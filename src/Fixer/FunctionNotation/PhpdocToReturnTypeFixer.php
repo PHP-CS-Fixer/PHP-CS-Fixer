@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
+use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -135,18 +136,36 @@ final class Foo {
                 continue;
             }
 
-            $returnTypeAnnotation = $this->getAnnotationsFromDocComment('return', $tokens, $docCommentIndex);
-            if (1 !== \count($returnTypeAnnotation)) {
+            $returnTypeAnnotations = $this->getAnnotationsFromDocComment('return', $tokens, $docCommentIndex);
+            if (1 !== \count($returnTypeAnnotations)) {
                 continue;
             }
 
-            $typeInfo = $this->getCommonTypeFromAnnotation(current($returnTypeAnnotation), true);
+            /** @var Annotation $returnTypeAnnotation */
+            $returnTypeAnnotation = current($returnTypeAnnotations);
+
+            $typesExpression = $returnTypeAnnotation->getTypeExpression();
+            $typeInfo = $this->getCommonTypeInfo($typesExpression, true);
+            $unionTypes = null;
 
             if (null === $typeInfo) {
+                $unionTypes = $this->getUnionTypes($typesExpression, true);
+            }
+
+            if (null === $typeInfo && null === $unionTypes) {
                 continue;
             }
 
-            [$returnType, $isNullable] = $typeInfo;
+            if (null !== $typeInfo) {
+                [$returnType, $isNullable] = $typeInfo;
+            } elseif (null !== $unionTypes) {
+                $returnType = $unionTypes;
+                $isNullable = false;
+            }
+
+            if (!isset($returnType, $isNullable)) {
+                continue;
+            }
 
             $startIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
 

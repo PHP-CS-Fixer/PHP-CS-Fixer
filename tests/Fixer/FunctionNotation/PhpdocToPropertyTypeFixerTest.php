@@ -19,6 +19,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
+ * @group phpdoc
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToPropertyTypeFixer
  */
 final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
@@ -160,8 +161,18 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
             '<?php class Foo { /** @var null */ private $foo; }',
         ];
 
-        yield 'skip mixed types' => [
+        yield 'skip union types' => [
             '<?php class Foo { /** @var Foo|Bar */ private $foo; }',
+            null,
+            null,
+            [],
+            80000,
+        ];
+
+        yield 'union types' => [
+            '<?php class Foo { /** @var Foo|Bar */ private Foo|Bar $foo; }',
+            '<?php class Foo { /** @var Foo|Bar */ private $foo; }',
+            80000,
         ];
 
         yield 'nullable type' => [
@@ -184,13 +195,29 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
             '<?php class Foo { /** @var null|array */ private $foo; }',
         ];
 
-        yield 'skip mixed nullable types' => [
+        yield 'skip union nullable types' => [
             '<?php class Foo { /** @var null|Foo|Bar */ private $foo; }',
+            null,
+            null,
+            [],
+            80000,
+        ];
+
+        yield 'union types including nullable' => [
+            '<?php class Foo { /** @var null|Foo|Bar */ private Foo|Bar|null $foo; }',
+            '<?php class Foo { /** @var null|Foo|Bar */ private $foo; }',
+            80000,
         ];
 
         yield 'generics' => [
             '<?php class Foo { /** @var array<int, bool> */ private array $foo; }',
             '<?php class Foo { /** @var array<int, bool> */ private $foo; }',
+        ];
+
+        yield 'union types including generics' => [
+            '<?php class Foo { /** @var string|array<int, bool> */ private string|array $foo; }',
+            '<?php class Foo { /** @var string|array<int, bool> */ private $foo; }',
+            80000,
         ];
 
         yield 'array of types' => [

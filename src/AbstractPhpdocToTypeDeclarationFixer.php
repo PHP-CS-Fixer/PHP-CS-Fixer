@@ -43,6 +43,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
         'iterable' => 7_01_00,
         'object' => 7_02_00,
         'mixed' => 8_00_00,
+        'union-types' => 8_00_00,
     ];
 
     /**
@@ -167,13 +168,8 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
     /**
      * @return null|array{string, bool}
      */
-    protected function getCommonTypeFromAnnotation(Annotation $annotation, bool $isReturnType): ?array
+    protected function getCommonTypeInfo(TypeExpression $typesExpression, bool $isReturnType): ?array
     {
-        $typesExpression = $annotation->getTypeExpression();
-        if (null === $typesExpression) {
-            return null;
-        }
-
         $commonType = $typesExpression->getCommonType();
         $isNullable = $typesExpression->allowsNull();
 
@@ -206,6 +202,75 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
         }
 
         return [$commonType, $isNullable];
+    }
+
+    protected function getUnionTypes(TypeExpression $typesExpression, bool $isReturnType): ?string
+    {
+        if (\PHP_VERSION_ID < $this->versionSpecificTypes['union-types']) {
+            return null;
+        }
+
+        if (!$typesExpression->isUnionType() || '|' !== $typesExpression->getTypesGlue()) {
+            return null;
+        }
+
+        $types = $typesExpression->getTypes();
+        $isNullable = $typesExpression->allowsNull();
+
+        if (\count($types) < 2) {
+            return null;
+        }
+
+        $unionTypes = [];
+        $containsOtherThanIterableType = false;
+        $containsOtherThanEmptyType = false;
+
+        foreach ($types as $type) {
+            if (empty($type)) {
+                return null;
+            }
+
+            if ('null' === $type) {
+                continue;
+            }
+
+            if ($this->isSkippedType($type)) {
+                return null;
+            }
+
+            if (isset($this->versionSpecificTypes[$type]) && \PHP_VERSION_ID < $this->versionSpecificTypes[$type]) {
+                return null;
+            }
+
+            $typeExpression = new TypeExpression($type, null, []);
+            $commonType = $typeExpression->getCommonType();
+
+            if (!$containsOtherThanIterableType && !\in_array($commonType, ['array', 'Traversable', 'iterable'], true)) {
+                $containsOtherThanIterableType = true;
+            }
+            if ($isReturnType && !$containsOtherThanEmptyType && !\in_array($commonType, ['null', 'void', 'never'], true)) {
+                $containsOtherThanEmptyType = true;
+            }
+
+            if (!$isNullable && $typesExpression->allowsNull()) {
+                $isNullable = true;
+            }
+
+            $unionTypes[] = $commonType;
+        }
+
+        if (!$containsOtherThanIterableType) {
+            return null;
+        }
+        if ($isReturnType && !$containsOtherThanEmptyType) {
+            return null;
+        }
+
+        if ($isNullable) {
+            $unionTypes[] = 'null';
+        }
+
+        return implode($typesExpression->getTypesGlue(), array_unique($unionTypes));
     }
 
     final protected function isValidSyntax(string $code): bool

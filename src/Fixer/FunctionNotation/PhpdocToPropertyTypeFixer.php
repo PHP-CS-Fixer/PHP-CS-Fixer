@@ -203,11 +203,24 @@ class Foo {
                 continue;
             }
 
-            $typeInfo = $this->getCommonTypeFromAnnotation($annotation, false);
+            $typesExpression = $annotation->getTypeExpression();
 
-            if (!isset($propertyTypes[$propertyName])) {
-                $propertyTypes[$propertyName] = [];
-            } elseif ($typeInfo !== $propertyTypes[$propertyName]) {
+            $typeInfo = $this->getCommonTypeInfo($typesExpression, false);
+            $unionTypes = null;
+
+            if (null === $typeInfo) {
+                $unionTypes = $this->getUnionTypes($typesExpression, false);
+            }
+
+            if (null === $typeInfo && null === $unionTypes) {
+                continue;
+            }
+
+            if (null !== $unionTypes) {
+                $typeInfo = [$unionTypes, false];
+            }
+
+            if (\array_key_exists($propertyName, $propertyTypes) && $typeInfo !== $propertyTypes[$propertyName]) {
                 return null;
             }
 

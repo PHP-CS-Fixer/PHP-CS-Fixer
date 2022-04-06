@@ -116,13 +116,29 @@ function bar($foo) {}
             }
 
             foreach ($this->getAnnotationsFromDocComment('param', $tokens, $docCommentIndex) as $paramTypeAnnotation) {
-                $typeInfo = $this->getCommonTypeFromAnnotation($paramTypeAnnotation, false);
+                $typesExpression = $paramTypeAnnotation->getTypeExpression();
+
+                $typeInfo = $this->getCommonTypeInfo($typesExpression, false);
+                $unionTypes = null;
 
                 if (null === $typeInfo) {
+                    $unionTypes = $this->getUnionTypes($typesExpression, false);
+                }
+
+                if (null === $typeInfo && null === $unionTypes) {
                     continue;
                 }
 
-                [$paramType, $isNullable] = $typeInfo;
+                if (null !== $typeInfo) {
+                    [$paramType, $isNullable] = $typeInfo;
+                } elseif (null !== $unionTypes) {
+                    $paramType = $unionTypes;
+                    $isNullable = false;
+                }
+
+                if (!isset($paramType, $isNullable)) {
+                    continue;
+                }
 
                 $startIndex = $tokens->getNextTokenOfKind($index, ['(']);
                 $variableIndex = $this->findCorrectVariable($tokens, $startIndex, $paramTypeAnnotation);

@@ -21,6 +21,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
+ * @group phpdoc
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToReturnTypeFixer
  */
 final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
@@ -228,6 +229,28 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 
         yield 'skip union types' => [
             '<?php /** @return Foo|Bar */ function my_foo() {}',
+            null,
+            null,
+            [],
+            80000,
+        ];
+
+        yield 'union types' => [
+            '<?php /** @return Foo|Bar */ function my_foo(): Foo|Bar {}',
+            '<?php /** @return Foo|Bar */ function my_foo() {}',
+            80000,
+        ];
+
+        yield 'union types including generics' => [
+            '<?php /** @return string|array<int, string> */ function my_foo(): string|array {}',
+            '<?php /** @return string|array<int, string> */ function my_foo() {}',
+            80000,
+        ];
+
+        yield 'union types including nullable' => [
+            '<?php /** @return null|Foo|Bar */ function my_foo(): Foo|Bar|null {}',
+            '<?php /** @return null|Foo|Bar */ function my_foo() {}',
+            80000,
         ];
 
         yield 'nullable type' => [
@@ -252,10 +275,24 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 
         yield 'skip primitive or array types' => [
             '<?php /** @return string|string[] */ function my_foo() {}',
+            null,
+            null,
+            [],
+            80000,
+        ];
+
+        yield 'primitive or array types' => [
+            '<?php /** @return string|string[] */ function my_foo(): string|array {}',
+            '<?php /** @return string|string[] */ function my_foo() {}',
+            80000,
         ];
 
         yield 'skip nullable union types' => [
             '<?php /** @return null|Foo|Bar */ function my_foo() {}',
+            null,
+            null,
+            [],
+            80000,
         ];
 
         yield 'generics' => [
@@ -388,6 +425,12 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                     /** @return Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz */
                     function bar() {}
                 ',
+        ];
+
+        yield 'skip never type' => [
+            '<?php function bar(): never {}',
+            null,
+            80100,
         ];
 
         yield 'arrow function' => [

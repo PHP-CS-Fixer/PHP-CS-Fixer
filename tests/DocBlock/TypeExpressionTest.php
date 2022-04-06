@@ -415,6 +415,34 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
+     * @dataProvider provideUnionTypesCases
+     */
+    public function testIsUnionType(bool $expectedIsUnionType, string $typesExpression): void
+    {
+        $expression = new TypeExpression($typesExpression, null, []);
+        static::assertSame($expectedIsUnionType, $expression->isUnionType());
+    }
+
+    public static function provideUnionTypesCases(): iterable
+    {
+        yield [false, 'string'];
+
+        yield [true, 'bool|string'];
+
+        yield [true, 'int|string|null'];
+
+        yield [true, 'int|?string'];
+
+        yield [true, 'int|null'];
+
+        yield [false, '?int'];
+
+        yield [true, 'Foo|Bar'];
+
+        yield [false, 'Foo&Bar'];
+    }
+
+    /**
      * @param NamespaceUseAnalysis[] $namespaceUses
      *
      * @dataProvider provideGetCommonTypeCases
