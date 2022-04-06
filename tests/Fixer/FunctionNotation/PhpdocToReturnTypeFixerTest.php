@@ -30,11 +30,20 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, ?int $versionSpecificFix = null, array $config = []): void
-    {
+    public function testFix(
+        string $expected,
+        ?string $input = null,
+        ?int $availableAboveVersion = null,
+        array $config = [],
+        ?int $skipFromVersion = null
+    ): void {
+        if (null !== $skipFromVersion && \PHP_VERSION_ID >= $skipFromVersion) {
+            static::markTestSkipped(sprintf('Only available up to version %d', $skipFromVersion));
+        }
+
         if (
             null !== $input
-            && (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
+            && (null !== $availableAboveVersion && \PHP_VERSION_ID < $availableAboveVersion)
         ) {
             $expected = $input;
             $input = null;
@@ -388,6 +397,29 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                     /** @return Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz */
                     function bar() {}
                 ',
+        ];
+
+        yield 'skip mixed type' => [
+            '<?php
+                    /** @return mixed */
+                    function bar() {}
+                ',
+            null,
+            null,
+            [],
+            80000,
+        ];
+
+        yield 'fix mixed type' => [
+            '<?php
+                    /** @return mixed */
+                    function bar(): mixed {}
+                ',
+            '<?php
+                    /** @return mixed */
+                    function bar() {}
+                ',
+            80000,
         ];
 
         yield 'arrow function' => [

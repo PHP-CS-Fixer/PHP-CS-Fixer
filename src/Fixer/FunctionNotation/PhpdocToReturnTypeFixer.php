@@ -42,7 +42,6 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
      * @var array<string, true>
      */
     private array $skippedTypes = [
-        'mixed' => true,
         'resource' => true,
         'null' => true,
     ];

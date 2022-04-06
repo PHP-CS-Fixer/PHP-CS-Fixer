@@ -30,18 +30,26 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, ?int $versionSpecificFix = null, array $config = []): void
-    {
+    public function testFix(
+        string $expected,
+        ?string $input = null,
+        ?int $availableAboveVersion = null,
+        array $config = [],
+        ?int $skipFromVersion = null
+    ): void {
+        if (null !== $skipFromVersion && \PHP_VERSION_ID >= $skipFromVersion) {
+            static::markTestSkipped(sprintf('Only available up to version %d', $skipFromVersion));
+        }
+
         if (
             null !== $input
-            && (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
+            && (null !== $availableAboveVersion && \PHP_VERSION_ID < $availableAboveVersion)
         ) {
             $expected = $input;
             $input = null;
         }
 
         $this->fixer->configure($config);
-
         $this->doTest($expected, $input);
     }
 
@@ -190,12 +198,30 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     function my_foo($bar, $baz, $tab) {}',
         ];
 
-        yield 'non-root class with mixed type of param' => [
+        yield 'non-root class with mixed type of param for php < 8' => [
+            '<?php
+                /**
+                * @param mixed $bar
+                */
+                function my_foo($bar) {}',
+            null,
+            null,
+            [],
+            80000,
+        ];
+
+        yield 'non-root class with mixed type of param for php >= 8' => [
+            '<?php
+                    /**
+                    * @param mixed $bar
+                    */
+                    function my_foo(mixed $bar) {}',
             '<?php
                     /**
                     * @param mixed $bar
                     */
                     function my_foo($bar) {}',
+            80000,
         ];
 
         yield 'non-root namespaced class' => [

@@ -39,7 +39,6 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
      * @var array<string, true>
      */
     private const SKIPPED_TYPES = [
-        'mixed' => true,
         'resource' => true,
         'static' => true,
         'void' => true,

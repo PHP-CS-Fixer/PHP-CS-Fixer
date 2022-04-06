@@ -28,8 +28,25 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, array $config = []): void
-    {
+    public function testFix(
+        string $expected,
+        ?string $input = null,
+        ?int $availableAboveVersion = null,
+        array $config = [],
+        ?int $skipFromVersion = null
+    ): void {
+        if (null !== $skipFromVersion && \PHP_VERSION_ID >= $skipFromVersion) {
+            static::markTestSkipped(sprintf('Only available up to version %d', $skipFromVersion));
+        }
+
+        if (
+            null !== $input
+            && (null !== $availableAboveVersion && \PHP_VERSION_ID < $availableAboveVersion)
+        ) {
+            $expected = $input;
+            $input = null;
+        }
+
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
@@ -130,6 +147,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         yield 'do not fix scalar types when configured as such' => [
             '<?php class Foo { /** @var int */ private $foo; }',
             null,
+            null,
             ['scalar_types' => false],
         ];
 
@@ -158,6 +176,16 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
 
         yield 'skip mixed special type' => [
             '<?php class Foo { /** @var mixed */ private $foo; }',
+            null,
+            null,
+            [],
+            80000,
+        ];
+
+        yield 'fix mixed special type' => [
+            '<?php class Foo { /** @var mixed */ private mixed $foo; }',
+            '<?php class Foo { /** @var mixed */ private $foo; }',
+            80000,
         ];
 
         yield 'null alone cannot be a property type' => [
