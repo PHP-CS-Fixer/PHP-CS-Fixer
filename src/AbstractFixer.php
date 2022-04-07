@@ -71,6 +71,14 @@ abstract class AbstractFixer implements FixerInterface
             throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
         }
 
+        $comments = $tokens->findGivenKind(T_DOC_COMMENT);
+        $ignoreFlag = '@PhpCsFixerIgnore ' . $this->getName();
+        foreach ($comments as $comment) {
+            if (str_contains($comment->getContent(), $ignoreFlag)) {
+                return;
+            }
+        }
+
         if (0 < $tokens->count() && $this->isCandidate($tokens) && $this->supports($file)) {
             $this->applyFix($file, $tokens);
         }
