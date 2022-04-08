@@ -277,7 +277,7 @@ class Example
                                 return true;
                             }
 
-                            if (substr($value, 0, 7) === 'method:') {
+                            if (is_string($value) && substr($value, 0, 7) === 'method:') {
                                 return true;
                             }
                         }
