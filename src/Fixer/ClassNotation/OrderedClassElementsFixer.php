@@ -265,10 +265,26 @@ class Example
      */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
+        $builtIns = array_keys(array_merge(self::$typeHierarchy, self::$specialTypes));
+
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes)))])
+                ->setAllowedValues([
+                    static function (array $values) use ($builtIns): bool {
+                        foreach ($values as $value) {
+                            if (\in_array($value, $builtIns, true)) {
+                                return true;
+                            }
+
+                            if (substr($value, 0, 7) === 'method:') {
+                                return true;
+                            }
+                        }
+
+                        return false;
+                    },
+                ])
                 ->setDefault([
                     'use_trait',
                     'case',
@@ -479,6 +495,12 @@ class Example
 
         foreach ($elements as &$element) {
             $type = $element['type'];
+
+            if (\in_array($type, ['method', 'magic', 'phpunit'], true) && isset($this->typePosition["method:{$element['name']}"])) {
+                $element['position'] = $this->typePosition["method:{$element['name']}"];
+
+                continue;
+            }
 
             if (\array_key_exists($type, self::$specialTypes)) {
                 if (isset($this->typePosition[$type])) {
