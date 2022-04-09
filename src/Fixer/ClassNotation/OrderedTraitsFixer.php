@@ -88,6 +88,7 @@ final class OrderedTraitsFixer extends AbstractFixer
                 continue;
             }
 
+            $startIndex = $tokens->getNextNonWhitespace($tokens->getPrevMeaningfulToken($index));
             $endIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
 
             if ($tokens[$endIndex]->equals('{')) {
@@ -96,11 +97,11 @@ final class OrderedTraitsFixer extends AbstractFixer
 
             $use = [];
 
-            for ($i = $index; $i <= $endIndex; ++$i) {
+            for ($i = $startIndex; $i <= $endIndex; ++$i) {
                 $use[] = $tokens[$i];
             }
 
-            $uses[$index] = Tokens::fromArray($use);
+            $uses[$startIndex] = Tokens::fromArray($use);
 
             $index = $endIndex;
         }

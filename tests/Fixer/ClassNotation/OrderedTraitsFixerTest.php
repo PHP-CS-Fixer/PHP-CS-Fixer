@@ -228,10 +228,10 @@ class Foo {
 }',
             '<?php
 class Foo {
-    /* A */use D/* D */;
-    /* B */use C\C/* C */;
-    /* C */use B\B\B/* B */;
-    /* D */use A\A\A\A/* A */;
+    /* D */use D/* D */;
+    /* C */use C\C/* C */;
+    /* B */use B\B\B/* B */;
+    /* A */use A\A\A\A/* A */;
 }',
         ];
 
@@ -272,6 +272,33 @@ class Foo {
 class Foo {
     use C;
     use \B;
+    use A;
+}',
+        ];
+
+        yield 'with phpdoc' => [
+            '<?php
+class Foo {
+    // foo 1
+
+    /** @phpstan-use A<Foo> */
+    use A;
+    /** @phpstan-use B<Foo> */
+    use B;
+
+    /** @phpstan-use C<Foo> */
+    use C;
+}',
+            '<?php
+class Foo {
+    /** @phpstan-use C<Foo> */
+    use C;
+    /** @phpstan-use B<Foo> */
+    use B;
+
+    // foo 1
+
+    /** @phpstan-use A<Foo> */
     use A;
 }',
         ];
