@@ -72,7 +72,7 @@ abstract class AbstractFixer implements FixerInterface
         }
 
         $comments = $tokens->findGivenKind(T_DOC_COMMENT);
-        $ignoreFlag = '@PhpCsFixerIgnore ' . $this->getName();
+        $ignoreFlag = '@PhpCsFixerIgnore '.$this->getName();
         foreach ($comments as $comment) {
             if (str_contains($comment->getContent(), $ignoreFlag)) {
                 return;
