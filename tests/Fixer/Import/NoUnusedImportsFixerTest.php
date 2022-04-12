@@ -696,26 +696,6 @@ EOF
                 '<?php ?>',
                 '<?php use A\B?>',
             ],
-            'with_matches_in_comments' => [
-                '<?php
-use Foo;
-use Bar;
-use Baz;
-
-//Foo
-#Bar
-/*Baz*/',
-            ],
-            'with_case_insensitive_matches_in_comments' => [
-                '<?php
-use Foo;
-use Bar;
-use Baz;
-
-//foo
-#bar
-/*baz*/',
-            ],
             'with_same_namespace_import_and_unused_import' => [
                 <<<'EOF'
 <?php
