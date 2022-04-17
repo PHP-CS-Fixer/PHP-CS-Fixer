@@ -807,6 +807,9 @@ Whitespace
 - `blank_line_before_statement <./whitespace/blank_line_before_statement.rst>`_
 
   An empty line feed must precede any configured statement.
+- `blank_line_between_import_groups <./whitespace/blank_line_between_import_groups.rst>`_
+
+  Putting blank lines between ``use`` statement groups.
 - `compact_nullable_typehint <./whitespace/compact_nullable_typehint.rst>`_
 
   Remove extra spaces in a nullable typehint.

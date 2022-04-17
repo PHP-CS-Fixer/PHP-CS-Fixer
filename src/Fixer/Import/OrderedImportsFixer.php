@@ -172,6 +172,7 @@ use Bar;
     /**
      * {@inheritdoc}
      *
+     * Must run before BlankLineBetweenImportGroupsFixer.
      * Must run after GlobalNamespaceImportFixer, NoLeadingImportSlashFixer.
      */
     public function getPriority(): int

@@ -1,0 +1,30 @@
+--TEST--
+Integration of fixers: ordered_imports,blank_line_between_import_groups.
+--RULESET--
+{"ordered_imports": true, "blank_line_between_import_groups": true}
+--EXPECT--
+<?php
+
+namespace Test;
+
+use function bar;
+
+use Foo;
+use Z;
+
+$foo = new Foo();
+
+bar($foo);
+
+--INPUT--
+<?php
+
+namespace Test;
+
+use Foo;
+use Z;
+use function bar;
+
+$foo = new Foo();
+
+bar($foo);
