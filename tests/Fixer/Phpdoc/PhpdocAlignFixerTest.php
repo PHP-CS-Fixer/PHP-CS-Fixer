@@ -1103,6 +1103,76 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testAlignsStaticAndNonStaticMethods(): void
+    {
+        $this->fixer->configure(['tags' => ['method', 'property']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @property        string      $foo             Desc1
+     * @property        int         $bar             Desc2
+     * @method                      foo(string $foo) DescriptionFoo
+     * @method          static      bar(string $foo) DescriptionBar
+     * @method          string|null baz(bool $baz)   DescriptionBaz
+     * @method   static int|false   qux(float $qux)  DescriptionQux
+     * @method   static static      quux(int $quux)  DescriptionQuux
+     * @method   static $this       quuz(bool $quuz) DescriptionQuuz
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @property    string   $foo     Desc1
+     * @property  int   $bar   Desc2
+     * @method     foo(string $foo)    DescriptionFoo
+     * @method  static     bar(string $foo) DescriptionBar
+     * @method    string|null    baz(bool $baz)  DescriptionBaz
+     * @method static     int|false qux(float $qux) DescriptionQux
+     * @method static   static    quux(int $quux) DescriptionQuux
+     * @method static  $this     quuz(bool $quuz) DescriptionQuuz
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testAlignsStaticAndNonStaticMethodsLeftAlign(): void
+    {
+        $this->fixer->configure(['tags' => ['method', 'property'], 'align' => PhpdocAlignFixer::ALIGN_LEFT]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @property string $foo Desc1
+     * @property int $bar Desc2
+     * @method foo(string $foo) DescriptionFoo
+     * @method static bar(string $foo) DescriptionBar
+     * @method string|null baz(bool $baz) DescriptionBaz
+     * @method static int|false qux(float $qux) DescriptionQux
+     * @method static static quux(int $quux) DescriptionQuux
+     * @method static $this quuz(bool $quuz) DescriptionQuuz
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @property    string   $foo     Desc1
+     * @property  int   $bar   Desc2
+     * @method     foo(string $foo)    DescriptionFoo
+     * @method  static     bar(string $foo) DescriptionBar
+     * @method    string|null    baz(bool $baz)  DescriptionBaz
+     * @method static     int|false qux(float $qux) DescriptionQux
+     * @method static   static    quux(int $quux) DescriptionQuux
+     * @method static  $this     quuz(bool $quuz) DescriptionQuuz
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testDoesNotAlignWithEmptyConfig(): void
     {
         $this->fixer->configure(['tags' => []]);
