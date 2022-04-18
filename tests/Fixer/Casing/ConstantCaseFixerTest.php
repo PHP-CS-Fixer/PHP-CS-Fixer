@@ -26,70 +26,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ConstantCaseFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideLowerGeneratedCases
-     */
-    public function testFixLowerGeneratedCases(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['case' => 'lower']);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideUpperGeneratedCases
-     */
-    public function testFixUpperGeneratedCases(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['case' => 'upper']);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideLowerGeneratedCases(): \Generator
-    {
-        foreach (['true', 'false', 'null'] as $case) {
-            yield [
-                sprintf('<?php $x = %s;', $case),
-                sprintf('<?php $x = %s;', strtoupper($case)),
-            ];
-
-            yield [
-                sprintf('<?php $x = %s;', $case),
-                sprintf('<?php $x = %s;', ucfirst($case)),
-            ];
-
-            yield [sprintf('<?php $x = new %s;', ucfirst($case))];
-
-            yield [sprintf('<?php $x = new %s;', strtoupper($case))];
-
-            yield [sprintf('<?php $x = "%s story";', $case)];
-
-            yield [sprintf('<?php $x = "%s";', $case)];
-        }
-    }
-
-    public function provideUpperGeneratedCases(): \Generator
-    {
-        foreach (['true', 'false', 'null'] as $case) {
-            yield [
-                sprintf('<?php $x = %s;', strtoupper($case)),
-                sprintf('<?php $x = %s;', $case),
-            ];
-
-            yield [
-                sprintf('<?php $x = %s;', strtoupper($case)),
-                sprintf('<?php $x = %s;', ucfirst($case)),
-            ];
-
-            yield [sprintf('<?php $x = new %s;', ucfirst($case))];
-
-            yield [sprintf('<?php $x = new %s;', strtoupper($case))];
-
-            yield [sprintf('<?php $x = "%s story";', $case)];
-
-            yield [sprintf('<?php $x = "%s";', $case)];
-        }
-    }
-
-    /**
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null): void
@@ -163,6 +99,70 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @dataProvider provideLowerGeneratedCases
+     */
+    public function testFixLowerGeneratedCases(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['case' => 'lower']);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideLowerGeneratedCases(): iterable
+    {
+        foreach (['true', 'false', 'null'] as $case) {
+            yield [
+                sprintf('<?php $x = %s;', $case),
+                sprintf('<?php $x = %s;', strtoupper($case)),
+            ];
+
+            yield [
+                sprintf('<?php $x = %s;', $case),
+                sprintf('<?php $x = %s;', ucfirst($case)),
+            ];
+
+            yield [sprintf('<?php $x = new %s;', ucfirst($case))];
+
+            yield [sprintf('<?php $x = new %s;', strtoupper($case))];
+
+            yield [sprintf('<?php $x = "%s story";', $case)];
+
+            yield [sprintf('<?php $x = "%s";', $case)];
+        }
+    }
+
+    /**
+     * @dataProvider provideUpperGeneratedCases
+     */
+    public function testFixUpperGeneratedCases(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['case' => 'upper']);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideUpperGeneratedCases(): iterable
+    {
+        foreach (['true', 'false', 'null'] as $case) {
+            yield [
+                sprintf('<?php $x = %s;', strtoupper($case)),
+                sprintf('<?php $x = %s;', $case),
+            ];
+
+            yield [
+                sprintf('<?php $x = %s;', strtoupper($case)),
+                sprintf('<?php $x = %s;', ucfirst($case)),
+            ];
+
+            yield [sprintf('<?php $x = new %s;', ucfirst($case))];
+
+            yield [sprintf('<?php $x = new %s;', strtoupper($case))];
+
+            yield [sprintf('<?php $x = "%s story";', $case)];
+
+            yield [sprintf('<?php $x = "%s";', $case)];
+        }
+    }
+
+    /**
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
@@ -171,11 +171,9 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases(): array
+    public static function provideFix80Cases(): iterable
     {
-        return [
-            ['<?php class Foo { public function Bar() { return $this?->False; } }'],
-        ];
+        yield ' nullsafe operator' => ['<?php class Foo { public function Bar() { return $this?->False; } }'];
     }
 
     /**
@@ -187,9 +185,9 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix81Cases(): \Generator
+    public static function provideFix81Cases(): iterable
     {
-        yield [
+        yield 'final class const' => [
             '<?php
                 class Foo
                 {
@@ -205,6 +203,58 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
                     public final const FALSE = TRUE;
                     final public const NULL = NULL;
                 }
+            ',
+        ];
+
+        yield 'enum and switch' => [
+            '<?php
+                enum Foo
+                {
+                    case True;
+                    case False;
+                    case Null;
+
+                    public function methodWithSwitch(mixed $value): void
+                    {
+                        switch ($value) {
+                            case true:
+                            case false:
+                            case null:
+                                break;
+                        }
+                    }
+                }
+            ',
+            '<?php
+                enum Foo
+                {
+                    case True;
+                    case False;
+                    case Null;
+
+                    public function methodWithSwitch(mixed $value): void
+                    {
+                        switch ($value) {
+                            case TRUE:
+                            case FALSE:
+                            case NULL:
+                                break;
+                        }
+                    }
+                }
+            ',
+        ];
+
+        yield 'enum' => [
+            '<?php
+                $y = false;
+                enum Foo: string { case FALSE = "false"; }
+                $x = true;
+            ',
+            '<?php
+                $y = FALSE;
+                enum Foo: string { case FALSE = "false"; }
+                $x = TRUE;
             ',
         ];
     }
