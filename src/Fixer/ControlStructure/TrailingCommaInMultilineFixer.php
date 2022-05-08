@@ -54,13 +54,15 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
      */
     public const ELEMENTS_PARAMETERS = 'parameters';
 
+    private const MATCH_EXPRESSIONS = 'match';
+
     /**
      * {@inheritdoc}
      */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Multi-line arrays, arguments list and parameters list must have a trailing comma.',
+            'Multi-line arrays, arguments list, parameters list and `match` expressions must have a trailing comma.',
             [
                 new CodeSample("<?php\narray(\n    1,\n    2\n);\n"),
                 new VersionSpecificCodeSample(
@@ -115,13 +117,17 @@ SAMPLE
                     return $value;
                 })
                 ->getOption(),
-            (new FixerOptionBuilder('elements', sprintf('Where to fix multiline trailing comma (PHP >= 7.3 required for `%s`, PHP >= 8.0 for `%s`).', self::ELEMENTS_ARGUMENTS, self::ELEMENTS_PARAMETERS)))
+            (new FixerOptionBuilder('elements', sprintf('Where to fix multiline trailing comma (PHP >= 8.0 for `%s` and `%s`).', self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS))) // @TODO: remove text when PHP 8.0+ is required
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset([self::ELEMENTS_ARRAYS, self::ELEMENTS_ARGUMENTS, self::ELEMENTS_PARAMETERS])])
+                ->setAllowedValues([new AllowedValueSubset([self::ELEMENTS_ARRAYS, self::ELEMENTS_ARGUMENTS, self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS])])
                 ->setDefault([self::ELEMENTS_ARRAYS])
                 ->setNormalizer(static function (Options $options, $value) {
-                    if (\PHP_VERSION_ID < 80000 && \in_array(self::ELEMENTS_PARAMETERS, $value, true)) {
-                        throw new InvalidOptionsForEnvException(sprintf('"%s" option can only be enabled with PHP 8.0+.', self::ELEMENTS_PARAMETERS));
+                    if (\PHP_VERSION_ID < 80000) { // @TODO: drop condition when PHP 8.0+ is required
+                        foreach ([self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS] as $option) {
+                            if (\in_array($option, $value, true)) {
+                                throw new InvalidOptionsForEnvException(sprintf('"%s" option can only be enabled with PHP 8.0+.', $option));
+                            }
+                        }
                     }
 
                     return $value;
@@ -137,7 +143,8 @@ SAMPLE
     {
         $fixArrays = \in_array(self::ELEMENTS_ARRAYS, $this->configuration['elements'], true);
         $fixArguments = \in_array(self::ELEMENTS_ARGUMENTS, $this->configuration['elements'], true);
-        $fixParameters = \in_array(self::ELEMENTS_PARAMETERS, $this->configuration['elements'], true);
+        $fixParameters = \PHP_VERSION_ID >= 80000 && \in_array(self::ELEMENTS_PARAMETERS, $this->configuration['elements'], true); // @TODO: drop condition when PHP 8.0+ is required
+        $fixMatch = \PHP_VERSION_ID >= 80000 && \in_array(self::MATCH_EXPRESSIONS, $this->configuration['elements'], true); // @TODO: drop condition when PHP 8.0+ is required
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
@@ -178,6 +185,10 @@ SAMPLE
             ) {
                 $this->fixBlock($tokens, $index);
             }
+
+            if ($fixMatch && $tokens[$prevIndex]->isGivenKind(T_MATCH)) {
+                $this->fixMatch($tokens, $index);
+            }
         }
     }
 
@@ -207,6 +218,36 @@ SAMPLE
             if (!$endToken->isComment() && !$endToken->isWhitespace()) {
                 $tokens->ensureWhitespaceAtIndex($endIndex, 1, ' ');
             }
+        }
+    }
+
+    private function fixMatch(Tokens $tokens, int $index): void
+    {
+        $index = $tokens->getNextTokenOfKind($index, ['{']);
+        $closeIndex = $index;
+        $isMultiline = false;
+        $depth = 1;
+
+        do {
+            ++$closeIndex;
+
+            if ($tokens[$closeIndex]->equals('{')) {
+                ++$depth;
+            } elseif ($tokens[$closeIndex]->equals('}')) {
+                --$depth;
+            } elseif (!$isMultiline && str_contains($tokens[$closeIndex]->getContent(), "\n")) {
+                $isMultiline = true;
+            }
+        } while ($depth > 0);
+
+        if (!$isMultiline) {
+            return;
+        }
+
+        $previousIndex = $tokens->getPrevMeaningfulToken($closeIndex);
+
+        if (!$tokens[$previousIndex]->equals(',')) {
+            $tokens->insertAt($previousIndex + 1, new Token(','));
         }
     }
 }

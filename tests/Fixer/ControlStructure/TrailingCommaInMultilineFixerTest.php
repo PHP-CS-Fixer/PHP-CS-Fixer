@@ -44,7 +44,7 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
         $this->fixer->configure($configuration);
     }
 
-    public static function provideInvalidConfigurationCases(): \Generator
+    public static function provideInvalidConfigurationCases(): iterable
     {
         yield [
             '[trailing_comma_in_multiline] Invalid configuration for env: "parameters" option can only be enabled with PHP 8.0+.',
@@ -551,55 +551,93 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases(): array
+    public static function provideFix80Cases(): iterable
     {
-        return [
-            [
-                '<?php function foo($x, $y) {}',
-                null,
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
-            ],
-            [
-                '<?php function foo(
-                        $x,
-                        $y
-                    ) {}',
-                null, // do not fix if not configured
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                '<?php function foo(
-                        $x,
-                        $y,
-                    ) {}',
-                '<?php function foo(
-                        $x,
-                        $y
-                    ) {}',
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
-            ],
-            [
-                '<?php $x = function(
-                        $x,
-                        $y,
-                    ) {};',
-                '<?php $x = function(
-                        $x,
-                        $y
-                    ) {};',
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
-            ],
-            [
-                '<?php $x = fn(
-                        $x,
-                        $y,
-                    ) => $x + $y;',
-                '<?php $x = fn(
-                        $x,
-                        $y
-                    ) => $x + $y;',
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
-            ],
+        yield [
+            '<?php function foo($x, $y) {}',
+            null,
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
+        ];
+
+        yield [
+            '<?php function foo(
+                    $x,
+                    $y
+                ) {}',
+            null, // do not fix if not configured
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            '<?php function foo(
+                    $x,
+                    $y,
+                ) {}',
+            '<?php function foo(
+                    $x,
+                    $y
+                ) {}',
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
+        ];
+
+        yield [
+            '<?php $x = function(
+                    $x,
+                    $y,
+                ) {};',
+            '<?php $x = function(
+                    $x,
+                    $y
+                ) {};',
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
+        ];
+
+        yield [
+            '<?php $x = fn(
+                    $x,
+                    $y,
+                ) => $x + $y;',
+            '<?php $x = fn(
+                    $x,
+                    $y
+                ) => $x + $y;',
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
+        ];
+
+        yield 'match' => [
+            '<?php
+$m = match ($a) {
+    200, 300 => null,
+    400 => 1,
+    500 => function() {return 2;},
+    600 => static function() {return 4;},
+    default => 3,
+};
+
+$z = match ($a) {
+    1 => 0,
+    2 => 1,
+};
+
+$b = match($c) {19 => 28, default => 333};
+            ',
+            '<?php
+$m = match ($a) {
+    200, 300 => null,
+    400 => 1,
+    500 => function() {return 2;},
+    600 => static function() {return 4;},
+    default => 3
+};
+
+$z = match ($a) {
+    1 => 0,
+    2 => 1
+};
+
+$b = match($c) {19 => 28, default => 333};
+            ',
+            ['elements' => ['match']],
         ];
     }
 }
