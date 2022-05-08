@@ -101,6 +101,14 @@ TEST;
 ?>
 ',
             ],
+            ['<?php', '<?'],
+            ["<?php\n", "<?\n"],
+            ["<?php    \n", "<?    \n"],
+            ["<?php    \n?><?= 1?>", "<?    \n?><?= 1?>"],
+            [
+                'foo <?php  echo "-"; echo "aaa <? bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
+                'foo <?  echo "-"; echo "aaa <? bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
+            ],
         ];
     }
 }
