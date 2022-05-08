@@ -27,10 +27,7 @@ final class ProcessLintingResult implements LintingResultInterface
 
     private ?string $path;
 
-    /**
-     * @var bool
-     */
-    private $isSuccessful;
+    private ?bool $isSuccessful = null;
 
     public function __construct(Process $process, ?string $path = null)
     {
