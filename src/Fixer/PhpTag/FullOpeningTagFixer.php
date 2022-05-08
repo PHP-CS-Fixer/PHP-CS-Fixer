@@ -91,7 +91,7 @@ echo "Hello!";
             if ($token->isGivenKind(T_OPEN_TAG)) {
                 $tokenContent = $token->getContent();
 
-                if ('<?php' !== strtolower(substr($content, $tokensOldContentLength, 5))) {
+                if ('<?php' !== strtolower((string)substr($content, $tokensOldContentLength, 5))) {
                     $tokenContent = '<? ';
                 }
 
