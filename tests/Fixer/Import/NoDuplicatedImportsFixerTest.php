@@ -141,5 +141,30 @@ use Throwable5 ?> Foo
              use const A;
              use function A;',
         ];
+
+        yield 'whatever' => [
+            '<?php
+namespace FooBar;
+use Vendor\Project\Duplicated\Foo;
+use Vendor\Foo;
+use Vendor\Project\Duplicated\Bar;
+ '.'
+ '.'
+use Vendor\Bar;
+ '.'
+ '.'
+',
+            '<?php
+namespace FooBar;
+use Vendor\Project\Duplicated\Foo;
+use Vendor\Foo;
+use Vendor\Project\Duplicated\Bar;
+use Vendor\Project\Duplicated\Foo;
+use Vendor\Project\Duplicated\Bar;
+use Vendor\Bar;
+use Vendor\Project\Duplicated\Foo;
+use Vendor\Project\Duplicated\Foo;
+',
+        ];
     }
 }
