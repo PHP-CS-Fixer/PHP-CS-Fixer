@@ -1,0 +1,28 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-05T14:42:29Z
+
+[![Coverage Status](https://coveralls.io/builds/45859324/badge)](https://coveralls.io/builds/45859324)
+
+Coverage decreased (-0.2%) to 92.933% when pulling **f65b48e75c0993dbf7fa326cc765c904030b7cf2 on julienfalque:split-braces-fixer-statement-indentation** into **b0a9fcac80336ac7c3854419d315570d72b5347b on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-09-05T14:59:48Z
+
+By the way this one is heavily inspired by `ArrayIndentationFixer`, which I think received some fixes/improvements. I have to check if they have to be applied to `StatementIndentationFixer` as well.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-10-19T11:18:51Z
+
+Maybe we can have a test for `enum` as well
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2022-01-23T15:52:11Z
+
+Rebased:
+* test cases with `enum` added;
+* bug with `match` expression fixed;
+* "current line indent" detection refactored;
