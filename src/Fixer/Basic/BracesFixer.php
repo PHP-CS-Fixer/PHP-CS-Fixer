@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ControlStructure\ControlStructureContinuationPositionFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\DeclareParenthesesFixer;
+use PhpCsFixer\Fixer\Whitespace\StatementIndentationFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -136,7 +137,7 @@ class Foo
     /**
      * {@inheritdoc}
      *
-     * Must run before ArrayIndentationFixer, MethodArgumentSpaceFixer, MethodChainingIndentationFixer.
+     * Must run before ArrayIndentationFixer, MethodChainingIndentationFixer.
      * Must run after ClassAttributesSeparationFixer, ClassDefinitionFixer, ElseifFixer, EmptyLoopBodyFixer, LineEndingFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleLineThrowFixer, SingleSpaceAfterConstructFixer, SingleTraitInsertPerStatementFixer.
      */
     public function getPriority(): int
@@ -211,6 +212,7 @@ class Foo
         return [
             $this->getControlStructureContinuationPositionFixer(),
             new DeclareParenthesesFixer(),
+            new StatementIndentationFixer(true),
         ];
     }
 

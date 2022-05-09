@@ -87,11 +87,11 @@ $a = null; // `no_unset_cast` rule
 $foo->bar = null; // `no_unset_on_property` rule
 
 // https://wiki.php.net/rfc/flexible_heredoc_nowdoc_syntaxes
-    $a = <<<'EOD'
-        abc
-            def
-            ghi
-        EOD;
+$a = <<<'EOD'
+    abc
+        def
+        ghi
+    EOD;
 $a = [<<<'EOD'
     foo
     EOD, <<<'EOD'

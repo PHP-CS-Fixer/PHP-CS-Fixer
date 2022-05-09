@@ -22,6 +22,16 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class AlternativeSyntaxAnalyzer
 {
+    private const ALTERNATIVE_SYNTAX_BLOCK_EDGES = [
+        T_IF => [T_ENDIF, T_ELSE, T_ELSEIF],
+        T_ELSE => [T_ENDIF],
+        T_ELSEIF => [T_ENDIF, T_ELSE, T_ELSEIF],
+        T_FOR => [T_ENDFOR],
+        T_FOREACH => [T_ENDFOREACH],
+        T_WHILE => [T_ENDWHILE],
+        T_SWITCH => [T_ENDSWITCH],
+    ];
+
     public function belongsToAlternativeSyntax(Tokens $tokens, int $index): bool
     {
         if (!$tokens[$index]->equals(':')) {
@@ -50,5 +60,68 @@ final class AlternativeSyntaxAnalyzer
             T_SWITCH,
             T_WHILE,
         ]);
+    }
+
+    public function findAlternativeSyntaxBlockEnd(Tokens $tokens, int $index): int
+    {
+        if (!isset($tokens[$index])) {
+            throw new \InvalidArgumentException("There is no token at index {$index}.");
+        }
+
+        if (!$this->isStartOfAlternativeSyntaxBlock($tokens, $index)) {
+            throw new \InvalidArgumentException("Token at index {$index} is not the start of an alternative syntax block.");
+        }
+
+        $startTokenKind = $tokens[$index]->getId();
+        $endTokenKinds = self::ALTERNATIVE_SYNTAX_BLOCK_EDGES[$startTokenKind];
+
+        $findKinds = [[$startTokenKind]];
+        foreach ($endTokenKinds as $endTokenKind) {
+            $findKinds[] = [$endTokenKind];
+        }
+
+        while (true) {
+            $index = $tokens->getNextTokenOfKind($index, $findKinds);
+
+            if ($tokens[$index]->isGivenKind($endTokenKinds)) {
+                return $index;
+            }
+
+            $blockOpeningIndex = $tokens->getNextTokenOfKind(
+                $tokens->findBlockEnd(
+                    Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+                    $tokens->getNextTokenOfKind($index + 1, ['(']),
+                ),
+                [':', '{'],
+            );
+
+            if (!$tokens[$blockOpeningIndex]->equals(':')) {
+                $index = $blockOpeningIndex;
+
+                continue;
+            }
+
+            $index = $this->findAlternativeSyntaxBlockEnd($tokens, $index);
+        }
+    }
+
+    private function isStartOfAlternativeSyntaxBlock(Tokens $tokens, $index)
+    {
+        $map = self::ALTERNATIVE_SYNTAX_BLOCK_EDGES;
+        $startTokenKind = $tokens[$index]->getId();
+
+        if (null === $startTokenKind || !isset($map[$startTokenKind])) {
+            return false;
+        }
+
+        $index = $tokens->getNextMeaningfulToken($index);
+
+        if ($tokens[$index]->equals('(')) {
+            $index = $tokens->getNextMeaningfulToken(
+                $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index)
+            );
+        }
+
+        return $tokens[$index]->equals(':');
     }
 }

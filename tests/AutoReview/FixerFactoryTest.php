@@ -340,13 +340,13 @@ final class FixerFactoryTest extends TestCase
             ],
             'braces' => [
                 'array_indentation',
-                'method_argument_space',
                 'method_chaining_indentation',
             ],
             'class_attributes_separation' => [
                 'braces',
                 'indentation_type',
                 'no_extra_blank_lines',
+                'statement_indentation',
             ],
             'class_definition' => [
                 'braces',
@@ -766,6 +766,9 @@ final class FixerFactoryTest extends TestCase
             ],
             'standardize_not_equals' => [
                 'binary_operator_spaces',
+            ],
+            'statement_indentation' => [
+                'heredoc_indentation',
             ],
             'strict_comparison' => [
                 'binary_operator_spaces',
