@@ -1,0 +1,14 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-05-08T17:31:43Z
+
+[![Coverage Status](https://coveralls.io/builds/48929287/badge)](https://coveralls.io/builds/48929287)
+
+Coverage increased (+0.01%) to 93.133% when pulling **61a5fd5662736e70c524812b953506f0530b90d7 on HypeMC:modernize-strpos-namespace-with-yoda** into **aa805a8a4d8384c71a1367fceb57a081a4d969e4 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-05-08T17:52:52Z
+
+Thanks, looking good, nice fix!
+Hope it will be merged soon by some of the other members :+1:
