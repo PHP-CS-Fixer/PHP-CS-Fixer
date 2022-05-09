@@ -164,7 +164,11 @@ if (strpos($haystack, $needle) === false) {}
     {
         $operatorIndex = $tokens->getMeaningfulTokenSibling($offsetIndex, $direction);
 
-        if (null === $operatorIndex) {
+        if (null !== $operatorIndex && $tokens[$operatorIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            $operatorIndex = $tokens->getMeaningfulTokenSibling($operatorIndex, $direction);
+        }
+
+        if (null === $operatorIndex || !$tokens[$operatorIndex]->isGivenKind([T_IS_IDENTICAL, T_IS_NOT_IDENTICAL])) {
             return null;
         }
 
@@ -177,10 +181,6 @@ if (strpos($haystack, $needle) === false) {}
         $operand = $tokens[$operandIndex];
 
         if (!$operand->equals([T_LNUMBER, '0']) && !$operand->equals([T_STRING, 'false'], false)) {
-            return null;
-        }
-
-        if (!$tokens[$operatorIndex]->isGivenKind([T_IS_IDENTICAL, T_IS_NOT_IDENTICAL])) {
             return null;
         }
 

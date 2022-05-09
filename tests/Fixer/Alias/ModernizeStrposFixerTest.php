@@ -65,6 +65,11 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
             '<?php if (\strpos($haystack5, $needle) === 0) {}',
         ];
 
+        yield 'leading namespace with yoda' => [
+            '<?php if (  \str_starts_with($haystack5, $needle)) {}',
+            '<?php if (0 === \strpos($haystack5, $needle)) {}',
+        ];
+
         yield [
             '<?php if (!str_starts_with($haystack6, $needle)  ) {}',
             '<?php if (strpos($haystack6, $needle) !== 0) {}',
@@ -73,6 +78,11 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield [
             '<?php if (!\str_starts_with($haystack6, $needle)  ) {}',
             '<?php if (\strpos($haystack6, $needle) !== 0) {}',
+        ];
+
+        yield [
+            '<?php if (  !\str_starts_with($haystack6, $needle)) {}',
+            '<?php if (0 !== \strpos($haystack6, $needle)) {}',
         ];
 
         yield 'casing operand' => [
@@ -123,6 +133,10 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'different namespace' => [
             '<?php if (a\strpos($haystack14, $needle) === 0) {}',
+        ];
+
+        yield 'different namespace with yoda' => [
+            '<?php if (0 === a\strpos($haystack14, $needle)) {}',
         ];
 
         yield 'non condition (hardcoded)' => [
