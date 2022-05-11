@@ -106,14 +106,23 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
     public function provideFindBlockEndCases()
     {
         yield ['<?php if ($foo): foo(); endif;', 1, 13];
+
         yield ['<?php if ($foo): foo(); else: bar(); endif;', 1, 13];
+
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 1, 13];
+
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 13, 25];
+
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); else: baz(); endif;', 13, 25];
+
         yield ['<?php if ($foo): foo(); else: bar(); endif;', 13, 21];
+
         yield ['<?php for (;;): foo(); endfor;', 1, 14];
+
         yield ['<?php foreach ($foo as $bar): foo(); endforeach;', 1, 17];
+
         yield ['<?php while ($foo): foo(); endwhile;', 1, 13];
+
         yield ['<?php switch ($foo): case 1: foo(); endswitch;', 1, 18];
 
         $nested = <<<'PHP'
@@ -146,7 +155,9 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         PHP;
 
         yield [$nested, 1, 113];
+
         yield [$nested, 15, 83];
+
         yield [$nested, 41, 80];
     }
 
@@ -168,43 +179,63 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
     public function provideFindInvalidBlockEndCases()
     {
         yield ['<?php if ($foo): foo(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
+
         yield ['<?php if ($foo): foo(); endif;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
+
         yield ['<?php if ($foo): foo(); endif;', 999, 'There is no token at index 999.'];
 
         yield ['<?php if ($foo): foo(); else: bar(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
+
         yield ['<?php if ($foo): foo(); else: bar(); endif;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
+
         yield ['<?php if ($foo): foo(); else: bar(); endif;', 999, 'There is no token at index 999.'];
 
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
+
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
+
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 999, 'There is no token at index 999.'];
 
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
+
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
+
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 999, 'There is no token at index 999.'];
 
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); else: baz(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
+
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); else: baz(); endif;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
+
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); else: baz(); endif;', 999, 'There is no token at index 999.'];
 
         yield ['<?php if ($foo): foo(); else: bar(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
+
         yield ['<?php if ($foo): foo(); else: bar(); endif;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
+
         yield ['<?php if ($foo): foo(); else: bar(); endif;', 999, 'There is no token at index 999.'];
 
         yield ['<?php for (;;): foo(); endfor;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
+
         yield ['<?php for (;;): foo(); endfor;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
+
         yield ['<?php for (;;): foo(); endfor;', 999, 'There is no token at index 999.'];
 
         yield ['<?php foreach ($foo as $bar): foo(); endforeach;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
+
         yield ['<?php foreach ($foo as $bar): foo(); endforeach;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
+
         yield ['<?php foreach ($foo as $bar): foo(); endforeach;', 999, 'There is no token at index 999.'];
 
         yield ['<?php while ($foo): foo(); endwhile;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
+
         yield ['<?php while ($foo): foo(); endwhile;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
+
         yield ['<?php while ($foo): foo(); endwhile;', 999, 'There is no token at index 999.'];
 
         yield ['<?php switch ($foo): case 1: foo(); endswitch;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
+
         yield ['<?php switch ($foo): case 1: foo(); endswitch;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
+
         yield ['<?php switch ($foo): case 1: foo(); endswitch;', 999, 'There is no token at index 999.'];
     }
 }
