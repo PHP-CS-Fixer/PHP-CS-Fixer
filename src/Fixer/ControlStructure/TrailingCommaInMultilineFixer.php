@@ -165,7 +165,7 @@ SAMPLE
             $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
 
             if ($fixArguments
-                && $tokens[$prevIndex]->equalsAny([']', [T_CLASS], [T_STRING], [T_VARIABLE]])
+                && $tokens[$prevIndex]->equalsAny([']', [T_CLASS], [T_STRING], [T_VARIABLE], [T_STATIC]])
                 && !$tokens[$prevPrevIndex]->isGivenKind(T_FUNCTION)
             ) {
                 $this->fixBlock($tokens, $index);
