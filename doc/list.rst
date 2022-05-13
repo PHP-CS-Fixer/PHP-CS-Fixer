@@ -1794,6 +1794,13 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\NoUselessSprintfFixer <./../src/Fixer/FunctionNotation/NoUselessSprintfFixer.php>`_
+-  `no_useless_try_catch_finally <./rules/exception_handling/no_useless_try_catch_finally.rst>`_
+
+   Exceptions should not be caught to only be thrown. A ``finally`` statement must not be empty.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\ExceptionHandling\\NoUselessTryCatchFinallyFixer <./../src/Fixer/ExceptionHandling/NoUselessTryCatchFinallyFixer.php>`_
 -  `no_whitespace_before_comma_in_array <./rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
 
    In array declaration, there MUST NOT be a whitespace before each comma.

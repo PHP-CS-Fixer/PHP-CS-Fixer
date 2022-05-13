@@ -1,0 +1,20 @@
+--TEST--
+Integration of fixers: no_useless_try_catch_finally,no_extra_blank_lines.
+--RULESET--
+{"no_useless_try_catch_finally": true, "no_extra_blank_lines": true}
+--EXPECT--
+<?php
+
+foo();
+
+
+--INPUT--
+<?php
+try
+{
+foo();
+}
+catch (\Exception $e)
+{
+throw $e;
+}

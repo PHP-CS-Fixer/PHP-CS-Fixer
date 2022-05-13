@@ -80,6 +80,7 @@ Rules
 - `no_unused_imports <./../rules/import/no_unused_imports.rst>`_
 - `no_useless_concat_operator <./../rules/operator/no_useless_concat_operator.rst>`_
 - `no_useless_nullsafe_operator <./../rules/operator/no_useless_nullsafe_operator.rst>`_
+- `no_useless_try_catch_finally <./../rules/exception_handling/no_useless_try_catch_finally.rst>`_
 - `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
 - `normalize_index_brace <./../rules/array_notation/normalize_index_brace.rst>`_
 - `object_operator_without_whitespace <./../rules/operator/object_operator_without_whitespace.rst>`_

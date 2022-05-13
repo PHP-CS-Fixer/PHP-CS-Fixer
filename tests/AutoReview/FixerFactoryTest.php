@@ -546,6 +546,7 @@ final class FixerFactoryTest extends TestCase
                 'no_trailing_whitespace',
                 'no_useless_else',
                 'no_useless_return',
+                'no_useless_try_catch_finally',
                 'no_whitespace_in_blank_line',
                 'return_assignment',
                 'space_after_semicolon',
@@ -591,6 +592,7 @@ final class FixerFactoryTest extends TestCase
             'no_unneeded_curly_braces' => [
                 'no_useless_else',
                 'no_useless_return',
+                'no_useless_try_catch_finally',
                 'return_assignment',
                 'simplified_if_return',
             ],
@@ -638,6 +640,12 @@ final class FixerFactoryTest extends TestCase
                 'no_empty_statement',
                 'no_extra_blank_lines',
                 'no_spaces_inside_parenthesis',
+            ],
+            'no_useless_try_catch_finally' => [
+                'no_extra_blank_lines',
+                'no_trailing_whitespace',
+                'no_whitespace_in_blank_line',
+                'no_whitespace_in_blank_line',
             ],
             'nullable_type_declaration_for_default_null_value' => [
                 'no_unreachable_default_argument_value',
