@@ -1736,6 +1736,8 @@ List of Available Rules
      | Default value: ``true``
 
 
+   Part of rule set `@Symfony <./ruleSets/Symfony.rst>`_
+
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\NullableTypeDeclarationForDefaultNullValueFixer <./../src/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixer.php>`_
 -  `object_operator_without_whitespace <./rules/operator/object_operator_without_whitespace.rst>`_
 

@@ -83,6 +83,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'no_superfluous_elseif' => true,
             'no_useless_else' => true,
             'no_useless_return' => true,
+            'nullable_type_declaration_for_default_null_value' => false,
             'operator_linebreak' => [
                 'only_booleans' => true,
             ],

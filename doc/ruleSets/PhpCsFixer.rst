@@ -35,6 +35,7 @@ Rules
 - `no_superfluous_elseif <./../rules/control_structure/no_superfluous_elseif.rst>`_
 - `no_useless_else <./../rules/control_structure/no_useless_else.rst>`_
 - `no_useless_return <./../rules/return_notation/no_useless_return.rst>`_
+- `nullable_type_declaration_for_default_null_value <./../rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_
   config:
   ``['only_booleans' => true]``
