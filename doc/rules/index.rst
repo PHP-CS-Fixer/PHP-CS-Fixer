@@ -307,6 +307,13 @@ Doctrine Annotation
 
   Fixes spaces in Doctrine annotations.
 
+Exception Handling
+------------------
+
+- `no_useless_try_catch_finally <./exception_handling/no_useless_try_catch_finally.rst>`_
+
+  Exceptions should not be caught to only be thrown. A ``finally`` statement must not be empty.
+
 Function Notation
 -----------------
 

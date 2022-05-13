@@ -1,0 +1,9 @@
+--TEST--
+Integration of fixers: no_empty_statement,no_useless_try_catch_finally.
+--RULESET--
+{"no_empty_statement": true, "no_useless_try_catch_finally": true}
+--EXPECT--
+<?php   foo();        // foo
+
+--INPUT--
+<?php try { foo(); } catch(\Exception $e) { ;;;throw $e;;; } // foo

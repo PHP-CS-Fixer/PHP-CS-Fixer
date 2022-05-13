@@ -62,7 +62,7 @@ namespace Foo {
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUselessElseFixer, NoUselessReturnFixer, ReturnAssignmentFixer, SimplifiedIfReturnFixer.
+     * Must run before NoUselessElseFixer, NoUselessReturnFixer, NoUselessTryCatchFinallyFixer, ReturnAssignmentFixer, SimplifiedIfReturnFixer.
      */
     public function getPriority(): int
     {

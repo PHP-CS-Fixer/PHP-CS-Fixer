@@ -1,0 +1,9 @@
+--TEST--
+Integration of fixers: no_unneeded_curly_braces,no_useless_try_catch_finally.
+--RULESET--
+{"no_unneeded_curly_braces": true, "no_useless_try_catch_finally": true}
+--EXPECT--
+<?php   foo();         // a
+
+--INPUT--
+<?php try { foo(); } catch (\Exception $e) { {throw $e;} } // a

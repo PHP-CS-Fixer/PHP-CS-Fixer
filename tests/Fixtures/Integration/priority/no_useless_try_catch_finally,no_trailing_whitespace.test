@@ -1,0 +1,9 @@
+--TEST--
+Integration of fixers: no_useless_try_catch_finally,no_trailing_whitespace.
+--RULESET--
+{"no_useless_try_catch_finally": true, "no_trailing_whitespace": true}
+--EXPECT--
+<?php   foo();
+
+--INPUT--
+<?php try { foo(); } catch (\Exception $e) { throw $e; }
