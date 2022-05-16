@@ -137,7 +137,7 @@ final class RunnerTest extends TestCase
 
         $error = $errors[0];
 
-        static::assertInstanceOf(\PhpCsFixer\Error\Error::class, $error);
+        static::assertInstanceOf(Error::class, $error);
 
         static::assertSame(Error::TYPE_INVALID, $error->getType());
         static::assertSame($pathToInvalidFile, $error->getFilePath());

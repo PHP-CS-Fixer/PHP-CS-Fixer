@@ -15,6 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -29,7 +33,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author VeeWee <toonverwerft@gmail.com>
  */
-final class FullyQualifiedStrictTypesFixer extends AbstractFixer
+final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -37,16 +41,16 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Transforms imported FQCN parameters and return types in function arguments to short version.',
+            'Removes the leading part of fully qualified symbol references if a given symbol is imported or belongs to the current namespace. Fixes function arguments, caught exception `classes`, `extend` and `implements` of `classes` and `interfaces` to short version.',
             [
                 new CodeSample(
                     '<?php
-
 use Foo\Bar;
+use Foo\Bar\Baz;
 
 class SomeClass
 {
-    public function doSomething(\Foo\Bar $foo)
+    public function doSomething(\Foo\Bar $foo, \Exception $e): \Foo\Bar\Baz
     {
     }
 }
@@ -54,17 +58,23 @@ class SomeClass
                 ),
                 new CodeSample(
                     '<?php
+namespace {
+    use Foo\A;
 
-use Foo\Bar;
-use Foo\Bar\Baz;
+    try {
+        foo();
+    } catch (\Exception|\Foo\A $e) {
 
-class SomeClass
-{
-    public function doSomething(\Foo\Bar $foo): \Foo\Bar\Baz
+    }
+}
+
+namespace Foo\Bar {
+    class SomeClass implements \Foo\Bar\Baz
     {
     }
 }
-'
+',
+                    ['shorten_globals_in_global_ns' => true],
                 ),
             ]
         );
@@ -86,7 +96,7 @@ class SomeClass
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isAnyTokenKindsFound([T_FUNCTION, T_IMPLEMENTS, T_EXTENDS, T_CATCH, T_DOUBLE_COLON]);
     }
 
     /**
@@ -109,9 +119,28 @@ class SomeClass
             for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex(); ++$index) {
                 if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
                     $this->fixFunction($functionsAnalyzer, $tokens, $index, $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind([T_EXTENDS, T_IMPLEMENTS])) {
+                    $this->fixExtendsImplements($tokens, $index, $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind(T_CATCH)) {
+                    $this->fixCatch($tokens, $index, $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
+                    $this->fixClassStaticAccess($tokens, $index, $uses, $namespaceName);
                 }
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('shorten_globals_in_global_ns', 'remove leading `\` when in global namespace.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -132,6 +161,126 @@ class SomeClass
         if (null !== $returnTypeAnalysis) {
             $this->replaceByShortType($tokens, $returnTypeAnalysis, $uses, $namespaceName);
         }
+    }
+
+    /**
+     * @param array<string, string> $uses
+     */
+    private function fixExtendsImplements(Tokens $tokens, int $index, array $uses, string $namespaceName): void
+    {
+        $index = $tokens->getNextMeaningfulToken($index);
+        $extend = ['content' => '', 'tokens' => []];
+
+        while (true) {
+            if ($tokens[$index]->equalsAny([',', '{', [T_IMPLEMENTS]])) {
+                $this->shortenClassIfPossible($tokens, $extend, $uses, $namespaceName);
+
+                if ($tokens[$index]->equals('{')) {
+                    break;
+                }
+
+                $extend = ['content' => '', 'tokens' => []];
+            } else {
+                $extend['tokens'][] = $index;
+                $extend['content'] .= $tokens[$index]->getContent();
+            }
+
+            $index = $tokens->getNextMeaningfulToken($index);
+        }
+    }
+
+    /**
+     * @param array<string, string> $uses
+     */
+    private function fixCatch(Tokens $tokens, int $index, array $uses, string $namespaceName): void
+    {
+        $index = $tokens->getNextMeaningfulToken($index); // '('
+        $index = $tokens->getNextMeaningfulToken($index); // first part of first exception class to be caught
+
+        $caughtExceptionClass = ['content' => '', 'tokens' => []];
+
+        while (true) {
+            if ($tokens[$index]->equalsAny([')', [T_VARIABLE], [CT::T_TYPE_ALTERNATION]])) {
+                if (0 === \count($caughtExceptionClass['tokens'])) {
+                    break;
+                }
+
+                $this->shortenClassIfPossible($tokens, $caughtExceptionClass, $uses, $namespaceName);
+
+                if ($tokens[$index]->equals(')')) {
+                    break;
+                }
+
+                $caughtExceptionClass = ['content' => '', 'tokens' => []];
+            } else {
+                $caughtExceptionClass['tokens'][] = $index;
+                $caughtExceptionClass['content'] .= $tokens[$index]->getContent();
+            }
+
+            $index = $tokens->getNextMeaningfulToken($index);
+        }
+    }
+
+    /**
+     * @param array<string, string> $uses
+     */
+    private function fixClassStaticAccess(Tokens $tokens, int $index, array $uses, string $namespaceName): void
+    {
+        $classConstantRef = ['content' => '', 'tokens' => []];
+
+        while (true) {
+            $index = $tokens->getPrevMeaningfulToken($index);
+
+            if ($tokens[$index]->equalsAny([[T_STRING], [T_NS_SEPARATOR]])) {
+                $classConstantRef['tokens'][] = $index;
+                $classConstantRef['content'] = $tokens[$index]->getContent().$classConstantRef['content'];
+            } else {
+                $classConstantRef['tokens'] = array_reverse($classConstantRef['tokens']);
+                $this->shortenClassIfPossible($tokens, $classConstantRef, $uses, $namespaceName);
+
+                break;
+            }
+        }
+    }
+
+    private function shortenClassIfPossible(Tokens $tokens, array $class, array $uses, string $namespaceName): void
+    {
+        $longTypeContent = $class['content'];
+
+        if (str_starts_with($longTypeContent, '\\')) {
+            $typeName = substr($longTypeContent, 1);
+            $typeNameLower = strtolower($typeName);
+
+            if (isset($uses[$typeNameLower])) {
+                // if the type without leading "\" equals any of the full "uses" long names, it can be replaced with the short one
+                $this->replaceClassWithShort($tokens, $class, $uses[$typeNameLower]);
+            } elseif ('' === $namespaceName) {
+                if (true === $this->configuration['shorten_globals_in_global_ns']) {
+                    // if we are in the global namespace and the type is not imported the leading '\' can be removed
+                    $inUses = false;
+
+                    foreach ($uses as $useShortName) {
+                        if (strtolower($useShortName) === $typeNameLower) {
+                            $inUses = true;
+
+                            break;
+                        }
+                    }
+
+                    if (!$inUses) {
+                        $this->replaceClassWithShort($tokens, $class, $typeName);
+                    }
+                }
+            } elseif (
+                $typeNameLower !== $namespaceName
+                && str_starts_with($typeNameLower, $namespaceName)
+                && '\\' === $typeNameLower[\strlen($namespaceName)]
+            ) {
+                // if the type starts with namespace and the type is not the same as the namespace it can be shortened
+                $typeNameShort = substr($typeName, \strlen($namespaceName) + 1);
+                $this->replaceClassWithShort($tokens, $class, $typeNameShort);
+            }
+        } // else: no shorter type possible
     }
 
     /**
@@ -164,19 +313,39 @@ class SomeClass
                 // if the type without leading "\" equals any of the full "uses" long names, it can be replaced with the short one
                 $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($uses[$typeNameLower]));
             } elseif ('' === $namespaceName) {
-                // if we are in the global namespace and the type is not imported the leading '\' can be removed (TODO nice config candidate)
-                foreach ($uses as $useShortName) {
-                    if (strtolower($useShortName) === $typeNameLower) {
-                        continue 2;
+                if (true === $this->configuration['shorten_globals_in_global_ns']) {
+                    foreach ($uses as $useShortName) {
+                        if (strtolower($useShortName) === $typeNameLower) {
+                            continue 2;
+                        }
                     }
-                }
 
-                $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($typeName));
-            } elseif ($typeNameLower !== $namespaceName && str_starts_with($typeNameLower, $namespaceName)) {
+                    $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($typeName));
+                }
+            } elseif (
+                $typeNameLower !== $namespaceName
+                && str_starts_with($typeNameLower, $namespaceName)
+                && '\\' === $typeNameLower[\strlen($namespaceName)]
+            ) {
                 // if the type starts with namespace and the type is not the same as the namespace it can be shortened
                 $typeNameShort = substr($typeName, $namespaceNameLength + 1);
                 $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($typeNameShort));
             }
+        }
+    }
+
+    private function replaceClassWithShort(Tokens $tokens, array $class, string $short): void
+    {
+        $i = 0; // override the tokens
+
+        foreach ($this->namespacedStringToTokens($short) as $shortToken) {
+            $tokens[$class['tokens'][$i]] = $shortToken;
+            ++$i;
+        }
+
+        // clear the leftovers
+        for ($j = \count($class['tokens']) - 1; $j >= $i; --$j) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($class['tokens'][$j]);
         }
     }
 

@@ -85,7 +85,7 @@ final class CTTest extends TestCase
         static $constants;
 
         if (null === $constants) {
-            $reflection = new \ReflectionClass(\PhpCsFixer\Tokenizer\CT::class);
+            $reflection = new \ReflectionClass(CT::class);
             $constants = $reflection->getConstants();
         }
 

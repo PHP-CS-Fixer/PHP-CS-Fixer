@@ -277,7 +277,7 @@ final class ConfigurationResolverTest extends TestCase
             'path' => [$dirBase.'case_1/.php-cs-fixer.dist.php', $dirBase.'case_1/foo.php'],
         ]);
 
-        static::assertInstanceOf(\PhpCsFixer\Console\ConfigurationResolver::class, $resolver);
+        static::assertInstanceOf(ConfigurationResolver::class, $resolver);
     }
 
     /**

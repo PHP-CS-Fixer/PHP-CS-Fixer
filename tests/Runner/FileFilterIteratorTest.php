@@ -93,7 +93,7 @@ final class FileFilterIteratorTest extends TestCase
         /** @var FixerFileProcessedEvent $event */
         $event = reset($events);
 
-        static::assertInstanceOf(\PhpCsFixer\FixerFileProcessedEvent::class, $event);
+        static::assertInstanceOf(FixerFileProcessedEvent::class, $event);
         static::assertSame(FixerFileProcessedEvent::STATUS_SKIPPED, $event->getStatus());
     }
 
@@ -126,7 +126,7 @@ final class FileFilterIteratorTest extends TestCase
         /** @var FixerFileProcessedEvent $event */
         $event = reset($events);
 
-        static::assertInstanceOf(\PhpCsFixer\FixerFileProcessedEvent::class, $event);
+        static::assertInstanceOf(FixerFileProcessedEvent::class, $event);
         static::assertSame(FixerFileProcessedEvent::STATUS_SKIPPED, $event->getStatus());
     }
 

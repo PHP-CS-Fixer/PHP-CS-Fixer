@@ -780,7 +780,15 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\FopenFlagOrderFixer <./../src/Fixer/FunctionNotation/FopenFlagOrderFixer.php>`_
 -  `fully_qualified_strict_types <./rules/import/fully_qualified_strict_types.rst>`_
 
-   Transforms imported FQCN parameters and return types in function arguments to short version.
+   Removes the leading part of fully qualified symbol references if a given symbol is imported or belongs to the current namespace. Fixes function arguments, caught exception ``classes``, ``extend`` and ``implements`` of ``classes`` and ``interfaces`` to short version.
+
+   Configuration options:
+
+   - | ``shorten_globals_in_global_ns``
+     | remove leading `\` when in global namespace.
+     | Allowed types: ``bool``
+     | Default value: ``false``
+
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 

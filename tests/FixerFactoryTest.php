@@ -396,7 +396,7 @@ final class FixerFactoryTest extends TestCase
 
     private function createFixerDouble(string $name, int $priority = 0): FixerInterface
     {
-        $fixer = $this->prophesize(\PhpCsFixer\Fixer\FixerInterface::class);
+        $fixer = $this->prophesize(FixerInterface::class);
         $fixer->getName()->willReturn($name);
         $fixer->getPriority()->willReturn($priority);
 
