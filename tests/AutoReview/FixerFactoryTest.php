@@ -371,6 +371,9 @@ final class FixerFactoryTest extends TestCase
                 'method_argument_space',
                 'no_spaces_inside_parenthesis',
             ],
+            'control_structure_braces' => [
+                'control_structure_continuation_position',
+            ],
             'declare_strict_types' => [
                 'blank_line_after_opening_tag',
                 'declare_equal_normalize',
@@ -384,9 +387,6 @@ final class FixerFactoryTest extends TestCase
             ],
             'echo_tag_syntax' => [
                 'no_mixed_echo_print',
-            ],
-            'elseif' => [
-                'braces',
             ],
             'empty_loop_body' => [
                 'braces',

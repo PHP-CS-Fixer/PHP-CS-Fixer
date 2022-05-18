@@ -236,6 +236,9 @@ Constant Notation
 Control Structure
 -----------------
 
+- `control_structure_braces <./control_structure/control_structure_braces.rst>`_
+
+  The body of each control structure MUST be enclosed within braces.
 - `control_structure_continuation_position <./control_structure/control_structure_continuation_position.rst>`_
 
   Control structure continuation keyword must be on the configured line.

@@ -84,6 +84,8 @@ if ($baz == true) {
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Must run after ControlStructureBracesFixer.
      */
     public function getPriority(): int

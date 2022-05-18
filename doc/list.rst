@@ -313,6 +313,11 @@ List of Available Rules
    Part of rule sets `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Casing\\ConstantCaseFixer <./../src/Fixer/Casing/ConstantCaseFixer.php>`_
+-  `control_structure_braces <./rules/control_structure/control_structure_braces.rst>`_
+
+   The body of each control structure MUST be enclosed within braces.
+
+   `Source PhpCsFixer\\Fixer\\ControlStructure\\ControlStructureBracesFixer <./../src/Fixer/ControlStructure/ControlStructureBracesFixer.php>`_
 -  `control_structure_continuation_position <./rules/control_structure/control_structure_continuation_position.rst>`_
 
    Control structure continuation keyword must be on the configured line.
