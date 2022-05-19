@@ -2569,6 +2569,18 @@ function D() /**
 }',
                 self::$configurationOopPositionSameLine,
             ],
+            [
+                '<?php
+class Foo
+{
+    public function bar($arg1,
+                        $arg2,
+                   $arg3)
+    {
+    }
+}',
+                null,
+            ],
         ];
     }
 
