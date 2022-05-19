@@ -139,13 +139,15 @@ else {
             }
 
             if (
-                $token->equalsAny(['{', [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], [T_EXTENDS], [T_IMPLEMENTS], [CT::T_GROUP_IMPORT_BRACE_OPEN]])
+                $token->equalsAny(['{', [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], [T_EXTENDS], [T_IMPLEMENTS], [CT::T_USE_TRAIT], [CT::T_GROUP_IMPORT_BRACE_OPEN]])
                 || ($token->equals('(') && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_ARRAY))
                 || isset($alternativeBlockStarts[$index])
                 || isset($caseBlockStarts[$index])
             ) {
                 if ($token->isGivenKind([T_EXTENDS, T_IMPLEMENTS])) {
                     $endIndex = $tokens->getNextTokenOfKind($index, ['{']);
+                } elseif ($token->isGivenKind(CT::T_USE_TRAIT)) {
+                    $endIndex = $tokens->getNextTokenOfKind($index, [';']);
                 } elseif ($token->equals(':')) {
                     if (isset($caseBlockStarts[$index])) {
                         $endIndex = $this->findCaseBlockEnd($tokens, $index);
