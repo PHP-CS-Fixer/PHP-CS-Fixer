@@ -381,7 +381,7 @@ class Foo {
         while (true) {
             $type = '';
 
-            if (\defined('T_READONLY') && $tokens[$index]->isGivenKind(T_READONLY)) { // @TODO: drop condition when PHP 8.1+ is required
+            if (\defined('T_READONLY') && $tokens[$index]->isGivenKind(T_READONLY)) { // @TODO: simplify condition when PHP 8.1+ is required
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
