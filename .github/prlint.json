@@ -1,0 +1,8 @@
+{
+  "title": [
+    {
+      "pattern": "^(feature|bug|minor|docs|DX):\\s.+\\S$",
+      "message": "Your title needs to match the convention: use '(feature|bug|minor|docs|DX):' prefix."
+    }
+  ]
+}
