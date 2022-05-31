@@ -539,16 +539,16 @@ INPUT
                 ['after_heredoc' => true],
             ],
             [
-                "<?php \$a = new class() {function A() { return new static(
+                '<?php $a = new class() {function A() { return new static(
 1,
 2,
-); }};",
-                "<?php \$a = new class() {function A() { return new static(
+); }};',
+                '<?php $a = new class() {function A() { return new static(
 1,
 2
-); }};",
+); }};',
                 ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ]
+            ],
         ];
     }
 
