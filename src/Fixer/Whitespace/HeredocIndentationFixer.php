@@ -110,7 +110,8 @@ SAMPLE
             (new FixerOptionBuilder('indentation', 'Whether the indentation should be the same as in the start token line or one level more.'))
                 ->setAllowedValues(['start_plus_one', 'same_as_start'])
                 ->setDefault('start_plus_one')
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

@@ -55,7 +55,8 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
                 (new FixerOptionBuilder('indent_mixed_lines', 'Whether to indent lines that have content before closing parenthesis.'))
                     ->setAllowedTypes(['bool'])
                     ->setDefault(false)
-                    ->getOption(),
+                    ->getOption()
+                ,
             ]
         ));
     }

@@ -97,7 +97,8 @@ if ($baz == true) {
             (new FixerOptionBuilder('position', 'the position of the keyword that continues the control structure.'))
                 ->setAllowedValues([self::NEXT_LINE, self::SAME_LINE])
                 ->setDefault(self::SAME_LINE)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

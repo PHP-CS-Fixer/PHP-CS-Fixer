@@ -25,9 +25,6 @@ Rules
   ``['on_multiline' => 'ensure_fully_multiline']``
 - `method_chaining_indentation <./../rules/whitespace/method_chaining_indentation.rst>`_
 - `multiline_comment_opening_closing <./../rules/comment/multiline_comment_opening_closing.rst>`_
-- `multiline_whitespace_before_semicolons <./../rules/semicolon/multiline_whitespace_before_semicolons.rst>`_
-  config:
-  ``['strategy' => 'new_line_for_chained_calls']``
 - `no_extra_blank_lines <./../rules/whitespace/no_extra_blank_lines.rst>`_
   config:
   ``['tokens' => ['break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use']]``
@@ -51,3 +48,4 @@ Rules
 - `simple_to_complex_string_variable <./../rules/string_notation/simple_to_complex_string_variable.rst>`_
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
 - `single_line_throw <./../rules/function_notation/single_line_throw.rst>`_
+- `whitespace_before_statement_end <./../rules/whitespace/whitespace_before_statement_end.rst>`_

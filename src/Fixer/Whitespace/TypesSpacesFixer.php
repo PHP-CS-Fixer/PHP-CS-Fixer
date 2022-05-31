@@ -80,11 +80,13 @@ final class TypesSpacesFixer extends AbstractFixer implements ConfigurableFixerI
             (new FixerOptionBuilder('space', 'spacing to apply around union type operator.'))
                 ->setAllowedValues(['none', 'single'])
                 ->setDefault('none')
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('space_multiple_catch', 'spacing to apply around type operator when catching exceptions of multiple types, use `null` to follow the value configured for `space`.'))
                 ->setAllowedValues(['none', 'single', null])
                 ->setDefault(null)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

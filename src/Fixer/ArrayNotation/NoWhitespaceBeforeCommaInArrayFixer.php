@@ -16,6 +16,7 @@ namespace PhpCsFixer\Fixer\ArrayNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -30,8 +31,12 @@ use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Adam Marczuk <adam@marczuk.info>
+ *
+ * @deprecated since 3.9
+ *
+ * @TODO remove in 4.0
  */
-final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements ConfigurableFixerInterface, DeprecatedFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -71,6 +76,14 @@ SAMPLE
     /**
      * {@inheritdoc}
      */
+    public function getSuccessorsNames(): array
+    {
+        return ['whitespace_before_statement_end'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
@@ -92,7 +105,8 @@ SAMPLE
                 ->setNormalizer(static function (Options $options, $value) {
                     return $value;
                 })
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

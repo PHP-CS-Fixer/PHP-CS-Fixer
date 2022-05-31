@@ -180,7 +180,8 @@ $c = 3;
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset(['asterisk', 'hash'])])
                 ->setDefault(['asterisk', 'hash'])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 }

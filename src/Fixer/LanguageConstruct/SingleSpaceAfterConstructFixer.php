@@ -284,7 +284,8 @@ yield  from  baz();
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset($tokens)])
                 ->setDefault($tokens)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

@@ -191,7 +191,8 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
 
                     return $normalized;
                 })
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

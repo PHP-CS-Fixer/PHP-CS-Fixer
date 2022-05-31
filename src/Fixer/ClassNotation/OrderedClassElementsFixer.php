@@ -286,11 +286,13 @@ class Example
                     'method_protected',
                     'method_private',
                 ])
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted'))
                 ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_NONE)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

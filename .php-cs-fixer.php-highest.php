@@ -25,6 +25,7 @@ $config->setRules(array_merge($config->getRules(), [
     '@PHP81Migration' => true,
     '@PHP80Migration:risky' => true,
     'heredoc_indentation' => false,
+    'whitespace_before_statement_end' => false,
 ]));
 
 return $config;

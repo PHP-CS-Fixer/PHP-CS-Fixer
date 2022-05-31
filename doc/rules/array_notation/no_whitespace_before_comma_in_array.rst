@@ -4,6 +4,14 @@ Rule ``no_whitespace_before_comma_in_array``
 
 In array declaration, there MUST NOT be a whitespace before each comma.
 
+Warning
+-------
+
+This rule is deprecated and will be removed on next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``whitespace_before_statement_end`` instead.
+
 Configuration
 -------------
 
@@ -47,34 +55,3 @@ With configuration: ``['after_heredoc' => true]``.
    -        , 'bar'
    +EOD, 'bar'
         ];
-
-Rule sets
----------
-
-The rule is part of the following rule sets:
-
-@PHP73Migration
-  Using the `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ rule set will enable the ``no_whitespace_before_comma_in_array`` rule with the config below:
-
-  ``['after_heredoc' => true]``
-
-@PHP74Migration
-  Using the `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_ rule set will enable the ``no_whitespace_before_comma_in_array`` rule with the config below:
-
-  ``['after_heredoc' => true]``
-
-@PHP80Migration
-  Using the `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ rule set will enable the ``no_whitespace_before_comma_in_array`` rule with the config below:
-
-  ``['after_heredoc' => true]``
-
-@PHP81Migration
-  Using the `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ rule set will enable the ``no_whitespace_before_comma_in_array`` rule with the config below:
-
-  ``['after_heredoc' => true]``
-
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``no_whitespace_before_comma_in_array`` rule with the default config.
-
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``no_whitespace_before_comma_in_array`` rule with the default config.

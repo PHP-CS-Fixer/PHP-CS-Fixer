@@ -172,7 +172,8 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset($possibleGroups)])
                 ->setDefault($possibleGroups)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 }

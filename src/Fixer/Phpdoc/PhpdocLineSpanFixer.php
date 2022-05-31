@@ -80,15 +80,18 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
             (new FixerOptionBuilder('const', 'Whether const blocks should be single or multi line'))
                 ->setAllowedValues(['single', 'multi', null])
                 ->setDefault('multi')
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('property', 'Whether property doc blocks should be single or multi line'))
                 ->setAllowedValues(['single', 'multi', null])
                 ->setDefault('multi')
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('method', 'Whether method doc blocks should be single or multi line'))
                 ->setAllowedValues(['single', 'multi', null])
                 ->setDefault('multi')
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

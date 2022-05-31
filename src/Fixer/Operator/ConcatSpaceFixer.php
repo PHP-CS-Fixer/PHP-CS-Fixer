@@ -112,7 +112,8 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
             (new FixerOptionBuilder('spacing', 'Spacing to apply around concatenation operator.'))
                 ->setAllowedValues(['one', 'none'])
                 ->setDefault('none')
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

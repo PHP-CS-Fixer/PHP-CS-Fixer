@@ -519,7 +519,8 @@ final class ConfigurationResolverTest extends TestCase
                 // don't override if the argument is empty
                 $cb(['a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php']),
                 Finder::create()
-                    ->in($dir),
+                    ->in($dir)
+                ,
                 [],
                 'override',
             ],
@@ -532,28 +533,32 @@ final class ConfigurationResolverTest extends TestCase
             'configured by finder, intersected with empty argument' => [
                 [],
                 Finder::create()
-                    ->in($dir),
+                    ->in($dir)
+                ,
                 [],
                 'intersection',
             ],
             'configured by finder, intersected with dir' => [
                 $cb(['c/c1.php', 'c/d/cd1.php']),
                 Finder::create()
-                    ->in($dir),
+                    ->in($dir)
+                ,
                 [$dir.'/c'],
                 'intersection',
             ],
             'configured by finder, intersected with file' => [
                 $cb(['c/c1.php']),
                 Finder::create()
-                    ->in($dir),
+                    ->in($dir)
+                ,
                 [$dir.'/c/c1.php'],
                 'intersection',
             ],
             'finder points to one dir while argument to another, not connected' => [
                 [],
                 Finder::create()
-                    ->in($dir.'/b'),
+                    ->in($dir.'/b')
+                ,
                 [$dir.'/c'],
                 'intersection',
             ],
@@ -561,7 +566,8 @@ final class ConfigurationResolverTest extends TestCase
                 [],
                 Finder::create()
                     ->in($dir)
-                    ->exclude('c'),
+                    ->exclude('c')
+                ,
                 [$dir.'/c/d/cd1.php'],
                 'intersection',
             ],
@@ -569,7 +575,8 @@ final class ConfigurationResolverTest extends TestCase
                 $cb(['c/c1.php']),
                 Finder::create()
                     ->in($dir)
-                    ->exclude('c/d'),
+                    ->exclude('c/d')
+                ,
                 [$dir.'/c'],
                 'intersection',
             ],
@@ -577,14 +584,16 @@ final class ConfigurationResolverTest extends TestCase
                 $cb(['c/d/cd1.php']),
                 Finder::create()
                     ->in($dir)
-                    ->notPath('c/c1.php'),
+                    ->notPath('c/c1.php')
+                ,
                 [$dir.'/c'],
                 'intersection',
             ],
             'configured by finder, intersected with non-existing path' => [
                 new \LogicException(),
                 Finder::create()
-                    ->in($dir),
+                    ->in($dir)
+                ,
                 ['non_existing_dir'],
                 'intersection',
             ],

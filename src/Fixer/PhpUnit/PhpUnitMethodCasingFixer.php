@@ -93,7 +93,8 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
             (new FixerOptionBuilder('case', 'Apply camel or snake case to test methods'))
                 ->setAllowedValues([self::CAMEL_CASE, self::SNAKE_CASE])
                 ->setDefault(self::CAMEL_CASE)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

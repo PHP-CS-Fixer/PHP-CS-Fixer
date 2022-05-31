@@ -104,11 +104,13 @@ function foo() {
             (new FixerOptionBuilder('only_booleans', 'whether to limit operators to only boolean ones'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('position', 'whether to place operators at the beginning or at the end of the line'))
                 ->setAllowedValues(['beginning', 'end'])
                 ->setDefault($this->position)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

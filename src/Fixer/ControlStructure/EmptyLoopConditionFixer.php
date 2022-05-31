@@ -129,7 +129,8 @@ final class EmptyLoopConditionFixer extends AbstractFixer implements Configurabl
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues([self::STYLE_WHILE, self::STYLE_FOR])
                 ->setDefault(self::STYLE_WHILE)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

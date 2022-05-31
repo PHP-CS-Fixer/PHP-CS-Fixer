@@ -63,7 +63,6 @@ Rules
 - `no_mixed_echo_print <./../rules/alias/no_mixed_echo_print.rst>`_
 - `no_multiline_whitespace_around_double_arrow <./../rules/array_notation/no_multiline_whitespace_around_double_arrow.rst>`_
 - `no_short_bool_cast <./../rules/cast_notation/no_short_bool_cast.rst>`_
-- `no_singleline_whitespace_before_semicolons <./../rules/semicolon/no_singleline_whitespace_before_semicolons.rst>`_
 - `no_spaces_around_offset <./../rules/whitespace/no_spaces_around_offset.rst>`_
 - `no_superfluous_phpdoc_tags <./../rules/phpdoc/no_superfluous_phpdoc_tags.rst>`_
   config:
@@ -80,7 +79,6 @@ Rules
 - `no_unneeded_import_alias <./../rules/import/no_unneeded_import_alias.rst>`_
 - `no_unset_cast <./../rules/cast_notation/no_unset_cast.rst>`_
 - `no_unused_imports <./../rules/import/no_unused_imports.rst>`_
-- `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
 - `normalize_index_brace <./../rules/array_notation/normalize_index_brace.rst>`_
 - `object_operator_without_whitespace <./../rules/operator/object_operator_without_whitespace.rst>`_
 - `ordered_imports <./../rules/import/ordered_imports.rst>`_
@@ -131,4 +129,7 @@ Rules
 - `types_spaces <./../rules/whitespace/types_spaces.rst>`_
 - `unary_operator_spaces <./../rules/operator/unary_operator_spaces.rst>`_
 - `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_
+- `whitespace_before_statement_end <./../rules/whitespace/whitespace_before_statement_end.rst>`_
+  config:
+  ``['comma_strategy' => 'no_whitespace', 'semicolon_strategy' => 'no_whitespace']``
 - `yoda_style <./../rules/control_structure/yoda_style.rst>`_

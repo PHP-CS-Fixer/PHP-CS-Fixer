@@ -228,11 +228,13 @@ $f = fn () => null;
             (new FixerOptionBuilder('closure_function_spacing', 'Spacing to use before open parenthesis for closures.'))
                 ->setDefault(self::SPACING_ONE)
                 ->setAllowedValues(self::SUPPORTED_SPACINGS)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('trailing_comma_single_line', 'Whether trailing commas are allowed in single line signatures.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

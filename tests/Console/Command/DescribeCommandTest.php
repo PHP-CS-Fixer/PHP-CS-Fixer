@@ -229,12 +229,14 @@ Fixing examples:
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset($functionNames)])
                 ->setDefault($functionNames)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('deprecated_option', 'A deprecated option.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->setDeprecationMessage('Use option `functions` instead.')
-                ->getOption(),
+                ->getOption()
+            ,
         ]));
 
         $fixer->getDefinition()->willReturn(new FixerDefinition(

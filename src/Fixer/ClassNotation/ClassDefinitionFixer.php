@@ -142,23 +142,28 @@ $foo = new class(){};
             (new FixerOptionBuilder('multi_line_extends_each_single_line', 'Whether definitions should be multiline.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('single_item_single_line', 'Whether definitions should be single line when including a single item.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('single_line', 'Whether definitions should be single line.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('space_before_parenthesis', 'Whether there should be a single space after the parenthesis of anonymous class (PSR12) or not.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('inline_constructor_arguments', 'Whether constructor argument list in anonymous classes should be single line.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

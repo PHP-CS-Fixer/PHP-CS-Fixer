@@ -218,25 +218,30 @@ namespace {
             (new FixerOptionBuilder('fix_built_in', 'Whether to fix constants returned by `get_defined_constants`. User constants are not accounted in this list and must be specified in the include one.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('include', 'List of additional constants to fix.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([$constantChecker])
                 ->setDefault([])
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('exclude', 'List of constants to ignore.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([$constantChecker])
                 ->setDefault(['null', 'false', 'true'])
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('scope', 'Only fix constant invocations that are made within a namespace or fix all.'))
                 ->setAllowedValues(['all', 'namespaced'])
                 ->setDefault('all')
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('strict', 'Whether leading `\` of constant invocation not meant to have it should be removed.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

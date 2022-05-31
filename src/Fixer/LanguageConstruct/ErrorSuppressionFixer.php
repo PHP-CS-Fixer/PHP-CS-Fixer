@@ -98,15 +98,18 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
             (new FixerOptionBuilder(self::OPTION_MUTE_DEPRECATION_ERROR, 'Whether to add `@` in deprecation notices.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder(self::OPTION_NOISE_REMAINING_USAGES, 'Whether to remove `@` in remaining usages.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder(self::OPTION_NOISE_REMAINING_USAGES_EXCLUDE, 'List of global functions to exclude from removing `@`'))
                 ->setAllowedTypes(['array'])
                 ->setDefault([])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

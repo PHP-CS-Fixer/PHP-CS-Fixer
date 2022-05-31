@@ -108,7 +108,8 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
             (new FixerOptionBuilder('space', 'Spacing to apply around the equal sign.'))
                 ->setAllowedValues(['single', 'none'])
                 ->setDefault('none')
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

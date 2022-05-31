@@ -96,7 +96,6 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_mixed_echo_print' => true,
             'no_multiline_whitespace_around_double_arrow' => true,
             'no_short_bool_cast' => true,
-            'no_singleline_whitespace_before_semicolons' => true,
             'no_spaces_around_offset' => true,
             'no_superfluous_phpdoc_tags' => [
                 'allow_mixed' => true,
@@ -123,7 +122,6 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_unneeded_import_alias' => true,
             'no_unset_cast' => true,
             'no_unused_imports' => true,
-            'no_whitespace_before_comma_in_array' => true,
             'normalize_index_brace' => true,
             'object_operator_without_whitespace' => true,
             'ordered_imports' => true,
@@ -179,6 +177,10 @@ final class SymfonySet extends AbstractRuleSetDescription
             'types_spaces' => true,
             'unary_operator_spaces' => true,
             'whitespace_after_comma_in_array' => true,
+            'whitespace_before_statement_end' => [
+                'comma_strategy' => 'no_whitespace',
+                'semicolon_strategy' => 'no_whitespace',
+            ],
             'yoda_style' => true,
         ];
     }

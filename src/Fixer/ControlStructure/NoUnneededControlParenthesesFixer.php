@@ -180,7 +180,8 @@ yield(2);
                     'switch_case',
                     'yield',
                 ])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 }

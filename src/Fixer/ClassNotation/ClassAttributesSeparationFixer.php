@@ -243,7 +243,8 @@ class Sample
                     'trait_import' => self::SPACING_NONE,
                     'case' => self::SPACING_NONE,
                 ])
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

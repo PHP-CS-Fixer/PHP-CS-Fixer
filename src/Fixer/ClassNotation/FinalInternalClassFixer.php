@@ -158,7 +158,8 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(['@internal'])
                 ->setNormalizer($annotationsNormalizer)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('annotation_exclude', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
@@ -172,11 +173,13 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                     '@ODM\Document',
                 ])
                 ->setNormalizer($annotationsNormalizer)
-                ->getOption(),
+                ->getOption()
+            ,
             (new FixerOptionBuilder('consider_absent_docblock_as_internal_class', 'Should classes without any DocBlock be fixed to final?'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 

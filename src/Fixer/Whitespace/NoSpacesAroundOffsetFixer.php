@@ -105,7 +105,8 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset($values)])
                 ->setDefault($values)
-                ->getOption(),
+                ->getOption()
+            ,
         ]);
     }
 }
