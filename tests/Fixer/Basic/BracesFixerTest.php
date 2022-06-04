@@ -31,6 +31,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     private static $configurationOopPositionSameLine = ['position_after_functions_and_oop_constructs' => BracesFixer::LINE_SAME];
     private static $configurationCtrlStructPositionNextLine = ['position_after_control_structures' => BracesFixer::LINE_NEXT];
     private static $configurationAnonymousPositionNextLine = ['position_after_anonymous_constructs' => BracesFixer::LINE_NEXT];
+    private static $configurationMultilineAnonymousClassPositionSameLine = ['position_after_multiline_anonymous_class' => BracesFixer::LINE_SAME];
 
     public function testInvalidConfigurationClassyConstructs(): void
     {
@@ -246,6 +247,57 @@ final class BracesFixerTest extends AbstractFixerTestCase
         for ($i=0;$i<5;++$i);
     };',
                 self::$configurationAnonymousPositionNextLine,
+            ],
+// Currently unable to test since `\PhpCsFixer\Tokenizer\Tokens::generateCode` generates a different indentation than `\PhpCsFixer\AbstractFixer::fix()` (which marks \PhpCsFixer\Tokenizer\Tokens::$changed as `true`)
+//            [
+//                '<?php
+//    $a = new class extends \StdObject implements
+//        \Stringable {
+//        };',
+//                null,
+//                self::$configurationMultilineAnonymousClassPositionSameLine,
+//            ],
+            [
+                '<?php
+    $a = new class extends \StdObject { // Not affected by `position_after_multiline_anonymous_class` setting.
+    };',
+            ],
+            [
+                '<?php
+    $a = new class extends \StdObject { // Not affected by `position_after_multiline_anonymous_class` setting (moved to same line by default).
+    };',
+                '<?php
+    $a = new class extends \StdObject
+    { // Not affected by `position_after_multiline_anonymous_class` setting (moved to same line by default).
+    };',
+            ],
+            [
+                '<?php
+    $a = new class extends \StdObject implements
+        \Stringable
+    { // Moved to new line after fix run.
+        function __toString()
+        {
+            return function () use (
+                $b
+            ) { // Moved to same line after fix run (not affected by `position_after_multiline_anonymous_class` setting).
+                return "test";
+            };
+        }
+    };',
+                '<?php
+    $a = new class extends \StdObject implements
+        \Stringable { // Moved to new line after fix run.
+        function __toString()
+        {
+            return function () use (
+                $b
+            )
+            { // Moved to same line after fix run (not affected by `position_after_multiline_anonymous_class` setting).
+                return "test";
+            };
+        }
+    };',
             ],
             [
                 '<?php

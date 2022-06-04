@@ -139,6 +139,10 @@ List of Available Rules
      | whether the opening brace should be placed on "next" or "same" line after anonymous constructs (anonymous classes and lambda functions).
      | Allowed values: ``'next'``, ``'same'``
      | Default value: ``'same'``
+   - | ``position_after_multiline_anonymous_class``
+     | whether the opening brace should be placed on "next" or "same" line after multiline anonymous class definitions.
+     | Allowed values: ``'next'``, ``'same'``
+     | Default value: ``'next'``
 
 
    Part of rule sets `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_

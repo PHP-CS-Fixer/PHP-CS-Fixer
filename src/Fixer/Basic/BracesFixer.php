@@ -204,6 +204,10 @@ class Foo
                 ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
                 ->setDefault(self::LINE_SAME)
                 ->getOption(),
+            (new FixerOptionBuilder('position_after_multiline_anonymous_class', 'whether the opening brace should be placed on "next" or "same" line after multiline anonymous class definitions.'))
+                ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
+                ->setDefault(self::LINE_NEXT)
+                ->getOption(),
         ]);
     }
 
@@ -583,10 +587,17 @@ class Foo
                 || (
                     self::LINE_NEXT === $this->configuration['position_after_control_structures'] && $token->isGivenKind($controlTokens)
                     || (
-                        self::LINE_NEXT === $this->configuration['position_after_anonymous_constructs']
-                        && (
+                        (
                             $token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($index)
                             || $token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)
+                        )
+                        && (
+                            self::LINE_NEXT === $this->configuration['position_after_anonymous_constructs']
+                            || (
+                                self::LINE_NEXT === $this->configuration['position_after_multiline_anonymous_class']
+                                && $token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)
+                                && $this->isMultilined($tokens, $index, $tokens->getNextTokenOfKind($index, ['{']) - 1)
+                            )
                         )
                     )
                 )
