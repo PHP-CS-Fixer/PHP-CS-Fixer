@@ -32,7 +32,7 @@ final class StatementIndentationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): iterable
     {
         yield 'no brace block' => [
             '<?php
@@ -635,7 +635,7 @@ foreach ($array as [
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithTabsCases()
+    public function provideFixWithTabsCases(): iterable
     {
         yield 'simple' => [
             "<?php
@@ -660,7 +660,7 @@ if ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases()
+    public function provideFixPhp80Cases(): iterable
     {
         yield 'match expression' => [
             '<?php
@@ -687,7 +687,7 @@ return match ($bool) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp81Cases()
+    public function provideFixPhp81Cases(): iterable
     {
         yield 'simple enum' => [
             '<?php
