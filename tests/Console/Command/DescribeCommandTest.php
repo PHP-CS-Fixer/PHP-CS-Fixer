@@ -266,7 +266,7 @@ Fixing examples:
         )->will(function (array $arguments) use (&$things): void {
             $arguments[1][3] = new Token([
                 $arguments[1][3]->getId(),
-                ($things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\''),
+                $things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'',
             ]);
         });
 

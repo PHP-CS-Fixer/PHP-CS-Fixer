@@ -26,6 +26,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -34,32 +35,42 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoUnneededControlParenthesesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private static array $loops = [
-        'break' => ['lookupTokens' => T_BREAK, 'neededSuccessors' => [';']],
-        'clone' => ['lookupTokens' => T_CLONE, 'neededSuccessors' => [';', ':', ',', ')'], 'forbiddenContents' => ['?', ':', [T_COALESCE, '??']]],
-        'continue' => ['lookupTokens' => T_CONTINUE, 'neededSuccessors' => [';']],
-        'echo_print' => ['lookupTokens' => [T_ECHO, T_PRINT], 'neededSuccessors' => [';', [T_CLOSE_TAG]]],
-        'return' => ['lookupTokens' => T_RETURN, 'neededSuccessors' => [';', [T_CLOSE_TAG]]],
-        'switch_case' => ['lookupTokens' => T_CASE, 'neededSuccessors' => [';', ':']],
-        'yield' => ['lookupTokens' => T_YIELD, 'neededSuccessors' => [';', ')']],
-        'yield_from' => ['lookupTokens' => T_YIELD_FROM, 'neededSuccessors' => [';', ')']],
-    ];
+    private TokensAnalyzer $tokensAnalyzer;
 
     /**
-     * {@inheritdoc}
+     * @var int[]
      */
-    public function isCandidate(Tokens $tokens): bool
-    {
-        $types = [];
+    private static array $blockTypes = [
+        Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE,
+        Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE,
+        Tokens::BLOCK_TYPE_CURLY_BRACE,
+        Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE,
+        Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE,
+        Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE,
+        Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE,
+        Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+    ];
 
-        foreach (self::$loops as $loop) {
-            $types[] = (array) $loop['lookupTokens'];
-        }
-
-        $types = array_merge(...$types);
-
-        return $tokens->isAnyTokenKindsFound($types);
-    }
+    private static array $beforeTypes = [
+        ';',
+        '{',
+        '}',
+        [T_OPEN_TAG],
+        [T_OPEN_TAG_WITH_ECHO],
+        [T_ECHO],
+        [T_PRINT],
+        [T_RETURN],
+        [T_THROW],
+        [T_YIELD],
+        [T_YIELD_FROM],
+        [T_BREAK],
+        [T_CONTINUE],
+        // won't be fixed, but true in concept, helpful for fast check
+        [T_REQUIRE],
+        [T_REQUIRE_ONCE],
+        [T_INCLUDE],
+        [T_INCLUDE_ONCE],
+    ];
 
     /**
      * {@inheritdoc}
@@ -84,13 +95,10 @@ yield(2);
                 new CodeSample(
                     '<?php
 while ($x) { while ($y) { break (2); } }
+
 clone($a);
+
 while ($y) { continue (2); }
-echo("foo");
-print("foo");
-return (1 + 2);
-switch ($a) { case($x); }
-yield(2);
 ',
                     ['statements' => ['break', 'continue']]
                 ),
@@ -101,7 +109,7 @@ yield(2);
     /**
      * {@inheritdoc}
      *
-     * Must run before NoTrailingWhitespaceFixer.
+     * Must run before ConcatSpaceFixer, NoTrailingWhitespaceFixer.
      */
     public function getPriority(): int
     {
@@ -111,53 +119,84 @@ yield(2);
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isAnyTokenKindsFound(['(', CT::T_BRACE_CLASS_INSTANTIATION_OPEN]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        // Checks if specific statements are set and uses them in this case.
-        $loops = array_intersect_key(self::$loops, array_flip($this->configuration['statements']));
+        $this->tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        foreach ($tokens as $index => $token) {
-            if (!$token->equalsAny(['(', [CT::T_BRACE_CLASS_INSTANTIATION_OPEN]])) {
+        foreach ($tokens as $openIndex => $token) {
+            if ($token->equals('(')) {
+                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            } elseif ($token->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN)) {
+                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, $openIndex);
+            } else {
                 continue;
             }
 
-            $blockStartIndex = $index;
-            $index = $tokens->getPrevMeaningfulToken($index);
-            $prevToken = $tokens[$index];
+            $beforeOpenIndex = $tokens->getPrevMeaningfulToken($openIndex);
+            $afterCloseIndex = $tokens->getNextMeaningfulToken($closeIndex);
 
-            foreach ($loops as $loop) {
-                if (!$prevToken->isGivenKind($loop['lookupTokens'])) {
-                    continue;
+            // do a cheap check for negative case: `X()`
+
+            if ($tokens[$tokens->getNextMeaningfulToken($openIndex)]->equals(')')) {
+                if ($this->isExitStatement($tokens, $beforeOpenIndex)) {
+                    $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'others');
                 }
 
-                $blockEndIndex = $tokens->findBlockEnd(
-                    $token->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS_BRACE : Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION,
-                    $blockStartIndex
-                );
+                continue;
+            }
 
-                $blockEndNextIndex = $tokens->getNextMeaningfulToken($blockEndIndex);
+            // do a cheap check for negative case: `foo(1,2)`
 
-                if (!$tokens[$blockEndNextIndex]->equalsAny($loop['neededSuccessors'])) {
-                    continue;
+            if ($this->isKnownNegativePre($tokens[$beforeOpenIndex])) {
+                continue;
+            }
+
+            // check for the simple useless wrapped cases
+
+            if ($this->isUselessWrapped($tokens, $beforeOpenIndex, $afterCloseIndex)) {
+                $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, $this->getConfigType($tokens, $beforeOpenIndex));
+
+                continue;
+            }
+
+            // handle `clone` statements
+
+            if ($this->isCloneStatement($tokens, $beforeOpenIndex)) {
+                if ($this->isWrappedCloneArgument($tokens, $beforeOpenIndex, $openIndex, $closeIndex, $afterCloseIndex)) {
+                    $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'clone');
                 }
 
-                if (\array_key_exists('forbiddenContents', $loop)) {
-                    $forbiddenTokenIndex = $tokens->getNextTokenOfKind($blockStartIndex, $loop['forbiddenContents']);
+                continue;
+            }
 
-                    // A forbidden token is found and is inside the parenthesis.
-                    if (null !== $forbiddenTokenIndex && $forbiddenTokenIndex < $blockEndIndex) {
-                        continue;
+            // handle `instance of` statements
+
+            $instanceOfIndex = $this->getIndexOfInstanceOfStatement($tokens, $openIndex, $closeIndex);
+
+            if (null !== $instanceOfIndex) {
+                if ($this->isWrappedInstanceOf($tokens, $instanceOfIndex, $beforeOpenIndex, $openIndex, $closeIndex, $afterCloseIndex)) {
+                    if ($tokens[$beforeOpenIndex]->equals('!')) {
+                        $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'negative_instanceof');
+                    } else {
+                        $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'others');
                     }
                 }
 
-                if ($tokens[$blockStartIndex - 1]->isWhitespace() || $tokens[$blockStartIndex - 1]->isComment()) {
-                    $tokens->clearTokenAndMergeSurroundingWhitespace($blockStartIndex);
-                } else {
-                    // Adds a space to prevent broken code like `return2`.
-                    $tokens[$blockStartIndex] = new Token([T_WHITESPACE, ' ']);
-                }
+                continue;
+            }
 
-                $tokens->clearTokenAndMergeSurroundingWhitespace($blockEndIndex);
+            // last checks deal with operators, do not swap around
+
+            if ($this->isWrappedPartOfOperation($tokens, $beforeOpenIndex, $openIndex, $closeIndex, $afterCloseIndex)) {
+                $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, $this->getConfigType($tokens, $beforeOpenIndex));
             }
         }
     }
@@ -167,20 +206,490 @@ yield(2);
      */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
+        $options = [
+            'break',
+            'clone',
+            'continue',
+            'echo_print',
+            'negative_instanceof',
+            'others',
+            'return',
+            'switch_case',
+            'yield',
+            'yield_from',
+        ];
+
+        $defaults = array_filter(
+            $options,
+            static function (string $option): bool {
+                return 'negative_instanceof' !== $option && 'others' !== $option && 'yield_from' !== $option;
+            }
+        );
+
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('statements', 'List of control statements to fix.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$loops))])
-                ->setDefault([
-                    'break',
-                    'clone',
-                    'continue',
-                    'echo_print',
-                    'return',
-                    'switch_case',
-                    'yield',
-                ])
+                ->setAllowedValues([new AllowedValueSubset($options)])
+                ->setDefault(array_values($defaults))
                 ->getOption(),
         ]);
+    }
+
+    private function isUselessWrapped(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
+    {
+        return
+            $this->isSingleStatement($tokens, $beforeOpenIndex, $afterCloseIndex)
+            || $this->isWrappedFnBody($tokens, $beforeOpenIndex, $afterCloseIndex)
+            || $this->isWrappedForElement($tokens, $beforeOpenIndex, $afterCloseIndex)
+            || $this->isWrappedLanguageConstructArgument($tokens, $beforeOpenIndex, $afterCloseIndex)
+            || $this->isWrappedSequenceElement($tokens, $beforeOpenIndex, $afterCloseIndex)
+        ;
+    }
+
+    private function isExitStatement(Tokens $tokens, int $beforeOpenIndex): bool
+    {
+        return $tokens[$beforeOpenIndex]->isGivenKind(T_EXIT);
+    }
+
+    private function isCloneStatement(Tokens $tokens, int $beforeOpenIndex): bool
+    {
+        return $tokens[$beforeOpenIndex]->isGivenKind(T_CLONE);
+    }
+
+    private function isWrappedCloneArgument(Tokens $tokens, int $beforeOpenIndex, int $openIndex, int $closeIndex, int $afterCloseIndex): bool
+    {
+        $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
+
+        if (
+            !(
+                $tokens[$beforeOpenIndex]->equals('?') // For BC reasons
+                || $this->isSimpleAssignment($tokens, $beforeOpenIndex, $afterCloseIndex)
+                || $this->isSingleStatement($tokens, $beforeOpenIndex, $afterCloseIndex)
+                || $this->isWrappedFnBody($tokens, $beforeOpenIndex, $afterCloseIndex)
+                || $this->isWrappedForElement($tokens, $beforeOpenIndex, $afterCloseIndex)
+                || $this->isWrappedSequenceElement($tokens, $beforeOpenIndex, $afterCloseIndex)
+            )
+        ) {
+            return false;
+        }
+
+        $newCandidateIndex = $tokens->getNextMeaningfulToken($openIndex);
+
+        if ($tokens[$newCandidateIndex]->isGivenKind(T_NEW)) {
+            $openIndex = $newCandidateIndex; // `clone (new X)`, `clone (new X())`, clone (new X(Y))`
+        }
+
+        return !$this->containsOperation($tokens, $openIndex, $closeIndex);
+    }
+
+    private function getIndexOfInstanceOfStatement(Tokens $tokens, int $openIndex, int $closeIndex): ?int
+    {
+        $instanceOfIndex = $tokens->findGivenKind(T_INSTANCEOF, $openIndex, $closeIndex);
+
+        return 1 === \count($instanceOfIndex) ? array_key_first($instanceOfIndex) : null;
+    }
+
+    private function isWrappedInstanceOf(Tokens $tokens, int $instanceOfIndex, int $beforeOpenIndex, int $openIndex, int $closeIndex, int $afterCloseIndex): bool
+    {
+        if (
+            $this->containsOperation($tokens, $openIndex, $instanceOfIndex)
+            || $this->containsOperation($tokens, $instanceOfIndex, $closeIndex)
+        ) {
+            return false;
+        }
+
+        if ($tokens[$beforeOpenIndex]->equals('!')) {
+            $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
+        }
+
+        return
+            $this->isSimpleAssignment($tokens, $beforeOpenIndex, $afterCloseIndex)
+            || $this->isSingleStatement($tokens, $beforeOpenIndex, $afterCloseIndex)
+            || $this->isWrappedFnBody($tokens, $beforeOpenIndex, $afterCloseIndex)
+            || $this->isWrappedForElement($tokens, $beforeOpenIndex, $afterCloseIndex)
+            || $this->isWrappedSequenceElement($tokens, $beforeOpenIndex, $afterCloseIndex)
+        ;
+    }
+
+    private function isWrappedPartOfOperation(Tokens $tokens, int $beforeOpenIndex, int $openIndex, int $closeIndex, int $afterCloseIndex): bool
+    {
+        if ($this->containsOperation($tokens, $openIndex, $closeIndex)) {
+            return false;
+        }
+
+        $boundariesMoved = false;
+
+        if ($this->isPreUnaryOperation($tokens, $beforeOpenIndex)) {
+            $beforeOpenIndex = $this->getBeforePreUnaryOperation($tokens, $beforeOpenIndex);
+            $boundariesMoved = true;
+        }
+
+        if ($this->isAccess($tokens, $afterCloseIndex)) {
+            $afterCloseIndex = $this->getAfterAccess($tokens, $afterCloseIndex);
+            $boundariesMoved = true;
+
+            if ($this->tokensAnalyzer->isUnarySuccessorOperator($afterCloseIndex)) { // post unary operation are only valid here
+                $afterCloseIndex = $tokens->getNextMeaningfulToken($afterCloseIndex);
+            }
+        }
+
+        if ($boundariesMoved) {
+            if ($this->isKnownNegativePre($tokens[$beforeOpenIndex])) {
+                return false;
+            }
+
+            if ($this->isUselessWrapped($tokens, $beforeOpenIndex, $afterCloseIndex)) {
+                return true;
+            }
+        }
+
+        // check if part of some operation sequence
+
+        $beforeIsBinaryOperation = $this->tokensAnalyzer->isBinaryOperator($beforeOpenIndex);
+        $afterIsBinaryOperation = $this->tokensAnalyzer->isBinaryOperator($afterCloseIndex);
+
+        if ($beforeIsBinaryOperation && $afterIsBinaryOperation) {
+            return true; // `+ (x) +`
+        }
+
+        $beforeToken = $tokens[$beforeOpenIndex];
+        $afterToken = $tokens[$afterCloseIndex];
+
+        $beforeIsBlockOpenOrComma = $beforeToken->equals(',') || null !== $this->getBlock($tokens, $beforeOpenIndex, true);
+        $afterIsBlockEndOrComma = $afterToken->equals(',') || null !== $this->getBlock($tokens, $afterCloseIndex, false);
+
+        if (($beforeIsBlockOpenOrComma && $afterIsBinaryOperation) || ($beforeIsBinaryOperation && $afterIsBlockEndOrComma)) {
+            // $beforeIsBlockOpenOrComma && $afterIsBlockEndOrComma is covered by `isWrappedSequenceElement`
+            // `[ (x) +` or `+ (X) ]` or `, (X) +` or `+ (X) ,`
+
+            return true;
+        }
+
+        $beforeIsStatementOpen = $beforeToken->equalsAny(self::$beforeTypes) || $beforeToken->isGivenKind(T_CASE);
+        $afterIsStatementEnd = $afterToken->equalsAny([';', [T_CLOSE_TAG]]);
+
+        return
+            ($beforeIsStatementOpen && $afterIsBinaryOperation) // `<?php (X) +`
+            || ($beforeIsBinaryOperation && $afterIsStatementEnd) // `+ (X);`
+        ;
+    }
+
+    // bounded `print|yield|yield from|require|require_once|include|include_once (X)`
+    private function isWrappedLanguageConstructArgument(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
+    {
+        if (!$tokens[$beforeOpenIndex]->isGivenKind([T_PRINT, T_YIELD, T_YIELD_FROM, T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE])) {
+            return false;
+        }
+
+        $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
+
+        return $this->isWrappedSequenceElement($tokens, $beforeOpenIndex, $afterCloseIndex);
+    }
+
+    // any of `<?php|<?|<?=|;|throw|return|... (X) ;|T_CLOSE`
+    private function isSingleStatement(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
+    {
+        if ($tokens[$beforeOpenIndex]->isGivenKind(T_CASE)) {
+            return $tokens[$afterCloseIndex]->equalsAny([':', ';']); // `switch case`
+        }
+
+        return $tokens[$afterCloseIndex]->equalsAny([';', [T_CLOSE_TAG]]) && $tokens[$beforeOpenIndex]->equalsAny(self::$beforeTypes);
+    }
+
+    private function isSimpleAssignment(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
+    {
+        return $tokens[$beforeOpenIndex]->equals('=') && $tokens[$afterCloseIndex]->equalsAny([';', [T_CLOSE_TAG]]); // `= (X) ;`
+    }
+
+    private function isWrappedSequenceElement(Tokens $tokens, int $startIndex, int $endIndex): bool
+    {
+        $startIsComma = $tokens[$startIndex]->equals(',');
+        $endIsComma = $tokens[$endIndex]->equals(',');
+
+        if ($startIsComma && $endIsComma) {
+            return true; // `,(X),`
+        }
+
+        $blockTypeStart = $this->getBlock($tokens, $startIndex, true);
+        $blockTypeEnd = $this->getBlock($tokens, $endIndex, false);
+
+        return
+            ($startIsComma && null !== $blockTypeEnd) // `,(X)]`
+            || ($endIsComma && null !== $blockTypeStart) // `[(X),`
+            || (null !== $blockTypeEnd && null !== $blockTypeStart) // any type of `{(X)}`, `[(X)]` and `((X))`
+        ;
+    }
+
+    // any of `for( (X); ;(X)) ;` note that the middle element is covered as 'single statement' as it is `; (X) ;`
+    private function isWrappedForElement(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
+    {
+        $forCandidateIndex = null;
+
+        if ($tokens[$beforeOpenIndex]->equals('(') && $tokens[$afterCloseIndex]->equals(';')) {
+            $forCandidateIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
+        } elseif ($tokens[$afterCloseIndex]->equals(')') && $tokens[$beforeOpenIndex]->equals(';')) {
+            $forCandidateIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $afterCloseIndex);
+            $forCandidateIndex = $tokens->getPrevMeaningfulToken($forCandidateIndex);
+        }
+
+        return null !== $forCandidateIndex && $tokens[$forCandidateIndex]->isGivenKind(T_FOR);
+    }
+
+    // `fn() => (X);`
+    private function isWrappedFnBody(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
+    {
+        if (
+            !$tokens[$afterCloseIndex]->equalsAny([';', [T_CLOSE_TAG]])
+            || !$tokens[$beforeOpenIndex]->isGivenKind(T_DOUBLE_ARROW)
+        ) {
+            return false;
+        }
+
+        $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
+
+        if (!$tokens[$beforeOpenIndex]->equals(')')) {
+            return false;
+        }
+
+        $beforeOpenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $beforeOpenIndex);
+        $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
+
+        if ($tokens[$beforeOpenIndex]->isGivenKind(CT::T_RETURN_REF)) {
+            $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
+        }
+
+        return $tokens[$beforeOpenIndex]->isGivenKind(T_FN);
+    }
+
+    private function isPreUnaryOperation(Tokens $tokens, int $index): bool
+    {
+        return $this->tokensAnalyzer->isUnaryPredecessorOperator($index) || $tokens[$index]->isCast();
+    }
+
+    private function getBeforePreUnaryOperation(Tokens $tokens, $index): int
+    {
+        do {
+            $index = $tokens->getPrevMeaningfulToken($index);
+        } while ($this->isPreUnaryOperation($tokens, $index));
+
+        return $index;
+    }
+
+    // array access `(X)[` or `(X){` or object access `(X)->` or `(X)?->`
+    private function isAccess(Tokens $tokens, int $index): bool
+    {
+        $token = $tokens[$index];
+
+        return $token->isObjectOperator() || $token->equals('[') || $token->isGivenKind([CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]);
+    }
+
+    private function getAfterAccess(Tokens $tokens, $index): int
+    {
+        while (true) {
+            $block = $this->getBlock($tokens, $index, true);
+
+            if (null !== $block) {
+                $index = $tokens->findBlockEnd($block['type'], $index);
+                $index = $tokens->getNextMeaningfulToken($index);
+
+                continue;
+            }
+
+            if (
+                $tokens[$index]->isObjectOperator()
+                || $tokens[$index]->equalsAny(['$', [T_PAAMAYIM_NEKUDOTAYIM], [T_STRING], [T_VARIABLE]])
+            ) {
+                $index = $tokens->getNextMeaningfulToken($index);
+
+                continue;
+            }
+
+            break;
+        }
+
+        return $index;
+    }
+
+    private function getBlock(Tokens $tokens, int $index, bool $isStart): ?array
+    {
+        $block = Tokens::detectBlockType($tokens[$index]);
+
+        return null !== $block && $isStart === $block['isStart'] && \in_array($block['type'], self::$blockTypes, true) ? $block : null;
+    }
+
+    // cheap check on a tokens type before `(` of which we know the `(` will never be superfluous
+    private function isKnownNegativePre(Token $token): bool
+    {
+        static $knownNegativeTypes;
+
+        if (null === $knownNegativeTypes) {
+            $knownNegativeTypes = [
+                [CT::T_CLASS_CONSTANT],
+                [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
+                [CT::T_RETURN_REF],
+                [CT::T_USE_LAMBDA],
+                [T_ARRAY],
+                [T_CATCH],
+                [T_CLASS],
+                [T_DECLARE],
+                [T_ELSEIF],
+                [T_EMPTY],
+                [T_EXIT],
+                [T_EVAL],
+                [T_FN],
+                [T_FOREACH],
+                [T_FOR],
+                [T_FUNCTION],
+                [T_HALT_COMPILER],
+                [T_IF],
+                [T_ISSET],
+                [T_LIST],
+                [T_STRING],
+                [T_SWITCH],
+                [T_STATIC],
+                [T_UNSET],
+                [T_VARIABLE],
+                [T_WHILE],
+                // handled by the `include` rule
+                [T_REQUIRE],
+                [T_REQUIRE_ONCE],
+                [T_INCLUDE],
+                [T_INCLUDE_ONCE],
+            ];
+
+            if (\defined('T_MATCH')) { // @TODO: drop condition and add directly in `$knownNegativeTypes` above when PHP 8.0+ is required
+                $knownNegativeTypes[] = T_MATCH;
+            }
+        }
+
+        return $token->equalsAny($knownNegativeTypes);
+    }
+
+    private function containsOperation(Tokens $tokens, int $startIndex, int $endIndex): bool
+    {
+        static $noopTypes;
+
+        if (null === $noopTypes) {
+            $noopTypes = [
+                '$',
+                [T_CONSTANT_ENCAPSED_STRING],
+                [T_DNUMBER],
+                [T_DOUBLE_COLON],
+                [T_LNUMBER],
+                [T_NS_SEPARATOR],
+                [T_OBJECT_OPERATOR],
+                [T_STRING],
+                [T_VARIABLE],
+                // magic constants
+                [T_CLASS_C],
+                [T_DIR],
+                [T_FILE],
+                [T_FUNC_C],
+                [T_LINE],
+                [T_METHOD_C],
+                [T_NS_C],
+                [T_TRAIT_C],
+            ];
+        }
+
+        while (true) {
+            $startIndex = $tokens->getNextMeaningfulToken($startIndex);
+
+            if ($startIndex === $endIndex) {
+                break;
+            }
+
+            $block = Tokens::detectBlockType($tokens[$startIndex]);
+
+            if (null !== $block && $block['isStart']) {
+                $startIndex = $tokens->findBlockEnd($block['type'], $startIndex);
+
+                continue;
+            }
+
+            if (!$tokens[$startIndex]->equalsAny($noopTypes)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function getConfigType(Tokens $tokens, int $beforeOpenIndex): ?string
+    {
+        if ($tokens[$beforeOpenIndex]->isGivenKind([T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE])) {
+            return null; // handled by the `include` rule
+        }
+
+        static $map = [
+            T_BREAK => 'break',
+            T_CASE => 'switch_case',
+            T_CONTINUE => 'continue',
+            T_ECHO => 'echo_print',
+            T_PRINT => 'echo_print',
+            T_RETURN => 'return',
+            T_YIELD => 'yield',
+            T_YIELD_FROM => 'yield_from',
+        ];
+
+        foreach ($map as $type => $configItem) {
+            if ($tokens[$beforeOpenIndex]->isGivenKind($type)) {
+                return $configItem;
+            }
+        }
+
+        return 'others';
+    }
+
+    private function removeUselessParenthesisPair(
+        Tokens $tokens,
+        int $beforeOpenIndex,
+        int $afterCloseIndex,
+        int $openIndex,
+        int $closeIndex,
+        ?string $configType
+    ): void {
+        $statements = $this->configuration['statements'];
+
+        if (null === $configType || !\in_array($configType, $statements, true)) {
+            return;
+        }
+
+        $needsSpaceAfter =
+            !$this->isAccess($tokens, $afterCloseIndex)
+            && !$tokens[$afterCloseIndex]->equalsAny([';', ',', [T_CLOSE_TAG]])
+            && null === $this->getBlock($tokens, $afterCloseIndex, false)
+            && !($tokens[$afterCloseIndex]->equalsAny([':', ';']) && $tokens[$beforeOpenIndex]->isGivenKind(T_CASE))
+        ;
+
+        $needsSpaceBefore =
+            !$this->isPreUnaryOperation($tokens, $beforeOpenIndex)
+            && !$tokens[$beforeOpenIndex]->equalsAny(['}', [T_EXIT], [T_OPEN_TAG]])
+            && null === $this->getBlock($tokens, $beforeOpenIndex, true)
+        ;
+
+        $this->removeBrace($tokens, $closeIndex, $needsSpaceAfter);
+        $this->removeBrace($tokens, $openIndex, $needsSpaceBefore);
+    }
+
+    private function removeBrace(Tokens $tokens, int $index, bool $needsSpace): void
+    {
+        if ($needsSpace) {
+            foreach ([-1, 1] as $direction) {
+                $siblingIndex = $tokens->getNonEmptySibling($index, $direction);
+
+                if ($tokens[$siblingIndex]->isWhitespace() || $tokens[$siblingIndex]->isComment()) {
+                    $needsSpace = false;
+
+                    break;
+                }
+            }
+        }
+
+        if ($needsSpace) {
+            $tokens[$index] = new Token([T_WHITESPACE, ' ']);
+        } else {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+        }
     }
 }

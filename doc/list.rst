@@ -1642,7 +1642,7 @@ List of Available Rules
 
    - | ``statements``
      | List of control statements to fix.
-     | Allowed values: a subset of ``['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield', 'yield_from']``
+     | Allowed values: a subset of ``['break', 'clone', 'continue', 'echo_print', 'negative_instanceof', 'others', 'return', 'switch_case', 'yield', 'yield_from']``
      | Default value: ``['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield']``
 
 

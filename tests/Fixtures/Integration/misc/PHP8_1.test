@@ -21,7 +21,7 @@ final class Foo
 // https://wiki.php.net/rfc/noreturn_type
 function endProgram(): never
 {
-    exit();
+    exit;
 }
 
 // https://wiki.php.net/rfc/fsync_function
