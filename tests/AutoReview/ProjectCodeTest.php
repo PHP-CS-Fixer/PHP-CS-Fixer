@@ -459,15 +459,23 @@ final class ProjectCodeTest extends TestCase
 
         static::assertTrue($tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds()), sprintf('File "%s" should contains a classy.', $file));
 
-        foreach ($tokens as $index => $token) {
-            if ($token->isClassy()) {
+        $count = \count($tokens);
+
+        for ($index = 1; $index < $count; ++$index) {
+            if ($tokens[$index]->isClassy()) {
                 $classyIndex = $index;
 
                 break;
             }
 
-            if (!$token->isGivenKind($headerTypes) && !$token->equalsAny([';', '=', '(', ')'])) {
-                static::fail(sprintf('File "%s" should only contains single classy, found "%s" @ %d.', $file, $token->toJson(), $index));
+            if (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+
+                continue;
+            }
+
+            if (!$tokens[$index]->isGivenKind($headerTypes) && !$tokens[$index]->equalsAny([';', '=', '(', ')'])) {
+                static::fail(sprintf('File "%s" should only contains single classy, found "%s" @ %d.', $file, $tokens[$index]->toJson(), $index));
             }
         }
 

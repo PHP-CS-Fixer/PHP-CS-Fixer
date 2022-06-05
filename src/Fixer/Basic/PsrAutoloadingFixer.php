@@ -74,7 +74,13 @@ class InvalidName {}
         parent::configure($configuration);
 
         if (null !== $this->configuration['dir']) {
-            $this->configuration['dir'] = realpath($this->configuration['dir']);
+            $realpath = realpath($this->configuration['dir']);
+
+            if (false === $realpath) {
+                throw new \InvalidArgumentException(sprintf('Failed to resolve configured directory "%s".', $this->configuration['dir']));
+            }
+
+            $this->configuration['dir'] = $realpath;
         }
     }
 

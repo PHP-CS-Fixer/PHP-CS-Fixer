@@ -20,6 +20,7 @@ use PhpCsFixer\Documentation\ListDocumentGenerator;
 use PhpCsFixer\Documentation\RuleSetDocumentationGenerator;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSets;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,6 +31,7 @@ use Symfony\Component\Finder\SplFileInfo;
 /**
  * @internal
  */
+#[AsCommand(name: 'documentation')]
 final class DocumentationCommand extends Command
 {
     /**
