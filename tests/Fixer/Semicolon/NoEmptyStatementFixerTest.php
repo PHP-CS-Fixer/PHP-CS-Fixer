@@ -33,7 +33,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideNoEmptyStatementsCases(): \Generator
+    public function provideNoEmptyStatementsCases(): iterable
     {
         yield from [
             [

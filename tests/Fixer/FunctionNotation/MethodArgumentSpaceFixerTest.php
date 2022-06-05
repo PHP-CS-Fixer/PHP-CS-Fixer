@@ -917,7 +917,7 @@ $example = function () use ($message1,$message2) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix2Cases(): \Generator
+    public function provideFix2Cases(): iterable
     {
         yield [
             '<?php function A($c, ...$a){}',
@@ -1009,7 +1009,7 @@ $fn = fn(
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield [
             '<?php

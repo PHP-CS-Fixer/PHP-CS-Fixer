@@ -297,7 +297,7 @@ final class ConfigurationResolverTest extends TestCase
         static::assertSame($expectedPaths, $resolver->getPath());
     }
 
-    public function providePathCases(): \Generator
+    public function providePathCases(): iterable
     {
         yield [
             ['Command'],
@@ -343,7 +343,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getPath();
     }
 
-    public function provideEmptyPathCases(): \Generator
+    public function provideEmptyPathCases(): iterable
     {
         yield [
             [''],
@@ -968,7 +968,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getRules();
     }
 
-    public function provideRenamedRulesCases(): \Generator
+    public function provideRenamedRulesCases(): iterable
     {
         yield 'with config' => [
             'The rules contain unknown fixers: "blank_line_before_return" is renamed (did you mean "blank_line_before_statement"? (note: use configuration "[\'statements\' => [\'return\']]")).

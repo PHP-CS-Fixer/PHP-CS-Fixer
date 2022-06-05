@@ -31,7 +31,7 @@ final class DeclareParenthesesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         yield 'spaces around parentheses' => [
             '<?php declare(strict_types = 1);',

@@ -33,7 +33,7 @@ final class EncodingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input, $file);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         yield $this->prepareTestCase('test-utf8.case1.php', 'test-utf8.case1-bom.php');
 

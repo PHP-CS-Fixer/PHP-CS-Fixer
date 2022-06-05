@@ -34,7 +34,7 @@ final class AttributeTransformerTest extends AbstractTransformerTestCase
         $this->doTest($source, $expectedTokens);
     }
 
-    public function provideProcessCases(): \Generator
+    public function provideProcessCases(): iterable
     {
         yield ['<?php class Foo {
     #[Listens(ProductCreatedEvent::class)]
@@ -186,7 +186,7 @@ class User
         }
     }
 
-    public function provideNotChangeCases(): \Generator
+    public function provideNotChangeCases(): iterable
     {
         yield [
             '<?php

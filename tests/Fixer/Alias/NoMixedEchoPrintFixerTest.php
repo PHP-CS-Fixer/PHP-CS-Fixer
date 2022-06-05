@@ -134,7 +134,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public static function provideEchoToPrintFixNewCases(): \Generator
+    public static function provideEchoToPrintFixNewCases(): iterable
     {
         foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
             yield [
@@ -272,7 +272,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public static function providePrintToEchoFixNewCases(): \Generator
+    public static function providePrintToEchoFixNewCases(): iterable
     {
         foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
             yield [
@@ -330,7 +330,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         static::assertSame($expected, $reflectionProperty->getValue($fixer));
     }
 
-    private static function getCodeSnippetsToConvertBothWays(): \Generator
+    private static function getCodeSnippetsToConvertBothWays(): iterable
     {
         yield 'inside of HTML' => '<div><?php %1$s "foo" ?></div>';
 

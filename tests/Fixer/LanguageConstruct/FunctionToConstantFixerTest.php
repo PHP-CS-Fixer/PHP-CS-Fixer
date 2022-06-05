@@ -278,7 +278,7 @@ get_called_class#1
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'first callable class' => [
             '<?php $a = get_class(...);',

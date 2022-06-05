@@ -2024,7 +2024,7 @@ function foo(string|int $foo) {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'some readonly properties' => [
             '<?php

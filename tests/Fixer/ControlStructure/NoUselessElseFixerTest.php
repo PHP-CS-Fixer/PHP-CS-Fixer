@@ -257,7 +257,7 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixIfElseCases(): \Generator
+    public function provideFixIfElseCases(): iterable
     {
         $expected = '<?php
             while(true) {
@@ -445,7 +445,7 @@ else?><?php echo 5;',
         $this->doTest($expected);
     }
 
-    public function provideNegativeCases(): \Generator
+    public function provideNegativeCases(): iterable
     {
         yield from [
             [
@@ -616,7 +616,7 @@ else?><?php echo 5;',
         $this->doTest($expected);
     }
 
-    public function provideNegativePhp80Cases(): \Generator
+    public function provideNegativePhp80Cases(): iterable
     {
         $cases = [
             '$bar = $foo1 ?? throw new \Exception($e);',
@@ -708,7 +708,7 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
-    public function provideConditionsWithoutBracesCases(): \Generator
+    public function provideConditionsWithoutBracesCases(): iterable
     {
         $statements = [
             'die;',
@@ -758,7 +758,7 @@ else?><?php echo 5;',
         $this->doTest($expected);
     }
 
-    public function provideConditionsWithoutBraces80Cases(): \Generator
+    public function provideConditionsWithoutBraces80Cases(): iterable
     {
         yield from $this->generateConditionsWithoutBracesCase('$b = $a ?? throw new Exception($i);');
     }
@@ -937,7 +937,7 @@ else?><?php echo 5;',
         ];
     }
 
-    private function generateConditionsWithoutBracesCase(string $statement): \Generator
+    private function generateConditionsWithoutBracesCase(string $statement): iterable
     {
         $ifTemplate = '<?php
             if ($a === false)

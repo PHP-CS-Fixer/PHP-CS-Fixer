@@ -357,7 +357,7 @@ abstract class Foo {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixConfigCases(): \Generator
+    public function provideFixConfigCases(): iterable
     {
         yield [
             '<?php
@@ -395,7 +395,7 @@ class Bar
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix81Cases(): \Generator
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php

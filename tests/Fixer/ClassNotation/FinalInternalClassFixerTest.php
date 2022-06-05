@@ -279,7 +279,7 @@ class B{}
         $this->doTest($expected, $input);
     }
 
-    public function provideAnonymousClassesCases(): \Generator
+    public function provideAnonymousClassesCases(): iterable
     {
         yield [
             '<?php
@@ -316,7 +316,7 @@ $a = new class{};',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield [
             '<?php

@@ -31,7 +31,7 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         yield [
             '<?php
@@ -255,7 +255,7 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield [
             '<?php enum exception {}',

@@ -35,7 +35,7 @@ final class EmptyLoopConditionFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         yield 'from `for` to `while`' => [
             '<?php

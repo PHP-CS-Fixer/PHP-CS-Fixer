@@ -39,7 +39,7 @@ final class FunctionsAnalyzerTest extends TestCase
         self::assertIsGlobalFunctionCall($indices, $code);
     }
 
-    public function provideIsGlobalFunctionCallCases(): \Generator
+    public function provideIsGlobalFunctionCallCases(): iterable
     {
         yield [
             '<?php CONSTANT;',
@@ -289,7 +289,7 @@ A();
         self::assertIsGlobalFunctionCall($indices, $code);
     }
 
-    public function provideIsGlobalFunctionCallPhp80Cases(): \Generator
+    public function provideIsGlobalFunctionCallPhp80Cases(): iterable
     {
         yield [
             '<?php $a = new (foo());',
@@ -334,7 +334,7 @@ class Foo {}
         self::assertIsGlobalFunctionCall($indices, $code);
     }
 
-    public function provideIsGlobalFunctionCallPhp81Cases(): \Generator
+    public function provideIsGlobalFunctionCallPhp81Cases(): iterable
     {
         yield 'first class callable cases' => [
             [],
@@ -387,7 +387,7 @@ class(){};
         static::assertSame(serialize($expected), serialize($actual));
     }
 
-    public function provideFunctionsWithArgumentsCases(): \Generator
+    public function provideFunctionsWithArgumentsCases(): iterable
     {
         yield from [
             ['<?php function(){};', 1, []],
@@ -582,7 +582,7 @@ class(){};
         }
     }
 
-    public function provideFunctionReturnTypeInfoCases(): \Generator
+    public function provideFunctionReturnTypeInfoCases(): iterable
     {
         yield ['<?php function(){};', 1, null];
 
@@ -610,7 +610,7 @@ class(){};
         static::assertSame(serialize($expected), serialize($actual));
     }
 
-    public function provideFunctionsWithReturnTypePhp74Cases(): \Generator
+    public function provideFunctionsWithReturnTypePhp74Cases(): iterable
     {
         yield ['<?php fn() => null;', 1, null];
 
@@ -638,7 +638,7 @@ class(){};
         static::assertSame($isTheSameClassCall, $analyzer->isTheSameClassCall($tokens, $index));
     }
 
-    public function provideIsTheSameClassCallCases(): \Generator
+    public function provideIsTheSameClassCallCases(): iterable
     {
         $template = '<?php
             class Foo {
@@ -721,7 +721,7 @@ class(){};
         static::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
     }
 
-    public function provideFunctionsWithArgumentsPhp80Cases(): \Generator
+    public function provideFunctionsWithArgumentsPhp80Cases(): iterable
     {
         yield ['<?php function($aa,){};', 1, [
             '$aa' => new ArgumentAnalysis(

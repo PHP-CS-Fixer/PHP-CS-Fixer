@@ -41,7 +41,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         static::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideArgumentsCases(): \Generator
+    public function provideArgumentsCases(): iterable
     {
         yield ['<?php function(){};', 2, 3, []];
 
@@ -98,7 +98,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         static::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideArguments80Cases(): \Generator
+    public function provideArguments80Cases(): iterable
     {
         yield ['<?php class Foo { public function __construct(public ?string $param = null) {} }', 12, 23, [13 => 22]];
 
@@ -124,7 +124,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         static::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideArguments81Cases(): \Generator
+    public function provideArguments81Cases(): iterable
     {
         yield ['<?php function setFoo(\A\B&C $param1, C&D $param2){}', 4, 20, [5 => 12, 14 => 19]];
     }
@@ -140,7 +140,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideArgumentsInfoCases(): \Generator
+    public function provideArgumentsInfoCases(): iterable
     {
         yield ['<?php function($a){};', 3, 3, new ArgumentAnalysis(
             '$a',
@@ -275,7 +275,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideArgumentsInfo80Cases(): \Generator
+    public function provideArgumentsInfo80Cases(): iterable
     {
         yield [
             '<?php function foo(#[AnAttribute] ?string $param = null) {}',
@@ -324,7 +324,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideArgumentsInfo81Cases(): \Generator
+    public function provideArgumentsInfo81Cases(): iterable
     {
         yield [
             '<?php

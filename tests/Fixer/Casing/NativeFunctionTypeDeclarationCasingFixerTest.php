@@ -140,7 +140,7 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield [
             '<?php class T { public function Foo(object $A): static {}}',
@@ -182,7 +182,7 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield [
             '<?php class T { public function Foo(object $A): never {die;}}',

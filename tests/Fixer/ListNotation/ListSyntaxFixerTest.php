@@ -42,7 +42,7 @@ final class ListSyntaxFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixToLongSyntaxCases(): \Generator
+    public function provideFixToLongSyntaxCases(): iterable
     {
         // reverse testing
         $shortCases = $this->provideFixToShortSyntaxCases();
@@ -202,7 +202,7 @@ $a;#
         $this->doTest($expected, $input);
     }
 
-    public function provideFixToShortSyntaxPhp72Cases(): \Generator
+    public function provideFixToShortSyntaxPhp72Cases(): iterable
     {
         yield [
             '<?php [$a, $b,, [$c, $d]] = $a;',
@@ -235,7 +235,7 @@ $a;#
         $this->doTest($expected, $input);
     }
 
-    public function provideFixToShortSyntaxPhp73Cases(): \Generator
+    public function provideFixToShortSyntaxPhp73Cases(): iterable
     {
         yield [
             '<?php [&$a, $b] = $a;',
@@ -267,7 +267,7 @@ $a;#
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'simple 8.1' => [
             '<?php $a = _list(...);',

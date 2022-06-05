@@ -156,7 +156,7 @@ inline 1
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): \Generator
+    public function provideMessyWhitespacesCases(): iterable
     {
         yield [
             "<?php\r\n\$a = 4;\r\n",

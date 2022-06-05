@@ -35,7 +35,7 @@ final class WhitespacesAnalyzerTest extends TestCase
         static::assertSame($indent, WhitespacesAnalyzer::detectIndent($tokens, $index));
     }
 
-    public function provideIndentCases(): \Generator
+    public function provideIndentCases(): iterable
     {
         yield ['<?php function foo() { return true; }', '', 10];
 

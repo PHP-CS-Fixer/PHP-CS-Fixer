@@ -189,7 +189,7 @@ $bar) {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield 'handle trailing comma' => [
             '<?php function foo($x, $y = 42, $z = 42 ) {}',
@@ -231,7 +231,7 @@ $bar) {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'do not crash' => [
             '<?php strlen( ... );',

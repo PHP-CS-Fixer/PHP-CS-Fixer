@@ -469,7 +469,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'readonly properties are always typed, make sure the fixer does not crash' => [
             '<?php class Foo { /** @var int */ private readonly string $foo; }',

@@ -207,7 +207,7 @@ $g["e"](1,); // foo',
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases(): \Generator
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php function foo(
@@ -228,7 +228,7 @@ $foo1b = function() use ($bar, ) {};
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield [
             '<?php $object?->method(1); strlen(...);',

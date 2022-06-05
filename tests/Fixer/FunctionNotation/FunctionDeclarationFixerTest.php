@@ -431,7 +431,7 @@ foo#
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases(): \Generator
+    public function provideFixPhp80Cases(): iterable
     {
         yield [
             '<?php function ($i) {};',

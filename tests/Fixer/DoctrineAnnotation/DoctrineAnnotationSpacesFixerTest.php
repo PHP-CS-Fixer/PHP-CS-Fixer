@@ -1464,7 +1464,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         );
     }
 
-    public static function provideElementDiscoveringCases(): \Generator
+    public static function provideElementDiscoveringCases(): iterable
     {
         yield ['private $foo;'];
 

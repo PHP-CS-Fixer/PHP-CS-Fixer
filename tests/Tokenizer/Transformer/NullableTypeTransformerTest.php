@@ -127,7 +127,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcess80Cases(): \Generator
+    public function provideProcess80Cases(): iterable
     {
         yield [
             [
@@ -173,7 +173,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcess81Cases(): \Generator
+    public function provideProcess81Cases(): iterable
     {
         yield [
             [

@@ -34,7 +34,7 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         $multiLinePatternToFix = <<<'FIX'
 <?php $x =
@@ -193,7 +193,7 @@ OVERRIDDEN;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre80Cases(): \Generator
+    public function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php $foo = ((string) ($x + $y)){0};',
@@ -238,7 +238,7 @@ intval#
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield [
             '<?php $x = intval(...);',

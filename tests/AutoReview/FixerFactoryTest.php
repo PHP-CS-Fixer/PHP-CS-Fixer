@@ -150,7 +150,7 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
-    public function provideIntegrationTestFilesCases(): \Generator
+    public function provideIntegrationTestFilesCases(): iterable
     {
         foreach (new \DirectoryIterator(self::getIntegrationPriorityDirectory()) as $candidate) {
             if (!$candidate->isDot()) {

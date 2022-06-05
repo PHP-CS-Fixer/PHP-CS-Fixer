@@ -40,7 +40,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input, $this->getTestFile(__FILE__));
     }
 
-    public static function provideFixNewCases(): \Generator
+    public static function provideFixNewCases(): iterable
     {
         foreach (['class', 'interface', 'trait'] as $element) {
             yield sprintf('%s with originally short name', $element) => [
@@ -174,7 +174,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input, $file);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         $fileProphecy = $this->prophesize();
         $fileProphecy->willExtend(\SplFileInfo::class);
@@ -455,7 +455,7 @@ class ClassTwo {};
         $this->doTest($expected, $input);
     }
 
-    public function providePhp80Cases(): \Generator
+    public function providePhp80Cases(): iterable
     {
         yield 'anonymous + annotation' => [
             '<?php
@@ -476,7 +476,7 @@ class extends stdClass {};
         $this->doTest($expected, $input, $this->getTestFile(__FILE__));
     }
 
-    public function providePhp81Cases(): \Generator
+    public function providePhp81Cases(): iterable
     {
         yield 'enum with wrong casing' => [
             '<?php enum PsrAutoloadingFixerTest {}',

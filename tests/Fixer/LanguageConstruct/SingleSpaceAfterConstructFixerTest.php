@@ -2895,7 +2895,7 @@ baz(); }',
         $this->doTest($expected, $input);
     }
 
-    public function provideCommentsCases(): \Generator
+    public function provideCommentsCases(): iterable
     {
         yield [
             '<?php
@@ -3013,7 +3013,7 @@ namespace/* comment */ Foo;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield 'match 1' => [
             '<?php echo match ($x) {
@@ -3086,7 +3086,7 @@ class Point {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
             '<?php
@@ -3180,7 +3180,7 @@ class    Test {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithSwitchCases(): \Generator
+    public function provideFixWithSwitchCases(): iterable
     {
         yield [
             '<?php

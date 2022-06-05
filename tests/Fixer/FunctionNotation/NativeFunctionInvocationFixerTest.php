@@ -474,7 +474,7 @@ namespace {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfiguredIncludeCases(): \Generator
+    public function provideFixWithConfiguredIncludeCases(): iterable
     {
         yield from [
             'include set + 1, exclude 1' => [
@@ -623,7 +623,7 @@ echo strlen($a);
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield 'attribute and strict' => [
             '<?php

@@ -115,7 +115,7 @@ final class RuleSetTest extends TestCase
         static::assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
     }
 
-    public function provideAllRulesFromSetsCases(): \Generator
+    public function provideAllRulesFromSetsCases(): iterable
     {
         foreach (RuleSets::getSetDefinitionNames() as $setName) {
             $ruleSet = new RuleSet([$setName => true]);
@@ -288,7 +288,7 @@ final class RuleSetTest extends TestCase
         );
     }
 
-    public function provideSafeSetCases(): \Generator
+    public function provideSafeSetCases(): iterable
     {
         foreach (RuleSets::getSetDefinitionNames() as $name) {
             yield $name => [
@@ -392,7 +392,7 @@ final class RuleSetTest extends TestCase
         );
     }
 
-    public static function providePhpUnitTargetVersionHasSetCases(): \Generator
+    public static function providePhpUnitTargetVersionHasSetCases(): iterable
     {
         foreach ((new \ReflectionClass(PhpUnitTargetVersion::class))->getConstants() as $constant) {
             if ('newest' === $constant) {

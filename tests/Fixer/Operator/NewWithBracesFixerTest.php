@@ -33,7 +33,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideNamedWithDefaultConfigurationCases(): \Generator
+    public function provideNamedWithDefaultConfigurationCases(): iterable
     {
         yield from [
             ['<?php $x = new X(foo(/**/));'],
@@ -285,7 +285,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideNamedWithoutBracesCases(): \Generator
+    public function provideNamedWithoutBracesCases(): iterable
     {
         yield from [
             ['<?php $x = new X(foo(/**/));'],
@@ -538,7 +538,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideAnonymousWithDefaultConfigurationCases(): \Generator
+    public function provideAnonymousWithDefaultConfigurationCases(): iterable
     {
         yield from [
             ['<?php $a = new class($a) {use SomeTrait;};'],
@@ -601,7 +601,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideAnonymousWithoutBracesCases(): \Generator
+    public function provideAnonymousWithoutBracesCases(): iterable
     {
         yield from [
             ['<?php $a = new class($a) {use SomeTrait;};'],
@@ -656,7 +656,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre80Cases(): \Generator
+    public function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php $a = new $b{$c}();',
@@ -683,7 +683,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield [
             '<?php $a = new (foo());',
@@ -731,7 +731,7 @@ $a = new ($foo."ar");',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield [
             '<?php

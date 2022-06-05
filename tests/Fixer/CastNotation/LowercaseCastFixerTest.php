@@ -46,7 +46,7 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         $types = ['boolean', 'bool', 'integer', 'int', 'double', 'float', 'float', 'string', 'array', 'object', 'binary'];
 
@@ -61,12 +61,12 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public function provideFixDeprecatedCases(): \Generator
+    public function provideFixDeprecatedCases(): iterable
     {
         return $this->createCasesFor('real');
     }
 
-    private function createCasesFor(string $type): \Generator
+    private function createCasesFor(string $type): iterable
     {
         yield [
             sprintf('<?php $b= (%s)$d;', $type),

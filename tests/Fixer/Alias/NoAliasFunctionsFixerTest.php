@@ -34,7 +34,7 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         $defaultSets = [
             '@internal',
@@ -111,7 +111,7 @@ abstract class A
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfigurationCases(): \Generator
+    public function provideFixWithConfigurationCases(): iterable
     {
         yield '@internal' => [
             '<?php
@@ -245,14 +245,14 @@ abstract class A
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'simple 8.1' => [
             '<?php $a = is_double(...);',
         ];
     }
 
-    private function provideAllCases(): \Generator
+    private function provideAllCases(): iterable
     {
         $reflectionConstant = new \ReflectionClassConstant(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, 'SETS');
 

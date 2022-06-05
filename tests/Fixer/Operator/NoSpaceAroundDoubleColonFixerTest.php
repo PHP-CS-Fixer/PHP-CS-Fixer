@@ -31,7 +31,7 @@ final class NoSpaceAroundDoubleColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): \Generator
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php echo self::$a;',

@@ -52,7 +52,7 @@ final class ReferenceAnalyzerTest extends TestCase
         $this->doTestCode(true, $code);
     }
 
-    public static function provideReferenceCases(): \Generator
+    public static function provideReferenceCases(): iterable
     {
         yield ['<?php $foo =& $bar;'];
 
@@ -99,7 +99,7 @@ class Foo {
         $this->doTestCode(false, $code);
     }
 
-    public static function provideNonReferenceCases(): \Generator
+    public static function provideNonReferenceCases(): iterable
     {
         yield ['<?php $foo & $bar;'];
 

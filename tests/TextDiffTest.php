@@ -61,7 +61,7 @@ final class TextDiffTest extends TestCase
         static::assertStringMatchesFormat($expected, $commandTester->getDisplay(false));
     }
 
-    public function provideDiffReportingCases(): \Generator
+    public function provideDiffReportingCases(): iterable
     {
         $expected = <<<'TEST'
 %A$output->writeln('<error>'.(int)$output.'</error>');%A

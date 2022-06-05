@@ -511,7 +511,7 @@ TestInterface3, /**/     TestInterface4   ,
         $this->doTestClassyInheritanceInfo($source, $label, $expected);
     }
 
-    public function provideClassyImplementsInfoCases(): \Generator
+    public function provideClassyImplementsInfoCases(): iterable
     {
         yield from [
             '1' => [
