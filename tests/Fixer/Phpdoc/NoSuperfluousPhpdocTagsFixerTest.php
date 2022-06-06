@@ -1988,6 +1988,29 @@ function foo(string|array|int $foo) {}',
  */
 function foo(string|int $foo) {}',
             ],
+            'promoted properties' => [
+                '<?php class Foo {
+                    /**
+                     */
+                    public function __construct(
+                        public string $a,
+                        protected ?string $b,
+                        private ?string $c,
+                    ) {}
+                }',
+                '<?php class Foo {
+                    /**
+                     * @param string $a
+                     * @param null|string $b
+                     * @param string|null $c
+                     */
+                    public function __construct(
+                        public string $a,
+                        protected ?string $b,
+                        private ?string $c,
+                    ) {}
+                }',
+            ],
         ];
     }
 
@@ -2087,6 +2110,30 @@ enum Foo {}',
  */
 enum Foo {}',
             ['remove_inheritdoc' => true],
+        ];
+
+        yield 'promoted readonly properties' => [
+            '<?php class Foo {
+                /**
+                 */
+                public function __construct(
+                    public readonly string $a,
+                    readonly public string $b,
+                    public readonly ?string $c,
+                ) {}
+            }',
+            '<?php class Foo {
+                /**
+                 * @param string $a
+                 * @param string $b
+                 * @param null|string $c
+                 */
+                public function __construct(
+                    public readonly string $a,
+                    readonly public string $b,
+                    public readonly ?string $c,
+                ) {}
+            }',
         ];
     }
 }

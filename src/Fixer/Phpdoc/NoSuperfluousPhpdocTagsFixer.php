@@ -376,15 +376,25 @@ class Foo {
     {
         $allowsNull = false;
 
-        if ($tokens[$index]->isGivenKind(CT::T_NULLABLE_TYPE)) {
-            $allowsNull = true;
-            $index = $tokens->getNextMeaningfulToken($index);
-        }
-
         $types = [];
 
         while (true) {
             $type = '';
+
+            if (\defined('T_READONLY') && $tokens[$index]->isGivenKind(T_READONLY)) { // @TODO: simplify condition when PHP 8.1+ is required
+                $index = $tokens->getNextMeaningfulToken($index);
+            }
+
+            if ($tokens[$index]->isGivenKind([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE])) {
+                $index = $tokens->getNextMeaningfulToken($index);
+
+                continue;
+            }
+
+            if ($tokens[$index]->isGivenKind(CT::T_NULLABLE_TYPE)) {
+                $allowsNull = true;
+                $index = $tokens->getNextMeaningfulToken($index);
+            }
 
             while ($tokens[$index]->isGivenKind([T_NS_SEPARATOR, T_STATIC, T_STRING, CT::T_ARRAY_TYPEHINT, T_CALLABLE])) {
                 $type .= $tokens[$index]->getContent();
