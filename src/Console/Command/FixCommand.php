@@ -25,6 +25,7 @@ use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,6 +43,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
  *
  * @internal
  */
+#[AsCommand(name: 'fix')]
 final class FixCommand extends Command
 {
     /**
