@@ -35,11 +35,10 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public function provideFixCases(): iterable
     {
-        return [
-            [
-                <<<'EOT'
+        yield [
+            <<<'EOT'
 <?php
 
 class Foo {}
@@ -48,28 +47,34 @@ class Bar
 {
 }
 EOT
-            ],
-            [
-                <<<'EOT'
+        ];
+
+        yield [
+            <<<'EOT'
 <?php
 
 class Foo { const C1 = 1; protected $abc = 'abc'; public function baz($y, $z) {} private function bar1($x) { return 1; } }
 EOT
-                , <<<'EOT'
+            , <<<'EOT'
 <?php
 
 class Foo { private function bar1($x) { return 1; } protected $abc = 'abc'; const C1 = 1; public function baz($y, $z) {} }
 EOT
-            ],
-            [
-                <<<'EOT'
+        ];
+
+        yield [
+            <<<'EOT'
 <?php
 
 interface FooInterface
 {
 
+    /** const 1 */
     const CONST1 = 'const1';
 
+    // foo
+
+    // const 2
     const CONST2 = 'const2';
     public function xyz($x, $y, $z); // comment
 
@@ -83,13 +88,14 @@ interface FooInterface
     public function def();
 }
 EOT
-                , <<<'EOT'
+            , <<<'EOT'
 <?php
 
 interface FooInterface
 {
     public function xyz($x, $y, $z); // comment
 
+    /** const 1 */
     const CONST1 = 'const1';
 
     /**
@@ -99,14 +105,18 @@ interface FooInterface
      */
     function abc(array &$a = null);
 
+    // foo
+
+    // const 2
     const CONST2 = 'const2';
 
     public function def();
 }
 EOT
-            ],
-            [
-                <<<'EOT'
+        ];
+
+        yield [
+            <<<'EOT'
 <?php
 
 abstract class Foo extends FooParent implements FooInterface1, FooInterface2
@@ -188,7 +198,7 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     } // end foo5
 }
 EOT
-                , <<<'EOT'
+            , <<<'EOT'
 <?php
 
 abstract class Foo extends FooParent implements FooInterface1, FooInterface2
@@ -270,9 +280,10 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     }
 }
 EOT
-            ],
-            [
-                <<<'EOT'
+        ];
+
+        yield [
+            <<<'EOT'
 <?php
 
 class Foo
@@ -289,7 +300,7 @@ class Bar
     public function baz() {}
 }
 EOT
-                , <<<'EOT'
+            , <<<'EOT'
 <?php
 
 class Foo
@@ -306,9 +317,10 @@ class Bar
     public function baz() {}
 }
 EOT
-            ],
-            [
-                <<<'EOT'
+        ];
+
+        yield [
+            <<<'EOT'
 <?php
 
 trait FooTrait
@@ -321,7 +333,7 @@ trait FooTrait
     }
 }
 EOT
-                , <<<'EOT'
+            , <<<'EOT'
 <?php
 
 trait FooTrait
@@ -334,9 +346,10 @@ trait FooTrait
     use BazTrait;
 }
 EOT
-            ],
-            [
-                <<<'EOT'
+        ];
+
+        yield [
+            <<<'EOT'
 <?php
 
 /**
@@ -352,8 +365,8 @@ class ComplexStringVariableAndUseTrait
 }
 
 EOT
-                ,
-                <<<'EOT'
+            ,
+            <<<'EOT'
 <?php
 
 /**
@@ -369,7 +382,6 @@ class ComplexStringVariableAndUseTrait
 }
 
 EOT
-            ],
         ];
     }
 
@@ -1252,7 +1264,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases(): \Generator
+    public function provideFix74Cases(): iterable
     {
         yield [
             '<?php
@@ -1318,7 +1330,7 @@ class TestClass
         );
     }
 
-    public function provideWithConfigWithNoCandidateCases(): \Generator
+    public function provideWithConfigWithNoCandidateCases(): iterable
     {
         yield ['z', '__construct'];
 
@@ -1338,7 +1350,7 @@ class TestClass
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield [
             '<?php
@@ -1412,7 +1424,7 @@ trait TestTrait
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield [
             '<?php
