@@ -414,6 +414,19 @@ interface Foo extends
      {}',
         ];
 
+        yield 'use list' => [
+            '<?php
+class Foo {
+    use Bar,
+        Baz;
+}',
+            '<?php
+  class Foo {
+       use Bar,
+              Baz;
+ }',
+        ];
+
         yield 'chained method call with argument' => [
             '<?php
 $foo
