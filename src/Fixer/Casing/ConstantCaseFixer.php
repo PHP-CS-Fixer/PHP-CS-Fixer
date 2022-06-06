@@ -110,6 +110,7 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
             if (
                 $this->isNeighbourAccepted($tokens, $tokens->getPrevMeaningfulToken($index))
                 && $this->isNeighbourAccepted($tokens, $tokens->getNextMeaningfulToken($index))
+                && !$this->isEnumCaseName($tokens, $index)
             ) {
                 $tokens[$index] = new Token([$token->getId(), $fixFunction($token->getContent())]);
             }
@@ -150,5 +151,26 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
         }
 
         return !$token->isGivenKind($forbiddenTokens);
+    }
+
+    private function isEnumCaseName(Tokens $tokens, int $index): bool
+    {
+        if (!\defined('T_ENUM') || !$tokens->isTokenKindFound(T_ENUM)) { // @TODO: drop condition when PHP 8.1+ is required
+            return false;
+        }
+
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+        if (null === $prevIndex || !$tokens[$prevIndex]->isGivenKind(T_CASE)) {
+            return false;
+        }
+
+        if (!$tokens->isTokenKindFound(T_SWITCH)) {
+            return true;
+        }
+
+        $prevIndex = $tokens->getPrevTokenOfKind($prevIndex, [[T_ENUM], [T_SWITCH]]);
+
+        return null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_ENUM);
     }
 }
