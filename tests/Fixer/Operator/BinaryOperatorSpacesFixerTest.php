@@ -2139,4 +2139,25 @@ $b = [1 => function() {
             }'
         );
     }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testIntersectionTypesAreNotChanged(): void
+    {
+        $this->doTest(
+            '<?php
+            class Foo
+            {
+                private TypeA&TypeB & TypeC $prop;
+                public function bar(TypeA & TypeB&TypeC $x): TypeA&TypeB & TypeC&TypeD
+                {
+                }
+                public function baz(
+                    Countable&Traversable $a,
+                    Traversable&Countable $b,
+                ) {}
+            }'
+        );
+    }
 }
