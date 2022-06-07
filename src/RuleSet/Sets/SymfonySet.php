@@ -159,6 +159,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'protected_to_private' => true,
             'semicolon_after_instruction' => true,
             'single_class_element_per_statement' => true,
+            'single_import_per_statement' => true,
             'single_line_comment_spacing' => true,
             'single_line_comment_style' => [
                 'comment_types' => [

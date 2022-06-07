@@ -113,6 +113,7 @@ Rules
 - `protected_to_private <./../rules/class_notation/protected_to_private.rst>`_
 - `semicolon_after_instruction <./../rules/semicolon/semicolon_after_instruction.rst>`_
 - `single_class_element_per_statement <./../rules/class_notation/single_class_element_per_statement.rst>`_
+- `single_import_per_statement <./../rules/import/single_import_per_statement.rst>`_
 - `single_line_comment_spacing <./../rules/comment/single_line_comment_spacing.rst>`_
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
   config:

@@ -15,7 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -30,7 +34,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class SingleImportPerStatementFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class SingleImportPerStatementFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -39,7 +43,23 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     {
         return new FixerDefinition(
             'There MUST be one use keyword per declaration.',
-            [new CodeSample("<?php\nuse Foo, Sample, Sample\\Sample as Sample2;\n")]
+            [
+                new CodeSample(
+                    '<?php
+use Foo, Sample, Sample\Sample as Sample2;
+'
+                ),
+                new CodeSample(
+                    '<?php
+use Space\Models\ {
+    TestModelA,
+    TestModelB,
+    TestModel,
+};
+',
+                    ['group_to_single_imports' => true]
+                ),
+            ]
         );
     }
 
@@ -67,17 +87,33 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $fixGroups = $this->configuration['group_to_single_imports'];
 
         foreach (array_reverse($tokensAnalyzer->getImportUseIndexes()) as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
             $groupClose = $tokens->getPrevMeaningfulToken($endIndex);
 
             if ($tokens[$groupClose]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
-                $this->fixGroupUse($tokens, $index, $endIndex);
+                if ($fixGroups) {
+                    $this->fixGroupUse($tokens, $index, $endIndex);
+                }
             } else {
                 $this->fixMultipleUse($tokens, $index, $endIndex);
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('group_to_single_imports', 'Whether to change group imports into single imports.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
+                ->getOption(),
+        ]);
     }
 
     private function getGroupDeclaration(Tokens $tokens, int $index): array
