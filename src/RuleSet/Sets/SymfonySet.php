@@ -80,6 +80,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_empty_statement' => true,
             'no_extra_blank_lines' => [
                 'tokens' => [
+                    'attribute',
                     'case',
                     'continue',
                     'curly_brace_block',

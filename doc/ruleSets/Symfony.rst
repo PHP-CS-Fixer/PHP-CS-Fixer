@@ -58,7 +58,7 @@ Rules
 - `no_empty_statement <./../rules/semicolon/no_empty_statement.rst>`_
 - `no_extra_blank_lines <./../rules/whitespace/no_extra_blank_lines.rst>`_
   config:
-  ``['tokens' => ['case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'square_brace_block', 'switch', 'throw', 'use']]``
+  ``['tokens' => ['attribute', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'square_brace_block', 'switch', 'throw', 'use']]``
 - `no_leading_namespace_whitespace <./../rules/namespace_notation/no_leading_namespace_whitespace.rst>`_
 - `no_mixed_echo_print <./../rules/alias/no_mixed_echo_print.rst>`_
 - `no_multiline_whitespace_around_double_arrow <./../rules/array_notation/no_multiline_whitespace_around_double_arrow.rst>`_
