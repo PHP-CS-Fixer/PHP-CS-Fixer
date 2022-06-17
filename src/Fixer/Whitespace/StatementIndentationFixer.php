@@ -107,6 +107,11 @@ else {
             $blockSignatureFirstTokens[] = T_MATCH;
         }
 
+        $blockFirstTokens = ['{', [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], [T_EXTENDS], [T_IMPLEMENTS], [CT::T_USE_TRAIT], [CT::T_GROUP_IMPORT_BRACE_OPEN]];
+        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
+            $blockFirstTokens[] = [T_ATTRIBUTE];
+        }
+
         $endIndex = \count($tokens) - 1;
         if ($tokens[$endIndex]->isWhitespace()) {
             --$endIndex;
@@ -139,7 +144,7 @@ else {
             }
 
             if (
-                $token->equalsAny(['{', [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], [T_EXTENDS], [T_IMPLEMENTS], [CT::T_USE_TRAIT], [CT::T_GROUP_IMPORT_BRACE_OPEN]])
+                $token->equalsAny($blockFirstTokens)
                 || ($token->equals('(') && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_ARRAY))
                 || isset($alternativeBlockStarts[$index])
                 || isset($caseBlockStarts[$index])
@@ -158,11 +163,12 @@ else {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]]);
                 } elseif ($token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_GROUP_IMPORT_BRACE_CLOSE]]);
+                } elseif ($token->equals('{')) {
+                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                } elseif ($token->equals('(')) {
+                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
                 } else {
-                    $endIndex = $tokens->findBlockEnd(
-                        $token->equals('{') ? Tokens::BLOCK_TYPE_CURLY_BRACE : Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-                        $index
-                    );
+                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
                 }
 
                 if ('block_signature' === $scopes[$currentScope]['type']) {
@@ -356,7 +362,7 @@ else {
                 --$currentScope;
             }
 
-            if ($token->equalsAny([';', ',', '}', [T_OPEN_TAG], [T_CLOSE_TAG]])) {
+            if ($token->equalsAny([';', ',', '}', [T_OPEN_TAG], [T_CLOSE_TAG], [CT::T_ATTRIBUTE_CLOSE]])) {
                 continue;
             }
 

@@ -2569,6 +2569,24 @@ function D() /**
 }',
                 self::$configurationOopPositionSameLine,
             ],
+            [
+                '<?php
+class Foo
+{
+    #[Baz]
+    public function bar()
+    {
+    }
+}',
+                '<?php
+class Foo
+{
+ #[Baz]
+       public function bar()
+ {
+   }
+}',
+            ],
         ];
     }
 
