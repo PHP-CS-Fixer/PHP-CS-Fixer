@@ -106,12 +106,18 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
 
                 $format = $tokens[$argumentIndex]->getContent();
 
-                if ('!' === substr($format, 1, 1)) {
+                if (\strlen($format) < 3) {
+                    continue;
+                }
+
+                $offset = 'b' === $format[0] || 'B' === $format[0] ? 2 : 1;
+
+                if ('!' === $format[$offset]) {
                     continue;
                 }
 
                 $tokens->clearAt($argumentIndex);
-                $tokens->insertAt($argumentIndex, new Token([T_CONSTANT_ENCAPSED_STRING, substr_replace($format, '!', 1, 0)]));
+                $tokens->insertAt($argumentIndex, new Token([T_CONSTANT_ENCAPSED_STRING, substr_replace($format, '!', $offset, 0)]));
             }
         }
     }

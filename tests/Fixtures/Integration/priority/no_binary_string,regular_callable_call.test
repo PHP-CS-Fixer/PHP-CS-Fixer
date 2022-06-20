@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: no_binary_string,regular_callable_call.
+--RULESET--
+{"no_binary_string": true, "regular_callable_call": true}
+--EXPECT--
+<?php
+foo(1,);
+
+--INPUT--
+<?php
+call_user_func(b"foo", 1,);

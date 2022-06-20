@@ -2,7 +2,6 @@
 Integration of fixers: no_alternative_syntax,braces.
 --RULESET--
 {"no_alternative_syntax": true, "braces": true}
-
 --EXPECT--
 <?php
 if (1 == 1) {

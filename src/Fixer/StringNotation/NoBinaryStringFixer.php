@@ -56,6 +56,16 @@ final class NoBinaryStringFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before PhpUnitDedicateAssertInternalTypeFixer, RegularCallableCallFixer, SetTypeToCastFixer.
+     */
+    public function getPriority(): int
+    {
+        return 40;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {

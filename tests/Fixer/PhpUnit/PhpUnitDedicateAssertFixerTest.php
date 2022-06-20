@@ -94,13 +94,13 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
                     $this->assertInfinite($a);
                     $this->assertFinite($a, "my message");
                     $this->assertInfinite($a);
-                    $this->assertFinite($a, "my message");
+                    $this->assertFinite($a, b"my message");
                 '),
                 self::generateTest('
                     $this->assertTrue(is_infinite($a));
                     $this->assertFalse(is_infinite($a), "my message");
                     $this->assertTrue(\is_infinite($a));
-                    $this->assertFalse(\is_infinite($a), "my message");
+                    $this->assertFalse(\is_infinite($a), b"my message");
                 '),
             ],
             [

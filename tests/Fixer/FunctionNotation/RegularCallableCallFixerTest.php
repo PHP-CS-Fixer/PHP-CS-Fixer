@@ -209,6 +209,26 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
             '<?php foo(1,);',
             '<?php call_user_func("foo", 1,);',
         ];
+
+        yield 'empty string double quote' => [
+            '<?php call_user_func("", 1,);',
+        ];
+
+        yield 'empty string single quote' => [
+            '<?php call_user_func(\'    \', 1,);',
+        ];
+
+        yield 'string with padding' => [
+            '<?php call_user_func(" padded  ", 1,);',
+        ];
+
+        yield 'binary string lower double quote' => [
+            '<?php call_user_func(b"foo", 1,);',
+        ];
+
+        yield 'binary string upper single quote' => [
+            '<?php call_user_func(B"foo", 1,);',
+        ];
     }
 
     /**

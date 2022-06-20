@@ -119,8 +119,17 @@ final class EregToPregFixer extends AbstractFixer
 
                 // convert to PCRE
                 $regexTokenContent = $tokens[$match[2]]->getContent();
-                $string = substr($regexTokenContent, 1, -1);
-                $quote = $regexTokenContent[0];
+
+                if ('b' === $regexTokenContent[0] || 'B' === $regexTokenContent[0]) {
+                    $quote = $regexTokenContent[1];
+                    $prefix = $regexTokenContent[0];
+                    $string = substr($regexTokenContent, 2, -1);
+                } else {
+                    $quote = $regexTokenContent[0];
+                    $prefix = '';
+                    $string = substr($regexTokenContent, 1, -1);
+                }
+
                 $delim = $this->getBestDelimiter($string);
                 $preg = $delim.addcslashes($string, $delim).$delim.'D'.$map[2];
 
@@ -131,7 +140,7 @@ final class EregToPregFixer extends AbstractFixer
 
                 // modify function and argument
                 $tokens[$match[0]] = new Token([T_STRING, $map[1]]);
-                $tokens[$match[2]] = new Token([T_CONSTANT_ENCAPSED_STRING, $quote.$preg.$quote]);
+                $tokens[$match[2]] = new Token([T_CONSTANT_ENCAPSED_STRING, $prefix.$quote.$preg.$quote]);
             }
         }
     }

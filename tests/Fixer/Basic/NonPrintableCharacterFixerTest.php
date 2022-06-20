@@ -115,6 +115,10 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
             [
                 '<?php /** foo *'.pack('H*', 'e2808b').'/ bar */',
             ],
+            [
+                '<?php echo b"Hello World !";',
+                '<?php echo b"'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0').'!";',
+            ],
         ];
     }
 

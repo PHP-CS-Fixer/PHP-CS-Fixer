@@ -62,6 +62,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
      * {@inheritdoc}
      *
      * Must run before NativeFunctionInvocationFixer.
+     * Must run after NoBinaryStringFixer.
      */
     public function getPriority(): int
     {
@@ -121,8 +122,15 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
 
         if ($firstArgToken->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
             $afterFirstArgIndex = $tokens->getNextMeaningfulToken($firstArgIndex);
+
             if (!$tokens[$afterFirstArgIndex]->equalsAny([',', ')'])) {
                 return; // first argument is an expression like `call_user_func("foo"."bar", ...)`, not supported!
+            }
+
+            $firstArgTokenContent = $firstArgToken->getContent();
+
+            if (!$this->isValidFunctionInvoke($firstArgTokenContent)) {
+                return;
             }
 
             $newCallTokens = Tokens::fromCode('<?php '.substr(str_replace('\\\\', '\\', $firstArgToken->getContent()), 1, -1).'();');
@@ -229,5 +237,20 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         }
 
         return $subCollection;
+    }
+
+    private function isValidFunctionInvoke(string $name): bool
+    {
+        if (\strlen($name) < 3 || 'b' === $name[0] || 'B' === $name[0]) {
+            return false;
+        }
+
+        $name = substr($name, 1, -1);
+
+        if ($name !== trim($name)) {
+            return false;
+        }
+
+        return true;
     }
 }
