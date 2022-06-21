@@ -17,14 +17,19 @@ declare(strict_types=1);
 use some\a\ClassA;
 use some\a\ClassB;
 use some\a\ClassC as C;
+
 use const some\a\ConstA;
 use const some\a\ConstB;
 use const some\a\ConstC;
+
 use function some\a\fn_a;
 use function some\a\fn_b;
 use function some\a\fn_c;
+
 use some\x\ClassX;
+
 use function some\x\D;
+
 use const some\x\E;
 
 function dummyUsage()

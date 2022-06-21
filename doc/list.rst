@@ -113,6 +113,13 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\BlankLineBeforeStatementFixer <./../src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php>`_
+-  `blank_line_between_import_groups <./rules/whitespace/blank_line_between_import_groups.rst>`_
+
+   Putting blank lines between ``use`` statement groups.
+
+   Part of rule sets `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Whitespace\\BlankLineBetweenImportGroupsFixer <./../src/Fixer/Whitespace/BlankLineBetweenImportGroupsFixer.php>`_
 -  `braces <./rules/basic/braces.rst>`_
 
    The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.

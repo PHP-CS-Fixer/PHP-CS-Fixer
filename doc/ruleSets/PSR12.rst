@@ -9,6 +9,7 @@ Rules
 
 - `@PSR2 <./PSR2.rst>`_
 - `blank_line_after_opening_tag <./../rules/php_tag/blank_line_after_opening_tag.rst>`_
+- `blank_line_between_import_groups <./../rules/whitespace/blank_line_between_import_groups.rst>`_
 - `braces <./../rules/basic/braces.rst>`_
   config:
   ``['allow_single_line_anonymous_class_with_empty_body' => true]``

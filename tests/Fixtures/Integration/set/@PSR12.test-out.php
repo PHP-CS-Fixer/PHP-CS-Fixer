@@ -6,7 +6,9 @@ use FooInterfaceA;
 use FooInterfaceB;
 use BarClass as Bar;
 use OtherVendor\OtherPackage\BazClass;
+
 use function foo;
+
 use const BAR;
 
 class Foo extends Bar implements FooInterfaceA

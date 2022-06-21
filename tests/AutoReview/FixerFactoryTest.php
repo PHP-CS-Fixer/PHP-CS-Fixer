@@ -619,6 +619,9 @@ final class FixerFactoryTest extends TestCase
                 'no_blank_lines_after_class_opening',
                 'space_after_semicolon',
             ],
+            'ordered_imports' => [
+                'blank_line_between_import_groups',
+            ],
             'php_unit_construct' => [
                 'php_unit_dedicate_assert',
             ],
