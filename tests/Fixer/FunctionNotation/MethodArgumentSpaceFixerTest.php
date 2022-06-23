@@ -910,7 +910,7 @@ $example = function () use ($message1,$message2) {
     "aaa
     bbb",
     $c,
-    $d ,
+    $d,
     $e,
     $f
 );

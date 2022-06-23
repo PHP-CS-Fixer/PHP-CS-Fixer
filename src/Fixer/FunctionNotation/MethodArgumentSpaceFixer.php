@@ -251,8 +251,6 @@ SAMPLE
                 $this->fixSpace($tokens, $index);
                 if (!$isMultiline && $this->isNewline($tokens[$index + 1])) {
                     $isMultiline = true;
-
-                    break;
                 }
             }
         }
