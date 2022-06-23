@@ -119,7 +119,7 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/phpunit ${{ matrix.phpunit-flags }}
+        run: vendor/bin/phpunit tests/Fixer/FunctionNotation/MethodArgumentSpaceFixerTest.php ${{ matrix.phpunit-flags }}
 
       - name: Upload coverage results to Coveralls
         if: matrix.calculate-code-coverage == 'yes'
