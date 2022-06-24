@@ -162,7 +162,7 @@ final class FixerFactoryTest extends TestCase
             sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
         );
 
-        [, $fixerName1, $fixerName2 ] = $matches;
+        [, $fixerName1, $fixerName2] = $matches;
         $graph = self::getFixersPriorityGraph();
 
         static::assertTrue(
