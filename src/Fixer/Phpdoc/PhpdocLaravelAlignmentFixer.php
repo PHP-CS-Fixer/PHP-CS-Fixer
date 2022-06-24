@@ -30,7 +30,7 @@ class PhpdocLaravelAlignmentFixer implements FixerInterface
      */
     public function getName(): string
     {
-        return 'Laravel/laravel_phpdoc_alignment';
+        return 'phpdoc_laravel_alignment';
     }
 
     /**

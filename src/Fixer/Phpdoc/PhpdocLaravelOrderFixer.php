@@ -30,7 +30,7 @@ class PhpdocLaravelOrderFixer extends AbstractFixer
      */
     public function getName(): string
     {
-        return 'Laravel/laravel_phpdoc_order';
+        return 'phpdoc_laravel_order';
     }
 
     /**

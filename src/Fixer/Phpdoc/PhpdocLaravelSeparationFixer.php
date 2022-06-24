@@ -43,7 +43,7 @@ class PhpdocLaravelSeparationFixer extends AbstractFixer
      */
     public function getName(): string
     {
-        return 'Laravel/laravel_phpdoc_separation';
+        return 'phpdoc_laravel_separation';
     }
 
     /**
