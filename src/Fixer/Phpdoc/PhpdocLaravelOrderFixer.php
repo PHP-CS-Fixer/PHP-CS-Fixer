@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Fixers;
+namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
@@ -87,11 +87,13 @@ class PhpdocLaravelOrderFixer extends AbstractFixer
     {
         $doc = new DocBlock($content);
 
-        if (empty($params = $doc->getAnnotationsOfType('param'))) {
+        $params = $doc->getAnnotationsOfType('param')
+        if (empty($params)) {
             return $content;
         }
 
-        if (empty($others = $doc->getAnnotationsOfType(['throws', 'return']))) {
+        $others = $doc->getAnnotationsOfType(['throws', 'return'])
+        if (empty($others)) {
             return $content;
         }
 
@@ -119,11 +121,13 @@ class PhpdocLaravelOrderFixer extends AbstractFixer
     {
         $doc = new DocBlock($content);
 
-        if (empty($throws = $doc->getAnnotationsOfType('throws'))) {
+        $throws = $doc->getAnnotationsOfType('throws')
+        if (empty($throws)) {
             return $content;
         }
 
-        if (empty($others = $doc->getAnnotationsOfType(['param', 'return']))) {
+        $others = $doc->getAnnotationsOfType(['param', 'return'])
+        if (empty($others)) {
             return $content;
         }
 

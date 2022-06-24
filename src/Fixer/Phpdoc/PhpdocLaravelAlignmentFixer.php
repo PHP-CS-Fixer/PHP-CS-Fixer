@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Fixers;
+namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Fixer\FixerInterface;
