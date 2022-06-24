@@ -134,7 +134,7 @@ final class StaticLambdaFixer extends AbstractFixer
      */
     private function hasPossibleReferenceToThis(Tokens $tokens, int $startIndex, int $endIndex): bool
     {
-        for ($i = $startIndex; $i < $endIndex; ++$i) {
+        for ($i = $startIndex; $i <= $endIndex; ++$i) {
             if ($tokens[$i]->isGivenKind(T_VARIABLE) && '$this' === strtolower($tokens[$i]->getContent())) {
                 return true; // directly accessing '$this'
             }
