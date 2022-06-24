@@ -302,6 +302,20 @@ $b->abc();
                     }
                 }',
             ],
+            [
+                '<?php
+                    class B
+                    {
+                        public function C()
+                        {
+                            return array_map(
+                                fn () => $this,
+                                []
+                            );
+                        }
+                    }
+                ',
+            ],
         ];
     }
 }
