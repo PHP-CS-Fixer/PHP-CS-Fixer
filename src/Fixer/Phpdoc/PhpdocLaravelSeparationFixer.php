@@ -196,8 +196,11 @@ class PhpdocLaravelSeparationFixer extends AbstractFixer
             return true;
         }
 
-        return collect($this->groups)
-            ->filter(fn ($group) => in_array($firstName, $group, true) && in_array($secondName, $group, true))
-            ->isNotEmpty();
+        return array_filter(
+            $this->groups,
+            static function (array $group) use ($firstName, $secondName) {
+                return in_array($firstName, $group, true) && in_array($secondName, $group, true);
+            }
+        ) !== [];
     }
 }
