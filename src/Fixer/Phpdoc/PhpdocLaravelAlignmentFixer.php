@@ -23,7 +23,7 @@ use SplFileInfo;
 /**
  * @author Julius Kiekbusch <jubeki99@gmail.com>
  */
-class PhpLaraveldocAlignmentFixer implements FixerInterface
+class PhpdocLaravelAlignmentFixer implements FixerInterface
 {
     /**
      * @inheritdoc
