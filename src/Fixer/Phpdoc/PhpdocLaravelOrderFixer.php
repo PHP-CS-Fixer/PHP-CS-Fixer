@@ -87,12 +87,12 @@ class PhpdocLaravelOrderFixer extends AbstractFixer
     {
         $doc = new DocBlock($content);
 
-        $params = $doc->getAnnotationsOfType('param')
+        $params = $doc->getAnnotationsOfType('param');
         if (empty($params)) {
             return $content;
         }
 
-        $others = $doc->getAnnotationsOfType(['throws', 'return'])
+        $others = $doc->getAnnotationsOfType(['throws', 'return']);
         if (empty($others)) {
             return $content;
         }
@@ -121,12 +121,12 @@ class PhpdocLaravelOrderFixer extends AbstractFixer
     {
         $doc = new DocBlock($content);
 
-        $throws = $doc->getAnnotationsOfType('throws')
+        $throws = $doc->getAnnotationsOfType('throws');
         if (empty($throws)) {
             return $content;
         }
 
-        $others = $doc->getAnnotationsOfType(['param', 'return'])
+        $others = $doc->getAnnotationsOfType(['param', 'return']);
         if (empty($others)) {
             return $content;
         }
