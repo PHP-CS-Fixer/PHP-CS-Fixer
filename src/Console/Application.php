@@ -119,7 +119,7 @@ final class Application extends BaseApplication
         $commit = '@git-commit@';
         $versionCommit = '';
 
-        if ('@'.'git-commit@' !== $commit) { /** @phpstan-ignore-line as `$commit` is replaced during phar building */
+        if ('@git-commit@' !== $commit) { /** @phpstan-ignore-line as `$commit` is replaced during phar building */
             $versionCommit = substr($commit, 0, 7);
         }
 
