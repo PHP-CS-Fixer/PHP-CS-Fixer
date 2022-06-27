@@ -474,7 +474,7 @@ $a = $ae?? $b;
             ],
             'align array destruction' => [
                 '<?php
-                    $c = [$d] = $e[1];
+                    $c                 = [$d]                 = $e[1];
                     function A(){}[$a] = $a[$c];
                     $b                 = 1;
                 ',
@@ -1537,6 +1537,16 @@ if (($c = count($array)) > 100) {
 } elseif (($c = count($array)) > 0) {
     $closure = fn ($x = 1) => $x ** 3;
 }
+',
+            ],
+            [
+                '<?php
+$suppliersTitles          = $container->getContainerSuppliers()->map(fn (ContainerSupplier $containerSupplier) => $containerSupplier->getSupplier()->getTitle());
+$suppliersClassifications = $container->getContainerSuppliers()->map(fn (ContainerSupplier $containerSupplier) => $containerSupplier->getSupplier()->getClassification());
+',
+                '<?php
+$suppliersTitles = $container->getContainerSuppliers()->map(fn (ContainerSupplier $containerSupplier) => $containerSupplier->getSupplier()->getTitle());
+$suppliersClassifications = $container->getContainerSuppliers()->map(fn (ContainerSupplier $containerSupplier) => $containerSupplier->getSupplier()->getClassification());
 ',
             ],
         ];

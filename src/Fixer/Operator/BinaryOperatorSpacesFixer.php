@@ -536,7 +536,6 @@ $array = [
             }
 
             if ($token->isGivenKind($functionKind)) {
-                ++$this->deepestLevel;
                 $index = $tokens->getNextTokenOfKind($index, ['(']);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
