@@ -585,8 +585,16 @@ $array = [
 
     private function injectAlignmentPlaceholdersForArrow(Tokens $tokens, int $startAt, int $endAt): void
     {
+        $newLineFoundSinceLastPlaceholder = true;
+
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
+            $content = $token->getContent();
+
+            if (str_contains($content, "\n")) {
+                $newLineFoundSinceLastPlaceholder = true;
+            }
+
 
             if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH, T_ELSEIF])) {
                 $index = $tokens->getNextMeaningfulToken($index);
@@ -615,7 +623,9 @@ $array = [
                 continue;
             }
 
-            if ($token->isGivenKind(T_DOUBLE_ARROW)) { // no need to analyze for `isBinaryOperator` (always true), nor if part of declare statement (not valid PHP)
+            // no need to analyze for `isBinaryOperator` (always true), nor if part of declare statement (not valid PHP)
+            // there is also no need to analyse the second arrow of a line
+            if ($token->isGivenKind(T_DOUBLE_ARROW) && $newLineFoundSinceLastPlaceholder) {
                 $tokenContent = sprintf(self::ALIGN_PLACEHOLDER, $this->currentLevel).$token->getContent();
 
                 $nextToken = $tokens[$index + 1];
@@ -626,6 +636,7 @@ $array = [
                 }
 
                 $tokens[$index] = new Token([T_DOUBLE_ARROW, $tokenContent]);
+                $newLineFoundSinceLastPlaceholder = false;
 
                 continue;
             }
@@ -640,6 +651,7 @@ $array = [
             if ($token->equals(',')) {
                 for ($i = $index; $i < $endAt - 1; ++$i) {
                     if (str_contains($tokens[$i - 1]->getContent(), "\n")) {
+                        $newLineFoundSinceLastPlaceholder = true;
                         break;
                     }
 

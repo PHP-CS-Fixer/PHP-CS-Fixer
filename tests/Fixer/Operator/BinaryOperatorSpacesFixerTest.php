@@ -2133,6 +2133,30 @@ $b = [1 => function() {
     }}, 2 => 3];
 ',
             ],
+            [
+                '<?php
+function asd() {
+      return [
+          "this"    => fn () => false,
+          "is"      => fn () => false,
+          "an"      => fn () => false,
+          "example" => fn () => false,
+          "array"   => fn () => false,
+      ];
+}
+',
+                '<?php
+function asd() {
+      return [
+          "this" => fn () => false,
+          "is" => fn () => false,
+          "an" => fn () => false,
+          "example" => fn () => false,
+          "array" => fn () => false,
+      ];
+}
+',
+            ],
         ];
     }
 
