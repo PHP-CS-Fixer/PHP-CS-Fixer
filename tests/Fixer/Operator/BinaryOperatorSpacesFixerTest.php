@@ -474,7 +474,7 @@ $a = $ae?? $b;
             ],
             'align array destruction' => [
                 '<?php
-                    $c                 = [$d]                 = $e[1];
+                    $c                 = [$d] = $e[1];
                     function A(){}[$a] = $a[$c];
                     $b                 = 1;
                 ',
@@ -1547,6 +1547,24 @@ $suppliersClassifications = $container->getContainerSuppliers()->map(fn (Contain
                 '<?php
 $suppliersTitles = $container->getContainerSuppliers()->map(fn (ContainerSupplier $containerSupplier) => $containerSupplier->getSupplier()->getTitle());
 $suppliersClassifications = $container->getContainerSuppliers()->map(fn (ContainerSupplier $containerSupplier) => $containerSupplier->getSupplier()->getClassification());
+',
+            ],
+            [
+                '<?php
+$a              = [$s = 5, $d => 5, $c => 9,];
+$ab             = [$bc = 1];
+$someOtherArray = [$bcd = 1];
+$a              = [$b];
+$ab             = [$bc];
+$abc            = [$bcd];
+',
+                '<?php
+$a = [$s = 5, $d => 5, $c => 9,];
+$ab = [$bc = 1];
+$someOtherArray = [$bcd = 1];
+$a = [$b];
+$ab = [$bc];
+$abc = [$bcd];
 ',
             ],
         ];

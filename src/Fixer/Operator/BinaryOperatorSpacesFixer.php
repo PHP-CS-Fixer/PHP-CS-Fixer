@@ -486,7 +486,7 @@ $array = [
             if ('=>' === $tokenContent) {
                 $this->injectAlignmentPlaceholdersForArrow($tokensClone, 0, \count($tokens));
             } else {
-                $this->injectAlignmentPlaceholders($tokensClone, 0, \count($tokens), $tokenContent);
+                $this->injectAlignmentPlaceholdersDefault($tokensClone, 0, \count($tokens), $tokenContent);
             }
 
             // for all tokens that should be aligned but do not have anything to align with, fix spacing if needed
@@ -517,20 +517,27 @@ $array = [
         }
     }
 
-    private function injectAlignmentPlaceholders(Tokens $tokens, int $startAt, int $endAt, string $tokenContent): void
+    private function injectAlignmentPlaceholdersDefault(Tokens $tokens, int $startAt, int $endAt, string $tokenContent): void
     {
         $functionKind = [T_FUNCTION, T_FN];
+        $newLineFoundSinceLastPlaceholder = true;
 
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
             $content = $token->getContent();
 
+            if (str_contains($content, "\n")) {
+                $newLineFoundSinceLastPlaceholder = true;
+            }
+
             if (
                 strtolower($content) === $tokenContent
                 && $this->tokensAnalyzer->isBinaryOperator($index)
                 && ('=' !== $content || !$this->isEqualPartOfDeclareStatement($tokens, $index))
+                && $newLineFoundSinceLastPlaceholder
             ) {
-                $tokens[$index] = new Token(sprintf(self::ALIGN_PLACEHOLDER, $this->deepestLevel).$content);
+                $tokens[$index] = new Token(sprintf(self::ALIGN_PLACEHOLDER, $this->currentLevel).$content);
+                $newLineFoundSinceLastPlaceholder = false;
 
                 continue;
             }
@@ -554,6 +561,25 @@ $array = [
 
                 continue;
             }
+
+            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+                $this->injectAlignmentPlaceholders($tokens, $index + 1, $until - 1, $tokenContent);
+                $index = $until;
+
+                continue;
+            }
+        }
+    }
+
+    private function injectAlignmentPlaceholders(Tokens $tokens, int $from, int $until, string $tokenContent): void
+    {
+        // Only inject placeholders for multi-line code
+        if ($tokens->isPartialCodeMultiline($from, $until)) {
+            ++$this->deepestLevel;
+            ++$this->currentLevel;
+            $this->injectAlignmentPlaceholdersDefault($tokens, $from, $until, $tokenContent);
+            --$this->currentLevel;
         }
     }
 
