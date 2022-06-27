@@ -1463,6 +1463,60 @@ m(
             ],
             [
                 '<?php
+
+class TaskObjectType
+{
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults(
+            [
+                "choices" => function (Options $options) {
+                    $choices   = TaskService::getFormMapperObjectList();
+                    $element   = null;
+                    $elementId = null;
+
+                    if (isset($options["task"]) && $options["task"]->getElement() === 42) {
+                        $element   = $options["task"]->getElement();
+                        $elementId = $options["task"]->getElementId();
+                    } elseif (isset($options["elementId"], $options["element"]) && $options["element"] === 42) {
+                        $element   = $options["element"];
+                        $elementId = $options["elementId"];
+                    };
+                },
+            ]
+        );
+    }
+}
+',
+                '<?php
+
+class TaskObjectType
+{
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults(
+            [
+                "choices" => function (Options $options) {
+                    $choices = TaskService::getFormMapperObjectList();
+                    $element = null;
+                    $elementId = null;
+
+                    if (isset($options["task"]) && $options["task"]->getElement() === 42) {
+                        $element = $options["task"]->getElement();
+                        $elementId = $options["task"]->getElementId();
+                    } elseif (isset($options["elementId"], $options["element"]) && $options["element"] === 42) {
+                        $element = $options["element"];
+                        $elementId = $options["elementId"];
+                    };
+                },
+            ]
+        );
+    }
+}
+',
+            ],
+            [
+                '<?php
 fn ($x = 1) => $x + 3;
 $f = 123;
 ',
