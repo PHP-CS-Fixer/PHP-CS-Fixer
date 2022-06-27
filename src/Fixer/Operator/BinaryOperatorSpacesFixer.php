@@ -595,7 +595,6 @@ $array = [
                 $newLineFoundSinceLastPlaceholder = true;
             }
 
-
             if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH, T_ELSEIF])) {
                 $index = $tokens->getNextMeaningfulToken($index);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
@@ -652,6 +651,7 @@ $array = [
                 for ($i = $index; $i < $endAt - 1; ++$i) {
                     if (str_contains($tokens[$i - 1]->getContent(), "\n")) {
                         $newLineFoundSinceLastPlaceholder = true;
+
                         break;
                     }
 
