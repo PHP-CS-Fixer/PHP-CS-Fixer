@@ -792,9 +792,33 @@ echo 2;
             ],
             [
                 '<?php $arr = [true, false]; ?>
-<?php foreach ($arr as $index => $item) if ($item): ?>
+<?php foreach ($arr as $index => $item) {
+    if ($item): ?>
     <?php echo $index; ?>
-<?php endif; ?>',
+<?php endif;
+} ?>',
+            ],
+            [
+                '<?php
+do {
+    foo();
+} // comment
+while (false);
+',
+            ],
+            [
+                '<?php
+
+if (true) {
+    ?>
+<hr />
+    <?php
+    if (true) {
+        echo \'x\';
+    } ?>
+<hr />
+    <?php
+}',
             ],
         ];
     }
@@ -5384,19 +5408,28 @@ return foo($i);
         ];
 
         yield [
+            '<?php if ($a) {
+    foreach ($b as $c): ?> X <?php endforeach;
+} ?>',
             '<?php if ($a) foreach ($b as $c): ?> X <?php endforeach; ?>',
         ];
 
         yield [
-            '<?php if ($a) while ($b): ?> X <?php endwhile; ?>',
+            '<?php if ($a) {
+    while ($b): ?> X <?php endwhile;
+} ?>',
         ];
 
         yield [
-            '<?php if ($a) for (;;): ?> X <?php endfor; ?>',
+            '<?php if ($a) {
+    for (;;): ?> X <?php endfor;
+} ?>',
         ];
 
         yield [
-            '<?php if ($a) switch ($a): case 1: ?> X <?php endswitch; ?>',
+            '<?php if ($a) {
+    switch ($a): case 1: ?> X <?php endswitch;
+} ?>',
         ];
 
         yield [
@@ -5408,6 +5441,47 @@ return foo($i);
         ];
 
         yield [
+            '<?php
+if ($a) {
+    foreach ($b as $c): ?>
+    <?php if ($a) {
+        for (;;): ?>
+        <?php if ($a) {
+            foreach ($b as $c): ?>
+            <?php if ($a) {
+                for (;;): ?>
+                <?php if ($a) {
+                    while ($b): ?>
+                    <?php if ($a) {
+                        while ($b): ?>
+                        <?php if ($a) {
+                            foreach ($b as $c): ?>
+                            <?php if ($a) {
+                                for (;;): ?>
+                                <?php if ($a) {
+                                    while ($b): ?>
+                                    <?php if ($a) {
+                                        while ($b): ?>
+                                    <?php endwhile;
+                                    } ?>
+                                <?php endwhile;
+                                } ?>
+                            <?php endfor;
+                            } ?>
+                        <?php endforeach;
+                        } ?>
+                    <?php endwhile;
+                    } ?>
+                <?php endwhile;
+                } ?>
+            <?php endfor;
+            } ?>
+        <?php endforeach;
+        } ?>
+    <?php endfor;
+    } ?>
+<?php endforeach;
+} ?>',
             '<?php
 if ($a) foreach ($b as $c): ?>
     <?php if ($a) for (;;): ?>

@@ -16,6 +16,7 @@ namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ControlStructure\ControlStructureBracesFixer;
 use PhpCsFixer\Fixer\ControlStructure\ControlStructureContinuationPositionFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\DeclareParenthesesFixer;
 use PhpCsFixer\Fixer\Whitespace\StatementIndentationFixer;
@@ -138,7 +139,7 @@ class Foo
      * {@inheritdoc}
      *
      * Must run before ArrayIndentationFixer, MethodChainingIndentationFixer.
-     * Must run after ClassAttributesSeparationFixer, ClassDefinitionFixer, ElseifFixer, EmptyLoopBodyFixer, LineEndingFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleLineThrowFixer, SingleSpaceAfterConstructFixer, SingleTraitInsertPerStatementFixer.
+     * Must run after ClassAttributesSeparationFixer, ClassDefinitionFixer, EmptyLoopBodyFixer, LineEndingFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleLineThrowFixer, SingleSpaceAfterConstructFixer, SingleTraitInsertPerStatementFixer.
      */
     public function getPriority(): int
     {
@@ -171,11 +172,12 @@ class Foo
     {
         $this->fixCommentBeforeBrace($tokens);
         $this->fixMissingControlBraces($tokens);
+        $this->proxyFixers['control_structure_braces']->fix($file, $tokens);
         $this->fixIndents($tokens);
         $this->fixSpaceAroundToken($tokens);
-        $this->fixDoWhile($tokens);
-
-        parent::applyFix($file, $tokens);
+        $this->proxyFixers['control_structure_continuation_position']->fix($file, $tokens);
+        $this->proxyFixers['declare_parentheses']->fix($file, $tokens);
+        $this->proxyFixers['statement_indentation']->fix($file, $tokens);
     }
 
     /**
@@ -210,6 +212,7 @@ class Foo
     protected function createProxyFixers(): array
     {
         return [
+            new ControlStructureBracesFixer(),
             $this->getControlStructureContinuationPositionFixer(),
             new DeclareParenthesesFixer(),
             new StatementIndentationFixer(true),
@@ -271,29 +274,6 @@ class Foo
                 // left trim till last line break
                 $tokens[$braceIndex] = new Token([T_WHITESPACE, substr($c, strrpos($c, "\n"))]);
             }
-        }
-    }
-
-    private function fixDoWhile(Tokens $tokens): void
-    {
-        for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind(T_DO)) {
-                continue;
-            }
-
-            $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
-            $startBraceIndex = $tokens->getNextNonWhitespace($parenthesisEndIndex);
-            $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startBraceIndex);
-            $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($endBraceIndex);
-            $nextNonWhitespaceToken = $tokens[$nextNonWhitespaceIndex];
-
-            if (!$nextNonWhitespaceToken->isGivenKind(T_WHILE)) {
-                continue;
-            }
-
-            $tokens->ensureWhitespaceAtIndex($nextNonWhitespaceIndex - 1, 1, ' ');
         }
     }
 
@@ -649,43 +629,7 @@ class Foo
             // if Token after parenthesis is { then we do not need to insert brace, but to fix whitespace before it
             if ($tokenAfterParenthesis->equals('{') && self::LINE_SAME === $this->configuration['position_after_control_structures']) {
                 $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
-
-                continue;
             }
-
-            // do not add braces for cases:
-            // - structure without block, e.g. while ($iter->next());
-            // - structure with block, e.g. while ($i) {...}, while ($i) : {...} endwhile;
-            if ($tokenAfterParenthesis->equalsAny([';', '{', ':'])) {
-                continue;
-            }
-
-            // do not add for 'short if' followed by alternative loop, for example: if ($a) while ($b): ? > X < ?php endwhile; ? >
-            // or 'short if' after an alternative loop, for example:  foreach ($arr as $index => $item) if ($item):
-            if ($tokenAfterParenthesis->isGivenKind([T_FOR, T_FOREACH, T_SWITCH, T_WHILE, T_IF])) {
-                $tokenAfterParenthesisBlockEnd = $tokens->findBlockEnd( // go to ')'
-                    Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-                    $tokens->getNextMeaningfulToken($nextAfterParenthesisEndIndex)
-                );
-
-                if ($tokens[$tokens->getNextMeaningfulToken($tokenAfterParenthesisBlockEnd)]->equals(':')) {
-                    continue;
-                }
-            }
-
-            $statementEndIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
-
-            // insert closing brace
-            $tokens->insertAt($statementEndIndex + 1, [new Token([T_WHITESPACE, ' ']), new Token('}')]);
-
-            // insert missing `;` if needed
-            if (!$tokens[$statementEndIndex]->equalsAny([';', '}'])) {
-                $tokens->insertAt($statementEndIndex + 1, new Token(';'));
-            }
-
-            // insert opening brace
-            $tokens->insertAt($parenthesisEndIndex + 1, new Token('{'));
-            $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
         }
     }
 
@@ -736,69 +680,6 @@ class Foo
         return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
     }
 
-    private function findStatementEnd(Tokens $tokens, int $parenthesisEndIndex): int
-    {
-        $nextIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
-        $nextToken = $tokens[$nextIndex];
-
-        if (!$nextToken) {
-            return $parenthesisEndIndex;
-        }
-
-        if ($nextToken->equals('{')) {
-            return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextIndex);
-        }
-
-        if ($nextToken->isGivenKind($this->getControlTokens())) {
-            $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $nextIndex);
-
-            $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
-
-            if ($nextToken->isGivenKind([T_IF, T_TRY, T_DO])) {
-                $openingTokenKind = $nextToken->getId();
-
-                while (true) {
-                    $nextIndex = $tokens->getNextMeaningfulToken($endIndex);
-                    $nextToken = isset($nextIndex) ? $tokens[$nextIndex] : null;
-                    if ($nextToken && $nextToken->isGivenKind($this->getControlContinuationTokensForOpeningToken($openingTokenKind))) {
-                        $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $nextIndex);
-
-                        $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
-
-                        if ($nextToken->isGivenKind($this->getFinalControlContinuationTokensForOpeningToken($openingTokenKind))) {
-                            return $endIndex;
-                        }
-                    } else {
-                        break;
-                    }
-                }
-            }
-
-            return $endIndex;
-        }
-
-        $index = $parenthesisEndIndex;
-
-        while (true) {
-            $token = $tokens[++$index];
-
-            // if there is some block in statement (eg lambda function) we need to skip it
-            if ($token->equals('{')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-
-                continue;
-            }
-
-            if ($token->equals(';')) {
-                return $index;
-            }
-
-            if ($token->isGivenKind(T_CLOSE_TAG)) {
-                return $tokens->getPrevNonWhitespace($index);
-            }
-        }
-    }
-
     private function getControlTokens(): array
     {
         static $tokens = [
@@ -834,42 +715,6 @@ class Foo
         ];
 
         return $tokens;
-    }
-
-    private function getControlContinuationTokensForOpeningToken(int $openingTokenKind): array
-    {
-        if (T_IF === $openingTokenKind) {
-            return [
-                T_ELSE,
-                T_ELSEIF,
-            ];
-        }
-
-        if (T_DO === $openingTokenKind) {
-            return [T_WHILE];
-        }
-
-        if (T_TRY === $openingTokenKind) {
-            return [
-                T_CATCH,
-                T_FINALLY,
-            ];
-        }
-
-        return [];
-    }
-
-    private function getFinalControlContinuationTokensForOpeningToken(int $openingTokenKind): array
-    {
-        if (T_IF === $openingTokenKind) {
-            return [T_ELSE];
-        }
-
-        if (T_TRY === $openingTokenKind) {
-            return [T_FINALLY];
-        }
-
-        return [];
     }
 
     private function ensureWhitespaceAtIndexAndIndentMultilineComment(Tokens $tokens, int $index, string $whitespace): void
