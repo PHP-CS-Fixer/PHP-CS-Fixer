@@ -52,6 +52,11 @@ final class BracesFixer extends AbstractProxyFixer implements ConfigurableFixerI
     public const LINE_SAME = 'same';
 
     /**
+     * @var null|CurlyBracesPositionFixer
+     */
+    private $curlyBracesPositionFixer;
+
+    /**
      * @var null|ControlStructureContinuationPositionFixer
      */
     private $controlStructureContinuationPositionFixer;
@@ -138,7 +143,7 @@ class Foo
     /**
      * {@inheritdoc}
      *
-     * Must run before ArrayIndentationFixer, MethodChainingIndentationFixer.
+     * Must run before HeredocIndentationFixer, MethodChainingIndentationFixer.
      * Must run after ClassAttributesSeparationFixer, ClassDefinitionFixer, EmptyLoopBodyFixer, LineEndingFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleLineThrowFixer, SingleSpaceAfterConstructFixer, SingleTraitInsertPerStatementFixer.
      */
     public function getPriority(): int
@@ -149,6 +154,16 @@ class Foo
     public function configure(array $configuration = null): void
     {
         parent::configure($configuration);
+
+        $this->getCurlyBracesPositionFixer()->configure([
+            'control_structures_opening_brace' => $this->translatePositionOption($this->configuration['position_after_control_structures']),
+            'functions_opening_brace' => $this->translatePositionOption($this->configuration['position_after_functions_and_oop_constructs']),
+            'anonymous_functions_opening_brace' => $this->translatePositionOption($this->configuration['position_after_anonymous_constructs']),
+            'classes_opening_brace' => $this->translatePositionOption($this->configuration['position_after_functions_and_oop_constructs']),
+            'anonymous_classes_opening_brace' => $this->translatePositionOption($this->configuration['position_after_anonymous_constructs']),
+            'allow_single_line_empty_anonymous_classes' => $this->configuration['allow_single_line_anonymous_class_with_empty_body'],
+            'allow_single_line_anonymous_functions' => $this->configuration['allow_single_line_closure'],
+        ]);
 
         $this->getControlStructureContinuationPositionFixer()->configure([
             'position' => self::LINE_NEXT === $this->configuration['position_after_control_structures']
@@ -171,11 +186,11 @@ class Foo
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->fixCommentBeforeBrace($tokens);
-        $this->fixMissingControlBraces($tokens);
         $this->proxyFixers['control_structure_braces']->fix($file, $tokens);
         $this->fixIndents($tokens);
         $this->fixSpaceAroundToken($tokens);
         $this->proxyFixers['control_structure_continuation_position']->fix($file, $tokens);
+        $this->proxyFixers['curly_braces_position']->fix($file, $tokens);
         $this->proxyFixers['declare_parentheses']->fix($file, $tokens);
         $this->proxyFixers['statement_indentation']->fix($file, $tokens);
     }
@@ -213,6 +228,7 @@ class Foo
     {
         return [
             new ControlStructureBracesFixer(),
+            $this->getCurlyBracesPositionFixer(),
             $this->getControlStructureContinuationPositionFixer(),
             new DeclareParenthesesFixer(),
             new StatementIndentationFixer(true),
@@ -602,34 +618,10 @@ class Foo
 
                     $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, $ensuredWhitespace);
                 }
-            } else {
-                $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
             }
 
             // reset loop limit due to collection change
             $limit = \count($tokens);
-        }
-    }
-
-    private function fixMissingControlBraces(Tokens $tokens): void
-    {
-        $controlTokens = $this->getControlTokens();
-
-        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind($controlTokens)) {
-                continue;
-            }
-
-            $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
-            $nextAfterParenthesisEndIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
-            $tokenAfterParenthesis = $tokens[$nextAfterParenthesisEndIndex];
-
-            // if Token after parenthesis is { then we do not need to insert brace, but to fix whitespace before it
-            if ($tokenAfterParenthesis->equals('{') && self::LINE_SAME === $this->configuration['position_after_control_structures']) {
-                $tokens->ensureWhitespaceAtIndex($parenthesisEndIndex + 1, 0, ' ');
-            }
         }
     }
 
@@ -842,6 +834,15 @@ class Foo
         return $siblingIndex;
     }
 
+    private function getCurlyBracesPositionFixer(): CurlyBracesPositionFixer
+    {
+        if (null === $this->curlyBracesPositionFixer) {
+            $this->curlyBracesPositionFixer = new CurlyBracesPositionFixer();
+        }
+
+        return $this->curlyBracesPositionFixer;
+    }
+
     private function getControlStructureContinuationPositionFixer(): ControlStructureContinuationPositionFixer
     {
         if (null === $this->controlStructureContinuationPositionFixer) {
@@ -849,5 +850,13 @@ class Foo
         }
 
         return $this->controlStructureContinuationPositionFixer;
+    }
+
+    private function translatePositionOption(string $option): string
+    {
+        return self::LINE_NEXT === $option
+            ? CurlyBracesPositionFixer::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END
+            : CurlyBracesPositionFixer::SAME_LINE
+        ;
     }
 }

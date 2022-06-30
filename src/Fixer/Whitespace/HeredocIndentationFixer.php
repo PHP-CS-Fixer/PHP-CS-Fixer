@@ -86,7 +86,7 @@ SAMPLE
     /**
      * {@inheritdoc}
      *
-     * Must run after StatementIndentationFixer.
+     * Must run after BracesFixer, StatementIndentationFixer.
      */
     public function getPriority(): int
     {

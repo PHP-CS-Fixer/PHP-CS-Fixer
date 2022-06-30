@@ -22,6 +22,17 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 trait Indentation
 {
+    private function getLineIndentation(Tokens $tokens, $index)
+    {
+        $newlineTokenIndex = $this->getPreviousNewlineTokenIndex($tokens, $index);
+
+        if (null === $newlineTokenIndex) {
+            return '';
+        }
+
+        return $this->extractIndent($this->computeNewLineContent($tokens, $newlineTokenIndex));
+    }
+
     private function extractIndent(string $content): string
     {
         if (Preg::match('/\R(\h*)[^\r\n]*$/D', $content, $matches)) {
@@ -29,6 +40,23 @@ trait Indentation
         }
 
         return '';
+    }
+
+    private function getPreviousNewlineTokenIndex(Tokens $tokens, $index)
+    {
+        while ($index > 0) {
+            $index = $tokens->getPrevTokenOfKind($index, [[T_WHITESPACE], [T_INLINE_HTML]]);
+
+            if (null === $index) {
+                break;
+            }
+
+            if ($this->isNewLineToken($tokens, $index)) {
+                return $index;
+            }
+        }
+
+        return null;
     }
 
     private function computeNewLineContent(Tokens $tokens, int $index): string

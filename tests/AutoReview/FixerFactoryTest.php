@@ -339,7 +339,7 @@ final class FixerFactoryTest extends TestCase
                 'no_blank_lines_before_namespace',
             ],
             'braces' => [
-                'array_indentation',
+                'heredoc_indentation',
                 'method_chaining_indentation',
             ],
             'class_attributes_separation' => [
@@ -373,6 +373,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'control_structure_braces' => [
                 'control_structure_continuation_position',
+                'curly_braces_position',
             ],
             'declare_strict_types' => [
                 'blank_line_after_opening_tag',
