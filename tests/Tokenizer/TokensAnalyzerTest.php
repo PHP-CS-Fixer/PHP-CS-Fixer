@@ -1768,7 +1768,7 @@ $b;',
         }
     }
 
-    public static function provideIsBinaryOperator80Cases(): iterable
+    public function provideIsBinaryOperator80Cases(): iterable
     {
         yield [
             [6 => false],
@@ -1788,6 +1788,32 @@ $b;',
         yield [
             [6 => false],
             '<?php function foo(callable|int $x) {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideIsBinaryOperator81Cases
+     * @requires PHP 8.1
+     */
+    public function testIsBinaryOperator81(array $expected, string $source): void
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $isBinary) {
+            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+
+            if ($isBinary) {
+                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+            }
+        }
+    }
+
+    public function provideIsBinaryOperator81Cases(): iterable
+    {
+        yield 'type intersection' => [
+            [6 => false],
+            '<?php function foo(array&string $x) {}',
         ];
     }
 
