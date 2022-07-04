@@ -451,6 +451,7 @@ final class FixerFactoryTest extends TestCase
                 'yoda_style',
             ],
             'lambda_not_used_import' => [
+                'method_argument_space',
                 'no_spaces_inside_parenthesis',
             ],
             'line_ending' => [
