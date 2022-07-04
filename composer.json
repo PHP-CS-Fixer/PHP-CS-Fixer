@@ -66,6 +66,9 @@
         "php-cs-fixer"
     ],
     "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        },
         "sort-packages": true
     }
 }
