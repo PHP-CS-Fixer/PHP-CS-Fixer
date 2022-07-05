@@ -96,6 +96,16 @@ final class NoBinaryStringFixerTest extends AbstractFixerTestCase
                 "<?php echo <<<\"EOT\"\nfoo\nEOT;\n",
                 "<?php echo B<<<\"EOT\"\nfoo\nEOT;\n",
             ],
+            [
+                '<?php
+                    echo "{$fruit}";
+                    echo " {$fruit}";
+                ',
+                '<?php
+                    echo b"{$fruit}";
+                    echo b" {$fruit}";
+                ',
+            ],
             ['<?php echo Bar::foo();'],
             ['<?php echo bar::foo();'],
             ['<?php echo "b";'],
