@@ -12,7 +12,7 @@ Configuration
 
 List of annotations to order, e.g. ``["covers"]``.
 
-Allowed values: a subset of ``['author', 'covers', 'coversNothing', 'dataProvider', 'depends', 'group', 'internal', 'method', 'property', 'property-read', 'property-write', 'requires', 'throws', 'uses']``
+Allowed values: a subset of ``['author', 'covers', 'coversNothing', 'dataProvider', 'depends', 'group', 'internal', 'method', 'mixin', 'property', 'property-read', 'property-write', 'requires', 'throws', 'uses']``
 
 Default value: ``['covers']``
 

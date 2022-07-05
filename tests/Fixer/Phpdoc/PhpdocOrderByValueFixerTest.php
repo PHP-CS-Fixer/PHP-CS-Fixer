@@ -1030,6 +1030,128 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @dataProvider provideFixWithMixinCases
+     */
+    public function testFixWithMixin(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'annotations' => [
+                'mixin',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithMixinCases(): array
+    {
+        return [
+            'skip on 1 or 0 occurrences' => [
+                '<?php
+                    /**
+                     * @package SomePackage
+                     * @mixin Bar
+                     * @license MIT
+                     */
+                    class Foo {
+                    }
+
+                    /**
+                     * @package SomePackage
+                     * @license MIT
+                     */
+                    class Foo2 {
+                    }
+                ',
+            ],
+            'base case' => [
+                '<?php
+                    /**
+                     * @mixin Bar1
+                     * @mixin Bar2
+                     * @mixin Bar3
+                     */
+                    class Foo {
+                    }
+                ',
+                '<?php
+                    /**
+                     * @mixin Bar2
+                     * @mixin Bar3
+                     * @mixin Bar1
+                     */
+                    class Foo {
+                    }
+                ',
+            ],
+            'preserve positions if other docblock parts are present' => [
+                '<?php
+                    /**
+                     * Comment 1
+                     * @mixin Bar1
+                     * Comment 3
+                     * @mixin Bar2
+                     * Comment 2
+                     */
+                    class Foo {
+                    }
+                ',
+                '<?php
+                    /**
+                     * Comment 1
+                     * @mixin Bar2
+                     * Comment 2
+                     * @mixin Bar1
+                     * Comment 3
+                     */
+                    class Foo {
+                    }
+                ',
+            ],
+            'case-insensitive' => [
+                '<?php
+                    /**
+                     * @mixin A
+                     * @mixin b
+                     * @mixin C
+                     */
+                    class Foo {
+                    }
+                ',
+                '<?php
+                    /**
+                     * @mixin b
+                     * @mixin A
+                     * @mixin C
+                     */
+                    class Foo {
+                    }
+                ',
+            ],
+            'fully-qualified' => [
+                '<?php
+                    /**
+                     * @mixin \A\B\Bar2
+                     * @mixin Bar1
+                     * @mixin Bar3
+                     */
+                    class Foo {
+                    }
+                ',
+                '<?php
+                    /**
+                     * @mixin Bar3
+                     * @mixin Bar1
+                     * @mixin \A\B\Bar2
+                     */
+                    class Foo {
+                    }
+                ',
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider provideFixWithPropertyCases
      */
     public function testFixWithProperty(string $expected, ?string $input = null): void
