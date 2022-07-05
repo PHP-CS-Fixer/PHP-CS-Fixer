@@ -33,6 +33,9 @@ Rules
 - `return_type_declaration <./../rules/function_notation/return_type_declaration.rst>`_
 - `short_scalar_cast <./../rules/cast_notation/short_scalar_cast.rst>`_
 - `single_blank_line_before_namespace <./../rules/namespace_notation/single_blank_line_before_namespace.rst>`_
+- `single_import_per_statement <./../rules/import/single_import_per_statement.rst>`_
+  config:
+  ``['group_to_single_imports' => false]``
 - `single_trait_insert_per_statement <./../rules/class_notation/single_trait_insert_per_statement.rst>`_
 - `ternary_operator_spaces <./../rules/operator/ternary_operator_spaces.rst>`_
 - `visibility_required <./../rules/class_notation/visibility_required.rst>`_

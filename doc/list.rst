@@ -2703,6 +2703,14 @@ List of Available Rules
 
    There MUST be one use keyword per declaration.
 
+   Configuration options:
+
+   - | ``group_to_single_imports``
+     | Whether to change group imports into single imports.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+
+
    Part of rule sets `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Import\\SingleImportPerStatementFixer <./../src/Fixer/Import/SingleImportPerStatementFixer.php>`_

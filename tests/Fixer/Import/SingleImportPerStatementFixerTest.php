@@ -272,24 +272,27 @@ use G\{H,I/*1*/,/*2*/};
         ];
     }
 
-    public function testMessyComments(): void
+    public function testWithConfig(): void
     {
-        if (\PHP_VERSION_ID >= 80000) {
-            static::markTestSkipped('PHP < 8.0 is required.');
-        }
+        $expected = '<?php
+use Space\Models\TestModelA;
+use Space\Models\TestModelB;
+use Space\Models\TestModel;'
+        ;
 
-        $this->doTest(
-            '<?php
-use D\/*1*//*2*//*3*/E;
-use D\/*4*//*5*//*6*//*7*//*8*//*9*/F/*10*//*11*//*12*/;
-',
-            '<?php
-use D\{
-/*1*//*2*//*3*/E,/*4*//*5*//*6*/
-/*7*//*8*//*9*/F/*10*//*11*//*12*/
-};
-'
-        );
+        $input = '<?php
+use Space\Models\ {
+    TestModelA,
+    TestModelB,
+    TestModel,
+};'
+        ;
+
+        $this->doTest($expected, $input);
+
+        $this->fixer->configure(['group_to_single_imports' => false]);
+
+        $this->doTest($input);
     }
 
     /**
@@ -302,22 +305,27 @@ use D\{
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): array
+    public function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                "<?php\r\n    use FooA;\r\n    use FooB;",
-                "<?php\r\n    use FooA, FooB;",
-            ],
+        yield [
+            "<?php\r\n    use FooA;\r\n    use FooB;",
+            "<?php\r\n    use FooA, FooB;",
         ];
     }
 
     /**
+     * @dataProvider provideFixPrePHP80Cases
+     *
      * @requires PHP <8.0
      */
-    public function testFixPrePHP80(): void
+    public function testFixPrePHP80(string $expected, string $input): void
     {
-        $this->doTest(
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPrePHP80Cases(): iterable
+    {
+        yield [
             '<?php
 use some\a\ClassA;
 use some\a\ClassB;
@@ -341,7 +349,20 @@ use const/* group comment */some\c\{ConstA/**/as/**/ E   ,    ConstB   AS    D, 
 ConstC};
 use A\{B};
 use D\{E,F};
-                '
-        );
+                ',
+        ];
+
+        yield 'messy comments' => [
+            '<?php
+use D\/*1*//*2*//*3*/E;
+use D\/*4*//*5*//*6*//*7*//*8*//*9*/F/*10*//*11*//*12*/;
+',
+            '<?php
+use D\{
+/*1*//*2*//*3*/E,/*4*//*5*//*6*/
+/*7*//*8*//*9*/F/*10*//*11*//*12*/
+};
+',
+        ];
     }
 }
