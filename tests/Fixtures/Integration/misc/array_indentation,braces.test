@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: braces,array_indentation.
+Integration of fixers: array_indentation,braces.
 --RULESET--
 {"array_indentation": true, "braces": true}
 --EXPECT--

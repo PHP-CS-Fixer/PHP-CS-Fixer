@@ -447,11 +447,13 @@ final class BracesFixerTest extends AbstractFixerTestCase
                 self::$configurationOopPositionSameLine,
             ],
             [
+                '<?php class A {
+    /** */
+}',
                 '<?php class A
 /** */
 {
 }',
-                null,
                 self::$configurationOopPositionSameLine,
             ],
             [
@@ -1507,9 +1509,8 @@ class Foo
     class C
     {
         public function __construct(
-        )
-        //comment
-        {
+        ) {
+            //comment
         }
     }',
                 '<?php
@@ -2538,9 +2539,8 @@ class Foo
                 '<?php
     class C {
         public function __construct(
-        )
-        //comment
-        {
+        ) {
+            //comment
         }
     }',
                 '<?php
@@ -2554,24 +2554,20 @@ class Foo
             ],
             [
                 '<?php
-class Something # a
-{
-    public function sth() //
-    {
+class Something { # a
+    public function sth() { //
         return function (int $foo) use ($bar) {
             return $bar;
         };
     }
 }
 
-function C() /**/ //    # /**/
-{
+function C() { /**/ //    # /**/
 }
 
-function D() /**
+function D() { /**
 *
 */
-{
 }',
                 '<?php
 class Something # a
@@ -3369,7 +3365,7 @@ class Foo
             ],
             [
                 '<?php
-    $fnc = function ($a, $b) /* random comment */ {
+    $fnc = function ($a, $b) { /* random comment */
         return 0;
     };',
                 '<?php
@@ -3380,7 +3376,7 @@ class Foo
             ],
             [
                 '<?php
-    $fnc = function ($a, $b) /** random comment */ {
+    $fnc = function ($a, $b) { /** random comment */
         return 0;
     };',
                 '<?php
@@ -3569,7 +3565,7 @@ class Foo
             ],
             [
                 '<?php
-    $fnc = function ($a, $b) /* random comment */ {
+    $fnc = function ($a, $b) { /* random comment */
         return 0;
     };',
                 '<?php
@@ -3581,7 +3577,7 @@ class Foo
             ],
             [
                 '<?php
-    $fnc = function ($a, $b) /** random comment */ {
+    $fnc = function ($a, $b) { /** random comment */
         return 0;
     };',
                 '<?php
@@ -4798,8 +4794,9 @@ if (1 === 1) {//a
     $a = "b"; /*d*/
 }//c
 echo $a;
-if ($a === 3) /**/
-{echo 1;}
+if ($a === 3) { /**/
+    echo 1;
+}
 ',
                 '<?php
 if ($test) // foo
@@ -4816,7 +4813,6 @@ if ($a === 3) /**/
             [
                 '<?php
 if (true) {
-
     //  The blank line helps with legibility in nested control structures
     if (true) {
         // if body

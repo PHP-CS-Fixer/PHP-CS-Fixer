@@ -70,6 +70,9 @@ Basic
 - `braces <./basic/braces.rst>`_
 
   The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
+- `curly_braces_position <./basic/curly_braces_position.rst>`_
+
+  Curly braces must be placed as configured.
 - `encoding <./basic/encoding.rst>`_
 
   PHP code MUST use only UTF-8 without BOM (remove BOM).

@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: control_structure_braces,curly_braces_position.
+--RULESET--
+{"control_structure_braces": true, "curly_braces_position": true}
+--EXPECT--
+<?php
+
+if (true) {
+foo();
+}
+
+--INPUT--
+<?php
+
+if (true) foo();

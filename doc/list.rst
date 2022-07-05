@@ -331,6 +331,43 @@ List of Available Rules
 
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\ControlStructureContinuationPositionFixer <./../src/Fixer/ControlStructure/ControlStructureContinuationPositionFixer.php>`_
+-  `curly_braces_position <./rules/basic/curly_braces_position.rst>`_
+
+   Curly braces must be placed as configured.
+
+   Configuration options:
+
+   - | ``control_structures_opening_brace``
+     | the position of the opening brace of control structures body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+     | Default value: ``'same_line'``
+   - | ``functions_opening_brace``
+     | the position of the opening brace of functions body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+     | Default value: ``'next_line_unless_newline_at_signature_end'``
+   - | ``anonymous_functions_opening_brace``
+     | the position of the opening brace of anonymous functions body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+     | Default value: ``'same_line'``
+   - | ``classes_opening_brace``
+     | the position of the opening brace of classes body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+     | Default value: ``'next_line_unless_newline_at_signature_end'``
+   - | ``anonymous_classes_opening_brace``
+     | the position of the opening brace of anonymous classes body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+     | Default value: ``'same_line'``
+   - | ``allow_single_line_empty_anonymous_classes``
+     | allow anonymous classes to have opening and closing braces on the same line.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``allow_single_line_anonymous_functions``
+     | allow anonymous functions to have opening and closing braces on the same line.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+
+
+   `Source PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer <./../src/Fixer/Basic/CurlyBracesPositionFixer.php>`_
 -  `date_time_create_from_format_call <./rules/function_notation/date_time_create_from_format_call.rst>`_
 
    The first argument of ``DateTime::createFromFormat`` method must start with ``!``.
