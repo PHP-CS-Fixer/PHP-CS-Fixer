@@ -98,12 +98,10 @@ final class NoBinaryStringFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                    $fruit = "apple";
                     echo "{$fruit}";
                     echo " {$fruit}";
                 ',
                 '<?php
-                    $fruit = "apple";
                     echo b"{$fruit}";
                     echo b" {$fruit}";
                 ',

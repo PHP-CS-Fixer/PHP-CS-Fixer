@@ -35,7 +35,7 @@ final class NoBinaryStringFixer extends AbstractFixer
             [
                 T_CONSTANT_ENCAPSED_STRING,
                 T_START_HEREDOC,
-                '"b',
+                'b"',
             ]
         );
     }
