@@ -59,7 +59,7 @@ final class StandardizeIncrementFixer extends AbstractIncrementOperatorFixer
      */
     public function getPriority(): int
     {
-        return 1;
+        return 16;
     }
 
     /**

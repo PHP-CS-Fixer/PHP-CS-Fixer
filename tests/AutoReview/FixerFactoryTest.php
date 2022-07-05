@@ -444,6 +444,9 @@ final class FixerFactoryTest extends TestCase
             'implode_call' => [
                 'method_argument_space',
             ],
+            'increment_style' => [
+                'no_spaces_inside_parenthesis',
+            ],
             'indentation_type' => [
                 'phpdoc_indent',
             ],
