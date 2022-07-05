@@ -330,7 +330,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
                 '<?php
     /**
      * @param int $bar
-     * @param ?array $foo
+     * @param null|array $foo
      */
     function p1(?array $foo = null, $bar) {}',
                 '<?php
@@ -339,6 +339,20 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      */
     function p1(?array $foo = null, $bar) {}',
                 ['only_untyped' => false],
+            ],
+            [
+                '<?php
+    /**
+     * Foo
+     * @param null|int $foo
+     * @param null|string $bar
+     */
+     function p1(?int $foo, ?string $bar = null) {}',
+                '<?php
+    /**
+     * Foo
+     */
+     function p1(?int $foo, ?string $bar = null) {}',
             ],
             [
                 '<?php

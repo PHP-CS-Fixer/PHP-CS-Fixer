@@ -191,7 +191,11 @@ function f9(string $foo, $bar, $baz) {}
             foreach ($arguments as $argument) {
                 $type = $argument['type'] ?: 'mixed';
 
-                if (!str_starts_with($type, '?') && 'null' === strtolower($argument['default'])) {
+                if (true === ($nullableType = str_starts_with($type, '?')) || 'null' === strtolower($argument['default'])) {
+                    if ($nullableType) {
+                        $type = substr($type, 1);
+                    }
+
                     $type = 'null|'.$type;
                 }
 
