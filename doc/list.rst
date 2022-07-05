@@ -1492,6 +1492,11 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\NoMultilineWhitespaceAroundDoubleArrowFixer <./../src/Fixer/ArrayNotation/NoMultilineWhitespaceAroundDoubleArrowFixer.php>`_
+-  `no_multiple_statements_per_line <./rules/basic/no_multiple_statements_per_line.rst>`_
+
+   There must not be more than one statement per line.
+
+   `Source PhpCsFixer\\Fixer\\Basic\\NoMultipleStatementsPerLineFixer <./../src/Fixer/Basic/NoMultipleStatementsPerLineFixer.php>`_
 -  `no_null_property_initialization <./rules/class_notation/no_null_property_initialization.rst>`_
 
    Properties MUST not be explicitly initialized with ``null`` except when they have a type declaration (PHP 7.4).

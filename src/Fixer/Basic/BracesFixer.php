@@ -187,6 +187,7 @@ class Foo
     {
         $this->fixCommentBeforeBrace($tokens);
         $this->proxyFixers['control_structure_braces']->fix($file, $tokens);
+        $this->proxyFixers['no_multiple_statements_per_line']->fix($file, $tokens);
         $this->fixIndents($tokens);
         $this->fixSpaceAroundToken($tokens);
         $this->proxyFixers['control_structure_continuation_position']->fix($file, $tokens);
@@ -231,6 +232,7 @@ class Foo
             $this->getCurlyBracesPositionFixer(),
             $this->getControlStructureContinuationPositionFixer(),
             new DeclareParenthesesFixer(),
+            new NoMultipleStatementsPerLineFixer(),
             new StatementIndentationFixer(true),
         ];
     }
