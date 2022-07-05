@@ -779,6 +779,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'strict_comparison' => [
                 'binary_operator_spaces',
+                'modernize_strpos',
             ],
             'strict_param' => [
                 'method_argument_space',

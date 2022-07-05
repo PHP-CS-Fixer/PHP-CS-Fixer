@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: strict_comparison,modernize_strpos.
+--RULESET--
+{"strict_comparison": true, "modernize_strpos": true}
+--EXPECT--
+<?php
+$x = str_starts_with($foo, 'foo')  ;
+
+--INPUT--
+<?php
+$x = strpos($foo, 'foo') == 0;
