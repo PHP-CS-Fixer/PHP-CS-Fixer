@@ -173,9 +173,7 @@ $bar = function () { $result = true;
 
         $allowSingleLineUntil = null;
 
-        for ($index = 0, $max = $tokens->count(); $index < $max; ++$index) {
-            $token = $tokens[$index];
-
+        foreach ($tokens as $index => $token) {
             $allowSingleLine = false;
             $allowSingleLineIfEmpty = false;
 

@@ -637,5 +637,28 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
                 }',
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
+
+        yield 'multiple elseifs' => [
+            '<?php if ($foo) {
+                } elseif ($foo) {
+                } elseif ($foo) {
+                } elseif ($foo) {
+                } elseif ($foo) {
+                } elseif ($foo) {
+                } elseif ($foo) {
+                } elseif ($foo) {
+                } elseif ($foo) {
+                }',
+            '<?php if ($foo){
+                } elseif ($foo){
+                } elseif ($foo){
+                } elseif ($foo){
+                } elseif ($foo){
+                } elseif ($foo){
+                } elseif ($foo){
+                } elseif ($foo){
+                } elseif ($foo){
+                }',
+        ];
     }
 }
