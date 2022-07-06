@@ -922,6 +922,23 @@ $example = function () use ($message1,$message2) {
         $f);
 ',
             ],
+            'test first element in same line, space before comma and inconsistent indent with comments' => [
+                '<?php foo(
+    "aaa
+    bbb", // comment1
+    $c, /** comment2 */
+    $d,
+    $e/* comment3 */,
+    $f
+);# comment4
+',
+                '<?php foo("aaa
+    bbb", // comment1
+    $c, /** comment2 */$d ,
+        $e/* comment3 */,
+        $f);# comment4
+',
+            ],
         ];
     }
 
