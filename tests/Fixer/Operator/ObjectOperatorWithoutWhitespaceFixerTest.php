@@ -87,7 +87,7 @@ final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases(): \Generator
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php $object?->method();',

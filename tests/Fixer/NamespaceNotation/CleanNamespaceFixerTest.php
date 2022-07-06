@@ -32,7 +32,7 @@ final class CleanNamespaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         yield [
             '<?php use function FooLibrary\Bar\Baz\ClassA as Foo ?>',

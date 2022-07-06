@@ -213,7 +213,7 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPrePHP80Cases(): \Generator
+    public function provideFixPrePHP80Cases(): iterable
     {
         yield [
             '<?php use /*1*/A\D;',

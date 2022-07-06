@@ -940,7 +940,7 @@ INPUT
         $this->doTest($expected);
     }
 
-    public function provideMultipleNamespacesCases(): \Generator
+    public function provideMultipleNamespacesCases(): iterable
     {
         yield [
             <<<'INPUT'

@@ -32,7 +32,7 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         $fixerReflection = new \ReflectionClass(MagicMethodCasingFixer::class);
         $property = $fixerReflection->getProperty('magicNames');
@@ -358,7 +358,7 @@ function __Tostring() {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'static call to "__set_state".' => [
             '<?php $f = Foo::__set_state(...);',

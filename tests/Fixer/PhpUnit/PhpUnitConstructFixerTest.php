@@ -195,7 +195,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield [
             self::generateTest('$this->assertEquals(...);'),

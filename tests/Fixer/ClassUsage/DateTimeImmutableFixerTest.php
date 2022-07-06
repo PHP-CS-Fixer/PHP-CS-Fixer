@@ -186,7 +186,7 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield ['<?php $foo?->DateTime();'];
 

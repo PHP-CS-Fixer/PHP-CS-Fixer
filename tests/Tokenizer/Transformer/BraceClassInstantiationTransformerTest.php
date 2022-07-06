@@ -356,7 +356,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
-    public function provideProcessPhp80Cases(): \Generator
+    public function provideProcessPhp80Cases(): iterable
     {
         yield [
             [
@@ -405,7 +405,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
-    public function provideProcessPhp81Cases(): \Generator
+    public function provideProcessPhp81Cases(): iterable
     {
         yield [
             [

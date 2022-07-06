@@ -93,7 +93,7 @@ final class DocumentationTest extends TestCase
         static::assertSame($expected, $actual);
     }
 
-    public function provideFixerCases(): \Generator
+    public function provideFixerCases(): iterable
     {
         foreach ($this->getFixers() as $fixer) {
             yield $fixer->getName() => [$fixer];

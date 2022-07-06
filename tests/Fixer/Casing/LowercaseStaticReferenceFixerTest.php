@@ -196,7 +196,7 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield ['<?php $foo?->Self();'];
 
@@ -253,7 +253,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix81Cases(): \Generator
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php class A { final const PARENT = 42; }',

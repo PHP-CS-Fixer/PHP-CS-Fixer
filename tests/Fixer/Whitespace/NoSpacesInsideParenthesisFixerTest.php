@@ -137,7 +137,7 @@ $a = $b->test(  // do not remove space
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield [
             '<?php function foo(mixed $a){}',
@@ -154,7 +154,7 @@ $a = $b->test(  // do not remove space
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'first callable class' => [
             '<?php $a = strlen(...);',

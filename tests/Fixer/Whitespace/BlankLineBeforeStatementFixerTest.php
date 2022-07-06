@@ -1400,7 +1400,7 @@ do {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield 'match' => [
             '<?php
@@ -1432,7 +1432,7 @@ do {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'enum' => [
             '<?php

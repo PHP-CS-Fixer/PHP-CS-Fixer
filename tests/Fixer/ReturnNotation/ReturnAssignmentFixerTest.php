@@ -796,7 +796,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
         $this->doTest($expected, $input);
     }
 
-    public function provideRepetitiveFixCases(): \Generator
+    public function provideRepetitiveFixCases(): iterable
     {
         yield [
             '<?php

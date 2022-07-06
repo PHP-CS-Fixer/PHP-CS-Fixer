@@ -1102,7 +1102,7 @@ echo $a;',
         static::assertSame($expected, $tokens->generateCode());
     }
 
-    public function provideRemoveTrailingWhitespaceCases(): \Generator
+    public function provideRemoveTrailingWhitespaceCases(): iterable
     {
         $leadingCases = $this->provideRemoveLeadingWhitespaceCases();
 
@@ -1188,7 +1188,7 @@ $bar;',
         static::assertSame($expected, Tokens::detectBlockType($tokens[$index]));
     }
 
-    public function provideDetectBlockTypeCases(): \Generator
+    public function provideDetectBlockTypeCases(): iterable
     {
         yield [
             [
@@ -1249,7 +1249,7 @@ $bar;',
         self::assertTokens(Tokens::fromArray($expected), $tokens);
     }
 
-    public function provideOverrideRangeCases(): \Generator
+    public function provideOverrideRangeCases(): iterable
     {
         // typically done by transformers, here we test the reverse
 
@@ -1368,7 +1368,7 @@ $bar;',
         static::assertSame($expectIndex, $tokens->getMeaningfulTokenSibling($index, $direction));
     }
 
-    public function provideGetMeaningfulTokenSiblingCases(): \Generator
+    public function provideGetMeaningfulTokenSiblingCases(): iterable
     {
         yield [null, 0, 1, '<?php '];
 
@@ -1415,7 +1415,7 @@ EOF;
         static::assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
-    public function provideInsertSlicesAtMultiplePlacesCases(): \Generator
+    public function provideInsertSlicesAtMultiplePlacesCases(): iterable
     {
         yield 'one slice count' => [
             <<<'EOF'

@@ -1139,7 +1139,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases(): \Generator
+    public function provideFixPhp80Cases(): iterable
     {
         yield [
             <<<'EOF'

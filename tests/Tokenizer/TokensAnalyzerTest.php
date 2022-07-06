@@ -52,7 +52,7 @@ final class TokensAnalyzerTest extends TestCase
         );
     }
 
-    public function provideGetClassyElementsCases(): \Generator
+    public function provideGetClassyElementsCases(): iterable
     {
         yield 'trait import' => [
             [
@@ -504,7 +504,7 @@ PHP;
         static::assertSame($expected, $elements);
     }
 
-    public function provideGetClassyElements81Cases(): \Generator
+    public function provideGetClassyElements81Cases(): iterable
     {
         yield [
             [
@@ -678,7 +678,7 @@ enum Foo: string
         }
     }
 
-    public function provideIsAnonymousClassCases(): \Generator
+    public function provideIsAnonymousClassCases(): iterable
     {
         yield [
             [1 => false],
@@ -841,7 +841,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsLambda74Cases(): \Generator
+    public function provideIsLambda74Cases(): iterable
     {
         yield [
             [5 => true],
@@ -1133,7 +1133,7 @@ abstract class Baz
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
-    public function provideIsConstantInvocationPhp80Cases(): \Generator
+    public function provideIsConstantInvocationPhp80Cases(): iterable
     {
         yield 'abstract method return alternation' => [
             [6 => false, 16 => false, 21 => false, 23 => false],
@@ -1231,7 +1231,7 @@ abstract class Baz
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
-    public function provideIsConstantInvocationPhp81Cases(): \Generator
+    public function provideIsConstantInvocationPhp81Cases(): iterable
     {
         yield [
             [5 => false, 15 => false],
@@ -1457,7 +1457,7 @@ abstract class Baz
         }
     }
 
-    public function provideIsBinaryOperatorCases(): \Generator
+    public function provideIsBinaryOperatorCases(): iterable
     {
         yield from [
             [
@@ -1737,7 +1737,7 @@ $b;',
         }
     }
 
-    public function provideIsBinaryOperator71Cases(): \Generator
+    public function provideIsBinaryOperator71Cases(): iterable
     {
         yield [
             [11 => false],
@@ -1870,7 +1870,7 @@ $b;',
         static::assertSame($isBlockMultiline, $tokensAnalyzer->isBlockMultiline($tokens, $tokenIndex));
     }
 
-    public static function provideIsBlockMultilineCases(): \Generator
+    public static function provideIsBlockMultilineCases(): iterable
     {
         yield [
             false,

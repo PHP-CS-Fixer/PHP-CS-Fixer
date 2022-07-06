@@ -31,7 +31,7 @@ final class IntegerLiteralCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         yield [
             '<?php $foo1 = 0xFF; $foo2 = 0xDEFA; $foo3 = 0xFA; $foo4 = 0xFA;',
@@ -62,7 +62,7 @@ final class IntegerLiteralCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases(): \Generator
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php $foo = 0o123;',

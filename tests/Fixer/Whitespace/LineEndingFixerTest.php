@@ -84,7 +84,7 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): \Generator
+    public function provideMessyWhitespacesCases(): iterable
     {
         yield from array_map(static function (array $case): array {
             return array_reverse($case);

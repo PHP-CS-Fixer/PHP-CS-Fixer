@@ -726,7 +726,7 @@ AB# <- this is the name
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         yield [
             '<?php class Foo { private int $foo; }',
@@ -773,7 +773,7 @@ AB# <- this is the name
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield [
             '<?php class Foo { private int|float|null $foo; }',
@@ -806,7 +806,7 @@ AB# <- this is the name
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield [
             '<?php class Foo { public Foo1&Bar $foo; }',

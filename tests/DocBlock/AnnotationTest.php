@@ -99,7 +99,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($content, (string) $annotation);
     }
 
-    public function provideGetContentCases(): \Generator
+    public function provideGetContentCases(): iterable
     {
         foreach (self::$content as $index => $content) {
             yield [$index, $content];
@@ -117,7 +117,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($start, $annotation->getStart());
     }
 
-    public function provideStartCases(): \Generator
+    public function provideStartCases(): iterable
     {
         foreach (self::$start as $index => $start) {
             yield [$index, $start];
@@ -135,7 +135,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($end, $annotation->getEnd());
     }
 
-    public function provideEndCases(): \Generator
+    public function provideEndCases(): iterable
     {
         foreach (self::$end as $index => $end) {
             yield [$index, $end];
@@ -153,7 +153,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($tag, $annotation->getTag()->getName());
     }
 
-    public function provideGetTagCases(): \Generator
+    public function provideGetTagCases(): iterable
     {
         foreach (self::$tags as $index => $tag) {
             yield [$index, $tag];
@@ -174,7 +174,7 @@ final class AnnotationTest extends TestCase
         static::assertSame('', $doc->getLine($end)->getContent());
     }
 
-    public function provideRemoveCases(): \Generator
+    public function provideRemoveCases(): iterable
     {
         foreach (self::$start as $index => $start) {
             yield [$index, $start, self::$end[$index]];
@@ -553,7 +553,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($expectedCommonType, $result->getCommonType());
     }
 
-    public function provideTypeExpressionCases(): \Generator
+    public function provideTypeExpressionCases(): iterable
     {
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
         $useTraversable = new NamespaceUseAnalysis('Traversable', 'Traversable', false, 0, 999, NamespaceUseAnalysis::TYPE_CLASS);
@@ -574,7 +574,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($expectedVariableName, $annotation->getVariableName());
     }
 
-    public function provideGetVariableCases(): \Generator
+    public function provideGetVariableCases(): iterable
     {
         yield ['* @param int $foo', '$foo'];
 

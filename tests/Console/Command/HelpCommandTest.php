@@ -36,7 +36,7 @@ final class HelpCommandTest extends TestCase
         static::assertSame($expected, HelpCommand::toString($input));
     }
 
-    public function provideToStringCases(): \Generator
+    public function provideToStringCases(): iterable
     {
         yield ["['a' => 3, 'b' => 'c']", ['a' => 3, 'b' => 'c']];
 
@@ -71,7 +71,7 @@ final class HelpCommandTest extends TestCase
         static::assertSame($expected, HelpCommand::getDisplayableAllowedValues($input));
     }
 
-    public function provideGetDisplayableAllowedValuesCases(): \Generator
+    public function provideGetDisplayableAllowedValuesCases(): iterable
     {
         yield [null, new FixerOption('foo', 'bar', false, null, ['int'], [])];
 

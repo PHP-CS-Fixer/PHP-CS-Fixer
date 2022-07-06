@@ -31,7 +31,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         yield 'minimal' => [
             '<?php $a[] =$b;',
@@ -250,7 +250,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre80Cases(): \Generator
+    public function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php $a5{1*3}[2+1][] = $b4{2+1};',
@@ -272,7 +272,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield [
             '<?php array_push($b?->c[2], $b19);',
@@ -288,7 +288,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'simple 8.1' => [
             '<?php

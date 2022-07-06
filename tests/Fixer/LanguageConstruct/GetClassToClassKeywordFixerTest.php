@@ -34,7 +34,7 @@ final class GetClassToClassKeywordFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): iterable
     {
         yield [
             '

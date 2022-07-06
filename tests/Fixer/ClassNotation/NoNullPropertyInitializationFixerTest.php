@@ -307,7 +307,7 @@ null;#13
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPrePHP80Cases(): \Generator
+    public function provideFixPrePHP80Cases(): iterable
     {
         yield [
             '<?php class Foo { public $bar; }',
@@ -355,7 +355,7 @@ class Point {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'readonly - cannot have default value, fixer should not crash' => [
             '<?php

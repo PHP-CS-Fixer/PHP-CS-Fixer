@@ -475,7 +475,7 @@ $b = 1;
         $this->doTest($expected, $input);
     }
 
-    public function provideBetweenUseCases(): \Generator
+    public function provideBetweenUseCases(): iterable
     {
         yield from [
             ['<?php use A\B;'],
@@ -667,7 +667,7 @@ $a = new Qux();',
         $this->doTest($expected, $input);
     }
 
-    public function provideRemoveBetweenUseTraitsCases(): \Generator
+    public function provideRemoveBetweenUseTraitsCases(): iterable
     {
         yield [
             '<?php
@@ -782,7 +782,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideOneAndInLineCases(): \Generator
+    public function provideOneAndInLineCases(): iterable
     {
         yield from [
             [
@@ -1092,7 +1092,7 @@ class Foo {}'
         $this->doTest($expected);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield [
             '<?php

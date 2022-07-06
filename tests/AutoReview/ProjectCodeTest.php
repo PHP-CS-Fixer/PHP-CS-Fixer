@@ -681,7 +681,7 @@ final class ProjectCodeTest extends TestCase
         static::assertTrue($reflection->isSubclassOf(\PhpCsFixer\Fixer\AbstractPhpUnitFixer::class));
     }
 
-    public function providePhpUnitFixerExtendsAbstractPhpUnitFixerCases(): \Generator
+    public function providePhpUnitFixerExtendsAbstractPhpUnitFixerCases(): iterable
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
@@ -726,7 +726,7 @@ final class ProjectCodeTest extends TestCase
         }
     }
 
-    private function getUsedDataProviderMethodNames(string $testClassName): \Generator
+    private function getUsedDataProviderMethodNames(string $testClassName): iterable
     {
         foreach ($this->getAnnotationsOfTestClass($testClassName, 'dataProvider') as $methodName => $dataProviderAnnotation) {
             if (1 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
@@ -735,7 +735,7 @@ final class ProjectCodeTest extends TestCase
         }
     }
 
-    private function getAnnotationsOfTestClass(string $testClassName, string $annotation): \Generator
+    private function getAnnotationsOfTestClass(string $testClassName, string $annotation): iterable
     {
         $tokens = Tokens::fromCode(file_get_contents(
             str_replace('\\', \DIRECTORY_SEPARATOR, preg_replace('#^PhpCsFixer\\\Tests#', 'tests', $testClassName)).'.php'

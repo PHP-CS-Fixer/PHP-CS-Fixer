@@ -33,7 +33,7 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         yield from [
             'It replaces an unset on a property with = null' => [
@@ -220,7 +220,7 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre80Cases(): \Generator
+    public function provideFixPre80Cases(): iterable
     {
         yield 'It does not break curly access expressions' => [
             '<?php unset(a(){"a"});',

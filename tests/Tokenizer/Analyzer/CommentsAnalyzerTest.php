@@ -362,7 +362,7 @@ Class MyAnnotation3 {}'],
         static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public function providePhpdocCandidatePhp81Cases(): \Generator
+    public function providePhpdocCandidatePhp81Cases(): iterable
     {
         yield 'public readonly' => [
             '<?php class Foo { /* */ public readonly int $a1; }',

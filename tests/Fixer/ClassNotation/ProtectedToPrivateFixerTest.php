@@ -142,7 +142,7 @@ final class Foo
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases(): \Generator
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php
@@ -167,7 +167,7 @@ final class Foo2 {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix81Cases(): \Generator
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php

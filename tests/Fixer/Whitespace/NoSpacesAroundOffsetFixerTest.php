@@ -115,7 +115,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function provideOutsideCases(): \Generator
+    public function provideOutsideCases(): iterable
     {
         yield from [
             [
@@ -301,7 +301,7 @@ $var = $arr[0][     0
         $this->doTest($expected, $input);
     }
 
-    public function provideConfigurationCases(): \Generator
+    public function provideConfigurationCases(): iterable
     {
         $tests = [
             [

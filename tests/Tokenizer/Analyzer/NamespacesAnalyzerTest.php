@@ -100,7 +100,7 @@ final class NamespacesAnalyzerTest extends TestCase
         );
     }
 
-    public function provideGetNamespaceAtCases(): \Generator
+    public function provideGetNamespaceAtCases(): iterable
     {
         yield [
             '<?php // no namespaces',

@@ -98,7 +98,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
         $this->doTest($source, $expectedTokens);
     }
 
-    public function provideProcess80Cases(): \Generator
+    public function provideProcess80Cases(): iterable
     {
         yield 'arrow function' => [
             '<?php $a = fn(int|null $item): int|null => $item * 2;',
@@ -329,7 +329,7 @@ class Number
         );
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
             [
@@ -367,7 +367,7 @@ class Foo
         $this->doTest($source, $expectedTokens);
     }
 
-    public function provideProcess81Cases(): \Generator
+    public function provideProcess81Cases(): iterable
     {
         yield 'arrow function with intersection' => [
             '<?php $a = fn(int|null $item): int&null => $item * 2;',

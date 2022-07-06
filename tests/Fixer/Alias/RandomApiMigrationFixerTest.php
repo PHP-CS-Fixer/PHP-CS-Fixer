@@ -191,7 +191,7 @@ class srand extends SrandClass{
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'simple 8.1' => [
             '<?php $f = srand(...);',

@@ -43,7 +43,7 @@ final class GotoLabelAnalyzerTest extends TestCase
         }
     }
 
-    public function provideIsClassyInvocationCases(): \Generator
+    public function provideIsClassyInvocationCases(): iterable
     {
         yield from [
             'no candidates' => [

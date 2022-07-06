@@ -42,7 +42,7 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
         );
     }
 
-    public function provideProcessCases(): \Generator
+    public function provideProcessCases(): iterable
     {
         yield [
             [
@@ -138,7 +138,7 @@ class Point {
         );
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
             [

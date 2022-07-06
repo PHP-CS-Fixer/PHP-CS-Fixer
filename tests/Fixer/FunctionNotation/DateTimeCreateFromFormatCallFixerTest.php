@@ -30,7 +30,7 @@ final class DateTimeCreateFromFormatCallFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         foreach (['DateTime', 'DateTimeImmutable'] as $class) {
             $lowerCaseClass = strtolower($class);

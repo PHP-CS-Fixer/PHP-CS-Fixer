@@ -39,7 +39,7 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases(): \Generator
+    public function provideProcessCases(): iterable
     {
         yield 'do not fix cases' => [
             '<?php

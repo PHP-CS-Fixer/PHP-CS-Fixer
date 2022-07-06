@@ -34,7 +34,7 @@ final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         yield [
             '<?php
@@ -1842,7 +1842,7 @@ abstract class Example
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases(): \Generator
+    public function provideFix74Cases(): iterable
     {
         yield [
             '<?php
@@ -1930,7 +1930,7 @@ abstract class Example
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases(): \Generator
+    public function provideFixPhp80Cases(): iterable
     {
         yield 'attributes' => [
             '<?php
@@ -2190,7 +2190,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield [
             '<?php class A {

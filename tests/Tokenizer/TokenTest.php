@@ -127,7 +127,7 @@ final class TokenTest extends TestCase
         static::assertSame($isComment, $token->isComment());
     }
 
-    public function provideIsCommentCases(): \Generator
+    public function provideIsCommentCases(): iterable
     {
         yield from [
             [$this->getBraceToken(), false],
@@ -150,7 +150,7 @@ final class TokenTest extends TestCase
         static::assertSame($isObjectOperator, $token->isObjectOperator());
     }
 
-    public function provideIsObjectOperatorCases(): \Generator
+    public function provideIsObjectOperatorCases(): iterable
     {
         yield from [
             [$this->getBraceToken(), false],
@@ -203,7 +203,7 @@ final class TokenTest extends TestCase
         static::assertSame($isConstant, $token->isMagicConstant());
     }
 
-    public function provideMagicConstantCases(): \Generator
+    public function provideMagicConstantCases(): iterable
     {
         $cases = [
             [T_CLASS_C, '__CLASS__'],
@@ -323,7 +323,7 @@ final class TokenTest extends TestCase
         static::assertSame($equals, $token->equals($other, $caseSensitive));
     }
 
-    public function provideEqualsCases(): \Generator
+    public function provideEqualsCases(): iterable
     {
         $brace = $this->getBraceToken();
         $function = new Token([T_FUNCTION, 'function', 1]);
@@ -409,7 +409,7 @@ final class TokenTest extends TestCase
         static::assertSame($equalsAny, $token->equalsAny($other, $caseSensitive));
     }
 
-    public function provideEqualsAnyCases(): \Generator
+    public function provideEqualsAnyCases(): iterable
     {
         $brace = $this->getBraceToken();
         $foreach = $this->getForeachToken();
@@ -441,7 +441,7 @@ final class TokenTest extends TestCase
         static::assertSame($isKeyCaseSensitive, Token::isKeyCaseSensitive($caseSensitive, $key));
     }
 
-    public function provideIsKeyCaseSensitiveCases(): \Generator
+    public function provideIsKeyCaseSensitiveCases(): iterable
     {
         yield [true, true, 0];
 
@@ -502,7 +502,7 @@ final class TokenTest extends TestCase
         static::assertSame($expected, $token->getName());
     }
 
-    public function provideGetNameCases(): \Generator
+    public function provideGetNameCases(): iterable
     {
         yield [
             new Token([T_FUNCTION, 'function', 1]),
@@ -528,7 +528,7 @@ final class TokenTest extends TestCase
         static::assertSame($expected, $token->toArray());
     }
 
-    public function provideToArrayCases(): \Generator
+    public function provideToArrayCases(): iterable
     {
         yield [
             new Token([T_FUNCTION, 'function', 1]),

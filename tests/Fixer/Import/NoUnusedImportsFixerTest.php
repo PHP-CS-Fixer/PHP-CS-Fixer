@@ -1355,7 +1355,7 @@ use /**/A\B/**/;
         $this->doTest($expected, $input);
     }
 
-    public function providePhp80Cases(): \Generator
+    public function providePhp80Cases(): iterable
     {
         yield [
             '<?php
@@ -1418,7 +1418,7 @@ class Foo {}
         $this->doTest($expected, $input);
     }
 
-    public function providePhp81Cases(): \Generator
+    public function providePhp81Cases(): iterable
     {
         yield 'final const' => [
             '<?php

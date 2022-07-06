@@ -769,7 +769,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): \Generator
+    public function provideMessyWhitespacesCases(): iterable
     {
         yield [
             "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0;\r\n\t\tconst BBB=1;\r\n\t}",
@@ -832,7 +832,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): \Generator
+    public function provideFix80Cases(): iterable
     {
         yield [
             '<?php
@@ -860,7 +860,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): \Generator
+    public function provideFix81Cases(): iterable
     {
         yield [
             '<?php
