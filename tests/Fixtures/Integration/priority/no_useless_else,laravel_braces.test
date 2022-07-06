@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: no_useless_else,laravel_braces.
+--RULESET--
+{"no_useless_else": true, "laravel_braces": true}
+--EXPECT--
+<?php
+
+if ($a) {
+    return;
+}
+unset($a);
+
+--INPUT--
+<?php
+
+if ($a) {
+    return;
+}
+else{unset($a);}

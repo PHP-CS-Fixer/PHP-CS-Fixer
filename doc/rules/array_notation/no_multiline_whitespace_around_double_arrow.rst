@@ -25,6 +25,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Laravel
+  Using the `@Laravel <./../../ruleSets/Laravel.rst>`_ rule set will enable the ``no_multiline_whitespace_around_double_arrow`` rule.
+
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``no_multiline_whitespace_around_double_arrow`` rule.
 

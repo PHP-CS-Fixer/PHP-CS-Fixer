@@ -172,6 +172,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Laravel
+  Using the `@Laravel <./../../ruleSets/Laravel.rst>`_ rule set will enable the ``class_definition`` rule with the default config.
+
 @PSR12
   Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``class_definition`` rule with the config below:
 

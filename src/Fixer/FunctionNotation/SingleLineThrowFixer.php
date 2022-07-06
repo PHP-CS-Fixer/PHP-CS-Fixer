@@ -55,7 +55,7 @@ final class SingleLineThrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer, ConcatSpaceFixer.
+     * Must run before BracesFixer, ConcatSpaceFixer, LaravelBracesFixer.
      */
     public function getPriority(): int
     {

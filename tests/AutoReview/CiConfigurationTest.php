@@ -112,10 +112,10 @@ final class CiConfigurationTest extends TestCase
             new TraversableContainsIdentical(sprintf('%.1fsnapshot', $lastSupportedVersion)),
             // if `$lastsupportedVersion` is not snapshot version, expect CI to run snapshot of next PHP version
             new TraversableContainsIdentical('nightly'),
-            new TraversableContainsIdentical(sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1)),
+            new TraversableContainsIdentical(sprintf('%.1fsnapshot', (float) $lastSupportedVersion + 0.1)),
             // GitHub CI uses just versions, without suffix, e.g. 8.1 for 8.1snapshot as of writing
-            new TraversableContainsIdentical(sprintf('%.1f', $lastSupportedVersion + 0.1)),
-            new TraversableContainsIdentical(sprintf('%.1f', round($lastSupportedVersion + 1.0)))
+            new TraversableContainsIdentical(sprintf('%.1f', (float) $lastSupportedVersion + 0.1)),
+            new TraversableContainsIdentical(sprintf('%.1f', round((float) $lastSupportedVersion + 1.0)))
         ));
     }
 

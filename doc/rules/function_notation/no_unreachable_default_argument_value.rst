@@ -33,6 +33,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Laravel:risky
+  Using the `@Laravel:risky <./../../ruleSets/LaravelRisky.rst>`_ rule set will enable the ``no_unreachable_default_argument_value`` rule.
+
 @PHP80Migration:risky
   Using the `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ rule set will enable the ``no_unreachable_default_argument_value`` rule.
 

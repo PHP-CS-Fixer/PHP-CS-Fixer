@@ -67,6 +67,11 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Laravel
+  Using the `@Laravel <./../../ruleSets/Laravel.rst>`_ rule set will enable the ``phpdoc_no_alias_tag`` rule with the config below:
+
+  ``['replacements' => ['type' => 'var']]``
+
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``phpdoc_no_alias_tag`` rule with the default config.
 

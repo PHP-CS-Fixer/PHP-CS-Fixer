@@ -76,6 +76,9 @@ Basic
 - `encoding <./basic/encoding.rst>`_
 
   PHP code MUST use only UTF-8 without BOM (remove BOM).
+- `laravel_braces <./basic/laravel_braces.rst>`_
+
+  The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
 - `non_printable_character <./basic/non_printable_character.rst>`_ *(risky)*
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
@@ -637,6 +640,15 @@ PHPDoc
 - `general_phpdoc_tag_rename <./phpdoc/general_phpdoc_tag_rename.rst>`_
 
   Renames PHPDoc tags.
+- `laravel_phpdoc_alignment <./phpdoc/laravel_phpdoc_alignment.rst>`_
+
+  All items of the given phpdoc tags must be either left-aligned separated with one space except ``@param`` tag which has to be separated with two.
+- `laravel_phpdoc_order <./phpdoc/laravel_phpdoc_order.rst>`_
+
+  Annotations in PHPDoc should be ordered so that ``@param`` annotations come first, then ``@return`` annotations, then ``@throws`` annotations.
+- `laravel_phpdoc_separation <./phpdoc/laravel_phpdoc_separation.rst>`_
+
+  Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single blank line. Except @param and ``@return`` that stay grouped.
 - `no_blank_lines_after_phpdoc <./phpdoc/no_blank_lines_after_phpdoc.rst>`_
 
   There should not be blank lines between docblock and the documented element.

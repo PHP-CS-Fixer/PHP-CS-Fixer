@@ -23,6 +23,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Laravel
+  Using the `@Laravel <./../../ruleSets/Laravel.rst>`_ rule set will enable the ``no_unset_cast`` rule.
+
 @PHP80Migration
   Using the `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ rule set will enable the ``no_unset_cast`` rule.
 

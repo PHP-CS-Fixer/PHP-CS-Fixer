@@ -53,6 +53,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Laravel
+  Using the `@Laravel <./../../ruleSets/Laravel.rst>`_ rule set will enable the ``no_whitespace_before_comma_in_array`` rule with the default config.
+
 @PHP73Migration
   Using the `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ rule set will enable the ``no_whitespace_before_comma_in_array`` rule with the config below:
 

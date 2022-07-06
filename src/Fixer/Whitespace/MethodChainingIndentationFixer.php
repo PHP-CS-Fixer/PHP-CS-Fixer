@@ -44,7 +44,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      * {@inheritdoc}
      *
      * Must run before ArrayIndentationFixer, MethodArgumentSpaceFixer.
-     * Must run after BracesFixer.
+     * Must run after BracesFixer, LaravelBracesFixer.
      */
     public function getPriority(): int
     {

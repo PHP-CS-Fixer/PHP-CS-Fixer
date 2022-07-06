@@ -50,6 +50,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Laravel
+  Using the `@Laravel <./../../ruleSets/Laravel.rst>`_ rule set will enable the ``array_syntax`` rule with the default config.
+
 @PHP54Migration
   Using the `@PHP54Migration <./../../ruleSets/PHP54Migration.rst>`_ rule set will enable the ``array_syntax`` rule with the default config.
 

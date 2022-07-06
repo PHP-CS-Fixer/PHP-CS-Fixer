@@ -2,6 +2,8 @@
 List of Available Rule sets
 ===========================
 - `@DoctrineAnnotation <./DoctrineAnnotation.rst>`_
+- `@Laravel <./Laravel.rst>`_
+- `@Laravel:risky <./LaravelRisky.rst>`_
 - `@PHP54Migration <./PHP54Migration.rst>`_
 - `@PHP56Migration:risky <./PHP56MigrationRisky.rst>`_
 - `@PHP70Migration <./PHP70Migration.rst>`_

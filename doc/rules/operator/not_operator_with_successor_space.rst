@@ -20,3 +20,11 @@ Example #1
    +if (! $bar) {
         echo "Help!";
     }
+
+Rule sets
+---------
+
+The rule is part of the following rule set:
+
+@Laravel
+  Using the `@Laravel <./../../ruleSets/Laravel.rst>`_ rule set will enable the ``not_operator_with_successor_space`` rule.

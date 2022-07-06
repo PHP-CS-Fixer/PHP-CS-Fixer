@@ -232,6 +232,11 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Laravel
+  Using the `@Laravel <./../../ruleSets/Laravel.rst>`_ rule set will enable the ``blank_line_before_statement`` rule with the config below:
+
+  ``['statements' => ['return']]``
+
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``blank_line_before_statement`` rule with the config below:
 

@@ -46,7 +46,7 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer, CombineConsecutiveUnsetsFixer, NoBreakCommentFixer, NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, NoUselessReturnFixer, NoWhitespaceInBlankLineFixer, SimplifiedIfReturnFixer.
+     * Must run before BracesFixer, CombineConsecutiveUnsetsFixer, LaravelBracesFixer, NoBreakCommentFixer, NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, NoUselessReturnFixer, NoWhitespaceInBlankLineFixer, SimplifiedIfReturnFixer.
      * Must run after NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUnneededCurlyBracesFixer.
      */
     public function getPriority(): int

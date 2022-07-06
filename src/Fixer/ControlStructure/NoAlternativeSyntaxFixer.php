@@ -60,7 +60,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer, ElseifFixer, NoSuperfluousElseifFixer, NoUselessElseFixer, SwitchContinueToBreakFixer.
+     * Must run before BracesFixer, ElseifFixer, LaravelBracesFixer, NoSuperfluousElseifFixer, NoUselessElseFixer, SwitchContinueToBreakFixer.
      */
     public function getPriority(): int
     {

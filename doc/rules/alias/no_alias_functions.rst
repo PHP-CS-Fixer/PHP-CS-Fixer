@@ -117,6 +117,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Laravel:risky
+  Using the `@Laravel:risky <./../../ruleSets/LaravelRisky.rst>`_ rule set will enable the ``no_alias_functions`` rule with the default config.
+
 @PHP74Migration:risky
   Using the `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ rule set will enable the ``no_alias_functions`` rule with the default config.
 

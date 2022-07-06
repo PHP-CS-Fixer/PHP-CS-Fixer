@@ -1,0 +1,18 @@
+--TEST--
+Integration of fixers: single_trait_insert_per_statement,laravel_braces.
+--RULESET--
+{"single_trait_insert_per_statement": true, "laravel_braces": true}
+--EXPECT--
+<?php
+final class Example
+{
+    use Foo;
+    use Bar;
+}
+
+--INPUT--
+<?php
+final class Example
+{
+    use Foo, Bar;
+}

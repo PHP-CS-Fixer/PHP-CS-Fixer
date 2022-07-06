@@ -57,7 +57,7 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer.
+     * Must run before BracesFixer, LaravelBracesFixer.
      */
     public function getPriority(): int
     {

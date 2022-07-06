@@ -1,0 +1,4 @@
+--TEST--
+Integration of @Laravel:risky.
+--RULESET--
+{"@Laravel:risky": true}

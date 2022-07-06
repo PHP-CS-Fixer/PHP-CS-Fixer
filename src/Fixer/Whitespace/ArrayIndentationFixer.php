@@ -54,7 +54,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
      * {@inheritdoc}
      *
      * Must run before AlignMultilineCommentFixer, BinaryOperatorSpacesFixer.
-     * Must run after MethodArgumentSpaceFixer, MethodChainingIndentationFixer.
+     * Must run after LaravelBracesFixer, MethodArgumentSpaceFixer, MethodChainingIndentationFixer.
      */
     public function getPriority(): int
     {

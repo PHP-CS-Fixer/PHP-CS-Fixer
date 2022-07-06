@@ -45,7 +45,7 @@ final class Example
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer, SpaceAfterSemicolonFixer.
+     * Must run before BracesFixer, LaravelBracesFixer, SpaceAfterSemicolonFixer.
      */
     public function getPriority(): int
     {

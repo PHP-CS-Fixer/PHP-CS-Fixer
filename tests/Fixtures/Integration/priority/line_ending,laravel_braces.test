@@ -1,0 +1,6 @@
+--TEST--
+Integration of fixers: line_ending,laravel_braces.
+--RULESET--
+{"line_ending": true, "laravel_braces": true}
+--CONFIG--
+{"indent": "\t", "lineEnding": "\r\n"}

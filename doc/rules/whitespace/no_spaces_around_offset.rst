@@ -63,6 +63,11 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Laravel
+  Using the `@Laravel <./../../ruleSets/Laravel.rst>`_ rule set will enable the ``no_spaces_around_offset`` rule with the config below:
+
+  ``['positions' => ['inside']]``
+
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``no_spaces_around_offset`` rule with the default config.
 

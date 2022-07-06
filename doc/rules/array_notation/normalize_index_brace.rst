@@ -23,6 +23,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Laravel
+  Using the `@Laravel <./../../ruleSets/Laravel.rst>`_ rule set will enable the ``normalize_index_brace`` rule.
+
 @PHP74Migration
   Using the `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_ rule set will enable the ``normalize_index_brace`` rule.
 

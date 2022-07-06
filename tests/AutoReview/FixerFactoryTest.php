@@ -345,6 +345,7 @@ final class FixerFactoryTest extends TestCase
             'class_attributes_separation' => [
                 'braces',
                 'indentation_type',
+                'laravel_braces',
                 'no_extra_blank_lines',
                 'statement_indentation',
             ],
@@ -391,6 +392,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'empty_loop_body' => [
                 'braces',
+                'laravel_braces',
                 'no_extra_blank_lines',
                 'no_trailing_whitespace',
             ],
@@ -458,8 +460,13 @@ final class FixerFactoryTest extends TestCase
                 'method_argument_space',
                 'no_spaces_inside_parenthesis',
             ],
+            'laravel_braces' => [
+                'array_indentation',
+                'method_chaining_indentation',
+            ],
             'line_ending' => [
                 'braces',
+                'laravel_braces',
             ],
             'list_syntax' => [
                 'binary_operator_spaces',
@@ -501,6 +508,7 @@ final class FixerFactoryTest extends TestCase
             'no_alternative_syntax' => [
                 'braces',
                 'elseif',
+                'laravel_braces',
                 'no_superfluous_elseif',
                 'no_useless_else',
                 'switch_continue_to_break',
@@ -522,6 +530,7 @@ final class FixerFactoryTest extends TestCase
                 'braces',
                 'combine_consecutive_unsets',
                 'empty_loop_body',
+                'laravel_braces',
                 'multiline_whitespace_before_semicolons',
                 'no_extra_blank_lines',
                 'no_singleline_whitespace_before_semicolons',
@@ -596,6 +605,7 @@ final class FixerFactoryTest extends TestCase
             'no_useless_else' => [
                 'braces',
                 'combine_consecutive_unsets',
+                'laravel_braces',
                 'no_break_comment',
                 'no_extra_blank_lines',
                 'no_trailing_whitespace',
@@ -760,6 +770,7 @@ final class FixerFactoryTest extends TestCase
             'single_line_throw' => [
                 'braces',
                 'concat_space',
+                'laravel_braces',
             ],
             'single_space_after_construct' => [
                 'braces',
@@ -767,6 +778,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'single_trait_insert_per_statement' => [
                 'braces',
+                'laravel_braces',
                 'space_after_semicolon',
             ],
             'standardize_increment' => [

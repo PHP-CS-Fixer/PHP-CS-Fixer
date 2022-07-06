@@ -87,6 +87,11 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Laravel
+  Using the `@Laravel <./../../ruleSets/Laravel.rst>`_ rule set will enable the ``single_line_comment_style`` rule with the config below:
+
+  ``['comment_types' => ['hash']]``
+
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``single_line_comment_style`` rule with the default config.
 
