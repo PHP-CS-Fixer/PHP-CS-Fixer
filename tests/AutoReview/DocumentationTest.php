@@ -34,7 +34,6 @@ use Symfony\Component\Finder\Finder;
  * @covers \PhpCsFixer\Documentation\RuleSetDocumentationGenerator
  *
  * @group auto-review
- * @requires PHP 7.3
  */
 final class DocumentationTest extends TestCase
 {
@@ -121,9 +120,6 @@ final class DocumentationTest extends TestCase
         );
     }
 
-    /**
-     * @requires PHP 7.4
-     */
     public function testRuleSetsDocumentationIsUpToDate(): void
     {
         $locator = new DocumentationLocator();
@@ -151,9 +147,6 @@ final class DocumentationTest extends TestCase
         );
     }
 
-    /**
-     * @requires PHP 7.4
-     */
     public function testRuleSetsDocumentationDirectoryHasNoExtraFiles(): void
     {
         $generator = new DocumentationLocator();
@@ -181,9 +174,6 @@ final class DocumentationTest extends TestCase
         );
     }
 
-    /**
-     * @requires PHP 7.4
-     */
     public function testListingDocumentationIsUpToDate(): void
     {
         $locator = new DocumentationLocator();

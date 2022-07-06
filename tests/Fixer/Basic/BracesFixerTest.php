@@ -4050,7 +4050,6 @@ declare   (   ticks   =   1   )   {
 
     /**
      * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
      */
     public function testFix70(string $expected, ?string $input = null, array $configuration = []): void
     {

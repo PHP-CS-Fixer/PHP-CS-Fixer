@@ -28,11 +28,6 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
-        if (null !== $input && \PHP_VERSION_ID < 70400) {
-            $expected = $input;
-            $input = null;
-        }
-
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
