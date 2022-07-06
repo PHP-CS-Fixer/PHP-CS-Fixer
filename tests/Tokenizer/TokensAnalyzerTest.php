@@ -442,9 +442,6 @@ PHP;
         );
     }
 
-    /**
-     * @requires PHP 7.4
-     */
     public function testGetClassyElements74(): void
     {
         $source = <<<'PHP'
@@ -830,7 +827,6 @@ preg_replace_callback(
 
     /**
      * @dataProvider provideIsLambda74Cases
-     * @requires PHP 7.4
      */
     public function testIsLambda74(array $expected, string $source): void
     {
@@ -1686,7 +1682,6 @@ $b;',
      * @param int[] $tokenIndexes
      *
      * @dataProvider provideIsArray71Cases
-     * @requires PHP 7.1
      */
     public function testIsArray71(string $source, array $tokenIndexes): void
     {

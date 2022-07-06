@@ -502,23 +502,7 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
                 }',
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
-    }
 
-    /**
-     * @dataProvider provideFixPhp70Cases
-     * @requires PHP 7.0
-     */
-    public function testFixPhp70(string $expected, ?string $input = null, array $configuration = null): void
-    {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp70Cases()
-    {
         yield 'anonymous class (same line)' => [
             '<?php
                 $foo = new class() {

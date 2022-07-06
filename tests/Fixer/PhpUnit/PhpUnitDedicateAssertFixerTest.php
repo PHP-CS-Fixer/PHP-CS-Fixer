@@ -560,7 +560,6 @@ $a# 5
     }
 
     /**
-     * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
     public function testFix73(string $expected, string $input): void

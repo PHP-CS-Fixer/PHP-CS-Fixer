@@ -837,6 +837,14 @@ Service
         ->methodA()
         ->methodB();',
             ],
+            [
+                "<?php\n\$this\n    ->one()\n    ->two(2, )\n;",
+                "<?php\n\$this\n    ->one()\n    ->two(2, );",
+            ],
+            [
+                "<?php\n\$this\n    ->one(1, )\n    ->two()\n;",
+                "<?php\n\$this\n    ->one(1, )\n    ->two();",
+            ],
         ];
     }
 
@@ -864,30 +872,6 @@ Service
             [
                 "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t))\r\n\t\t\t;\r\n\t\t})\r\n\t;\r\n?>",
                 "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t));\r\n\t\t});\r\n?>",
-            ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73(string $expected, string $input): void
-    {
-        $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): array
-    {
-        return [
-            [
-                "<?php\n\$this\n    ->one()\n    ->two(2, )\n;",
-                "<?php\n\$this\n    ->one()\n    ->two(2, );",
-            ],
-            [
-                "<?php\n\$this\n    ->one(1, )\n    ->two()\n;",
-                "<?php\n\$this\n    ->one(1, )\n    ->two();",
             ],
         ];
     }

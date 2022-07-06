@@ -203,24 +203,7 @@ endwhile;
             null,
             ['position' => 'beginning'],
         ];
-    }
 
-    /**
-     * @dataProvider provideFix71Cases
-     *
-     * @requires     PHP 7.1
-     */
-    public function testFix71(string $expected, ?string $input = null, ?array $configuration = null): void
-    {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
-
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFix71Cases(): iterable
-    {
         yield 'nullable type when position is "end"' => [
             '<?php
                 function foo(

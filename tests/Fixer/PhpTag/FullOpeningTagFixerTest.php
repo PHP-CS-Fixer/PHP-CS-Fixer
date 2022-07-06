@@ -103,23 +103,4 @@ TEST;
             ],
         ];
     }
-
-    /**
-     * @dataProvider provideFixLT70Cases
-     * @requires PHP <7.0
-     */
-    public function testFixLT70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixLT70Cases(): array
-    {
-        return [
-            [
-                'foo <?php  echo "-"; echo "aaa <? bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
-                'foo <?  echo "-"; echo "aaa <? bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
-            ],
-        ];
-    }
 }

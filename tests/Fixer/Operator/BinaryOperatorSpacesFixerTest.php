@@ -2149,7 +2149,6 @@ $b = [1 => function() {
 
     /**
      * @dataProvider provideFixPhp74Cases
-     * @requires PHP 7.4
      */
     public function testFixPhp74(string $expected, ?string $input = null, ?array $configuration = null): void
     {

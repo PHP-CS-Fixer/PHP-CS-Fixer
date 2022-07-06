@@ -1786,7 +1786,6 @@ abstract class Example
 
     /**
      * @dataProvider provideFix71Cases
-     * @requires PHP 7.1
      */
     public function testFix71(string $expected, string $input): void
     {
@@ -1831,7 +1830,6 @@ abstract class Example
 
     /**
      * @dataProvider provideFix74Cases
-     * @requires PHP 7.4
      */
     public function testFix74(string $expected, ?string $input = null, array $config = null): void
     {

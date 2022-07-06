@@ -649,17 +649,8 @@ $a#4
             ];
         }
 
-        $assignmentOperators = ['=', '**=', '*=', '|=', '+=', '-=', '^=',  '<<=', '>>=', '&=', '.=', '/=', '%='];
-
-        if (\PHP_VERSION_ID >= 70400) {
-            $assignmentOperators[] = '??=';
-        }
-
-        $logicalOperators = ['xor', 'or', 'and',  '||', '&&'];
-
-        if (\PHP_VERSION_ID >= 70400) {
-            $logicalOperators[] = '??';
-        }
+        $assignmentOperators = ['=', '**=', '*=', '|=', '+=', '-=', '^=',  '<<=', '>>=', '&=', '.=', '/=', '%=', '??='];
+        $logicalOperators = ['xor', 'or', 'and',  '||', '&&', '??'];
 
         foreach (array_merge($assignmentOperators, $logicalOperators) as $operator) {
             yield [
@@ -819,7 +810,6 @@ switch ($a) {
 
     /**
      * @dataProvider providePHP71Cases
-     * @requires PHP 7.1
      */
     public function testPHP71Cases(string $expected, ?string $input = null): void
     {
@@ -831,7 +821,6 @@ switch ($a) {
      * Test with the inverse config.
      *
      * @dataProvider providePHP71Cases
-     * @requires PHP 7.1
      */
     public function testPHP71CasesInverse(string $expected, ?string $input = null): void
     {
@@ -929,7 +918,6 @@ while (2 !== $b = array_pop($c));
 
     /**
      * @dataProvider provideFixPhp74Cases
-     * @requires PHP 7.4
      */
     public function testFixPhp74(string $expected, ?string $input): void
     {
@@ -948,7 +936,6 @@ while (2 !== $b = array_pop($c));
      * Test with the inverse config.
      *
      * @dataProvider providePHP74Cases
-     * @requires PHP 7.4
      */
     public function testPHP74CasesInverse(string $expected, ?string $input = null, ?array $configuration = null): void
     {

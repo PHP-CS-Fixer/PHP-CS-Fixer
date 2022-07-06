@@ -183,7 +183,6 @@ $a;#
     }
 
     /**
-     * @requires PHP 7.2
      * @dataProvider provideFixToShortSyntaxPhp72Cases
      */
     public function testFixToShortSyntaxPhp72(string $expected, string $input): void
@@ -193,7 +192,6 @@ $a;#
     }
 
     /**
-     * @requires PHP 7.2
      * @dataProvider provideFixToLongSyntaxPhp72Cases
      */
     public function testFixToLongSyntaxPhp72(string $expected, string $input): void
@@ -216,7 +214,6 @@ $a;#
     }
 
     /**
-     * @requires PHP 7.3
      * @dataProvider provideFixToShortSyntaxPhp73Cases
      */
     public function testFixToShortSyntaxPhp73(string $expected, string $input): void
@@ -226,7 +223,6 @@ $a;#
     }
 
     /**
-     * @requires PHP 7.3
      * @dataProvider provideFixToLongSyntaxPhp73Cases
      */
     public function testFixToLongSyntaxPhp73(string $expected, string $input): void

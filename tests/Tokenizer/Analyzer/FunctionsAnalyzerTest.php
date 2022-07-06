@@ -595,23 +595,7 @@ class(){};
         if (\PHP_VERSION_ID < 80000) {
             yield ['<?php function($a): \Foo/** TODO: change to something else */\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 11)];
         }
-    }
 
-    /**
-     * @dataProvider provideFunctionsWithReturnTypePhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFunctionReturnTypeInfoPhp74(string $code, int $methodIndex, ?TypeAnalysis $expected): void
-    {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new FunctionsAnalyzer();
-        $actual = $analyzer->getFunctionReturnType($tokens, $methodIndex);
-
-        static::assertSame(serialize($expected), serialize($actual));
-    }
-
-    public function provideFunctionsWithReturnTypePhp74Cases(): iterable
-    {
         yield ['<?php fn() => null;', 1, null];
 
         yield ['<?php fn(array $a) => null;', 1, null];
