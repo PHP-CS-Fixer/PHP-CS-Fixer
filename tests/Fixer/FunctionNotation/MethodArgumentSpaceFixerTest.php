@@ -905,6 +905,40 @@ $example = function () use ($message1, $message2) {
 $example = function () use ($message1,$message2) {
 };',
             ],
+            'test first element in same line, space before comma and inconsistent indent' => [
+                '<?php foo(
+    "aaa
+    bbb",
+    $c,
+    $d,
+    $e,
+    $f
+);
+',
+                '<?php foo("aaa
+    bbb",
+    $c, $d ,
+        $e,
+        $f);
+',
+            ],
+            'test first element in same line, space before comma and inconsistent indent with comments' => [
+                '<?php foo(
+    "aaa
+    bbb", // comment1
+    $c, /** comment2 */
+    $d,
+    $e/* comment3 */,
+    $f
+);# comment4
+',
+                '<?php foo("aaa
+    bbb", // comment1
+    $c, /** comment2 */$d ,
+        $e/* comment3 */,
+        $f);# comment4
+',
+            ],
         ];
     }
 
