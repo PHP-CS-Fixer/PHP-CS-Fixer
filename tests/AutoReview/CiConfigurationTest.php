@@ -99,6 +99,9 @@ final class CiConfigurationTest extends TestCase
         }
     }
 
+    /**
+     * @param numeric-string $lastSupportedVersion
+     */
     private static function assertUpcomingPhpVersionIsCoveredByCiJob(string $lastSupportedVersion, array $ciVersions): void
     {
         if ('8.1' === $lastSupportedVersion) {
