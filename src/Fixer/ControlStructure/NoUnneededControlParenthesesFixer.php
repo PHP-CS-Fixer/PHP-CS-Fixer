@@ -70,6 +70,59 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         [T_INCLUDE_ONCE],
     ];
 
+    private const NOOP_TYPES = [
+        '$',
+        [T_CONSTANT_ENCAPSED_STRING],
+        [T_DNUMBER],
+        [T_DOUBLE_COLON],
+        [T_LNUMBER],
+        [T_NS_SEPARATOR],
+        [T_OBJECT_OPERATOR],
+        [T_STRING],
+        [T_VARIABLE],
+        // magic constants
+        [T_CLASS_C],
+        [T_DIR],
+        [T_FILE],
+        [T_FUNC_C],
+        [T_LINE],
+        [T_METHOD_C],
+        [T_NS_C],
+        [T_TRAIT_C],
+    ];
+
+    private const CONFIG_OPTIONS = [
+        'break',
+        'clone',
+        'continue',
+        'echo_print',
+        'negative_instanceof',
+        'others',
+        'return',
+        'switch_case',
+        'yield',
+        'yield_from',
+    ];
+
+    private const TOKEN_TYPE_CONFIG_MAP = [
+        T_BREAK => 'break',
+        T_CASE => 'switch_case',
+        T_CONTINUE => 'continue',
+        T_ECHO => 'echo_print',
+        T_PRINT => 'echo_print',
+        T_RETURN => 'return',
+        T_YIELD => 'yield',
+        T_YIELD_FROM => 'yield_from',
+    ];
+
+    // handled by the `include` rule
+    private const TOKEN_TYPE_NO_CONFIG = [
+        T_REQUIRE,
+        T_REQUIRE_ONCE,
+        T_INCLUDE,
+        T_INCLUDE_ONCE,
+    ];
+
     private TokensAnalyzer $tokensAnalyzer;
 
     /**
@@ -209,21 +262,8 @@ while ($y) { continue (2); }
      */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $options = [
-            'break',
-            'clone',
-            'continue',
-            'echo_print',
-            'negative_instanceof',
-            'others',
-            'return',
-            'switch_case',
-            'yield',
-            'yield_from',
-        ];
-
         $defaults = array_filter(
-            $options,
+            self::CONFIG_OPTIONS,
             static function (string $option): bool {
                 return 'negative_instanceof' !== $option && 'others' !== $option && 'yield_from' !== $option;
             }
@@ -232,7 +272,7 @@ while ($y) { continue (2); }
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('statements', 'List of control statements to fix.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset($options)])
+                ->setAllowedValues([new AllowedValueSubset(self::CONFIG_OPTIONS)])
                 ->setDefault(array_values($defaults))
                 ->getOption(),
         ]);
@@ -570,31 +610,6 @@ while ($y) { continue (2); }
 
     private function containsOperation(Tokens $tokens, int $startIndex, int $endIndex): bool
     {
-        static $noopTypes;
-
-        if (null === $noopTypes) {
-            $noopTypes = [
-                '$',
-                [T_CONSTANT_ENCAPSED_STRING],
-                [T_DNUMBER],
-                [T_DOUBLE_COLON],
-                [T_LNUMBER],
-                [T_NS_SEPARATOR],
-                [T_OBJECT_OPERATOR],
-                [T_STRING],
-                [T_VARIABLE],
-                // magic constants
-                [T_CLASS_C],
-                [T_DIR],
-                [T_FILE],
-                [T_FUNC_C],
-                [T_LINE],
-                [T_METHOD_C],
-                [T_NS_C],
-                [T_TRAIT_C],
-            ];
-        }
-
         while (true) {
             $startIndex = $tokens->getNextMeaningfulToken($startIndex);
 
@@ -610,7 +625,7 @@ while ($y) { continue (2); }
                 continue;
             }
 
-            if (!$tokens[$startIndex]->equalsAny($noopTypes)) {
+            if (!$tokens[$startIndex]->equalsAny(self::NOOP_TYPES)) {
                 return true;
             }
         }
@@ -620,22 +635,11 @@ while ($y) { continue (2); }
 
     private function getConfigType(Tokens $tokens, int $beforeOpenIndex): ?string
     {
-        if ($tokens[$beforeOpenIndex]->isGivenKind([T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE])) {
-            return null; // handled by the `include` rule
+        if ($tokens[$beforeOpenIndex]->isGivenKind(self::TOKEN_TYPE_NO_CONFIG)) {
+            return null;
         }
 
-        static $map = [
-            T_BREAK => 'break',
-            T_CASE => 'switch_case',
-            T_CONTINUE => 'continue',
-            T_ECHO => 'echo_print',
-            T_PRINT => 'echo_print',
-            T_RETURN => 'return',
-            T_YIELD => 'yield',
-            T_YIELD_FROM => 'yield_from',
-        ];
-
-        foreach ($map as $type => $configItem) {
+        foreach (self::TOKEN_TYPE_CONFIG_MAP as $type => $configItem) {
             if ($tokens[$beforeOpenIndex]->isGivenKind($type)) {
                 return $configItem;
             }
