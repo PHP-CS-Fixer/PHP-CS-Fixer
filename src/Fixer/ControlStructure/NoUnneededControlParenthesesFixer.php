@@ -145,7 +145,7 @@ while ($y) { continue (2); }
 
             // do a cheap check for negative case: `X()`
 
-            if ($tokens[$tokens->getNextMeaningfulToken($openIndex)]->equals(')')) {
+            if ($tokens->getNextMeaningfulToken($openIndex) === $closeIndex) {
                 if ($this->isExitStatement($tokens, $beforeOpenIndex)) {
                     $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'others');
                 }
