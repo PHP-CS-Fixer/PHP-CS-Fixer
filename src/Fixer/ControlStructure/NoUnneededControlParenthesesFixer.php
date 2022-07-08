@@ -183,11 +183,14 @@ while ($y) { continue (2); }
 
             if (null !== $instanceOfIndex) {
                 if ($this->isWrappedInstanceOf($tokens, $instanceOfIndex, $beforeOpenIndex, $openIndex, $closeIndex, $afterCloseIndex)) {
-                    if ($tokens[$beforeOpenIndex]->equals('!')) {
-                        $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'negative_instanceof');
-                    } else {
-                        $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'others');
-                    }
+                    $this->removeUselessParenthesisPair(
+                        $tokens,
+                        $beforeOpenIndex,
+                        $afterCloseIndex,
+                        $openIndex,
+                        $closeIndex,
+                        $tokens[$beforeOpenIndex]->equals('!') ? 'negative_instanceof' : 'others'
+                    );
                 }
 
                 continue;
