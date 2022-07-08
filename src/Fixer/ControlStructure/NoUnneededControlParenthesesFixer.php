@@ -40,7 +40,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     /**
      * @var int[]
      */
-    private static array $blockTypes = [
+    private const BLOCK_TYPES = [
         Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE,
         Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE,
         Tokens::BLOCK_TYPE_CURLY_BRACE,
@@ -51,7 +51,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
     ];
 
-    private static array $beforeTypes = [
+    private const BEFORE_TYPES = [
         ';',
         '{',
         '}',
@@ -365,7 +365,7 @@ while ($y) { continue (2); }
             return true;
         }
 
-        $beforeIsStatementOpen = $beforeToken->equalsAny(self::$beforeTypes) || $beforeToken->isGivenKind(T_CASE);
+        $beforeIsStatementOpen = $beforeToken->equalsAny(self::BEFORE_TYPES) || $beforeToken->isGivenKind(T_CASE);
         $afterIsStatementEnd = $afterToken->equalsAny([';', [T_CLOSE_TAG]]);
 
         return
@@ -393,7 +393,7 @@ while ($y) { continue (2); }
             return $tokens[$afterCloseIndex]->equalsAny([':', ';']); // `switch case`
         }
 
-        return $tokens[$afterCloseIndex]->equalsAny([';', [T_CLOSE_TAG]]) && $tokens[$beforeOpenIndex]->equalsAny(self::$beforeTypes);
+        return $tokens[$afterCloseIndex]->equalsAny([';', [T_CLOSE_TAG]]) && $tokens[$beforeOpenIndex]->equalsAny(self::BEFORE_TYPES);
     }
 
     private function isSimpleAssignment(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
@@ -514,7 +514,7 @@ while ($y) { continue (2); }
     {
         $block = Tokens::detectBlockType($tokens[$index]);
 
-        return null !== $block && $isStart === $block['isStart'] && \in_array($block['type'], self::$blockTypes, true) ? $block : null;
+        return null !== $block && $isStart === $block['isStart'] && \in_array($block['type'], self::BLOCK_TYPES, true) ? $block : null;
     }
 
     // cheap check on a tokens type before `(` of which we know the `(` will never be superfluous
