@@ -481,10 +481,7 @@ while ($y) { continue (2); }
     // `fn() => (X);`
     private function isWrappedFnBody(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
     {
-        if (
-            !$tokens[$afterCloseIndex]->equalsAny([';', [T_CLOSE_TAG]])
-            || !$tokens[$beforeOpenIndex]->isGivenKind(T_DOUBLE_ARROW)
-        ) {
+        if (!$tokens[$beforeOpenIndex]->isGivenKind(T_DOUBLE_ARROW)) {
             return false;
         }
 
@@ -501,7 +498,11 @@ while ($y) { continue (2); }
             $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
         }
 
-        return $tokens[$beforeOpenIndex]->isGivenKind(T_FN);
+        if (!$tokens[$beforeOpenIndex]->isGivenKind(T_FN)) {
+            return false;
+        }
+
+        return $tokens[$afterCloseIndex]->equalsAny([';', ',', [T_CLOSE_TAG]]);
     }
 
     private function isPreUnaryOperation(Tokens $tokens, int $index): bool

@@ -521,6 +521,19 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             '<?php $fn1 = fn & ($x) => !($x);',
         ];
 
+        yield 'wrapped FN with `,`' => [
+            '<?php
+                $fn1 = array_map(fn() => 1, $array);
+                $fn2 = array_map($array, fn() => 2);
+                $fn3 = array_map($array, fn() => 3, $array);
+            ',
+            '<?php
+                $fn1 = array_map(fn() => (1), $array);
+                $fn2 = array_map($array, fn() => (2));
+                $fn3 = array_map($array, fn() => (3), $array);
+            ',
+        ];
+
         yield 'wrapped `for` elements' => [
             '<?php
                 for (!$a; $a < 10; ++$a){
