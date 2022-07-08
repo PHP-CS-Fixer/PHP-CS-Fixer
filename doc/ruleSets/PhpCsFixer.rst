@@ -33,6 +33,9 @@ Rules
   ``['tokens' => ['break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use']]``
 - `no_null_property_initialization <./../rules/class_notation/no_null_property_initialization.rst>`_
 - `no_superfluous_elseif <./../rules/control_structure/no_superfluous_elseif.rst>`_
+- `no_unneeded_control_parentheses <./../rules/control_structure/no_unneeded_control_parentheses.rst>`_
+  config:
+  ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'negative_instanceof', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``
 - `no_useless_else <./../rules/control_structure/no_useless_else.rst>`_
 - `no_useless_return <./../rules/return_notation/no_useless_return.rst>`_
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_

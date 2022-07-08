@@ -35,8 +35,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class NoUnneededControlParenthesesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private TokensAnalyzer $tokensAnalyzer;
-
     /**
      * @var int[]
      */
@@ -71,6 +69,8 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         [T_INCLUDE],
         [T_INCLUDE_ONCE],
     ];
+
+    private TokensAnalyzer $tokensAnalyzer;
 
     /**
      * {@inheritdoc}
