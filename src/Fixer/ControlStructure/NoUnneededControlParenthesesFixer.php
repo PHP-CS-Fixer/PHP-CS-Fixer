@@ -487,6 +487,22 @@ while ($y) { continue (2); }
 
         $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
 
+        if ($tokens[$beforeOpenIndex]->isGivenKind(T_STRING)) {
+            while (true) {
+                $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
+
+                if (!$tokens[$beforeOpenIndex]->isGivenKind([T_STRING, CT::T_TYPE_INTERSECTION, CT::T_TYPE_ALTERNATION])) {
+                    break;
+                }
+            }
+
+            if (!$tokens[$beforeOpenIndex]->isGivenKind(CT::T_TYPE_COLON)) {
+                return false;
+            }
+
+            $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
+        }
+
         if (!$tokens[$beforeOpenIndex]->equals(')')) {
             return false;
         }

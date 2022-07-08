@@ -534,6 +534,15 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             ',
         ];
 
+        yield 'wrapped FN with return type' => [
+            '<?php
+                $fn8 = fn(): int => 123456;
+            ',
+            '<?php
+                $fn8 = fn(): int => (123456);
+            ',
+        ];
+
         yield 'wrapped `for` elements' => [
             '<?php
                 for (!$a; $a < 10; ++$a){
@@ -1506,12 +1515,12 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
     public function provideFixPhp80Cases(): iterable
     {
-        yield [
+        yield 'fn throw' => [
             '<?php $triggerError = fn () => throw new MyError();',
             '<?php $triggerError = fn () => (throw new MyError());',
         ];
 
-        yield [
+        yield 'match' => [
             "<?php
                 \$r = match (\$food) {
                     'apple' => 'An apple',
@@ -1524,6 +1533,15 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                     'cake' => 'Some cake',
                 };
             ",
+        ];
+
+        yield 'wrapped FN with return types' => [
+            '<?php
+                $fn8 = fn(): int|bool => 123456;
+            ',
+            '<?php
+                $fn8 = fn(): int|bool => (123456);
+            ',
         ];
     }
 
@@ -1572,6 +1590,24 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         yield [
             '<?php echo Number::Two->value;',
             '<?php echo (Number::Two)->value;',
+        ];
+
+        yield 'wrapped FN with return types' => [
+            '<?php
+                $fn8 = fn(): A&B => new C();
+            ',
+            '<?php
+                $fn8 = fn(): A&B => (new C());
+            ',
+        ];
+
+        yield 'wrapped FN with return types and ref' => [
+            '<?php
+                $fn9 = fn & (): D & E => new F();
+            ',
+            '<?php
+                $fn9 = fn & (): D & E => (new F());
+            ',
         ];
     }
 }
