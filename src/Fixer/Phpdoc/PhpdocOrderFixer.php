@@ -16,6 +16,10 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -24,27 +28,37 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @author Jakub Kwaśniewski <jakub@zero-85.pl>
  */
-final class PhpdocOrderFixer extends AbstractFixer
+final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * {@inheritdoc}
+     * @internal
      */
-    public function isCandidate(Tokens $tokens): bool
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
+    public const ORDER_STYLE_PHPCS = 'phpcs';
+
+    /**
+     * @internal
+     */
+    public const ORDER_STYLE_SYMFONY = 'symfony';
+
+    private const ORDERS = [
+        'phpcs' => ['param', 'throws', 'return'],
+        'symfony' => ['param', 'return', 'throws'],
+    ];
+
+    /**
+     * @var string[]
+     */
+    private array $order;
 
     /**
      * {@inheritdoc}
      */
     public function getDefinition(): FixerDefinitionInterface
     {
-        return new FixerDefinition(
-            'Annotations in PHPDoc should be ordered so that `@param` annotations come first, then `@throws` annotations, then `@return` annotations.',
-            [
-                new CodeSample(
-                    '<?php
+        $code = <<<'EOF'
+<?php
 /**
  * Hello there!
  *
@@ -54,10 +68,43 @@ final class PhpdocOrderFixer extends AbstractFixer
  * @param string $foo
  * @param bool   $bar Bar
  */
-'
-                ),
-            ]
+
+EOF;
+
+        $description = 'Annotations in PHPDoc should be ordered in one of the styles below:'."\n";
+        $opts = [];
+        foreach (self::ORDERS as $style => $order) {
+            $opts[] = "\n- `'{$style}'` style annotations order is `@".implode('`, `@', $order).'`';
+        }
+        $description .= implode(',', $opts).'.';
+
+        return new FixerDefinition(
+            'Annotations in PHPDoc should be ordered in specific style.',
+            [
+                new CodeSample($code),
+                new CodeSample($code, ['style' => self::ORDER_STYLE_SYMFONY]),
+                new CodeSample($code, ['style' => self::ORDER_STYLE_PHPCS]),
+            ],
+            $description
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration): void
+    {
+        parent::configure($configuration);
+
+        $this->order = self::ORDERS[$this->configuration['style']];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**
@@ -74,6 +121,21 @@ final class PhpdocOrderFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        $style = new FixerOptionBuilder('style', 'Style in which annotations in PHPDoc should be ordered.');
+        $style
+            ->setAllowedTypes(['string'])
+            ->setAllowedValues([self::ORDER_STYLE_PHPCS, self::ORDER_STYLE_SYMFONY])
+            ->setDefault(self::ORDER_STYLE_PHPCS)
+        ;
+
+        return new FixerConfigurationResolver([$style->getOption()]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
@@ -81,38 +143,43 @@ final class PhpdocOrderFixer extends AbstractFixer
                 continue;
             }
 
+            // assuming we sort three annotation tags
+            [$first, $middle, $last] = $this->order;
             $content = $token->getContent();
-            // move param to start, return to end, leave throws in the middle
-            $content = $this->moveParamAnnotations($content);
+            // move $first to start, $last to end, leave $middle in the middle
+            $content = $this->moveAnnotationsBefore($first, [$middle, $last], $content);
             // we're parsing the content again to make sure the internal
             // state of the docblock is correct after the modifications
-            $content = $this->moveReturnAnnotations($content);
+            $content = $this->moveAnnotationsAfter($last, [$first, $middle], $content);
             // persist the content at the end
             $tokens[$index] = new Token([T_DOC_COMMENT, $content]);
         }
     }
 
     /**
-     * Move all param annotations in before throws and return annotations.
+     * Move all given annotations in before given set of annotations.
+     *
+     * @param string   $move   Tag of annotations that should be moved
+     * @param string[] $before Tags of annotations that should moved annotations be placed before
      */
-    private function moveParamAnnotations(string $content): string
+    private function moveAnnotationsBefore(string $move, array $before, string $content): string
     {
         $doc = new DocBlock($content);
-        $params = $doc->getAnnotationsOfType('param');
+        $to_be_moved = $doc->getAnnotationsOfType($move);
 
-        // nothing to do if there are no param annotations
-        if (0 === \count($params)) {
+        // nothing to do if there are no annotations to be moved
+        if (0 === \count($to_be_moved)) {
             return $content;
         }
 
-        $others = $doc->getAnnotationsOfType(['throws', 'return']);
+        $others = $doc->getAnnotationsOfType($before);
 
         if (0 === \count($others)) {
             return $content;
         }
 
-        // get the index of the final line of the final param annotation
-        $end = end($params)->getEnd();
+        // get the index of the final line of the final to_be_moved annotation
+        $end = end($to_be_moved)->getEnd();
 
         $line = $doc->getLine($end);
 
@@ -129,27 +196,30 @@ final class PhpdocOrderFixer extends AbstractFixer
     }
 
     /**
-     * Move all return annotations after param and throws annotations.
+     * Move all given annotations after given set of annotations.
+     *
+     * @param string   $move  Tag of annotations that should be moved
+     * @param string[] $after Tags of annotations that should moved annotations be placed after
      */
-    private function moveReturnAnnotations(string $content): string
+    private function moveAnnotationsAfter(string $move, array $after, string $content): string
     {
         $doc = new DocBlock($content);
-        $returns = $doc->getAnnotationsOfType('return');
+        $to_be_moved = $doc->getAnnotationsOfType($move);
 
-        // nothing to do if there are no return annotations
-        if (0 === \count($returns)) {
+        // nothing to do if there are no annotations to be moved
+        if (0 === \count($to_be_moved)) {
             return $content;
         }
 
-        $others = $doc->getAnnotationsOfType(['param', 'throws']);
+        $others = $doc->getAnnotationsOfType($after);
 
         // nothing to do if there are no other annotations
         if (0 === \count($others)) {
             return $content;
         }
 
-        // get the index of the first line of the first return annotation
-        $start = $returns[0]->getStart();
+        // get the index of the first line of the first to_be_moved annotation
+        $start = $to_be_moved[0]->getStart();
         $line = $doc->getLine($start);
 
         // move stuff about if required

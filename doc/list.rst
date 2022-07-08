@@ -2028,7 +2028,22 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoUselessInheritdocFixer <./../src/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixer.php>`_
 -  `phpdoc_order <./rules/phpdoc/phpdoc_order.rst>`_
 
-   Annotations in PHPDoc should be ordered so that ``@param`` annotations come first, then ``@throws`` annotations, then ``@return`` annotations.
+   Annotations in PHPDoc should be ordered in specific style.
+
+   Annotations in PHPDoc should be ordered in one of the styles below:
+
+   - ``'phpcs'`` style annotations order is ``@param``, ``@throws``,
+   ``@return``,
+   - ``'symfony'`` style annotations order is ``@param``, ``@return``,
+   ``@throws``.
+
+   Configuration options:
+
+   - | ``style``
+     | Style in which annotations in PHPDoc should be ordered.
+     | Allowed values: ``'phpcs'``, ``'symfony'``
+     | Default value: ``'phpcs'``
+
 
    Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 

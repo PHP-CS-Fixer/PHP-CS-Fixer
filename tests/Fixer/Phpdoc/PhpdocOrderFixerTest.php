@@ -14,10 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\Fixer\Phpdoc\PhpdocOrderFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @author Jakub Kwaśniewski <jakub@zero-85.pl>
  *
  * @internal
  *
@@ -44,8 +46,13 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testOnlyParams(): void
+    /**
+     * @dataProvider provideAllAvailableOrderStyleCases
+     */
+    public function testOnlyParams(array $config): void
     {
+        $this->fixer->configure($config);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -57,8 +64,13 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testOnlyReturns(): void
+    /**
+     * @dataProvider provideAllAvailableOrderStyleCases
+     */
+    public function testOnlyReturns(array $config): void
     {
+        $this->fixer->configure($config);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -71,13 +83,22 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testEmpty(): void
+    /**
+     * @dataProvider provideAllAvailableOrderStyleCases
+     */
+    public function testEmpty(array $config): void
     {
+        $this->fixer->configure($config);
         $this->doTest('/***/');
     }
 
-    public function testNoAnnotations(): void
+    /**
+     * @dataProvider provideAllAvailableOrderStyleCases
+     */
+    public function testNoAnnotations(array $config): void
     {
+        $this->fixer->configure($config);
+
         $expected = <<<'EOF'
 <?php
     /**
@@ -207,5 +228,143 @@ EOF;
 EOF;
 
         $this->doTest($expected, $input);
+    }
+
+    public function testNoChangesithLaravelStyle(): void
+    {
+        $this->fixer->configure(['style' => PhpdocOrderFixer::ORDER_STYLE_SYMFONY]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Do some cool stuff.
+     *
+     * @param EngineInterface $templating
+     * @param string          $name
+     *
+     * @return void|bar
+     *
+     * @throws Exception
+     */
+
+EOF;
+        $this->doTest($expected);
+    }
+
+    public function testFixBasicCaseWithSymfonyStyle(): void
+    {
+        $this->fixer->configure(['style' => PhpdocOrderFixer::ORDER_STYLE_SYMFONY]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param string $foo
+     * @return bool
+     * @throws Exception
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @throws Exception
+     * @return bool
+     * @param string $foo
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixCompeteCaseWithSymfonyStyle(): void
+    {
+        $this->fixer->configure(['style' => PhpdocOrderFixer::ORDER_STYLE_SYMFONY]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Hello there!
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     *
+     *
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     *
+     *
+     *
+     * @param string $foo
+     * @param bool   $bar Bar
+     * @return bool Return false on failure.
+     * @return int  Return the number of changes.
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * Hello there!
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     *
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     *
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     *
+     *
+     * @return bool Return false on failure.
+     * @return int  Return the number of changes.
+     *
+     * @param string $foo
+     * @param bool   $bar Bar
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testExampleFromSymfonyWithSymfonyStyle(): void
+    {
+        $this->fixer->configure(['style' => PhpdocOrderFixer::ORDER_STYLE_SYMFONY]);
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * Renders a template.
+     *
+     * @param mixed $name       A template name
+     * @param array $parameters An array of parameters to pass to the template
+     *
+     * @return string The evaluated template as a string
+     *
+     * @throws \InvalidArgumentException if the template does not exist
+     * @throws \RuntimeException         if the template cannot be rendered
+     */
+
+EOF;
+
+        $this->doTest($input);
+    }
+
+    public function provideAllAvailableOrderStyleCases(): array
+    {
+        return [
+            [['style' => PhpdocOrderFixer::ORDER_STYLE_PHPCS]],
+            [['style' => PhpdocOrderFixer::ORDER_STYLE_SYMFONY]],
+        ];
     }
 }
