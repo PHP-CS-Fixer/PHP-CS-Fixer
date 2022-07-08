@@ -133,11 +133,7 @@ final class FixerFactoryTest extends TestCase
             static::assertSame($expected, $actual, sprintf('The ruleset of "%s" must contain the rules for the priority test.', $file));
         }
 
-        if (\count($missingIntegrationsTests) > 0) {
-            static::fail(sprintf("There shall be an integration test. How do you know that priority set up is good, if there is no integration test to check it?\nMissing:\n- %s", implode("\n- ", $missingIntegrationsTests)));
-        } else {
-            $this->addToAssertionCount(1);
-        }
+        static::assertNotCount(0, $missingIntegrationsTests, sprintf("There shall be an integration test. How do you know that priority set up is good, if there is no integration test to check it?\nMissing:\n- %s", implode("\n- ", $missingIntegrationsTests)));
     }
 
     public function provideFixersPriorityCasesHaveIntegrationCases(): iterable
