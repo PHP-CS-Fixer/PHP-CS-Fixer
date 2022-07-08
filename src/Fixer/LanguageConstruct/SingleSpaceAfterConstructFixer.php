@@ -90,6 +90,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
         'throw' => T_THROW,
         'trait' => T_TRAIT,
         'try' => T_TRY,
+        'type_colon' => CT::T_TYPE_COLON,
         'use' => T_USE,
         'use_lambda' => CT::T_USE_LAMBDA,
         'use_trait' => CT::T_USE_TRAIT,
@@ -277,13 +278,16 @@ yield  from  baz();
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $tokens = array_keys(self::$tokenMap);
+        $defaults = self::$tokenMap;
+        $tokens = array_keys($defaults);
+
+        unset($defaults['type_colon']);
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('constructs', 'List of constructs which must be followed by a single space.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset($tokens)])
-                ->setDefault($tokens)
+                ->setDefault(array_keys($defaults))
                 ->getOption(),
         ]);
     }

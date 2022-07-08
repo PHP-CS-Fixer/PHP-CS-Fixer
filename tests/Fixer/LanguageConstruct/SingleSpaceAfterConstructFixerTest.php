@@ -3193,4 +3193,46 @@ class    Test {
             ',
         ];
     }
+
+    /**
+     * @dataProvider provideTypeColonCases
+     */
+    public function testTypeColon(string $expected, string $input): void
+    {
+        $this->fixer->configure([
+            'constructs' => [
+                'type_colon',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideTypeColonCases(): iterable
+    {
+        yield [
+            '<?php function foo(): array { return []; }',
+            "<?php function foo():\narray { return []; }",
+        ];
+
+        yield [
+            '<?php interface F { public function foo(): array; }',
+            "<?php interface F { public function foo():\tarray; }",
+        ];
+
+        yield [
+            '<?php $a=1; $f = function () use($a): array {};',
+            '<?php $a=1; $f = function () use($a):array {};',
+        ];
+
+        yield [
+            '<?php fn()        : array => [];',
+            '<?php fn()        :      array => [];',
+        ];
+
+        yield [
+            '<?php $a=1; $f = fn (): array => [];',
+            '<?php $a=1; $f = fn ():      array => [];',
+        ];
+    }
 }
