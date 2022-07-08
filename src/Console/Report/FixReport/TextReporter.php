@@ -54,6 +54,9 @@ final class TextReporter implements ReporterInterface
         return $output.$this->getFooter($reportSummary->getTime(), $reportSummary->getMemory(), $reportSummary->isDryRun());
     }
 
+    /**
+     * @param array{appliedFixers: list<string>} $fixResult
+     */
     private function getAppliedFixers(bool $isDecoratedOutput, array $fixResult): string
     {
         return sprintf(
@@ -62,6 +65,9 @@ final class TextReporter implements ReporterInterface
         );
     }
 
+    /**
+     * @param array{diff?: string} $fixResult
+     */
     private function getDiff(bool $isDecoratedOutput, array $fixResult): string
     {
         if (empty($fixResult['diff'])) {

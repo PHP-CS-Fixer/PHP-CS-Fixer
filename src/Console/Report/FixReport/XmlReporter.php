@@ -60,7 +60,7 @@ final class XmlReporter implements ReporterInterface
             }
 
             if (!empty($fixResult['diff'])) {
-                $fileXML->appendChild($this->createDiffElement($dom, $fixResult));
+                $fileXML->appendChild($this->createDiffElement($dom, $fixResult['diff']));
             }
         }
 
@@ -77,6 +77,9 @@ final class XmlReporter implements ReporterInterface
         return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($dom->saveXML()) : $dom->saveXML();
     }
 
+    /**
+     * @param array{appliedFixers: list<string>} $fixResult
+     */
     private function createAppliedFixersElement(\DOMDocument $dom, array $fixResult): \DOMElement
     {
         $appliedFixersXML = $dom->createElement('applied_fixers');
@@ -90,10 +93,10 @@ final class XmlReporter implements ReporterInterface
         return $appliedFixersXML;
     }
 
-    private function createDiffElement(\DOMDocument $dom, array $fixResult): \DOMElement
+    private function createDiffElement(\DOMDocument $dom, string $diff): \DOMElement
     {
         $diffXML = $dom->createElement('diff');
-        $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
+        $diffXML->appendChild($dom->createCDATASection($diff));
 
         return $diffXML;
     }

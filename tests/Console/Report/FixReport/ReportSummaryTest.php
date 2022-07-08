@@ -26,7 +26,12 @@ final class ReportSummaryTest extends TestCase
 {
     public function testReportSummary(): void
     {
-        $changed = ['', 5];
+        $changed = [
+            'someFile.php' => [
+                'appliedFixers' => ['some_fixer_name_here'],
+                'diff' => 'this text is a diff ;)',
+            ],
+        ];
         $time = time();
         $memory = 123456789;
         $addAppliedFixers = true;

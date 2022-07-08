@@ -102,6 +102,9 @@ final class JunitReporter implements ReporterInterface
         $testsuite->setAttribute('errors', '0');
     }
 
+    /**
+     * @param array{appliedFixers: list<string>, diff?: string} $fixResult
+     */
     private function createFailedTestCase(\DOMDocument $dom, string $file, array $fixResult, bool $shouldAddAppliedFixers): \DOMElement
     {
         $appliedFixersCount = \count($fixResult['appliedFixers']);
