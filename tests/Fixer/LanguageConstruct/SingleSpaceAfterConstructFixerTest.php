@@ -3195,7 +3195,6 @@ class    Test {
     }
 
     /**
-     * @requires PHP 8.0
      * @dataProvider provideTypeColonCases
      */
     public function testTypeColon(string $expected, string $input): void
