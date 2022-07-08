@@ -10,8 +10,8 @@
         "maglnet/composer-require-checker": "3.3.0",
         "mi-schi/phpmd-extension": "^4.3",
         "phpmd/phpmd": "^2.10.2",
-        "phpstan/phpstan": "^1.2",
-        "phpstan/phpstan-phpunit": "^1.0"
+        "phpstan/phpstan": "^1.8",
+        "phpstan/phpstan-phpunit": "^1.1"
     },
     "config": {
         "allow-plugins": {
