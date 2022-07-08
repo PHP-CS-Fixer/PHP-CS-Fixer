@@ -1867,150 +1867,200 @@ class Foo {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases(): array
+    public function provideFixPhp80Cases(): iterable
     {
-        return [
-            'static return' => [
-                '<?php
+        yield 'static return' => [
+            '<?php
 class Foo {
     /**
      */
     public function foo($foo): static {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @return static
      */
     public function foo($foo): static {}
 }',
-            ],
-            'union type on parameter' => [
-                '<?php
+        ];
+
+        yield 'union type on parameter' => [
+            '<?php
 class Foo {
     /**
      */
     public function foo(int|string $foo) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param int|string $foo
      */
     public function foo(int|string $foo) {}
 }',
-            ],
-            'union type on return type' => [
-                '<?php
+        ];
+
+        yield 'union type on return type' => [
+            '<?php
 class Foo {
     /**
      */
     public function foo($foo): int|string {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @return int|string
      */
     public function foo($foo): int|string {}
 }',
-            ],
-            'union type on property' => [
-                '<?php
+        ];
+
+        yield 'union type on property' => [
+            '<?php
 class Foo {
     /**
      */
     public int|string $foo;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var int|string
      */
     public int|string $foo;
 }',
-            ],
-            'union type on property with spaces' => [
-                '<?php
+        ];
+
+        yield 'union type on property with spaces' => [
+            '<?php
 class Foo {
     /**
      */
     public int  |  string $foo;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var int|string
      */
     public int  |  string $foo;
 }',
-            ],
-            'union type with null' => [
-                '<?php
+        ];
+
+        yield 'union type with null' => [
+            '<?php
 /**
  */
 function foo(int|string|null $foo) {}',
-                '<?php
+            '<?php
 /**
  * @param int|string|null $foo
  */
 function foo(int|string|null $foo) {}',
-            ],
-            'union type in different order' => [
-                '<?php
+        ];
+
+        yield 'union type in different order' => [
+            '<?php
 /**
  */
 function foo(string|int $foo) {}',
-                '<?php
+            '<?php
 /**
  * @param int|string $foo
  */
 function foo(string|int $foo) {}',
-            ],
-            'more details in phpdocs' => [
-                '<?php
+        ];
+
+        yield 'more details in phpdocs' => [
+            '<?php
 /**
  * @param string|array<string> $foo
  */
 function foo(string|array $foo) {}',
-            ],
-            'missing types in phpdocs' => [
-                '<?php
+        ];
+
+        yield 'missing types in phpdocs' => [
+            '<?php
 /**
  * @param string|int $foo
  */
 function foo(string|array|int $foo) {}',
-            ],
-            'too many types in phpdocs' => [
-                '<?php
+        ];
+
+        yield 'too many types in phpdocs' => [
+            '<?php
 /**
  * @param string|array|int $foo
  */
 function foo(string|int $foo) {}',
-            ],
-            'promoted properties' => [
-                '<?php class Foo {
-                    /**
-                     */
-                    public function __construct(
-                        public string $a,
-                        protected ?string $b,
-                        private ?string $c,
-                    ) {}
-                }',
-                '<?php class Foo {
-                    /**
-                     * @param string $a
-                     * @param null|string $b
-                     * @param string|null $c
-                     */
-                    public function __construct(
-                        public string $a,
-                        protected ?string $b,
-                        private ?string $c,
-                    ) {}
-                }',
-            ],
+        ];
+
+        yield 'promoted properties' => [
+            '<?php class Foo {
+                /**
+                 */
+                public function __construct(
+                    public string $a,
+                    protected ?string $b,
+                    private ?string $c,
+                ) {}
+            }',
+            '<?php class Foo {
+                /**
+                 * @param string $a
+                 * @param null|string $b
+                 * @param string|null $c
+                 */
+                public function __construct(
+                    public string $a,
+                    protected ?string $b,
+                    private ?string $c,
+                ) {}
+            }',
+        ];
+
+        yield 'single attribute' => [
+            '<?php
+class Foo
+{
+    /**
+     */
+    #[MyAttribute]
+    private int $bar = 1;
+}',
+            '<?php
+class Foo
+{
+    /**
+     * @var int
+     */
+    #[MyAttribute]
+    private int $bar = 1;
+}',
+        ];
+
+        yield 'multiple attributes' => [
+            '<?php
+class Foo
+{
+    /**
+     */
+    #[MyAttribute]
+    #[MyAttribute2]
+    private int $bar = 1;
+}',
+            '<?php
+class Foo
+{
+    /**
+     * @var int
+     */
+    #[MyAttribute]
+    #[MyAttribute2]
+    private int $bar = 1;
+}',
         ];
     }
 
