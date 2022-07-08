@@ -49,7 +49,7 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
     /**
      * @var array<string, array>
      */
-    private $functions;
+    private array $functions;
 
     public function __construct()
     {

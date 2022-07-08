@@ -30,10 +30,8 @@ final class RuleSet implements RuleSetInterface
      *
      * The key is name of rule, value is bool if the rule/set should be used.
      * The key must not point to any set.
-     *
-     * @var array
      */
-    private $rules;
+    private array $rules;
 
     public function __construct(array $set = [])
     {

@@ -27,10 +27,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class FileFilterIterator extends \FilterIterator
 {
-    /**
-     * @var null|EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private ?EventDispatcherInterface $eventDispatcher;
 
     private CacheManagerInterface $cacheManager;
 

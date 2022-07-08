@@ -19,15 +19,9 @@ namespace PhpCsFixer\FixerDefinition;
  */
 final class VersionSpecification implements VersionSpecificationInterface
 {
-    /**
-     * @var null|int
-     */
-    private $minimum;
+    private ?int $minimum;
 
-    /**
-     * @var null|int
-     */
-    private $maximum;
+    private ?int $maximum;
 
     /**
      * @throws \InvalidArgumentException

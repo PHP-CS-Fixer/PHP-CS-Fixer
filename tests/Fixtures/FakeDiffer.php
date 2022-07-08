@@ -19,10 +19,7 @@ use PhpCsFixer\Differ\DifferInterface;
  */
 final class FakeDiffer implements DifferInterface
 {
-    /**
-     * @var \SplFileInfo|null
-     */
-    public $passedFile;
+    public ?\SplFileInfo $passedFile;
 
     public function diff(string $old, string $new, \SplFileInfo $file = null): string
     {

@@ -29,10 +29,7 @@ final class IntegrationCase
 
     private string $fileName;
 
-    /**
-     * @var null|string
-     */
-    private $inputCode;
+    private ?string $inputCode;
 
     /**
      * Env requirements (possible keys: php).

@@ -34,10 +34,7 @@ final class TokensAnalyzer
      */
     private Tokens $tokens;
 
-    /**
-     * @var ?GotoLabelAnalyzer
-     */
-    private $gotoLabelAnalyzer;
+    private ?GotoLabelAnalyzer $gotoLabelAnalyzer = null;
 
     public function __construct(Tokens $tokens)
     {

@@ -26,15 +26,9 @@ final class FixerDefinition implements FixerDefinitionInterface
      */
     private array $codeSamples;
 
-    /**
-     * @var null|string
-     */
-    private $description;
+    private ?string $description;
 
-    /**
-     * @var null|string
-     */
-    private $riskyDescription;
+    private ?string $riskyDescription;
 
     /**
      * @param CodeSampleInterface[] $codeSamples      array of samples, where single sample is [code, configuration]

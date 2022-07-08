@@ -38,7 +38,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
     /**
      * @var array<string, Token[]>
      */
-    private $functionsFixMap;
+    private array $functionsFixMap;
 
     public function __construct()
     {
@@ -72,6 +72,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
         parent::configure($configuration);
 
         $this->functionsFixMap = [];
+
         foreach ($this->configuration['functions'] as $key) {
             $this->functionsFixMap[$key] = self::$availableFunctions[$key];
         }
