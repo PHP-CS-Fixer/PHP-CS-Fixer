@@ -62,6 +62,16 @@ final class EregToPregFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after NoUselessConcatOperatorFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens): bool
     {

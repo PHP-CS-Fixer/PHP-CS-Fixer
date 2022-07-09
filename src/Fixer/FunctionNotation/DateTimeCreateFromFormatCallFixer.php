@@ -42,6 +42,16 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after NoUselessConcatOperatorFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOUBLE_COLON);

@@ -611,6 +611,13 @@ final class FixerFactoryTest extends TestCase
                 'no_leading_import_slash',
                 'single_line_after_imports',
             ],
+            'no_useless_concat_operator' => [
+                'date_time_create_from_format_call',
+                'ereg_to_preg',
+                'php_unit_dedicate_assert_internal_type',
+                'regular_callable_call',
+                'set_type_to_cast',
+            ],
             'no_useless_else' => [
                 'braces',
                 'combine_consecutive_unsets',

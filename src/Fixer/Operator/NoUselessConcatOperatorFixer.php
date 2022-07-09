@@ -49,6 +49,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
     /**
      * {@inheritdoc}
      *
+     * Must run before DateTimeCreateFromFormatCallFixer, EregToPregFixer, PhpUnitDedicateAssertInternalTypeFixer, RegularCallableCallFixer, SetTypeToCastFixer.
      * Must run after NoBinaryStringFixer, SingleQuoteFixer.
      */
     public function getPriority(): int
