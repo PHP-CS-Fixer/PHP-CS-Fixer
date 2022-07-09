@@ -165,10 +165,10 @@ EOF;
     private function moveAnnotationsBefore(string $move, array $before, string $content): string
     {
         $doc = new DocBlock($content);
-        $to_be_moved = $doc->getAnnotationsOfType($move);
+        $toBeMoved = $doc->getAnnotationsOfType($move);
 
         // nothing to do if there are no annotations to be moved
-        if (0 === \count($to_be_moved)) {
+        if (0 === \count($toBeMoved)) {
             return $content;
         }
 
@@ -178,8 +178,8 @@ EOF;
             return $content;
         }
 
-        // get the index of the final line of the final to_be_moved annotation
-        $end = end($to_be_moved)->getEnd();
+        // get the index of the final line of the final toBoMoved annotation
+        $end = end($toBeMoved)->getEnd();
 
         $line = $doc->getLine($end);
 
@@ -204,10 +204,10 @@ EOF;
     private function moveAnnotationsAfter(string $move, array $after, string $content): string
     {
         $doc = new DocBlock($content);
-        $to_be_moved = $doc->getAnnotationsOfType($move);
+        $toBeMoved = $doc->getAnnotationsOfType($move);
 
         // nothing to do if there are no annotations to be moved
-        if (0 === \count($to_be_moved)) {
+        if (0 === \count($toBeMoved)) {
             return $content;
         }
 
@@ -218,8 +218,8 @@ EOF;
             return $content;
         }
 
-        // get the index of the first line of the first to_be_moved annotation
-        $start = $to_be_moved[0]->getStart();
+        // get the index of the first line of the first toBeMoved annotation
+        $start = $toBeMoved[0]->getStart();
         $line = $doc->getLine($start);
 
         // move stuff about if required
