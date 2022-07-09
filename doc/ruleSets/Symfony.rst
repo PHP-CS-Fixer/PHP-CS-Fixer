@@ -73,7 +73,7 @@ Rules
 - `no_trailing_comma_in_singleline_function_call <./../rules/function_notation/no_trailing_comma_in_singleline_function_call.rst>`_
 - `no_unneeded_control_parentheses <./../rules/control_structure/no_unneeded_control_parentheses.rst>`_
   config:
-  ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield', 'yield_from']]``
+  ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``
 - `no_unneeded_curly_braces <./../rules/control_structure/no_unneeded_curly_braces.rst>`_
   config:
   ``['namespaces' => true]``

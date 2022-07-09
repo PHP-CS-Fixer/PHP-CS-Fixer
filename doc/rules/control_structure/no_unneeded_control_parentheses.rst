@@ -12,7 +12,7 @@ Configuration
 
 List of control statements to fix.
 
-Allowed values: a subset of ``['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield', 'yield_from']``
+Allowed values: a subset of ``['break', 'clone', 'continue', 'echo_print', 'negative_instanceof', 'others', 'return', 'switch_case', 'yield', 'yield_from']``
 
 Default value: ``['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield']``
 
@@ -58,14 +58,11 @@ With configuration: ``['statements' => ['break', 'continue']]``.
     <?php
    -while ($x) { while ($y) { break (2); } }
    +while ($x) { while ($y) { break 2; } }
+
     clone($a);
+
    -while ($y) { continue (2); }
    +while ($y) { continue 2; }
-    echo("foo");
-    print("foo");
-    return (1 + 2);
-    switch ($a) { case($x); }
-    yield(2);
 
 Rule sets
 ---------
@@ -75,9 +72,9 @@ The rule is part of the following rule sets:
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``no_unneeded_control_parentheses`` rule with the config below:
 
-  ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield', 'yield_from']]``
+  ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'negative_instanceof', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``
 
 @Symfony
   Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``no_unneeded_control_parentheses`` rule with the config below:
 
-  ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield', 'yield_from']]``
+  ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``

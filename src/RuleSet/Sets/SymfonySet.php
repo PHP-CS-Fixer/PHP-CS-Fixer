@@ -111,6 +111,7 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'clone',
                     'continue',
                     'echo_print',
+                    'others',
                     'return',
                     'switch_case',
                     'yield',

@@ -81,6 +81,20 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             ],
             'no_null_property_initialization' => true,
             'no_superfluous_elseif' => true,
+            'no_unneeded_control_parentheses' => [
+                'statements' => [
+                    'break',
+                    'clone',
+                    'continue',
+                    'echo_print',
+                    'negative_instanceof',
+                    'others',
+                    'return',
+                    'switch_case',
+                    'yield',
+                    'yield_from',
+                ],
+            ],
             'no_useless_else' => true,
             'no_useless_return' => true,
             'operator_linebreak' => [

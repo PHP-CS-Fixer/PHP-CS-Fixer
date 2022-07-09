@@ -405,7 +405,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         if ($tokens[$classEndIndex]->equalsAny([',', ')'])) { // do the fixing
             array_pop($classPartTokens);
-            $isInstanceOfVar = (reset($classPartTokens))->isGivenKind(T_VARIABLE);
+            $isInstanceOfVar = reset($classPartTokens)->isGivenKind(T_VARIABLE);
             $insertIndex = $testIndex - 1;
             $newTokens = [];
 
