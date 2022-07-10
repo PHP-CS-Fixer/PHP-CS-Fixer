@@ -1733,6 +1733,13 @@ List of Available Rules
    Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\NoUselessElseFixer <./../src/Fixer/ControlStructure/NoUselessElseFixer.php>`_
+-  `no_useless_nullsafe_operator <./rules/operator/no_useless_nullsafe_operator.rst>`_
+
+   There should not be useless ``null-safe-operators`` ``?->`` used.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Operator\\NoUselessNullsafeOperatorFixer <./../src/Fixer/Operator/NoUselessNullsafeOperatorFixer.php>`_
 -  `no_useless_return <./rules/return_notation/no_useless_return.rst>`_
 
    There should not be an empty ``return`` statement at the end of a function.
