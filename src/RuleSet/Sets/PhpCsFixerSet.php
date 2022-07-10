@@ -65,6 +65,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             ],
             'no_extra_blank_lines' => [
                 'tokens' => [
+                    'attribute',
                     'break',
                     'case',
                     'continue',

@@ -1439,7 +1439,7 @@ List of Available Rules
 
    - | ``tokens``
      | List of tokens to fix.
-     | Allowed values: a subset of ``['break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use', 'use_trait']``
+     | Allowed values: a subset of ``['attribute', 'break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use', 'use_trait']``
      | Default value: ``['extra']``
 
 
