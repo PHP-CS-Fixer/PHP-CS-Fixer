@@ -51,6 +51,5 @@ Rules
 - `phpdoc_types_order <./../rules/phpdoc/phpdoc_types_order.rst>`_
 - `phpdoc_var_annotation_correct_order <./../rules/phpdoc/phpdoc_var_annotation_correct_order.rst>`_
 - `return_assignment <./../rules/return_notation/return_assignment.rst>`_
-- `simple_to_complex_string_variable <./../rules/string_notation/simple_to_complex_string_variable.rst>`_
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
 - `single_line_throw <./../rules/function_notation/single_line_throw.rst>`_

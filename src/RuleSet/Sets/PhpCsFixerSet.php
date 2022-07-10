@@ -110,7 +110,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'phpdoc_types_order' => true,
             'phpdoc_var_annotation_correct_order' => true,
             'return_assignment' => true,
-            'simple_to_complex_string_variable' => true,
             'single_line_comment_style' => true,
             'single_line_throw' => false,
         ];

@@ -2657,7 +2657,7 @@ List of Available Rules
    Doesn't touch implicit variables. Works together nicely with
    ``explicit_string_variable``.
 
-   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\StringNotation\\SimpleToComplexStringVariableFixer <./../src/Fixer/StringNotation/SimpleToComplexStringVariableFixer.php>`_
 -  `simplified_if_return <./rules/control_structure/simplified_if_return.rst>`_
