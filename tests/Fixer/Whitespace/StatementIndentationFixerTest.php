@@ -676,6 +676,45 @@ return match ($bool) {
    default => throw new Exception(),
 };',
         ];
+
+        yield 'attribute' => [
+            '<?php
+class Foo {
+    #[SimpleAttribute]
+    #[
+        MultilineAttribute
+    ]
+    #[ComplexAttribute(
+        foo: true,
+        bar: [
+                    1,
+                        2,
+                  3,
+         ]
+    )]
+    public function bar()
+    {
+    }
+}',
+            '<?php
+class Foo {
+ #[SimpleAttribute]
+ #[
+ MultilineAttribute
+ ]
+#[ComplexAttribute(
+ foo: true,
+    bar: [
+                1,
+                    2,
+              3,
+     ]
+ )]
+  public function bar()
+     {
+     }
+}',
+        ];
     }
 
     /**

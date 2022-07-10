@@ -905,6 +905,51 @@ INPUT
         ]);
     }
 
+    /**
+     * @dataProvider provideFixPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp80Cases()
+    {
+        yield 'attribute' => [
+            '<?php
+class Foo {
+ #[SimpleAttribute]
+#[ComplexAttribute(
+ foo: true,
+    bar: [
+        1,
+        2,
+        3,
+    ]
+ )]
+  public function bar()
+     {
+     }
+}',
+            '<?php
+class Foo {
+ #[SimpleAttribute]
+#[ComplexAttribute(
+ foo: true,
+    bar: [
+                1,
+                    2,
+              3,
+     ]
+ )]
+  public function bar()
+     {
+     }
+}',
+        ];
+    }
+
     private function withLongArraySyntaxCases(array $cases): array
     {
         $longSyntaxCases = [];
