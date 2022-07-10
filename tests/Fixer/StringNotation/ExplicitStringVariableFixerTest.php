@@ -38,8 +38,8 @@ final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
         $input = $expected = '<?php';
 
         for ($inc = 1; $inc < 15; ++$inc) {
+            $expected .= " \$var{$inc} = \"My name is {\$name}!\";";
             $input .= " \$var{$inc} = \"My name is \$name!\";";
-            $expected .= " \$var{$inc} = \"My name is \${name}!\";";
         }
 
         return [
@@ -48,16 +48,16 @@ final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
                 $input,
             ],
             [
-                '<?php $a = "My name is ${name}!";',
+                '<?php $a = "My name is {$name}!";',
                 '<?php $a = "My name is $name!";',
             ],
             [
-                '<?php "My name is ${james}${bond}!";',
+                '<?php "My name is {$james}{$bond}!";',
                 '<?php "My name is $james$bond!";',
             ],
             [
                 '<?php $a = <<<EOF
-My name is ${name}!
+My name is {$name}!
 EOF;
 ',
                 '<?php $a = <<<EOF
@@ -66,20 +66,20 @@ EOF;
 ',
             ],
             [
-                '<?php $a = "${b}";',
+                '<?php $a = "{$b}";',
                 '<?php $a = "$b";',
             ],
             [
-                '<?php $a = "${b} start";',
+                '<?php $a = "{$b} start";',
                 '<?php $a = "$b start";',
             ],
             [
-                '<?php $a = "end ${b}";',
+                '<?php $a = "end {$b}";',
                 '<?php $a = "end $b";',
             ],
             [
                 '<?php $a = <<<EOF
-${b}
+{$b}
 EOF;
 ',
                 '<?php $a = <<<EOF
@@ -126,11 +126,11 @@ EOF;
                 '<?php $a = "My name is $array[$foo] !";',
             ],
             [
-                '<?php $a = "My name is {$array[$foo]}[${bar}] !";',
+                '<?php $a = "My name is {$array[$foo]}[{$bar}] !";',
                 '<?php $a = "My name is $array[$foo][$bar] !";',
             ],
             [
-                '<?php $a = "Closure not allowed ${closure}() text";',
+                '<?php $a = "Closure not allowed {$closure}() text";',
                 '<?php $a = "Closure not allowed $closure() text";',
             ],
             [
@@ -142,7 +142,7 @@ EOF;
                 '<?php $a = "Complex array chaining not allowed $array[1][2][MY_CONSTANT] text";',
             ],
             [
-                '<?php $a = "Concatenation: ${james}${bond}{$object->property}{$array[1]}!";',
+                '<?php $a = "Concatenation: {$james}{$bond}{$object->property}{$array[1]}!";',
                 '<?php $a = "Concatenation: $james$bond$object->property$array[1]!";',
             ],
             [
@@ -201,7 +201,7 @@ EOF;
                 '<?php $a = `echo $foo`;',
             ],
             [
-                '<?php $a = "My name is ${name}!"; $a = `echo $foo`; $a = "{$a->b} start";',
+                '<?php $a = "My name is {$name}!"; $a = `echo $foo`; $a = "{$a->b} start";',
                 '<?php $a = "My name is $name!"; $a = `echo $foo`; $a = "$a->b start";',
             ],
             [
@@ -209,11 +209,11 @@ EOF;
                 '<?php $mobileNumberVisible = "***-***-$last4Digits[0]$last4Digits[1]-$last4Digits[2]$last4Digits[3]";',
             ],
             [
-                '<?php $pair = "${foo} {$bar[0]}";',
+                '<?php $pair = "{$foo} {$bar[0]}";',
                 '<?php $pair = "$foo {$bar[0]}";',
             ],
             [
-                '<?php $pair = "${foo}{$bar[0]}";',
+                '<?php $pair = "{$foo}{$bar[0]}";',
                 '<?php $pair = "$foo{$bar[0]}";',
             ],
             [

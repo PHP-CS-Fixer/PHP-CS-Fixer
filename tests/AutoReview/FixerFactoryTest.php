@@ -261,6 +261,7 @@ final class FixerFactoryTest extends TestCase
         $knownIssues = [ // should only shrink
             'final_class' => true,
             'psr_autoloading' => true,
+            'simple_to_complex_string_variable' => true, // had prio case but no longer, left prio the same for BC reasons
             'single_blank_line_before_namespace' => true,
         ];
 
@@ -401,9 +402,6 @@ final class FixerFactoryTest extends TestCase
             'escape_implicit_backslashes' => [
                 'heredoc_to_nowdoc',
                 'single_quote',
-            ],
-            'explicit_string_variable' => [
-                'simple_to_complex_string_variable',
             ],
             'final_internal_class' => [
                 'protected_to_private',
