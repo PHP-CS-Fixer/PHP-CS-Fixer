@@ -35,7 +35,7 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): iterable
     {
         yield 'if (default)' => [
             '<?php

@@ -831,6 +831,8 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @param \ReflectionClass<object> $rc
+     *
      * @return string[]
      */
     private function getPublicMethodNames(\ReflectionClass $rc): array

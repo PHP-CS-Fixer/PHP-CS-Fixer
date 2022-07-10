@@ -37,7 +37,7 @@ final class FileLintingIteratorTest extends TestCase
             $fileLintingIteratorProphecy->reveal()
         );
 
-        static::assertNull($fileLintingIterator->current());
+        static::assertNull($fileLintingIterator->current()); // @phpstan-ignore-line
         static::assertNull($fileLintingIterator->currentLintingResult());
         static::assertSame($iterator, $fileLintingIterator->getInnerIterator());
         static::assertFalse($fileLintingIterator->valid());

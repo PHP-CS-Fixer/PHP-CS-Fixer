@@ -50,7 +50,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixControlContinuationBracesCases()
+    public function provideFixControlContinuationBracesCases(): iterable
     {
         return [
             [
@@ -835,7 +835,7 @@ if (true) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixMissingBracesAndIndentCases()
+    public function provideFixMissingBracesAndIndentCases(): iterable
     {
         return [
             [
@@ -2620,7 +2620,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixClassyBracesCases()
+    public function provideFixClassyBracesCases(): iterable
     {
         return [
             [
@@ -2801,7 +2801,7 @@ function foo()
         $this->doTest($expected, $input);
     }
 
-    public function provideFixAnonFunctionInShortArraySyntaxCases()
+    public function provideFixAnonFunctionInShortArraySyntaxCases(): iterable
     {
         return [
             [
@@ -2915,7 +2915,7 @@ function foo()
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCommentBeforeBraceCases()
+    public function provideFixCommentBeforeBraceCases(): iterable
     {
         return [
             [
@@ -3045,7 +3045,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWhitespaceBeforeBraceCases()
+    public function provideFixWhitespaceBeforeBraceCases(): iterable
     {
         return [
             [
@@ -3260,7 +3260,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
         $this->doTest($expected, $input);
     }
 
-    public function provideFixFunctionsCases()
+    public function provideFixFunctionsCases(): iterable
     {
         return [
             [
@@ -3618,7 +3618,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixMultiLineStructuresCases()
+    public function provideFixMultiLineStructuresCases(): iterable
     {
         return [
             [
@@ -3736,7 +3736,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixSpaceAroundTokenCases()
+    public function provideFixSpaceAroundTokenCases(): iterable
     {
         return [
             [
@@ -3931,7 +3931,7 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provideFinallyCases()
+    public function provideFinallyCases(): iterable
     {
         return [
             [
@@ -4028,7 +4028,7 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provideFunctionImportCases()
+    public function provideFunctionImportCases(): iterable
     {
         return [
             [
@@ -4076,7 +4076,7 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70Cases()
+    public function provideFix70Cases(): iterable
     {
         return [
             [
@@ -4788,7 +4788,7 @@ $foo = new class () extends \Exception { protected $message = "Surprise"; };
         $this->doTest($expected, $input);
     }
 
-    public function providePreserveLineAfterControlBraceCases()
+    public function providePreserveLineAfterControlBraceCases(): iterable
     {
         return [
             [
@@ -4907,7 +4907,7 @@ if (true) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithAllowOnelineLambdaCases()
+    public function provideFixWithAllowOnelineLambdaCases(): iterable
     {
         return [
             [
@@ -4949,7 +4949,7 @@ if (true) {
         $this->doTest($expected, $input);
     }
 
-    public function provideDoWhileLoopInsideAnIfWithoutBracketsCases()
+    public function provideDoWhileLoopInsideAnIfWithoutBracketsCases(): iterable
     {
         return [
             [
@@ -4980,7 +4980,7 @@ if (true)
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): iterable
     {
         return [
             [
@@ -5043,7 +5043,7 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
         $this->doTest($expected, $input);
     }
 
-    public function provideNowdocInTemplatesCases()
+    public function provideNowdocInTemplatesCases(): iterable
     {
         return [
             [
@@ -5106,7 +5106,7 @@ EOT
         $this->doTest(str_replace('//', '#', $expected), null === $input ? null : str_replace('//', '#', $input));
     }
 
-    public function provideFixCommentsCases()
+    public function provideFixCommentsCases(): iterable
     {
         return [
             [
@@ -5316,7 +5316,7 @@ function example()
         $this->doTest($expected, $input);
     }
 
-    public function provideIndentCommentCases()
+    public function provideIndentCommentCases(): iterable
     {
         yield [
             "<?php
@@ -5402,7 +5402,7 @@ return foo($i);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixAlternativeSyntaxCases()
+    public function provideFixAlternativeSyntaxCases(): iterable
     {
         yield [
             '<?php if (foo()) {
@@ -5607,7 +5607,7 @@ break;
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): iterable
     {
         yield 'match' => [
             '<?php echo match ($x) {
@@ -5630,7 +5630,7 @@ break;
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases()
+    public function provideFix81Cases(): iterable
     {
         yield 'enum' => [
             '<?php

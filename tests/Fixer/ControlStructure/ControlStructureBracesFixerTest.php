@@ -31,7 +31,7 @@ final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): iterable
     {
         yield 'if' => [
             '<?php if ($foo) { foo(); }',

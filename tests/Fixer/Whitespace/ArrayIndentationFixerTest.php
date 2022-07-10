@@ -914,7 +914,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases()
+    public function provideFixPhp80Cases(): iterable
     {
         yield 'attribute' => [
             '<?php

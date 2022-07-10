@@ -29,7 +29,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
      *
      * Ordered by most common types first.
      *
-     * @var array
+     * @var list<array{int}|string>
      */
     private const VALID_BEFORE_ENDTYPES = [
         '=',

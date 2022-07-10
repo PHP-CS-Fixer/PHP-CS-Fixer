@@ -219,7 +219,7 @@ final class ControlStructureBracesFixer extends AbstractFixer
         return $tokens;
     }
 
-    private function getControlContinuationTokensForOpeningToken($openingTokenKind): array
+    private function getControlContinuationTokensForOpeningToken(int $openingTokenKind): array
     {
         if (T_IF === $openingTokenKind) {
             return [
@@ -242,7 +242,7 @@ final class ControlStructureBracesFixer extends AbstractFixer
         return [];
     }
 
-    private function getFinalControlContinuationTokensForOpeningToken($openingTokenKind): array
+    private function getFinalControlContinuationTokensForOpeningToken(int $openingTokenKind): array
     {
         if (T_IF === $openingTokenKind) {
             return [T_ELSE];

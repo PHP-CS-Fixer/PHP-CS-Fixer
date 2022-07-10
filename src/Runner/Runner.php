@@ -52,7 +52,7 @@ final class Runner
     private LinterInterface $linter;
 
     /**
-     * @var \Traversable
+     * @var \Traversable<\SplFileInfo>
      */
     private $finder;
 
@@ -63,6 +63,9 @@ final class Runner
 
     private bool $stopOnViolation;
 
+    /**
+     * @param \Traversable<\SplFileInfo> $finder
+     */
     public function __construct(
         $finder,
         array $fixers,

@@ -438,6 +438,9 @@ final class RuleSetTest extends TestCase
         return $array;
     }
 
+    /**
+     * @param array<string, mixed>|bool $config
+     */
     private function findInSets(array $sets, string $ruleName, $config): array
     {
         $duplicates = [];

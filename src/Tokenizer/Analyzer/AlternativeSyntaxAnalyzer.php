@@ -105,7 +105,7 @@ final class AlternativeSyntaxAnalyzer
         }
     }
 
-    private function isStartOfAlternativeSyntaxBlock(Tokens $tokens, $index): bool
+    private function isStartOfAlternativeSyntaxBlock(Tokens $tokens, int $index): bool
     {
         $map = self::ALTERNATIVE_SYNTAX_BLOCK_EDGES;
         $startTokenKind = $tokens[$index]->getId();

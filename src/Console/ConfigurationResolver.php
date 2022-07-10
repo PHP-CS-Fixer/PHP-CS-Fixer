@@ -143,9 +143,9 @@ final class ConfigurationResolver
     private $directory;
 
     /**
-     * @var null|iterable
+     * @var null|iterable<\SplFileInfo>
      */
-    private $finder;
+    private ?iterable $finder = null;
 
     private $format;
 
@@ -610,6 +610,13 @@ final class ConfigurationResolver
         return $this->isStdIn;
     }
 
+    /**
+     * @template T
+     *
+     * @param iterable<T> $iterable
+     *
+     * @return \Traversable<T>
+     */
     private function iterableToTraversable(iterable $iterable): \Traversable
     {
         return \is_array($iterable) ? new \ArrayIterator($iterable) : $iterable;

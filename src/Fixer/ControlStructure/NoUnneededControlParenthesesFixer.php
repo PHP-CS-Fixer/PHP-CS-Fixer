@@ -526,7 +526,7 @@ while ($y) { continue (2); }
         return $this->tokensAnalyzer->isUnaryPredecessorOperator($index) || $tokens[$index]->isCast();
     }
 
-    private function getBeforePreUnaryOperation(Tokens $tokens, $index): int
+    private function getBeforePreUnaryOperation(Tokens $tokens, int $index): int
     {
         do {
             $index = $tokens->getPrevMeaningfulToken($index);
@@ -543,7 +543,7 @@ while ($y) { continue (2); }
         return $token->isObjectOperator() || $token->equals('[') || $token->isGivenKind([CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]);
     }
 
-    private function getAfterAccess(Tokens $tokens, $index): int
+    private function getAfterAccess(Tokens $tokens, int $index): int
     {
         while (true) {
             $block = $this->getBlock($tokens, $index, true);

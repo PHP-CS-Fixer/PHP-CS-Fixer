@@ -21,6 +21,8 @@ use PhpCsFixer\Linter\LintingResultInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @extends \IteratorIterator<mixed, \SplFileInfo, \Traversable<\SplFileInfo>>
  */
 final class FileLintingIterator extends \IteratorIterator
 {

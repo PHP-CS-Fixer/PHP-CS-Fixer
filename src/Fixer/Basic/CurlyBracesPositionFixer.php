@@ -404,7 +404,7 @@ $bar = function () { $result = true;
         return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
     }
 
-    private function isFollowedByNewLine(Tokens $tokens, $index)
+    private function isFollowedByNewLine(Tokens $tokens, int $index): bool
     {
         for (++$index, $max = \count($tokens) - 1; $index < $max; ++$index) {
             $token = $tokens[$index];
@@ -416,7 +416,7 @@ $bar = function () { $result = true;
         return false;
     }
 
-    private function hasCommentOnSameLine(Tokens $tokens, $index)
+    private function hasCommentOnSameLine(Tokens $tokens, int $index): bool
     {
         $token = $tokens[$index + 1];
 
