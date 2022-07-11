@@ -3,6 +3,51 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.9.0
+--------------------
+
+* bug: Add attributes support to `statement_indentation` (#6429)
+* bug: BinaryOperatorSpacesFixer - Allow to align `=` inside array definitions (#6444)
+* bug: BinaryOperatorSpacesFixer - Fix align of operator with function declaration (#6445)
+* bug: ConstantCaseFixer - Do not touch enum case (#6367)
+* bug: CurlyBracesPositionFixer - multiple elseifs (#6459)
+* bug: Fix #6439 issue in `StaticLambda` fixer (#6440)
+* bug: FullOpeningTagFixer - fix substr check for pre PHP8 (#6388)
+* bug: IncrementStyleFixer - NoSpacesInsideParenthesisFixer - prio (#6416)
+* bug: LambdaNotUsedImportFixer must run before MethodArgumentSpaceFixer (#6453)
+* bug: MethodArgumentSpaceFixer - first element in same line, space before comma and inconsistent indent (#6438)
+* bug: NoSuperfluousPhpdocTagsFixer - fix for promoted properties (#6403)
+* bug: StatementIndentationFixer - Fix indentation for multiline traits use (#6402)
+* bug: StrictComparisonFixer must rune before ModernizeStrposFixer (#6455)
+* bug: TokensAnalyzer - fix intersection types considered as binary operator (#6414)
+* DX: `ISSUE_TEMPLATE` hints to check applied rules (#6398)
+* DX: Add more type hints (#6383)
+* DX: Fix CI/CD issues (#6411)
+* DX: cleanup test (#6410)
+* DX: integrate PRLint (#6406)
+* feature: BlankLineBetweenImportGroupsFixer - Introduction (#6365)
+* feature: DateTimeCreateFromFormatCallFixer - Add DateTimeImmutable support (#6350)
+* feature: Extract StatementIndentationFixer from BracesFixer (#5960)
+* feature: ModernizeStrposFixer - fix leading backslash with yoda (#6377)
+* feature: NoExtraBlankLinesFixer - Add `attributes` option - Fix support for `enum` `case` (#6426)
+* feature: NoUnneededControlParenthesesFixer - Fix more cases (#6409)
+* feature: NoUselessNullsafeOperatorFixer - Introduction (#6425)
+* feature: OrderedTrait - Move Phpdoc with trait import (#6361)
+* feature: PhpdocOrderByValueFixer - Allow sorting of mixin annotations by value (#6446)
+* feature: TrailingCommaInMultiline - Add `match` support (#6381)
+* minor: Allow Composer Normalize plugin (#6454)
+* minor: ExplicitStringVariableFixer - Fix to PHP8.2 compat code (#6424)
+* minor: Extract ControlStructureBracesFixer from BracesFixer (#6399)
+* minor: NoBinaryStringFixer - Fix more cases (#6442)
+* minor: NoSuperfluousPhpdocTagsFixer - Attribute handling (#6382)
+* minor: PhpCsFixerSet - Update blank_line_before_statement config (#6389)
+* minor: Remove unnecessary PHP version constraints (#6461)
+* minor: SingleImportPerStatementFixer - fix PSR12 set (#6415)
+* minor: SingleSpaceAfterConstructFixer - add option `type_colon` (#6434)
+* minor: SymfonySet - Add SimpleToComplexStringVariableFixer (#6423)
+* minor: Update PHPStan (#6467)
+* minor: extract CurlyBracesPositionFixer from BracesFixer (#6452)
+
 Changelog for v3.8.0
 --------------------
 
