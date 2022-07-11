@@ -708,6 +708,7 @@ $a
 $b;
 ',
             ],
+            ['<a href="test-<?=$path?>-<?=$id?>.html">Test</a>'],
         ];
     }
 
