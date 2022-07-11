@@ -3,7 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
-Changelog for v3.9.0
+Changelog for v3.9.2
+--------------------
+
+* bug: Fix indentation after control structure in switch (#6473)
+
+Changelog for v3.9.1
 --------------------
 
 * bug: Add attributes support to `statement_indentation` (#6429)
