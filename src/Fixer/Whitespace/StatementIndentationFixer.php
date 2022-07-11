@@ -434,6 +434,12 @@ else {
                 continue;
             }
 
+            if ($tokens[$index]->equals('{')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+
+                continue;
+            }
+
             if ($tokens[$index]->equalsAny([[T_CASE], [T_DEFAULT]])) {
                 return $index;
             }

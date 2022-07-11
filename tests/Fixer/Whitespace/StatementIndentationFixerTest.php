@@ -624,6 +624,25 @@ foreach ($array as [
 ]) {
 }',
         ];
+
+        yield 'switch case with control structure' => [
+            '<?php
+switch ($foo) {
+    case true:
+        if ($bar) {
+            bar();
+        }
+        return true;
+}',
+            '<?php
+switch ($foo) {
+    case true:
+    if ($bar) {
+      bar();
+    }
+return true;
+}',
+        ];
     }
 
     /**
