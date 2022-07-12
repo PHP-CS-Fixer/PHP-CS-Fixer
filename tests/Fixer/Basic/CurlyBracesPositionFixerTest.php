@@ -645,4 +645,55 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
                 }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): iterable
+    {
+        yield 'function (multiline + union return)' => [
+            '<?php
+                function sum(
+                    int|float $first,
+                    int|float $second,
+                ): int|float {
+                }',
+        ];
+
+        yield 'function (multiline + union return with whitespace)' => [
+            '<?php
+                function sum(
+                    int|float $first,
+                    int|float $second,
+                ): int | float {
+                }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): iterable
+    {
+        yield 'function (multiline + intersection return)' => [
+            '<?php
+                function foo(
+                    mixed $bar,
+                    mixed $baz,
+                ): Foo&Bar {
+                }',
+        ];
+    }
 }

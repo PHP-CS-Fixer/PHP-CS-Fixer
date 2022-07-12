@@ -255,7 +255,7 @@ $bar = function () { $result = true;
                 $previousTokenIndex = $openBraceIndex;
                 do {
                     $previousTokenIndex = $tokens->getPrevMeaningfulToken($previousTokenIndex);
-                } while ($tokens[$previousTokenIndex]->isGivenKind([CT::T_TYPE_COLON, CT::T_NULLABLE_TYPE, T_STRING, T_NS_SEPARATOR, CT::T_ARRAY_TYPEHINT]));
+                } while ($tokens[$previousTokenIndex]->isGivenKind([CT::T_TYPE_COLON, CT::T_NULLABLE_TYPE, T_STRING, T_NS_SEPARATOR, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION]));
 
                 if ($tokens[$previousTokenIndex]->equals(')')) {
                     if ($tokens[--$previousTokenIndex]->isComment()) {
