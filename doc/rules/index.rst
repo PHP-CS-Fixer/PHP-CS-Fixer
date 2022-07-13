@@ -860,4 +860,4 @@ Whitespace
   Each statement must be indented.
 - `types_spaces <./whitespace/types_spaces.rst>`_
 
-  A single space or none should be around union type operator.
+  A single space or none should be around union type and intersection type operators.
