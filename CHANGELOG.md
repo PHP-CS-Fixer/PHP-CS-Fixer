@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.9.3
+--------------------
+
+* bug: Fix BinaryOperatorSpacesFixer adding whitespace outside PHP blocks (#6476)
+* bug: Fix brace location after multiline function signature (#6475)
+
 Changelog for v3.9.2
 --------------------
 
