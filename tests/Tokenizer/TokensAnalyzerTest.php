@@ -1579,6 +1579,10 @@ $b;',
                 [9 => false],
                 '<?php $a = "{$value}-{$theSwitch}";',
             ],
+            [
+                [3 => false],
+                '<?=$path?>-<?=$id?>',
+            ],
         ];
 
         $operators = [
