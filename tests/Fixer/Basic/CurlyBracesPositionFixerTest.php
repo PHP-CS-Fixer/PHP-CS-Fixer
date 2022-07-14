@@ -664,6 +664,13 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
                     int|float $second,
                 ): int|float {
                 }',
+            '<?php
+                function sum(
+                    int|float $first,
+                    int|float $second,
+                ): int|float
+                {
+                }',
         ];
 
         yield 'function (multiline + union return with whitespace)' => [
@@ -672,6 +679,33 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
                     int|float $first,
                     int|float $second,
                 ): int | float {
+                }',
+            '<?php
+                function sum(
+                    int|float $first,
+                    int|float $second,
+                ): int | float
+                {
+                }',
+        ];
+
+        yield 'method with static return type' => [
+            '<?php
+                class Foo
+                {
+                    function sum(
+                        $foo
+                    ): static {
+                    }
+                }',
+            '<?php
+                class Foo
+                {
+                    function sum(
+                        $foo
+                    ): static
+                    {
+                    }
                 }',
         ];
     }
