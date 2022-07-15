@@ -785,6 +785,22 @@ $a = 1;
 var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
 ',
             ],
+            'variable returned by reference in function' => [
+                '<?php
+                function &foo() {
+                    $var = 1;
+                    return $var;
+                }',
+            ],
+            'variable returned by reference in method' => [
+                '<?php
+                class Foo {
+                    public function &bar() {
+                        $var = 1;
+                        return $var;
+                    }
+                }',
+            ],
         ];
     }
 

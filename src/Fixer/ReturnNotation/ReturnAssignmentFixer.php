@@ -73,6 +73,11 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 continue;
             }
 
+            $next = $tokens->getNextMeaningfulToken($index);
+            if ($tokens[$next]->isGivenKind(CT::T_RETURN_REF)) {
+                continue;
+            }
+
             $functionOpenIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
             if ($tokens[$functionOpenIndex]->equals(';')) { // abstract function
                 $index = $functionOpenIndex - 1;
