@@ -17,7 +17,6 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -118,9 +117,6 @@ EOF;
         $order = new FixerOptionBuilder('order', 'Sequence in which annotations in PHPDoc should be ordered.');
         $order
             ->setAllowedTypes(['string[]'])
-//            ->setAllowedValues([
-//                   new AllowedValueSubset(self::ORDERABLE_TAGS),
-//            ])
             ->setDefault(self::ORDER_DEFAULT)
         ;
 
