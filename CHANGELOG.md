@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.9.4
+--------------------
+
+* bug: Fix various indentation issues (#6480)
+* bug: Fix wrong brace position after static return type (#6485)
+* bug: Prevent breaking functions returning by reference (#6487)
+
 Changelog for v3.9.3
 --------------------
 
