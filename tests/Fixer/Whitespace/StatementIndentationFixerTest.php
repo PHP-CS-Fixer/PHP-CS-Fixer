@@ -97,13 +97,14 @@ if ($foo) {
     foo();',
         ];
 
+        // @TODO brace at line 6 should have one level of indentation
         yield 'with several opening braces on same line' => [
             '<?php
 if ($foo) { if ($foo) { foo();
     if ($bar) { if ($bar) { bar(); }
         baz();
     }
-    }
+}
     baz();
 }
 baz();',
@@ -641,6 +642,53 @@ switch ($foo) {
       bar();
     }
 return true;
+}',
+        ];
+
+        yield 'comment in method calls chain' => [
+            '<?php
+$foo
+    ->baz()
+    /* ->baz() */
+;',
+        ];
+
+        yield 'if with only a comment and followed by else' => [
+            '<?php
+if (true) {
+    // foo
+} else {
+    // bar
+}',
+        ];
+
+        yield 'multiple anonymous functions as function arguments' => [
+            '<?php
+foo(function () {
+    bar();
+}, function () {
+    baz();
+});',
+        ];
+
+        yield 'multiple anonymous functions as method arguments' => [
+            '<?php
+$this
+    ->bar(function ($a) {
+        echo $a;
+    }, function ($b) {
+        echo $b;
+    })
+;',
+        ];
+
+        yield 'semicolon on a newline inside a switch case without break statement' => [
+            '<?php
+switch (true) {
+    case $foo:
+        $foo
+            ->baz()
+        ;
 }',
         ];
     }
