@@ -2,27 +2,19 @@
 Rule ``phpdoc_order``
 =====================
 
-Annotations in PHPDoc should be ordered in specific style.
-
-Description
------------
-
-Annotations in PHPDoc should be ordered in one of the styles below:
-
-- ``'phpcs'`` style annotations order is ``@param``, ``@throws``, ``@return``,
-- ``'symfony'`` style annotations order is ``@param``, ``@return``, ``@throws``.
+Annotations in PHPDoc should be ordered in defined sequence.
 
 Configuration
 -------------
 
-``style``
+``order``
 ~~~~~~~~~
 
-Style in which annotations in PHPDoc should be ordered.
+Sequence in which annotations in PHPDoc should be ordered.
 
-Allowed values: ``'phpcs'``, ``'symfony'``
+Allowed types: ``string[]``
 
-Default value: ``'phpcs'``
+Default value: ``['param', 'throws', 'return']``
 
 Examples
 --------
@@ -52,7 +44,29 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['style' => 'symfony']``.
+With configuration: ``['order' => ['param', 'throws', 'return']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    /**
+     * Hello there!
+     *
+   - * @throws Exception|RuntimeException foo
+     * @custom Test!
+   - * @return int  Return the number of changes.
+     * @param string $foo
+     * @param bool   $bar Bar
+   + * @throws Exception|RuntimeException foo
+   + * @return int  Return the number of changes.
+     */
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['order' => ['param', 'return', 'throws']]``.
 
 .. code-block:: diff
 
@@ -71,10 +85,10 @@ With configuration: ``['style' => 'symfony']``.
    + * @throws Exception|RuntimeException foo
      */
 
-Example #3
+Example #4
 ~~~~~~~~~~
 
-With configuration: ``['style' => 'phpcs']``.
+With configuration: ``['order' => ['param', 'custom', 'throws', 'return']]``.
 
 .. code-block:: diff
 
@@ -84,13 +98,14 @@ With configuration: ``['style' => 'phpcs']``.
     /**
      * Hello there!
      *
-   - * @throws Exception|RuntimeException foo
-     * @custom Test!
-   - * @return int  Return the number of changes.
-     * @param string $foo
-     * @param bool   $bar Bar
-   + * @throws Exception|RuntimeException foo
-   + * @return int  Return the number of changes.
+   + * @param string $foo
+   + * @param bool   $bar Bar
+   + * @custom Test!
+     * @throws Exception|RuntimeException foo
+   - * @custom Test!
+     * @return int  Return the number of changes.
+   - * @param string $foo
+   - * @param bool   $bar Bar
      */
 
 Rule sets

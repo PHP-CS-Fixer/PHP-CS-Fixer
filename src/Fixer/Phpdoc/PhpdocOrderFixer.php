@@ -17,6 +17,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -35,17 +36,12 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * @internal
      */
-    public const ORDER_STYLE_PHPCS = 'phpcs';
+    public const ORDER_DEFAULT = ['param', 'throws', 'return'];
 
     /**
      * @internal
      */
-    public const ORDER_STYLE_SYMFONY = 'symfony';
-
-    private const ORDERS = [
-        'phpcs' => ['param', 'throws', 'return'],
-        'symfony' => ['param', 'return', 'throws'],
-    ];
+    public const ORDER_LARAVEL = ['param', 'return', 'throws'];
 
     /**
      * @var string[]
@@ -71,19 +67,15 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
 
 EOF;
 
-        $description = 'Annotations in PHPDoc should be ordered in one of the styles below:'."\n";
-        $opts = [];
-        foreach (self::ORDERS as $style => $order) {
-            $opts[] = "\n- `'{$style}'` style annotations order is `@".implode('`, `@', $order).'`';
-        }
-        $description .= implode(',', $opts).'.';
+        $description = null;
 
         return new FixerDefinition(
-            'Annotations in PHPDoc should be ordered in specific style.',
+            'Annotations in PHPDoc should be ordered in defined sequence.',
             [
                 new CodeSample($code),
-                new CodeSample($code, ['style' => self::ORDER_STYLE_SYMFONY]),
-                new CodeSample($code, ['style' => self::ORDER_STYLE_PHPCS]),
+                new CodeSample($code, ['order' => self::ORDER_DEFAULT]),
+                new CodeSample($code, ['order' => self::ORDER_LARAVEL]),
+                new CodeSample($code, ['order' => ['param', 'custom', 'throws', 'return']]),
             ],
             $description
         );
@@ -96,7 +88,7 @@ EOF;
     {
         parent::configure($configuration);
 
-        $this->order = self::ORDERS[$this->configuration['style']];
+        $this->order = $this->configuration['order'];
     }
 
     /**
@@ -123,14 +115,16 @@ EOF;
      */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $style = new FixerOptionBuilder('style', 'Style in which annotations in PHPDoc should be ordered.');
-        $style
-            ->setAllowedTypes(['string'])
-            ->setAllowedValues([self::ORDER_STYLE_PHPCS, self::ORDER_STYLE_SYMFONY])
-            ->setDefault(self::ORDER_STYLE_PHPCS)
+        $order = new FixerOptionBuilder('order', 'Sequence in which annotations in PHPDoc should be ordered.');
+        $order
+            ->setAllowedTypes(['string[]'])
+//            ->setAllowedValues([
+//                   new AllowedValueSubset(self::ORDERABLE_TAGS),
+//            ])
+            ->setDefault(self::ORDER_DEFAULT)
         ;
 
-        return new FixerConfigurationResolver([$style->getOption()]);
+        return new FixerConfigurationResolver([$order->getOption()]);
     }
 
     /**
@@ -143,14 +137,24 @@ EOF;
                 continue;
             }
 
-            // assuming we sort three annotation tags
-            [$first, $middle, $last] = $this->order;
+            // assuming annotations are already grouped by tags
             $content = $token->getContent();
-            // move $first to start, $last to end, leave $middle in the middle
-            $content = $this->moveAnnotationsBefore($first, [$middle, $last], $content);
-            // we're parsing the content again to make sure the internal
-            // state of the docblock is correct after the modifications
-            $content = $this->moveAnnotationsAfter($last, [$first, $middle], $content);
+
+            // sort annotations
+            $successors = $this->order;
+            if (\count($successors) >= 2) {
+                while (\count($successors) >= 3) {
+                    $predecessor = array_shift($successors);
+                    $content = $this->moveAnnotationsBefore($predecessor, $successors, $content);
+                }
+
+                // we're parsing the content last time to make sure the internal
+                // state of the docblock is correct after the modifications
+                $predecessors = $this->order;
+                $last = array_pop($predecessors);
+                $content = $this->moveAnnotationsAfter($last, $predecessors, $content);
+            }
+
             // persist the content at the end
             $tokens[$index] = new Token([T_DOC_COMMENT, $content]);
         }
