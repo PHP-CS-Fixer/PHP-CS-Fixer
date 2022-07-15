@@ -15,6 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -32,8 +36,10 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class NoUnusedImportsFixer extends AbstractFixer
+final class NoUnusedImportsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    private const CONFIG_OPTIPON_CASE_SENSITIVE_IN_COMMENT = 'case_sensitive_in_comment';
+
     /**
      * {@inheritdoc}
      */
@@ -41,7 +47,28 @@ final class NoUnusedImportsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Unused `use` statements must be removed.',
-            [new CodeSample("<?php\nuse \\DateTime;\nuse \\Exception;\n\nnew DateTime();\n")]
+            [
+                new CodeSample(
+                    '<?php
+use \DateTime;
+use \Users;
+use \Exception;
+
+//users
+new DateTime();
+'
+                ),  new CodeSample(
+                    '<?php
+use \DateTime;
+use \Users;
+use \Exception;
+
+//users
+new DateTime();
+',
+                    ['case_sensitive_in_comment' => true]
+                ),
+            ]
         );
     }
 
@@ -62,6 +89,18 @@ final class NoUnusedImportsFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_USE);
+    }
+
+    public function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver(
+            [
+                (new FixerOptionBuilder(self::CONFIG_OPTIPON_CASE_SENSITIVE_IN_COMMENT, 'Whether usage detection should be case sensitive in comment'))
+                    ->setAllowedTypes(['bool'])
+                    ->setDefault(false)
+                    ->getOption(),
+            ]
+        );
     }
 
     /**
@@ -185,7 +224,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
             if ($token->isComment()
                 && Preg::match(
-                    '/(?<![[:alnum:]\$])(?<!\\\\)'.$import->getShortName().'(?![[:alnum:]])/i',
+                    '/(?<![[:alnum:]\$])(?<!\\\\)'.$import->getShortName().'(?![[:alnum:]])/'.($this->configuration[self::CONFIG_OPTIPON_CASE_SENSITIVE_IN_COMMENT] ? '' : 'i'),
                     $token->getContent()
                 )
             ) {

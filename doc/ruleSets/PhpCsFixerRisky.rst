@@ -22,3 +22,6 @@ Rules
 - `php_unit_test_case_static_method_calls <./../rules/php_unit/php_unit_test_case_static_method_calls.rst>`_
 - `strict_comparison <./../rules/strict/strict_comparison.rst>`_
 - `strict_param <./../rules/strict/strict_param.rst>`_
+  config:
+  ``['namespaces' => true]``
+- `no_unused_imports <./../rules/import/no_unused_imports.rst>`_

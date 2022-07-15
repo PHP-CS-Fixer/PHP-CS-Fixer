@@ -1723,7 +1723,16 @@ List of Available Rules
 
    Unused ``use`` statements must be removed.
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Configuration options:
+
+   - | ``case_sensitive_in_comment``
+     | Whether usage detection should be case sensitive
+     | Allowed types: ``bool``
+     | Default value: ``false``
+
+   *warning risky* Risky when the case insensitive to reference of classes in comment.
+
+   Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Import\\NoUnusedImportsFixer <./../src/Fixer/Import/NoUnusedImportsFixer.php>`_
 -  `no_useless_else <./rules/control_structure/no_useless_else.rst>`_

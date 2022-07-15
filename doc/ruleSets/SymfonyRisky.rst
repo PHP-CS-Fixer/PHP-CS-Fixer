@@ -45,3 +45,6 @@ Rules
 - `string_length_to_empty <./../rules/string_notation/string_length_to_empty.rst>`_
 - `string_line_ending <./../rules/string_notation/string_line_ending.rst>`_
 - `ternary_to_elvis_operator <./../rules/operator/ternary_to_elvis_operator.rst>`_
+  config:
+  ``['namespaces' => true]``
+- `no_unused_imports <./../rules/import/no_unused_imports.rst>`_

@@ -124,7 +124,6 @@ final class SymfonySet extends AbstractRuleSetDescription
             ],
             'no_unneeded_import_alias' => true,
             'no_unset_cast' => true,
-            'no_unused_imports' => true,
             'no_useless_nullsafe_operator' => true,
             'no_whitespace_before_comma_in_array' => true,
             'normalize_index_brace' => true,

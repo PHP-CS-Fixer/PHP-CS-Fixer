@@ -1314,6 +1314,45 @@ use Z;
     }
 
     /**
+     * @dataProvider provideFixCaseSensitive
+     */
+    public function testFixCaseSensitive(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['case_sensitive_in_comment' => true]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCaseSensitive()
+    {
+        return ['with_matches_in_comments' => [
+            '<?php
+use Foo;
+use Bar;
+use Baz;
+
+//Foo
+#Bar
+/*Baz*/',
+        ],
+            'with_case_insensitive_matches_in_comments' => [
+                '<?php
+
+//foo
+#bar
+/*baz*/',
+                '<?php
+use Foo;
+use Bar;
+use Baz;
+
+//foo
+#bar
+/*baz*/',
+            ],
+        ];
+    }
+
+    /**
      * @requires PHP <8.0
      */
     public function testFixPrePHP80(): void
