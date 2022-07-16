@@ -644,6 +644,28 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
                 } elseif ($foo){
                 }',
         ];
+
+        yield 'open brace preceded by comment and whitespace' => [
+            '<?php
+                if (true) { /* foo */
+                    foo();
+                }',
+            '<?php
+                if (true) /* foo */ {
+                    foo();
+                }',
+        ];
+
+        yield 'open brace surrounded by comment and whitespace' => [
+            '<?php
+                if (true) { /* foo */ /* bar */
+                    foo();
+                }',
+            '<?php
+                if (true) /* foo */ { /* bar */
+                    foo();
+                }',
+        ];
     }
 
     /**
