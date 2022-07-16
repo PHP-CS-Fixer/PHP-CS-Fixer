@@ -691,6 +691,20 @@ switch (true) {
         ;
 }',
         ];
+
+        yield 'comment on switch case' => [
+            '<?php
+switch ($foo) {
+    case 1:
+        break;
+    // foo
+    case 2:
+        break;
+    // bar
+    default:
+        break;
+}',
+        ];
     }
 
     /**
@@ -782,6 +796,19 @@ class Foo {
      }
 }',
         ];
+
+        yield 'comment on match arm' => [
+            '<?php
+return match ($bool) {
+    // foo
+    0 => false,
+    // bar
+    1 => true,
+    // baz
+    default => throw new Exception(),
+};',
+        ];
+
     }
 
     /**
@@ -845,6 +872,30 @@ enum Color {
       public function foo() {
             return true;
         }
+}',
+        ];
+
+        yield 'comment on enum case' => [
+            '<?php
+enum Color {
+    // Red
+    case Red;
+    // Green
+    case Green;
+    // Blue
+    case Blue;
+}',
+        ];
+
+        yield 'comment on backed enum case' => [
+            '<?php
+enum Color: string {
+    // Red
+    case Red = \'R\';
+    // Green
+    case Green = \'G\';
+    // Blue
+    case Blue = \'B\';
 }',
         ];
     }
