@@ -305,15 +305,15 @@ $bar = function () { $result = true;
                 $delta = $openBraceIndex < $moveBraceToIndex ? 1 : -1;
 
                 if ($tokens[$openBraceIndex + $delta]->isWhitespace()) {
-                    if (1 === $delta) {
-                        $tokens->clearAt($openBraceIndex - 1);
-                    } elseif ($tokens[$openBraceIndex - 1]->isWhitespace() && Preg::match('/\R/', $tokens[$openBraceIndex - 1]->getContent())) {
+                    if (-1 === $delta && Preg::match('/\R/', $tokens[$openBraceIndex - 1]->getContent())) {
                         $content = Preg::replace('/^(\h*?\R)?\h*/', '', $tokens[$openBraceIndex + 1]->getContent());
                         if ('' !== $content) {
                             $tokens[$openBraceIndex + 1] = new Token([T_WHITESPACE, $content]);
                         } else {
                             $tokens->clearAt($openBraceIndex + 1);
                         }
+                    } else {
+                        $tokens->clearAt($openBraceIndex - 1);
                     }
                 }
 
