@@ -742,6 +742,26 @@ class Foo
     }
 }',
         ];
+
+        yield 'comment at end of switch case' => [
+            '<?php
+switch ($foo) {
+    case 1:
+        // Nothing to do
+}',
+        ];
+
+        yield 'comment at end of switch default' => [
+            '<?php
+switch ($foo) {
+    case 1:
+        break;
+    case 2:
+        break;
+    default:
+        // Nothing to do
+}',
+        ];
     }
 
     /**

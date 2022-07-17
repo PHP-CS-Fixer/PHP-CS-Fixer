@@ -143,10 +143,6 @@ else {
         foreach ($tokens as $index => $token) {
             $currentScope = \count($scopes) - 1;
 
-            if ($token->isComment()) {
-                continue;
-            }
-
             if (
                 $token->equalsAny($blockFirstTokens)
                 || ($token->equals('(') && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_ARRAY))
@@ -271,20 +267,20 @@ else {
                     $indent = false;
 
                     if ($scopes[$currentScope]['is_indented_block']) {
-                        $firstMeaningFulTokenIndex = null;
+                        $firstNonWhitespaceTokenIndex = null;
                         $nextNewlineIndex = null;
                         for ($searchIndex = $index + 1, $max = \count($tokens); $searchIndex < $max; ++$searchIndex) {
                             $searchToken = $tokens[$searchIndex];
 
-                            if (!$searchToken->isWhitespace() && !$searchToken->isComment()) {
-                                if (null === $firstMeaningFulTokenIndex) {
-                                    $firstMeaningFulTokenIndex = $searchIndex;
+                            if (!$searchToken->isWhitespace()) {
+                                if (null === $firstNonWhitespaceTokenIndex) {
+                                    $firstNonWhitespaceTokenIndex = $searchIndex;
                                 }
 
                                 continue;
                             }
 
-                            if ($searchToken->isWhitespace() && Preg::match('/\R/', $searchToken->getContent())) {
+                            if (Preg::match('/\R/', $searchToken->getContent())) {
                                 $nextNewlineIndex = $searchIndex;
 
                                 break;
@@ -299,7 +295,7 @@ else {
                             }
 
                             if (
-                                (null !== $firstMeaningFulTokenIndex && $firstMeaningFulTokenIndex < $endIndex)
+                                (null !== $firstNonWhitespaceTokenIndex && $firstNonWhitespaceTokenIndex < $endIndex)
                                 || (null !== $nextNewlineIndex && $nextNewlineIndex < $endIndex)
                             ) {
                                 $indent = true;
@@ -372,7 +368,7 @@ else {
                 --$currentScope;
             }
 
-            if ($token->equalsAny([';', ',', '}', [T_OPEN_TAG], [T_CLOSE_TAG], [CT::T_ATTRIBUTE_CLOSE]])) {
+            if ($token->isComment() || $token->equalsAny([';', ',', '}', [T_OPEN_TAG], [T_CLOSE_TAG], [CT::T_ATTRIBUTE_CLOSE]])) {
                 continue;
             }
 
@@ -460,7 +456,7 @@ else {
             }
 
             if ($tokens[$index]->equalsAny(['}', [T_ENDSWITCH]])) {
-                return [$tokens->getPrevMeaningfulToken($index), false];
+                return [$tokens->getPrevNonWhitespace($index), false];
             }
         }
 
