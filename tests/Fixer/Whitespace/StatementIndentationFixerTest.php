@@ -691,6 +691,19 @@ switch (true) {
         ;
 }',
         ];
+
+        yield 'alternative syntax' => [
+            '<?php if (1): ?>
+    <div></div>
+<?php else: ?>
+    <?php if (2): ?>
+        <div></div>
+    <?php else: ?>
+        <div></div>
+    <?php endif; ?>
+<?php endif; ?>
+',
+        ];
     }
 
     /**

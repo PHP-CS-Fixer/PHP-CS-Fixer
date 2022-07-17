@@ -159,6 +159,26 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         yield [$nested, 15, 83];
 
         yield [$nested, 41, 80];
+
+        $nestedWithHtml = <<<'PHP'
+            <?php if (1): ?>
+                <div></div>
+            <?php else: ?>
+                <?php if (2): ?>
+                    <div></div>
+                <?php else: ?>
+                    <div></div>
+                <?php endif; ?>
+            <?php endif; ?>
+            PHP;
+
+        yield [$nestedWithHtml, 1, 11];
+
+        yield [$nestedWithHtml, 11, 38];
+
+        yield [$nestedWithHtml, 17, 27];
+
+        yield [$nestedWithHtml, 27, 33];
     }
 
     /**
