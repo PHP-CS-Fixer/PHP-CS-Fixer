@@ -17,7 +17,12 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock\Tag;
 use PhpCsFixer\DocBlock\TagComparator;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -26,33 +31,70 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @author Jakub Kwaśniewski <jakub@zero-85.pl>
  */
-final class PhpdocSeparationFixer extends AbstractFixer
+final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @internal
+     */
+    public const ADDITIONAL_GROUPS_DEFAULT = null;
+
+    /**
+     * @internal
+     */
+    public const ADDITIONAL_GROUPS_LARAVEL = [['param', 'return']];
+
+    private TagComparator $tagComparator;
+
+    private bool $standardTagsOnly = true;
+
     /**
      * {@inheritdoc}
      */
     public function getDefinition(): FixerDefinitionInterface
     {
-        return new FixerDefinition(
-            'Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single blank line.',
-            [
-                new CodeSample(
-                    '<?php
+        $code = <<<'EOF'
+<?php
 /**
- * Description.
+ * Hello there!
+ *
+ * @author John Doe
+ * @custom Test!
+ *
+ * @throws Exception|RuntimeException foo
  * @param string $foo
  *
- *
  * @param bool   $bar Bar
- * @throws Exception|RuntimeException
- * @return bool
+ * @return int  Return the number of changes.
  */
-function fnc($foo, $bar) {}
-'
-                ),
-            ]
+
+EOF;
+
+        return new FixerDefinition(
+            'Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line, except those specified in `additional_groups` option.',
+            [
+                new CodeSample($code),
+                new CodeSample($code, ['additional_groups' => self::ADDITIONAL_GROUPS_LARAVEL]),
+                new CodeSample($code, ['additional_groups' => self::ADDITIONAL_GROUPS_LARAVEL, 'psr_standard_tags_only' => false]),
+                new CodeSample($code, ['groups' => [['author', 'throws', 'custom'], ['return', 'param']], 'psr_standard_tags_only' => false]),
+            ],
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration): void
+    {
+        parent::configure($configuration);
+
+        $this->tagComparator =
+            TagComparator::configure($this->configuration['groups'])
+                ->withAdditionalGroups($this->configuration['additional_groups'])
+        ;
+
+        $this->standardTagsOnly = $this->configuration['psr_standard_tags_only'];
     }
 
     /**
@@ -93,6 +135,31 @@ function fnc($foo, $bar) {}
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('groups', 'Sets of annotation types to be grouped together.'))
+                ->setAllowedTypes(['string[][]'])
+                ->setDefault(TagComparator::TAG_GROUPS)
+                ->getOption(),
+            (new FixerOptionBuilder('additional_groups', 'Sets of additional annotation types to be grouped together.'))
+                ->setAllowedTypes(['string[][]', 'null'])
+                ->setDefault(self::ADDITIONAL_GROUPS_DEFAULT)
+                ->getOption(),
+            (new FixerOptionBuilder(
+                'psr_standard_tags_only',
+                'Sets if process PSR PHPDoc standard annotation tags only, which are: '.
+                '`'.implode('`, `', Tag::PSR_STANDARD_TAGS).'`.'
+            ))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
+                ->getOption(),
+        ]);
+    }
+
+    /**
      * Make sure the description is separated from the annotations.
      */
     private function fixDescription(DocBlock $doc): void
@@ -126,8 +193,8 @@ function fnc($foo, $bar) {}
                 break;
             }
 
-            if (true === $next->getTag()->valid()) {
-                if (TagComparator::shouldBeTogether($annotation->getTag(), $next->getTag())) {
+            if ((false === $this->standardTagsOnly) || (true === $next->getTag()->valid())) {
+                if ($this->tagComparator->shouldBeTogether($annotation->getTag(), $next->getTag())) {
                     $this->ensureAreTogether($doc, $annotation, $next);
                 } else {
                     $this->ensureAreSeparate($doc, $annotation, $next);

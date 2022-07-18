@@ -21,6 +21,7 @@ use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @author Jakub Kwaśniewski <jakub@zero-85.pl>
  *
  * @internal
  *
@@ -36,7 +37,7 @@ final class TagComparatorTest extends TestCase
         $tag1 = new Tag(new Line('* @'.$first));
         $tag2 = new Tag(new Line('* @'.$second));
 
-        static::assertSame($expected, TagComparator::shouldBeTogether($tag1, $tag2));
+        static::assertSame($expected, TagComparator::configure()->shouldBeTogether($tag1, $tag2));
     }
 
     public function provideComparatorCases(): array
@@ -51,6 +52,39 @@ final class TagComparatorTest extends TestCase
             ['author', 'since', false],
             ['link', 'see', true],
             ['category', 'package', true],
+        ];
+    }
+
+    /**
+     * @dataProvider provideComparatorWithAdditionalGroupsCases
+     *
+     * @param null|string[][] $additionalGroups
+     */
+    public function testComparatorTogetherWithAdditionalGroups(?array $additionalGroups, string $first, string $second, bool $expected): void
+    {
+        $tag1 = new Tag(new Line('* @'.$first));
+        $tag2 = new Tag(new Line('* @'.$second));
+
+        static::assertSame(
+            $expected,
+            TagComparator::configure()
+                ->withAdditionalGroups($additionalGroups)
+                ->shouldBeTogether($tag1, $tag2)
+        );
+    }
+
+    public function provideComparatorWithAdditionalGroupsCases(): array
+    {
+        return [
+            [[['param', 'return']], 'return', 'return', true],
+            [null, 'param', 'return', false],
+            [[['param', 'return']], 'return', 'param', true],
+            [[['param', 'return']], 'var', 'foo', false],
+            [[['param', 'return']], 'api', 'deprecated', false],
+            [[['param', 'return']], 'author', 'copyright', true],
+            [[['param', 'return'], ['author', 'since']], 'author', 'since', true],
+            [[['param', 'return']], 'link', 'see', true],
+            [[['param', 'return']], 'category', 'package', true],
         ];
     }
 }

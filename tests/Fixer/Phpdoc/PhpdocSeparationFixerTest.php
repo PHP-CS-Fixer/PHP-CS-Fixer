@@ -14,10 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @author Jakub Kwaśniewski <jakub@zero-85.pl>
  *
  * @internal
  *
@@ -647,5 +649,215 @@ EOF;
      */';
 
         $this->doTest($expected, $input);
+    }
+
+    public function testLaravelGroups(): void
+    {
+        $this->fixer->configure(['additional_groups' => PhpdocSeparationFixer::ADDITIONAL_GROUPS_LARAVEL]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Attempt to authenticate using HTTP Basic Auth.
+     *
+     * @param  string  $field
+     * @param  array  $extraConditions
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * Attempt to authenticate using HTTP Basic Auth.
+     *
+     * @param  string  $field
+     * @param  array  $extraConditions
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testVariousGroups(): void
+    {
+        $this->fixer->configure([
+            'additional_groups' => [
+                ['deprecated', 'link', 'see', 'since', 'author', 'copyright', 'license'],
+                ['return', 'param'],
+            ],
+            'psr_standard_tags_only' => false,
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Attempt to authenticate using HTTP Basic Auth.
+     *
+     * @link https://example.com/link
+     * @see https://doc.example.com/link
+     * @copyright by John Doe 2001
+     * @author John Doe
+     *
+     * @property-custom string $prop
+     *
+     * @param  string  $field
+     * @param  array  $extraConditions
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * Attempt to authenticate using HTTP Basic Auth.
+     *
+     * @link https://example.com/link
+     *
+     *
+     * @see https://doc.example.com/link
+     * @copyright by John Doe 2001
+     * @author John Doe
+     * @property-custom string $prop
+     * @param  string  $field
+     * @param  array  $extraConditions
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testVariousAdditionalGroups(): void
+    {
+        $this->fixer->configure(['additional_groups' => [
+            ['deprecated', 'link', 'see', 'since', 'author', 'copyright', 'license'],
+            ['return', 'param'],
+        ]]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Attempt to authenticate using HTTP Basic Auth.
+     *
+     * @link https://example.com/link
+     * @see https://doc.example.com/link
+     * @copyright by John Doe 2001
+     * @author John Doe
+     *
+     * @param  string  $field
+     * @param  array  $extraConditions
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * Attempt to authenticate using HTTP Basic Auth.
+     *
+     * @link https://example.com/link
+     *
+     *
+     * @see https://doc.example.com/link
+     * @copyright by John Doe 2001
+     * @author John Doe
+     * @param  string  $field
+     * @param  array  $extraConditions
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provideDocCodeCases
+     */
+    public function testDocCode(array $config, string $expected, string $input): void
+    {
+        $this->fixer->configure($config);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDocCodeCases(): array
+    {
+        $input = <<<'EOF'
+<?php
+/**
+ * Hello there!
+ *
+ * @author John Doe
+ * @custom Test!
+ * @throws Exception|RuntimeException foo
+ * @param string $foo
+ * @param bool   $bar Bar
+ *
+ * @return int  Return the number of changes.
+ */
+
+EOF;
+
+        return [
+            [
+                ['additional_groups' => PhpdocSeparationFixer::ADDITIONAL_GROUPS_LARAVEL],
+                <<<'EOF'
+<?php
+/**
+ * Hello there!
+ *
+ * @author John Doe
+ * @custom Test!
+ *
+ * @throws Exception|RuntimeException foo
+ *
+ * @param string $foo
+ * @param bool   $bar Bar
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+                $input,
+            ],
+
+            [
+                ['groups' => [['author', 'throws', 'custom'], ['return', 'param']], 'psr_standard_tags_only' => false],
+                <<<'EOF'
+<?php
+/**
+ * Hello there!
+ *
+ * @author John Doe
+ * @custom Test!
+ * @throws Exception|RuntimeException foo
+ *
+ * @param string $foo
+ * @param bool   $bar Bar
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+                $input,
+            ],
+        ];
     }
 }

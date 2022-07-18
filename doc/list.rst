@@ -2088,7 +2088,23 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Phpdoc\\PhpdocScalarFixer <./../src/Fixer/Phpdoc/PhpdocScalarFixer.php>`_
 -  `phpdoc_separation <./rules/phpdoc/phpdoc_separation.rst>`_
 
-   Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single blank line.
+   Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line, except those specified in ``additional_groups`` option.
+
+   Configuration options:
+
+   - | ``groups``
+     | Sets of annotation types to be grouped together.
+     | Allowed types: ``string[][]``
+     | Default value: ``[['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write']]``
+   - | ``additional_groups``
+     | Sets of additional annotation types to be grouped together.
+     | Allowed types: ``string[][]``, ``null``
+     | Default value: ``null``
+   - | ``psr_standard_tags_only``
+     | Sets if process PSR PHPDoc standard annotation tags only, which are: `api`, `author`, `category`, `copyright`, `deprecated`, `example`, `global`, `internal`, `license`, `link`, `method`, `package`, `param`, `property`, `property-read`, `property-write`, `return`, `see`, `since`, `subpackage`, `throws`, `todo`, `uses`, `var`, `version`.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
