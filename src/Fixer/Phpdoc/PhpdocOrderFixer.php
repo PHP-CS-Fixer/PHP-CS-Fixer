@@ -66,8 +66,6 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
 
 EOF;
 
-        $description = null;
-
         return new FixerDefinition(
             'Annotations in PHPDoc should be ordered in defined sequence.',
             [
@@ -76,7 +74,6 @@ EOF;
                 new CodeSample($code, ['order' => self::ORDER_LARAVEL]),
                 new CodeSample($code, ['order' => ['param', 'custom', 'throws', 'return']]),
             ],
-            $description
         );
     }
 
