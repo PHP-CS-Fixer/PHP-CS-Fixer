@@ -481,7 +481,25 @@ else {
 
         $index = $tokens->getNextMeaningfulToken($index + 1);
 
-        if (null === $index || !$tokens[$index]->equals('}')) {
+        if (null === $index) {
+            return false;
+        }
+
+        if ($tokens[$index]->isGivenKind(T_CASE)) {
+            $index = $tokens->getNextMeaningfulToken($index);
+
+            if ($tokens[$index]->isGivenKind(T_STRING)) {
+                return !$tokens[$tokens->getNextMeaningfulToken($index)]->equalsAny([';', '=']);
+            }
+
+            return true;
+        }
+
+        if ($tokens[$index]->isGivenKind(T_DEFAULT)) {
+            return !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(T_DOUBLE_ARROW);
+        }
+
+        if (!$tokens[$index]->equals('}')) {
             return false;
         }
 
