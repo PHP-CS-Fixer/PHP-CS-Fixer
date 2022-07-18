@@ -172,4 +172,21 @@ string {}',
             '<?php class A { public function foo()   :static{}}',
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): iterable
+    {
+        yield [
+            '<?php enum Foo: int {}',
+            '<?php enum Foo   :   int {}',
+        ];
+    }
 }
