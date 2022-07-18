@@ -2,7 +2,6 @@
 Integration of fixers: no_alternative_syntax,no_useless_else.
 --RULESET--
 {"no_alternative_syntax": true, "no_useless_else": true}
-
 --EXPECT--
 <?php
 if ($some) { return 1; }   $test = false;  //

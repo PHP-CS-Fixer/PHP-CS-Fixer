@@ -101,6 +101,10 @@ TEST;
 ?>
 ',
             ],
+            'binary string' => [
+                '<?php echo b\'Foo\';',
+                '<? echo b\'Foo\';',
+            ],
             ['<?php', '<?'],
             ["<?php\n", "<?\n"],
             ["<?php    \n", "<?    \n"],

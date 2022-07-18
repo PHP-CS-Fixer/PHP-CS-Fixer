@@ -125,6 +125,15 @@ namespace Bar {
 }
 ",
             ];
+
+            yield $class.': binary string' => [
+                "<?php \\{$class}::createFromFormat(b'!Y-m-d', '2022-02-11');",
+                "<?php \\{$class}::createFromFormat(b'Y-m-d', '2022-02-11');",
+            ];
+
+            yield $class.': empty string' => [
+                "<?php \\{$class}::createFromFormat('', '2022-02-11');",
+            ];
         }
     }
 }

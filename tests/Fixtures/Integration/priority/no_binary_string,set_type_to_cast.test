@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: no_binary_string,set_type_to_cast.
+--RULESET--
+{"no_binary_string": true, "set_type_to_cast": true}
+--EXPECT--
+<?php
+$foo = null;
+
+--INPUT--
+<?php
+settype($foo, b"null");

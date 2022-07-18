@@ -68,9 +68,14 @@ final class FixerFactoryTest extends TestCase
         }
     }
 
-    public function testFixersPriorityCasesHaveIntegrationTest(): void
+    /**
+     * @param string[] $edges
+     *
+     * @dataProvider provideFixersPriorityCasesHaveIntegrationCases
+     */
+    public function testFixersPriorityCasesHaveIntegrationTest(string $fixerName, array $edges): void
     {
-        $forPerformanceEdgesOnly = [
+        static $forPerformanceEdgesOnly = [
             'function_to_constant' => [
                 'native_function_casing' => true,
             ],
@@ -88,40 +93,53 @@ final class FixerFactoryTest extends TestCase
             ],
         ];
 
-        foreach (self::getFixersPriorityGraph() as $fixerName => $edges) {
-            foreach ($edges as $edge) {
-                if (isset($forPerformanceEdgesOnly[$fixerName][$edge])) {
-                    continue;
-                }
+        $missingIntegrationsTests = [];
 
-                $file = self::getIntegrationPriorityDirectory().$fixerName.','.$edge.'.test';
-
-                static::assertFileExists($file, 'There shall be an integration test. How do you know that priority set up is good, if there is no integration test to check it?');
-
-                $file = realpath($file);
-                $factory = new IntegrationCaseFactory();
-                $test = $factory->create(new SplFileInfo($file, './', __DIR__));
-                $rules = $test->getRuleset()->getRules();
-                $expected = [$fixerName, $edge];
-                $actual = array_keys($rules);
-
-                sort($expected);
-                sort($actual);
-
-                static::assertSame(
-                    sprintf('Integration of fixers: %s,%s.', $fixerName, $edge),
-                    $test->getTitle(),
-                    sprintf('Please fix the title in "%s".', $file)
-                );
-
-                static::assertCount(2, $rules, sprintf('Only the two rules that are tested for priority should be in the ruleset of "%s".', $file));
-
-                foreach ($rules as $name => $config) {
-                    static::assertNotFalse($config, sprintf('The rule "%s" in "%s" may not be disabled for the test.', $name, $file));
-                }
-
-                static::assertSame($expected, $actual, sprintf('The ruleset of "%s" must contain the rules for the priority test.', $file));
+        foreach ($edges as $edge) {
+            if (isset($forPerformanceEdgesOnly[$fixerName][$edge])) {
+                continue;
             }
+
+            $file = self::getIntegrationPriorityDirectory().$fixerName.','.$edge.'.test';
+
+            if (!is_file($file)) {
+                $missingIntegrationsTests[] = $file;
+
+                continue;
+            }
+
+            $file = realpath($file);
+            $factory = new IntegrationCaseFactory();
+            $test = $factory->create(new SplFileInfo($file, './', __DIR__));
+            $rules = $test->getRuleset()->getRules();
+            $expected = [$fixerName, $edge];
+            $actual = array_keys($rules);
+
+            sort($expected);
+            sort($actual);
+
+            static::assertSame(
+                sprintf('Integration of fixers: %s,%s.', $fixerName, $edge),
+                $test->getTitle(),
+                sprintf('Please fix the title in "%s".', $file)
+            );
+
+            static::assertCount(2, $rules, sprintf('Only the two rules that are tested for priority should be in the ruleset of "%s".', $file));
+
+            foreach ($rules as $name => $config) {
+                static::assertNotFalse($config, sprintf('The rule "%s" in "%s" may not be disabled for the test.', $name, $file));
+            }
+
+            static::assertSame($expected, $actual, sprintf('The ruleset of "%s" must contain the rules for the priority test.', $file));
+        }
+
+        static::assertCount(0, $missingIntegrationsTests, sprintf("There shall be an integration test. How do you know that priority set up is good, if there is no integration test to check it?\nMissing:\n- %s", implode("\n- ", $missingIntegrationsTests)));
+    }
+
+    public function provideFixersPriorityCasesHaveIntegrationCases(): iterable
+    {
+        foreach (self::getFixersPriorityGraph() as $fixerName => $edges) {
+            yield $fixerName => [$fixerName, $edges];
         }
     }
 
@@ -140,9 +158,8 @@ final class FixerFactoryTest extends TestCase
             sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
         );
 
+        [, $fixerName1, $fixerName2] = $matches;
         $graph = self::getFixersPriorityGraph();
-        $fixerName1 = $matches[1];
-        $fixerName2 = $matches[2];
 
         static::assertTrue(
             isset($graph[$fixerName1]) && \in_array($fixerName2, $graph[$fixerName1], true),
@@ -502,6 +519,11 @@ final class FixerFactoryTest extends TestCase
                 'no_superfluous_elseif',
                 'no_useless_else',
                 'switch_continue_to_break',
+            ],
+            'no_binary_string' => [
+                'php_unit_dedicate_assert_internal_type',
+                'regular_callable_call',
+                'set_type_to_cast',
             ],
             'no_blank_lines_after_phpdoc' => [
                 'header_comment',

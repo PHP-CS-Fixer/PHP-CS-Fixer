@@ -2,7 +2,6 @@
 Integration of fixers: no_alternative_syntax,elseif.
 --RULESET--
 {"no_alternative_syntax": true, "elseif": true}
-
 --EXPECT--
 
 <?php
