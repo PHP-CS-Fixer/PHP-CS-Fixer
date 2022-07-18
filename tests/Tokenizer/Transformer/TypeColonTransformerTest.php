@@ -100,4 +100,37 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideProcess81Cases
+     * @requires PHP 8.1
+     */
+    public function testProcess81(string $source, array $expectedTokens = []): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                CT::T_TYPE_COLON,
+            ]
+        );
+    }
+
+    public function provideProcess81Cases(): array
+    {
+        return [
+            [
+                '<?php enum Foo: int {}',
+                [
+                    4 => CT::T_TYPE_COLON,
+                ],
+            ],
+            [
+                '<?php enum Foo /** */ : int {}',
+                [
+                    7 => CT::T_TYPE_COLON,
+                ],
+            ],
+        ];
+    }
 }

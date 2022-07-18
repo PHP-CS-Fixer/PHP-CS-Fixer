@@ -57,6 +57,15 @@ final class TypeColonTransformer extends AbstractTransformer
 
         $endIndex = $tokens->getPrevMeaningfulToken($index);
 
+        if (
+            \defined('T_ENUM') // @TODO: drop condition when PHP 8.1+ is required
+            && $tokens[$tokens->getPrevMeaningfulToken($endIndex)]->isGivenKind(T_ENUM)
+        ) {
+            $tokens[$index] = new Token([CT::T_TYPE_COLON, ':']);
+
+            return;
+        }
+
         if (!$tokens[$endIndex]->equals(')')) {
             return;
         }

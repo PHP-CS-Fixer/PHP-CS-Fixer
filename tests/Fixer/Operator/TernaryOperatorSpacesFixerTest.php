@@ -225,4 +225,30 @@ class Foo
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): iterable
+    {
+        yield [
+            <<<'PHP'
+                <?php
+
+                enum TaskType: int
+                {
+                    public function foo(bool $value): string
+                    {
+                        return $value ? 'foo' : 'bar';
+                    }
+                }
+                PHP,
+        ];
+    }
 }
