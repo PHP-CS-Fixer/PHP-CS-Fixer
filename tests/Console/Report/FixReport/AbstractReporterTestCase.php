@@ -82,6 +82,7 @@ abstract class AbstractReporterTestCase extends TestCase
                     [
                         'someFile.php' => [
                             'appliedFixers' => ['some_fixer_name_here'],
+                            'diff' => '',
                         ],
                     ],
                     0,
@@ -113,6 +114,7 @@ abstract class AbstractReporterTestCase extends TestCase
                     [
                         'someFile.php' => [
                             'appliedFixers' => ['some_fixer_name_here_1', 'some_fixer_name_here_2'],
+                            'diff' => '',
                         ],
                     ],
                     0,
@@ -128,6 +130,7 @@ abstract class AbstractReporterTestCase extends TestCase
                     [
                         'someFile.php' => [
                             'appliedFixers' => ['some_fixer_name_here'],
+                            'diff' => '',
                         ],
                     ],
                     1234,

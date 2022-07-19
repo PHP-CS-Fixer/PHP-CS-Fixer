@@ -21,28 +21,12 @@ parameters:
 
         # baseline, should only shrink
         -
-            message: '#^Method .+ has parameter .+ with no value type specified in iterable type array\.$#'
+            message: '#^.+no value type specified in iterable type.+\.$#'
             path: *
-            count: 363
-        -
-            message: '#^Method .+ has parameter .+ with no value type specified in iterable type iterable\.$#'
-            path: *
-            count: 4
-        -
-            message: '#^Method .+ return type has no value type specified in iterable type array\.$#'
-            path: *
-            count: 153
-        -
-            message: '#^Method .+ return type has no value type specified in iterable type iterable\.$#'
-            path: *
-            count: 15
+            count: 561
         -
             message: '#^Property .+ has no type specified\.$#'
             path: *
             count: 7
-        -
-            message: '#^Property .+ type has no value type specified in iterable type array\.$#'
-            path: *
-            count: 37
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache

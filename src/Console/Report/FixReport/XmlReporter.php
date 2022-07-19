@@ -56,11 +56,13 @@ final class XmlReporter implements ReporterInterface
             $filesXML->appendChild($fileXML);
 
             if ($reportSummary->shouldAddAppliedFixers()) {
-                $fileXML->appendChild($this->createAppliedFixersElement($dom, $fixResult));
+                $fileXML->appendChild(
+                    $this->createAppliedFixersElement($dom, $fixResult['appliedFixers']),
+                );
             }
 
-            if (!empty($fixResult['diff'])) {
-                $fileXML->appendChild($this->createDiffElement($dom, $fixResult));
+            if ('' !== $fixResult['diff']) {
+                $fileXML->appendChild($this->createDiffElement($dom, $fixResult['diff']));
             }
         }
 
@@ -77,11 +79,14 @@ final class XmlReporter implements ReporterInterface
         return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($dom->saveXML()) : $dom->saveXML();
     }
 
-    private function createAppliedFixersElement(\DOMDocument $dom, array $fixResult): \DOMElement
+    /**
+     * @param list<string> $appliedFixers
+     */
+    private function createAppliedFixersElement(\DOMDocument $dom, array $appliedFixers): \DOMElement
     {
         $appliedFixersXML = $dom->createElement('applied_fixers');
 
-        foreach ($fixResult['appliedFixers'] as $appliedFixer) {
+        foreach ($appliedFixers as $appliedFixer) {
             $appliedFixerXML = $dom->createElement('applied_fixer');
             $appliedFixerXML->setAttribute('name', $appliedFixer);
             $appliedFixersXML->appendChild($appliedFixerXML);
@@ -90,10 +95,10 @@ final class XmlReporter implements ReporterInterface
         return $appliedFixersXML;
     }
 
-    private function createDiffElement(\DOMDocument $dom, array $fixResult): \DOMElement
+    private function createDiffElement(\DOMDocument $dom, string $diff): \DOMElement
     {
         $diffXML = $dom->createElement('diff');
-        $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
+        $diffXML->appendChild($dom->createCDATASection($diff));
 
         return $diffXML;
     }

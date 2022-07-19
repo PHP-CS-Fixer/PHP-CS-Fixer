@@ -44,27 +44,33 @@ final class TextReporter implements ReporterInterface
             $output .= sprintf('%4d) %s', $i, $file);
 
             if ($reportSummary->shouldAddAppliedFixers()) {
-                $output .= $this->getAppliedFixers($reportSummary->isDecoratedOutput(), $fixResult);
+                $output .= $this->getAppliedFixers(
+                    $reportSummary->isDecoratedOutput(),
+                    $fixResult['appliedFixers'],
+                );
             }
 
-            $output .= $this->getDiff($reportSummary->isDecoratedOutput(), $fixResult);
+            $output .= $this->getDiff($reportSummary->isDecoratedOutput(), $fixResult['diff']);
             $output .= PHP_EOL;
         }
 
         return $output.$this->getFooter($reportSummary->getTime(), $reportSummary->getMemory(), $reportSummary->isDryRun());
     }
 
-    private function getAppliedFixers(bool $isDecoratedOutput, array $fixResult): string
+    /**
+     * @param list<string> $appliedFixers
+     */
+    private function getAppliedFixers(bool $isDecoratedOutput, array $appliedFixers): string
     {
         return sprintf(
             $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)',
-            implode(', ', $fixResult['appliedFixers'])
+            implode(', ', $appliedFixers)
         );
     }
 
-    private function getDiff(bool $isDecoratedOutput, array $fixResult): string
+    private function getDiff(bool $isDecoratedOutput, string $diff): string
     {
-        if (empty($fixResult['diff'])) {
+        if ('' === $diff) {
             return '';
         }
 
@@ -74,7 +80,7 @@ final class TextReporter implements ReporterInterface
             PHP_EOL
         ));
 
-        return PHP_EOL.$diffFormatter->format($fixResult['diff']).PHP_EOL;
+        return PHP_EOL.$diffFormatter->format($diff).PHP_EOL;
     }
 
     private function getFooter(int $time, int $memory, bool $isDryRun): string

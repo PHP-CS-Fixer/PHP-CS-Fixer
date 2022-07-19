@@ -33,6 +33,9 @@ final class FileLintingIterator extends \IteratorIterator
 
     private LinterInterface $linter;
 
+    /**
+     * @param \Iterator<mixed, \SplFileInfo> $iterator
+     */
     public function __construct(\Iterator $iterator, LinterInterface $linter)
     {
         parent::__construct($iterator);
