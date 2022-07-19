@@ -292,7 +292,6 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
                 continue;
             }
 
-            /** @var null|array{isStart: bool, type: int} $blockType */
             $blockType = Tokens::detectBlockType($token);
 
             if (null !== $blockType && $blockType['isStart']) {

@@ -31,7 +31,7 @@ interface TransformerInterface
     /**
      * Get tokens created by Transformer.
      *
-     * @return int[]
+     * @return list<int>
      */
     public function getCustomTokens(): array;
 

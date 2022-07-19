@@ -130,17 +130,16 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     {
         $colonIndices = [];
 
+        /** @var SwitchAnalysis $analysis */
         foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]) as $analysis) {
             foreach ($analysis->getCases() as $case) {
                 $colonIndices[] = $case->getColonIndex();
             }
 
-            if ($analysis instanceof SwitchAnalysis) {
-                $defaultAnalysis = $analysis->getDefaultAnalysis();
+            $defaultAnalysis = $analysis->getDefaultAnalysis();
 
-                if (null !== $defaultAnalysis) {
-                    $colonIndices[] = $defaultAnalysis->getColonIndex();
-                }
+            if (null !== $defaultAnalysis) {
+                $colonIndices[] = $defaultAnalysis->getColonIndex();
             }
         }
 

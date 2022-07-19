@@ -620,6 +620,7 @@ PHP;
 
     /**
      * @param ?int $expectedIndex
+     * @param -1|1 $direction
      *
      * @dataProvider provideTokenOfKindSiblingCases
      */
@@ -682,6 +683,8 @@ PHP;
 
     /**
      * @dataProvider provideFindBlockEndCases
+     *
+     * @param Tokens::BLOCK_TYPE_* $type
      */
     public function testFindBlockEnd(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
@@ -710,6 +713,8 @@ PHP;
     /**
      * @requires PHP 8.0
      * @dataProvider provideFindBlockEnd80Cases
+     *
+     * @param Tokens::BLOCK_TYPE_* $type
      */
     public function testFindBlockEnd80(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
@@ -739,6 +744,7 @@ PHP;
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Invalid param type: "-1"\.$/');
 
+        // @phpstan-ignore-next-line
         $tokens->findBlockEnd(-1, 0);
     }
 
@@ -1358,6 +1364,8 @@ $bar;',
     }
 
     /**
+     * @param -1|1 $direction
+     *
      * @dataProvider provideGetMeaningfulTokenSiblingCases
      */
     public function testGetMeaningfulTokenSibling(?int $expectIndex, int $index, int $direction, string $source): void
@@ -1641,6 +1649,9 @@ EOF
         ]);
     }
 
+    /**
+     * @param Tokens::BLOCK_TYPE_* $type
+     */
     private static function assertFindBlockEnd(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         Tokens::clearCache();
@@ -1706,9 +1717,6 @@ EOF
         foreach ($expected as $index => $expectedToken) {
             $token = $tokens[$index];
             $expectedPrototype = $expectedToken->getPrototype();
-            if (\is_array($expectedPrototype)) {
-                unset($expectedPrototype[2]); // don't compare token lines as our token mutations don't deal with line numbers
-            }
 
             static::assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype), $token->toJson()));
         }

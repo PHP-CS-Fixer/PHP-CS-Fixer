@@ -115,7 +115,6 @@ final class StaticLambdaFixer extends AbstractFixer
                 break;
             }
 
-            /** @var null|array{isStart: bool, type: int} $blockType */
             $blockType = Tokens::detectBlockType($nextToken);
 
             if (null !== $blockType && $blockType['isStart']) {

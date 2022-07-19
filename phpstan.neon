@@ -23,7 +23,7 @@ parameters:
         -
             message: '#^Method .+ has parameter .+ with no value type specified in iterable type array\.$#'
             path: *
-            count: 379
+            count: 363
         -
             message: '#^Method .+ has parameter .+ with no value type specified in iterable type iterable\.$#'
             path: *
@@ -31,7 +31,7 @@ parameters:
         -
             message: '#^Method .+ return type has no value type specified in iterable type array\.$#'
             path: *
-            count: 163
+            count: 153
         -
             message: '#^Method .+ return type has no value type specified in iterable type iterable\.$#'
             path: *
@@ -43,6 +43,6 @@ parameters:
         -
             message: '#^Property .+ type has no value type specified in iterable type array\.$#'
             path: *
-            count: 38
+            count: 37
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache
