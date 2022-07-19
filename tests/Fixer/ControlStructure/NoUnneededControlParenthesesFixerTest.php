@@ -913,15 +913,15 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             '<?php $a8 = [1, @( ($f.$b)() )];',
         ];
 
-        yield 'directly following `{` and `}`' => [
+        yield 'inside `{` and `}`' => [
             '<?php
-                while(foo()) { bar(); }foo();
-                while(bar()){foo();};
+                while(foo()) { bar(); }
+                while(bar()){foo1();};
                 if($a){foo();}
             ',
             '<?php
-                while(foo()) { (bar()); }(foo());
-                while(bar()){(foo());};
+                while(foo()) { (bar()); }
+                while(bar()){(foo1());};
                 if($a){(foo());}
             ',
         ];
@@ -1207,6 +1207,79 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             ];
         }
 
+        yield 'after `}`' => [
+            '<?php
+                while(foo()){}  ++$i;
+                for(;;){}++$i;
+                foreach ($a as $b){}++$i;
+
+                if (foo()) {}++$i;
+                if (foo()) {} else {}++$i;
+                if (foo()) {} elseif(bar()) {}++$i;
+
+                switch(foo()){case 1: echo 1;}++$i;
+                switch (foo()){
+                    case 1: {}++$i; break;
+                }
+
+                function Bar(): array {
+                    $i++;
+                    return [];
+                }
+                function Foo1(){}++$i;
+                function & Foo2(){}++$i;
+
+                class A{}++$i;
+                class A1 extends BD{}++$i;
+                class A2 extends BD implements CE{}++$i;
+                class A3 extends BD implements CE,DE{}++$i;
+
+                interface B{}++$i;
+                interface B1 extends A{}++$i;
+                interface B2 extends A,B{}++$i;
+
+                trait X{}++$i;
+
+                try{}catch(E $e){}$i++;
+                try {} finally {}++$i;
+            ',
+            '<?php
+                while(foo()){}  (++$i);
+                for(;;){}(++$i);
+                foreach ($a as $b){}(++$i);
+
+                if (foo()) {}(++$i);
+                if (foo()) {} else {}(++$i);
+                if (foo()) {} elseif(bar()) {}(++$i);
+
+                switch(foo()){case 1: echo 1;}(++$i);
+                switch (foo()){
+                    case 1: {}(++$i); break;
+                }
+
+                function Bar(): array {
+                    ($i++);
+                    return [];
+                }
+                function Foo1(){}(++$i);
+                function & Foo2(){}(++$i);
+
+                class A{}(++$i);
+                class A1 extends BD{}(++$i);
+                class A2 extends BD implements CE{}(++$i);
+                class A3 extends BD implements CE,DE{}(++$i);
+
+                interface B{}(++$i);
+                interface B1 extends A{}(++$i);
+                interface B2 extends A,B{}(++$i);
+
+                trait X{}(++$i);
+
+                try{}catch(E $e){}($i++);
+                try {} finally {}(++$i);
+            ',
+        ];
+
         yield 'do not fix' => [
             '<?php
                 $b = ($a+=$c);
@@ -1330,6 +1403,26 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
                 __halt_compiler();
             ',
+        ];
+
+        yield 'do not fix ' => [
+            '<?php
+                SomeClass::{$method}(
+                    $variableA,
+                    $variableB
+                );',
+        ];
+
+        yield 'do not fix 2' => [
+            '<?php SomeClass::{$method}(2) + 1;',
+        ];
+
+        yield 'do not fix 3' => [
+            '<?php $object::{$method}(...$args);',
+        ];
+
+        yield 'alternative syntax is not completely supported' => [
+            '<?php if ($a):(++$i); endif;',
         ];
     }
 
@@ -1608,6 +1701,21 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             '<?php
                 $fn9 = fn & (): D & E => (new F());
             ',
+        ];
+
+        yield [
+            '<?php
+enum Suit
+{
+    case Hearts;
+}$i++;
+',
+            '<?php
+enum Suit
+{
+    case Hearts;
+}($i++);
+',
         ];
     }
 }

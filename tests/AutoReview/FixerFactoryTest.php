@@ -517,6 +517,7 @@ final class FixerFactoryTest extends TestCase
                 'braces',
                 'elseif',
                 'no_superfluous_elseif',
+                'no_unneeded_control_parentheses',
                 'no_useless_else',
                 'switch_continue_to_break',
             ],
