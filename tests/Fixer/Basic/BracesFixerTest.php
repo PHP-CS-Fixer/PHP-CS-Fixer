@@ -28,9 +28,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class BracesFixerTest extends AbstractFixerTestCase
 {
-    private static $configurationOopPositionSameLine = ['position_after_functions_and_oop_constructs' => BracesFixer::LINE_SAME];
-    private static $configurationCtrlStructPositionNextLine = ['position_after_control_structures' => BracesFixer::LINE_NEXT];
-    private static $configurationAnonymousPositionNextLine = ['position_after_anonymous_constructs' => BracesFixer::LINE_NEXT];
+    private const CONFIGURATION_OOP_POSITION_SAME_LINE = ['position_after_functions_and_oop_constructs' => BracesFixer::LINE_SAME];
+    private const CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE = ['position_after_control_structures' => BracesFixer::LINE_NEXT];
+    private const CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE = ['position_after_anonymous_constructs' => BracesFixer::LINE_NEXT];
 
     public function testInvalidConfigurationClassyConstructs(): void
     {
@@ -208,7 +208,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         while (false);
     };',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -222,7 +222,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         $a = 1;
         while (false);
     };',
-                self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -231,7 +231,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         for ($i=0;$i<5;++$i);
     };',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -245,7 +245,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         $a = 1;
         for ($i=0;$i<5;++$i);
     };',
-                self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -268,7 +268,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
             $a = 1;
         }
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -284,7 +284,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     else {
         $b = 2;
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -303,7 +303,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     else {
         $b = 2;
     }',
-                self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -323,7 +323,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     catch (\Exception $e) {
         // do nothing
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -348,7 +348,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     catch (\Exception $e) {
         // do nothing
     }',
-                self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -364,7 +364,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     {
         echo 2;
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -382,7 +382,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     {
         echo 2;
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -404,7 +404,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         ){
         }
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -416,7 +416,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     }
                 ',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -426,7 +426,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         } while (true);
     }',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -434,7 +434,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     }',
                 '<?php
     if /* 1 */ (2) {}',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -444,7 +444,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
                     }
                 ',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php class A {
@@ -454,7 +454,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
 /** */
 {
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1527,7 +1527,7 @@ if (true):
     $foo = 0;
 endif;',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1535,13 +1535,13 @@ if (true)  :
     $foo = 0;
 endif;',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
     if (true) : $foo = 1; endif;',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1550,7 +1550,7 @@ if (true) {
 }',
                 '<?php
 if (true)$foo = 1;',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1559,7 +1559,7 @@ if (true) {
 }',
                 '<?php
 if (true)    $foo = 2;',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1568,7 +1568,7 @@ if (true) {
 }',
                 '<?php
 if (true){$foo = 3;}',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1579,7 +1579,7 @@ if (true) {
 }',
                 '<?php
 if(true) { echo 1; } else echo 2;',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1590,7 +1590,7 @@ if (true) {
 }',
                 '<?php
 if(true) echo 3; else { echo 4; }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1601,7 +1601,7 @@ if (true) {
 }',
                 '<?php
 if (true) echo 5; else echo 6;',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1613,7 +1613,7 @@ if (true) {
 }',
                 '<?php
 if (true) while (true) { $foo = 1; $bar = 2;}',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1628,7 +1628,7 @@ if (true) {
 }',
                 '<?php
 if (true) if (true) echo 1; else echo 2; else echo 3;',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1645,7 +1645,7 @@ if (true) {
 
     if ($a && ($b || $c)) $d = 1;
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1658,7 +1658,7 @@ for ($i = 1; $i < 10; ++$i) {
                 '<?php
 for ($i = 1; $i < 10; ++$i) echo $i;
 for ($i = 1; $i < 10; ++$i) { echo $i; }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1669,7 +1669,7 @@ for ($i = 1; $i < 5; ++$i) {
 }',
                 '<?php
 for ($i = 1; $i < 5; ++$i) for ($i = 1; $i < 10; ++$i) { echo $i; }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1678,13 +1678,13 @@ do {
 } while (false);',
                 '<?php
 do { echo 1; } while (false);',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
 while ($foo->next());',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1693,7 +1693,7 @@ foreach ($foo as $bar) {
 }',
                 '<?php
 foreach ($foo as $bar) echo $bar;',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1702,7 +1702,7 @@ if (true) {
 }',
                 '<?php
 if (true) {$a = 1;}',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1713,7 +1713,7 @@ if (true) {
 if (true) {
  $a = 1;
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1734,7 +1734,7 @@ if (true) {
                         }
         $d = 4;
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1745,7 +1745,7 @@ if (true) {
     $b = 2;
 }',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1755,7 +1755,7 @@ if (1) {
     // comment at end
 }',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1771,7 +1771,7 @@ if (1) {
     $d = "d";
 }',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1782,7 +1782,7 @@ foreach ($numbers as $num) {
     $b = "b";
 }',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1796,7 +1796,7 @@ if (1) {
     }
 }',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1808,7 +1808,7 @@ if (1) {
     ticks = 1  ) {
   $ticks = 1;
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1825,7 +1825,7 @@ if (1) {
     {
         bar();
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1837,7 +1837,7 @@ if (1) {
     {
         foo();
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1850,7 +1850,7 @@ if (1) {
         echo $test;
     }
     while ($test = $this->getTest());',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1862,7 +1862,7 @@ if (1) {
     {
         echo $test;
     }while ($test = $this->getTest());',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1890,7 +1890,7 @@ if (1) {
 
 
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1918,7 +1918,7 @@ if (1) {
 
 
     }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -1930,7 +1930,7 @@ if (1) {
         }
     }',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1953,7 +1953,7 @@ if (1) {
             // do nothing
         }
     }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -1965,7 +1965,7 @@ if (1) {
     {
         public function setConfig(ConfigInterface $config);
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -1977,7 +1977,7 @@ if (1) {
     {
         public function setConfig(ConfigInterface $config);
     }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -1989,7 +1989,7 @@ function bar()
 {
     $a = 1; //comment
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2005,7 +2005,7 @@ function & lambda()
     return function () {
     };
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2022,7 +2022,7 @@ function & lambda()
     return function () {
     };
 }',
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -2038,7 +2038,7 @@ function & lambda()
     return function () {
     };
 }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -2050,7 +2050,7 @@ function nested()
 {
     $a = "a{$b->c()}d";
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2062,7 +2062,7 @@ function nested()
 {
     $a = "a{$b->c()}d";
 }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -2084,7 +2084,7 @@ function foo()
     $p = array($q->{$r}, $s->{$t});
     $u->{$v}->w = 1;
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2106,7 +2106,7 @@ function foo()
     $p = array($q->{$r}, $s->{$t});
     $u->{$v}->w = 1;
 }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -2118,7 +2118,7 @@ function mixed()
 {
     $a = $b->{"a{$c}d"}();
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2130,7 +2130,7 @@ function mixedComplex()
 {
     $a = $b->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2142,7 +2142,7 @@ function mixedComplex()
 {
     $a = ${"b{$foo}"}->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2153,7 +2153,7 @@ function mixedComplex()
     endif;
 ',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2164,7 +2164,7 @@ function mixedComplex()
     endif;
 ',
                 null,
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -2172,7 +2172,7 @@ function mixedComplex()
         echo 1;
     }',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2195,7 +2195,7 @@ function mixedComplex()
             print("bar");
         }
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2220,7 +2220,7 @@ function mixedComplex()
             print("bar");
         }
     }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -2242,14 +2242,14 @@ function mixedComplex()
             print("bar");
         }
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php if (true) {
     echo "s";
 } ?>x',
                 '<?php if (true) echo "s" ?>x',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2279,7 +2279,7 @@ function mixedComplex()
                 });
         }
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2310,7 +2310,7 @@ function mixedComplex()
                 });
         }
     }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -2342,7 +2342,7 @@ function mixedComplex()
                 });
         }
     }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -2365,7 +2365,7 @@ if(true)
     else
         echo 3;
 ',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2390,7 +2390,7 @@ if(true)
         echo 3;
 echo 4;
 ',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2405,7 +2405,7 @@ if (true) {
 }',
                 '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2420,7 +2420,7 @@ if (true) {
 }',
                 '<?php
 if(true) if(true) echo 1; else echo 2; else echo 3;',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2436,7 +2436,7 @@ foreach ($data as $val)
     if ($val === "errors") {
         echo "!";
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2455,7 +2455,7 @@ if (1)
         if ($val === "errors") {
             echo "!";
         }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
 
             [
@@ -2473,7 +2473,7 @@ if (1)
         echo "Hello";
       }
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2490,7 +2490,7 @@ class Foo
     echo "Hello";
   }
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2507,7 +2507,7 @@ class Foo
     echo "Hello";
   }
 }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -2521,7 +2521,7 @@ class Foo
                 public $bar;
                 public $baz;
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2533,7 +2533,7 @@ class Foo
     {
         return \Foo::{$foo}($bar);
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2550,7 +2550,7 @@ class Foo
         //comment
         {}
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2587,7 +2587,7 @@ function D() /**
 */
 {
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2687,7 +2687,7 @@ function foo()
                     }',
                 '<?php
                     class FooA {}',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2695,7 +2695,7 @@ function foo()
                     }',
                 '<?php
                     class FooB{}',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2704,7 +2704,7 @@ function foo()
                 '<?php
                     class FooC
 {}',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2712,7 +2712,7 @@ function foo()
                     }',
                 '<?php
                     interface FooD {}',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2721,7 +2721,7 @@ function foo()
                 }',
                 '<?php
                 class TestClass extends BaseTestClass implements TestInterface { private $foo;}',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2738,7 +2738,7 @@ abstract class Foo
         return true;
     }
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2750,7 +2750,7 @@ function foo()
 {
     return "$c ($d)";
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2768,7 +2768,7 @@ function foo()
     }',
                 '<?php
     trait TFoo {public $a;}',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2786,7 +2786,7 @@ function foo()
     }',
                 '<?php
     trait TFoo {public $a;}',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
         ];
     }
@@ -2866,7 +2866,7 @@ function foo()
             ],
         ];
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2900,7 +2900,7 @@ function foo()
             ],
         ];
     }',
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
         ];
     }
@@ -2946,7 +2946,7 @@ function foo()
             [
                 '<?php ',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2958,7 +2958,7 @@ function foo()
     {
         echo 1;
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -2970,7 +2970,7 @@ function foo()
     {
         echo 1;
     };',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3030,7 +3030,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     {
         private $x;
     };',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
         ];
     }
@@ -3121,7 +3121,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     {
         echo 1;
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3132,7 +3132,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     if (true){
         echo 1;
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3143,7 +3143,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     if (true)           {
         echo 1;
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3153,7 +3153,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     while ($file = $this->getFile())
     {
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3177,7 +3177,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
             echo 3;
             echo 4;
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3189,7 +3189,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     {
         echo 1;
     }',
-                self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -3200,7 +3200,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     if (true){
         echo 1;
     }',
-                self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -3211,7 +3211,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     if (true)           {
         echo 1;
     }',
-                self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -3221,7 +3221,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     while ($file = $this->getFile())
     {
     }',
-                self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -3245,7 +3245,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
             echo 3;
             echo 4;
     }',
-                self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
         ];
     }
@@ -3408,7 +3408,7 @@ class Foo
     function download() {
     }',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3435,7 +3435,7 @@ class Foo
     {
     }
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3444,7 +3444,7 @@ class Foo
     });
 ',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3453,7 +3453,7 @@ class Foo
                 '<?php
     filter(function   ($a)
     {});',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3461,7 +3461,7 @@ class Foo
     });',
                 '<?php
     filter(function   ($b){});',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3472,7 +3472,7 @@ class Foo
     }, $collection));',
                 '<?php
     foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3485,7 +3485,7 @@ class Foo
     }, $collection));',
                 '<?php
     foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -3502,7 +3502,7 @@ class Foo
         return 1;
     }
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3519,7 +3519,7 @@ class Foo
         return 1;
     }
 }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -3536,7 +3536,7 @@ class Foo
         return 1;
     }
 }',
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -3544,7 +3544,7 @@ class Foo
         return 1;
     });',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3555,7 +3555,7 @@ class Foo
         }
     );',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3567,7 +3567,7 @@ class Foo
     {
         return 0;
     };',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3579,7 +3579,7 @@ class Foo
     {
         return 0;
     };',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3591,7 +3591,7 @@ class Foo
     {
         return 0;
     };',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3603,7 +3603,7 @@ class Foo
     {
         return 0;
     };',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
         ];
     }
@@ -3633,7 +3633,7 @@ class Foo
     )
     {
     }',
-                self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -3647,7 +3647,7 @@ class Foo
     )
     {
     }',
-                self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -3663,7 +3663,7 @@ class Foo
     )
     {
     };',
-                self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -3685,7 +3685,7 @@ class Foo
         {
         }
     }',
-                self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -3699,7 +3699,7 @@ class Foo
     )
     {
     }',
-                self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -3721,7 +3721,7 @@ class Foo
     )
     {
     }',
-                self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
         ];
     }
@@ -3837,7 +3837,7 @@ declare   (   ticks   =   1   )   {
     }catch (Exception $e){
         log($e);
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3848,7 +3848,7 @@ declare   (   ticks   =   1   )   {
     do{
         echo 1;
     }while($test);',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3861,7 +3861,7 @@ declare   (   ticks   =   1   )   {
         && true === true
     )     {
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3874,7 +3874,7 @@ declare   (   ticks   =   1   )   {
     }
     if ($this->tesT ($test)) {
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3887,7 +3887,7 @@ declare   (   ticks   =   1   )   {
     }elseif(false){
     }else{
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3895,7 +3895,7 @@ declare   (   ticks   =   1   )   {
     };',
                 '<?php
     $foo = function& ()use($bar){};',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3907,7 +3907,7 @@ declare(strict_types=1);
 while (true) {
 }',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -3916,7 +3916,7 @@ declare(ticks   =   1) {
                 '<?php
 declare   (   ticks   =   1   )   {
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
         ];
     }
@@ -3981,7 +3981,7 @@ declare   (   ticks   =   1   )   {
     finally     {
         echo "finish!";
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -4013,7 +4013,7 @@ declare   (   ticks   =   1   )   {
     finally     {
         echo "finish!";
     }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
         ];
     }
@@ -4043,7 +4043,7 @@ declare   (   ticks   =   1   )   {
     if (true) {
     }',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -4055,7 +4055,7 @@ declare   (   ticks   =   1   )   {
     use function Foo\bar;
     if (true) {
     }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4247,7 +4247,7 @@ use const some\a\{ConstA, ConstB, ConstC};
         // foo
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -4266,7 +4266,7 @@ use const some\a\{ConstA, ConstB, ConstC};
         // foo
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
-                self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4283,7 +4283,7 @@ use const some\a\{ConstA, ConstB, ConstC};
         // foo
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4303,7 +4303,7 @@ use const some\a\{ConstA, ConstB, ConstC};
         // foo
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
-                self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4321,7 +4321,7 @@ use const some\a\{ConstA, ConstB, ConstC};
         // foo
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4332,7 +4332,7 @@ use const some\a\{ConstA, ConstB, ConstC};
     }, 3);',
                 '<?php
     foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -4344,7 +4344,7 @@ use const some\a\{ConstA, ConstB, ConstC};
     }, 3);',
                 '<?php
     foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
-                self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4356,7 +4356,7 @@ use const some\a\{ConstA, ConstB, ConstC};
     }, 3);',
                 '<?php
     foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4364,7 +4364,7 @@ $message = (new class() implements FooInterface {
 });',
                 '<?php
 $message = (new class() implements FooInterface{});',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -4372,7 +4372,7 @@ $message = (new class() implements FooInterface {
 });',
                 '<?php
 $message = (new class() implements FooInterface{});',
-                self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4381,26 +4381,26 @@ $message = (new class() implements FooInterface
 });',
                 '<?php
 $message = (new class() implements FooInterface{});',
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php $message = (new class() {
 });',
                 '<?php $message = (new class() {});',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php $message = (new class() {
 });',
                 '<?php $message = (new class() {});',
-                self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php $message = (new class()
 {
 });',
                 '<?php $message = (new class() {});',
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4418,7 +4418,7 @@ if (1) {
     public function bar() { echo 1; }
   });
 }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -4438,7 +4438,7 @@ if (1) {
     public function bar() { echo 1; }
   });
 }',
-                self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4457,7 +4457,7 @@ if (1) {
     public function bar() { echo 1; }
   });
 }',
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4476,7 +4476,7 @@ if (1) {
     public function bar() { echo 1; }
   });
 }',
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4497,7 +4497,7 @@ if (1) {
     public function bar() { echo 1; }
   });
 }',
-                self::$configurationCtrlStructPositionNextLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4517,7 +4517,7 @@ if (1) {
     public function bar() { echo 1; }
   });
 }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4539,7 +4539,7 @@ if (1) {
         }
     }
                 ',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -4561,7 +4561,7 @@ if (1) {
         }
     }
                 ',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4590,7 +4590,7 @@ if (1) {
     function a() {
     }
                 ',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -4621,7 +4621,7 @@ if (1) {
     function a() {
     }
                 ',
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4640,7 +4640,7 @@ if (1) {
             return function (int $foo) use ($bar): string { return $bar; };
         }
     }',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -4660,7 +4660,7 @@ if (1) {
             return function (int $foo) use ($bar): string { return $bar; };
         }
     }',
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4675,7 +4675,7 @@ use function some\a\{
     test2
  };
 test();',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -4690,7 +4690,7 @@ use function some\a\{
     test2
  };
 test();',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4705,7 +4705,7 @@ use function some\a\{
     test2
  };
 test();',
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4714,7 +4714,7 @@ use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
 ',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -4723,7 +4723,7 @@ use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
 ',
                 null,
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4732,7 +4732,7 @@ use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
 ',
                 null,
-                self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
             ],
             [
                 '<?php
@@ -4854,7 +4854,7 @@ if (true) {
     // if body
 }',
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -4879,18 +4879,18 @@ if (true) {
 
     // if body
 }',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
                 "<?php if (true) {\r\n\r\n    // CRLF newline\n}",
                 null,
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 "<?php if (true)
 {\r\n\r\n    // CRLF newline\n}",
                 "<?php if (true){\r\n\r\n// CRLF newline\n}",
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
         ];
     }
@@ -5010,7 +5010,7 @@ if (true) {'."\r\n"
 .'}',
                 '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
-                self::$configurationOopPositionSameLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 '<?php
@@ -5030,7 +5030,7 @@ if (true)'
 .'}',
                 '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
-                self::$configurationOopPositionSameLine + self::$configurationCtrlStructPositionNextLine,
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
         ];
     }

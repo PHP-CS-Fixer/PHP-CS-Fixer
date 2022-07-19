@@ -23,10 +23,6 @@ parameters:
         -
             message: '#^.+no value type specified in iterable type.+\.$#'
             path: *
-            count: 561
-        -
-            message: '#^Property .+ has no type specified\.$#'
-            path: *
-            count: 7
+            count: 542
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache

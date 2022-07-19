@@ -19,6 +19,11 @@ namespace PhpCsFixer\Tests\Test;
  */
 final class TestCaseUtils
 {
+    /**
+     * @param iterable<array{0: string, 1?: string}> $cases
+     *
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function swapExpectedInputTestCases(iterable $cases): iterable
     {
         foreach ($cases as $case) {

@@ -24,22 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class AbstractFunctionReferenceFixerTest extends TestCase
 {
-    private $fixer;
-
-    protected function setUp(): void
-    {
-        $this->fixer = new FunctionReferenceTestFixer();
-
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->fixer = null;
-
-        parent::tearDown();
-    }
-
     /**
      * @param null|int[] $expected
      *
@@ -52,13 +36,15 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
         int $start = 0,
         ?int $end = null
     ): void {
-        static::assertTrue($this->fixer->isRisky());
+        $fixer = new FunctionReferenceTestFixer();
+
+        static::assertTrue($fixer->isRisky());
 
         $tokens = Tokens::fromCode($source);
 
         static::assertSame(
             $expected,
-            $this->fixer->findTest(
+            $fixer->findTest(
                 $functionNameToSearch,
                 $tokens,
                 $start,

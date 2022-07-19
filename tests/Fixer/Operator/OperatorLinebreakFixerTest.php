@@ -216,6 +216,9 @@ endwhile;
         ];
     }
 
+    /**
+     * @return iterable<array{0: string, 1: null|string, 2?: array<string, mixed>}>
+     */
     private static function pairs(): iterable
     {
         yield 'handle equal sign' => [
