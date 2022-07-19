@@ -56,10 +56,12 @@ final class XmlReporter implements ReporterInterface
             $filesXML->appendChild($fileXML);
 
             if ($reportSummary->shouldAddAppliedFixers()) {
-                $fileXML->appendChild($this->createAppliedFixersElement($dom, $fixResult));
+                $fileXML->appendChild(
+                    $this->createAppliedFixersElement($dom, $fixResult['appliedFixers']),
+                );
             }
 
-            if (!empty($fixResult['diff'])) {
+            if ('' !== $fixResult['diff']) {
                 $fileXML->appendChild($this->createDiffElement($dom, $fixResult['diff']));
             }
         }
@@ -78,13 +80,13 @@ final class XmlReporter implements ReporterInterface
     }
 
     /**
-     * @param array{appliedFixers: list<string>} $fixResult
+     * @param list<string> $appliedFixers
      */
-    private function createAppliedFixersElement(\DOMDocument $dom, array $fixResult): \DOMElement
+    private function createAppliedFixersElement(\DOMDocument $dom, array $appliedFixers): \DOMElement
     {
         $appliedFixersXML = $dom->createElement('applied_fixers');
 
-        foreach ($fixResult['appliedFixers'] as $appliedFixer) {
+        foreach ($appliedFixers as $appliedFixer) {
             $appliedFixerXML = $dom->createElement('applied_fixer');
             $appliedFixerXML->setAttribute('name', $appliedFixer);
             $appliedFixersXML->appendChild($appliedFixerXML);

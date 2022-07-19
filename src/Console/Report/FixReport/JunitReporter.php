@@ -103,7 +103,7 @@ final class JunitReporter implements ReporterInterface
     }
 
     /**
-     * @param array{appliedFixers: list<string>, diff?: string} $fixResult
+     * @param array{appliedFixers: list<string>, diff: string} $fixResult
      */
     private function createFailedTestCase(\DOMDocument $dom, string $file, array $fixResult, bool $shouldAddAppliedFixers): \DOMElement
     {
@@ -130,7 +130,7 @@ final class JunitReporter implements ReporterInterface
             $failureContent = "Wrong code style\n";
         }
 
-        if (!empty($fixResult['diff'])) {
+        if ('' !== $fixResult['diff']) {
             $failureContent .= "\nDiff:\n---------------\n\n".$fixResult['diff'];
         }
 

@@ -45,7 +45,7 @@ final class JsonReporter implements ReporterInterface
                 $jsonFile['appliedFixers'] = $fixResult['appliedFixers'];
             }
 
-            if (!empty($fixResult['diff'])) {
+            if ('' !== $fixResult['diff']) {
                 $jsonFile['diff'] = $fixResult['diff'];
             }
 

@@ -23,7 +23,7 @@ parameters:
         -
             message: '#^.+no value type specified in iterable type.+\.$#'
             path: *
-            count: 569
+            count: 561
         -
             message: '#^Property .+ has no type specified\.$#'
             path: *
