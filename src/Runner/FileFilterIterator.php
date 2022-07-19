@@ -36,6 +36,9 @@ final class FileFilterIterator extends \FilterIterator
      */
     private array $visitedElements = [];
 
+    /**
+     * @param \Traversable<\SplFileInfo> $iterator
+     */
     public function __construct(
         \Traversable $iterator,
         ?EventDispatcherInterface $eventDispatcher,

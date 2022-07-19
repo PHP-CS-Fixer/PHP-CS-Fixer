@@ -172,7 +172,7 @@ final class FileFilterIteratorTest extends TestCase
     public function testInvalidIterator(): void
     {
         $filter = new FileFilterIterator(
-            new \ArrayIterator([__FILE__]),
+            new \ArrayIterator([__FILE__]), // @phpstan-ignore-line we want this check for contexts without static analysis
             null,
             $this->prophesize(\PhpCsFixer\Cache\CacheManagerInterface::class)->reveal()
         );

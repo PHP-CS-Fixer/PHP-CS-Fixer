@@ -31,9 +31,9 @@ class Config implements ConfigInterface
     private array $customFixers = [];
 
     /**
-     * @var null|iterable
+     * @var null|iterable<\SplFileInfo>
      */
-    private $finder;
+    private ?iterable $finder = null;
 
     private string $format = 'txt';
 

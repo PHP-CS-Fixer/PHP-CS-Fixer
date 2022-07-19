@@ -4,7 +4,7 @@ includes:
     - dev-tools/vendor/phpstan/phpstan-phpunit/extension.neon
 
 parameters:
-    level: 5
+    level: 6
     paths:
         - src
         - tests
@@ -14,5 +14,35 @@ parameters:
         - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens)\.$/'
         - '/^Unsafe call to private method [a-zA-Z\\]+::[a-zA-Z]+\(\) through static::\.$/'
         - '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
+
+        # ignore PHPUnit data providers return type as they are not checked against the test methods anyway
+        - '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type array\.$#'
+        - '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type iterable\.$#'
+
+        # baseline, should only shrink
+        -
+            message: '#^Method .+ has parameter .+ with no value type specified in iterable type array\.$#'
+            path: *
+            count: 379
+        -
+            message: '#^Method .+ has parameter .+ with no value type specified in iterable type iterable\.$#'
+            path: *
+            count: 4
+        -
+            message: '#^Method .+ return type has no value type specified in iterable type array\.$#'
+            path: *
+            count: 163
+        -
+            message: '#^Method .+ return type has no value type specified in iterable type iterable\.$#'
+            path: *
+            count: 15
+        -
+            message: '#^Property .+ has no type specified\.$#'
+            path: *
+            count: 7
+        -
+            message: '#^Property .+ type has no value type specified in iterable type array\.$#'
+            path: *
+            count: 38
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache

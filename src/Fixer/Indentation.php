@@ -22,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 trait Indentation
 {
-    private function getLineIndentation(Tokens $tokens, $index)
+    private function getLineIndentation(Tokens $tokens, int $index): string
     {
         $newlineTokenIndex = $this->getPreviousNewlineTokenIndex($tokens, $index);
 
@@ -42,7 +42,7 @@ trait Indentation
         return '';
     }
 
-    private function getPreviousNewlineTokenIndex(Tokens $tokens, $index)
+    private function getPreviousNewlineTokenIndex(Tokens $tokens, int $index): ?int
     {
         while ($index > 0) {
             $index = $tokens->getPrevTokenOfKind($index, [[T_WHITESPACE], [T_INLINE_HTML]]);
