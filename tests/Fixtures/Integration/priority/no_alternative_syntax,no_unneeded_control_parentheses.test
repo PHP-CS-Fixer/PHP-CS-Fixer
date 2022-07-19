@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: no_alternative_syntax,no_unneeded_control_parentheses.
+--RULESET--
+{"no_alternative_syntax": true, "no_unneeded_control_parentheses": {"statements": ["others"]}}
+--EXPECT--
+<?php
+if ($a) { ++$i; }
+
+--INPUT--
+<?php
+if ($a):(++$i); endif;
