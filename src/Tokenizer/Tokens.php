@@ -533,7 +533,7 @@ class Tokens extends \SplFixedArray
      * Get index for closest sibling token which is non whitespace.
      *
      * @param int         $index       token index
-     * @param int         $direction   direction for looking, +1 or -1
+     * @param -1|1        $direction
      * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
      */
     public function getNonWhitespaceSibling(int $index, int $direction, ?string $whitespaces = null): ?int
@@ -580,8 +580,8 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token of given kind.
      *
-     * @param int $index     token index
-     * @param int $direction direction for looking, +1 or -1
+     * @param int  $index     token index
+     * @param -1|1 $direction
      * @param list<array{int}|string|Token> $tokens possible tokens
      * @param bool $caseSensitive perform a case sensitive comparison
      */
@@ -611,8 +611,8 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token not of given kind.
      *
-     * @param int $index     token index
-     * @param int $direction direction for looking, +1 or -1
+     * @param int  $index     token index
+     * @param -1|1 $direction
      * @param list<array{int}|string|Token> $tokens possible tokens
      */
     public function getTokenNotOfKindSibling(int $index, int $direction, array $tokens = []): ?int
@@ -628,7 +628,7 @@ class Tokens extends \SplFixedArray
      * Get index for closest sibling token not of given kind.
      *
      * @param int       $index     token index
-     * @param int       $direction direction for looking, +1 or -1
+     * @param -1|1      $direction
      * @param list<int> $kinds     possible tokens kinds
      */
     public function getTokenNotOfKindsSibling(int $index, int $direction, array $kinds = []): ?int
@@ -643,8 +643,8 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token that is not a whitespace, comment or attribute.
      *
-     * @param int $index     token index
-     * @param int $direction direction for looking, +1 or -1
+     * @param int  $index     token index
+     * @param -1|1 $direction
      */
     public function getMeaningfulTokenSibling(int $index, int $direction): ?int
     {
@@ -658,8 +658,8 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token which is not empty.
      *
-     * @param int $index     token index
-     * @param int $direction direction for looking, +1 or -1
+     * @param int  $index     token index
+     * @param -1|1 $direction
      */
     public function getNonEmptySibling(int $index, int $direction): ?int
     {
@@ -1163,6 +1163,9 @@ class Tokens extends \SplFixedArray
         $transformers->transform($this);
     }
 
+    /**
+     * @param -1|1 $direction
+     */
     private function removeWhitespaceSafely(int $index, int $direction, ?string $whitespaces = null): void
     {
         $whitespaceIndex = $this->getNonEmptySibling($index, $direction);
@@ -1377,7 +1380,7 @@ class Tokens extends \SplFixedArray
 
     /**
      * @param int                 $index     token index
-     * @param int                 $direction direction for looking, +1 or -1
+     * @param -1|1                $direction
      * @param callable(int): bool $filter
      */
     private function getTokenNotOfKind(int $index, int $direction, callable $filter): ?int

@@ -620,6 +620,7 @@ PHP;
 
     /**
      * @param ?int $expectedIndex
+     * @param -1|1 $direction
      *
      * @dataProvider provideTokenOfKindSiblingCases
      */
@@ -1363,6 +1364,8 @@ $bar;',
     }
 
     /**
+     * @param -1|1 $direction
+     *
      * @dataProvider provideGetMeaningfulTokenSiblingCases
      */
     public function testGetMeaningfulTokenSibling(?int $expectIndex, int $index, int $direction, string $source): void
