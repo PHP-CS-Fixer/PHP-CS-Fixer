@@ -155,10 +155,6 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
         do {
             $index = $tokens->getPrevNonWhitespace($index);
 
-            if (!\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
-                continue;
-            }
-
             if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
                 $index = $tokens->getPrevTokenOfKind($index, [[T_ATTRIBUTE]]);
             }
