@@ -87,21 +87,9 @@ final class AlternativeSyntaxAnalyzer
                 return $index;
             }
 
-            $blockOpeningIndex = $tokens->getNextTokenOfKind(
-                $tokens->findBlockEnd(
-                    Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-                    $tokens->getNextTokenOfKind($index + 1, ['(']),
-                ),
-                [':', '{'],
-            );
-
-            if (!$tokens[$blockOpeningIndex]->equals(':')) {
-                $index = $blockOpeningIndex;
-
-                continue;
+            if ($this->isStartOfAlternativeSyntaxBlock($tokens, $index)) {
+                $index = $this->findAlternativeSyntaxBlockEnd($tokens, $index);
             }
-
-            $index = $this->findAlternativeSyntaxBlockEnd($tokens, $index);
         }
     }
 
