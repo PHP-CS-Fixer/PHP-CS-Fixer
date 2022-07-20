@@ -127,6 +127,10 @@ final class ReturnAssignmentFixer extends AbstractFixer
         $candidates = [];
         $isRisky = false;
 
+        if ($tokens[$tokens->getNextMeaningfulToken($functionIndex)]->isGivenKind(CT::T_RETURN_REF)) {
+            $isRisky = true;
+        }
+
         // go through the function declaration and check if references are passed
         // - check if it will be risky to fix return statements of this function
         for ($index = $functionIndex + 1; $index < $functionOpenIndex; ++$index) {
@@ -258,7 +262,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
             );
 
             if ($tokens[$assignVarOperatorIndex]->equals('}')) {
-                $startIndex = $this->isCloseBracePartOfDefinition($tokens, $assignVarOperatorIndex); // test for `php anonymous class`, `lambda` and `match`
+                $startIndex = $this->isCloseBracePartOfDefinition($tokens, $assignVarOperatorIndex); // test for `anonymous class`, `lambda` and `match`
 
                 if (null === $startIndex) {
                     continue;
@@ -400,7 +404,9 @@ final class ReturnAssignmentFixer extends AbstractFixer
      */
     private function isOpenBraceOfAnonymousClass(Tokens $tokens, int $index): ?int
     {
-        $index = $tokens->getPrevMeaningfulToken($index);
+        do {
+            $index = $tokens->getPrevMeaningfulToken($index);
+        } while ($tokens[$index]->equalsAny([',', [T_STRING], [T_IMPLEMENTS], [T_EXTENDS]]));
 
         if ($tokens[$index]->equals(')')) {
             $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
@@ -436,7 +442,13 @@ final class ReturnAssignmentFixer extends AbstractFixer
             $index = $tokens->getPrevTokenOfKind($index, [')']);
             $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
             $index = $tokens->getPrevMeaningfulToken($index);
-        } elseif (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+        }
+
+        if ($tokens[$index]->isGivenKind(CT::T_RETURN_REF)) {
+            $index = $tokens->getPrevMeaningfulToken($index);
+        }
+
+        if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
             return null;
         }
 

@@ -476,6 +476,16 @@ var names are case-insensitive */ return $a   ;}
                     {
                         return new class(1,2) { public function Z(Foo $d){} };
                     }
+
+                    function D()
+                    {
+                        return new class extends Y {};
+                    }
+
+                    function E()
+                    {
+                        return new class extends Y implements O,P {};
+                    }
                 ',
                 '<?php
                     function A()
@@ -495,6 +505,18 @@ var names are case-insensitive */ return $a   ;}
                         $c = new class(1,2) { public function Z(Foo $d){} };
                         return $c;
                     }
+
+                    function D()
+                    {
+                        $c = new class extends Y {};
+                        return $c;
+                    }
+
+                    function E()
+                    {
+                        $c = new class extends Y implements O,P {};
+                        return $c;
+                    }
                 ',
             ],
             'lambda' => [
@@ -512,6 +534,22 @@ var names are case-insensitive */ return $a   ;}
                     function C()
                     {
                         return static function ($a, $b) use ($z) {};
+                    }
+
+                    function D()
+                    {
+                        return function &() use(&$b) {
+                            return $b; // do not fix
+                        };
+                          // fix
+                    }
+
+                    function E()
+                    {
+                        return function &() {
+                            $z = new A(); return $z; // do not fix
+                        };
+                          // fix
                     }
                 ',
                 '<?php
@@ -534,6 +572,24 @@ var names are case-insensitive */ return $a   ;}
                         $c = static function ($a, $b) use ($z) {};
 
                         return $c;
+                    }
+
+                    function D()
+                    {
+                        $a = function &() use(&$b) {
+                            return $b; // do not fix
+                        };
+
+                        return $a; // fix
+                    }
+
+                    function E()
+                    {
+                        $a = function &() {
+                            $z = new A(); return $z; // do not fix
+                        };
+
+                        return $a; // fix
                     }
                 ',
             ],
@@ -877,6 +933,9 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                         return $var;
                     }
                 }',
+            ],
+            'variable returned by reference in lambda' => [
+                '<?php $a = function &() {$z = new A(); return $z;};',
             ],
             [
                 '<?php
