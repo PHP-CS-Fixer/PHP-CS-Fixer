@@ -551,6 +551,12 @@ var names are case-insensitive */ return $a   ;}
                         };
                           // fix
                     }
+
+                    function A99()
+                    {
+                        $v = static function ($a, $b) use ($z) {};
+                        return 15;
+                    }
                 ',
                 '<?php
                     function A()
@@ -590,6 +596,13 @@ var names are case-insensitive */ return $a   ;}
                         };
 
                         return $a; // fix
+                    }
+
+                    function A99()
+                    {
+                        $v = static function ($a, $b) use ($z) {};
+                        $a = 15;
+                        return $a;
                     }
                 ',
             ],
