@@ -593,6 +593,20 @@ var names are case-insensitive */ return $a   ;}
                     }
                 ',
             ],
+            'arrow functions' => [
+                '<?php
+                    function Foo() {
+                        return fn($x) => $x + $y;
+                    }
+                ',
+                '<?php
+                    function Foo() {
+                        $fn1 = fn($x) => $x + $y;
+
+                        return $fn1;
+                    }
+                ',
+            ],
         ];
     }
 
