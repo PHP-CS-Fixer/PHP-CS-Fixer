@@ -38,12 +38,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
     /**
      * @internal
      */
-    public const ADDITIONAL_GROUPS_DEFAULT = null;
-
-    /**
-     * @internal
-     */
-    public const ADDITIONAL_GROUPS_LARAVEL = [['param', 'return']];
+    private const ADDITIONAL_GROUPS_DEFAULT = null;
 
     private TagComparator $tagComparator;
 
@@ -75,8 +70,8 @@ EOF;
             'Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line, except those specified in `additional_groups` option.',
             [
                 new CodeSample($code),
-                new CodeSample($code, ['additional_groups' => self::ADDITIONAL_GROUPS_LARAVEL]),
-                new CodeSample($code, ['additional_groups' => self::ADDITIONAL_GROUPS_LARAVEL, 'psr_standard_tags_only' => false]),
+                new CodeSample($code, ['additional_groups' => [['param', 'return']]]),
+                new CodeSample($code, ['additional_groups' => [['param', 'return']], 'psr_standard_tags_only' => false]),
                 new CodeSample($code, ['groups' => [['author', 'throws', 'custom'], ['return', 'param']], 'psr_standard_tags_only' => false]),
             ],
         );

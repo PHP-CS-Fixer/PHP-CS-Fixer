@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
-use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -653,7 +652,7 @@ EOF;
 
     public function testLaravelGroups(): void
     {
-        $this->fixer->configure(['additional_groups' => PhpdocSeparationFixer::ADDITIONAL_GROUPS_LARAVEL]);
+        $this->fixer->configure(['additional_groups' => [['param', 'return']]]);
 
         $expected = <<<'EOF'
 <?php
@@ -819,7 +818,7 @@ EOF;
 
         return [
             [
-                ['additional_groups' => PhpdocSeparationFixer::ADDITIONAL_GROUPS_LARAVEL],
+                ['additional_groups' => [['param', 'return']]],
                 <<<'EOF'
 <?php
 /**
