@@ -576,16 +576,16 @@ class Foo
 {
     /** @var string[] */
     #[Attribute1]
-    private readonly array $foo1;
+    private array $foo1;
 
     /** @var string[] */
     #[Attribute1]
     #[Attribute2]
-    readonly private array $foo2;
+    private array $foo2;
 
     /** @var string[] */
     #[Attribute1, Attribute2]
-    readonly array $foo3;
+    public array $foo3;
 }',
             '<?php
 
@@ -595,27 +595,27 @@ class Foo
      * @var string[]
      */
     #[Attribute1]
-    private readonly array $foo1;
+    private array $foo1;
 
     /**
      * @var string[]
      */
     #[Attribute1]
     #[Attribute2]
-    readonly private array $foo2;
+    private array $foo2;
 
     /**
      * @var string[]
      */
     #[Attribute1, Attribute2]
-    readonly array $foo3;
+    public array $foo3;
 }',
             [
                 'property' => 'single',
             ],
         ];
 
-        yield [
+        yield 'It handles class constants correctly' => [
             '<?php
 class Foo
 {
@@ -630,13 +630,13 @@ class Foo
      */
     #[Attribute1]
     #[Attribute2]
-    final public const B1 = "1";
+    public const B1 = "1";
 
     /**
      * 2
      */
     #[Attribute1, Attribute2]
-    public final const B2 = "2";
+    public const B2 = "2";
 }
 ',
             '<?php
@@ -649,18 +649,18 @@ class Foo
     /** 1 */
     #[Attribute1]
     #[Attribute2]
-    final public const B1 = "1";
+    public const B1 = "1";
 
     /** 2 */
     #[Attribute1, Attribute2]
-    public final const B2 = "2";
+    public const B2 = "2";
 }
 ',
         ];
 
-        yield [
+        yield 'It handles class functions correctly' => [
             '<?php
-                enum Foo
+                class Foo
                 {
                     /**
                      * @return void
@@ -683,7 +683,7 @@ class Foo
                 }
             ',
             '<?php
-                enum Foo
+                class Foo
                 {
                     /** @return void */
                     #[Attribute1]
@@ -714,7 +714,7 @@ class Foo
 
     public function provideFix81Cases(): iterable
     {
-        yield 'readonly' => [
+        yield 'It handles readonly properties correctly' => [
             '<?php
 
 class Foo
@@ -752,7 +752,7 @@ class Foo
             ],
         ];
 
-        yield [
+        yield 'It handles class constant correctly' => [
             '<?php
 class Foo
 {
@@ -795,7 +795,7 @@ class Foo
 ',
         ];
 
-        yield [
+        yield 'It handles enum functions correctly' => [
             '<?php
                 enum Foo
                 {
@@ -810,6 +810,49 @@ class Foo
                 {
                     /** @return void */
                     public function hello() {}
+                }
+            ',
+        ];
+
+        yield 'It handles enum function with attributes correctly' => [
+            '<?php
+                enum Foo
+                {
+                    /**
+                     * @return void
+                     */
+                    #[Attribute1]
+                    public function hello1() {}
+
+                    /**
+                     * @return void
+                     */
+                    #[Attribute1]
+                    #[Attribute2]
+                    public function hello2() {}
+
+                    /**
+                     * @return void
+                     */
+                    #[Attribute1, Attribute2]
+                    public function hello3() {}
+                }
+            ',
+            '<?php
+                enum Foo
+                {
+                    /** @return void */
+                    #[Attribute1]
+                    public function hello1() {}
+
+                    /** @return void */
+                    #[Attribute1]
+                    #[Attribute2]
+                    public function hello2() {}
+
+                    /** @return void */
+                    #[Attribute1, Attribute2]
+                    public function hello3() {}
                 }
             ',
         ];
