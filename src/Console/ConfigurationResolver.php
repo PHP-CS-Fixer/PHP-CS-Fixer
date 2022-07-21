@@ -147,14 +147,17 @@ final class ConfigurationResolver
      */
     private ?iterable $finder = null;
 
-    private $format;
+    private ?string $format = null;
 
     /**
      * @var null|Linter
      */
     private $linter;
 
-    private $path;
+    /**
+     * @var null|list<string>
+     */
+    private ?array $path = null;
 
     /**
      * @var null|string
@@ -480,6 +483,9 @@ final class ConfigurationResolver
         return $this->usingCache;
     }
 
+    /**
+     * @return iterable<\SplFileInfo>
+     */
     public function getFinder(): iterable
     {
         if (null === $this->finder) {
@@ -803,6 +809,8 @@ final class ConfigurationResolver
 
     /**
      * Apply path on config instance.
+     *
+     * @return iterable<\SplFileInfo>
      */
     private function resolveFinder(): iterable
     {

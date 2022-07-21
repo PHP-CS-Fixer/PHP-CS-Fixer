@@ -507,6 +507,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
+    /**
+     * @return iterable<array{
+     *     index: int,
+     *     loweredName: string,
+     *     openBraceIndex: int,
+     *     closeBraceIndex: int,
+     * }>
+     */
     private function getPreviousAssertCall(Tokens $tokens, int $startIndex, int $endIndex): iterable
     {
         $functionsAnalyzer = new FunctionsAnalyzer();

@@ -66,6 +66,9 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
         return $this->createCasesFor('real');
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     private function createCasesFor(string $type): iterable
     {
         yield [

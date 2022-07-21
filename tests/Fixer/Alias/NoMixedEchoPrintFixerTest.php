@@ -330,6 +330,9 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         static::assertSame($expected, $reflectionProperty->getValue($fixer));
     }
 
+    /**
+     * @return iterable<non-empty-string>
+     */
     private static function getCodeSnippetsToConvertBothWays(): iterable
     {
         yield 'inside of HTML' => '<div><?php %1$s "foo" ?></div>';

@@ -938,6 +938,9 @@ else?><?php echo 5;',
         ];
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     private function generateConditionsWithoutBracesCase(string $statement): iterable
     {
         $ifTemplate = '<?php

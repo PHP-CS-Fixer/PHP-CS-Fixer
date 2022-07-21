@@ -180,6 +180,9 @@ class SomeClass
         }
     }
 
+    /**
+     * @return iterable<string, array{int, int}>
+     */
     private function getTypes(Tokens $tokens, int $index, int $endIndex): iterable
     {
         $index = $typeStartIndex = $typeEndIndex = $tokens->getNextMeaningfulToken($index - 1);

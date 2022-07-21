@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
@@ -726,6 +727,9 @@ final class ProjectCodeTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<string, string>
+     */
     private function getUsedDataProviderMethodNames(string $testClassName): iterable
     {
         foreach ($this->getAnnotationsOfTestClass($testClassName, 'dataProvider') as $methodName => $dataProviderAnnotation) {
@@ -735,6 +739,9 @@ final class ProjectCodeTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<string, Annotation>
+     */
     private function getAnnotationsOfTestClass(string $testClassName, string $annotation): iterable
     {
         $tokens = Tokens::fromCode(file_get_contents(

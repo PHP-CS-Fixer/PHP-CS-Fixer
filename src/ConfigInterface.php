@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use SplFileInfo;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -39,7 +40,7 @@ interface ConfigInterface
     /**
      * Returns files to scan.
      *
-     * @return iterable|\Traversable
+     * @return iterable<SplFileInfo>
      */
     public function getFinder(): iterable;
 
@@ -99,6 +100,9 @@ interface ConfigInterface
      */
     public function setCacheFile(string $cacheFile): self;
 
+    /**
+     * @param iterable<SplFileInfo> $finder
+     */
     public function setFinder(iterable $finder): self;
 
     public function setFormat(string $format): self;

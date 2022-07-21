@@ -652,6 +652,9 @@ if (count($x)) {
         return [$global, $other];
     }
 
+    /**
+     * @return iterable<string>
+     */
     private function findFunctionDeclarations(Tokens $tokens, int $start, int $end): iterable
     {
         for ($index = $start; $index <= $end; ++$index) {

@@ -87,6 +87,9 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         return $cases;
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     private function createCasesFor(string $from, string $to): iterable
     {
         yield [

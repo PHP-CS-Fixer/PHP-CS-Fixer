@@ -32,6 +32,9 @@ final class UtilsTest extends TestCase
 {
     use ExpectDeprecationTrait;
 
+    /**
+     * @var null|false|string
+     */
     private $originalValueOfFutureMode;
 
     protected function setUp(): void

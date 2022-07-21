@@ -193,7 +193,8 @@ final class ConfigTest extends TestCase
     }
 
     /**
-     * @param FixerInterface[] $expected
+     * @param list<FixerInterface>     $expected
+     * @param iterable<FixerInterface> $suite
      *
      * @dataProvider provideRegisterCustomFixersCases
      */
