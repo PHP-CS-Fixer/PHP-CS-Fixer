@@ -790,6 +790,8 @@ EOF;
 
     /**
      * @dataProvider provideDocCodeCases
+     *
+     * @param array<string, mixed> $config
      */
     public function testDocCode(array $config, string $expected, string $input): void
     {
@@ -798,6 +800,9 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return array<array<null|array<string, mixed>|string>>
+     */
     public function provideDocCodeCases(): array
     {
         $input = <<<'EOF'
