@@ -47,6 +47,8 @@ EOF;
 
     /**
      * @dataProvider provideDifferentOrderCases
+     *
+     * @param array<string, mixed> $config
      */
     public function testOnlyParams(array $config): void
     {
@@ -65,6 +67,8 @@ EOF;
 
     /**
      * @dataProvider provideDifferentOrderCases
+     *
+     * @param array<string, mixed> $config
      */
     public function testOnlyReturns(array $config): void
     {
@@ -84,6 +88,8 @@ EOF;
 
     /**
      * @dataProvider provideDifferentOrderCases
+     *
+     * @param array<string, mixed> $config
      */
     public function testEmpty(array $config): void
     {
@@ -93,6 +99,8 @@ EOF;
 
     /**
      * @dataProvider provideDifferentOrderCases
+     *
+     * @param array<string, mixed> $config
      */
     public function testNoAnnotations(array $config): void
     {
@@ -359,6 +367,9 @@ EOF;
         $this->doTest($input);
     }
 
+    /**
+     * @return array<string, mixed>[][]
+     */
     public function provideDifferentOrderCases(): array
     {
         return [
@@ -370,17 +381,18 @@ EOF;
     /**
      * @dataProvider provideBasicCodeWithDifferentOrdersCases
      *
-     * @param mixed $config
-     * @param mixed $expected
-     * @param mixed $input
+     * @param array<string, mixed> $config
      */
-    public function testFixBasicCaseWithDifferentOrders($config, $expected, $input): void
+    public function testFixBasicCaseWithDifferentOrders(array $config, string $expected, ?string $input): void
     {
         $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return array<array<null|array<string, mixed>|string>>
+     */
     public function provideBasicCodeWithDifferentOrdersCases(): array
     {
         $input = <<<'EOF'
@@ -491,6 +503,8 @@ EOF;
 
     /**
      * @dataProvider provideCompeteCasesWithCustomOrdersCases
+     *
+     * @param array<string, mixed> $config
      */
     public function testFixCompeteCasesWithCustomOrders(array $config, string $expected, string $input): void
     {
@@ -499,6 +513,9 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return array<int, array<int, string|string[][]>>
+     */
     public function provideCompeteCasesWithCustomOrdersCases(): array
     {
         $docBlockBricks = [
@@ -589,6 +606,10 @@ EOF;
         ];
     }
 
+    /**
+     * @param array<string, string|string[]> $bricks
+     * @param string[]                       $order
+     */
     private static function glueBricks(array $bricks, array $order): string
     {
         $indent = '    ';

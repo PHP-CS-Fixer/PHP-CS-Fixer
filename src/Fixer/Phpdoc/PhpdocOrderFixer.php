@@ -32,6 +32,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @const string[]
+     */
     private const ORDER_DEFAULT = ['param', 'throws', 'return'];
 
     /**
@@ -71,6 +74,8 @@ EOF;
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $configuration
      */
     public function configure(array $configuration): void
     {
@@ -103,13 +108,12 @@ EOF;
      */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $order = new FixerOptionBuilder('order', 'Sequence in which annotations in PHPDoc should be ordered.');
-        $order
-            ->setAllowedTypes(['string[]'])
-            ->setDefault(self::ORDER_DEFAULT)
-        ;
-
-        return new FixerConfigurationResolver([$order->getOption()]);
+        return new FixerConfigurationResolver([
+            ( new FixerOptionBuilder('order', 'Sequence in which annotations in PHPDoc should be ordered.') )
+                ->setAllowedTypes(['string[]'])
+                ->setDefault(self::ORDER_DEFAULT)
+                ->getOption(),
+        ]);
     }
 
     /**
