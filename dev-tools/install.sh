@@ -20,7 +20,7 @@ cd "$(dirname "$0")"
 
 mkdir -p bin
 
-VERSION_CB="2.22.1"
+VERSION_CB="2.22.2"
 VERSION_SC="stable"
 
 echo λλλ checkbashisms
