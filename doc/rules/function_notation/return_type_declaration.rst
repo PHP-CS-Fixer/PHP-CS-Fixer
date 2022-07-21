@@ -2,8 +2,7 @@
 Rule ``return_type_declaration``
 ================================
 
-There should be one or no space before colon, and one space after it in return
-type declarations, according to configuration.
+Adjust spacing around colon in return type declarations and backed enum types.
 
 Description
 -----------

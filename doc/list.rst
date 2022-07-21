@@ -2603,7 +2603,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\ReturnNotation\\ReturnAssignmentFixer <./../src/Fixer/ReturnNotation/ReturnAssignmentFixer.php>`_
 -  `return_type_declaration <./rules/function_notation/return_type_declaration.rst>`_
 
-   There should be one or no space before colon, and one space after it in return type declarations, according to configuration.
+   Adjust spacing around colon in return type declarations and backed enum types.
 
    Rule is applied only in a PHP 7+ environment.
 

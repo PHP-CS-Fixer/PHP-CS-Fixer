@@ -3235,4 +3235,32 @@ class    Test {
             '<?php $a=1; $f = fn ():      array => [];',
         ];
     }
+
+    /**
+     * @dataProvider provideEnumTypeColonCases
+     * @requires PHP 8.1
+     */
+    public function testEnumTypeColon(string $expected, string $input): void
+    {
+        $this->fixer->configure([
+            'constructs' => [
+                'type_colon',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideEnumTypeColonCases(): iterable
+    {
+        yield [
+            '<?php enum Foo: int {}',
+            "<?php enum Foo:\nint {}",
+        ];
+
+        yield [
+            '<?php enum Foo: string {}',
+            '<?php enum Foo:string {}',
+        ];
+    }
 }

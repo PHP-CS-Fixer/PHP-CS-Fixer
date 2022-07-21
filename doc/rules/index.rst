@@ -375,7 +375,7 @@ Function Notation
   Callables must be called without using ``call_user_func*`` when possible.
 - `return_type_declaration <./function_notation/return_type_declaration.rst>`_
 
-  There should be one or no space before colon, and one space after it in return type declarations, according to configuration.
+  Adjust spacing around colon in return type declarations and backed enum types.
 - `single_line_throw <./function_notation/single_line_throw.rst>`_
 
   Throwing exception must be done in single line.
