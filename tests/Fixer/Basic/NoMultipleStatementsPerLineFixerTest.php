@@ -48,6 +48,12 @@ final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
                 }',
         ];
 
+        yield 'mixed `;` and close tag' => [
+            '<?php ++$a;
+++$b ?>',
+            '<?php ++$a; ++$b ?>',
+        ];
+
         yield 'followed by closing brace' => [
             '<?php if ($foo) { foo(); }',
         ];

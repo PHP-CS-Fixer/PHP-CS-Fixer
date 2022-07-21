@@ -23,6 +23,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * Fixer for rules defined in PSR2 ¶2.3 Lines: There must not be more than one statement per line.
+ */
 final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     use Indentation;
@@ -36,6 +39,16 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
             'There must not be more than one statement per line.',
             [new CodeSample("<?php\nfoo(); bar();\n")]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after NoEmptyStatementFixer.
+     */
+    public function getPriority(): int
+    {
+        return 39;
     }
 
     /**
