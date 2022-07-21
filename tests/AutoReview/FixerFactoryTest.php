@@ -545,6 +545,7 @@ final class FixerFactoryTest extends TestCase
                 'empty_loop_body',
                 'multiline_whitespace_before_semicolons',
                 'no_extra_blank_lines',
+                'no_multiple_statements_per_line',
                 'no_singleline_whitespace_before_semicolons',
                 'no_trailing_whitespace',
                 'no_useless_else',

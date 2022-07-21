@@ -76,6 +76,9 @@ Basic
 - `encoding <./basic/encoding.rst>`_
 
   PHP code MUST use only UTF-8 without BOM (remove BOM).
+- `no_multiple_statements_per_line <./basic/no_multiple_statements_per_line.rst>`_
+
+  There must not be more than one statement per line.
 - `non_printable_character <./basic/non_printable_character.rst>`_ *(risky)*
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
