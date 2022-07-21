@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
-use PhpCsFixer\Fixer\Phpdoc\PhpdocOrderFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -47,7 +46,7 @@ EOF;
     }
 
     /**
-     * @dataProvider provideAllAvailableOrderStyleCases
+     * @dataProvider provideDifferentOrderCases
      */
     public function testOnlyParams(array $config): void
     {
@@ -65,7 +64,7 @@ EOF;
     }
 
     /**
-     * @dataProvider provideAllAvailableOrderStyleCases
+     * @dataProvider provideDifferentOrderCases
      */
     public function testOnlyReturns(array $config): void
     {
@@ -84,7 +83,7 @@ EOF;
     }
 
     /**
-     * @dataProvider provideAllAvailableOrderStyleCases
+     * @dataProvider provideDifferentOrderCases
      */
     public function testEmpty(array $config): void
     {
@@ -93,7 +92,7 @@ EOF;
     }
 
     /**
-     * @dataProvider provideAllAvailableOrderStyleCases
+     * @dataProvider provideDifferentOrderCases
      */
     public function testNoAnnotations(array $config): void
     {
@@ -230,9 +229,9 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testNoChangesithLaravelStyle(): void
+    public function testNoChangesWithLaravelStyle(): void
     {
-        $this->fixer->configure(['order' => PhpdocOrderFixer::ORDER_LARAVEL]);
+        $this->fixer->configure(['order' => ['param', 'return', 'throws']]);
 
         $expected = <<<'EOF'
 <?php
@@ -253,7 +252,7 @@ EOF;
 
     public function testFixBasicCaseWithLaravelStyle(): void
     {
-        $this->fixer->configure(['order' => PhpdocOrderFixer::ORDER_LARAVEL]);
+        $this->fixer->configure(['order' => ['param', 'return', 'throws']]);
 
         $expected = <<<'EOF'
 <?php
@@ -280,7 +279,7 @@ EOF;
 
     public function testFixCompeteCaseWithLaravelStyle(): void
     {
-        $this->fixer->configure(['order' => PhpdocOrderFixer::ORDER_LARAVEL]);
+        $this->fixer->configure(['order' => ['param', 'return', 'throws']]);
 
         $expected = <<<'EOF'
 <?php
@@ -339,7 +338,7 @@ EOF;
 
     public function testExampleFromSymfonyWithLaravelStyle(): void
     {
-        $this->fixer->configure(['order' => PhpdocOrderFixer::ORDER_LARAVEL]);
+        $this->fixer->configure(['order' => ['param', 'return', 'throws']]);
 
         $input = <<<'EOF'
 <?php
@@ -360,11 +359,11 @@ EOF;
         $this->doTest($input);
     }
 
-    public function provideAllAvailableOrderStyleCases(): array
+    public function provideDifferentOrderCases(): array
     {
         return [
-            [['order' => PhpdocOrderFixer::ORDER_DEFAULT]],
-            [['order' => PhpdocOrderFixer::ORDER_DEFAULT]],
+            [['order' => ['param', 'throw', 'return']]],
+            [['order' => ['param', 'return', 'throw']]],
         ];
     }
 

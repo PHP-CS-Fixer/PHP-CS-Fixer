@@ -32,15 +32,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @internal
-     */
-    public const ORDER_DEFAULT = ['param', 'throws', 'return'];
-
-    /**
-     * @internal
-     */
-    public const ORDER_LARAVEL = ['param', 'return', 'throws'];
+    private const ORDER_DEFAULT = ['param', 'throws', 'return'];
 
     /**
      * @var string[]
@@ -71,7 +63,7 @@ EOF;
             [
                 new CodeSample($code),
                 new CodeSample($code, ['order' => self::ORDER_DEFAULT]),
-                new CodeSample($code, ['order' => self::ORDER_LARAVEL]),
+                new CodeSample($code, ['order' => ['param', 'return', 'throws']]),
                 new CodeSample($code, ['order' => ['param', 'custom', 'throws', 'return']]),
             ],
         );
