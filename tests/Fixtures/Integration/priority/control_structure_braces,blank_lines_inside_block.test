@@ -1,0 +1,20 @@
+--TEST--
+Integration of fixers: control_structure_braces,blank_lines_inside_block.
+--RULESET--
+{"control_structure_braces": true, "blank_lines_inside_block": true}
+--EXPECT--
+<?php
+
+if (true) {
+foo(); }
+
+bar();
+
+--INPUT--
+<?php
+
+if (true)
+
+foo();
+
+bar();

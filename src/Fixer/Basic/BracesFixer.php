@@ -19,6 +19,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ControlStructure\ControlStructureBracesFixer;
 use PhpCsFixer\Fixer\ControlStructure\ControlStructureContinuationPositionFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\DeclareParenthesesFixer;
+use PhpCsFixer\Fixer\Whitespace\BlankLinesInsideBlockFixer;
 use PhpCsFixer\Fixer\Whitespace\StatementIndentationFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -187,6 +188,7 @@ class Foo
     {
         $this->fixCommentBeforeBrace($tokens);
         $this->proxyFixers['control_structure_braces']->fix($file, $tokens);
+        $this->proxyFixers['blank_lines_inside_block']->fix($file, $tokens);
         $this->proxyFixers['no_multiple_statements_per_line']->fix($file, $tokens);
         $this->fixIndents($tokens);
         $this->fixSpaceAroundToken($tokens);
@@ -229,6 +231,7 @@ class Foo
     {
         return [
             new ControlStructureBracesFixer(),
+            new BlankLinesInsideBlockFixer(),
             $this->getCurlyBracesPositionFixer(),
             $this->getControlStructureContinuationPositionFixer(),
             new DeclareParenthesesFixer(),

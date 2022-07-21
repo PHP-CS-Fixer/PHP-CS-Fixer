@@ -390,6 +390,7 @@ final class FixerFactoryTest extends TestCase
                 'no_spaces_inside_parenthesis',
             ],
             'control_structure_braces' => [
+                'blank_lines_inside_block',
                 'control_structure_continuation_position',
                 'curly_braces_position',
             ],

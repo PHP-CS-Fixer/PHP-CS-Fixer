@@ -84,6 +84,11 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\BinaryOperatorSpacesFixer <./../src/Fixer/Operator/BinaryOperatorSpacesFixer.php>`_
+-  `blank_lines_inside_block <./rules/whitespace/blank_lines_inside_block.rst>`_
+
+   There must not be blank lines at start and end of braces blocks.
+
+   `Source PhpCsFixer\\Fixer\\Whitespace\\BlankLinesInsideBlockFixer <./../src/Fixer/Whitespace/BlankLinesInsideBlockFixer.php>`_
 -  `blank_line_after_namespace <./rules/namespace_notation/blank_line_after_namespace.rst>`_
 
    There MUST be one blank line after the namespace declaration.

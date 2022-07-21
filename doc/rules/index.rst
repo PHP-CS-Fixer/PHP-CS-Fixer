@@ -822,6 +822,9 @@ Whitespace
 - `blank_line_between_import_groups <./whitespace/blank_line_between_import_groups.rst>`_
 
   Putting blank lines between ``use`` statement groups.
+- `blank_lines_inside_block <./whitespace/blank_lines_inside_block.rst>`_
+
+  There must not be blank lines at start and end of braces blocks.
 - `compact_nullable_typehint <./whitespace/compact_nullable_typehint.rst>`_
 
   Remove extra spaces in a nullable typehint.
