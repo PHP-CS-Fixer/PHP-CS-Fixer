@@ -1568,6 +1568,33 @@ $ab = [$bc];
 $abc = [$bcd];
 ',
             ],
+            [
+                '<?php
+$result = false;
+
+$callback = static function () use (&$result) {
+    $result = true;
+};
+
+$this->query = $this->db->prepare(static function ($db) {
+   $sql = "INSERT INTO {$db->protectIdentifiers($db->DBPrefix)} ("
+          . $db->protectIdentifiers("name") . ", "
+          . $db->protectIdentifiers("email") . ", "
+          . $db->protectIdentifiers("country");
+});
+
+$classSet = Closure::bind(function ($key, $value) {
+    $this->{$key} = $value;
+}, $classObj, $className);
+',
+            ],
+            [
+                '<?php
+$obj = new class() extends SomeClass {
+    public $someProperty = null;
+};
+',
+            ],
         ];
     }
 

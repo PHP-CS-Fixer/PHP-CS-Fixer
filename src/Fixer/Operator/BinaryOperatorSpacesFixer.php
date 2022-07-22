@@ -547,9 +547,15 @@ $array = [
                 continue;
             }
 
-            if ($token->isGivenKind(T_FUNCTION)) {
-                $index = $tokens->getNextTokenOfKind($index, ['(']);
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            if ($token->isGivenKind([T_FUNCTION, T_CLASS])) {
+                $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
+                if ($tokens[$openBraceIndex]->equals(';')) {
+                    continue;
+                }
+
+                $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openBraceIndex);
+                $this->injectAlignmentPlaceholders($tokens, $openBraceIndex + 1, $closeBraceIndex - 1, $tokenContent);
+                $index = $closeBraceIndex;
 
                 continue;
             }
