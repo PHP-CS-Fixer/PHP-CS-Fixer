@@ -24,14 +24,14 @@ Default value: ``[['deprecated', 'link', 'see', 'since'], ['author', 'copyright'
 
 Sets of additional annotation types to be grouped together.
 
-Allowed types: ``string[][]``, ``null``
+Allowed types: ``string[][]``
 
-Default value: ``null``
+Default value: ``[]``
 
 ``psr_standard_tags_only``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sets if process PSR PHPDoc standard annotation tags only, which are: ``api``,
+Whether to only process annotations defined by PSR-5 draft, which are: ``api``,
 ``author``, ``category``, ``copyright``, ``deprecated``, ``example``,
 ``global``, ``internal``, ``license``, ``link``, ``method``, ``package``,
 ``param``, ``property``, ``property-read``, ``property-write``, ``return``,

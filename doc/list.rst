@@ -2098,10 +2098,10 @@ List of Available Rules
      | Default value: ``[['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write']]``
    - | ``additional_groups``
      | Sets of additional annotation types to be grouped together.
-     | Allowed types: ``string[][]``, ``null``
-     | Default value: ``null``
+     | Allowed types: ``string[][]``
+     | Default value: ``[]``
    - | ``psr_standard_tags_only``
-     | Sets if process PSR PHPDoc standard annotation tags only, which are: `api`, `author`, `category`, `copyright`, `deprecated`, `example`, `global`, `internal`, `license`, `link`, `method`, `package`, `param`, `property`, `property-read`, `property-write`, `return`, `see`, `since`, `subpackage`, `throws`, `todo`, `uses`, `var`, `version`.
+     | Whether to only process annotations defined by PSR-5 draft, which are: `api`, `author`, `category`, `copyright`, `deprecated`, `example`, `global`, `internal`, `license`, `link`, `method`, `package`, `param`, `property`, `property-read`, `property-write`, `return`, `see`, `since`, `subpackage`, `throws`, `todo`, `uses`, `var`, `version`.
      | Allowed types: ``bool``
      | Default value: ``true``
 
