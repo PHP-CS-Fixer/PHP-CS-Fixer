@@ -3,6 +3,23 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.9.5
+--------------------
+
+* bug: AlternativeSyntaxAnalyzer - fix for nested else (#6495)
+* bug: Fix cases related to binary strings (#6432)
+* bug: Fix trailing whitespace after moving brace (#6489)
+* bug: NoUnneededControlParenthesesFixer - Fix some curly close cases (#6502)
+* bug: TypeColonTransformer - fix for backed enum types (#6494)
+* DX: Add tests for type colon in backed enums (#6497)
+* DX: Fix CI static analysis workflow (#6506)
+* DX: Fix PHPStan errors (#6504)
+* DX: Increase PHPStan level to 6 (#6468)
+* DX: Narrow docblock types in Runner and Report (#6465)
+* DX: Narrow docblock types in Tokenizer (#6293)
+* minor: extract NoMultipleStatementsPerLineFixer from BracesFixer (#6458)
+* minor: Let PhpdocLineSpan fixer detect docblocks when seperator from token with attribute (#6343)
+
 Changelog for v3.9.4
 --------------------
 
