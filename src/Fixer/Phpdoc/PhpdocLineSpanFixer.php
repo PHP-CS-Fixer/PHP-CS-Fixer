@@ -144,12 +144,20 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
             CT::T_NULLABLE_TYPE,
         ];
 
+        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
+            $propertyPartKinds[] = T_ATTRIBUTE;
+        }
+
         if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
             $propertyPartKinds[] = T_READONLY;
         }
 
         do {
             $index = $tokens->getPrevNonWhitespace($index);
+
+            if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                $index = $tokens->getPrevTokenOfKind($index, [[T_ATTRIBUTE]]);
+            }
         } while ($tokens[$index]->isGivenKind($propertyPartKinds));
 
         return $index;
