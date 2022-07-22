@@ -519,7 +519,6 @@ $array = [
 
     private function injectAlignmentPlaceholdersDefault(Tokens $tokens, int $startAt, int $endAt, string $tokenContent): void
     {
-        $functionKind = [T_FUNCTION, T_FN];
         $newLineFoundSinceLastPlaceholder = true;
 
         for ($index = $startAt; $index < $endAt; ++$index) {
@@ -542,7 +541,13 @@ $array = [
                 continue;
             }
 
-            if ($token->isGivenKind($functionKind)) {
+            if ($token->isGivenKind(T_FN)) {
+                $index = $this->getLastTokenIndexOfFn($tokens, $index);
+
+                continue;
+            }
+
+            if ($token->isGivenKind(T_FUNCTION)) {
                 $index = $tokens->getNextTokenOfKind($index, ['(']);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
@@ -551,7 +556,9 @@ $array = [
 
             if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH, T_ELSEIF])) {
                 $index = $tokens->getNextMeaningfulToken($index);
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $this->injectAlignmentPlaceholders($tokens, $index + 1, $until - 1, $tokenContent);
+                $index = $until;
 
                 continue;
             }
@@ -595,9 +602,8 @@ $array = [
                 $newLineFoundSinceLastPlaceholder = true;
             }
 
-            if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH, T_ELSEIF])) {
-                $index = $tokens->getNextMeaningfulToken($index);
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            if ($token->isGivenKind(T_FN)) {
+                $index = $this->getLastTokenIndexOfFn($tokens, $index);
 
                 continue;
             }
@@ -778,5 +784,34 @@ $array = [
         }
 
         return $tmpCode;
+    }
+
+    private function getLastTokenIndexOfFn(Tokens $tokens, int $index): int
+    {
+        $index = $tokens->getNextTokenOfKind($index, [[T_DOUBLE_ARROW]]);
+
+        while (true) {
+            $index = $tokens->getNextMeaningfulToken($index);
+
+            if ($tokens[$index]->equalsAny([';', ',', [T_CLOSE_TAG]])) {
+                break;
+            }
+
+            $blockType = Tokens::detectBlockType($tokens[$index]);
+
+            if (null === $blockType) {
+                continue;
+            }
+
+            if ($blockType['isStart']) {
+                $index = $tokens->findBlockEnd($blockType['type'], $index);
+
+                continue;
+            }
+
+            break;
+        }
+
+        return $index;
     }
 }

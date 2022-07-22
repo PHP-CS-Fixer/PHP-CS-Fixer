@@ -2158,6 +2158,50 @@ function asd() {
 }
 ',
             ],
+            [
+                '<?php
+collect()
+    ->map(fn ($arg) => [])
+    ->keyBy(fn ($arg) => []);
+',
+            ],
+            [
+                '<?php
+if ($this->save([
+    "bar"       => "baz",
+    "barbarbar" => "baz",
+])) {
+    // Do the work
+}
+',
+                '<?php
+if ($this->save([
+    "bar" => "baz",
+    "barbarbar" => "baz",
+])) {
+    // Do the work
+}
+',
+            ],
+            [
+                '<?php
+class test
+{
+    public function __construct()
+    {
+        $result = $this->test1(fn () => $this->test2($a));
+        foreach ($result as $k => $v)
+        {
+        }
+
+        $result = $this->test1(fn () => $this->test2($a, $b));
+        foreach ($result as $k => $v)
+        {
+        }
+    }
+}
+',
+            ],
         ];
     }
 
