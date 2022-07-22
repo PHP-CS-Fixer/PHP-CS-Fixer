@@ -28,7 +28,7 @@ final class PhpdocLineSpanFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      *
-     * @param array<string, string> $config
+     * @param array<string, mixed> $config
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
@@ -563,7 +563,7 @@ class Foo
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      *
-     * @param array<string, string> $config
+     * @param array<string, mixed> $config
      */
     public function testFix80(string $expected, string $input = null, array $config = []): void
     {
@@ -710,7 +710,7 @@ class Foo
      * @dataProvider provideFix81Cases
      * @requires PHP 8.1
      *
-     * @param array<string, string> $config
+     * @param array<string, mixed> $config
      */
     public function testFix81(string $expected, string $input = null, array $config = []): void
     {
