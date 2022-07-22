@@ -474,7 +474,7 @@ $a = $ae?? $b;
             ],
             'align array destruction' => [
                 '<?php
-                    $c                 = [$d]                 = $e[1];
+                    $c                 = [$d] = $e[1];
                     function A(){}[$a] = $a[$c];
                     $b                 = 1;
                 ',
@@ -1550,6 +1550,24 @@ $suppliersTitles = $container->getContainerSuppliers()->map(fn (ContainerSupplie
 $suppliersClassifications = $container->getContainerSuppliers()->map(fn (ContainerSupplier $containerSupplier) => $containerSupplier->getSupplier()->getClassification());
 ',
             ],
+            [
+                '<?php
+$a              = [$s = 5, $d => 5, $c => 9,];
+$ab             = [$bc = 1];
+$someOtherArray = [$bcd = 1];
+$a              = [$b];
+$ab             = [$bc];
+$abc            = [$bcd];
+',
+                '<?php
+$a = [$s = 5, $d => 5, $c => 9,];
+$ab = [$bc = 1];
+$someOtherArray = [$bcd = 1];
+$a = [$b];
+$ab = [$bc];
+$abc = [$bcd];
+',
+            ],
         ];
     }
 
@@ -2114,6 +2132,30 @@ $b = [1 => function() {
             $cc => 3,
         ];
     }}, 2 => 3];
+',
+            ],
+            [
+                '<?php
+function asd() {
+      return [
+          "this"    => fn () => false,
+          "is"      => fn () => false,
+          "an"      => fn () => false,
+          "example" => fn () => false,
+          "array"   => fn () => false,
+      ];
+}
+',
+                '<?php
+function asd() {
+      return [
+          "this" => fn () => false,
+          "is" => fn () => false,
+          "an" => fn () => false,
+          "example" => fn () => false,
+          "array" => fn () => false,
+      ];
+}
 ',
             ],
         ];
