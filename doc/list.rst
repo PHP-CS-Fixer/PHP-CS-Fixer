@@ -2096,10 +2096,6 @@ List of Available Rules
      | Sets of annotation types to be grouped together.
      | Allowed types: ``string[][]``
      | Default value: ``[['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write']]``
-   - | ``additional_groups``
-     | Sets of additional annotation types to be grouped together.
-     | Allowed types: ``string[][]``
-     | Default value: ``[]``
    - | ``psr_standard_tags_only``
      | Whether to only process annotations defined by PSR-5 draft, which are: `api`, `author`, `category`, `copyright`, `deprecated`, `example`, `global`, `internal`, `license`, `link`, `method`, `package`, `param`, `property`, `property-read`, `property-write`, `return`, `see`, `since`, `subpackage`, `throws`, `todo`, `uses`, `var`, `version`.
      | Allowed types: ``bool``

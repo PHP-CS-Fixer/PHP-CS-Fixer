@@ -19,15 +19,6 @@ Allowed types: ``string[][]``
 
 Default value: ``[['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write']]``
 
-``additional_groups``
-~~~~~~~~~~~~~~~~~~~~~
-
-Sets of additional annotation types to be grouped together.
-
-Allowed types: ``string[][]``
-
-Default value: ``[]``
-
 ``psr_standard_tags_only``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -73,7 +64,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['additional_groups' => [['param', 'return']]]``.
+With configuration: ``['groups' => [['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['param', 'return']]]``.
 
 .. code-block:: diff
 
@@ -97,7 +88,7 @@ With configuration: ``['additional_groups' => [['param', 'return']]]``.
 Example #3
 ~~~~~~~~~~
 
-With configuration: ``['additional_groups' => [['param', 'return']], 'psr_standard_tags_only' => false]``.
+With configuration: ``['groups' => [['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['param', 'return']], 'psr_standard_tags_only' => false]``.
 
 .. code-block:: diff
 

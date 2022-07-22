@@ -37,7 +37,7 @@ final class TagComparatorTest extends TestCase
         $tag1 = new Tag(new Line('* @'.$first));
         $tag2 = new Tag(new Line('* @'.$second));
 
-        static::assertSame($expected, TagComparator::configure()->shouldBeTogether($tag1, $tag2));
+        static::assertSame($expected, TagComparator::shouldBeTogether($tag1, $tag2));
     }
 
     public function provideComparatorCases(): array
@@ -58,18 +58,17 @@ final class TagComparatorTest extends TestCase
     /**
      * @dataProvider provideComparatorWithAdditionalGroupsCases
      *
-     * @param null|string[][] $additionalGroups
+     * @param string[][] $additionalGroups
      */
-    public function testComparatorTogetherWithAdditionalGroups(?array $additionalGroups, string $first, string $second, bool $expected): void
+    public function testComparatorTogetherWithAdditionalGroups(array $additionalGroups, string $first, string $second, bool $expected): void
     {
         $tag1 = new Tag(new Line('* @'.$first));
         $tag2 = new Tag(new Line('* @'.$second));
 
         static::assertSame(
             $expected,
-            TagComparator::configure()
-                ->withAdditionalGroups($additionalGroups)
-                ->shouldBeTogether($tag1, $tag2)
+            TagComparator::configure(array_merge(TagComparator::DEFAULT_GROUPS, $additionalGroups))
+                ->shouldBeGroupedTogether($tag1, $tag2)
         );
     }
 
@@ -77,7 +76,7 @@ final class TagComparatorTest extends TestCase
     {
         return [
             [[['param', 'return']], 'return', 'return', true],
-            [null, 'param', 'return', false],
+            [[], 'param', 'return', false],
             [[['param', 'return']], 'return', 'param', true],
             [[['param', 'return']], 'var', 'foo', false],
             [[['param', 'return']], 'api', 'deprecated', false],

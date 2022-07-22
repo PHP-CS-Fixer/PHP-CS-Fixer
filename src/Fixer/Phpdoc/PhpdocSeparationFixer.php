@@ -65,8 +65,8 @@ EOF;
             'Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line, except those specified in `additional_groups` option.',
             [
                 new CodeSample($code),
-                new CodeSample($code, ['additional_groups' => [['param', 'return']]]),
-                new CodeSample($code, ['additional_groups' => [['param', 'return']], 'psr_standard_tags_only' => false]),
+                new CodeSample($code, ['groups' => array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']])]),
+                new CodeSample($code, ['groups' => array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']]), 'psr_standard_tags_only' => false]),
                 new CodeSample($code, ['groups' => [['author', 'throws', 'custom'], ['return', 'param']], 'psr_standard_tags_only' => false]),
             ],
         );
@@ -79,10 +79,7 @@ EOF;
     {
         parent::configure($configuration);
 
-        $this->tagComparator =
-            TagComparator::configure($this->configuration['groups'])
-                ->withAdditionalGroups($this->configuration['additional_groups'])
-        ;
+        $this->tagComparator = TagComparator::configure($this->configuration['groups']);
 
         $this->standardTagsOnly = $this->configuration['psr_standard_tags_only'];
     }
@@ -134,10 +131,6 @@ EOF;
                 ->setAllowedTypes(['string[][]'])
                 ->setDefault(TagComparator::DEFAULT_GROUPS)
                 ->getOption(),
-            (new FixerOptionBuilder('additional_groups', 'Sets of additional annotation types to be grouped together.'))
-                ->setAllowedTypes(['string[][]'])
-                ->setDefault([])
-                ->getOption(),
             (new FixerOptionBuilder(
                 'psr_standard_tags_only',
                 'Whether to only process annotations defined by PSR-5 draft, which are: '.
@@ -184,7 +177,7 @@ EOF;
             }
 
             if (!$this->standardTagsOnly || $next->getTag()->valid()) {
-                if ($this->tagComparator->shouldBeTogether($annotation->getTag(), $next->getTag())) {
+                if ($this->tagComparator->shouldBeGroupedTogether($annotation->getTag(), $next->getTag())) {
                     $this->ensureAreTogether($doc, $annotation, $next);
                 } else {
                     $this->ensureAreSeparate($doc, $annotation, $next);

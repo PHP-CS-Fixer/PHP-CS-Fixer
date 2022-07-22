@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -652,7 +653,7 @@ EOF;
 
     public function testLaravelGroups(): void
     {
-        $this->fixer->configure(['additional_groups' => [['param', 'return']]]);
+        $this->fixer->configure(['groups' => array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']])]);
 
         $expected = <<<'EOF'
 <?php
@@ -687,10 +688,10 @@ EOF;
     public function testVariousGroups(): void
     {
         $this->fixer->configure([
-            'additional_groups' => [
+            'groups' => array_merge(TagComparator::DEFAULT_GROUPS, [
                 ['deprecated', 'link', 'see', 'since', 'author', 'copyright', 'license'],
                 ['return', 'param'],
-            ],
+            ]),
             'psr_standard_tags_only' => false,
         ]);
 
@@ -741,10 +742,11 @@ EOF;
 
     public function testVariousAdditionalGroups(): void
     {
-        $this->fixer->configure(['additional_groups' => [
-            ['deprecated', 'link', 'see', 'since', 'author', 'copyright', 'license'],
-            ['return', 'param'],
-        ]]);
+        $this->fixer->configure([
+            'groups' => array_merge(TagComparator::DEFAULT_GROUPS, [
+                ['deprecated', 'link', 'see', 'since', 'author', 'copyright', 'license'],
+                ['return', 'param'],
+            ]), ]);
 
         $expected = <<<'EOF'
 <?php
@@ -823,7 +825,7 @@ EOF;
 
         return [
             [
-                ['additional_groups' => [['param', 'return']]],
+                ['groups' => array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']])],
                 <<<'EOF'
 <?php
 /**
