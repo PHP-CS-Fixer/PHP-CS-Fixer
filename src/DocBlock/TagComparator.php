@@ -28,7 +28,7 @@ final class TagComparator
      *
      * @internal
      */
-    public const TAG_GROUPS = [
+    public const DEFAULT_GROUPS = [
         ['deprecated', 'link', 'see', 'since'],
         ['author', 'copyright', 'license'],
         ['category', 'package', 'subpackage'],
@@ -52,7 +52,7 @@ final class TagComparator
     public static function configure(?array $groups = null): self
     {
         $comparator = new self();
-        $comparator->groups = (null === $groups) ? self::TAG_GROUPS : $groups;
+        $comparator->groups = $groups ?? self::DEFAULT_GROUPS;
 
         return $comparator;
     }

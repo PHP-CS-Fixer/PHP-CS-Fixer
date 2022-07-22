@@ -35,11 +35,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @internal
-     */
-    private const ADDITIONAL_GROUPS_DEFAULT = null;
-
     private TagComparator $tagComparator;
 
     private bool $standardTagsOnly = true;
@@ -137,15 +132,15 @@ EOF;
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('groups', 'Sets of annotation types to be grouped together.'))
                 ->setAllowedTypes(['string[][]'])
-                ->setDefault(TagComparator::TAG_GROUPS)
+                ->setDefault(TagComparator::DEFAULT_GROUPS)
                 ->getOption(),
             (new FixerOptionBuilder('additional_groups', 'Sets of additional annotation types to be grouped together.'))
-                ->setAllowedTypes(['string[][]', 'null'])
-                ->setDefault(self::ADDITIONAL_GROUPS_DEFAULT)
+                ->setAllowedTypes(['string[][]'])
+                ->setDefault([])
                 ->getOption(),
             (new FixerOptionBuilder(
                 'psr_standard_tags_only',
-                'Sets if process PSR PHPDoc standard annotation tags only, which are: '.
+                'Whether to only process annotations defined by PSR-5 draft, which are: '.
                 '`'.implode('`, `', Tag::PSR_STANDARD_TAGS).'`.'
             ))
                 ->setAllowedTypes(['bool'])
@@ -188,7 +183,7 @@ EOF;
                 break;
             }
 
-            if ((false === $this->standardTagsOnly) || (true === $next->getTag()->valid())) {
+            if (!$this->standardTagsOnly || $next->getTag()->valid()) {
                 if ($this->tagComparator->shouldBeTogether($annotation->getTag(), $next->getTag())) {
                     $this->ensureAreTogether($doc, $annotation, $next);
                 } else {
