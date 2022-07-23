@@ -548,14 +548,25 @@ $array = [
             }
 
             if ($token->isGivenKind([T_FUNCTION, T_CLASS])) {
-                $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
-                if ($tokens[$openBraceIndex]->equals(';')) {
+                $index = $tokens->getNextTokenOfKind($index, ['{', ';', '(']);
+                // We don't align `=` on multi-line definition of function parameters with default values
+                if ($tokens[$index]->equals('(')) {
+                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
                     continue;
                 }
 
-                $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openBraceIndex);
-                $this->injectAlignmentPlaceholders($tokens, $openBraceIndex + 1, $closeBraceIndex - 1, $tokenContent);
-                $index = $closeBraceIndex;
+                if ($tokens[$index]->equals(';')) {
+                    continue;
+                }
+
+                // Update the token to the `{` one in order to apply the following logic
+                $token = $tokens[$index];
+            }
+
+            if ($token->equals('{')) {
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $this->injectAlignmentPlaceholders($tokens, $index + 1, $until - 1, $tokenContent);
+                $index = $until;
 
                 continue;
             }

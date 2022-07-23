@@ -1602,6 +1602,13 @@ $bobbyUser = $fabricator->make();
 $bobbyUser = $fabricator->make();
 ',
             ],
+            [
+                '<?php
+$a = 1; if (true) {
+$bbb = 1;
+}
+',
+            ],
         ];
     }
 
