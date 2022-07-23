@@ -600,10 +600,11 @@ $array = [
     {
         // Only inject placeholders for multi-line code
         if ($tokens->isPartialCodeMultiline($from, $until)) {
-            ++$this->currentLevel;
-            $this->deepestLevel = max($this->deepestLevel, $this->currentLevel);
+            ++$this->deepestLevel;
+            $currentLevel = $this->currentLevel;
+            $this->currentLevel = $this->deepestLevel;
             $this->injectAlignmentPlaceholdersDefault($tokens, $from, $until, $tokenContent);
-            --$this->currentLevel;
+            $this->currentLevel = $currentLevel;
         }
     }
 
@@ -701,10 +702,11 @@ $array = [
     {
         // Only inject placeholders for multi-line arrays
         if ($tokens->isPartialCodeMultiline($from, $until)) {
-            ++$this->currentLevel;
-            $this->deepestLevel = max($this->deepestLevel, $this->currentLevel);
+            ++$this->deepestLevel;
+            $currentLevel = $this->currentLevel;
+            $this->currentLevel = $this->deepestLevel;
             $this->injectAlignmentPlaceholdersForArrow($tokens, $from, $until);
-            --$this->currentLevel;
+            $this->currentLevel = $currentLevel;
         }
     }
 

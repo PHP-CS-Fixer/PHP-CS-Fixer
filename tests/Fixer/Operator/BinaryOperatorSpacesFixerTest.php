@@ -1609,6 +1609,14 @@ $bbb = 1;
 }
 ',
             ],
+            [
+                '<?php
+$fabricator->setOverrides(
+["first" => "Bobby"], $persist = false);
+$fabricator->setOverrides(["first" => "Bobby"], $persist = false
+);
+',
+            ],
         ];
     }
 
