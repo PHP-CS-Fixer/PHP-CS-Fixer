@@ -560,8 +560,7 @@ $array = [
                 continue;
             }
 
-            if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH, T_ELSEIF])) {
-                $index = $tokens->getNextMeaningfulToken($index);
+            if ($token->equals('(')) {
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
                 $this->injectAlignmentPlaceholders($tokens, $index + 1, $until - 1, $tokenContent);
                 $index = $until;
@@ -589,8 +588,8 @@ $array = [
     {
         // Only inject placeholders for multi-line code
         if ($tokens->isPartialCodeMultiline($from, $until)) {
-            ++$this->deepestLevel;
             ++$this->currentLevel;
+            $this->deepestLevel = max($this->deepestLevel, $this->currentLevel);
             $this->injectAlignmentPlaceholdersDefault($tokens, $from, $until, $tokenContent);
             --$this->currentLevel;
         }
@@ -690,8 +689,8 @@ $array = [
     {
         // Only inject placeholders for multi-line arrays
         if ($tokens->isPartialCodeMultiline($from, $until)) {
-            ++$this->deepestLevel;
             ++$this->currentLevel;
+            $this->deepestLevel = max($this->deepestLevel, $this->currentLevel);
             $this->injectAlignmentPlaceholdersForArrow($tokens, $from, $until);
             --$this->currentLevel;
         }
