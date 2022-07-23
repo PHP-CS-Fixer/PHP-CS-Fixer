@@ -552,6 +552,7 @@ $array = [
                 // We don't align `=` on multi-line definition of function parameters with default values
                 if ($tokens[$index]->equals('(')) {
                     $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
                     continue;
                 }
 
