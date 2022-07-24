@@ -125,12 +125,12 @@ final class ProcessOutputTest extends TestCase
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES],
                     [FixerFileProcessedEvent::STATUS_INVALID],
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES, 40],
-                    [FixerFileProcessedEvent::STATUS_UNKNOWN],
+                    [FixerFileProcessedEvent::STATUS_INVALID],
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES, 15],
                 ],
                 '...................E......EFFF.................................  63 / 189 ( 33%)'.PHP_EOL.
                 '.................S............................................. 126 / 189 ( 67%)'.PHP_EOL.
-                '....I.I........................................?............... 189 / 189 (100%)',
+                '....I.I........................................I............... 189 / 189 (100%)',
                 80,
             ],
             [
@@ -147,12 +147,12 @@ final class ProcessOutputTest extends TestCase
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES],
                     [FixerFileProcessedEvent::STATUS_INVALID],
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES, 40],
-                    [FixerFileProcessedEvent::STATUS_UNKNOWN],
+                    [FixerFileProcessedEvent::STATUS_INVALID],
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES, 15],
                 ],
                 '...................E......EFFF.................................  63 / 189 ( 33%)'.PHP_EOL.
                 '.................S............................................. 126 / 189 ( 67%)'.PHP_EOL.
-                '....I.I........................................?............... 189 / 189 (100%)',
+                '....I.I........................................I............... 189 / 189 (100%)',
                 80,
             ],
             [
@@ -169,11 +169,11 @@ final class ProcessOutputTest extends TestCase
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES],
                     [FixerFileProcessedEvent::STATUS_INVALID],
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES, 40],
-                    [FixerFileProcessedEvent::STATUS_UNKNOWN],
+                    [FixerFileProcessedEvent::STATUS_INVALID],
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES, 15],
                 ],
                 '...................E......EFFF..................................................S...................... 103 / 189 ( 54%)'.PHP_EOL.
-                '...........................I.I........................................?...............                  189 / 189 (100%)',
+                '...........................I.I........................................I...............                  189 / 189 (100%)',
                 120,
             ],
         ];
