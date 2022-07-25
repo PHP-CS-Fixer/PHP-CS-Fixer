@@ -2038,7 +2038,7 @@ List of Available Rules
      | Default value: ``['param', 'throws', 'return']``
 
 
-   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Phpdoc\\PhpdocOrderFixer <./../src/Fixer/Phpdoc/PhpdocOrderFixer.php>`_
 -  `phpdoc_order_by_value <./rules/phpdoc/phpdoc_order_by_value.rst>`_
