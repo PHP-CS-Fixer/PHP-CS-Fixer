@@ -64,7 +64,7 @@ class FooBar
             return ucwords($dummy);
         }
 
-        throw new \RuntimeException(sprintf('Unrecognized dummy option "%s"', $dummy));
+        throw new \RuntimeException(sprintf('Unrecognized dummy option "%s".', $dummy));
     }
 
     private function reverseBoolean($value = null, $theSwitch = false)
