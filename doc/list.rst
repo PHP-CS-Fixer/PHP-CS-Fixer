@@ -2088,7 +2088,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Phpdoc\\PhpdocScalarFixer <./../src/Fixer/Phpdoc/PhpdocScalarFixer.php>`_
 -  `phpdoc_separation <./rules/phpdoc/phpdoc_separation.rst>`_
 
-   Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line, except those specified in ``additional_groups`` option.
+   Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line.
 
    Configuration options:
 

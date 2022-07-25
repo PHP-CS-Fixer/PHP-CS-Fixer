@@ -56,23 +56,22 @@ final class TagComparatorTest extends TestCase
     }
 
     /**
-     * @dataProvider provideComparatorWithAdditionalGroupsCases
+     * @dataProvider provideComparatorWithDefinedGroupsCases
      *
-     * @param string[][] $additionalGroups
+     * @param string[][] $groups
      */
-    public function testComparatorTogetherWithAdditionalGroups(array $additionalGroups, string $first, string $second, bool $expected): void
+    public function testComparatorTogetherWithDefinedGroups(array $groups, string $first, string $second, bool $expected): void
     {
         $tag1 = new Tag(new Line('* @'.$first));
         $tag2 = new Tag(new Line('* @'.$second));
 
         static::assertSame(
             $expected,
-            TagComparator::configure(array_merge(TagComparator::DEFAULT_GROUPS, $additionalGroups))
-                ->shouldBeGroupedTogether($tag1, $tag2)
+            TagComparator::shouldBeTogether($tag1, $tag2, $groups)
         );
     }
 
-    public function provideComparatorWithAdditionalGroupsCases(): array
+    public function provideComparatorWithDefinedGroupsCases(): array
     {
         return [
             [[['param', 'return']], 'return', 'return', true],
@@ -80,10 +79,10 @@ final class TagComparatorTest extends TestCase
             [[['param', 'return']], 'return', 'param', true],
             [[['param', 'return']], 'var', 'foo', false],
             [[['param', 'return']], 'api', 'deprecated', false],
-            [[['param', 'return']], 'author', 'copyright', true],
+            [[['param', 'return']], 'author', 'copyright', false],
             [[['param', 'return'], ['author', 'since']], 'author', 'since', true],
-            [[['param', 'return']], 'link', 'see', true],
-            [[['param', 'return']], 'category', 'package', true],
+            [array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']]), 'link', 'see', true],
+            [[['param', 'return']], 'category', 'package', false],
         ];
     }
 }

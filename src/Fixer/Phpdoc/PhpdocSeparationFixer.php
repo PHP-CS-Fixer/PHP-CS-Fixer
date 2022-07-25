@@ -35,7 +35,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private TagComparator $tagComparator;
+    /**
+     * @var string[][]
+     */
+    private array $groups;
 
     private bool $standardTagsOnly = true;
 
@@ -62,7 +65,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
 EOF;
 
         return new FixerDefinition(
-            'Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line, except those specified in `additional_groups` option.',
+            'Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line.',
             [
                 new CodeSample($code),
                 new CodeSample($code, ['groups' => array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']])]),
@@ -79,7 +82,7 @@ EOF;
     {
         parent::configure($configuration);
 
-        $this->tagComparator = TagComparator::configure($this->configuration['groups']);
+        $this->groups = $this->configuration['groups'];
 
         $this->standardTagsOnly = $this->configuration['psr_standard_tags_only'];
     }
@@ -177,7 +180,7 @@ EOF;
             }
 
             if (!$this->standardTagsOnly || $next->getTag()->valid()) {
-                if ($this->tagComparator->shouldBeGroupedTogether($annotation->getTag(), $next->getTag())) {
+                if (TagComparator::shouldBeTogether($annotation->getTag(), $next->getTag(), $this->groups)) {
                     $this->ensureAreTogether($doc, $annotation, $next);
                 } else {
                     $this->ensureAreSeparate($doc, $annotation, $next);

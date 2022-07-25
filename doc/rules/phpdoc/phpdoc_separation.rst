@@ -4,8 +4,7 @@ Rule ``phpdoc_separation``
 
 Annotations in PHPDoc should be grouped together so that annotations of the same
 type immediately follow each other. Annotations of a different type are
-separated by a single blank line, except those specified in
-``additional_groups`` option.
+separated by a single blank line.
 
 Configuration
 -------------
