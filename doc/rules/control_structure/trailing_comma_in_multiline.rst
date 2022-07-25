@@ -2,8 +2,8 @@
 Rule ``trailing_comma_in_multiline``
 ====================================
 
-Multi-line arrays, arguments list, parameters list and ``match`` expressions
-must have a trailing comma.
+Multi-line arrays, arguments list, parameters list, array destructuring list and
+``match`` expressions must have a trailing comma.
 
 Configuration
 -------------
@@ -23,7 +23,7 @@ Default value: ``false``
 Where to fix multiline trailing comma (PHP >= 8.0 for ``parameters`` and
 ``match``).
 
-Allowed values: a subset of ``['arrays', 'arguments', 'parameters', 'match']``
+Allowed values: a subset of ``['arguments', 'arrays', 'array_destructuring', 'match', 'parameters']``
 
 Default value: ``['arrays']``
 
@@ -124,7 +124,11 @@ The rule is part of the following rule sets:
   ``['after_heredoc' => true]``
 
 @PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``trailing_comma_in_multiline`` rule with the default config.
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``trailing_comma_in_multiline`` rule with the config below:
+
+  ``['elements' => ['array_destructuring', 'arrays', 'match']]``
 
 @Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``trailing_comma_in_multiline`` rule with the default config.
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``trailing_comma_in_multiline`` rule with the config below:
+
+  ``['elements' => ['array_destructuring', 'arrays', 'match']]``

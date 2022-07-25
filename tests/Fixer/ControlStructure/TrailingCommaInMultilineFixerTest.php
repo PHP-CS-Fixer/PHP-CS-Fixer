@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
-use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
@@ -28,30 +27,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @requires PHP <8.0
-     *
-     * @dataProvider provideInvalidConfigurationCases
-     *
-     * @param mixed $exceptionMessega
-     * @param mixed $configuration
-     */
-    public function testInvalidConfiguration($exceptionMessega, $configuration): void
-    {
-        $this->expectException(InvalidForEnvFixerConfigurationException::class);
-        $this->expectExceptionMessage($exceptionMessega);
-
-        $this->fixer->configure($configuration);
-    }
-
-    public static function provideInvalidConfigurationCases(): iterable
-    {
-        yield [
-            '[trailing_comma_in_multiline] Invalid configuration for env: "parameters" option can only be enabled with PHP 8.0+.',
-            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
-        ];
-    }
-
     /**
      * @param array<string, mixed> $config
      *
@@ -549,6 +524,19 @@ INPUT
 ); }};',
                 ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
             ],
+            'default config does not fix array destructuring' => [
+                '<?php
+list(
+$a,
+$b
+) = $z;
+
+[
+$x,
+$y
+] = $ff;
+',
+            ],
         ];
     }
 
@@ -652,6 +640,106 @@ $z = match ($a) {
 $b = match($c) {19 => 28, default => 333};
             ',
             ['elements' => ['match']],
+        ];
+    }
+
+    /**
+     * @dataProvider provideArrayDestructuringCases
+     */
+    public function testArrayDestructuring(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['elements' => ['array_destructuring']]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideArrayDestructuringCases(): iterable
+    {
+        yield 'simple long array destructuring syntax' => [
+            '<?php
+list(
+$b,
+$c,
+) = $t;
+
+list($a) = $k;
+            ',
+            '<?php
+list(
+$b,
+$c
+) = $t;
+
+list($a) = $k;
+            ',
+        ];
+
+        yield 'simple short array destructuring syntax' => [
+            '<?php
+[
+$b,
+$c,
+] = $t;
+
+[$v,$d] = $p;
+            ',
+            '<?php
+[
+$b,
+$c
+] = $t;
+
+[$v,$d] = $p;
+            ',
+        ];
+
+        yield 'short and long destructuring array syntax' => [
+            '<?php
+list(
+$a,
+$b,
+) = $z;
+
+[
+$x,
+$y,
+] = $ff;
+',
+            '<?php
+list(
+$a,
+$b
+) = $z;
+
+[
+$x,
+$y
+] = $ff;
+',
+        ];
+
+        yield [
+            '<?php
+                list(
+                    9 => $ty,
+                    10 => $gh,
+                ) = $sd;
+
+                [
+                    1 => $xa,
+                    2 => $xb,
+                ] = $zz;
+            ',
+            '<?php
+                list(
+                    9 => $ty,
+                    10 => $gh
+                ) = $sd;
+
+                [
+                    1 => $xa,
+                    2 => $xb
+                ] = $zz;
+            ',
         ];
     }
 }

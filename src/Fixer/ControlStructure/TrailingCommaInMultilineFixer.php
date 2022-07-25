@@ -20,7 +20,6 @@ use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -56,13 +55,15 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
 
     private const MATCH_EXPRESSIONS = 'match';
 
+    private const ARRAY_DESTRUCTURING = 'array_destructuring';
+
     /**
      * {@inheritdoc}
      */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Multi-line arrays, arguments list, parameters list and `match` expressions must have a trailing comma.',
+            'Multi-line arrays, arguments list, parameters list, array destructuring list and `match` expressions must have a trailing comma.',
             [
                 new CodeSample("<?php\narray(\n    1,\n    2\n);\n"),
                 new VersionSpecificCodeSample(
@@ -101,7 +102,7 @@ SAMPLE
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN, '(']);
+        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN, '(', CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN]);
     }
 
     /**
@@ -109,6 +110,14 @@ SAMPLE
      */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
+        $allOptions = [
+            self::ELEMENTS_ARGUMENTS,
+            self::ELEMENTS_ARRAYS,
+            self::ARRAY_DESTRUCTURING,
+            self::MATCH_EXPRESSIONS,
+            self::ELEMENTS_PARAMETERS,
+        ];
+
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('after_heredoc', 'Whether a trailing comma should also be placed after heredoc end.'))
                 ->setAllowedTypes(['bool'])
@@ -116,15 +125,16 @@ SAMPLE
                 ->getOption(),
             (new FixerOptionBuilder('elements', sprintf('Where to fix multiline trailing comma (PHP >= 8.0 for `%s` and `%s`).', self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS))) // @TODO: remove text when PHP 8.0+ is required
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset([self::ELEMENTS_ARRAYS, self::ELEMENTS_ARGUMENTS, self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS])])
+                ->setAllowedValues([new AllowedValueSubset($allOptions)])
                 ->setDefault([self::ELEMENTS_ARRAYS])
                 ->setNormalizer(static function (Options $options, $value) {
                     if (\PHP_VERSION_ID < 80000) { // @TODO: drop condition when PHP 8.0+ is required
-                        foreach ([self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS] as $option) {
-                            if (\in_array($option, $value, true)) {
-                                throw new InvalidOptionsForEnvException(sprintf('"%s" option can only be enabled with PHP 8.0+.', $option));
+                        $value = array_filter(
+                            $value,
+                            static function (string $option) {
+                                return self::ELEMENTS_PARAMETERS !== $option && self::MATCH_EXPRESSIONS !== $option;
                             }
-                        }
+                        );
                     }
 
                     return $value;
@@ -138,22 +148,27 @@ SAMPLE
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $fixArrays = \in_array(self::ELEMENTS_ARRAYS, $this->configuration['elements'], true);
-        $fixArguments = \in_array(self::ELEMENTS_ARGUMENTS, $this->configuration['elements'], true);
-        $fixParameters = \PHP_VERSION_ID >= 80000 && \in_array(self::ELEMENTS_PARAMETERS, $this->configuration['elements'], true); // @TODO: drop condition when PHP 8.0+ is required
-        $fixMatch = \PHP_VERSION_ID >= 80000 && \in_array(self::MATCH_EXPRESSIONS, $this->configuration['elements'], true); // @TODO: drop condition when PHP 8.0+ is required
+        $configuredElements = $this->configuration['elements'];
+
+        $fixArrays = \in_array(self::ELEMENTS_ARRAYS, $configuredElements, true);
+        $fixArguments = \in_array(self::ELEMENTS_ARGUMENTS, $configuredElements, true);
+        $fixParameters = \PHP_VERSION_ID >= 80000 && \in_array(self::ELEMENTS_PARAMETERS, $configuredElements, true); // @TODO: drop condition when PHP 8.0+ is required
+        $fixMatch = \PHP_VERSION_ID >= 80000 && \in_array(self::MATCH_EXPRESSIONS, $configuredElements, true); // @TODO: drop condition when PHP 8.0+ is required
+        $fixDestructuring = \in_array(self::ARRAY_DESTRUCTURING, $configuredElements, true);
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$index]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
+                if ($fixDestructuring) { // array destructing short syntax
+                    $this->fixBlock($tokens, $index);
+                }
 
-            if (
-                $fixArrays
-                && (
-                    $tokens[$index]->equals('(') && $tokens[$prevIndex]->isGivenKind(T_ARRAY) // long syntax
-                    || $tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN) // short syntax
-                )
-            ) {
-                $this->fixBlock($tokens, $index);
+                continue;
+            }
+
+            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                if ($fixArrays) { // array short syntax
+                    $this->fixBlock($tokens, $index);
+                }
 
                 continue;
             }
@@ -162,9 +177,34 @@ SAMPLE
                 continue;
             }
 
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+            if ($tokens[$prevIndex]->isGivenKind(T_ARRAY)) {
+                if ($fixArrays) { // array long syntax
+                    $this->fixBlock($tokens, $index);
+                }
+
+                continue;
+            }
+
+            if ($tokens[$prevIndex]->isGivenKind(T_LIST)) {
+                if ($fixDestructuring) { // array destructing long syntax
+                    $this->fixBlock($tokens, $index);
+                }
+
+                continue;
+            }
+
+            if ($fixMatch && $tokens[$prevIndex]->isGivenKind(T_MATCH)) {
+                $this->fixMatch($tokens, $index);
+
+                continue;
+            }
+
             $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
 
-            if ($fixArguments
+            if (
+                $fixArguments
                 && $tokens[$prevIndex]->equalsAny([']', [T_CLASS], [T_STRING], [T_VARIABLE], [T_STATIC]])
                 && !$tokens[$prevPrevIndex]->isGivenKind(T_FUNCTION)
             ) {
@@ -181,10 +221,6 @@ SAMPLE
                 )
             ) {
                 $this->fixBlock($tokens, $index);
-            }
-
-            if ($fixMatch && $tokens[$prevIndex]->isGivenKind(T_MATCH)) {
-                $this->fixMatch($tokens, $index);
             }
         }
     }

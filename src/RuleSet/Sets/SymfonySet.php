@@ -249,7 +249,13 @@ final class SymfonySet extends AbstractRuleSetDescription
             'standardize_increment' => true,
             'standardize_not_equals' => true,
             'switch_continue_to_break' => true,
-            'trailing_comma_in_multiline' => true,
+            'trailing_comma_in_multiline' => [
+                'elements' => [
+                    'array_destructuring',
+                    'arrays',
+                    'match',
+                ],
+            ],
             'trim_array_spaces' => true,
             'types_spaces' => true,
             'unary_operator_spaces' => true,

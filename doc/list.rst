@@ -2977,7 +2977,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Operator\\TernaryToNullCoalescingFixer <./../src/Fixer/Operator/TernaryToNullCoalescingFixer.php>`_
 -  `trailing_comma_in_multiline <./rules/control_structure/trailing_comma_in_multiline.rst>`_
 
-   Multi-line arrays, arguments list, parameters list and ``match`` expressions must have a trailing comma.
+   Multi-line arrays, arguments list, parameters list, array destructuring list and ``match`` expressions must have a trailing comma.
 
    Configuration options:
 
@@ -2987,7 +2987,7 @@ List of Available Rules
      | Default value: ``false``
    - | ``elements``
      | Where to fix multiline trailing comma (PHP >= 8.0 for `parameters` and `match`).
-     | Allowed values: a subset of ``['arrays', 'arguments', 'parameters', 'match']``
+     | Allowed values: a subset of ``['arguments', 'arrays', 'array_destructuring', 'match', 'parameters']``
      | Default value: ``['arrays']``
 
 

@@ -134,6 +134,8 @@ Rules
 - `standardize_not_equals <./../rules/operator/standardize_not_equals.rst>`_
 - `switch_continue_to_break <./../rules/control_structure/switch_continue_to_break.rst>`_
 - `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_
+  config:
+  ``['elements' => ['array_destructuring', 'arrays', 'match']]``
 - `trim_array_spaces <./../rules/array_notation/trim_array_spaces.rst>`_
 - `types_spaces <./../rules/whitespace/types_spaces.rst>`_
 - `unary_operator_spaces <./../rules/operator/unary_operator_spaces.rst>`_
