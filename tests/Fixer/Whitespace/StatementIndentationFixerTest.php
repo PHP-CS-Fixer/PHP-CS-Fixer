@@ -27,9 +27,18 @@ final class StatementIndentationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $unused, ?string $input = NULL): void
     {
         $this->doTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provideFixCases
+     */
+    public function testFixContinuationIndent(string $original, ?string $expected, ?string $input = NULL): void
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\n", '        '));
+        $this->doTest($expected ?? $original, $input);
     }
 
     public function provideFixCases(): iterable
@@ -38,6 +47,7 @@ final class StatementIndentationFixerTest extends AbstractFixerTestCase
             '<?php
 foo();
 bar();',
+            null,
             '<?php
   foo();
        bar();',
@@ -49,6 +59,7 @@ if ($foo) {
     foo();
     bar();
 }',
+            null,
             '<?php
 if ($foo) {
   foo();
@@ -62,6 +73,7 @@ if ($foo) {
     foo();
     if ($bar) { bar(); }
 }',
+            null,
             '<?php
 if ($foo) {
  foo();
@@ -77,6 +89,7 @@ if ($foo) { foo();
     foo();
 }
 foo();',
+            null,
             '<?php
 if ($foo) { foo();
  if ($bar) { bar();
@@ -91,6 +104,7 @@ if ($foo) { foo();
 if ($foo) {
     foo(); }
 foo();',
+            null,
             '<?php
 if ($foo) {
     foo(); }
@@ -108,6 +122,7 @@ if ($foo) { if ($foo) { foo();
     baz();
 }
 baz();',
+            null,
             '<?php
 if ($foo) { if ($foo) { foo();
   if ($bar) { if ($bar) { bar(); }
@@ -127,6 +142,12 @@ function foo(
 ) {
 }',
             '<?php
+function foo(
+        $bar,
+        $baz
+) {
+}',
+            '<?php
    function foo(
      $bar,
       $baz
@@ -139,6 +160,12 @@ function foo(
 $foo = function(
     $bar,
     $baz
+) {
+};',
+            '<?php
+$foo = function(
+        $bar,
+        $baz
 ) {
 };',
             '<?php
@@ -159,6 +186,13 @@ interface Foo {
 }',
             '<?php
 interface Foo {
+    public function foo(
+            $bar,
+            $baz
+    );
+}',
+            '<?php
+interface Foo {
    public function foo(
      $bar,
       $baz
@@ -172,6 +206,14 @@ class Foo {
     public function foo(
         $bar,
         $baz
+    ) {
+    }
+}',
+            '<?php
+class Foo {
+    public function foo(
+            $bar,
+            $baz
     ) {
     }
 }',
@@ -196,6 +238,14 @@ trait Foo {
 }',
             '<?php
 trait Foo {
+    public function foo(
+            $bar,
+            $baz
+    ) {
+    }
+}',
+            '<?php
+trait Foo {
    public function foo(
      $bar,
       $baz
@@ -212,6 +262,11 @@ foo(
 );',
             '<?php
 foo(
+        $bar,
+        $baz
+);',
+            '<?php
+foo(
   $bar,
    $baz
     );',
@@ -222,6 +277,11 @@ foo(
 $foo(
     $bar,
     $baz
+);',
+            '<?php
+$foo(
+        $bar,
+        $baz
 );',
             '<?php
 $foo(
@@ -238,6 +298,7 @@ if ($foo) {
                  ->baz()
     ;
 }',
+            null,
             '<?php
   if ($foo) {
          $foo
@@ -259,6 +320,7 @@ if ($foo) {
             )
     ;
 }',
+            null,
             '<?php
   if ($foo) {
          $foo = array(
@@ -284,6 +346,7 @@ if ($foo) {
             ]
     ;
 }',
+            null,
             '<?php
   if ($foo) {
          $foo = [
@@ -304,6 +367,16 @@ if ($foo) {
              foo(
                  $bar,
                  $baz
+             )
+             )
+    ;
+}',
+            '<?php
+if ($foo) {
+    $foo = array(
+             foo(
+                     $bar,
+                     $baz
              )
              )
     ;
@@ -332,6 +405,16 @@ if ($foo) {
     ;
 }',
             '<?php
+if ($foo) {
+    $foo = [
+             foo(
+                     $bar,
+                     $baz
+             )
+             ]
+    ;
+}',
+            '<?php
   if ($foo) {
          $foo = [
                   foo(
@@ -350,6 +433,16 @@ if ($foo) {
              new Foo(
                  $bar,
                  $baz
+             )
+             )
+    ;
+}',
+            '<?php
+if ($foo) {
+    $foo = array(
+             new Foo(
+                     $bar,
+                     $baz
              )
              )
     ;
@@ -378,6 +471,16 @@ if ($foo) {
     ;
 }',
             '<?php
+if ($foo) {
+    $foo = [
+             new Foo(
+                     $bar,
+                     $baz
+             )
+             ]
+    ;
+}',
+            '<?php
   if ($foo) {
          $foo = [
                   new Foo(
@@ -395,6 +498,7 @@ class Foo implements
     Bar,
     Baz
 {}',
+            null,
             '<?php
   class Foo implements
    Bar,
@@ -408,6 +512,7 @@ interface Foo extends
     Bar,
     Baz
 {}',
+            null,
             '<?php
   interface Foo extends
    Bar,
@@ -421,6 +526,7 @@ class Foo {
     use Bar,
         Baz;
 }',
+            null,
             '<?php
   class Foo {
        use Bar,
@@ -433,6 +539,11 @@ class Foo {
 $foo
  ->bar(
      $baz
+ );',
+            '<?php
+$foo
+ ->bar(
+         $baz
  );',
             '<?php
 $foo
@@ -450,6 +561,12 @@ foo(
 );',
             '<?php
 foo(
+        1
+        ,
+        2
+);',
+            '<?php
+foo(
  1
 ,
  2
@@ -464,6 +581,7 @@ if (true) {
              && $b
     ;
 }',
+            null,
             '<?php
 if (true) {
   $foo =
@@ -479,6 +597,7 @@ if ($a
        && $b) {
     foo();
 }',
+            null,
             '<?php
 if ($a
        && $b) {
@@ -499,6 +618,7 @@ switch ($foo) {
     default:
         echo "baz";
 }',
+            null,
             '<?php
 switch ($foo) {
   case 1:
@@ -525,6 +645,24 @@ if ($foo) {
 
                  public function foo(
                      $foo
+                 ) {
+                     return $foo;
+                 }
+             }
+             )
+    ;
+}',
+            '<?php
+if ($foo) {
+    $foo = array(
+             new class (
+                     $bar,
+                     $baz
+             ) {
+                 private $foo;
+
+                 public function foo(
+                         $foo
                  ) {
                      return $foo;
                  }
@@ -572,6 +710,24 @@ if ($foo) {
     ;
 }',
             '<?php
+if ($foo) {
+    $foo = [
+             new class (
+                     $bar,
+                     $baz
+             ) {
+                 private $foo;
+
+                 public function foo(
+                         $foo
+                 ) {
+                     return $foo;
+                 }
+             }
+             ]
+    ;
+}',
+            '<?php
   if ($foo) {
          $foo = [
                   new class (
@@ -599,6 +755,11 @@ if ($foo) {
 );',
             '<?php
 (\'foo\')(
+        $bar,
+        $baz
+);',
+            '<?php
+(\'foo\')(
   $bar,
    $baz
     );',
@@ -609,6 +770,11 @@ if ($foo) {
 $foo = fn(
     $bar,
     $baz
+) => null;',
+            '<?php
+$foo = fn(
+        $bar,
+        $baz
 ) => null;',
             '<?php
    $foo = fn(
@@ -624,6 +790,12 @@ foreach ($array as [
     "bar" => $bar,
 ]) {
 }',
+            '<?php
+foreach ($array as [
+        "foo" => $foo,
+        "bar" => $bar,
+]) {
+}',
         ];
 
         yield 'switch case with control structure' => [
@@ -635,6 +807,7 @@ switch ($foo) {
         }
         return true;
 }',
+            null,
             '<?php
 switch ($foo) {
     case true:
@@ -651,6 +824,7 @@ $foo
     ->baz()
     /* ->baz() */
 ;',
+            null,
         ];
 
         yield 'if with only a comment and followed by else' => [
@@ -660,6 +834,7 @@ if (true) {
 } else {
     // bar
 }',
+            null,
         ];
 
         yield 'multiple anonymous functions as function arguments' => [
@@ -669,6 +844,7 @@ foo(function () {
 }, function () {
     baz();
 });',
+            null,
         ];
 
         yield 'multiple anonymous functions as method arguments' => [
@@ -680,6 +856,7 @@ $this
         echo $b;
     })
 ;',
+            null,
         ];
 
         yield 'semicolon on a newline inside a switch case without break statement' => [
@@ -690,6 +867,7 @@ switch (true) {
             ->baz()
         ;
 }',
+            null,
         ];
 
         yield 'alternative syntax' => [
@@ -703,6 +881,25 @@ switch (true) {
     <?php endif; ?>
 <?php endif; ?>
 ',
+            null,
+        ];
+
+        yield 'array destruct' => [
+            '<?php
+[
+    $bar,
+    $baz,
+] = $foo;',
+            '<?php
+[
+        $bar,
+        $baz,
+] = $foo;',
+            '<?php
+[
+$bar,
+$baz,
+] = $foo;',
         ];
     }
 
@@ -711,7 +908,7 @@ switch (true) {
      */
     public function testFixWithTabs(string $expected, ?string $input = null): void
     {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\n", "\t"));
         $this->doTest($expected, $input);
     }
 

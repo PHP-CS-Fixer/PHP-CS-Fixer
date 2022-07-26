@@ -129,6 +129,7 @@ else {
                 'end_index_inclusive' => true,
                 'initial_indent' => $lastIndent,
                 'is_indented_block' => false,
+                'continuation' => false,
             ],
         ];
 
@@ -151,6 +152,7 @@ else {
                 || isset($caseBlockStarts[$index])
             ) {
                 $endIndexInclusive = true;
+                $continuation = false;
 
                 if ($token->isGivenKind([T_EXTENDS, T_IMPLEMENTS])) {
                     $endIndex = $tokens->getNextTokenOfKind($index, ['{']);
@@ -163,14 +165,17 @@ else {
                         $endIndex = $this->alternativeSyntaxAnalyzer->findAlternativeSyntaxBlockEnd($tokens, $alternativeBlockStarts[$index]);
                     }
                 } elseif ($token->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
+                    $continuation = true;
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]]);
                 } elseif ($token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_GROUP_IMPORT_BRACE_CLOSE]]);
                 } elseif ($token->equals('{')) {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
                 } elseif ($token->equals('(')) {
+                    $continuation = true;
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
                 } else {
+                    $continuation = true;
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
                 }
 
@@ -186,6 +191,7 @@ else {
                     'end_index_inclusive' => $endIndexInclusive,
                     'initial_indent' => $initialIndent,
                     'is_indented_block' => true,
+                    'continuation' => $continuation,
                 ];
 
                 continue;
@@ -220,6 +226,7 @@ else {
                     'end_index_inclusive' => true,
                     'initial_indent' => $this->getLineIndentationWithBracesCompatibility($tokens, $index, $lastIndent),
                     'is_indented_block' => false,
+                    'continuation' => false,
                 ];
 
                 continue;
@@ -252,7 +259,7 @@ else {
                 }
 
                 if ('block' === $scopes[$currentScope]['type'] || 'block_signature' === $scopes[$currentScope]['type']) {
-                    $indent = false;
+                    $indent = '';
 
                     if ($scopes[$currentScope]['is_indented_block']) {
                         $firstMeaningFulTokenIndex = null;
@@ -286,7 +293,9 @@ else {
                                 (null !== $firstMeaningFulTokenIndex && $firstMeaningFulTokenIndex < $endIndex)
                                 || (null !== $nextNewlineIndex && $nextNewlineIndex < $endIndex)
                             ) {
-                                $indent = true;
+                                $indent = $scopes[$currentScope]['continuation']
+                                    ? $this->whitespacesConfig->getContinuationIndent()
+                                    : $this->whitespacesConfig->getIndent();
                             }
                         }
                     }
@@ -295,7 +304,7 @@ else {
 
                     $content = Preg::replace(
                         '/(\R+)\h*$/',
-                        '$1'.$scopes[$currentScope]['initial_indent'].($indent ? $this->whitespacesConfig->getIndent() : ''),
+                        '$1'.$scopes[$currentScope]['initial_indent'].$indent,
                         $content
                     );
 
@@ -367,6 +376,7 @@ else {
                     'end_index_inclusive' => false,
                     'initial_indent' => $previousLineInitialIndent,
                     'new_indent' => $previousLineNewIndent,
+                    'continuation' => false,
                 ];
             }
         }
