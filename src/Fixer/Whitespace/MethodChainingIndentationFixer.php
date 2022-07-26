@@ -99,7 +99,6 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     private function getExpectedIndentAt(Tokens $tokens, int $index): string
     {
         $index = $tokens->getPrevMeaningfulToken($index);
-        $indent = $this->whitespacesConfig->getIndent();
 
         for ($i = $index; $i >= 0; --$i) {
             if ($tokens[$i]->equals(')')) {
@@ -112,13 +111,13 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
             }
 
             if ($this->currentLineRequiresExtraIndentLevel($tokens, $i, $index)) {
-                return $currentIndent.$indent;
+                return $currentIndent.$this->whitespacesConfig->getContinuationIndent();
             }
 
             return $currentIndent;
         }
 
-        return $indent;
+        return $this->whitespacesConfig->getIndent();
     }
 
     /**

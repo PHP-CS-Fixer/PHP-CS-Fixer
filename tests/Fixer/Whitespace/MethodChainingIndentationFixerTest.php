@@ -297,4 +297,94 @@ $foo
 '
         );
     }
+    /**
+     * @dataProvider provideContinuationIndentCases
+     */
+    public function testContinuationIndent(string $continuationIndent, string $expected, string $input): void {
+
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\n", $continuationIndent));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideContinuationIndentCases(): iterable {
+        yield 'Four spaces' => [
+            '    ',
+            '<?php
+
+    $user->setEmail(\'voff.web@gmail.com\')
+        ->setPassword(\'233434\')
+        ->setEmailConfirmed(false)
+        ->setEmailConfirmationCode(\'123456\')
+        ->setHashsalt(\'1234\')
+        ->setTncAccepted(true);
+',
+            '<?php
+
+    $user->setEmail(\'voff.web@gmail.com\')
+
+     ->setPassword(\'233434\')
+        ->setEmailConfirmed(false)
+->setEmailConfirmationCode(\'123456\')
+
+                ->setHashsalt(\'1234\')
+  ->setTncAccepted(true);
+',
+        ];
+
+        yield 'Two spaces' => [
+            '  ',
+            '<?php
+
+    $user->setEmail(\'voff.web@gmail.com\')
+      ->setPassword(\'233434\')
+      ->setEmailConfirmed(false)
+      ->setEmailConfirmationCode(\'123456\')
+      ->setHashsalt(\'1234\')
+      ->setTncAccepted(true);
+',
+            '<?php
+
+    $user->setEmail(\'voff.web@gmail.com\')
+
+     ->setPassword(\'233434\')
+        ->setEmailConfirmed(false)
+->setEmailConfirmationCode(\'123456\')
+
+                ->setHashsalt(\'1234\')
+  ->setTncAccepted(true);
+',
+        ];
+
+        yield 'Tab' => [
+            "\t",
+            "<?php\n\n    \$user->setEmail('voff.web@gmail.com')\n    \t->setPassword('233434')\n    \t->setEmailConfirmed(false)\n    \t->setEmailConfirmationCode('123456')\n    \t->setHashsalt('1234')\n    \t->setTncAccepted(true);\n",
+            '<?php
+
+    $user->setEmail(\'voff.web@gmail.com\')
+
+     ->setPassword(\'233434\')
+        ->setEmailConfirmed(false)
+->setEmailConfirmationCode(\'123456\')
+
+                ->setHashsalt(\'1234\')
+  ->setTncAccepted(true);
+',
+        ];
+
+        yield 'Double tab' => [
+            "\t\t",
+            "<?php\n\n    \$user->setEmail('voff.web@gmail.com')\n    \t\t->setPassword('233434')\n    \t\t->setEmailConfirmed(false)\n    \t\t->setEmailConfirmationCode('123456')\n    \t\t->setHashsalt('1234')\n    \t\t->setTncAccepted(true);\n",
+            '<?php
+
+    $user->setEmail(\'voff.web@gmail.com\')
+
+     ->setPassword(\'233434\')
+        ->setEmailConfirmed(false)
+->setEmailConfirmationCode(\'123456\')
+
+                ->setHashsalt(\'1234\')
+  ->setTncAccepted(true);
+',
+        ];
+    }
 }
