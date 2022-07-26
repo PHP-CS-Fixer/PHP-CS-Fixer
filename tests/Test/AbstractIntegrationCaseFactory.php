@@ -82,6 +82,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     {
         $parsed = $this->parseJson($config, [
             'indent' => '    ',
+            'continuationIndent' => '    ',
             'lineEnding' => "\n",
         ]);
 
@@ -89,6 +90,13 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
             throw new \InvalidArgumentException(sprintf(
                 'Expected string value for "indent", got "%s".',
                 \is_object($parsed['indent']) ? \get_class($parsed['indent']) : \gettype($parsed['indent']).'#'.$parsed['indent']
+            ));
+        }
+
+        if (!\is_string($parsed['continuationIndent'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected string value for "continuationIndent", got "%s".',
+                \is_object($parsed['continuationIndent']) ? \get_class($parsed['continuationIndent']) : \gettype($parsed['continuationIndent']).'#'.$parsed['continuationIndent']
             ));
         }
 

@@ -28,28 +28,32 @@ final class WhitespacesFixerConfigTest extends TestCase
     /**
      * @dataProvider provideTestCases
      */
-    public function testCases(string $indent, string $lineEnding, ?string $exceptionRegExp = null): void
+    public function testCases(string $indent, string $continuationIndent, string $lineEnding, ?string $exceptionRegExp = null): void
     {
         if (null !== $exceptionRegExp) {
             $this->expectException(\InvalidArgumentException::class);
             $this->expectExceptionMessageMatches('%^'.preg_quote($exceptionRegExp, '%').'$%');
         }
 
-        $config = new WhitespacesFixerConfig($indent, $lineEnding);
+        $config = new WhitespacesFixerConfig($indent, $lineEnding, $continuationIndent);
 
         static::assertSame($indent, $config->getIndent());
+        static::assertSame($continuationIndent, $config->getContinuationIndent());
         static::assertSame($lineEnding, $config->getLineEnding());
     }
 
     public function provideTestCases(): array
     {
         return [
-            ['    ', "\n"],
-            ["\t", "\n"],
-            ['    ', "\r\n"],
-            ["\t", "\r\n"],
-            ['    ', 'asd', 'Invalid "lineEnding" param, expected "\n" or "\r\n".'],
-            ['std', "\n", 'Invalid "indent" param, expected tab or two or four spaces.'],
+            ['    ', '    ', "\n"],
+            ["\t", '    ', "\n"],
+            ["\t", "\t", "\n"],
+            ['    ', '    ', "\r\n"],
+            ["\t", '    ', "\r\n"],
+            ["\t", "\t", "\r\n"],
+            ['    ', '    ', 'asd', 'Invalid "lineEnding" param, expected "\n" or "\r\n".'],
+            ['std', '    ', "\n", 'Invalid "indent" param, expected tab or two or four spaces.'],
+            ['    ', 'std', "\n", 'Invalid "continuationIndent" param, expected (double) tab or two, four or eight spaces.'],
         ];
     }
 }

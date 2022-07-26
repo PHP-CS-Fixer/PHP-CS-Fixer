@@ -225,6 +225,7 @@ final class ConfigurationResolver
                         PHP_VERSION,
                         $this->toolInfo->getVersion(),
                         $this->getConfig()->getIndent(),
+                        $this->getConfig()->getContinuationIndent(),
                         $this->getConfig()->getLineEnding(),
                         $this->getRules()
                     ),
@@ -319,7 +320,7 @@ final class ConfigurationResolver
         if (null === $this->fixers) {
             $this->fixers = $this->createFixerFactory()
                 ->useRuleSet($this->getRuleSet())
-                ->setWhitespacesConfig(new WhitespacesFixerConfig($this->config->getIndent(), $this->config->getLineEnding()))
+                ->setWhitespacesConfig(new WhitespacesFixerConfig($this->config->getIndent(), $this->config->getLineEnding(), $this->config->getContinuationIndent()))
                 ->getFixers()
             ;
 

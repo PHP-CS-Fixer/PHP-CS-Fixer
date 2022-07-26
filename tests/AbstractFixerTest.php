@@ -83,15 +83,17 @@ final class AbstractFixerTest extends TestCase
         $config = $fixer->getWhitespacesConfig();
 
         static::assertSame('    ', $config->getIndent());
+        static::assertSame('    ', $config->getContinuationIndent());
         static::assertSame("\n", $config->getLineEnding());
 
-        $newConfig = new WhitespacesFixerConfig("\t", "\r\n");
+        $newConfig = new WhitespacesFixerConfig("\t", "\r\n", "\t\t");
 
         $fixer->setWhitespacesConfig($newConfig);
 
         $config = $fixer->getWhitespacesConfig();
 
         static::assertSame("\t", $config->getIndent());
+        static::assertSame("\t\t", $config->getContinuationIndent());
         static::assertSame("\r\n", $config->getLineEnding());
     }
 }
