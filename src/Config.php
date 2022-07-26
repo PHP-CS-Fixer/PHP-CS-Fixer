@@ -41,6 +41,8 @@ class Config implements ConfigInterface
 
     private string $indent = '    ';
 
+    private string $continuationIndent = '    ';
+
     private bool $isRiskyAllowed = false;
 
     private string $lineEnding = "\n";
@@ -111,6 +113,14 @@ class Config implements ConfigInterface
     public function getIndent(): string
     {
         return $this->indent;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContinuationIndent(): string
+    {
+        return $this->continuationIndent;
     }
 
     /**
@@ -219,6 +229,16 @@ class Config implements ConfigInterface
     public function setIndent(string $indent): ConfigInterface
     {
         $this->indent = $indent;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContinuationIndent(string $indent): ConfigInterface
+    {
+        $this->continuationIndent = $indent;
 
         return $this;
     }

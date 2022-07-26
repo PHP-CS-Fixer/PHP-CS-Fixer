@@ -53,6 +53,8 @@ interface ConfigInterface
 
     public function getIndent(): string;
 
+    public function getContinuationIndent(): string;
+
     public function getLineEnding(): string;
 
     /**
@@ -110,6 +112,8 @@ interface ConfigInterface
     public function setHideProgress(bool $hideProgress): self;
 
     public function setIndent(string $indent): self;
+
+    public function setContinuationIndent(string $indent): self;
 
     public function setLineEnding(string $lineEnding): self;
 

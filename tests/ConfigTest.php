@@ -215,6 +215,7 @@ final class ConfigTest extends TestCase
         static::assertSame('txt', $config->getFormat());
         static::assertFalse($config->getHideProgress());
         static::assertSame('    ', $config->getIndent());
+        static::assertSame('    ', $config->getContinuationIndent());
         static::assertSame("\n", $config->getLineEnding());
         static::assertSame('default', $config->getName());
         static::assertNull($config->getPhpExecutable());
@@ -233,6 +234,9 @@ final class ConfigTest extends TestCase
 
         $config->setIndent("\t");
         static::assertSame("\t", $config->getIndent());
+
+        $config->setContinuationIndent("\t");
+        static::assertSame("\t", $config->getContinuationIndent());
 
         $finder = new Finder();
         $config->setFinder($finder);

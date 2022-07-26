@@ -72,6 +72,14 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
+    public function getContinuationIndent(): string
+    {
+      return '    ';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getLineEnding(): string
     {
         return "\n";
@@ -161,6 +169,14 @@ final class CustomConfig implements ConfigInterface
      * {@inheritdoc}
      */
     public function setIndent(string $indent): ConfigInterface
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContinuationIndent(string $indent): ConfigInterface
     {
         return $this;
     }
