@@ -94,9 +94,12 @@ final class RuleSetTest extends TestCase
             $defaultConfig[$option->getName()] = $option->getDefault();
         }
 
+        // do not sort options for which order is important
+        $excludeFromSorting = $this->orderMattersFor($ruleName);
+
         static::assertNotSame(
-            $this->sortNestedArray($defaultConfig),
-            $this->sortNestedArray($ruleConfig),
+            $this->sortNestedArray($defaultConfig, $excludeFromSorting),
+            $this->sortNestedArray($ruleConfig, $excludeFromSorting),
             sprintf('Rule "%s" (in RuleSet "%s") has default config passed.', $ruleName, $setName)
         );
     }
@@ -419,13 +422,31 @@ final class RuleSetTest extends TestCase
         new RuleSet(['@Symfony:risky' => null]);
     }
 
-    private function sortNestedArray(array $array): array
+    /**
+     * Options for which order is important.
+     *
+     * @return string[]
+     */
+    private function orderMattersFor(string $ruleName): array
+    {
+        static $orderMattersFor = [
+            'phpdoc_order' => ['order'],
+        ];
+
+        return $orderMattersFor[$ruleName] ?? [];
+    }
+
+    /**
+     * @param string[] $excludeKeys
+     */
+    private function sortNestedArray(array $array, array $excludeKeys = []): array
     {
         foreach ($array as $key => $element) {
-            if (!\is_array($element)) {
+            if (!\is_array($element) || \in_array($key, $excludeKeys, true)) {
                 continue;
             }
-            $array[$key] = $this->sortNestedArray($element);
+
+            $array[$key] = $this->sortNestedArray($element, $excludeKeys);
         }
 
         // sort by key if associative, by values otherwise
