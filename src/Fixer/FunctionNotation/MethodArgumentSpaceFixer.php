@@ -323,7 +323,7 @@ SAMPLE
             ;
         }
 
-        $indentation = $existingIndentation.$this->whitespacesConfig->getIndent();
+        $indentation = $existingIndentation.$this->whitespacesConfig->getContinuationIndent();
         $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
 
         $wasWhitespaceBeforeEndFunctionAddedAsNewToken = $tokens->ensureWhitespaceAtIndex(

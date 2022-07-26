@@ -53,7 +53,8 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
         $this->fixer->configure($configuration);
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig(
             $indent,
-            $lineEnding
+            $lineEnding,
+            $indent
         ));
 
         $this->doTest($expected, $input);
@@ -1031,6 +1032,66 @@ $fn = fn(
             [
                 'on_multiline' => 'ensure_fully_multiline',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideContinuationIndentCases
+     */
+    public function testContinuationIndent(string $continuationIndent, string $expected, string $input): void {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\n", $continuationIndent));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideContinuationIndentCases(): iterable {
+        yield 'Two spaces' => [
+            '  ',
+            '<?php
+functionCall(
+  1,
+  2,
+  3,
+);',
+            '<?php
+functionCall(
+    1, 2,
+    3,
+);'
+        ];
+
+        yield 'Four spaces' => [
+            '    ',
+            '<?php
+functionCall(
+    1,
+    2,
+    3,
+);',
+            '<?php
+functionCall(
+    1, 2,
+    3,
+);'
+        ];
+
+        yield 'One tab' => [
+            "\t",
+            "<?php\nfunctionCall(\n\t1,\n\t2,\n\t3,\n);",
+            '<?php
+functionCall(
+    1, 2,
+    3,
+);'
+        ];
+
+        yield 'Two tabs' => [
+            "\t\t",
+            "<?php\nfunctionCall(\n\t\t1,\n\t\t2,\n\t\t3,\n);",
+            '<?php
+functionCall(
+    1, 2,
+    3,
+);'
         ];
     }
 
