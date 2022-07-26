@@ -27,15 +27,18 @@ final class Signature implements SignatureInterface
 
     private string $indent;
 
+    private string $continuationIndent;
+
     private string $lineEnding;
 
     private array $rules;
 
-    public function __construct(string $phpVersion, string $fixerVersion, string $indent, string $lineEnding, array $rules)
+    public function __construct(string $phpVersion, string $fixerVersion, string $indent, string $continuationIndent, string $lineEnding, array $rules)
     {
         $this->phpVersion = $phpVersion;
         $this->fixerVersion = $fixerVersion;
         $this->indent = $indent;
+        $this->continuationIndent = $continuationIndent;
         $this->lineEnding = $lineEnding;
         $this->rules = self::utf8Encode($rules);
     }
@@ -55,6 +58,11 @@ final class Signature implements SignatureInterface
         return $this->indent;
     }
 
+    public function getContinuationIndent(): string
+    {
+        return $this->continuationIndent;
+    }
+
     public function getLineEnding(): string
     {
         return $this->lineEnding;
@@ -70,6 +78,7 @@ final class Signature implements SignatureInterface
         return $this->phpVersion === $signature->getPhpVersion()
             && $this->fixerVersion === $signature->getFixerVersion()
             && $this->indent === $signature->getIndent()
+            && $this->continuationIndent === $signature->getContinuationIndent()
             && $this->lineEnding === $signature->getLineEnding()
             && $this->rules === $signature->getRules();
     }

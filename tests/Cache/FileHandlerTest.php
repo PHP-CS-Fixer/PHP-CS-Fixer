@@ -193,6 +193,7 @@ final class FileHandlerTest extends TestCase
             PHP_VERSION,
             '2.0',
             '    ',
+            '    ',
             PHP_EOL,
             [
                 'foo',

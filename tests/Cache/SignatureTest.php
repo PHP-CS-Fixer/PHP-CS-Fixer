@@ -45,6 +45,7 @@ final class SignatureTest extends TestCase
         $php = PHP_VERSION;
         $version = '2.0';
         $indent = '    ';
+        $continuationIndent = '    ';
         $lineEnding = PHP_EOL;
         $rules = [
             'foo',
@@ -55,6 +56,7 @@ final class SignatureTest extends TestCase
             $php,
             $version,
             $indent,
+            $continuationIndent,
             $lineEnding,
             $rules
         );
@@ -62,6 +64,7 @@ final class SignatureTest extends TestCase
         static::assertSame($php, $signature->getPhpVersion());
         static::assertSame($version, $signature->getFixerVersion());
         static::assertSame($indent, $signature->getIndent());
+        static::assertSame($continuationIndent, $signature->getContinuationIndent());
         static::assertSame($lineEnding, $signature->getLineEnding());
         static::assertSame($rules, $signature->getRules());
     }
@@ -79,37 +82,43 @@ final class SignatureTest extends TestCase
         $php = PHP_VERSION;
         $version = '2.0';
         $indent = '    ';
+        $continuationIndent = '    ';
         $lineEnding = "\n";
         $rules = [
             'foo',
             'bar',
         ];
 
-        $base = new Signature($php, $version, $indent, $lineEnding, $rules);
+        $base = new Signature($php, $version, $indent, $continuationIndent, $lineEnding, $rules);
 
         yield 'php' => [
             $base,
-            new Signature('50400', $version, $indent, $lineEnding, $rules),
+            new Signature('50400', $version, $indent, $continuationIndent, $lineEnding, $rules),
         ];
 
         yield 'version' => [
             $base,
-            new Signature($php, '2.12', $indent, $lineEnding, $rules),
+            new Signature($php, '2.12', $indent, $continuationIndent, $lineEnding, $rules),
         ];
 
         yield 'indent' => [
             $base,
-            new Signature($php, $version, "\t", $lineEnding, $rules),
+            new Signature($php, $version, "\t", $continuationIndent, $lineEnding, $rules),
+        ];
+
+        yield 'continuationIndent' => [
+            $base,
+            new Signature($php, $version, $indent, "\t", $lineEnding, $rules),
         ];
 
         yield 'lineEnding' => [
             $base,
-            new Signature($php, $version, $indent, "\r\n", $rules),
+            new Signature($php, $version, $indent, $continuationIndent, "\r\n", $rules),
         ];
 
         yield 'rules' => [
             $base,
-            new Signature($php, $version, $indent, $lineEnding, ['foo']),
+            new Signature($php, $version, $indent, $continuationIndent, $lineEnding, ['foo']),
         ];
     }
 
@@ -118,6 +127,7 @@ final class SignatureTest extends TestCase
         $php = PHP_VERSION;
         $version = '2.0';
         $indent = '    ';
+        $continuationIndent = '    ';
         $lineEnding = PHP_EOL;
         $rules = [
             'foo',
@@ -128,6 +138,7 @@ final class SignatureTest extends TestCase
             $php,
             $version,
             $indent,
+            $continuationIndent,
             $lineEnding,
             $rules
         );
@@ -136,6 +147,7 @@ final class SignatureTest extends TestCase
             $php,
             $version,
             $indent,
+            $continuationIndent,
             $lineEnding,
             $rules
         );

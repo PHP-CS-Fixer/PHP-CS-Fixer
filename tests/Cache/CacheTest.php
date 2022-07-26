@@ -165,6 +165,7 @@ final class CacheTest extends TestCase
                 PHP_VERSION,
                 '2.0',
                 '  ',
+                '    ',
                 "\r\n",
                 [
                     'foo' => true,
@@ -175,6 +176,7 @@ final class CacheTest extends TestCase
                 PHP_VERSION,
                 $toolInfo->getVersion(),
                 $config->getIndent(),
+                $config->getContinuationIndent(),
                 $config->getLineEnding(),
                 [
                     // value encoded in ANSI, not UTF
@@ -192,6 +194,7 @@ final class CacheTest extends TestCase
         $signature->getPhpVersion()->willReturn('7.1.0');
         $signature->getFixerVersion()->willReturn('2.2.0');
         $signature->getIndent()->willReturn('    ');
+        $signature->getContinuationIndent()->willReturn('    ');
         $signature->getLineEnding()->willReturn(PHP_EOL);
         $signature->getRules()->willReturn([
             $invalidUtf8Sequence => true,

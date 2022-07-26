@@ -68,6 +68,7 @@ final class Cache implements CacheInterface
             'php' => $this->getSignature()->getPhpVersion(),
             'version' => $this->getSignature()->getFixerVersion(),
             'indent' => $this->getSignature()->getIndent(),
+            'continuationIndent' => $this->getSignature()->getContinuationIndent(),
             'lineEnding' => $this->getSignature()->getLineEnding(),
             'rules' => $this->getSignature()->getRules(),
             'hashes' => $this->hashes,
@@ -102,6 +103,7 @@ final class Cache implements CacheInterface
             'php',
             'version',
             'indent',
+            'continuationIndent',
             'lineEnding',
             'rules',
             'hashes',
@@ -120,6 +122,7 @@ final class Cache implements CacheInterface
             $data['php'],
             $data['version'],
             $data['indent'],
+            $data['continuationIndent'],
             $data['lineEnding'],
             $data['rules']
         );

@@ -27,6 +27,8 @@ interface SignatureInterface
 
     public function getIndent(): string;
 
+    public function getContinuationIndent(): string;
+
     public function getLineEnding(): string;
 
     public function getRules(): array;
