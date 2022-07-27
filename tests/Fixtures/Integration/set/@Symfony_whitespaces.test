@@ -3,4 +3,4 @@ Integration of @Symfony [whitespace version].
 --RULESET--
 {"@Symfony": true}
 --CONFIG--
-{"indent": "\t", "lineEnding": "\r\n"}
+{"indent": "\t", "lineEnding": "\r\n", "continuationIndent": "\t"}
