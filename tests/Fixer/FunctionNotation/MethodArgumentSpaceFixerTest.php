@@ -1038,12 +1038,14 @@ $fn = fn(
     /**
      * @dataProvider provideContinuationIndentCases
      */
-    public function testContinuationIndent(string $continuationIndent, string $expected, string $input): void {
+    public function testContinuationIndent(string $continuationIndent, string $expected, string $input): void
+    {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\n", $continuationIndent));
         $this->doTest($expected, $input);
     }
 
-    public function provideContinuationIndentCases(): iterable {
+    public function provideContinuationIndentCases(): iterable
+    {
         yield 'Two spaces' => [
             '  ',
             '<?php
@@ -1056,7 +1058,7 @@ functionCall(
 functionCall(
     1, 2,
     3,
-);'
+);',
         ];
 
         yield 'Four spaces' => [
@@ -1071,7 +1073,7 @@ functionCall(
 functionCall(
     1, 2,
     3,
-);'
+);',
         ];
 
         yield 'One tab' => [
@@ -1081,7 +1083,7 @@ functionCall(
 functionCall(
     1, 2,
     3,
-);'
+);',
         ];
 
         yield 'Two tabs' => [
@@ -1091,7 +1093,7 @@ functionCall(
 functionCall(
     1, 2,
     3,
-);'
+);',
         ];
     }
 

@@ -297,16 +297,18 @@ $foo
 '
         );
     }
+
     /**
      * @dataProvider provideContinuationIndentCases
      */
-    public function testContinuationIndent(string $continuationIndent, string $expected, string $input): void {
-
+    public function testContinuationIndent(string $continuationIndent, string $expected, string $input): void
+    {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\n", $continuationIndent));
         $this->doTest($expected, $input);
     }
 
-    public function provideContinuationIndentCases(): iterable {
+    public function provideContinuationIndentCases(): iterable
+    {
         yield 'Four spaces' => [
             '    ',
             '<?php

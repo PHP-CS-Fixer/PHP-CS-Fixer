@@ -27,7 +27,7 @@ final class StatementIndentationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $unused, ?string $input = NULL): void
+    public function testFix(string $expected, ?string $unused, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -35,7 +35,7 @@ final class StatementIndentationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFixContinuationIndent(string $original, ?string $expected, ?string $input = NULL): void
+    public function testFixContinuationIndent(string $original, ?string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\n", '        '));
         $this->doTest($expected ?? $original, $input);
