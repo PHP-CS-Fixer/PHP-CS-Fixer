@@ -5662,4 +5662,152 @@ break;
  case Bar = "bar";}',
         ];
     }
+
+    /**
+     * @dataProvider provideFixAnonymousStructuresCases
+     *
+     * @param string[] $configuration
+     */
+    public function testFixAnonymousStructures(string $expected, ?string $input = null, array $configuration = []): void
+    {
+        $this->fixer->configure($configuration);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixAnonymousStructuresCases(): iterable
+    {
+        yield 'next-same-next' => [
+            '<?php
+$foo = new class ($a) extends Foo implements Bar {
+    private $x;
+};
+$bar = function($a)
+{
+    echo $a;
+};
+',
+            '<?php
+$foo = new class ($a) extends Foo implements Bar { private $x;
+};
+$bar = function($a) { echo $a; };
+',
+            [
+                'position_after_anonymous_constructs' => 'next',
+                'position_after_anonymous_classes' => 'same',
+                'position_after_anonymous_functions' => 'next',
+            ],
+        ];
+
+        yield 'next-same-same' => [
+            '<?php
+$foo = new class ($a) extends Foo implements Bar {
+    private $x;
+};
+$bar = function($a) {
+    echo $a;
+};
+',
+            '<?php
+$foo = new class ($a) extends Foo implements Bar { private $x;
+};
+$bar = function($a) { echo $a; };
+',
+            [
+                'position_after_anonymous_constructs' => 'next',
+                'position_after_anonymous_classes' => 'same',
+                'position_after_anonymous_functions' => 'same',
+            ],
+        ];
+
+        yield 'same-next-next' => [
+            '<?php
+$foo = new class ($a) extends Foo implements Bar
+{
+    private $x;
+};
+$bar = function($a)
+{
+    echo $a;
+};
+',
+            '<?php
+$foo = new class ($a) extends Foo implements Bar { private $x;
+};
+$bar = function($a) { echo $a; };
+',
+            [
+                'position_after_anonymous_constructs' => 'same',
+                'position_after_anonymous_classes' => 'next',
+                'position_after_anonymous_functions' => 'next',
+            ],
+        ];
+
+        yield 'next-same-null' => [
+            '<?php
+$foo = new class ($a) extends Foo implements Bar {
+    private $x;
+};',
+            '<?php
+$foo = new class ($a) extends Foo implements Bar
+{
+private $x;
+};',
+            [
+                'position_after_anonymous_constructs' => 'next',
+                'position_after_anonymous_classes' => 'same',
+            ],
+        ];
+
+        yield 'same-next-null' => [
+            '<?php
+$foo = new class ($a) extends Foo implements Bar
+{
+    private $x;
+    function fooBar($fo,$bar,array $baz,$qux)
+    {
+        parent::fooBar($fo,$bar,$baz,$qux);
+        $this->x = function ($foo) {
+            return $bar + $baz;
+        };
+    }
+};',
+            '<?php
+$foo = new class ($a) extends Foo implements Bar {
+private $x;
+function fooBar($fo,$bar,array $baz,$qux){
+parent::fooBar($fo,$bar,$baz,$qux);
+$this->x = function ($foo) { return $bar + $baz;
+};}};',
+            [
+                'position_after_anonymous_constructs' => 'same',
+                'position_after_anonymous_classes' => 'next',
+            ],
+        ];
+
+        yield 'single-line-closure' => [
+            '<?php
+$foo = new class ($a) extends Foo implements Bar
+{
+    private $x;
+    function fooBar($fo,$bar,array $baz,$qux)
+    {
+        parent::fooBar($fo,$bar,$baz,$qux);
+        $this->x = function ($foo) { return $bar + $baz; };
+    }
+};',
+            '<?php
+$foo = new class ($a) extends Foo implements Bar
+{ private $x;
+function fooBar($fo,$bar,array $baz,$qux){
+parent::fooBar($fo,$bar,$baz,$qux);
+$this->x = function ($foo) { return $bar + $baz; };
+}};',
+            [
+                'allow_single_line_closure' => true,
+                'position_after_anonymous_constructs' => 'next',
+                'position_after_anonymous_functions' => 'same',
+            ],
+        ];
+    }
 }

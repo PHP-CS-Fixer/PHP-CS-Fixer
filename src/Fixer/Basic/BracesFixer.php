@@ -158,9 +158,9 @@ class Foo
         $this->getCurlyBracesPositionFixer()->configure([
             'control_structures_opening_brace' => $this->translatePositionOption($this->configuration['position_after_control_structures']),
             'functions_opening_brace' => $this->translatePositionOption($this->configuration['position_after_functions_and_oop_constructs']),
-            'anonymous_functions_opening_brace' => $this->translatePositionOption($this->configuration['position_after_anonymous_constructs']),
+            'anonymous_functions_opening_brace' => $this->translatePositionOption($this->configuration['position_after_anonymous_functions'] ?? $this->configuration['position_after_anonymous_constructs']),
             'classes_opening_brace' => $this->translatePositionOption($this->configuration['position_after_functions_and_oop_constructs']),
-            'anonymous_classes_opening_brace' => $this->translatePositionOption($this->configuration['position_after_anonymous_constructs']),
+            'anonymous_classes_opening_brace' => $this->translatePositionOption($this->configuration['position_after_anonymous_classes'] ?? $this->configuration['position_after_anonymous_constructs']),
             'allow_single_line_empty_anonymous_classes' => $this->configuration['allow_single_line_anonymous_class_with_empty_body'],
             'allow_single_line_anonymous_functions' => $this->configuration['allow_single_line_closure'],
         ]);
@@ -221,6 +221,14 @@ class Foo
             (new FixerOptionBuilder('position_after_anonymous_constructs', 'whether the opening brace should be placed on "next" or "same" line after anonymous constructs (anonymous classes and lambda functions).'))
                 ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
                 ->setDefault(self::LINE_SAME)
+                ->getOption(),
+            (new FixerOptionBuilder('position_after_anonymous_classes', 'whether the opening brace should be placed on "next" or "same" line after anonymous classes. If this option is not set, ``position_after_anonymous_constructs`` setting is used.'))
+                ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME, null])
+                ->setDefault(null)
+                ->getOption(),
+            (new FixerOptionBuilder('position_after_anonymous_functions', 'whether the opening brace should be placed on "next" or "same" line after anonymous lambda functions. If this option is not set, ``position_after_anonymous_constructs`` setting is used.'))
+                ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME, null])
+                ->setDefault(null)
                 ->getOption(),
         ]);
     }
@@ -581,11 +589,12 @@ class Foo
                 || (
                     self::LINE_NEXT === $this->configuration['position_after_control_structures'] && $token->isGivenKind($controlTokens)
                     || (
-                        self::LINE_NEXT === $this->configuration['position_after_anonymous_constructs']
-                        && (
-                            $token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($index)
-                            || $token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)
-                        )
+                        self::LINE_NEXT === ($this->configuration['position_after_anonymous_classes'] ?? $this->configuration['position_after_anonymous_constructs'])
+                        && $token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)
+                    )
+                    || (
+                        self::LINE_NEXT === ($this->configuration['position_after_anonymous_functions'] ?? $this->configuration['position_after_anonymous_constructs'])
+                        && $token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($index)
                     )
                 )
             ) {
