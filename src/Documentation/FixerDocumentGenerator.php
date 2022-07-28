@@ -105,11 +105,9 @@ RST;
 
         if ($deprecationDescription || $riskyDescription) {
             $warningsHeader = 'Warning';
-            $warningsSeparator = '';
 
             if ($deprecationDescription && $riskyDescription) {
                 $warningsHeader = 'Warnings';
-                $warningsSeparator = "\n";
             }
 
             $warningsHeaderLine = str_repeat('-', \strlen($warningsHeader));

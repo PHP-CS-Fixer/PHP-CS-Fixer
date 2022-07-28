@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Cache;
 
 use PhpCsFixer\Cache\Cache;
+use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Config;
@@ -32,16 +33,16 @@ final class CacheTest extends TestCase
 {
     public function testIsFinal(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Cache::class);
+        $reflection = new \ReflectionClass(Cache::class);
 
         static::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsCacheInterface(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Cache::class);
+        $reflection = new \ReflectionClass(Cache::class);
 
-        static::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheInterface::class));
+        static::assertTrue($reflection->implementsInterface(CacheInterface::class));
     }
 
     public function testConstructorSetsValues(): void
@@ -188,7 +189,7 @@ final class CacheTest extends TestCase
     {
         $invalidUtf8Sequence = "\xB1\x31";
 
-        $signature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class);
+        $signature = $this->prophesize(SignatureInterface::class);
         $signature->getPhpVersion()->willReturn('7.1.0');
         $signature->getFixerVersion()->willReturn('2.2.0');
         $signature->getIndent()->willReturn('    ');
@@ -212,6 +213,6 @@ final class CacheTest extends TestCase
 
     private function getSignatureDouble(): SignatureInterface
     {
-        return $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
+        return $this->prophesize(SignatureInterface::class)->reveal();
     }
 }

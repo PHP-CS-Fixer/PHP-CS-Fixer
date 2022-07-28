@@ -214,16 +214,17 @@ abstract class AbstractFixerTestCase extends TestCase
 
     final public function testDeprecatedFixersHaveCorrectSummary(): void
     {
-        $reflection = new \ReflectionClass($this->fixer);
-        $comment = $reflection->getDocComment();
-
         static::assertStringNotContainsString(
             'DEPRECATED',
             $this->fixer->getDefinition()->getSummary(),
             'Fixer cannot contain word "DEPRECATED" in summary'
         );
 
+        $reflection = new \ReflectionClass($this->fixer);
+        $comment = $reflection->getDocComment();
+
         if ($this->fixer instanceof DeprecatedFixerInterface) {
+            static::assertIsString($comment, sprintf('Missing class PHPDoc for deprecated fixer "%s".', $this->fixer->getName()));
             static::assertStringContainsString('@deprecated', $comment);
         } elseif (\is_string($comment)) {
             static::assertStringNotContainsString('@deprecated', $comment);

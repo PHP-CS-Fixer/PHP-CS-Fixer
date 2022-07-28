@@ -56,29 +56,16 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
 
         $this->hints = [
             'array' => true,
+            'bool' => true,
             'callable' => true,
+            'float' => true,
+            'int' => true,
+            'iterable' => true,
+            'object' => true,
             'self' => true,
+            'string' => true,
+            'void' => true,
         ];
-
-        $this->hints = array_merge(
-            $this->hints,
-            [
-                'bool' => true,
-                'float' => true,
-                'int' => true,
-                'string' => true,
-            ]
-        );
-
-        $this->hints = array_merge(
-            $this->hints,
-            [
-                'iterable' => true,
-                'void' => true,
-            ]
-        );
-
-        $this->hints = array_merge($this->hints, ['object' => true]);
 
         if (\PHP_VERSION_ID >= 80000) {
             $this->hints = array_merge($this->hints, ['static' => true]);
