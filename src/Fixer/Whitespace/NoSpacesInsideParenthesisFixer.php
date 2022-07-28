@@ -51,7 +51,7 @@ function foo( \$bar, \$baz )
      * {@inheritdoc}
      *
      * Must run before FunctionToConstantFixer, GetClassToClassKeywordFixer, StringLengthToEmptyFixer.
-     * Must run after CombineConsecutiveIssetsFixer, CombineNestedDirnameFixer, IncrementStyleFixer, LambdaNotUsedImportFixer, ModernizeStrposFixer, NoTrailingCommaInSinglelineFunctionCallFixer, NoUselessSprintfFixer, PowToExponentiationFixer.
+     * Must run after CombineConsecutiveIssetsFixer, CombineNestedDirnameFixer, IncrementStyleFixer, LambdaNotUsedImportFixer, ModernizeStrposFixer, NoUselessSprintfFixer, PowToExponentiationFixer.
      */
     public function getPriority(): int
     {

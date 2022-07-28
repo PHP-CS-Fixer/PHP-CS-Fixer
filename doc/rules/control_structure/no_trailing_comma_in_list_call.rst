@@ -4,6 +4,14 @@ Rule ``no_trailing_comma_in_list_call``
 
 Remove trailing commas in list function calls.
 
+Warning
+-------
+
+This rule is deprecated and will be removed on next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``no_trailing_comma_in_singleline`` instead.
+
 Examples
 --------
 
@@ -17,14 +25,3 @@ Example #1
     <?php
    -list($a, $b,) = foo();
    +list($a, $b) = foo();
-
-Rule sets
----------
-
-The rule is part of the following rule sets:
-
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``no_trailing_comma_in_list_call`` rule.
-
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``no_trailing_comma_in_list_call`` rule.
