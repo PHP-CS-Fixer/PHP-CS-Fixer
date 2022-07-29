@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Differ;
 
-use PhpCsFixer\Diff\Differ;
-use PhpCsFixer\Diff\Output\StrictUnifiedDiffOutputBuilder;
+use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
