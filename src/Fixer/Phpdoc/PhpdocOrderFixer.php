@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\Phpdoc;
 
+use ArrayIterator;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
@@ -25,6 +26,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
@@ -81,7 +83,7 @@ EOF;
     {
         parent::configure($configuration);
 
-        $this->order = $this->configuration['order'];
+        $this->order = (array) $this->configuration['order'];
     }
 
     /**
@@ -112,6 +114,7 @@ EOF;
             ( new FixerOptionBuilder('order', 'Sequence in which annotations in PHPDoc should be ordered.') )
                 ->setAllowedTypes(['string[]'])
                 ->setDefault(self::ORDER_DEFAULT)
+                ->setNormalizer(static function (Options $options, $value) { return new ArrayIterator($value); })
                 ->getOption(),
         ]);
     }
