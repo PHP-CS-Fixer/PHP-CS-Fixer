@@ -15,9 +15,14 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\ArrayNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -25,7 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Adam Marczuk <adam@marczuk.info>
  */
-final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
+final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -34,7 +39,10 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'In array declaration, there MUST be a whitespace after each comma.',
-            [new CodeSample("<?php\n\$sample = array(1,'a',\$b,);\n")]
+            [
+                new CodeSample("<?php\n\$sample = array(1,'a',\$b,);\n"),
+                new CodeSample("<?php\n\$sample = [1,2, 3,  4,    5];\n", ['ensure_single_space' => true]),
+            ]
         );
     }
 
@@ -44,6 +52,19 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('ensure_single_space', 'If there are only horizontal whitespaces after the comma then ensure it is a single space.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -68,8 +89,18 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
 
             for ($i = $endIndex - 1; $i > $startIndex; --$i) {
                 $i = $this->skipNonArrayElements($i, $tokens);
-                if ($tokens[$i]->equals(',') && !$tokens[$i + 1]->isWhitespace()) {
+                if (!$tokens[$i]->equals(',')) {
+                    continue;
+                }
+                if (!$tokens[$i + 1]->isWhitespace()) {
                     $tokensToInsert[$i + 1] = new Token([T_WHITESPACE, ' ']);
+                } elseif (
+                    $this->configuration['ensure_single_space']
+                    && ' ' !== $tokens[$i + 1]->getContent()
+                    && 1 === Preg::match('/^\h+$/', $tokens[$i + 1]->getContent())
+                    && (!$tokens[$i + 2]->isComment() || 1 === Preg::match('/^\h+$/', $tokens[$i + 3]->getContent()))
+                ) {
+                    $tokens[$i + 1] = new Token([T_WHITESPACE, ' ']);
                 }
             }
         }

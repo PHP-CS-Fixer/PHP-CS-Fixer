@@ -346,7 +346,7 @@ class Foo
             $sequences[] = $seq;
         }
 
-        return [$sequences,  [3 => false]];
+        return [$sequences, [3 => false]];
     }
 
     /**

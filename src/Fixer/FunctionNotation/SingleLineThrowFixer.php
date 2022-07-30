@@ -29,7 +29,7 @@ final class SingleLineThrowFixer extends AbstractFixer
 {
     private const REMOVE_WHITESPACE_AFTER_TOKENS = ['['];
     private const REMOVE_WHITESPACE_AROUND_TOKENS = ['(', [T_DOUBLE_COLON]];
-    private const REMOVE_WHITESPACE_BEFORE_TOKENS = [')',  ']', ',', ';'];
+    private const REMOVE_WHITESPACE_BEFORE_TOKENS = [')', ']', ',', ';'];
 
     /**
      * {@inheritdoc}
@@ -74,7 +74,7 @@ final class SingleLineThrowFixer extends AbstractFixer
 
             $endCandidateIndex = $tokens->getNextMeaningfulToken($index);
 
-            while (!$tokens[$endCandidateIndex]->equalsAny([')',  ']', ',', ';'])) {
+            while (!$tokens[$endCandidateIndex]->equalsAny([')', ']', ',', ';'])) {
                 $blockType = Tokens::detectBlockType($tokens[$endCandidateIndex]);
 
                 if (null !== $blockType) {

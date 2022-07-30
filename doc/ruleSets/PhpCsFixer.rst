@@ -53,3 +53,6 @@ Rules
 - `return_assignment <./../rules/return_notation/return_assignment.rst>`_
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
 - `single_line_throw <./../rules/function_notation/single_line_throw.rst>`_
+- `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_
+  config:
+  ``['ensure_single_space' => true]``
