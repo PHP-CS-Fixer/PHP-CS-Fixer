@@ -121,12 +121,15 @@ final class ReturnAssignmentFixer extends AbstractFixer
             T_INCLUDE_ONCE,               // "
             T_REQUIRE,                    // "
             T_REQUIRE_ONCE,               // "
-            T_STATIC,
         ];
 
         $inserted = 0;
         $candidates = [];
         $isRisky = false;
+
+        if ($tokens[$tokens->getNextMeaningfulToken($functionIndex)]->isGivenKind(CT::T_RETURN_REF)) {
+            $isRisky = true;
+        }
 
         // go through the function declaration and check if references are passed
         // - check if it will be risky to fix return statements of this function
@@ -191,6 +194,16 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 continue;
             }
 
+            if ($tokens[$index]->isGivenKind(T_STATIC)) {
+                $nextIndex = $tokens->getNextMeaningfulToken($index);
+
+                if (!$tokens[$nextIndex]->isGivenKind(T_FUNCTION)) {
+                    $isRisky = true; // "static $a" case
+
+                    continue;
+                }
+            }
+
             if ($tokens[$index]->equals('$')) {
                 $nextIndex = $tokens->getNextMeaningfulToken($index);
                 if ($tokens[$nextIndex]->isGivenKind(T_VARIABLE)) {
@@ -245,10 +258,20 @@ final class ReturnAssignmentFixer extends AbstractFixer
 
             $assignVarOperatorIndex = $tokens->getPrevTokenOfKind(
                 $assignVarEndIndex,
-                ['=', ';', '{', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO]]
+                ['=', ';', '{', '}', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO]]
             );
 
-            if (null === $assignVarOperatorIndex || !$tokens[$assignVarOperatorIndex]->equals('=')) {
+            if ($tokens[$assignVarOperatorIndex]->equals('}')) {
+                $startIndex = $this->isCloseBracePartOfDefinition($tokens, $assignVarOperatorIndex); // test for `anonymous class`, `lambda` and `match`
+
+                if (null === $startIndex) {
+                    continue;
+                }
+
+                $assignVarOperatorIndex = $tokens->getPrevMeaningfulToken($startIndex);
+            }
+
+            if (!$tokens[$assignVarOperatorIndex]->equals('=')) {
                 continue;
             }
 
@@ -353,5 +376,107 @@ final class ReturnAssignmentFixer extends AbstractFixer
         }
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+    }
+
+    /**
+     * @param int $index open brace index
+     *
+     * @return null|int index of the first token of a definition (lambda, anonymous class or match) or `null` if not an anonymous
+     */
+    private function isCloseBracePartOfDefinition(Tokens $tokens, int $index): ?int
+    {
+        $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        $candidateIndex = $this->isOpenBraceOfLambda($tokens, $index);
+
+        if (null !== $candidateIndex) {
+            return $candidateIndex;
+        }
+
+        $candidateIndex = $this->isOpenBraceOfAnonymousClass($tokens, $index);
+
+        return $candidateIndex ?? $this->isOpenBraceOfMatch($tokens, $index);
+    }
+
+    /**
+     * @param int $index open brace index
+     *
+     * @return null|int index of T_NEW of anonymous class or `null` if not an anonymous
+     */
+    private function isOpenBraceOfAnonymousClass(Tokens $tokens, int $index): ?int
+    {
+        do {
+            $index = $tokens->getPrevMeaningfulToken($index);
+        } while ($tokens[$index]->equalsAny([',', [T_STRING], [T_IMPLEMENTS], [T_EXTENDS]]));
+
+        if ($tokens[$index]->equals(')')) {
+            $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            $index = $tokens->getPrevMeaningfulToken($index);
+        }
+
+        if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+            return null;
+        }
+
+        $index = $tokens->getPrevMeaningfulToken($index);
+
+        return $tokens[$index]->isGivenKind(T_NEW) ? $index : null;
+    }
+
+    /**
+     * @param int $index open brace index
+     *
+     * @return null|int index of T_FUNCTION or T_STATIC of lambda or `null` if not a lambda
+     */
+    private function isOpenBraceOfLambda(Tokens $tokens, int $index): ?int
+    {
+        $index = $tokens->getPrevMeaningfulToken($index);
+
+        if (!$tokens[$index]->equals(')')) {
+            return null;
+        }
+
+        $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+        $index = $tokens->getPrevMeaningfulToken($index);
+
+        if ($tokens[$index]->isGivenKind(CT::T_USE_LAMBDA)) {
+            $index = $tokens->getPrevTokenOfKind($index, [')']);
+            $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            $index = $tokens->getPrevMeaningfulToken($index);
+        }
+
+        if ($tokens[$index]->isGivenKind(CT::T_RETURN_REF)) {
+            $index = $tokens->getPrevMeaningfulToken($index);
+        }
+
+        if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            return null;
+        }
+
+        $staticCandidate = $tokens->getPrevMeaningfulToken($index);
+
+        return $tokens[$staticCandidate]->isGivenKind(T_STATIC) ? $staticCandidate : $index;
+    }
+
+    /**
+     * @param int $index open brace index
+     *
+     * @return null|int index of T_MATCH or `null` if not a `match`
+     */
+    private function isOpenBraceOfMatch(Tokens $tokens, int $index): ?int
+    {
+        if (!\defined('T_MATCH') || !$tokens->isTokenKindFound(T_MATCH)) { // @TODO: drop condition when PHP 8.0+ is required
+            return null;
+        }
+
+        $index = $tokens->getPrevMeaningfulToken($index);
+
+        if (!$tokens[$index]->equals(')')) {
+            return null;
+        }
+
+        $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+        $index = $tokens->getPrevMeaningfulToken($index);
+
+        return $tokens[$index]->isGivenKind(T_MATCH) ? $index : null;
     }
 }

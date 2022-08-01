@@ -460,6 +460,166 @@ var names are case-insensitive */ return $a   ;}
                         return $bars;
                     }',
             ],
+            'anonymous classes' => [
+                '<?php
+                    function A()
+                    {
+                        return new class {};
+                    }
+
+                    function B()
+                    {
+                        return new class() {};
+                    }
+
+                    function C()
+                    {
+                        return new class(1,2) { public function Z(Foo $d){} };
+                    }
+
+                    function D()
+                    {
+                        return new class extends Y {};
+                    }
+
+                    function E()
+                    {
+                        return new class extends Y implements O,P {};
+                    }
+                ',
+                '<?php
+                    function A()
+                    {
+                        $a = new class {};
+                        return $a;
+                    }
+
+                    function B()
+                    {
+                        $b = new class() {};
+                        return $b;
+                    }
+
+                    function C()
+                    {
+                        $c = new class(1,2) { public function Z(Foo $d){} };
+                        return $c;
+                    }
+
+                    function D()
+                    {
+                        $c = new class extends Y {};
+                        return $c;
+                    }
+
+                    function E()
+                    {
+                        $c = new class extends Y implements O,P {};
+                        return $c;
+                    }
+                ',
+            ],
+            'lambda' => [
+                '<?php
+                    function A()
+                    {
+                        return function () {};
+                    }
+
+                    function B()
+                    {
+                        return function ($a, $b) use ($z) {};
+                    }
+
+                    function C()
+                    {
+                        return static function ($a, $b) use ($z) {};
+                    }
+
+                    function D()
+                    {
+                        return function &() use(&$b) {
+                            return $b; // do not fix
+                        };
+                          // fix
+                    }
+
+                    function E()
+                    {
+                        return function &() {
+                            $z = new A(); return $z; // do not fix
+                        };
+                          // fix
+                    }
+
+                    function A99()
+                    {
+                        $v = static function ($a, $b) use ($z) {};
+                        return 15;
+                    }
+                ',
+                '<?php
+                    function A()
+                    {
+                        $a = function () {};
+
+                        return $a;
+                    }
+
+                    function B()
+                    {
+                        $b = function ($a, $b) use ($z) {};
+
+                        return $b;
+                    }
+
+                    function C()
+                    {
+                        $c = static function ($a, $b) use ($z) {};
+
+                        return $c;
+                    }
+
+                    function D()
+                    {
+                        $a = function &() use(&$b) {
+                            return $b; // do not fix
+                        };
+
+                        return $a; // fix
+                    }
+
+                    function E()
+                    {
+                        $a = function &() {
+                            $z = new A(); return $z; // do not fix
+                        };
+
+                        return $a; // fix
+                    }
+
+                    function A99()
+                    {
+                        $v = static function ($a, $b) use ($z) {};
+                        $a = 15;
+                        return $a;
+                    }
+                ',
+            ],
+            'arrow functions' => [
+                '<?php
+                    function Foo() {
+                        return fn($x) => $x + $y;
+                    }
+                ',
+                '<?php
+                    function Foo() {
+                        $fn1 = fn($x) => $x + $y;
+
+                        return $fn1;
+                    }
+                ',
+            ],
         ];
     }
 
@@ -514,7 +674,7 @@ var names are case-insensitive */ return $a   ;}
                     return $a;
                 ',
             ],
-            [
+            'open-close with ;' => [
                 '<?php
                     function a()
                     {
@@ -526,14 +686,14 @@ var names are case-insensitive */ return $a   ;}
                     }
                 ',
             ],
-            [
+            'open-close single line' => [
                 '<?php
                     function a()
                     {
                         $a = 1 ?><?php return $a;
                     }',
             ],
-            [
+            'open-close' => [
                 '<?php
                     function a()
                     {
@@ -544,7 +704,7 @@ var names are case-insensitive */ return $a   ;}
                     }
                 ',
             ],
-            [
+            'open-close before function' => [
                 '<?php
                     $zz = 1 ?><?php
                     function a($zz)
@@ -801,6 +961,22 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                     }
                 }',
             ],
+            'variable returned by reference in lambda' => [
+                '<?php $a = function &() {$z = new A(); return $z;};',
+            ],
+            [
+                '<?php
+                function F() {
+                    $a = 1;
+
+                    while(bar()) {
+                        ++$a;
+                    }; // keep this
+
+                    return $a;
+                }
+                ',
+            ],
         ];
     }
 
@@ -853,5 +1029,38 @@ function foo(&$c) {
         }
 
         yield [$expected, $input];
+    }
+
+    /**
+     * @requires PHP 8.0
+     * @dataProvider providePhp80Cases
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function providePhp80Cases(): iterable
+    {
+        yield 'match' => [
+            '<?php
+            function Foo($food) {
+                return match ($food) {
+                    "apple" => "This food is an apple",
+                    "cake" => "This food is a cake",
+                };
+            }
+            ',
+            '<?php
+            function Foo($food) {
+                $return_value = match ($food) {
+                    "apple" => "This food is an apple",
+                    "cake" => "This food is a cake",
+                };
+
+                return $return_value;
+            }
+            ',
+        ];
     }
 }
