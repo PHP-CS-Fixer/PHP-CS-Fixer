@@ -1617,6 +1617,15 @@ $fabricator->setOverrides(["first" => "Bobby"], $persist = false
 );
 ',
             ],
+            [
+                '<?php
+$start = (
+    $input["start"] !== "" && ($date = DateTime::parse($input["start"]))
+        ? $date->setTimezone("UTC")
+        : $date->setTimezone("Europe/London")
+);
+',
+            ],
         ];
     }
 
@@ -2249,6 +2258,22 @@ class test
         }
     }
 }
+',
+            ],
+            [
+                '<?php
+$array = [
+    "foo"     => 123,
+    "longkey" => "test",
+    "baz"     => fn () => "value",
+];
+',
+                '<?php
+$array = [
+    "foo" => 123,
+    "longkey" => "test",
+    "baz" => fn () => "value",
+];
 ',
             ],
         ];
