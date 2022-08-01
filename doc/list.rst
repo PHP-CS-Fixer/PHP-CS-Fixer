@@ -2954,12 +2954,12 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\TrimArraySpacesFixer <./../src/Fixer/ArrayNotation/TrimArraySpacesFixer.php>`_
 -  `types_spaces <./rules/whitespace/types_spaces.rst>`_
 
-   A single space or none should be around union type operator.
+   A single space or none should be around union type and intersection type operators.
 
    Configuration options:
 
    - | ``space``
-     | spacing to apply around union type operator.
+     | spacing to apply around union type and intersection type operators.
      | Allowed values: ``'none'``, ``'single'``
      | Default value: ``'none'``
    - | ``space_multiple_catch``

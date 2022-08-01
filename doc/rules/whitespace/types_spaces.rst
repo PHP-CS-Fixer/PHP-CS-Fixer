@@ -2,7 +2,8 @@
 Rule ``types_spaces``
 =====================
 
-A single space or none should be around union type operator.
+A single space or none should be around union type and intersection type
+operators.
 
 Configuration
 -------------
@@ -10,7 +11,7 @@ Configuration
 ``space``
 ~~~~~~~~~
 
-spacing to apply around union type operator.
+spacing to apply around union type and intersection type operators.
 
 Allowed values: ``'none'``, ``'single'``
 

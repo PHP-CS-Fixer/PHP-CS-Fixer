@@ -46,7 +46,7 @@ final class TypesSpacesFixer extends AbstractFixer implements ConfigurableFixerI
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'A single space or none should be around union type operator.',
+            'A single space or none should be around union type and intersection type operators.',
             [
                 new CodeSample(
                     "<?php\ntry\n{\n    new Foo();\n} catch (ErrorA | ErrorB \$e) {\necho'error';}\n"
@@ -77,7 +77,7 @@ final class TypesSpacesFixer extends AbstractFixer implements ConfigurableFixerI
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('space', 'spacing to apply around union type operator.'))
+            (new FixerOptionBuilder('space', 'spacing to apply around union type and intersection type operators.'))
                 ->setAllowedValues(['none', 'single'])
                 ->setDefault('none')
                 ->getOption(),
