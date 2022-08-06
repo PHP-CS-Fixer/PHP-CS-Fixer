@@ -125,6 +125,7 @@ else {
         $scopes = [
             [
                 'type' => 'block',
+                'skip' => false,
                 'end_index' => $endIndex,
                 'end_index_inclusive' => true,
                 'initial_indent' => $lastIndent,
@@ -180,8 +181,20 @@ else {
                     $initialIndent = $this->getLineIndentationWithBracesCompatibility($tokens, $index, $lastIndent);
                 }
 
+                $skip = false;
+                if ($this->bracesFixerCompatibility) {
+                    $prevIndex = $tokens->getPrevMeaningfulToken($index);
+                    if (null !== $prevIndex) {
+                        $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
+                    }
+                    if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind([T_FUNCTION, T_FN])) {
+                        $skip = true;
+                    }
+                }
+
                 $scopes[] = [
                     'type' => 'block',
+                    'skip' => $skip,
                     'end_index' => $endIndex,
                     'end_index_inclusive' => $endIndexInclusive,
                     'initial_indent' => $initialIndent,
@@ -216,6 +229,7 @@ else {
 
                 $scopes[] = [
                     'type' => 'block_signature',
+                    'skip' => false,
                     'end_index' => $endIndex,
                     'end_index_inclusive' => true,
                     'initial_indent' => $this->getLineIndentationWithBracesCompatibility($tokens, $index, $lastIndent),
@@ -293,9 +307,15 @@ else {
 
                     $previousLineInitialIndent = $this->extractIndent($content);
 
+                    if ($scopes[$currentScope]['skip']) {
+                        $whitespaces = $previousLineInitialIndent;
+                    } else {
+                        $whitespaces = $scopes[$currentScope]['initial_indent'].($indent ? $this->whitespacesConfig->getIndent() : '');
+                    }
+
                     $content = Preg::replace(
                         '/(\R+)\h*$/',
-                        '$1'.$scopes[$currentScope]['initial_indent'].($indent ? $this->whitespacesConfig->getIndent() : ''),
+                        '$1'.$whitespaces,
                         $content
                     );
 
@@ -363,6 +383,7 @@ else {
 
                 $scopes[] = [
                     'type' => 'statement',
+                    'skip' => false,
                     'end_index' => $endIndex,
                     'end_index_inclusive' => false,
                     'initial_indent' => $previousLineInitialIndent,
