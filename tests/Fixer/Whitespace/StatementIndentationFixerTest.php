@@ -704,6 +704,23 @@ switch (true) {
 <?php endif; ?>
 ',
         ];
+
+        yield 'trait import with conflict resolution' => [
+            '<?php
+class Foo {
+    use Bar,
+        Baz {
+            Baz::baz insteadof Bar;
+        }
+}',
+            '<?php
+class Foo {
+    use Bar,
+      Baz {
+       Baz::baz insteadof Bar;
+       }
+}',
+        ];
     }
 
     /**
