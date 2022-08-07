@@ -1775,6 +1775,39 @@ if (1) {
             ],
             [
                 '<?php
+if (1) {
+    if (2) {
+        $a = "a";
+    } elseif (3) {
+        $b = "b";
+    // comment line 1
+    // comment line 2
+    // comment line 3
+    // comment line 4
+    } else {
+        $c = "c";
+    }
+    $d = "d";
+}',
+                '<?php
+if (1) {
+    if (2) {
+        $a = "a";
+    } elseif (3) {
+        $b = "b";
+        // comment line 1
+        // comment line 2
+// comment line 3
+            // comment line 4
+    } else {
+        $c = "c";
+    }
+    $d = "d";
+}',
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+            ],
+            [
+                '<?php
 foreach ($numbers as $num) {
     for ($i = 0; $i < $num; ++$i) {
         $a = "a";
