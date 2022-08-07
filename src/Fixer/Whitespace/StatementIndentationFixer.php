@@ -102,12 +102,14 @@ else {
             T_CLASS,
             T_INTERFACE,
             T_TRAIT,
+            T_EXTENDS,
+            T_IMPLEMENTS,
         ];
         if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required
             $blockSignatureFirstTokens[] = T_MATCH;
         }
 
-        $blockFirstTokens = ['{', [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], [T_EXTENDS], [T_IMPLEMENTS], [CT::T_USE_TRAIT], [CT::T_GROUP_IMPORT_BRACE_OPEN]];
+        $blockFirstTokens = ['{', [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], [CT::T_USE_TRAIT], [CT::T_GROUP_IMPORT_BRACE_OPEN]];
         if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
             $blockFirstTokens[] = [T_ATTRIBUTE];
         }
@@ -212,7 +214,7 @@ else {
                         continue;
                     }
 
-                    if ($tokens[$endIndex]->equalsAny(['{', ';', [T_DOUBLE_ARROW]])) {
+                    if ($tokens[$endIndex]->equalsAny(['{', ';', [T_DOUBLE_ARROW], [T_IMPLEMENTS]])) {
                         break;
                     }
 
@@ -233,7 +235,7 @@ else {
                     'end_index' => $endIndex,
                     'end_index_inclusive' => true,
                     'initial_indent' => $this->getLineIndentationWithBracesCompatibility($tokens, $index, $lastIndent),
-                    'is_indented_block' => false,
+                    'is_indented_block' => $token->isGivenKind([T_EXTENDS, T_IMPLEMENTS]),
                 ];
 
                 continue;

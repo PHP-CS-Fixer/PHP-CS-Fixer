@@ -721,6 +721,27 @@ class Foo {
        }
 }',
         ];
+
+        yield 'multiline class definition' => [
+            '<?php
+class Foo
+extends
+    BaseFoo
+implements Bar,
+    Baz {
+    public function foo() {
+    }
+}',
+            '<?php
+class Foo
+  extends
+    BaseFoo
+   implements Bar,
+  Baz {
+    public function foo() {
+    }
+}',
+        ];
     }
 
     /**
