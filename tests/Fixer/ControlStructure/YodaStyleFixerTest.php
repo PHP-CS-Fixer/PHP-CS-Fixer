@@ -649,8 +649,8 @@ $a#4
             ];
         }
 
-        $assignmentOperators = ['=', '**=', '*=', '|=', '+=', '-=', '^=',  '<<=', '>>=', '&=', '.=', '/=', '%=', '??='];
-        $logicalOperators = ['xor', 'or', 'and',  '||', '&&', '??'];
+        $assignmentOperators = ['=', '**=', '*=', '|=', '+=', '-=', '^=', '<<=', '>>=', '&=', '.=', '/=', '%=', '??='];
+        $logicalOperators = ['xor', 'or', 'and', '||', '&&', '??'];
 
         foreach (array_merge($assignmentOperators, $logicalOperators) as $operator) {
             yield [

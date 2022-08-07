@@ -673,7 +673,7 @@ return $foo === count($bar);
                 return false;
             }
 
-            if ($token->isGivenKind([T_ARRAY,  CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if ($token->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 $expectArrayOnly = true;
 
                 continue;

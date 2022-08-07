@@ -3016,6 +3016,14 @@ List of Available Rules
 
    In array declaration, there MUST be a whitespace after each comma.
 
+   Configuration options:
+
+   - | ``ensure_single_space``
+     | If there are only horizontal whitespaces after the comma then ensure it is a single space.
+     | Allowed types: ``bool``
+     | Default value: ``false``
+
+
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\WhitespaceAfterCommaInArrayFixer <./../src/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixer.php>`_

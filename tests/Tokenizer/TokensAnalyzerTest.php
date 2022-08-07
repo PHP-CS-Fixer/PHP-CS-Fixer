@@ -952,7 +952,7 @@ $a(1,2);',
                 '<?php echo FOO[BAR];',
             ],
             [
-                [1 => false, 3 => true, 6 => false,  8 => true],
+                [1 => false, 3 => true, 6 => false, 8 => true],
                 '<?php func(FOO, Bar\BAZ);',
             ],
             [
@@ -960,7 +960,7 @@ $a(1,2);',
                 '<?php if (FOO && BAR) {}',
             ],
             [
-                [3 => true, 7 => false, 9 => false,  11 => true],
+                [3 => true, 7 => false, 9 => false, 11 => true],
                 '<?php return FOO * X\Y\BAR;',
             ],
             [
