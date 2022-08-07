@@ -1568,6 +1568,64 @@ $ab = [$bc];
 $abc = [$bcd];
 ',
             ],
+            [
+                '<?php
+$result = false;
+
+$callback = static function () use (&$result) {
+    $result = true;
+};
+
+$this->query = $this->db->prepare(static function ($db) {
+   $sql = "INSERT INTO {$db->protectIdentifiers($db->DBPrefix)} ("
+          . $db->protectIdentifiers("name") . ", "
+          . $db->protectIdentifiers("email") . ", "
+          . $db->protectIdentifiers("country");
+});
+
+$classSet = Closure::bind(function ($key, $value) {
+    $this->{$key} = $value;
+}, $classObj, $className);
+',
+            ],
+            [
+                '<?php
+$obj = new class() extends SomeClass {
+    public $someProperty = null;
+};
+',
+            ],
+            [
+                '<?php
+$fabricator->setOverrides(["first" => "Bobby"], $persist = false);
+$bobbyUser = $fabricator->make();
+$bobbyUser = $fabricator->make();
+',
+            ],
+            [
+                '<?php
+$a = 1; if (true) {
+$bbb = 1;
+}
+',
+            ],
+            [
+                '<?php
+$fabricator->setOverrides(
+["first" => "Bobby"], $persist = false);
+$fabricator->setOverrides(["first" => "Bobby"], $persist = false
+);
+',
+            ],
+            [
+                '<?php
+$start = (
+    $input["start"] !== "" && ($date = DateTime::parse($input["start"]))
+        ? $date->setTimezone("UTC")
+        : $date->setTimezone("Europe/London")
+);
+',
+            ],
         ];
     }
 
@@ -2156,6 +2214,66 @@ function asd() {
           "array" => fn () => false,
       ];
 }
+',
+            ],
+            [
+                '<?php
+collect()
+    ->map(fn ($arg) => [])
+    ->keyBy(fn ($arg) => []);
+',
+            ],
+            [
+                '<?php
+if ($this->save([
+    "bar"       => "baz",
+    "barbarbar" => "baz",
+])) {
+    // Do the work
+}
+',
+                '<?php
+if ($this->save([
+    "bar" => "baz",
+    "barbarbar" => "baz",
+])) {
+    // Do the work
+}
+',
+            ],
+            [
+                '<?php
+class test
+{
+    public function __construct()
+    {
+        $result = $this->test1(fn () => $this->test2($a));
+        foreach ($result as $k => $v)
+        {
+        }
+
+        $result = $this->test1(fn () => $this->test2($a, $b));
+        foreach ($result as $k => $v)
+        {
+        }
+    }
+}
+',
+            ],
+            [
+                '<?php
+$array = [
+    "foo"     => 123,
+    "longkey" => "test",
+    "baz"     => fn () => "value",
+];
+',
+                '<?php
+$array = [
+    "foo" => 123,
+    "longkey" => "test",
+    "baz" => fn () => "value",
+];
 ',
             ],
         ];
