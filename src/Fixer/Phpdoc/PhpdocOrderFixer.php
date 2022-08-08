@@ -25,6 +25,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
@@ -36,11 +37,6 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
      * @const string[]
      */
     private const ORDER_DEFAULT = ['param', 'throws', 'return'];
-
-    /**
-     * @var string[]
-     */
-    private array $order;
 
     /**
      * {@inheritdoc}
@@ -74,18 +70,6 @@ EOF;
 
     /**
      * {@inheritdoc}
-     *
-     * @param array<string, mixed> $configuration
-     */
-    public function configure(array $configuration): void
-    {
-        parent::configure($configuration);
-
-        $this->order = (array) $this->configuration['order'];
-    }
-
-    /**
-     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens): bool
     {
@@ -109,8 +93,15 @@ EOF;
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            ( new FixerOptionBuilder('order', 'Sequence in which annotations in PHPDoc should be ordered.') )
+            (new FixerOptionBuilder('order', 'Sequence in which annotations in PHPDoc should be ordered.'))
                 ->setAllowedTypes(['string[]'])
+                ->setAllowedValues([function ($order) {
+                    if (\count($order) < 2) {
+                        throw new InvalidOptionsException('The option "order" value is invalid. Minimum two tags are required.');
+                    }
+
+                    return true;
+                }])
                 ->setDefault(self::ORDER_DEFAULT)
                 ->getOption(),
         ]);
@@ -130,19 +121,17 @@ EOF;
             $content = $token->getContent();
 
             // sort annotations
-            $successors = $this->order;
-            if (\count($successors) >= 2) {
-                while (\count($successors) >= 3) {
-                    $predecessor = array_shift($successors);
-                    $content = $this->moveAnnotationsBefore($predecessor, $successors, $content);
-                }
-
-                // we're parsing the content last time to make sure the internal
-                // state of the docblock is correct after the modifications
-                $predecessors = $this->order;
-                $last = array_pop($predecessors);
-                $content = $this->moveAnnotationsAfter($last, $predecessors, $content);
+            $successors = $this->configuration['order'];
+            while (\count($successors) >= 3) {
+                $predecessor = array_shift($successors);
+                $content = $this->moveAnnotationsBefore($predecessor, $successors, $content);
             }
+
+            // we're parsing the content last time to make sure the internal
+            // state of the docblock is correct after the modifications
+            $predecessors = $this->configuration['order'];
+            $last = array_pop($predecessors);
+            $content = $this->moveAnnotationsAfter($last, $predecessors, $content);
 
             // persist the content at the end
             $tokens[$index] = new Token([T_DOC_COMMENT, $content]);

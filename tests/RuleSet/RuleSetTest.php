@@ -34,6 +34,16 @@ use PhpCsFixer\Tests\TestCase;
 final class RuleSetTest extends TestCase
 {
     /**
+     * Options for which order of array elements matters.
+     *
+     * @var string[]
+     */
+    private const ORDER_MATTERS = [
+        'ordered_imports.imports_order',
+        'phpdoc_order.order',
+    ];
+
+    /**
      * @param array|bool $ruleConfig
      *
      * @dataProvider provideAllRulesFromSetsCases
@@ -435,22 +445,15 @@ final class RuleSetTest extends TestCase
      */
     private function doSort(array &$data, string $path): void
     {
-        static $orderMatters = [
-            'ordered_imports.imports_order',
-            'phpdoc_order.order',
-        ];
-
-        if (\in_array($path, $orderMatters, true)) { // order matters
+        // if order matters do not sort!
+        if (\in_array($path, self::ORDER_MATTERS, true)) {
             return;
         }
 
         $keys = array_keys($data);
 
         if ($this->allInteger($keys)) {
-            // do not sort if all values are arrays
-            if (!$this->allArray($data)) {
-                sort($data);
-            }
+            sort($data);
         } else {
             ksort($data);
         }
@@ -472,20 +475,6 @@ final class RuleSetTest extends TestCase
     {
         foreach ($values as $value) {
             if (!\is_int($value)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @param array<int|string,mixed> $values
-     */
-    private function allArray(array $values): bool
-    {
-        foreach ($values as $value) {
-            if (!\is_array($value)) {
                 return false;
             }
         }

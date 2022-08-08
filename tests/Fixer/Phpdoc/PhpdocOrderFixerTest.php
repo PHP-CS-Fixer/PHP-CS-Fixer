@@ -143,7 +143,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixCompeteCase(): void
+    public function testFixCompleteCase(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -285,7 +285,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixCompeteCaseWithLaravelStyle(): void
+    public function testFixCompleteCaseWithLaravelStyle(): void
     {
         $this->fixer->configure(['order' => ['param', 'return', 'throws']]);
 
@@ -436,7 +436,7 @@ EOF,
         ];
     }
 
-    public function testFixCompeteCaseWithCustomOrder(): void
+    public function testFixCompleteCaseWithCustomOrder(): void
     {
         $this->fixer->configure(['order' => [
             'throws',
@@ -502,11 +502,11 @@ EOF;
     }
 
     /**
-     * @dataProvider provideCompeteCasesWithCustomOrdersCases
+     * @dataProvider provideCompleteCasesWithCustomOrdersCases
      *
      * @param array<string, mixed> $config
      */
-    public function testFixCompeteCasesWithCustomOrders(array $config, string $expected, string $input): void
+    public function testFixCompleteCasesWithCustomOrders(array $config, string $expected, string $input): void
     {
         $this->fixer->configure($config);
 
@@ -514,122 +514,293 @@ EOF;
     }
 
     /**
-     * @return array<int, array<int, string|string[][]>>
+     * @return array<string, array<int, string|string[][]>>
      */
-    public function provideCompeteCasesWithCustomOrdersCases(): array
+    public function provideCompleteCasesWithCustomOrdersCases(): array
     {
-        $docBlockBricks = [
-            'title' => "Hello there\n",
-            'description' => "Long description\ngoes here.\n",
-            '@internal' => '',
-            '@throws' => "Exception|RuntimeException dfsdf\njkaskdnaksdnkasndansdnansdajsdnkasd",
-            '@custom' => "Test!\nasldnaksdkjasdasd",
-            '@return' => [
-                'bool Return false on failure',
-                'int  Return the number of changes.',
-            ],
-            '@param' => [
-                'string $foo',
-                'bool   $bar Bar',
-                'class-string<T> $id',
-            ],
-            '@template' => 'T of Extension\Extension',
-        ];
-
         return [
-            [
+            'intepacuthre' => [
                 ['order' => ['internal', 'template', 'param', 'custom', 'throws', 'return']],
-                self::glueBricks(
-                    $docBlockBricks,
-                    ['title', 'description', 'internal', 'template', 'param', 'custom', 'throws', 'return']
-                ),
-                self::glueBricks(
-                    $docBlockBricks,
-                    ['title', 'description', 'internal', 'param', 'custom', 'template', 'return', 'throws']
-                ),
+                <<<'EOF'
+<?php
+    /**
+     * Hello there
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     * @template T of Extension\Extension
+     * @param string $foo
+     * @param bool   $bar Bar
+     * @param class-string<T> $id
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     * @return bool Return false on failure
+     * @return int  Return the number of changes.
+     **/
+
+EOF,
+                <<<'EOF'
+<?php
+    /**
+     * Hello there
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     * @param string $foo
+     * @param bool   $bar Bar
+     * @param class-string<T> $id
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     * @template T of Extension\Extension
+     * @return bool Return false on failure
+     * @return int  Return the number of changes.
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     **/
+
+EOF,
             ],
-            [
+            'pare' => [
                 ['order' => ['param', 'return']],
-                self::glueBricks(
-                    $docBlockBricks,
-                    ['title', 'description', 'internal', 'param', 'return', 'custom', 'template', 'throws']
-                ),
-                self::glueBricks(
-                    $docBlockBricks,
-                    ['title', 'description', 'internal', 'return', 'custom', 'template', 'param', 'throws']
-                ),
+                <<<'EOF'
+<?php
+    /**
+     * Hello there
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     * @param string $foo
+     * @param bool   $bar Bar
+     * @param class-string<T> $id
+     * @return bool Return false on failure
+     * @return int  Return the number of changes.
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     * @template T of Extension\Extension
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     **/
+
+EOF,
+                <<<'EOF'
+<?php
+    /**
+     * Hello there
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     * @return bool Return false on failure
+     * @return int  Return the number of changes.
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     * @template T of Extension\Extension
+     * @param string $foo
+     * @param bool   $bar Bar
+     * @param class-string<T> $id
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     **/
+
+EOF,
             ],
-            [
+            'pareth' => [
                 ['order' => ['param', 'return', 'throws']],
-                self::glueBricks(
-                    $docBlockBricks,
-                    ['title', 'description', 'internal', 'custom', 'template', 'param', 'return', 'throws']
-                ),
-                self::glueBricks(
-                    $docBlockBricks,
-                    ['title', 'description', 'internal', 'return', 'custom', 'template', 'param', 'throws']
-                ),
+                <<<'EOF'
+<?php
+    /**
+     * Hello there
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     * @template T of Extension\Extension
+     * @param string $foo
+     * @param bool   $bar Bar
+     * @param class-string<T> $id
+     * @return bool Return false on failure
+     * @return int  Return the number of changes.
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     **/
+
+EOF,
+                <<<'EOF'
+<?php
+    /**
+     * Hello there
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     * @return bool Return false on failure
+     * @return int  Return the number of changes.
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     * @template T of Extension\Extension
+     * @param string $foo
+     * @param bool   $bar Bar
+     * @param class-string<T> $id
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     **/
+
+EOF,
             ],
-            [
+            'pathre' => [
                 ['order' => ['param', 'throws', 'return']],
-                self::glueBricks(
-                    $docBlockBricks,
-                    ['title', 'description', 'internal', 'custom', 'template', 'param', 'throws', 'return']
-                ),
-                self::glueBricks(
-                    $docBlockBricks,
-                    ['title', 'description', 'internal', 'return', 'custom', 'template', 'param', 'throws']
-                ),
+                <<<'EOF'
+<?php
+    /**
+     * Hello there
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     * @template T of Extension\Extension
+     * @param string $foo
+     * @param bool   $bar Bar
+     * @param class-string<T> $id
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     * @return bool Return false on failure
+     * @return int  Return the number of changes.
+     **/
+
+EOF,
+                <<<'EOF'
+<?php
+    /**
+     * Hello there
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     * @return bool Return false on failure
+     * @return int  Return the number of changes.
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     * @template T of Extension\Extension
+     * @param string $foo
+     * @param bool   $bar Bar
+     * @param class-string<T> $id
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     **/
+
+EOF,
             ],
-            [
+            'tepathre' => [
                 ['order' => ['template', 'param', 'throws', 'return']],
-                self::glueBricks(
-                    $docBlockBricks,
-                    ['title', 'description', 'internal', 'template', 'param', 'throws', 'return', 'custom']
-                ),
-                self::glueBricks(
-                    $docBlockBricks,
-                    ['title', 'description', 'internal', 'return', 'param', 'template', 'custom', 'throws']
-                ),
+                <<<'EOF'
+<?php
+    /**
+     * Hello there
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     * @template T of Extension\Extension
+     * @param string $foo
+     * @param bool   $bar Bar
+     * @param class-string<T> $id
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     * @return bool Return false on failure
+     * @return int  Return the number of changes.
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     **/
+
+EOF,
+                <<<'EOF'
+<?php
+    /**
+     * Hello there
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     * @return bool Return false on failure
+     * @return int  Return the number of changes.
+     * @param string $foo
+     * @param bool   $bar Bar
+     * @param class-string<T> $id
+     * @template T of Extension\Extension
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     **/
+
+EOF,
             ],
-            [
+            'tepathre2' => [
                 ['order' => ['template', 'param', 'throws', 'return']],
-                self::glueBricks(
-                    $docBlockBricks,
-                    ['title', 'description', 'internal', 'template', 'param', 'throws', 'return', 'custom']
-                ),
-                self::glueBricks(
-                    $docBlockBricks,
-                    ['title', 'description', 'internal', 'param', 'return', 'template', 'custom', 'throws']
-                ),
+                <<<'EOF'
+<?php
+    /**
+     * Hello there
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     * @template T of Extension\Extension
+     * @param string $foo
+     * @param bool   $bar Bar
+     * @param class-string<T> $id
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     * @return bool Return false on failure
+     * @return int  Return the number of changes.
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     **/
+
+EOF,
+                <<<'EOF'
+<?php
+    /**
+     * Hello there
+     *
+     * Long description
+     * goes here.
+     *
+     * @internal
+     * @param string $foo
+     * @param bool   $bar Bar
+     * @param class-string<T> $id
+     * @return bool Return false on failure
+     * @return int  Return the number of changes.
+     * @template T of Extension\Extension
+     * @custom Test!
+     *         asldnaksdkjasdasd
+     * @throws Exception|RuntimeException dfsdf
+     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+     **/
+
+EOF,
             ],
         ];
-    }
-
-    /**
-     * @param array<string, string|string[]> $bricks
-     * @param string[]                       $order
-     */
-    private static function glueBricks(array $bricks, array $order): string
-    {
-        $indent = '    ';
-        $commentIndent = $indent.' *';
-        $out = '';
-        foreach ($order as $tag) {
-            // not an annotation brick
-            if (isset($bricks[$tag])) {
-                $out .= "{$commentIndent} ".str_replace("\n", "\n{$commentIndent} ", $bricks[$tag])."\n";
-            }
-            // it's an annotation
-            elseif (isset($bricks["@{$tag}"])) {
-                $annotation = "@{$tag}";
-                $brick = (array) $bricks[$annotation];
-                foreach ($brick as $line) {
-                    $out .= "{$commentIndent} {$annotation} ".str_replace("\n", "\n{$commentIndent}  ".str_repeat(' ', \strlen($annotation)), $line)."\n";
-                }
-            }
-        }
-
-        return "<?php\n{$indent}/**\n{$out}{$commentIndent}*/\n\n";
     }
 }
