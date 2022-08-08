@@ -1,4 +1,7 @@
 <?
+
+declare(strict_types = 1 );
+
 namespace Vendor\Package;
 use const BAR;
 use function foo;
@@ -38,5 +41,21 @@ class Aaa implements
 $a = new Foo;
 $b = (boolean) 1;
 $c = true  ? (INT) '1'  :  2;
+
+function bar() : void
+{
+}
+
+$class = new class () {};
+
+class Baz
+{
+    const FOO = 'foo';
+
+    public function bar(): ? int
+    {
+        return 0;
+    }
+}
 
 ?>

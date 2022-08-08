@@ -38,7 +38,9 @@ final class PSR12Set extends AbstractRuleSetDescription
             'declare_equal_normalize' => true,
             'lowercase_cast' => true,
             'lowercase_static_reference' => true,
-            'new_with_braces' => true,
+            'new_with_braces' => [
+                'anonymous_class' => false,
+            ],
             'no_blank_lines_after_class_opening' => true,
             'no_leading_import_slash' => true,
             'no_whitespace_in_blank_line' => true,

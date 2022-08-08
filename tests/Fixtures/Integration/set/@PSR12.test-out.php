@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Vendor\Package;
 
 use FooInterfaceA;
@@ -48,3 +50,19 @@ class Aaa implements
 $a = new Foo();
 $b = (bool) 1;
 $c = true ? (int) '1' : 2;
+
+function bar(): void
+{
+}
+
+$class = new class {};
+
+class Baz
+{
+    public const FOO = 'foo';
+
+    public function bar(): ?int
+    {
+        return 0;
+    }
+}
