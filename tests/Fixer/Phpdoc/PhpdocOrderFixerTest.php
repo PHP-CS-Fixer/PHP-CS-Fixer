@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -26,6 +27,22 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocOrderFixerTest extends AbstractFixerTestCase
 {
+    public function testEmptyOrderConfiguration(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('The option "order" value is invalid. Minimum two tags are required.');
+
+        $this->fixer->configure(['order' => []]);
+    }
+
+    public function testInvalidOrderConfiguration(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('The option "order" value is invalid. Minimum two tags are required.');
+
+        $this->fixer->configure(['order' => ['param']]);
+    }
+
     public function testNoChanges(): void
     {
         $expected = <<<'EOF'
