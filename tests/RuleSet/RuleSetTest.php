@@ -34,6 +34,16 @@ use PhpCsFixer\Tests\TestCase;
 final class RuleSetTest extends TestCase
 {
     /**
+     * Options for which order of array elements matters.
+     *
+     * @var string[]
+     */
+    private const ORDER_MATTERS = [
+        'ordered_imports.imports_order',
+        'phpdoc_order.order',
+    ];
+
+    /**
      * @param array|bool $ruleConfig
      *
      * @dataProvider provideAllRulesFromSetsCases
@@ -95,8 +105,8 @@ final class RuleSetTest extends TestCase
         }
 
         static::assertNotSame(
-            $this->sortNestedArray($defaultConfig),
-            $this->sortNestedArray($ruleConfig),
+            $this->sortNestedArray($defaultConfig, $ruleName),
+            $this->sortNestedArray($ruleConfig, $ruleName),
             sprintf('Rule "%s" (in RuleSet "%s") has default config passed.', $ruleName, $setName)
         );
     }
@@ -419,23 +429,57 @@ final class RuleSetTest extends TestCase
         new RuleSet(['@Symfony:risky' => null]);
     }
 
-    private function sortNestedArray(array $array): array
+    private function sortNestedArray(array $array, string $ruleName): array
     {
-        foreach ($array as $key => $element) {
-            if (!\is_array($element)) {
-                continue;
-            }
-            $array[$key] = $this->sortNestedArray($element);
-        }
-
-        // sort by key if associative, by values otherwise
-        if (array_keys($array) === range(0, \count($array) - 1)) {
-            sort($array);
-        } else {
-            ksort($array);
-        }
+        $this->doSort($array, $ruleName);
 
         return $array;
+    }
+
+    /**
+     * Sorts an array of fixer definition recursively.
+     *
+     * Sometimes keys are all string, sometimes they are integers - we need to account for that.
+     *
+     * @param array<int|string,mixed> $data
+     */
+    private function doSort(array &$data, string $path): void
+    {
+        // if order matters do not sort!
+        if (\in_array($path, self::ORDER_MATTERS, true)) {
+            return;
+        }
+
+        $keys = array_keys($data);
+
+        if ($this->allInteger($keys)) {
+            sort($data);
+        } else {
+            ksort($data);
+        }
+
+        foreach ($data as $key => $value) {
+            if (\is_array($value)) {
+                $this->doSort(
+                    $data[$key],
+                    $path.('' !== $path ? '.' : '').$key
+                );
+            }
+        }
+    }
+
+    /**
+     * @param array<int|string,mixed> $values
+     */
+    private function allInteger(array $values): bool
+    {
+        foreach ($values as $value) {
+            if (!\is_int($value)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

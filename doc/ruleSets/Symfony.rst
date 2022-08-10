@@ -95,6 +95,9 @@ Rules
 - `phpdoc_no_alias_tag <./../rules/phpdoc/phpdoc_no_alias_tag.rst>`_
 - `phpdoc_no_package <./../rules/phpdoc/phpdoc_no_package.rst>`_
 - `phpdoc_no_useless_inheritdoc <./../rules/phpdoc/phpdoc_no_useless_inheritdoc.rst>`_
+- `phpdoc_order <./../rules/phpdoc/phpdoc_order.rst>`_
+  config:
+  ``['order' => ['param', 'return', 'throws']]``
 - `phpdoc_return_self_reference <./../rules/phpdoc/phpdoc_return_self_reference.rst>`_
 - `phpdoc_scalar <./../rules/phpdoc/phpdoc_scalar.rst>`_
 - `phpdoc_separation <./../rules/phpdoc/phpdoc_separation.rst>`_

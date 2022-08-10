@@ -690,7 +690,7 @@ PHPDoc
   Order phpdoc tags by value.
 - `phpdoc_order <./phpdoc/phpdoc_order.rst>`_
 
-  Annotations in PHPDoc should be ordered so that ``@param`` annotations come first, then ``@throws`` annotations, then ``@return`` annotations.
+  Annotations in PHPDoc should be ordered in defined sequence.
 - `phpdoc_return_self_reference <./phpdoc/phpdoc_return_self_reference.rst>`_
 
   The type of ``@return`` annotations of methods returning a reference to itself must the configured one.
