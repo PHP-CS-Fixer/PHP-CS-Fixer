@@ -232,7 +232,7 @@ yield  from  baz();
             }
 
             if ($token->isGivenKind(T_OPEN_TAG)) {
-                if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE]) && !str_contains($token->getContent(), "\n")) {
+                if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE]) && !str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n") && !str_contains($token->getContent(), "\n")) {
                     $tokens->clearAt($whitespaceTokenIndex);
                 }
 
