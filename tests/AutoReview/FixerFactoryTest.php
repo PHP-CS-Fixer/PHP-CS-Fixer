@@ -824,6 +824,9 @@ final class FixerFactoryTest extends TestCase
                 'not_operator_with_space',
                 'not_operator_with_successor_space',
             ],
+            'visibility_required' => [
+                'class_attributes_separation',
+            ],
             'void_return' => [
                 'phpdoc_no_empty_return',
                 'return_type_declaration',

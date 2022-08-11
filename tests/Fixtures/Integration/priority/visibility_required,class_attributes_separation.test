@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: visibility_required,class_attributes_separation.
+--RULESET--
+{"visibility_required": true, "class_attributes_separation": {"elements": {"property": "none"}}}
+--EXPECT--
+<?php
+class Foo {
+    /* Bar */
+ private $bar;
+}
+
+--INPUT--
+<?php
+class Foo {
+    private /* Bar */ $bar;
+}
