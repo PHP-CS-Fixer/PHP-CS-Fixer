@@ -1173,6 +1173,68 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testAlignsReturnStatic(): void
+    {
+        $this->fixer->configure(['tags' => ['param', 'return', 'throws']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param  string    $foobar Desc1
+     * @param  int       &$baz   Desc2
+     * @param  ?Qux      $qux    Desc3
+     * @param  int|float $quux   Desc4
+     * @return static    DescriptionReturn
+     * @throws Exception DescriptionException
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param    string   $foobar     Desc1
+     * @param  int   &$baz   Desc2
+     * @param ?Qux       $qux   Desc3
+     * @param    int|float $quux   Desc4
+     * @return  static     DescriptionReturn
+     * @throws   Exception       DescriptionException
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testAlignsReturnStaticLeftAlign(): void
+    {
+        $this->fixer->configure(['tags' => ['param', 'return', 'throws'], 'align' => PhpdocAlignFixer::ALIGN_LEFT]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param string $foobar Desc1
+     * @param int &$baz Desc2
+     * @param ?Qux $qux Desc3
+     * @param int|float $quux Desc4
+     * @return static DescriptionReturn
+     * @throws Exception DescriptionException
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param    string   $foobar     Desc1
+     * @param  int   &$baz   Desc2
+     * @param ?Qux       $qux   Desc3
+     * @param    int|float $quux   Desc4
+     * @return  static     DescriptionReturn
+     * @throws   Exception       DescriptionException
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testDoesNotAlignWithEmptyConfig(): void
     {
         $this->fixer->configure(['tags' => []]);
