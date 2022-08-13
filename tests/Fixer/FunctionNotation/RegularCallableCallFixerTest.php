@@ -229,6 +229,16 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
         yield 'binary string upper single quote' => [
             '<?php call_user_func(B"foo", 1,);',
         ];
+
+        yield 'static property as first argument' => [
+            '<?php
+class Foo {
+  public static $factory;
+  public static function createFromFactory(...$args) {
+    return call_user_func_array(static::$factory, $args);
+  }
+}',
+        ];
     }
 
     /**

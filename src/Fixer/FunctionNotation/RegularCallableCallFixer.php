@@ -140,7 +140,13 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
             $newCallTokens->clearEmptyTokens();
 
             $this->replaceCallUserFuncWithCallback($tokens, $index, $newCallTokens, $firstArgIndex, $firstArgIndex);
-        } elseif ($firstArgToken->isGivenKind([T_FUNCTION, T_STATIC])) {
+        } elseif (
+            $firstArgToken->isGivenKind(T_FUNCTION)
+            || (
+                $firstArgToken->isGivenKind(T_STATIC)
+                && $tokens[$tokens->getNextMeaningfulToken($firstArgIndex)]->isGivenKind(T_FUNCTION)
+            )
+        ) {
             $firstArgEndIndex = $tokens->findBlockEnd(
                 Tokens::BLOCK_TYPE_CURLY_BRACE,
                 $tokens->getNextTokenOfKind($firstArgIndex, ['{'])
