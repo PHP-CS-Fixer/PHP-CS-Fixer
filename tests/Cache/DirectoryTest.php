@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Cache;
 
 use PhpCsFixer\Cache\Directory;
+use PhpCsFixer\Cache\DirectoryInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -28,16 +29,16 @@ final class DirectoryTest extends TestCase
 {
     public function testIsFinal(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Directory::class);
+        $reflection = new \ReflectionClass(Directory::class);
 
         static::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsDirectoryInterface(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Directory::class);
+        $reflection = new \ReflectionClass(Directory::class);
 
-        static::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\DirectoryInterface::class));
+        static::assertTrue($reflection->implementsInterface(DirectoryInterface::class));
     }
 
     public function testGetRelativePathToReturnsFileIfAboveLevelOfDirectoryName(): void

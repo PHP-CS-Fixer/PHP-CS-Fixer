@@ -184,7 +184,7 @@ function Foo(INTEGER $a) {}
 
     public function provideFix81Cases(): iterable
     {
-        yield [
+        yield 'return type `never`' => [
             '<?php class T { public function Foo(object $A): never {die;}}',
             '<?php class T { public function Foo(object $A): NEVER {die;}}',
         ];

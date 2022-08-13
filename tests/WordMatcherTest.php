@@ -26,6 +26,8 @@ use PhpCsFixer\WordMatcher;
 final class WordMatcherTest extends TestCase
 {
     /**
+     * @param string[] $candidates
+     *
      * @dataProvider provideMatchCases
      */
     public function testMatch(?string $expected, string $needle, array $candidates): void

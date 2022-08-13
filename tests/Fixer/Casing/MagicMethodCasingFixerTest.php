@@ -74,7 +74,7 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
         // two arguments
         $methodNames = ['__call', '__set'];
 
-        foreach ($methodNames as $i => $name) {
+        foreach ($methodNames as $name) {
             unset($allMethodNames[$name]);
 
             yield sprintf('method declaration for "%s".', $name) => [
@@ -83,7 +83,7 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
             ];
         }
 
-        foreach ($methodNames as $i => $name) {
+        foreach ($methodNames as $name) {
             yield sprintf('method call "%s".', $name) => [
                 sprintf('<?php $a->%s($a, $b);', $name),
                 sprintf('<?php $a->%s($a, $b);', strtoupper($name)),
@@ -93,7 +93,7 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
         // single argument
         $methodNames = ['__get', '__isset', '__unset', '__unserialize'];
 
-        foreach ($methodNames as $i => $name) {
+        foreach ($methodNames as $name) {
             unset($allMethodNames[$name]);
 
             yield sprintf('method declaration for "%s".', $name) => [
@@ -102,7 +102,7 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
             ];
         }
 
-        foreach ($methodNames as $i => $name) {
+        foreach ($methodNames as $name) {
             yield sprintf('method call "%s".', $name) => [
                 sprintf('<?php $a->%s($a);', $name),
                 sprintf('<?php $a->%s($a);', strtoupper($name)),
@@ -111,14 +111,14 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
 
         // no argument
 
-        foreach ($allMethodNames as $i => $name) {
+        foreach ($allMethodNames as $name) {
             yield sprintf('method declaration for "%s".', $name) => [
                 sprintf('<?php class Foo {public function %s(){}}', $name),
                 sprintf('<?php class Foo {public function %s(){}}', strtoupper($name)),
             ];
         }
 
-        foreach ($allMethodNames as $i => $name) {
+        foreach ($allMethodNames as $name) {
             yield sprintf('method call "%s".', $name) => [
                 sprintf('<?php $a->%s();', $name),
                 sprintf('<?php $a->%s();', strtoupper($name)),
