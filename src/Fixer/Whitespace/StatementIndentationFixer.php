@@ -124,6 +124,17 @@ else {
             0,
             $this->extractIndent($this->computeNewLineContent($tokens, 0)),
         );
+
+        /**
+         * @var list<array{
+         *     type: 'block'|'block_signature'|'statement',
+         *     skip: bool,
+         *     end_index: int,
+         *     end_index_inclusive: bool,
+         *     initial_indent: string,
+         *     is_indented_block: bool,
+         * }> $scopes
+         */
         $scopes = [
             [
                 'type' => 'block',
@@ -198,6 +209,13 @@ else {
                     'initial_indent' => $initialIndent,
                     'is_indented_block' => true,
                 ];
+                ++$currentScope;
+
+                while ($index >= $scopes[$currentScope]['end_index']) {
+                    array_pop($scopes);
+
+                    --$currentScope;
+                }
 
                 continue;
             }

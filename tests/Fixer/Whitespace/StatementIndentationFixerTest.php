@@ -762,6 +762,20 @@ switch ($foo) {
         // Nothing to do
 }',
         ];
+
+        yield 'switch ending with empty case' => [
+            '<?php
+switch ($foo) {
+    case 1:
+}',
+        ];
+
+        yield 'switch ending with empty default' => [
+            '<?php
+switch ($foo) {
+    default:
+}',
+        ];
     }
 
     /**
