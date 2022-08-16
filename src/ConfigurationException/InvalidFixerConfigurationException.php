@@ -20,6 +20,7 @@ use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
  * Exception thrown by Fixers on misconfiguration.
  *
  * @internal
+ *
  * @final Only internal extending this class is supported
  */
 class InvalidFixerConfigurationException extends InvalidConfigurationException

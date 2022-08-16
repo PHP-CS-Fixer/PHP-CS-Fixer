@@ -21,6 +21,7 @@ use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
  * @author Hans-Christian Otto <c.otto@suora.com>
  *
  * @internal
+ *
  * @covers \PhpCsFixer\Console\Report\FixReport\GitlabReporter
  */
 final class GitlabReporterTest extends AbstractReporterTestCase
