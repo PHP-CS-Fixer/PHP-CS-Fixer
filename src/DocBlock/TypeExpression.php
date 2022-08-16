@@ -147,8 +147,8 @@ final class TypeExpression
     {
         if ($this->isUnionType) {
             return array_map(
-                static function (array $type) { return $type['expression']->toString(); },
-                $this->innerTypeExpressions
+                static fn (array $type) => $type['expression']->toString(),
+                $this->innerTypeExpressions,
             );
         }
 
@@ -179,8 +179,8 @@ final class TypeExpression
         if ($this->isUnionType) {
             $this->innerTypeExpressions = Utils::stableSort(
                 $this->innerTypeExpressions,
-                static function (array $type): self { return $type['expression']; },
-                $compareCallback
+                static fn (array $type): self => $type['expression'],
+                $compareCallback,
             );
 
             $this->value = implode($this->getTypesGlue(), $this->getTypes());

@@ -161,7 +161,10 @@ namespace {
 
         $caseInsensitiveConstantsToEscape = array_diff(
             array_unique($caseInsensitiveConstantsToEscape),
-            array_map(static function (string $function): string { return strtolower($function); }, $uniqueConfiguredExclude)
+            array_map(
+                static fn (string $function): string => strtolower($function),
+                $uniqueConfiguredExclude,
+            ),
         );
 
         // Store the cache

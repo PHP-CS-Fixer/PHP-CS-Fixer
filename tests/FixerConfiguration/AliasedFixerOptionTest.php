@@ -152,7 +152,7 @@ final class AliasedFixerOptionTest extends TestCase
 
     public function testGetAllowedValuesClosure(): void
     {
-        $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, [static function (): void {}]), 'baz');
+        $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, [static fn () => null]), 'baz');
         $allowedTypes = $option->getAllowedValues();
         static::assertIsArray($allowedTypes);
         static::assertCount(1, $allowedTypes);
@@ -165,7 +165,7 @@ final class AliasedFixerOptionTest extends TestCase
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.'), 'baz');
         static::assertNull($option->getNormalizer());
 
-        $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, null, static function (): void {}), 'baz');
+        $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, null, static fn () => null), 'baz');
         static::assertInstanceOf(\Closure::class, $option->getNormalizer());
     }
 

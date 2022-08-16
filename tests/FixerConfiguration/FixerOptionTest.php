@@ -83,7 +83,7 @@ final class FixerOptionTest extends TestCase
         $option = new FixerOption('foo', 'Bar.', true, null, null, ['baz', 'qux']);
         static::assertSame(['baz', 'qux'], $option->getAllowedValues());
 
-        $option = new FixerOption('foo', 'Bar.', true, null, null, [static function (): void {}]);
+        $option = new FixerOption('foo', 'Bar.', true, null, null, [static fn () => null]);
         $allowedTypes = $option->getAllowedValues();
         static::assertIsArray($allowedTypes);
         static::assertCount(1, $allowedTypes);
@@ -96,7 +96,7 @@ final class FixerOptionTest extends TestCase
         $option = new FixerOption('foo', 'Bar.');
         static::assertNull($option->getNormalizer());
 
-        $option = new FixerOption('foo', 'Bar.', true, null, null, null, static function (): void {});
+        $option = new FixerOption('foo', 'Bar.', true, null, null, null, static fn () => null);
         static::assertInstanceOf(\Closure::class, $option->getNormalizer());
     }
 
