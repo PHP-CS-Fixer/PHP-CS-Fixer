@@ -49,6 +49,7 @@ Example #1
      * Hello there!
      *
      * @author John Doe
+   + *
      * @custom Test!
      *
      * @throws Exception|RuntimeException foo
@@ -74,6 +75,7 @@ With configuration: ``['groups' => [['deprecated', 'link', 'see', 'since'], ['au
      * Hello there!
      *
      * @author John Doe
+   + *
      * @custom Test!
      *
      * @throws Exception|RuntimeException foo

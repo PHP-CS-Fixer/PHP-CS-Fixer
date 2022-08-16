@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
@@ -651,6 +652,28 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testTagInTwoGroupsConfiguration(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage(
+            'The option "groups" value is invalid. '.
+            'The "param" tag belongs to more than one group.'
+        );
+
+        $this->fixer->configure(['groups' => [['param', 'return'], ['param', 'throws']]]);
+    }
+
+    public function testTagSpecifiedTwoTimesInGroupConfiguration(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage(
+            'The option "groups" value is invalid. '.
+            'The "param" tag is specified more than once.'
+        );
+
+        $this->fixer->configure(['groups' => [['param', 'return', 'param', 'throws']]]);
+    }
+
     public function testLaravelGroups(): void
     {
         $this->fixer->configure(['groups' => array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']])]);
@@ -688,10 +711,12 @@ EOF;
     public function testVariousGroups(): void
     {
         $this->fixer->configure([
-            'groups' => array_merge(TagComparator::DEFAULT_GROUPS, [
+            'groups' => [
                 ['deprecated', 'link', 'see', 'since', 'author', 'copyright', 'license'],
+                ['category', 'package', 'subpackage'],
+                ['property', 'property-read', 'property-write'],
                 ['return', 'param'],
-            ]),
+            ],
             'psr_standard_tags_only' => false,
         ]);
 
@@ -743,10 +768,13 @@ EOF;
     public function testVariousAdditionalGroups(): void
     {
         $this->fixer->configure([
-            'groups' => array_merge(TagComparator::DEFAULT_GROUPS, [
+            'groups' => [
                 ['deprecated', 'link', 'see', 'since', 'author', 'copyright', 'license'],
+                ['category', 'package', 'subpackage'],
+                ['property', 'property-read', 'property-write'],
                 ['return', 'param'],
-            ]), ]);
+            ],
+        ]);
 
         $expected = <<<'EOF'
 <?php
@@ -824,7 +852,7 @@ EOF;
 EOF;
 
         return [
-            [
+            'laravel' => [
                 ['groups' => array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']])],
                 <<<'EOF'
 <?php
@@ -832,6 +860,7 @@ EOF;
  * Hello there!
  *
  * @author John Doe
+ *
  * @custom Test!
  *
  * @throws Exception|RuntimeException foo
@@ -845,7 +874,7 @@ EOF,
                 $input,
             ],
 
-            [
+            'all_tags' => [
                 ['groups' => [['author', 'throws', 'custom'], ['return', 'param']], 'psr_standard_tags_only' => false],
                 <<<'EOF'
 <?php
@@ -863,6 +892,76 @@ EOF,
 
 EOF,
                 $input,
+            ],
+
+            'default_groups_standard_tags' => [
+                ['groups' => TagComparator::DEFAULT_GROUPS, 'psr_standard_tags_only' => true],
+                <<<'EOF'
+<?php
+/**
+ * Hello there!
+ *
+ * @author John Doe
+ *
+ * @throws Exception|RuntimeException foo
+ *
+ * @custom Test!
+ *
+ * @param string $foo
+ * @param bool   $bar Bar
+ *
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+                <<<'EOF'
+<?php
+/**
+ * Hello there!
+ * @author John Doe
+ * @throws Exception|RuntimeException foo
+ * @custom Test!
+ * @param string $foo
+ * @param bool   $bar Bar
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+            ],
+
+            'default_groups_all_tags' => [
+                ['groups' => TagComparator::DEFAULT_GROUPS, 'psr_standard_tags_only' => false],
+                <<<'EOF'
+<?php
+/**
+ * Hello there!
+ *
+ * @author John Doe
+ *
+ * @throws Exception|RuntimeException foo
+ *
+ * @custom Test!
+ *
+ * @param string $foo
+ * @param bool   $bar Bar
+ *
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+                <<<'EOF'
+<?php
+/**
+ * Hello there!
+ * @author John Doe
+ * @throws Exception|RuntimeException foo
+ * @custom Test!
+ * @param string $foo
+ * @param bool   $bar Bar
+ * @return int  Return the number of changes.
+ */
+
+EOF,
             ],
         ];
     }

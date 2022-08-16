@@ -28,6 +28,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
@@ -129,10 +130,35 @@ EOF;
      */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
+        $allowTagToBelongToOnlyOneGroup = function ($groups) {
+            $tags = [];
+            foreach ($groups as $groupIndex => $group) {
+                foreach ($group as $member) {
+                    if (isset($tags[$member])) {
+                        if ($groupIndex === $tags[$member]) {
+                            throw new InvalidOptionsException(
+                                'The option "groups" value is invalid. '.
+                                'The "'.$member.'" tag is specified more than once.'
+                            );
+                        }
+
+                        throw new InvalidOptionsException(
+                            'The option "groups" value is invalid. '.
+                            'The "'.$member.'" tag belongs to more than one group.'
+                        );
+                    }
+                    $tags[$member] = $groupIndex;
+                }
+            }
+
+            return true;
+        };
+
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('groups', 'Sets of annotation types to be grouped together.'))
                 ->setAllowedTypes(['string[][]'])
                 ->setDefault(TagComparator::DEFAULT_GROUPS)
+                ->setAllowedValues([$allowTagToBelongToOnlyOneGroup])
                 ->getOption(),
             (new FixerOptionBuilder(
                 'psr_standard_tags_only',
@@ -179,7 +205,7 @@ EOF;
                 break;
             }
 
-            if (!$this->standardTagsOnly || $next->getTag()->valid()) {
+            if (!$this->standardTagsOnly || $annotation->getTag()->valid() || $next->getTag()->valid()) {
                 if (TagComparator::shouldBeTogether($annotation->getTag(), $next->getTag(), $this->groups)) {
                     $this->ensureAreTogether($doc, $annotation, $next);
                 } else {
