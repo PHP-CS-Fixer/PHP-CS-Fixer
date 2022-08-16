@@ -7,6 +7,7 @@ Rule set as used by the PHP-CS-Fixer development team, highly opinionated.
 Rules
 -----
 
+- `@PER <./PER.rst>`_
 - `@Symfony <./Symfony.rst>`_
 - `align_multiline_comment <./../rules/phpdoc/align_multiline_comment.rst>`_
 - `array_indentation <./../rules/whitespace/array_indentation.rst>`_

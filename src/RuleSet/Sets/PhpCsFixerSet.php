@@ -24,6 +24,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
     public function getRules(): array
     {
         return [
+            '@PER' => true,
             '@Symfony' => true,
             'align_multiline_comment' => true,
             'array_indentation' => true,

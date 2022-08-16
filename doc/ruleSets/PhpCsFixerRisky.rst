@@ -7,6 +7,7 @@ Rule set as used by the PHP-CS-Fixer development team, highly opinionated. This 
 Rules
 -----
 
+- `@PER:risky <./PERRisky.rst>`_
 - `@Symfony:risky <./SymfonyRisky.rst>`_
 - `comment_to_phpdoc <./../rules/comment/comment_to_phpdoc.rst>`_
 - `final_internal_class <./../rules/class_notation/final_internal_class.rst>`_
