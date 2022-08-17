@@ -50,6 +50,16 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @dataProvider provideIgnoreCases
+     */
+    public function testIgnoreMixedCase(string $ignoredExpected): void
+    {
+        $this->fixer->configure(['ignore_mixed_cases' => true]);
+        $this->doTest($ignoredExpected);
+    }
+
+
     public function provideFixCases(): \Generator
     {
         yield 'skip non phpunit methods' => [
@@ -168,6 +178,13 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
 
                     public function my_app_not_2() {}
                 }',
+        ];
+    }
+
+    public function provideIgnoreCases(): \Generator
+    {
+        yield 'default mixed case' => [
+            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase { public function test_MyApp() {} }',
         ];
     }
 }
