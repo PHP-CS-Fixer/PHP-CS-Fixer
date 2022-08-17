@@ -29,7 +29,6 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use PhpCsFixer\Utils;
-use function str_contains;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
@@ -83,6 +82,16 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
                 ),
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after PhpUnitTestAnnotationFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface

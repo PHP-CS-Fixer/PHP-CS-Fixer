@@ -77,7 +77,7 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
     }
 
 
-    public function provideFixCases(): \Generator
+    public function provideFixCases(): iterable
     {
         yield 'skip non phpunit methods' => [
             '<?php class MyClass {
@@ -198,7 +198,7 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function provideIgnoreCases(): \Generator
+    public function provideIgnoreCases(): iterable
     {
         yield 'default ignored' => [
             '<?php class MyTest extends \PhpUnit\FrameWork\TestCase { public function test_MyApp() {} }',
