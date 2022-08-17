@@ -39,13 +39,8 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
      */
     public function testFixToSnakeCase(string $camelExpected, ?string $camelInput = null): void
     {
-        if (null === $camelInput) {
-            $expected = $camelExpected;
-            $input = $camelInput;
-        } else {
-            $expected = $camelInput;
-            $input = $camelExpected;
-        }
+        $expected = $camelInput ?: $camelExpected;
+        $input = $camelInput ? $camelExpected : $camelInput;
 
         $this->fixer->configure(['case' => PhpUnitMethodCasingFixer::SNAKE_CASE]);
         $this->doTest($expected, $input);

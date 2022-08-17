@@ -74,19 +74,6 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
         );
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * Must run after PhpUnitTestAnnotationFixer.
-     */
-    public function getPriority(): int
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -97,9 +84,6 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         for ($index = $endIndex - 1; $index > $startIndex; --$index) {
@@ -179,8 +163,8 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
         $lines = $doc->getLines();
 
         $docBlockNeedsUpdate = false;
-        for ($inc = 0; $inc < \count($lines); ++$inc) {
-            $lineContent = $lines[$inc]->getContent();
+        foreach ($lines as $inc => $incValue) {
+            $lineContent = $incValue->getContent();
             if (!str_contains($lineContent, '@depends')) {
                 continue;
             }
