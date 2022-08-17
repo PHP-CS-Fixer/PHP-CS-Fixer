@@ -32,6 +32,8 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
     public function testFixToCamelCase(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
+        $this->fixer->configure(['ignore_mixed_cases' => true]);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -43,6 +45,8 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
         $input = $camelInput ? $camelExpected : $camelInput;
 
         $this->fixer->configure(['case' => PhpUnitMethodCasingFixer::SNAKE_CASE]);
+        $this->doTest($expected, $input);
+        $this->fixer->configure(['case' => PhpUnitMethodCasingFixer::SNAKE_CASE, 'ignore_mixed_cases' => true]);
         $this->doTest($expected, $input);
     }
 
