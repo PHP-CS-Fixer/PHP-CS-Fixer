@@ -44,11 +44,11 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
     /**
      * {@inheritdoc}
      *
-     * Must run after NoEmptyStatementFixer.
+     * Must run after ControlStructureBracesFixer, NoEmptyStatementFixer.
      */
     public function getPriority(): int
     {
-        return 39;
+        return -1;
     }
 
     /**
