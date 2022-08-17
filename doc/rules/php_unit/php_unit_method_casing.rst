@@ -16,6 +16,15 @@ Allowed values: ``'camel_case'``, ``'snake_case'``
 
 Default value: ``'camel_case'``
 
+``ignore_mixed_cases``
+~~~~~~~~~~~~~~~~~~~~~~
+
+Ignore mixed cases, i.e. "test_that_FooBar_does_something"
+
+Allowed values: ``false``, ``true``
+
+Default value: ``false``
+
 Examples
 --------
 
@@ -49,6 +58,23 @@ With configuration: ``['case' => 'snake_case']``.
     {
    -    public function testMyCode() {}
    +    public function test_my_code() {}
+    }
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['ignore_mixed_cases' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class MyTest extends \PhpUnit\FrameWork\TestCase
+    {
+   -    public function test_my_code() {}
+   +    public function testMyCode() {}
+        public function test_FooBar() {}
     }
 
 Rule sets

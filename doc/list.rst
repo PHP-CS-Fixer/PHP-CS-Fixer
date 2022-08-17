@@ -2371,6 +2371,10 @@ List of Available Rules
      | Apply camel or snake case to test methods
      | Allowed values: ``'camel_case'``, ``'snake_case'``
      | Default value: ``'camel_case'``
+   - | ``ignore_mixed_cases``
+     | Ignore mixed cases, i.e. "test_that_FooBar_does_something"
+     | Allowed values: ``false``, ``true``
+     | Default value: ``false``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
