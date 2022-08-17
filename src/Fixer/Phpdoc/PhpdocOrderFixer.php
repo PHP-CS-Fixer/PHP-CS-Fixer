@@ -35,6 +35,8 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
 {
     /**
      * @const string[]
+     *
+     * @TODO: 4.0 - change default to ['param', 'return', 'throws']
      */
     private const ORDER_DEFAULT = ['param', 'throws', 'return'];
 

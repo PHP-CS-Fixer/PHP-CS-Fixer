@@ -103,9 +103,9 @@ final class Preg
     }
 
     /**
-     * @throws PregException
-     *
      * @return string[]
+     *
+     * @throws PregException
      */
     public static function split(string $pattern, string $subject, int $limit = -1, int $flags = 0): array
     {
