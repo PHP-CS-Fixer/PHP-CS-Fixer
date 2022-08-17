@@ -81,6 +81,10 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
                 ->setAllowedValues([self::CAMEL_CASE, self::SNAKE_CASE])
                 ->setDefault(self::CAMEL_CASE)
                 ->getOption(),
+            (new FixerOptionBuilder('ignore_mixed_cases', 'Ignore mixed cases, i.e. "test_that_FooBar_does_something"'))
+                ->setAllowedValues([true, false])
+                ->setDefault(false)
+                ->getOption(),
         ]);
     }
 
