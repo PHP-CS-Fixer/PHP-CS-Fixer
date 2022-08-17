@@ -3,6 +3,23 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.10.0
+---------------------
+
+* bug: Fix error in `regular_callable_call` with static property (#6539)
+* bug: Fix indentation for multiline class definition (#6540)
+* bug: Fix indentation for switch ending with empty case (#6538)
+* bug: Fix indentation of comment at end of switch case (#6493)
+* bug: PhpdocAlignFixer - fix static `@method` (#6366)
+* bug: SingleSpaceAfterConstructFixer - fix handling open tag (#6549)
+* bug: VisibilityRequiredFixer must run before ClassAttributesSeparationFixer (#6548)
+* DX: Assert dataproviders of tests of project itself return "array" or "iterable". (#6524)
+* feature: Introduce configurability to PhpdocOrderFixer (#6466)
+* feature: WhitespaceAfterCommaInArrayFixer - add option "ensure_single_space" (#6527)
+* minor: Add test for indentation of trait conflict resolution (#6541)
+* minor: Split BracesFixer (#4884)
+* minor: TrailingCommaInMultilineFixer - Add comma to multiline `new static` (#6380)
+
 Changelog for v3.9.6
 --------------------
 
