@@ -190,5 +190,25 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
         yield '@test annotation ignored' => [
             '<?php class MyTest extends \PhpUnit\FrameWork\TestCase { /** @test */ public function my_App_does_SomeClass() {} }',
         ];
+
+
+        yield '@depends annotation ignored' => [
+            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                    public function test_MyApp () {}
+
+                    /**
+                     * @depends test_MyApp
+                     */
+                    public function testMyAppToo() {}
+                }',
+            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                    public function test_MyApp () {}
+
+                    /**
+                     * @depends test_MyApp
+                     */
+                    public function test_my_app_too() {}
+                }',
+        ];
     }
 }
