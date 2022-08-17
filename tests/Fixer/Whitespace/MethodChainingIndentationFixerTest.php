@@ -286,67 +286,6 @@ $foo
                 ->where("a", "b");
 ',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideWindowsWhitespacesCases
-     */
-    public function testWindowsWhitespaces(string $expected, ?string $input = null): void
-    {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        $this->doTest($expected, $input);
-    }
-
-    public function provideWindowsWhitespacesCases(): array
-    {
-        return [
-            [
-                "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\t->setPassword('233434')\r\n\t->setEmailConfirmed(false)\r\n\t->setEmailConfirmationCode('123456')\r\n\t->setHashsalt('1234')\r\n\t->setTncAccepted(true);",
-                "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\r\n     ->setPassword('233434')\r\n\t\t\t->setEmailConfirmed(false)\r\n\t\t      ->setEmailConfirmationCode('123456')\r\n->setHashsalt('1234')\r\n\t\t->setTncAccepted(true);",
-            ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     */
-    public function testFix73(): void
-    {
-        $this->doTest(
-            '<?php
-
-    $user->setEmail("voff.web@gmail.com", )
-        ->setPassword("233434" ,)
-        ->setEmailConfirmed(false , )
-        ->setEmailConfirmationCode("123456",    );
-',
-            '<?php
-
-    $user->setEmail("voff.web@gmail.com", )
-
-     ->setPassword("233434" ,)
-        ->setEmailConfirmed(false , )
-->setEmailConfirmationCode("123456",    );
-'
-        );
-    }
-
-    /**
-     * @param string $expected
-     * @param string|null $input
-     *
-     * @dataProvider provideFix74Cases
-     * @requires PHP 7.4
-     */
-    public function testFix74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix74Cases(): array
-    {
-        return [
             [
                 '<?php
 
@@ -445,6 +384,49 @@ $foo
 ',
             ],
         ];
+    }
+
+    /**
+     * @dataProvider provideWindowsWhitespacesCases
+     */
+    public function testWindowsWhitespaces(string $expected, ?string $input = null): void
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->doTest($expected, $input);
+    }
+
+    public function provideWindowsWhitespacesCases(): array
+    {
+        return [
+            [
+                "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\t->setPassword('233434')\r\n\t->setEmailConfirmed(false)\r\n\t->setEmailConfirmationCode('123456')\r\n\t->setHashsalt('1234')\r\n\t->setTncAccepted(true);",
+                "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\r\n     ->setPassword('233434')\r\n\t\t\t->setEmailConfirmed(false)\r\n\t\t      ->setEmailConfirmationCode('123456')\r\n->setHashsalt('1234')\r\n\t\t->setTncAccepted(true);",
+            ],
+        ];
+    }
+
+    /**
+     * @requires PHP 7.3
+     */
+    public function testFix73(): void
+    {
+        $this->doTest(
+            '<?php
+
+    $user->setEmail("voff.web@gmail.com", )
+        ->setPassword("233434" ,)
+        ->setEmailConfirmed(false , )
+        ->setEmailConfirmationCode("123456",    );
+',
+            '<?php
+
+    $user->setEmail("voff.web@gmail.com", )
+
+     ->setPassword("233434" ,)
+        ->setEmailConfirmed(false , )
+->setEmailConfirmationCode("123456",    );
+'
+        );
     }
 
     /**

@@ -197,9 +197,10 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     private function currentLineRequiresExtraIndentLevel(Tokens $tokens, int $start, int $end): bool
     {
         $firstMeaningful = $tokens->getNextMeaningfulToken($start);
-        $thirdMeaningful = $tokens->getNextMeaningfulToken($tokens->getNextMeaningfulToken($firstMeaningful));
 
         if ($tokens[$firstMeaningful]->isObjectOperator()) {
+            $thirdMeaningful = $tokens->getNextMeaningfulToken($tokens->getNextMeaningfulToken($firstMeaningful));
+
             return
                 $tokens[$thirdMeaningful]->equals('(')
                 && $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $thirdMeaningful) > $end
