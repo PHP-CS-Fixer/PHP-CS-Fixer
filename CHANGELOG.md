@@ -3,6 +3,18 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.9.6
+--------------------
+
+* bug: BinaryOperatorSpacesFixer: Solve issues with scoped arrow and equal alignments (#6515)
+* bug: Fix 3 weird behavior about BinaryOperatorSpacesFixer (#6450)
+* docs: Add intersection type to types_spaces rule description (#6479)
+* DX: no need to use forked diff anymore (#6526)
+* DX: remove unused FixerFileProcessedEvent::STATUS_UNKNOWN (#6516)
+* Improve `statement_indentation` compatibility with `braces` (#6401)
+* minor: add test: multi-line comments before else indented correctly. (#3573)
+* minor: ReturnAssignmentFixer - Support for anonymous classes, lambda and match (#6391)
+
 Changelog for v3.9.5
 --------------------
 
