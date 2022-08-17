@@ -29,6 +29,7 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use PhpCsFixer\Utils;
+use function str_contains;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
@@ -69,6 +70,16 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
 }
 ',
                     ['case' => self::SNAKE_CASE]
+                ),
+                new CodeSample(
+                    '<?php
+class MyTest extends \\PhpUnit\\FrameWork\\TestCase
+{
+    public function test_my_code() {}
+    public function test_FooBar() {}
+}
+',
+                    ['ignore_mixed_cases' => true]
                 ),
             ]
         );
@@ -116,6 +127,10 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
         $parts = explode('::', $functionName);
 
         $functionNamePart = array_pop($parts);
+
+        if ($this->shouldIgnoreFunctionName($functionNamePart)) {
+            return $functionName;
+        }
 
         if (self::CAMEL_CASE === $this->configuration['case']) {
             $newFunctionNamePart = $functionNamePart;
@@ -192,5 +207,12 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
             $lines = implode('', $lines);
             $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
         }
+    }
+
+    private function shouldIgnoreFunctionName(string $functionNamePart): bool
+    {
+        return $this->configuration['ignore_mixed_cases']
+            && Preg::match('/^test_*[A-Z]+/', $functionNamePart)
+            && str_contains($functionNamePart, '_');
     }
 }
