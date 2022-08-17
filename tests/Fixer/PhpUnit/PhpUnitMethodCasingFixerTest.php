@@ -201,13 +201,12 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
     public function provideIgnoreCases(): iterable
     {
         yield 'default ignored' => [
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase { public function test_MyApp() {} }',
+            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase { public function test_that_MyApp_does_something_with_Class() {} }',
         ];
 
         yield '@test annotation ignored' => [
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase { /** @test */ public function my_App_does_SomeClass() {} }',
+            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase { /** @test */ public function my_app_does_SomeThing_special() {} }',
         ];
-
 
         yield '@depends annotation ignored' => [
             '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {

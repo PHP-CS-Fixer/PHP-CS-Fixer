@@ -221,7 +221,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
     private function shouldIgnoreFunctionName(string $functionNamePart): bool
     {
         return $this->configuration['ignore_mixed_cases']
-            && Preg::match('/^[a-z]+_*[A-Z]+/', $functionNamePart)
+            && Preg::match('/[A-Z]+/', $functionNamePart)
             && str_contains($functionNamePart, '_');
     }
 }
