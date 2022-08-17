@@ -76,7 +76,6 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($ignoredExpected, $input);
     }
 
-
     public function provideFixCases(): iterable
     {
         yield 'skip non phpunit methods' => [
