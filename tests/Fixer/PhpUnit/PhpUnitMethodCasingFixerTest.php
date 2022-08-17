@@ -186,5 +186,9 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
         yield 'default mixed case' => [
             '<?php class MyTest extends \PhpUnit\FrameWork\TestCase { public function test_MyApp() {} }',
         ];
+
+        yield 'annotation' => [
+            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase { /** @test */ public function my_App_does_SomeClass() {} }',
+        ];
     }
 }
