@@ -21,6 +21,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
+use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
 
@@ -160,6 +161,7 @@ final class RuleSetTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Missing value for "braces" rule/set.');
 
+        // @phpstan-ignore-next-line
         new RuleSet(['braces']);
     }
 
@@ -336,57 +338,53 @@ final class RuleSetTest extends TestCase
         $ruleSet->getRuleConfiguration('_not_exists');
     }
 
-    public function testDuplicateRuleConfigurationInSetDefinitions(): void
+    /**
+     * @dataProvider provideAllSetCases
+     */
+    public function testDuplicateRuleConfigurationInSetDefinitions(RuleSetDescriptionInterface $set): void
     {
-        $resolvedSets = [];
-        $setDefinitions = RuleSets::getSetDefinitions();
+        $rules = [];
+        $setRules = [];
 
-        foreach ($setDefinitions as $setName => $setDefinition) {
-            $resolvedSets[$setName] = ['rules' => [], 'sets' => []];
-
-            foreach ($setDefinition->getRules() as $name => $value) {
-                if (str_starts_with($name, '@')) {
-                    $resolvedSets[$setName]['sets'][$name] = $this->expendSet($setDefinitions, $resolvedSets, $name, $value);
-                } else {
-                    $resolvedSets[$setName]['rules'][$name] = $value;
-                }
+        foreach ($set->getRules() as $ruleName => $ruleConfig) {
+            if (str_starts_with($ruleName, '@')) {
+                $setRules = array_merge($setRules, $this->resolveSet($ruleName, $ruleConfig));
+            } else {
+                $rules[$ruleName] = $ruleConfig;
             }
         }
 
         $duplicates = [];
 
-        foreach ($resolvedSets as $name => $resolvedSet) {
-            foreach ($resolvedSet['rules'] as $ruleName => $config) {
-                if (\count($resolvedSet['sets']) < 1) {
-                    continue;
-                }
-
-                $setDuplicates = $this->findInSets($resolvedSet['sets'], $ruleName, $config);
-
-                if (\count($setDuplicates) > 0) {
-                    if (!isset($duplicates[$name])) {
-                        $duplicates[$name] = [];
-                    }
-
-                    $duplicates[$name][$ruleName] = $setDuplicates;
-                }
+        foreach ($rules as $ruleName => $ruleConfig) {
+            if (!\array_key_exists($ruleName, $setRules)) {
+                continue;
             }
+
+            if ($ruleConfig !== $setRules[$ruleName]) {
+                continue;
+            }
+
+            $duplicates[] = $ruleName;
         }
 
-        if (\count($duplicates) > 0) {
-            $message = '';
-
-            foreach ($duplicates as $setName => $rules) {
-                $message .= sprintf("\n\"%s\" defines rules the same as it extends from:", $setName);
-
-                foreach ($rules as $ruleName => $otherSets) {
-                    $message .= sprintf("\n- \"%s\" is also in \"%s\"", $ruleName, implode(', ', $otherSets));
-                }
-            }
-
-            static::fail($message);
-        } else {
+        if (0 === \count($duplicates)) {
             $this->addToAssertionCount(1);
+
+            return;
+        }
+
+        static::fail(sprintf(
+            '"%s" defines rules the same as it extends from: %s',
+            $set->getName(),
+            implode(', ', $duplicates),
+        ));
+    }
+
+    public function provideAllSetCases(): iterable
+    {
+        foreach (RuleSets::getSetDefinitions() as $name => $set) {
+            yield $name => [$set];
         }
     }
 
@@ -418,7 +416,7 @@ final class RuleSetTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Rule/set name must not be empty.');
 
-        new RuleSet(['' => 'foo']);
+        new RuleSet(['' => true]);
     }
 
     public function testInvalidConfig(): void
@@ -426,6 +424,7 @@ final class RuleSetTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('[@Symfony:risky] Set must be enabled (true) or disabled (false). Other values are not allowed. To disable the set, use "FALSE" instead of "NULL".');
 
+        // @phpstan-ignore-next-line
         new RuleSet(['@Symfony:risky' => null]);
     }
 
@@ -483,53 +482,25 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param array<string, mixed>|bool $config
+     * @return array<string, array<string, mixed>|bool>
      */
-    private function findInSets(array $sets, string $ruleName, $config): array
+    private function resolveSet(string $setName, bool $setValue): array
     {
-        $duplicates = [];
-
-        foreach ($sets as $setName => $setRules) {
-            if (\array_key_exists($ruleName, $setRules['rules'])) {
-                if ($config === $setRules['rules'][$ruleName]) {
-                    $duplicates[] = $setName;
-                }
-
-                break; // do not check below, config for the rule has been changed
-            }
-
-            if (isset($setRules['sets']) && \count($setRules['sets']) > 0) {
-                $subSetDuplicates = $this->findInSets($setRules['sets'], $ruleName, $config);
-
-                if (\count($subSetDuplicates) > 0) {
-                    $duplicates = array_merge($duplicates, $subSetDuplicates);
-                }
-            }
-        }
-
-        return $duplicates;
-    }
-
-    /**
-     * @param array|bool $setValue
-     *
-     * @return mixed
-     */
-    private function expendSet(array $setDefinitions, array $resolvedSets, string $setName, $setValue)
-    {
-        $rules = $setDefinitions[$setName]->getRules();
+        $rules = RuleSets::getSetDefinition($setName)->getRules();
 
         foreach ($rules as $name => $value) {
             if (str_starts_with($name, '@')) {
-                $resolvedSets[$setName]['sets'][$name] = $this->expendSet($setDefinitions, $resolvedSets, $name, $setValue);
-            } elseif (false === $setValue) {
-                $resolvedSets[$setName]['rules'][$name] = false;
+                $set = $this->resolveSet($name, $setValue);
+                unset($rules[$name]);
+                $rules = array_merge($rules, $set);
+            } elseif (!$setValue) {
+                $rules[$name] = false;
             } else {
-                $resolvedSets[$setName]['rules'][$name] = $value;
+                $rules[$name] = $value;
             }
         }
 
-        return $resolvedSets[$setName];
+        return $rules;
     }
 
     private static function assertSameRules(array $expected, array $actual): void
