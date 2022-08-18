@@ -27,7 +27,7 @@ class TokensWithObservedTransformers extends Tokens
     public $currentTransformer;
 
     /**
-     * @var array<string,array<int|string>>
+     * @var array<string, array<int|string>>
      */
     public $observedModificationsPerTransformer = [];
 

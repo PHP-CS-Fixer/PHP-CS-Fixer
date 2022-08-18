@@ -441,7 +441,7 @@ final class RuleSetTest extends TestCase
      *
      * Sometimes keys are all string, sometimes they are integers - we need to account for that.
      *
-     * @param array<int|string,mixed> $data
+     * @param array<int|string, mixed> $data
      */
     private function doSort(array &$data, string $path): void
     {
@@ -469,7 +469,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param array<int|string,mixed> $values
+     * @param array<int|string, mixed> $values
      */
     private function allInteger(array $values): bool
     {

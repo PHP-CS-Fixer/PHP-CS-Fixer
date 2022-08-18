@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class MagicMethodCasingFixer extends AbstractFixer
 {
     /**
-     * @var array<string,string>
+     * @var array<string, string>
      */
     private static array $magicNames = [
         '__call' => '__call',

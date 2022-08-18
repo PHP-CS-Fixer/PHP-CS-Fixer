@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Token;
 final class Utils
 {
     /**
-     * @var array<string,true>
+     * @var array<string, true>
      */
     private static array $deprecations = [];
 
