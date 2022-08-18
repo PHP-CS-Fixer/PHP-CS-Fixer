@@ -65,6 +65,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@PER
+  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``visibility_required`` rule with the default config.
+
 @PHP71Migration
   Using the `@PHP71Migration <./../../ruleSets/PHP71Migration.rst>`_ rule set will enable the ``visibility_required`` rule with the default config.
 

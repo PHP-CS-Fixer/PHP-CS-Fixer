@@ -209,6 +209,11 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@PER
+  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``method_argument_space`` rule with the config below:
+
+  ``['on_multiline' => 'ensure_fully_multiline']``
+
 @PHP73Migration
   Using the `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ rule set will enable the ``method_argument_space`` rule with the config below:
 

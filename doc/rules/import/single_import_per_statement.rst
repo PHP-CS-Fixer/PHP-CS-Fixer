@@ -58,6 +58,11 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@PER
+  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``single_import_per_statement`` rule with the config below:
+
+  ``['group_to_single_imports' => false]``
+
 @PSR12
   Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``single_import_per_statement`` rule with the config below:
 
