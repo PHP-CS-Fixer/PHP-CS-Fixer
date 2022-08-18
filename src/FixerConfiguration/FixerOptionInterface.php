@@ -23,9 +23,9 @@ interface FixerOptionInterface
     public function hasDefault(): bool;
 
     /**
-     * @throws \LogicException when no default value is defined
-     *
      * @return mixed
+     *
+     * @throws \LogicException when no default value is defined
      */
     public function getDefault();
 
