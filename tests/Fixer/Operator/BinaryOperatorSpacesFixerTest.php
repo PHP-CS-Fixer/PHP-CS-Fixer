@@ -2276,6 +2276,38 @@ $array = [
 ];
 ',
             ],
+            [
+                '<?php
+function foo () {
+    $this->query = $this->db->prepare(static fn ($db) => $db->table("user")->insert([
+        "name"    => "a",
+        "email"   => "b@example.com",
+        "country" => "JP",
+    ]));
+
+    foreach ($data as $name => $array) {
+        foreach ($array as $field => $value) {
+            yield $type => $case;
+        }
+    }
+}
+',
+                '<?php
+function foo () {
+    $this->query = $this->db->prepare(static fn ($db) => $db->table("user")->insert([
+        "name" => "a",
+        "email" => "b@example.com",
+        "country" => "JP",
+    ]));
+
+    foreach ($data as $name => $array) {
+        foreach ($array as $field => $value) {
+            yield $type => $case;
+        }
+    }
+}
+',
+            ],
         ];
     }
 
