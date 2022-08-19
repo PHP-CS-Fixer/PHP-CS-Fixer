@@ -862,6 +862,9 @@ String Notation
 Whitespace
 ----------
 
+- `align_enum_values <./whitespace/align_enum_values.rst>`_
+
+  Align enum values on the ``=`` operator.
 - `array_indentation <./whitespace/array_indentation.rst>`_
 
   Each element of an array must be indented exactly once.
