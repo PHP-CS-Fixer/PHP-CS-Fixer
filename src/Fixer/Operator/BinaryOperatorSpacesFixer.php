@@ -514,7 +514,7 @@ $array = [
                 }
             }
 
-            $tokens->setCode($this->replacePlaceholders($tokensClone, $alignStrategy));
+            $tokens->setCode($this->replacePlaceholders($tokensClone, $alignStrategy, $tokenContent));
         }
     }
 
@@ -755,7 +755,7 @@ $array = [
     /**
      * Look for group of placeholders and provide vertical alignment.
      */
-    private function replacePlaceholders(Tokens $tokens, string $alignStrategy): string
+    private function replacePlaceholders(Tokens $tokens, string $alignStrategy, string $tokenContent): string
     {
         $tmpCode = $tokens->generateCode();
 
@@ -774,7 +774,7 @@ $array = [
             foreach ($lines as $index => $line) {
                 if (substr_count($line, $placeholder) > 0) {
                     $groups[$groupIndex][] = $index;
-                } else {
+                } elseif ('=>' !== $tokenContent) {
                     ++$groupIndex;
                     $groups[$groupIndex] = [];
                 }
