@@ -30,6 +30,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@PER
+  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``no_spaces_after_function_name`` rule.
+
 @PSR12
   Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``no_spaces_after_function_name`` rule.
 

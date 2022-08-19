@@ -169,25 +169,25 @@ final class UtilsTest extends TestCase
             [
                 ['a', 'b', 'c', 'd', 'e'],
                 ['b', 'd', 'e', 'a', 'c'],
-                static function ($element) { return $element; },
+                static fn ($element) => $element,
                 'strcmp',
             ],
             [
                 ['b', 'd', 'e', 'a', 'c'],
                 ['b', 'd', 'e', 'a', 'c'],
-                static function (): string { return 'foo'; },
+                static fn (): string => 'foo',
                 'strcmp',
             ],
             [
                 ['b', 'd', 'e', 'a', 'c'],
                 ['b', 'd', 'e', 'a', 'c'],
-                static function ($element) { return $element; },
-                static function (): int { return 0; },
+                static fn ($element) => $element,
+                static fn (): int => 0,
             ],
             [
                 ['bar1', 'baz1', 'foo1', 'bar2', 'baz2', 'foo2'],
                 ['foo1', 'foo2', 'bar1', 'bar2', 'baz1', 'baz2'],
-                static function ($element) { return preg_replace('/([a-z]+)(\d+)/', '$2$1', $element); },
+                static fn ($element) => preg_replace('/([a-z]+)(\d+)/', '$2$1', $element),
                 'strcmp',
             ],
         ];

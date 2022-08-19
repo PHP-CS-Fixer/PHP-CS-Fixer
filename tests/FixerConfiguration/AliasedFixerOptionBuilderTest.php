@@ -48,7 +48,7 @@ final class AliasedFixerOptionBuilderTest extends TestCase
     public function testSetNormalizer(): void
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
-        static::assertSame($builder, $builder->setNormalizer(static function (): void {}));
+        static::assertSame($builder, $builder->setNormalizer(static fn () => null));
     }
 
     public function testGetOption(): void
@@ -58,7 +58,7 @@ final class AliasedFixerOptionBuilderTest extends TestCase
             ->setDefault('baz')
             ->setAllowedTypes(['bool'])
             ->setAllowedValues([true, false])
-            ->setNormalizer(static function (): void {})
+            ->setNormalizer(static fn () => null)
             ->getOption()
         ;
 

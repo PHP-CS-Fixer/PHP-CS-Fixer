@@ -179,6 +179,11 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@PER
+  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``braces`` rule with the config below:
+
+  ``['allow_single_line_anonymous_class_with_empty_body' => true]``
+
 @PSR12
   Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``braces`` rule with the config below:
 

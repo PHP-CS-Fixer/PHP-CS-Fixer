@@ -168,8 +168,8 @@ JSON;
             implode(
                 "\n",
                 array_map(
-                    static function (array $item): string { return sprintf('Property `%s`: %s.', $item['property'], $item['message']); },
-                    $validator->getErrors()
+                    static fn (array $item): string => sprintf('Property `%s`: %s.', $item['property'], $item['message']),
+                    $validator->getErrors(),
                 )
             )
         );

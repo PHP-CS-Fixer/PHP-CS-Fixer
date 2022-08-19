@@ -23,24 +23,27 @@ namespace PhpCsFixer\RuleSet;
  */
 interface RuleSetInterface
 {
+    /**
+     * @param array<string, array<string, mixed>|bool> $set
+     */
     public function __construct(array $set = []);
 
     /**
      * Get configuration for given rule.
      *
-     * @param string $rule name of rule
+     * @return null|array<string, mixed>
      */
     public function getRuleConfiguration(string $rule): ?array;
 
     /**
      * Get all rules from rules set.
+     *
+     * @return array<string, array<string, mixed>|bool>
      */
     public function getRules(): array;
 
     /**
      * Check given rule is in rules set.
-     *
-     * @param string $rule name of rule
      */
     public function hasRule(string $rule): bool;
 }

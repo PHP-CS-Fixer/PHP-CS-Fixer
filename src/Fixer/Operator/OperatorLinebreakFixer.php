@@ -313,7 +313,7 @@ function foo() {
                 [T_POW_EQUAL], [T_SL], [T_SL_EQUAL], [T_SR], [T_SR_EQUAL], [T_XOR_EQUAL],
                 [T_COALESCE], [T_SPACESHIP],
             ],
-            array_map(static function ($id): array { return [$id]; }, Token::getObjectOperatorKinds())
+            array_map(static fn (int $id): array => [$id], Token::getObjectOperatorKinds()),
         );
     }
 }

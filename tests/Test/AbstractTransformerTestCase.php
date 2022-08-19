@@ -135,7 +135,10 @@ abstract class AbstractTransformerTestCase extends TestCase
             static::assertStringStartsWith('CT::', CT::getName($customTokenOfTransformer));
         }
 
-        $customTokensOfTransformerList = implode(', ', array_map(static function (int $ct): string { return CT::getName($ct); }, $customTokensOfTransformer));
+        $customTokensOfTransformerList = implode(', ', array_map(
+            static fn (int $ct): string => CT::getName($ct),
+            $customTokensOfTransformer,
+        ));
 
         foreach ($tokens->observedModificationsPerTransformer as $appliedTransformerName => $modificationsOfTransformer) {
             foreach ($modificationsOfTransformer as $modification) {

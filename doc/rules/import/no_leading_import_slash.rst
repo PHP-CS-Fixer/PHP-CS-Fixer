@@ -24,6 +24,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@PER
+  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``no_leading_import_slash`` rule.
+
 @PSR12
   Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``no_leading_import_slash`` rule.
 

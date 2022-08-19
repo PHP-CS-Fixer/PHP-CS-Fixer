@@ -70,7 +70,7 @@ final class ProjectCodeTest extends TestCase
     {
         $unknownClasses = array_filter(
             self::$classesWithoutTests,
-            static function (string $class): bool { return !class_exists($class) && !trait_exists($class); }
+            static fn (string $class): bool => !class_exists($class) && !trait_exists($class),
         );
 
         static::assertSame([], $unknownClasses);
@@ -444,7 +444,7 @@ final class ProjectCodeTest extends TestCase
                 }
             }
 
-            $expected = array_filter($expected, static function ($item): bool { return false !== $item; });
+            $expected = array_filter($expected, static fn ($item): bool => false !== $item);
 
             if (\count($expected) < 2) {
                 $this->addToAssertionCount(1); // not enough parameters to test, all good!
@@ -664,7 +664,7 @@ final class ProjectCodeTest extends TestCase
     public function provideSrcConcreteClassCases(): array
     {
         return array_map(
-            static function (string $item): array { return [$item]; },
+            static fn (string $item): array => [$item],
             array_filter(
                 $this->getSrcClasses(),
                 static function (string $className): bool {

@@ -47,7 +47,7 @@ final class FixerOptionBuilderTest extends TestCase
     public function testSetNormalizer(): void
     {
         $builder = new FixerOptionBuilder('foo', 'Bar.');
-        static::assertSame($builder, $builder->setNormalizer(static function (): void {}));
+        static::assertSame($builder, $builder->setNormalizer(static fn () => null));
     }
 
     public function testGetOption(): void
@@ -57,7 +57,7 @@ final class FixerOptionBuilderTest extends TestCase
             ->setDefault('baz')
             ->setAllowedTypes(['bool'])
             ->setAllowedValues([true, false])
-            ->setNormalizer(static function (): void {})
+            ->setNormalizer(static fn () => null)
             ->getOption()
         ;
 
@@ -67,7 +67,7 @@ final class FixerOptionBuilderTest extends TestCase
             ->setDefault('baz')
             ->setAllowedTypes(['bool'])
             ->setAllowedValues([true, false])
-            ->setNormalizer(static function (): void {})
+            ->setNormalizer(static fn () => null)
             ->setDeprecationMessage('Deprecation message')
             ->getOption()
         ;

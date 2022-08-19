@@ -201,7 +201,7 @@ final class PregTest extends TestCase
      */
     public function testReplaceCallback($pattern, $subject): void
     {
-        $callback = static function (array $x): string { return implode('-', $x); };
+        $callback = static fn (array $x): string => implode('-', $x);
 
         $expectedResult = preg_replace_callback($pattern, $callback, $subject);
         $actualResult = Preg::replaceCallback($pattern, $callback, $subject);
