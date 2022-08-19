@@ -12,9 +12,9 @@ Configuration
 
 Default fix strategy.
 
-Allowed values: ``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``, ``'no_space'``, ``'single_space'``, ``null``
+Allowed values: ``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``, ``'no_space'``, ``'single_space'``, ``'single_space_minimal'``, ``null``
 
-Default value: ``'single_space'``
+Default value: ``'single_space_minimal'``
 
 ``operators``
 ~~~~~~~~~~~~~
@@ -117,7 +117,7 @@ With configuration: ``['operators' => ['|' => 'no_space']]``.
 Example #6
 ~~~~~~~~~~
 
-With configuration: ``['operators' => ['=>' => 'single_space']]``.
+With configuration: ``['operators' => ['=>' => 'single_space_minimal']]``.
 
 .. code-block:: diff
 

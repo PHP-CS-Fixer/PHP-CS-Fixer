@@ -73,8 +73,8 @@ List of Available Rules
 
    - | ``default``
      | Default fix strategy.
-     | Allowed values: ``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``, ``'no_space'``, ``'single_space'``, ``null``
-     | Default value: ``'single_space'``
+     | Allowed values: ``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``, ``'no_space'``, ``'single_space'``, ``'single_space_minimal'``, ``null``
+     | Default value: ``'single_space_minimal'``
    - | ``operators``
      | Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: `=`, `*`, `/`, `%`, `<`, `>`, `|`, `^`, `+`, `-`, `&`, `&=`, `&&`, `||`, `.=`, `/=`, `=>`, `==`, `>=`, `===`, `!=`, `<>`, `!==`, `<=`, `and`, `or`, `xor`, `-=`, `%=`, `*=`, `|=`, `+=`, `<<`, `<<=`, `>>`, `>>=`, `^=`, `**`, `**=`, `<=>`, `??`, `??=`
      | Allowed types: ``array``

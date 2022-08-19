@@ -125,7 +125,7 @@ $a//
 $a//
      =  1;
                 ',
-                ['operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE]],
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE_MINIMAL]],
             ],
             [
                 '<?php
@@ -253,7 +253,7 @@ $a//
                 ',
                 [
                     'operators' => [
-                        'and' => BinaryOperatorSpacesFixer::SINGLE_SPACE,
+                        'and' => BinaryOperatorSpacesFixer::SINGLE_SPACE_MINIMAL,
                         '*=' => BinaryOperatorSpacesFixer::ALIGN,
                         'or' => null,
                     ],
@@ -404,7 +404,7 @@ $a//
                 ',
                 [
                     'default' => BinaryOperatorSpacesFixer::NO_SPACE,
-                    'operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE],
+                    'operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE_MINIMAL],
                 ],
             ],
             [
@@ -417,7 +417,7 @@ $a//
                 [
                     'default' => null,
                     'operators' => [
-                        '=' => BinaryOperatorSpacesFixer::SINGLE_SPACE,
+                        '=' => BinaryOperatorSpacesFixer::SINGLE_SPACE_MINIMAL,
                         '|' => BinaryOperatorSpacesFixer::NO_SPACE,
                     ],
                 ],

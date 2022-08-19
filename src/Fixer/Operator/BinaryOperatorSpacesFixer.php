@@ -36,8 +36,15 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
 {
     /**
      * @internal
+     *
+     * TODO: 4.0 - Remove this constant
      */
     public const SINGLE_SPACE = 'single_space';
+
+    /**
+     * @internal
+     */
+    public const SINGLE_SPACE_MINIMAL = 'single_space_minimal';
 
     /**
      * @internal
@@ -135,6 +142,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
         self::ALIGN_SINGLE_SPACE,
         self::ALIGN_SINGLE_SPACE_MINIMAL,
         self::SINGLE_SPACE,
+        self::SINGLE_SPACE_MINIMAL,
         self::NO_SPACE,
         null,
     ];
@@ -213,7 +221,7 @@ $array = [
     "baaaaaaaaaaar"  =>  11,
 ];
 ',
-                    ['operators' => ['=>' => 'single_space']]
+                    ['operators' => ['=>' => 'single_space_minimal']]
                 ),
                 new CodeSample(
                     '<?php
@@ -304,7 +312,7 @@ $array = [
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('default', 'Default fix strategy.'))
-                ->setDefault(self::SINGLE_SPACE)
+                ->setDefault(self::SINGLE_SPACE_MINIMAL)
                 ->setAllowedValues(self::$allowedValues)
                 ->getOption(),
             (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: `'.implode('`, `', self::SUPPORTED_OPERATORS).'`'))
@@ -348,8 +356,11 @@ $array = [
             return; // not configured to be changed
         }
 
-        if (self::SINGLE_SPACE === $this->operators[$tokenContent]) {
-            $this->fixWhiteSpaceAroundOperatorToSingleSpace($tokens, $index);
+        if (
+            self::SINGLE_SPACE === $this->operators[$tokenContent]
+            || self::SINGLE_SPACE_MINIMAL === $this->operators[$tokenContent]
+        ) {
+            $this->fixWhiteSpaceAroundOperatorToSingleSpaceMinimal($tokens, $index);
 
             return;
         }
@@ -379,7 +390,7 @@ $array = [
         $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
     }
 
-    private function fixWhiteSpaceAroundOperatorToSingleSpace(Tokens $tokens, int $index): void
+    private function fixWhiteSpaceAroundOperatorToSingleSpaceMinimal(Tokens $tokens, int $index): void
     {
         // fix white space after operator
         if ($tokens[$index + 1]->isWhitespace()) {
