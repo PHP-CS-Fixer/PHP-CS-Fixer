@@ -542,7 +542,10 @@ $array = [
             }
 
             if ($token->isGivenKind(T_FN)) {
-                $index = $this->getLastTokenIndexOfFn($tokens, $index);
+                $from = $tokens->getNextMeaningfulToken($index);
+                $until = $this->getLastTokenIndexOfFn($tokens, $index);
+                $this->injectAlignmentPlaceholders($tokens, $from + 1, $until - 1, $tokenContent);
+                $index = $until;
 
                 continue;
             }
@@ -621,7 +624,10 @@ $array = [
             }
 
             if ($token->isGivenKind(T_FN)) {
-                $index = $this->getLastTokenIndexOfFn($tokens, $index);
+                $from = $tokens->getNextMeaningfulToken($index);
+                $until = $this->getLastTokenIndexOfFn($tokens, $index);
+                $this->injectArrayAlignmentPlaceholders($tokens, $from + 1, $until - 1);
+                $index = $until;
 
                 continue;
             }
@@ -694,6 +700,22 @@ $array = [
 
                     ++$index;
                 }
+            }
+
+            if ($token->equals('{')) {
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $this->injectArrayAlignmentPlaceholders($tokens, $index + 1, $until - 1);
+                $index = $until;
+
+                continue;
+            }
+
+            if ($token->equals('(')) {
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $this->injectArrayAlignmentPlaceholders($tokens, $index + 1, $until - 1);
+                $index = $until;
+
+                continue;
             }
         }
     }
