@@ -106,6 +106,10 @@ final class CommentsAnalyzer
             return true;
         }
 
+        if ($tokens[$nextIndex]->isGivenKind(CT::T_USE_TRAIT)) {
+            return true;
+        }
+
         return false;
     }
 

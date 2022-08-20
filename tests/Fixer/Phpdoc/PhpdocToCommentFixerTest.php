@@ -58,6 +58,11 @@ class DocBlocks
     /**
      * Do not convert this
      */
+    use TestTrait;
+
+    /**
+     * Do not convert this
+     */
     const STRUCTURAL = true;
 
     /**
