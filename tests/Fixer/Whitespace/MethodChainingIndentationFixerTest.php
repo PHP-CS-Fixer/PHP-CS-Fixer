@@ -252,6 +252,154 @@ $foo
 ->setEmailConfirmationCode("123456",    );
 ',
             ],
+            [
+                '<?php
+
+                $obj = (new Foo)
+                    ->setBar((new Bar)
+                        ->baz());
+',
+                '<?php
+
+                $obj = (new Foo)
+        ->setBar((new Bar)
+                            ->baz());
+',
+            ],
+            [
+                '<?php
+
+                $obj
+                    ->foo("bar", function ($baz) {
+                                    return $baz
+                                        ->on("table1", "table2");
+                                })
+                    ->where("a", "b");
+',
+                '<?php
+
+                $obj
+        ->foo("bar", function ($baz) {
+                        return $baz
+                                    ->on("table1", "table2");
+                    })
+                ->where("a", "b");
+',
+            ],
+            [
+                '<?php
+
+                $obj
+                    ->foo("baz", fn ($bar) => $bar
+                        ->baz("foobar"))
+                    ->baz();
+',
+                '<?php
+
+                $obj
+                                        ->foo("baz", fn ($bar) => $bar
+        ->baz("foobar"))
+                                ->baz();
+',
+            ],
+            [
+                '<?php
+
+                $obj
+                    ->foo("baz", fn (string $bar) => otherFunc($bar)
+                        ->baz("foobar"))
+                    ->baz();
+',
+                '<?php
+
+                $obj
+                                        ->foo("baz", fn (string $bar) => otherFunc($bar)
+                            ->baz("foobar"))
+                                ->baz();
+',
+            ],
+            [
+                '<?php
+
+                $obj
+                    ->foo("baz", fn (SomeClass $bar) => $bar
+                        ->baz("foobar"))
+                    ->baz();
+',
+                '<?php
+
+                $obj
+                                        ->foo("baz", fn (SomeClass $bar) => $bar
+        ->baz("foobar"))
+                                ->baz();
+',
+            ],
+            [
+                '<?php
+
+                $obj
+                    ->foo("baz", fn (?AnotherClass $bar) => $bar
+                        ->baz("foobar"))
+                    ->baz();
+',
+                '<?php
+
+                $obj
+                                        ->foo("baz", fn (?AnotherClass $bar) => $bar
+        ->baz("foobar"))
+                                ->baz();
+',
+            ],
+            [
+                '<?php
+
+                $obj
+        /*buahaha*/
+                    ->foo("baz", fn ($bar) => $bar
+                        ->baz/*buahaha*/("foobar"))
+                    ->/**buahaha*/baz();
+',
+                '<?php
+
+                $obj
+        /*buahaha*/                                ->foo("baz", fn ($bar) => $bar
+        ->baz/*buahaha*/("foobar"))
+                                ->/**buahaha*/baz();
+',
+            ],
+            [
+                '<?php
+
+                $obj
+                    ->      foo("baz", fn ($bar) => $bar
+                        ->baz              ("foobar"))
+                    ->       baz  ();
+',
+                '<?php
+
+                $obj
+                                        ->      foo("baz", fn ($bar) => $bar
+        ->baz              ("foobar"))
+                                ->       baz  ();
+',
+            ],
+            [
+                '<?php
+
+    $user->setEmail("voff.web@gmail.com", )
+        ->setPassword("233434" ,)
+        ->setEmailConfirmed(false , )
+        ->setEmailConfirmationCode("123456",    );
+',
+                '<?php
+
+    $user->setEmail("voff.web@gmail.com", )
+
+     ->setPassword("233434" ,)
+        ->setEmailConfirmed(false , )
+->setEmailConfirmationCode("123456",    );
+',
+            ],
         ];
     }
 
