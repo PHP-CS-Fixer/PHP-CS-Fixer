@@ -334,6 +334,10 @@ EOT
                 namespace Foo\Bar;
 ',
             ],
+            [
+                '<?php /* header comment */ $foo = true; class Foo { /** @phpstan-use Bar<Baz> $bar */ use Bar; }',
+                '<?php /* header comment */ $foo = true; class Foo { /* @phpstan-use Bar<Baz> $bar */ use Bar; }',
+            ],
         ];
     }
 }
