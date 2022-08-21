@@ -91,7 +91,7 @@ namespace A\B\C\D
         yield 'simple use with global' => [
             '<?php use B\Exception; function foo(Exception $e, \Exception $e2, A\B $f) {}',
             '<?php use B\Exception; function foo(\B\Exception $e, \Exception $e2, \A\B $f) {}',
-            ['shorten_globals_in_global_ns' => true],
+            ['shorten_globals_in_global_namespace' => true],
         ];
 
         yield 'simple use as' => [
@@ -131,13 +131,13 @@ interface NakanoInterface extends \Foo\Bar\IzumiInterface, \Foo\Bar\A, \D\E, \C,
         yield 'interface in global namespace with global extend' => [
             '<?php interface Foo1 extends ArrayAccess2{}',
             '<?php interface Foo1 extends \ArrayAccess2{}',
-            ['shorten_globals_in_global_ns' => true],
+            ['shorten_globals_in_global_namespace' => true],
         ];
 
         yield 'interface in global namespace with multiple extend' => [
             '<?php use B\Exception; interface Foo extends ArrayAccess, \Exception, Exception {}',
             '<?php use B\Exception; interface Foo extends \ArrayAccess, \Exception, \B\Exception {}',
-            ['shorten_globals_in_global_ns' => true],
+            ['shorten_globals_in_global_namespace' => true],
         ];
 
         yield 'class implements' => [
@@ -233,7 +233,7 @@ namespace B {
     try{ foo(); } catch (\B\Z $z) {}
 }
 ',
-            ['shorten_globals_in_global_ns' => true],
+            ['shorten_globals_in_global_namespace' => true],
         ];
 
         yield 'starts with but not full name arg' => [
@@ -763,7 +763,7 @@ class SomeClass
 function withReference(Exception &$e) {}',
             '<?php
 function withReference(\Exception &$e) {}',
-            ['shorten_globals_in_global_ns' => true],
+            ['shorten_globals_in_global_namespace' => true],
         ];
 
         yield 'Test reference with use' => [
@@ -842,7 +842,7 @@ class Two
      */
     public function testFix80(string $expected, string $input): void
     {
-        $this->fixer->configure(['shorten_globals_in_global_ns' => true]);
+        $this->fixer->configure(['shorten_globals_in_global_namespace' => true]);
         $this->doTest($expected, $input);
     }
 
@@ -881,7 +881,7 @@ class Two
      */
     public function testFix81(string $expected, string $input): void
     {
-        $this->fixer->configure(['shorten_globals_in_global_ns' => true]);
+        $this->fixer->configure(['shorten_globals_in_global_namespace' => true]);
         $this->doTest($expected, $input);
     }
 

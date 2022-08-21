@@ -784,7 +784,7 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``shorten_globals_in_global_ns``
+   - | ``shorten_globals_in_global_namespace``
      | remove leading `\` when in global namespace.
      | Allowed types: ``bool``
      | Default value: ``false``

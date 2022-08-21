@@ -74,7 +74,7 @@ namespace Foo\Bar {
     }
 }
 ',
-                    ['shorten_globals_in_global_ns' => true],
+                    ['shorten_globals_in_global_namespace' => true],
                 ),
             ]
         );
@@ -136,7 +136,7 @@ namespace Foo\Bar {
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('shorten_globals_in_global_ns', 'remove leading `\` when in global namespace.'))
+            (new FixerOptionBuilder('shorten_globals_in_global_namespace', 'remove leading `\` when in global namespace.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
@@ -255,7 +255,7 @@ namespace Foo\Bar {
                 // if the type without leading "\" equals any of the full "uses" long names, it can be replaced with the short one
                 $this->replaceClassWithShort($tokens, $class, $uses[$typeNameLower]);
             } elseif ('' === $namespaceName) {
-                if (true === $this->configuration['shorten_globals_in_global_ns']) {
+                if (true === $this->configuration['shorten_globals_in_global_namespace']) {
                     // if we are in the global namespace and the type is not imported the leading '\' can be removed
                     $inUses = false;
 
@@ -313,7 +313,7 @@ namespace Foo\Bar {
                 // if the type without leading "\" equals any of the full "uses" long names, it can be replaced with the short one
                 $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($uses[$typeNameLower]));
             } elseif ('' === $namespaceName) {
-                if (true === $this->configuration['shorten_globals_in_global_ns']) {
+                if (true === $this->configuration['shorten_globals_in_global_namespace']) {
                     foreach ($uses as $useShortName) {
                         if (strtolower($useShortName) === $typeNameLower) {
                             continue 2;

@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: fully_qualified_strict_types,no_superfluous_phpdoc_tags.
 --RULESET--
-{"fully_qualified_strict_types": {"shorten_globals_in_global_ns": true}, "no_superfluous_phpdoc_tags": true}
+{"fully_qualified_strict_types": {"shorten_globals_in_global_namespace": true}, "no_superfluous_phpdoc_tags": true}
 --EXPECT--
 <?php
 // No namespace

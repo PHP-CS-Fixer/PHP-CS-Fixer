@@ -10,7 +10,7 @@ caught exception ``classes``, ``extend`` and ``implements`` of ``classes`` and
 Configuration
 -------------
 
-``shorten_globals_in_global_ns``
+``shorten_globals_in_global_namespace``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 remove leading ``\`` when in global namespace.
@@ -46,7 +46,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['shorten_globals_in_global_ns' => true]``.
+With configuration: ``['shorten_globals_in_global_namespace' => true]``.
 
 .. code-block:: diff
 
