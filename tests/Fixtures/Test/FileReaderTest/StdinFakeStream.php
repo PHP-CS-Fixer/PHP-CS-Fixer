@@ -25,6 +25,11 @@ namespace PhpCsFixer\Tests\Fixtures\Test\FileReaderTest;
  */
 final class StdinFakeStream
 {
+    /**
+     * @var resource
+     */
+    public $context;
+
     private static bool $hasReadContent = false;
 
     private string $content = '<?php echo "foo";';
