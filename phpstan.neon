@@ -23,6 +23,6 @@ parameters:
         -
             message: '#^.+no value type specified in iterable type.+\.$#'
             path: *
-            count: 461
+            count: 468
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache

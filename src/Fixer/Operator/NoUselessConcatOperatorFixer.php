@@ -177,6 +177,11 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         }
     }
 
+    /**
+     * @param -1|1 $direction
+     *
+     * @return ?array
+     */
     private function getConcatOperandType(Tokens $tokens, int $index, int $direction): ?array
     {
         if ($tokens[$index]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
