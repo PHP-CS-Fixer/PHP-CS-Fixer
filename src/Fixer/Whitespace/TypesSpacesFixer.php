@@ -65,6 +65,16 @@ final class TypesSpacesFixer extends AbstractFixer implements ConfigurableFixerI
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after OrderedTypesFixer.
+     */
+    public function getPriority(): int
+    {
+        return -1;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens): bool
     {
