@@ -59,30 +59,37 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
                 continue;
             }
 
+            $endParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', ',', [T_CLOSE_TAG]]);
+
+            if (null === $endParenthesisIndex || !$tokens[$endParenthesisIndex]->equals('(')) {
+                continue;
+            }
+
             if ($this->canBeMovedToNextLine($index, $tokens)) {
                 $newline = new Token([T_WHITESPACE, $lineEnding]);
+
                 if ($tokens[$index - 1]->isWhitespace()) {
                     $tokens[$index - 1] = $newline;
                 } else {
                     $tokens->insertAt($index, $newline);
                     ++$index;
+                    ++$endParenthesisIndex;
                 }
             }
 
             $currentIndent = $this->getIndentAt($tokens, $index - 1);
+
             if (null === $currentIndent) {
                 continue;
             }
 
             $expectedIndent = $this->getExpectedIndentAt($tokens, $index);
+
             if ($currentIndent !== $expectedIndent) {
                 $tokens[$index - 1] = new Token([T_WHITESPACE, $lineEnding.$expectedIndent]);
             }
 
-            $endParenthesisIndex = $tokens->findBlockEnd(
-                Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-                $tokens->getNextTokenOfKind($index, ['('])
-            );
+            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endParenthesisIndex);
 
             for ($searchIndex = $index + 1; $searchIndex < $endParenthesisIndex; ++$searchIndex) {
                 $searchToken = $tokens[$searchIndex];

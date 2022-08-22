@@ -400,6 +400,38 @@ $foo
 ->setEmailConfirmationCode("123456",    );
 ',
             ],
+            [
+                '<?php return $foo
+->bar;',
+            ],
+            [
+                '<?php return $foo
+->bar;
+
+    if (foo()) {
+        echo 123;
+    }
+',
+            ],
+            [
+                '<?php return $foo
+->bar?>
+
+<?php
+if (foo()) {
+    echo 123;
+}
+',
+            ],
+            [
+                '<?php return [$foo
+->bar,
+1,
+2,
+abc(),
+];
+',
+            ],
         ];
     }
 
