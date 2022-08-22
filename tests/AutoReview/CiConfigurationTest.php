@@ -26,6 +26,7 @@ use Symfony\Component\Yaml\Yaml;
  * @internal
  *
  * @coversNothing
+ *
  * @group auto-review
  * @group covers-nothing
  */

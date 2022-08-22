@@ -664,6 +664,7 @@ $a = new Qux();',
 
     /**
      * @dataProvider provideRemoveBetweenUseTraitsCases
+     *
      * @group legacy
      */
     public function testRemoveBetweenUseTraits(string $expected, string $input): void
@@ -1097,6 +1098,7 @@ class Foo {}'
 
     /**
      * @dataProvider provideFix80Cases
+     *
      * @requires PHP 8.0
      */
     public function testFix80(array $config, string $expected, string $input = null): void
@@ -1154,6 +1156,7 @@ function foo(){}
 
     /**
      * @dataProvider provideFix81Cases
+     *
      * @requires PHP 8.1
      */
     public function testFix81(string $expected, string $input = null): void

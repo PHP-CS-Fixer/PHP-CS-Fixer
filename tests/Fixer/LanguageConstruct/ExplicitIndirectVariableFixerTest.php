@@ -74,6 +74,7 @@ $foo
      * @param mixed $input
      *
      * @dataProvider provideTestFix80Cases
+     *
      * @requires PHP 8.0
      */
     public function testFix80($expected, $input): void

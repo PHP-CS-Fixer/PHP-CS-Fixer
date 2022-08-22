@@ -437,6 +437,7 @@ EOT
 
     /**
      * @dataProvider provideFixPre80Cases
+     *
      * @requires PHP <8.0
      */
     public function testFixPre80(string $expected, string $input = null): void
@@ -493,6 +494,7 @@ EOT
 
     /**
      * @dataProvider provideDoNotFix80Cases
+     *
      * @requires PHP 8.0
      */
     public function test80DoNotFix(string $input): void

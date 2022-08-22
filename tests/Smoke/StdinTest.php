@@ -23,8 +23,11 @@ use PhpCsFixer\Preg;
  * @internal
  *
  * @requires OS Linux|Darwin
+ *
  * @coversNothing
+ *
  * @group covers-nothing
+ *
  * @large
  */
 final class StdinTest extends AbstractSmokeTest

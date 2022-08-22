@@ -87,6 +87,7 @@ final class ArgumentsAnalyzerTest extends TestCase
 
     /**
      * @requires PHP 8.0
+     *
      * @dataProvider provideArguments80Cases
      */
     public function testArguments80(string $code, int $openIndex, int $closeIndex, array $arguments): void
@@ -113,6 +114,7 @@ final class ArgumentsAnalyzerTest extends TestCase
 
     /**
      * @requires PHP 8.1
+     *
      * @dataProvider provideArguments81Cases
      */
     public function testArguments81(string $code, int $openIndex, int $closeIndex, array $arguments): void
@@ -265,6 +267,7 @@ final class ArgumentsAnalyzerTest extends TestCase
 
     /**
      * @requires PHP 8.0
+     *
      * @dataProvider provideArgumentsInfo80Cases
      */
     public function testArgumentInfo80(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
@@ -314,6 +317,7 @@ final class ArgumentsAnalyzerTest extends TestCase
 
     /**
      * @requires PHP 8.1
+     *
      * @dataProvider provideArgumentsInfo81Cases
      */
     public function testArgumentInfo81(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void

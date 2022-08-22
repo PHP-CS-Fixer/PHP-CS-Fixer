@@ -33,6 +33,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 
     /**
      * @dataProvider provideFixDeprecatedCases
+     *
      * @group legacy
      */
     public function testFix74Deprecated(string $expected, ?string $input = null): void

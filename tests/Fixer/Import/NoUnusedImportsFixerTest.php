@@ -1348,6 +1348,7 @@ use /**/A\B/**/;
 
     /**
      * @requires PHP 8.0
+     *
      * @dataProvider providePhp80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
@@ -1411,6 +1412,7 @@ class Foo {}
 
     /**
      * @requires PHP 8.1
+     *
      * @dataProvider providePhp81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
@@ -1485,6 +1487,7 @@ const D = new Foo7(1,2);
 
     /**
      * @requires PHP 8.1
+     *
      * @dataProvider provideFixPhp81Cases
      */
     public function testFixPhp81(string $expected): void

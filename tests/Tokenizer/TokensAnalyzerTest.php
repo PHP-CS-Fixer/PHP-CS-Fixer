@@ -482,6 +482,7 @@ PHP;
 
     /**
      * @dataProvider provideGetClassyElements81Cases
+     *
      * @requires PHP 8.1
      */
     public function testGetClassyElements81(array $expected, string $source): void
@@ -852,6 +853,7 @@ preg_replace_callback(
 
     /**
      * @dataProvider provideIsLambda80Cases
+     *
      * @requires PHP 8.0
      */
     public function testIsLambda80(array $expected, string $source): void
@@ -1122,6 +1124,7 @@ abstract class Baz
 
     /**
      * @dataProvider provideIsConstantInvocationPhp80Cases
+     *
      * @requires PHP 8.0
      */
     public function testIsConstantInvocationPhp80(array $expected, string $source): void
@@ -1220,6 +1223,7 @@ abstract class Baz
 
     /**
      * @dataProvider provideIsConstantInvocationPhp81Cases
+     *
      * @requires PHP 8.1
      */
     public function testIsConstantInvocationPhp81(array $expected, string $source): void
@@ -1751,6 +1755,7 @@ $b;',
 
     /**
      * @dataProvider provideIsBinaryOperator80Cases
+     *
      * @requires PHP 8.0
      */
     public function testIsBinaryOperator80(array $expected, string $source): void
@@ -1792,6 +1797,7 @@ $b;',
 
     /**
      * @dataProvider provideIsBinaryOperator81Cases
+     *
      * @requires PHP 8.1
      */
     public function testIsBinaryOperator81(array $expected, string $source): void

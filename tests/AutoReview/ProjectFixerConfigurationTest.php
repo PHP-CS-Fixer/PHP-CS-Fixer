@@ -23,6 +23,7 @@ use PhpCsFixer\ToolInfo;
  * @internal
  *
  * @coversNothing
+ *
  * @group auto-review
  * @group covers-nothing
  */

@@ -29,6 +29,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
     /**
      * @testWith ["php", "foo.php", "'php' '-l' 'foo.php'"]
      *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"]
+     *
      * @requires OS Linux|Darwin
      */
     public function testPrepareCommandOnPhpOnLinuxOrMac(string $executable, string $file, string $expected): void
@@ -44,6 +45,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
     /**
      * @testWith ["php", "foo.php", "php -l foo.php"]
      *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
+     *
      * @requires OS ^Win
      */
     public function testPrepareCommandOnPhpOnWindows(string $executable, string $file, string $expected): void

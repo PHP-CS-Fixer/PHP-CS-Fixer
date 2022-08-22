@@ -22,6 +22,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer
+ *
  * @requires PHP <8.0
  */
 final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase

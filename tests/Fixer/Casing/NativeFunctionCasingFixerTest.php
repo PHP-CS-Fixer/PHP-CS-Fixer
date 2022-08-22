@@ -180,6 +180,7 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
 
     /**
      * @dataProvider provideFix80Cases
+     *
      * @requires PHP 8.0
      */
     public function testFix80(string $expected): void

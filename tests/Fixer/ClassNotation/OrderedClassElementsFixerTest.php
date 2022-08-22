@@ -1342,6 +1342,7 @@ class TestClass
 
     /**
      * @dataProvider provideFix80Cases
+     *
      * @requires PHP 8.0
      */
     public function testFix80(string $expected, string $input): void
@@ -1412,6 +1413,7 @@ trait TestTrait
 
     /**
      * @dataProvider provideFix81Cases
+     *
      * @requires PHP 8.1
      */
     public function testFix81(string $expected, ?string $input = null, ?array $configuration = null): void

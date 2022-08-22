@@ -25,8 +25,11 @@ use PhpCsFixer\Console\Application;
  * @internal
  *
  * @requires OS Linux|Darwin
+ *
  * @coversNothing
+ *
  * @group covers-nothing
+ *
  * @large
  */
 final class CiIntegrationTest extends AbstractSmokeTest

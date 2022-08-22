@@ -489,6 +489,7 @@ echo M_PI;
 
     /**
      * @dataProvider provideFix80Cases
+     *
      * @requires PHP 8.0
      */
     public function testFixPhp80(string $expected): void

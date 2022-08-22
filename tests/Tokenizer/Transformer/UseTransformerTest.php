@@ -149,6 +149,7 @@ use C\{D,E,};
      * @param array<int, int> $expectedTokens index => kind
      *
      * @requires PHP 8.1
+     *
      * @dataProvider provideProcessPhp81Cases
      */
     public function testProcessPhp81(string $source, array $expectedTokens = []): void

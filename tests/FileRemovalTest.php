@@ -48,6 +48,7 @@ final class FileRemovalTest extends TestCase
 
     /**
      * @runInSeparateProcess
+     *
      * @doesNotPerformAssertions
      */
     public function testShutdownRemovesObservedFilesSetup(): void

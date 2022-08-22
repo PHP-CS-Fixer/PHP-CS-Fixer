@@ -1859,6 +1859,7 @@ class Foo {
 
     /**
      * @dataProvider provideFixPhp80Cases
+     *
      * @requires PHP 8.0
      */
     public function testFixPhp80(string $expected, ?string $input = null, array $config = []): void
@@ -2066,6 +2067,7 @@ class Foo
 
     /**
      * @dataProvider provideFix81Cases
+     *
      * @requires PHP 8.1
      */
     public function testFix81(string $expected, ?string $input = null, array $config = []): void

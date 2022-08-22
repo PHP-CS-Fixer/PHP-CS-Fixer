@@ -805,6 +805,7 @@ echo 1;'
 
     /**
      * @dataProvider provideFix81Cases
+     *
      * @requires PHP 8.1
      */
     public function testFix81(array $configuration, string $expected, ?string $input = null): void
