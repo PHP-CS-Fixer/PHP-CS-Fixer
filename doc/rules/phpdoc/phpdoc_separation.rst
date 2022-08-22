@@ -18,20 +18,6 @@ Allowed types: ``string[][]``
 
 Default value: ``[['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write']]``
 
-``psr_standard_tags_only``
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Whether to only process annotations defined by PSR-5 draft, which are: ``api``,
-``author``, ``category``, ``copyright``, ``deprecated``, ``example``,
-``global``, ``internal``, ``license``, ``link``, ``method``, ``package``,
-``param``, ``property``, ``property-read``, ``property-write``, ``return``,
-``see``, ``since``, ``subpackage``, ``throws``, ``todo``, ``uses``, ``var``,
-``version``.
-
-Allowed types: ``bool``
-
-Default value: ``true``
-
 Examples
 --------
 
@@ -89,32 +75,7 @@ With configuration: ``['groups' => [['deprecated', 'link', 'see', 'since'], ['au
 Example #3
 ~~~~~~~~~~
 
-With configuration: ``['groups' => [['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['param', 'return']], 'psr_standard_tags_only' => false]``.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-    /**
-     * Hello there!
-     *
-     * @author John Doe
-   + *
-     * @custom Test!
-     *
-     * @throws Exception|RuntimeException foo
-   + *
-     * @param string $foo
-   - *
-     * @param bool   $bar Bar
-     * @return int  Return the number of changes.
-     */
-
-Example #4
-~~~~~~~~~~
-
-With configuration: ``['groups' => [['author', 'throws', 'custom'], ['return', 'param']], 'psr_standard_tags_only' => false]``.
+With configuration: ``['groups' => [['author', 'throws', 'custom'], ['return', 'param']]]``.
 
 .. code-block:: diff
 

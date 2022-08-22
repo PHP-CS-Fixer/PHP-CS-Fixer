@@ -488,15 +488,15 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testDoNotMoveUnknownAnnotations(): void
+    public function testMoveUnknownAnnotations(): void
     {
         $expected = <<<'EOF'
 <?php
     /**
      * @expectedException Exception
+     *
      * @expectedExceptionMessage Oh Noes!
      * Something when wrong!
-     *
      *
      * @Hello\Test\Foo(asd)
      * @Method("GET")
@@ -717,7 +717,6 @@ EOF;
                 ['property', 'property-read', 'property-write'],
                 ['return', 'param'],
             ],
-            'psr_standard_tags_only' => false,
         ]);
 
         $expected = <<<'EOF'
@@ -875,7 +874,7 @@ EOF,
             ],
 
             'all_tags' => [
-                ['groups' => [['author', 'throws', 'custom'], ['return', 'param']], 'psr_standard_tags_only' => false],
+                ['groups' => [['author', 'throws', 'custom'], ['return', 'param']]],
                 <<<'EOF'
 <?php
 /**
@@ -895,7 +894,7 @@ EOF,
             ],
 
             'default_groups_standard_tags' => [
-                ['groups' => TagComparator::DEFAULT_GROUPS, 'psr_standard_tags_only' => true],
+                ['groups' => TagComparator::DEFAULT_GROUPS],
                 <<<'EOF'
 <?php
 /**
@@ -930,7 +929,7 @@ EOF,
             ],
 
             'default_groups_all_tags' => [
-                ['groups' => TagComparator::DEFAULT_GROUPS, 'psr_standard_tags_only' => false],
+                ['groups' => TagComparator::DEFAULT_GROUPS],
                 <<<'EOF'
 <?php
 /**

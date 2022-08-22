@@ -17,7 +17,6 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\DocBlock\Tag;
 use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -40,8 +39,6 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
      * @var string[][]
      */
     private array $groups;
-
-    private bool $standardTagsOnly = true;
 
     /**
      * {@inheritdoc}
@@ -69,9 +66,8 @@ EOF;
             'Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line.',
             [
                 new CodeSample($code),
-                new CodeSample($code, ['groups' => array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']])]),
-                new CodeSample($code, ['groups' => array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']]), 'psr_standard_tags_only' => false]),
-                new CodeSample($code, ['groups' => [['author', 'throws', 'custom'], ['return', 'param']], 'psr_standard_tags_only' => false]),
+                new CodeSample($code, ['groups' => [...TagComparator::DEFAULT_GROUPS, ['param', 'return']]]),
+                new CodeSample($code, ['groups' => [['author', 'throws', 'custom'], ['return', 'param']]]),
             ],
         );
     }
@@ -84,8 +80,6 @@ EOF;
         parent::configure($configuration);
 
         $this->groups = $this->configuration['groups'];
-
-        $this->standardTagsOnly = $this->configuration['psr_standard_tags_only'];
     }
 
     /**
@@ -160,14 +154,6 @@ EOF;
                 ->setDefault(TagComparator::DEFAULT_GROUPS)
                 ->setAllowedValues([$allowTagToBelongToOnlyOneGroup])
                 ->getOption(),
-            (new FixerOptionBuilder(
-                'psr_standard_tags_only',
-                'Whether to only process annotations defined by PSR-5 draft, which are: '.
-                '`'.implode('`, `', Tag::PSR_STANDARD_TAGS).'`.'
-            ))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(true)
-                ->getOption(),
         ]);
     }
 
@@ -205,12 +191,10 @@ EOF;
                 break;
             }
 
-            if (!$this->standardTagsOnly || $annotation->getTag()->valid() || $next->getTag()->valid()) {
-                if (TagComparator::shouldBeTogether($annotation->getTag(), $next->getTag(), $this->groups)) {
-                    $this->ensureAreTogether($doc, $annotation, $next);
-                } else {
-                    $this->ensureAreSeparate($doc, $annotation, $next);
-                }
+            if (TagComparator::shouldBeTogether($annotation->getTag(), $next->getTag(), $this->groups)) {
+                $this->ensureAreTogether($doc, $annotation, $next);
+            } else {
+                $this->ensureAreSeparate($doc, $annotation, $next);
             }
         }
     }
