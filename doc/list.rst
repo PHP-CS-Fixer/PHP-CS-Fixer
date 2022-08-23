@@ -379,6 +379,9 @@ List of Available Rules
        Change 'Y-m-d' to '!Y-m-d', return value will be '2022-01-11 00:00:00.0'.
        So, adding ``!`` to format string will make return value more intuitive.
 
+   *warning risky* Risky when depending on the actual timings being used even when not explicit
+   set in format.
+
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\DateTimeCreateFromFormatCallFixer <./../src/Fixer/FunctionNotation/DateTimeCreateFromFormatCallFixer.php>`_
 -  `date_time_immutable <./rules/class_usage/date_time_immutable.rst>`_
 
