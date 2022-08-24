@@ -21,6 +21,7 @@ use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @author Jakub Kwaśniewski <jakub@zero-85.pl>
  *
  * @internal
  *
@@ -51,6 +52,37 @@ final class TagComparatorTest extends TestCase
             ['author', 'since', false],
             ['link', 'see', true],
             ['category', 'package', true],
+        ];
+    }
+
+    /**
+     * @dataProvider provideComparatorWithDefinedGroupsCases
+     *
+     * @param string[][] $groups
+     */
+    public function testComparatorTogetherWithDefinedGroups(array $groups, string $first, string $second, bool $expected): void
+    {
+        $tag1 = new Tag(new Line('* @'.$first));
+        $tag2 = new Tag(new Line('* @'.$second));
+
+        static::assertSame(
+            $expected,
+            TagComparator::shouldBeTogether($tag1, $tag2, $groups)
+        );
+    }
+
+    public function provideComparatorWithDefinedGroupsCases(): array
+    {
+        return [
+            [[['param', 'return']], 'return', 'return', true],
+            [[], 'param', 'return', false],
+            [[['param', 'return']], 'return', 'param', true],
+            [[['param', 'return']], 'var', 'foo', false],
+            [[['param', 'return']], 'api', 'deprecated', false],
+            [[['param', 'return']], 'author', 'copyright', false],
+            [[['param', 'return'], ['author', 'since']], 'author', 'since', true],
+            [array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']]), 'link', 'see', true],
+            [[['param', 'return']], 'category', 'package', false],
         ];
     }
 }

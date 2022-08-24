@@ -26,6 +26,7 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
+     *
      * @requires PHP 8.1
      */
     public function testProcess(string $source, array $expectedTokens = []): void

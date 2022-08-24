@@ -18,6 +18,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\DateTimeCreateFromFormatCallFixer
  */
 final class DateTimeCreateFromFormatCallFixerTest extends AbstractFixerTestCase

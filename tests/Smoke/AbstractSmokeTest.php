@@ -22,7 +22,9 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @requires OS Linux|Darwin
+ *
  * @coversNothing
+ *
  * @group covers-nothing
  */
 abstract class AbstractSmokeTest extends TestCase

@@ -699,7 +699,7 @@ PHPDoc
   Scalar types should always be written in the same form. ``int`` not ``integer``, ``bool`` not ``boolean``, ``float`` not ``real`` or ``double``.
 - `phpdoc_separation <./phpdoc/phpdoc_separation.rst>`_
 
-  Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single blank line.
+  Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line.
 - `phpdoc_single_line_var_spacing <./phpdoc/phpdoc_single_line_var_spacing.rst>`_
 
   Single line ``@var`` PHPDoc should have proper spacing.

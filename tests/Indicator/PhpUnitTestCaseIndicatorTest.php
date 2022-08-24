@@ -20,6 +20,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
  * @covers \PhpCsFixer\Indicator\PhpUnitTestCaseIndicator
  */
 final class PhpUnitTestCaseIndicatorTest extends TestCase

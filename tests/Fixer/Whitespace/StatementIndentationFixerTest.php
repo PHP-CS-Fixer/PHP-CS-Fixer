@@ -805,6 +805,7 @@ if ($foo) {
 
     /**
      * @dataProvider provideFixPhp80Cases
+     *
      * @requires PHP 8.0
      */
     public function testFixPhp80(string $expected, ?string $input = null): void
@@ -871,6 +872,7 @@ class Foo {
 
     /**
      * @dataProvider provideFixPhp81Cases
+     *
      * @requires PHP 8.1
      */
     public function testFixPhp81(string $expected, ?string $input = null): void

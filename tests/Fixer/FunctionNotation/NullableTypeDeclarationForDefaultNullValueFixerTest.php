@@ -429,6 +429,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
 
     /**
      * @dataProvider provideFix80Cases
+     *
      * @requires PHP 8.0
      */
     public function testFix80(string $expected, ?string $input = null): void
@@ -438,6 +439,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
 
     /**
      * @dataProvider provideInvertedFix80Cases
+     *
      * @requires PHP 8.0
      */
     public function testFixInverse80(string $expected, ?string $input = null): void
@@ -541,6 +543,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
 
     /**
      * @dataProvider provideFix81Cases
+     *
      * @requires PHP 8.1
      */
     public function testFix81(string $expected, ?array $config): void

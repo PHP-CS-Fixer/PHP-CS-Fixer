@@ -712,6 +712,7 @@ PHP;
 
     /**
      * @requires PHP 8.0
+     *
      * @dataProvider provideFindBlockEnd80Cases
      *
      * @param Tokens::BLOCK_TYPE_* $type

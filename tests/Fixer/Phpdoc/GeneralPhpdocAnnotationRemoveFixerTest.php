@@ -20,6 +20,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @author Gert de Pagter
+ *
  * @covers \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer
  */
 final class GeneralPhpdocAnnotationRemoveFixerTest extends AbstractFixerTestCase

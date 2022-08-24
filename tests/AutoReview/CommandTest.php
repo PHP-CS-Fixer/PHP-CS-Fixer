@@ -24,6 +24,7 @@ use Symfony\Component\Console\Command\Command;
  * @internal
  *
  * @coversNothing
+ *
  * @group auto-review
  * @group covers-nothing
  */

@@ -14,10 +14,13 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @author Jakub Kwaśniewski <jakub@zero-85.pl>
  *
  * @internal
  *
@@ -485,15 +488,15 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testDoNotMoveUnknownAnnotations(): void
+    public function testMoveUnknownAnnotations(): void
     {
         $expected = <<<'EOF'
 <?php
     /**
      * @expectedException Exception
+     *
      * @expectedExceptionMessage Oh Noes!
      * Something when wrong!
-     *
      *
      * @Hello\Test\Foo(asd)
      * @Method("GET")
@@ -647,5 +650,318 @@ EOF;
      */';
 
         $this->doTest($expected, $input);
+    }
+
+    public function testTagInTwoGroupsConfiguration(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage(
+            'The option "groups" value is invalid. '.
+            'The "param" tag belongs to more than one group.'
+        );
+
+        $this->fixer->configure(['groups' => [['param', 'return'], ['param', 'throws']]]);
+    }
+
+    public function testTagSpecifiedTwoTimesInGroupConfiguration(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage(
+            'The option "groups" value is invalid. '.
+            'The "param" tag is specified more than once.'
+        );
+
+        $this->fixer->configure(['groups' => [['param', 'return', 'param', 'throws']]]);
+    }
+
+    public function testLaravelGroups(): void
+    {
+        $this->fixer->configure(['groups' => array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']])]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Attempt to authenticate using HTTP Basic Auth.
+     *
+     * @param  string  $field
+     * @param  array  $extraConditions
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * Attempt to authenticate using HTTP Basic Auth.
+     *
+     * @param  string  $field
+     * @param  array  $extraConditions
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testVariousGroups(): void
+    {
+        $this->fixer->configure([
+            'groups' => [
+                ['deprecated', 'link', 'see', 'since', 'author', 'copyright', 'license'],
+                ['category', 'package', 'subpackage'],
+                ['property', 'property-read', 'property-write'],
+                ['return', 'param'],
+            ],
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Attempt to authenticate using HTTP Basic Auth.
+     *
+     * @link https://example.com/link
+     * @see https://doc.example.com/link
+     * @copyright by John Doe 2001
+     * @author John Doe
+     *
+     * @property-custom string $prop
+     *
+     * @param  string  $field
+     * @param  array  $extraConditions
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * Attempt to authenticate using HTTP Basic Auth.
+     *
+     * @link https://example.com/link
+     *
+     *
+     * @see https://doc.example.com/link
+     * @copyright by John Doe 2001
+     * @author John Doe
+     * @property-custom string $prop
+     * @param  string  $field
+     * @param  array  $extraConditions
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testVariousAdditionalGroups(): void
+    {
+        $this->fixer->configure([
+            'groups' => [
+                ['deprecated', 'link', 'see', 'since', 'author', 'copyright', 'license'],
+                ['category', 'package', 'subpackage'],
+                ['property', 'property-read', 'property-write'],
+                ['return', 'param'],
+            ],
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * Attempt to authenticate using HTTP Basic Auth.
+     *
+     * @link https://example.com/link
+     * @see https://doc.example.com/link
+     * @copyright by John Doe 2001
+     * @author John Doe
+     *
+     * @param  string  $field
+     * @param  array  $extraConditions
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * Attempt to authenticate using HTTP Basic Auth.
+     *
+     * @link https://example.com/link
+     *
+     *
+     * @see https://doc.example.com/link
+     * @copyright by John Doe 2001
+     * @author John Doe
+     * @param  string  $field
+     * @param  array  $extraConditions
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provideDocCodeCases
+     *
+     * @param array<string, mixed> $config
+     */
+    public function testDocCode(array $config, string $expected, string $input): void
+    {
+        $this->fixer->configure($config);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array<array<null|array<string, mixed>|string>>
+     */
+    public function provideDocCodeCases(): array
+    {
+        $input = <<<'EOF'
+<?php
+/**
+ * Hello there!
+ *
+ * @author John Doe
+ * @custom Test!
+ * @throws Exception|RuntimeException foo
+ * @param string $foo
+ * @param bool   $bar Bar
+ *
+ * @return int  Return the number of changes.
+ */
+
+EOF;
+
+        return [
+            'laravel' => [
+                ['groups' => array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']])],
+                <<<'EOF'
+<?php
+/**
+ * Hello there!
+ *
+ * @author John Doe
+ *
+ * @custom Test!
+ *
+ * @throws Exception|RuntimeException foo
+ *
+ * @param string $foo
+ * @param bool   $bar Bar
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+                $input,
+            ],
+
+            'all_tags' => [
+                ['groups' => [['author', 'throws', 'custom'], ['return', 'param']]],
+                <<<'EOF'
+<?php
+/**
+ * Hello there!
+ *
+ * @author John Doe
+ * @custom Test!
+ * @throws Exception|RuntimeException foo
+ *
+ * @param string $foo
+ * @param bool   $bar Bar
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+                $input,
+            ],
+
+            'default_groups_standard_tags' => [
+                ['groups' => TagComparator::DEFAULT_GROUPS],
+                <<<'EOF'
+<?php
+/**
+ * Hello there!
+ *
+ * @author John Doe
+ *
+ * @throws Exception|RuntimeException foo
+ *
+ * @custom Test!
+ *
+ * @param string $foo
+ * @param bool   $bar Bar
+ *
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+                <<<'EOF'
+<?php
+/**
+ * Hello there!
+ * @author John Doe
+ * @throws Exception|RuntimeException foo
+ * @custom Test!
+ * @param string $foo
+ * @param bool   $bar Bar
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+            ],
+
+            'default_groups_all_tags' => [
+                ['groups' => TagComparator::DEFAULT_GROUPS],
+                <<<'EOF'
+<?php
+/**
+ * Hello there!
+ *
+ * @author John Doe
+ *
+ * @throws Exception|RuntimeException foo
+ *
+ * @custom Test!
+ *
+ * @param string $foo
+ * @param bool   $bar Bar
+ *
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+                <<<'EOF'
+<?php
+/**
+ * Hello there!
+ * @author John Doe
+ * @throws Exception|RuntimeException foo
+ * @custom Test!
+ * @param string $foo
+ * @param bool   $bar Bar
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+            ],
+        ];
     }
 }

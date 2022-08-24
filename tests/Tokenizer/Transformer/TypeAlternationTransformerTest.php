@@ -91,6 +91,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
 
     /**
      * @dataProvider provideProcess80Cases
+     *
      * @requires PHP 8.0
      */
     public function testProcess80(string $source, array $expectedTokens): void
@@ -316,6 +317,7 @@ class Number
 
     /**
      * @dataProvider provideFix81Cases
+     *
      * @requires PHP 8.1
      */
     public function testFix81(array $expectedTokens, string $source): void
@@ -360,6 +362,7 @@ class Foo
 
     /**
      * @dataProvider provideProcess81Cases
+     *
      * @requires PHP 8.1
      */
     public function testProcess81(string $source, array $expectedTokens): void

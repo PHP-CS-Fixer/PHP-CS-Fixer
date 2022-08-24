@@ -27,6 +27,7 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
 {
     /**
      * @dataProvider provideProcessCases
+     *
      * @requires PHP 8.0
      */
     public function testProcess(array $expectedTokens, string $source): void
@@ -125,6 +126,7 @@ class Point {
 
     /**
      * @dataProvider provideFix81Cases
+     *
      * @requires PHP 8.1
      */
     public function testFix81(array $expectedTokens, string $source): void

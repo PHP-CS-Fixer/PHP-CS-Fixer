@@ -282,6 +282,7 @@ A();
      * @param int[] $indices
      *
      * @dataProvider provideIsGlobalFunctionCallPhp80Cases
+     *
      * @requires PHP 8.0
      */
     public function testIsGlobalFunctionCallPhp80(string $code, array $indices): void
@@ -327,6 +328,7 @@ class Foo {}
      * @param int[] $indices
      *
      * @dataProvider provideIsGlobalFunctionCallPhp81Cases
+     *
      * @requires PHP 8.1
      */
     public function testIsGlobalFunctionCallPhp81(array $indices, string $code): void
@@ -695,6 +697,7 @@ class(){};
 
     /**
      * @dataProvider provideFunctionsWithArgumentsPhp80Cases
+     *
      * @requires PHP 8.0
      */
     public function testFunctionArgumentInfoPhp80(string $code, int $methodIndex, array $expected): void

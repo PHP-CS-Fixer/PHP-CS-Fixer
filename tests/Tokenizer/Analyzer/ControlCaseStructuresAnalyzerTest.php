@@ -321,6 +321,7 @@ endswitch ?>',
      * @param int[] $types
      *
      * @requires PHP 8.1
+     *
      * @dataProvider provideFindControlStructuresPhp81Cases
      */
     public function testFindControlStructuresPhp81(array $expectedAnalyses, string $source, array $types): void

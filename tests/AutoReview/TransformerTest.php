@@ -24,6 +24,7 @@ use PhpCsFixer\Tokenizer\Transformers;
  * @internal
  *
  * @coversNothing
+ *
  * @group auto-review
  * @group covers-nothing
  */

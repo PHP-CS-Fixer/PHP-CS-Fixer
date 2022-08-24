@@ -18,7 +18,6 @@ class Foo {
      *
      * @throws Exception
      *
-     *
      * @custom
      */
     public function fooBar ($fo, $bar, array $baz, $qux) {}

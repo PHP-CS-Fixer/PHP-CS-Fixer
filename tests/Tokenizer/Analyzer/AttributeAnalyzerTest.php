@@ -38,6 +38,7 @@ final class AttributeAnalyzerTest extends TestCase
 
     /**
      * @requires     PHP 8.0
+     *
      * @dataProvider provideIsAttributeCases
      */
     public function testIsAttribute(bool $isInAttribute, string $code): void

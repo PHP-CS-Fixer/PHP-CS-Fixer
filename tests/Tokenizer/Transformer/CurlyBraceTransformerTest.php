@@ -205,6 +205,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
 
     /**
      * @dataProvider provideProcess80Cases
+     *
      * @requires PHP 8.0
      */
     public function testProcess80(string $source, array $expectedTokens = []): void

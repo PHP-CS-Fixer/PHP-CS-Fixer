@@ -1033,6 +1033,7 @@ function foo(&$c) {
 
     /**
      * @requires PHP 8.0
+     *
      * @dataProvider providePhp80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void

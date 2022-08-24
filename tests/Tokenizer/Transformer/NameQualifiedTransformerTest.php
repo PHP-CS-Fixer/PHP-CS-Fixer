@@ -22,6 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
  * @requires PHP 8.0
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NameQualifiedTransformer

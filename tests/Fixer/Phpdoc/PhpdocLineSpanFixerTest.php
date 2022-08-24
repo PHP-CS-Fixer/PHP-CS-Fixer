@@ -561,6 +561,7 @@ class Foo
 
     /**
      * @dataProvider provideFix80Cases
+     *
      * @requires PHP 8.0
      *
      * @param array<string, mixed> $config
@@ -708,6 +709,7 @@ class Foo
 
     /**
      * @dataProvider provideFix81Cases
+     *
      * @requires PHP 8.1
      *
      * @param array<string, mixed> $config

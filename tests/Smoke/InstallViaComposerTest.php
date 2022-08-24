@@ -24,7 +24,9 @@ use Symfony\Component\Filesystem\Filesystem;
  * @internal
  *
  * @coversNothing
+ *
  * @group covers-nothing
+ *
  * @large
  */
 final class InstallViaComposerTest extends AbstractSmokeTest

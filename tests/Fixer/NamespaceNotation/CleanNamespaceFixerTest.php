@@ -25,6 +25,7 @@ final class CleanNamespaceFixerTest extends AbstractFixerTestCase
 {
     /**
      * @requires PHP <8.0
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, string $input): void
