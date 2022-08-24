@@ -1407,6 +1407,14 @@ use Symfony\\Component\\Routing\\Annotation\\Route;
 class Foo {}
 ",
         ];
+
+        yield 'attribute 2' => [
+            '<?php
+
+use Psr\Log\LoggerInterface;
+function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
+',
+        ];
     }
 
     /**
