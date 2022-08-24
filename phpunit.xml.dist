@@ -3,28 +3,19 @@
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-    backupGlobals="false"
-    backupStaticAttributes="false"
     beStrictAboutChangesToGlobalState="true"
     beStrictAboutOutputDuringTests="true"
-    beStrictAboutTestsThatDoNotTestAnything="true"
     beStrictAboutTodoAnnotatedTests="true"
     bootstrap="./vendor/autoload.php"
     colors="true"
     columns="max"
-    convertErrorsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertWarningsToExceptions="true"
     defaultTimeLimit="10"
     enforceTimeLimit="true"
     failOnRisky="true"
     failOnWarning="true"
-    processIsolation="false"
-    stopOnFailure="false"
     timeoutForSmallTests="10"
     timeoutForMediumTests="20"
     timeoutForLargeTests="30"
-    verbose="false"
 >
     <testsuites>
         <testsuite name="all">
@@ -37,11 +28,11 @@
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist>
+    <coverage>
+        <include>
             <directory>./src</directory>
-        </whitelist>
-    </filter>
+        </include>
+    </coverage>
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
