@@ -1219,6 +1219,15 @@ abstract class Baz
             [5 => false, 14 => false, 16 => false, 19 => false, 22 => false],
             '<?php try { foo(); } catch(A\B|\InvalidArgumentException|\LogicException) {}',
         ];
+
+        yield 'attribute before' => [
+            [4 => false, 6 => false, 8 => false, 13 => false, 17 => false, 23 => false, 25 => false],
+            '<?php
+
+use Psr\Log\LoggerInterface;
+function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
+',
+        ];
     }
 
     /**

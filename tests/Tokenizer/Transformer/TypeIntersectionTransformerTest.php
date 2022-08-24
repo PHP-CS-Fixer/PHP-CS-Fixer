@@ -296,5 +296,29 @@ $a = static function (A&B&int $a):int|null {};
                 52 => CT::T_TYPE_INTERSECTION,
             ],
         ];
+
+        yield [
+            '<?php
+
+use Psr\Log\LoggerInterface;
+function f( #[Target(\'xxx\')] LoggerInterface&A $logger) {}
+
+',
+            [
+                24 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield [
+            '<?php
+
+use Psr\Log\LoggerInterface;
+function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] LoggerInterface&X $logger) {}
+
+',
+            [
+                45 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
     }
 }
