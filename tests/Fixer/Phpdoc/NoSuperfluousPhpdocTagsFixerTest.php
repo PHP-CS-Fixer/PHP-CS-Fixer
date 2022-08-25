@@ -32,11 +32,10 @@ final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public function provideFixCases(): iterable
     {
-        return [
-            'no typehint' => [
-                '<?php
+        yield 'no typehint' => [
+            '<?php
 class Foo {
     /**
      * @param Bar $bar
@@ -45,55 +44,59 @@ class Foo {
      */
     public function doFoo($bar) {}
 }',
-            ],
-            'same typehint' => [
-                '<?php
+        ];
+
+        yield 'same typehint' => [
+            '<?php
 class Foo {
     /**
      */
     public function doFoo(Bar $bar) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param Bar $bar
      */
     public function doFoo(Bar $bar) {}
 }',
-            ],
-            'same optional typehint' => [
-                '<?php
+        ];
+
+        yield 'same optional typehint' => [
+            '<?php
 class Foo {
     /**
      */
     public function doFoo(Bar $bar = NULL) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param Bar|null $bar
      */
     public function doFoo(Bar $bar = NULL) {}
 }',
-            ],
-            'same typehint with description' => [
-                '<?php
+        ];
+
+        yield 'same typehint with description' => [
+            '<?php
 class Foo {
     /**
      * @param Bar $bar an instance of Bar
      */
     public function doFoo(Bar $bar) {}
 }',
-            ],
-            'allow_mixed=>false' => [
-                '<?php
+        ];
+
+        yield 'allow_mixed=>false' => [
+            '<?php
 class Foo {
     /**
      *
      */
     public function doFoo($bar) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param mixed $bar
@@ -102,106 +105,114 @@ class Foo {
      */
     public function doFoo($bar) {}
 }',
-                ['allow_mixed' => false],
-            ],
-            'allow_mixed=>true' => [
-                '<?php
+            ['allow_mixed' => false],
+        ];
+
+        yield 'allow_mixed=>true' => [
+            '<?php
 class Foo {
     /**
      *
      */
     public function doFoo($bar) {}
 }',
-                null,
-                ['allow_mixed' => true],
-            ],
-            'allow_mixed=>false on property' => [
-                '<?php
+            null,
+            ['allow_mixed' => true],
+        ];
+
+        yield 'allow_mixed=>false on property' => [
+            '<?php
 class Foo {
     /**
      */
     private $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var mixed
      */
     private $bar;
 }',
-                ['allow_mixed' => false],
-            ],
-            'allow_mixed=>false on property with var' => [
-                '<?php
+            ['allow_mixed' => false],
+        ];
+
+        yield 'allow_mixed=>false on property with var' => [
+            '<?php
 class Foo {
     /**
      */
     private $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var mixed $bar
      */
     private $bar;
 }',
-                ['allow_mixed' => false],
-            ],
-            'allow_mixed=>false on property but with comment' => [
-                '<?php
+            ['allow_mixed' => false],
+        ];
+
+        yield 'allow_mixed=>false on property but with comment' => [
+            '<?php
 class Foo {
     /**
      * @var mixed comment
      */
     private $bar;
 }',
-                null,
-                ['allow_mixed' => false],
-            ],
-            'allow_unused_params=>true' => [
-                '<?php
+            null,
+            ['allow_mixed' => false],
+        ];
+
+        yield 'allow_unused_params=>true' => [
+            '<?php
 class Foo {
     /**
      * @param string|int $c
      */
     public function doFoo($bar /*, $c = 0 */) {}
 }',
-                null,
-                ['allow_unused_params' => true],
-            ],
-            'multiple different types' => [
-                '<?php
+            null,
+            ['allow_unused_params' => true],
+        ];
+
+        yield 'multiple different types' => [
+            '<?php
 class Foo {
     /**
      * @param SubclassOfBar1|SubclassOfBar2 $bar
      */
     public function doFoo(Bar $bar) {}
 }',
-            ],
-            'same typehint with different casing' => [
-                '<?php
+        ];
+
+        yield 'same typehint with different casing' => [
+            '<?php
 class Foo {
     /**
      */
     public function doFoo(Bar $bar) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param bar $bar
      */
     public function doFoo(Bar $bar) {}
 }',
-            ],
-            'multiple arguments' => [
-                '<?php
+        ];
+
+        yield 'multiple arguments' => [
+            '<?php
 class Foo {
     /**
      * @param SubclassOfBar1|SubclassOfBar2 $bar
      */
     public function doFoo(Bar $bar, Baz $baz = null) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param SubclassOfBar1|SubclassOfBar2 $bar
@@ -209,42 +220,45 @@ class Foo {
      */
     public function doFoo(Bar $bar, Baz $baz = null) {}
 }',
-            ],
-            'with import' => [
-                '<?php
+        ];
+
+        yield 'with import' => [
+            '<?php
 use Foo\Bar;
 
 /**
  */
 function foo(Bar $bar) {}',
-                '<?php
+            '<?php
 use Foo\Bar;
 
 /**
  * @param Bar $bar
  */
 function foo(Bar $bar) {}',
-            ],
-            'with root symbols' => [
-                '<?php
+        ];
+
+        yield 'with root symbols' => [
+            '<?php
 /**
  */
 function foo(\Foo\Bar $bar) {}',
-                '<?php
+            '<?php
 /**
  * @param \Foo\Bar $bar
  */
 function foo(\Foo\Bar $bar) {}',
-            ],
-            'with mix of imported and fully qualified symbols' => [
-                '<?php
+        ];
+
+        yield 'with mix of imported and fully qualified symbols' => [
+            '<?php
 use Foo\Bar;
 use Foo\Baz;
 
 /**
  */
 function foo(Bar $bar, \Foo\Baz $baz) {}',
-                '<?php
+            '<?php
 use Foo\Bar;
 use Foo\Baz;
 
@@ -253,33 +267,36 @@ use Foo\Baz;
  * @param Baz $baz
  */
 function foo(Bar $bar, \Foo\Baz $baz) {}',
-            ],
-            'with aliased import' => [
-                '<?php
+        ];
+
+        yield 'with aliased import' => [
+            '<?php
 use Foo\Bar as Baz;
 
 /**
  */
 function foo(Baz $bar) {}',
-                '<?php
+            '<?php
 use Foo\Bar as Baz;
 
 /**
  * @param \Foo\Bar $bar
  */
 function foo(Baz $bar) {}',
-            ],
-            'with unmapped param' => [
-                '<?php
+        ];
+
+        yield 'with unmapped param' => [
+            '<?php
 use Foo\Bar;
 
 /**
  * @param Bar
  */
 function foo(Bar $bar) {}',
-            ],
-            'with param superfluous but not return' => [
-                '<?php
+        ];
+
+        yield 'with param superfluous but not return' => [
+            '<?php
 class Foo {
     /**
      *
@@ -287,7 +304,7 @@ class Foo {
      */
     public function doFoo(Bar $bar) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param Bar $bar
@@ -296,16 +313,17 @@ class Foo {
      */
     public function doFoo(Bar $bar) {}
 }',
-            ],
-            'with not all params superfluous' => [
-                '<?php
+        ];
+
+        yield 'with not all params superfluous' => [
+            '<?php
 class Foo {
     /**
      * @param Bax|Baz $baxz
      */
     public function doFoo(Bar $bar, $baxz) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param Bar $bar
@@ -313,15 +331,16 @@ class Foo {
      */
     public function doFoo(Bar $bar, $baxz) {}
 }',
-            ],
-            'with special type hints' => [
-                '<?php
+        ];
+
+        yield 'with special type hints' => [
+            '<?php
 class Foo {
     /**
      */
     public function doFoo(array $bar, callable $baz) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param array    $bar
@@ -329,24 +348,27 @@ class Foo {
      */
     public function doFoo(array $bar, callable $baz) {}
 }',
-            ],
-            'PHPDoc at the end of file' => [
-                '<?php
+        ];
+
+        yield 'PHPDoc at the end of file' => [
+            '<?php
 /**
  * Foo
  */',
-            ],
-            'with_variable_in_description' => [
-                '<?php
+        ];
+
+        yield 'with_variable_in_description' => [
+            '<?php
 class Foo {
     /**
      * @param $foo Some description that includes a $variable
      */
     public function doFoo($foo) {}
 }',
-            ],
-            'with_null' => [
-                '<?php
+        ];
+
+        yield 'with_null' => [
+            '<?php
 class Foo {
     /**
      * @param null $foo
@@ -354,83 +376,90 @@ class Foo {
      */
     public function doFoo($foo) {}
 }',
-            ],
-            'inheritdoc' => [
-                '<?php
+        ];
+
+        yield 'inheritdoc' => [
+            '<?php
 class Foo {
     /**
      * @inheritDoc
      */
     public function doFoo($foo) {}
 }',
-            ],
-            'inline_inheritdoc' => [
-                '<?php
+        ];
+
+        yield 'inline_inheritdoc' => [
+            '<?php
 class Foo {
     /**
      * {@inheritdoc}
      */
     public function doFoo($foo) {}
 }',
-            ],
-            'dont_remove_inheritdoc' => [
-                '<?php
+        ];
+
+        yield 'dont_remove_inheritdoc' => [
+            '<?php
 class Foo {
     /**
      * @inheritDoc
      */
     public function doFoo($foo) {}
 }',
-                null,
-                ['remove_inheritdoc' => false],
-            ],
-            'dont_remove_inline_inheritdoc' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => false],
+        ];
+
+        yield 'dont_remove_inline_inheritdoc' => [
+            '<?php
 class Foo {
     /**
      * {@inheritdoc}
      */
     public function doFoo($foo) {}
 }',
-                null,
-                ['remove_inheritdoc' => false],
-            ],
-            'remove_inheritdoc' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => false],
+        ];
+
+        yield 'remove_inheritdoc' => [
+            '<?php
 class Foo {
     /**
      *
      */
     public function doFoo($foo) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @inheritDoc
      */
     public function doFoo($foo) {}
 }',
-                ['remove_inheritdoc' => true],
-            ],
-            'remove_inline_inheritdoc' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'remove_inline_inheritdoc' => [
+            '<?php
 class Foo {
     /**
      *
      */
     public function doFoo($foo) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * {@inheritdoc}
      */
     public function doFoo($foo) {}
 }',
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_inheritdoc_when_surrounded_by_text' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_inheritdoc_when_surrounded_by_text' => [
+            '<?php
 class Foo {
     /**
      * Foo.
@@ -441,11 +470,12 @@ class Foo {
      */
     public function doFoo($foo) {}
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_inheritdoc_when_preceded_by_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_inheritdoc_when_preceded_by_text' => [
+            '<?php
 class Foo {
     /**
      * Foo.
@@ -454,11 +484,12 @@ class Foo {
      */
     public function doFoo($foo) {}
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_inheritdoc_when_followed_by_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_inheritdoc_when_followed_by_text' => [
+            '<?php
 class Foo {
     /**
      * @inheritDoc
@@ -467,96 +498,104 @@ class Foo {
      */
     public function doFoo($foo) {}
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_inline_inheritdoc_inside_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_inline_inheritdoc_inside_text' => [
+            '<?php
 class Foo {
     /**
      * Foo {@inheritDoc} Bar.
      */
     public function doFoo($foo) {}
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'inheritdocs' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'inheritdocs' => [
+            '<?php
 class Foo {
     /**
      * @inheritDocs
      */
     public function doFoo($foo) {}
 }',
-            ],
-            'inline_inheritdocs' => [
-                '<?php
+        ];
+
+        yield 'inline_inheritdocs' => [
+            '<?php
 class Foo {
     /**
      * {@inheritdocs}
      */
     public function doFoo($foo) {}
 }',
-            ],
-            'dont_remove_inheritdocs' => [
-                '<?php
+        ];
+
+        yield 'dont_remove_inheritdocs' => [
+            '<?php
 class Foo {
     /**
      * @inheritDocs
      */
     public function doFoo($foo) {}
 }',
-                null,
-                ['remove_inheritdoc' => false],
-            ],
-            'dont_remove_inline_inheritdocs' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => false],
+        ];
+
+        yield 'dont_remove_inline_inheritdocs' => [
+            '<?php
 class Foo {
     /**
      * {@inheritdocs}
      */
     public function doFoo($foo) {}
 }',
-                null,
-                ['remove_inheritdoc' => false],
-            ],
-            'remove_inheritdocs' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => false],
+        ];
+
+        yield 'remove_inheritdocs' => [
+            '<?php
 class Foo {
     /**
      *
      */
     public function doFoo($foo) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @inheritDocs
      */
     public function doFoo($foo) {}
 }',
-                ['remove_inheritdoc' => true],
-            ],
-            'remove_inline_inheritdocs' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'remove_inline_inheritdocs' => [
+            '<?php
 class Foo {
     /**
      *
      */
     public function doFoo($foo) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * {@inheritdocs}
      */
     public function doFoo($foo) {}
 }',
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_inheritdocs_when_surrounded_by_text' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_inheritdocs_when_surrounded_by_text' => [
+            '<?php
 class Foo {
     /**
      * Foo.
@@ -567,11 +606,12 @@ class Foo {
      */
     public function doFoo($foo) {}
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_inheritdocs_when_preceded_by_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_inheritdocs_when_preceded_by_text' => [
+            '<?php
 class Foo {
     /**
      * Foo.
@@ -580,11 +620,12 @@ class Foo {
      */
     public function doFoo($foo) {}
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_inheritdocs_when_followed_by_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_inheritdocs_when_followed_by_text' => [
+            '<?php
 class Foo {
     /**
      * @inheritDocs
@@ -593,96 +634,104 @@ class Foo {
      */
     public function doFoo($foo) {}
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_inline_inheritdocs_inside_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_inline_inheritdocs_inside_text' => [
+            '<?php
 class Foo {
     /**
      * Foo {@inheritDocs} Bar.
      */
     public function doFoo($foo) {}
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'property_inheritdoc' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'property_inheritdoc' => [
+            '<?php
 class Foo {
     /**
      * @inheritDoc
      */
     private $foo;
 }',
-            ],
-            'inline_property_inheritdoc' => [
-                '<?php
+        ];
+
+        yield 'inline_property_inheritdoc' => [
+            '<?php
 class Foo {
     /**
      * {@inheritdoc}
      */
     private $foo;
 }',
-            ],
-            'dont_remove_property_inheritdoc' => [
-                '<?php
+        ];
+
+        yield 'dont_remove_property_inheritdoc' => [
+            '<?php
 class Foo {
     /**
      * @inheritDoc
      */
     private $foo;
 }',
-                null,
-                ['remove_inheritdoc' => false],
-            ],
-            'dont_remove_property_inline_inheritdoc' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => false],
+        ];
+
+        yield 'dont_remove_property_inline_inheritdoc' => [
+            '<?php
 class Foo {
     /**
      * {@inheritdoc}
      */
     private $foo;
 }',
-                null,
-                ['remove_inheritdoc' => false],
-            ],
-            'remove_property_inheritdoc' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => false],
+        ];
+
+        yield 'remove_property_inheritdoc' => [
+            '<?php
 class Foo {
     /**
      *
      */
     private $foo;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @inheritDoc
      */
     private $foo;
 }',
-                ['remove_inheritdoc' => true],
-            ],
-            'remove_inline_property_inheritdoc' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'remove_inline_property_inheritdoc' => [
+            '<?php
 class Foo {
     /**
      *
      */
     private $foo;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * {@inheritdoc}
      */
     private $foo;
 }',
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_property_inheritdoc_when_surrounded_by_text' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_property_inheritdoc_when_surrounded_by_text' => [
+            '<?php
 class Foo {
     /**
      * Foo.
@@ -693,11 +742,12 @@ class Foo {
      */
     private $foo;
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_property_inheritdoc_when_preceded_by_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_property_inheritdoc_when_preceded_by_text' => [
+            '<?php
 class Foo {
     /**
      * Foo.
@@ -706,11 +756,12 @@ class Foo {
      */
     private $foo;
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_property_inheritdoc_when_followed_by_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_property_inheritdoc_when_followed_by_text' => [
+            '<?php
 class Foo {
     /**
      * @inheritDoc
@@ -719,96 +770,104 @@ class Foo {
      */
     private $foo;
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_property_inline_inheritdoc_inside_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_property_inline_inheritdoc_inside_text' => [
+            '<?php
 class Foo {
     /**
      * Foo {@inheritDoc} Bar.
      */
     private $foo;
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'property_inheritdocs' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'property_inheritdocs' => [
+            '<?php
 class Foo {
     /**
      * @inheritDocs
      */
     private $foo;
 }',
-            ],
-            'inline_property_inheritdocs' => [
-                '<?php
+        ];
+
+        yield 'inline_property_inheritdocs' => [
+            '<?php
 class Foo {
     /**
      * {@inheritdocs}
      */
     private $foo;
 }',
-            ],
-            'dont_remove_property_inheritdocs' => [
-                '<?php
+        ];
+
+        yield 'dont_remove_property_inheritdocs' => [
+            '<?php
 class Foo {
     /**
      * @inheritDocs
      */
     private $foo;
 }',
-                null,
-                ['remove_inheritdoc' => false],
-            ],
-            'dont_remove_inline_property_inheritdocs' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => false],
+        ];
+
+        yield 'dont_remove_inline_property_inheritdocs' => [
+            '<?php
 class Foo {
     /**
      * {@inheritdocs}
      */
     private $foo;
 }',
-                null,
-                ['remove_inheritdoc' => false],
-            ],
-            'remove_property_property_inheritdoc' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => false],
+        ];
+
+        yield 'remove_property_property_inheritdoc' => [
+            '<?php
 class Foo {
     /**
      *
      */
     private $foo;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @inheritDocs
      */
     private $foo;
 }',
-                ['remove_inheritdoc' => true],
-            ],
-            'remove_inline_property_inheritdocs' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'remove_inline_property_inheritdocs' => [
+            '<?php
 class Foo {
     /**
      *
      */
     private $foo;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * {@inheritdocs}
      */
     private $foo;
 }',
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_property_inheritdocs_when_surrounded_by_text' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_property_inheritdocs_when_surrounded_by_text' => [
+            '<?php
 class Foo {
     /**
      * Foo.
@@ -819,11 +878,12 @@ class Foo {
      */
     private $foo;
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_property_inheritdocs_when_preceded_by_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_property_inheritdocs_when_preceded_by_text' => [
+            '<?php
 class Foo {
     /**
      * Foo.
@@ -832,11 +892,12 @@ class Foo {
      */
     private $foo;
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_property_inheritdocs_when_followed_by_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_property_inheritdocs_when_followed_by_text' => [
+            '<?php
 class Foo {
     /**
      * @inheritDocs
@@ -845,64 +906,70 @@ class Foo {
      */
     private $foo;
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_inline_property_inheritdocs_inside_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_inline_property_inheritdocs_inside_text' => [
+            '<?php
 class Foo {
     /**
      * Foo {@inheritDocs} Bar.
      */
     private $foo;
 }',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'class_inheritdoc' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'class_inheritdoc' => [
+            '<?php
 /**
  * @inheritDoc
  */
 class Foo {}',
-            ],
-            'dont_remove_class_inheritdoc' => [
-                '<?php
+        ];
+
+        yield 'dont_remove_class_inheritdoc' => [
+            '<?php
 /**
  * @inheritDoc
  */
 class Foo {}',
-                null,
-                ['remove_inheritdoc' => false],
-            ],
-            'remove_class_inheritdoc' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => false],
+        ];
+
+        yield 'remove_class_inheritdoc' => [
+            '<?php
 /**
  *
  */
 class Foo {}',
-                '<?php
+            '<?php
 /**
  * @inheritDoc
  */
 class Foo {}',
-                ['remove_inheritdoc' => true],
-            ],
-            'remove_interface_inheritdoc' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'remove_interface_inheritdoc' => [
+            '<?php
 /**
  *
  */
 interface Foo {}',
-                '<?php
+            '<?php
 /**
  * @inheritDoc
  */
 interface Foo {}',
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_class_inheritdoc_when_surrounded_by_text' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_class_inheritdoc_when_surrounded_by_text' => [
+            '<?php
 /**
  * Foo.
  *
@@ -911,33 +978,36 @@ interface Foo {}',
  * Bar.
  */
 class Foo {}',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_class_inheritdoc_when_preceded_by_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_class_inheritdoc_when_preceded_by_text' => [
+            '<?php
 /**
  * Foo.
  *
  * @inheritDoc
  */
 class Foo {}',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'dont_remove_class_inheritdoc_when_followed_by_text' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'dont_remove_class_inheritdoc_when_followed_by_text' => [
+            '<?php
 /**
  * @inheritDoc
  *
  * Bar.
  */
 class Foo {}',
-                null,
-                ['remove_inheritdoc' => true],
-            ],
-            'remove_inheritdoc_after_other_tag' => [
-                '<?php
+            null,
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'remove_inheritdoc_after_other_tag' => [
+            '<?php
 class Foo {
     /**
      * @param int $foo an integer
@@ -946,7 +1016,7 @@ class Foo {
      */
     public function doFoo($foo) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param int $foo an integer
@@ -955,10 +1025,11 @@ class Foo {
      */
     public function doFoo($foo) {}
 }',
-                ['remove_inheritdoc' => true],
-            ],
-            'remove_only_inheritdoc_line' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'remove_only_inheritdoc_line' => [
+            '<?php
 class Foo {
     /**
      *
@@ -977,7 +1048,7 @@ class Foo {
      */
     public function doFoo($foo) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      *
@@ -996,75 +1067,81 @@ class Foo {
      */
     public function doFoo($foo) {}
 }',
-                ['remove_inheritdoc' => true],
-            ],
-            'remove_single_line_inheritdoc' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'remove_single_line_inheritdoc' => [
+            '<?php
 class Foo {
     /** */
     public function doFoo($foo) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /** @inheritDoc */
     public function doFoo($foo) {}
 }',
-                ['remove_inheritdoc' => true],
-            ],
-            'remove_inheritdoc_on_first_line' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'remove_inheritdoc_on_first_line' => [
+            '<?php
 class Foo {
     /**
      */
     public function doFoo($foo) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /** @inheritDoc
      */
     public function doFoo($foo) {}
 }',
-                ['remove_inheritdoc' => true],
-            ],
-            'remove_inheritdoc_on_last_line' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'remove_inheritdoc_on_last_line' => [
+            '<?php
 class Foo {
     /**
      * */
     public function doFoo($foo) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @inheritDoc */
     public function doFoo($foo) {}
 }',
-                ['remove_inheritdoc' => true],
-            ],
-            'remove_inheritdoc_non_structural_element_it_does_not_inherit' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'remove_inheritdoc_non_structural_element_it_does_not_inherit' => [
+            '<?php
 /**
  *
  */
 $foo = 1;',
-                '<?php
+            '<?php
 /**
  * @inheritDoc
  */
 $foo = 1;',
-                ['remove_inheritdoc' => true],
-            ],
-            'property with unsupported type' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'property with unsupported type' => [
+            '<?php
 class Foo {
     /**
      * @var foo:bar
      */
     private $foo;
 }',
-            ],
-            'method with unsupported types' => [
-                '<?php
+        ];
+
+        yield 'method with unsupported types' => [
+            '<?php
 class Foo {
     /**
      * @param foo:bar $foo
@@ -1072,9 +1149,10 @@ class Foo {
      */
     public function foo($foo) {}
 }',
-            ],
-            'with constant values as type' => [
-                '<?php
+        ];
+
+        yield 'with constant values as type' => [
+            '<?php
 class Foo {
     /**
      * @var Bar::A|Bar::B|Baz::*|null
@@ -1086,16 +1164,17 @@ class Foo {
      */
     private $bar;
 }',
-            ],
-            'same type hint' => [
-                '<?php
+        ];
+
+        yield 'same type hint' => [
+            '<?php
 class Foo {
     /**
      *
      */
     public function doFoo(Bar $bar): Baz {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param Bar $bar
@@ -1104,9 +1183,10 @@ class Foo {
      */
     public function doFoo(Bar $bar): Baz {}
 }',
-            ],
-            'same type hint with description' => [
-                '<?php
+        ];
+
+        yield 'same type hint with description' => [
+            '<?php
 class Foo {
     /**
      * @param Bar $bar an instance of Bar
@@ -1115,9 +1195,10 @@ class Foo {
      */
     public function doFoo(Bar $bar): Baz {}
 }',
-            ],
-            'multiple different types (with return type)' => [
-                '<?php
+        ];
+
+        yield 'multiple different types (with return type)' => [
+            '<?php
 class Foo {
     /**
      * @param SubclassOfBar1|SubclassOfBar2 $bar
@@ -1126,16 +1207,17 @@ class Foo {
      */
     public function doFoo(Bar $bar): Baz {}
 }',
-            ],
-            'with import (with return type)' => [
-                '<?php
+        ];
+
+        yield 'with import (with return type)' => [
+            '<?php
 use Foo\Bar;
 use Foo\Baz;
 
 /**
  */
 function foo(Bar $bar): Baz {}',
-                '<?php
+            '<?php
 use Foo\Bar;
 use Foo\Baz;
 
@@ -1144,21 +1226,23 @@ use Foo\Baz;
  * @return Baz
  */
 function foo(Bar $bar): Baz {}',
-            ],
-            'with root symbols (with return type)' => [
-                '<?php
+        ];
+
+        yield 'with root symbols (with return type)' => [
+            '<?php
 /**
  */
 function foo(\Foo\Bar $bar): \Foo\Baz {}',
-                '<?php
+            '<?php
 /**
  * @param \Foo\Bar $bar
  * @return \Foo\Baz
  */
 function foo(\Foo\Bar $bar): \Foo\Baz {}',
-            ],
-            'with mix of imported and fully qualified symbols (with return type)' => [
-                '<?php
+        ];
+
+        yield 'with mix of imported and fully qualified symbols (with return type)' => [
+            '<?php
 use Foo\Bar;
 use Foo\Baz;
 use Foo\Qux;
@@ -1166,7 +1250,7 @@ use Foo\Qux;
 /**
  */
 function foo(Bar $bar, \Foo\Baz $baz): \Foo\Qux {}',
-                '<?php
+            '<?php
 use Foo\Bar;
 use Foo\Baz;
 use Foo\Qux;
@@ -1177,15 +1261,16 @@ use Foo\Qux;
  * @return Qux
  */
 function foo(Bar $bar, \Foo\Baz $baz): \Foo\Qux {}',
-            ],
-            'with aliased import (with return type)' => [
-                '<?php
+        ];
+
+        yield 'with aliased import (with return type)' => [
+            '<?php
 use Foo\Bar as Baz;
 
 /**
  */
 function foo(Baz $bar): Baz {}',
-                '<?php
+            '<?php
 use Foo\Bar as Baz;
 
 /**
@@ -1193,16 +1278,17 @@ use Foo\Bar as Baz;
  * @return \Foo\Bar
  */
 function foo(Baz $bar): Baz {}',
-            ],
-            'with scalar type hints' => [
-                '<?php
+        ];
+
+        yield 'with scalar type hints' => [
+            '<?php
 class Foo {
     /**
      *
      */
     public function doFoo(int $bar, string $baz): bool {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param int    $bar
@@ -1212,9 +1298,10 @@ class Foo {
      */
     public function doFoo(int $bar, string $baz): bool {}
 }',
-            ],
-            'really long one' => [
-                '<?php
+        ];
+
+        yield 'really long one' => [
+            '<?php
                     /**
                      * "Sponsored" by https://github.com/PrestaShop/PrestaShop/blob/1.6.1.24/tools/tcpdf/tcpdf.php (search for "Get page dimensions from format name")
                      * @see
@@ -1223,43 +1310,46 @@ class Foo {
                      */
                      function display($number) {}
                 ',
-            ],
-            'return with @inheritDoc in description' => [
-                '<?php
+        ];
+
+        yield 'return with @inheritDoc in description' => [
+            '<?php
                     /**
                      */
                     function foo(): bool {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @return bool @inheritDoc
                      */
                     function foo(): bool {}
                 ',
-                ['remove_inheritdoc' => true],
-            ],
-            'remove_trait_inheritdoc' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'remove_trait_inheritdoc' => [
+            '<?php
 /**
  *
  */
 trait Foo {}',
-                '<?php
+            '<?php
 /**
  * @inheritDoc
  */
 trait Foo {}',
-                ['remove_inheritdoc' => true],
-            ],
-            'same nullable type hint' => [
-                '<?php
+            ['remove_inheritdoc' => true],
+        ];
+
+        yield 'same nullable type hint' => [
+            '<?php
 class Foo {
     /**
      *
      */
     public function doFoo(?Bar $bar): ?Baz {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param Bar|null $bar
@@ -1268,16 +1358,17 @@ class Foo {
      */
     public function doFoo(?Bar $bar): ?Baz {}
 }',
-            ],
-            'same nullable type hint reversed' => [
-                '<?php
+        ];
+
+        yield 'same nullable type hint reversed' => [
+            '<?php
 class Foo {
     /**
      *
      */
     public function doFoo(?Bar $bar): ?Baz {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param null|Bar $bar
@@ -1286,9 +1377,10 @@ class Foo {
      */
     public function doFoo(?Bar $bar): ?Baz {}
 }',
-            ],
-            'same nullable type hint with description' => [
-                '<?php
+        ];
+
+        yield 'same nullable type hint with description' => [
+            '<?php
 class Foo {
     /**
      * @param Bar|null $bar an instance of Bar
@@ -1297,24 +1389,26 @@ class Foo {
      */
     public function doFoo(?Bar $bar): ?Baz {}
 }',
-            ],
-            'same optional nullable type hint' => [
-                '<?php
+        ];
+
+        yield 'same optional nullable type hint' => [
+            '<?php
 class Foo {
     /**
      */
     public function doFoo(?Bar $bar = null) {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param Bar|null $bar
      */
     public function doFoo(?Bar $bar = null) {}
 }',
-            ],
-            'multiple different types (nullable)' => [
-                '<?php
+        ];
+
+        yield 'multiple different types (nullable)' => [
+            '<?php
 class Foo {
     /**
      * @param SubclassOfBar1|SubclassOfBar2|null $bar
@@ -1323,16 +1417,17 @@ class Foo {
      */
     public function doFoo(?Bar $bar): ?Baz {}
 }',
-            ],
-            'with nullable import' => [
-                '<?php
+        ];
+
+        yield 'with nullable import' => [
+            '<?php
 use Foo\Bar;
 use Foo\Baz;
 
 /**
  */
 function foo(?Bar $bar): ?Baz {}',
-                '<?php
+            '<?php
 use Foo\Bar;
 use Foo\Baz;
 
@@ -1341,21 +1436,23 @@ use Foo\Baz;
  * @return Baz|null
  */
 function foo(?Bar $bar): ?Baz {}',
-            ],
-            'with nullable root symbols' => [
-                '<?php
+        ];
+
+        yield 'with nullable root symbols' => [
+            '<?php
 /**
  */
 function foo(?\Foo\Bar $bar): ?\Foo\Baz {}',
-                '<?php
+            '<?php
 /**
  * @param \Foo\Bar|null $bar
  * @return \Foo\Baz|null
  */
 function foo(?\Foo\Bar $bar): ?\Foo\Baz {}',
-            ],
-            'with nullable mix of imported and fully qualified symbols' => [
-                '<?php
+        ];
+
+        yield 'with nullable mix of imported and fully qualified symbols' => [
+            '<?php
 use Foo\Bar;
 use Foo\Baz;
 use Foo\Qux;
@@ -1363,7 +1460,7 @@ use Foo\Qux;
 /**
  */
 function foo(?Bar $bar, ?\Foo\Baz $baz): ?\Foo\Qux {}',
-                '<?php
+            '<?php
 use Foo\Bar;
 use Foo\Baz;
 use Foo\Qux;
@@ -1374,15 +1471,16 @@ use Foo\Qux;
  * @return Qux|null
  */
 function foo(?Bar $bar, ?\Foo\Baz $baz): ?\Foo\Qux {}',
-            ],
-            'with nullable aliased import' => [
-                '<?php
+        ];
+
+        yield 'with nullable aliased import' => [
+            '<?php
 use Foo\Bar as Baz;
 
 /**
  */
 function foo(?Baz $bar): ?Baz {}',
-                '<?php
+            '<?php
 use Foo\Bar as Baz;
 
 /**
@@ -1390,16 +1488,17 @@ use Foo\Bar as Baz;
  * @return \Foo\Bar|null
  */
 function foo(?Baz $bar): ?Baz {}',
-            ],
-            'with nullable special type hints' => [
-                '<?php
+        ];
+
+        yield 'with nullable special type hints' => [
+            '<?php
 class Foo {
     /**
      *
      */
     public function doFoo(iterable $bar, ?int $baz): ?array {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @param iterable $bar
@@ -1409,95 +1508,104 @@ class Foo {
      */
     public function doFoo(iterable $bar, ?int $baz): ?array {}
 }',
-            ],
-            'remove abstract annotation in function' => [
-                '<?php
+        ];
+
+        yield 'remove abstract annotation in function' => [
+            '<?php
 abstract class Foo {
     /**
      */
     public abstract function doFoo();
 }',
-                '<?php
+            '<?php
 abstract class Foo {
     /**
      * @abstract
      */
     public abstract function doFoo();
-}', ],
-            'dont remove abstract annotation in function' => [
-                '<?php
+}', ];
+
+        yield 'dont remove abstract annotation in function' => [
+            '<?php
 class Foo {
     /**
      * @abstract
      */
     public function doFoo() {}
-}', ],
-            'remove final annotation in function' => [
-                '<?php
+}', ];
+
+        yield 'remove final annotation in function' => [
+            '<?php
 class Foo {
     /**
      */
     public final function doFoo() {}
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @final
      */
     public final function doFoo() {}
-}', ],
-            'dont remove final annotation in function' => [
-                '<?php
+}', ];
+
+        yield 'dont remove final annotation in function' => [
+            '<?php
 class Foo {
     /**
      * @final
      */
     public function doFoo() {}
-}', ],
-            'remove abstract annotation in class' => [
-                '<?php
+}', ];
+
+        yield 'remove abstract annotation in class' => [
+            '<?php
 /**
  */
 abstract class Foo {
 }',
-                '<?php
+            '<?php
 /**
  * @abstract
  */
 abstract class Foo {
-}', ],
-            'dont remove abstract annotation in class' => [
-                '<?php
+}', ];
+
+        yield 'dont remove abstract annotation in class' => [
+            '<?php
 abstract class Bar{}
 
 /**
  * @abstract
  */
 class Foo {
-}', ],
-            'remove final annotation in class' => [
-                '<?php
+}', ];
+
+        yield 'remove final annotation in class' => [
+            '<?php
 /**
  */
 final class Foo {
 }',
-                '<?php
+            '<?php
 /**
  * @final
  */
 final class Foo {
-}', ],
-            'dont remove final annotation in class' => [
-                '<?php
+}', ];
+
+        yield 'dont remove final annotation in class' => [
+            '<?php
 final class Bar{}
 
 /**
  * @final
  */
 class Foo {
-}', ],
-            'remove when used with reference' => [
-                '<?php class Foo {
+}', ];
+
+        yield 'remove when used with reference' => [
+            '<?php class Foo {
                     /**
                      */
                      function f1(string &$x) {}
@@ -1508,7 +1616,7 @@ class Foo {
                      */
                      function f3(string &$x) {}
                 }',
-                '<?php class Foo {
+            '<?php class Foo {
                     /**
                      * @param string $x
                      */
@@ -1522,17 +1630,19 @@ class Foo {
                      */
                      function f3(string &$x) {}
                 }',
-            ],
-            'dont remove when used with reference' => [
-                '<?php class Foo {
+        ];
+
+        yield 'dont remove when used with reference' => [
+            '<?php class Foo {
                     /**
                      * @param string ...$x Description
                      */
                      function f(string ...$x) {}
                 }',
-            ],
-            'remove when used with splat operator' => [
-                '<?php class Foo {
+        ];
+
+        yield 'remove when used with splat operator' => [
+            '<?php class Foo {
                     /**
                      */
                      function f1(string ...$x) {}
@@ -1540,7 +1650,7 @@ class Foo {
                      */
                      function f2(string ...$x) {}
                 }',
-                '<?php class Foo {
+            '<?php class Foo {
                     /**
                      * @param string ...$x
                      */
@@ -1550,17 +1660,19 @@ class Foo {
                      */
                      function f2(string ...$x) {}
                 }',
-            ],
-            'dont remove when used with splat operator' => [
-                '<?php class Foo {
+        ];
+
+        yield 'dont remove when used with splat operator' => [
+            '<?php class Foo {
                     /**
                      * @param string ...$x Description
                      */
                      function f(string ...$x) {}
                 }',
-            ],
-            'remove when used with reference and splat operator' => [
-                '<?php class Foo {
+        ];
+
+        yield 'remove when used with reference and splat operator' => [
+            '<?php class Foo {
                     /**
                      */
                      function f1(string &...$x) {}
@@ -1571,7 +1683,7 @@ class Foo {
                      */
                      function f3(string &...$x) {}
                 }',
-                '<?php class Foo {
+            '<?php class Foo {
                     /**
                      * @param string ...$x
                      */
@@ -1585,74 +1697,80 @@ class Foo {
                      */
                      function f3(string &...$x) {}
                 }',
-            ],
-            'dont remove when used with reference and splat operator' => [
-                '<?php class Foo {
+        ];
+
+        yield 'dont remove when used with reference and splat operator' => [
+            '<?php class Foo {
                     /**
                      * @param string &...$x Description
                      */
                      function f(string &...$x) {}
                 }',
-            ],
-            'some typed static public property' => [
-                '<?php
+        ];
+
+        yield 'some typed static public property' => [
+            '<?php
 class Foo {
     /**
      */
     static public Bar $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var Bar
      */
     static public Bar $bar;
 }',
-            ],
-            'some typed public static property' => [
-                '<?php
+        ];
+
+        yield 'some typed public static property' => [
+            '<?php
 class Foo {
     /**
      */
     public static Bar $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var Bar
      */
     public static Bar $bar;
 }',
-            ],
-            'some typed public property' => [
-                '<?php
+        ];
+
+        yield 'some typed public property' => [
+            '<?php
 class Foo {
     /**
      */
     public Bar $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var Bar
      */
     public Bar $bar;
 }',
-            ],
-            'some typed public property with single line PHPDoc' => [
-                '<?php
+        ];
+
+        yield 'some typed public property with single line PHPDoc' => [
+            '<?php
 class Foo {
     /**  */
     public Bar $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /** @var Bar */
     public Bar $bar;
 }',
-            ],
-            'some typed public property with semi-single line PHPDoc' => [
-                '<?php
+        ];
+
+        yield 'some typed public property with semi-single line PHPDoc' => [
+            '<?php
 class Foo {
     /**
      */
@@ -1662,7 +1780,7 @@ class Foo {
      */
     public Baz $baz;
 }',
-                '<?php
+            '<?php
 class Foo {
     /** @var Bar
      */
@@ -1672,171 +1790,184 @@ class Foo {
      * @var Baz */
     public Baz $baz;
 }',
-            ],
-            'some typed protected property' => [
-                '<?php
+        ];
+
+        yield 'some typed protected property' => [
+            '<?php
 class Foo {
     /**
      */
     protected Bar $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var Bar
      */
     protected Bar $bar;
 }',
-            ],
-            'some typed private property' => [
-                '<?php
+        ];
+
+        yield 'some typed private property' => [
+            '<?php
 class Foo {
     /**
      */
     private Bar $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var Bar
      */
     private Bar $bar;
 }',
-            ],
-            'some typed nullable private property' => [
-                '<?php
+        ];
+
+        yield 'some typed nullable private property' => [
+            '<?php
 class Foo {
     /**
      */
     private ?Bar $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var null|Bar
      */
     private ?Bar $bar;
 }',
-            ],
-            'some typed nullable property with name declared in phpdoc' => [
-                '<?php
+        ];
+
+        yield 'some typed nullable property with name declared in phpdoc' => [
+            '<?php
 class Foo {
     /**
      */
     private ?Bar $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var null|Bar $bar
      */
     private ?Bar $bar;
 }',
-            ],
-            'some array property' => [
-                '<?php
+        ];
+
+        yield 'some array property' => [
+            '<?php
 class Foo {
     /**
      */
     private array $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var array
      */
     private array $bar;
 }',
-            ],
-            'some nullable array property' => [
-                '<?php
+        ];
+
+        yield 'some nullable array property' => [
+            '<?php
 class Foo {
     /**
      */
     private ?array $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var array|null
      */
     private ?array $bar;
 }',
-            ],
-            'some object property' => [
-                '<?php
+        ];
+
+        yield 'some object property' => [
+            '<?php
 class Foo {
     /**
      */
     private object $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var object
      */
     private object $bar;
 }',
-            ],
-            'phpdoc does not match property typehint' => [
-                '<?php
+        ];
+
+        yield 'phpdoc does not match property typehint' => [
+            '<?php
 class Foo {
     /**
      * @var FooImplementation1|FooImplementation2
      */
     private FooInterface $bar;
 }',
-            ],
-            'allow_mixed=>false but with description' => [
-                '<?php
+        ];
+
+        yield 'allow_mixed=>false but with description' => [
+            '<?php
 class Foo {
     /**
      * @var mixed description
      */
     private $bar;
 }',
-                null,
-                ['allow_mixed' => false],
-            ],
-            'allow_mixed=>false but with description and var name' => [
-                '<?php
+            null,
+            ['allow_mixed' => false],
+        ];
+
+        yield 'allow_mixed=>false but with description and var name' => [
+            '<?php
 class Foo {
     /**
      * @var mixed $bar description
      */
     private $bar;
 }',
-                null,
-                ['allow_mixed' => false],
-            ],
-            'allow_mixed=>true ||' => [
-                '<?php
+            null,
+            ['allow_mixed' => false],
+        ];
+
+        yield 'allow_mixed=>true ||' => [
+            '<?php
 class Foo {
     /**
      * @var mixed
      */
     private $bar;
 }',
-                null,
-                ['allow_mixed' => true],
-            ],
-            'some fully qualified typed property' => [
-                '<?php
+            null,
+            ['allow_mixed' => true],
+        ];
+
+        yield 'some fully qualified typed property' => [
+            '<?php
 class Foo {
     /**
      */
     protected \Foo\Bar $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
     /**
      * @var \Foo\Bar
      */
     protected \Foo\Bar $bar;
 }',
-            ],
-            'some fully qualified imported typed property' => [
-                '<?php
+        ];
+
+        yield 'some fully qualified imported typed property' => [
+            '<?php
 namespace App;
 use Foo\Bar;
 class Foo {
@@ -1844,7 +1975,7 @@ class Foo {
      */
     protected Bar $bar;
 }',
-                '<?php
+            '<?php
 namespace App;
 use Foo\Bar;
 class Foo {
@@ -1853,7 +1984,122 @@ class Foo {
      */
     protected Bar $bar;
 }',
-            ],
+        ];
+
+        yield 'self as native type and interface name in phpdocs' => [
+            '<?php
+interface Foo {
+    /**
+     */
+    public function bar(self $other): self;
+}',
+            '<?php
+interface Foo {
+    /**
+     * @param Foo $other
+     * @return Foo
+     */
+    public function bar(self $other): self;
+}',
+        ];
+
+        yield 'interface name as native type and self in phpdocs' => [
+            '<?php
+interface Foo {
+    /**
+     */
+    public function bar(Foo $other): Foo;
+}',
+            '<?php
+interface Foo {
+    /**
+     * @param self $other
+     * @return self
+     */
+    public function bar(Foo $other): Foo;
+}',
+        ];
+
+        yield 'self as native type and class name in phpdocs' => [
+            '<?php
+class Foo {
+    /**
+     */
+    public self $foo;
+
+    /**
+     */
+    public function bar(self $other): self {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @var Foo
+     */
+    public self $foo;
+
+    /**
+     * @param Foo $other
+     * @return Foo
+     */
+    public function bar(self $other): self {}
+}',
+        ];
+
+        yield 'class name as native type and self in phpdocs' => [
+            '<?php
+class Foo {
+    /**
+     */
+    public Foo $foo;
+
+    /**
+     */
+    public function bar(Foo $other): Foo {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @var self
+     */
+    public Foo $foo;
+
+    /**
+     * @param self $other
+     * @return self
+     */
+    public function bar(Foo $other): Foo {}
+}',
+        ];
+
+        yield 'anonymous class' => [
+            '<?php
+new class() extends Foo {
+    /**
+     * @var Foo
+     */
+    public self $foo;
+
+    /**
+     * @param Foo $other
+     * @return Foo
+     */
+    public function bar(self $other, int $superfluous): self {}
+};',
+            '<?php
+new class() extends Foo {
+    /**
+     * @var Foo
+     */
+    public self $foo;
+
+    /**
+     * @param Foo $other
+     * @param int $superfluous
+     * @return Foo
+     */
+    public function bar(self $other, int $superfluous): self {}
+};',
         ];
     }
 
@@ -2063,6 +2309,36 @@ class Foo
     private int $bar = 1;
 }',
         ];
+
+        yield 'anonymous class with attribute' => [
+            '<?php
+new #[Bar] class() extends Foo {
+    /**
+     * @var Foo
+     */
+    public self $foo;
+
+    /**
+     * @param Foo $other
+     * @return Foo
+     */
+    public function bar(self $other, int $superfluous): self {}
+};',
+            '<?php
+new #[Bar] class() extends Foo {
+    /**
+     * @var Foo
+     */
+    public self $foo;
+
+    /**
+     * @param Foo $other
+     * @param int $superfluous
+     * @return Foo
+     */
+    public function bar(self $other, int $superfluous): self {}
+};',
+        ];
     }
 
     /**
@@ -2186,6 +2462,40 @@ enum Foo {}',
                     public readonly ?string $c,
                 ) {}
             }',
+        ];
+
+        yield 'self as native type and enum name in phpdocs' => [
+            '<?php
+enum Foo {
+    /**
+     */
+    public function bar(self $other): self {}
+}',
+            '<?php
+enum Foo {
+    /**
+     * @param Foo $other
+     * @return Foo
+     */
+    public function bar(self $other): self {}
+}',
+        ];
+
+        yield 'enum name as native type and self in phpdocs' => [
+            '<?php
+enum Foo {
+    /**
+     */
+    public function bar(Foo $other): Foo {}
+}',
+            '<?php
+enum Foo {
+    /**
+     * @param self $other
+     * @return self
+     */
+    public function bar(Foo $other): Foo {}
+}',
         ];
     }
 }

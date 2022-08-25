@@ -31,8 +31,5 @@ interface SignatureInterface
 
     public function getRules(): array;
 
-    /**
-     * @param SignatureInterface $signature
-     */
     public function equals(self $signature): bool;
 }
