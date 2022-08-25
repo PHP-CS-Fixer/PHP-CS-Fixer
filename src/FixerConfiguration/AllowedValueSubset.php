@@ -55,7 +55,7 @@ final class AllowedValueSubset
     /**
      * @return list<string>
      */
-    public function getAllowedValues(): ?array
+    public function getAllowedValues(): array
     {
         return $this->allowedValues;
     }
