@@ -266,6 +266,7 @@ get_called_class#1
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. Defined options are: "functions"\.$#');
 
+        // @phpstan-ignore-next-line
         $this->fixer->configure(['pi123']);
     }
 

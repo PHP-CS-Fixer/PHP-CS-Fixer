@@ -22,7 +22,11 @@ parameters:
         # baseline, should only shrink
         -
             message: '#^.+no value type specified in iterable type.+\.$#'
-            path: *
-            count: 461
+            path: src/Fixer
+            count: 118
+        -
+            message: '#^.+no value type specified in iterable type.+\.$#'
+            path: tests
+            count: 267
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache

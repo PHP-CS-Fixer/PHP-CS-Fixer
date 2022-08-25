@@ -30,7 +30,7 @@ final class ToolInfo implements ToolInfoInterface
     public const COMPOSER_LEGACY_PACKAGE_NAME = 'fabpot/php-cs-fixer';
 
     /**
-     * @var null|array
+     * @var null|array{name: string, version: string, dist: array{reference?: string}}
      */
     private $composerInstallationDetails;
 

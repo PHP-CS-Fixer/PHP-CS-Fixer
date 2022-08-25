@@ -52,6 +52,9 @@ class Config implements ConfigInterface
      */
     private $phpExecutable;
 
+    /**
+     * @var array<string, array<string, mixed>|bool>
+     */
     private array $rules = ['@PSR12' => true];
 
     private bool $usingCache = true;
