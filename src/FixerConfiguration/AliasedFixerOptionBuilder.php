@@ -42,7 +42,7 @@ final class AliasedFixerOptionBuilder
     }
 
     /**
-     * @param string[] $allowedTypes
+     * @param list<string> $allowedTypes
      */
     public function setAllowedTypes(array $allowedTypes): self
     {
@@ -51,6 +51,9 @@ final class AliasedFixerOptionBuilder
         return $this;
     }
 
+    /**
+     * @param list<(callable(mixed): bool)|null|scalar> $allowedValues
+     */
     public function setAllowedValues(array $allowedValues): self
     {
         $this->optionBuilder->setAllowedValues($allowedValues);

@@ -25,6 +25,9 @@ final class FileSpecificCodeSample implements FileSpecificCodeSampleInterface
 
     private \SplFileInfo $splFileInfo;
 
+    /**
+     * @param null|array<string, mixed> $configuration
+     */
     public function __construct(
         string $code,
         \SplFileInfo $splFileInfo,

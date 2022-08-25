@@ -21,12 +21,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class FixerConfigurationResolver implements FixerConfigurationResolverInterface
 {
     /**
-     * @var FixerOptionInterface[]
+     * @var list<FixerOptionInterface>
      */
     private array $options = [];
 
     /**
-     * @var string[]
+     * @var list<string>
      */
     private array $registeredNames = [];
 

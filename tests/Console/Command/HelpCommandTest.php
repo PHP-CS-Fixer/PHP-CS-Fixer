@@ -77,7 +77,7 @@ final class HelpCommandTest extends TestCase
 
         yield [['A', 'B', 'x', 'z'], new FixerOption('foo', 'bar', false, null, ['string'], ['z', 'x', 'B', 'A'])];
 
-        yield [[0, 3, 9], new FixerOption('foo', 'bar', false, null, ['int'], [0, 3, 9, static fn () => null])];
+        yield [[0, 3, 9], new FixerOption('foo', 'bar', false, null, ['int'], [0, 3, 9, static fn () => true])];
 
         yield [null, new FixerOption('foo', 'bar')];
     }
