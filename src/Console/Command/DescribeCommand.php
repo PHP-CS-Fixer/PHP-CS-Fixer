@@ -196,19 +196,15 @@ final class DescribeCommand extends Command
 
                 if (null === $allowed) {
                     $allowed = array_map(
-                        static function (string $type): string {
-                            return '<comment>'.$type.'</comment>';
-                        },
-                        $option->getAllowedTypes()
+                        static fn (string $type): string => '<comment>'.$type.'</comment>',
+                        $option->getAllowedTypes(),
                     );
                 } else {
-                    foreach ($allowed as &$value) {
-                        if ($value instanceof AllowedValueSubset) {
-                            $value = 'a subset of <comment>'.HelpCommand::toString($value->getAllowedValues()).'</comment>';
-                        } else {
-                            $value = '<comment>'.HelpCommand::toString($value).'</comment>';
-                        }
-                    }
+                    $allowed = array_map(static function ($value): string {
+                        return $value instanceof AllowedValueSubset
+                            ? 'a subset of <comment>'.HelpCommand::toString($value->getAllowedValues()).'</comment>'
+                            : '<comment>'.HelpCommand::toString($value).'</comment>';
+                    }, $allowed);
                 }
 
                 $line .= ' ('.implode(', ', $allowed).')';

@@ -50,6 +50,8 @@ final class HelpCommand extends BaseHelpCommand
 
     /**
      * Returns the allowed values of the given option that can be converted to a string.
+     *
+     * @return list<null|AllowedValueSubset|scalar>
      */
     public static function getDisplayableAllowedValues(FixerOptionInterface $option): ?array
     {
@@ -57,7 +59,7 @@ final class HelpCommand extends BaseHelpCommand
 
         if (null !== $allowed) {
             $allowed = array_filter($allowed, static function ($value): bool {
-                return !$value instanceof \Closure;
+                return null === $value || \is_scalar($value) || $value instanceof AllowedValueSubset;
             });
 
             usort($allowed, static function ($valueA, $valueB): int {

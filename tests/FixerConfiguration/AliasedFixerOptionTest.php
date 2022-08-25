@@ -152,7 +152,7 @@ final class AliasedFixerOptionTest extends TestCase
 
     public function testGetAllowedValuesClosure(): void
     {
-        $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, [static fn () => null]), 'baz');
+        $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, [static fn () => true]), 'baz');
         $allowedTypes = $option->getAllowedValues();
         static::assertIsArray($allowedTypes);
         static::assertCount(1, $allowedTypes);

@@ -30,10 +30,13 @@ interface FixerOptionInterface
     public function getDefault();
 
     /**
-     * @return null|string[]
+     * @return null|list<string>
      */
     public function getAllowedTypes(): ?array;
 
+    /**
+     * @return null|list<(callable(mixed): bool)|null|scalar>
+     */
     public function getAllowedValues(): ?array;
 
     public function getNormalizer(): ?\Closure;
