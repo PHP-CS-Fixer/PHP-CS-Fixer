@@ -79,6 +79,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         [T_OBJECT_OPERATOR],
         [T_STRING],
         [T_VARIABLE],
+        [T_STATIC],
         // magic constants
         [T_CLASS_C],
         [T_DIR],
