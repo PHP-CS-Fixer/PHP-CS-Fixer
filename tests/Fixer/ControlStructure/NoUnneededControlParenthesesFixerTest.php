@@ -1047,6 +1047,15 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $l6 = [1, $foo instanceof Foo, 1];
                 $fn1 = fn($x) => $fx instanceof Foo;
                 for ($foo instanceof Foo ; $i < 1; ++$i) { echo $i; }
+                class foo {
+                    public function bar() {
+                        self instanceof static;
+                        self instanceof self;
+                        $a instanceof static;
+                        self instanceof $a;
+                        $a instanceof self;
+                    }
+                }
             ',
             '<?php
                 ; ($foo instanceof Foo);
@@ -1059,6 +1068,15 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $l6 = [1, ($foo instanceof Foo), 1];
                 $fn1 = fn($x) => ($fx instanceof Foo);
                 for (($foo instanceof Foo) ; $i < 1; ++$i) { echo $i; }
+                class foo {
+                    public function bar() {
+                        (self instanceof static);
+                        (self instanceof self);
+                        ($a instanceof static);
+                        (self instanceof $a);
+                        ($a instanceof self);
+                    }
+                }
             ',
         ];
 
@@ -1103,6 +1121,29 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                     echo 123;
                 }
             ',
+        ];
+
+        yield 'wrapped negative instanceof 2' => [
+            '<?php
+                class foo {
+                    public function bar() {
+                        !self instanceof static;
+                        !self instanceof self;
+                        !$a instanceof static;
+                        !self instanceof $a;
+                        !$a instanceof self;
+                    }
+            }',
+            '<?php
+                class foo {
+                    public function bar() {
+                        !(self instanceof static);
+                        !(self instanceof self);
+                        !($a instanceof static);
+                        !(self instanceof $a);
+                        !($a instanceof self);
+                    }
+            }',
         ];
 
         yield '(x,y' => [
