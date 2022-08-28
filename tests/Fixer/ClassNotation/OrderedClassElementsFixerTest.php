@@ -1275,7 +1275,6 @@ class Foo
     {}
 }
 EOT
-EOT
             ],
         ];
     }
