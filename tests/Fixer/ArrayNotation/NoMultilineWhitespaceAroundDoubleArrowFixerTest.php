@@ -100,6 +100,39 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
                         =>
                             null;',
             ],
+            [
+                '<?php
+                    $foo = [
+                        1 /* foo */ => $one,
+                        2 => $two
+                    ];',
+                '<?php
+                    $foo = [
+                        1 /* foo */
+                            =>
+                                $one,
+                        2
+                            =>
+                                $two
+                    ];',
+            ],
+            [
+                '<?php
+                    $foo = [
+                        1 // foo
+                            => $one,
+                        2 => $two,
+                    ];',
+                '<?php
+                    $foo = [
+                        1 // foo
+                            =>
+                                $one,
+                        2
+                            =>
+                                $two,
+                    ];',
+            ],
         ];
     }
 }
