@@ -1248,6 +1248,35 @@ class Foo
 }
 EOT
             ],
+            [
+                [
+                    'order' => ['use_trait', 'constant_public', 'constant_protected', 'constant_private', 'property_public', 'property_protected', 'property_private', 'construct', 'destruct', 'magic', 'phpunit'],
+                    'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA
+                ],
+                <<<'EOT'
+<?php
+
+class Foo
+{
+    public function smth2(): void
+    {}
+    public function smth1(): void
+    {}
+}
+EOT
+                , <<<'EOT'
+<?php
+
+class Foo
+{
+    public function smth2(): void
+    {}
+    public function smth1(): void
+    {}
+}
+EOT
+EOT
+            ],
         ];
     }
 
