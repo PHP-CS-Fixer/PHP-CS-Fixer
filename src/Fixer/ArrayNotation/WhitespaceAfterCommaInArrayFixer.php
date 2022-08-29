@@ -129,6 +129,21 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements Co
             }
         }
 
+        if ($tokens[$index]->equals(',') && $this->commaIsPartOfImplementsList($index, $tokens)) {
+            --$index;
+        }
+
         return $index;
+    }
+
+    private function commaIsPartOfImplementsList(int $index, Tokens $tokens): bool
+    {
+        do {
+            $index = $tokens->getPrevMeaningfulToken($index);
+
+            $current = $tokens[$index];
+        } while ($current->isGivenKind(T_STRING) || $current->equals(','));
+
+        return $current->isGivenKind(T_IMPLEMENTS);
     }
 }
