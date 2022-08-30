@@ -73,6 +73,11 @@ final class WhitespaceAfterCommaInArrayFixerTest extends AbstractFixerTestCase
                 '<?php $x = [1,  "2", "c" => function( $x ,$y) { return [$x , $y]; }, $y ];',
                 '<?php $x = [1,  "2","c" => function( $x ,$y) { return [$x ,$y]; },$y ];',
             ],
+            // don't change anonymous class implements list but change array inside
+            [
+                '<?php $x = [1,  "2", "c" => new class implements Foo ,Bar { const FOO = ["x", "y"]; }, $y ];',
+                '<?php $x = [1,  "2","c" => new class implements Foo ,Bar { const FOO = ["x","y"]; },$y ];',
+            ],
             // associative array (old)
             [
                 '<?php $x = array("a" => $a , "b" =>  "b", 3=>$this->foo(),  "d" => 30  );',
