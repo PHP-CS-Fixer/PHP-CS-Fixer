@@ -21,22 +21,19 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Comment\RemoveCommentsFixer
+ * @covers \PhpCsFixer\Fixer\Whitespace\AlignEnumValuesFixer
  */
 final class AlignEnumValuesFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             // Test already well formatted enum.
@@ -77,6 +74,25 @@ final class AlignEnumValuesFixerTest extends AbstractFixerTestCase
     = 1;
     case ELIZABETH = 2;
     case CORA = 4;
+}',
+            ],
+            // Test enum with empty lines.
+            [
+                '<?php enum MyEnum: int
+{
+    case BENJI     = 1;
+
+    case ELIZABETH = 2;
+
+    case CORA      = 4;
+}',
+                '<?php enum MyEnum: int
+{
+    case BENJI = 1;
+
+    case ELIZABETH = 2;
+
+    case CORA               = 4;
 }',
             ],
             // Test non-backed enum.
