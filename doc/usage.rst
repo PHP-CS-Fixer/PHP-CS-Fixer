@@ -10,8 +10,8 @@ problems as possible on a given file or files in a given directory and its subdi
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar fix /path/to/dir
-    $ php php-cs-fixer.phar fix /path/to/file
+    php php-cs-fixer.phar fix /path/to/dir
+    php php-cs-fixer.phar fix /path/to/file
 
 By default ``--path-mode`` is set to ``override``, which means, that if you specify the path to a file or a directory via
 command arguments, then the paths provided to a ``Finder`` in config file will be ignored. You can also use ``--path-mode=intersection``,
@@ -19,7 +19,7 @@ which will use the intersection of the paths from the config file and from the a
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar fix --path-mode=intersection /path/to/dir
+    php php-cs-fixer.phar fix --path-mode=intersection /path/to/dir
 
 The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml``, ``checkstyle``, ``junit`` and ``gitlab``.
 
@@ -45,7 +45,7 @@ project:
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar fix /path/to/project --rules=@PSR12
+    php php-cs-fixer.phar fix /path/to/project --rules=@PSR12
 
 By default the ``PSR12`` rules are used. If the ``--rules`` option is used rules from config files are ignored.
 
@@ -53,26 +53,26 @@ The ``--rules`` option lets you choose the exact rules to apply (the rule names 
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar fix /path/to/dir --rules=line_ending,full_opening_tag,indentation_type
+    php php-cs-fixer.phar fix /path/to/dir --rules=line_ending,full_opening_tag,indentation_type
 
 You can also exclude the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
 using ``-name_of_fixer``:
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-indentation_type
+    php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-indentation_type
 
 When using combinations of exact and exclude rules, applying exact rules along with above excluded results:
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar fix /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison
+    php php-cs-fixer.phar fix /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison
 
 Complete configuration for rules can be supplied using a ``json`` formatted string.
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar fix /path/to/project --rules='{"concat_space": {"spacing": "none"}}'
+    php php-cs-fixer.phar fix /path/to/project --rules='{"concat_space": {"spacing": "none"}}'
 
 The ``--dry-run`` flag will run the fixer without making changes to your files.
 
@@ -92,28 +92,28 @@ If the option is not provided, it defaults to ``dots`` unless a config file that
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar fix --verbose --show-progress=estimating
+    php php-cs-fixer.phar fix --verbose --show-progress=estimating
 
 The command can also read from standard input, in which case it won't
 automatically fix anything:
 
 .. code-block:: console
 
-    $ cat foo.php | php php-cs-fixer.phar fix --diff -
+    cat foo.php | php php-cs-fixer.phar fix --diff -
 
 Finally, if you don't need BC kept on CLI level, you might use `PHP_CS_FIXER_FUTURE_MODE` to start using options that
 would be default in next MAJOR release and to forbid using deprecated configuration:
 
 .. code-block:: console
 
-    $ PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer.phar fix -v --diff
+    PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer.phar fix -v --diff
 
 The ``--dry-run`` option displays the files that need to be
 fixed but without actually modifying them:
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar fix /path/to/code --dry-run
+    php php-cs-fixer.phar fix /path/to/code --dry-run
 
 By using ``--using-cache`` option with ``yes`` or ``no`` you can set if the caching
 mechanism should be used.
@@ -125,13 +125,13 @@ The ``list-files`` command will list all files which need fixing.
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar list-files
+    php php-cs-fixer.phar list-files
 
 The ``--config`` option can be used, like in the ``fix`` command, to tell from which path a config file should be loaded.
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php
+    php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php
 
 The output is built in a form that its easy to use in combination with ``xargs`` command in a linux pipe.
 This can be useful e.g. in situations where the caching mechanism might not be available (CI, Docker) and distribute
@@ -141,7 +141,7 @@ Note: You need to pass the config to the ``fix`` command, in order to make it wo
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php | xargs -n 10 -P 8 php php-cs-fixer.phar fix --config=.php-cs-fixer.dist.php --path-mode intersection -v
+    php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php | xargs -n 10 -P 8 php php-cs-fixer.phar fix --config=.php-cs-fixer.dist.php --path-mode intersection -v
 
 * ``-n`` defines how many files a single subprocess process
 * ``-P`` defines how many subprocesses the shell is allowed to spawn for parallel processing (usually similar to the number of CPUs your system has)
@@ -154,13 +154,13 @@ Use the following command to quickly understand what a rule will do to your code
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar describe align_multiline_comment
+    php php-cs-fixer.phar describe align_multiline_comment
 
 To visualize all the rules that belong to a ruleset:
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar describe @PSR2
+    php php-cs-fixer.phar describe @PSR2
 
 Caching
 -------
@@ -196,17 +196,17 @@ Require ``friendsofphp/php-cs-fixer`` as a ``dev`` dependency:
 
 .. code-block:: console
 
-    $ ./composer.phar require --dev friendsofphp/php-cs-fixer
+    ./composer.phar require --dev friendsofphp/php-cs-fixer
 
 Then, add the following command to your CI:
 
 .. code-block:: console
 
-    $ IFS='
-    $ '
-    $ CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}")
-    $ if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$"; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
-    $ vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --dry-run --stop-on-violation --using-cache=no ${EXTRA_ARGS}
+    IFS='
+    '
+    CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}")
+    if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$"; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
+    vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --dry-run --stop-on-violation --using-cache=no ${EXTRA_ARGS}
 
 Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
@@ -220,7 +220,7 @@ NOTE: Execution may be unstable when used.
 
 .. code-block:: console
 
-    $ PHP_CS_FIXER_IGNORE_ENV=1 php php-cs-fixer.phar fix /path/to/dir
+    PHP_CS_FIXER_IGNORE_ENV=1 php php-cs-fixer.phar fix /path/to/dir
 
 Exit code
 ---------
