@@ -68,9 +68,7 @@ Rules
 - `no_superfluous_phpdoc_tags <./../rules/phpdoc/no_superfluous_phpdoc_tags.rst>`_
   config:
   ``['allow_mixed' => true, 'allow_unused_params' => true]``
-- `no_trailing_comma_in_list_call <./../rules/control_structure/no_trailing_comma_in_list_call.rst>`_
-- `no_trailing_comma_in_singleline_array <./../rules/array_notation/no_trailing_comma_in_singleline_array.rst>`_
-- `no_trailing_comma_in_singleline_function_call <./../rules/function_notation/no_trailing_comma_in_singleline_function_call.rst>`_
+- `no_trailing_comma_in_singleline <./../rules/basic/no_trailing_comma_in_singleline.rst>`_
 - `no_unneeded_control_parentheses <./../rules/control_structure/no_unneeded_control_parentheses.rst>`_
   config:
   ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``

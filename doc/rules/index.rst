@@ -48,7 +48,7 @@ Array Notation
 - `no_multiline_whitespace_around_double_arrow <./array_notation/no_multiline_whitespace_around_double_arrow.rst>`_
 
   Operator ``=>`` should not be surrounded by multi-line whitespaces.
-- `no_trailing_comma_in_singleline_array <./array_notation/no_trailing_comma_in_singleline_array.rst>`_
+- `no_trailing_comma_in_singleline_array <./array_notation/no_trailing_comma_in_singleline_array.rst>`_ *(deprecated)*
 
   PHP single-line arrays should not have trailing comma.
 - `no_whitespace_before_comma_in_array <./array_notation/no_whitespace_before_comma_in_array.rst>`_
@@ -79,6 +79,9 @@ Basic
 - `no_multiple_statements_per_line <./basic/no_multiple_statements_per_line.rst>`_
 
   There must not be more than one statement per line.
+- `no_trailing_comma_in_singleline <./basic/no_trailing_comma_in_singleline.rst>`_
+
+  If a list of values separated by a comma is contained on a single line, then the last item MUST NOT have a trailing comma.
 - `non_printable_character <./basic/non_printable_character.rst>`_ *(risky)*
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
@@ -269,7 +272,7 @@ Control Structure
 - `no_superfluous_elseif <./control_structure/no_superfluous_elseif.rst>`_
 
   Replaces superfluous ``elseif`` with ``if``.
-- `no_trailing_comma_in_list_call <./control_structure/no_trailing_comma_in_list_call.rst>`_
+- `no_trailing_comma_in_list_call <./control_structure/no_trailing_comma_in_list_call.rst>`_ *(deprecated)*
 
   Remove trailing commas in list function calls.
 - `no_unneeded_control_parentheses <./control_structure/no_unneeded_control_parentheses.rst>`_
@@ -352,7 +355,7 @@ Function Notation
 - `no_spaces_after_function_name <./function_notation/no_spaces_after_function_name.rst>`_
 
   When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.
-- `no_trailing_comma_in_singleline_function_call <./function_notation/no_trailing_comma_in_singleline_function_call.rst>`_
+- `no_trailing_comma_in_singleline_function_call <./function_notation/no_trailing_comma_in_singleline_function_call.rst>`_ *(deprecated)*
 
   When making a method or function call on a single line there MUST NOT be a trailing comma after the last argument.
 - `no_unreachable_default_argument_value <./function_notation/no_unreachable_default_argument_value.rst>`_ *(risky)*

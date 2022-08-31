@@ -59,7 +59,7 @@ final class NoTrailingCommaInSinglelineFunctionCallFixerTest extends AbstractFix
         ];
 
         yield '(' => [
-            '<?php (foo($a /* 1 */   /* 2 */  ));',
+            '<?php (foo($a/* 1 */   /* 2 */  ));',
             '<?php (foo($a /* 1 */  , /* 2 */  ));',
         ];
 
