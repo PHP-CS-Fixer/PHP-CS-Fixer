@@ -279,7 +279,7 @@ Execute the following command in your command shell:
 
 .. code-block:: console
 
-   $ php dev-tools/doc.php
+   php dev-tools/doc.php
 
 Next, we must filter what type of tokens we want to fix. Here, we are interested in code that contains ``T_COMMENT`` tokens:
 
@@ -319,7 +319,7 @@ For now, let us just make a fixer that applies no modification:
        }
    }
 
-Run ``$ phpunit tests/Fixer/Comment/RemoveCommentsFixerTest.php``.
+Run ``phpunit tests/Fixer/Comment/RemoveCommentsFixerTest.php``.
 You are going to see that the tests fail.
 
 Break
@@ -487,7 +487,7 @@ itself. Thus, on the command line call:
 
 .. code-block:: console
 
-   $ php php-cs-fixer fix
+   php php-cs-fixer fix
 
 This will fix all the coding style mistakes.
 
