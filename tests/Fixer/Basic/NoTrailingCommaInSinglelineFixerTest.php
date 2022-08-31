@@ -226,6 +226,7 @@ $g["e"](1,); // foo',
 
     /**
      * @dataProvider provideFix80NoTrailingCommaInSinglelineFunctionCallFixerCases
+     *
      * @requires PHP 8.0
      */
     public function testFix80NoTrailingCommaInSinglelineFunctionCallFixer(string $expected, string $input = null): void
@@ -247,6 +248,7 @@ $foo1b = function() use ($bar, ) {};
 
     /**
      * @dataProvider provideFix81NoTrailingCommaInSinglelineFunctionCallFixerCases
+     *
      * @requires PHP 8.1
      */
     public function testFix81NoTrailingCommaInSinglelineFunctionCallFixer(string $expected, ?string $input = null): void
