@@ -1606,7 +1606,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\ControlStructure\\NoTrailingCommaInListCallFixer <./../src/Fixer/ControlStructure/NoTrailingCommaInListCallFixer.php>`_
 -  `no_trailing_comma_in_singleline <./rules/basic/no_trailing_comma_in_singleline.rst>`_
 
-   In a single line statement there MUST NOT be a trailing comma after: the last argument when calling a function, the last element when declaring array, the last variable assignment when destructuring, the last ``use`` group when declaring usage.
+   If a list of values separated by a comma is contained on a single line, then the last item MUST NOT have a trailing comma.
 
    Configuration options:
 

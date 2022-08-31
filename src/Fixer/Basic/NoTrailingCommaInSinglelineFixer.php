@@ -35,7 +35,7 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'In a single line statement there MUST NOT be a trailing comma after: the last argument when calling a function, the last element when declaring array, the last variable assignment when destructuring, the last `use` group when declaring usage.',
+            'If a list of values separated by a comma is contained on a single line, then the last item MUST NOT have a trailing comma.',
             [
                 new CodeSample("<?php\nfoo(\$a,);\n\$foo = array(1,);\n[\$foo, \$bar,] = \$array;\nuse a\\{ClassA, ClassB,};\n"),
                 new CodeSample("<?php\nfoo(\$a,);\n[\$foo, \$bar,] = \$array;\n", ['elements' => ['array_destructuring']]),

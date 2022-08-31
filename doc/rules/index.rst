@@ -81,7 +81,7 @@ Basic
   There must not be more than one statement per line.
 - `no_trailing_comma_in_singleline <./basic/no_trailing_comma_in_singleline.rst>`_
 
-  In a single line statement there MUST NOT be a trailing comma after: the last argument when calling a function, the last element when declaring array, the last variable assignment when destructuring, the last ``use`` group when declaring usage.
+  If a list of values separated by a comma is contained on a single line, then the last item MUST NOT have a trailing comma.
 - `non_printable_character <./basic/non_printable_character.rst>`_ *(risky)*
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
