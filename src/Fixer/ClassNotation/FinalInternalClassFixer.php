@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -25,6 +26,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -35,6 +37,30 @@ use Symfony\Component\OptionsResolver\Options;
  */
 final class FinalInternalClassFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    private const DEFAULTS = [
+        'include' => [
+            'internal',
+        ],
+        'exclude' => [
+            'final',
+            'Entity',
+            'ORM\Entity',
+            'ORM\Mapping\Entity',
+            'Mapping\Entity',
+            'Document',
+            'ODM\Document',
+        ],
+    ];
+
+    private bool $checkAnnotations;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->checkAnnotations = \PHP_VERSION_ID >= 80000;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -42,14 +68,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
     {
         parent::configure($configuration);
 
-        $intersect = array_intersect_assoc(
-            $this->configuration['annotation_include'],
-            $this->configuration['annotation_exclude']
-        );
-
-        if (\count($intersect) > 0) {
-            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both the include and exclude list, got duplicates: "%s".', implode('", "', array_keys($intersect))));
-        }
+        $this->assertConfigHasNoConflicts();
     }
 
     /**
@@ -64,8 +83,8 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                 new CodeSample(
                     "<?php\n/**\n * @CUSTOM\n */\nclass A{}\n\n/**\n * @CUSTOM\n * @not-fix\n */\nclass B{}\n",
                     [
-                        'annotation_include' => ['@Custom'],
-                        'annotation_exclude' => ['@not-fix'],
+                        'include' => ['@Custom'],
+                        'exclude' => ['@not-fix'],
                     ]
                 ),
             ],
@@ -113,14 +132,13 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                 continue;
             }
 
-            // make class final
-            $tokens->insertAt(
-                $index,
-                [
+            // make class 'final'
+            $tokens->insertSlices([
+                $index => [
                     new Token([T_FINAL, 'final']),
                     new Token([T_WHITESPACE, ' ']),
-                ]
-            );
+                ],
+            ]);
         }
     }
 
@@ -139,10 +157,10 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             return true;
         }];
 
-        $annotationsNormalizer = static function (Options $options, array $value): array {
+        $normalizer = static function (Options $options, array $value): array {
             $newValue = [];
             foreach ($value as $key) {
-                if ('@' === $key[0]) {
+                if (str_starts_with($key, '@')) {
                     $key = substr($key, 1);
                 }
 
@@ -152,26 +170,46 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             return $newValue;
         };
 
+        $oldAnnotationIncludeOption = new FixerOptionBuilder('annotation_include', 'Class level PHPDoc annotations tags that must be set in order to fix the class. (case insensitive)');
+        $oldAnnotationIncludeOption = $oldAnnotationIncludeOption
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues($annotationsAsserts)
+            ->setDefault(['@internal'])
+            ->setNormalizer($normalizer)
+            ->getOption()
+        ;
+
+        $oldAnnotationExcludeOption = new FixerOptionBuilder('annotation_exclude', 'Class level PHPDoc annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)');
+        $oldAnnotationExcludeOption = $oldAnnotationExcludeOption
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues($annotationsAsserts)
+            ->setDefault([
+                '@final',
+                '@Entity',
+                '@ORM\Entity',
+                '@ORM\Mapping\Entity',
+                '@Mapping\Entity',
+                '@Document',
+                '@ODM\Document',
+            ])
+            ->setNormalizer($normalizer)
+            ->getOption()
+        ;
+
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('annotation_include', 'Class level annotations tags that must be set in order to fix the class. (case insensitive)'))
+            new DeprecatedFixerOption($oldAnnotationIncludeOption, 'Use `internal` to configure PHPDoc annotations tags and attributes.'),
+            new DeprecatedFixerOption($oldAnnotationExcludeOption, 'Use `exclude` to configure PHPDoc annotations tags and attributes.'),
+            (new FixerOptionBuilder('include', 'Class level PHPDoc annotations tags or attributes of which one or more must be set in order to fix the class. (case insensitive)'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
-                ->setDefault(['@internal'])
-                ->setNormalizer($annotationsNormalizer)
+                ->setDefault(self::DEFAULTS['include'])
+                ->setNormalizer($normalizer)
                 ->getOption(),
-            (new FixerOptionBuilder('annotation_exclude', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)'))
+            (new FixerOptionBuilder('exclude', 'Class level PHPDoc annotations tags or attributes which must all be omitted to fix the class. (case insensitive)'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
-                ->setDefault([
-                    '@final',
-                    '@Entity',
-                    '@ORM\Entity',
-                    '@ORM\Mapping\Entity',
-                    '@Mapping\Entity',
-                    '@Document',
-                    '@ODM\Document',
-                ])
-                ->setNormalizer($annotationsNormalizer)
+                ->setDefault(self::DEFAULTS['exclude'])
+                ->setNormalizer($normalizer)
                 ->getOption(),
             (new FixerOptionBuilder('consider_absent_docblock_as_internal_class', 'Should classes without any DocBlock be fixed to final?'))
                 ->setAllowedTypes(['bool'])
@@ -189,21 +227,42 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             return false; // ignore class; it is abstract or already final
         }
 
-        $docToken = $tokens[$tokens->getPrevNonWhitespace($index)];
+        $index = $tokens->getPrevNonWhitespace($index);
 
-        if (!$docToken->isGivenKind(T_DOC_COMMENT)) {
-            return $this->configuration['consider_absent_docblock_as_internal_class'];
+        if ($this->checkAnnotations && $tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            if (!$this->isClassCandidateBasedOnAttribute($tokens, $index)) {
+                return false;
+            }
+
+            while ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+            }
+
+            $index = $tokens->getPrevNonWhitespace($index);
+
+            return !$tokens[$index]->isGivenKind(T_DOC_COMMENT) || $this->isClassCandidateBasedOnPhpDoc($tokens, $index);
         }
 
-        $doc = new DocBlock($docToken->getContent());
+        if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+            return $this->isClassCandidateBasedOnPhpDoc($tokens, $index);
+        }
+
+        return $this->configuration['consider_absent_docblock_as_internal_class'];
+    }
+
+    private function isClassCandidateBasedOnPhpDoc(Tokens $tokens, int $index): bool
+    {
+        $doc = new DocBlock($tokens[$index]->getContent());
         $tags = [];
 
         foreach ($doc->getAnnotations() as $annotation) {
             if (1 !== Preg::match('/@\S+(?=\s|$)/', $annotation->getContent(), $matches)) {
                 continue;
             }
+
             $tag = strtolower(substr(array_shift($matches), 1));
-            foreach ($this->configuration['annotation_exclude'] as $tagStart => $true) {
+
+            foreach ($this->configuration['exclude'] as $tagStart => $true) {
                 if (str_starts_with($tag, $tagStart)) {
                     return false; // ignore class: class-level PHPDoc contains tag that has been excluded through configuration
                 }
@@ -212,12 +271,85 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             $tags[$tag] = true;
         }
 
-        foreach ($this->configuration['annotation_include'] as $tag => $true) {
-            if (!isset($tags[$tag])) {
-                return false; // ignore class: class-level PHPDoc does not contain all tags that has been included through configuration
+        return $this->isConfiguredAsInclude($tags);
+    }
+
+    private function isClassCandidateBasedOnAttribute(Tokens $tokens, int $attributeCloseIndex): bool
+    {
+        $attributeCandidates = [];
+
+        while ($tokens[$attributeCloseIndex]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            $attributeStartIndex = $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $attributeCloseIndex);
+            $attributeString = '';
+
+            do {
+                $index = $tokens->getNextMeaningfulToken($index);
+
+                if (!$tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
+                    break;
+                }
+
+                $attributeString .= strtolower($tokens[$index]->getContent());
+            } while ($index < $attributeCloseIndex);
+
+            if (isset($this->configuration['exclude'][$attributeString])) {
+                return false;
+            }
+
+            $attributeCandidates[$attributeString] = true;
+            $attributeCloseIndex = $tokens->getPrevNonWhitespace($attributeStartIndex);
+        }
+
+        return $this->isConfiguredAsInclude($attributeCandidates);
+    }
+
+    private function isConfiguredAsInclude(array $attributes): bool
+    {
+        if (0 === \count($this->configuration['include'])) {
+            return true;
+        }
+
+        foreach ($this->configuration['include'] as $tag => $true) {
+            if (isset($attributes[$tag])) {
+                return true;
             }
         }
 
-        return true;
+        return false;
+    }
+
+    private function assertConfigHasNoConflicts(): void
+    {
+        foreach (['include', 'exclude'] as $newConfigKey) {
+            $oldConfigKey = 'annotation_'.$newConfigKey;
+            $defaults = [];
+
+            foreach (self::DEFAULTS[$newConfigKey] as $foo) {
+                $defaults[strtolower($foo)] = true;
+            }
+
+            $newConfigIsSet = $this->configuration[$newConfigKey] !== $defaults;
+            $oldConfigIsSet = $this->configuration[$oldConfigKey] !== $defaults;
+
+            if ($newConfigIsSet && $oldConfigIsSet) {
+                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configuration cannot contain deprecated option "%s" and new option "%s".', $oldConfigKey, $newConfigKey));
+            }
+
+            if ($oldConfigIsSet) {
+                $this->configuration[$newConfigKey] = $this->configuration[$oldConfigKey];
+                $this->checkAnnotations = false; // run in old mode
+            }
+
+            // if ($newConfigIsSet) - only new config is set, all good
+            // if (!$newConfigIsSet && !$oldConfigIsSet) - both are set as to default values, all good
+
+            unset($this->configuration[$oldConfigKey]);
+        }
+
+        $intersect = array_intersect_assoc($this->configuration['include'], $this->configuration['exclude']);
+
+        if (\count($intersect) > 0) {
+            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both "include" and "exclude" list, got duplicates: "%s".', implode('", "', array_keys($intersect))));
+        }
     }
 }

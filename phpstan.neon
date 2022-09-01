@@ -22,6 +22,6 @@ parameters:
         -
             message: '#^.+no value type specified in iterable type.+\.$#'
             path: src/Fixer
-            count: 117
+            count: 118
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache

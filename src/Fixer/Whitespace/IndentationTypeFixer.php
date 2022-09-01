@@ -139,9 +139,6 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         return new Token([T_WHITESPACE, $newContent]);
     }
 
-    /**
-     * @return string mixed
-     */
     private function getExpectedIndent(string $content, string $indent): string
     {
         if ("\t" === $indent) {

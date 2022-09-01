@@ -149,8 +149,8 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @param list<mixed> $expected
-     * @param list<mixed> $elements
+     * @param list<string> $expected
+     * @param list<string> $elements
      *
      * @dataProvider provideStableSortCases
      */
