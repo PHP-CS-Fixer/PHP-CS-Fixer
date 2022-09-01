@@ -3,6 +3,29 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.11.0
+---------------------
+
+* bug: DateTimeCreateFromFormatCallFixer - Mark as risky (#6575)
+* bug: Do not treat implements list comma as array comma (#6595)
+* bug: Fix MethodChainingIndentationFixer with arrow functions and class instantiation (#5587)
+* bug: MethodChainingIndentationFixer - Fix bug with attribute access (#6573)
+* bug: NoMultilineWhitespaceAroundDoubleArrowFixer - fix for single line comment (#6589)
+* bug: TypeAlternationTransformer - TypeIntersectionTransforme - Bug: handle attributes (#6579)
+* bug: [BinaryOperatorFixer] Fix more issues with scoped operators (#6559)
+* docs: Remove `$` from console command snippets (#6600)
+* docs: Remove `$` from console command snippets in documentation (#6599)
+* DX: AllowedValueSubset::getAllowedValues - fix method prototype (#6585)
+* DX: Narrow docblock types in FixerConfiguration (#6580)
+* DX: updagte @PhpCsFixer set config for phpdoc_order rule (#6555)
+* DX: Update PHPUnit config (#6566)
+* feature: Introduce configurability to PhpdocSeparationFixer (#6501)
+* feature: Introduce PER set (#6545)
+* feature: NoTrailingCommaInSinglelineFixer - Introduction (#6529)
+* feature: Support removing superfluous PHPDocs involving `self` (#6583)
+* minor: NoUnneededControlParenthesesFixer - Support instanceof static cases (#6587)
+* minor: PhpdocToCommentFixer - allow phpdoc comments before trait use statement. Fixes #6092 (#6565)
+
 Changelog for v3.10.0
 ---------------------
 
