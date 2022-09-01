@@ -122,8 +122,8 @@ final class FileCacheManager implements CacheManagerInterface
         $this->handler->write($this->cache);
     }
 
-    private function calcHash(string $content): int
+    private function calcHash(string $content): string
     {
-        return crc32($content);
+        return md5($content);
     }
 }

@@ -31,6 +31,6 @@ final class CodeHasher
      */
     public static function calculateCodeHash(string $code): string
     {
-        return (string) crc32($code);
+        return md5($code);
     }
 }

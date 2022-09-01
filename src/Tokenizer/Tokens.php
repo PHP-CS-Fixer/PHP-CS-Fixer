@@ -65,7 +65,7 @@ class Tokens extends \SplFixedArray
     private array $blockEndCache = [];
 
     /**
-     * crc32 hash of code string.
+     * A MD5 hash of the code string.
      */
     private ?string $codeHash = null;
 

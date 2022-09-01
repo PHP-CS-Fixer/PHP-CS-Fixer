@@ -161,7 +161,7 @@ final class FileCacheManagerTest extends TestCase
         $cacheProphecy = $this->prophesize(CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cacheProphecy->has(Argument::is($file))->willReturn(true);
-        $cacheProphecy->get(Argument::is($file))->willReturn(crc32($previousFileContent));
+        $cacheProphecy->get(Argument::is($file))->willReturn(md5($previousFileContent));
         $cache = $cacheProphecy->reveal();
 
         $handlerProphecy = $this->prophesize(FileHandlerInterface::class);
@@ -192,7 +192,7 @@ final class FileCacheManagerTest extends TestCase
         $cacheProphecy = $this->prophesize(CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cacheProphecy->has(Argument::is($file))->willReturn(true);
-        $cacheProphecy->get(Argument::is($file))->willReturn(crc32($fileContent));
+        $cacheProphecy->get(Argument::is($file))->willReturn(md5($fileContent));
         $cache = $cacheProphecy->reveal();
 
         $handlerProphecy = $this->prophesize(FileHandlerInterface::class);
@@ -261,7 +261,7 @@ final class FileCacheManagerTest extends TestCase
 
         $cacheProphecy = $this->prophesize(CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
-        $cacheProphecy->set(Argument::is($file), Argument::is(crc32($fileContent)))->shouldBeCalled();
+        $cacheProphecy->set(Argument::is($file), Argument::is(md5($fileContent)))->shouldBeCalled();
         $cache = $cacheProphecy->reveal();
 
         $handlerProphecy = $this->prophesize(FileHandlerInterface::class);
@@ -294,7 +294,7 @@ final class FileCacheManagerTest extends TestCase
         $cacheProphecy = $this->prophesize(CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cacheProphecy->has(Argument::is($file))->willReturn(false);
-        $cacheProphecy->set(Argument::is($file), Argument::is(crc32($fileContent)))->shouldBeCalled();
+        $cacheProphecy->set(Argument::is($file), Argument::is(md5($fileContent)))->shouldBeCalled();
         $cache = $cacheProphecy->reveal();
 
         $handlerProphecy = $this->prophesize(FileHandlerInterface::class);
@@ -329,7 +329,7 @@ final class FileCacheManagerTest extends TestCase
         $cacheProphecy = $this->prophesize(CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
         $cacheProphecy->has(Argument::is($file))->willReturn(true);
-        $cacheProphecy->get(Argument::is($file))->willReturn(crc32($previousFileContent));
+        $cacheProphecy->get(Argument::is($file))->willReturn(md5($previousFileContent));
         $cacheProphecy->clear(Argument::is($file))->shouldBeCalled();
         $cache = $cacheProphecy->reveal();
 
@@ -366,7 +366,7 @@ final class FileCacheManagerTest extends TestCase
 
         $cacheProphecy = $this->prophesize(CacheInterface::class);
         $cacheProphecy->getSignature()->willReturn($cachedSignature);
-        $cacheProphecy->set(Argument::is($relativePathToFile), Argument::is(crc32($fileContent)))->shouldBeCalled();
+        $cacheProphecy->set(Argument::is($relativePathToFile), Argument::is(md5($fileContent)))->shouldBeCalled();
         $cache = $cacheProphecy->reveal();
 
         $handlerProphecy = $this->prophesize(FileHandlerInterface::class);
