@@ -116,6 +116,18 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         ]);
     }
 
+    /**
+     * @param array{
+     *     start: int,
+     *     end: int,
+     *     type: self::STR_*,
+     * } $firstOperand
+     * @param array{
+     *     start: int,
+     *     end: int,
+     *     type: self::STR_*,
+     * } $secondOperand
+     */
     private function fixConcatOperation(Tokens $tokens, array $firstOperand, int $concatIndex, array $secondOperand): void
     {
         // if both operands are of the same type then these operands can always be merged
@@ -180,7 +192,11 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
     /**
      * @param -1|1 $direction
      *
-     * @return ?array
+     * @return null|array{
+     *     start: int,
+     *     end: int,
+     *     type: self::STR_*,
+     * }
      */
     private function getConcatOperandType(Tokens $tokens, int $index, int $direction): ?array
     {
@@ -211,6 +227,18 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         return null;
     }
 
+    /**
+     * @param array{
+     *     start: int,
+     *     end: int,
+     *     type: self::STR_*,
+     * } $firstOperand
+     * @param array{
+     *     start: int,
+     *     end: int,
+     *     type: self::STR_*,
+     * } $secondOperand
+     */
     private function mergeContantEscapedStringOperands(
         Tokens $tokens,
         array $firstOperand,
@@ -232,6 +260,18 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         $this->clearConcatAndAround($tokens, $concatOperatorIndex);
     }
 
+    /**
+     * @param array{
+     *     start: int,
+     *     end: int,
+     *     type: self::STR_*,
+     * } $firstOperand
+     * @param array{
+     *     start: int,
+     *     end: int,
+     *     type: self::STR_*,
+     * } $secondOperand
+     */
     private function mergeContantEscapedStringVarOperands(
         Tokens $tokens,
         array $firstOperand,
