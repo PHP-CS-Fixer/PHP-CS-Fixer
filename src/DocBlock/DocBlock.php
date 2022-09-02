@@ -177,23 +177,17 @@ final class DocBlock
     }
 
     /**
-     * Get specific types of annotations only.
-     *
      * @param list<string>|string $types
      *
      * @return list<Annotation>
      */
-    public function getAnnotationsOfType($types): array
+    public function getAnnotationsOfType($types, bool $allowWildcards = false): array
     {
         $annotations = [];
-        $types = (array) $types;
 
         foreach ($this->getAnnotations() as $annotation) {
-            $tag = $annotation->getTag()->getName();
-            foreach ($types as $type) {
-                if ($type === $tag) {
-                    $annotations[] = $annotation;
-                }
+            if ($annotation->getTag()->nameEquals($types, $allowWildcards)) {
+                $annotations[] = $annotation;
             }
         }
 

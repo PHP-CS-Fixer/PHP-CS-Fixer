@@ -45,29 +45,40 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
      */
     public function getDefinition(): FixerDefinitionInterface
     {
-        $code = <<<'EOF'
-<?php
-/**
- * Hello there!
- *
- * @author John Doe
- * @custom Test!
- *
- * @throws Exception|RuntimeException foo
- * @param string $foo
- *
- * @param bool   $bar Bar
- * @return int  Return the number of changes.
- */
-
-EOF;
-
         return new FixerDefinition(
             'Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line.',
             [
-                new CodeSample($code),
-                new CodeSample($code, ['groups' => [...TagComparator::DEFAULT_GROUPS, ['param', 'return']]]),
-                new CodeSample($code, ['groups' => [['author', 'throws', 'custom'], ['return', 'param']]]),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * Hello there!
+                         * @throws Exception|RuntimeException foo
+                         * @param string $foo
+                         *
+                         * @param bool   $bar Bar
+                         * @return int  Return the number of changes.
+                         */
+
+                        PHP,
+                ),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @requires PHP 8.1
+                         *
+                         * @dataProvider provideFix81Cases
+                         * @param string $expected
+                         *
+                         * @psalm-param non-empty-string $expected
+                         *
+                         * @return void
+                         */
+
+                        PHP,
+                    ['groups' => [['requires', 'dataProvider'], ['*param', '*return']]],
+                ),
             ],
         );
     }

@@ -33,11 +33,7 @@ Example #1
     <?php
     /**
      * Hello there!
-     *
-     * @author John Doe
    + *
-     * @custom Test!
-     *
      * @throws Exception|RuntimeException foo
    + *
      * @param string $foo
@@ -50,7 +46,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['groups' => [['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['param', 'return']]]``.
+With configuration: ``['groups' => [['requires', 'dataProvider'], ['*param', '*return']]]``.
 
 .. code-block:: diff
 
@@ -58,42 +54,15 @@ With configuration: ``['groups' => [['deprecated', 'link', 'see', 'since'], ['au
    +++ New
     <?php
     /**
-     * Hello there!
+     * @requires PHP 8.1
+   + * @dataProvider provideFix81Cases
      *
-     * @author John Doe
-   + *
-     * @custom Test!
-     *
-     * @throws Exception|RuntimeException foo
-   + *
-     * @param string $foo
+   - * @dataProvider provideFix81Cases
+     * @param string $expected
    - *
-     * @param bool   $bar Bar
-     * @return int  Return the number of changes.
-     */
-
-Example #3
-~~~~~~~~~~
-
-With configuration: ``['groups' => [['author', 'throws', 'custom'], ['return', 'param']]]``.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-    /**
-     * Hello there!
-     *
-     * @author John Doe
-     * @custom Test!
-   + * @throws Exception|RuntimeException foo
-     *
-   - * @throws Exception|RuntimeException foo
-     * @param string $foo
+     * @psalm-param non-empty-string $expected
    - *
-     * @param bool   $bar Bar
-     * @return int  Return the number of changes.
+     * @return void
      */
 
 Rule sets

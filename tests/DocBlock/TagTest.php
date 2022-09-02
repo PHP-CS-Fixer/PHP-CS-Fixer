@@ -63,6 +63,40 @@ final class TagTest extends TestCase
     }
 
     /**
+     * @param list<string>|string $names
+     *
+     * @dataProvider provideNameEqualsCases
+     */
+    public function testNameEquals(bool $expected, $names, bool $allowWildcards, string $input): void
+    {
+        $tag = new Tag(new Line($input));
+
+        static::assertSame($expected, $tag->nameEquals($names, $allowWildcards));
+    }
+
+    public function provideNameEqualsCases(): array
+    {
+        return [
+            [true, 'param', false, '     * @param Foo $foo'],
+            [true, 'return', false, '*   @return            false'],
+            [false, 'param', false, '     * @psalm-param Foo $foo'],
+            [false, '*param', false, '     * @psalm-param Foo $foo'],
+            [true, 'param', true, '     * @param Foo $foo'],
+            [true, 'return', true, '*   @return            false'],
+            [false, 'param', true, '     * @psalm-param Foo $foo'],
+            [true, '*param', true, '     * @psalm-param Foo $foo'],
+            [true, ['param', 'return'], false, '     * @param Foo $foo'],
+            [false, ['*param', '*return'], false, '     * @param Foo $foo'],
+            [false, ['param', 'return'], false, '     * @psalm-param Foo $foo'],
+            [false, ['*param', '*return'], false, '     * @psalm-param Foo $foo'],
+            [true, ['param', 'return'], true, '     * @param Foo $foo'],
+            [true, ['*param', '*return'], true, '     * @param Foo $foo'],
+            [false, ['param', 'return'], true, '     * @psalm-param Foo $foo'],
+            [true, ['*param', '*return'], true, '     * @psalm-param Foo $foo'],
+        ];
+    }
+
+    /**
      * @dataProvider provideValidCases
      */
     public function testValid(bool $expected, string $input): void

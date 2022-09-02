@@ -42,15 +42,12 @@ final class TagComparator
      */
     public static function shouldBeTogether(Tag $first, Tag $second, array $groups = self::DEFAULT_GROUPS): bool
     {
-        $firstName = $first->getName();
-        $secondName = $second->getName();
-
-        if ($firstName === $secondName) {
+        if ($first->getName() === $second->getName()) {
             return true;
         }
 
         foreach ($groups as $group) {
-            if (\in_array($firstName, $group, true) && \in_array($secondName, $group, true)) {
+            if ($first->nameEquals($group, true) && $second->nameEquals($group, true)) {
                 return true;
             }
         }

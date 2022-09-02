@@ -45,27 +45,35 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
      */
     public function getDefinition(): FixerDefinitionInterface
     {
-        $code = <<<'EOF'
-<?php
-/**
- * Hello there!
- *
- * @throws Exception|RuntimeException foo
- * @custom Test!
- * @return int  Return the number of changes.
- * @param string $foo
- * @param bool   $bar Bar
- */
-
-EOF;
-
         return new FixerDefinition(
             'Annotations in PHPDoc should be ordered in defined sequence.',
             [
-                new CodeSample($code),
-                new CodeSample($code, ['order' => self::ORDER_DEFAULT]),
-                new CodeSample($code, ['order' => ['param', 'return', 'throws']]),
-                new CodeSample($code, ['order' => ['param', 'custom', 'throws', 'return']]),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @throws InvalidArgumentException
+                         * @dataProvider provideFixCases
+                         * @return void
+                         * @param string $expected The expected value.
+                         * @param int    $input
+                         */
+
+                        PHP,
+                ),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @return int
+                         * @param string $foo
+                         * @psalm-return positive-int
+                         * @param bool   $bar Bar
+                         */
+
+                        PHP,
+                    ['order' => ['*param', '*return']],
+                ),
             ],
         );
     }
@@ -143,20 +151,20 @@ EOF;
     /**
      * Move all given annotations in before given set of annotations.
      *
-     * @param string   $move   Tag of annotations that should be moved
-     * @param string[] $before Tags of annotations that should moved annotations be placed before
+     * @param string       $move   Tag of annotations that should be moved
+     * @param list<string> $before Tags of annotations that $move should be placed before
      */
     private function moveAnnotationsBefore(string $move, array $before, string $content): string
     {
         $doc = new DocBlock($content);
-        $toBeMoved = $doc->getAnnotationsOfType($move);
+        $toBeMoved = $doc->getAnnotationsOfType($move, true);
 
         // nothing to do if there are no annotations to be moved
         if (0 === \count($toBeMoved)) {
             return $content;
         }
 
-        $others = $doc->getAnnotationsOfType($before);
+        $others = $doc->getAnnotationsOfType($before, true);
 
         if (0 === \count($others)) {
             return $content;
@@ -182,20 +190,20 @@ EOF;
     /**
      * Move all given annotations after given set of annotations.
      *
-     * @param string   $move  Tag of annotations that should be moved
-     * @param string[] $after Tags of annotations that should moved annotations be placed after
+     * @param string       $move  Tag of annotations that should be moved
+     * @param list<string> $after Tags of annotations that $move should be placed after
      */
     private function moveAnnotationsAfter(string $move, array $after, string $content): string
     {
         $doc = new DocBlock($content);
-        $toBeMoved = $doc->getAnnotationsOfType($move);
+        $toBeMoved = $doc->getAnnotationsOfType($move, true);
 
         // nothing to do if there are no annotations to be moved
         if (0 === \count($toBeMoved)) {
             return $content;
         }
 
-        $others = $doc->getAnnotationsOfType($after);
+        $others = $doc->getAnnotationsOfType($after, true);
 
         // nothing to do if there are no other annotations
         if (0 === \count($others)) {

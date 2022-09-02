@@ -83,6 +83,10 @@ final class TagComparatorTest extends TestCase
             [[['param', 'return'], ['author', 'since']], 'author', 'since', true],
             [array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']]), 'link', 'see', true],
             [[['param', 'return']], 'category', 'package', false],
+            [[['*param'], ['*return']], 'param', 'psalm-param', true],
+            [[['*param'], ['*return']], 'param', 'psalm-return', false],
+            [[['property-*']], 'property-read', 'property-write', true],
+            [[['property-']], 'property-read', 'property', false],
         ];
     }
 }

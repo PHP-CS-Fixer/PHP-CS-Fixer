@@ -30,21 +30,19 @@ Example #1
    +++ New
     <?php
     /**
-     * Hello there!
-     *
-   - * @throws Exception|RuntimeException foo
-     * @custom Test!
-   - * @return int  Return the number of changes.
-     * @param string $foo
-     * @param bool   $bar Bar
-   + * @throws Exception|RuntimeException foo
-   + * @return int  Return the number of changes.
+   - * @throws InvalidArgumentException
+     * @dataProvider provideFixCases
+   - * @return void
+     * @param string $expected The expected value.
+     * @param int    $input
+   + * @throws InvalidArgumentException
+   + * @return void
      */
 
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['order' => ['param', 'throws', 'return']]``.
+With configuration: ``['order' => ['*param', '*return']]``.
 
 .. code-block:: diff
 
@@ -52,59 +50,11 @@ With configuration: ``['order' => ['param', 'throws', 'return']]``.
    +++ New
     <?php
     /**
-     * Hello there!
-     *
-   - * @throws Exception|RuntimeException foo
-     * @custom Test!
-   - * @return int  Return the number of changes.
-     * @param string $foo
-     * @param bool   $bar Bar
-   + * @throws Exception|RuntimeException foo
-   + * @return int  Return the number of changes.
-     */
-
-Example #3
-~~~~~~~~~~
-
-With configuration: ``['order' => ['param', 'return', 'throws']]``.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-    /**
-     * Hello there!
-     *
-   - * @throws Exception|RuntimeException foo
-     * @custom Test!
-   - * @return int  Return the number of changes.
-     * @param string $foo
-     * @param bool   $bar Bar
-   + * @return int  Return the number of changes.
-   + * @throws Exception|RuntimeException foo
-     */
-
-Example #4
-~~~~~~~~~~
-
-With configuration: ``['order' => ['param', 'custom', 'throws', 'return']]``.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-    /**
-     * Hello there!
-     *
    + * @param string $foo
    + * @param bool   $bar Bar
-   + * @custom Test!
-     * @throws Exception|RuntimeException foo
-   - * @custom Test!
-     * @return int  Return the number of changes.
+     * @return int
    - * @param string $foo
+     * @psalm-return positive-int
    - * @param bool   $bar Bar
      */
 

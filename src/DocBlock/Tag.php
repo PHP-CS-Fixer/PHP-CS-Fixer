@@ -39,24 +39,13 @@ final class Tag
      */
     private Line $line;
 
-    /**
-     * The cached tag name.
-     */
     private ?string $name = null;
 
-    /**
-     * Create a new tag instance.
-     */
     public function __construct(Line $line)
     {
         $this->line = $line;
     }
 
-    /**
-     * Get the tag name.
-     *
-     * This may be "param", or "return", etc.
-     */
     public function getName(): string
     {
         if (null === $this->name) {
@@ -73,9 +62,27 @@ final class Tag
     }
 
     /**
-     * Set the tag name.
-     *
-     * This will also be persisted to the upstream line and annotation.
+     * @param list<string>|string $names
+     */
+    public function nameEquals($names, bool $allowWildcards = false): bool
+    {
+        if (!$allowWildcards) {
+            return \in_array($this->getName(), (array) $names, true);
+        }
+
+        foreach ((array) $names as $name) {
+            $name = str_replace('\*', '.*', preg_quote($name, '/'));
+
+            if (1 === Preg::match("/^{$name}$/", $this->getName())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * New name will also be persisted to the upstream line and annotation.
      */
     public function setName(string $name): void
     {
@@ -97,6 +104,6 @@ final class Tag
      */
     public function valid(): bool
     {
-        return \in_array($this->getName(), self::PSR_STANDARD_TAGS, true);
+        return $this->nameEquals(self::PSR_STANDARD_TAGS);
     }
 }

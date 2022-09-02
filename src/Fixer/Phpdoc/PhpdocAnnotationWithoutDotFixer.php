@@ -86,9 +86,7 @@ function foo ($bar) {}
             }
 
             foreach ($annotations as $annotation) {
-                if (
-                    !$annotation->getTag()->valid() || !\in_array($annotation->getTag()->getName(), $this->tags, true)
-                ) {
+                if (!$annotation->getTag()->valid() || !$annotation->getTag()->nameEquals($this->tags)) {
                     continue;
                 }
 

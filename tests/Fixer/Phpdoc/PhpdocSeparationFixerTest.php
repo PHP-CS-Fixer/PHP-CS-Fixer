@@ -964,4 +964,47 @@ EOF,
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFixWithWildcardsCases
+     *
+     * @param array<string, mixed> $config
+     */
+    public function testFixWithWildcards(string $expected, string $input, array $config): void
+    {
+        $this->fixer->configure($config);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithWildcardsCases(): iterable
+    {
+        yield [
+            <<<'PHP'
+                <?php
+                /**
+                 * @param DbalConnection|Connection       $connection
+                 * @psalm-param DbalConnection|Connection $connection
+                 * @param bool                            $fromExecuteStatement
+                 *
+                 * @phpstan-return ($fromExecuteStatement is true ? int<0, max> : DbalResult)
+                 * @return DbalResult|int<0, max>
+                 */
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @param DbalConnection|Connection       $connection
+                 *
+                 * @psalm-param DbalConnection|Connection $connection
+                 * @param bool                            $fromExecuteStatement
+                 * @phpstan-return ($fromExecuteStatement is true ? int<0, max> : DbalResult)
+                 *
+                 *
+                 * @return DbalResult|int<0, max>
+                 */
+                PHP,
+            ['groups' => [['*param'], ['*return']]],
+        ];
+    }
 }

@@ -45,6 +45,7 @@ final class DocBlockTest extends TestCase
      * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
      *
      * @return void
+     * @psalm-return never
      */';
 
     public function testContent(): void
@@ -67,14 +68,14 @@ final class DocBlockTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $lines = $doc->getLines();
 
-        static::assertCount(15, $lines);
+        static::assertCount(16, $lines);
 
         foreach ($lines as $index => $line) {
             static::assertInstanceOf(\PhpCsFixer\DocBlock\Line::class, $line);
             static::assertSame($doc->getLine($index), $line);
         }
 
-        static::assertEmpty($doc->getLine(15));
+        static::assertNull($doc->getLine(16));
     }
 
     public function testGetAnnotations(): void
@@ -82,14 +83,14 @@ final class DocBlockTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $annotations = $doc->getAnnotations();
 
-        static::assertCount(5, $annotations);
+        static::assertCount(6, $annotations);
 
         foreach ($annotations as $index => $annotation) {
             static::assertInstanceOf(\PhpCsFixer\DocBlock\Annotation::class, $annotation);
             static::assertSame($doc->getAnnotation($index), $annotation);
         }
 
-        static::assertEmpty($doc->getAnnotation(5));
+        static::assertNull($doc->getAnnotation(6));
     }
 
     public function testGetAnnotationsOfTypeParam(): void
@@ -134,10 +135,7 @@ final class DocBlockTest extends TestCase
 
         static::assertCount(1, $annotations);
 
-        $content = '     * @return void
-';
-
-        static::assertSame($content, $annotations[0]->getContent());
+        static::assertSame("     * @return void\n", $annotations[0]->getContent());
     }
 
     public function testGetAnnotationsOfTypeFoo(): void
@@ -146,6 +144,25 @@ final class DocBlockTest extends TestCase
         $annotations = $doc->getAnnotationsOfType('foo');
 
         static::assertCount(0, $annotations);
+    }
+
+    public function testGetAnnotationsOfTypeWildcardDisabled(): void
+    {
+        $doc = new DocBlock(self::$sample);
+        $annotations = $doc->getAnnotationsOfType('*return');
+
+        static::assertCount(0, $annotations);
+    }
+
+    public function testGetAnnotationsOfTypeWildcardEnabled(): void
+    {
+        $doc = new DocBlock(self::$sample);
+        $annotations = $doc->getAnnotationsOfType('*return', true);
+
+        static::assertCount(2, $annotations);
+
+        static::assertSame("     * @return void\n", $annotations[0]->getContent());
+        static::assertSame("     * @psalm-return never\n", $annotations[1]->getContent());
     }
 
     public function testIsMultiLIne(): void

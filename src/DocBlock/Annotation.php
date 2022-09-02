@@ -267,7 +267,7 @@ final class Annotation
 
     public function supportTypes(): bool
     {
-        return \in_array($this->getTag()->getName(), self::$tags, true);
+        return $this->getTag()->nameEquals(self::$tags);
     }
 
     /**
