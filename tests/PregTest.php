@@ -46,20 +46,23 @@ final class PregTest extends TestCase
         static::assertSame($expectedMatches, $actualMatches);
     }
 
-    public function providePatternValidationCases(): array
+    public function providePatternValidationCases(): iterable
     {
-        return [
+        yield from [
             'invalid_blank' => ['', null, PregException::class],
             'invalid_open' => ["\1", null, PregException::class, "'\1' found"],
             'valid_control_character_delimiter' => ["\1\1", 1],
             'invalid_control_character_modifier' => ["\1\1\1", null, PregException::class, ' Unknown modifier '],
             'valid_slate' => ['//', 1],
             'valid_paired' => ['()', 1],
-            'null_byte_injection' => ['()'."\0", null, PregException::class, ' Null byte in regex '],
             'paired_non_utf8_only' => ["((*UTF8)\xFF)", null, PregException::class, 'UTF-8'],
             'valid_paired_non_utf8_only' => ["(\xFF)", 1],
             'php_version_dependent' => ['([\\R])', 0, PregException::class, 'Compilation failed: escape sequence is invalid '],
         ];
+
+        $nullByteMessage = \PHP_VERSION_ID >= 80200 ? 'NUL is not a valid modifier' : 'Null byte in regex';
+
+        yield 'null_byte_injection' => ['()'."\0", null, PregException::class, " {$nullByteMessage} "];
     }
 
     /**

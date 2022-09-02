@@ -46,6 +46,11 @@ jobs:
             job-description: 'with deployment'
             execute-deployment: 'yes'
 
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
+            PHP_CS_FIXER_IGNORE_ENV: 1
+            composer-flags: '--ignore-platform-req=PHP'
+
           - operating-system: 'windows-latest'
             php-version: '8.1'
             job-description: 'on Windows'

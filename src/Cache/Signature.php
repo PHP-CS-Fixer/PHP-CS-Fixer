@@ -43,7 +43,7 @@ final class Signature implements SignatureInterface
         $this->fixerVersion = $fixerVersion;
         $this->indent = $indent;
         $this->lineEnding = $lineEnding;
-        $this->rules = self::utf8Encode($rules);
+        $this->rules = self::makeJsonEncodable($rules);
     }
 
     public function getPhpVersion(): string
@@ -85,11 +85,11 @@ final class Signature implements SignatureInterface
      *
      * @return array<string, array<string, mixed>|bool>
      */
-    private static function utf8Encode(array $data): array
+    private static function makeJsonEncodable(array $data): array
     {
         array_walk_recursive($data, static function (&$item): void {
             if (\is_string($item) && !mb_detect_encoding($item, 'utf-8', true)) {
-                $item = utf8_encode($item);
+                $item = base64_encode($item);
             }
         });
 
