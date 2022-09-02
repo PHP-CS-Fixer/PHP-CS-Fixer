@@ -45,7 +45,7 @@ final class RuleSetTest extends TestCase
     ];
 
     /**
-     * @param array|bool $ruleConfig
+     * @param array<string, mixed>|bool $ruleConfig
      *
      * @dataProvider provideAllRulesFromSetsCases
      */
@@ -77,7 +77,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param array|bool $ruleConfig
+     * @param array<string, mixed>|bool $ruleConfig
      *
      * @dataProvider provideAllRulesFromSetsCases
      */
@@ -268,6 +268,8 @@ final class RuleSetTest extends TestCase
     }
 
     /**
+     * @param array<string, array<string, mixed>|bool> $set
+     *
      * @dataProvider provideSafeSetCases
      */
     public function testRiskyRulesInSet(array $set, bool $safe): void
@@ -428,6 +430,11 @@ final class RuleSetTest extends TestCase
         new RuleSet(['@Symfony:risky' => null]);
     }
 
+    /**
+     * @param array<array-key, mixed> $array
+     *
+     * @return array<array-key, mixed> $array
+     */
     private function sortNestedArray(array $array, string $ruleName): array
     {
         $this->doSort($array, $ruleName);
@@ -440,7 +447,7 @@ final class RuleSetTest extends TestCase
      *
      * Sometimes keys are all string, sometimes they are integers - we need to account for that.
      *
-     * @param array<int|string,mixed> $data
+     * @param array<array-key, mixed> $data
      */
     private function doSort(array &$data, string $path): void
     {
@@ -503,6 +510,10 @@ final class RuleSetTest extends TestCase
         return $rules;
     }
 
+    /**
+     * @param array<string, array<string, mixed>|bool> $expected
+     * @param array<string, array<string, mixed>|bool> $actual
+     */
     private static function assertSameRules(array $expected, array $actual): void
     {
         ksort($expected);

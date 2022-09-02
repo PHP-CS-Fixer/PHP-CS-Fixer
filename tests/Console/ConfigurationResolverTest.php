@@ -460,7 +460,8 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @param array|\Exception $expected
+     * @param \Exception|list<string> $expected
+     * @param list<string>            $path
      *
      * @dataProvider provideResolveIntersectionOfPathsCases
      */
@@ -648,6 +649,8 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $options
+     *
      * @dataProvider provideConfigFinderIsOverriddenCases
      */
     public function testConfigFinderIsOverridden(array $options, bool $expectedResult): void
@@ -1140,7 +1143,7 @@ For more info about updating see: https://github.com/FriendsOfPHP/PHP-CS-Fixer/b
     }
 
     /**
-     * @param array|bool $ruleConfig
+     * @param array<string, mixed>|bool $ruleConfig
      *
      * @dataProvider provideDeprecatedFixerConfiguredCases
      *
@@ -1207,6 +1210,10 @@ For more info about updating see: https://github.com/FriendsOfPHP/PHP-CS-Fixer/b
         return str_replace('/', \DIRECTORY_SEPARATOR, $path);
     }
 
+    /**
+     * @param array<string, array<string, mixed>|bool> $expected
+     * @param array<string, array<string, mixed>|bool> $actual
+     */
     private static function assertSameRules(array $expected, array $actual): void
     {
         ksort($expected);
@@ -1220,6 +1227,9 @@ For more info about updating see: https://github.com/FriendsOfPHP/PHP-CS-Fixer/b
         return realpath(__DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.\DIRECTORY_SEPARATOR).'/';
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     private function createConfigurationResolver(array $options, Config $config = null, string $cwdPath = ''): ConfigurationResolver
     {
         if (null === $config) {

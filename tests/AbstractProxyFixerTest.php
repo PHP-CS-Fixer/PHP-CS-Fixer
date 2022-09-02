@@ -137,10 +137,13 @@ final class AbstractProxyFixerTest extends TestCase
     {
         return new class($fixers) extends AbstractProxyFixer implements WhitespacesAwareFixerInterface {
             /**
-             * @var FixerInterface[]
+             * @var list<FixerInterface>
              */
             private array $fixers;
 
+            /**
+             * @param list<FixerInterface> $fixers
+             */
             public function __construct(array $fixers)
             {
                 $this->fixers = $fixers;

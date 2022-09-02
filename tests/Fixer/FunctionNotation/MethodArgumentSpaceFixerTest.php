@@ -33,6 +33,8 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     protected $fixer;
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
@@ -60,6 +62,8 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
     public function testFixWithDifferentLineEndings(string $expected, ?string $input = null, array $configuration = []): void
@@ -943,6 +947,8 @@ $example = function () use ($message1,$message2) {
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFix2Cases
      */
     public function testFix2(string $expected, ?string $input = null, array $config = []): void

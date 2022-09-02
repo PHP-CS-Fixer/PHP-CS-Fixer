@@ -93,7 +93,8 @@ class Test {
 EOF;
 
     /**
-     * @param int[] $lineNumberRemoved Line numbers expected to be removed after fixing
+     * @param list<int>    $lineNumberRemoved Line numbers expected to be removed after fixing
+     * @param list<string> $config
      *
      * @dataProvider provideWithConfigCases
      */
@@ -822,6 +823,8 @@ class Foo
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideBraceCases
      */
     public function testBraces(array $config, string $expected, ?string $input = null): void
@@ -920,6 +923,8 @@ class Foo
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces(array $config, string $expected, ?string $input = null): void
@@ -958,6 +963,8 @@ class Foo
     }
 
     /**
+     * @param list<string> $config
+     *
      * @dataProvider provideSwitchCases
      */
     public function testInSwitchStatement(array $config, string $expected, ?string $input = null): void
@@ -1097,6 +1104,8 @@ class Foo {}'
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
@@ -1230,6 +1239,9 @@ enum Foo
         }
     }
 
+    /**
+     * @param list<int> $lineNumbers
+     */
     private function removeLinesFromString(string $input, array $lineNumbers): string
     {
         sort($lineNumbers);

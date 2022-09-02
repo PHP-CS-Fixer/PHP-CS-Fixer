@@ -26,13 +26,13 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class ControlStructureContinuationPositionFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, array $configuration = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -269,6 +269,8 @@ final class ControlStructureContinuationPositionFixerTest extends AbstractFixerT
     }
 
     /**
+     * @param null|array<string, mixed> $configuration
+     *
      * @dataProvider provideFixWithWindowsLineEndingsCases
      */
     public function testFixWithWindowsLineEndings(string $expected, ?string $input = null, array $configuration = null): void

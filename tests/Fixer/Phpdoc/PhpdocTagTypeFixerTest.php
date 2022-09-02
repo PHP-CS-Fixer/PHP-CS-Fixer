@@ -25,13 +25,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, ?array $configuration = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }

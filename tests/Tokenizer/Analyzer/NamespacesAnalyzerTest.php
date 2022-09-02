@@ -29,6 +29,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NamespacesAnalyzerTest extends TestCase
 {
     /**
+     * @param list<NamespaceAnalysis> $expected
+     *
      * @dataProvider provideNamespacesCases
      */
     public function testNamespaces(string $code, array $expected): void

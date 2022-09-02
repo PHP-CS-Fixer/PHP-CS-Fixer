@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\CT;
 final class NullableTypeTransformerTest extends AbstractTransformerTestCase
 {
     /**
+     * @param array<int, int|string> $expectedTokens
+     *
      * @dataProvider provideProcessCases
      */
     public function testProcess(string $source, array $expectedTokens = []): void
@@ -113,6 +115,8 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
+     * @param array<int, int|string> $expectedTokens
+     *
      * @dataProvider provideProcess80Cases
      *
      * @requires PHP 8.0
@@ -160,6 +164,8 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
+     * @param array<int, int|string> $expectedTokens
+     *
      * @dataProvider provideProcess81Cases
      *
      * @requires PHP 8.1

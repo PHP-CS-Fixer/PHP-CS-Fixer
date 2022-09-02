@@ -32,6 +32,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ControlCaseStructuresAnalyzerTest extends TestCase
 {
     /**
+     * @param array<int, AbstractControlCaseStructuresAnalysis> $expectedAnalyses
+     *
      * @dataProvider provideFindControlStructuresCases
      */
     public function testFindControlStructures(array $expectedAnalyses, string $source): void
@@ -318,7 +320,8 @@ endswitch ?>',
     }
 
     /**
-     * @param int[] $types
+     * @param array<int, AbstractControlCaseStructuresAnalysis> $expectedAnalyses
+     * @param list<int>                                         $types
      *
      * @requires PHP 8.1
      *

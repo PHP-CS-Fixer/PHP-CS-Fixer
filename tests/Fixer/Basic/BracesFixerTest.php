@@ -41,6 +41,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixControlContinuationBracesCases
      */
     public function testFixControlContinuationBraces(string $expected, ?string $input = null, array $configuration = []): void
@@ -827,6 +829,8 @@ if (true) {
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixMissingBracesAndIndentCases
      */
     public function testFixMissingBracesAndIndent(string $expected, ?string $input = null, array $configuration = []): void
@@ -2645,6 +2649,8 @@ class Foo
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixClassyBracesCases
      */
     public function testFixClassyBraces(string $expected, ?string $input = null, array $configuration = []): void
@@ -2826,6 +2832,8 @@ function foo()
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixAnonFunctionInShortArraySyntaxCases
      */
     public function testFixAnonFunctionInShortArraySyntax(string $expected, ?string $input = null, array $configuration = []): void
@@ -2940,6 +2948,8 @@ function foo()
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCommentBeforeBraceCases
      */
     public function testFixCommentBeforeBrace(string $expected, ?string $input = null, array $configuration = []): void
@@ -3070,6 +3080,8 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixWhitespaceBeforeBraceCases
      */
     public function testFixWhitespaceBeforeBrace(string $expected, ?string $input = null, array $configuration = []): void
@@ -3285,6 +3297,8 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixFunctionsCases
      */
     public function testFixFunctions(string $expected, ?string $input = null, array $configuration = []): void
@@ -3643,6 +3657,8 @@ class Foo
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixMultiLineStructuresCases
      */
     public function testFixMultiLineStructures(string $expected, ?string $input = null, array $configuration = []): void
@@ -3761,6 +3777,8 @@ class Foo
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixSpaceAroundTokenCases
      */
     public function testFixSpaceAroundToken(string $expected, ?string $input = null, array $configuration = []): void
@@ -3956,6 +3974,8 @@ declare   (   ticks   =   1   )   {
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFinallyCases
      */
     public function testFinally(string $expected, ?string $input = null, array $configuration = []): void
@@ -4053,6 +4073,8 @@ declare   (   ticks   =   1   )   {
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFunctionImportCases
      */
     public function testFunctionImport(string $expected, ?string $input = null, array $configuration = []): void
@@ -4101,6 +4123,8 @@ declare   (   ticks   =   1   )   {
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFix70Cases
      */
     public function testFix70(string $expected, ?string $input = null, array $configuration = []): void
@@ -4813,6 +4837,8 @@ $foo = new class () extends \Exception { protected $message = "Surprise"; };
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider providePreserveLineAfterControlBraceCases
      */
     public function testPreserveLineAfterControlBrace(string $expected, ?string $input = null, array $configuration = []): void
@@ -5023,6 +5049,8 @@ if (true)
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces(string $expected, ?string $input = null, array $configuration = []): void

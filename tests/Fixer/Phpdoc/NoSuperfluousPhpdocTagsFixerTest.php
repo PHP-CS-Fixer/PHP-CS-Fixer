@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
@@ -2104,6 +2106,8 @@ new class() extends Foo {
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixPhp80Cases
      *
      * @requires PHP 8.0
@@ -2342,6 +2346,8 @@ new #[Bar] class() extends Foo {
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1

@@ -951,6 +951,11 @@ class Foo {
         ];
     }
 
+    /**
+     * @param list<array{0: string, 1?: string}> $cases
+     *
+     * @return list<array{0: string, 1?: string}>
+     */
     private function withLongArraySyntaxCases(array $cases): array
     {
         $longSyntaxCases = [];

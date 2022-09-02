@@ -646,6 +646,8 @@ else?><?php echo 5;',
     }
 
     /**
+     * @param list<int> $expected
+     *
      * @dataProvider provideBlockDetectionCases
      */
     public function testBlockDetection(array $expected, string $source, int $index): void

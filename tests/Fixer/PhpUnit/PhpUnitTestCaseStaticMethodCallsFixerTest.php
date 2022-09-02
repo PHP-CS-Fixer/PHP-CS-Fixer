@@ -64,6 +64,8 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideTestFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void

@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class TypesSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
@@ -88,6 +90,8 @@ final class TypesSpacesFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0

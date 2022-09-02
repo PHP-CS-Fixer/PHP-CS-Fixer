@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ConstructorPromotionTransformerTest extends AbstractTransformerTestCase
 {
     /**
+     * @param array<int, int|string> $expectedTokens
+     *
      * @dataProvider provideProcessCases
      *
      * @requires PHP 8.0
@@ -125,6 +127,8 @@ class Point {
     }
 
     /**
+     * @param array<int, int|string> $expectedTokens
+     *
      * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1

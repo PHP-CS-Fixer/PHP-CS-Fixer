@@ -42,6 +42,9 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 final class ProjectCodeTest extends TestCase
 {
+    /**
+     * @var null|list<array{class-string<TestCase>}>
+     */
     private static ?array $testClassCases = null;
 
     /**
@@ -677,14 +680,15 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{class-string<TestCase>}>
+     */
     public function provideTestClassCases(): iterable
     {
         if (null === self::$testClassCases) {
             self::$testClassCases = array_map(
-                static function (string $item): array {
-                    return [$item];
-                },
-                self::getTestClasses()
+                static fn (string $item): array => [$item],
+                self::getTestClasses(),
             );
         }
 
@@ -694,15 +698,11 @@ final class ProjectCodeTest extends TestCase
     public function provideClassesWherePregFunctionsAreForbiddenCases(): array
     {
         return array_map(
-            static function (string $item): array {
-                return [$item];
-            },
+            static fn (string $item): array => [$item],
             array_filter(
                 $this->getSrcClasses(),
-                static function (string $className): bool {
-                    return Preg::class !== $className;
-                }
-            )
+                static fn (string $className): bool => Preg::class !== $className,
+            ),
         );
     }
 
@@ -798,6 +798,9 @@ final class ProjectCodeTest extends TestCase
         }
     }
 
+    /**
+     * @return list<class-string>
+     */
     private function getSrcClasses(): array
     {
         static $classes;
@@ -833,6 +836,9 @@ final class ProjectCodeTest extends TestCase
         return $classes;
     }
 
+    /**
+     * @return list<class-string<TestCase>>
+     */
     private static function getTestClasses(): array
     {
         static $classes;

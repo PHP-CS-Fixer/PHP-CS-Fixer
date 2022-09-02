@@ -466,6 +466,8 @@ namespace {
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixWithConfiguredIncludeCases
      */
     public function testFixWithConfiguredInclude(string $expected, ?string $input = null, array $configuration = []): void
@@ -614,6 +616,8 @@ echo strlen($a);
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0

@@ -48,8 +48,9 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param Token[]         $sequence
-     * @param null|array|bool $caseSensitive
+     * @param null|array<int, Token>                       $expected
+     * @param list<array{0: int, 1?: string}|string|Token> $sequence
+     * @param bool|list<bool>                              $caseSensitive
      *
      * @dataProvider provideFindSequenceCases
      */
@@ -278,6 +279,8 @@ final class TokensTest extends TestCase
     }
 
     /**
+     * @param array<mixed> $sequence
+     *
      * @dataProvider provideFindSequenceExceptionCases
      */
     public function testFindSequenceException(string $message, array $sequence): void
@@ -621,6 +624,7 @@ PHP;
     /**
      * @param ?int $expectedIndex
      * @param -1|1 $direction
+     * @param list<array{int}|string|Token> $findTokens
      *
      * @dataProvider provideTokenOfKindSiblingCases
      */
@@ -1187,6 +1191,8 @@ $bar;',
     }
 
     /**
+     * @param null|array{type: Tokens::BLOCK_TYPE_*, isStart: bool} $expected
+     *
      * @dataProvider provideDetectBlockTypeCases
      */
     public function testDetectBlockType(?array $expected, string $code, int $index): void
@@ -1241,9 +1247,8 @@ $bar;',
     }
 
     /**
-     * @param int          $indexStart start overriding index
-     * @param int          $indexEnd   end overriding index
-     * @param array<Token> $items      tokens to insert
+     * @param list<Token>       $expected
+     * @param array<int, Token> $items
      *
      * @dataProvider provideOverrideRangeCases
      */
@@ -1476,6 +1481,8 @@ EOF
     }
 
     /**
+     * @param array<int, list<Token>|Token|Tokens> $slices
+     *
      * @dataProvider provideInsertSlicesCases
      */
     public function testInsertSlices(Tokens $expected, Tokens $tokens, array $slices): void

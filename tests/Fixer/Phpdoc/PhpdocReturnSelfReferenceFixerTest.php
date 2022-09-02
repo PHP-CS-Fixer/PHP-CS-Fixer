@@ -25,9 +25,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected PHP code
-     * @param null|string $input    PHP code
-     *
      * @dataProvider provideDefaultConfigurationTestCases
      */
     public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
@@ -81,8 +78,7 @@ trait SomeTrait
     }
 
     /**
-     * @param string      $expected PHP code
-     * @param null|string $input    PHP code
+     * @param array<string, string> $configuration
      *
      * @dataProvider provideTestCases
      */
@@ -163,6 +159,8 @@ class F
     }
 
     /**
+     * @param array<mixed> $configuration
+     *
      * @dataProvider provideInvalidConfigurationCases
      */
     public function testInvalidConfiguration(array $configuration, string $message): void

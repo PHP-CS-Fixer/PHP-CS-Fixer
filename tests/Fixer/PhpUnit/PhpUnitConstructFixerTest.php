@@ -202,6 +202,9 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         ];
     }
 
+    /**
+     * @return list<array{string, string}>
+     */
     private function generateCases(string $expectedTemplate, string $inputTemplate): array
     {
         $functionTypes = ['Same' => true, 'NotSame' => false, 'Equals' => true, 'NotEquals' => false];

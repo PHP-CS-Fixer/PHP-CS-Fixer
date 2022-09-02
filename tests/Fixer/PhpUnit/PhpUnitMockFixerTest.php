@@ -27,13 +27,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitMockFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideTestFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }

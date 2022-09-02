@@ -106,6 +106,8 @@ final class CacheTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $data
+     *
      * @dataProvider provideMissingDataCases
      */
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKey(array $data): void

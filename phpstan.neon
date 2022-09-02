@@ -16,17 +16,12 @@ parameters:
         - '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
 
         # ignore PHPUnit data providers return type as they are not checked against the test methods anyway
-        - '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type array\.$#'
-        - '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type iterable\.$#'
+        - '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type (array|iterable)\.$#'
 
         # baseline, should only shrink
         -
             message: '#^.+no value type specified in iterable type.+\.$#'
             path: src/Fixer
-            count: 118
-        -
-            message: '#^.+no value type specified in iterable type.+\.$#'
-            path: tests
-            count: 267
+            count: 117
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache

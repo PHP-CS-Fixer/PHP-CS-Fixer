@@ -23,6 +23,9 @@ use PhpCsFixer\RuleSet\RuleSet;
  */
 final class IntegrationCase
 {
+    /**
+     * @var array{indent: string, lineEnding: string}
+     */
     private array $config;
 
     private string $expectedCode;
@@ -32,7 +35,9 @@ final class IntegrationCase
     private ?string $inputCode;
 
     /**
-     * Env requirements (possible keys: php).
+     * Env requirements (possible keys: 'php' or 'php<').
+     *
+     * @var array<string, int>|array{php: int}
      */
     private array $requirements;
 
@@ -40,11 +45,18 @@ final class IntegrationCase
 
     /**
      * Settings how to perform the test (possible keys: none in base class, use as extension point for custom IntegrationTestCase).
+     *
+     * @var array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck?: bool}
      */
     private array $settings;
 
     private string $title;
 
+    /**
+     * @param array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck?: bool} $settings
+     * @param array<string, int>|array{php: int}                                                     $requirements
+     * @param array{indent: string, lineEnding: string}                                              $config
+     */
     public function __construct(
         string $fileName,
         string $title,
@@ -70,6 +82,9 @@ final class IntegrationCase
         return null !== $this->inputCode;
     }
 
+    /**
+     * @return array{indent: string, lineEnding: string}
+     */
     public function getConfig(): array
     {
         return $this->config;
@@ -90,10 +105,7 @@ final class IntegrationCase
         return $this->inputCode;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getRequirement(string $name)
+    public function getRequirement(string $name): int
     {
         if (!\array_key_exists($name, $this->requirements)) {
             throw new \InvalidArgumentException(sprintf(
@@ -106,6 +118,9 @@ final class IntegrationCase
         return $this->requirements[$name];
     }
 
+    /**
+     * @return array<string, int>|array{php: int}
+     */
     public function getRequirements(): array
     {
         return $this->requirements;
@@ -116,6 +131,9 @@ final class IntegrationCase
         return $this->ruleset;
     }
 
+    /**
+     * @return array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck?: bool}
+     */
     public function getSettings(): array
     {
         return $this->settings;

@@ -208,6 +208,9 @@ final class ClassyAnalyzerTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<int, bool> $expected
+     */
     private static function assertClassyInvocation(string $source, array $expected): void
     {
         $tokens = Tokens::fromCode($source);

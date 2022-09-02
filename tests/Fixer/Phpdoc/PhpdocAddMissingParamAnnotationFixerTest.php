@@ -89,6 +89,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
+     * @param null|array<string, mixed> $config
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, ?array $config = null): void
@@ -368,6 +370,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
+     * @param null|array<string, mixed> $config
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces(string $expected, ?string $input = null, ?array $config = null): void

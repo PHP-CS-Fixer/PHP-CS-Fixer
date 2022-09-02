@@ -314,7 +314,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param array|string|Token $other
+     * @param array{0: int, 1?: string}|string|Token $other
      *
      * @dataProvider provideEqualsCases
      */
@@ -400,6 +400,8 @@ final class TokenTest extends TestCase
     }
 
     /**
+     * @param list<array{0: int, 1?: string}|string|Token> $other
+     *
      * @dataProvider provideEqualsAnyCases
      */
     public function testEqualsAny(bool $equalsAny, array $other, bool $caseSensitive = true): void
@@ -432,7 +434,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param array|bool $caseSensitive
+     * @param bool|list<bool> $caseSensitive
      *
      * @dataProvider provideIsKeyCaseSensitiveCases
      */
@@ -521,6 +523,8 @@ final class TokenTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $expected
+     *
      * @dataProvider provideToArrayCases
      */
     public function testToArray(Token $token, array $expected): void
@@ -588,6 +592,9 @@ final class TokenTest extends TestCase
         return new Token($this->getForeachTokenPrototype());
     }
 
+    /**
+     * @return array{int, string}
+     */
     private function getForeachTokenPrototype(): array
     {
         static $prototype = [T_FOREACH, 'foreach'];
