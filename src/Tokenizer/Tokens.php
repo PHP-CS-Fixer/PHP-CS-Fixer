@@ -1348,7 +1348,7 @@ class Tokens extends \SplFixedArray
     /**
      * Register token as found.
      *
-     * @param array|string|Token $token token prototype
+     * @param array{int}|string|Token $token token prototype
      */
     private function unregisterFoundToken($token): void
     {

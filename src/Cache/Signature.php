@@ -29,8 +29,14 @@ final class Signature implements SignatureInterface
 
     private string $lineEnding;
 
+    /**
+     * @var array<string, array<string, mixed>|bool>
+     */
     private array $rules;
 
+    /**
+     * @param array<string, array<string, mixed>|bool> $rules
+     */
     public function __construct(string $phpVersion, string $fixerVersion, string $indent, string $lineEnding, array $rules)
     {
         $this->phpVersion = $phpVersion;
@@ -74,6 +80,11 @@ final class Signature implements SignatureInterface
             && $this->rules === $signature->getRules();
     }
 
+    /**
+     * @param array<string, array<string, mixed>|bool> $data
+     *
+     * @return array<string, array<string, mixed>|bool>
+     */
     private static function utf8Encode(array $data): array
     {
         array_walk_recursive($data, static function (&$item): void {

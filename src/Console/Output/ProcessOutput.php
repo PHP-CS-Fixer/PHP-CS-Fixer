@@ -27,6 +27,8 @@ final class ProcessOutput implements ProcessOutputInterface
 {
     /**
      * File statuses map.
+     *
+     * @var array<FixerFileProcessedEvent::STATUS_*, array{symbol: string, format: string, description: string}>
      */
     private static array $eventStatusMap = [
         FixerFileProcessedEvent::STATUS_NO_CHANGES => ['symbol' => '.', 'format' => '%s', 'description' => 'no changes'],

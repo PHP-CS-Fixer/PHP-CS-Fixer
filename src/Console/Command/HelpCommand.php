@@ -103,6 +103,9 @@ final class HelpCommand extends BaseHelpCommand
         return Preg::replace('/\bNULL\b/', 'null', $str);
     }
 
+    /**
+     * @param array<mixed> $value
+     */
     private static function arrayToString(array $value): string
     {
         if (0 === \count($value)) {

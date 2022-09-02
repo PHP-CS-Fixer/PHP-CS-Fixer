@@ -451,6 +451,15 @@ final class Token
         return '' === trim($this->content, $whitespaces);
     }
 
+    /**
+     * @return array{
+     *     id: int|null,
+     *     name: string|null,
+     *     content: string,
+     *     isArray: bool,
+     *     changed: bool,
+     * }
+     */
     public function toArray(): array
     {
         return [
