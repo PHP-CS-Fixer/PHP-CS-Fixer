@@ -28,6 +28,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class HeaderCommentFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(array $configuration, string $expected, ?string $input = null): void
@@ -616,6 +618,8 @@ echo 1;'
     }
 
     /**
+     * @param null|array<string, mixed> $configuration
+     *
      * @dataProvider provideMisconfigurationCases
      */
     public function testMisconfiguration(?array $configuration, string $exceptionMessage): void
@@ -739,6 +743,8 @@ echo 1;'
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces(array $configuration, string $expected, ?string $input = null): void
@@ -804,6 +810,8 @@ echo 1;'
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1

@@ -349,6 +349,8 @@ abstract class Foo {
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixConfigCases
      */
     public function testFixConfig(string $expected, string $input, array $config): void

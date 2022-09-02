@@ -14,19 +14,20 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\ArrayNotation;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\Basic\NoTrailingCommaInSinglelineFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Tokenizer\CT;
-use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
+ * @deprecated
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
-final class NoTrailingCommaInSinglelineArrayFixer extends AbstractFixer
+final class NoTrailingCommaInSinglelineArrayFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -42,48 +43,19 @@ final class NoTrailingCommaInSinglelineArrayFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens): bool
+    public function getSuccessorsNames(): array
     {
-        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return array_keys($this->proxyFixers);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+    protected function createProxyFixers(): array
     {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $fixer = new NoTrailingCommaInSinglelineFixer();
+        $fixer->configure(['elements' => ['array']]);
 
-        for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
-            if ($tokensAnalyzer->isArray($index)) {
-                $this->fixArray($tokens, $index);
-            }
-        }
-    }
-
-    private function fixArray(Tokens $tokens, int $index): void
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        if ($tokensAnalyzer->isArrayMultiLine($index)) {
-            return;
-        }
-
-        $startIndex = $index;
-
-        if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
-            $startIndex = $tokens->getNextTokenOfKind($startIndex, ['(']);
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
-        } else {
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
-        }
-
-        $beforeEndIndex = $tokens->getPrevMeaningfulToken($endIndex);
-        $beforeEndToken = $tokens[$beforeEndIndex];
-
-        if ($beforeEndToken->equals(',')) {
-            $tokens->removeTrailingWhitespace($beforeEndIndex);
-            $tokens->clearAt($beforeEndIndex);
-        }
+        return [$fixer];
     }
 }

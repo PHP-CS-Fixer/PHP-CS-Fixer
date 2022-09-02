@@ -807,12 +807,12 @@ $array = [
 
                 $rightmostSymbol = 0;
                 foreach ($group as $index) {
-                    $rightmostSymbol = max($rightmostSymbol, strpos(utf8_decode($lines[$index]), $placeholder));
+                    $rightmostSymbol = max($rightmostSymbol, mb_strpos($lines[$index], $placeholder));
                 }
 
                 foreach ($group as $index) {
                     $line = $lines[$index];
-                    $currentSymbol = strpos(utf8_decode($line), $placeholder);
+                    $currentSymbol = mb_strpos($line, $placeholder);
                     $delta = abs($rightmostSymbol - $currentSymbol);
 
                     if ($delta > 0) {

@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTestCase
 {
     /**
+     * @param array<mixed> $configuration
+     *
      * @dataProvider provideInvalidConfigurationCases
      */
     public function testConfigureWithInvalidConfiguration(array $configuration): void
@@ -41,7 +43,9 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
     }
 
     /**
-     * @param array<array<string>> $commentCases
+     * @param list<array{0: string, 1?: string}> $commentCases
+     *
+     * @return list<array{0: string, 1?: string}>
      */
     protected function createTestCases(array $commentCases): array
     {

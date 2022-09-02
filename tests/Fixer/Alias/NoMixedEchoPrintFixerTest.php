@@ -290,6 +290,8 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param array<mixed> $wrongConfig
+     *
      * @dataProvider provideWrongConfigCases
      */
     public function testWrongConfig(array $wrongConfig, string $expectedMessage): void

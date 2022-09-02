@@ -106,6 +106,9 @@ final class ConfigurationResolver
 
     private ToolInfoInterface $toolInfo;
 
+    /**
+     * @var array<string, mixed>
+     */
     private array $options = [
         'allow-risky' => null,
         'cache-file' => null,
@@ -179,6 +182,9 @@ final class ConfigurationResolver
      */
     private $fixerFactory;
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function __construct(
         ConfigInterface $config,
         array $options,
@@ -462,6 +468,8 @@ final class ConfigurationResolver
 
     /**
      * Returns rules.
+     *
+     * @return array<string, array<string, mixed>|bool>
      */
     public function getRules(): array
     {
@@ -629,7 +637,7 @@ final class ConfigurationResolver
     }
 
     /**
-     * Compute rules.
+     * @return array<mixed>
      */
     private function parseRules(): array
     {
@@ -672,6 +680,8 @@ final class ConfigurationResolver
     }
 
     /**
+     * @param array<mixed> $rules
+     *
      * @throws InvalidConfigurationException
      */
     private function validateRules(array $rules): void
@@ -693,20 +703,13 @@ final class ConfigurationResolver
 
         $ruleSet = new RuleSet($ruleSet);
 
-        /** @var string[] $configuredFixers */
         $configuredFixers = array_keys($ruleSet->getRules());
 
         $fixers = $this->createFixerFactory()->getFixers();
 
-        /** @var string[] $availableFixers */
-        $availableFixers = array_map(static function (FixerInterface $fixer): string {
-            return $fixer->getName();
-        }, $fixers);
+        $availableFixers = array_map(static fn (FixerInterface $fixer): string => $fixer->getName(), $fixers);
 
-        $unknownFixers = array_diff(
-            $configuredFixers,
-            $availableFixers
-        );
+        $unknownFixers = array_diff($configuredFixers, $availableFixers);
 
         if (\count($unknownFixers) > 0) {
             $renamedRules = [

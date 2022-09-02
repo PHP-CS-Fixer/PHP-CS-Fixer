@@ -195,6 +195,9 @@ final class DocumentationTest extends TestCase
         static::assertSame($expectedString, file_get_contents($actualFilePath), $message);
     }
 
+    /**
+     * @return list<FixerInterface>
+     */
     private function getFixers(): array
     {
         $factory = new FixerFactory();

@@ -29,15 +29,21 @@ final class Signature implements SignatureInterface
 
     private string $lineEnding;
 
+    /**
+     * @var array<string, array<string, mixed>|bool>
+     */
     private array $rules;
 
+    /**
+     * @param array<string, array<string, mixed>|bool> $rules
+     */
     public function __construct(string $phpVersion, string $fixerVersion, string $indent, string $lineEnding, array $rules)
     {
         $this->phpVersion = $phpVersion;
         $this->fixerVersion = $fixerVersion;
         $this->indent = $indent;
         $this->lineEnding = $lineEnding;
-        $this->rules = self::utf8Encode($rules);
+        $this->rules = self::makeJsonEncodable($rules);
     }
 
     public function getPhpVersion(): string
@@ -74,11 +80,16 @@ final class Signature implements SignatureInterface
             && $this->rules === $signature->getRules();
     }
 
-    private static function utf8Encode(array $data): array
+    /**
+     * @param array<string, array<string, mixed>|bool> $data
+     *
+     * @return array<string, array<string, mixed>|bool>
+     */
+    private static function makeJsonEncodable(array $data): array
     {
         array_walk_recursive($data, static function (&$item): void {
             if (\is_string($item) && !mb_detect_encoding($item, 'utf-8', true)) {
-                $item = utf8_encode($item);
+                $item = base64_encode($item);
             }
         });
 

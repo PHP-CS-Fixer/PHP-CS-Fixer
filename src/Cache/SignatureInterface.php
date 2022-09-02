@@ -29,6 +29,9 @@ interface SignatureInterface
 
     public function getLineEnding(): string;
 
+    /**
+     * @return array<string, array<string, mixed>|bool>
+     */
     public function getRules(): array;
 
     public function equals(self $signature): bool;

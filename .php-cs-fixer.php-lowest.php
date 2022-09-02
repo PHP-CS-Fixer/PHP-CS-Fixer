@@ -24,12 +24,13 @@ $config = require __DIR__.'/.php-cs-fixer.dist.php';
 $config->getFinder()->notPath([
     // @TODO 4.0 change interface to be fully typehinted and remove the exceptions from this list
     'src/DocBlock/Annotation.php',
+    'src/Doctrine/Annotation/Tokens.php',
     'src/Tokenizer/Tokens.php',
 ]);
 
 $config->setRules([
-    'phpdoc_to_param_type' => true, // EXPERIMENTAL rule, helping to ensure usage of 7.0+ typing
-    'phpdoc_to_return_type' => true, // EXPERIMENTAL rule, helping to ensure usage of 7.0+ typing
+    'phpdoc_to_param_type' => true,
+    'phpdoc_to_return_type' => true,
 ]);
 
 return $config;

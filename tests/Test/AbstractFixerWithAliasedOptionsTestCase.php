@@ -59,6 +59,9 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
         }
     }
 
+    /**
+     * @param array<string, mixed> $configuration
+     */
     protected function configureFixerWithAliasedOptions(array $configuration): void
     {
         if (!$this->fixer instanceof ConfigurableFixerInterface) {

@@ -172,6 +172,16 @@ final class ControlCaseStructuresAnalyzer
         }
     }
 
+    /**
+     * @param array{
+     *     kind: int,
+     *     index: int,
+     *     open: int,
+     *     end: int,
+     *     cases: list<array{index: int, open: int}>,
+     *     default: null|array{index: int, open: int},
+     * } $analysis
+     */
     private static function buildControlCaseStructureAnalysis(array $analysis): AbstractControlCaseStructuresAnalysis
     {
         $default = null === $analysis['default']

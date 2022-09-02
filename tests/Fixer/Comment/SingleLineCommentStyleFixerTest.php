@@ -30,6 +30,7 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
     {
         $this->expectException(InvalidFixerConfigurationException::class);
 
+        // @phpstan-ignore-next-line
         $this->fixer->configure(['abc']);
     }
 

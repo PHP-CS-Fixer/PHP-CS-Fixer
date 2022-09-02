@@ -39,9 +39,11 @@ final class CommentsAnalyzerTest extends TestCase
     }
 
     /**
+     * @param list<int> $borders
+     *
      * @dataProvider provideCommentsCases
      */
-    public function testComments(string $code, int $index, ?array $borders): void
+    public function testComments(string $code, int $index, array $borders): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new CommentsAnalyzer();

@@ -43,8 +43,8 @@
         "phpspec/prophecy": "^1.15",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.5",
-        "phpunitgoodpractices/polyfill": "^1.5",
-        "phpunitgoodpractices/traits": "^1.9.1",
+        "phpunitgoodpractices/polyfill": "^1.6",
+        "phpunitgoodpractices/traits": "^1.9.2",
         "symfony/phpunit-bridge": "^6.0",
         "symfony/yaml": "^5.4 || ^6.0"
     },

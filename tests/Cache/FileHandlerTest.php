@@ -194,10 +194,7 @@ final class FileHandlerTest extends TestCase
             '2.0',
             '    ',
             PHP_EOL,
-            [
-                'foo',
-                'bar',
-            ]
+            ['foo' => true, 'bar' => false],
         );
     }
 }

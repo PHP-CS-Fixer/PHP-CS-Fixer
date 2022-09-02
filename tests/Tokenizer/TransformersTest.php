@@ -28,6 +28,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class TransformersTest extends TestCase
 {
     /**
+     * @param array<int, int> $expectedTokenKinds
+     *
      * @dataProvider provideTransformCases
      */
     public function testTransform(string $input, array $expectedTokenKinds): void

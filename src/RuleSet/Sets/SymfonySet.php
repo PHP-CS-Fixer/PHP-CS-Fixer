@@ -103,9 +103,7 @@ final class SymfonySet extends AbstractRuleSetDescription
                 'allow_mixed' => true,
                 'allow_unused_params' => true,
             ],
-            'no_trailing_comma_in_list_call' => true,
-            'no_trailing_comma_in_singleline_array' => true,
-            'no_trailing_comma_in_singleline_function_call' => true,
+            'no_trailing_comma_in_singleline' => true,
             'no_unneeded_control_parentheses' => [
                 'statements' => [
                     'break',

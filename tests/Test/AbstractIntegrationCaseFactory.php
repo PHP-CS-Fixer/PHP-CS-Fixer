@@ -76,7 +76,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--CONFIG--' block of a '.test' file.
      *
-     * @param ?string $config
+     * @return array{indent: string, lineEnding: string}
      */
     protected function determineConfig(SplFileInfo $file, ?string $config): array
     {
@@ -105,7 +105,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--REQUIREMENTS--' block of a '.test' file and determines requirements.
      *
-     * @param ?string $config
+     * @return array<string, int>|array{php: int}
      */
     protected function determineRequirements(SplFileInfo $file, ?string $config): array
     {
@@ -116,7 +116,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         if (!\is_int($parsed['php'])) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected int value like 50509 for "php", got "%s".',
-                \is_object($parsed['php']) ? \get_class($parsed['php']) : \gettype($parsed['php']).'#'.$parsed['php']
+                get_debug_type($parsed['php']).'#'.$parsed['php'],
             ));
         }
 
@@ -142,7 +142,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--SETTINGS--' block of a '.test' file and determines settings.
      *
-     * @param ?string $config
+     * @return array{checkPriority: bool, deprecations: list<string>}
      */
     protected function determineSettings(SplFileInfo $file, ?string $config): array
     {
@@ -208,6 +208,11 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         return null;
     }
 
+    /**
+     * @param null|array<mixed> $template
+     *
+     * @return array<mixed>
+     */
     private function parseJson(?string $encoded, array $template = null): array
     {
         // content is optional if template is provided

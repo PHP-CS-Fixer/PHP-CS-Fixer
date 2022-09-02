@@ -25,13 +25,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, ?array $configuration = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -259,6 +259,8 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param array<mixed> $replacements
+     *
      * @dataProvider provideConfigureWithInvalidReplacementsCases
      */
     public function testConfigureWithInvalidReplacements(array $replacements, bool $caseSensitive, string $expectedMessage): void

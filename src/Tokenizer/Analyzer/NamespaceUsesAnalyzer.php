@@ -53,6 +53,8 @@ final class NamespaceUsesAnalyzer
     }
 
     /**
+     * @param list<int> $useIndices
+     *
      * @return list<NamespaceUseAnalysis>
      */
     private function getDeclarations(Tokens $tokens, array $useIndices): array

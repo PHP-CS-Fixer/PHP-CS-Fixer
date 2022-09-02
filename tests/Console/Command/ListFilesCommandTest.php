@@ -41,6 +41,9 @@ final class ListFilesCommandTest extends TestCase
         static::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
     }
 
+    /**
+     * @param array<string, bool|string> $arguments
+     */
     private function doTestExecute(array $arguments): CommandTester
     {
         $application = new Application();

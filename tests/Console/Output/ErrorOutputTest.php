@@ -157,6 +157,9 @@ EOT;
         return str_replace(PHP_EOL, "\n", $displayed);
     }
 
+    /**
+     * @return array{int, Error}
+     */
     private function getErrorAndLineNumber(): array
     {
         $lineNumber = __LINE__;

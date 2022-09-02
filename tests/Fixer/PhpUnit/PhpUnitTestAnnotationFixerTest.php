@@ -27,6 +27,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class PhpUnitTestAnnotationFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
@@ -978,6 +980,8 @@ class Test extends \PhpUnit\FrameWork\TestCase
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces(string $expected, ?string $input = null, array $config = []): void

@@ -293,6 +293,8 @@ $var = $arr[0][     0
     }
 
     /**
+     * @param list<string> $configuration
+     *
      * @dataProvider provideConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, string $expected, string $input): void

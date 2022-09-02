@@ -775,6 +775,8 @@ EOF;
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces(array $config, string $expected, string $input, WhitespacesFixerConfig $whitespacesFixerConfig): void
@@ -1256,6 +1258,8 @@ EOF;
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideVariadicCases
      */
     public function testVariadicParams(array $config, string $expected, string $input): void
@@ -1377,6 +1381,8 @@ class Foo {}
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideInvalidPhpdocCases
      */
     public function testInvalidPhpdocsAreUnchanged(array $config, string $input): void

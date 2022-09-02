@@ -51,6 +51,9 @@ final class ListSetsCommandTest extends TestCase
         static::assertSame(0, $commandTester->getStatusCode());
     }
 
+    /**
+     * @param array<string, bool|string> $arguments
+     */
     private function doTestExecute(array $arguments): CommandTester
     {
         $application = new Application();

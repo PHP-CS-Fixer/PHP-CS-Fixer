@@ -26,6 +26,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, ?int $versionSpecificFix = null, array $config = []): void

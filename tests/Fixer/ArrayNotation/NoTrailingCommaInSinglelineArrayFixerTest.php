@@ -51,11 +51,6 @@ final class NoTrailingCommaInSinglelineArrayFixerTest extends AbstractFixerTestC
     $test = array("foo", <<<TWIG
         foo
 TWIG
-        , $twig);',
-                '<?php
-    $test = array("foo", <<<TWIG
-        foo
-TWIG
         , $twig, );',
             ],
             [
@@ -67,11 +62,6 @@ TWIG
         , $twig, );',
             ],
             [
-                '<?php
-    $test = array("foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig);',
                 '<?php
     $test = array("foo", <<<\'TWIG\'
         foo
@@ -102,11 +92,6 @@ TWIG
     $test = ["foo", <<<TWIG
         foo
 TWIG
-        , $twig];',
-                '<?php
-    $test = ["foo", <<<TWIG
-        foo
-TWIG
         , $twig, ];',
             ],
             [
@@ -118,11 +103,6 @@ TWIG
         , $twig, ];',
             ],
             [
-                '<?php
-    $test = ["foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig];',
                 '<?php
     $test = ["foo", <<<\'TWIG\'
         foo

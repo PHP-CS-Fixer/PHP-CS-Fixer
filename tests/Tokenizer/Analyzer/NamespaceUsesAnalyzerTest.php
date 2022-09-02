@@ -30,6 +30,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NamespaceUsesAnalyzerTest extends TestCase
 {
     /**
+     * @param list<NamespaceUseAnalysis> $expected
+     *
      * @dataProvider provideNamespaceUsesCases
      */
     public function testUsesFromTokens(string $code, array $expected): void

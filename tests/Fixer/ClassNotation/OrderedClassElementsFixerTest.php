@@ -386,6 +386,8 @@ EOT
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, string $expected, string $input): void
@@ -917,6 +919,8 @@ EOT
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideSortingConfigurationCases
      */
     public function testFixWithSortingAlgorithm(array $configuration, string $expected, string $input): void
@@ -1252,13 +1256,13 @@ EOT
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFix74Cases
      */
-    public function testFix74(string $expected, ?string $input = null, ?array $configuration = null): void
+    public function testFix74(string $expected, ?string $input = null, array $configuration = []): void
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -1412,15 +1416,15 @@ trait TestTrait
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected, ?string $input = null, ?array $configuration = null): void
+    public function testFix81(string $expected, ?string $input = null, array $configuration = []): void
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }

@@ -1601,21 +1601,36 @@ List of Available Rules
 
    Remove trailing commas in list function calls.
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   *warning deprecated*   Use ``no_trailing_comma_in_singleline`` instead.
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\NoTrailingCommaInListCallFixer <./../src/Fixer/ControlStructure/NoTrailingCommaInListCallFixer.php>`_
+-  `no_trailing_comma_in_singleline <./rules/basic/no_trailing_comma_in_singleline.rst>`_
+
+   If a list of values separated by a comma is contained on a single line, then the last item MUST NOT have a trailing comma.
+
+   Configuration options:
+
+   - | ``elements``
+     | Which elements to fix.
+     | Allowed values: a subset of ``['arguments', 'array_destructuring', 'array', 'group_import']``
+     | Default value: ``['arguments', 'array_destructuring', 'array', 'group_import']``
+
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Basic\\NoTrailingCommaInSinglelineFixer <./../src/Fixer/Basic/NoTrailingCommaInSinglelineFixer.php>`_
 -  `no_trailing_comma_in_singleline_array <./rules/array_notation/no_trailing_comma_in_singleline_array.rst>`_
 
    PHP single-line arrays should not have trailing comma.
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   *warning deprecated*   Use ``no_trailing_comma_in_singleline`` instead.
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\NoTrailingCommaInSinglelineArrayFixer <./../src/Fixer/ArrayNotation/NoTrailingCommaInSinglelineArrayFixer.php>`_
 -  `no_trailing_comma_in_singleline_function_call <./rules/function_notation/no_trailing_comma_in_singleline_function_call.rst>`_
 
    When making a method or function call on a single line there MUST NOT be a trailing comma after the last argument.
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   *warning deprecated*   Use ``no_trailing_comma_in_singleline`` instead.
 
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\NoTrailingCommaInSinglelineFunctionCallFixer <./../src/Fixer/FunctionNotation/NoTrailingCommaInSinglelineFunctionCallFixer.php>`_
 -  `no_trailing_whitespace <./rules/whitespace/no_trailing_whitespace.rst>`_

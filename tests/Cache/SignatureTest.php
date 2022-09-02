@@ -43,21 +43,12 @@ final class SignatureTest extends TestCase
     public function testConstructorSetsValues(): void
     {
         $php = PHP_VERSION;
-        $version = '2.0';
+        $version = '3.0';
         $indent = '    ';
         $lineEnding = PHP_EOL;
-        $rules = [
-            'foo',
-            'bar',
-        ];
+        $rules = ['foo' => true, 'bar' => false];
 
-        $signature = new Signature(
-            $php,
-            $version,
-            $indent,
-            $lineEnding,
-            $rules
-        );
+        $signature = new Signature($php, $version, $indent, $lineEnding, $rules);
 
         static::assertSame($php, $signature->getPhpVersion());
         static::assertSame($version, $signature->getFixerVersion());
@@ -80,10 +71,7 @@ final class SignatureTest extends TestCase
         $version = '2.0';
         $indent = '    ';
         $lineEnding = "\n";
-        $rules = [
-            'foo',
-            'bar',
-        ];
+        $rules = ['foo' => true, 'bar' => false];
 
         $base = new Signature($php, $version, $indent, $lineEnding, $rules);
 
@@ -109,7 +97,7 @@ final class SignatureTest extends TestCase
 
         yield 'rules' => [
             $base,
-            new Signature($php, $version, $indent, $lineEnding, ['foo']),
+            new Signature($php, $version, $indent, $lineEnding, ['foo' => false]),
         ];
     }
 
@@ -119,26 +107,10 @@ final class SignatureTest extends TestCase
         $version = '2.0';
         $indent = '    ';
         $lineEnding = PHP_EOL;
-        $rules = [
-            'foo',
-            'bar',
-        ];
+        $rules = ['foo' => true, 'bar' => false];
 
-        $signature = new Signature(
-            $php,
-            $version,
-            $indent,
-            $lineEnding,
-            $rules
-        );
-
-        $anotherSignature = new Signature(
-            $php,
-            $version,
-            $indent,
-            $lineEnding,
-            $rules
-        );
+        $signature = new Signature($php, $version, $indent, $lineEnding, $rules);
+        $anotherSignature = new Signature($php, $version, $indent, $lineEnding, $rules);
 
         static::assertTrue($signature->equals($anotherSignature));
     }

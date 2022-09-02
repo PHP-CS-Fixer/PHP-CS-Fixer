@@ -29,6 +29,9 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var array<int, array{classIndex: int, token: Token, type: string}>
+     */
     private array $classyElements;
 
     /**

@@ -26,6 +26,8 @@ final class FileRemoval
 {
     /**
      * List of observed files to be removed.
+     *
+     * @var array<string, true>
      */
     private array $files = [];
 

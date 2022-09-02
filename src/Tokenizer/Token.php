@@ -209,10 +209,10 @@ final class Token
     /**
      * A helper method used to find out whether a certain input token has to be case-sensitively matched.
      *
-     * @param array<int, bool>|bool $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
-     *                                             the ones used in $sequence. If any is missing, the default case-sensitive
-     *                                             comparison is used
-     * @param int                   $key           the key of the token that has to be looked up
+     * @param bool|list<bool> $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
+     *                                       the ones used in $sequence. If any is missing, the default case-sensitive
+     *                                       comparison is used
+     * @param int             $key           the key of the token that has to be looked up
      */
     public static function isKeyCaseSensitive($caseSensitive, int $key): bool
     {
@@ -451,6 +451,15 @@ final class Token
         return '' === trim($this->content, $whitespaces);
     }
 
+    /**
+     * @return array{
+     *     id: int|null,
+     *     name: string|null,
+     *     content: string,
+     *     isArray: bool,
+     *     changed: bool,
+     * }
+     */
     public function toArray(): array
     {
         return [

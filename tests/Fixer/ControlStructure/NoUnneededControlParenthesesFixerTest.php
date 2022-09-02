@@ -1468,6 +1468,8 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixWithConfigCases
      */
     public function testWithConfig(array $config, string $expected, string $input): void

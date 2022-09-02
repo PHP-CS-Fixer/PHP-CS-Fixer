@@ -26,8 +26,11 @@ final class ApplicationTest extends TestCase
 {
     public function testApplication(): void
     {
-        $app = new Application();
-        static::assertStringMatchesFormat("%s by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>.\nPHP runtime: <info>%d.%d.%d</info>", $app->getLongVersion());
+        $regex = '/^PHP CS Fixer <info>\\d+.\\d+.\\d+(-DEV)?<\\/info> <info>.+<\\/info>'
+            .' by <comment>Fabien Potencier<\\/comment> and <comment>Dariusz Ruminski<\\/comment>.'
+            ."\nPHP runtime: <info>\\d+.\\d+.\\d+(-dev)?<\\/info>$/";
+
+        static::assertMatchesRegularExpression($regex, (new Application())->getLongVersion());
     }
 
     public function testGetMajorVersion(): void

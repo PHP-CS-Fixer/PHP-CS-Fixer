@@ -90,7 +90,7 @@ final class SelfUpdateCommandTest extends TestCase
     }
 
     /**
-     * @param ?string $latestMinorVersion
+     * @param array<string, bool|string> $input
      *
      * @dataProvider provideExecuteCases
      */
@@ -228,6 +228,8 @@ OUTPUT;
     }
 
     /**
+     * @param array<string, bool|string> $input
+     *
      * @dataProvider provideExecuteWhenNotAbleToGetLatestVersionsCases
      */
     public function testExecuteWhenNotAbleToGetLatestVersions(
@@ -299,6 +301,8 @@ OUTPUT;
     }
 
     /**
+     * @param array<string, bool|string> $input
+     *
      * @dataProvider provideExecuteWhenNotInstalledAsPharCases
      */
     public function testExecuteWhenNotInstalledAsPhar(array $input, bool $decorated): void
@@ -330,6 +334,9 @@ OUTPUT;
         ];
     }
 
+    /**
+     * @param array<string, bool|string> $input
+     */
     private function execute(Command $command, array $input, bool $decorated): CommandTester
     {
         $application = new Application();
