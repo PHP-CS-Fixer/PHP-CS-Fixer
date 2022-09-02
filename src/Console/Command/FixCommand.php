@@ -114,6 +114,8 @@ NOTE: if there is an error like "errors reported during linting after fixing", y
 The <comment>--rules</comment> option limits the rules to apply to the
 project:
 
+EOF. /* @TODO: 4.0 - change to @PER */ <<<'EOF'
+
     <info>$ php %command.full_name% /path/to/project --rules=@PSR12</info>
 
 By default the PSR-12 rules are used.
