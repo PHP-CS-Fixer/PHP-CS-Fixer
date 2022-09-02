@@ -13,25 +13,27 @@ jobs:
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
             job-description: 'with lowest deps'
-            composer-flags: '--prefer-stable --prefer-lowest' # should be checked on lowest supported PHP version
+            composer-flags: '--prefer-stable --prefer-lowest' # should be checked on the lowest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
+            job-description: 'with PHPDoc to type rules'
+            phpdoc-to-type-rules: 'yes' # should be checked on the lowest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
-            job-description: 'with Sf ^5'
-            execute-flex-with-symfony-version: '^5' # Explicit check for Sf 5.x compatibility
+            job-description: 'with Symfony ^5'
+            execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.0'
-            job-description: 'with Sf ^6'
-            execute-flex-with-symfony-version: '^6' # Explicit check for Sf 6.x compatibility
+            job-description: 'with Symfony ^6'
+            execute-flex-with-symfony-version: '^6' # explicit check for Symfony 6.x compatibility
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.1'
             job-description: 'with migration rules'
-            execute-migration-rules: 'yes' # should be checked on highest supported PHP version
+            migration-rules: 'yes' # should be checked on the highest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.1'
@@ -107,8 +109,10 @@ jobs:
             composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.composer-flags }}
             composer info -D
 
-      - name: Execute migration rules # we want to execute migration rules BEFORE we gonna run tests and self-fixing, so we know that our codebase is future-ready
-        if: matrix.execute-migration-rules == 'yes'
+      # execute migration rules before running tests and self-fixing,
+      # so that we know that our codebase is future-ready
+      - name: Run PHP CS Fixer with migration rules
+        if: matrix.migration-rules == 'yes'
         run: php php-cs-fixer fix --config .php-cs-fixer.php-highest.php -q
 
       - name: Disable time limit for tests when collecting coverage
@@ -127,8 +131,8 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: php vendor/bin/php-coveralls --verbose
 
-      - name: Run PHP CS Fixer for PHP 7.2 types
-        if: matrix.php-version == '7.2' # we run on lowest supported version, running it on higher would falsy expect more changes, eg `mixed` type on PHP 8
+      - name: Run PHP CS Fixer with PHPDoc to type rules
+        if: matrix.phpdoc-to-type-rules == 'yes'
         run: php php-cs-fixer fix --diff --dry-run -v --config .php-cs-fixer.php-lowest.php
 
       - name: Run PHP CS Fixer
