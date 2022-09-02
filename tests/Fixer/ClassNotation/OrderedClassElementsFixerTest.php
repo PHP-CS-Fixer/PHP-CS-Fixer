@@ -1492,4 +1492,22 @@ class A
  ',
         ];
     }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix82Cases(): iterable
+    {
+        yield [
+            '<?php trait Foo { const C1 = 1; protected $abc = "abc"; }',
+            '<?php trait Foo { protected $abc = "abc"; const C1 = 1; }',
+        ];
+    }
 }

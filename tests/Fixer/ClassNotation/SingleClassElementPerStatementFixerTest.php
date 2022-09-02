@@ -944,4 +944,22 @@ enum Foo: string {
 var_dump(Foo::A.Foo::B);",
         ];
     }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix82Cases(): iterable
+    {
+        yield [
+            '<?php trait Foo { public const Bar = 1; public const Baz = 1; }',
+            '<?php trait Foo { public const Bar = 1, Baz = 1; }',
+        ];
+    }
 }
