@@ -48,6 +48,17 @@ final class ControlCaseStructuresAnalyzer
         }
 
         $depth = -1;
+
+        /**
+         * @var list<array{
+         *     kind: int|null,
+         *     index: int,
+         *     brace_count: int,
+         *     cases: list<array{index: int, open: int}>,
+         *     default: array{index: int, open: int}|null,
+         *     alternative_syntax: bool,
+         * }> $stack
+         */
         $stack = [];
         $isTypeOfInterest = false;
 

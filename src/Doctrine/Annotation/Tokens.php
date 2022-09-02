@@ -273,6 +273,7 @@ final class Tokens extends \SplFixedArray
 
         $max = \count($this) - 1;
         while ($index < $max) {
+            // @phpstan-ignore-next-line Next index always exists.
             $this[$index] = $this[$index + 1];
             ++$index;
         }
