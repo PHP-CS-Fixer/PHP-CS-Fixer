@@ -33,11 +33,10 @@ final class PhpUnitDedicateAssertInternalTypeFixerTest extends AbstractFixerTest
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixInternalTypeCases(): array
+    public function provideTestFixInternalTypeCases(): iterable
     {
-        return [
-            'skip cases' => [
-                '<?php
+        yield 'skip cases' => [
+            '<?php
 final class MyTest extends \PhpUnit\FrameWork\TestCase
 {
     public function testMe()
@@ -56,9 +55,10 @@ final class MyTest extends \PhpUnit\FrameWork\TestCase
     }
 }
 ',
-            ],
-            'expected normal cases' => [
-                '<?php
+        ];
+
+        yield 'expected normal cases' => [
+            '<?php
 final class MyTest extends \PhpUnit\FrameWork\TestCase
 {
     public function testMe()
@@ -99,7 +99,7 @@ final class MyTest extends \PhpUnit\FrameWork\TestCase
     }
 }
 ',
-                '<?php
+            '<?php
 final class MyTest extends \PhpUnit\FrameWork\TestCase
 {
     public function testMe()
@@ -140,9 +140,10 @@ final class MyTest extends \PhpUnit\FrameWork\TestCase
     }
 }
 ',
-            ],
-            'false positive cases' => [
-                '<?php
+        ];
+
+        yield 'false positive cases' => [
+            '<?php
 final class MyTest extends \PhpUnit\FrameWork\TestCase
 {
     public function testMe()
@@ -152,9 +153,10 @@ final class MyTest extends \PhpUnit\FrameWork\TestCase
     }
 }
 ',
-            ],
-            'anonymous class false positive case' => [
-                '<?php
+        ];
+
+        yield 'anonymous class false positive case' => [
+            '<?php
 final class MyTest extends \PhpUnit\FrameWork\TestCase
 {
     public function testMe()
@@ -169,7 +171,6 @@ final class MyTest extends \PhpUnit\FrameWork\TestCase
     }
 }
 ',
-            ],
         ];
     }
 }

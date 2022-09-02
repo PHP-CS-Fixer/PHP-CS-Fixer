@@ -1749,6 +1749,21 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Import\\NoUnusedImportsFixer <./../src/Fixer/Import/NoUnusedImportsFixer.php>`_
+-  `no_useless_concat_operator <./rules/operator/no_useless_concat_operator.rst>`_
+
+   There should not be useless concat operations.
+
+   Configuration options:
+
+   - | ``juggle_simple_strings``
+     | Allow for simple string quote juggling if it results in more concat-operations merges.
+     | Allowed types: ``bool``
+     | Default value: ``false``
+
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Operator\\NoUselessConcatOperatorFixer <./../src/Fixer/Operator/NoUselessConcatOperatorFixer.php>`_
 -  `no_useless_else <./rules/control_structure/no_useless_else.rst>`_
 
    There should not be useless ``else`` cases.

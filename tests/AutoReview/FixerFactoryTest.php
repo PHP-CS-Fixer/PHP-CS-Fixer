@@ -517,6 +517,7 @@ final class FixerFactoryTest extends TestCase
                 'switch_continue_to_break',
             ],
             'no_binary_string' => [
+                'no_useless_concat_operator',
                 'php_unit_dedicate_assert_internal_type',
                 'regular_callable_call',
                 'set_type_to_cast',
@@ -607,6 +608,13 @@ final class FixerFactoryTest extends TestCase
                 'no_extra_blank_lines',
                 'no_leading_import_slash',
                 'single_line_after_imports',
+            ],
+            'no_useless_concat_operator' => [
+                'date_time_create_from_format_call',
+                'ereg_to_preg',
+                'php_unit_dedicate_assert_internal_type',
+                'regular_callable_call',
+                'set_type_to_cast',
             ],
             'no_useless_else' => [
                 'braces',
@@ -775,6 +783,9 @@ final class FixerFactoryTest extends TestCase
             'single_line_throw' => [
                 'braces',
                 'concat_space',
+            ],
+            'single_quote' => [
+                'no_useless_concat_operator',
             ],
             'single_space_after_construct' => [
                 'braces',

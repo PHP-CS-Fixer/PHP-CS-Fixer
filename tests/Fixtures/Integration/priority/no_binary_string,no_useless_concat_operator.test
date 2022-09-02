@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: no_binary_string,no_useless_concat_operator.
+--RULESET--
+{"no_binary_string": true, "no_useless_concat_operator": true}
+--EXPECT--
+<?php
+$f = "ab";
+
+--INPUT--
+<?php
+$f = b"a".b"b";

@@ -48,7 +48,7 @@ settype($bar, "null");
     /**
      * {@inheritdoc}
      *
-     * Must run after NoBinaryStringFixer.
+     * Must run after NoBinaryStringFixer, NoUselessConcatOperatorFixer.
      */
     public function getPriority(): int
     {

@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_useless_concat_operator,regular_callable_call.
+--RULESET--
+{"no_useless_concat_operator": true, "regular_callable_call": true}
+--EXPECT--
+<?php
+
+foo(1,);
+
+--INPUT--
+<?php
+
+call_user_func("fo"."o", 1,);

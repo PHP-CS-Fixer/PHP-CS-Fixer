@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: single_quote,no_useless_concat_operator.
+--RULESET--
+{"single_quote": true, "no_useless_concat_operator": true}
+--EXPECT--
+<?php
+$a = 'foo $(bar7) $1';
+
+--INPUT--
+<?php
+$a = "foo \$(bar7)".' $1';

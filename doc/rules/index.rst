@@ -526,6 +526,9 @@ Operator
 - `no_space_around_double_colon <./operator/no_space_around_double_colon.rst>`_
 
   There must be no space around double colons (also called Scope Resolution Operator or Paamayim Nekudotayim).
+- `no_useless_concat_operator <./operator/no_useless_concat_operator.rst>`_
+
+  There should not be useless concat operations.
 - `no_useless_nullsafe_operator <./operator/no_useless_nullsafe_operator.rst>`_
 
   There should not be useless ``null-safe-operators`` ``?->`` used.
