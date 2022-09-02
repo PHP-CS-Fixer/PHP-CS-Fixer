@@ -27,6 +27,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class HeredocIndentationFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void

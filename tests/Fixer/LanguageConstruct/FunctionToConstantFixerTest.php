@@ -25,6 +25,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class FunctionToConstantFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideTestCases
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
@@ -242,6 +244,8 @@ get_called_class#1
     }
 
     /**
+     * @param array<mixed> $config
+     *
      * @dataProvider provideInvalidConfigurationKeysCases
      */
     public function testInvalidConfigurationKeys(array $config): void

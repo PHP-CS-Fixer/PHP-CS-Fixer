@@ -115,7 +115,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @param array|string $input token prototype
+     * @param array{int, string}|string $input token prototype
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */
@@ -149,6 +149,9 @@ final class UtilsTest extends TestCase
     }
 
     /**
+     * @param list<mixed> $expected
+     * @param list<mixed> $elements
+     *
      * @dataProvider provideStableSortCases
      */
     public function testStableSort(
@@ -221,6 +224,8 @@ final class UtilsTest extends TestCase
     }
 
     /**
+     * @param list<string> $names
+     *
      * @dataProvider provideNaturalLanguageJoinWithBackticksCases
      */
     public function testNaturalLanguageJoinWithBackticks(string $joined, array $names): void

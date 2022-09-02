@@ -143,6 +143,8 @@ abstract class class4 {}
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixWithConfigCases
      */
     public function testFixWithConfig(string $expected, string $input, array $config): void

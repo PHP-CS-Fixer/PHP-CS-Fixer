@@ -27,6 +27,9 @@ use PhpCsFixer\Tokenizer\CT;
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {
     /**
+     * @param array<int, int|string> $expectedTokens
+     * @param list<int>              $observedKinds
+     *
      * @dataProvider provideProcessCases
      */
     public function testProcess(string $source, array $expectedTokens, array $observedKinds = []): void
@@ -341,8 +344,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param array<int, string> $expectedTokens
-     * @param string[]           $observedKinds
+     * @param array<int, int|string> $expectedTokens
+     * @param list<int>              $observedKinds
      *
      * @dataProvider provideProcessPhp80Cases
      *
@@ -392,7 +395,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param array<int, string> $expectedTokens
+     * @param array<int, int|string> $expectedTokens
+     * @param list<int>              $observedKinds
      *
      * @dataProvider provideProcessPhp81Cases
      *

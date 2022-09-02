@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\CT;
 final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
 {
     /**
+     * @param array<int, int|string> $expectedTokens
+     *
      * @dataProvider provideProcessCases
      *
      * @requires PHP 8.1

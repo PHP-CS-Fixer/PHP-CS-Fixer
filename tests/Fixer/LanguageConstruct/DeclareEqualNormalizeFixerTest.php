@@ -27,6 +27,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input, array $config): void
@@ -101,6 +103,8 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param array<mixed> $config
+     *
      * @dataProvider provideInvalidConfigCases
      */
     public function testInvalidConfig(array $config, string $expectedMessage): void

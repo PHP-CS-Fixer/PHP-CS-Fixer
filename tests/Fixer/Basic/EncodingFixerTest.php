@@ -42,6 +42,9 @@ final class EncodingFixerTest extends AbstractFixerTestCase
         yield ['<?php '];
     }
 
+    /**
+     * @return array{string, string|null, \SplFileInfo}
+     */
     private function prepareTestCase(string $expectedFilename, ?string $inputFilename = null): array
     {
         $expectedFile = $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$expectedFilename);

@@ -826,6 +826,9 @@ final class FixerFactoryTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, list<string>>
+     */
     private static function getPhpDocFixersPriorityGraph(): array
     {
         // Prepare bulk tests for phpdoc fixers to test that:

@@ -292,6 +292,9 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
         return CommandExecutor::create($command, self::$fixtureDir)->getResult();
     }
 
+    /**
+     * @param list<string> $scriptParts
+     */
     private static function executeScript(array $scriptParts): CliResult
     {
         return ScriptExecutor::create($scriptParts, self::$fixtureDir)->getResult();

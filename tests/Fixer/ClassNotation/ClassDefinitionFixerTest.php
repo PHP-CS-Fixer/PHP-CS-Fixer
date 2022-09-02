@@ -68,6 +68,8 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideClassesWithConfigCases
      */
     public function testFixingClassesWithConfig(string $expected, string $input, array $config): void
@@ -415,7 +417,7 @@ TestInterface3, /**/     TestInterface4   ,
     }
 
     /**
-     * @param string $source PHP source code
+     * @param array<string, mixed> $expected
      *
      * @dataProvider provideClassyDefinitionInfoCases
      */
@@ -502,7 +504,7 @@ TestInterface3, /**/     TestInterface4   ,
     }
 
     /**
-     * @param string $source PHP source code
+     * @param array<string, mixed> $expected
      *
      * @dataProvider provideClassyImplementsInfoCases
      */
@@ -722,6 +724,9 @@ $a = new class implements
         ];
     }
 
+    /**
+     * @param array<string, mixed> $expected
+     */
     private static function assertConfigurationSame(array $expected, ClassDefinitionFixer $fixer): void
     {
         $reflectionProperty = new \ReflectionProperty($fixer, 'configuration');
@@ -730,6 +735,9 @@ $a = new class implements
         static::assertSame($expected, $reflectionProperty->getValue($fixer));
     }
 
+    /**
+     * @param array<string, mixed> $expected
+     */
     private function doTestClassyInheritanceInfo(string $source, string $label, array $expected): void
     {
         Tokens::clearCache();

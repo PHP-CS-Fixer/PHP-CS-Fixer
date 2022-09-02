@@ -28,6 +28,8 @@ use PhpCsFixer\Tokenizer\CT;
 final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
 {
     /**
+     * @param array<int, int|string> $expectedTokens
+     *
      * @dataProvider provideProcessCases
      */
     public function testProcess(string $source, array $expectedTokens = []): void
@@ -90,6 +92,8 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
+     * @param array<int, int|string> $expectedTokens
+     *
      * @dataProvider provideProcess80Cases
      *
      * @requires PHP 8.0
@@ -340,6 +344,8 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
+     * @param array<int, int|string> $expectedTokens
+     *
      * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
@@ -385,6 +391,8 @@ class Foo
     }
 
     /**
+     * @param array<int, int|string> $expectedTokens
+     *
      * @dataProvider provideProcess81Cases
      *
      * @requires PHP 8.1

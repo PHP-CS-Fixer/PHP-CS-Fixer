@@ -27,6 +27,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class YodaStyleFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $extraConfig
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $extraConfig = []): void
@@ -37,6 +39,8 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
 
     /**
      * Test with the inverse config.
+     *
+     * @param array<string, mixed> $extraConfig
      *
      * @dataProvider provideFixCases
      */
@@ -785,6 +789,8 @@ switch ($a) {
     }
 
     /**
+     * @param array<mixed> $config
+     *
      * @dataProvider provideInvalidConfigurationCases
      */
     public function testInvalidConfig(array $config, string $expectedMessage): void
@@ -878,6 +884,8 @@ switch ($a) {
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixWithConfigCases
      */
     public function testWithConfig(array $config, string $expected): void
@@ -935,13 +943,13 @@ while (2 !== $b = array_pop($c));
     /**
      * Test with the inverse config.
      *
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider providePHP74Cases
      */
-    public function testPHP74CasesInverse(string $expected, ?string $input = null, ?array $configuration = null): void
+    public function testPHP74CasesInverse(string $expected, ?string $input = null, array $configuration = []): void
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -999,6 +1007,8 @@ while (2 !== $b = array_pop($c));
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0

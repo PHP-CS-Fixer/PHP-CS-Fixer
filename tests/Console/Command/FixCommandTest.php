@@ -58,6 +58,9 @@ final class FixCommandTest extends TestCase
         $cmdTester->getStatusCode();
     }
 
+    /**
+     * @param array<string, bool|string> $arguments
+     */
     private function doTestExecute(array $arguments): CommandTester
     {
         $application = new Application();
@@ -82,6 +85,9 @@ final class FixCommandTest extends TestCase
         return $commandTester;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function getDefaultArguments(): array
     {
         return [

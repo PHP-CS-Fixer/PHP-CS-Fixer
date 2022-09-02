@@ -107,6 +107,10 @@ abstract class AbstractTransformerTestCase extends TestCase
         static::assertFalse($tokens->isChanged());
     }
 
+    /**
+     * @param array<int, int|string> $expectedTokens
+     * @param list<int>              $observedKindsOrPrototypes
+     */
     protected function doTest(string $source, array $expectedTokens, array $observedKindsOrPrototypes = []): void
     {
         Tokens::clearCache();
@@ -189,6 +193,9 @@ abstract class AbstractTransformerTestCase extends TestCase
         }
     }
 
+    /**
+     * @param list<array{0: int, 1?: string}> $prototypes
+     */
     private function countTokenPrototypes(Tokens $tokens, array $prototypes): int
     {
         $count = 0;

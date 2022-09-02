@@ -24,11 +24,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class EmptyLoopBodyFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixCases
      */
-    public function testFixConfig(string $expected, ?string $input = null, array $config = null): void
+    public function testFixConfig(string $expected, ?string $input = null, array $config = []): void
     {
-        if (null === $config) {
+        if ([] === $config) {
             $this->doTest($expected, $input);
 
             $this->fixer->configure(['style' => 'braces']);

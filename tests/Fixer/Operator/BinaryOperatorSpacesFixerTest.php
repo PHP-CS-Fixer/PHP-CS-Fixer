@@ -30,6 +30,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideWithTabsCases
      */
     public function testWithTabs(string $expected, ?string $input = null, array $configuration = []): void
@@ -75,6 +77,8 @@ public function myFunction() {
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideConfiguredCases
      */
     public function testConfigured(string $expected, ?string $input = null, array $configuration = []): void
@@ -2341,13 +2345,13 @@ function foo () {
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixPhp74Cases
      */
-    public function testFixPhp74(string $expected, ?string $input = null, ?array $configuration = null): void
+    public function testFixPhp74(string $expected, ?string $input = null, array $configuration = []): void
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -2364,7 +2368,6 @@ function foo () {
                     $a = fn()    =>      null;
                     $b = fn()      =>  null;
                 ',
-                null,
                 ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
             ],
             [

@@ -25,6 +25,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class FopenFlagsFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, string $input, array $config = []): void

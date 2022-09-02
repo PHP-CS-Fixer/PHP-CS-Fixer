@@ -687,6 +687,8 @@ echo Foo::A, Foo::B;
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, string $expected): void

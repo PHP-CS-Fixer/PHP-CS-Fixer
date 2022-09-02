@@ -30,6 +30,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class TokensAnalyzerTest extends TestCase
 {
     /**
+     * @param array<int, array{classIndex: int, type: string}> $expectedElements
+     *
      * @dataProvider provideGetClassyElementsCases
      */
     public function testGetClassyElements(array $expectedElements, string $source): void
@@ -481,6 +483,8 @@ PHP;
     }
 
     /**
+     * @param array<int, array{classIndex: int, type: string}> $expected
+     *
      * @dataProvider provideGetClassyElements81Cases
      *
      * @requires PHP 8.1
@@ -665,6 +669,8 @@ enum Foo: string
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
      * @dataProvider provideIsAnonymousClassCases
      */
     public function testIsAnonymousClass(array $expected, string $source): void
@@ -729,6 +735,8 @@ enum Foo: string
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
      * @dataProvider provideIsLambdaCases
      */
     public function testIsLambda(array $expected, string $source): void
@@ -827,6 +835,8 @@ preg_replace_callback(
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
      * @dataProvider provideIsLambda74Cases
      */
     public function testIsLambda74(array $expected, string $source): void
@@ -852,6 +862,8 @@ preg_replace_callback(
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
      * @dataProvider provideIsLambda80Cases
      *
      * @requires PHP 8.0
@@ -911,6 +923,8 @@ $a(1,2);',
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
      * @dataProvider provideIsConstantInvocationCases
      */
     public function testIsConstantInvocation(array $expected, string $source): void
@@ -1123,6 +1137,8 @@ abstract class Baz
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
      * @dataProvider provideIsConstantInvocationPhp80Cases
      *
      * @requires PHP 8.0
@@ -1231,6 +1247,8 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
      * @dataProvider provideIsConstantInvocationPhp81Cases
      *
      * @requires PHP 8.1
@@ -1308,6 +1326,8 @@ abstract class Baz
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
      * @dataProvider provideIsUnarySuccessorOperatorCases
      */
     public function testIsUnarySuccessorOperator(array $expected, string $source): void
@@ -1367,6 +1387,8 @@ abstract class Baz
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
      * @dataProvider provideIsUnaryPredecessorOperatorCases
      */
     public function testIsUnaryPredecessorOperator(array $expected, string $source): void
@@ -1450,6 +1472,8 @@ abstract class Baz
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
      * @dataProvider provideIsBinaryOperatorCases
      */
     public function testIsBinaryOperator(array $expected, string $source): void
@@ -1696,7 +1720,7 @@ $b;',
     }
 
     /**
-     * @param int[] $tokenIndexes
+     * @param list<int> $tokenIndexes
      *
      * @dataProvider provideIsArray71Cases
      */
@@ -1733,6 +1757,8 @@ $b;',
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
      * @dataProvider provideIsBinaryOperator71Cases
      */
     public function testIsBinaryOperator71(array $expected, string $source): void
@@ -1763,6 +1789,8 @@ $b;',
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
      * @dataProvider provideIsBinaryOperator80Cases
      *
      * @requires PHP 8.0
@@ -1805,6 +1833,8 @@ $b;',
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
      * @dataProvider provideIsBinaryOperator81Cases
      *
      * @requires PHP 8.1
@@ -1919,6 +1949,8 @@ $b;',
     }
 
     /**
+     * @param array{visibility: ?int, static: bool, abstract: bool, final: bool} $expected
+     *
      * @dataProvider provideGetFunctionPropertiesCases
      */
     public function testGetFunctionProperties(string $source, int $index, array $expected): void
@@ -2065,6 +2097,8 @@ SRC;
     }
 
     /**
+     * @param array<int, list<int>>|list<int> $expected
+     *
      * @dataProvider provideGetImportUseIndexesCases
      */
     public function testGetImportUseIndexes(array $expected, string $input, bool $perNamespace = false): void
@@ -2303,6 +2337,9 @@ class MyTestWithAnonymousClass extends TestCase
         return $cases;
     }
 
+    /**
+     * @param array<int, bool> $expected
+     */
     private function doIsConstantInvocationTest(array $expected, string $source): void
     {
         $tokens = Tokens::fromCode($source);

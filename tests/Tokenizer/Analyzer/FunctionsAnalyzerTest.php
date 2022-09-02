@@ -367,6 +367,8 @@ class(){};
     }
 
     /**
+     * @param array<string, ArgumentAnalysis> $expected
+     *
      * @dataProvider provideFunctionsWithArgumentsCases
      */
     public function testFunctionArgumentInfo(string $code, int $methodIndex, array $expected): void
@@ -696,6 +698,8 @@ class(){};
     }
 
     /**
+     * @param array<string, ArgumentAnalysis> $expected
+     *
      * @dataProvider provideFunctionsWithArgumentsPhp80Cases
      *
      * @requires PHP 8.0

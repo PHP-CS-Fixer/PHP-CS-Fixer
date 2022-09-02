@@ -30,6 +30,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ArgumentsAnalyzerTest extends TestCase
 {
     /**
+     * @param array<int, int> $arguments
+     *
      * @dataProvider provideArgumentsCases
      */
     public function testArguments(string $code, int $openIndex, int $closeIndex, array $arguments): void
@@ -86,6 +88,8 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
+     * @param array<int, int> $arguments
+     *
      * @requires PHP 8.0
      *
      * @dataProvider provideArguments80Cases
@@ -113,6 +117,8 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
+     * @param array<int, int> $arguments
+     *
      * @requires PHP 8.1
      *
      * @dataProvider provideArguments81Cases

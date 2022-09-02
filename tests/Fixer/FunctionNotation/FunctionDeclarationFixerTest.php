@@ -44,6 +44,8 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
@@ -422,6 +424,8 @@ foo#
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixPhp80Cases
      *
      * @requires PHP 8.0

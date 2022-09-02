@@ -26,6 +26,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class RangeAnalyzerTest extends TestCase
 {
     /**
+     * @param array{start: int, end: int} $range1
+     * @param array{start: int, end: int} $range2
+     *
      * @dataProvider provideRangeEqualsRangeCases
      */
     public function testRangeEqualsRange(bool $expected, string $code, array $range1, array $range2): void

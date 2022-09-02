@@ -134,7 +134,7 @@ Integration of %s.
     {
         $setDefinition = array_keys(RuleSets::getSetDefinitions());
         $sortedSetDefinition = $setDefinition;
-        $this->sort($sortedSetDefinition);
+        sort($sortedSetDefinition);
 
         static::assertSame($sortedSetDefinition, $setDefinition);
     }
@@ -227,12 +227,17 @@ Integration of %s.
      * Sorts an array of rule set definitions recursively.
      *
      * Sometimes keys are all string, sometimes they are integers - we need to account for that.
+     *
+     * @param array<array-key, mixed> $data
      */
     private function sort(array &$data): void
     {
         $this->doSort($data, '');
     }
 
+    /**
+     * @param array<array-key, mixed> $data
+     */
     private function doSort(array &$data, string $path): void
     {
         if ('ordered_imports.imports_order' === $path) { // order matters
@@ -257,6 +262,9 @@ Integration of %s.
         }
     }
 
+    /**
+     * @param array<array-key, mixed> $values
+     */
     private function allInteger(array $values): bool
     {
         foreach ($values as $value) {

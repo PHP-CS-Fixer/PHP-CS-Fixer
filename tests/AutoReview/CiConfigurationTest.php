@@ -52,9 +52,11 @@ final class CiConfigurationTest extends TestCase
             self::generateMinorVersionsRange($supportedMinPhp, $supportedMaxPhp)
         );
 
+        static::assertTrue(\count($supportedVersions) > 0);
+
         $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
 
-        static::assertGreaterThanOrEqual(1, \count($ciVersions));
+        static::assertNotEmpty($ciVersions);
 
         self::assertSupportedPhpVersionsAreCoveredByCiJobs($supportedVersions, $ciVersions);
         self::assertUpcomingPhpVersionIsCoveredByCiJob(end($supportedVersions), $ciVersions);
@@ -82,6 +84,9 @@ final class CiConfigurationTest extends TestCase
         }
     }
 
+    /**
+     * @return list<numeric-string>
+     */
     private static function generateMinorVersionsRange(float $from, float $to): array
     {
         $range = [];
@@ -101,7 +106,8 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @param numeric-string $lastSupportedVersion
+     * @param numeric-string       $lastSupportedVersion
+     * @param list<numeric-string> $ciVersions
      */
     private static function assertUpcomingPhpVersionIsCoveredByCiJob(string $lastSupportedVersion, array $ciVersions): void
     {
@@ -123,6 +129,10 @@ final class CiConfigurationTest extends TestCase
         ));
     }
 
+    /**
+     * @param list<numeric-string> $supportedVersions
+     * @param list<numeric-string> $ciVersions
+     */
     private static function assertSupportedPhpVersionsAreCoveredByCiJobs(array $supportedVersions, array $ciVersions): void
     {
         $lastSupportedVersion = array_pop($supportedVersions);
@@ -140,7 +150,7 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @return string[]
+     * @return array<int, string>
      */
     private function getAllPhpVersionsUsedByCiForDeployments(): array
     {
@@ -154,7 +164,7 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @return string[]
+     * @return list<numeric-string>
      */
     private function getAllPhpVersionsUsedByCiForTests(): array
     {
@@ -207,6 +217,9 @@ final class CiConfigurationTest extends TestCase
         return $this->convertPhpVerIdToNiceVer($phpVerId);
     }
 
+    /**
+     * @return list<array<string, scalar>>
+     */
     private function getGitHubJobs(): array
     {
         $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
@@ -215,7 +228,7 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @return string[]
+     * @return list<numeric-string>
      */
     private function getPhpVersionsUsedByGitHub(): array
     {

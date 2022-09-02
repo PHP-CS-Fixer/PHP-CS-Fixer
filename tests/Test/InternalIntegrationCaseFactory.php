@@ -24,7 +24,7 @@ use Symfony\Component\Finder\SplFileInfo;
 final class InternalIntegrationCaseFactory extends AbstractIntegrationCaseFactory
 {
     /**
-     * {@inheritdoc}
+     * @return array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck: bool}
      */
     protected function determineSettings(SplFileInfo $file, ?string $config): array
     {

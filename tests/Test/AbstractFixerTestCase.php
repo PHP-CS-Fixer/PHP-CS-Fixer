@@ -57,7 +57,7 @@ abstract class AbstractFixerTestCase extends TestCase
     /**
      * do not modify this structure without prior discussion.
      *
-     * @var array<string,array>
+     * @var array<string, array<string, bool>>
      */
     private array $allowedRequiredOptions = [
         'header_comment' => ['header' => true],
@@ -472,6 +472,11 @@ abstract class AbstractFixerTestCase extends TestCase
         static::assertSame(substr_count(strtolower($haystack), strtolower($needle)), substr_count($haystack, $needle), $message);
     }
 
+    /**
+     * @param list<array{0: int, 1?: string}> $sequence
+     *
+     * @return list<array<int, Token>>
+     */
     private function findAllTokenSequences(Tokens $tokens, array $sequence): array
     {
         $lastIndex = 0;

@@ -61,7 +61,7 @@ class TokensWithObservedTransformers extends Tokens
     }
 
     /**
-     * @param array|string|Token $token token prototype
+     * @param array{int}|string|Token $token token prototype
      *
      * @return int|string
      */

@@ -249,6 +249,8 @@ private $d = 123;
     }
 
     /**
+     * @param array<mixed> $elements
+     *
      * @dataProvider provideInvalidElementsCases
      */
     public function testInvalidElements(array $elements): void
@@ -1161,6 +1163,8 @@ class ezcReflectionMethod extends ReflectionMethod {
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideConfigCases
      */
     public function testWithConfig(string $expected, ?string $input, array $config): void
@@ -1829,13 +1833,13 @@ abstract class Example
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFix74Cases
      */
-    public function testFix74(string $expected, ?string $input = null, array $config = null): void
+    public function testFix74(string $expected, ?string $input = null, array $config = []): void
     {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
@@ -1916,15 +1920,15 @@ abstract class Example
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixPhp80Cases
      *
      * @requires PHP 8.0
      */
-    public function testFixPhp80(string $expected, ?string $input, array $config = null): void
+    public function testFixPhp80(string $expected, ?string $input, array $config = []): void
     {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
@@ -2177,15 +2181,15 @@ class Foo
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected, ?string $input, array $config = null): void
+    public function testFix81(string $expected, ?string $input, array $config = []): void
     {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }

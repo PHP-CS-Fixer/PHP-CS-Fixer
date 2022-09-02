@@ -509,15 +509,15 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @requires PHP <8.0
      *
      * @dataProvider provideFixPre81Cases
      */
-    public function testFixPre81(string $expected, ?string $input = null, array $configuration = null): void
+    public function testFixPre81(string $expected, ?string $input = null, array $configuration = []): void
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -542,15 +542,15 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected, ?array $config): void
+    public function testFix81(string $expected, array $config = []): void
     {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
+        $this->fixer->configure($config);
 
         $this->doTest($expected);
     }
@@ -566,7 +566,6 @@ class Foo
     ) {}
 }
 ',
-            null,
         ];
 
         yield [
