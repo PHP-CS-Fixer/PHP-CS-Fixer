@@ -24,4 +24,4 @@ parameters:
             path: src/Fixer
             count: 40
     tipsOfTheDay: false
-    tmpDir: dev-tools/phpstan/cache
+    tmpDir: dev-tools/tmp/phpstan

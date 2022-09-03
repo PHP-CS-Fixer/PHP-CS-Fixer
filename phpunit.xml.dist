@@ -7,6 +7,7 @@
     beStrictAboutOutputDuringTests="true"
     beStrictAboutTodoAnnotatedTests="true"
     bootstrap="./vendor/autoload.php"
+    cacheResultFile="dev-tools/tmp/.phpunit.result.cache"
     colors="true"
     columns="max"
     defaultTimeLimit="10"
