@@ -45,6 +45,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@PHP82Migration
+  Using the `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_ rule set will enable the ``simple_to_complex_string_variable`` rule.
+
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``simple_to_complex_string_variable`` rule.
 

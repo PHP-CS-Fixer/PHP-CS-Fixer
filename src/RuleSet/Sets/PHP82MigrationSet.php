@@ -25,6 +25,7 @@ final class PHP82MigrationSet extends AbstractMigrationSetDescription
     {
         return [
             '@PHP81Migration' => true,
+            'simple_to_complex_string_variable' => true,
         ];
     }
 }
