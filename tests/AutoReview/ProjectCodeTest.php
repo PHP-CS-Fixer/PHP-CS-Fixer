@@ -15,8 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\AbstractProxyFixer;
-use PhpCsFixer\DocBlock\Annotation;
-use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
 use PhpCsFixer\FixerFactory;
@@ -223,10 +222,10 @@ final class ProjectCodeTest extends TestCase
     public function testThatTestClassesAreInternal(string $testClassName): void
     {
         $rc = new \ReflectionClass($testClassName);
-        $doc = new DocBlock($rc->getDocComment());
+        $doc = DocBlock::create($rc->getDocComment());
 
         static::assertNotEmpty(
-            $doc->getAnnotationsOfType('internal'),
+            $doc->getTagsByName('@internal'),
             sprintf('Test class %s should have internal annotation.', $testClassName)
         );
     }
@@ -629,12 +628,12 @@ final class ProjectCodeTest extends TestCase
                 $rc = new \ReflectionClass($className);
 
                 $doc = false !== $rc->getDocComment()
-                    ? new DocBlock($rc->getDocComment())
+                    ? DocBlock::create($rc->getDocComment())
                     : null;
 
                 if (
                     $rc->isInterface()
-                    || (null !== $doc && \count($doc->getAnnotationsOfType('internal')) > 0)
+                    || (null !== $doc && \count($doc->getTagsByName('@internal')) > 0)
                     || \in_array($className, [
                         \PhpCsFixer\Finder::class,
                         AbstractFixerTestCase::class,
@@ -707,6 +706,69 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
+     */
+    public function testOldDocBlockIsNotUsed(string $className): void
+    {
+        /**
+         * This array contains classes still using old classes (src/DocBlock).
+         *
+         * It may only shrink, never add anything to it.
+         *
+         * @var string[]
+         */
+        static $oldDocBlockIsUsedClasses = [
+            \PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer::class,
+            \PhpCsFixer\AbstractPhpdocTypesFixer::class,
+            \PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer::class,
+            \PhpCsFixer\Fixer\FunctionNotation\PhpdocToPropertyTypeFixer::class,
+            \PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer::class,
+            \PhpCsFixer\Fixer\Import\GlobalNamespaceImportFixer::class,
+            \PhpCsFixer\Fixer\PhpUnit\PhpUnitInternalClassFixer::class,
+            \PhpCsFixer\Fixer\PhpUnit\PhpUnitMethodCasingFixer::class,
+            \PhpCsFixer\Fixer\PhpUnit\PhpUnitNoExpectationAnnotationFixer::class,
+            \PhpCsFixer\Fixer\PhpUnit\PhpUnitSizeClassFixer::class,
+            \PhpCsFixer\Fixer\PhpUnit\PhpUnitTestAnnotationFixer::class,
+            \PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\PhpdocAnnotationWithoutDotFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\PhpdocLineSpanFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\PhpdocOrderByValueFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\PhpdocOrderFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\PhpdocSummaryFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\PhpdocTrimConsecutiveBlankLineSeparationFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\PhpdocTypesOrderFixer::class,
+            \PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocSeparationFixerTest::class,
+        ];
+
+        if (str_starts_with($className, 'PhpCsFixer\\DocBlock\\') || str_starts_with($className, 'PhpCsFixer\\Tests\\DocBlock\\')) {
+            $this->addToAssertionCount(1); // this is the old doc block class
+
+            return;
+        }
+
+        if (\in_array($className, $oldDocBlockIsUsedClasses, true)) {
+            $this->addToAssertionCount(1);
+
+            return;
+        }
+
+        static::assertStringNotContainsString(
+            'PhpCsFixer\\DocBlock\\',
+            file_get_contents((new \ReflectionClass($className))->getFileName()),
+            sprintf('Class %s is using old DocBlock (PhpCsFixer\\DocBlock\\*) classes, use new one (PhpCsFixer\DocBlock)', $className)
+        );
+    }
+
+    /**
      * @dataProvider providePhpUnitFixerExtendsAbstractPhpUnitFixerCases
      */
     public function testPhpUnitFixerExtendsAbstractPhpUnitFixer(string $className): void
@@ -766,18 +828,6 @@ final class ProjectCodeTest extends TestCase
      */
     private function getUsedDataProviderMethodNames(string $testClassName): iterable
     {
-        foreach ($this->getAnnotationsOfTestClass($testClassName, 'dataProvider') as $methodName => $dataProviderAnnotation) {
-            if (1 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
-                yield $methodName => $matches['methodName'];
-            }
-        }
-    }
-
-    /**
-     * @return iterable<string, Annotation>
-     */
-    private function getAnnotationsOfTestClass(string $testClassName, string $annotation): iterable
-    {
         $tokens = Tokens::fromCode(file_get_contents(
             str_replace('\\', \DIRECTORY_SEPARATOR, preg_replace('#^PhpCsFixer\\\Tests#', 'tests', $testClassName)).'.php'
         ));
@@ -789,11 +839,10 @@ final class ProjectCodeTest extends TestCase
 
             $methodName = $tokens[$tokens->getNextTokenOfKind($index, [[T_STRING]])]->getContent();
 
-            $docBlock = new DocBlock($token->getContent());
-            $dataProviderAnnotations = $docBlock->getAnnotationsOfType($annotation);
+            $docBlock = DocBlock::create($token->getContent());
 
-            foreach ($dataProviderAnnotations as $dataProviderAnnotation) {
-                yield $methodName => $dataProviderAnnotation;
+            foreach ($docBlock->getTagsByName('@dataProvider') as $tag) {
+                yield $methodName => (string) $tag->value;
             }
         }
     }

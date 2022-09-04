@@ -16,7 +16,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -24,7 +24,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -195,14 +194,11 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             return $this->configuration['consider_absent_docblock_as_internal_class'];
         }
 
-        $doc = new DocBlock($docToken->getContent());
+        $docBlock = DocBlock::create($docToken->getContent());
         $tags = [];
 
-        foreach ($doc->getAnnotations() as $annotation) {
-            if (1 !== Preg::match('/@\S+(?=\s|$)/', $annotation->getContent(), $matches)) {
-                continue;
-            }
-            $tag = strtolower(substr(array_shift($matches), 1));
+        foreach ($docBlock->getTags() as $tagNode) {
+            $tag = ltrim(strtolower($tagNode->name), '@');
             foreach ($this->configuration['annotation_exclude'] as $tagStart => $true) {
                 if (str_starts_with($tag, $tagStart)) {
                     return false; // ignore class: class-level PHPDoc contains tag that has been excluded through configuration
