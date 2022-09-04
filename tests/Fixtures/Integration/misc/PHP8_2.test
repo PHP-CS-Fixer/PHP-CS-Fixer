@@ -1,0 +1,147 @@
+--TEST--
+PHP 8.2 test.
+--RULESET--
+{
+    "@PhpCsFixer": true,
+    "@PHP82Migration": true
+}
+--REQUIREMENTS--
+{"php": 80200}
+--EXPECT--
+
+// https://wiki.php.net/rfc/readonly_classes
+readonly final class Foo
+{
+    public string $c;
+    public string $prop;
+    public string $b;
+}
+
+// https://wiki.php.net/rfc/null-false-standalone-types
+class FalseNull {
+    public function __construct(
+        private false $falsy = false,
+        private null $nully = null
+    ) {
+    }
+
+    public function falsy(): false
+    {
+        return $this->falsy;
+    }
+
+    public function nully(): null
+    {
+        return $this->nully;
+    }
+}
+
+// https://wiki.php.net/rfc/true-type
+class TrueType {
+    public function __construct(
+        private true $havingABud = true
+    ) {
+    }
+
+    public function havingABud(): true
+    {
+        return $this->havingABud;
+    }
+}
+
+// https://wiki.php.net/rfc/dnf_types
+class DnfTypes {
+    public function __construct(
+        private array|(object&iterable) $notSure
+    ) {
+    }
+
+    public function notSure(): array|(object&iterable)
+    {
+        return $this->notSure;
+    }
+}
+
+// https://wiki.php.net/rfc/constants_in_traits
+trait WithConstants {
+    public const ONE = 'one';
+    protected const TWO = 'two';
+    private const THREE = 'three';
+}
+
+// https://wiki.php.net/rfc/fetch_property_in_const_expressions
+enum E: string {
+    case Foo = 'foo';
+}
+
+$eFoo = E::Foo->value;
+
+--INPUT--
+<?php
+
+// https://wiki.php.net/rfc/readonly_classes
+READONLY final class Foo
+{
+    public string $c;
+    public string $prop;
+    public string $b;
+}
+
+// https://wiki.php.net/rfc/null-false-standalone-types
+class FalseNull {
+    public function __construct(
+        private FALSE $falsy = FALSE,
+        private NULL $nully = NULL
+    ) {
+    }
+
+    public function falsy(): FALSE
+    {
+        return $this->falsy;
+    }
+
+    public function nully(): NULL
+    {
+        return $this->nully;
+    }
+}
+
+// https://wiki.php.net/rfc/true-type
+class TrueType {
+    public function __construct(
+        private TRUE $havingABud = TRUE
+    ) {
+    }
+
+    public function havingABud(): TRUE
+    {
+        return $this->havingABud;
+    }
+}
+
+// https://wiki.php.net/rfc/dnf_types
+class DnfTypes {
+    public function __construct(
+        private array | ( object & iterable ) $notSure
+    ) {
+    }
+
+    public function notSure(): array | ( object & iterable )
+    {
+        return $this->notSure;
+    }
+}
+
+// https://wiki.php.net/rfc/constants_in_traits
+trait      WithConstants      {
+    public    const one   = 'one';
+    protected const two   = 'two';
+    private   const three = 'three';
+}
+
+// https://wiki.php.net/rfc/fetch_property_in_const_expressions
+enum E: string {
+    case Foo = 'foo';
+}
+
+$eFoo = E::Foo->value;
