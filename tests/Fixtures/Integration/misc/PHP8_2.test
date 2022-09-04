@@ -8,6 +8,7 @@ PHP 8.2 test.
 --REQUIREMENTS--
 {"php": 80200}
 --EXPECT--
+<?php
 
 // https://wiki.php.net/rfc/readonly_classes
 readonly final class Foo
@@ -18,7 +19,8 @@ readonly final class Foo
 }
 
 // https://wiki.php.net/rfc/null-false-standalone-types
-class FalseNull {
+class FalseNull
+{
     public function __construct(
         private false $falsy = false,
         private null $nully = null
@@ -37,7 +39,8 @@ class FalseNull {
 }
 
 // https://wiki.php.net/rfc/true-type
-class TrueType {
+class TrueType
+{
     public function __construct(
         private true $havingABud = true
     ) {
@@ -50,27 +53,45 @@ class TrueType {
 }
 
 // https://wiki.php.net/rfc/dnf_types
-class DnfTypes {
+interface DnfA
+{
+    public function foo(): void;
+
+    public function bar(): void;
+}
+interface DnfB
+{
+    public function foo(): void;
+}
+interface DnfC
+{
+    public function bar(): void;
+}
+
+class DnfTypes
+{
     public function __construct(
-        private array|(object&iterable) $notSure
+        private DnfA|(DnfB&DnfC) $notSure
     ) {
     }
 
-    public function notSure(): array|(object&iterable)
+    public function notSure(): DnfA|(DnfB&DnfC)
     {
         return $this->notSure;
     }
 }
 
 // https://wiki.php.net/rfc/constants_in_traits
-trait WithConstants {
+trait WithConstants
+{
     public const ONE = 'one';
     protected const TWO = 'two';
     private const THREE = 'three';
 }
 
 // https://wiki.php.net/rfc/fetch_property_in_const_expressions
-enum E: string {
+enum E: string
+{
     case Foo = 'foo';
 }
 
@@ -120,13 +141,24 @@ class TrueType {
 }
 
 // https://wiki.php.net/rfc/dnf_types
+interface DnfA {
+    public function foo(): void;
+    function bar():        void;
+}
+interface DnfB {
+    PUBLIC function foo(): void;
+}
+interface DnfC {
+    public FUNCTION bar(): void;
+}
+
 class DnfTypes {
     public function __construct(
-        private array | ( object & iterable ) $notSure
+        private DnfA | ( DnfB & DnfC) $notSure
     ) {
     }
 
-    public function notSure(): array | ( object & iterable )
+    public function notSure(): DnfA | ( DnfB & DnfC )
     {
         return $this->notSure;
     }
