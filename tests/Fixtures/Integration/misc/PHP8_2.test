@@ -13,14 +13,15 @@ PHP 8.2 test.
 // https://wiki.php.net/rfc/readonly_classes
 final readonly class Foo
 {
-    public string $c;
     public string $prop;
-    public string $b;
 }
 
 // https://wiki.php.net/rfc/null-false-standalone-types
 class FalseNull
 {
+    private false $a = false;
+    private null $b = null;
+
     public function __construct(
         private false $falsy = false,
         private null $nully = null
@@ -36,11 +37,23 @@ class FalseNull
     {
         return $this->nully;
     }
+
+    public function setAB(false $a, null $b): void
+    {
+        $this->a = $a;
+        $this->b = $b;
+    }
+}
+
+function falsyNull(null $n, false $f): null|false
+{
 }
 
 // https://wiki.php.net/rfc/true-type
 class TrueType
 {
+    private true $a = true;
+
     public function __construct(
         private true $havingABud = true
     ) {
@@ -50,6 +63,16 @@ class TrueType
     {
         return $this->havingABud;
     }
+
+    public function setA(true $a): void
+    {
+        $this->a = $a;
+    }
+}
+
+function truish(true $true): true
+{
+    return $true;
 }
 
 // https://wiki.php.net/rfc/dnf_types
@@ -58,6 +81,8 @@ interface DnfA
     public function foo(): void;
 
     public function bar(): void;
+
+    public function baz(): void;
 }
 interface DnfB
 {
@@ -67,17 +92,37 @@ interface DnfC
 {
     public function bar(): void;
 }
+interface DnfD
+{
+    public function baz(): void;
+}
+interface DnfE extends DnfB
+{
+}
+interface DnfF extends DnfC
+{
+}
+interface DnfG extends DnfD
+{
+}
 
 class DnfTypes
 {
+    private DnfA|(DnfB&DnfC&DnfD)|(DnfE&DnfF&DnfG) $whatever;
+
     public function __construct(
-        private DnfA|(DnfB&DnfC) $notSure
+        private DnfA|(DnfB&DnfC&DnfD)|(DnfE&DnfF&DnfG) $notSure
     ) {
     }
 
-    public function notSure(): DnfA|(DnfB&DnfC)
+    public function notSure(): DnfA|(DnfB&DnfC&DnfD)|(DnfE&DnfF&DnfG)
     {
         return $this->notSure;
+    }
+
+    public function setWhatever(DnfA|(DnfB&DnfC&DnfD)|(DnfE&DnfF&DnfG) $whatever): void
+    {
+        $this->whatever = $whatever;
     }
 }
 
@@ -97,19 +142,47 @@ enum E: string
 
 $eFoo = E::Foo->value;
 
+function e1()
+{
+    static $v = E::Foo->value;
+}
+
+#[Attr(E::Foo->name)]
+class E2
+{
+}
+
+function e3(
+    $p = E::Foo->value,
+) {}
+
+class E4
+{
+    public string $p = E::Foo->name;
+}
+
+const E5 = 'value';
+class E6
+{
+    public const C = E::Foo->{E5};
+}
+
+array_filter([E::Foo->name], fn (string $a) => $a === E::Foo->value);
+
 --INPUT--
 <?php
 
 // https://wiki.php.net/rfc/readonly_classes
 READONLY final class Foo
 {
-    public string $c;
     public string $prop;
-    public string $b;
 }
 
 // https://wiki.php.net/rfc/null-false-standalone-types
 class FalseNull {
+    private FALSE $a = FALSE;
+    private NULL $b = NULL;
+
     public function __construct(
         private FALSE $falsy = FALSE,
         private NULL $nully = NULL
@@ -125,10 +198,22 @@ class FalseNull {
     {
         return $this->nully;
     }
+
+    public function setAB(FALSE $a, NULL $b): void
+    {
+        $this->a = $a;
+        $this->b = $b;
+    }
+}
+
+function falsyNull(NULL $n, FALSE $f): NULL|FALSE
+{
 }
 
 // https://wiki.php.net/rfc/true-type
 class TrueType {
+    private TRUE $a = TRUE;
+
     public function __construct(
         private TRUE $havingABud = TRUE
     ) {
@@ -138,29 +223,65 @@ class TrueType {
     {
         return $this->havingABud;
     }
+
+    public function setA(TRUE $a): void
+    {
+        $this->a = $a;
+    }
+}
+
+function truish(TRUE $true): TRUE
+{
+    return $true;
 }
 
 // https://wiki.php.net/rfc/dnf_types
-interface DnfA {
+interface DnfA
+{
     public function foo(): void;
-    function bar():        void;
+
+    public function bar(): void;
+
+    public function baz(): void;
 }
-interface DnfB {
-    PUBLIC function foo(): void;
+interface DnfB
+{
+    public function foo(): void;
 }
-interface DnfC {
-    public FUNCTION bar(): void;
+interface DnfC
+{
+    public function bar(): void;
+}
+interface DnfD
+{
+    public function baz(): void;
+}
+interface DnfE extends DnfB
+{
+}
+interface DnfF extends DnfC
+{
+}
+interface DnfG extends DnfD
+{
 }
 
 class DnfTypes {
+    private DnfA | ( DnfB & DnfC & DnfD) | ( DnfE & DnfF & DnfG ) $whatever;
+
     public function __construct(
-        private DnfA | ( DnfB & DnfC) $notSure
+        private DnfA | ( DnfB & DnfC & DnfD) | ( DnfE & DnfF & DnfG ) $notSure
     ) {
     }
 
-    public function notSure(): DnfA | ( DnfB & DnfC )
+    public function notSure(): DnfA | ( DnfB & DnfC & DnfD) | ( DnfE & DnfF & DnfG )
     {
         return $this->notSure;
+    }
+
+    public function setWhatever(DnfA | ( DnfB & DnfC & DnfD) | ( DnfE & DnfF & DnfG ) $whatever): void
+    {
+        $this->whatever = $whatever;
     }
 }
 
@@ -176,4 +297,28 @@ enum E: string {
     case Foo = 'foo';
 }
 
-$eFoo = E::Foo->value;
+$eFoo = E::Foo -> value;
+
+function e1() {
+    static $v = E::Foo->VALUE;
+}
+
+#[Attr(E::Foo->NAME)]
+class E2
+{
+}
+
+function e3(
+    $p = E::Foo->Value,
+) {}
+
+class E4 {
+    public string $p = E::Foo->Name;
+}
+
+const E5 = 'value';
+class E6 {
+    public const C = E::Foo -> {E5};
+}
+
+array_filter([E::Foo->NAME], fn (string $a) => $a === E::Foo->VALUE);
