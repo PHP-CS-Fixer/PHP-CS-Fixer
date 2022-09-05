@@ -24,6 +24,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -59,14 +60,21 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
-        $prevIndex = $tokens->getPrevMeaningfulToken($classIndex);
 
-        // don't add `@covers` annotation for abstract base classes
-        if ($tokens[$prevIndex]->isGivenKind(T_ABSTRACT)) {
-            return;
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $modifiers = $tokensAnalyzer->getClassyModifiers($classIndex);
+
+        if (isset($modifiers['abstract'])) {
+            return; // don't add `@covers` annotation for abstract base classes
         }
 
-        $index = $tokens[$prevIndex]->isGivenKind(T_FINAL) ? $prevIndex : $classIndex;
+        $index = $classIndex;
+
+        foreach ($modifiers as $modifier => $modifierIndex) {
+            if (null !== $modifierIndex) {
+                $index = min($index, $modifierIndex);
+            }
+        }
 
         $indent = $tokens[$index - 1]->isGivenKind(T_WHITESPACE)
             ? Preg::replace('/^.*\R*/', '', $tokens[$index - 1]->getContent())

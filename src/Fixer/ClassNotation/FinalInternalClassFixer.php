@@ -109,7 +109,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS) || $tokensAnalyzer->isAnonymousClass($index) || !$this->isClassCandidate($tokens, $index)) {
+            if (!$tokens[$index]->isGivenKind(T_CLASS) || !$this->isClassCandidate($tokensAnalyzer, $tokens, $index)) {
                 continue;
             }
 
@@ -142,7 +142,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $annotationsNormalizer = static function (Options $options, array $value): array {
             $newValue = [];
             foreach ($value as $key) {
-                if ('@' === $key[0]) {
+                if (str_starts_with($key, '@')) {
                     $key = substr($key, 1);
                 }
 
@@ -183,9 +183,15 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
     /**
      * @param int $index T_CLASS index
      */
-    private function isClassCandidate(Tokens $tokens, int $index): bool
+    private function isClassCandidate(TokensAnalyzer $tokensAnalyzer, Tokens $tokens, int $index): bool
     {
-        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([T_ABSTRACT, T_FINAL])) {
+        if ($tokensAnalyzer->isAnonymousClass($index)) {
+            return false;
+        }
+
+        $modifiers = $tokensAnalyzer->getClassyModifiers($index);
+
+        if (isset($modifiers['final']) || isset($modifiers['abstract'])) {
             return false; // ignore class; it is abstract or already final
         }
 
@@ -202,7 +208,9 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             if (1 !== Preg::match('/@\S+(?=\s|$)/', $annotation->getContent(), $matches)) {
                 continue;
             }
+
             $tag = strtolower(substr(array_shift($matches), 1));
+
             foreach ($this->configuration['annotation_exclude'] as $tagStart => $true) {
                 if (str_starts_with($tag, $tagStart)) {
                     return false; // ignore class: class-level PHPDoc contains tag that has been excluded through configuration

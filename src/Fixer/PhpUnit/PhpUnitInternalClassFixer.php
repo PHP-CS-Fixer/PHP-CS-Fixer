@@ -29,6 +29,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Gert de Pagter <BackEndTea@gmail.com>
@@ -98,14 +99,16 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
         }
     }
 
-    private function isAllowedByConfiguration(Tokens $tokens, int $i): bool
+    private function isAllowedByConfiguration(Tokens $tokens, int $index): bool
     {
-        $typeIndex = $tokens->getPrevMeaningfulToken($i);
-        if ($tokens[$typeIndex]->isGivenKind(T_FINAL)) {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $modifiers = $tokensAnalyzer->getClassyModifiers($index);
+
+        if (isset($modifiers['final'])) {
             return \in_array('final', $this->configuration['types'], true);
         }
 
-        if ($tokens[$typeIndex]->isGivenKind(T_ABSTRACT)) {
+        if (isset($modifiers['abstract'])) {
             return \in_array('abstract', $this->configuration['types'], true);
         }
 
@@ -116,12 +119,13 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
     {
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
-        $toInsert = [
-            new Token([T_DOC_COMMENT, '/**'.$lineEnd."{$originalIndent} * @internal".$lineEnd."{$originalIndent} */"]),
-            new Token([T_WHITESPACE, $lineEnd.$originalIndent]),
-        ];
-        $index = $tokens->getNextMeaningfulToken($docBlockIndex);
-        $tokens->insertAt($index, $toInsert);
+
+        $tokens->insertSlices([
+            $tokens->getNextMeaningfulToken($docBlockIndex) => [
+                new Token([T_DOC_COMMENT, '/**'.$lineEnd."{$originalIndent} * @internal".$lineEnd."{$originalIndent} */"]),
+                new Token([T_WHITESPACE, $lineEnd.$originalIndent]),
+            ],
+        ]);
     }
 
     private function updateDocBlockIfNeeded(Tokens $tokens, int $docBlockIndex): void

@@ -11,7 +11,7 @@ PHP 8.2 test.
 <?php
 
 // https://wiki.php.net/rfc/readonly_classes
-readonly final class Foo
+final readonly class Foo
 {
     public string $prop;
 }
