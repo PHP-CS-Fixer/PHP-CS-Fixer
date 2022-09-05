@@ -215,15 +215,26 @@ function Foo(INTEGER $a) {}
     public function provideFix82Cases(): iterable
     {
         foreach (['true', 'false', 'null'] as $type) {
-            yield sprintf('standalone type `%s`', $type) => [
+            yield sprintf('standalone type `%s` in class method', $type) => [
                 sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', $type),
                 sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', strtoupper($type)),
             ];
 
-            yield sprintf('standalone type `%s`, leading backslash', $type) => [
-                sprintf('<?php class T { public function Foo(\%s $A): \%1$s {return $A;}}', $type),
-                sprintf('<?php class T { public function Foo(\%s $A): \%1$s {return $A;}}', strtoupper($type)),
+            yield sprintf('standalone type `%s` in function', $type) => [
+                sprintf('<?php function Foo(%s $A): %1$s {return $A;}', $type),
+                sprintf('<?php function Foo(%s $A): %1$s {return $A;}', strtoupper($type)),
             ];
+
+            yield sprintf('standalone type `%s` in closure', $type) => [
+                sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', $type),
+                sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', strtoupper($type)),
+            ];
+
+            // @TODO Support for closures
+            // yield sprintf('standalone type `%s` in arrow function', $type) => [
+            //     sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', $type),
+            //     sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', strtoupper($type)),
+            // ];
         }
     }
 }
