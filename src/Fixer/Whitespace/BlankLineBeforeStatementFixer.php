@@ -34,6 +34,9 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class BlankLineBeforeStatementFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
+    /**
+     * @var array<string, int>
+     */
     private static array $tokenMap = [
         'break' => T_BREAK,
         'case' => T_CASE,
@@ -60,6 +63,9 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'yield_from' => T_YIELD_FROM,
     ];
 
+    /**
+     * @var list<int>
+     */
     private array $fixTokenMap = [];
 
     /**

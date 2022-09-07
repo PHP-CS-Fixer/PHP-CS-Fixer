@@ -222,6 +222,9 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
         ]);
     }
 
+    /**
+     * @return array<int, list<Token>>
+     */
     private function getInterfaces(Tokens $tokens, int $implementsStart, int $implementsEnd): array
     {
         $interfaces = [];

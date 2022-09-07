@@ -44,7 +44,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     ];
 
     /**
-     * @var array Array containing all class element base types (keys) and their parent types (values)
+     * @var array<string, null|list<string>> Array containing all class element base types (keys) and their parent types (values)
      */
     private static array $typeHierarchy = [
         'use_trait' => null,
@@ -85,7 +85,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     ];
 
     /**
-     * @var array Array containing special method types
+     * @var array<string, null> Array containing special method types
      */
     private static array $specialTypes = [
         'construct' => null,
@@ -95,9 +95,9 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     ];
 
     /**
-     * @var array Resolved configuration array (type => position)
+     * @var array<string, int> Resolved configuration array (type => position)
      */
-    private $typePosition;
+    private array $typePosition;
 
     /**
      * {@inheritdoc}
@@ -295,7 +295,16 @@ class Example
     }
 
     /**
-     * @return array[]
+     * @return list<array{
+     *     start: int,
+     *     visibility: string,
+     *     abstract: bool,
+     *     static: bool,
+     *     readonly: bool,
+     *     type: string,
+     *     name: string,
+     *     end: int,
+     * }>
      */
     private function getElements(Tokens $tokens, int $startIndex): array
     {
@@ -373,7 +382,7 @@ class Example
     }
 
     /**
-     * @return array|string type or array of type and name
+     * @return array<string>|string type or array of type and name
      */
     private function detectElementType(Tokens $tokens, int $index)
     {
@@ -441,9 +450,17 @@ class Example
     }
 
     /**
-     * @param array[] $elements
-     *
-     * @return array[]
+     * @return list<array{
+     *     start: int,
+     *     visibility: string,
+     *     abstract: bool,
+     *     static: bool,
+     *     readonly: bool,
+     *     type: string,
+     *     name: string,
+     *     end: int,
+     *     position: int,
+     * }>
      */
     private function sortElements(array $elements): array
     {
@@ -509,6 +526,30 @@ class Example
         return $elements;
     }
 
+    /**
+     * @param array{
+     *     start: int,
+     *     visibility: string,
+     *     abstract: bool,
+     *     static: bool,
+     *     readonly: bool,
+     *     type: string,
+     *     name: string,
+     *     end: int,
+     *     position: int,
+     * } $a
+     * @param array{
+     *     start: int,
+     *     visibility: string,
+     *     abstract: bool,
+     *     static: bool,
+     *     readonly: bool,
+     *     type: string,
+     *     name: string,
+     *     end: int,
+     *     position: int,
+     * } $b
+     */
     private function sortGroupElements(array $a, array $b): int
     {
         $selectedSortAlgorithm = $this->configuration['sort_algorithm'];
@@ -521,7 +562,17 @@ class Example
     }
 
     /**
-     * @param array[] $elements
+     * @param list<array{
+     *     start: int,
+     *     visibility: string,
+     *     abstract: bool,
+     *     static: bool,
+     *     readonly: bool,
+     *     type: string,
+     *     name: string,
+     *     end: int,
+     *     position: int,
+     * }> $elements
      */
     private function sortTokens(Tokens $tokens, int $startIndex, int $endIndex, array $elements): void
     {

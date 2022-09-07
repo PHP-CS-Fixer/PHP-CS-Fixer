@@ -228,6 +228,9 @@ function f9(string $foo, $bar, $baz) {}
         ]);
     }
 
+    /**
+     * @return array{default: string, name: string, type: string}
+     */
     private function prepareArgumentInformation(Tokens $tokens, int $start, int $end): array
     {
         $info = [

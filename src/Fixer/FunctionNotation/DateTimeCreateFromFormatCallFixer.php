@@ -138,6 +138,9 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
         }
     }
 
+    /**
+     * @param array<int, int> $arguments
+     */
     private function getFirstArgumentTokenIndex(Tokens $tokens, array $arguments): ?int
     {
         if (2 !== \count($arguments)) {

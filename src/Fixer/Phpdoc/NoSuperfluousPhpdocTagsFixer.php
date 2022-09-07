@@ -202,6 +202,14 @@ class Foo {
         ]);
     }
 
+    /**
+     * @return null|array{
+     *       index: int,
+     *       type: 'classy'|'function'|'property',
+     *       modifiers: array<int, Token>,
+     *       types: array<int, Token>,
+     * }
+     */
     private function findDocumentedElement(Tokens $tokens, int $docCommentIndex): ?array
     {
         $modifierKinds = [
@@ -281,6 +289,15 @@ class Foo {
         return null;
     }
 
+    /**
+     * @param array{
+     *       index: int,
+     *       type: 'function',
+     *       modifiers: array<int, Token>,
+     *       types: array<int, Token>,
+     * } $element
+     * @param array<string, string> $shortNames
+     */
     private function fixFunctionDocComment(
         string $content,
         Tokens $tokens,
@@ -328,6 +345,15 @@ class Foo {
         return $docBlock->getContent();
     }
 
+    /**
+     * @param array{
+     *       index: int,
+     *       type: 'property',
+     *       modifiers: array<int, Token>,
+     *       types: array<int, Token>,
+     * } $element
+     * @param array<string, string> $shortNames
+     */
     private function fixPropertyDocComment(
         string $content,
         Tokens $tokens,
@@ -355,6 +381,14 @@ class Foo {
         return $docBlock->getContent();
     }
 
+    /**
+     * @param array{
+     *       index: int,
+     *       type: 'classy',
+     *       modifiers: array<int, Token>,
+     *       types: array<int, Token>,
+     * } $element
+     */
     private function fixClassDocComment(string $content, array $element): string
     {
         $docBlock = new DocBlock($content);
@@ -365,7 +399,7 @@ class Foo {
     }
 
     /**
-     * @return array<string, array>
+     * @return array<string, array{types: list<string>, allows_null: bool}>
      */
     private function getArgumentsInfo(Tokens $tokens, int $start, int $end): array
     {
@@ -406,6 +440,9 @@ class Foo {
         return $argumentsInfo;
     }
 
+    /**
+     * @return array{types: list<string>, allows_null: bool}
+     */
     private function getReturnTypeInfo(Tokens $tokens, int $closingParenthesisIndex): array
     {
         $colonIndex = $tokens->getNextMeaningfulToken($closingParenthesisIndex);
@@ -421,6 +458,8 @@ class Foo {
 
     /**
      * @param int $index The index of the first token of the type hint
+     *
+     * @return array{types: list<string>, allows_null: bool}
      */
     private function parseTypeHint(Tokens $tokens, int $index): array
     {

@@ -393,6 +393,9 @@ return $foo === count($bar);
         ;
     }
 
+    /**
+     * @return array{start: int, end: int}
+     */
     private function getLeftSideCompareFixableInfo(Tokens $tokens, int $index): array
     {
         return [
@@ -401,6 +404,9 @@ return $foo === count($bar);
         ];
     }
 
+    /**
+     * @return array{start: int, end: int}
+     */
     private function getRightSideCompareFixableInfo(Tokens $tokens, int $index): array
     {
         return [

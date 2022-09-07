@@ -584,6 +584,9 @@ while ($y) { continue (2); }
         return $index;
     }
 
+    /**
+     * @return null|array{type: Tokens::BLOCK_TYPE_*, isStart: bool}
+     */
     private function getBlock(Tokens $tokens, int $index, bool $isStart): ?array
     {
         $block = Tokens::detectBlockType($tokens[$index]);

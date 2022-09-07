@@ -125,7 +125,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     }
 
     /**
-     * @return array<array|string>
+     * @return array<list<int>|string>
      */
     private function getBraceAfterVariableKinds(): array
     {
