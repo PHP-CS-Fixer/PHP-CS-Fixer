@@ -79,7 +79,6 @@ class T
     {
     }
 
-    /** @return static */
     public function something(): static
     {
     }
