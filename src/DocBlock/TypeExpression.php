@@ -87,7 +87,7 @@ final class TypeExpression
                 (?<constant> # single constant value (case insensitive), e.g.: 1, `\'a\'`
                     (?i)
                     null | true | false
-                    | [\d.]+
+                    | -?(?:\d+(?:\.\d*)?|\.\d+) # all sorts of numbers with or without minus, e.g.: 1, 1.1, 1., .1, -1
                     | \'[^\']+?\' | "[^"]+?"
                     | [@$]?(?:this | self | static)
                     (?-i)

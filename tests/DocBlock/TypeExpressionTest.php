@@ -93,7 +93,7 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array<Foo::A*>|null', ['array<Foo::A*>', 'null']];
 
-        yield ['null|true|false|1|1.5|\'a\'|"b"', ['null', 'true', 'false', '1', '1.5', "'a'", '"b"']];
+        yield ['null|true|false|1|-1|1.5|-1.5|.5|1.|\'a\'|"b"', ['null', 'true', 'false', '1', '-1', '1.5', '-1.5', '.5', '1.', "'a'", '"b"']];
 
         yield ['int | "a" | A<B<C, D>, E<F::*|G[]>>', ['int', '"a"', 'A<B<C, D>, E<F::*|G[]>>']];
 

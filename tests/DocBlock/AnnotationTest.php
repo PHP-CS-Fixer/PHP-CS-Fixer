@@ -370,8 +370,8 @@ final class AnnotationTest extends TestCase
                 '/** @var array<Foo::A*>|null',
             ],
             [
-                ['null', 'true', 'false', '1', '1.5', "'a'", '"b"'],
-                '/** @var null|true|false|1|1.5|\'a\'|"b"',
+                ['null', 'true', 'false', '1', '-1', '1.5', '-1.5', '.5', '1.', "'a'", '"b"'],
+                '/** @var null|true|false|1|-1|1.5|-1.5|.5|1.|\'a\'|"b"',
             ],
             [
                 ['int', '"a"', 'A<B<C, D>, E<F::*|G[]>>'],
