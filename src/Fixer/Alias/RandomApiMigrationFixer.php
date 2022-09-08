@@ -32,6 +32,9 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  */
 final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var array<string, array<int, int>>
+     */
     private static array $argumentCounts = [
         'getrandmax' => [0],
         'mt_rand' => [1, 2],

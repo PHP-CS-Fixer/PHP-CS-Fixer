@@ -128,6 +128,9 @@ if (strpos($haystack, $needle) === false) {}
         }
     }
 
+    /**
+     * @param array{operator_index: int, operand_index: int} $operatorIndices
+     */
     private function fixCall(Tokens $tokens, int $functionIndex, array $operatorIndices): void
     {
         foreach (self::REPLACEMENTS as $replacement) {
@@ -163,6 +166,8 @@ if (strpos($haystack, $needle) === false) {}
 
     /**
      * @param -1|1 $direction
+     *
+     * @return null|array{operator_index: int, operand_index: int}
      */
     private function getCompareTokens(Tokens $tokens, int $offsetIndex, int $direction): ?array
     {

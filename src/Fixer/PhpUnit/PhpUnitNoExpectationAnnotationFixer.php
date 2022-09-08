@@ -189,6 +189,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             if (!isset($annotations['expectedException'])) {
                 continue;
             }
+
             if (!$this->fixMessageRegExp && isset($annotations['expectedExceptionMessageRegExp'])) {
                 continue;
             }
@@ -243,13 +244,20 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         return rtrim($content);
     }
 
+    /**
+     * @param array<string, string> $annotations
+     *
+     * @return list<string>
+     */
     private function annotationsToParamList(array $annotations): array
     {
         $params = [];
         $exceptionClass = ltrim($annotations['expectedException'], '\\');
+
         if (str_contains($exceptionClass, '*')) {
             $exceptionClass = substr($exceptionClass, 0, strpos($exceptionClass, '*'));
         }
+
         $exceptionClass = trim($exceptionClass);
 
         if (true === $this->configuration['use_class_const']) {

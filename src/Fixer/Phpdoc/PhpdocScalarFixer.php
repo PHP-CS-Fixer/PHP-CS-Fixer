@@ -31,6 +31,8 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements Config
 {
     /**
      * The types to fix.
+     *
+     * @var array<string, string>
      */
     private static array $types = [
         'boolean' => 'bool',

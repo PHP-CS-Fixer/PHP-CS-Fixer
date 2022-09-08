@@ -173,6 +173,8 @@ if (count($x)) {
 
     /**
      * @param NamespaceUseAnalysis[] $useDeclarations
+     *
+     * @return array<string, string>
      */
     private function importConstants(Tokens $tokens, array $useDeclarations): array
     {
@@ -244,6 +246,8 @@ if (count($x)) {
 
     /**
      * @param NamespaceUseAnalysis[] $useDeclarations
+     *
+     * @return array<string, string>
      */
     private function importFunctions(Tokens $tokens, array $useDeclarations): array
     {
@@ -294,6 +298,8 @@ if (count($x)) {
 
     /**
      * @param NamespaceUseAnalysis[] $useDeclarations
+     *
+     * @return array<string, string>
      */
     private function importClasses(Tokens $tokens, array $useDeclarations): array
     {
@@ -407,9 +413,10 @@ if (count($x)) {
     /**
      * Removes the leading slash at the given indices (when the name is not already used).
      *
-     * @param int[] $indices
+     * @param int[]               $indices
+     * @param array<string, true> $other
      *
-     * @return array array keys contain the names that must be imported
+     * @return array<string, string> array keys contain the names that must be imported
      */
     private function prepareImports(Tokens $tokens, array $indices, array $global, array $other, bool $caseSensitive): array
     {

@@ -28,7 +28,15 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
 {
     /**
-     * @var array the list of the string-related function names and their mb_ equivalent
+     * list of the string-related function names and their mb_ equivalent.
+     *
+     * @var array<
+     *     string,
+     *     array{
+     *         alternativeName: string,
+     *         argumentCount: list<int>,
+     *     },
+     * >
      */
     private static array $functionsMap = [
         'str_split' => ['alternativeName' => 'mb_str_split', 'argumentCount' => [1, 2, 3]],
@@ -47,7 +55,13 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
     ];
 
     /**
-     * @var array<string, array>
+     * @var array<
+     *     string,
+     *     array{
+     *         alternativeName: string,
+     *         argumentCount: list<int>,
+     *     },
+     * >
      */
     private array $functions;
 

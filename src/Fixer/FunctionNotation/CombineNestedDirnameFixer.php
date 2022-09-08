@@ -117,7 +117,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
      * @param int      $index                 Index of `dirname`
      * @param null|int $firstArgumentEndIndex Index of last token of first argument of `dirname` call
      *
-     * @return array|bool `false` when it is not a (supported) `dirname` call, an array with info about the dirname call otherwise
+     * @return array{indexes: list<int>, secondArgument?: int, levels: int, end: int}|bool `false` when it is not a (supported) `dirname` call, an array with info about the dirname call otherwise
      */
     private function getDirnameInfo(Tokens $tokens, int $index, ?int $firstArgumentEndIndex = null)
     {
@@ -200,6 +200,9 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         return $info;
     }
 
+    /**
+     * @param array<array{indexes: list<int>, secondArgument?: int, levels: int, end: int}> $dirnameInfoArray
+     */
     private function combineDirnames(Tokens $tokens, array $dirnameInfoArray): void
     {
         $outerDirnameInfo = array_pop($dirnameInfoArray);

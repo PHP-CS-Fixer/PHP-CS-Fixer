@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class SimplifiedIfReturnFixer extends AbstractFixer
 {
     /**
-     * @var array[]
+     * @var list<array{isNegative: bool, sequence: array<int, list<int|string>|string>}>
      */
     private array $sequences = [
         [

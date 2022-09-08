@@ -141,7 +141,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
     }
 
     /**
-     * @return null|array null if contains ++/-- operator
+     * @return null|array{start: int, end: int} null if contains ++/-- operator
      */
     private function getBeforeOperator(Tokens $tokens, int $index, array $blockEdgeDefinitions): ?array
     {
@@ -194,6 +194,9 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
         return $before;
     }
 
+    /**
+     * @return array{start: int, end: int}
+     */
     private function getAfterOperator(Tokens $tokens, int $index): array
     {
         $index = $tokens->getNextMeaningfulToken($index);
@@ -213,6 +216,9 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
         return $after;
     }
 
+    /**
+     * @param array{start: int, end: int} $range
+     */
     private function clearMeaningfulFromRange(Tokens $tokens, array $range): void
     {
         // $range['end'] must be meaningful!
