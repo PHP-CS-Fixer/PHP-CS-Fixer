@@ -167,7 +167,7 @@ if (strpos($haystack, $needle) === false) {}
     /**
      * @param -1|1 $direction
      *
-     * @return array{operator_index: int, operand_index: int}
+     * @return null|array{operator_index: int, operand_index: int}
      */
     private function getCompareTokens(Tokens $tokens, int $offsetIndex, int $direction): ?array
     {
