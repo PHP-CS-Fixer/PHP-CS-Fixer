@@ -45,14 +45,14 @@ List of Available Rules
      | Default value: ``'short'``
 
 
-   Part of rule sets `@PHP54Migration <./ruleSets/PHP54Migration.rst>`_ `@PHP70Migration <./ruleSets/PHP70Migration.rst>`_ `@PHP71Migration <./ruleSets/PHP71Migration.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PHP54Migration <./ruleSets/PHP54Migration.rst>`_ `@PHP70Migration <./ruleSets/PHP70Migration.rst>`_ `@PHP71Migration <./ruleSets/PHP71Migration.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\ArraySyntaxFixer <./../src/Fixer/ArrayNotation/ArraySyntaxFixer.php>`_
 -  `assign_null_coalescing_to_coalesce_equal <./rules/operator/assign_null_coalescing_to_coalesce_equal.rst>`_
 
    Use the null coalescing assignment operator ``??=`` where possible.
 
-   Part of rule sets `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_
+   Part of rule sets `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\AssignNullCoalescingToCoalesceEqualFixer <./../src/Fixer/Operator/AssignNullCoalescingToCoalesceEqualFixer.php>`_
 -  `backtick_to_shell_exec <./rules/alias/backtick_to_shell_exec.rst>`_
@@ -230,7 +230,7 @@ List of Available Rules
 
    Namespace must not contain spacing, comments or PHPDoc.
 
-   Part of rule sets `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\NamespaceNotation\\CleanNamespaceFixer <./../src/Fixer/NamespaceNotation/CleanNamespaceFixer.php>`_
 -  `combine_consecutive_issets <./rules/language_construct/combine_consecutive_issets.rst>`_
@@ -950,7 +950,7 @@ List of Available Rules
      | Default value: ``'start_plus_one'``
 
 
-   Part of rule sets `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_
+   Part of rule sets `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\HeredocIndentationFixer <./../src/Fixer/Whitespace/HeredocIndentationFixer.php>`_
 -  `heredoc_to_nowdoc <./rules/string_notation/heredoc_to_nowdoc.rst>`_
@@ -1047,7 +1047,7 @@ List of Available Rules
      | Default value: ``'short'``
 
 
-   Part of rule sets `@PHP71Migration <./ruleSets/PHP71Migration.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_
+   Part of rule sets `@PHP71Migration <./ruleSets/PHP71Migration.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ListNotation\\ListSyntaxFixer <./../src/Fixer/ListNotation/ListSyntaxFixer.php>`_
 -  `logical_operators <./rules/operator/logical_operators.rst>`_
@@ -1123,7 +1123,7 @@ List of Available Rules
      | Default value: ``false``
 
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixer <./../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php>`_
 -  `method_chaining_indentation <./rules/whitespace/method_chaining_indentation.rst>`_
@@ -1291,7 +1291,7 @@ List of Available Rules
 
    Array index should always be written by using square braces.
 
-   Part of rule sets `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\NormalizeIndexBraceFixer <./../src/Fixer/ArrayNotation/NormalizeIndexBraceFixer.php>`_
 -  `not_operator_with_space <./rules/operator/not_operator_with_space.rst>`_
@@ -1726,7 +1726,7 @@ List of Available Rules
 
    Variables must be set ``null`` instead of using ``(unset)`` casting.
 
-   Part of rule sets `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\CastNotation\\NoUnsetCastFixer <./../src/Fixer/CastNotation/NoUnsetCastFixer.php>`_
 -  `no_unset_on_property <./rules/language_construct/no_unset_on_property.rst>`_
@@ -1806,7 +1806,7 @@ List of Available Rules
      | Default value: ``false``
 
 
-   Part of rule sets `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\NoWhitespaceBeforeCommaInArrayFixer <./../src/Fixer/ArrayNotation/NoWhitespaceBeforeCommaInArrayFixer.php>`_
 -  `no_whitespace_in_blank_line <./rules/whitespace/no_whitespace_in_blank_line.rst>`_
@@ -1842,7 +1842,7 @@ List of Available Rules
 
    Literal octal must be in ``0o`` notation.
 
-   Part of rule set `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_
+   Part of rule sets `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Basic\\OctalNotationFixer <./../src/Fixer/Basic/OctalNotationFixer.php>`_
 -  `operator_linebreak <./rules/operator/operator_linebreak.rst>`_
@@ -2708,7 +2708,7 @@ List of Available Rules
 
    Cast ``(boolean)`` and ``(integer)`` should be written as ``(bool)`` and ``(int)``, ``(double)`` and ``(real)`` as ``(float)``, ``(binary)`` as ``(string)``.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\CastNotation\\ShortScalarCastFixer <./../src/Fixer/CastNotation/ShortScalarCastFixer.php>`_
 -  `simple_to_complex_string_variable <./rules/string_notation/simple_to_complex_string_variable.rst>`_
@@ -2718,7 +2718,7 @@ List of Available Rules
    Doesn't touch implicit variables. Works together nicely with
    ``explicit_string_variable``.
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\StringNotation\\SimpleToComplexStringVariableFixer <./../src/Fixer/StringNotation/SimpleToComplexStringVariableFixer.php>`_
 -  `simplified_if_return <./rules/control_structure/simplified_if_return.rst>`_
@@ -2972,7 +2972,7 @@ List of Available Rules
 
    Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
 
-   Part of rule sets `@PHP70Migration <./ruleSets/PHP70Migration.rst>`_ `@PHP71Migration <./ruleSets/PHP71Migration.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_
+   Part of rule sets `@PHP70Migration <./ruleSets/PHP70Migration.rst>`_ `@PHP71Migration <./ruleSets/PHP71Migration.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\TernaryToNullCoalescingFixer <./../src/Fixer/Operator/TernaryToNullCoalescingFixer.php>`_
 -  `trailing_comma_in_multiline <./rules/control_structure/trailing_comma_in_multiline.rst>`_
@@ -2991,7 +2991,7 @@ List of Available Rules
      | Default value: ``['arrays']``
 
 
-   Part of rule sets `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\TrailingCommaInMultilineFixer <./../src/Fixer/ControlStructure/TrailingCommaInMultilineFixer.php>`_
 -  `trim_array_spaces <./rules/array_notation/trim_array_spaces.rst>`_
@@ -3049,7 +3049,7 @@ List of Available Rules
      | Default value: ``['property', 'method', 'const']``
 
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PHP71Migration <./ruleSets/PHP71Migration.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PHP71Migration <./ruleSets/PHP71Migration.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\VisibilityRequiredFixer <./../src/Fixer/ClassNotation/VisibilityRequiredFixer.php>`_
 -  `void_return <./rules/function_notation/void_return.rst>`_

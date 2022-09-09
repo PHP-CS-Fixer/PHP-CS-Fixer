@@ -1,0 +1,119 @@
+--TEST--
+PHP 8.2 test.
+--RULESET--
+{
+    "@PhpCsFixer": true,
+    "@PHP82Migration": true
+}
+--REQUIREMENTS--
+{"php": 80200}
+--EXPECT--
+<?php
+
+// https://wiki.php.net/rfc/readonly_classes
+readonly final class Foo
+{
+    public string $prop;
+}
+
+// https://wiki.php.net/rfc/null-false-standalone-types
+class FalseNull
+{
+    private false $a = false;
+    private null $b = null;
+
+    public function __construct(
+        private false $falsy = false,
+        private null $nully = null
+    ) {
+    }
+
+    public function setAB(false $a, null $b): void
+    {
+        $this->a = $a;
+        $this->b = $b;
+    }
+}
+
+array_filter([], fn (null $n) => null === $n);
+array_filter([], fn (false $n) => false === $n);
+
+// https://wiki.php.net/rfc/true-type
+class TrueType
+{
+    private true $a = true;
+
+    public function __construct(
+        private true $havingABud = true
+    ) {
+    }
+
+    public function setA(true $a): void
+    {
+        $this->a = $a;
+    }
+}
+
+array_filter([], fn (true $n) => true === $n);
+
+// https://wiki.php.net/rfc/constants_in_traits
+trait WithConstants
+{
+    public const ONE = 'one';
+    protected const TWO = 'two';
+    private const THREE = 'three';
+}
+
+--INPUT--
+<?php
+
+// https://wiki.php.net/rfc/readonly_classes
+READONLY       final       class       Foo
+{
+    public string $prop;
+}
+
+// https://wiki.php.net/rfc/null-false-standalone-types
+class FalseNull {
+    private FALSE $a = FALSE;
+    private NULL $b = NULL;
+
+    public function __construct(
+        private FALSE $falsy = FALSE,
+        private NULL $nully = NULL
+    ) {
+    }
+
+    public function setAB(FALSE $a, NULL $b): void
+    {
+        $this->a = $a;
+        $this->b = $b;
+    }
+}
+
+array_filter([], fn     (NULL     $n)     =>     NULL     ===     $n);
+array_filter([], fn     (FALSE     $n)     =>     FALSE     ===     $n);
+
+// https://wiki.php.net/rfc/true-type
+class TrueType {
+    private TRUE $a = TRUE;
+
+    public function __construct(
+        private TRUE $havingABud = TRUE
+    ) {
+    }
+
+    public function setA(TRUE $a): void
+    {
+        $this->a = $a;
+    }
+}
+
+array_filter([], fn     (TRUE     $n)     =>     TRUE     ===     $n);
+
+// https://wiki.php.net/rfc/constants_in_traits
+trait      WithConstants      {
+    public    const ONE   = 'one';
+    protected const TWO   = 'two';
+    private   const THREE = 'three';
+}

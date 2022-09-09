@@ -90,3 +90,6 @@ The rule is part of the following rule sets:
 
 @PHP81Migration
   Using the `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ rule set will enable the ``heredoc_indentation`` rule with the default config.
+
+@PHP82Migration
+  Using the `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_ rule set will enable the ``heredoc_indentation`` rule with the default config.
