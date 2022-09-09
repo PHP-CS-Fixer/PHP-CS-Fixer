@@ -35,6 +35,9 @@ class FalseNull
     }
 }
 
+array_filter([], fn (null $n) => null === $n);
+array_filter([], fn (false $n) => false === $n);
+
 // https://wiki.php.net/rfc/true-type
 class TrueType
 {
@@ -50,6 +53,8 @@ class TrueType
         $this->a = $a;
     }
 }
+
+array_filter([], fn (true $n) => true === $n);
 
 // https://wiki.php.net/rfc/constants_in_traits
 trait WithConstants
@@ -86,6 +91,9 @@ class FalseNull {
     }
 }
 
+array_filter([], fn     (NULL     $n)     =>     NULL     ===     $n);
+array_filter([], fn     (FALSE     $n)     =>     FALSE     ===     $n);
+
 // https://wiki.php.net/rfc/true-type
 class TrueType {
     private TRUE $a = TRUE;
@@ -100,6 +108,8 @@ class TrueType {
         $this->a = $a;
     }
 }
+
+array_filter([], fn     (TRUE     $n)     =>     TRUE     ===     $n);
 
 // https://wiki.php.net/rfc/constants_in_traits
 trait      WithConstants      {
