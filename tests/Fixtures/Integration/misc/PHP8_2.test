@@ -11,7 +11,7 @@ PHP 8.2 test.
 <?php
 
 // https://wiki.php.net/rfc/readonly_classes
-final readonly class Foo
+readonly final class Foo
 {
     public string $prop;
 }
@@ -28,25 +28,11 @@ class FalseNull
     ) {
     }
 
-    public function falsy(): false
-    {
-        return $this->falsy;
-    }
-
-    public function nully(): null
-    {
-        return $this->nully;
-    }
-
     public function setAB(false $a, null $b): void
     {
         $this->a = $a;
         $this->b = $b;
     }
-}
-
-function falsyNull(null $n, false $f): null|false
-{
 }
 
 // https://wiki.php.net/rfc/true-type
@@ -59,70 +45,9 @@ class TrueType
     ) {
     }
 
-    public function havingABud(): true
-    {
-        return $this->havingABud;
-    }
-
     public function setA(true $a): void
     {
         $this->a = $a;
-    }
-}
-
-function truish(true $true): true
-{
-    return $true;
-}
-
-// https://wiki.php.net/rfc/dnf_types
-interface DnfA
-{
-    public function foo(): void;
-
-    public function bar(): void;
-
-    public function baz(): void;
-}
-interface DnfB
-{
-    public function foo(): void;
-}
-interface DnfC
-{
-    public function bar(): void;
-}
-interface DnfD
-{
-    public function baz(): void;
-}
-interface DnfE extends DnfB
-{
-}
-interface DnfF extends DnfC
-{
-}
-interface DnfG extends DnfD
-{
-}
-
-class DnfTypes
-{
-    private DnfA|(DnfB&DnfC&DnfD)|(DnfE&DnfF&DnfG) $whatever;
-
-    public function __construct(
-        private DnfA|(DnfB&DnfC&DnfD)|(DnfE&DnfF&DnfG) $notSure
-    ) {
-    }
-
-    public function notSure(): DnfA|(DnfB&DnfC&DnfD)|(DnfE&DnfF&DnfG)
-    {
-        return $this->notSure;
-    }
-
-    public function setWhatever(DnfA|(DnfB&DnfC&DnfD)|(DnfE&DnfF&DnfG) $whatever): void
-    {
-        $this->whatever = $whatever;
     }
 }
 
@@ -134,46 +59,11 @@ trait WithConstants
     private const THREE = 'three';
 }
 
-// https://wiki.php.net/rfc/fetch_property_in_const_expressions
-enum E: string
-{
-    case Foo = 'foo';
-}
-
-$eFoo = E::Foo->value;
-
-function e1()
-{
-    static $v = E::Foo->value;
-}
-
-#[Attr(E::Foo->name)]
-class E2
-{
-}
-
-function e3(
-    $p = E::Foo->value,
-) {}
-
-class E4
-{
-    public string $p = E::Foo->name;
-}
-
-const E5 = 'value';
-class E6
-{
-    public const C = E::Foo->{E5};
-}
-
-array_filter([E::Foo->name], fn (string $a) => $a === E::Foo->value);
-
 --INPUT--
 <?php
 
 // https://wiki.php.net/rfc/readonly_classes
-READONLY final class Foo
+READONLY       final       class       Foo
 {
     public string $prop;
 }
@@ -189,25 +79,11 @@ class FalseNull {
     ) {
     }
 
-    public function falsy(): FALSE
-    {
-        return $this->falsy;
-    }
-
-    public function nully(): NULL
-    {
-        return $this->nully;
-    }
-
     public function setAB(FALSE $a, NULL $b): void
     {
         $this->a = $a;
         $this->b = $b;
     }
-}
-
-function falsyNull(NULL $n, FALSE $f): NULL|FALSE
-{
 }
 
 // https://wiki.php.net/rfc/true-type
@@ -219,69 +95,9 @@ class TrueType {
     ) {
     }
 
-    public function havingABud(): TRUE
-    {
-        return $this->havingABud;
-    }
-
     public function setA(TRUE $a): void
     {
         $this->a = $a;
-    }
-}
-
-function truish(TRUE $true): TRUE
-{
-    return $true;
-}
-
-// https://wiki.php.net/rfc/dnf_types
-interface DnfA
-{
-    public function foo(): void;
-
-    public function bar(): void;
-
-    public function baz(): void;
-}
-interface DnfB
-{
-    public function foo(): void;
-}
-interface DnfC
-{
-    public function bar(): void;
-}
-interface DnfD
-{
-    public function baz(): void;
-}
-interface DnfE extends DnfB
-{
-}
-interface DnfF extends DnfC
-{
-}
-interface DnfG extends DnfD
-{
-}
-
-class DnfTypes {
-    private DnfA | ( DnfB & DnfC & DnfD) | ( DnfE & DnfF & DnfG ) $whatever;
-
-    public function __construct(
-        private DnfA | ( DnfB & DnfC & DnfD) | ( DnfE & DnfF & DnfG ) $notSure
-    ) {
-    }
-
-    public function notSure(): DnfA | ( DnfB & DnfC & DnfD) | ( DnfE & DnfF & DnfG )
-    {
-        return $this->notSure;
-    }
-
-    public function setWhatever(DnfA | ( DnfB & DnfC & DnfD) | ( DnfE & DnfF & DnfG ) $whatever): void
-    {
-        $this->whatever = $whatever;
     }
 }
 
@@ -291,34 +107,3 @@ trait      WithConstants      {
     protected const TWO   = 'two';
     private   const THREE = 'three';
 }
-
-// https://wiki.php.net/rfc/fetch_property_in_const_expressions
-enum E: string {
-    case Foo = 'foo';
-}
-
-$eFoo = E::Foo -> value;
-
-function e1() {
-    static $v = E::Foo->VALUE;
-}
-
-#[Attr(E::Foo->NAME)]
-class E2
-{
-}
-
-function e3(
-    $p = E::Foo->Value,
-) {}
-
-class E4 {
-    public string $p = E::Foo->Name;
-}
-
-const E5 = 'value';
-class E6 {
-    public const C = E::Foo -> {E5};
-}
-
-array_filter([E::Foo->NAME], fn (string $a) => $a === E::Foo->VALUE);
