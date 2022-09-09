@@ -30,7 +30,7 @@ final class NameQualifiedTransformer extends AbstractTransformer
      */
     public function getPriority(): int
     {
-        return 1; // must run before NamespaceOperatorTransformer
+        return 1;
     }
 
     /**

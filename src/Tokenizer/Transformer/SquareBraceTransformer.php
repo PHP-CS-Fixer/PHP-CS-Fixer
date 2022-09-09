@@ -37,7 +37,6 @@ final class SquareBraceTransformer extends AbstractTransformer
      */
     public function getPriority(): int
     {
-        // must run after CurlyBraceTransformer and AttributeTransformer
         return -1;
     }
 

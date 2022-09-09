@@ -31,7 +31,6 @@ final class NamedArgumentTransformer extends AbstractTransformer
      */
     public function getPriority(): int
     {
-        // needs to run after TypeColonTransformer
         return -15;
     }
 

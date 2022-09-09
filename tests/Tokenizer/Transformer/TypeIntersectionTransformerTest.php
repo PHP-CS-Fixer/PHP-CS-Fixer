@@ -20,12 +20,13 @@ use PhpCsFixer\Tokenizer\CT;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\Tokenizer\AbstractTypeTransformer
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeIntersectionTransformer
  */
 final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int|string> $expectedTokens
+     * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
@@ -321,6 +322,45 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
             [
                 45 => CT::T_TYPE_INTERSECTION,
             ],
+        ];
+    }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideProcessPhp82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testProcessPhp82(array $expectedTokens, string $source): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                CT::T_TYPE_INTERSECTION,
+            ]
+        );
+    }
+
+    public function provideProcessPhp82Cases(): iterable
+    {
+        yield 'DNF properties' => [
+            [
+                13 => CT::T_TYPE_INTERSECTION,
+                24 => CT::T_TYPE_INTERSECTION,
+                37 => CT::T_TYPE_INTERSECTION,
+                43 => CT::T_TYPE_INTERSECTION,
+                49 => CT::T_TYPE_INTERSECTION,
+            ],
+            '<?php
+class Dnf
+{
+    public A|(C&D) $a;
+    protected (C&D)|B $b;
+    private (C&D)|(E&F)|(G&H) $c;
+}
+',
         ];
     }
 }

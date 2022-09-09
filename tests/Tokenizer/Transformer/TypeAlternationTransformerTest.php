@@ -344,7 +344,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
-     * @param array<int, int|string> $expectedTokens
+     * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideFix81Cases
      *
@@ -391,13 +391,13 @@ class Foo
     }
 
     /**
-     * @param array<int, int|string> $expectedTokens
+     * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideProcess81Cases
      *
      * @requires PHP 8.1
      */
-    public function testProcess81(string $source, array $expectedTokens): void
+    public function testProcess81(array $expectedTokens, string $source): void
     {
         $this->doTest($source, $expectedTokens);
     }
@@ -405,10 +405,52 @@ class Foo
     public function provideProcess81Cases(): iterable
     {
         yield 'arrow function with intersection' => [
-            '<?php $a = fn(int|null $item): int&null => $item * 2;',
             [
                 8 => CT::T_TYPE_ALTERNATION,
             ],
+            '<?php $a = fn(int|null $item): int&null => $item * 2;',
+        ];
+    }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideProcessPhp82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testProcess82(array $expectedTokens, string $source): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    public function provideProcessPhp82Cases(): iterable
+    {
+        yield 'DNF' => [
+            [
+                10 => CT::T_TYPE_ALTERNATION, // C1
+                27 => CT::T_TYPE_ALTERNATION, // C2
+                40 => CT::T_TYPE_ALTERNATION, // C3
+                46 => CT::T_TYPE_ALTERNATION, // F
+                63 => CT::T_TYPE_ALTERNATION, // C4
+                76 => CT::T_TYPE_ALTERNATION, // C5
+                93 => CT::T_TYPE_ALTERNATION, // A6
+                101 => CT::T_TYPE_ALTERNATION, // A7
+                116 => CT::T_TYPE_ALTERNATION, // A8
+                130 => CT::T_TYPE_ALTERNATION, // A9
+            ],
+            '<?php
+class Dnf
+{
+    public A|(C1&D) $a;
+    protected (C2&D)|B $b;
+    private (C3&D)|(E&F)|(G&H) $c;
+    static (C4&D)|Z $d;
+    public (C5&D)|X $e;
+
+    public function Foo((A6&B)|C $a, \D|(A7&B) $b, (A8&B)|(C&D) & $g): T|(A9&B) {}
+}
+',
         ];
     }
 }

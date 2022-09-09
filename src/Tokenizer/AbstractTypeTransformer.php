@@ -37,10 +37,12 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
 
         if ($prevToken->isGivenKind([
             CT::T_TYPE_COLON, // `:` is part of a function return type `foo(): X|Y`
-            CT::T_TYPE_ALTERNATION, // `|` is part of a union (chain) `X|Y`
-            CT::T_TYPE_INTERSECTION,
+            CT::T_TYPE_ALTERNATION, // `|` is part of a union (chain) `W|X|Y`
+            CT::T_TYPE_INTERSECTION, // `&` is part of a intersection (chain) `W&X&Y`
             T_STATIC, T_VAR, T_PUBLIC, T_PROTECTED, T_PRIVATE, // `var X|Y $a;`, `private X|Y $a` or `public static X|Y $a`
             CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, // promoted properties
+            CT::T_DNF_TYPE_PARENTHESIS_CLOSE, // `|` is part of DNF `(A&B)|X`
+            CT::T_DNF_TYPE_PARENTHESIS_OPEN, // `&` is part of DNF `(A&B)`
         ])) {
             $this->replaceToken($tokens, $index);
 

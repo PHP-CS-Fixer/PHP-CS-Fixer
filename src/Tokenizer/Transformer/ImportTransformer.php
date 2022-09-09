@@ -37,7 +37,6 @@ final class ImportTransformer extends AbstractTransformer
      */
     public function getPriority(): int
     {
-        // Should run after CurlyBraceTransformer and ReturnRefTransformer
         return -1;
     }
 

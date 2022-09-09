@@ -33,8 +33,6 @@ final class TypeColonTransformer extends AbstractTransformer
      */
     public function getPriority(): int
     {
-        // needs to run after ReturnRefTransformer and UseTransformer
-        // and before TypeAlternationTransformer
         return -10;
     }
 
@@ -74,7 +72,7 @@ final class TypeColonTransformer extends AbstractTransformer
         $prevIndex = $tokens->getPrevMeaningfulToken($startIndex);
         $prevToken = $tokens[$prevIndex];
 
-        // if this could be a function name we need to take one more step
+        // this could be a function name, we need to take one more step
         if ($prevToken->isGivenKind(T_STRING)) {
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
             $prevToken = $tokens[$prevIndex];

@@ -124,7 +124,7 @@ abstract class Sample
             ],
             [
                 '<?php
-final class Foo
+final class Foo99
 {
     public function bar()
     {
@@ -135,7 +135,7 @@ final class Foo
 }
                 ',
                 '<?php
-final class Foo
+final class Foo99
 {
     public function bar()
     {
@@ -148,7 +148,7 @@ final class Foo
             ],
             'instance of' => [
                 '<?php
-final class Foo
+final class Foo100
 {
     public function isBar($foo)
     {
@@ -157,7 +157,7 @@ final class Foo
 }
                 ',
                 '<?php
-final class Foo
+final class Foo100
 {
     public function isBar($foo)
     {
@@ -167,16 +167,16 @@ final class Foo
                 ',
             ],
             'in method as new' => [
-                '<?php final class A { public static function b() { return new self(); } }',
-                '<?php final class A { public static function b() { return new static(); } }',
+                '<?php final class A0 { public static function b() { return new self(); } }',
+                '<?php final class A0 { public static function b() { return new static(); } }',
             ],
             'in method as new with comments' => [
-                '<?php final class A { public static function b() { return new /* hmm */ self(); } }',
-                '<?php final class A { public static function b() { return new /* hmm */ static(); } }',
+                '<?php final class A1 { public static function b() { return new /* hmm */ self(); } }',
+                '<?php final class A1 { public static function b() { return new /* hmm */ static(); } }',
             ],
             'in method as new without parentheses' => [
-                '<?php final class A { public static function b() { return new self; } }',
-                '<?php final class A { public static function b() { return new static; } }',
+                '<?php final class A2 { public static function b() { return new self; } }',
+                '<?php final class A2 { public static function b() { return new static; } }',
             ],
             'simple anonymous class' => [
                 '<?php
@@ -196,7 +196,7 @@ $a = new class {
             ],
             'nested anonymous class' => [
                 '<?php
-final class Foo
+final class Foo3x
 {
     public function Foo()
     {
@@ -220,7 +220,7 @@ final class Foo
 }
 ',
                 '<?php
-final class Foo
+final class Foo3x
 {
     public function Foo()
     {
@@ -246,7 +246,7 @@ final class Foo
             ],
             'anonymous classes inside lambda' => [
                 '<?php
-final class Foo
+final class Foo4y
 {
     public function bar()
     {
@@ -292,7 +292,7 @@ final class Foo
 }
 ',
                 '<?php
-final class Foo
+final class Foo4y
 {
     public function bar()
     {
@@ -343,7 +343,7 @@ final class Foo
             ],
             'do not fix inside lambda' => [
                 '<?php
-final class Foo
+final class FooT
 {
     public function Bar()
     {

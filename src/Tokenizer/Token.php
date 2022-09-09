@@ -118,7 +118,7 @@ final class Token
 
         if (null === $objectOperators) {
             $objectOperators = [T_OBJECT_OPERATOR];
-            if (\defined('T_NULLSAFE_OBJECT_OPERATOR')) {
+            if (\defined('T_NULLSAFE_OBJECT_OPERATOR')) { // @TODO: drop condition when PHP 8.0+ is required
                 $objectOperators[] = T_NULLSAFE_OBJECT_OPERATOR;
             }
         }

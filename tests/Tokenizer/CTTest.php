@@ -68,6 +68,7 @@ final class CTTest extends TestCase
     {
         static::assertGreaterThan(10000, $value);
         static::assertFalse(\defined($name), 'The CT name must not use native T_* name.');
+        static::assertMatchesRegularExpression('#^T(_[A-Z]+)+$#', $name, sprintf('Name "%s" does not match expected format.', $name));
     }
 
     public function provideConstantsCases(): iterable

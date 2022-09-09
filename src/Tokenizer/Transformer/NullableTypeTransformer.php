@@ -33,7 +33,6 @@ final class NullableTypeTransformer extends AbstractTransformer
      */
     public function getPriority(): int
     {
-        // needs to run after TypeColonTransformer
         return -20;
     }
 

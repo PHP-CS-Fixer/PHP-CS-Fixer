@@ -30,92 +30,158 @@ use PhpCsFixer\Tokenizer\Transformers;
  */
 final class TransformerTest extends TestCase
 {
+    private const PRIORITY_MAP = [
+        'array_typehint' => [
+            'type_alternation',
+            'type_intersection',
+        ],
+        'attribute' => [
+            'curly_brace',
+            'disjunctive_normal_form_type_braces',
+            'nullable_type',
+            'square_brace',
+            'type_alternation',
+            'type_intersection',
+        ],
+        'constructor_promotion' => [
+            'disjunctive_normal_form_type_braces',
+            'nullable_type',
+            'type_alternation',
+            'type_intersection',
+        ],
+        'curly_brace' => [
+            'brace_class_instantiation',
+            'import',
+            'square_brace',
+            'use',
+        ],
+        'disjunctive_normal_form_type_braces' => [
+            'type_alternation',
+            'type_intersection',
+        ],
+        'name_qualified' => [
+            'namespace_operator',
+        ],
+        'return_ref' => [
+            'brace_class_instantiation',
+            'import',
+            'type_colon',
+        ],
+        'square_brace' => [
+            'brace_class_instantiation',
+            'disjunctive_normal_form_type_braces',
+        ],
+        'type_colon' => [
+            'disjunctive_normal_form_type_braces',
+            'named_argument',
+            'nullable_type',
+            'type_alternation',
+            'type_intersection',
+        ],
+        'use' => [
+            'type_alternation',
+            'type_colon',
+            'type_intersection',
+        ],
+    ];
+
     /**
-     * @dataProvider provideTransformerPriorityCases
+     * @requires PHP 8.2
      */
-    public function testTransformerPriority(TransformerInterface $first, TransformerInterface $second): void
+    public function testTransformerPriorities(): void
     {
-        static::assertLessThan(
-            $first->getPriority(),
-            $second->getPriority(),
-            sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first))
+        $transformerNamePriority = [];
+        $transformerNamesWithoutDefaultPriorityNotInPriorityMap = [];
+
+        foreach ($this->getTransformers() as $transformer) {
+            $name = $transformer->getName();
+            $priority = $transformer->getPriority();
+            $transformerNamePriority[$name] = $priority;
+
+            if (0 !== $priority) {
+                if (isset(self::PRIORITY_MAP[$name])) {
+                    continue;
+                }
+
+                foreach (self::PRIORITY_MAP as $beforeNames) {
+                    if (\in_array($name, $beforeNames, true)) {
+                        continue 2;
+                    }
+                }
+
+                $transformerNamesWithoutDefaultPriorityNotInPriorityMap[] = $name;
+            }
+        }
+
+        static::assertEmpty(
+            $transformerNamesWithoutDefaultPriorityNotInPriorityMap,
+            sprintf("Missing transformers in priority map:\n'%s'.", implode("', '", $transformerNamesWithoutDefaultPriorityNotInPriorityMap))
         );
-    }
 
-    /**
-     * @dataProvider provideTransformerCases
-     */
-    public function testTransformerPriorityIsListed(TransformerInterface $transformer): void
-    {
-        $priority = $transformer->getPriority();
+        $priorityMapConflicts = [];
 
-        if (0 === $priority) {
-            $this->expectNotToPerformAssertions();
+        foreach (self::PRIORITY_MAP as $name => $beforeNames) {
+            foreach ($beforeNames as $beforeName) {
+                if ($transformerNamePriority[$name] <= $transformerNamePriority[$beforeName]) {
+                    if (!isset($priorityMapConflicts[$name])) {
+                        $priorityMapConflicts[$name] = [];
+                    }
+
+                    $priorityMapConflicts[$name][] = $beforeName;
+                }
+            }
+        }
+
+        if (0 === \count($priorityMapConflicts)) {
+            $this->addToAssertionCount(1);
 
             return;
         }
 
-        $name = $transformer->getName();
+        $message = '';
 
-        foreach ($this->provideTransformerPriorityCases() as $pair) {
-            [$first, $second] = $pair;
+        foreach ($priorityMapConflicts as $name => $conflicts) {
+            $message .= sprintf("Priority conflict for '%s' with priority %d:\n", $name, $transformerNamePriority[$name]);
 
-            if ($name === $first->getName() || $name === $second->getName()) {
-                $this->addToAssertionCount(1);
-
-                return;
+            foreach ($conflicts as $conflict) {
+                $message .= sprintf("- '%s' with prio %d\n", $conflict, $transformerNamePriority[$conflict]);
             }
         }
 
-        static::fail(sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
+        static::fail($message);
     }
 
-    public function provideTransformerPriorityCases(): array
+    public function testPriorityMapIsValid(): void
     {
-        $transformers = [];
+        self::assertArrayIsSorted(array_keys(self::PRIORITY_MAP), 'Priority map top level keys are not sorted.');
 
-        foreach ($this->provideTransformerCases() as [$transformer]) {
-            $transformers[$transformer->getName()] = $transformer;
+        foreach (self::PRIORITY_MAP as $name => $beforeNames) {
+            static::assertSame(array_unique($beforeNames), $beforeNames, sprintf('Priority map entry "%s" contains duplicates.', $name));
+            self::assertArrayIsSorted($beforeNames, sprintf('Priority map entry "%s" is not sorted.', $name));
         }
-
-        return [
-            [$transformers['attribute'], $transformers['curly_brace']],
-            [$transformers['attribute'], $transformers['square_brace']],
-            [$transformers['curly_brace'], $transformers['brace_class_instantiation']],
-            [$transformers['curly_brace'], $transformers['import']],
-            [$transformers['curly_brace'], $transformers['use']],
-            [$transformers['name_qualified'], $transformers['namespace_operator']],
-            [$transformers['return_ref'], $transformers['import']],
-            [$transformers['return_ref'], $transformers['type_colon']],
-            [$transformers['square_brace'], $transformers['brace_class_instantiation']],
-            [$transformers['type_colon'], $transformers['named_argument']],
-            [$transformers['type_colon'], $transformers['nullable_type']],
-            [$transformers['array_typehint'], $transformers['type_alternation']],
-            [$transformers['type_colon'], $transformers['type_alternation']],
-            [$transformers['array_typehint'], $transformers['type_intersection']],
-            [$transformers['type_colon'], $transformers['type_intersection']],
-            [$transformers['use'], $transformers['type_colon']],
-        ];
     }
 
     /**
      * @return TransformerInterface[]
      */
-    public function provideTransformerCases(): array
+    private function getTransformers(): array
     {
-        static $transformersArray = null;
+        $transformers = Transformers::createSingleton();
+        $transformersReflection = new \ReflectionObject($transformers);
+        $items = $transformersReflection->getProperty('items');
+        $items->setAccessible(true);
 
-        if (null === $transformersArray) {
-            $transformers = Transformers::createSingleton();
-            $reflection = new \ReflectionObject($transformers);
-            $builtInTransformers = $reflection->getMethod('findBuiltInTransformers');
-            $builtInTransformers->setAccessible(true);
-            $transformersArray = [];
-            foreach ($builtInTransformers->invoke($transformers) as $transformer) {
-                $transformersArray[] = [$transformer];
-            }
-        }
+        return $items->getValue($transformers);
+    }
 
-        return $transformersArray;
+    /**
+     * @param array<int|string, mixed> $array
+     */
+    private static function assertArrayIsSorted(array $array, string $message): void
+    {
+        $arraySorted = $array;
+        sort($arraySorted);
+
+        static::assertSame($arraySorted, $array, $message);
     }
 }
