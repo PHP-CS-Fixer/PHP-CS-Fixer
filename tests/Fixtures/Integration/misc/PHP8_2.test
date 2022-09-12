@@ -28,11 +28,25 @@ class FalseNull
     ) {
     }
 
+    public function falsy(): false
+    {
+        return $this->falsy;
+    }
+
+    public function nully(): null
+    {
+        return $this->nully;
+    }
+
     public function setAB(false $a, null $b): void
     {
         $this->a = $a;
         $this->b = $b;
     }
+}
+
+function falsyNull(null $n, false $f): null|false
+{
 }
 
 array_filter([], fn (null $n) => null === $n);
@@ -48,10 +62,20 @@ class TrueType
     ) {
     }
 
+    public function havingABud(): true
+    {
+        return $this->havingABud;
+    }
+
     public function setA(true $a): void
     {
         $this->a = $a;
     }
+}
+
+function truish(true $true): true
+{
+    return $true;
 }
 
 array_filter([], fn (true $n) => true === $n);
@@ -84,11 +108,25 @@ class FalseNull {
     ) {
     }
 
+    public   function   falsy()   :   FALSE
+    {
+        return $this -> falsy;
+    }
+
+    public   function   nully()   :   NULL
+    {
+        return $this -> nully;
+    }
+
     public function setAB(FALSE $a, NULL $b): void
     {
         $this->a = $a;
         $this->b = $b;
     }
+}
+
+function   falsyNull   (NULL   $n,   FALSE   $f):   NULL|FALSE
+{
 }
 
 array_filter([], fn     (NULL     $n)     =>     NULL     ===     $n);
@@ -103,10 +141,20 @@ class TrueType {
     ) {
     }
 
+    public   function   havingABud()   :   TRUE
+    {
+        return $this -> havingABud;
+    }
+
     public function setA(TRUE $a): void
     {
         $this->a = $a;
     }
+}
+
+function truish   (TRUE   $true)   :   TRUE
+{
+    return   $true;
 }
 
 array_filter([], fn     (TRUE     $n)     =>     TRUE     ===     $n);
