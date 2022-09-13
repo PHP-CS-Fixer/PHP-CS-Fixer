@@ -68,7 +68,7 @@ final class Runner
      * @param list<FixerInterface>       $fixers
      */
     public function __construct(
-        \Traversable $finder,
+        $finder,
         array $fixers,
         DifferInterface $differ,
         ?EventDispatcherInterface $eventDispatcher,
