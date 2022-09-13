@@ -119,7 +119,7 @@ final class ErrorOutput
 
     /**
      * @param array{
-     *     function: string,
+     *     function?: string,
      *     line?: int,
      *     file?: string,
      *     class?: class-string,
