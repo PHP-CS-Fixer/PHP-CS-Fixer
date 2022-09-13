@@ -119,7 +119,7 @@ final class ErrorOutput
 
     /**
      * @param array{
-     *     function: string,
+     *     function?: string,
      *     line?: int,
      *     file?: string,
      *     class?: class-string,
@@ -130,14 +130,14 @@ final class ErrorOutput
      */
     private function outputTrace(array $trace): void
     {
-        if (isset($trace['class'], $trace['type'])) {
+        if (isset($trace['class'], $trace['type'], $trace['function'])) {
             $this->output->writeln(sprintf(
                 '      <comment>%s</comment>%s<comment>%s()</comment>',
                 $this->prepareOutput($trace['class']),
                 $this->prepareOutput($trace['type']),
                 $this->prepareOutput($trace['function'])
             ));
-        } else {
+        } elseif (isset($trace['function'])) {
             $this->output->writeln(sprintf('      <comment>%s()</comment>', $this->prepareOutput($trace['function'])));
         }
 
