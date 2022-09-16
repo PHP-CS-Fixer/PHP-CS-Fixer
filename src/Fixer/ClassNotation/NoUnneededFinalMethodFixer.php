@@ -129,7 +129,7 @@ class Bar
         ]);
     }
 
-    private function getMethods(Tokens $tokens): \Generator
+    private function getMethods(Tokens $tokens): iterable
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $modifierKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_STATIC];

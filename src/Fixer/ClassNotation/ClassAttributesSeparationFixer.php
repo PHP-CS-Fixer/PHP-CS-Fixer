@@ -454,7 +454,7 @@ class Sample
         return $start;
     }
 
-    private function getElementsByClass(Tokens $tokens): \Generator
+    private function getElementsByClass(Tokens $tokens): iterable
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $class = $classIndex = false;

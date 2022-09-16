@@ -75,25 +75,27 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
         }
     }
 
-    private function getClassReference(Tokens $tokens, NamespaceAnalysis $namespace): \Generator
+    private function getClassReference(Tokens $tokens, NamespaceAnalysis $namespace): iterable
     {
         static $notBeforeKinds;
         static $blockKinds;
 
         if (null === $notBeforeKinds) {
-            $notBeforeKinds = [
-                CT::T_USE_TRAIT,
-                T_AS,
-                T_CASE, // PHP 8.1 trait enum-case
-                T_CLASS,
-                T_CONST,
-                T_DOUBLE_ARROW,
-                T_DOUBLE_COLON,
-                T_FUNCTION,
-                T_INTERFACE,
-                T_OBJECT_OPERATOR,
-                T_TRAIT,
-            ];
+            $notBeforeKinds = array_merge(
+                Token::getObjectOperatorKinds(),
+                [
+                    CT::T_USE_TRAIT,
+                    T_AS,
+                    T_CASE, // PHP 8.1 trait enum-case
+                    T_CLASS,
+                    T_CONST,
+                    T_DOUBLE_ARROW,
+                    T_DOUBLE_COLON,
+                    T_FUNCTION,
+                    T_INTERFACE,
+                    T_TRAIT,
+                ]
+            );
 
             if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
                 $notBeforeKinds[] = T_ENUM;

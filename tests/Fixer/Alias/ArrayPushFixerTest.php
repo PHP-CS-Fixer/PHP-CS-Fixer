@@ -276,7 +276,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
 
     public function provideFix80Cases(): iterable
     {
-        yield [
+        yield 'Can\'t use nullsafe operator in write context' => [
             '<?php array_push($b?->c[2], $b19);',
         ];
     }

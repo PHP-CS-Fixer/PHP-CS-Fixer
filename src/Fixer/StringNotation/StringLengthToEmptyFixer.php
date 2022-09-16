@@ -306,7 +306,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
         return false;
     }
 
-    private function findStrLengthCalls(Tokens $tokens): \Generator
+    private function findStrLengthCalls(Tokens $tokens): iterable
     {
         $candidates = [];
         $count = \count($tokens);

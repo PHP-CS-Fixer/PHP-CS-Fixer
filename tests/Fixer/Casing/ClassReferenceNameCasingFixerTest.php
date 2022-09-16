@@ -244,6 +244,10 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
         ];
 
         yield ['<?php echo error ?><?php echo error;'];
+
+        yield [
+            '<?php echo $a->exception;',
+        ];
     }
 
     /**
@@ -276,6 +280,10 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
         yield 'multiple type catch without variable 3' => [
             '<?php try { foo(); } catch(\InvalidArgumentException|\LogicException) {}',
             '<?php try { foo(); } catch(\INVALIDARGUMENTEXCEPTION|\logicexception) {}',
+        ];
+
+        yield [
+            '<?php echo $a?->exception;',
         ];
     }
 }

@@ -36,7 +36,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class NoUnneededControlParenthesesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var int[]
+     * @var list<int>
      */
     private const BLOCK_TYPES = [
         Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE,
@@ -49,6 +49,9 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
     ];
 
+    /**
+     * @var list<list<int>|string>
+     */
     private const BEFORE_TYPES = [
         ';',
         '{',
@@ -69,28 +72,9 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         [T_INCLUDE_ONCE],
     ];
 
-    private const NOOP_TYPES = [
-        '$',
-        [T_CONSTANT_ENCAPSED_STRING],
-        [T_DNUMBER],
-        [T_DOUBLE_COLON],
-        [T_LNUMBER],
-        [T_NS_SEPARATOR],
-        [T_OBJECT_OPERATOR],
-        [T_STRING],
-        [T_VARIABLE],
-        [T_STATIC],
-        // magic constants
-        [T_CLASS_C],
-        [T_DIR],
-        [T_FILE],
-        [T_FUNC_C],
-        [T_LINE],
-        [T_METHOD_C],
-        [T_NS_C],
-        [T_TRAIT_C],
-    ];
-
+    /**
+     * @var list<string>
+     */
     private const CONFIG_OPTIONS = [
         'break',
         'clone',
@@ -104,6 +88,9 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         'yield_from',
     ];
 
+    /**
+     * @var array<int, string>
+     */
     private const TOKEN_TYPE_CONFIG_MAP = [
         T_BREAK => 'break',
         T_CASE => 'switch_case',
@@ -115,7 +102,11 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         T_YIELD_FROM => 'yield_from',
     ];
 
-    // handled by the `include` rule
+    /**
+     * handled by the `include` rule.
+     *
+     * @var list<int>
+     */
     private const TOKEN_TYPE_NO_CONFIG = [
         T_REQUIRE,
         T_REQUIRE_ONCE,
@@ -123,7 +114,42 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         T_INCLUDE_ONCE,
     ];
 
+    /**
+     * @var list<list<int>|string>
+     */
+    private array $noopTypes;
+
     private TokensAnalyzer $tokensAnalyzer;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->noopTypes = [
+            '$',
+            [T_CONSTANT_ENCAPSED_STRING],
+            [T_DNUMBER],
+            [T_DOUBLE_COLON],
+            [T_LNUMBER],
+            [T_NS_SEPARATOR],
+            [T_STRING],
+            [T_VARIABLE],
+            [T_STATIC],
+            // magic constants
+            [T_CLASS_C],
+            [T_DIR],
+            [T_FILE],
+            [T_FUNC_C],
+            [T_LINE],
+            [T_METHOD_C],
+            [T_NS_C],
+            [T_TRAIT_C],
+        ];
+
+        foreach (Token::getObjectOperatorKinds() as $kind) {
+            $this->noopTypes[] = [$kind];
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -659,7 +685,7 @@ while ($y) { continue (2); }
                 continue;
             }
 
-            if (!$tokens[$startIndex]->equalsAny(self::NOOP_TYPES)) {
+            if (!$tokens[$startIndex]->equalsAny($this->noopTypes)) {
                 return true;
             }
         }
