@@ -119,13 +119,13 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'simple short array' => [
-            '<?php $a[] = [$b, $c];',
-            '<?php array_push($a, [$b, $c]);',
+            '<?php $a[] = [$b];',
+            '<?php array_push($a, [$b]);',
         ];
 
-        yield 'multiple empty short array' => [
-            '<?php $a[] = [[],[]];',
-            '<?php array_push($a, [[],[]]);',
+        yield 'multiple element short array' => [
+            '<?php $a[] = [[], [], $b, $c];',
+            '<?php array_push($a, [[], [], $b, $c]);',
         ];
 
         yield [
