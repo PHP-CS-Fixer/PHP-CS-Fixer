@@ -21,27 +21,14 @@ set_error_handler(static function ($severity, $message, $file, $line) {
 
 // check environment requirements
 (function () {
-    if (defined('HHVM_VERSION_ID')) {
-        fwrite(STDERR, "HHVM is not supported.\n");
-
-        if (getenv('PHP_CS_FIXER_IGNORE_ENV')) {
-            fwrite(STDERR, "Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.\n");
-        } else {
-            exit(1);
-        }
-    } elseif (!defined('PHP_VERSION_ID')) { // PHP_VERSION_ID is available as of PHP 5.2.7
-        fwrite(STDERR, 'PHP version no supported, please update. Current PHP version: '.PHP_VERSION.".\n");
-
-        exit(1);
-    } elseif (\PHP_VERSION_ID === 80000) {
+    if (\PHP_VERSION_ID === 80000) {
         fwrite(STDERR, "PHP CS Fixer is not able run on PHP 8.0.0 due to bug in PHP tokenizer (https://bugs.php.net/bug.php?id=80462).\n");
         fwrite(STDERR, "Update PHP version to unblock execution.\n");
 
         exit(1);
-    } elseif (
-        \PHP_VERSION_ID < 70400
-        || \PHP_VERSION_ID >= 80200
-    ) {
+    }
+
+    if (\PHP_VERSION_ID < 70400 || \PHP_VERSION_ID >= 80200) {
         fwrite(STDERR, "PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.1.*.\n");
         fwrite(STDERR, 'Current PHP version: '.PHP_VERSION.".\n");
 
