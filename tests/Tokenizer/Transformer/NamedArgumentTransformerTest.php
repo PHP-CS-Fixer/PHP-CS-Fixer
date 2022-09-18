@@ -26,7 +26,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int|string> $expectedTokens
+     * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
