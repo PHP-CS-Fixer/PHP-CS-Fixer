@@ -197,10 +197,6 @@ final class ArrayPushFixer extends AbstractFixer
             return null;
         }
 
-        if (!$tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
-            $index = $tokens->getNextMeaningfulToken($index);
-        }
-
         for (; $index <= $endIndex; ++$index) {
             $blockType = Tokens::detectBlockType($tokens[$index]);
 

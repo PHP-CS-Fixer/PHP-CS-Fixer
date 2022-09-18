@@ -128,6 +128,11 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
             '<?php array_push($a, [[], [], $b, $c]);',
         ];
 
+        yield 'second argument wrapped in `(` `)`' => [
+            '<?php $a::$c[] = ($b);',
+            '<?php array_push($a::$c, ($b));',
+        ];
+
         yield [
             '<?php $a::$c[] = $b;',
             '<?php array_push($a::$c, $b);',
