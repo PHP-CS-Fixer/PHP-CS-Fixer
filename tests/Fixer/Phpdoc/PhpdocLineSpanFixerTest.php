@@ -865,4 +865,36 @@ class Foo
             ',
         ];
     }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix82Cases(): iterable
+    {
+        yield 'constant in trait' => [
+            <<<'PHP'
+                <?php
+                trait Foo {
+                    /**
+                     * @var string
+                     */
+                    const Foo = 'foo';
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                trait Foo {
+                    /** @var string */
+                    const Foo = 'foo';
+                }
+                PHP,
+        ];
+    }
 }
