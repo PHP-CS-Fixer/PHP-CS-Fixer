@@ -104,7 +104,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int|string> $expectedTokens
+     * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideProcess81Cases
      *

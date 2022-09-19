@@ -26,7 +26,6 @@ $config->getFinder()->notPath([
     'src/DocBlock/Annotation.php',
     'src/Doctrine/Annotation/Tokens.php',
     'src/Tokenizer/Tokens.php',
-    'src/Runner/Runner.php',
 ]);
 
 $config->setRules([

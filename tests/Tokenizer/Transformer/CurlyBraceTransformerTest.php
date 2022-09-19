@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\CT;
 final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int|string> $expectedTokens
+     * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -206,7 +206,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int|string> $expectedTokens
+     * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideProcess80Cases
      *
