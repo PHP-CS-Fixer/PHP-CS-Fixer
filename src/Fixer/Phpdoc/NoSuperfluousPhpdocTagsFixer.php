@@ -17,6 +17,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -33,6 +34,11 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    private const NO_TYPE_INFO = [
+        'types' => [],
+        'allows_null' => true,
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -320,6 +326,10 @@ class Foo {
             $argumentName = $annotation->getVariableName();
 
             if (null === $argumentName) {
+                if ($this->annotationIsSuperfluous($annotation, self::NO_TYPE_INFO, $currentSymbol, $shortNames)) {
+                    $annotation->remove();
+                }
+
                 continue;
             }
 
@@ -364,10 +374,7 @@ class Foo {
         if (\count($element['types']) > 0) {
             $propertyTypeInfo = $this->parseTypeHint($tokens, array_key_first($element['types']));
         } else {
-            $propertyTypeInfo = [
-                'types' => [],
-                'allows_null' => true,
-            ];
+            $propertyTypeInfo = self::NO_TYPE_INFO;
         }
 
         $docBlock = new DocBlock($content);
@@ -418,10 +425,7 @@ class Foo {
             if ($typeIndex !== $index) {
                 $info = $this->parseTypeHint($tokens, $typeIndex);
             } else {
-                $info = [
-                    'types' => [],
-                    'allows_null' => true,
-                ];
+                $info = self::NO_TYPE_INFO;
             }
 
             if (!$info['allows_null']) {
@@ -449,10 +453,7 @@ class Foo {
 
         return $tokens[$colonIndex]->isGivenKind(CT::T_TYPE_COLON)
             ? $this->parseTypeHint($tokens, $tokens->getNextMeaningfulToken($colonIndex))
-            : [
-                'types' => [],
-                'allows_null' => true,
-            ]
+            : self::NO_TYPE_INFO
         ;
     }
 
@@ -519,15 +520,26 @@ class Foo {
         array $symbolShortNames
     ): bool {
         if ('param' === $annotation->getTag()->getName()) {
-            $regex = '/@param\s+[^\$]+\s(?:\&\s*)?(?:\.{3}\s*)?\$\S+\s+\S/';
+            $regex = '{@param(?:\s+'.TypeExpression::REGEX_TYPES.')?(?:\s+(?:\&\s*)?(?:\.{3}\s*)?\$\S+)?(?:\s+(?<description>(?!\*+\/)\S+))?}sx';
         } elseif ('var' === $annotation->getTag()->getName()) {
-            $regex = '/@var\s+\S+(\s+\$\S+)?(\s+)(?!\*+\/)([^$\s]+)/';
+            $regex = '{@var(?:\s+'.TypeExpression::REGEX_TYPES.')?(?:\s+\$\S+)?(?:\s+(?<description>(?!\*\/)\S+))?}sx';
         } else {
-            $regex = '/@return\s+\S+\s+\S/';
+            $regex = '{@return(?:\s+'.TypeExpression::REGEX_TYPES.')?(?:\s+(?<description>(?!\*\/)\S+))?}sx';
         }
 
-        if (Preg::match($regex, $annotation->getContent())) {
+        if (1 !== Preg::match($regex, $annotation->getContent(), $matches)) {
+            // Unable to match the annotation, it must be malformed or has unsupported format.
+            // Either way we don't want to tinker with it.
             return false;
+        }
+
+        if (isset($matches['description'])) {
+            return false;
+        }
+
+        if (!isset($matches['types']) || '' === $matches['types']) {
+            // If there's no type info in the annotation, further checks make no sense, exit early.
+            return true;
         }
 
         $annotationTypes = $this->toComparableNames($annotation->getTypes(), $currentSymbol, $symbolShortNames);

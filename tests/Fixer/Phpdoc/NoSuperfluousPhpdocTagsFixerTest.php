@@ -2103,6 +2103,187 @@ new class() extends Foo {
     public function bar(self $other, int $superfluous): self {}
 };',
         ];
+
+        yield 'remove empty var' => [
+            '<?php
+class Foo {
+    /**
+     */
+    private $foo;
+}',
+            '<?php
+class Foo {
+    /**
+     * @var
+     */
+    private $foo;
+}',
+        ];
+
+        yield 'remove empty var single line' => [
+            '<?php
+class Foo {
+    /**  */
+    private $foo;
+}',
+            '<?php
+class Foo {
+    /** @var */
+    private $foo;
+}',
+        ];
+
+        yield 'dont remove var without a type but with a property name and a description' => [
+            '<?php
+class Foo {
+    /**
+     * @var $foo some description
+     */
+    private $foo;
+}',
+        ];
+
+        yield 'dont remove single line var without a type but with a property name and a description' => [
+            '<?php
+class Foo {
+    /** @var $foo some description */
+    private $foo;
+}',
+        ];
+
+        yield 'remove var without a type but with a property name' => [
+            '<?php
+class Foo {
+    /**
+     */
+    private $foo;
+}',
+            '<?php
+class Foo {
+    /**
+     * @var $foo
+     */
+    private $foo;
+}',
+        ];
+
+        yield 'remove single line var without a type but with a property name' => [
+            '<?php
+class Foo {
+    /**  */
+    private $foo;
+}',
+            '<?php
+class Foo {
+    /** @var $foo */
+    private $foo;
+}',
+        ];
+
+        yield 'remove empty param' => [
+            '<?php
+class Foo {
+    /**
+     */
+    public function foo($foo) {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @param
+     */
+    public function foo($foo) {}
+}',
+        ];
+
+        yield 'remove empty single line param' => [
+            '<?php
+class Foo {
+    /**  */
+    public function foo($foo) {}
+}',
+            '<?php
+class Foo {
+    /** @param */
+    public function foo($foo) {}
+}',
+        ];
+
+        yield 'remove param without a type' => [
+            '<?php
+class Foo {
+    /**
+     */
+    public function foo($foo) {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @param $foo
+     */
+    public function foo($foo) {}
+}',
+        ];
+
+        yield 'remove single line param without a type' => [
+            '<?php
+class Foo {
+    /**  */
+    public function foo($foo) {}
+}',
+            '<?php
+class Foo {
+    /** @param $foo */
+    public function foo($foo) {}
+}',
+        ];
+
+        yield 'dont remove param without a type but with a description' => [
+            '<?php
+class Foo {
+    /**
+     * @param $foo description
+     */
+    public function foo($foo) {}
+}',
+        ];
+
+        yield 'dont remove single line param without a type but with a description' => [
+            '<?php
+class Foo {
+    /** @param $foo description */
+    public function foo($foo) {}
+}',
+        ];
+
+        yield 'remove empty return' => [
+            '<?php
+class Foo {
+    /**
+     */
+    public function foo($foo) {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @return
+     */
+    public function foo($foo) {}
+}',
+        ];
+
+        yield 'remove empty single line return' => [
+            '<?php
+class Foo {
+    /**  */
+    public function foo($foo) {}
+}',
+            '<?php
+class Foo {
+    /** @return */
+    public function foo($foo) {}
+}',
+        ];
     }
 
     /**
