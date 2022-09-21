@@ -2143,7 +2143,7 @@ class Foo {
 }',
         ];
 
-        yield 'dont remove sindle line var without a type but with a property name and a description' => [
+        yield 'dont remove single line var without a type but with a property name and a description' => [
             '<?php
 class Foo {
     /** @var $foo some description */
