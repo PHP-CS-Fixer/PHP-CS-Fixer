@@ -312,6 +312,7 @@ class Foo {
                 if ($this->annotationIsSuperfluous($annotation, self::NO_TYPE_INFO, $currentSymbol, $shortNames)) {
                     $annotation->remove();
                 }
+
                 continue;
             }
 
