@@ -35,15 +35,18 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
     {
         yield ['<?php throw new Exception; foo(
                     "Foo"
-                );'];
+                );',
+        ];
 
         yield ['<?php throw new $exceptionName; foo(
                     "Foo"
-                );'];
+                );',
+        ];
 
         yield ['<?php throw $exception; foo(
                     "Foo"
-                );'];
+                );',
+        ];
 
         yield ['<?php throw new Exception("Foo.", 0);'];
 
@@ -339,6 +342,31 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
                 1 => "a",
                 3 => "b"
             });',
+        ];
+
+        yield [
+            '<?php
+$var = [
+    $something[1] ?? throw new Exception(123)
+];
+',
+            '<?php
+$var = [
+    $something[1] ?? throw new Exception(
+
+    123
+
+    )
+];
+',
+        ];
+
+        yield [
+            '<?php
+$var = [
+    $something[1] ?? throw new Exception()
+];
+',
         ];
     }
 }
