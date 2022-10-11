@@ -33,19 +33,19 @@ final class AllowedValueSubsetTest extends TestCase
     {
         return [
             [
-                ['foo', 'bar'],
                 ['bar', 'foo'],
+                ['foo', 'bar'],
             ],
         ];
     }
 
     /**
-     * @param list<string> $input
      * @param list<string> $expected
+     * @param list<string> $input
      *
      * @dataProvider provideGetAllowedValuesAreSortedCases
      */
-    public function testGetAllowedValuesAreSorted(array $input, array $expected): void
+    public function testGetAllowedValuesAreSorted(array $expected, array $input): void
     {
         $subset = new AllowedValueSubset($input);
 
