@@ -42,7 +42,12 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
      * object   PHP 7.2
      * static   PHP 8.0 (return type only)
      * mixed    PHP 8.0
-     * never    PHP 8.1
+     * false    PHP 8.0 (union return type only)
+     * null     PHP 8.0 (union return type only)
+     * never    PHP 8.1 (return type only)
+     * true     PHP 8.2 (standalone type: https://wiki.php.net/rfc/true-type)
+     * false    PHP 8.2 (standalone type: https://wiki.php.net/rfc/null-false-standalone-types)
+     * null     PHP 8.2 (standalone type: https://wiki.php.net/rfc/null-false-standalone-types)
      *
      * @var array<string, true>
      */
@@ -68,12 +73,18 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
         ];
 
         if (\PHP_VERSION_ID >= 80000) {
-            $this->hints = array_merge($this->hints, ['static' => true]);
-            $this->hints = array_merge($this->hints, ['mixed' => true]);
+            $this->hints['false'] = true;
+            $this->hints['mixed'] = true;
+            $this->hints['null'] = true;
+            $this->hints['static'] = true;
         }
 
         if (\PHP_VERSION_ID >= 80100) {
-            $this->hints = array_merge($this->hints, ['never' => true]);
+            $this->hints['never'] = true;
+        }
+
+        if (\PHP_VERSION_ID >= 80200) {
+            $this->hints['true'] = true;
         }
 
         $this->functionsAnalyzer = new FunctionsAnalyzer();

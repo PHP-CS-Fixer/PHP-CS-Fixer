@@ -172,6 +172,16 @@ function Foo(INTEGER $a) {}
             '<?php function foo(): int|bool {}',
             '<?php function foo(): INT|BOOL {}',
         ];
+
+        yield 'return type string|false' => [
+            '<?php function foo(): string|false {}',
+            '<?php function foo(): string|FALSE {}',
+        ];
+
+        yield 'return type string|null' => [
+            '<?php function foo(): string|null {}',
+            '<?php function foo(): string|NULL {}',
+        ];
     }
 
     /**
@@ -190,5 +200,35 @@ function Foo(INTEGER $a) {}
             '<?php class T { public function Foo(object $A): never {die;}}',
             '<?php class T { public function Foo(object $A): NEVER {die;}}',
         ];
+    }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix82Cases(): iterable
+    {
+        foreach (['true', 'false', 'null'] as $type) {
+            yield sprintf('standalone type `%s` in class method', $type) => [
+                sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', $type),
+                sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', strtoupper($type)),
+            ];
+
+            yield sprintf('standalone type `%s` in function', $type) => [
+                sprintf('<?php function Foo(%s $A): %1$s {return $A;}', $type),
+                sprintf('<?php function Foo(%s $A): %1$s {return $A;}', strtoupper($type)),
+            ];
+
+            yield sprintf('standalone type `%s` in closure', $type) => [
+                sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', $type),
+                sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', strtoupper($type)),
+            ];
+        }
     }
 }
