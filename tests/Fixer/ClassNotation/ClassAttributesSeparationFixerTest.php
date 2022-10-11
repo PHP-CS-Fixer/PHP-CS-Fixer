@@ -2356,4 +2356,31 @@ enum Cards: string
             ]],
         ];
     }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix82Cases(): iterable
+    {
+        yield [
+            '<?php
+            trait Foo {
+                const Bar = 1;
+
+                const Baz = 2;
+            }',
+            '<?php
+            trait Foo {
+                const Bar = 1;
+                const Baz = 2;
+            }',
+        ];
+    }
 }

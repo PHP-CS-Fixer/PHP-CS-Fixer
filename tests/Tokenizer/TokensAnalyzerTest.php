@@ -669,6 +669,54 @@ enum Foo: string
     }
 
     /**
+     * @param array<int, array{classIndex: int, type: string}> $expected
+     *
+     * @dataProvider provideGetClassyElements82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testGetClassyElements82(array $expected, string $source): void
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
+
+        array_walk(
+            $expected,
+            static function (array &$element, $index) use ($tokens): void {
+                $element['token'] = $tokens[$index];
+                ksort($element);
+            },
+        );
+
+        static::assertSame($expected, $elements);
+    }
+
+    public function provideGetClassyElements82Cases(): iterable
+    {
+        yield 'constant in trait' => [
+            [
+                7 => [
+                    'classIndex' => 1,
+                    'type' => 'const',
+                ],
+                18 => [
+                    'classIndex' => 1,
+                    'type' => 'const',
+                ],
+            ],
+            <<<'PHP'
+                <?php
+                trait Foo
+                {
+                    const BAR = 0;
+                    final const BAZ = 1;
+                }
+                PHP,
+        ];
+    }
+
+    /**
      * @param array<int, bool> $expected
      *
      * @dataProvider provideIsAnonymousClassCases
