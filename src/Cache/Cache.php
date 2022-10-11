@@ -128,7 +128,7 @@ final class Cache implements CacheInterface
 
         $cache->hashes = array_map(function ($v): string {
             // before v3.11.1 the hashes were crc32 encoded and saved as integers
-            // TODO remove the to string cast/array_map in v4.0
+            // @TODO: remove the to string cast/array_map in v4.0
             return \is_int($v) ? (string) $v : $v;
         }, $data['hashes']);
 
