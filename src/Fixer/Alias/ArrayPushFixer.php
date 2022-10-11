@@ -197,8 +197,6 @@ final class ArrayPushFixer extends AbstractFixer
             return null;
         }
 
-        $index = $tokens->getNextMeaningfulToken($index);
-
         for (; $index <= $endIndex; ++$index) {
             $blockType = Tokens::detectBlockType($tokens[$index]);
 

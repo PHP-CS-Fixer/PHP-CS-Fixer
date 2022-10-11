@@ -113,6 +113,26 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
             ',
         ];
 
+        yield 'simple traditional array' => [
+            '<?php $a[] = array($b, $c);',
+            '<?php array_push($a, array($b, $c));',
+        ];
+
+        yield 'simple short array' => [
+            '<?php $a[] = [$b];',
+            '<?php array_push($a, [$b]);',
+        ];
+
+        yield 'multiple element short array' => [
+            '<?php $a[] = [[], [], $b, $c];',
+            '<?php array_push($a, [[], [], $b, $c]);',
+        ];
+
+        yield 'second argument wrapped in `(` `)`' => [
+            '<?php $a::$c[] = ($b);',
+            '<?php array_push($a::$c, ($b));',
+        ];
+
         yield [
             '<?php $a::$c[] = $b;',
             '<?php array_push($a::$c, $b);',
@@ -164,6 +184,10 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
 
         yield 'push multiple II' => [
             '<?php ; array_push($a6a, $b9->$a(1,2), $c);',
+        ];
+
+        yield 'push multiple short' => [
+            '<?php array_push($a6, [$b,$c], []);',
         ];
 
         yield 'returns number of elements in the array I' => [
