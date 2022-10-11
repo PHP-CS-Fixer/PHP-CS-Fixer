@@ -1,17 +1,16 @@
 {
     "require": {
-        "php": "^7.4 || ^8.0"
+        "php": "^8.1"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "^2.17.0",
-        "humbug/box": "^3.8",
-        "humbug/php-scoper": "dev-master#0a4e329 as 0.14.2",
-        "jangregor/phpstan-prophecy": "^1.0",
-        "maglnet/composer-require-checker": "3.3.0",
-        "mi-schi/phpmd-extension": "^4.3",
-        "phpmd/phpmd": "^2.10.2",
-        "phpstan/phpstan": "^1.8",
-        "phpstan/phpstan-phpunit": "^1.1"
+        "ergebnis/composer-normalize": "^2.28.3",
+        "humbug/box": "^4.1.0",
+        "jangregor/phpstan-prophecy": "^1.0.0",
+        "maglnet/composer-require-checker": "^4.2.0",
+        "mi-schi/phpmd-extension": "^4.3.0",
+        "phpmd/phpmd": "^2.13.0",
+        "phpstan/phpstan": "^1.8.6",
+        "phpstan/phpstan-phpunit": "^1.1.1"
     },
     "config": {
         "allow-plugins": {
