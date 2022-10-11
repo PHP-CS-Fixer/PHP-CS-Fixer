@@ -950,14 +950,14 @@ List of Available Rules
      | Default value: ``'start_plus_one'``
 
 
-   Part of rule sets `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\HeredocIndentationFixer <./../src/Fixer/Whitespace/HeredocIndentationFixer.php>`_
 -  `heredoc_to_nowdoc <./rules/string_notation/heredoc_to_nowdoc.rst>`_
 
    Convert ``heredoc`` to ``nowdoc`` where possible.
 
-   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 
    `Source PhpCsFixer\\Fixer\\StringNotation\\HeredocToNowdocFixer <./../src/Fixer/StringNotation/HeredocToNowdocFixer.php>`_
 -  `implode_call <./rules/function_notation/implode_call.rst>`_
@@ -1130,7 +1130,7 @@ List of Available Rules
 
    Method chaining MUST be properly indented. Method chaining with different levels of indentation is not supported.
 
-   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\MethodChainingIndentationFixer <./../src/Fixer/Whitespace/MethodChainingIndentationFixer.php>`_
 -  `modernize_strpos <./rules/alias/modernize_strpos.rst>`_
@@ -1528,7 +1528,7 @@ List of Available Rules
 
    Single-line whitespace before closing semicolon are prohibited.
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Semicolon\\NoSinglelineWhitespaceBeforeSemicolonsFixer <./../src/Fixer/Semicolon/NoSinglelineWhitespaceBeforeSemicolonsFixer.php>`_
 -  `no_spaces_after_function_name <./rules/function_notation/no_spaces_after_function_name.rst>`_
@@ -1616,7 +1616,7 @@ List of Available Rules
      | Default value: ``['arguments', 'array_destructuring', 'array', 'group_import']``
 
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Basic\\NoTrailingCommaInSinglelineFixer <./../src/Fixer/Basic/NoTrailingCommaInSinglelineFixer.php>`_
 -  `no_trailing_comma_in_singleline_array <./rules/array_notation/no_trailing_comma_in_singleline_array.rst>`_
@@ -2991,7 +2991,7 @@ List of Available Rules
      | Default value: ``['arrays']``
 
 
-   Part of rule sets `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\TrailingCommaInMultilineFixer <./../src/Fixer/ControlStructure/TrailingCommaInMultilineFixer.php>`_
 -  `trim_array_spaces <./rules/array_notation/trim_array_spaces.rst>`_

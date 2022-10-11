@@ -1,0 +1,4 @@
+--TEST--
+Integration of @PER [PHP 8.0 version].
+--RULESET--
+{"@PER": true}

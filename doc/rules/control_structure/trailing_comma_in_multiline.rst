@@ -103,6 +103,11 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@PER
+  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``trailing_comma_in_multiline`` rule with the config below:
+
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'arrays', 'match', 'parameters']]``
+
 @PHP73Migration
   Using the `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ rule set will enable the ``trailing_comma_in_multiline`` rule with the config below:
 

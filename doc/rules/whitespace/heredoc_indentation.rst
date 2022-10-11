@@ -79,6 +79,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@PER
+  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``heredoc_indentation`` rule with the default config.
+
 @PHP73Migration
   Using the `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ rule set will enable the ``heredoc_indentation`` rule with the default config.
 
@@ -93,3 +96,6 @@ The rule is part of the following rule sets:
 
 @PHP82Migration
   Using the `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_ rule set will enable the ``heredoc_indentation`` rule with the default config.
+
+@PhpCsFixer
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``heredoc_indentation`` rule with the default config.

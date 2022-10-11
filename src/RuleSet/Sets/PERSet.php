@@ -19,7 +19,7 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 /**
  * @internal
  *
- * Last updated to PER Coding Style v1.0.0.
+ * Last updated to PER Coding Style v1.1.0.
  */
 final class PERSet extends AbstractRuleSetDescription
 {
@@ -27,6 +27,15 @@ final class PERSet extends AbstractRuleSetDescription
     {
         return [
             '@PSR12' => true,
+            'heredoc_indentation' => true,
+            'heredoc_to_nowdoc' => true,
+            'method_chaining_indentation' => true,
+            'no_singleline_whitespace_before_semicolons' => true,
+            'no_trailing_comma_in_singleline' => true,
+            'trailing_comma_in_multiline' => [
+                'after_heredoc' => true,
+                'elements' => ['arguments', 'arrays', 'match', 'parameters'],
+            ],
         ];
     }
 

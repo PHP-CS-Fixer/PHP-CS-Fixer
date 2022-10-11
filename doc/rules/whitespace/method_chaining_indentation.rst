@@ -23,7 +23,10 @@ Example #1
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
+
+@PER
+  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``method_chaining_indentation`` rule.
 
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``method_chaining_indentation`` rule.

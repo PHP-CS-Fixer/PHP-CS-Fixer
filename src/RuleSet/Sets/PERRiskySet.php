@@ -19,7 +19,7 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 /**
  * @internal
  *
- * Last updated to PER Coding Style v1.0.0.
+ * Last updated to PER Coding Style v1.1.0.
  */
 final class PERRiskySet extends AbstractRuleSetDescription
 {
