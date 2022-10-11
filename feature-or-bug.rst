@@ -21,4 +21,4 @@ Example of features:
 - introduction of new rule
 - enhancement of existing rule to cover more cases (for example adding support for newly introduced PHP syntax)
 - introduction of new ruleset
-- update of existing ruleset (eg adjusting it to match newest style of community or adding newly implemented rule that was supposed to be followed by style of given community, yet not implemented as a rule before)
+- update of existing ruleset (for example adjusting it to match newest style of given community or adding newly implemented rule that was supposed to be followed by style of given community, yet not implemented as a rule before)
