@@ -12,7 +12,7 @@ Configuration
 
 What types of classes to mark as internal
 
-Allowed values: a subset of ``['normal', 'final', 'abstract']``
+Allowed values: a subset of ``['abstract', 'final', 'normal']``
 
 Default value: ``['normal', 'final']``
 

@@ -13,7 +13,7 @@ Configuration
 
 Which elements to fix.
 
-Allowed values: a subset of ``['arguments', 'array_destructuring', 'array', 'group_import']``
+Allowed values: a subset of ``['arguments', 'array', 'array_destructuring', 'group_import']``
 
 Default value: ``['arguments', 'array_destructuring', 'array', 'group_import']``
 

@@ -12,7 +12,7 @@ Configuration
 
 Type groups to fix.
 
-Allowed values: a subset of ``['simple', 'alias', 'meta']``
+Allowed values: a subset of ``['alias', 'meta', 'simple']``
 
 Default value: ``['simple', 'alias', 'meta']``
 
