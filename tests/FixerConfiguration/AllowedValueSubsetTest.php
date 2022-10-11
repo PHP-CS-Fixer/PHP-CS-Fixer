@@ -124,7 +124,7 @@ final class AllowedValueSubsetTest extends TestCase
 
     public function testGetAllowedValues(): void
     {
-        $values = ['foo', 'bar'];
+        $values = ['bar', 'foo'];
 
         $subset = new AllowedValueSubset($values);
 
