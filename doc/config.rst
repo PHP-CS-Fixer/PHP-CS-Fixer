@@ -71,3 +71,9 @@ configure them in your config file.
         ->setIndent("\t")
         ->setLineEnding("\r\n")
     ;
+
+Online configurator
+-------------------
+
+The `mlocati/php-cs-fixer-configurator <https://mlocati.github.io/php-cs-fixer-configurator/>`_ is Web
+service to inspect fixers and easily configure them.
