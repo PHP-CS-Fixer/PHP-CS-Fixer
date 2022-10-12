@@ -340,5 +340,30 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
                 3 => "b"
             });',
         ];
+
+        yield [
+            '<?php
+$var = [
+    $something[1] ?? throw new Exception(123)
+];
+',
+            '<?php
+$var = [
+    $something[1] ?? throw new Exception(
+
+    123
+
+    )
+];
+',
+        ];
+
+        yield [
+            '<?php
+$var = [
+    $something[1] ?? throw new Exception()
+];
+',
+        ];
     }
 }
