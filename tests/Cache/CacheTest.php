@@ -73,7 +73,7 @@ final class CacheTest extends TestCase
         $cache = new Cache($signature);
 
         $file = 'test.php';
-        $hash = crc32('hello');
+        $hash = md5('hello');
 
         $cache->set($file, $hash);
 
@@ -88,7 +88,7 @@ final class CacheTest extends TestCase
         $cache = new Cache($signature);
 
         $file = 'test.php';
-        $hash = crc32('hello');
+        $hash = md5('hello');
 
         $cache->set($file, $hash);
         $cache->clear($file);
@@ -148,7 +148,7 @@ final class CacheTest extends TestCase
         $cache = new Cache($signature);
 
         $file = 'test.php';
-        $hash = crc32('hello');
+        $hash = md5('hello');
 
         $cache->set($file, $hash);
         $cached = Cache::fromJson($cache->toJson());
