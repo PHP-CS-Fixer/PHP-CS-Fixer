@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Config;
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Differ\FullDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
@@ -30,6 +32,7 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\ToolInfo;
 use PhpCsFixer\Utils;
 use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -37,6 +40,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -58,24 +62,12 @@ final class DescribeCommand extends Command
      */
     private $setNames;
 
-    private FixerFactory $fixerFactory;
+    private ConfigurationResolver $configResolver;
 
     /**
      * @var array<string, FixerInterface>
      */
     private $fixers;
-
-    public function __construct(?FixerFactory $fixerFactory = null)
-    {
-        parent::__construct();
-
-        if (null === $fixerFactory) {
-            $fixerFactory = new FixerFactory();
-            $fixerFactory->registerBuiltInFixers();
-        }
-
-        $this->fixerFactory = $fixerFactory;
-    }
 
     /**
      * {@inheritdoc}
@@ -86,6 +78,7 @@ final class DescribeCommand extends Command
             ->setDefinition(
                 [
                     new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
+                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
                 ]
             )
             ->setDescription('Describe rule / ruleset.')
@@ -103,6 +96,16 @@ final class DescribeCommand extends Command
         }
 
         $name = $input->getArgument('name');
+        $passedConfig = $input->getOption('config');
+
+        $this->configResolver = new ConfigurationResolver(
+          (new Config()),
+          [
+            'config' => $passedConfig,
+          ],
+          getcwd(),
+          (new ToolInfo())
+        );
 
         try {
             if (str_starts_with($name, '@')) {
@@ -359,7 +362,7 @@ final class DescribeCommand extends Command
 
         $fixers = [];
 
-        foreach ($this->fixerFactory->getFixers() as $fixer) {
+        foreach ($this->configResolver->getFixers() as $fixer) {
             $fixers[$fixer->getName()] = $fixer;
         }
 
