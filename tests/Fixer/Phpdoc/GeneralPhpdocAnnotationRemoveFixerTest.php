@@ -196,7 +196,7 @@ function foo() {}',
 * @AuThOr Jane Doe
 */
 function foo() {}',
-                ['annotations' => ['author'], 'case_sensitive' => false],
+                ['annotations' => ['author'], 'case_sensitive' => true],
             ],
             [
                 '<?php
