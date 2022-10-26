@@ -16,6 +16,15 @@ Allowed values: ``'none'``, ``'one'``
 
 Default value: ``'one'``
 
+``closure_fn_spacing``
+~~~~~~~~~~~~~~~~~~~~~~
+
+Spacing to use before open parenthesis for short arrow functions.
+
+Allowed values: ``'none'``, ``'one'``
+
+Default value: ``'one'``
+
 ``trailing_comma_single_line``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -70,7 +79,7 @@ With configuration: ``['closure_function_spacing' => 'none']``.
 Example #3
 ~~~~~~~~~~
 
-With configuration: ``['closure_function_spacing' => 'none']``.
+With configuration: ``['closure_fn_spacing' => 'none']``.
 
 .. code-block:: diff
 

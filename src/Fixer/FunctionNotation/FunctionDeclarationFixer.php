@@ -93,7 +93,7 @@ $f = function () {};
 $f = fn () => null;
 ',
                     new VersionSpecification(70400),
-                    ['closure_function_spacing' => self::SPACING_NONE]
+                    ['closure_fn_spacing' => self::SPACING_NONE]
                 ),
             ]
         );
@@ -195,7 +195,9 @@ $f = fn () => null;
                 $tokens->clearAt($startParenthesisIndex - 1);
             }
 
-            if ($isLambda && self::SPACING_NONE === $this->configuration['closure_function_spacing']) {
+            $option = $token->isGivenKind(T_FN) ? 'closure_fn_spacing' : 'closure_function_spacing';
+
+            if ($isLambda && self::SPACING_NONE === $this->configuration[$option]) {
                 // optionally remove whitespace after T_FUNCTION of a closure
                 // eg: `function () {}` => `function() {}`
                 if ($tokens[$index + 1]->isWhitespace()) {
@@ -227,6 +229,10 @@ $f = fn () => null;
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('closure_function_spacing', 'Spacing to use before open parenthesis for closures.'))
                 ->setDefault(self::SPACING_ONE)
+                ->setAllowedValues(self::SUPPORTED_SPACINGS)
+                ->getOption(),
+            (new FixerOptionBuilder('closure_fn_spacing', 'Spacing to use before open parenthesis for short arrow functions.'))
+                ->setDefault(self::SPACING_ONE) // @TODO change to SPACING_NONE on next major 4.0
                 ->setAllowedValues(self::SUPPORTED_SPACINGS)
                 ->getOption(),
             (new FixerOptionBuilder('trailing_comma_single_line', 'Whether trailing commas are allowed in single line signatures.'))
