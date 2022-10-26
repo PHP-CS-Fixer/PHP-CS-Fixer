@@ -37,6 +37,9 @@ Rules
 - `general_phpdoc_tag_rename <./../rules/phpdoc/general_phpdoc_tag_rename.rst>`_
   config:
   ``['replacements' => ['inheritDocs' => 'inheritDoc']]``
+- `global_namespace_import <./../rules/import/global_namespace_import.rst>`_
+  config:
+  ``['import_classes' => false, 'import_constants' => false, 'import_functions' => false]``
 - `include <./../rules/control_structure/include.rst>`_
 - `increment_style <./../rules/operator/increment_style.rst>`_
 - `integer_literal_case <./../rules/casing/integer_literal_case.rst>`_

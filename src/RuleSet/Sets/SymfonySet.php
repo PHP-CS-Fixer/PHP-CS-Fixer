@@ -59,6 +59,11 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'inheritDocs' => 'inheritDoc',
                 ],
             ],
+            'global_namespace_import' => [
+                'import_classes' => false,
+                'import_constants' => false,
+                'import_functions' => false,
+            ],
             'include' => true,
             'increment_style' => true,
             'integer_literal_case' => true,
