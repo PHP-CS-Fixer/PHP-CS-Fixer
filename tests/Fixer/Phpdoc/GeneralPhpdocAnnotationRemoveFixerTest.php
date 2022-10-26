@@ -181,6 +181,38 @@ while ($something = myFunction($foo)) {}
 ',
                 ['annotations' => ['noinspection']],
             ],
+
+            [
+                '<?php
+/**
+* @internal
+* @AuThOr Jane Doe
+*/
+function foo() {}',
+                '<?php
+/**
+* @internal
+* @author John Doe
+* @AuThOr Jane Doe
+*/
+function foo() {}',
+                ['annotations' => ['author'], 'case_sensitive' => true],
+            ],
+            [
+                '<?php
+/**
+* @internal
+*/
+function foo() {}',
+                '<?php
+/**
+* @internal
+* @author John Doe
+* @AuThOr Jane Doe
+*/
+function foo() {}',
+                ['annotations' => ['author'], 'case_sensitive' => false],
+            ],
         ];
     }
 }

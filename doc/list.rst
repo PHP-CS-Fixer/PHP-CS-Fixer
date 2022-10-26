@@ -848,6 +848,10 @@ List of Available Rules
      | List of annotations to remove, e.g. `["author"]`.
      | Allowed types: ``array``
      | Default value: ``[]``
+   - | ``case_sensitive``
+     | Should annotations be case sensitive.
+     | Allowed types: ``bool``
+     | Default value: ``true``
 
 
    `Source PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocAnnotationRemoveFixer <./../src/Fixer/Phpdoc/GeneralPhpdocAnnotationRemoveFixer.php>`_
