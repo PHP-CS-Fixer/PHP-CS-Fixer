@@ -237,6 +237,10 @@ FIXED;
                 '<?php $a === (null === ($a ? $x : $y ));',
                 '<?php $a === is_null($a ? $x : $y, );',
             ],
+            [
+                '<?php $a === (int) (null === $x) + (int) (null !== $y);',
+                '<?php $a === (int) is_null($x) + (int) !is_null($y);',
+            ],
         ];
     }
 }

@@ -135,11 +135,11 @@ final class IsNullFixer extends AbstractFixer
                 }
             }
 
-            // edge cases: is_null() followed/preceded by ==, ===, !=, !==, <>
+            // edge cases: is_null() followed/preceded by ==, ===, !=, !==, <>, (int-or-other-casting)
             $parentLeftToken = $tokens[$tokens->getPrevMeaningfulToken($isNullIndex)];
             $parentRightToken = $tokens[$tokens->getNextMeaningfulToken($referenceEnd)];
             $parentOperations = [T_IS_EQUAL, T_IS_NOT_EQUAL, T_IS_IDENTICAL, T_IS_NOT_IDENTICAL];
-            $wrapIntoParentheses = $parentLeftToken->isGivenKind($parentOperations) || $parentRightToken->isGivenKind($parentOperations);
+            $wrapIntoParentheses = $parentLeftToken->isCast() || $parentLeftToken->isGivenKind($parentOperations) || $parentRightToken->isGivenKind($parentOperations);
 
             // possible trailing comma removed
             $prevIndex = $tokens->getPrevMeaningfulToken($referenceEnd);
