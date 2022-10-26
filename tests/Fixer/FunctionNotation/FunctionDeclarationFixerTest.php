@@ -33,6 +33,11 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
      */
     private static $configurationClosureSpacingNone = ['closure_function_spacing' => FunctionDeclarationFixer::SPACING_NONE];
 
+    /**
+     * @var array<string,string>
+     */
+    private static $configurationArrowSpacingNone = ['closure_fn_spacing' => FunctionDeclarationFixer::SPACING_NONE];
+
     public function testInvalidConfigurationClosureFunctionSpacing(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
@@ -41,6 +46,16 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
         );
 
         $this->fixer->configure(['closure_function_spacing' => 'neither']);
+    }
+
+    public function testInvalidConfigurationClosureFnSpacing(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(
+            '#^\[function_declaration\] Invalid configuration: The option "closure_fn_spacing" with value "neither" is invalid\. Accepted values are: "none", "one"\.$#'
+        );
+
+        $this->fixer->configure(['closure_fn_spacing' => 'neither']);
     }
 
     /**
@@ -384,32 +399,32 @@ foo#
             [
                 '<?php fn($i) => null;',
                 null,
-                self::$configurationClosureSpacingNone,
+                self::$configurationArrowSpacingNone,
             ],
             [
                 '<?php fn($a) => null;',
                 '<?php fn ($a)      => null;',
-                self::$configurationClosureSpacingNone,
+                self::$configurationArrowSpacingNone,
             ],
             [
                 '<?php $fn = fn() => null;',
                 '<?php $fn = fn ()=> null;',
-                self::$configurationClosureSpacingNone,
+                self::$configurationArrowSpacingNone,
             ],
             [
                 '<?php $fn("");',
                 null,
-                self::$configurationClosureSpacingNone,
+                self::$configurationArrowSpacingNone,
             ],
             [
                 '<?php fn&($a) => null;',
                 '<?php fn &(  $a   ) => null;',
-                self::$configurationClosureSpacingNone,
+                self::$configurationArrowSpacingNone,
             ],
             [
                 '<?php fn&($a,$b) => null;',
                 '<?php fn &(  $a,$b  ) => null;',
-                self::$configurationClosureSpacingNone,
+                self::$configurationArrowSpacingNone,
             ],
             [
                 '<?php $b = static fn ($a) => $a;',
@@ -418,7 +433,7 @@ foo#
             [
                 '<?php $b = static fn($a) => $a;',
                 '<?php $b = static     fn ( $a )   => $a;',
-                self::$configurationClosureSpacingNone,
+                self::$configurationArrowSpacingNone,
             ],
         ];
     }
@@ -485,7 +500,7 @@ foo#
         yield [
             '<?php fn&($a,$b) => null;',
             '<?php fn &(  $a,$b,   ) => null;',
-            self::$configurationClosureSpacingNone,
+            self::$configurationArrowSpacingNone,
         ];
 
         yield [

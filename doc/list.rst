@@ -805,6 +805,10 @@ List of Available Rules
      | Spacing to use before open parenthesis for closures.
      | Allowed values: ``'none'``, ``'one'``
      | Default value: ``'one'``
+   - | ``closure_fn_spacing``
+     | Spacing to use before open parenthesis for short arrow functions.
+     | Allowed values: ``'none'``, ``'one'``
+     | Default value: ``'one'``
    - | ``trailing_comma_single_line``
      | Whether trailing commas are allowed in single line signatures.
      | Allowed types: ``bool``
