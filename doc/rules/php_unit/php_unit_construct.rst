@@ -21,7 +21,7 @@ Configuration
 
 List of assertion methods to fix.
 
-Allowed values: a subset of ``['assertSame', 'assertEquals', 'assertNotEquals', 'assertNotSame']``
+Allowed values: a subset of ``['assertEquals', 'assertNotEquals', 'assertNotSame', 'assertSame']``
 
 Default value: ``['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']``
 

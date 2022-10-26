@@ -1341,7 +1341,7 @@ List of Available Rules
 * `@sodium` (libsodium functions)
 * `@time` (time functions)
 
-     | Allowed values: a subset of ``['@all', '@internal', '@exif', '@ftp', '@IMAP', '@ldap', '@mbreg', '@mysqli', '@oci', '@odbc', '@openssl', '@pcntl', '@pg', '@posix', '@snmp', '@sodium', '@time']``
+     | Allowed values: a subset of ``['@IMAP', '@all', '@exif', '@ftp', '@internal', '@ldap', '@mbreg', '@mysqli', '@oci', '@odbc', '@openssl', '@pcntl', '@pg', '@posix', '@snmp', '@sodium', '@time']``
      | Default value: ``['@internal', '@IMAP', '@pg']``
 
 
@@ -1620,7 +1620,7 @@ List of Available Rules
 
    - | ``elements``
      | Which elements to fix.
-     | Allowed values: a subset of ``['arguments', 'array_destructuring', 'array', 'group_import']``
+     | Allowed values: a subset of ``['arguments', 'array', 'array_destructuring', 'group_import']``
      | Default value: ``['arguments', 'array_destructuring', 'array', 'group_import']``
 
 
@@ -1880,7 +1880,7 @@ List of Available Rules
 
    - | ``order``
      | List of strings defining order of elements.
-     | Allowed values: a subset of ``['use_trait', 'public', 'protected', 'private', 'case', 'constant', 'constant_public', 'constant_protected', 'constant_private', 'property', 'property_static', 'property_public', 'property_protected', 'property_private', 'property_public_readonly', 'property_protected_readonly', 'property_private_readonly', 'property_public_static', 'property_protected_static', 'property_private_static', 'method', 'method_abstract', 'method_static', 'method_public', 'method_protected', 'method_private', 'method_public_abstract', 'method_protected_abstract', 'method_private_abstract', 'method_public_abstract_static', 'method_protected_abstract_static', 'method_private_abstract_static', 'method_public_static', 'method_protected_static', 'method_private_static', 'construct', 'destruct', 'magic', 'phpunit']``
+     | Allowed values: a subset of ``['case', 'constant', 'constant_private', 'constant_protected', 'constant_public', 'construct', 'destruct', 'magic', 'method', 'method_abstract', 'method_private', 'method_private_abstract', 'method_private_abstract_static', 'method_private_static', 'method_protected', 'method_protected_abstract', 'method_protected_abstract_static', 'method_protected_static', 'method_public', 'method_public_abstract', 'method_public_abstract_static', 'method_public_static', 'method_static', 'phpunit', 'private', 'property', 'property_private', 'property_private_readonly', 'property_private_static', 'property_protected', 'property_protected_readonly', 'property_protected_static', 'property_public', 'property_public_readonly', 'property_public_static', 'property_static', 'protected', 'public', 'use_trait']``
      | Default value: ``['use_trait', 'case', 'constant_public', 'constant_protected', 'constant_private', 'property_public', 'property_protected', 'property_private', 'construct', 'destruct', 'magic', 'phpunit', 'method_public', 'method_protected', 'method_private']``
    - | ``sort_algorithm``
      | How multiple occurrences of same type statements should be sorted
@@ -1963,7 +1963,7 @@ List of Available Rules
 
    - | ``tags``
      | The tags that should be aligned.
-     | Allowed values: a subset of ``['param', 'property', 'property-read', 'property-write', 'return', 'throws', 'type', 'var', 'method']``
+     | Allowed values: a subset of ``['method', 'param', 'property', 'property-read', 'property-write', 'return', 'throws', 'type', 'var']``
      | Default value: ``['method', 'param', 'property', 'return', 'throws', 'type', 'var']``
    - | ``align``
      | Align comments
@@ -2278,7 +2278,7 @@ List of Available Rules
 
    - | ``groups``
      | Type groups to fix.
-     | Allowed values: a subset of ``['simple', 'alias', 'meta']``
+     | Allowed values: a subset of ``['alias', 'meta', 'simple']``
      | Default value: ``['simple', 'alias', 'meta']``
 
 
@@ -2328,7 +2328,7 @@ List of Available Rules
 
    - | ``assertions``
      | List of assertion methods to fix.
-     | Allowed values: a subset of ``['assertSame', 'assertEquals', 'assertNotEquals', 'assertNotSame']``
+     | Allowed values: a subset of ``['assertEquals', 'assertNotEquals', 'assertNotSame', 'assertSame']``
      | Default value: ``['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']``
 
 
@@ -2403,7 +2403,7 @@ List of Available Rules
 
    - | ``types``
      | What types of classes to mark as internal
-     | Allowed values: a subset of ``['normal', 'final', 'abstract']``
+     | Allowed values: a subset of ``['abstract', 'final', 'normal']``
      | Default value: ``['normal', 'final']``
 
 
@@ -2995,7 +2995,7 @@ List of Available Rules
      | Default value: ``false``
    - | ``elements``
      | Where to fix multiline trailing comma (PHP >= 8.0 for `parameters` and `match`).
-     | Allowed values: a subset of ``['arrays', 'arguments', 'parameters', 'match']``
+     | Allowed values: a subset of ``['arguments', 'arrays', 'match', 'parameters']``
      | Default value: ``['arrays']``
 
 
@@ -3053,7 +3053,7 @@ List of Available Rules
 
    - | ``elements``
      | The structural elements to fix (PHP >= 7.1 required for `const`).
-     | Allowed values: a subset of ``['property', 'method', 'const']``
+     | Allowed values: a subset of ``['const', 'method', 'property']``
      | Default value: ``['property', 'method', 'const']``
 
 

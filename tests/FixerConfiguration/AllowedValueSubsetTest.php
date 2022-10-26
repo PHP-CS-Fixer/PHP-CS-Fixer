@@ -29,6 +29,29 @@ final class AllowedValueSubsetTest extends TestCase
         static::assertIsCallable(new AllowedValueSubset(['foo', 'bar']));
     }
 
+    public function provideGetAllowedValuesAreSortedCases(): array
+    {
+        return [
+            [
+                ['bar', 'foo'],
+                ['foo', 'bar'],
+            ],
+        ];
+    }
+
+    /**
+     * @param list<string> $expected
+     * @param list<string> $input
+     *
+     * @dataProvider provideGetAllowedValuesAreSortedCases
+     */
+    public function testGetAllowedValuesAreSorted(array $expected, array $input): void
+    {
+        $subset = new AllowedValueSubset($input);
+
+        static::assertSame($expected, $subset->getAllowedValues());
+    }
+
     /**
      * @param mixed $inputValue
      *
@@ -101,7 +124,7 @@ final class AllowedValueSubsetTest extends TestCase
 
     public function testGetAllowedValues(): void
     {
-        $values = ['foo', 'bar'];
+        $values = ['bar', 'foo'];
 
         $subset = new AllowedValueSubset($values);
 
