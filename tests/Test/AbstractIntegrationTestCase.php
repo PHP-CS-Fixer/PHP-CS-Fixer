@@ -261,7 +261,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
                 $case->getTitle(),
                 $case->getFileName(),
-                null === $changed ? '[None]' : implode(',', $changed['appliedFixers'])
+                implode(',', $changed['appliedFixers'])
             )
         );
 
