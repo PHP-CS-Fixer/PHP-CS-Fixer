@@ -491,7 +491,7 @@ else {
             && $tokens[$index + 1]->isWhitespace()
             && Preg::match('/\h+$/D', $tokens[$index + 1]->getContent())
         ) {
-            return Preg::replace('/.*?(\h+)$/D', '$1', $tokens[$index + 1]->getContent());
+            return Preg::replace('/.*?(\h+)$/sD', '$1', $tokens[$index + 1]->getContent());
         }
 
         return $regularIndent;
