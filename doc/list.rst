@@ -350,7 +350,7 @@ List of Available Rules
      | Default value: ``'same_line'``
    - | ``functions_opening_brace``
      | The position of the opening brace of functions‘ body.
-     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+     | Allowed values: ``'next_line_if_return_typehint'``, ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
      | Default value: ``'next_line_unless_newline_at_signature_end'``
    - | ``anonymous_functions_opening_brace``
      | The position of the opening brace of anonymous functions‘ body.

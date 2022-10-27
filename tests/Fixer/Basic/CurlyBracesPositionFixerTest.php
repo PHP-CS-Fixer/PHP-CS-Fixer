@@ -379,6 +379,62 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
             ['functions_opening_brace' => 'same_line'],
         ];
 
+        yield 'function (next line if return typehint)' => [
+            '<?php
+                function foo() : void
+                {
+                }',
+            '<?php
+                function foo() : void {
+                }',
+            ['functions_opening_brace' => 'next_line_if_return_typehint'],
+        ];
+
+        yield 'function (next line if return typehint, multiline)' => [
+            '<?php
+                function foo(
+                    $bar,
+                    $baz
+                ) : void
+                {
+                }',
+            '<?php
+                function foo(
+                    $bar,
+                    $baz
+                ) : void {
+                }',
+            ['functions_opening_brace' => 'next_line_if_return_typehint'],
+        ];
+
+        yield 'function (next line if return typehint, no typehint)' => [
+            '<?php
+                function foo($bar, $baz)
+                {
+                }',
+            '<?php
+                function foo($bar, $baz) {
+                }',
+            ['functions_opening_brace' => 'next_line_if_return_typehint'],
+        ];
+
+        yield 'function (next line if return typehint, same line)' => [
+            '<?php
+                function foo(
+                    $bar,
+                    $baz
+                ) : void
+                {
+                }',
+            '<?php
+                function foo(
+                    $bar,
+                    $baz
+                ) : void {
+                }',
+            ['functions_opening_brace' => 'next_line_if_return_typehint'],
+        ];
+
         yield 'anonymous function (default)' => [
             '<?php
                 $foo = function () {

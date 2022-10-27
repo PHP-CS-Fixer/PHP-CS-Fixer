@@ -39,6 +39,11 @@ final class CurlyBracesPositionFixer extends AbstractFixer implements Configurab
     /**
      * @internal
      */
+    public const NEXT_LINE_IF_RETURN_TYPEHINT = 'next_line_if_return_typehint';
+
+    /**
+     * @internal
+     */
     public const NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END = 'next_line_unless_newline_at_signature_end';
 
     /**
@@ -92,6 +97,16 @@ function foo()
 }
 ',
                     ['functions_opening_brace' => self::SAME_LINE]
+                ),
+                new CodeSample(
+                    '<?php
+function foo(
+    $bar,
+    $baz
+): string {
+}
+',
+                    ['functions_opening_brace' => self::NEXT_LINE_IF_RETURN_TYPEHINT]
                 ),
                 new CodeSample(
                     '<?php
@@ -241,6 +256,27 @@ $bar = function () { $result = true;
             }
 
             $whitespace = ' ';
+
+            if (self::NEXT_LINE_IF_RETURN_TYPEHINT === $this->configuration[$positionOption]) {
+                $whitespace = $this->whitespacesConfig->getLineEnding().$this->getLineIndentation($tokens, $index);
+
+                $previousTokenIndex = $tokens->getPrevMeaningfulToken($openBraceIndex);
+                $previousToken = $tokens[$previousTokenIndex];
+
+                if ($tokens[$previousTokenIndex]->equals(')')) {
+                    if ($tokens[--$previousTokenIndex]->isComment()) {
+                        --$previousTokenIndex;
+                    }
+
+                    if (
+                        $tokens[$previousTokenIndex]->isWhitespace()
+                        && 1 === Preg::match('/\R/', $tokens[$previousTokenIndex]->getContent())
+                    ) {
+                        $whitespace = ' ';
+                    }
+                }
+            }
+
             if (self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END === $this->configuration[$positionOption]) {
                 $whitespace = $this->whitespacesConfig->getLineEnding().$this->getLineIndentation($tokens, $index);
 
@@ -354,7 +390,7 @@ $bar = function () { $result = true;
                 ->setDefault(self::SAME_LINE)
                 ->getOption(),
             (new FixerOptionBuilder('functions_opening_brace', 'The position of the opening brace of functions‘ body.'))
-                ->setAllowedValues([self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END, self::SAME_LINE])
+                ->setAllowedValues([self::NEXT_LINE_IF_RETURN_TYPEHINT, self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END, self::SAME_LINE])
                 ->setDefault(self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END)
                 ->getOption(),
             (new FixerOptionBuilder('anonymous_functions_opening_brace', 'The position of the opening brace of anonymous functions‘ body.'))
