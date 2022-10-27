@@ -915,6 +915,8 @@ List of Available Rules
      | Default value: ``true``
 
 
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
    `Source PhpCsFixer\\Fixer\\Import\\GlobalNamespaceImportFixer <./../src/Fixer/Import/GlobalNamespaceImportFixer.php>`_
 -  `group_import <./rules/import/group_import.rst>`_
 
