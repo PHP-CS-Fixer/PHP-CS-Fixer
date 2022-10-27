@@ -1343,7 +1343,7 @@ List of Available Rules
 * `@sodium` (libsodium functions)
 * `@time` (time functions)
 
-     | Allowed values: a subset of ``['@IMAP', '@all', '@exif', '@ftp', '@internal', '@ldap', '@mbreg', '@mysqli', '@oci', '@odbc', '@openssl', '@pcntl', '@pg', '@posix', '@snmp', '@sodium', '@time']``
+     | Allowed values: a subset of ``['@all', '@exif', '@ftp', '@IMAP', '@internal', '@ldap', '@mbreg', '@mysqli', '@oci', '@odbc', '@openssl', '@pcntl', '@pg', '@posix', '@snmp', '@sodium', '@time']``
      | Default value: ``['@internal', '@IMAP', '@pg']``
 
 
