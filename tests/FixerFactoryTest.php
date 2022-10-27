@@ -21,7 +21,6 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
 use PhpCsFixer\WhitespacesFixerConfig;
-use stdClass;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -375,7 +374,7 @@ final class FixerFactoryTest extends TestCase
     {
         return [
             ['bar'],
-            [new stdClass()],
+            [new \stdClass()],
             [5],
             [5.5],
         ];
