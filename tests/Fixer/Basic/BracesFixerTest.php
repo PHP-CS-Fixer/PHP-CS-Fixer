@@ -825,6 +825,13 @@ if (true) {
     <?php
 }',
             ],
+            [
+                '<?php
+
+    function foo()
+    {
+    }',
+            ],
         ];
     }
 
