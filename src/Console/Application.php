@@ -39,7 +39,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    public const VERSION = '3.13.0';
+    public const VERSION = '3.13.1-DEV';
     public const VERSION_CODENAME = 'Oliva';
 
     private ToolInfo $toolInfo;
