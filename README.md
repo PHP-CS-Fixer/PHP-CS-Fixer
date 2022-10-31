@@ -63,7 +63,7 @@ Dedicated plugins exist for:
 
 ## Community
 
-The PHP CS Fixer is maintained on GitHub at https://github.com/FriendsOfPHP/PHP-CS-Fixer.
+The PHP CS Fixer is maintained on GitHub at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.
 Bug reports and ideas about new features are welcome there.
 
 You can reach us at https://gitter.im/PHP-CS-Fixer/Lobby about the project,

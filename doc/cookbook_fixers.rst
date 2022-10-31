@@ -27,7 +27,7 @@ Assumptions
 -----------
 
 * You are familiar with Test Driven Development.
-* Forked FriendsOfPHP/PHP-CS-Fixer into your own GitHub Account.
+* Forked PHP-CS-Fixer/PHP-CS-Fixer into your own GitHub Account.
 * Cloned your forked repository locally.
 * Installed the dependencies of PHP CS Fixer using Composer_.
 * You have read `CONTRIBUTING.md`_.

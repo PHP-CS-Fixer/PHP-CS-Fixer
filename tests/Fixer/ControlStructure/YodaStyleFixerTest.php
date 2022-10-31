@@ -243,7 +243,7 @@ if ($a = $obj instanceof A === true) {
             ['<?php return $foo->$a === $foo->$b->$c;'],
             ['<?php return $x === 2 - 1;'],
             ['<?php return $x === 2-1;'],
-            // https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/693
+            // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/693
             ['<?php return array(2) == $o;'],
             ['<?php return $p == array(2);'],
             ['<?php return $p == array("2");'],

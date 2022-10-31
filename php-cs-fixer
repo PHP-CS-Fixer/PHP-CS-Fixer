@@ -37,7 +37,7 @@ set_error_handler(static function ($severity, $message, $file, $line) {
         } else {
             fwrite(STDERR, "To ignore this requirement please set `PHP_CS_FIXER_IGNORE_ENV`.\n");
             fwrite(STDERR, "If you use PHP version higher than supported, you may experience code modified in a wrong way.\n");
-            fwrite(STDERR, "Please report such cases at https://github.com/FriendsOfPHP/PHP-CS-Fixer .\n");
+            fwrite(STDERR, "Please report such cases at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer .\n");
 
             exit(1);
         }

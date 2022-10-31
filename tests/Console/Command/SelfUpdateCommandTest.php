@@ -151,7 +151,7 @@ final class SelfUpdateCommandTest extends TestCase
         $newMajorDisplay = "\033[32mPHP CS Fixer updated\033[39m (\033[33m{$currentVersion}\033[39m -> \033[33m{$majorRelease}\033[39m)\n";
         $majorInfoNoMinorDisplay = <<<OUTPUT
 \033[32mA new major version of PHP CS Fixer is available\033[39m (\033[33m{$majorRelease}\033[39m)
-\033[32mBefore upgrading please read\033[39m https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/{$majorRelease}/UPGRADE-v{$major}.md
+\033[32mBefore upgrading please read\033[39m https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/{$majorRelease}/UPGRADE-v{$major}.md
 \033[32mIf you are ready to upgrade run this command with\033[39m \033[33m-f\033[39m
 \033[32mChecking for new minor/patch version...\033[39m
 \033[32mNo minor update for PHP CS Fixer.\033[39m
@@ -159,7 +159,7 @@ final class SelfUpdateCommandTest extends TestCase
 OUTPUT;
         $majorInfoNewMinorDisplay = <<<OUTPUT
 \033[32mA new major version of PHP CS Fixer is available\033[39m (\033[33m{$majorRelease}\033[39m)
-\033[32mBefore upgrading please read\033[39m https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/{$majorRelease}/UPGRADE-v{$major}.md
+\033[32mBefore upgrading please read\033[39m https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/{$majorRelease}/UPGRADE-v{$major}.md
 \033[32mIf you are ready to upgrade run this command with\033[39m \033[33m-f\033[39m
 \033[32mChecking for new minor/patch version...\033[39m
 \033[32mPHP CS Fixer updated\033[39m (\033[33m{$currentVersion}\033[39m -> \033[33m{$minorRelease}\033[39m)

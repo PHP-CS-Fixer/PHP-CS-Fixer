@@ -42,7 +42,7 @@ final class WarningsDetector
         // $currentMajorVersion = \intval(explode('.', Application::VERSION)[0], 10);
         // $nextMajorVersion = $currentMajorVersion + 1;
         // $this->warnings[] = "You are running PHP CS Fixer v{$currentMajorVersion}, which is not maintained anymore. Please update to v{$nextMajorVersion}.";
-        // $this->warnings[] = "You may find an UPGRADE guide at https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v{$nextMajorVersion}.0.0/UPGRADE-v{$nextMajorVersion}.md .";
+        // $this->warnings[] = "You may find an UPGRADE guide at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v{$nextMajorVersion}.0.0/UPGRADE-v{$nextMajorVersion}.md .";
     }
 
     public function detectOldVendor(): void

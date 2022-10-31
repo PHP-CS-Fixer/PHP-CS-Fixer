@@ -172,7 +172,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 echo("test");
                 ',
             ],
-            // https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1502#issuecomment-156436229
+            // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/1502#issuecomment-156436229
             [
                 '<?php
                 ($some_var) ? print "true" : print "false";

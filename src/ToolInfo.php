@@ -101,7 +101,7 @@ final class ToolInfo implements ToolInfoInterface
     public function getPharDownloadUri(string $version): string
     {
         return sprintf(
-            'https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar',
+            'https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar',
             $version
         );
     }
