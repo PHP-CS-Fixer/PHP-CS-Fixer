@@ -3,6 +3,23 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.13.0
+---------------------
+
+* bug: BracesFixer - Fix unexpected extra blank line (#6667)
+* bug: fix CI on master branch (#6663)
+* bug: IsNullFixer - handle casting (#6661)
+* docs: feature or bug (#6652)
+* docs: Use case insensitive sorting for options (#6666)
+* docs: [DateTimeCreateFromFormatCallFixer] Fix typos in the code sample (#6671)
+* DX: update cli-executor (#6664)
+* DX: update dev-tools (#6665)
+* feature: Add global_namespace_import to @Symfony ruleset (#6662)
+* feature: Add separate option for closure_fn_spacing (#6658)
+* feature: general_phpdoc_annotation_remove - allow add case_sensitive option (#6660)
+* minor: AllowedValueSubset - possible values are sorted (#6651)
+* minor: Use md5 for file hashing to reduce possible collisions (#6597)
+
 Changelog for v3.12.0
 ---------------------
 
