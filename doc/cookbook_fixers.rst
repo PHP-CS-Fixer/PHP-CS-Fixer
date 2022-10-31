@@ -36,7 +36,7 @@ Step by step
 ------------
 
 For this step-by-step, we are going to create a simple fixer that
-removes all comments from the code that are preceded by ';' (semicolon).
+removes all comments from the code that are preceded by `;` (semicolon).
 
 We are calling it ``remove_comments`` (code name), or,
 ``RemoveCommentsFixer`` (class name).
@@ -263,10 +263,10 @@ First, we need to create one method to describe what this fixer does:
        public function getDefinition()
        {
            return new FixerDefinition(
-               'Removes all comments of the code that are preceded by ";" (semicolon).', // Trailing dot is important. We thrive to use English grammar properly.
+               'Removes all comments of the code that are preceded by `;` (semicolon).', // Trailing dot is important. We thrive to use English grammar properly.
                [
                    new CodeSample(
-                       '<?php echo 123; /* Comment */'
+                       "<?php echo 123; /* Comment */\n"
                    ),
                ]
            );
@@ -442,10 +442,10 @@ So the fixer in the end looks like this:
        public function getDefinition()
        {
            return new FixerDefinition(
-               'Removes all comments of the code that are preceded by ";" (semicolon).', // Trailing dot is important. We thrive to use English grammar properly.
+               'Removes all comments of the code that are preceded by `;` (semicolon).', // Trailing dot is important. We thrive to use English grammar properly.
                [
                    new CodeSample(
-                       '<?php echo 123; /* Comment */'
+                       "<?php echo 123; /* Comment */\n"
                    ),
                ]
            );
