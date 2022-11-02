@@ -75,7 +75,7 @@ final class StdinTest extends AbstractSmokeTest
     private function unifyFooter(string $output): string
     {
         return preg_replace(
-            '/Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used/',
+            '/Checked \d+ files in \d+\.\d+ seconds, \d+\.\d+ MB memory used/',
             'Footer',
             $output
         );

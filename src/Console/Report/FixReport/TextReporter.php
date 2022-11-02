@@ -54,7 +54,7 @@ final class TextReporter implements ReporterInterface
             $output .= PHP_EOL;
         }
 
-        return $output.$this->getFooter($reportSummary->getTime(), $reportSummary->getMemory(), $reportSummary->isDryRun());
+        return $output.$this->getFooter($reportSummary->getTime(), count($reportSummary->getChanged()), $reportSummary->getFiles(), $reportSummary->getMemory(), $reportSummary->isDryRun());
     }
 
     /**
@@ -83,17 +83,18 @@ final class TextReporter implements ReporterInterface
         return PHP_EOL.$diffFormatter->format($diff).PHP_EOL;
     }
 
-    private function getFooter(int $time, int $memory, bool $isDryRun): string
+    private function getFooter(int $time, int $changed, int $files, int $memory, bool $isDryRun): string
     {
         if (0 === $time || 0 === $memory) {
             return '';
         }
 
         return PHP_EOL.sprintf(
-            '%s all files in %.3f seconds, %.3f MB memory used'.PHP_EOL,
-            $isDryRun ? 'Checked' : 'Fixed',
-            $time / 1000,
-            $memory / 1024 / 1024
-        );
+                '%s %d files in %.3f seconds, %.3f MB memory used'.PHP_EOL,
+                $isDryRun ? 'Checked' : sprintf('Fixed %d of', $changed),
+                $files,
+                $time / 1000,
+                $memory / 1024 / 1024
+            );
     }
 }

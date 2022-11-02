@@ -183,7 +183,7 @@ Exit code of the fix command is built using following bit flags:
 * 64 - Exception raised within the application.
 
 EOF
-        ;
+            ;
     }
 
     /**
@@ -315,6 +315,7 @@ EOF
 
         $reportSummary = new ReportSummary(
             $changed,
+            count($finder),
             $fixEvent->getDuration(),
             $fixEvent->getMemory(),
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
