@@ -104,7 +104,7 @@ another diff here ;)
 <comment>      ----------- end diff -----------</comment>
 
 
-Checked 10 files in 1.234 seconds, 2.500 MB memory used
+Found 2 of 10 files that can be fixed in 1.234 seconds, 2.500 MB memory used
 
 TEXT
         );
