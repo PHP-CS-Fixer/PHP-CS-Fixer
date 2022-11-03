@@ -315,7 +315,7 @@ EOF
 
         $reportSummary = new ReportSummary(
             $changed,
-            count($finder),
+            \count($finder),
             $fixEvent->getDuration(),
             $fixEvent->getMemory(),
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
