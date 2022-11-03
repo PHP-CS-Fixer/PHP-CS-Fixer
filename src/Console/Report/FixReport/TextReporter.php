@@ -57,7 +57,7 @@ final class TextReporter implements ReporterInterface
         return $output.$this->getFooter(
             $reportSummary->getTime(),
             $identifiedFiles,
-            $reportSummary->getFiles(),
+            $reportSummary->getFilesCount(),
             $reportSummary->getMemory(),
             $reportSummary->isDryRun()
         );

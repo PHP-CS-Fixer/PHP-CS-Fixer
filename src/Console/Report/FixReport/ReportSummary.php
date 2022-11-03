@@ -89,7 +89,7 @@ final class ReportSummary
         return $this->time;
     }
 
-    public function getFiles(): int
+    public function getFilesCount(): int
     {
         return $this->files;
     }

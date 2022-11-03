@@ -50,7 +50,7 @@ final class ReportSummaryTest extends TestCase
         );
 
         static::assertSame($changed, $reportSummary->getChanged());
-        static::assertSame($files, $reportSummary->getFiles());
+        static::assertSame($files, $reportSummary->getFilesCount());
         static::assertSame($time, $reportSummary->getTime());
         static::assertSame($memory, $reportSummary->getMemory());
         static::assertSame($addAppliedFixers, $reportSummary->shouldAddAppliedFixers());
