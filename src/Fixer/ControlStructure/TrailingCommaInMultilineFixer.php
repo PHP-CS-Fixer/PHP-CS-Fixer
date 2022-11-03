@@ -88,16 +88,6 @@ SAMPLE
 
     /**
      * {@inheritdoc}
-     *
-     * Must run after NoMultilineWhitespaceAroundDoubleArrowFixer.
-     */
-    public function getPriority(): int
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens): bool
     {
@@ -201,6 +191,9 @@ SAMPLE
         $endIndex = $tokens->findBlockEnd($blockType['type'], $startIndex);
 
         $beforeEndIndex = $tokens->getPrevMeaningfulToken($endIndex);
+        if (!$tokens->isPartialCodeMultiline($beforeEndIndex, $endIndex)) {
+            return;
+        }
         $beforeEndToken = $tokens[$beforeEndIndex];
 
         // if there is some item between braces then add `,` after it
@@ -242,6 +235,9 @@ SAMPLE
         }
 
         $previousIndex = $tokens->getPrevMeaningfulToken($closeIndex);
+        if (!$tokens->isPartialCodeMultiline($previousIndex, $closeIndex)) {
+            return;
+        }
 
         if (!$tokens[$previousIndex]->equals(',')) {
             $tokens->insertAt($previousIndex + 1, new Token(','));
