@@ -32,7 +32,7 @@ final class ReportSummaryTest extends TestCase
                 'diff' => 'this text is a diff ;)',
             ],
         ];
-        $files = 10;
+        $filesCount = 10;
         $time = time();
         $memory = 123456789;
         $addAppliedFixers = true;
@@ -41,7 +41,7 @@ final class ReportSummaryTest extends TestCase
 
         $reportSummary = new ReportSummary(
             $changed,
-            $files,
+            $filesCount,
             $time,
             $memory,
             $addAppliedFixers,
@@ -50,7 +50,7 @@ final class ReportSummaryTest extends TestCase
         );
 
         static::assertSame($changed, $reportSummary->getChanged());
-        static::assertSame($files, $reportSummary->getFilesCount());
+        static::assertSame($filesCount, $reportSummary->getFilesCount());
         static::assertSame($time, $reportSummary->getTime());
         static::assertSame($memory, $reportSummary->getMemory());
         static::assertSame($addAppliedFixers, $reportSummary->shouldAddAppliedFixers());

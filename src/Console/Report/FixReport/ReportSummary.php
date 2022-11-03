@@ -26,7 +26,7 @@ final class ReportSummary
      */
     private array $changed;
 
-    private int $files;
+    private int $filesCount;
 
     private int $time;
 
@@ -45,7 +45,7 @@ final class ReportSummary
      */
     public function __construct(
         array $changed,
-        int $files,
+        int $filesCount,
         int $time,
         int $memory,
         bool $addAppliedFixers,
@@ -53,7 +53,7 @@ final class ReportSummary
         bool $isDecoratedOutput
     ) {
         $this->changed = $changed;
-        $this->files = $files;
+        $this->filesCount = $filesCount;
         $this->time = $time;
         $this->memory = $memory;
         $this->addAppliedFixers = $addAppliedFixers;
@@ -91,7 +91,7 @@ final class ReportSummary
 
     public function getFilesCount(): int
     {
-        return $this->files;
+        return $this->filesCount;
     }
 
     public function shouldAddAppliedFixers(): bool
