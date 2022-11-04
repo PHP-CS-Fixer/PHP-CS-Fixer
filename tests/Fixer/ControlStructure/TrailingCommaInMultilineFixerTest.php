@@ -80,19 +80,15 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
             ["<?php \$x = array(\narray('foo'),\n);", "<?php \$x = array(\narray('foo')\n);"],
             ["<?php \$x = array(\n /* He */ \n);"],
             [
-                "<?php \$x = array('a', 'b', 'c',\n  'd', 'q', 'z', );",
                 "<?php \$x = array('a', 'b', 'c',\n  'd', 'q', 'z');",
             ],
             [
-                "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z', );",
                 "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z');",
             ],
             [
-                "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z', );",
                 "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z' );",
             ],
             [
-                "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z',\t);",
                 "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z'\t);",
             ],
             ["<?php \$x = array(\n<<<EOT\noet\nEOT\n);"],
@@ -430,8 +426,8 @@ $a
                 ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS]],
             ],
             [
-                "<?php \$var = foo('a', 'b', 'c',\n  'd', 'q', 'z', );",
                 "<?php \$var = foo('a', 'b', 'c',\n  'd', 'q', 'z');",
+                null,
                 ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
             ],
             [
@@ -440,13 +436,13 @@ $a
                 ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
             ],
             [
-                "<?php \$var = \$foonction('a', 'b', 'c',\n  'd', 'q', 'z', );",
                 "<?php \$var = \$foonction('a', 'b', 'c',\n  'd', 'q', 'z');",
+                null,
                 ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
             ],
             [
-                "<?php \$var = \$fMap[100]('a', 'b', 'c',\n  'd', 'q', 'z', );",
                 "<?php \$var = \$fMap[100]('a', 'b', 'c',\n  'd', 'q', 'z');",
+                null,
                 ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
             ],
             [
@@ -651,6 +647,15 @@ $z = match ($a) {
 
 $b = match($c) {19 => 28, default => 333};
             ',
+            ['elements' => ['match']],
+        ];
+
+        yield 'match with last comma in the same line as closing brace' => [
+            '<?php
+$x = match ($a) { 1 => 0,
+                  2 => 1 };
+            ',
+            null,
             ['elements' => ['match']],
         ];
     }

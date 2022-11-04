@@ -560,7 +560,6 @@ final class FixerFactoryTest extends TestCase
             'no_multiline_whitespace_around_double_arrow' => [
                 'binary_operator_spaces',
                 'method_argument_space',
-                'trailing_comma_in_multiline',
             ],
             'no_php4_constructor' => [
                 'ordered_class_elements',
