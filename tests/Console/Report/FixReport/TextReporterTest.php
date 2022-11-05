@@ -81,7 +81,7 @@ TEXT
             <<<'TEXT'
    1) someFile.php
 
-Fixed all files in 1.234 seconds, 2.500 MB memory used
+Fixed 1 of 10 files in 1.234 seconds, 2.500 MB memory used
 
 TEXT
         );
@@ -104,7 +104,7 @@ another diff here ;)
 <comment>      ----------- end diff -----------</comment>
 
 
-Checked all files in 1.234 seconds, 2.500 MB memory used
+Found 2 of 10 files that can be fixed in 1.234 seconds, 2.500 MB memory used
 
 TEXT
         );

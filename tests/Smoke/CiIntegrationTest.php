@@ -194,7 +194,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
         static::assertSame(substr_count($expectedResult3FilesDots, 'S'), substr_count($matches[1], 'S'));
 
         static::assertMatchesRegularExpression(
-            '/^\s*Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
+            '/^\s*Found \d+ of \d+ files that can be fixed in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
             $result3->getOutput()
         );
     }
