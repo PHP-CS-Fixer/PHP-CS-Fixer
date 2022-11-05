@@ -47,6 +47,7 @@ $config
         'heredoc_indentation' => false, // TODO switch on when # of PR's is lower
         'modernize_strpos' => true, // needs PHP 8+ or polyfill
         'no_useless_concat_operator' => false, // TODO switch back on when the `src/Console/Application.php` no longer needs the concat
+        'phpdoc_to_comment' => false, // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/5109
         'use_arrow_functions' => false, // TODO switch on when # of PR's is lower
     ])
     ->setFinder($finder)

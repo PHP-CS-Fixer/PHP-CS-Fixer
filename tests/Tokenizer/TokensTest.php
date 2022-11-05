@@ -1637,6 +1637,182 @@ EOF
         static::assertSame(11, $endIndex);
     }
 
+    /**
+     * @dataProvider provideMeaningfulTokenIndexAfterGivenIndexCases
+     */
+    public function testItReturnsNextMeaningfulTokenIndexAfterGivenIndex(
+        string $php,
+        int $index,
+        int $expectedIndex
+    ): void {
+        $tokens = Tokens::fromCode($php);
+
+        static::assertSame($expectedIndex, $tokens->meaningfulTokenIndexAfter($index));
+    }
+
+    public function provideMeaningfulTokenIndexAfterGivenIndexCases(): iterable
+    {
+        yield ['<?php echo 1;', 1, 3];
+
+        yield ['<?php echo/* foo */1;', 1, 3];
+    }
+
+    public function testItThrowsWhenThereIsNoMeaningfulTokenIndexAfterGivenIndex(): void
+    {
+        $tokens = Tokens::fromCode('<?php echo 1;');
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('No meaningful token found after index 4.');
+
+        $tokens->meaningfulTokenIndexAfter(4);
+    }
+
+    /**
+     * @dataProvider provideMeaningfulTokenIndexBeforeGivenIndexCases
+     */
+    public function testItReturnsNextMeaningfulTokenIndexBeforeGivenIndex(
+        string $php,
+        int $index,
+        int $expectedIndex
+    ): void {
+        $tokens = Tokens::fromCode($php);
+
+        static::assertSame($expectedIndex, $tokens->meaningfulTokenIndexBefore($index));
+    }
+
+    public function provideMeaningfulTokenIndexBeforeGivenIndexCases(): iterable
+    {
+        yield ['<?php echo 1;', 3, 1];
+
+        yield ['<?php echo/* foo */1;', 3, 1];
+    }
+
+    public function testItThrowsWhenThereIsNoMeaningfulTokenIndexBeforeGivenIndex(): void
+    {
+        $tokens = Tokens::fromCode('<?php echo 1;');
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('No meaningful token found before index 0.');
+
+        $tokens->meaningfulTokenIndexBefore(0);
+    }
+
+    /**
+     * @param array{0: int, 1?: string}|int|string|Token $tokenKinds
+     *
+     * @dataProvider provideTokenIndexOfGivenKindAfterGivenIndexCases
+     */
+    public function testItReturnsNextTokenIndexOfGivenKindAfterGivenIndex(
+        string $php,
+        int $index,
+        $tokenKinds,
+        bool $caseSensitive,
+        int $expectedIndex
+    ): void {
+        $tokens = Tokens::fromCode($php);
+
+        static::assertSame(
+            $expectedIndex,
+            $tokens->tokenIndexOfKindAfter($index, $tokenKinds, $caseSensitive),
+        );
+    }
+
+    public function provideTokenIndexOfGivenKindAfterGivenIndexCases(): iterable
+    {
+        $php = <<<'PHP'
+        <?php
+        echo 1;
+        echo 2;
+        foo();
+        PHP;
+
+        yield 'next whitespace by id' => [$php, 1, T_WHITESPACE, true, 2];
+
+        yield 'next whitespace by prototype with id' => [$php, 1, [T_WHITESPACE], true, 2];
+
+        yield 'next whitespace by prototype with id and content' => [$php, 1, [T_WHITESPACE, ' '], true, 2];
+
+        yield 'next whitespace by token' => [$php, 1, new Token([T_WHITESPACE, ' ']), true, 2];
+
+        yield 'next newline by prototype with id and content' => [$php, 1, [T_WHITESPACE, "\n"], true, 5];
+
+        yield 'next semicolon by content only' => [$php, 1, ';', true, 4];
+
+        yield 'next number by id' => [$php, 1, T_LNUMBER, true, 3];
+
+        yield 'next function name by prototype with id and content' => [$php, 1, [T_STRING, 'foo'], true, 11];
+
+        yield 'next function name by prototype with id and content, case insensitive' => [$php, 1, [T_STRING, 'FOO'], false, 11];
+    }
+
+    public function testItThrowsWhenThereIsNoNextTokenIndexOfGivenKindAfterGivenIndex(): void
+    {
+        $tokens = Tokens::fromCode('<?php foo();');
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('No token of given kind found after index 1.');
+
+        $tokens->tokenIndexOfKindAfter(1, T_WHITESPACE);
+    }
+
+    /**
+     * @param array{0: int, 1?: string}|int|string|Token $tokenKinds
+     *
+     * @dataProvider provideTokenIndexOfGivenKindBeforeGivenIndexCases
+     */
+    public function testItReturnsNextTokenIndexOfGivenKindBeforeGivenIndex(
+        string $php,
+        int $index,
+        $tokenKinds,
+        bool $caseSensitive,
+        int $expectedIndex
+    ): void {
+        $tokens = Tokens::fromCode($php);
+
+        static::assertSame(
+            $expectedIndex,
+            $tokens->tokenIndexOfKindBefore($index, $tokenKinds, $caseSensitive),
+        );
+    }
+
+    public function provideTokenIndexOfGivenKindBeforeGivenIndexCases(): iterable
+    {
+        $php = <<<'PHP'
+        <?php
+        echo 1;
+        echo 2;
+        foo();
+        PHP;
+
+        yield 'previous whitespace by id' => [$php, 3, T_WHITESPACE, true, 2];
+
+        yield 'previous whitespace by prototype with id' => [$php, 3, [T_WHITESPACE], true, 2];
+
+        yield 'previous whitespace by prototype with id and content' => [$php, 3, [T_WHITESPACE, ' '], true, 2];
+
+        yield 'previous whitespace by token' => [$php, 3, new Token([T_WHITESPACE, ' ']), true, 2];
+
+        yield 'next newline by prototype with id and content' => [$php, 8, [T_WHITESPACE, "\n"], true, 5];
+
+        yield 'previous semicolon by content only' => [$php, 5, ';', true, 4];
+
+        yield 'previous number by id' => [$php, 4, T_LNUMBER, true, 3];
+
+        yield 'previous function name by prototype with id and content' => [$php, 12, [T_STRING, 'foo'], true, 11];
+
+        yield 'previous function name by prototype with id and content, case insensitive' => [$php, 12, [T_STRING, 'FOO'], false, 11];
+    }
+
+    public function testItThrowsWhenThereIsNoNextTokenIndexOfGivenKindBeforeGivenIndex(): void
+    {
+        $tokens = Tokens::fromCode('<?php foo();');
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('No token of given kind found before index 4.');
+
+        $tokens->tokenIndexOfKindBefore(4, T_WHITESPACE);
+    }
+
     private function getBlockEdgeCachingTestTokens(): Tokens
     {
         Tokens::clearCache();

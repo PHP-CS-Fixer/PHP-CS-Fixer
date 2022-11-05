@@ -175,6 +175,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
             }
         }
 
+        /** @var array{checkPriority: bool, deprecations: list<string>} */
         return $parsed;
     }
 

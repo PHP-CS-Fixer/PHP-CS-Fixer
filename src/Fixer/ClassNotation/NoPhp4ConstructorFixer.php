@@ -367,9 +367,9 @@ class Foo
      * @return null|array{
      *     nameIndex: int,
      *     startIndex: int,
-     *     endIndex: int,
-     *     bodyIndex: int,
-     *     modifiers: list<int>,
+     *     endIndex: int|null,
+     *     bodyIndex: int|null,
+     *     modifiers: array<int>,
      * }
      */
     private function findFunction(Tokens $tokens, string $name, int $startIndex, int $endIndex): ?array
@@ -394,7 +394,8 @@ class Foo
         $prevBlock = $tokens->getPrevMeaningfulToken($function[0]);
 
         while (null !== $prevBlock && $tokens[$prevBlock]->isGivenKind($possibleModifiers)) {
-            $modifiers[$tokens[$prevBlock]->getId()] = $prevBlock;
+            $prevToken = $tokens[$prevBlock];
+            $modifiers[$prevToken->getId() ?? $prevToken->getContent()] = $prevBlock;
             $prevBlock = $tokens->getPrevMeaningfulToken($prevBlock);
         }
 

@@ -238,10 +238,10 @@ final class FunctionsAnalyzer
                     continue;
                 }
 
-                $i = $tokens->getNextMeaningfulToken($i);
+                $i = $tokens->meaningfulTokenIndexAfter($i);
 
                 if ($tokens[$i]->isGivenKind(CT::T_RETURN_REF)) {
-                    $i = $tokens->getNextMeaningfulToken($i);
+                    $i = $tokens->meaningfulTokenIndexAfter($i);
                 }
 
                 if (!$tokens[$i]->isGivenKind(T_STRING)) {

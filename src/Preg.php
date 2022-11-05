@@ -25,8 +25,8 @@ namespace PhpCsFixer;
 final class Preg
 {
     /**
-     * @param null|string[]         $matches
-     * @param int-mask<0, 256, 512> $flags
+     * @param null|string[]                                         $matches
+     * @param int-mask<PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL> $flags
      *
      * @throws PregException
      */

@@ -516,17 +516,41 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Get index for closest next token of given kind.
+     * Get index for closest next token among given kinds.
      *
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int $index token index
-     * @param list<array{int}|string|Token> $tokens        possible tokens
-     * @param bool $caseSensitive perform a case sensitive comparison
+     * @param int                                          $index         token index
+     * @param list<array{0: int, 1?: string}|string|Token> $tokens        possible tokens
+     * @param bool                                         $caseSensitive perform a case sensitive comparison
      */
     public function getNextTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
         return $this->getTokenOfKindSibling($index, 1, $tokens, $caseSensitive);
+    }
+
+    /**
+     * Get index for closest next token of given kind.
+     *
+     * @param int                                        $index         token index
+     * @param array{0: int, 1?: string}|int|string|Token $tokens        possible tokens
+     * @param bool                                       $caseSensitive perform a case sensitive comparison
+     *
+     * @internal
+     */
+    public function tokenIndexOfKindAfter(int $index, $tokens, bool $caseSensitive = true): int
+    {
+        if (\is_int($tokens)) {
+            $tokens = [$tokens];
+        }
+
+        $nextIndex = $this->getNextTokenOfKind($index, [$tokens], $caseSensitive);
+
+        if (null === $nextIndex) {
+            throw new \LogicException("No token of given kind found after index {$index}.");
+        }
+
+        return $nextIndex;
     }
 
     /**
@@ -565,12 +589,13 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Get index for closest previous token of given kind.
+     * Get index for closest previous token among given kinds.
+     *
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int $index token index
-     * @param list<array{int}|string|Token> $tokens        possible tokens
-     * @param bool $caseSensitive perform a case sensitive comparison
+     * @param int                                          $index         token index
+     * @param list<array{0: int, 1?: string}|string|Token> $tokens        possible tokens
+     * @param bool                                         $caseSensitive perform a case sensitive comparison
      */
     public function getPrevTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
@@ -578,12 +603,35 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Get index for closest previous token of given kind.
+     *
+     * @param int                                        $index         token index
+     * @param array{0: int, 1?: string}|int|string|Token $tokens        possible tokens
+     * @param bool                                       $caseSensitive perform a case sensitive comparison
+     *
+     * @internal
+     */
+    public function tokenIndexOfKindBefore(int $index, $tokens, bool $caseSensitive = true): int
+    {
+        if (\is_int($tokens)) {
+            $tokens = [$tokens];
+        }
+        $prevIndex = $this->getPrevTokenOfKind($index, [$tokens], $caseSensitive);
+
+        if (null === $prevIndex) {
+            throw new \LogicException("No token of given kind found before index {$index}.");
+        }
+
+        return $prevIndex;
+    }
+
+    /**
      * Get index for closest sibling token of given kind.
      *
-     * @param int  $index     token index
-     * @param -1|1 $direction
-     * @param list<array{int}|string|Token> $tokens possible tokens
-     * @param bool $caseSensitive perform a case sensitive comparison
+     * @param int                                          $index         token index
+     * @param -1|1                                         $direction
+     * @param list<array{0: int, 1?: string}|string|Token> $tokens        possible tokens
+     * @param bool                                         $caseSensitive perform a case sensitive comparison
      */
     public function getTokenOfKindSibling(int $index, int $direction, array $tokens = [], bool $caseSensitive = true): ?int
     {
@@ -611,9 +659,9 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token not of given kind.
      *
-     * @param int  $index     token index
-     * @param -1|1 $direction
-     * @param list<array{int}|string|Token> $tokens possible tokens
+     * @param int                                          $index     token index
+     * @param -1|1                                         $direction
+     * @param list<array{0: int, 1?: string}|string|Token> $tokens    possible tokens
      */
     public function getTokenNotOfKindSibling(int $index, int $direction, array $tokens = []): ?int
     {
@@ -694,6 +742,46 @@ class Tokens extends \SplFixedArray
     public function getPrevMeaningfulToken(int $index): ?int
     {
         return $this->getMeaningfulTokenSibling($index, -1);
+    }
+
+    /**
+     * Get index for closest next token that is not a whitespace or comment.
+     *
+     * @param int $index token index
+     *
+     * @throws \LogicException when no such index exists
+     *
+     * @internal
+     */
+    public function meaningfulTokenIndexAfter(int $index): int
+    {
+        $nextIndex = $this->getNextMeaningfulToken($index);
+
+        if (null === $nextIndex) {
+            throw new \LogicException("No meaningful token found after index {$index}.");
+        }
+
+        return $nextIndex;
+    }
+
+    /**
+     * Get index for closest previous token that is not a whitespace or comment.
+     *
+     * @param int $index token index
+     *
+     * @throws \LogicException when no such index exists
+     *
+     * @internal
+     */
+    public function meaningfulTokenIndexBefore(int $index): int
+    {
+        $prevIndex = $this->getPrevMeaningfulToken($index);
+
+        if (null === $prevIndex) {
+            throw new \LogicException("No meaningful token found before index {$index}.");
+        }
+
+        return $prevIndex;
     }
 
     /**
@@ -1331,7 +1419,7 @@ class Tokens extends \SplFixedArray
     /**
      * Register token as found.
      *
-     * @param array{int}|string|Token $token token prototype
+     * @param array{0: int, 1?: string}|string|Token $token token prototype
      */
     private function registerFoundToken($token): void
     {
@@ -1348,7 +1436,7 @@ class Tokens extends \SplFixedArray
     /**
      * Register token as found.
      *
-     * @param array{int}|string|Token $token token prototype
+     * @param array{0: int, 1?: string}|string|Token $token token prototype
      */
     private function unregisterFoundToken($token): void
     {
@@ -1366,7 +1454,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @param array{int}|string|Token $token token prototype
+     * @param array{0: int, 1?: string}|string|Token $token token prototype
      *
      * @return int|string
      */

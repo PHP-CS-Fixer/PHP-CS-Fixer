@@ -130,7 +130,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         }
 
         $info = ['indexes' => []];
-        $prev = $tokens->getPrevMeaningfulToken($index);
+        $prev = $tokens->meaningfulTokenIndexBefore($index);
 
         if ($tokens[$prev]->isGivenKind(T_NS_SEPARATOR)) {
             $info['indexes'][] = $prev;
@@ -139,13 +139,13 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         $info['indexes'][] = $index;
 
         // opening parenthesis "("
-        $next = $tokens->getNextMeaningfulToken($index);
+        $next = $tokens->meaningfulTokenIndexAfter($index);
         $info['indexes'][] = $next;
 
         if (null !== $firstArgumentEndIndex) {
-            $next = $tokens->getNextMeaningfulToken($firstArgumentEndIndex);
+            $next = $tokens->meaningfulTokenIndexAfter($firstArgumentEndIndex);
         } else {
-            $next = $tokens->getNextMeaningfulToken($next);
+            $next = $tokens->meaningfulTokenIndexAfter($next);
 
             if ($tokens[$next]->equals(')')) {
                 return false;
@@ -158,14 +158,14 @@ final class CombineNestedDirnameFixer extends AbstractFixer
                     $next = $tokens->findBlockEnd($blockType['type'], $next);
                 }
 
-                $next = $tokens->getNextMeaningfulToken($next);
+                $next = $tokens->meaningfulTokenIndexAfter($next);
             }
         }
 
         $info['indexes'][] = $next;
 
         if ($tokens[$next]->equals(',')) {
-            $next = $tokens->getNextMeaningfulToken($next);
+            $next = $tokens->meaningfulTokenIndexAfter($next);
             $info['indexes'][] = $next;
         }
 
@@ -183,11 +183,11 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         $info['secondArgument'] = $next;
         $info['levels'] = (int) $tokens[$next]->getContent();
 
-        $next = $tokens->getNextMeaningfulToken($next);
+        $next = $tokens->meaningfulTokenIndexAfter($next);
 
         if ($tokens[$next]->equals(',')) {
             $info['indexes'][] = $next;
-            $next = $tokens->getNextMeaningfulToken($next);
+            $next = $tokens->meaningfulTokenIndexAfter($next);
         }
 
         if (!$tokens[$next]->equals(')')) {
