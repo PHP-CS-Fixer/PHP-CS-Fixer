@@ -50,34 +50,45 @@ final class RuleSetDocumentationGenerator
             $doc .= ' This set contains rules that are risky.';
         }
 
-        $doc .= "\n\n";
-
         $rules = $definition->getRules();
 
-        if (\count($rules) < 1) {
-            $doc .= 'This is an empty set.';
+        if ([] === $rules) {
+            $doc .= "\n\nThis is an empty set.";
         } else {
-            $doc .= "Rules\n-----\n";
+            $enabledRules = array_filter($rules, static fn ($config) => false !== $config);
+            $disabledRules = array_filter($rules, static fn ($config) => false === $config);
 
-            foreach ($rules as $rule => $config) {
-                if (str_starts_with($rule, '@')) {
-                    $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($rule);
-                    $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
+            $listRules = function (array $rules) use (&$doc, $fixerNames): void {
+                foreach ($rules as $rule => $config) {
+                    if (str_starts_with($rule, '@')) {
+                        $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($rule);
+                        $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 
-                    $doc .= "\n- `{$rule} <.{$ruleSetPath}>`_";
-                } else {
-                    $path = Preg::replace(
-                        '#^'.preg_quote($this->locator->getFixersDocumentationDirectoryPath(), '#').'/#',
-                        './../rules/',
-                        $this->locator->getFixerDocumentationFilePath($fixerNames[$rule])
-                    );
+                        $doc .= "\n- `{$rule} <.{$ruleSetPath}>`_";
+                    } else {
+                        $path = Preg::replace(
+                            '#^'.preg_quote($this->locator->getFixersDocumentationDirectoryPath(), '#').'/#',
+                            './../rules/',
+                            $this->locator->getFixerDocumentationFilePath($fixerNames[$rule])
+                        );
 
-                    $doc .= "\n- `{$rule} <{$path}>`_";
+                        $doc .= "\n- `{$rule} <{$path}>`_";
+                    }
+
+                    if (!\is_bool($config)) {
+                        $doc .= "\n  config:\n  ``".HelpCommand::toString($config).'``';
+                    }
                 }
+            };
 
-                if (!\is_bool($config)) {
-                    $doc .= "\n  config:\n  ``".HelpCommand::toString($config).'``';
-                }
+            if ([] !== $enabledRules) {
+                $doc .= "\n\nRules\n-----\n";
+                $listRules($enabledRules);
+            }
+
+            if ([] !== $disabledRules) {
+                $doc .= "\n\nDisabled rules\n--------------\n";
+                $listRules($disabledRules);
             }
         }
 
