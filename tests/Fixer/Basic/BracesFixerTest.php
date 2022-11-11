@@ -5481,6 +5481,29 @@ return foo($i);
  */
 }',
         ];
+
+        yield [
+            "<?php
+switch (true) {
+    // Case foo
+    case 'foo':
+        return 'foo';
+
+    // Default
+    default:
+        return 'bar';
+}",
+            "<?php
+switch (true) {
+        // Case foo
+    case 'foo':
+        return 'foo';
+
+        // Default
+    default:
+        return 'bar';
+}",
+        ];
     }
 
     /**
