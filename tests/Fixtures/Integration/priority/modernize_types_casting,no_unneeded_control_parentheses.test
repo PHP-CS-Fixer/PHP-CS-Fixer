@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: modernize_types_casting,no_unneeded_control_parentheses.
+--RULESET--
+{"modernize_types_casting": true, "no_unneeded_control_parentheses": {"statements": ["others"]}}
+--EXPECT--
+<?php
+
+$foo = (int) foo();
+
+--INPUT--
+<?php
+
+$foo = intval(foo());

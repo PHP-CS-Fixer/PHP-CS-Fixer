@@ -52,6 +52,16 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoUnneededControlParenthesesFixer.
+     */
+    public function getPriority(): int
+    {
+        return 31;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
