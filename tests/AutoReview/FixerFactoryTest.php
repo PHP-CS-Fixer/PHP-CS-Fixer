@@ -492,6 +492,9 @@ final class FixerFactoryTest extends TestCase
                 'php_unit_dedicate_assert',
                 'single_space_after_construct',
             ],
+            'modernize_types_casting' => [
+                'no_unneeded_control_parentheses',
+            ],
             'multiline_whitespace_before_semicolons' => [
                 'space_after_semicolon',
             ],

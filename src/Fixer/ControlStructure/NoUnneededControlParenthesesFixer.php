@@ -163,7 +163,7 @@ while ($y) { continue (2); }
      * {@inheritdoc}
      *
      * Must run before ConcatSpaceFixer, NoTrailingWhitespaceFixer.
-     * Must run after NoAlternativeSyntaxFixer.
+     * Must run after ModernizeTypesCastingFixer, NoAlternativeSyntaxFixer.
      */
     public function getPriority(): int
     {
