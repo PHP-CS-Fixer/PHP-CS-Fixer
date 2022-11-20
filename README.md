@@ -28,7 +28,7 @@ in a dedicated `composer.json` file in your project, for example in the
 `tools/php-cs-fixer` directory:
 
 ```console
-mkdir --parents tools/php-cs-fixer
+mkdir -p tools/php-cs-fixer
 composer require --working-dir=tools/php-cs-fixer friendsofphp/php-cs-fixer
 ```
 
