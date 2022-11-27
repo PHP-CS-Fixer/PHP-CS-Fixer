@@ -199,7 +199,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
         );
     }
 
-    public function provideIntegrationCases(): array
+    public static function provideIntegrationCases(): array
     {
         return [
             'random-changes' => [

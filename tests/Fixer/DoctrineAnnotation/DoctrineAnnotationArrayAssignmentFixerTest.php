@@ -185,7 +185,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php class FooClass{

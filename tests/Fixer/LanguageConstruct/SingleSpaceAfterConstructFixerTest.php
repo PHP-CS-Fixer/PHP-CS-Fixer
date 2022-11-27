@@ -42,7 +42,7 @@ final class SingleSpaceAfterConstructFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    public function provideInvalidConstructCases(): array
+    public static function provideInvalidConstructCases(): array
     {
         return [
             'null' => [null],
@@ -70,7 +70,7 @@ final class SingleSpaceAfterConstructFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithAbstractCases(): array
+    public static function provideFixWithAbstractCases(): array
     {
         return [
             [
@@ -166,7 +166,7 @@ abstract class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithBreakCases(): array
+    public static function provideFixWithBreakCases(): array
     {
         return [
             [
@@ -215,7 +215,7 @@ abstract class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithAsCases(): array
+    public static function provideFixWithAsCases(): array
     {
         return [
             [
@@ -331,7 +331,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithCaseCases(): array
+    public static function provideFixWithCaseCases(): array
     {
         return [
             [
@@ -401,7 +401,7 @@ switch ($i) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithCatchCases(): array
+    public static function provideFixWithCatchCases(): array
     {
         return [
             [
@@ -443,7 +443,7 @@ switch ($i) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithClassCases(): array
+    public static function provideFixWithClassCases(): array
     {
         return [
             [
@@ -517,7 +517,7 @@ Foo {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithContinueCases(): array
+    public static function provideFixWithContinueCases(): array
     {
         return [
             [
@@ -562,7 +562,7 @@ Foo {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConstCases(): array
+    public static function provideFixWithConstCases(): array
     {
         return [
             [
@@ -644,7 +644,7 @@ const     A = 3 ?>
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConstImportCases(): array
+    public static function provideFixWithConstImportCases(): array
     {
         return [
             [
@@ -682,7 +682,7 @@ FOO\BAR;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithCloneCases(): array
+    public static function provideFixWithCloneCases(): array
     {
         return [
             [
@@ -720,7 +720,7 @@ $foo;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithDoCases(): array
+    public static function provideFixWithDoCases(): array
     {
         return [
             [
@@ -766,7 +766,7 @@ $foo;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithEchoCases(): array
+    public static function provideFixWithEchoCases(): array
     {
         return [
             [
@@ -804,7 +804,7 @@ $foo;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithElseCases(): array
+    public static function provideFixWithElseCases(): array
     {
         return [
             [
@@ -842,7 +842,7 @@ $foo;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithElseIfCases(): array
+    public static function provideFixWithElseIfCases(): array
     {
         return [
             [
@@ -880,7 +880,7 @@ $foo;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithExtendsCases(): array
+    public static function provideFixWithExtendsCases(): array
     {
         return [
             [
@@ -979,7 +979,7 @@ Bar6, Baz, Qux {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithFinalCases(): array
+    public static function provideFixWithFinalCases(): array
     {
         return [
             [
@@ -1075,7 +1075,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithFinallyCases(): array
+    public static function provideFixWithFinallyCases(): array
     {
         return [
             [
@@ -1117,7 +1117,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithForCases(): array
+    public static function provideFixWithForCases(): array
     {
         return [
             [
@@ -1159,7 +1159,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithForeachCases(): array
+    public static function provideFixWithForeachCases(): array
     {
         return [
             [
@@ -1201,7 +1201,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithFunctionCases(): array
+    public static function provideFixWithFunctionCases(): array
     {
         return [
             [
@@ -1297,7 +1297,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithFunctionImportCases(): array
+    public static function provideFixWithFunctionImportCases(): array
     {
         return [
             [
@@ -1335,7 +1335,7 @@ Foo\bar;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithGlobalCases(): array
+    public static function provideFixWithGlobalCases(): array
     {
         return [
             [
@@ -1377,7 +1377,7 @@ $bar; }',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithGotoCases(): array
+    public static function provideFixWithGotoCases(): array
     {
         return [
             [
@@ -1411,7 +1411,7 @@ foo; foo: echo "Bar";',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithIfCases(): array
+    public static function provideFixWithIfCases(): array
     {
         return [
             [
@@ -1449,7 +1449,7 @@ foo; foo: echo "Bar";',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithImplementsCases(): array
+    public static function provideFixWithImplementsCases(): array
     {
         return [
             [
@@ -1512,7 +1512,7 @@ foo; foo: echo "Bar";',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithIncludeCases(): array
+    public static function provideFixWithIncludeCases(): array
     {
         return [
             [
@@ -1550,7 +1550,7 @@ foo; foo: echo "Bar";',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithIncludeOnceCases(): array
+    public static function provideFixWithIncludeOnceCases(): array
     {
         return [
             [
@@ -1588,7 +1588,7 @@ foo; foo: echo "Bar";',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithInstanceofCases(): array
+    public static function provideFixWithInstanceofCases(): array
     {
         return [
             [
@@ -1630,7 +1630,7 @@ foo; foo: echo "Bar";',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithInsteadofCases(): array
+    public static function provideFixWithInsteadofCases(): array
     {
         return [
             [
@@ -1724,7 +1724,7 @@ class Talker {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithInterfaceCases(): array
+    public static function provideFixWithInterfaceCases(): array
     {
         return [
             [
@@ -1762,7 +1762,7 @@ Foo {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithNewCases(): array
+    public static function provideFixWithNewCases(): array
     {
         return [
             [
@@ -1800,7 +1800,7 @@ Bar();',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithOpenTagWithEchoCases(): array
+    public static function provideFixWithOpenTagWithEchoCases(): array
     {
         return [
             [
@@ -1842,7 +1842,7 @@ $foo ?>',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithPrintCases(): array
+    public static function provideFixWithPrintCases(): array
     {
         return [
             [
@@ -1880,7 +1880,7 @@ $foo ?>',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithPrivateCases(): array
+    public static function provideFixWithPrivateCases(): array
     {
         return [
             [
@@ -1958,7 +1958,7 @@ CONST BAR = 9000; }',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithProtectedCases(): array
+    public static function provideFixWithProtectedCases(): array
     {
         return [
             [
@@ -2036,7 +2036,7 @@ CONST BAR = 9000; }',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithPublicCases(): array
+    public static function provideFixWithPublicCases(): array
     {
         return [
             [
@@ -2114,7 +2114,7 @@ CONST BAR = 9000; }',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithRequireCases(): array
+    public static function provideFixWithRequireCases(): array
     {
         return [
             [
@@ -2152,7 +2152,7 @@ CONST BAR = 9000; }',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithRequireOnceCases(): array
+    public static function provideFixWithRequireOnceCases(): array
     {
         return [
             [
@@ -2190,7 +2190,7 @@ CONST BAR = 9000; }',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithReturnCases(): array
+    public static function provideFixWithReturnCases(): array
     {
         return [
             [
@@ -2324,7 +2324,7 @@ return
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithStaticCases(): array
+    public static function provideFixWithStaticCases(): array
     {
         return [
             [
@@ -2390,7 +2390,7 @@ function bar() {} }',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithThrowCases(): array
+    public static function provideFixWithThrowCases(): array
     {
         return [
             [
@@ -2428,7 +2428,7 @@ new Exception();',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithTraitCases(): array
+    public static function provideFixWithTraitCases(): array
     {
         return [
             [
@@ -2466,7 +2466,7 @@ Foo {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithTryCases(): array
+    public static function provideFixWithTryCases(): array
     {
         return [
             [
@@ -2508,7 +2508,7 @@ Foo {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithUseCases(): array
+    public static function provideFixWithUseCases(): array
     {
         return [
             [
@@ -2582,7 +2582,7 @@ function Foo\bar;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithUseLambdaCases(): array
+    public static function provideFixWithUseLambdaCases(): array
     {
         return [
             [
@@ -2624,7 +2624,7 @@ function Foo\bar;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithUseTraitCases(): array
+    public static function provideFixWithUseTraitCases(): array
     {
         return [
             [
@@ -2662,7 +2662,7 @@ Bar; }',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithVarCases(): array
+    public static function provideFixWithVarCases(): array
     {
         return [
             [
@@ -2704,7 +2704,7 @@ $bar; }',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithWhileCases(): array
+    public static function provideFixWithWhileCases(): array
     {
         return [
             [
@@ -2746,7 +2746,7 @@ $bar; }',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithYieldCases(): array
+    public static function provideFixWithYieldCases(): array
     {
         return [
             [
@@ -2784,7 +2784,7 @@ $bar; }',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithYieldFromCases(): array
+    public static function provideFixWithYieldFromCases(): array
     {
         return [
             [
@@ -2858,7 +2858,7 @@ baz(); }',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithPhpOpenCases(): array
+    public static function provideFixWithPhpOpenCases(): array
     {
         return [
             [
@@ -2901,7 +2901,7 @@ baz(); }',
         $this->doTest($expected, $input);
     }
 
-    public function provideCommentsCases(): iterable
+    public static function provideCommentsCases(): iterable
     {
         yield [
             '<?php
@@ -2954,7 +2954,7 @@ foreach ($fields as [$field/** @var string*/]) {
         $this->doTest($expected, $input);
     }
 
-    public function provideWithNamespaceCases(): iterable
+    public static function provideWithNamespaceCases(): iterable
     {
         yield 'simple' => [
             '<?php
@@ -3020,7 +3020,7 @@ namespace/* comment */ Foo;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield 'match 1' => [
             '<?php echo match ($x) {
@@ -3094,7 +3094,7 @@ class Point {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
             '<?php
@@ -3188,7 +3188,7 @@ class    Test {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithSwitchCases(): iterable
+    public static function provideFixWithSwitchCases(): iterable
     {
         yield [
             '<?php
@@ -3216,7 +3216,7 @@ class    Test {
         $this->doTest($expected, $input);
     }
 
-    public function provideTypeColonCases(): iterable
+    public static function provideTypeColonCases(): iterable
     {
         yield [
             '<?php function foo(): array { return []; }',
@@ -3260,7 +3260,7 @@ class    Test {
         $this->doTest($expected, $input);
     }
 
-    public function provideEnumTypeColonCases(): iterable
+    public static function provideEnumTypeColonCases(): iterable
     {
         yield [
             '<?php enum Foo: int {}',

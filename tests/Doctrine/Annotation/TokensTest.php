@@ -53,7 +53,7 @@ final class TokensTest extends TestCase
         $tokens[1] = $wrongType;
     }
 
-    public function provideOffSetOtherThanTokenCases(): iterable
+    public static function provideOffSetOtherThanTokenCases(): iterable
     {
         yield [
             'Token must be an instance of PhpCsFixer\Doctrine\Annotation\Token, "null" given.',

@@ -32,7 +32,7 @@ final class NoUselessConcatOperatorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         $templateExpected = '<?php $b = %s;';
         $templateInput = '<?php $b = %s.%s;';

@@ -78,7 +78,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    public function provideInvalidConfigurationElementCases(): array
+    public static function provideInvalidConfigurationElementCases(): array
     {
         return [
             'null' => [null],
@@ -118,7 +118,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithDefaultConfigurationCases(): array
+    public static function provideFixWithDefaultConfigurationCases(): array
     {
         return [
             ['<?php var_dump(NULL, FALSE, TRUE, 1);'],
@@ -197,7 +197,7 @@ try {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfiguredCustomIncludeCases(): array
+    public static function provideFixWithConfiguredCustomIncludeCases(): array
     {
         return [
             [
@@ -226,7 +226,7 @@ try {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfiguredOnlyIncludeCases(): array
+    public static function provideFixWithConfiguredOnlyIncludeCases(): array
     {
         return [
             [
@@ -254,7 +254,7 @@ try {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfiguredExcludeCases(): array
+    public static function provideFixWithConfiguredExcludeCases(): array
     {
         return [
             [
@@ -498,7 +498,7 @@ echo M_PI;
         $this->doTest($expected);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php

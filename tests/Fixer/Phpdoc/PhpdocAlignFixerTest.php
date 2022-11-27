@@ -787,7 +787,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -1268,7 +1268,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideVariadicCases(): array
+    public static function provideVariadicCases(): array
     {
         return [
             [
@@ -1391,7 +1391,7 @@ class Foo {}
         $this->doTest($input);
     }
 
-    public function provideInvalidPhpdocCases(): array
+    public static function provideInvalidPhpdocCases(): array
     {
         return [
             [

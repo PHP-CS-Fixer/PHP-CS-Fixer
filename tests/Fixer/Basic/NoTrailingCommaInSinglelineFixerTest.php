@@ -31,7 +31,7 @@ final class NoTrailingCommaInSinglelineFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php [$x, $y] = $a;',
@@ -59,7 +59,7 @@ final class NoTrailingCommaInSinglelineFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixNoTrailingCommaInSinglelineFunctionCallCases(): iterable
+    public static function provideFixNoTrailingCommaInSinglelineFunctionCallCases(): iterable
     {
         yield 'simple var' => [
             '<?php $a(1);',
@@ -256,7 +256,7 @@ $foo1b = function() use ($bar, ) {};
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81NoTrailingCommaInSinglelineFunctionCallFixerCases(): iterable
+    public static function provideFix81NoTrailingCommaInSinglelineFunctionCallFixerCases(): iterable
     {
         yield [
             '<?php $object?->method(1); strlen(...);',
@@ -274,7 +274,7 @@ $foo1b = function() use ($bar, ) {};
         $this->doTest($expected, $input);
     }
 
-    public function provideFixNoTrailingCommaInSinglelineArrayFixerCases(): array
+    public static function provideFixNoTrailingCommaInSinglelineArrayFixerCases(): array
     {
         return [
             ['<?php $x = array();'],
@@ -378,7 +378,7 @@ TWIG
         $this->doTest($expected, $input);
     }
 
-    public function provideFixNoTrailingCommaInListCallFixerCases(): iterable
+    public static function provideFixNoTrailingCommaInListCallFixerCases(): iterable
     {
         yield [
             '<?php

@@ -48,7 +48,7 @@ final class ControlCaseStructuresAnalyzerTest extends TestCase
         }
     }
 
-    public function provideFindControlStructuresCases(): iterable
+    public static function provideFindControlStructuresCases(): iterable
     {
         yield 'two cases' => [
             [1 => new SwitchAnalysis(1, 7, 46, [new CaseAnalysis(9, 12), new CaseAnalysis(36, 39)], null)],
@@ -339,7 +339,7 @@ endswitch ?>',
         }
     }
 
-    public function provideFindControlStructuresPhp81Cases(): iterable
+    public static function provideFindControlStructuresPhp81Cases(): iterable
     {
         $switchAnalysis = new SwitchAnalysis(1, 6, 26, [new CaseAnalysis(8, 11)], new DefaultAnalysis(18, 19));
         $enumAnalysis = new EnumAnalysis(28, 35, 51, [new CaseAnalysis(37, 41), new CaseAnalysis(46, 49)]);

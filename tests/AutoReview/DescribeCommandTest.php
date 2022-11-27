@@ -49,7 +49,7 @@ final class DescribeCommandTest extends TestCase
         static::assertSame(0, $commandTester->getStatusCode());
     }
 
-    public function provideDescribeCommandCases(): iterable
+    public static function provideDescribeCommandCases(): iterable
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();

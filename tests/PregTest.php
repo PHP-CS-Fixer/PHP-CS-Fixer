@@ -46,7 +46,7 @@ final class PregTest extends TestCase
         static::assertSame($expectedMatches, $actualMatches);
     }
 
-    public function providePatternValidationCases(): iterable
+    public static function providePatternValidationCases(): iterable
     {
         yield from [
             'invalid_blank' => ['', null, PregException::class],
@@ -212,7 +212,7 @@ final class PregTest extends TestCase
         static::assertSame($expectedResult, $actualResult);
     }
 
-    public function provideCommonCases(): array
+    public static function provideCommonCases(): array
     {
         return [
             ['/u/u', 'u'],

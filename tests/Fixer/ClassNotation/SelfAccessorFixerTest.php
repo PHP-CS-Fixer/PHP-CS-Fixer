@@ -33,7 +33,7 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -179,7 +179,7 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases(): iterable
+    public static function provideFixPhp80Cases(): iterable
     {
         yield [
             '<?php interface Foo { public function bar(self $foo, self $bar,): self; }',

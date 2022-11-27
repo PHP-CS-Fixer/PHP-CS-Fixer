@@ -33,7 +33,7 @@ final class ImplodeCallFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield ["<?php implode('', [1,2,3]);"];
 

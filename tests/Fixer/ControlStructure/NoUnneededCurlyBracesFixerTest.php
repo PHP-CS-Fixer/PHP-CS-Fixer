@@ -31,7 +31,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield from [
             'simple sample, last token candidate' => [
@@ -137,7 +137,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre80Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield 'no fixes, offset access syntax with curly braces' => [
             '<?php
@@ -156,7 +156,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixNamespaceCases(): iterable
+    public static function provideFixNamespaceCases(): iterable
     {
         yield [
             '<?php

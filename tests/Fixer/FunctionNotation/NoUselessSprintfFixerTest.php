@@ -31,7 +31,7 @@ final class NoUselessSprintfFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'simple' => [
             '<?php echo "bar";',
@@ -116,7 +116,7 @@ final class NoUselessSprintfFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre80Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php echo  "bar";',

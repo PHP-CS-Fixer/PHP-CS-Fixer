@@ -104,7 +104,7 @@ class Test
         $this->doTest($expected, $input);
     }
 
-    public function provideFixToShortSyntaxCases(): array
+    public static function provideFixToShortSyntaxCases(): array
     {
         return [
             [
@@ -200,7 +200,7 @@ $a;#
         $this->doTest($expected, $input);
     }
 
-    public function provideFixToShortSyntaxPhp72Cases(): iterable
+    public static function provideFixToShortSyntaxPhp72Cases(): iterable
     {
         yield [
             '<?php [$a, $b,, [$c, $d]] = $a;',
@@ -231,7 +231,7 @@ $a;#
         $this->doTest($expected, $input);
     }
 
-    public function provideFixToShortSyntaxPhp73Cases(): iterable
+    public static function provideFixToShortSyntaxPhp73Cases(): iterable
     {
         yield [
             '<?php [&$a, $b] = $a;',
@@ -264,7 +264,7 @@ $a;#
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'simple 8.1' => [
             '<?php $a = _list(...);',

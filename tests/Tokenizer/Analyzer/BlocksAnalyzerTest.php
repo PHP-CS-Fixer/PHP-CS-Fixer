@@ -38,7 +38,7 @@ final class BlocksAnalyzerTest extends TestCase
         static::assertTrue($analyzer->isBlock($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideBlocksCases(): array
+    public static function provideBlocksCases(): array
     {
         return [
             ['<?php foo(1);', 2, 4],
@@ -67,7 +67,7 @@ final class BlocksAnalyzerTest extends TestCase
         static::assertSame($isBlock, $analyzer->isBlock($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideNonBlocksCases(): array
+    public static function provideNonBlocksCases(): array
     {
         return [
             ['<?php foo(1);', null, 4],

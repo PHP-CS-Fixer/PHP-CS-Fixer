@@ -130,7 +130,7 @@ final class ConfigurationResolverTest extends TestCase
         static::assertSame($progressType, $resolver->getProgress());
     }
 
-    public function provideProgressTypeCases(): array
+    public static function provideProgressTypeCases(): array
     {
         return [
             ['none'],
@@ -297,7 +297,7 @@ final class ConfigurationResolverTest extends TestCase
         static::assertSame($expectedPaths, $resolver->getPath());
     }
 
-    public function providePathCases(): iterable
+    public static function providePathCases(): iterable
     {
         yield [
             ['Command'],
@@ -343,7 +343,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getPath();
     }
 
-    public function provideEmptyPathCases(): iterable
+    public static function provideEmptyPathCases(): iterable
     {
         yield [
             [''],
@@ -497,7 +497,7 @@ final class ConfigurationResolverTest extends TestCase
         static::assertSame($expected, $intersectionItems);
     }
 
-    public function provideResolveIntersectionOfPathsCases(): array
+    public static function provideResolveIntersectionOfPathsCases(): array
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
         $cb = static function (array $items) use ($dir): array {
@@ -665,7 +665,7 @@ final class ConfigurationResolverTest extends TestCase
         static::assertSame($expectedResult, $resolver->configFinderIsOverridden());
     }
 
-    public function provideConfigFinderIsOverriddenCases(): array
+    public static function provideConfigFinderIsOverriddenCases(): array
     {
         $root = __DIR__.'/../..';
 
@@ -971,7 +971,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getRules();
     }
 
-    public function provideRenamedRulesCases(): iterable
+    public static function provideRenamedRulesCases(): iterable
     {
         yield 'with config' => [
             'The rules contain unknown fixers: "blank_line_before_return" is renamed (did you mean "blank_line_before_statement"? (note: use configuration "[\'statements\' => [\'return\']]")).
@@ -1079,7 +1079,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         static::assertInstanceOf($expected, $resolver->getDiffer());
     }
 
-    public function provideDifferCases(): array
+    public static function provideDifferCases(): array
     {
         return [
             [
@@ -1120,7 +1120,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $resolver->getRiskyAllowed();
     }
 
-    public function provideResolveBooleanOptionCases(): array
+    public static function provideResolveBooleanOptionCases(): array
     {
         return [
             [true, true, 'yes'],
@@ -1161,7 +1161,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $resolver->getFixers();
     }
 
-    public function provideDeprecatedFixerConfiguredCases(): array
+    public static function provideDeprecatedFixerConfiguredCases(): array
     {
         return [
             [true],
@@ -1170,7 +1170,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         ];
     }
 
-    public function provideGetDirectoryCases(): array
+    public static function provideGetDirectoryCases(): array
     {
         return [
             [null, '/my/path/my/file', 'path/my/file'],

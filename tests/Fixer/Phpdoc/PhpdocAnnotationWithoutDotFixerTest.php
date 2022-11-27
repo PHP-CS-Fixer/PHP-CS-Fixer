@@ -33,7 +33,7 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [

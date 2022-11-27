@@ -33,7 +33,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'yoda ===' => [
             '<?php if (  str_starts_with($haystack1, $needle)) {}',

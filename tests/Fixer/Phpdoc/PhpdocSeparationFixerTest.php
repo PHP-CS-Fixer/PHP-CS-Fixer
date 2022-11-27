@@ -536,7 +536,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideInheritDocCases(): array
+    public static function provideInheritDocCases(): array
     {
         return [
             [
@@ -832,7 +832,7 @@ EOF;
     /**
      * @return array<array<null|array<string, mixed>|string>>
      */
-    public function provideDocCodeCases(): array
+    public static function provideDocCodeCases(): array
     {
         $input = <<<'EOF'
 <?php

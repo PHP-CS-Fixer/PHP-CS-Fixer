@@ -61,7 +61,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
         }
     }
 
-    public function provideProcessCases(): iterable
+    public static function provideProcessCases(): iterable
     {
         if (\PHP_VERSION_ID < 80000) {
             return; // PHPUnit still calls this for no reason on non PHP8.0
@@ -165,7 +165,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
         self::assertTokens(Tokens::fromArray($expected), Tokens::fromCode($source));
     }
 
-    public function providePriorityCases(): iterable
+    public static function providePriorityCases(): iterable
     {
         yield [
             [

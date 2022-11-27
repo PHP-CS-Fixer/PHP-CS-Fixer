@@ -40,7 +40,7 @@ final class TagComparatorTest extends TestCase
         static::assertSame($expected, TagComparator::shouldBeTogether($tag1, $tag2));
     }
 
-    public function provideComparatorCases(): array
+    public static function provideComparatorCases(): array
     {
         return [
             ['return', 'return', true],
@@ -71,7 +71,7 @@ final class TagComparatorTest extends TestCase
         );
     }
 
-    public function provideComparatorWithDefinedGroupsCases(): array
+    public static function provideComparatorWithDefinedGroupsCases(): array
     {
         return [
             [[['param', 'return']], 'return', 'return', true],

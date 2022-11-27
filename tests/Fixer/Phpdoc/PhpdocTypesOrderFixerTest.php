@@ -44,7 +44,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -194,7 +194,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithNullLastCases(): array
+    public static function provideFixWithNullLastCases(): array
     {
         return [
             [
@@ -313,7 +313,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithAlphaAlgorithmCases(): array
+    public static function provideFixWithAlphaAlgorithmCases(): array
     {
         return [
             [
@@ -443,7 +443,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithAlphaAlgorithmAndNullAlwaysFirstCases(): array
+    public static function provideFixWithAlphaAlgorithmAndNullAlwaysFirstCases(): array
     {
         return [
             [
@@ -558,7 +558,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithAlphaAlgorithmAndNullAlwaysLastCases(): array
+    public static function provideFixWithAlphaAlgorithmAndNullAlwaysLastCases(): array
     {
         return [
             [

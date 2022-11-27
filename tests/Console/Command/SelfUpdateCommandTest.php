@@ -81,7 +81,7 @@ final class SelfUpdateCommandTest extends TestCase
         static::assertSame($command, $application->find($name));
     }
 
-    public function provideCommandNameCases(): array
+    public static function provideCommandNameCases(): array
     {
         return [
             ['self-update'],
@@ -276,7 +276,7 @@ OUTPUT;
         static::assertSame(1, $commandTester->getStatusCode());
     }
 
-    public function provideExecuteWhenNotAbleToGetLatestVersionsCases(): array
+    public static function provideExecuteWhenNotAbleToGetLatestVersionsCases(): array
     {
         return [
             [false, false, [], true],
@@ -322,7 +322,7 @@ OUTPUT;
         static::assertSame(1, $commandTester->getStatusCode());
     }
 
-    public function provideExecuteWhenNotInstalledAsPharCases(): array
+    public static function provideExecuteWhenNotInstalledAsPharCases(): array
     {
         return [
             [[], true],

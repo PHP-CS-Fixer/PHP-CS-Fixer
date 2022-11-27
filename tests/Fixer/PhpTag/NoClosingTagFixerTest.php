@@ -43,7 +43,7 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideWithFullOpenTagCases(): array
+    public static function provideWithFullOpenTagCases(): array
     {
         return [
             [
@@ -141,7 +141,7 @@ if (true) {
         ];
     }
 
-    public function provideWithShortOpenTagCases(): array
+    public static function provideWithShortOpenTagCases(): array
     {
         return [
             [

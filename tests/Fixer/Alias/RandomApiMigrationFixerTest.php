@@ -72,7 +72,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     /**
      * @return array[]
      */
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -194,7 +194,7 @@ class srand extends SrandClass{
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'simple 8.1' => [
             '<?php $f = srand(...);',

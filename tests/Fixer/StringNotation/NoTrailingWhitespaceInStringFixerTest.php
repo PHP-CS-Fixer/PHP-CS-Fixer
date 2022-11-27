@@ -33,7 +33,7 @@ final class NoTrailingWhitespaceInStringFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             "<?php \$a = ' foo\r bar\r\n\nbaz\n  ';",

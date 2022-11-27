@@ -118,7 +118,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
         $fixer->configure(['single_line' => 'z']);
     }
 
-    public function provideAnonymousClassesCases(): array
+    public static function provideAnonymousClassesCases(): array
     {
         return [
             [
@@ -324,7 +324,7 @@ A#
         );
     }
 
-    public function provideClassesWithConfigCases(): array
+    public static function provideClassesWithConfigCases(): array
     {
         return [
             [
@@ -434,7 +434,7 @@ TestInterface3, /**/     TestInterface4   ,
         static::assertSame($expected, $result);
     }
 
-    public function provideClassyDefinitionInfoCases(): array
+    public static function provideClassyDefinitionInfoCases(): array
     {
         return [
             [
@@ -513,7 +513,7 @@ TestInterface3, /**/     TestInterface4   ,
         $this->doTestClassyInheritanceInfo($source, $label, $expected);
     }
 
-    public function provideClassyImplementsInfoCases(): iterable
+    public static function provideClassyImplementsInfoCases(): iterable
     {
         yield from [
             '1' => [
@@ -628,7 +628,7 @@ namespace {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -686,7 +686,7 @@ $a = new class implements
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -706,7 +706,7 @@ $a = new class implements
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             "<?php enum SomeEnum implements SomeInterface, D\n{};",

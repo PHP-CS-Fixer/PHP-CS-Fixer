@@ -34,7 +34,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
         $this->fixer->configure($configuration);
     }
 
-    public function provideInvalidConfigurationCases(): array
+    public static function provideInvalidConfigurationCases(): array
     {
         return [
             [['foo' => 'bar']],

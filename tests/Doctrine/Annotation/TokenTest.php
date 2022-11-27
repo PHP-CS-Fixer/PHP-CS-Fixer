@@ -74,7 +74,7 @@ final class TokenTest extends TestCase
         static::assertTrue($token->isType($types));
     }
 
-    public function provideIsTypeCases(): array
+    public static function provideIsTypeCases(): array
     {
         return [
             'same-value' => [
@@ -105,7 +105,7 @@ final class TokenTest extends TestCase
         static::assertFalse($token->isType($types));
     }
 
-    public function provideIsNotTypeCases(): array
+    public static function provideIsNotTypeCases(): array
     {
         return [
             'different-value' => [

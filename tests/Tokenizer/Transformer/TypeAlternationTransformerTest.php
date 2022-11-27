@@ -43,7 +43,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases(): array
+    public static function provideProcessCases(): array
     {
         return [
             'no namespace' => [
@@ -103,7 +103,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
         $this->doTest($source, $expectedTokens);
     }
 
-    public function provideProcess80Cases(): iterable
+    public static function provideProcess80Cases(): iterable
     {
         yield 'arrow function' => [
             '<?php $a = fn(int|null $item): int|null => $item * 2;',
@@ -361,7 +361,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
         );
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
             [
@@ -402,7 +402,7 @@ class Foo
         $this->doTest($source, $expectedTokens);
     }
 
-    public function provideProcess81Cases(): iterable
+    public static function provideProcess81Cases(): iterable
     {
         yield 'arrow function with intersection' => [
             '<?php $a = fn(int|null $item): int&null => $item * 2;',

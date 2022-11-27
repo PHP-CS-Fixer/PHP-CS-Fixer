@@ -31,7 +31,7 @@ final class LambdaNotUsedImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             'simple' => [
@@ -122,7 +122,7 @@ $a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; /
         $this->doTest($expected);
     }
 
-    public function provideDoNotFixCases(): iterable
+    public static function provideDoNotFixCases(): iterable
     {
         yield from [
             'reference' => [
@@ -190,7 +190,7 @@ $foo();
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield 'simple' => [
             '<?php $foo = function() {};',

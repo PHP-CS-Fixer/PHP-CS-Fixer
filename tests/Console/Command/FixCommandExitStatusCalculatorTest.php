@@ -40,7 +40,7 @@ final class FixCommandExitStatusCalculatorTest extends TestCase
         );
     }
 
-    public function provideCalculateCases(): array
+    public static function provideCalculateCases(): array
     {
         return [
             [0, true, false, false, false, false],

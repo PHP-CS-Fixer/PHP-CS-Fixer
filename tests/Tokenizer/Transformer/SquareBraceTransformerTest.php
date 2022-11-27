@@ -63,7 +63,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
         }
     }
 
-    public function provideIsShortArrayCases(): array
+    public static function provideIsShortArrayCases(): array
     {
         return [
             ['<?php $a=[];', [3], false],
@@ -97,7 +97,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases(): array
+    public static function provideProcessCases(): array
     {
         return [
             'Array offset only.' => [
@@ -379,7 +379,7 @@ class Test
         );
     }
 
-    public function provideProcess72Cases(): array
+    public static function provideProcess72Cases(): array
     {
         return [
             [

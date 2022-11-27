@@ -56,7 +56,7 @@ final class VersionSpecificationTest extends TestCase
         );
     }
 
-    public function provideInvalidVersionCases(): array
+    public static function provideInvalidVersionCases(): array
     {
         return [
             'negative' => [-1],
@@ -87,7 +87,7 @@ final class VersionSpecificationTest extends TestCase
         static::assertTrue($versionSpecification->isSatisfiedBy($actual));
     }
 
-    public function provideIsSatisfiedByReturnsTrueCases(): array
+    public static function provideIsSatisfiedByReturnsTrueCases(): array
     {
         return [
             'version-same-as-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID],
@@ -110,7 +110,7 @@ final class VersionSpecificationTest extends TestCase
         static::assertFalse($versionSpecification->isSatisfiedBy($actual));
     }
 
-    public function provideIsSatisfiedByReturnsFalseCases(): array
+    public static function provideIsSatisfiedByReturnsFalseCases(): array
     {
         return [
             'version-greater-than-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID + 1],

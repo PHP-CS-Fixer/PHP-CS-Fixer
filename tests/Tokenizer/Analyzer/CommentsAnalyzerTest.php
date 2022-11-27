@@ -52,7 +52,7 @@ final class CommentsAnalyzerTest extends TestCase
         static::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
-    public function provideCommentsCases(): array
+    public static function provideCommentsCases(): array
     {
         return [
             'discover all 4 comments for the 1st comment with slash' => [
@@ -168,7 +168,7 @@ $bar;',
         static::assertTrue($analyzer->isHeaderComment($tokens, $index));
     }
 
-    public function provideHeaderCommentCases(): array
+    public static function provideHeaderCommentCases(): array
     {
         return [
             ['<?php /* Comment */ namespace Foo;', 1],
@@ -190,7 +190,7 @@ $bar;',
         static::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
-    public function provideNotHeaderCommentCases(): array
+    public static function provideNotHeaderCommentCases(): array
     {
         return [
             ['<?php $foo; /* Comment */ $bar;', 4],
@@ -224,7 +224,7 @@ $bar;',
         static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public function providePhpdocCandidateCases(): array
+    public static function providePhpdocCandidateCases(): array
     {
         return [
             ['<?php /* @var Foo */ $bar = "baz";'],
@@ -277,7 +277,7 @@ $bar;',
         static::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public function provideNotPhpdocCandidateCases(): array
+    public static function provideNotPhpdocCandidateCases(): array
     {
         return [
             ['<?php class Foo {} /* At the end of file */'],
@@ -320,7 +320,7 @@ $bar;',
         static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public function providePhpdocCandidatePhp74Cases(): array
+    public static function providePhpdocCandidatePhp74Cases(): array
     {
         return [
             ['<?php /* Before anonymous function */ $fn = fn($x) => $x + 1;'],
@@ -341,7 +341,7 @@ $bar;',
         static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public function providePhpdocCandidatePhp80Cases(): array
+    public static function providePhpdocCandidatePhp80Cases(): array
     {
         return [
             ['<?php
@@ -367,7 +367,7 @@ Class MyAnnotation3 {}'],
         static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public function providePhpdocCandidatePhp81Cases(): iterable
+    public static function providePhpdocCandidatePhp81Cases(): iterable
     {
         yield 'public readonly' => [
             '<?php class Foo { /* */ public readonly int $a1; }',

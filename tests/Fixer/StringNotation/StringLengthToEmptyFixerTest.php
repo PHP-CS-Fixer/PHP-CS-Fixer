@@ -31,7 +31,7 @@ final class StringLengthToEmptyFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases(): iterable
+    public static function provideTestFixCases(): iterable
     {
         yield [
             '<?php $a = \'\' === $b;',

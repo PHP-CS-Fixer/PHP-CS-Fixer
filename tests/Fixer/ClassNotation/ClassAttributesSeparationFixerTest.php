@@ -34,7 +34,7 @@ final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php
@@ -286,7 +286,7 @@ private $d = 123;
         );
     }
 
-    public function provideCommentBlockStartDetectionCases(): array
+    public static function provideCommentBlockStartDetectionCases(): array
     {
         return [
             [
@@ -371,7 +371,7 @@ private $d = 123;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixClassesCases(): array
+    public static function provideFixClassesCases(): array
     {
         $cases = [];
 
@@ -969,7 +969,7 @@ public function B1(); // allowed comment
         $this->doTest($expected, $input);
     }
 
-    public function provideFixTraitsCases(): array
+    public static function provideFixTraitsCases(): array
     {
         $cases = [];
 
@@ -1063,7 +1063,7 @@ trait SomeReturnInfo {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixInterfaceCases(): array
+    public static function provideFixInterfaceCases(): array
     {
         $cases = [];
         $cases[] = [
@@ -1148,7 +1148,7 @@ class ezcReflectionMethod extends ReflectionMethod {
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -1173,7 +1173,7 @@ class ezcReflectionMethod extends ReflectionMethod {
         $this->doTest($expected, $input);
     }
 
-    public function provideConfigCases(): array
+    public static function provideConfigCases(): array
     {
         return [
             'multi line property' => [
@@ -1799,7 +1799,7 @@ abstract class Example
         $this->doTest($expected, $input);
     }
 
-    public function provideFix71Cases(): array
+    public static function provideFix71Cases(): array
     {
         return [
             [
@@ -1844,7 +1844,7 @@ abstract class Example
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases(): iterable
+    public static function provideFix74Cases(): iterable
     {
         yield [
             '<?php
@@ -1933,7 +1933,7 @@ abstract class Example
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases(): iterable
+    public static function provideFixPhp80Cases(): iterable
     {
         yield 'attributes' => [
             '<?php
@@ -2156,7 +2156,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixClassesWithTraitsCases(): iterable
+    public static function provideFixClassesWithTraitsCases(): iterable
     {
         yield [
             '<?php
@@ -2194,7 +2194,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php class A {
@@ -2367,7 +2367,7 @@ enum Cards: string
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield [
             '<?php

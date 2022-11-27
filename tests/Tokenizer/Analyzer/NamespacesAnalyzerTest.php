@@ -44,7 +44,7 @@ final class NamespacesAnalyzerTest extends TestCase
         );
     }
 
-    public function provideNamespacesCases(): array
+    public static function provideNamespacesCases(): array
     {
         return [
             ['<?php // no namespaces', [
@@ -102,7 +102,7 @@ final class NamespacesAnalyzerTest extends TestCase
         );
     }
 
-    public function provideGetNamespaceAtCases(): iterable
+    public static function provideGetNamespaceAtCases(): iterable
     {
         yield [
             '<?php // no namespaces',

@@ -31,7 +31,7 @@ final class SingleLineCommentSpacingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestCases(): iterable
+    public static function provideTestCases(): iterable
     {
         yield 'comment list' => [
             '<?php

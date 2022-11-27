@@ -39,7 +39,7 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases(): array
+    public static function provideTestFixCases(): array
     {
         return [
             [
@@ -412,7 +412,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): array
     {
         $expectedTemplate =
 '

@@ -33,7 +33,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -107,7 +107,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideLowerGeneratedCases(): iterable
+    public static function provideLowerGeneratedCases(): iterable
     {
         foreach (['true', 'false', 'null'] as $case) {
             yield [
@@ -139,7 +139,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideUpperGeneratedCases(): iterable
+    public static function provideUpperGeneratedCases(): iterable
     {
         foreach (['true', 'false', 'null'] as $case) {
             yield [

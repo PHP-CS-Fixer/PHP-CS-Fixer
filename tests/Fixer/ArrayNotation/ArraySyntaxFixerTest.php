@@ -53,7 +53,7 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideLongSyntaxCases(): array
+    public static function provideLongSyntaxCases(): array
     {
         return [
             ['<?php $x = array();', '<?php $x = [];'],
@@ -91,7 +91,7 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideShortSyntaxCases(): array
+    public static function provideShortSyntaxCases(): array
     {
         return [
             ['<?php $x = [];', '<?php $x = array();'],
