@@ -34,7 +34,7 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield from [
             [
@@ -605,7 +605,7 @@ $i#3
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre80Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php echo ++$foo->{$bar};',

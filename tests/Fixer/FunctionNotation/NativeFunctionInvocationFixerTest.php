@@ -63,7 +63,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    public function provideInvalidConfigurationElementCases(): array
+    public static function provideInvalidConfigurationElementCases(): array
     {
         return [
             'null' => [null],
@@ -99,7 +99,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public function provideConfigureIncludeSetsCases(): array
+    public static function provideConfigureIncludeSetsCases(): array
     {
         return [
             [['foo', 'bar']],
@@ -173,7 +173,7 @@ PHP;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithDefaultConfigurationCases(): array
+    public static function provideFixWithDefaultConfigurationCases(): array
     {
         return [
             [
@@ -273,7 +273,7 @@ strlen($foo);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfiguredExcludeCases(): array
+    public static function provideFixWithConfiguredExcludeCases(): array
     {
         return [
             [
@@ -306,7 +306,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithNamespaceConfigurationCases(): array
+    public static function provideFixWithNamespaceConfigurationCases(): array
     {
         return [
             [
@@ -476,7 +476,7 @@ namespace {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfiguredIncludeCases(): iterable
+    public static function provideFixWithConfiguredIncludeCases(): iterable
     {
         yield from [
             'include set + 1, exclude 1' => [
@@ -628,7 +628,7 @@ echo strlen($a);
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield 'attribute and strict' => [
             '<?php

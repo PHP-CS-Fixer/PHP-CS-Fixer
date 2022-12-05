@@ -43,7 +43,7 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideAsteriskCases(): array
+    public static function provideAsteriskCases(): array
     {
         return [
             [
@@ -226,7 +226,7 @@ second line*/',
         $this->doTest($expected, $input);
     }
 
-    public function provideHashCases(): array
+    public static function provideHashCases(): array
     {
         return [
             [
@@ -295,7 +295,7 @@ second line*/',
         $this->doTest($expected, $input);
     }
 
-    public function provideAllCases(): array
+    public static function provideAllCases(): array
     {
         return [
             [

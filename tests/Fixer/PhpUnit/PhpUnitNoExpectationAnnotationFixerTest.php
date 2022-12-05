@@ -38,7 +38,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases(): array
+    public static function provideTestFixCases(): array
     {
         return [
             'empty exception message' => [
@@ -690,7 +690,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): array
     {
         return [
             [

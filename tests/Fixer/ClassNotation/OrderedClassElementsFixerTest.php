@@ -35,7 +35,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             <<<'EOT'
@@ -396,7 +396,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideConfigurationCases(): array
+    public static function provideConfigurationCases(): array
     {
         return [
             [
@@ -929,7 +929,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideSortingConfigurationCases(): array
+    public static function provideSortingConfigurationCases(): array
     {
         return [
             [
@@ -1267,7 +1267,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases(): iterable
+    public static function provideFix74Cases(): iterable
     {
         yield [
             '<?php
@@ -1333,7 +1333,7 @@ class TestClass
         );
     }
 
-    public function provideWithConfigWithNoCandidateCases(): iterable
+    public static function provideWithConfigWithNoCandidateCases(): iterable
     {
         yield ['z', '__construct'];
 
@@ -1354,7 +1354,7 @@ class TestClass
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php
@@ -1429,7 +1429,7 @@ trait TestTrait
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php
@@ -1503,7 +1503,7 @@ class A
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield [
             '<?php trait Foo { const C1 = 1; protected $abc = "abc"; }',

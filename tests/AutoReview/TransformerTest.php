@@ -101,7 +101,7 @@ final class TransformerTest extends TestCase
     /**
      * @return TransformerInterface[]
      */
-    public function provideTransformerCases(): array
+    public static function provideTransformerCases(): array
     {
         static $transformersArray = null;
 

@@ -99,7 +99,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($content, (string) $annotation);
     }
 
-    public function provideGetContentCases(): iterable
+    public static function provideGetContentCases(): iterable
     {
         foreach (self::$content as $index => $content) {
             yield [$index, $content];
@@ -117,7 +117,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($start, $annotation->getStart());
     }
 
-    public function provideStartCases(): iterable
+    public static function provideStartCases(): iterable
     {
         foreach (self::$start as $index => $start) {
             yield [$index, $start];
@@ -135,7 +135,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($end, $annotation->getEnd());
     }
 
-    public function provideEndCases(): iterable
+    public static function provideEndCases(): iterable
     {
         foreach (self::$end as $index => $end) {
             yield [$index, $end];
@@ -153,7 +153,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($tag, $annotation->getTag()->getName());
     }
 
-    public function provideGetTagCases(): iterable
+    public static function provideGetTagCases(): iterable
     {
         foreach (self::$tags as $index => $tag) {
             yield [$index, $tag];
@@ -174,7 +174,7 @@ final class AnnotationTest extends TestCase
         static::assertSame('', $doc->getLine($end)->getContent());
     }
 
-    public function provideRemoveCases(): iterable
+    public static function provideRemoveCases(): iterable
     {
         foreach (self::$start as $index => $start) {
             yield [$index, $start, self::$end[$index]];
@@ -193,7 +193,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($expected, $doc->getContent());
     }
 
-    public function provideRemoveEdgeCasesCases(): array
+    public static function provideRemoveEdgeCasesCases(): array
     {
         return [
             // Single line
@@ -242,7 +242,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($expected, $tag->getTypes());
     }
 
-    public function provideTypeParsingCases(): array
+    public static function provideTypeParsingCases(): array
     {
         return [
             [
@@ -468,7 +468,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($output, $line->getContent());
     }
 
-    public function provideTypesCases(): array
+    public static function provideTypesCases(): array
     {
         return [
             [['Foo', 'null'], ['Bar[]'], '     * @param Foo|null $foo', '     * @param Bar[] $foo'],
@@ -494,7 +494,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($expected, $tag->getNormalizedTypes());
     }
 
-    public function provideNormalizedTypesCases(): array
+    public static function provideNormalizedTypesCases(): array
     {
         return [
             [['null', 'string'], '* @param StRiNg|NuLl $foo'],
@@ -553,7 +553,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($expectedCommonType, $result->getCommonType());
     }
 
-    public function provideTypeExpressionCases(): iterable
+    public static function provideTypeExpressionCases(): iterable
     {
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
         $useTraversable = new NamespaceUseAnalysis('Traversable', 'Traversable', false, 0, 999, NamespaceUseAnalysis::TYPE_CLASS);
@@ -574,7 +574,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($expectedVariableName, $annotation->getVariableName());
     }
 
-    public function provideGetVariableCases(): iterable
+    public static function provideGetVariableCases(): iterable
     {
         yield ['* @param int $foo', '$foo'];
 

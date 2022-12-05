@@ -34,7 +34,7 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         $multiLinePatternToFix = <<<'FIX'
 <?php $x =

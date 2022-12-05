@@ -42,7 +42,7 @@ final class ClassConstantTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases(): array
+    public static function provideProcessCases(): array
     {
         return [
             [

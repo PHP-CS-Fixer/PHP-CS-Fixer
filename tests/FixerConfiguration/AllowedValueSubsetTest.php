@@ -29,7 +29,7 @@ final class AllowedValueSubsetTest extends TestCase
         static::assertIsCallable(new AllowedValueSubset(['foo', 'bar']));
     }
 
-    public function provideGetAllowedValuesAreSortedCases(): iterable
+    public static function provideGetAllowedValuesAreSortedCases(): iterable
     {
         yield [
             ['bar', 'foo'],
@@ -67,7 +67,7 @@ final class AllowedValueSubsetTest extends TestCase
         static::assertSame($expectedResult, $subset($inputValue));
     }
 
-    public function provideInvokeCases(): array
+    public static function provideInvokeCases(): array
     {
         return [
             [

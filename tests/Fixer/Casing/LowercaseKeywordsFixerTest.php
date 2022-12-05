@@ -33,7 +33,7 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             ['<?php $x = (1 and 2);', '<?php $x = (1 AND 2);'],
@@ -62,7 +62,7 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php
@@ -109,7 +109,7 @@ class Point {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php

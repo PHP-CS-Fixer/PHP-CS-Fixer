@@ -42,7 +42,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -290,7 +290,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithoutSpacesInEmptyForExpressionsCases(): array
+    public static function provideFixWithoutSpacesInEmptyForExpressionsCases(): array
     {
         return [
             [

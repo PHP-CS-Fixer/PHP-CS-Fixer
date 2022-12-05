@@ -38,7 +38,7 @@ final class HeaderCommentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -630,7 +630,7 @@ echo 1;'
         $this->fixer->configure($configuration);
     }
 
-    public function provideMisconfigurationCases(): array
+    public static function provideMisconfigurationCases(): array
     {
         return [
             [[], 'Missing required configuration: The required option "header" is missing.'],
@@ -689,7 +689,7 @@ echo 1;'
         );
     }
 
-    public function provideHeaderGenerationCases(): array
+    public static function provideHeaderGenerationCases(): array
     {
         return [
             [
@@ -721,7 +721,7 @@ echo 1;'
         $this->doTest($expected);
     }
 
-    public function provideDoNotTouchCases(): array
+    public static function provideDoNotTouchCases(): array
     {
         return [
             ["<?php\nphpinfo();\n?>\n<?"],
@@ -754,7 +754,7 @@ echo 1;'
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -823,7 +823,7 @@ echo 1;'
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             ['header' => 'tmp'],

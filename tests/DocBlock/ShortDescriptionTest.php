@@ -36,7 +36,7 @@ final class ShortDescriptionTest extends TestCase
         static::assertSame($expected, $shortDescription->getEnd());
     }
 
-    public function provideGetEndCases(): array
+    public static function provideGetEndCases(): array
     {
         return [
             [1, '/**

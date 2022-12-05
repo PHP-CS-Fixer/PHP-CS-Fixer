@@ -39,7 +39,7 @@ final class FunctionsAnalyzerTest extends TestCase
         self::assertIsGlobalFunctionCall($indices, $code);
     }
 
-    public function provideIsGlobalFunctionCallCases(): iterable
+    public static function provideIsGlobalFunctionCallCases(): iterable
     {
         yield [
             '<?php CONSTANT;',
@@ -290,7 +290,7 @@ A();
         self::assertIsGlobalFunctionCall($indices, $code);
     }
 
-    public function provideIsGlobalFunctionCallPhp80Cases(): iterable
+    public static function provideIsGlobalFunctionCallPhp80Cases(): iterable
     {
         yield [
             '<?php $a = new (foo());',
@@ -336,7 +336,7 @@ class Foo {}
         self::assertIsGlobalFunctionCall($indices, $code);
     }
 
-    public function provideIsGlobalFunctionCallPhp81Cases(): iterable
+    public static function provideIsGlobalFunctionCallPhp81Cases(): iterable
     {
         yield 'first class callable cases' => [
             [],
@@ -391,7 +391,7 @@ class(){};
         static::assertSame(serialize($expected), serialize($actual));
     }
 
-    public function provideFunctionsWithArgumentsCases(): iterable
+    public static function provideFunctionsWithArgumentsCases(): iterable
     {
         yield from [
             ['<?php function(){};', 1, []],
@@ -586,7 +586,7 @@ class(){};
         }
     }
 
-    public function provideFunctionReturnTypeInfoCases(): iterable
+    public static function provideFunctionReturnTypeInfoCases(): iterable
     {
         yield ['<?php function(){};', 1, null];
 
@@ -626,7 +626,7 @@ class(){};
         static::assertSame($isTheSameClassCall, $analyzer->isTheSameClassCall($tokens, $index));
     }
 
-    public function provideIsTheSameClassCallCases(): iterable
+    public static function provideIsTheSameClassCallCases(): iterable
     {
         $template = '<?php
             class Foo {
@@ -712,7 +712,7 @@ class(){};
         static::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
     }
 
-    public function provideFunctionsWithArgumentsPhp80Cases(): iterable
+    public static function provideFunctionsWithArgumentsPhp80Cases(): iterable
     {
         yield ['<?php function($aa,){};', 1, [
             '$aa' => new ArgumentAnalysis(

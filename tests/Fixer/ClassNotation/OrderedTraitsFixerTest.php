@@ -34,7 +34,7 @@ final class OrderedTraitsFixerTest extends AbstractFixerTestCase
     /**
      * @return iterable<array>
      */
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'simple' => [
             '<?php

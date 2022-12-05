@@ -34,7 +34,7 @@ final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php
@@ -514,7 +514,7 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): array
     {
         return [
             [

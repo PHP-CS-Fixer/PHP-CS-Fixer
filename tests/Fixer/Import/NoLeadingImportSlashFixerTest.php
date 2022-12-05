@@ -33,7 +33,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -213,7 +213,7 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPrePHP80Cases(): iterable
+    public static function provideFixPrePHP80Cases(): iterable
     {
         yield [
             '<?php use /*1*/A\D;',

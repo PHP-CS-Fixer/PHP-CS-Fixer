@@ -137,7 +137,7 @@ final class FixerFactoryTest extends TestCase
         static::assertCount(0, $missingIntegrationsTests, sprintf("There shall be an integration test. How do you know that priority set up is good, if there is no integration test to check it?\nMissing:\n- %s", implode("\n- ", $missingIntegrationsTests)));
     }
 
-    public function provideFixersPriorityCasesHaveIntegrationCases(): iterable
+    public static function provideFixersPriorityCasesHaveIntegrationCases(): iterable
     {
         foreach (self::getFixersPriorityGraph() as $fixerName => $edges) {
             yield $fixerName => [$fixerName, $edges];
@@ -168,7 +168,7 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
-    public function provideIntegrationTestFilesCases(): iterable
+    public static function provideIntegrationTestFilesCases(): iterable
     {
         foreach (new \DirectoryIterator(self::getIntegrationPriorityDirectory()) as $candidate) {
             if (!$candidate->isDot()) {

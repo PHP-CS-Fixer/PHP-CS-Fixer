@@ -35,7 +35,7 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'if (default)' => [
             '<?php
@@ -678,7 +678,7 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield 'function (multiline + union return)' => [
             '<?php
@@ -743,7 +743,7 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'function (multiline + intersection return)' => [
             '<?php

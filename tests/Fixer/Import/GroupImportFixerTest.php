@@ -33,7 +33,7 @@ final class GroupImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php
@@ -334,7 +334,7 @@ use function Foo\b;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre80Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php

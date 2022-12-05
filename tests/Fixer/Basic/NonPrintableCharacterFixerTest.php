@@ -49,7 +49,7 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -134,7 +134,7 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithEscapeSequencesInStringsCases(): array
+    public static function provideFixWithEscapeSequencesInStringsCases(): array
     {
         return [
             [

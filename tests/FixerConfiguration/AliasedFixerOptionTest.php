@@ -37,7 +37,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($name, $option->getName());
     }
 
-    public function provideGetNameCases(): array
+    public static function provideGetNameCases(): array
     {
         return [
             ['foo'],
@@ -55,7 +55,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($description, $option->getDescription());
     }
 
-    public function provideGetDescriptionCases(): array
+    public static function provideGetDescriptionCases(): array
     {
         return [
             ['Foo.'],
@@ -71,7 +71,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($hasDefault, $input->hasDefault());
     }
 
-    public function provideHasDefaultCases(): array
+    public static function provideHasDefaultCases(): array
     {
         return [
             [
@@ -95,7 +95,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($default, $option->getDefault());
     }
 
-    public function provideGetDefaultCases(): array
+    public static function provideGetDefaultCases(): array
     {
         return [
             ['baz'],
@@ -124,7 +124,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($allowedTypes, $option->getAllowedTypes());
     }
 
-    public function provideGetAllowedTypesCases(): array
+    public static function provideGetAllowedTypesCases(): array
     {
         return [
             [null],
@@ -145,7 +145,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($allowedValues, $option->getAllowedValues());
     }
 
-    public function provideGetAllowedValuesCases(): array
+    public static function provideGetAllowedValuesCases(): array
     {
         return [
             [null],
@@ -183,7 +183,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($alias, $options->getAlias());
     }
 
-    public function provideGetAliasCases(): array
+    public static function provideGetAliasCases(): array
     {
         return [
             ['bar'],

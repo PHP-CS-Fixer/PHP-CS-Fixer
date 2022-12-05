@@ -44,7 +44,7 @@ final class UseTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases(): iterable
+    public static function provideProcessCases(): iterable
     {
         yield [
             '<?php use Foo;',
@@ -157,7 +157,7 @@ use C\{D,E,};
         $this->doTest($source, $expectedTokens, [CT::T_USE_TRAIT]);
     }
 
-    public function provideProcessPhp81Cases(): iterable
+    public static function provideProcessPhp81Cases(): iterable
     {
         yield [
             '<?php enum Foo: string

@@ -33,7 +33,7 @@ final class NoUselessNullsafeOperatorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'simple case + comment' => [
             '<?php $a = new class extends foo {

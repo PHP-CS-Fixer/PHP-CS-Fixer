@@ -34,7 +34,7 @@ final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'no typehint' => [
             '<?php
@@ -2299,7 +2299,7 @@ class Foo {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases(): iterable
+    public static function provideFixPhp80Cases(): iterable
     {
         yield 'static return' => [
             '<?php
@@ -2539,7 +2539,7 @@ new #[Bar] class() extends Foo {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'some readonly properties' => [
             '<?php

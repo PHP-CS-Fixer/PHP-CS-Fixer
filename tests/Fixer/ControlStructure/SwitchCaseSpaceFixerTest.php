@@ -33,7 +33,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield from [
             [
@@ -342,7 +342,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre80Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php
@@ -370,7 +370,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php
@@ -410,7 +410,7 @@ $a = function (): ?string {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'enums' => [
             '<?php

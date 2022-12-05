@@ -36,7 +36,7 @@ final class PhpUnitInternalClassFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             'It does not change normal classes' => [

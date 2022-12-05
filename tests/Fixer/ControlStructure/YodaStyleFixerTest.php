@@ -55,7 +55,7 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield from [
             [
@@ -748,7 +748,7 @@ switch ($a) {
         $this->doTest($input, $expected);
     }
 
-    public function provideLessGreaterCases(): array
+    public static function provideLessGreaterCases(): array
     {
         return [
             [
@@ -801,7 +801,7 @@ switch ($a) {
         $this->fixer->configure($config);
     }
 
-    public function provideInvalidConfigurationCases(): array
+    public static function provideInvalidConfigurationCases(): array
     {
         return [
             [['equal' => 2], 'Invalid configuration: The option "equal" with value 2 is expected to be of type "bool" or "null", but is of type "(int|integer)"\.'],
@@ -839,7 +839,7 @@ switch ($a) {
         }
     }
 
-    public function providePHP71Cases(): array
+    public static function providePHP71Cases(): array
     {
         return [
             // no fix cases
@@ -894,7 +894,7 @@ switch ($a) {
         $this->doTest($expected);
     }
 
-    public function provideFixWithConfigCases(): iterable
+    public static function provideFixWithConfigCases(): iterable
     {
         yield [
             [
@@ -932,7 +932,7 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases(): iterable
+    public static function provideFixPhp74Cases(): iterable
     {
         yield [
             '<?php if (1_000 === $b);',
@@ -954,7 +954,7 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public function providePHP74Cases(): iterable
+    public static function providePHP74Cases(): iterable
     {
         yield [
             '<?php fn() => $c === array(1) ? $b : $d;',
@@ -980,7 +980,7 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPrePHP80Cases(): iterable
+    public static function provideFixPrePHP80Cases(): iterable
     {
         yield [
             '<?php return \A/*5*/\/*6*/B\/*7*/C::MY_CONST === \A/*1*//*1*//*1*//*1*//*1*/\/*2*/B/*3*/\C/*4*/::$myVariable;',
@@ -1019,7 +1019,7 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php
@@ -1065,7 +1065,7 @@ if ($a = $obj instanceof (foo()) === true) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'does not make a lot of sense but is valid syntax, do not break 1' => [
             '<?php $b = strlen( ... ) === $a;',

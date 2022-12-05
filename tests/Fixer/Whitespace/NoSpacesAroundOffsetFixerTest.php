@@ -72,7 +72,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideCommentCases(): array
+    public static function provideCommentCases(): array
     {
         return [
             [
@@ -115,7 +115,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function provideOutsideCases(): iterable
+    public static function provideOutsideCases(): iterable
     {
         yield from [
             [
@@ -206,7 +206,7 @@ $var = $arr[0]{     0
         }
     }
 
-    public function provideInsideCases(): array
+    public static function provideInsideCases(): array
     {
         return [
             [
@@ -303,7 +303,7 @@ $var = $arr[0][     0
         $this->doTest($expected, $input);
     }
 
-    public function provideConfigurationCases(): iterable
+    public static function provideConfigurationCases(): iterable
     {
         $tests = [
             [

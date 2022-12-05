@@ -31,7 +31,7 @@ final class NoTrailingCommaInSinglelineFunctionCallFixerTest extends AbstractFix
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'simple var' => [
             '<?php $a(1);',
@@ -230,7 +230,7 @@ $foo1b = function() use ($bar, ) {};
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php $object?->method(1); strlen(...);',

@@ -33,7 +33,7 @@ final class NoNullPropertyInitializationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -307,7 +307,7 @@ null;#13
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPrePHP80Cases(): iterable
+    public static function provideFixPrePHP80Cases(): iterable
     {
         yield [
             '<?php class Foo { public $bar; }',
@@ -356,7 +356,7 @@ class Point {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'readonly - cannot have default value, fixer should not crash' => [
             '<?php

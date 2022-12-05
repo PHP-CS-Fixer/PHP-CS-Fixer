@@ -40,7 +40,7 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideWithTabsCases(): array
+    public static function provideWithTabsCases(): array
     {
         return [
             [
@@ -87,7 +87,7 @@ public function myFunction() {
         $this->doTest($expected, $input);
     }
 
-    public function provideConfiguredCases(): array
+    public static function provideConfiguredCases(): array
     {
         return [
             [
@@ -525,7 +525,7 @@ $a = $ae?? $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -724,7 +724,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideUnalignEqualsCases(): array
+    public static function provideUnalignEqualsCases(): array
     {
         return [
             [
@@ -900,7 +900,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideUnalignDoubleArrowCases(): array
+    public static function provideUnalignDoubleArrowCases(): array
     {
         return [
             [
@@ -1295,7 +1295,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideAlignEqualsCases(): array
+    public static function provideAlignEqualsCases(): array
     {
         return [
             [
@@ -1642,7 +1642,7 @@ $start = (
         $this->doTest($expected, $input);
     }
 
-    public function provideAlignDoubleArrowCases(): array
+    public static function provideAlignDoubleArrowCases(): array
     {
         return [
             [
@@ -2356,7 +2356,7 @@ function foo () {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases(): array
+    public static function provideFixPhp74Cases(): array
     {
         return [
             [

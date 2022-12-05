@@ -38,7 +38,7 @@ final class ErrorSuppressionFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield from [
             [
@@ -132,7 +132,7 @@ Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>'
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre80Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php \A\B/* */\trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
@@ -149,7 +149,7 @@ Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>'
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php $a = trigger_error(...);',

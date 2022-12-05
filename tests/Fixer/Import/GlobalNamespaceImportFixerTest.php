@@ -34,7 +34,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixImportConstantsCases(): array
+    public static function provideFixImportConstantsCases(): array
     {
         return [
             'non-global names' => [
@@ -235,7 +235,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixImportFunctionsCases(): array
+    public static function provideFixImportFunctionsCases(): array
     {
         return [
             'non-global names' => [
@@ -439,7 +439,7 @@ EXPECTED
         $this->doTest($expected, $input);
     }
 
-    public function provideFixImportClassesCases(): array
+    public static function provideFixImportClassesCases(): array
     {
         return [
             'non-global names' => [
@@ -726,7 +726,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixFullyQualifyConstantsCases(): array
+    public static function provideFixFullyQualifyConstantsCases(): array
     {
         return [
             'already fqn or sub namespace' => [
@@ -785,7 +785,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixFullyQualifyFunctionsCases(): array
+    public static function provideFixFullyQualifyFunctionsCases(): array
     {
         return [
             'already fqn or sub namespace' => [
@@ -851,7 +851,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixFullyQualifyClassesCases(): array
+    public static function provideFixFullyQualifyClassesCases(): array
     {
         return [
             'already fqn or sub namespace' => [
@@ -940,7 +940,7 @@ INPUT
         $this->doTest($expected);
     }
 
-    public function provideMultipleNamespacesCases(): iterable
+    public static function provideMultipleNamespacesCases(): iterable
     {
         yield [
             <<<'INPUT'
@@ -1046,7 +1046,7 @@ class Bar
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'ignore enum methods' => [
             <<<'EXPECTED'

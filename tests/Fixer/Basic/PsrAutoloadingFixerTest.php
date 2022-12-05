@@ -401,7 +401,7 @@ class Bar {}',
         }, $cases);
     }
 
-    public function provideAnonymousClassCases(): iterable
+    public static function provideAnonymousClassCases(): iterable
     {
         yield 'class with anonymous class' => [
             '<?php
@@ -456,7 +456,7 @@ class ClassTwo {};
         $this->doTest($expected, $input);
     }
 
-    public function providePhp80Cases(): iterable
+    public static function providePhp80Cases(): iterable
     {
         yield 'anonymous + annotation' => [
             '<?php
@@ -478,7 +478,7 @@ class extends stdClass {};
         $this->doTest($expected, $input, $this->getTestFile(__FILE__));
     }
 
-    public function providePhp81Cases(): iterable
+    public static function providePhp81Cases(): iterable
     {
         yield 'enum with wrong casing' => [
             '<?php enum PsrAutoloadingFixerTest {}',
