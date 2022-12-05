@@ -104,6 +104,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
                 'only_booleans' => true,
             ],
             'ordered_class_elements' => true,
+            'php_unit_data_provider_static' => true,
             'php_unit_internal_class' => true,
             'php_unit_test_class_requires_covers' => true,
             'phpdoc_add_missing_param_annotation' => true,

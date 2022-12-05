@@ -2337,6 +2337,13 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitConstructFixer <./../src/Fixer/PhpUnit/PhpUnitConstructFixer.php>`_
+-  `php_unit_data_provider_static <./rules/php_unit/php_unit_data_provider_static.rst>`_
+
+   Data providers must be static.
+
+   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php>`_
 -  `php_unit_dedicate_assert <./rules/php_unit/php_unit_dedicate_assert.rst>`_
 
    PHPUnit assertions like ``assertInternalType``, ``assertFileExists``, should be used over ``assertTrue``.
