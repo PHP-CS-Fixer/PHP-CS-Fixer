@@ -58,7 +58,7 @@ final class Tokens extends \SplFixedArray
             $index = 0;
             $nbScannedTokensToUse = 0;
             $nbScopes = 0;
-            while (null !== $token = $lexer->peek()) {
+            while ($token = $lexer->peek()) {
                 if (0 === $index && DocLexer::T_AT !== $token['type']) {
                     break;
                 }
