@@ -32,6 +32,6 @@ final class PERSet extends AbstractRuleSetDescription
 
     public function getDescription(): string
     {
-        return 'Alias for the PERCS rules.  It is recommended you use @PERCS instead.';
+        return 'Alias for the PERCS rules. It is recommended you use @PERCS instead.';
     }
 }
