@@ -19,12 +19,17 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 /**
  * @internal
  *
- * PER Coding Style v1.0.0.
+ * PER Coding Style v1.0.
  *
  * @link https://github.com/php-fig/per-coding-style/blob/1.0.0/spec.md
  */
 final class PERCS10Set extends AbstractRuleSetDescription
 {
+    public function getName(): string
+    {
+        return 'PER-CS1.0';
+    }
+
     public function getRules(): array
     {
         return [

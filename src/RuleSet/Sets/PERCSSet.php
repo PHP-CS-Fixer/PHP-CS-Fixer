@@ -27,10 +27,15 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  */
 final class PERCSSet extends AbstractRuleSetDescription
 {
+    public function getName(): string
+    {
+        return 'PER-CS';
+    }
+
     public function getRules(): array
     {
         return [
-            '@PERCS10' => true,
+            '@PER-CS1.0' => true,
         ];
     }
 

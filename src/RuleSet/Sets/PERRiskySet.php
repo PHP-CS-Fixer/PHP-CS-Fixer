@@ -19,10 +19,15 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 /**
  * @internal
  *
- * Last updated to PER Coding Style v1.0.0.
+ * Last updated to PER Coding Style
  */
 final class PERRiskySet extends AbstractRuleSetDescription
 {
+    public function getName(): string
+    {
+        return 'PER-CS:risky';
+    }
+
     public function getRules(): array
     {
         return [
@@ -32,6 +37,6 @@ final class PERRiskySet extends AbstractRuleSetDescription
 
     public function getDescription(): string
     {
-        return 'Rules that follow `PER Coding Style <https://www.php-fig.org/per/coding-style/>`_.';
+        return 'Alias for the PER-CS rules. It is recommended you use @PER-CS instead.';
     }
 }
