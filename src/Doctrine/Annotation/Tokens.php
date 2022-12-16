@@ -62,7 +62,7 @@ final class Tokens extends \SplFixedArray
                 $token_type = '';
                 $token_value = '';
                 if(is_array($token) && isset($token['type'])) $token_type = $token['type'];
-                if(is_array($token) && isset($token['value'])) $token_value = $token['value'];
+                if(is_array($token)) $token_value = $token['value'];
 
 
                 if (0 === $index && DocLexer::T_AT !== $token_type) {
