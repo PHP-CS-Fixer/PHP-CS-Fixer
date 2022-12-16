@@ -59,33 +59,33 @@ final class Tokens extends \SplFixedArray
             $nbScannedTokensToUse = 0;
             $nbScopes = 0;
             while (null !== $token = $lexer->peek()) {
-                $token_type = '';
-                $token_value = '';
-                if(is_array($token) && isset($token['type'])) $token_type = $token['type'];
-                if(is_array($token)) $token_value = $token['value'];
+                $tokenType = '';
+                $tokenValue = '';
+                if(is_array($token) && isset($token['type'])) $tokenType = $token['type'];
+                if(is_array($token)) $tokenValue = $token['value'];
 
 
-                if (0 === $index && DocLexer::T_AT !== $token_type) {
+                if (0 === $index && DocLexer::T_AT !== $tokenType) {
                     break;
                 }
 
                 if (1 === $index) {
-                    if (DocLexer::T_IDENTIFIER !== $token_type || \in_array($token_value, $ignoredTags, true)) {
+                    if (DocLexer::T_IDENTIFIER !== $tokenType || \in_array($tokenValue, $ignoredTags, true)) {
                         break;
                     }
 
                     $nbScannedTokensToUse = 2;
                 }
 
-                if ($index >= 2 && 0 === $nbScopes && !\in_array($token_type, [DocLexer::T_NONE, DocLexer::T_OPEN_PARENTHESIS], true)) {
+                if ($index >= 2 && 0 === $nbScopes && !\in_array($tokenType, [DocLexer::T_NONE, DocLexer::T_OPEN_PARENTHESIS], true)) {
                     break;
                 }
 
                 $scannedTokens[] = $token;
 
-                if (DocLexer::T_OPEN_PARENTHESIS === $token_type) {
+                if (DocLexer::T_OPEN_PARENTHESIS === $tokenType) {
                     ++$nbScopes;
-                } elseif (DocLexer::T_CLOSE_PARENTHESIS === $token_type) {
+                } elseif (DocLexer::T_CLOSE_PARENTHESIS === $tokenType) {
                     if (0 === --$nbScopes) {
                         $nbScannedTokensToUse = \count($scannedTokens);
 
