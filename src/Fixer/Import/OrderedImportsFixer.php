@@ -280,7 +280,7 @@ use Bar;
 
                     return true;
                 }])
-                ->setDefault(null)
+                ->setDefault(null) // @TODO set to ['class', 'function', 'const'] on 4.0
                 ->getOption(),
         ]);
     }
