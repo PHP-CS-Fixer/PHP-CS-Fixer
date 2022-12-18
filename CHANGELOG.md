@@ -3,6 +3,18 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.13.1
+---------------------
+
+* bug: Align all the arrows inside the same array (#6590)
+* bug: Fix priority between `modernize_types_casting` and `no_unneeded_control_parentheses` (#6687)
+* bug: TrailingCommaInMultilineFixer - do not add trailing comma when there is no break line after last element (#6677)
+* docs: Fix docs for disabled rules in rulesets (#6679)
+* docs: fix the cookbook_fixers.rst (#6672)
+* docs: Update installation recommended commands for `mkdir` argument (`-p` insteadof `--parents`). (#6689)
+* Make static data providers that are not using dynamic calls (#6696)
+* minor: displaying number of checked files (#6674)
+
 Changelog for v3.13.0
 ---------------------
 
