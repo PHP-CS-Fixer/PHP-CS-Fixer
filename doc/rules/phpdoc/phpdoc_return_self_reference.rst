@@ -15,7 +15,7 @@ Mapping between replaced return types with new ones.
 
 Allowed types: ``array``
 
-Default value: ``['this' => '$this', '@this' => '$this', '$self' => 'self', '@self' => 'self', '$static' => 'static', '@static' => 'static']``
+Default value: ``['this' => '$this', '@this' => '$this', '$this' => '$this', '$self' => 'self', '@self' => 'self', '$static' => 'static', '@static' => 'static']``
 
 Examples
 --------

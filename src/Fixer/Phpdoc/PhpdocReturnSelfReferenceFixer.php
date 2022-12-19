@@ -138,6 +138,7 @@ class Sample
         $default = [
             'this' => '$this',
             '@this' => '$this',
+            '$this' => '$this',
             '$self' => 'self',
             '@self' => 'self',
             '$static' => 'static',

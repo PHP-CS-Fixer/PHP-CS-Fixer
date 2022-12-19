@@ -151,6 +151,7 @@ class F
         return [
             ['$this', 'this'],
             ['$this', '@this'],
+            ['self', '$this'],
             ['self', '$self'],
             ['self', '@self'],
             ['static', '$static'],
@@ -176,7 +177,7 @@ class F
         return [
             [
                 ['replacements' => [1 => 'a']],
-                'Invalid configuration: Unknown key "integer#1", expected any of "this", "@this", "$self", "@self", "$static", "@static".',
+                'Invalid configuration: Unknown key "integer#1", expected any of "this", "@this", "$this", "$self", "@self", "$static", "@static".',
             ],
             [
                 ['replacements' => [
@@ -269,5 +270,55 @@ enum Foo {
 var_dump(Foo::CAT->test());
 ',
         ];
+    }
+
+    public function testThisStartWithDollarMark(): void
+    {
+        $this->fixer->configure([
+            'replacements' => [
+                '$this' => 'self',
+            ],
+        ]);
+
+        $this->doTest(
+            '<?php
+                $a = new class() {
+
+                    /** @return self */
+                    public function a() {
+                    }
+                };
+
+                class C
+                {
+                    public function A()
+                    {
+                        $a = new class() {
+                            /** @return self */
+                            public function a() {}
+                        };
+                    }
+                }
+            ',
+            '<?php
+                $a = new class() {
+
+                    /** @return $this */
+                    public function a() {
+                    }
+                };
+
+                class C
+                {
+                    public function A()
+                    {
+                        $a = new class() {
+                            /** @return $this */
+                            public function a() {}
+                        };
+                    }
+                }
+            '
+        );
     }
 }
