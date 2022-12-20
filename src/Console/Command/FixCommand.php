@@ -283,7 +283,7 @@ EOF
         if ('none' === $progressType || null === $stdErr) {
             $progressOutput = new NullOutput();
         } else {
-            $finder = new \ArrayIterator(iterator_to_array($finder));
+            $finder = new \ArrayIterator($finder);
             $progressOutput = new ProcessOutput(
                 $stdErr,
                 $this->eventDispatcher,
@@ -313,6 +313,7 @@ EOF
 
         $fixEvent = $this->stopwatch->getEvent('fixFiles');
 
+        $finder = new \ArrayIterator($finder);
         $reportSummary = new ReportSummary(
             $changed,
             \count($finder),
