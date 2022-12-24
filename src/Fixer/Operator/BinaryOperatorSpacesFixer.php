@@ -52,12 +52,27 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * @internal
      */
+    public const ALIGN_BY_SCOPE = 'align_by_scope';
+
+    /**
+     * @internal
+     */
     public const ALIGN_SINGLE_SPACE = 'align_single_space';
 
     /**
      * @internal
      */
+    public const ALIGN_SINGLE_SPACE_BY_SCOPE = 'align_single_space_by_scope';
+
+    /**
+     * @internal
+     */
     public const ALIGN_SINGLE_SPACE_MINIMAL = 'align_single_space_minimal';
+
+    /**
+     * @internal
+     */
+    public const ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE = 'align_single_space_minimal_by_scope';
 
     /**
      * @internal
@@ -133,8 +148,11 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
      */
     private static array $allowedValues = [
         self::ALIGN,
+        self::ALIGN_BY_SCOPE,
         self::ALIGN_SINGLE_SPACE,
         self::ALIGN_SINGLE_SPACE_MINIMAL,
+        self::ALIGN_SINGLE_SPACE_BY_SCOPE,
+        self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE,
         self::SINGLE_SPACE,
         self::NO_SPACE,
         null,
@@ -221,6 +239,8 @@ $array = [
 $array = [
     "foo" => 12,
     "baaaaaaaaaaar"  => 13,
+
+    "baz" => 1,
 ];
 ',
                     ['operators' => ['=>' => 'align']]
@@ -230,6 +250,19 @@ $array = [
 $array = [
     "foo" => 12,
     "baaaaaaaaaaar"  => 13,
+
+    "baz" => 1,
+];
+',
+                    ['operators' => ['=>' => 'align_by_scope']]
+                ),
+                new CodeSample(
+                    '<?php
+$array = [
+    "foo" => 12,
+    "baaaaaaaaaaar"  => 13,
+
+    "baz" => 1,
 ];
 ',
                     ['operators' => ['=>' => 'align_single_space']]
@@ -239,9 +272,33 @@ $array = [
 $array = [
     "foo" => 12,
     "baaaaaaaaaaar"  => 13,
+
+    "baz" => 1,
+];
+',
+                    ['operators' => ['=>' => 'align_single_space_by_scope']]
+                ),
+                new CodeSample(
+                    '<?php
+$array = [
+    "foo" => 12,
+    "baaaaaaaaaaar"  => 13,
+
+    "baz" => 1,
 ];
 ',
                     ['operators' => ['=>' => 'align_single_space_minimal']]
+                ),
+                new CodeSample(
+                    '<?php
+$array = [
+    "foo" => 12,
+    "baaaaaaaaaaar"  => 13,
+
+    "baz" => 1,
+];
+',
+                    ['operators' => ['=>' => 'align_single_space_minimal_by_scope']]
                 ),
             ]
         );
@@ -364,13 +421,19 @@ $array = [
         // schedule for alignment
         $this->alignOperatorTokens[$tokenContent] = $this->operators[$tokenContent];
 
-        if (self::ALIGN === $this->operators[$tokenContent]) {
+        if (
+            self::ALIGN === $this->operators[$tokenContent]
+            || self::ALIGN_BY_SCOPE === $this->operators[$tokenContent]
+        ) {
             return;
         }
 
         // fix white space after operator
         if ($tokens[$index + 1]->isWhitespace()) {
-            if (self::ALIGN_SINGLE_SPACE_MINIMAL === $this->operators[$tokenContent]) {
+            if (
+                self::ALIGN_SINGLE_SPACE_MINIMAL === $this->operators[$tokenContent]
+                || self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE === $this->operators[$tokenContent]
+            ) {
                 $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
             }
 
@@ -491,7 +554,12 @@ $array = [
             }
 
             // for all tokens that should be aligned but do not have anything to align with, fix spacing if needed
-            if (self::ALIGN_SINGLE_SPACE === $alignStrategy || self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy) {
+            if (
+                self::ALIGN_SINGLE_SPACE === $alignStrategy
+                || self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy
+                || self::ALIGN_SINGLE_SPACE_BY_SCOPE === $alignStrategy
+                || self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE === $alignStrategy
+            ) {
                 if ('=>' === $tokenContent) {
                     for ($index = $tokens->count() - 2; $index > 0; --$index) {
                         if ($tokens[$index]->isGivenKind(T_DOUBLE_ARROW)) { // always binary operator, never part of declare statement
@@ -615,8 +683,10 @@ $array = [
     private function injectAlignmentPlaceholdersForArrow(Tokens $tokens, int $startAt, int $endAt): void
     {
         $newLineFoundSinceLastPlaceholder = true;
+        $yieldFoundSinceLastPlaceholder = false;
 
         for ($index = $startAt; $index < $endAt; ++$index) {
+            /** @var Token $token */
             $token = $tokens[$index];
             $content = $token->getContent();
 
@@ -624,7 +694,12 @@ $array = [
                 $newLineFoundSinceLastPlaceholder = true;
             }
 
+            if ($token->isGivenKind(T_YIELD)) {
+                $yieldFoundSinceLastPlaceholder = true;
+            }
+
             if ($token->isGivenKind(T_FN)) {
+                $yieldFoundSinceLastPlaceholder = false;
                 $from = $tokens->getNextMeaningfulToken($index);
                 $until = $this->getLastTokenIndexOfFn($tokens, $index);
                 $this->injectArrayAlignmentPlaceholders($tokens, $from + 1, $until - 1);
@@ -634,6 +709,7 @@ $array = [
             }
 
             if ($token->isGivenKind(T_ARRAY)) { // don't use "$tokens->isArray()" here, short arrays are handled in the next case
+                $yieldFoundSinceLastPlaceholder = false;
                 $from = $tokens->getNextMeaningfulToken($index);
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $from);
                 $index = $until;
@@ -644,6 +720,7 @@ $array = [
             }
 
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                $yieldFoundSinceLastPlaceholder = false;
                 $from = $index;
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $from);
                 $index = $until;
@@ -656,6 +733,10 @@ $array = [
             // no need to analyze for `isBinaryOperator` (always true), nor if part of declare statement (not valid PHP)
             // there is also no need to analyse the second arrow of a line
             if ($token->isGivenKind(T_DOUBLE_ARROW) && $newLineFoundSinceLastPlaceholder) {
+                if ($yieldFoundSinceLastPlaceholder) {
+                    ++$this->deepestLevel;
+                    ++$this->currentLevel;
+                }
                 $tokenContent = sprintf(self::ALIGN_PLACEHOLDER, $this->currentLevel).$token->getContent();
 
                 $nextToken = $tokens[$index + 1];
@@ -667,6 +748,7 @@ $array = [
 
                 $tokens[$index] = new Token([T_DOUBLE_ARROW, $tokenContent]);
                 $newLineFoundSinceLastPlaceholder = false;
+                $yieldFoundSinceLastPlaceholder = false;
 
                 continue;
             }
@@ -742,7 +824,10 @@ $array = [
             return;
         }
 
-        if (self::ALIGN_SINGLE_SPACE_MINIMAL !== $alignStrategy || $tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+        if (
+            self::ALIGN_SINGLE_SPACE_MINIMAL !== $alignStrategy && self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE !== $alignStrategy
+            || $tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()
+        ) {
             return;
         }
 
@@ -774,7 +859,11 @@ $array = [
             foreach ($lines as $index => $line) {
                 if (substr_count($line, $placeholder) > 0) {
                     $groups[$groupIndex][] = $index;
-                } elseif ('=>' !== $tokenContent) {
+                } elseif (
+                    self::ALIGN_BY_SCOPE !== $alignStrategy
+                    && self::ALIGN_SINGLE_SPACE_BY_SCOPE !== $alignStrategy
+                    && self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE !== $alignStrategy
+                ) {
                     ++$groupIndex;
                     $groups[$groupIndex] = [];
                 }
@@ -791,11 +880,17 @@ $array = [
                         $currentPosition = strpos($lines[$index], $placeholder);
                         $before = substr($lines[$index], 0, $currentPosition);
 
-                        if (self::ALIGN_SINGLE_SPACE === $alignStrategy) {
+                        if (
+                            self::ALIGN_SINGLE_SPACE === $alignStrategy
+                            || self::ALIGN_SINGLE_SPACE_BY_SCOPE === $alignStrategy
+                        ) {
                             if (!str_ends_with($before, ' ')) { // if last char of before-content is not ' '; add it
                                 $before .= ' ';
                             }
-                        } elseif (self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy) {
+                        } elseif (
+                            self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy
+                            || self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE === $alignStrategy
+                        ) {
                             if (1 !== Preg::match('/^\h+$/', $before)) { // if indent; do not move, leave to other fixer
                                 $before = rtrim($before).' ';
                             }
