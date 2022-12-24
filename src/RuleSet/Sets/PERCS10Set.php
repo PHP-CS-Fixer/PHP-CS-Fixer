@@ -27,7 +27,7 @@ final class PERCS10Set extends AbstractRuleSetDescription
 {
     public function getName(): string
     {
-        return 'PER-CS1.0';
+        return '@PER-CS1.0';
     }
 
     public function getRules(): array

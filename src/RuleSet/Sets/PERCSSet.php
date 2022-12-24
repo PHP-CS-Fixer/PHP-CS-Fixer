@@ -29,7 +29,7 @@ final class PERCSSet extends AbstractRuleSetDescription
 {
     public function getName(): string
     {
-        return 'PER-CS';
+        return '@PER-CS';
     }
 
     public function getRules(): array

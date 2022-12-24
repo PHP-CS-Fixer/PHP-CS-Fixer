@@ -27,7 +27,7 @@ final class PERCS10RiskySet extends AbstractRuleSetDescription
 {
     public function getName(): string
     {
-        return 'PER-CS1.0:risky';
+        return '@PER-CS1.0:risky';
     }
 
     public function getRules(): array
