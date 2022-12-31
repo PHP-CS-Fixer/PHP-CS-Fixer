@@ -18,6 +18,8 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
  * @internal
+ * @deprecated
+ * @TODO 4.0 remove me
  *
  * Last updated to PER Coding Style
  */
