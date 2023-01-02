@@ -34,6 +34,7 @@ final class FixCommandTest extends TestCase
     {
         $cmdTester = $this->doTestExecute([
             '--path-mode' => 'intersection',
+            '--show-progress' => 'none',
         ]);
 
         static::assertSame(
