@@ -77,10 +77,13 @@ class FooTest extends TestCase {
     /** @dataProvider provider2 */
     public function testFoo2() {}
     /** @dataProvider provider3 */
-    public function testFoo13() {}
+    public function testFoo3() {}
+    /** @dataProvider provider4 */
+    public function testFoo4() {}
     public static function provider1() {}
     public function provider2() { $this->init(); }
     public static function provider3() {}
+    public static function provider4() {}
 }',
             '<?php
 class FooTest extends TestCase {
@@ -89,10 +92,13 @@ class FooTest extends TestCase {
     /** @dataProvider provider2 */
     public function testFoo2() {}
     /** @dataProvider provider3 */
-    public function testFoo13() {}
+    public function testFoo3() {}
+    /** @dataProvider provider4 */
+    public function testFoo4() {}
     public function provider1() {}
     public function provider2() { $this->init(); }
-    public static function provider3() {}
+    public function provider3() {}
+    public static function provider4() {}
 }',
         ];
 
