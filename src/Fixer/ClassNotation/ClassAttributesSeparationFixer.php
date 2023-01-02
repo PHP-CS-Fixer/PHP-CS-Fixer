@@ -48,6 +48,11 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
      * @internal
      */
     public const SPACING_ONE = 'one';
+    
+    /**
+     * @internal
+     */
+    public const SPACING_TWO = 'two';
 
     private const SPACING_ONLY_IF_META = 'only_if_meta';
 
@@ -220,7 +225,7 @@ class Sample
                             );
                         }
 
-                        $supportedSpacings = [self::SPACING_NONE, self::SPACING_ONE, self::SPACING_ONLY_IF_META];
+                        $supportedSpacings = [self::SPACING_NONE, self::SPACING_ONE, self::SPACING_TWO, self::SPACING_ONLY_IF_META];
 
                         if (!\in_array($spacing, $supportedSpacings, true)) {
                             throw new InvalidOptionsException(
@@ -310,11 +315,14 @@ class Sample
             // there should be one linebreak between the element and the attribute above it
             $this->correctLineBreaks($tokens, $nonWhiteAbove, $element['start'], 1);
 
-            // make sure there is blank line above the comment (with the exception when it is directly after a class opening)
+            // make sure there is blank line (1 for self::SPACING_ONE, 2 for self::SPACING_TWO) above the comment 
+            // (with the exception when it is directly after a class opening)
             $nonWhiteAbove = $this->findCommentBlockStart($tokens, $nonWhiteAbove, $elementAboveEnd);
             $nonWhiteAboveComment = $tokens->getPrevNonWhitespace($nonWhiteAbove);
+            $type = $class['elements'][$elementIndex]['type'];
+            $spacing = $this->classElementTypes[$type];
 
-            $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, $nonWhiteAboveComment === $class['open'] ? 1 : 2);
+            $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, $nonWhiteAboveComment === $class['open'] ? 1 : ($spacing === self::SPACING_TWO ? 3 : 2));
 
             return;
         }
@@ -327,6 +335,10 @@ class Sample
         $type = $class['elements'][$elementIndex]['type'];
         $spacing = $this->classElementTypes[$type];
 
+        if (self::SPACING_TWO === $spacing) {
+            return 3;
+        }
+        
         if (self::SPACING_ONE === $spacing) {
             return 2;
         }
