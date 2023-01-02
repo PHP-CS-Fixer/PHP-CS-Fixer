@@ -54,16 +54,6 @@ class FooTest extends TestCase {
      */
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
-        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
-
-        /** @var array<int> $indices */
-        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indices) {
-            $this->fixStatic($tokens, $indices[0], $indices[1]);
-        }
-    }
-
-    private function fixStatic(Tokens $tokens, int $startIndex, int $endIndex): void
-    {
         $dataProviderAnalyzer = new DataProviderAnalyzer();
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
