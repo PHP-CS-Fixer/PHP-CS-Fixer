@@ -19,6 +19,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -29,6 +30,19 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class FixCommandTest extends TestCase
 {
+    public function testIntersectionPathMode(): void
+    {
+        $cmdTester = $this->doTestExecute([
+            '--path-mode' => 'intersection',
+            '--show-progress' => 'none',
+        ]);
+
+        static::assertSame(
+            Command::SUCCESS,
+            $cmdTester->getStatusCode()
+        );
+    }
+
     public function testEmptyRulesValue(): void
     {
         $this->expectException(
@@ -93,7 +107,7 @@ final class FixCommandTest extends TestCase
         return [
             'path' => [__FILE__],
             '--path-mode' => 'override',
-            '--allow-risky' => true,
+            '--allow-risky' => 'yes',
             '--dry-run' => true,
             '--using-cache' => 'no',
             '--show-progress' => 'none',

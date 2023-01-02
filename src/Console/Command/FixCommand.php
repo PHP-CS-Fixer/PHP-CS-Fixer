@@ -272,7 +272,7 @@ EOF
         }
 
         $progressType = $resolver->getProgress();
-        $finder = $resolver->getFinder();
+        $finder = new \ArrayIterator(iterator_to_array($resolver->getFinder()));
 
         if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
             $stdErr->writeln(
@@ -283,7 +283,6 @@ EOF
         if ('none' === $progressType || null === $stdErr) {
             $progressOutput = new NullOutput();
         } else {
-            $finder = new \ArrayIterator(iterator_to_array($finder));
             $progressOutput = new ProcessOutput(
                 $stdErr,
                 $this->eventDispatcher,
