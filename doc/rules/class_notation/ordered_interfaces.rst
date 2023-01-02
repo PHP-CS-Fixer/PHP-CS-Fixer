@@ -4,16 +4,6 @@ Rule ``ordered_interfaces``
 
 Orders the interfaces in an ``implements`` or ``interface extends`` clause.
 
-Warning
--------
-
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-Risky for ``implements`` when specifying both an interface and its parent
-interface, because PHP doesn't break on ``parent, child`` but does on ``child,
-parent``.
-
 Configuration
 -------------
 

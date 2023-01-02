@@ -1916,10 +1916,6 @@ List of Available Rules
 
    Orders the interfaces in an ``implements`` or ``interface extends`` clause.
 
-   *warning risky* Risky for ``implements`` when specifying both an interface and its parent
-   interface, because PHP doesn't break on ``parent, child`` but does on
-   ``child, parent``.
-
    Configuration options:
 
    - | ``order``
