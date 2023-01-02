@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.13.2
+---------------------
+
+* bug: Fix type error when using paths intersection mode (#6734)
+
 Changelog for v3.13.1
 ---------------------
 
