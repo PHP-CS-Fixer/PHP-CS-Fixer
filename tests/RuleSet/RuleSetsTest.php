@@ -134,7 +134,7 @@ Integration of %s.
     {
         $setDefinition = array_keys(RuleSets::getSetDefinitions());
         $sortedSetDefinition = $setDefinition;
-        sort($sortedSetDefinition);
+        natsort($sortedSetDefinition);
 
         static::assertSame($sortedSetDefinition, $setDefinition);
     }
