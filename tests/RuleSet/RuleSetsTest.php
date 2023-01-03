@@ -211,7 +211,7 @@ Integration of %s.
             $actualTargetVersion,
             implode('", "', $allowedVersionsForRuleset)
         ));
-var_dump($allowedVersionsForRuleset);
+
         rsort($allowedVersionsForRuleset);
         $maximumAllowedVersionForRuleset = reset($allowedVersionsForRuleset);
 
