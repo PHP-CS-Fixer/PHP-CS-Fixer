@@ -35,10 +35,7 @@ Example #1
 Rule sets
 ---------
 
-The rule is part of the following rule sets:
+The rule is part of the following rule set:
 
 @PHPUnit100Migration:risky
   Using the `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ rule set will enable the ``php_unit_data_provider_static`` rule.
-
-@PhpCsFixer:risky
-  Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``php_unit_data_provider_static`` rule.
