@@ -36,12 +36,14 @@ final class RuleSets
         if (null === self::$setDefinitions) {
             self::$setDefinitions = [];
 
-            foreach (Finder::create()->files()->in(__DIR__.'/Sets')->sortByName(true) as $file) {
+            foreach (Finder::create()->files()->in(__DIR__.'/Sets') as $file) {
                 $class = 'PhpCsFixer\RuleSet\Sets\\'.$file->getBasename('.php');
                 $set = new $class();
 
                 self::$setDefinitions[$set->getName()] = $set;
             }
+
+            uksort(self::$setDefinitions, static fn (string $x, string $y): int => strnatcmp($x, $y));
         }
 
         return self::$setDefinitions;
