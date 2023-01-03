@@ -12,7 +12,7 @@ labels: kind/bug
   Check that the issue is NOT regarded to an applied rule by using the `-vvv` option (will list applied rules) on a minimal code snippet.
 -->
 
-### Runtime version
+### Description
 
 <!--
   Please describe the problem.
