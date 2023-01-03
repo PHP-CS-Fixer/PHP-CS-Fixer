@@ -2,19 +2,19 @@
 List of Available Rule sets
 ===========================
 - `@DoctrineAnnotation <./DoctrineAnnotation.rst>`_
-- `@PER <./PER.rst>`_
 - `@PER:risky <./PERRisky.rst>`_
+- `@PER <./PER.rst>`_
 - `@PHP54Migration <./PHP54Migration.rst>`_
 - `@PHP56Migration:risky <./PHP56MigrationRisky.rst>`_
-- `@PHP70Migration <./PHP70Migration.rst>`_
 - `@PHP70Migration:risky <./PHP70MigrationRisky.rst>`_
-- `@PHP71Migration <./PHP71Migration.rst>`_
+- `@PHP70Migration <./PHP70Migration.rst>`_
 - `@PHP71Migration:risky <./PHP71MigrationRisky.rst>`_
+- `@PHP71Migration <./PHP71Migration.rst>`_
 - `@PHP73Migration <./PHP73Migration.rst>`_
-- `@PHP74Migration <./PHP74Migration.rst>`_
 - `@PHP74Migration:risky <./PHP74MigrationRisky.rst>`_
-- `@PHP80Migration <./PHP80Migration.rst>`_
+- `@PHP74Migration <./PHP74Migration.rst>`_
 - `@PHP80Migration:risky <./PHP80MigrationRisky.rst>`_
+- `@PHP80Migration <./PHP80Migration.rst>`_
 - `@PHP81Migration <./PHP81Migration.rst>`_
 - `@PHP82Migration <./PHP82Migration.rst>`_
 - `@PHPUnit30Migration:risky <./PHPUnit30MigrationRisky.rst>`_
@@ -32,10 +32,10 @@ List of Available Rule sets
 - `@PHPUnit75Migration:risky <./PHPUnit75MigrationRisky.rst>`_
 - `@PHPUnit84Migration:risky <./PHPUnit84MigrationRisky.rst>`_
 - `@PSR1 <./PSR1.rst>`_
-- `@PSR12 <./PSR12.rst>`_
-- `@PSR12:risky <./PSR12Risky.rst>`_
 - `@PSR2 <./PSR2.rst>`_
-- `@PhpCsFixer <./PhpCsFixer.rst>`_
+- `@PSR12:risky <./PSR12Risky.rst>`_
+- `@PSR12 <./PSR12.rst>`_
 - `@PhpCsFixer:risky <./PhpCsFixerRisky.rst>`_
-- `@Symfony <./Symfony.rst>`_
+- `@PhpCsFixer <./PhpCsFixer.rst>`_
 - `@Symfony:risky <./SymfonyRisky.rst>`_
+- `@Symfony <./Symfony.rst>`_
