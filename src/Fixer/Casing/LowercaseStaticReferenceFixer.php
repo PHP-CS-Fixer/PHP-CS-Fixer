@@ -100,6 +100,10 @@ class Foo extends Bar
                 continue;
             }
 
+            if ($tokens[$prevIndex]->isGivenKind(T_CASE) && !$tokens[$nextIndex]->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)) {
+                continue;
+            }
+
             $tokens[$index] = new Token([$token->getId(), $newContent]);
         }
     }

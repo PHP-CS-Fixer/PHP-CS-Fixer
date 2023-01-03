@@ -178,7 +178,7 @@ Class Notation
 - `ordered_class_elements <./class_notation/ordered_class_elements.rst>`_
 
   Orders the elements of classes/interfaces/traits/enums.
-- `ordered_interfaces <./class_notation/ordered_interfaces.rst>`_ *(risky)*
+- `ordered_interfaces <./class_notation/ordered_interfaces.rst>`_
 
   Orders the interfaces in an ``implements`` or ``interface extends`` clause.
 - `ordered_traits <./class_notation/ordered_traits.rst>`_ *(risky)*

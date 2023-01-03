@@ -86,13 +86,13 @@ The rule is part of the following rule sets:
 @PHP82Migration
   Using the `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_ rule set will enable the ``visibility_required`` rule with the default config.
 
-@PSR12
-  Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``visibility_required`` rule with the default config.
-
 @PSR2
   Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``visibility_required`` rule with the config below:
 
   ``['elements' => ['method', 'property']]``
+
+@PSR12
+  Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``visibility_required`` rule with the default config.
 
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``visibility_required`` rule with the default config.
