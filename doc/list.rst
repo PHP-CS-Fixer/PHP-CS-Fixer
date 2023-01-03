@@ -2337,7 +2337,9 @@ List of Available Rules
 
    Data providers must be static.
 
-   Part of rule sets `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+   *warning risky* Fixer could be risky if one is calling data provider function dynamically.
+
+   Part of rule sets `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_ `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php>`_
 -  `php_unit_dedicate_assert <./rules/php_unit/php_unit_dedicate_assert.rst>`_

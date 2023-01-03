@@ -45,7 +45,17 @@ class FooTest extends TestCase {
 '
                 ),
             ],
+            null,
+            'Fixer could be risky if one is calling data provider function dynamically.'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky(): bool
+    {
+        return true;
     }
 
     /**

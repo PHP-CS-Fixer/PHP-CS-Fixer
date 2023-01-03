@@ -43,7 +43,6 @@ Rules
   config:
   ``['only_booleans' => true]``
 - `ordered_class_elements <./../rules/class_notation/ordered_class_elements.rst>`_
-- `php_unit_data_provider_static <./../rules/php_unit/php_unit_data_provider_static.rst>`_
 - `php_unit_internal_class <./../rules/php_unit/php_unit_internal_class.rst>`_
 - `php_unit_test_class_requires_covers <./../rules/php_unit/php_unit_test_class_requires_covers.rst>`_
 - `phpdoc_add_missing_param_annotation <./../rules/phpdoc/phpdoc_add_missing_param_annotation.rst>`_

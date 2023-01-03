@@ -4,6 +4,14 @@ Rule ``php_unit_data_provider_static``
 
 Data providers must be static.
 
+Warning
+-------
+
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixer could be risky if one is calling data provider function dynamically.
+
 Examples
 --------
 
@@ -32,5 +40,5 @@ The rule is part of the following rule sets:
 @PHPUnit100Migration:risky
   Using the `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ rule set will enable the ``php_unit_data_provider_static`` rule.
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``php_unit_data_provider_static`` rule.
+@PhpCsFixer:risky
+  Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``php_unit_data_provider_static`` rule.
