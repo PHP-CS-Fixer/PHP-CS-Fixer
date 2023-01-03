@@ -151,7 +151,7 @@ class Foo extends A implements TestInterface, SomethingElse
     }
 
     /**
-     * @param array<int,int> $expectedIndexes
+     * @param array<array{0: int, 1: int}> $expectedIndexes
      *
      * @dataProvider provideFindPhpUnitClassesCases
      */
