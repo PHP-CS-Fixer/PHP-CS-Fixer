@@ -242,7 +242,6 @@ final class Tokens extends \SplFixedArray
 
     public function offsetSet($index, $token): void
     {
-        // @phpstan-ignore-next-line as we type checking here
         if (null === $token) {
             throw new \InvalidArgumentException('Token must be an instance of PhpCsFixer\\Doctrine\\Annotation\\Token, "null" given.');
         }
@@ -273,7 +272,6 @@ final class Tokens extends \SplFixedArray
 
         $max = \count($this) - 1;
         while ($index < $max) {
-            // @phpstan-ignore-next-line Next index always exists.
             $this[$index] = $this[$index + 1];
             ++$index;
         }
