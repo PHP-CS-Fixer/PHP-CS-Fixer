@@ -67,7 +67,7 @@ final class PhpUnitTestCaseIndicator
      * we do it for bottom of file first, and then to the top of the file, so we
      * mitigate risk of not visiting whole collcetion (final indices).
      *
-     * @return iterable array of [int start, int end] indices from later to earlier classes
+     * @return iterable<array{0: int, 1: int}> array of [int start, int end] indices from later to earlier classes
      */
     public function findPhpUnitClasses(Tokens $tokens): iterable
     {
