@@ -2337,7 +2337,7 @@ List of Available Rules
 
    Data providers must be static.
 
-   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+   Part of rule sets `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php>`_
 -  `php_unit_dedicate_assert <./rules/php_unit/php_unit_dedicate_assert.rst>`_
@@ -2354,7 +2354,7 @@ List of Available Rules
      | Default value: ``'newest'``
 
 
-   Part of rule sets `@PHPUnit30Migration:risky <./ruleSets/PHPUnit30MigrationRisky.rst>`_ `@PHPUnit32Migration:risky <./ruleSets/PHPUnit32MigrationRisky.rst>`_ `@PHPUnit35Migration:risky <./ruleSets/PHPUnit35MigrationRisky.rst>`_ `@PHPUnit43Migration:risky <./ruleSets/PHPUnit43MigrationRisky.rst>`_ `@PHPUnit48Migration:risky <./ruleSets/PHPUnit48MigrationRisky.rst>`_ `@PHPUnit50Migration:risky <./ruleSets/PHPUnit50MigrationRisky.rst>`_ `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_
+   Part of rule sets `@PHPUnit30Migration:risky <./ruleSets/PHPUnit30MigrationRisky.rst>`_ `@PHPUnit32Migration:risky <./ruleSets/PHPUnit32MigrationRisky.rst>`_ `@PHPUnit35Migration:risky <./ruleSets/PHPUnit35MigrationRisky.rst>`_ `@PHPUnit43Migration:risky <./ruleSets/PHPUnit43MigrationRisky.rst>`_ `@PHPUnit48Migration:risky <./ruleSets/PHPUnit48MigrationRisky.rst>`_ `@PHPUnit50Migration:risky <./ruleSets/PHPUnit50MigrationRisky.rst>`_ `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixer <./../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php>`_
 -  `php_unit_dedicate_assert_internal_type <./rules/php_unit/php_unit_dedicate_assert_internal_type.rst>`_
@@ -2372,7 +2372,7 @@ List of Available Rules
      | Default value: ``'newest'``
 
 
-   Part of rule sets `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_
+   Part of rule sets `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertInternalTypeFixer <./../src/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixer.php>`_
 -  `php_unit_expectation <./rules/php_unit/php_unit_expectation.rst>`_
@@ -2390,7 +2390,7 @@ List of Available Rules
      | Default value: ``'newest'``
 
 
-   Part of rule sets `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_
+   Part of rule sets `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitExpectationFixer <./../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php>`_
 -  `php_unit_fqcn_annotation <./rules/php_unit/php_unit_fqcn_annotation.rst>`_
@@ -2445,7 +2445,7 @@ List of Available Rules
      | Default value: ``'newest'``
 
 
-   Part of rule sets `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_
+   Part of rule sets `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockFixer <./../src/Fixer/PhpUnit/PhpUnitMockFixer.php>`_
 -  `php_unit_mock_short_will_return <./rules/php_unit/php_unit_mock_short_will_return.rst>`_
@@ -2483,7 +2483,7 @@ List of Available Rules
      | Default value: ``'newest'``
 
 
-   Part of rule sets `@PHPUnit48Migration:risky <./ruleSets/PHPUnit48MigrationRisky.rst>`_ `@PHPUnit50Migration:risky <./ruleSets/PHPUnit50MigrationRisky.rst>`_ `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_
+   Part of rule sets `@PHPUnit48Migration:risky <./ruleSets/PHPUnit48MigrationRisky.rst>`_ `@PHPUnit50Migration:risky <./ruleSets/PHPUnit50MigrationRisky.rst>`_ `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNamespacedFixer <./../src/Fixer/PhpUnit/PhpUnitNamespacedFixer.php>`_
 -  `php_unit_no_expectation_annotation <./rules/php_unit/php_unit_no_expectation_annotation.rst>`_
@@ -2505,7 +2505,7 @@ List of Available Rules
      | Default value: ``true``
 
 
-   Part of rule sets `@PHPUnit32Migration:risky <./ruleSets/PHPUnit32MigrationRisky.rst>`_ `@PHPUnit35Migration:risky <./ruleSets/PHPUnit35MigrationRisky.rst>`_ `@PHPUnit43Migration:risky <./ruleSets/PHPUnit43MigrationRisky.rst>`_ `@PHPUnit48Migration:risky <./ruleSets/PHPUnit48MigrationRisky.rst>`_ `@PHPUnit50Migration:risky <./ruleSets/PHPUnit50MigrationRisky.rst>`_ `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_
+   Part of rule sets `@PHPUnit32Migration:risky <./ruleSets/PHPUnit32MigrationRisky.rst>`_ `@PHPUnit35Migration:risky <./ruleSets/PHPUnit35MigrationRisky.rst>`_ `@PHPUnit43Migration:risky <./ruleSets/PHPUnit43MigrationRisky.rst>`_ `@PHPUnit48Migration:risky <./ruleSets/PHPUnit48MigrationRisky.rst>`_ `@PHPUnit50Migration:risky <./ruleSets/PHPUnit50MigrationRisky.rst>`_ `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNoExpectationAnnotationFixer <./../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php>`_
 -  `php_unit_set_up_tear_down_visibility <./rules/php_unit/php_unit_set_up_tear_down_visibility.rst>`_
