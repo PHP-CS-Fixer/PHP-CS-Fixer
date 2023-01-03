@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**

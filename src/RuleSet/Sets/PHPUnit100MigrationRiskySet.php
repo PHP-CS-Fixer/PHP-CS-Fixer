@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderStaticFixer;
 use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
 
 /**
@@ -26,7 +25,7 @@ final class PHPUnit100MigrationRiskySet extends AbstractMigrationSetDescription
     {
         return [
             '@PHPUnit84Migration:risky' => true,
-            (new PhpUnitDataProviderStaticFixer())->getName() => true,
+            'php_unit_data_provider_static' => true,
         ];
     }
 }
