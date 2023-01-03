@@ -67,7 +67,6 @@ class FooTest extends TestCase {
                 }
             }
             $functionIndex = $tokens->getPrevTokenOfKind($dataProviderDefinitionIndex, [[T_FUNCTION]]);
-            \assert(\is_int($functionIndex));
 
             $methodAttributes = $tokensAnalyzer->getMethodAttributes($functionIndex);
             if (false !== $methodAttributes['static']) {

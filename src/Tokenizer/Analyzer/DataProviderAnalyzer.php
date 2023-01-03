@@ -38,7 +38,6 @@ final class DataProviderAnalyzer
                 -1,
                 [[T_ABSTRACT], [T_COMMENT], [T_FINAL], [T_FUNCTION], [T_PRIVATE], [T_PROTECTED], [T_PUBLIC], [T_STATIC], [T_WHITESPACE]]
             );
-            \assert(\is_int($docCommentIndex));
 
             if (!$tokens[$docCommentIndex]->isGivenKind(T_DOC_COMMENT)) {
                 continue;
@@ -80,7 +79,6 @@ final class DataProviderAnalyzer
             }
 
             $functionNameIndex = $tokens->getNextNonWhitespace($index);
-            \assert(\is_int($functionNameIndex));
 
             if (!$tokens[$functionNameIndex]->isGivenKind(T_STRING)) {
                 continue;
