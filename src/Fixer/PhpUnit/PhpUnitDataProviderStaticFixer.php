@@ -18,7 +18,6 @@ use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
 use PhpCsFixer\Tokenizer\Analyzer\DataProviderAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -58,8 +57,8 @@ class FooTest extends TestCase {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         $inserts = [];
-        foreach ($dataProviderAnalyzer->getDataProviders($tokens, $startIndex, $endIndex) as $dataProviderAnalysis) {
-            $methodStartIndex = $tokens->getNextTokenOfKind($dataProviderAnalysis->getNameIndex(), ['{']);
+        foreach ($dataProviderAnalyzer->getDataProviders($tokens, $startIndex, $endIndex) as $dataProviderDefinitionIndex) {
+            $methodStartIndex = $tokens->getNextTokenOfKind($dataProviderDefinitionIndex, ['{']);
             if (null !== $methodStartIndex) {
                 $methodEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodStartIndex);
 
@@ -67,7 +66,7 @@ class FooTest extends TestCase {
                     continue;
                 }
             }
-            $functionIndex = $tokens->getPrevTokenOfKind($dataProviderAnalysis->getNameIndex(), [[T_FUNCTION]]);
+            $functionIndex = $tokens->getPrevTokenOfKind($dataProviderDefinitionIndex, [[T_FUNCTION]]);
             \assert(\is_int($functionIndex));
 
             $methodAttributes = $tokensAnalyzer->getMethodAttributes($functionIndex);
