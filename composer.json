@@ -19,7 +19,7 @@
         "ext-tokenizer": "*",
         "composer/semver": "^3.2",
         "composer/xdebug-handler": "^3.0.3",
-        "doctrine/annotations": "^1.13",
+        "doctrine/annotations": "^1.14.1",
         "sebastian/diff": "^4.0",
         "symfony/console": "^5.4 || ^6.0",
         "symfony/event-dispatcher": "^5.4 || ^6.0",
