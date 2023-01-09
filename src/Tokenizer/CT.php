@@ -54,6 +54,7 @@ final class CT
     public const T_NAMED_ARGUMENT_COLON = 10033;
     public const T_FIRST_CLASS_CALLABLE = 10034;
     public const T_TYPE_INTERSECTION = 10035;
+    public const T_CLASS_READONLY = 10036;
 
     private function __construct()
     {
