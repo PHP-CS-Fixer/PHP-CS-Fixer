@@ -44,9 +44,15 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
 
     final protected function getDocBlockIndex(Tokens $tokens, int $index): int
     {
+        $modifiers = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_COMMENT];
+
+        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.2+ is required
+            $modifiers[] = T_READONLY;
+        }
+
         do {
             $index = $tokens->getPrevNonWhitespace($index);
-        } while ($tokens[$index]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_COMMENT]));
+        } while ($tokens[$index]->isGivenKind($modifiers));
 
         return $index;
     }

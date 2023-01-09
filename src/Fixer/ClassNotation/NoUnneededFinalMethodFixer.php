@@ -181,8 +181,8 @@ class Bar
             }
 
             if (!\array_key_exists($classIndex, $classesAreFinal)) {
-                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classIndex)];
-                $classesAreFinal[$classIndex] = $prevToken->isGivenKind(T_FINAL);
+                $modifiers = $tokensAnalyzer->getClassyModifiers($classIndex);
+                $classesAreFinal[$classIndex] = isset($modifiers['final']);
             }
 
             $element['method_of_enum'] = false;
