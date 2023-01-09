@@ -24,10 +24,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 final class SelfStaticAccessorFixer extends AbstractFixer
 {
-    /**
-     * @var TokensAnalyzer
-     */
-    private $tokensAnalyzer;
+    private TokensAnalyzer $tokensAnalyzer;
 
     /**
      * {@inheritdoc}
@@ -115,14 +112,12 @@ $a = new class() {
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
-
         $classIndex = $tokens->getNextTokenOfKind(0, [[T_CLASS]]);
 
         while (null !== $classIndex) {
-            if (
-                $this->tokensAnalyzer->isAnonymousClass($classIndex)
-                || $tokens[$tokens->getPrevMeaningfulToken($classIndex)]->isGivenKind(T_FINAL)
-            ) {
+            $modifiers = $this->tokensAnalyzer->getClassyModifiers($classIndex);
+
+            if (isset($modifiers['final']) || $this->tokensAnalyzer->isAnonymousClass($classIndex)) {
                 $classIndex = $this->fixClass($tokens, $classIndex);
             }
 

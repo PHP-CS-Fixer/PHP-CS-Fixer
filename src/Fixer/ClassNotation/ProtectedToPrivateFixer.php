@@ -28,6 +28,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class ProtectedToPrivateFixer extends AbstractFixer
 {
+    private TokensAnalyzer $tokensAnalyzer;
+
     /**
      * {@inheritdoc}
      */
@@ -80,7 +82,7 @@ final class Sample
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $this->tokensAnalyzer = new TokensAnalyzer($tokens);
         $modifierKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION];
 
         if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
@@ -90,7 +92,7 @@ final class Sample
         $classesCandidate = [];
         $classElementTypes = ['method' => true, 'property' => true, 'const' => true];
 
-        foreach ($tokensAnalyzer->getClassyElements() as $index => $element) {
+        foreach ($this->tokensAnalyzer->getClassyElements() as $index => $element) {
             $classIndex = $element['classIndex'];
 
             if (!\array_key_exists($classIndex, $classesCandidate)) {
@@ -98,7 +100,7 @@ final class Sample
             }
 
             if (false === $classesCandidate[$classIndex]) {
-                continue; // not "final" class, "extends", is "anonymous", enum or uses trait
+                continue;
             }
 
             if (!isset($classElementTypes[$element['type']])) {
@@ -132,15 +134,28 @@ final class Sample
         }
     }
 
+    /**
+     * Consider symbol as candidate for fixing if it's:
+     *   - an Enum (PHP8.1+)
+     *   - a class, which:
+     *     - is not anonymous
+     *     - is not final
+     *     - does not use traits
+     *     - does not extend other class.
+     */
     private function isClassCandidate(Tokens $tokens, int $classIndex): bool
     {
         if (\defined('T_ENUM') && $tokens[$classIndex]->isGivenKind(T_ENUM)) { // @TODO: drop condition when PHP 8.1+ is required
             return true;
         }
 
-        $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classIndex)];
+        if (!$tokens[$classIndex]->isGivenKind(T_CLASS) || $this->tokensAnalyzer->isAnonymousClass($classIndex)) {
+            return false;
+        }
 
-        if (!$prevToken->isGivenKind(T_FINAL)) {
+        $modifiers = $this->tokensAnalyzer->getClassyModifiers($classIndex);
+
+        if (!isset($modifiers['final'])) {
             return false;
         }
 
