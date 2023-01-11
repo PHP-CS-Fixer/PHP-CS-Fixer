@@ -1494,4 +1494,49 @@ class Foo {}
              */
         ');
     }
+
+    /**
+     * @dataProvider provideCallableTypesWithUglyCodeCases
+     */
+    public function testCallableTypesWithUglyCode(string $input): void
+    {
+        $this->doTest(<<<'EOT'
+        <?php
+        /**
+         * @var callable                      $fn
+         * @var callable(bool): int           $fn2
+         * @var Closure                       $fn3
+         * @var Closure(string|object):string $fn4
+         * @var \Closure                      $fn5
+         * @var \Closure(int, bool): bool     $fn6
+         */
+        EOT, $input);
+    }
+
+    public function provideCallableTypesWithUglyCodeCases(): iterable
+    {
+        yield [<<<'EOT'
+        <?php
+        /**
+         * @var callable $fn
+         * @var callable(bool): int $fn2
+         * @var Closure $fn3
+         * @var Closure(string|object):string $fn4
+         * @var \Closure $fn5
+         * @var \Closure(int, bool): bool $fn6
+         */
+        EOT];
+
+        yield [<<<'EOT'
+        <?php
+        /**
+         * @var          callable           $fn
+         * @var   callable(bool): int     $fn2
+         * @var   Closure          $fn3
+         * @var Closure(string|object):string                  $fn4
+         * @var      \Closure             $fn5
+         * @var            \Closure(int, bool): bool       $fn6
+         */
+        EOT];
+    }
 }
