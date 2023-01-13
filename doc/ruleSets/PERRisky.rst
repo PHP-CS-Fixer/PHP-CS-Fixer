@@ -2,7 +2,7 @@
 Rule set ``@PER:risky``
 =======================
 
-Rules that follow `PER Coding Style <https://www.php-fig.org/per/coding-style/>`_. This set contains rules that are risky.
+Alias for the PER-CS rules. It is recommended you use @PER-CS instead. This set contains rules that are risky.
 
 Rules
 -----
