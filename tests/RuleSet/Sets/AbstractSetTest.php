@@ -98,7 +98,7 @@ abstract class AbstractSetTest extends TestCase
         self::assertSame($setRulesSorted, $setRules);
     }
 
-    private static function getSet(): RuleSetDescriptionInterface
+    protected static function getSet(): RuleSetDescriptionInterface
     {
         $setClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
 

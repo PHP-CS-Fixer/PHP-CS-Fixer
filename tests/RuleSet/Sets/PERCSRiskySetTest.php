@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\RuleSet\Sets;
 
+use PhpCsFixer\RuleSet\RuleSets;
+
 /**
  * @internal
  *
@@ -21,4 +23,18 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
  */
 final class PERCSRiskySetTest extends AbstractSetTest
 {
+    function testPointsToLatestPERCSRiskySet(): void
+    {
+        $percsSets =array_filter(RuleSets::getSetDefinitionNames(), fn (string $s): bool =>
+            strpos($s, '@PER-CS') === 0
+            && strpos($s, 'risky') !== false
+            && $s !== '@PER-CS:risky'
+        );
+        $latest = array_pop($percsSets);
+
+        $set = self::getSet();
+
+        self::assertTrue($set->isRisky());
+        self::assertSame([$latest => true], $set->getRules());
+    }
 }
