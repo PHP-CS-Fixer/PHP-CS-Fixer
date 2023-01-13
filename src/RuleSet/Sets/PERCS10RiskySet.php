@@ -21,7 +21,7 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  *
  * PER Coding Style v1.0.
  *
- * @link https://github.com/php-fig/per-coding-style/blob/1.0.0/spec.md
+ * @see https://github.com/php-fig/per-coding-style/blob/1.0.0/spec.md
  */
 final class PERCS10RiskySet extends AbstractRuleSetDescription
 {

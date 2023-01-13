@@ -19,7 +19,7 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 /**
  * @internal
  *
- * @link https://www.php-fig.org/per/coding-style/
+ * @see https://www.php-fig.org/per/coding-style/
  *
  * This Ruleset always points to the latest version of PER-CS.
  * To fix on a specific version of PER-CS, use `PERCS10` (the 1.0 release),

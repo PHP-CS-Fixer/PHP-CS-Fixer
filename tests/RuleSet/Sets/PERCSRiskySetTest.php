@@ -23,12 +23,13 @@ use PhpCsFixer\RuleSet\RuleSets;
  */
 final class PERCSRiskySetTest extends AbstractSetTest
 {
-    function testPointsToLatestPERCSRiskySet(): void
+    public function testPointsToLatestPERCSRiskySet(): void
     {
-        $percsSets =array_filter(RuleSets::getSetDefinitionNames(), fn (string $s): bool =>
-            strpos($s, '@PER-CS') === 0
-            && strpos($s, 'risky') !== false
-            && $s !== '@PER-CS:risky'
+        $percsSets = array_filter(
+            RuleSets::getSetDefinitionNames(),
+            static fn (string $s): bool => str_starts_with($s, '@PER-CS')
+            && str_contains($s, 'risky')
+            && '@PER-CS:risky' !== $s
         );
         $latest = array_pop($percsSets);
 
