@@ -2339,6 +2339,14 @@ List of Available Rules
 
    *warning risky* Fixer could be risky if one is calling data provider function dynamically.
 
+   Configuration options:
+
+   - | ``force``
+     | whether to make static data providers having dynamic class calls
+     | Allowed types: ``bool``
+     | Default value: ``false``
+
+
    Part of rule set `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php>`_

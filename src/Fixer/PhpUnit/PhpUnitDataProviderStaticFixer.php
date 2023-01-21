@@ -15,6 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -26,7 +30,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author Kuba Werłos <werlos@gmail.com>
  */
-final class PhpUnitDataProviderStaticFixer extends AbstractPhpUnitFixer
+final class PhpUnitDataProviderStaticFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -43,6 +47,18 @@ class FooTest extends TestCase {
     public function provideSomethingCases() {}
 }
 '
+                ),
+                new CodeSample(
+                    '<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideSomethingCases
+     */
+    public function testSomething($expected, $actual) {}
+    public function provideSomethingCases() { $this->getData(); }
+}
+',
+                    ['force' => true]
                 ),
             ],
             null,
@@ -61,6 +77,19 @@ class FooTest extends TestCase {
     /**
      * {@inheritdoc}
      */
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('force', 'whether to make static data providers having dynamic class calls'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $dataProviderAnalyzer = new DataProviderAnalyzer();
@@ -72,7 +101,7 @@ class FooTest extends TestCase {
             if (null !== $methodStartIndex) {
                 $methodEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodStartIndex);
 
-                if (null !== $tokens->findSequence([[T_VARIABLE, '$this']], $methodStartIndex, $methodEndIndex)) {
+                if (!$this->configuration['force'] && null !== $tokens->findSequence([[T_VARIABLE, '$this']], $methodStartIndex, $methodEndIndex)) {
                     continue;
                 }
             }

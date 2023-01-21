@@ -24,10 +24,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitDataProviderStaticFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, bool> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -139,6 +142,26 @@ abstract class FooTest extends TestCase {
     public function testFoo() {}
     abstract public function provideFooCases();
 }',
+        ];
+
+        yield 'fix when containing dynamic calls and with `force` enabled' => [
+            '<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideFoo1Cases
+     */
+    public function testFoo1() {}
+    public static function provideFoo1Cases() { $this->init(); }
+}',
+            '<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideFoo1Cases
+     */
+    public function testFoo1() {}
+    public function provideFoo1Cases() { $this->init(); }
+}',
+            ['force' => true],
         ];
     }
 }
