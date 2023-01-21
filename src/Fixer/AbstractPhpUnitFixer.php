@@ -15,7 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -57,8 +61,107 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         return $index;
     }
 
+    /**
+     * @param array<string> $preventingAnnotations
+     */
+    final protected function ensureIsDockBlockWithAnnotation(
+        Tokens $tokens,
+        int $index,
+        string $annotation,
+        bool $addWithEmptyLineBeforePhpdoc,
+        bool $addWithEmptyLineBeforeAnnotation,
+        bool $addInSingleLinePhpdoc,
+        array $preventingAnnotations
+    ): void {
+        $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
+
+        if ($this->isPHPDoc($tokens, $docBlockIndex)) {
+            $this->updateDocBlockIfNeeded($tokens, $docBlockIndex, $annotation, $addWithEmptyLineBeforeAnnotation, $addInSingleLinePhpdoc, $preventingAnnotations);
+        } else {
+            $this->createDocBlock($tokens, $docBlockIndex, $annotation, $addWithEmptyLineBeforePhpdoc);
+        }
+    }
+
     final protected function isPHPDoc(Tokens $tokens, int $index): bool
     {
         return $tokens[$index]->isGivenKind(T_DOC_COMMENT);
+    }
+
+    private function createDocBlock(Tokens $tokens, int $docBlockIndex, string $annotation, bool $addWithEmptyLineBeforePhpdoc): void
+    {
+        $lineEnd = $this->whitespacesConfig->getLineEnding();
+        $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
+        $toInsert = [
+            new Token([T_DOC_COMMENT, "/**{$lineEnd}{$originalIndent} * @{$annotation}{$lineEnd}{$originalIndent} */"]),
+            new Token([T_WHITESPACE, $lineEnd.$originalIndent]),
+        ];
+        $index = $tokens->getNextMeaningfulToken($docBlockIndex);
+        $tokens->insertAt($index, $toInsert);
+
+        if ($addWithEmptyLineBeforePhpdoc && !$tokens[$index - 1]->isGivenKind(T_WHITESPACE)) {
+            $extraNewLines = $this->whitespacesConfig->getLineEnding();
+
+            if (!$tokens[$index - 1]->isGivenKind(T_OPEN_TAG)) {
+                $extraNewLines .= $this->whitespacesConfig->getLineEnding();
+            }
+
+            $tokens->insertAt($index, [
+                new Token([T_WHITESPACE, $extraNewLines.WhitespacesAnalyzer::detectIndent($tokens, $index)]),
+            ]);
+        }
+    }
+
+    /**
+     * @param array<string> $preventingAnnotations
+     */
+    private function updateDocBlockIfNeeded(
+        Tokens $tokens,
+        int $docBlockIndex,
+        string $annotation,
+        bool $addWithEmptyLineBeforeAnnotation,
+        bool $addInSingleLinePhpdoc,
+        array $preventingAnnotations
+    ): void {
+        $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
+        if (!$addInSingleLinePhpdoc && 1 === \count($doc->getLines())) {
+            return;
+        }
+        foreach ($preventingAnnotations as $preventingAnnotation) {
+            if ([] !== $doc->getAnnotationsOfType($preventingAnnotation)) {
+                return;
+            }
+        }
+        $doc = $this->makeDocBlockMultiLineIfNeeded($doc, $tokens, $docBlockIndex, $annotation);
+        $lines = $this->addInternalAnnotation($doc, $tokens, $docBlockIndex, $annotation, $addWithEmptyLineBeforeAnnotation);
+        $lines = implode('', $lines);
+
+        $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
+    }
+
+    /**
+     * @return array<Line>
+     */
+    private function addInternalAnnotation(DocBlock $docBlock, Tokens $tokens, int $docBlockIndex, string $annotation, bool $addWithEmptyLineBeforeAnnotation): array
+    {
+        $lines = $docBlock->getLines();
+        $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
+        $lineEnd = $this->whitespacesConfig->getLineEnding();
+        $extraLine = $addWithEmptyLineBeforeAnnotation ? $lineEnd.$originalIndent.' *' : '';
+        array_splice($lines, -1, 0, $originalIndent.' *'.$extraLine.' @'.$annotation.$lineEnd);
+
+        return $lines;
+    }
+
+    private function makeDocBlockMultiLineIfNeeded(DocBlock $doc, Tokens $tokens, int $docBlockIndex, string $annotation): DocBlock
+    {
+        $lines = $doc->getLines();
+        if (1 === \count($lines) && empty($doc->getAnnotationsOfType($annotation))) {
+            $indent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
+            $doc->makeMultiLine($indent, $this->whitespacesConfig->getLineEnding());
+
+            return $doc;
+        }
+
+        return $doc;
     }
 }

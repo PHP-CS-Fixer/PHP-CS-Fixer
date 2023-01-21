@@ -21,6 +21,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @author Jefersson Nathan <malukenho.dev@gmail.com>
  *
+ * @covers \PhpCsFixer\Fixer\AbstractPhpUnitFixer
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitSizeClassFixer
  */
 final class PhpUnitSizeClassFixerTest extends AbstractFixerTestCase

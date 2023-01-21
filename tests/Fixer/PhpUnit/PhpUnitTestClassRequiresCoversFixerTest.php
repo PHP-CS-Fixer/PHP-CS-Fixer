@@ -22,6 +22,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\Fixer\AbstractPhpUnitFixer
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer
  */
 final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCase
