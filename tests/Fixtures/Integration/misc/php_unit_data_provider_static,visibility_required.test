@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: php_unit_data_provider_static,visibility_required.
+--RULESET--
+{"php_unit_data_provider_static": true, "visibility_required": true}
+--EXPECT--
+<?php
+class FooTest extends TestCase {
+    /**
+    * @dataProvider provideFooCases
+    */
+    public function testFoo() {}
+    public static function provideFooCases() { $x->getData(); }
+}
+
+--INPUT--
+<?php
+class FooTest extends TestCase {
+    /**
+    * @dataProvider provideFooCases
+    */
+    function testFoo() {}
+    function provideFooCases() { $x->getData(); }
+}

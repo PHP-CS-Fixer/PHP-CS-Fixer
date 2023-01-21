@@ -588,6 +588,9 @@ PHPUnit
 - `php_unit_construct <./php_unit/php_unit_construct.rst>`_ *(risky)*
 
   PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be written with dedicated method like ``->assertTrue($foo)``.
+- `php_unit_data_provider_static <./php_unit/php_unit_data_provider_static.rst>`_ *(risky)*
+
+  Data providers must be static.
 - `php_unit_dedicate_assert <./php_unit/php_unit_dedicate_assert.rst>`_ *(risky)*
 
   PHPUnit assertions like ``assertInternalType``, ``assertFileExists``, should be used over ``assertTrue``.
