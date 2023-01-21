@@ -46,7 +46,7 @@ final class TypeExpression
                 )
                 |
                 (?<callable> # callable syntax, e.g. `callable(string): bool`
-                    (?<callable_start>(?:callable|Closure)\h*\(\h*)
+                    (?<callable_start>(?:callable|\\\\?Closure)\h*\(\h*)
                         (?<callable_arguments>
                             (?&types)
                             (?:
