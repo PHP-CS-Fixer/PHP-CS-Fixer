@@ -1513,7 +1513,7 @@ class Foo {}
         EOT, $input);
     }
 
-    public function provideCallableTypesWithUglyCodeCases(): iterable
+    public static function provideCallableTypesWithUglyCodeCases(): iterable
     {
         yield [<<<'EOT'
         <?php
