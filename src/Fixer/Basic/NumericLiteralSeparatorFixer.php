@@ -105,24 +105,24 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer
         // All other types
 
         /** If its a negative value we need an offset */
-        $negative_offset = fn ($v) => str_contains($v, '-') ? 1 : 0;
+        $negativeOffset = fn ($v) => str_contains($v, '-') ? 1 : 0;
 
         preg_match_all('/([0-9-_]+)((\.)([0-9_]+))?((e)([0-9-_]+))?/i', $value, $result);
 
         $integer = $result[1][0];
-        $joinedValue = $this->insertEveryRight($integer, 3, $negative_offset($integer));
+        $joinedValue = $this->insertEveryRight($integer, 3, $negativeOffset($integer));
 
         $dot = $result[3][0];
         if ('' !== $dot) {
             $integer = $result[4][0];
-            $decimal = $this->insertEveryLeft($integer, 3, $negative_offset($integer));
+            $decimal = $this->insertEveryLeft($integer, 3, $negativeOffset($integer));
             $joinedValue = $joinedValue.$dot.$decimal;
         }
 
         $tim = $result[6][0];
         if ('' !== $tim) {
             $integer = $result[7][0];
-            $times = $this->insertEveryRight($integer, 3, $negative_offset($integer));
+            $times = $this->insertEveryRight($integer, 3, $negativeOffset($integer));
             $joinedValue = $joinedValue.$tim.$times;
         }
 
