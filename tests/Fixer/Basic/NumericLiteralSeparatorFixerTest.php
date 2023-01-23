@@ -21,7 +21,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Basic\NumericLiteralSeparatorFixerTest
+ * @covers \PhpCsFixer\Fixer\Basic\NumericLiteralSeparatorFixer
  */
 final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
 {
