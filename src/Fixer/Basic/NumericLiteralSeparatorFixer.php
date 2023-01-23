@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -107,7 +108,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer
         /** If its a negative value we need an offset */
         $negativeOffset = fn ($v) => str_contains($v, '-') ? 1 : 0;
 
-        preg_match_all('/([0-9-_]+)((\.)([0-9_]+))?((e)([0-9-_]+))?/i', $value, $result);
+        Preg::matchAll('/([0-9-_]+)((\.)([0-9_]+))?((e)([0-9-_]+))?/i', $value, $result);
 
         $integer = $result[1][0];
         $joinedValue = $this->insertEveryRight($integer, 3, $negativeOffset($integer));
