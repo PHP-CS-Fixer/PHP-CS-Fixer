@@ -101,6 +101,9 @@ Basic
 - `non_printable_character <./basic/non_printable_character.rst>`_ *(risky)*
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
+- `numeric_literal_separator <./basic/numeric_literal_separator.rst>`_
+
+  Adds separators to numeric literals of any kind.
 - `octal_notation <./basic/octal_notation.rst>`_
 
   Literal octal must be in ``0o`` notation.
