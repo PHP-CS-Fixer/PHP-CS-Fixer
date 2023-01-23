@@ -129,7 +129,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer
         return $joinedValue;
     }
 
-    private function insertEveryRight($value, $length, $offset = 0)
+    private function insertEveryRight(string $value, int $length, int $offset = 0): string
     {
         $position = $length * -1;
         while ($position > -(\strlen($value) - $offset)) {
@@ -140,7 +140,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer
         return $value;
     }
 
-    private function insertEveryLeft($value, $length, $offset = 0)
+    private function insertEveryLeft(string $value, int $length, int $offset = 0): string
     {
         $position = $length;
         while ($position < \strlen($value)) {
