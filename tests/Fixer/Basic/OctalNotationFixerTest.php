@@ -22,6 +22,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Basic\OctalNotationFixer
+ *
  * @requires PHP 8.1
  */
 final class OctalNotationFixerTest extends AbstractFixerTestCase
@@ -67,6 +68,16 @@ final class OctalNotationFixerTest extends AbstractFixerTestCase
                 $foo = 0123;
                 $foo = 01;
             ',
+        ];
+
+        yield [
+            '<?php $foo = 0o1_234;',
+            '<?php $foo = 01_234;',
+        ];
+
+        yield [
+            '<?php $foo = 0o0_123_456;',
+            '<?php $foo = 0_123_456;',
         ];
     }
 }
