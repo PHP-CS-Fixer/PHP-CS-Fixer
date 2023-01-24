@@ -33,7 +33,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NumericLiteralSeparatorFixer extends AbstractFixer
 {
-    private string $separator = '_';
+    private const separator = '_';
 
     /**
      * {@inheritdoc}
@@ -43,7 +43,11 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer
         return new FixerDefinition(
             'Adds separators to numeric literals of any kind.',
             [
-                new CodeSample("<?php \$var = 123456;\n"),
+                new CodeSample("<?php \$var = 12345678;\n"),
+                new CodeSample("<?php \$var = 01234567;\n"),
+                new CodeSample("<?php \$var = 0o123456;\n"),
+                new CodeSample("<?php \$var = 0b100100;\n"),
+                new CodeSample("<?php \$var = 0x3D458F;\n"),
             ]
         );
     }
@@ -53,11 +57,6 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        if (\PHP_VERSION_ID < 70400) {
-            // Syntax since PHP 7.4.0
-            return false;
-        }
-
         return $tokens->isAnyTokenKindsFound([T_DNUMBER, T_LNUMBER]);
     }
 
@@ -93,14 +92,29 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer
 
     private function formatValue(string $value): string
     {
-        if (str_starts_with(strtolower($value), '0b')) {
+        $lowerValue = strtolower($value);
+
+        if (str_starts_with($lowerValue, '0b')) {
             // Binary
             return $this->insertEveryRight($value, 4, 2);
         }
 
-        if (str_starts_with(strtolower($value), '0x')) {
+        if (str_starts_with($lowerValue, '0x')) {
             // Hexadecimal
             return $this->insertEveryRight($value, 2, 2);
+        }
+
+        if (str_starts_with($lowerValue, '0o')) {
+            // Octal
+            return $this->insertEveryRight($value, 3, 2);
+        }
+        if (str_starts_with($lowerValue, '0') && !(
+            str_contains($lowerValue, 'e')
+            || str_contains($lowerValue, '.')
+        )) {
+            // Octal only prefixed with one 0 prior PHP 8.1
+            // will be considered an Octal.
+            return $this->insertEveryRight($value, 3, 1);
         }
 
         // All other types
@@ -134,7 +148,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer
     {
         $position = $length * -1;
         while ($position > -(\strlen($value) - $offset)) {
-            $value = substr_replace($value, $this->separator, $position, 0);
+            $value = substr_replace($value, static::separator, $position, 0);
             $position -= $length + 1;
         }
 
@@ -145,7 +159,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer
     {
         $position = $length;
         while ($position < \strlen($value)) {
-            $value = substr_replace($value, $this->separator, $position, $offset);
+            $value = substr_replace($value, static::separator, $position, $offset);
             $position += $length + 1;
         }
 

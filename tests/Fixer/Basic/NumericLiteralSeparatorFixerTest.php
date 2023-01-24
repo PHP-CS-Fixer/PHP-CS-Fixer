@@ -17,7 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\Basic;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Marvin Heilemann <11534760+muuvmuuv@users.noreply.github.com>
+ * @author Marvin Heilemann <marvin.heilemann+github@googlemail.com>
  *
  * @internal
  *
@@ -26,12 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -75,14 +72,15 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
             ],
             'octal' => [
                 '012345' => '012_345',
-                '0123456' => '0_123_456',
+                '0123456' => '0123_456',
                 '01234567' => '01_234_567',
+                '0o123456' => '0o123_456',
             ],
         ];
 
-        foreach ($cases as $pairs) {
+        foreach ($cases as $pairsType => $pairs) {
             foreach ($pairs as $withoutSeparator => $withSeparator) {
-                yield [
+                yield "{$pairsType}#{$withoutSeparator}" => [
                     sprintf('<?php echo %s;', $withSeparator),
                     sprintf('<?php echo %s;', $withoutSeparator),
                 ];
