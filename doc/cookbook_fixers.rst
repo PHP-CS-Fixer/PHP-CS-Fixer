@@ -135,7 +135,7 @@ Now let us create the test file at
        /**
         * @dataProvider provideFixCases
         */
-       public function testFix(string $expected, ?string $input = null)
+       public function testFix(string $expected, ?string $input = null): void
        {
            $this->doTest($expected, $input);
        }
