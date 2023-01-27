@@ -133,12 +133,9 @@ Now let us create the test file at
    final class RemoveCommentsFixerTest extends AbstractFixerTestCase
    {
        /**
-        * @param string      $expected
-        * @param null|string $input
-        *
         * @dataProvider provideFixCases
         */
-       public function testFix($expected, $input = null)
+       public function testFix(string $expected, ?string $input = null): void
        {
            $this->doTest($expected, $input);
        }
