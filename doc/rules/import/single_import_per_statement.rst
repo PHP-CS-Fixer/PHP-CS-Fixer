@@ -63,13 +63,13 @@ The rule is part of the following rule sets:
 
   ``['group_to_single_imports' => false]``
 
+@PSR2
+  Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``single_import_per_statement`` rule with the default config.
+
 @PSR12
   Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``single_import_per_statement`` rule with the config below:
 
   ``['group_to_single_imports' => false]``
-
-@PSR2
-  Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``single_import_per_statement`` rule with the default config.
 
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``single_import_per_statement`` rule with the default config.

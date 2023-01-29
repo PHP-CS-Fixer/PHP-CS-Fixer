@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -499,6 +498,7 @@ EOF;
      * Something when wrong!
      *
      * @Hello\Test\Foo(asd)
+     *
      * @Method("GET")
      *
      * @param string $expected
@@ -676,7 +676,14 @@ EOF;
 
     public function testLaravelGroups(): void
     {
-        $this->fixer->configure(['groups' => array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']])]);
+        $this->fixer->configure(['groups' => [
+            ['param', 'return'],
+            ['throws'],
+            ['deprecated', 'link', 'see', 'since'],
+            ['author', 'copyright', 'license'],
+            ['category', 'package', 'subpackage'],
+            ['property', 'property-read', 'property-write'],
+        ]]);
 
         $expected = <<<'EOF'
 <?php
@@ -822,9 +829,11 @@ EOF;
      *
      * @param array<string, mixed> $config
      */
-    public function testDocCode(array $config, string $expected, string $input): void
+    public function testDocCode(string $expected, ?string $input = null, ?array $config = null): void
     {
-        $this->fixer->configure($config);
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
 
         $this->doTest($expected, $input);
     }
@@ -832,7 +841,7 @@ EOF;
     /**
      * @return array<array<null|array<string, mixed>|string>>
      */
-    public static function provideDocCodeCases(): array
+    public static function provideDocCodeCases(): iterable
     {
         $input = <<<'EOF'
 <?php
@@ -850,10 +859,8 @@ EOF;
 
 EOF;
 
-        return [
-            'laravel' => [
-                ['groups' => array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']])],
-                <<<'EOF'
+        yield 'laravel' => [
+            <<<'EOF'
 <?php
 /**
  * Hello there!
@@ -870,98 +877,218 @@ EOF;
  */
 
 EOF,
-                $input,
+            $input,
+            ['groups' => [
+                ['param', 'return'],
+                ['throws'],
+                ['deprecated', 'link', 'see', 'since'],
+                ['author', 'copyright', 'license'],
+                ['category', 'package', 'subpackage'],
+                ['property', 'property-read', 'property-write'],
+            ]],
+        ];
+
+        yield 'all_tags' => [
+            <<<'EOF'
+<?php
+/**
+ * Hello there!
+ *
+ * @author John Doe
+ * @custom Test!
+ * @throws Exception|RuntimeException foo
+ *
+ * @param string $foo
+ * @param bool   $bar Bar
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+            $input,
+            ['groups' => [['author', 'throws', 'custom'], ['return', 'param']]],
+        ];
+
+        yield 'default_groups_standard_tags' => [
+            <<<'EOF'
+<?php
+/**
+ * Hello there!
+ *
+ * @author John Doe
+ *
+ * @throws Exception|RuntimeException foo
+ *
+ * @custom Test!
+ *
+ * @param string $foo
+ * @param bool   $bar Bar
+ *
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+            <<<'EOF'
+<?php
+/**
+ * Hello there!
+ * @author John Doe
+ * @throws Exception|RuntimeException foo
+ * @custom Test!
+ * @param string $foo
+ * @param bool   $bar Bar
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+        ];
+
+        yield 'default_groups_all_tags' => [
+            <<<'EOF'
+<?php
+/**
+ * Hello there!
+ *
+ * @author John Doe
+ *
+ * @throws Exception|RuntimeException foo
+ *
+ * @custom Test!
+ *
+ * @param string $foo
+ * @param bool   $bar Bar
+ *
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+            <<<'EOF'
+<?php
+/**
+ * Hello there!
+ * @author John Doe
+ * @throws Exception|RuntimeException foo
+ * @custom Test!
+ * @param string $foo
+ * @param bool   $bar Bar
+ * @return int  Return the number of changes.
+ */
+
+EOF,
+        ];
+
+        yield 'Separated unlisted tags with default config' => [
+            <<<'EOF'
+<?php
+/**
+ * @not-in-any-group1
+ *
+ * @not-in-any-group2
+ *
+ * @not-in-any-group3
+ */
+
+EOF,
+            <<<'EOF'
+<?php
+/**
+ * @not-in-any-group1
+ * @not-in-any-group2
+ * @not-in-any-group3
+ */
+
+EOF,
+        ];
+
+        yield 'Skip unlisted tags' => [
+            <<<'EOF'
+<?php
+/**
+ * @in-group-1
+ * @in-group-1-too
+ *
+ * @not-in-any-group1
+ *
+ * @not-in-any-group2
+ * @not-in-any-group3
+ */
+
+EOF,
+            <<<'EOF'
+<?php
+/**
+ * @in-group-1
+ *
+ * @in-group-1-too
+ * @not-in-any-group1
+ *
+ * @not-in-any-group2
+ * @not-in-any-group3
+ */
+
+EOF,
+            [
+                'groups' => [['in-group-1', 'in-group-1-too']],
+                'skip_unlisted_annotations' => true,
             ],
+        ];
 
-            'all_tags' => [
-                ['groups' => [['author', 'throws', 'custom'], ['return', 'param']]],
-                <<<'EOF'
+        yield 'Doctrine annotations' => [
+            <<<'EOF'
 <?php
 /**
- * Hello there!
- *
- * @author John Doe
- * @custom Test!
- * @throws Exception|RuntimeException foo
- *
- * @param string $foo
- * @param bool   $bar Bar
- * @return int  Return the number of changes.
+ * @ORM\Id
+ * @ORM\Column(type="integer")
+ * @ORM\GeneratedValue
  */
 
 EOF,
-                $input,
-            ],
-
-            'default_groups_standard_tags' => [
-                ['groups' => TagComparator::DEFAULT_GROUPS],
-                <<<'EOF'
+            <<<'EOF'
 <?php
 /**
- * Hello there!
+ * @ORM\Id
  *
- * @author John Doe
+ * @ORM\Column(type="integer")
  *
- * @throws Exception|RuntimeException foo
- *
- * @custom Test!
- *
- * @param string $foo
- * @param bool   $bar Bar
- *
- * @return int  Return the number of changes.
+ * @ORM\GeneratedValue
  */
 
 EOF,
-                <<<'EOF'
+            ['groups' => [
+                ['ORM\Id', 'ORM\Column', 'ORM\GeneratedValue'],
+            ]],
+        ];
+
+        yield 'With wildcard' => [
+            <<<'EOF'
 <?php
 /**
- * Hello there!
- * @author John Doe
- * @throws Exception|RuntimeException foo
- * @custom Test!
- * @param string $foo
- * @param bool   $bar Bar
- * @return int  Return the number of changes.
+ * @ORM\Id
+ * @ORM\Column(type="integer")
+ * @ORM\GeneratedValue
+ *
+ * @Assert\NotNull
+ * @Assert\Type("string")
  */
 
 EOF,
-            ],
-
-            'default_groups_all_tags' => [
-                ['groups' => TagComparator::DEFAULT_GROUPS],
-                <<<'EOF'
+            <<<'EOF'
 <?php
 /**
- * Hello there!
+ * @ORM\Id
  *
- * @author John Doe
+ * @ORM\Column(type="integer")
  *
- * @throws Exception|RuntimeException foo
+ * @ORM\GeneratedValue
+ * @Assert\NotNull
  *
- * @custom Test!
- *
- * @param string $foo
- * @param bool   $bar Bar
- *
- * @return int  Return the number of changes.
+ * @Assert\Type("string")
  */
 
 EOF,
-                <<<'EOF'
-<?php
-/**
- * Hello there!
- * @author John Doe
- * @throws Exception|RuntimeException foo
- * @custom Test!
- * @param string $foo
- * @param bool   $bar Bar
- * @return int  Return the number of changes.
- */
-
-EOF,
-            ],
+            ['groups' => [
+                ['ORM\*'],
+                ['Assert\*'],
+            ]],
         ];
     }
 }

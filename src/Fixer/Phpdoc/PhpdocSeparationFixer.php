@@ -17,7 +17,6 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -25,6 +24,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -66,8 +66,33 @@ EOF;
             'Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line.',
             [
                 new CodeSample($code),
-                new CodeSample($code, ['groups' => [...TagComparator::DEFAULT_GROUPS, ['param', 'return']]]),
-                new CodeSample($code, ['groups' => [['author', 'throws', 'custom'], ['return', 'param']]]),
+                new CodeSample($code, ['groups' => [
+                    ['deprecated', 'link', 'see', 'since'],
+                    ['author', 'copyright', 'license'],
+                    ['category', 'package', 'subpackage'],
+                    ['property', 'property-read', 'property-write'],
+                    ['param', 'return'],
+                ]]),
+                new CodeSample($code, ['groups' => [
+                    ['author', 'throws', 'custom'],
+                    ['return', 'param'],
+                ]]),
+                new CodeSample(
+                    <<<'EOF'
+                    <?php
+                    /**
+                     * @ORM\Id
+                     *
+                     * @ORM\GeneratedValue
+                     * @Assert\NotNull
+                     *
+                     * @Assert\Type("string")
+                     */
+
+                    EOF,
+                    ['groups' => [['ORM\*'], ['Assert\*']]],
+                ),
+                new CodeSample($code, ['skip_unlisted_annotations' => true]),
             ],
         );
     }
@@ -149,10 +174,19 @@ EOF;
         };
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('groups', 'Sets of annotation types to be grouped together.'))
+            (new FixerOptionBuilder('groups', 'Sets of annotation types to be grouped together. Use `*` to match any tag character.'))
                 ->setAllowedTypes(['string[][]'])
-                ->setDefault(TagComparator::DEFAULT_GROUPS)
+                ->setDefault([
+                    ['deprecated', 'link', 'see', 'since'],
+                    ['author', 'copyright', 'license'],
+                    ['category', 'package', 'subpackage'],
+                    ['property', 'property-read', 'property-write'],
+                ])
                 ->setAllowedValues([$allowTagToBelongToOnlyOneGroup])
+                ->getOption(),
+            (new FixerOptionBuilder('skip_unlisted_annotations', 'Whether to skip annotations that are not listed in any group.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false) // @TODO 4.0: set to `true`.
                 ->getOption(),
         ]);
     }
@@ -191,9 +225,11 @@ EOF;
                 break;
             }
 
-            if (TagComparator::shouldBeTogether($annotation->getTag(), $next->getTag(), $this->groups)) {
+            $shouldBeTogether = $this->shouldBeTogether($annotation, $next, $this->groups);
+
+            if (true === $shouldBeTogether) {
                 $this->ensureAreTogether($doc, $annotation, $next);
-            } else {
+            } elseif (false === $shouldBeTogether || !$this->configuration['skip_unlisted_annotations']) {
                 $this->ensureAreSeparate($doc, $annotation, $next);
             }
         }
@@ -230,5 +266,63 @@ EOF;
         for ($pos = $pos + 1; $pos < $final; ++$pos) {
             $doc->getLine($pos)->remove();
         }
+    }
+
+    /**
+     * @param list<list<string>> $groups
+     */
+    private function shouldBeTogether(Annotation $first, Annotation $second, array $groups): ?bool
+    {
+        $firstName = $this->tagName($first);
+        $secondName = $this->tagName($second);
+
+        // A tag could not be read.
+        if (null === $firstName || null === $secondName) {
+            return null;
+        }
+
+        if ($firstName === $secondName) {
+            return true;
+        }
+
+        foreach ($groups as $group) {
+            $firstTagIsInGroup = $this->isInGroup($firstName, $group);
+            $secondTagIsInGroup = $this->isInGroup($secondName, $group);
+
+            if ($firstTagIsInGroup) {
+                return $secondTagIsInGroup;
+            }
+
+            if ($secondTagIsInGroup) {
+                return false;
+            }
+        }
+
+        return null;
+    }
+
+    private function tagName(Annotation $annotation): ?string
+    {
+        Preg::match('/@([a-zA-Z0-9_\\\\-]+(?=\s|$|\())/', $annotation->getContent(), $matches);
+
+        return $matches[1] ?? null;
+    }
+
+    /**
+     * @param list<string> $group
+     */
+    private function isInGroup(string $tag, array $group): bool
+    {
+        foreach ($group as $tagInGroup) {
+            $tagInGroup = str_replace('*', '\*', $tagInGroup);
+            $tagInGroup = preg_quote($tagInGroup, '/');
+            $tagInGroup = str_replace('\\\\\*', '.*?', $tagInGroup);
+
+            if (1 === Preg::match("/^{$tagInGroup}$/", $tag)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
