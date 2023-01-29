@@ -524,7 +524,7 @@ else {
 
         $index = $tokens->getNextMeaningfulToken($index);
 
-        return null !== $index && $tokens[$index]->equalsAny([[T_ELSE], [T_ELSEIF], ',']);
+        return null !== $index && $tokens[$index]->isGivenKind([T_ELSE, T_ELSEIF]);
     }
 
     /**
