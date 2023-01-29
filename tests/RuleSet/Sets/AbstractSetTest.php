@@ -43,7 +43,7 @@ abstract class AbstractSetTest extends TestCase
         static::assertStringEndsWith('.', $setDescription, sprintf('Ruleset description of "%s" must end with ".", got "%s".', $setName, $setDescription));
         static::assertRules($setRules, $factory, $setName);
 
-        if (1 === preg_match('/(\d)(\d)Migration/', \get_class($set), $matches)) {
+        if (1 === preg_match('/(\d+)(\d)Migration/', \get_class($set), $matches)) {
             static::assertStringEndsWith(
                 sprintf(' %d.%d compatibility.', $matches[1], $matches[2]),
                 $setDescription,

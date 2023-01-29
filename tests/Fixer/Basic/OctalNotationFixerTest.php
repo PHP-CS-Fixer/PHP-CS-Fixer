@@ -22,20 +22,20 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Basic\OctalNotationFixer
+ *
+ * @requires PHP 8.1
  */
 final class OctalNotationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFix81Cases
-     *
-     * @requires PHP 8.1
+     * @dataProvider provideFixCases
      */
-    public function testFix81(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix81Cases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php
@@ -68,6 +68,16 @@ final class OctalNotationFixerTest extends AbstractFixerTestCase
                 $foo = 0123;
                 $foo = 01;
             ',
+        ];
+
+        yield [
+            '<?php $foo = 0o1_234;',
+            '<?php $foo = 01_234;',
+        ];
+
+        yield [
+            '<?php $foo = 0o0_123_456;',
+            '<?php $foo = 0_123_456;',
         ];
     }
 }

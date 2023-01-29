@@ -776,6 +776,14 @@ switch ($foo) {
     default:
 }',
         ];
+
+        yield 'function ending with a comment and followed by a comma' => [
+            '<?php
+foo(function () {
+    bar();
+    // comment
+}, );',
+        ];
     }
 
     /**

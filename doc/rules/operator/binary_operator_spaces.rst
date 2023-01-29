@@ -12,7 +12,7 @@ Configuration
 
 Default fix strategy.
 
-Allowed values: ``'align'``, ``'align_single_space'``, ``'align_single_space_minimal'``, ``'no_space'``, ``'single_space'``, ``null``
+Allowed values: ``'align'``, ``'align_by_scope'``, ``'align_single_space'``, ``'align_single_space_by_scope'``, ``'align_single_space_minimal'``, ``'align_single_space_minimal_by_scope'``, ``'no_space'``, ``'single_space'``, ``null``
 
 Default value: ``'single_space'``
 
@@ -145,9 +145,30 @@ With configuration: ``['operators' => ['=>' => 'align']]``.
    -    "foo" => 12,
    +    "foo"            => 12,
         "baaaaaaaaaaar"  => 13,
+
+        "baz" => 1,
     ];
 
 Example #8
+~~~~~~~~~~
+
+With configuration: ``['operators' => ['=>' => 'align_by_scope']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    $array = [
+   -    "foo" => 12,
+   +    "foo"            => 12,
+        "baaaaaaaaaaar"  => 13,
+
+   -    "baz" => 1,
+   +    "baz"            => 1,
+    ];
+
+Example #9
 ~~~~~~~~~~
 
 With configuration: ``['operators' => ['=>' => 'align_single_space']]``.
@@ -161,10 +182,31 @@ With configuration: ``['operators' => ['=>' => 'align_single_space']]``.
    -    "foo" => 12,
    +    "foo"            => 12,
         "baaaaaaaaaaar"  => 13,
+
+        "baz" => 1,
     ];
 
-Example #9
-~~~~~~~~~~
+Example #10
+~~~~~~~~~~~
+
+With configuration: ``['operators' => ['=>' => 'align_single_space_by_scope']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    $array = [
+   -    "foo" => 12,
+   +    "foo"            => 12,
+        "baaaaaaaaaaar"  => 13,
+
+   -    "baz" => 1,
+   +    "baz"            => 1,
+    ];
+
+Example #11
+~~~~~~~~~~~
 
 With configuration: ``['operators' => ['=>' => 'align_single_space_minimal']]``.
 
@@ -178,6 +220,28 @@ With configuration: ``['operators' => ['=>' => 'align_single_space_minimal']]``.
    -    "baaaaaaaaaaar"  => 13,
    +    "foo"           => 12,
    +    "baaaaaaaaaaar" => 13,
+
+        "baz" => 1,
+    ];
+
+Example #12
+~~~~~~~~~~~
+
+With configuration: ``['operators' => ['=>' => 'align_single_space_minimal_by_scope']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    $array = [
+   -    "foo" => 12,
+   -    "baaaaaaaaaaar"  => 13,
+   +    "foo"           => 12,
+   +    "baaaaaaaaaaar" => 13,
+
+   -    "baz" => 1,
+   +    "baz"           => 1,
     ];
 
 Rule sets
