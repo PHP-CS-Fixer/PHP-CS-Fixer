@@ -267,7 +267,7 @@ A();
             [1, 20],
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             yield [
                 '<?php
                     use function \  str_repeat;
@@ -557,7 +557,7 @@ class(){};
             ]],
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             yield ['<?php fn(\Foo/** TODO: change to something else */\Bar $a) => null;', 1, [
                 '$a' => new ArgumentAnalysis(
                     '$a',
@@ -596,7 +596,7 @@ class(){};
 
         yield ['<?php function($a): /* not sure if really an array */array {};', 1, new TypeAnalysis('array', 8, 8)];
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             yield ['<?php function($a): \Foo/** TODO: change to something else */\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 11)];
         }
 
@@ -610,7 +610,7 @@ class(){};
 
         yield ['<?php fn($a): /* not sure if really an array */array => null;', 1, new TypeAnalysis('array', 8, 8)];
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             yield ['<?php fn($a): \Foo/** TODO: change to something else */\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 11)];
         }
     }
@@ -682,7 +682,7 @@ class(){};
             24,
         ];
 
-        if (\PHP_VERSION_ID >= 80000) {
+        if (\PHP_VERSION_ID >= 8_00_00) {
             yield [
                 true,
                 sprintf($template, '$this?->'),

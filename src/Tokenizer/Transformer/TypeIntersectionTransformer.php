@@ -41,7 +41,7 @@ final class TypeIntersectionTransformer extends AbstractTypeTransformer
      */
     public function getRequiredPhpVersionId(): int
     {
-        return 80100;
+        return 8_01_00;
     }
 
     /**

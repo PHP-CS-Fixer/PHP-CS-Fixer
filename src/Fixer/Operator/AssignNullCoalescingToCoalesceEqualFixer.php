@@ -36,7 +36,7 @@ final class AssignNullCoalescingToCoalesceEqualFixer extends AbstractFixer
             [
                 new VersionSpecificCodeSample(
                     "<?php\n\$foo = \$foo ?? 1;\n",
-                    new VersionSpecification(70400)
+                    new VersionSpecification(7_04_00)
                 ),
             ]
         );

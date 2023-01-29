@@ -29,7 +29,7 @@ final class FirstClassCallableTransformer extends AbstractTransformer
      */
     public function getRequiredPhpVersionId(): int
     {
-        return 80100;
+        return 8_01_00;
     }
 
     /**

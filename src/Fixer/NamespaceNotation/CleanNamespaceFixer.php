@@ -33,7 +33,7 @@ final class CleanNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
         foreach (['namespace Foo \\ Bar;', 'echo foo /* comment */ \\ bar();'] as $sample) {
             $samples[] = new VersionSpecificCodeSample(
                 "<?php\n".$sample."\n",
-                new VersionSpecification(null, 80000 - 1)
+                new VersionSpecification(null, 8_00_00 - 1)
             );
         }
 
@@ -48,7 +48,7 @@ final class CleanNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID < 80000 && $tokens->isTokenKindFound(T_NS_SEPARATOR);
+        return \PHP_VERSION_ID < 8_00_00 && $tokens->isTokenKindFound(T_NS_SEPARATOR);
     }
 
     /**

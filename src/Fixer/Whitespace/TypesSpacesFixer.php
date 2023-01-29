@@ -57,7 +57,7 @@ final class TypesSpacesFixer extends AbstractFixer implements ConfigurableFixerI
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nfunction foo(int | string \$x)\n{\n}\n",
-                    new VersionSpecification(80000)
+                    new VersionSpecification(8_00_00)
                 ),
             ]
         );

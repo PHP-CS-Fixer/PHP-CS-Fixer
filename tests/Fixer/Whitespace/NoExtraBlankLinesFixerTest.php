@@ -815,7 +815,7 @@ class Foo
             "<?php\n\n\$a = new class { public function a () { while(4<1)break; while(3<1)continue; if (true) throw \$e; return 1; }};\n\n",
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             yield [
                 "<?php\n\n\$a = \$b{0};\n\n",
             ];

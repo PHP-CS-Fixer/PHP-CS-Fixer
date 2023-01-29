@@ -51,7 +51,7 @@ class Foo {
     private $bar;
 }
 ',
-                    new VersionSpecification(70400)
+                    new VersionSpecification(7_04_00)
                 ),
                 new VersionSpecificCodeSample(
                     '<?php
@@ -62,7 +62,7 @@ class Foo {
     private $bar;
 }
 ',
-                    new VersionSpecification(70400),
+                    new VersionSpecification(7_04_00),
                     ['scalar_types' => false]
                 ),
             ],

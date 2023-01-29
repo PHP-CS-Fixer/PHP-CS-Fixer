@@ -96,7 +96,7 @@ Bar3:
             ],
         ];
 
-        if (\PHP_VERSION_ID >= 80000) {
+        if (\PHP_VERSION_ID >= 8_00_00) {
             yield [
                 '<?php array_fill(start_index: 0, num: 100, value: 50);', [],
             ];

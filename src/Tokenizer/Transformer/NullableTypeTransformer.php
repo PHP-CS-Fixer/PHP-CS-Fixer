@@ -42,7 +42,7 @@ final class NullableTypeTransformer extends AbstractTransformer
      */
     public function getRequiredPhpVersionId(): int
     {
-        return 70100;
+        return 7_01_00;
     }
 
     /**

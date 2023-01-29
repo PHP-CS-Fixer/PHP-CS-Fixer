@@ -46,7 +46,7 @@ foo(function ($a) use ($b) {
 
 SAMPLE
                     ,
-                    new VersionSpecification(70400)
+                    new VersionSpecification(7_04_00)
                 ),
             ],
             null,

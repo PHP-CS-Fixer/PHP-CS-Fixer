@@ -122,7 +122,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'object return on ^7.2' => [
                 '<?php /** @return object */ function my_foo(): object {}',
                 '<?php /** @return object */ function my_foo() {}',
-                70200,
+                7_02_00,
             ],
             'fix scalar types by default, int' => [
                 '<?php /** @return int */ function my_foo(): int {}',

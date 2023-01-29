@@ -40,7 +40,7 @@ final class NamedArgumentTransformer extends AbstractTransformer
      */
     public function getRequiredPhpVersionId(): int
     {
-        return 80000;
+        return 8_00_00;
     }
 
     /**

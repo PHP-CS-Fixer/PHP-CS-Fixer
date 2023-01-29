@@ -38,7 +38,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
      */
     public function testFix74Deprecated(string $expected, ?string $input = null): void
     {
-        if (\PHP_VERSION_ID >= 80000) {
+        if (\PHP_VERSION_ID >= 8_00_00) {
             static::markTestSkipped('PHP < 8.0 is required.');
         }
 
@@ -74,7 +74,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         $cases = [];
         $types = ['string', 'array', 'object'];
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             $types[] = 'unset';
         }
 

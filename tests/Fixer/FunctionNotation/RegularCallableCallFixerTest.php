@@ -121,7 +121,7 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
             '<?php call_user_func($foo, $foo = "bar");',
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             yield 'call by variable (PHP < 8.0)' => [
                 '<?php
                     $a{"b"}{"c"}(1, 2);

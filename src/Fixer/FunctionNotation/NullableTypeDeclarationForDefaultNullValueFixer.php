@@ -134,7 +134,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
 
             $argumentTypeInfo = $argumentInfo->getTypeAnalysis();
 
-            if (\PHP_VERSION_ID >= 80000 && false === $this->configuration['use_nullable_type_declaration']) {
+            if (\PHP_VERSION_ID >= 8_00_00 && false === $this->configuration['use_nullable_type_declaration']) {
                 $visibility = $tokens[$tokens->getPrevMeaningfulToken($argumentTypeInfo->getStartIndex())];
 
                 if ($visibility->isGivenKind($constructorPropertyModifiers)) {

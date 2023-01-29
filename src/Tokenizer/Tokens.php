@@ -995,7 +995,7 @@ class Tokens extends \SplFixedArray
             $this->registerFoundToken($token);
         }
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             $this->rewind();
         }
 
@@ -1011,7 +1011,7 @@ class Tokens extends \SplFixedArray
             $output[$index] = $token->toArray();
         }
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             $this->rewind();
         }
 

@@ -76,7 +76,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         $requiredPhpVersionId = $this->transformer->getRequiredPhpVersionId();
 
         static::assertIsInt($requiredPhpVersionId, $name);
-        static::assertGreaterThanOrEqual(50000, $requiredPhpVersionId, $name);
+        static::assertGreaterThanOrEqual(5_00_00, $requiredPhpVersionId, $name);
     }
 
     public function testTransformersIsFinal(): void
