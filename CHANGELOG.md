@@ -3,6 +3,29 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.14.0
+---------------------
+
+* bug: Fix indentation for comment at end of function followed by a comma (#6542)
+* bug: Fix PHPDoc alignment fixer containing callbacks using `\Closure` (#6746)
+* bug: Fix type error when using paths intersection mode (#6734)
+* bug: PhpdocSeparationFixer - Make groups handling more flexible (#6668)
+* docs: make bug_report.md template more explicit (#6736)
+* docs: PhpUnitTestCaseIndicator - fix docs (#6727)
+* DX: apply CS (#6759)
+* DX: bump doctrine/annotations to prevent installing version with unintentional BC break (#6739)
+* DX: update deps (#6760)
+* DX: upgrade dev-tools/composer.json (#6737)
+* DX: upgrade PHPStan to 1.9.7 (#6741)
+* feature: Add php 7.4 types to Cookbook docs (#6763)
+* feature: add PhpUnitDataProviderStaticFixer (#6702)
+* feature: binary_operator_spaces - Revert change about => alignment and use option instead (#6724)
+* feature: make OrderedInterfacesFixer non-risky (#6722)
+* feature: OctalNotationFixer - support _ notation (#6762)
+* fix: enum case "PARENT" must not be renamed (#6732)
+* minor: Follow PSR12 ordered imports in Symfony ruleset (#6712)
+* minor: improve rule sets order (#6738)
+
 Changelog for v3.13.2
 ---------------------
 
