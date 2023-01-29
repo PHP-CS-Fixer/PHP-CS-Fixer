@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.14.2
+---------------------
+
+* DX: Drop support for doctrine/lexer 1 (#6729)
+
 Changelog for v3.14.1
 ---------------------
 
