@@ -129,6 +129,22 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Closure(string)', ['Closure(string)']];
 
+        yield ['\\Closure', ['\\Closure']];
+
+        yield ['\\Closure()', ['\\Closure()']];
+
+        yield ['\\Closure(string)', ['\\Closure(string)']];
+
+        yield ['\\Closure(string, bool)', ['\\Closure(string, bool)']];
+
+        yield ['\\Closure(string|int, bool)', ['\\Closure(string|int, bool)']];
+
+        yield ['\\Closure(string):bool', ['\\Closure(string):bool']];
+
+        yield ['\\Closure(string): bool', ['\\Closure(string): bool']];
+
+        yield ['\\Closure(string|int, bool): bool', ['\\Closure(string|int, bool): bool']];
+
         yield ['array  <  int   , callable  (  string  )  :   bool  >', ['array  <  int   , callable  (  string  )  :   bool  >']];
     }
 

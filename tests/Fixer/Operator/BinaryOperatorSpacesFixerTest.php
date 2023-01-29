@@ -1711,6 +1711,703 @@ $start = (
             "foo"    => "bar",
             "foofoo" => 42,
         ]),
+        "baz" => "OK",
+    ]);',
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html" =>    renderView("views/my_view.html.twig", [
+            "foo" =>   "bar",
+            "foofoo" =>    42,
+        ]),
+        "baz" => "OK",
+    ]);',
+            ],
+            [
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => array(
+            [
+                "baz"     => "Test",
+                "bazaa"   => $a->{"Test"},
+                "bazaa"   => $a["Test"],
+                "bazaaaa" => b("Test"),
+            ]
+        ),
+        "bar"  => array(),
+    ];',
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => array(
+            [
+                "baz" => "Test",
+                "bazaa" => $a->{"Test"},
+                "bazaa" => $a["Test"],
+                "bazaaaa" => b("Test"),
+            ]
+        ),
+        "bar"  => array(),
+    ];',
+            ],
+            [
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => [array("baz" => "Test")],
+        "bar"  => array(),
+    ];
+    $data = array(
+        "foo"  => "Bar",
+        "main" => array("baz" => "Test"),
+        "bar"  => array(),
+    );
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = /* Comment */ [$i => $bar];
+    }',
+            ],
+            [
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => [array("baz" => "Test")],
+        "bar"  => array(),
+    ];',
+            ],
+            [
+                '<?php
+    $data = array(
+        "foo"  => "Bar",
+        "main" => array("baz" => "Test"),
+        "bar"  => array(),
+    );',
+            ],
+            [
+                '<?php
+    $data = array(
+        "foo"  => "Bar",
+        "main" => array(array("baz" => "Test")),
+        "bar"  => array(),
+    );',
+            ],
+            [
+                '<?php
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = /* Comment */ [$i => $bar];
+    }',
+            ],
+            [
+                '<?php
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = [$i => $bar];
+    }',
+            ],
+            [
+                '<?php
+    $var = [];
+    foreach ([1 => 2] as $k => $v) {
+        $var[] = [$i => $bar];
+    }',
+            ],
+            [
+                '<?php
+    $var = [];
+    foreach (fncCall() as $k => $v){
+        $var[] = [$i => $bar];
+    }',
+            ],
+            [
+                '<?php
+    $var = [];
+    foreach ($foo as $bar) {
+        $var[] = [
+            $i    => $bar,
+            $iaaa => $bar,
+        ];
+    }',
+            ],
+            [
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => [["baz" => "Test", "bar" => "Test2"]],
+        "bar"  => [],
+    ];',
+            ],
+            [
+                '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => ["baz" => "Test"],
+        "bar"  => [],
+    ];',
+            ],
+            [
+                '<?php
+    $a = [
+        0              => 1,
+        10 /*Comment*/ => [
+            1  => 2,
+            22 => 3,
+        ],
+        100 => [
+            1  => 2,
+            22 => 3,
+        ]
+    ];',
+                '<?php
+    $a = [
+        0  => 1,
+        10 /*Comment*/ => [
+            1  => 2,
+            22 => 3,
+        ],
+        100 => [
+            1  => 2,
+            22 => 3,
+        ]
+    ];',
+            ],
+            [
+                '<?php
+    $a = array(
+        0   => 1,
+        10  => array(
+            1  => 2,
+            22 => 3,
+        ),
+        100 => array(
+            1  => 2,
+            22 => 3,
+        )
+    );',
+            ],
+            [
+                '<?php
+    $arr = array(
+        $a    => 1,
+        $bbbb => \'
+        $cccccccc2 = 3;
+        \',
+    );',
+                '<?php
+    $arr = array(
+        $a => 1,
+        $bbbb => \'
+        $cccccccc2 = 3;
+        \',
+    );',
+            ],
+            [
+                '<?php
+    $arr = [
+        $a    => 1,
+        $bbbb => \'
+        $cccccccc3 = 3;
+        \',
+    ];',
+                '<?php
+    $arr = [
+        $a => 1,
+        $bbbb => \'
+        $cccccccc3 = 3;
+        \',
+    ];',
+            ],
+            [
+                '<?php
+    foreach($arr as $k => $v){
+        $arr = array($k => 1,
+            $a          => 1,
+            $bbbb       => \'
+            $cccccccc4 = 3;
+            \',
+        );
+    }',
+            ],
+            [
+                '<?php
+    $a = array(
+        10    => 11,
+        20    => 22,
+        30    => 33,
+        40
+            =>
+                44,
+    );',
+                '<?php
+    $a = array(
+        10    =>    11,
+        20  =>    22,
+        30=>33,
+        40
+            =>
+                44,
+    );',
+            ],
+            [
+                '<?php
+    return array(
+        " "    => "",    "\t"    => "",
+        "\n"   => "", "\r"   => "",
+        "\0"   => "", "\x0B"    => "",
+    );',
+                '<?php
+    return array(
+        " "   => "",    "\t"    => "",
+        "\n"   => "", "\r"   => "",
+        "\0"  => "", "\x0B"    => "",
+    );',
+            ],
+            [
+                '<?php
+    return $this->grabAttribsBeforeToken(
+        $tokens,
+        $index,
+        $tokenAttribsMap,
+        array(
+            "abstract"   => null,
+            "final"      => null,
+            "visibility" => new Token(array(T_PUBLIC, "public")),
+            "static"     => null,
+        )
+    );',
+                '<?php
+    return $this->grabAttribsBeforeToken(
+        $tokens,
+        $index,
+        $tokenAttribsMap,
+        array(
+            "abstract" => null,
+            "final" => null,
+            "visibility" => new Token(array(T_PUBLIC, "public")),
+            "static" => null,
+        )
+    );',
+            ],
+            [
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_1    => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_1    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_1 => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_1    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            ],
+            [
+                '<?php
+    $array = array(
+        "bazab" => b(array(
+            1     => 2,
+            5     => [
+                6     => 7,
+                8     => 9,
+            ],
+            3       => 4,
+            10      => 11,
+        )),
+    );',
+                '<?php
+    $array = array(
+        "bazab" => b(array(
+            1 => 2,
+            5     => [
+                6 => 7,
+                8     => 9,
+            ],
+            3    => 4,
+            10      => 11,
+        )),
+    );',
+            ],
+            [
+                '<?php
+    Foo::test()->aaa(array(1 => 2))->bbb("a", "b");
+',
+            ],
+            [
+                '<?php
+    $inflect_male = array(
+        "aitė\b" => "as",
+        "ytė\b"  => "is",
+        "iūtė\b" => "ius",
+        "utė\b"  => "us",
+    );',
+                '<?php
+    $inflect_male = array(
+        "aitė\b" => "as",
+        "ytė\b" => "is",
+        "iūtė\b" => "ius",
+        "utė\b" => "us",
+    );',
+            ],
+            [
+                '<?php
+                $formMapper
+                    ->add(\'foo\', null, [\'required\' => false])
+                    ->add(\'dummy_field\', null, [\'required\' => false])
+                ;
+                ',
+            ],
+            [
+                '<?php
+                $formMapper
+                    ->add(\'foo\', null, array(\'required\' => false))
+                    ->add(\'dummy_field\', null, array(\'required\' => false))
+                ;
+                ',
+            ],
+            [
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(["server1" => $object], ["addedAt" => "DESC"], 5);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(["server2" => $object], ["checkedAt" => "desc"], 50);
+    ',
+            ],
+            [
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array("server1" => $object), array("addedAt" => "DESC"), 5);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array("server2" => $object), array("checkedAt" => "desc"), 50);
+    ',
+            ],
+            [
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy($foo[123]);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy($foo[123]);
+    ',
+            ],
+            [
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
+    ',
+            ],
+            [
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy((1 + 2));
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy((1 + 2));
+    ',
+            ],
+            [
+                '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array(1, 2));
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array(1, 2));
+    ',
+            ],
+            [
+                '<?php
+
+    function foo() {}
+
+    $bar = 42;
+
+    $foo = [
+        "test123" => "foo",
+        "foo"     => $bar[123],
+        "a"       => foo(),
+        "b"       => 1,
+    ];
+    ',
+                '<?php
+
+    function foo() {}
+
+    $bar = 42;
+
+    $foo = [
+        "test123" => "foo",
+        "foo" => $bar[123],
+        "a" => foo(),
+        "b" => 1,
+    ];
+    ',
+            ],
+            [
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_2    => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_2    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_2 => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_2    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            ],
+            [
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_3    => array((1 + 11)=> "?", "description" => "unknown"),
+        self::STATUS_INVALID_3    => array((2 + 3)=> "III", "description" => "invalid file syntax, file ignored"),
+    );',
+                '<?php
+    return array(
+        self::STATUS_UNKNOWN_3 => array((1+11)=> "?", "description" => "unknown"),
+        self::STATUS_INVALID_3    => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            ],
+            [
+                '<?php
+    return [
+        self::STATUS_UNKNOWN_4    => ["symbol" => "?", "description" => "unknown"],
+        self::STATUS_INVALID_4    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+                '<?php
+    return [
+        self::STATUS_UNKNOWN_4 => ["symbol" => "?", "description" => "unknown"],
+        self::STATUS_INVALID_4    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+            ],
+            [
+                '<?php
+    return [
+        self::STATUS_UNKNOWN_7    => [(1 + 11)=> "?", "description" => "unknown"],
+        self::STATUS_INVALID_7    => [(2 + 3)=> "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+                '<?php
+    return [
+        self::STATUS_UNKNOWN_7 => [(1+11)=> "?", "description" => "unknown"],
+        self::STATUS_INVALID_7    => [(2+3)=> "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+            ],
+            [
+                '<?php
+$b = [1 => function() {
+    foreach([$a => 2] as $b) {
+        $bv = [
+            $b  => 2,
+            $cc => 3,
+        ];
+    }}, 2 => 3];
+',
+                '<?php
+$b = [1 => function() {
+    foreach([$a => 2] as $b) {
+        $bv = [
+            $b => 2,
+            $cc => 3,
+        ];
+    }}, 2 => 3];
+',
+            ],
+            [
+                '<?php
+function asd() {
+      return [
+          "this"    => fn () => false,
+          "is"      => fn () => false,
+          "an"      => fn () => false,
+          "example" => fn () => false,
+          "array"   => fn () => false,
+      ];
+}
+',
+                '<?php
+function asd() {
+      return [
+          "this" => fn () => false,
+          "is" => fn () => false,
+          "an" => fn () => false,
+          "example" => fn () => false,
+          "array" => fn () => false,
+      ];
+}
+',
+            ],
+            [
+                '<?php
+collect()
+    ->map(fn ($arg) => [])
+    ->keyBy(fn ($arg) => []);
+',
+            ],
+            [
+                '<?php
+if ($this->save([
+    "bar"       => "baz",
+    "barbarbar" => "baz",
+])) {
+    // Do the work
+}
+',
+                '<?php
+if ($this->save([
+    "bar" => "baz",
+    "barbarbar" => "baz",
+])) {
+    // Do the work
+}
+',
+            ],
+            [
+                '<?php
+class test
+{
+    public function __construct()
+    {
+        $result = $this->test1(fn () => $this->test2($a));
+        foreach ($result as $k => $v)
+        {
+        }
+
+        $result = $this->test1(fn () => $this->test2($a, $b));
+        foreach ($result as $k => $v)
+        {
+        }
+    }
+}
+',
+            ],
+            [
+                '<?php
+$array = [
+    "foo"     => 123,
+    "longkey" => "test",
+    "baz"     => fn () => "value",
+];
+',
+                '<?php
+$array = [
+    "foo" => 123,
+    "longkey" => "test",
+    "baz" => fn () => "value",
+];
+',
+            ],
+            [
+                '<?php
+function foo () {
+    $this->query = $this->db->prepare(static fn ($db) => $db->table("user")->insert([
+        "name"    => "a",
+        "email"   => "b@example.com",
+        "country" => "JP",
+    ]));
+
+    foreach ($data as $name => $array) {
+        foreach ($array as $field => $value) {
+            yield $type => $case;
+        }
+    }
+}
+',
+                '<?php
+function foo () {
+    $this->query = $this->db->prepare(static fn ($db) => $db->table("user")->insert([
+        "name" => "a",
+        "email" => "b@example.com",
+        "country" => "JP",
+    ]));
+
+    foreach ($data as $name => $array) {
+        foreach ($array as $field => $value) {
+            yield $type => $case;
+        }
+    }
+}
+',
+            ],
+            [
+                '<?php
+function test()
+{
+    yield "null customer" => [
+        "expected"    => null,
+        "ourCustomer" => null,
+    ];
+    yield "no underlying user" => [
+        "expected"    => null,
+        "ourCustomer" => Customer::seed(),
+    ];
+}
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideAlignScopedDoubleArrowCases
+     */
+    public function testFixAlignScopedDoubleArrow(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_BY_SCOPE]]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideAlignScopedDoubleArrowCases(): array
+    {
+        return [
+            [
+                '<?php
+                switch ($a) {
+                    case "prod":
+                        break;
+                }
+                ',
+            ],
+            [
+                '<?php
+    $array = array(
+        "closure" => function ($param1, $param2) {
+            return;
+        }
+    );',
+            ],
+            [
+                '<?php
+    return new JsonResponse(array(
+        "result" => "OK",
+        "html"   => 1, /**/array(
+            "foo"    => "bar",
+            "foofoo" => array(
+                "a"  => 1,
+                "b"  => 2
+            )
+        ),)
+    );',
+                '<?php
+    return new JsonResponse(array(
+        "result" => "OK",
+        "html" => 1, /**/array(
+            "foo" => "bar",
+            "foofoo" => array(
+                "a" => 1,
+                "b"  =>  2
+            )
+        ),)
+    );',
+            ],
+            [
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html"   => renderView("views/my_view.html.twig", array(
+            "foo"    => "bar",
+            "foofoo" => 43,
+        )),
+    ]);',
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html" =>    renderView("views/my_view.html.twig", array(
+            "foo" => "bar",
+            "foofoo" => 43,
+        )),
+    ]);',
+            ],
+            [
+                '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html"   => renderView("views/my_view.html.twig", [
+            "foo"    => "bar",
+            "foofoo" => 42,
+        ]),
         "baz"    => "OK",
     ]);',
                 '<?php
@@ -2311,6 +3008,21 @@ function foo () {
     }
 }
 ',
+            ],
+            [
+                '<?php
+function test()
+{
+    yield "null customer" => [
+        "expected"    => null,
+        "ourCustomer" => null,
+    ];
+    yield "no underlying user" => [
+        "expected"    => null,
+        "ourCustomer" => Customer::seed(),
+    ];
+}
+                ',
             ],
         ];
     }

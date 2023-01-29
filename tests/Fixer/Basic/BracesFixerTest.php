@@ -3035,14 +3035,7 @@ function foo()
     } else {
         echo "unknown API";
         // sth
-    }
-
-    return $this->guess($class, $property, function (Constraint $constraint) use ($guesser) {
-        return $guesser->guessRequiredForConstraint($constraint);
-    // Fallback to false...
-    // ... due to sth...
-    }, false);
-    ',
+    }',
             ],
             [
                 '<?php

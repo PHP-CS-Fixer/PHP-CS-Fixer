@@ -31,10 +31,11 @@ List of Available Rule sets
 - `@PHPUnit60Migration:risky <./PHPUnit60MigrationRisky.rst>`_
 - `@PHPUnit75Migration:risky <./PHPUnit75MigrationRisky.rst>`_
 - `@PHPUnit84Migration:risky <./PHPUnit84MigrationRisky.rst>`_
+- `@PHPUnit100Migration:risky <./PHPUnit100MigrationRisky.rst>`_
 - `@PSR1 <./PSR1.rst>`_
+- `@PSR2 <./PSR2.rst>`_
 - `@PSR12 <./PSR12.rst>`_
 - `@PSR12:risky <./PSR12Risky.rst>`_
-- `@PSR2 <./PSR2.rst>`_
 - `@PhpCsFixer <./PhpCsFixer.rst>`_
 - `@PhpCsFixer:risky <./PhpCsFixerRisky.rst>`_
 - `@Symfony <./Symfony.rst>`_
