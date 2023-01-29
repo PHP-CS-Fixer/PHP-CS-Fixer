@@ -20,7 +20,7 @@
         "composer/semver": "^3.3",
         "composer/xdebug-handler": "^3.0.3",
         "doctrine/annotations": "^1.14.2 || ^2",
-        "doctrine/lexer": "^1 || ^2",
+        "doctrine/lexer": "^2",
         "sebastian/diff": "^4.0",
         "symfony/console": "^5.4 || ^6.0",
         "symfony/event-dispatcher": "^5.4 || ^6.0",
