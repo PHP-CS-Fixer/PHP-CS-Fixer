@@ -2132,9 +2132,13 @@ List of Available Rules
    Configuration options:
 
    - | ``groups``
-     | Sets of annotation types to be grouped together.
+     | Sets of annotation types to be grouped together. Use `*` to match any tag character.
      | Allowed types: ``string[][]``
      | Default value: ``[['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write']]``
+   - | ``skip_unlisted_annotations``
+     | Whether to skip annotations that are not listed in any group.
+     | Allowed types: ``bool``
+     | Default value: ``false``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
