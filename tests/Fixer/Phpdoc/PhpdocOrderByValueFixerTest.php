@@ -43,7 +43,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    public function provideInvalidAnnotationCases(): array
+    public static function provideInvalidAnnotationCases(): array
     {
         return [
             'null' => [null],
@@ -79,7 +79,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithAuthorCases(): array
+    public static function provideFixWithAuthorCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -199,7 +199,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithCoversCases(): array
+    public static function provideFixWithCoversCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -319,7 +319,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithCoversNothingCases(): array
+    public static function provideFixWithCoversNothingCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -439,7 +439,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithDataProviderCases(): array
+    public static function provideFixWithDataProviderCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -559,7 +559,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithDependsCases(): array
+    public static function provideFixWithDependsCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -679,7 +679,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithGroupCases(): array
+    public static function provideFixWithGroupCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -799,7 +799,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithInternalCases(): array
+    public static function provideFixWithInternalCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -919,7 +919,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithMethodCases(): array
+    public static function provideFixWithMethodCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -1043,7 +1043,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithMixinCases(): array
+    public static function provideFixWithMixinCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -1165,7 +1165,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithPropertyCases(): array
+    public static function provideFixWithPropertyCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -1273,7 +1273,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithPropertyReadCases(): array
+    public static function provideFixWithPropertyReadCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -1381,7 +1381,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithPropertyWriteCases(): array
+    public static function provideFixWithPropertyWriteCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -1489,7 +1489,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithRequiresCases(): array
+    public static function provideFixWithRequiresCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -1609,7 +1609,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithThrowsCases(): array
+    public static function provideFixWithThrowsCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -1745,7 +1745,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithUsesCases(): array
+    public static function provideFixWithUsesCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -1866,7 +1866,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithMultipleConfiguredAnnotationsCases(): array
+    public static function provideFixWithMultipleConfiguredAnnotationsCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [

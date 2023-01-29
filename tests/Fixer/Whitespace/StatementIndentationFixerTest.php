@@ -32,7 +32,7 @@ final class StatementIndentationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'no brace block' => [
             '<?php
@@ -776,6 +776,14 @@ switch ($foo) {
     default:
 }',
         ];
+
+        yield 'function ending with a comment and followed by a comma' => [
+            '<?php
+foo(function () {
+    bar();
+    // comment
+}, );',
+        ];
     }
 
     /**
@@ -787,7 +795,7 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithTabsCases(): iterable
+    public static function provideFixWithTabsCases(): iterable
     {
         yield 'simple' => [
             "<?php
@@ -813,7 +821,7 @@ if ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases(): iterable
+    public static function provideFixPhp80Cases(): iterable
     {
         yield 'match expression' => [
             '<?php
@@ -880,7 +888,7 @@ class Foo {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp81Cases(): iterable
+    public static function provideFixPhp81Cases(): iterable
     {
         yield 'simple enum' => [
             '<?php

@@ -165,7 +165,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases(): array
+    public static function provideFix73Cases(): array
     {
         return [
             [
@@ -195,7 +195,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             self::generateTest('$this->assertEquals(...);'),

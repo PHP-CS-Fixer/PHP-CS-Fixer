@@ -21,7 +21,6 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
 use PhpCsFixer\WhitespacesFixerConfig;
-use stdClass;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -273,7 +272,7 @@ final class FixerFactoryTest extends TestCase
             ->registerBuiltInFixers()->useRuleSet($ruleSet);
     }
 
-    public function provideConflictingFixersCases(): array
+    public static function provideConflictingFixersCases(): array
     {
         return [
             [new RuleSet(['no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true])],
@@ -371,11 +370,11 @@ final class FixerFactoryTest extends TestCase
         ]));
     }
 
-    public function provideConfigureFixerWithNonArrayCases(): array
+    public static function provideConfigureFixerWithNonArrayCases(): array
     {
         return [
             ['bar'],
-            [new stdClass()],
+            [new \stdClass()],
             [5],
             [5.5],
         ];

@@ -35,7 +35,7 @@ final class ClassyAnalyzerTest extends TestCase
         self::assertClassyInvocation($source, $expected);
     }
 
-    public function provideIsClassyInvocationCases(): iterable
+    public static function provideIsClassyInvocationCases(): iterable
     {
         yield from [
             [
@@ -155,7 +155,7 @@ final class ClassyAnalyzerTest extends TestCase
         self::assertClassyInvocation($source, $expected);
     }
 
-    public function provideIsClassyInvocation80Cases(): iterable
+    public static function provideIsClassyInvocation80Cases(): iterable
     {
         yield [
             '<?php function foo(): \Foo|int {}',
@@ -195,7 +195,7 @@ final class ClassyAnalyzerTest extends TestCase
         self::assertClassyInvocation($source, $expected);
     }
 
-    public function provideIsClassyInvocation81Cases(): iterable
+    public static function provideIsClassyInvocation81Cases(): iterable
     {
         yield 'never' => [
             '<?php function foo(): never {}',

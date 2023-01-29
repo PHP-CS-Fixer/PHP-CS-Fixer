@@ -35,7 +35,7 @@ final class SingleClassElementPerStatementFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield from [
             [
@@ -707,7 +707,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function provideConfigurationCases(): array
+    public static function provideConfigurationCases(): array
     {
         return [
             [
@@ -771,7 +771,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): iterable
+    public static function provideMessyWhitespacesCases(): iterable
     {
         yield [
             "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0;\r\n\t\tconst BBB=1;\r\n\t}",
@@ -835,7 +835,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php
@@ -864,7 +864,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php
@@ -955,7 +955,7 @@ var_dump(Foo::A.Foo::B);",
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield [
             '<?php trait Foo { public const Bar = 1; public const Baz = 1; }',

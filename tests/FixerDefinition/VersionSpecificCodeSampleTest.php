@@ -75,7 +75,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
         static::assertSame($isSatisfied, $codeSample->isSuitableFor($version));
     }
 
-    public function provideIsSuitableForVersionUsesVersionSpecificationCases(): array
+    public static function provideIsSuitableForVersionUsesVersionSpecificationCases(): array
     {
         return [
             'is-satisfied' => [\PHP_VERSION_ID, true],

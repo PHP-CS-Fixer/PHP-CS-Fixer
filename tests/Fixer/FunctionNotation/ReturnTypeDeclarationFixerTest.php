@@ -57,7 +57,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithSpaceBeforeNoneCases(): array
+    public static function provideFixWithSpaceBeforeNoneCases(): array
     {
         return [
             [
@@ -127,7 +127,7 @@ string {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithSpaceBeforeOneCases(): array
+    public static function provideFixWithSpaceBeforeOneCases(): array
     {
         return [
             [
@@ -161,7 +161,7 @@ string {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php function foo(): mixed{}',
@@ -184,7 +184,7 @@ string {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php enum Foo: int {}',

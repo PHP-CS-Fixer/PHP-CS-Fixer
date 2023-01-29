@@ -33,7 +33,7 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function providePHPCloseTagCases(): array
+    public static function providePHPCloseTagCases(): array
     {
         return [
             [
@@ -315,7 +315,7 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixNestedIfCases(): array
+    public static function provideFixNestedIfCases(): array
     {
         return [
             [
@@ -353,7 +353,7 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixEmptyElseCases(): array
+    public static function provideFixEmptyElseCases(): array
     {
         return [
             [
@@ -445,7 +445,7 @@ else?><?php echo 5;',
         $this->doTest($expected);
     }
 
-    public function provideNegativeCases(): iterable
+    public static function provideNegativeCases(): iterable
     {
         yield from [
             [
@@ -617,7 +617,7 @@ else?><?php echo 5;',
         $this->doTest($expected);
     }
 
-    public function provideNegativePhp80Cases(): iterable
+    public static function provideNegativePhp80Cases(): iterable
     {
         $cases = [
             '$bar = $foo1 ?? throw new \Exception($e);',
@@ -663,7 +663,7 @@ else?><?php echo 5;',
         static::assertSame($expected, $result);
     }
 
-    public function provideBlockDetectionCases(): array
+    public static function provideBlockDetectionCases(): array
     {
         $cases = [];
 
@@ -789,7 +789,7 @@ else?><?php echo 5;',
         }
     }
 
-    public function provideIsInConditionWithoutBracesCases(): array
+    public static function provideIsInConditionWithoutBracesCases(): array
     {
         return [
             [

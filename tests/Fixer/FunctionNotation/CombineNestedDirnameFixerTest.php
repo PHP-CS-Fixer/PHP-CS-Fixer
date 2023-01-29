@@ -33,7 +33,7 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -114,7 +114,7 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield ['<?php $a = dirname(dirname(...));'];
     }

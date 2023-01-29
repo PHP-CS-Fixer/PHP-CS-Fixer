@@ -29,7 +29,7 @@ or with specified version:
 
 .. code-block:: console
 
-    wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.0.1/php-cs-fixer.phar -O php-cs-fixer
+    wget https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/v3.13.0/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 

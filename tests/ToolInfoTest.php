@@ -55,7 +55,7 @@ final class ToolInfoTest extends TestCase
     {
         $toolInfo = new ToolInfo();
         static::assertSame(
-            'https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/foo/php-cs-fixer.phar',
+            'https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/foo/php-cs-fixer.phar',
             $toolInfo->getPharDownloadUri('foo')
         );
     }

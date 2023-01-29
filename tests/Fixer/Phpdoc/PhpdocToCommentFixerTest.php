@@ -39,7 +39,7 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideDocblocksCases(): array
+    public static function provideDocblocksCases(): array
     {
         $cases = [];
 
@@ -684,7 +684,7 @@ foreach($connections as $key => $sqlite) {
         return $cases;
     }
 
-    public function provideTraitsCases(): array
+    public static function provideTraitsCases(): array
     {
         return [
             [
@@ -702,7 +702,7 @@ trait DocBlocks
         ];
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -805,7 +805,7 @@ $first = true;// needed because by default first docblock is never fixed.
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php
@@ -882,7 +882,7 @@ class Foo
         $this->doTest($expected);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'enum' => [
             '<?php

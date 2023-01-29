@@ -53,7 +53,7 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
         }, $this->provideFixPreIncrementCases());
     }
 
-    public function provideFixPreIncrementCases(): array
+    public static function provideFixPreIncrementCases(): array
     {
         $cases = [
             [

@@ -31,7 +31,7 @@ final class NativeFunctionTypeDeclarationCasingFixerTest extends AbstractFixerTe
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -141,7 +141,7 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php class T { public function Foo(object $A): static {}}',
@@ -194,7 +194,7 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'return type `never`' => [
             '<?php class T { public function Foo(object $A): never {die;}}',
@@ -212,7 +212,7 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         foreach (['true', 'false', 'null'] as $type) {
             yield sprintf('standalone type `%s` in class method', $type) => [

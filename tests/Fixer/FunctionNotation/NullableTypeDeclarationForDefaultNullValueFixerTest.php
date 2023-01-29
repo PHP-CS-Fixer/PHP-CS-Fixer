@@ -34,7 +34,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         $this->doTest($expected);
     }
 
-    public function provideDoNotFixCases(): iterable
+    public static function provideDoNotFixCases(): iterable
     {
         yield ['<?php function foo($param = null) {}'];
 
@@ -150,7 +150,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php function foo(?string $param = null) {}',
@@ -332,7 +332,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         return TestCaseUtils::swapExpectedInputTestCases($this->provideFixCases());
     }
 
-    public function provideNonInverseOnlyFixCases(): iterable
+    public static function provideNonInverseOnlyFixCases(): iterable
     {
         yield [
             '<?php function foo( ?string $param = null) {}',
@@ -350,7 +350,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         ];
     }
 
-    public function provideInverseOnlyFixCases(): iterable
+    public static function provideInverseOnlyFixCases(): iterable
     {
         yield [
             '<?php function foo(string $param = null) {}',
@@ -385,7 +385,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases(): iterable
+    public static function provideFixPhp74Cases(): iterable
     {
         yield [
             '<?php $foo = fn (?string $param = null) => null;',
@@ -448,7 +448,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield 'trailing comma' => [
             '<?php function foo(?string $param = null,) {}',
@@ -522,7 +522,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre81Cases(): iterable
+    public static function provideFixPre81Cases(): iterable
     {
         yield 'do not fix pre PHP 8.1' => [
             '<?php
@@ -555,7 +555,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         $this->doTest($expected);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php

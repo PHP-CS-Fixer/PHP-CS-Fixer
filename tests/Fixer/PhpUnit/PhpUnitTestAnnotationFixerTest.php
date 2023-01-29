@@ -37,7 +37,7 @@ final class PhpUnitTestAnnotationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             'Annotation is used, and it should not be' => [
@@ -991,7 +991,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): array
     {
         return [
             [

@@ -34,7 +34,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             ['<?php class Test { public function __construct() {} }'],

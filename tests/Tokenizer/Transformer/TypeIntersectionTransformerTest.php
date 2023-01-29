@@ -42,7 +42,7 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases(): iterable
+    public static function provideProcessCases(): iterable
     {
         yield 'do not fix cases' => [
             '<?php

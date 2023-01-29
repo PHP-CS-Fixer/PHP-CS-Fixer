@@ -69,6 +69,7 @@ abstract class AbstractReporterTestCase extends TestCase
                 $this->createNoErrorReport(),
                 new ReportSummary(
                     [],
+                    10,
                     0,
                     0,
                     false,
@@ -85,6 +86,7 @@ abstract class AbstractReporterTestCase extends TestCase
                             'diff' => '',
                         ],
                     ],
+                    10,
                     0,
                     0,
                     false,
@@ -101,6 +103,7 @@ abstract class AbstractReporterTestCase extends TestCase
                             'diff' => 'this text is a diff ;)',
                         ],
                     ],
+                    10,
                     0,
                     0,
                     false,
@@ -117,6 +120,7 @@ abstract class AbstractReporterTestCase extends TestCase
                             'diff' => '',
                         ],
                     ],
+                    10,
                     0,
                     0,
                     true,
@@ -133,6 +137,7 @@ abstract class AbstractReporterTestCase extends TestCase
                             'diff' => '',
                         ],
                     ],
+                    10,
                     1234,
                     2621440, // 2.5 * 1024 * 1024
                     false,
@@ -153,6 +158,7 @@ abstract class AbstractReporterTestCase extends TestCase
                             'diff' => 'another diff here ;)',
                         ],
                     ],
+                    10,
                     1234,
                     2621440, // 2.5 * 1024 * 1024
                     true,

@@ -88,7 +88,7 @@ List of Available Rules
 
    There MUST be one blank line after the namespace declaration.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\NamespaceNotation\\BlankLineAfterNamespaceFixer <./../src/Fixer/NamespaceNotation/BlankLineAfterNamespaceFixer.php>`_
 -  `blank_line_after_opening_tag <./rules/php_tag/blank_line_after_opening_tag.rst>`_
@@ -148,7 +148,7 @@ List of Available Rules
      | Default value: ``'same'``
 
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../src/Fixer/Basic/BracesFixer.php>`_
 -  `cast_spaces <./rules/cast_notation/cast_spaces.rst>`_
@@ -209,7 +209,7 @@ List of Available Rules
      | Default value: ``true``
 
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\ClassDefinitionFixer <./../src/Fixer/ClassNotation/ClassDefinitionFixer.php>`_
 -  `class_keyword_remove <./rules/language_construct/class_keyword_remove.rst>`_
@@ -310,7 +310,7 @@ List of Available Rules
      | Default value: ``'lower'``
 
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Casing\\ConstantCaseFixer <./../src/Fixer/Casing/ConstantCaseFixer.php>`_
 -  `control_structure_braces <./rules/control_structure/control_structure_braces.rst>`_
@@ -374,9 +374,9 @@ List of Available Rules
 
    Consider this code:
        ``DateTime::createFromFormat('Y-m-d', '2022-02-11')``.
-       What value will be returned? '2022-01-11 00:00:00.0'? No, actual return
+       What value will be returned? '2022-02-11 00:00:00.0'? No, actual return
    value has 'H:i:s' section like '2022-02-11 16:55:37.0'.
-       Change 'Y-m-d' to '!Y-m-d', return value will be '2022-01-11 00:00:00.0'.
+       Change 'Y-m-d' to '!Y-m-d', return value will be '2022-02-11 00:00:00.0'.
        So, adding ``!`` to format string will make return value more intuitive.
 
    *warning risky* Risky when depending on the actual timings being used even when not explicit
@@ -565,7 +565,7 @@ List of Available Rules
 
    The keyword ``elseif`` should be used instead of ``else if`` so that all control keywords look like single words.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\ElseifFixer <./../src/Fixer/ControlStructure/ElseifFixer.php>`_
 -  `empty_loop_body <./rules/control_structure/empty_loop_body.rst>`_
@@ -602,7 +602,7 @@ List of Available Rules
 
    PHP code MUST use only UTF-8 without BOM (remove BOM).
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR1 <./ruleSets/PSR1.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR1 <./ruleSets/PSR1.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Basic\\EncodingFixer <./../src/Fixer/Basic/EncodingFixer.php>`_
 -  `ereg_to_preg <./rules/alias/ereg_to_preg.rst>`_
@@ -792,7 +792,7 @@ List of Available Rules
 
    PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not other tag variations.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR1 <./ruleSets/PSR1.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR1 <./ruleSets/PSR1.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpTag\\FullOpeningTagFixer <./../src/Fixer/PhpTag/FullOpeningTagFixer.php>`_
 -  `function_declaration <./rules/function_notation/function_declaration.rst>`_
@@ -815,7 +815,7 @@ List of Available Rules
      | Default value: ``false``
 
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\FunctionDeclarationFixer <./../src/Fixer/FunctionNotation/FunctionDeclarationFixer.php>`_
 -  `function_to_constant <./rules/language_construct/function_to_constant.rst>`_
@@ -915,6 +915,8 @@ List of Available Rules
      | Default value: ``true``
 
 
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
    `Source PhpCsFixer\\Fixer\\Import\\GlobalNamespaceImportFixer <./../src/Fixer/Import/GlobalNamespaceImportFixer.php>`_
 -  `group_import <./rules/import/group_import.rst>`_
 
@@ -1003,7 +1005,7 @@ List of Available Rules
 
    Code MUST use configured indentation type.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\IndentationTypeFixer <./../src/Fixer/Whitespace/IndentationTypeFixer.php>`_
 -  `integer_literal_case <./rules/casing/integer_literal_case.rst>`_
@@ -1040,7 +1042,7 @@ List of Available Rules
 
    All PHP files must use same line ending.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\LineEndingFixer <./../src/Fixer/Whitespace/LineEndingFixer.php>`_
 -  `list_syntax <./rules/list_notation/list_syntax.rst>`_
@@ -1079,7 +1081,7 @@ List of Available Rules
 
    PHP keywords MUST be in lower case.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Casing\\LowercaseKeywordsFixer <./../src/Fixer/Casing/LowercaseKeywordsFixer.php>`_
 -  `lowercase_static_reference <./rules/casing/lowercase_static_reference.rst>`_
@@ -1131,7 +1133,7 @@ List of Available Rules
      | Default value: ``false``
 
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixer <./../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php>`_
 -  `method_chaining_indentation <./rules/whitespace/method_chaining_indentation.rst>`_
@@ -1341,7 +1343,7 @@ List of Available Rules
 * `@sodium` (libsodium functions)
 * `@time` (time functions)
 
-     | Allowed values: a subset of ``['@IMAP', '@all', '@exif', '@ftp', '@internal', '@ldap', '@mbreg', '@mysqli', '@oci', '@odbc', '@openssl', '@pcntl', '@pg', '@posix', '@snmp', '@sodium', '@time']``
+     | Allowed values: a subset of ``['@all', '@exif', '@ftp', '@IMAP', '@internal', '@ldap', '@mbreg', '@mysqli', '@oci', '@odbc', '@openssl', '@pcntl', '@pg', '@posix', '@snmp', '@sodium', '@time']``
      | Default value: ``['@internal', '@IMAP', '@pg']``
 
 
@@ -1411,14 +1413,14 @@ List of Available Rules
      | Default value: ``'no break'``
 
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\NoBreakCommentFixer <./../src/Fixer/ControlStructure/NoBreakCommentFixer.php>`_
 -  `no_closing_tag <./rules/php_tag/no_closing_tag.rst>`_
 
    The closing ``?>`` tag MUST be omitted from files containing only PHP.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpTag\\NoClosingTagFixer <./../src/Fixer/PhpTag/NoClosingTagFixer.php>`_
 -  `no_empty_comment <./rules/comment/no_empty_comment.rst>`_
@@ -1543,7 +1545,7 @@ List of Available Rules
 
    When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\NoSpacesAfterFunctionNameFixer <./../src/Fixer/FunctionNotation/NoSpacesAfterFunctionNameFixer.php>`_
 -  `no_spaces_around_offset <./rules/whitespace/no_spaces_around_offset.rst>`_
@@ -1565,14 +1567,14 @@ List of Available Rules
 
    There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\NoSpacesInsideParenthesisFixer <./../src/Fixer/Whitespace/NoSpacesInsideParenthesisFixer.php>`_
 -  `no_space_around_double_colon <./rules/operator/no_space_around_double_colon.rst>`_
 
    There must be no space around double colons (also called Scope Resolution Operator or Paamayim Nekudotayim).
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\NoSpaceAroundDoubleColonFixer <./../src/Fixer/Operator/NoSpaceAroundDoubleColonFixer.php>`_
 -  `no_superfluous_elseif <./rules/control_structure/no_superfluous_elseif.rst>`_
@@ -1645,14 +1647,14 @@ List of Available Rules
 
    Remove trailing whitespace at the end of non-blank lines.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\NoTrailingWhitespaceFixer <./../src/Fixer/Whitespace/NoTrailingWhitespaceFixer.php>`_
 -  `no_trailing_whitespace_in_comment <./rules/comment/no_trailing_whitespace_in_comment.rst>`_
 
    There MUST be no trailing spaces inside comment or PHPDoc.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Comment\\NoTrailingWhitespaceInCommentFixer <./../src/Fixer/Comment/NoTrailingWhitespaceInCommentFixer.php>`_
 -  `no_trailing_whitespace_in_string <./rules/string_notation/no_trailing_whitespace_in_string.rst>`_
@@ -1913,10 +1915,6 @@ List of Available Rules
 -  `ordered_interfaces <./rules/class_notation/ordered_interfaces.rst>`_
 
    Orders the interfaces in an ``implements`` or ``interface extends`` clause.
-
-   *warning risky* Risky for ``implements`` when specifying both an interface and its parent
-   interface, because PHP doesn't break on ``parent, child`` but does on
-   ``child, parent``.
 
    Configuration options:
 
@@ -2339,6 +2337,15 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitConstructFixer <./../src/Fixer/PhpUnit/PhpUnitConstructFixer.php>`_
+-  `php_unit_data_provider_static <./rules/php_unit/php_unit_data_provider_static.rst>`_
+
+   Data providers must be static.
+
+   *warning risky* Fixer could be risky if one is calling data provider function dynamically.
+
+   Part of rule set `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php>`_
 -  `php_unit_dedicate_assert <./rules/php_unit/php_unit_dedicate_assert.rst>`_
 
    PHPUnit assertions like ``assertInternalType``, ``assertFileExists``, should be used over ``assertTrue``.
@@ -2353,7 +2360,7 @@ List of Available Rules
      | Default value: ``'newest'``
 
 
-   Part of rule sets `@PHPUnit30Migration:risky <./ruleSets/PHPUnit30MigrationRisky.rst>`_ `@PHPUnit32Migration:risky <./ruleSets/PHPUnit32MigrationRisky.rst>`_ `@PHPUnit35Migration:risky <./ruleSets/PHPUnit35MigrationRisky.rst>`_ `@PHPUnit43Migration:risky <./ruleSets/PHPUnit43MigrationRisky.rst>`_ `@PHPUnit48Migration:risky <./ruleSets/PHPUnit48MigrationRisky.rst>`_ `@PHPUnit50Migration:risky <./ruleSets/PHPUnit50MigrationRisky.rst>`_ `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_
+   Part of rule sets `@PHPUnit30Migration:risky <./ruleSets/PHPUnit30MigrationRisky.rst>`_ `@PHPUnit32Migration:risky <./ruleSets/PHPUnit32MigrationRisky.rst>`_ `@PHPUnit35Migration:risky <./ruleSets/PHPUnit35MigrationRisky.rst>`_ `@PHPUnit43Migration:risky <./ruleSets/PHPUnit43MigrationRisky.rst>`_ `@PHPUnit48Migration:risky <./ruleSets/PHPUnit48MigrationRisky.rst>`_ `@PHPUnit50Migration:risky <./ruleSets/PHPUnit50MigrationRisky.rst>`_ `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixer <./../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php>`_
 -  `php_unit_dedicate_assert_internal_type <./rules/php_unit/php_unit_dedicate_assert_internal_type.rst>`_
@@ -2371,7 +2378,7 @@ List of Available Rules
      | Default value: ``'newest'``
 
 
-   Part of rule sets `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_
+   Part of rule sets `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertInternalTypeFixer <./../src/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixer.php>`_
 -  `php_unit_expectation <./rules/php_unit/php_unit_expectation.rst>`_
@@ -2389,7 +2396,7 @@ List of Available Rules
      | Default value: ``'newest'``
 
 
-   Part of rule sets `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_
+   Part of rule sets `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitExpectationFixer <./../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php>`_
 -  `php_unit_fqcn_annotation <./rules/php_unit/php_unit_fqcn_annotation.rst>`_
@@ -2444,7 +2451,7 @@ List of Available Rules
      | Default value: ``'newest'``
 
 
-   Part of rule sets `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_
+   Part of rule sets `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockFixer <./../src/Fixer/PhpUnit/PhpUnitMockFixer.php>`_
 -  `php_unit_mock_short_will_return <./rules/php_unit/php_unit_mock_short_will_return.rst>`_
@@ -2482,7 +2489,7 @@ List of Available Rules
      | Default value: ``'newest'``
 
 
-   Part of rule sets `@PHPUnit48Migration:risky <./ruleSets/PHPUnit48MigrationRisky.rst>`_ `@PHPUnit50Migration:risky <./ruleSets/PHPUnit50MigrationRisky.rst>`_ `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_
+   Part of rule sets `@PHPUnit48Migration:risky <./ruleSets/PHPUnit48MigrationRisky.rst>`_ `@PHPUnit50Migration:risky <./ruleSets/PHPUnit50MigrationRisky.rst>`_ `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNamespacedFixer <./../src/Fixer/PhpUnit/PhpUnitNamespacedFixer.php>`_
 -  `php_unit_no_expectation_annotation <./rules/php_unit/php_unit_no_expectation_annotation.rst>`_
@@ -2504,7 +2511,7 @@ List of Available Rules
      | Default value: ``true``
 
 
-   Part of rule sets `@PHPUnit32Migration:risky <./ruleSets/PHPUnit32MigrationRisky.rst>`_ `@PHPUnit35Migration:risky <./ruleSets/PHPUnit35MigrationRisky.rst>`_ `@PHPUnit43Migration:risky <./ruleSets/PHPUnit43MigrationRisky.rst>`_ `@PHPUnit48Migration:risky <./ruleSets/PHPUnit48MigrationRisky.rst>`_ `@PHPUnit50Migration:risky <./ruleSets/PHPUnit50MigrationRisky.rst>`_ `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_
+   Part of rule sets `@PHPUnit32Migration:risky <./ruleSets/PHPUnit32MigrationRisky.rst>`_ `@PHPUnit35Migration:risky <./ruleSets/PHPUnit35MigrationRisky.rst>`_ `@PHPUnit43Migration:risky <./ruleSets/PHPUnit43MigrationRisky.rst>`_ `@PHPUnit48Migration:risky <./ruleSets/PHPUnit48MigrationRisky.rst>`_ `@PHPUnit50Migration:risky <./ruleSets/PHPUnit50MigrationRisky.rst>`_ `@PHPUnit52Migration:risky <./ruleSets/PHPUnit52MigrationRisky.rst>`_ `@PHPUnit54Migration:risky <./ruleSets/PHPUnit54MigrationRisky.rst>`_ `@PHPUnit55Migration:risky <./ruleSets/PHPUnit55MigrationRisky.rst>`_ `@PHPUnit56Migration:risky <./ruleSets/PHPUnit56MigrationRisky.rst>`_ `@PHPUnit57Migration:risky <./ruleSets/PHPUnit57MigrationRisky.rst>`_ `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNoExpectationAnnotationFixer <./../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php>`_
 -  `php_unit_set_up_tear_down_visibility <./rules/php_unit/php_unit_set_up_tear_down_visibility.rst>`_
@@ -2747,7 +2754,7 @@ List of Available Rules
 
    A PHP file without end tag must always end with a single empty line feed.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\SingleBlankLineAtEofFixer <./../src/Fixer/Whitespace/SingleBlankLineAtEofFixer.php>`_
 -  `single_blank_line_before_namespace <./rules/namespace_notation/single_blank_line_before_namespace.rst>`_
@@ -2769,7 +2776,7 @@ List of Available Rules
      | Default value: ``['const', 'property']``
 
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\SingleClassElementPerStatementFixer <./../src/Fixer/ClassNotation/SingleClassElementPerStatementFixer.php>`_
 -  `single_import_per_statement <./rules/import/single_import_per_statement.rst>`_
@@ -2784,14 +2791,14 @@ List of Available Rules
      | Default value: ``true``
 
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Import\\SingleImportPerStatementFixer <./../src/Fixer/Import/SingleImportPerStatementFixer.php>`_
 -  `single_line_after_imports <./rules/import/single_line_after_imports.rst>`_
 
    Each namespace use MUST go on its own line and there MUST be one blank line after the use statements block.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Import\\SingleLineAfterImportsFixer <./../src/Fixer/Import/SingleLineAfterImportsFixer.php>`_
 -  `single_line_comment_spacing <./rules/comment/single_line_comment_spacing.rst>`_
@@ -2947,14 +2954,14 @@ List of Available Rules
 
    A case should be followed by a colon and not a semicolon.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\SwitchCaseSemicolonToColonFixer <./../src/Fixer/ControlStructure/SwitchCaseSemicolonToColonFixer.php>`_
 -  `switch_case_space <./rules/control_structure/switch_case_space.rst>`_
 
    Removes extra spaces between colon and case value.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\SwitchCaseSpaceFixer <./../src/Fixer/ControlStructure/SwitchCaseSpaceFixer.php>`_
 -  `switch_continue_to_break <./rules/control_structure/switch_continue_to_break.rst>`_
@@ -3061,7 +3068,7 @@ List of Available Rules
      | Default value: ``['property', 'method', 'const']``
 
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PHP71Migration <./ruleSets/PHP71Migration.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PHP71Migration <./ruleSets/PHP71Migration.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\VisibilityRequiredFixer <./../src/Fixer/ClassNotation/VisibilityRequiredFixer.php>`_
 -  `void_return <./rules/function_notation/void_return.rst>`_

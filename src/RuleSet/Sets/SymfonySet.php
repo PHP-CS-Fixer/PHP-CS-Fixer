@@ -59,6 +59,11 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'inheritDocs' => 'inheritDoc',
                 ],
             ],
+            'global_namespace_import' => [
+                'import_classes' => false,
+                'import_constants' => false,
+                'import_functions' => false,
+            ],
             'include' => true,
             'increment_style' => true,
             'integer_literal_case' => true,
@@ -128,7 +133,14 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_whitespace_before_comma_in_array' => true,
             'normalize_index_brace' => true,
             'object_operator_without_whitespace' => true,
-            'ordered_imports' => true,
+            'ordered_imports' => [
+                'imports_order' => [
+                    'class',
+                    'function',
+                    'const',
+                ],
+                'sort_algorithm' => 'alpha',
+            ],
             'php_unit_fqcn_annotation' => true,
             'php_unit_method_casing' => true,
             'phpdoc_align' => true,

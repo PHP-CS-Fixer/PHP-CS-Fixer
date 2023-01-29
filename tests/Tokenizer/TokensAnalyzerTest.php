@@ -54,7 +54,7 @@ final class TokensAnalyzerTest extends TestCase
         );
     }
 
-    public function provideGetClassyElementsCases(): iterable
+    public static function provideGetClassyElementsCases(): iterable
     {
         yield 'trait import' => [
             [
@@ -506,7 +506,7 @@ PHP;
         static::assertSame($expected, $elements);
     }
 
-    public function provideGetClassyElements81Cases(): iterable
+    public static function provideGetClassyElements81Cases(): iterable
     {
         yield [
             [
@@ -692,7 +692,7 @@ enum Foo: string
         static::assertSame($expected, $elements);
     }
 
-    public function provideGetClassyElements82Cases(): iterable
+    public static function provideGetClassyElements82Cases(): iterable
     {
         yield 'constant in trait' => [
             [
@@ -730,7 +730,7 @@ enum Foo: string
         }
     }
 
-    public function provideIsAnonymousClassCases(): iterable
+    public static function provideIsAnonymousClassCases(): iterable
     {
         yield [
             [1 => false],
@@ -796,7 +796,7 @@ enum Foo: string
         }
     }
 
-    public function provideIsLambdaCases(): array
+    public static function provideIsLambdaCases(): array
     {
         return [
             [
@@ -896,7 +896,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsLambda74Cases(): iterable
+    public static function provideIsLambda74Cases(): iterable
     {
         yield [
             [5 => true],
@@ -925,7 +925,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsLambda80Cases(): array
+    public static function provideIsLambda80Cases(): array
     {
         return [
             [
@@ -980,7 +980,7 @@ $a(1,2);',
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
-    public function provideIsConstantInvocationCases(): array
+    public static function provideIsConstantInvocationCases(): array
     {
         return [
             [
@@ -1196,7 +1196,7 @@ abstract class Baz
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
-    public function provideIsConstantInvocationPhp80Cases(): iterable
+    public static function provideIsConstantInvocationPhp80Cases(): iterable
     {
         yield 'abstract method return alternation' => [
             [6 => false, 16 => false, 21 => false, 23 => false],
@@ -1306,7 +1306,7 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
-    public function provideIsConstantInvocationPhp81Cases(): iterable
+    public static function provideIsConstantInvocationPhp81Cases(): iterable
     {
         yield [
             [5 => false, 15 => false],
@@ -1392,7 +1392,7 @@ abstract class Baz
         }
     }
 
-    public function provideIsUnarySuccessorOperatorCases(): array
+    public static function provideIsUnarySuccessorOperatorCases(): array
     {
         return [
             [
@@ -1453,7 +1453,7 @@ abstract class Baz
         }
     }
 
-    public function provideIsUnaryPredecessorOperatorCases(): array
+    public static function provideIsUnaryPredecessorOperatorCases(): array
     {
         return [
             [
@@ -1538,7 +1538,7 @@ abstract class Baz
         }
     }
 
-    public function provideIsBinaryOperatorCases(): iterable
+    public static function provideIsBinaryOperatorCases(): iterable
     {
         yield from [
             [
@@ -1705,7 +1705,7 @@ $b;',
         static::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
     }
 
-    public function provideIsArrayCases(): array
+    public static function provideIsArrayCases(): array
     {
         return [
             [
@@ -1788,7 +1788,7 @@ $b;',
         }
     }
 
-    public function provideIsArray71Cases(): array
+    public static function provideIsArray71Cases(): array
     {
         return [
             [
@@ -1823,7 +1823,7 @@ $b;',
         }
     }
 
-    public function provideIsBinaryOperator71Cases(): iterable
+    public static function provideIsBinaryOperator71Cases(): iterable
     {
         yield [
             [11 => false],
@@ -1857,7 +1857,7 @@ $b;',
         }
     }
 
-    public function provideIsBinaryOperator80Cases(): iterable
+    public static function provideIsBinaryOperator80Cases(): iterable
     {
         yield [
             [6 => false],
@@ -1901,7 +1901,7 @@ $b;',
         }
     }
 
-    public function provideIsBinaryOperator81Cases(): iterable
+    public static function provideIsBinaryOperator81Cases(): iterable
     {
         yield 'type intersection' => [
             [6 => false],
@@ -1932,7 +1932,7 @@ $b;',
         $tokensAnalyzer->isArrayMultiLine($tokenIndex);
     }
 
-    public function provideArrayExceptionsCases(): array
+    public static function provideArrayExceptionsCases(): array
     {
         return [
             ['<?php $a;', 1],
@@ -2010,7 +2010,7 @@ $b;',
         static::assertSame($expected, $attributes);
     }
 
-    public function provideGetFunctionPropertiesCases(): array
+    public static function provideGetFunctionPropertiesCases(): array
     {
         $defaultAttributes = [
             'visibility' => null,
@@ -2157,7 +2157,7 @@ SRC;
         static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
-    public function provideGetImportUseIndexesCases(): array
+    public static function provideGetImportUseIndexesCases(): array
     {
         return [
             [
@@ -2341,7 +2341,7 @@ class MyTestWithAnonymousClass extends TestCase
         static::assertSame($expected, $tokensAnalyzer->isSuperGlobal($index));
     }
 
-    public function provideIsSuperGlobalCases(): array
+    public static function provideIsSuperGlobalCases(): array
     {
         $superNames = [
             '$_COOKIE',

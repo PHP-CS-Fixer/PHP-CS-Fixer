@@ -41,7 +41,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
-    public function provideProcessCases(): array
+    public static function provideProcessCases(): array
     {
         return [
             [
@@ -360,7 +360,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
-    public function provideProcessPhp80Cases(): iterable
+    public static function provideProcessPhp80Cases(): iterable
     {
         yield [
             [
@@ -411,7 +411,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
-    public function provideProcessPhp81Cases(): iterable
+    public static function provideProcessPhp81Cases(): iterable
     {
         yield [
             [

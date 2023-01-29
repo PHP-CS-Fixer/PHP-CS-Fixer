@@ -491,7 +491,7 @@ else {
             && $tokens[$index + 1]->isWhitespace()
             && Preg::match('/\h+$/D', $tokens[$index + 1]->getContent())
         ) {
-            return Preg::replace('/.*?(\h+)$/D', '$1', $tokens[$index + 1]->getContent());
+            return Preg::replace('/.*?(\h+)$/sD', '$1', $tokens[$index + 1]->getContent());
         }
 
         return $regularIndent;
@@ -524,7 +524,7 @@ else {
 
         $index = $tokens->getNextMeaningfulToken($index);
 
-        return null !== $index && $tokens[$index]->equalsAny([[T_ELSE], [T_ELSEIF], ',']);
+        return null !== $index && $tokens[$index]->isGivenKind([T_ELSE, T_ELSEIF]);
     }
 
     /**

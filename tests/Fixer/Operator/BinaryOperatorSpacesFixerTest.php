@@ -40,7 +40,7 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideWithTabsCases(): array
+    public static function provideWithTabsCases(): array
     {
         return [
             [
@@ -87,7 +87,7 @@ public function myFunction() {
         $this->doTest($expected, $input);
     }
 
-    public function provideConfiguredCases(): array
+    public static function provideConfiguredCases(): array
     {
         return [
             [
@@ -525,7 +525,7 @@ $a = $ae?? $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -724,7 +724,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideUnalignEqualsCases(): array
+    public static function provideUnalignEqualsCases(): array
     {
         return [
             [
@@ -900,7 +900,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideUnalignDoubleArrowCases(): array
+    public static function provideUnalignDoubleArrowCases(): array
     {
         return [
             [
@@ -1295,7 +1295,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideAlignEqualsCases(): array
+    public static function provideAlignEqualsCases(): array
     {
         return [
             [
@@ -1642,7 +1642,7 @@ $start = (
         $this->doTest($expected, $input);
     }
 
-    public function provideAlignDoubleArrowCases(): array
+    public static function provideAlignDoubleArrowCases(): array
     {
         return [
             [
@@ -1711,7 +1711,7 @@ $start = (
             "foo"    => "bar",
             "foofoo" => 42,
         ]),
-        "baz" => "OK",
+        "baz"    => "OK",
     ]);',
                 '<?php
     return new JsonResponse([
@@ -1854,7 +1854,7 @@ $start = (
             1  => 2,
             22 => 3,
         ],
-        100 => [
+        100            => [
             1  => 2,
             22 => 3,
         ]
@@ -1875,8 +1875,8 @@ $start = (
             [
                 '<?php
     $a = array(
-        0  => 1,
-        10 => array(
+        0   => 1,
+        10  => array(
             1  => 2,
             22 => 3,
         ),
@@ -1936,7 +1936,7 @@ $start = (
         20    => 22,
         30    => 33,
         40
-            =>
+              =>
                 44,
     );',
                 '<?php
@@ -2005,8 +2005,8 @@ $start = (
                 '<?php
     $array = array(
         "bazab" => b(array(
-            1     => 2,
-            5     => [
+            1       => 2,
+            5       => [
                 6     => 7,
                 8     => 9,
             ],
@@ -2356,7 +2356,7 @@ function foo () {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases(): array
+    public static function provideFixPhp74Cases(): array
     {
         return [
             [

@@ -50,7 +50,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -368,7 +368,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixAllCases(): iterable
+    public static function provideFixAllCases(): iterable
     {
         yield '===' => [
             '<?php $at = $a === $b;',
@@ -1481,7 +1481,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         $this->doTest($input);
     }
 
-    public function provideFixWithConfigCases(): iterable
+    public static function provideFixWithConfigCases(): iterable
     {
         yield 'config: break' => [
             ['statements' => ['break']],
@@ -1606,7 +1606,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function providePrePhp8Cases(): iterable
+    public static function providePrePhp8Cases(): iterable
     {
         yield 'block type array index curly brace' => [
             '<?php echo $a12 = $a{1};',
@@ -1651,7 +1651,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases(): iterable
+    public static function provideFixPhp80Cases(): iterable
     {
         yield 'fn throw' => [
             '<?php $triggerError = fn () => throw new MyError();',
@@ -1709,7 +1709,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp81Cases(): iterable
+    public static function provideFixPhp81Cases(): iterable
     {
         yield [
             '<?php

@@ -31,7 +31,7 @@ final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield from [
             'comment' => [
@@ -92,7 +92,7 @@ A is equal to 5
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre80Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php $a = [1,2,3]; echo $a{1}; ?>',

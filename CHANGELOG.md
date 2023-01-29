@@ -3,6 +3,40 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.13.2
+---------------------
+
+* bug: Fix type error when using paths intersection mode (#6734)
+
+Changelog for v3.13.1
+---------------------
+
+* bug: Align all the arrows inside the same array (#6590)
+* bug: Fix priority between `modernize_types_casting` and `no_unneeded_control_parentheses` (#6687)
+* bug: TrailingCommaInMultilineFixer - do not add trailing comma when there is no break line after last element (#6677)
+* docs: Fix docs for disabled rules in rulesets (#6679)
+* docs: fix the cookbook_fixers.rst (#6672)
+* docs: Update installation recommended commands for `mkdir` argument (`-p` insteadof `--parents`). (#6689)
+* Make static data providers that are not using dynamic calls (#6696)
+* minor: displaying number of checked files (#6674)
+
+Changelog for v3.13.0
+---------------------
+
+* bug: BracesFixer - Fix unexpected extra blank line (#6667)
+* bug: fix CI on master branch (#6663)
+* bug: IsNullFixer - handle casting (#6661)
+* docs: feature or bug (#6652)
+* docs: Use case insensitive sorting for options (#6666)
+* docs: [DateTimeCreateFromFormatCallFixer] Fix typos in the code sample (#6671)
+* DX: update cli-executor (#6664)
+* DX: update dev-tools (#6665)
+* feature: Add global_namespace_import to @Symfony ruleset (#6662)
+* feature: Add separate option for closure_fn_spacing (#6658)
+* feature: general_phpdoc_annotation_remove - allow add case_sensitive option (#6660)
+* minor: AllowedValueSubset - possible values are sorted (#6651)
+* minor: Use md5 for file hashing to reduce possible collisions (#6597)
+
 Changelog for v3.12.0
 ---------------------
 

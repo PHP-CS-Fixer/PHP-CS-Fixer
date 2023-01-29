@@ -33,7 +33,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideNoEmptyStatementsCases(): iterable
+    public static function provideNoEmptyStatementsCases(): iterable
     {
         yield from [
             [
@@ -433,7 +433,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -528,7 +528,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCasesWithShortOpenTagCases(): array
+    public static function provideCasesWithShortOpenTagCases(): array
     {
         return [
             [
@@ -546,7 +546,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixMultipleSemicolonsCases(): array
+    public static function provideFixMultipleSemicolonsCases(): array
     {
         return [
             [
@@ -613,7 +613,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php enum Foo{}',

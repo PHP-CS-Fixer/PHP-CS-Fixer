@@ -37,7 +37,7 @@ final class ControlStructureContinuationPositionFixerTest extends AbstractFixerT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'else (same line, default)' => [
             '<?php

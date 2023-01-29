@@ -33,7 +33,7 @@ final class EregToPregFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield ['<?php $x = 1;'];
 
@@ -140,7 +140,7 @@ final class EregToPregFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php $x = spliti(...);',

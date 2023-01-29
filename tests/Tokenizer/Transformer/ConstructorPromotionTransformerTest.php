@@ -45,7 +45,7 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
         );
     }
 
-    public function provideProcessCases(): iterable
+    public static function provideProcessCases(): iterable
     {
         yield [
             [
@@ -144,7 +144,7 @@ class Point {
         );
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
             [

@@ -61,7 +61,7 @@ final class UtilsTest extends TestCase
         static::assertSame($expected, Utils::camelCaseToUnderscore($expected));
     }
 
-    public function provideCamelCaseToUnderscoreCases(): array
+    public static function provideCamelCaseToUnderscoreCases(): array
     {
         return [
             [
@@ -126,7 +126,7 @@ final class UtilsTest extends TestCase
         static::assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
     }
 
-    public function provideCalculateTrailingWhitespaceIndentCases(): array
+    public static function provideCalculateTrailingWhitespaceIndentCases(): array
     {
         return [
             ['    ', [T_WHITESPACE, "\n\n    "]],
@@ -166,7 +166,7 @@ final class UtilsTest extends TestCase
         );
     }
 
-    public function provideStableSortCases(): array
+    public static function provideStableSortCases(): array
     {
         return [
             [
@@ -233,7 +233,7 @@ final class UtilsTest extends TestCase
         static::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
     }
 
-    public function provideNaturalLanguageJoinWithBackticksCases(): array
+    public static function provideNaturalLanguageJoinWithBackticksCases(): array
     {
         return [
             [

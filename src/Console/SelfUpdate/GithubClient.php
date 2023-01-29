@@ -24,14 +24,14 @@ final class GithubClient implements GithubClientInterface
      */
     public function getTags(): array
     {
-        $url = 'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/tags';
+        $url = 'https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/tags';
 
         $result = @file_get_contents(
             $url,
             false,
             stream_context_create([
                 'http' => [
-                    'header' => 'User-Agent: FriendsOfPHP/PHP-CS-Fixer',
+                    'header' => 'User-Agent: PHP-CS-Fixer/PHP-CS-Fixer',
                 ],
             ])
         );

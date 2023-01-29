@@ -31,7 +31,7 @@ final class NoUnneededImportAliasFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php use some\ns\{ClassA, ClassB, ClassC  };',

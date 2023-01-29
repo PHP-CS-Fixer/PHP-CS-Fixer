@@ -42,7 +42,7 @@ final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         $cases = [];
 
@@ -164,7 +164,7 @@ function bar() {}
         return $cases;
     }
 
-    public function provideTraitsCases(): array
+    public static function provideTraitsCases(): array
     {
         $cases = [];
 
@@ -201,7 +201,7 @@ trait Good
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -225,7 +225,7 @@ trait Good
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php

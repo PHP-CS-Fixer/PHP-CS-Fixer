@@ -34,7 +34,7 @@ final class SingleBlankLineAtEofFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             'Not adding an empty line in empty file.' => [
@@ -156,7 +156,7 @@ inline 1
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): iterable
+    public static function provideMessyWhitespacesCases(): iterable
     {
         yield [
             "<?php\r\n\$a = 4;\r\n",

@@ -31,7 +31,7 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield from [
             [
@@ -246,7 +246,7 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre80Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php
@@ -274,7 +274,7 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): array
+    public static function provideFix80Cases(): array
     {
         return [
             'Simple match' => [
@@ -324,7 +324,7 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'enums' => [
             '<?php

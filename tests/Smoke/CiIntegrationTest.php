@@ -148,7 +148,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
         ]);
 
         $optionalDeprecatedVersionWarning = 'You are running PHP CS Fixer v3, which is not maintained anymore. Please update to v4.
-You may find an UPGRADE guide at https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v4.0.0/UPGRADE-v4.md .
+You may find an UPGRADE guide at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v4.0.0/UPGRADE-v4.md .
 ';
 
         $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.1.*.
@@ -194,12 +194,12 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
         static::assertSame(substr_count($expectedResult3FilesDots, 'S'), substr_count($matches[1], 'S'));
 
         static::assertMatchesRegularExpression(
-            '/^\s*Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
+            '/^\s*Found \d+ of \d+ files that can be fixed in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
             $result3->getOutput()
         );
     }
 
-    public function provideIntegrationCases(): array
+    public static function provideIntegrationCases(): array
     {
         return [
             'random-changes' => [

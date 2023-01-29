@@ -33,7 +33,7 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideNewLogicCases(): iterable
+    public static function provideNewLogicCases(): iterable
     {
         yield 'namespace === type name' => [
             '<?php
@@ -114,7 +114,7 @@ namespace A\B\C\D
         $this->doTest($expected, $input);
     }
 
-    public function provideCodeWithReturnTypesCases(): iterable
+    public static function provideCodeWithReturnTypesCases(): iterable
     {
         yield 'Import common strict types' => [
             '<?php
@@ -326,7 +326,7 @@ class SomeClass
         $this->doTest($expected, $input);
     }
 
-    public function provideCodeWithoutReturnTypesCases(): iterable
+    public static function provideCodeWithoutReturnTypesCases(): iterable
     {
         yield 'import from namespace and global' => [
             '<?php
@@ -573,7 +573,7 @@ namespace {
         ];
     }
 
-    public function provideCodeWithReturnTypesCasesWithNullableCases(): array
+    public static function provideCodeWithReturnTypesCasesWithNullableCases(): array
     {
         return [
             'Test namespace fixes with nullable types' => [

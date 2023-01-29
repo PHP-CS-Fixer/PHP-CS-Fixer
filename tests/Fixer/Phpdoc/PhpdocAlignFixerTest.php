@@ -787,7 +787,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -1268,7 +1268,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideVariadicCases(): array
+    public static function provideVariadicCases(): array
     {
         return [
             [
@@ -1391,7 +1391,7 @@ class Foo {}
         $this->doTest($input);
     }
 
-    public function provideInvalidPhpdocCases(): array
+    public static function provideInvalidPhpdocCases(): array
     {
         return [
             [
@@ -1453,5 +1453,90 @@ class Foo {}
              * @param array<string, $this> $arrayOfStrings
              */
         ');
+    }
+
+    public function testClosureTypesContainingBackslash(): void
+    {
+        $this->doTest('<?php
+            /**
+             * @var string                            $input
+             * @var \Closure                          $fn
+             * @var \Closure(bool):int                $fn2
+             * @var Closure                           $fn3
+             * @var Closure(string):string            $fn4
+             * @var array<string,array<string,mixed>> $data
+             */
+            /**
+             * @param string                            $input
+             * @param \Closure                          $fn
+             * @param \Closure(bool):int                $fn2
+             * @param Closure                           $fn3
+             * @param Closure(string):string            $fn4
+             * @param array<string,array<string,mixed>> $data
+             */
+            /**
+             * @var string                   $value
+             * @var \Closure(string): string $callback
+             * @var Closure(int): bool       $callback2
+             */
+            /**
+             * @param string                   $value
+             * @param \Closure(string): string $callback
+             * @param Closure(int): bool       $callback2
+             */
+            /**
+             * @var Closure(array<int,bool>): bool $callback1
+             * @var \Closure(string): string       $callback2
+             */
+            /**
+             * @param Closure(array<int,bool>): bool $callback1
+             * @param \Closure(string): string       $callback2
+             */
+        ');
+    }
+
+    /**
+     * @dataProvider provideCallableTypesWithUglyCodeCases
+     */
+    public function testCallableTypesWithUglyCode(string $input): void
+    {
+        $this->doTest(<<<'EOT'
+        <?php
+        /**
+         * @var callable                      $fn
+         * @var callable(bool): int           $fn2
+         * @var Closure                       $fn3
+         * @var Closure(string|object):string $fn4
+         * @var \Closure                      $fn5
+         * @var \Closure(int, bool): bool     $fn6
+         */
+        EOT, $input);
+    }
+
+    public static function provideCallableTypesWithUglyCodeCases(): iterable
+    {
+        yield [<<<'EOT'
+        <?php
+        /**
+         * @var callable $fn
+         * @var callable(bool): int $fn2
+         * @var Closure $fn3
+         * @var Closure(string|object):string $fn4
+         * @var \Closure $fn5
+         * @var \Closure(int, bool): bool $fn6
+         */
+        EOT];
+
+        yield [<<<'EOT'
+        <?php
+        /**
+         * @var          callable           $fn
+         * @var   callable(bool): int     $fn2
+         * @var   Closure          $fn3
+         * @var Closure(string|object):string                  $fn4
+         * @var      \Closure             $fn5
+         * @var            \Closure(int, bool): bool       $fn6
+         */
+        EOT];
     }
 }

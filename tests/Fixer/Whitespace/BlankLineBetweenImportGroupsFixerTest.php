@@ -31,7 +31,7 @@ final class BlankLineBetweenImportGroupsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixTypesOrderAndWhitespaceCases(): iterable
+    public static function provideFixTypesOrderAndWhitespaceCases(): iterable
     {
         yield [
             '<?php
@@ -537,7 +537,7 @@ use const C\D; // bar
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPre80Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php

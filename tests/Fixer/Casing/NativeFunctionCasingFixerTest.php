@@ -31,7 +31,7 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -188,7 +188,7 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield ['<?php $a?->STRTOLOWER(1,);'];
 

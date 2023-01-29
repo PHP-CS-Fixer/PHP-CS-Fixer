@@ -31,7 +31,6 @@ Rules
 - `no_homoglyph_names <./../rules/naming/no_homoglyph_names.rst>`_
 - `no_php4_constructor <./../rules/class_notation/no_php4_constructor.rst>`_
 - `no_unneeded_final_method <./../rules/class_notation/no_unneeded_final_method.rst>`_
-- `no_unreachable_default_argument_value <./../rules/function_notation/no_unreachable_default_argument_value.rst>`_
 - `no_useless_sprintf <./../rules/function_notation/no_useless_sprintf.rst>`_
 - `non_printable_character <./../rules/basic/non_printable_character.rst>`_
 - `ordered_traits <./../rules/class_notation/ordered_traits.rst>`_
@@ -45,3 +44,8 @@ Rules
 - `string_length_to_empty <./../rules/string_notation/string_length_to_empty.rst>`_
 - `string_line_ending <./../rules/string_notation/string_line_ending.rst>`_
 - `ternary_to_elvis_operator <./../rules/operator/ternary_to_elvis_operator.rst>`_
+
+Disabled rules
+--------------
+
+- `no_unreachable_default_argument_value <./../rules/function_notation/no_unreachable_default_argument_value.rst>`_

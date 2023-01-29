@@ -654,7 +654,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @return iterable<array{class-string<TestCase>}>
      */
-    public function provideTestClassCases(): iterable
+    public static function provideTestClassCases(): iterable
     {
         if (null === self::$testClassCases) {
             self::$testClassCases = array_map(
@@ -687,7 +687,7 @@ final class ProjectCodeTest extends TestCase
         static::assertTrue($reflection->isSubclassOf(AbstractPhpUnitFixer::class));
     }
 
-    public function providePhpUnitFixerExtendsAbstractPhpUnitFixerCases(): iterable
+    public static function providePhpUnitFixerExtendsAbstractPhpUnitFixerCases(): iterable
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();

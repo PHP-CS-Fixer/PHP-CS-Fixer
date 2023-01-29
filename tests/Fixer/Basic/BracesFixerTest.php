@@ -52,7 +52,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixControlContinuationBracesCases(): iterable
+    public static function provideFixControlContinuationBracesCases(): iterable
     {
         return [
             [
@@ -825,6 +825,13 @@ if (true) {
     <?php
 }',
             ],
+            [
+                '<?php
+
+    function foo()
+    {
+    }',
+            ],
         ];
     }
 
@@ -840,7 +847,7 @@ if (true) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixMissingBracesAndIndentCases(): iterable
+    public static function provideFixMissingBracesAndIndentCases(): iterable
     {
         return [
             [
@@ -2660,7 +2667,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixClassyBracesCases(): iterable
+    public static function provideFixClassyBracesCases(): iterable
     {
         return [
             [
@@ -2843,7 +2850,7 @@ function foo()
         $this->doTest($expected, $input);
     }
 
-    public function provideFixAnonFunctionInShortArraySyntaxCases(): iterable
+    public static function provideFixAnonFunctionInShortArraySyntaxCases(): iterable
     {
         return [
             [
@@ -2959,7 +2966,7 @@ function foo()
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCommentBeforeBraceCases(): iterable
+    public static function provideFixCommentBeforeBraceCases(): iterable
     {
         return [
             [
@@ -3028,14 +3035,7 @@ function foo()
     } else {
         echo "unknown API";
         // sth
-    }
-
-    return $this->guess($class, $property, function (Constraint $constraint) use ($guesser) {
-        return $guesser->guessRequiredForConstraint($constraint);
-    // Fallback to false...
-    // ... due to sth...
-    }, false);
-    ',
+    }',
             ],
             [
                 '<?php
@@ -3091,7 +3091,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWhitespaceBeforeBraceCases(): iterable
+    public static function provideFixWhitespaceBeforeBraceCases(): iterable
     {
         return [
             [
@@ -3308,7 +3308,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
         $this->doTest($expected, $input);
     }
 
-    public function provideFixFunctionsCases(): iterable
+    public static function provideFixFunctionsCases(): iterable
     {
         return [
             [
@@ -3668,7 +3668,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixMultiLineStructuresCases(): iterable
+    public static function provideFixMultiLineStructuresCases(): iterable
     {
         return [
             [
@@ -3788,7 +3788,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixSpaceAroundTokenCases(): iterable
+    public static function provideFixSpaceAroundTokenCases(): iterable
     {
         return [
             [
@@ -3985,7 +3985,7 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provideFinallyCases(): iterable
+    public static function provideFinallyCases(): iterable
     {
         return [
             [
@@ -4084,7 +4084,7 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provideFunctionImportCases(): iterable
+    public static function provideFunctionImportCases(): iterable
     {
         return [
             [
@@ -4134,7 +4134,7 @@ declare   (   ticks   =   1   )   {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70Cases(): iterable
+    public static function provideFix70Cases(): iterable
     {
         return [
             [
@@ -4848,7 +4848,7 @@ $foo = new class () extends \Exception { protected $message = "Surprise"; };
         $this->doTest($expected, $input);
     }
 
-    public function providePreserveLineAfterControlBraceCases(): iterable
+    public static function providePreserveLineAfterControlBraceCases(): iterable
     {
         return [
             [
@@ -4987,7 +4987,7 @@ if (true) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithAllowOnelineLambdaCases(): iterable
+    public static function provideFixWithAllowOnelineLambdaCases(): iterable
     {
         return [
             [
@@ -5029,7 +5029,7 @@ if (true) {
         $this->doTest($expected, $input);
     }
 
-    public function provideDoWhileLoopInsideAnIfWithoutBracketsCases(): iterable
+    public static function provideDoWhileLoopInsideAnIfWithoutBracketsCases(): iterable
     {
         return [
             [
@@ -5062,7 +5062,7 @@ if (true)
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): iterable
+    public static function provideMessyWhitespacesCases(): iterable
     {
         return [
             [
@@ -5125,7 +5125,7 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
         $this->doTest($expected, $input);
     }
 
-    public function provideNowdocInTemplatesCases(): iterable
+    public static function provideNowdocInTemplatesCases(): iterable
     {
         return [
             [
@@ -5188,7 +5188,7 @@ EOT
         $this->doTest(str_replace('//', '#', $expected), null === $input ? null : str_replace('//', '#', $input));
     }
 
-    public function provideFixCommentsCases(): iterable
+    public static function provideFixCommentsCases(): iterable
     {
         return [
             [
@@ -5398,7 +5398,7 @@ function example()
         $this->doTest($expected, $input);
     }
 
-    public function provideIndentCommentCases(): iterable
+    public static function provideIndentCommentCases(): iterable
     {
         yield [
             "<?php
@@ -5484,7 +5484,7 @@ return foo($i);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixAlternativeSyntaxCases(): iterable
+    public static function provideFixAlternativeSyntaxCases(): iterable
     {
         yield [
             '<?php if (foo()) {
@@ -5689,7 +5689,7 @@ break;
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield 'match' => [
             '<?php echo match ($x) {
@@ -5712,7 +5712,7 @@ break;
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'enum' => [
             '<?php

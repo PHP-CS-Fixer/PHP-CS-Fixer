@@ -37,7 +37,7 @@ final class TypeExpressionTest extends TestCase
         static::assertSame($expectedTypes, $expression->getTypes());
     }
 
-    public function provideGetTypesCases(): iterable
+    public static function provideGetTypesCases(): iterable
     {
         yield ['int', ['int']];
 
@@ -129,6 +129,22 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Closure(string)', ['Closure(string)']];
 
+        yield ['\\Closure', ['\\Closure']];
+
+        yield ['\\Closure()', ['\\Closure()']];
+
+        yield ['\\Closure(string)', ['\\Closure(string)']];
+
+        yield ['\\Closure(string, bool)', ['\\Closure(string, bool)']];
+
+        yield ['\\Closure(string|int, bool)', ['\\Closure(string|int, bool)']];
+
+        yield ['\\Closure(string):bool', ['\\Closure(string):bool']];
+
+        yield ['\\Closure(string): bool', ['\\Closure(string): bool']];
+
+        yield ['\\Closure(string|int, bool): bool', ['\\Closure(string|int, bool): bool']];
+
         yield ['array  <  int   , callable  (  string  )  :   bool  >', ['array  <  int   , callable  (  string  )  :   bool  >']];
     }
 
@@ -161,7 +177,7 @@ final class TypeExpressionTest extends TestCase
         static::assertSame($expectedCommonType, $expression->getCommonType());
     }
 
-    public function provideCommonTypeCases(): iterable
+    public static function provideCommonTypeCases(): iterable
     {
         $globalNamespace = new NamespaceAnalysis('', '', 0, 999, 0, 999);
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
@@ -279,7 +295,7 @@ final class TypeExpressionTest extends TestCase
         static::assertSame($expectNullAllowed, $expression->allowsNull());
     }
 
-    public function provideAllowsNullCases(): iterable
+    public static function provideAllowsNullCases(): iterable
     {
         yield ['null', true];
 
@@ -312,7 +328,7 @@ final class TypeExpressionTest extends TestCase
         static::assertSame($expectResult, $expression->toString());
     }
 
-    public function provideSortTypesCases(): iterable
+    public static function provideSortTypesCases(): iterable
     {
         yield 'not a union type' => [
             'int',

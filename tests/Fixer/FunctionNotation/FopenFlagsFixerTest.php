@@ -35,7 +35,7 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             'missing "b"' => [
@@ -111,7 +111,7 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public function provideDoNotFixCases(): array
+    public static function provideDoNotFixCases(): array
     {
         return [
             'not simple flags' => [

@@ -94,7 +94,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixMethodsCases(): iterable
+    public static function provideFixMethodsCases(): iterable
     {
         return [
             [
@@ -526,7 +526,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixClassConstCases(): array
+    public static function provideFixClassConstCases(): array
     {
         return [
             [
@@ -726,7 +726,7 @@ AB# <- this is the name
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php class Foo { private int $foo; }',
@@ -774,7 +774,7 @@ AB# <- this is the name
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php class Foo { private int|float|null $foo; }',
@@ -808,7 +808,7 @@ AB# <- this is the name
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php class Foo { public Foo1&Bar $foo; }',
@@ -904,7 +904,7 @@ var_dump(Foo::CAT->test());',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield [
             '<?php trait Foo { public const Bar = 1; }',

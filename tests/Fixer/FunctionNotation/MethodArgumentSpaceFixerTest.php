@@ -79,7 +79,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
         );
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -957,7 +957,7 @@ $example = function () use ($message1,$message2) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix2Cases(): iterable
+    public static function provideFix2Cases(): iterable
     {
         yield [
             '<?php function A($c, ...$a){}',
@@ -1050,7 +1050,7 @@ $fn = fn(
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php

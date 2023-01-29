@@ -34,7 +34,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             'no phpdoc return' => [
@@ -467,7 +467,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'readonly properties are always typed, make sure the fixer does not crash' => [
             '<?php class Foo { /** @var int */ private readonly string $foo; }',

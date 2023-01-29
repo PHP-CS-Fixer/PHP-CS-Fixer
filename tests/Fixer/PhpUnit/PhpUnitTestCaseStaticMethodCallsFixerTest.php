@@ -74,7 +74,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases(): array
+    public static function provideTestFixCases(): array
     {
         return [
             [
@@ -549,7 +549,7 @@ class MyTest extends \PHPUnit_Framework_TestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php

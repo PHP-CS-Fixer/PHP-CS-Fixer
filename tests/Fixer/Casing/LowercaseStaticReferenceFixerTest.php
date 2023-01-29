@@ -33,7 +33,7 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -184,6 +184,30 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
                 private STATIC ?int $baz2;
             }',
             ],
+            [
+                '<?php
+                class Foo { public function bar() {} }
+                class FooChild extends Foo
+                {
+                    public function bar()
+                    {
+                        switch (true) {
+                            case parent::bar():
+                        }
+                    }
+                }',
+                '<?php
+                class Foo { public function bar() {} }
+                class FooChild extends Foo
+                {
+                    public function bar()
+                    {
+                        switch (true) {
+                            case PARENT::bar():
+                        }
+                    }
+                }',
+            ],
         ];
     }
 
@@ -197,7 +221,7 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield ['<?php $foo?->Self();'];
 
@@ -259,6 +283,10 @@ class Foo
     {
         yield [
             '<?php class A { final const PARENT = 42; }',
+        ];
+
+        yield [
+            '<?php enum Foo: string { case PARENT = \'parent\'; }',
         ];
     }
 }

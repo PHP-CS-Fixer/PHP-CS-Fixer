@@ -36,7 +36,7 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases(): iterable
+    public static function provideTestFixCases(): iterable
     {
         yield from [
             [
@@ -329,7 +329,7 @@ $a#
         $this->doTest($expected);
     }
 
-    public function provideNotFixCases(): iterable
+    public static function provideNotFixCases(): iterable
     {
         yield 'not a method call' => [
             self::generateTest('echo $this->assertTrue;'),
@@ -403,7 +403,7 @@ $a#
         $this->doTest($expected, $input);
     }
 
-    public function provideTestAssertCountCases(): array
+    public static function provideTestAssertCountCases(): array
     {
         return [
             // positive fixing
@@ -548,7 +548,7 @@ $a# 5
         $this->doTest($expected, $input);
     }
 
-    public function provideTestAssertCountCasingCases(): iterable
+    public static function provideTestAssertCountCasingCases(): iterable
     {
         yield [
             self::generateTest('$this->assertCount(1, $a);'),
@@ -570,7 +570,7 @@ $a# 5
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases(): iterable
+    public static function provideFix73Cases(): iterable
     {
         yield [
             self::generateTest('$this->assertNan($a, );'),
@@ -624,7 +624,7 @@ $a# 5
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             self::generateTest('$a = $this->assertTrue(...);'),

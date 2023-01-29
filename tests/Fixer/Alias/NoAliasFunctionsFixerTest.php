@@ -246,7 +246,7 @@ abstract class A
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'simple 8.1' => [
             '<?php $a = is_double(...);',

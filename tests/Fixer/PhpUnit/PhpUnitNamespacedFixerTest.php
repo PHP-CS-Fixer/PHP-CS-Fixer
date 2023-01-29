@@ -38,7 +38,7 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases(): array
+    public static function provideTestFixCases(): array
     {
         return [
             'class_mapping' => [
@@ -290,7 +290,7 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php

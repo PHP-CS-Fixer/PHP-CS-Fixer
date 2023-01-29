@@ -57,7 +57,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCastsCases(): array
+    public static function provideFixCastsCases(): array
     {
         return [
             [
@@ -121,7 +121,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideNoneSpaceFixCases(): array
+    public static function provideNoneSpaceFixCases(): array
     {
         return [
             [

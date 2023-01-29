@@ -33,7 +33,7 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'simple' => [
             '<?php return (bool) ($foo)      ;',

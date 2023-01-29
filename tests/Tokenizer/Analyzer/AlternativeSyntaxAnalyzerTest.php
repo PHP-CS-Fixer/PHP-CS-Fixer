@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
-use InvalidArgumentException;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\AlternativeSyntaxAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -44,7 +43,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         }
     }
 
-    public function provideBelongsToAlternativeSyntaxCases(): iterable
+    public static function provideBelongsToAlternativeSyntaxCases(): iterable
     {
         yield 'declare' => [
             [7],
@@ -103,7 +102,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         );
     }
 
-    public function provideFindBlockEndCases(): iterable
+    public static function provideFindBlockEndCases(): iterable
     {
         yield ['<?php if ($foo): foo(); endif;', 1, 13];
 
@@ -190,13 +189,13 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
 
         $analyzer = new AlternativeSyntaxAnalyzer();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedMessage);
 
         $analyzer->findAlternativeSyntaxBlockEnd($tokens, $startIndex);
     }
 
-    public function provideFindInvalidBlockEndCases(): iterable
+    public static function provideFindInvalidBlockEndCases(): iterable
     {
         yield ['<?php if ($foo): foo(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
 

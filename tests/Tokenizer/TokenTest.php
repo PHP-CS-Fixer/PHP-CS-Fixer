@@ -39,7 +39,7 @@ final class TokenTest extends TestCase
         new Token($input);
     }
 
-    public function provideConstructorValidationCases(): array
+    public static function provideConstructorValidationCases(): array
     {
         return [
             [null],
@@ -294,7 +294,7 @@ final class TokenTest extends TestCase
         static::assertSame($expectedIsArray, $token->isArray());
     }
 
-    public function provideCreatingTokenCases(): array
+    public static function provideCreatingTokenCases(): array
     {
         return [
             [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true],
@@ -443,7 +443,7 @@ final class TokenTest extends TestCase
         static::assertSame($isKeyCaseSensitive, Token::isKeyCaseSensitive($caseSensitive, $key));
     }
 
-    public function provideIsKeyCaseSensitiveCases(): iterable
+    public static function provideIsKeyCaseSensitiveCases(): iterable
     {
         yield [true, true, 0];
 
@@ -478,7 +478,7 @@ final class TokenTest extends TestCase
         static::assertSame($expected, Token::getNameForId($id));
     }
 
-    public function provideTokenGetNameCases(): array
+    public static function provideTokenGetNameCases(): array
     {
         return [
             [
@@ -504,7 +504,7 @@ final class TokenTest extends TestCase
         static::assertSame($expected, $token->getName());
     }
 
-    public function provideGetNameCases(): iterable
+    public static function provideGetNameCases(): iterable
     {
         yield [
             new Token([T_FUNCTION, 'function', 1]),
@@ -532,7 +532,7 @@ final class TokenTest extends TestCase
         static::assertSame($expected, $token->toArray());
     }
 
-    public function provideToArrayCases(): iterable
+    public static function provideToArrayCases(): iterable
     {
         yield [
             new Token([T_FUNCTION, 'function', 1]),

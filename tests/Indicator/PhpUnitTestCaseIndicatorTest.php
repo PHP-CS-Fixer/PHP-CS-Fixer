@@ -49,7 +49,7 @@ final class PhpUnitTestCaseIndicatorTest extends TestCase
         static::assertSame($expected, $this->indicator->isPhpUnitClass($tokens, $index));
     }
 
-    public function provideIsPhpUnitClassCases(): iterable
+    public static function provideIsPhpUnitClassCases(): iterable
     {
         yield 'Test class' => [
             true,
@@ -151,7 +151,7 @@ class Foo extends A implements TestInterface, SomethingElse
     }
 
     /**
-     * @param array<int,int> $expectedIndexes
+     * @param array<array{0: int, 1: int}> $expectedIndexes
      *
      * @dataProvider provideFindPhpUnitClassesCases
      */
@@ -165,7 +165,7 @@ class Foo extends A implements TestInterface, SomethingElse
         static::assertSame($expectedIndexes, $classes);
     }
 
-    public function provideFindPhpUnitClassesCases(): iterable
+    public static function provideFindPhpUnitClassesCases(): iterable
     {
         yield 'empty' => [
             [],

@@ -115,7 +115,7 @@ if (1) {
 }
 
 // https://wiki.php.net/rfc/non-capturing_catches
-// TODO: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5175 - when implementing new rule for fixing such cases, add exception variable in --INPUT-- section
+// TODO: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/5175 - when implementing new rule for fixing such cases, add exception variable in --INPUT-- section
 try {
     foo();
 } catch (Exception) {
@@ -288,7 +288,7 @@ if (1) {
 }
 
 // https://wiki.php.net/rfc/non-capturing_catches
-// TODO: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5175 - when implementing new rule for fixing such cases, add exception variable in --INPUT-- section
+// TODO: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/5175 - when implementing new rule for fixing such cases, add exception variable in --INPUT-- section
 try {
     foo();
 } catch (Exception) {

@@ -34,7 +34,7 @@ final class TypesSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php try {} catch (ErrorA|ErrorB $e) {}',
@@ -102,7 +102,7 @@ final class TypesSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php function foo(TypeA|TypeB $x) {}',
@@ -280,7 +280,7 @@ TypeB $x) {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php class Foo {

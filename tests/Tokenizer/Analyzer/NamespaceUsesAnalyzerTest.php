@@ -45,7 +45,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         );
     }
 
-    public function provideNamespaceUsesCases(): array
+    public static function provideNamespaceUsesCases(): array
     {
         return [
             ['<?php // no uses', [], []],
@@ -174,7 +174,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         );
     }
 
-    public function provideGetDeclarationsInNamespaceCases(): array
+    public static function provideGetDeclarationsInNamespaceCases(): array
     {
         return [
             [

@@ -45,7 +45,7 @@ final class NoBreakCommentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -1202,7 +1202,7 @@ switch ($foo) {
         ]);
     }
 
-    public function provideFixWithCommentTextContainingNewLinesCases(): array
+    public static function provideFixWithCommentTextContainingNewLinesCases(): array
     {
         return [
             ["No\nbreak"],
@@ -1229,7 +1229,7 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php
@@ -1294,7 +1294,7 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'enums' => [
             '<?php

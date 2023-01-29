@@ -31,7 +31,7 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases(): iterable
+    public static function provideFix74Cases(): iterable
     {
         yield 'simple' => [
             '<?php $a ??= 1;',

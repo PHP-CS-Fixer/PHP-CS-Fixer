@@ -119,7 +119,7 @@ final class CacheTest extends TestCase
         Cache::fromJson($json);
     }
 
-    public function provideMissingDataCases(): array
+    public static function provideMissingDataCases(): array
     {
         $data = [
             'php' => '7.1.2',
@@ -158,7 +158,7 @@ final class CacheTest extends TestCase
         static::assertSame($hash, $cached->get($file));
     }
 
-    public function provideCanConvertToAndFromJsonCases(): array
+    public static function provideCanConvertToAndFromJsonCases(): array
     {
         $toolInfo = new ToolInfo();
         $config = new Config();

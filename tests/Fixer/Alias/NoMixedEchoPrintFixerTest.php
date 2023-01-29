@@ -37,7 +37,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideEchoToPrintFixCases(): array
+    public static function provideEchoToPrintFixCases(): array
     {
         return [
             [
@@ -154,7 +154,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function providePrintToEchoFixCases(): array
+    public static function providePrintToEchoFixCases(): array
     {
         return [
             [
@@ -172,7 +172,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 echo("test");
                 ',
             ],
-            // https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1502#issuecomment-156436229
+            // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/1502#issuecomment-156436229
             [
                 '<?php
                 ($some_var) ? print "true" : print "false";
@@ -302,7 +302,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->fixer->configure($wrongConfig);
     }
 
-    public function provideWrongConfigCases(): array
+    public static function provideWrongConfigCases(): array
     {
         return [
             [

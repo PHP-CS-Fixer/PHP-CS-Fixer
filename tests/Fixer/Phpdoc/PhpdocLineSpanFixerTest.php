@@ -36,7 +36,7 @@ final class PhpdocLineSpanFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             'It does not change doc blocks if not needed' => [
@@ -572,7 +572,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield 'It detects attributes between docblock and token' => [
             '<?php
@@ -720,7 +720,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFix81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'It handles readonly properties correctly' => [
             '<?php
@@ -876,7 +876,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield 'constant in trait' => [
             <<<'PHP'

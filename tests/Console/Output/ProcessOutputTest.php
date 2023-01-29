@@ -55,7 +55,7 @@ final class ProcessOutputTest extends TestCase
         static::assertSame($expectedOutput, $output->fetch());
     }
 
-    public function provideProcessProgressOutputCases(): array
+    public static function provideProcessProgressOutputCases(): array
     {
         return [
             [
@@ -201,7 +201,7 @@ final class ProcessOutputTest extends TestCase
 
     /**
      * @param list<array{0: FixerFileProcessedEvent::STATUS_*, 1?: int}> $statuses
-     * @param \Closure(FixerFileProcessedEvent::STATUS_*): void $action
+     * @param \Closure(FixerFileProcessedEvent::STATUS_*): void          $action
      */
     private function foreachStatus(array $statuses, \Closure $action): void
     {

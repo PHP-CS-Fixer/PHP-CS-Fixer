@@ -34,7 +34,7 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -305,7 +305,7 @@ use Space\Models\ {
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): iterable
+    public static function provideMessyWhitespacesCases(): iterable
     {
         yield [
             "<?php\r\n    use FooA;\r\n    use FooB;",
@@ -323,7 +323,7 @@ use Space\Models\ {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPrePHP80Cases(): iterable
+    public static function provideFixPrePHP80Cases(): iterable
     {
         yield [
             '<?php

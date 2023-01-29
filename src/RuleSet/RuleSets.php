@@ -43,7 +43,7 @@ final class RuleSets
                 self::$setDefinitions[$set->getName()] = $set;
             }
 
-            ksort(self::$setDefinitions);
+            uksort(self::$setDefinitions, static fn (string $x, string $y): int => strnatcmp($x, $y));
         }
 
         return self::$setDefinitions;

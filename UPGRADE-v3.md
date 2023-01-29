@@ -3,7 +3,7 @@ UPGRADE GUIDE FROM 2.x to 3.0
 
 This is guide for upgrade from version 2.x to 3.0 for using the CLI tool.
 
-*Before following this guide, install [v2.19](https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/tag/v2.19.0) and run in verbose mode (`php-cs-fixer fix -v`) or in future mode (`PHP_CS_FIXER_FUTURE_MODE=1 php-cs-fixer fix`) to identify deprecations and fix them first.*
+*Before following this guide, install [v2.19](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/tag/v2.19.0) and run in verbose mode (`php-cs-fixer fix -v`) or in future mode (`PHP_CS_FIXER_FUTURE_MODE=1 php-cs-fixer fix`) to identify deprecations and fix them first.*
 
 Rename of files
 ---------------
