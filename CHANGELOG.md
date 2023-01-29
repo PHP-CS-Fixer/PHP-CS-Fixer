@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.14.1
+---------------------
+
+* DX: Allow doctrine/annotations 2 (#6721)
+
 Changelog for v3.14.0
 ---------------------
 
