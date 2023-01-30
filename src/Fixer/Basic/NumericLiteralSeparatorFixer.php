@@ -33,7 +33,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * - {@link https://github.com/kubawerlos/php-cs-fixer-custom-fixers/blob/main/src/Fixer/NumericLiteralSeparatorFixer.php}
  * - {@link https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/rules/numeric-separators-style.js}
  *
- * @author Marvin Heilemann <11534760+muuvmuuv@users.noreply.github.com>
+ * @author Marvin Heilemann <marvin.heilemann+github@googlemail.com>
  */
 final class NumericLiteralSeparatorFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
