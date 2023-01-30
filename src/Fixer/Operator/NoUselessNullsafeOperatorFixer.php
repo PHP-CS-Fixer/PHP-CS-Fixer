@@ -41,7 +41,7 @@ class Foo extends Bar
     }
 }
 ',
-                    new VersionSpecification(80000)
+                    new VersionSpecification(8_00_00)
                 ),
             ]
         );
@@ -52,7 +52,7 @@ class Foo extends Bar
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 80000 && $tokens->isAllTokenKindsFound([T_VARIABLE, T_NULLSAFE_OBJECT_OPERATOR]);
+        return \PHP_VERSION_ID >= 8_00_00 && $tokens->isAllTokenKindsFound([T_VARIABLE, T_NULLSAFE_OBJECT_OPERATOR]);
     }
 
     /**

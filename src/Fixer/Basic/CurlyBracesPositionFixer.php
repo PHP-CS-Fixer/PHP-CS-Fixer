@@ -78,7 +78,7 @@ $foo = new class
 {
 };
 ',
-                    new VersionSpecification(70000)
+                    new VersionSpecification(7_00_00)
                 ),
                 new CodeSample(
                     '<?php
@@ -116,7 +116,7 @@ class Foo
 $foo = new class {
 };
 ',
-                    new VersionSpecification(70000),
+                    new VersionSpecification(7_00_00),
                     ['anonymous_classes_opening_brace' => self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END]
                 ),
                 new VersionSpecificCodeSample(
@@ -124,7 +124,7 @@ $foo = new class {
 $foo = new class { };
 $bar = new class { private $baz; };
 ',
-                    new VersionSpecification(70000),
+                    new VersionSpecification(7_00_00),
                     ['allow_single_line_empty_anonymous_classes' => true]
                 ),
                 new CodeSample(

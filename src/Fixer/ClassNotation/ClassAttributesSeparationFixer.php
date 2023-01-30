@@ -146,7 +146,7 @@ class Sample
     public $e;
 }
 ',
-                    new VersionSpecification(80000),
+                    new VersionSpecification(8_00_00),
                     ['elements' => ['property' => self::SPACING_ONLY_IF_META]]
                 ),
             ]

@@ -33,7 +33,7 @@ final class ClassConstantTransformer extends AbstractTransformer
      */
     public function getRequiredPhpVersionId(): int
     {
-        return 50500;
+        return 5_05_00;
     }
 
     /**

@@ -60,7 +60,7 @@ final class PregTest extends TestCase
             'php_version_dependent' => ['([\\R])', 0, PregException::class, 'Compilation failed: escape sequence is invalid '],
         ];
 
-        $nullByteMessage = \PHP_VERSION_ID >= 80200 ? 'NUL is not a valid modifier' : 'Null byte in regex';
+        $nullByteMessage = \PHP_VERSION_ID >= 8_02_00 ? 'NUL is not a valid modifier' : 'Null byte in regex';
 
         yield 'null_byte_injection' => ['()'."\0", null, PregException::class, " {$nullByteMessage} "];
     }

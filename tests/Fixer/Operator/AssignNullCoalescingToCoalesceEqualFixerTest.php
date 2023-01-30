@@ -181,7 +181,7 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
             '<?php $a = $a ?? $b ? $c : $d ?>',
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             yield 'mixed array' => [
                 '<?php
                 $a[1] ??= 1;

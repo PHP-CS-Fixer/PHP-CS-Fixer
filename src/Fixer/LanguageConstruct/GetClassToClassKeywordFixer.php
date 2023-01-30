@@ -39,11 +39,11 @@ final class GetClassToClassKeywordFixer extends AbstractFixer
             [
                 new VersionSpecificCodeSample(
                     "<?php\nget_class(\$a);\n",
-                    new VersionSpecification(80000)
+                    new VersionSpecification(8_00_00)
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\n\n\$date = new \\DateTimeImmutable();\n\$class = get_class(\$date);\n",
-                    new VersionSpecification(80000)
+                    new VersionSpecification(8_00_00)
                 ),
             ],
             null,
@@ -67,7 +67,7 @@ final class GetClassToClassKeywordFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 80000 && $tokens->isAllTokenKindsFound([T_STRING, T_VARIABLE]);
+        return \PHP_VERSION_ID >= 8_00_00 && $tokens->isAllTokenKindsFound([T_STRING, T_VARIABLE]);
     }
 
     /**

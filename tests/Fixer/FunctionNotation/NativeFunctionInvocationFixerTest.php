@@ -570,7 +570,7 @@ namespace {
             ],
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             yield 'include @compiler_optimized with strict enabled' => [
                 '<?php
                         $a = not_compiler_optimized_function();

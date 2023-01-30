@@ -43,7 +43,7 @@ final class TypeColonTransformer extends AbstractTransformer
      */
     public function getRequiredPhpVersionId(): int
     {
-        return 70000;
+        return 7_00_00;
     }
 
     /**

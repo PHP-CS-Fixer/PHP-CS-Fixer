@@ -303,12 +303,12 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             'object param' => [
                 '<?php /** @param object $foo */ function my_foo(object $foo) {}',
                 '<?php /** @param object $foo */ function my_foo($foo) {}',
-                70200,
+                7_02_00,
             ],
             'nullable and object param' => [
                 '<?php /** @param null|object $foo */ function my_foo(?object $foo) {}',
                 '<?php /** @param null|object $foo */ function my_foo($foo) {}',
-                70200,
+                7_02_00,
             ],
             'generics with single type' => [
                 '<?php /** @param array<foo> $foo */ function my_foo(array $foo) {}',
@@ -384,7 +384,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             'array of object and traversable' => [
                 '<?php /** @param Foo[]|Traversable $foo */ function my_foo(iterable $foo) {}',
                 '<?php /** @param Foo[]|Traversable $foo */ function my_foo($foo) {}',
-                70100,
+                7_01_00,
             ],
             'array of object and iterable' => [
                 '<?php /** @param Foo[]|iterable $foo */ function my_foo(iterable $foo) {}',

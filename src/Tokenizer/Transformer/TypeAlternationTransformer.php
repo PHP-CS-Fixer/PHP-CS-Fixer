@@ -43,7 +43,7 @@ final class TypeAlternationTransformer extends AbstractTypeTransformer
      */
     public function getRequiredPhpVersionId(): int
     {
-        return 70100;
+        return 7_01_00;
     }
 
     /**

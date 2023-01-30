@@ -48,7 +48,7 @@ final class LowercaseCastFixer extends AbstractFixer
     $a = (UNset) $b;
     $a = (Binary) $b;
 ',
-                    new VersionSpecification(null, 70399)
+                    new VersionSpecification(null, 7_03_99)
                 ),
                 new VersionSpecificCodeSample(
                     '<?php
@@ -65,7 +65,7 @@ final class LowercaseCastFixer extends AbstractFixer
     $a = (UNset) $b;
     $a = (Binary) $b;
 ',
-                    new VersionSpecification(70400)
+                    new VersionSpecification(7_04_00)
                 ),
             ]
         );

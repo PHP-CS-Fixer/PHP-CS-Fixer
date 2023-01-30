@@ -32,7 +32,7 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
      */
     public function getRequiredPhpVersionId(): int
     {
-        return 50000;
+        return 5_00_00;
     }
 
     /**

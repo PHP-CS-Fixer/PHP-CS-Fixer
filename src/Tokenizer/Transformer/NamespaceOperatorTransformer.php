@@ -33,7 +33,7 @@ final class NamespaceOperatorTransformer extends AbstractTransformer
      */
     public function getRequiredPhpVersionId(): int
     {
-        return 50300;
+        return 5_03_00;
     }
 
     /**

@@ -549,7 +549,7 @@ class X10 implements    Z   , T,R    //
             ],
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             $multiLine = true;
             $code = '<?php
 namespace A {

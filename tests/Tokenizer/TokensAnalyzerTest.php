@@ -762,7 +762,7 @@ enum Foo: string
             '<?php interface foo {}',
         ];
 
-        if (\PHP_VERSION_ID >= 80000) {
+        if (\PHP_VERSION_ID >= 8_00_00) {
             yield [
                 [11 => true],
                 '<?php $object = new #[ExampleAttribute] class(){};',
@@ -774,7 +774,7 @@ enum Foo: string
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80100) {
+        if (\PHP_VERSION_ID >= 8_01_00) {
             yield [
                 [1 => false],
                 '<?php enum foo {}',

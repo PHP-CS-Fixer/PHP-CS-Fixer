@@ -92,7 +92,7 @@ sample(
 
 SAMPLE
                     ,
-                    new VersionSpecification(70300),
+                    new VersionSpecification(7_03_00),
                     ['after_heredoc' => true]
                 ),
             ]

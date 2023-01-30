@@ -63,7 +63,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        if (\PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             return; // PHPUnit still calls this for no reason on non PHP8.0
         }
 
