@@ -4,18 +4,51 @@ Rule ``numeric_literal_separator``
 
 Adds separators to numeric literals of any kind.
 
+Configuration
+-------------
+
+``override_existing``
+~~~~~~~~~~~~~~~~~~~~~
+
+Reformat literals already contain underscores.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
 Example #1
 ~~~~~~~~~~
 
+*Default* configuration.
+
 .. code-block:: diff
 
    --- Original
    +++ New
-   -<?php $var = 123456;
-   +<?php $var = 123_456;
+    <?php
+   -$integer = 12345678;
+   -$octal = 0o123456;
+   -$binary = 0b00100100;
+   -$hexadecimal = 0x3D458F4F;
+   +$integer = 12_345_678;
+   +$octal = 0o123_456;
+   +$binary = 0b0010_0100;
+   +$hexadecimal = 0x3D_45_8F_4F;
+
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['override_existing' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   -<?php $var = 24_40_21;
+   +<?php $var = 244_021;
 References
 ----------
 

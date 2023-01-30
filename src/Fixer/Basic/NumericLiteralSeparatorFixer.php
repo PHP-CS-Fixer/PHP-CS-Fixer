@@ -15,6 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -31,7 +35,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Marvin Heilemann <11534760+muuvmuuv@users.noreply.github.com>
  */
-final class NumericLiteralSeparatorFixer extends AbstractFixer
+final class NumericLiteralSeparatorFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private const separator = '_';
 
@@ -43,12 +47,12 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer
         return new FixerDefinition(
             'Adds separators to numeric literals of any kind.',
             [
-                new CodeSample("<?php \$var = 12345678;\n"),
-                new CodeSample("<?php \$var = 01234567;\n"),
-                new CodeSample("<?php \$var = 0o123456;\n"),
-                new CodeSample("<?php \$var = 0b100100;\n"),
-                new CodeSample("<?php \$var = 0x3D458F;\n"),
-            ]
+                new CodeSample("<?php\n\$integer = 12345678;\n\$octal = 0o123456;\n\$binary = 0b00100100;\n\$hexadecimal = 0x3D458F4F;\n"),
+                new CodeSample(
+                    "<?php \$var = 24_40_21;\n",
+                    ['override_existing' => true]
+                ),
+            ],
         );
     }
 
@@ -63,6 +67,19 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('override_existing', 'Reformat literals already contain underscores.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
@@ -72,9 +89,12 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer
 
             $content = $token->getContent();
 
-            // Already has literal separator, but may be incomplete
-            // e.g.: 1_412412.
-            $content = str_replace('_', '', $content);
+            if ($this->configuration['override_existing']) {
+                $content = str_replace('_', '', $content);
+            } elseif (str_contains($content, '_')) {
+                // Keep already underscored literals untouched.
+                continue;
+            }
 
             $newContent = $this->formatValue($content);
 
@@ -108,12 +128,8 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer
             // Octal
             return $this->insertEveryRight($value, 3, 2);
         }
-        if (str_starts_with($lowerValue, '0') && !(
-            str_contains($lowerValue, 'e')
-            || str_contains($lowerValue, '.')
-        )) {
-            // Octal only prefixed with one 0 prior PHP 8.1
-            // will be considered an Octal.
+        if (str_starts_with($lowerValue, '0')) {
+            // Octal prior PHP 8.1
             return $this->insertEveryRight($value, 3, 1);
         }
 
