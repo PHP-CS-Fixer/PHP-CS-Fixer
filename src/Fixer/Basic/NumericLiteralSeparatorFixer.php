@@ -37,8 +37,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NumericLiteralSeparatorFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private const separator = '_';
-
     /**
      * {@inheritdoc}
      */
@@ -164,7 +162,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
     {
         $position = $length * -1;
         while ($position > -(\strlen($value) - $offset)) {
-            $value = substr_replace($value, static::separator, $position, 0);
+            $value = substr_replace($value, '_', $position, 0);
             $position -= $length + 1;
         }
 
@@ -175,7 +173,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
     {
         $position = $length;
         while ($position < \strlen($value)) {
-            $value = substr_replace($value, static::separator, $position, $offset);
+            $value = substr_replace($value, '_', $position, $offset);
             $position += $length + 1;
         }
 
