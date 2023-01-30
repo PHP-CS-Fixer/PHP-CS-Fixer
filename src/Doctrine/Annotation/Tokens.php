@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Doctrine\Annotation;
 
 use Doctrine\Common\Annotations\DocLexer;
+use Doctrine\Common\Lexer\Token as LexerToken;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token as PhpToken;
 
@@ -59,27 +60,27 @@ final class Tokens extends \SplFixedArray
             $nbScannedTokensToUse = 0;
             $nbScopes = 0;
             while (null !== $token = $lexer->peek()) {
-                if (0 === $index && DocLexer::T_AT !== $token['type']) {
+                if (0 === $index && !$token->isA(DocLexer::T_AT)) {
                     break;
                 }
 
                 if (1 === $index) {
-                    if (DocLexer::T_IDENTIFIER !== $token['type'] || \in_array($token['value'], $ignoredTags, true)) {
+                    if (!$token->isA(DocLexer::T_IDENTIFIER) || \in_array($token->value, $ignoredTags, true)) {
                         break;
                     }
 
                     $nbScannedTokensToUse = 2;
                 }
 
-                if ($index >= 2 && 0 === $nbScopes && !\in_array($token['type'], [DocLexer::T_NONE, DocLexer::T_OPEN_PARENTHESIS], true)) {
+                if ($index >= 2 && 0 === $nbScopes && !$token->isA(DocLexer::T_NONE, DocLexer::T_OPEN_PARENTHESIS)) {
                     break;
                 }
 
                 $scannedTokens[] = $token;
 
-                if (DocLexer::T_OPEN_PARENTHESIS === $token['type']) {
+                if ($token->isA(DocLexer::T_OPEN_PARENTHESIS)) {
                     ++$nbScopes;
-                } elseif (DocLexer::T_CLOSE_PARENTHESIS === $token['type']) {
+                } elseif ($token->isA(DocLexer::T_CLOSE_PARENTHESIS)) {
                     if (0 === --$nbScopes) {
                         $nbScannedTokensToUse = \count($scannedTokens);
 
@@ -102,11 +103,15 @@ final class Tokens extends \SplFixedArray
 
                 $lastTokenEndIndex = 0;
                 foreach (\array_slice($scannedTokens, 0, $nbScannedTokensToUse) as $token) {
-                    if (DocLexer::T_STRING === $token['type']) {
-                        $token['value'] = '"'.str_replace('"', '""', $token['value']).'"';
+                    if ($token->isA(DocLexer::T_STRING)) {
+                        $token = new LexerToken(
+                            '"'.str_replace('"', '""', $token->value).'"',
+                            $token->type,
+                            $token->position
+                        );
                     }
 
-                    $missingTextLength = $token['position'] - $lastTokenEndIndex;
+                    $missingTextLength = $token->position - $lastTokenEndIndex;
                     if ($missingTextLength > 0) {
                         $tokens[] = new Token(DocLexer::T_NONE, substr(
                             $content,
@@ -115,11 +120,11 @@ final class Tokens extends \SplFixedArray
                         ));
                     }
 
-                    $tokens[] = new Token($token['type'], $token['value']);
-                    $lastTokenEndIndex = $token['position'] + \strlen($token['value']);
+                    $tokens[] = new Token($token->type, $token->value);
+                    $lastTokenEndIndex = $token->position + \strlen($token->value);
                 }
 
-                $currentPosition = $ignoredTextPosition = $nextAtPosition + $token['position'] + \strlen($token['value']);
+                $currentPosition = $ignoredTextPosition = $nextAtPosition + $token->position + \strlen($token->value);
             } else {
                 $currentPosition = $nextAtPosition + 1;
             }
