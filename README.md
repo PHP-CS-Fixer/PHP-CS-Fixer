@@ -19,6 +19,11 @@ If you are already using a linter to identify coding standards problems in your
 code, you know that fixing them by hand is tedious, especially on large
 projects. This tool does not only detect them, but also fixes them for you.
 
+## Supported versions
+* PHP 7.4
+* PHP 8.0
+* PHP 8.1
+
 ## Documentation
 
 ### Installation
