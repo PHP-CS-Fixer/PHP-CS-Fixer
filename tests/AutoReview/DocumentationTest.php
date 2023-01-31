@@ -28,6 +28,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\Documentation\CookbookGenerator
  * @covers \PhpCsFixer\Documentation\DocumentationLocator
  * @covers \PhpCsFixer\Documentation\FixerDocumentGenerator
  * @covers \PhpCsFixer\Documentation\ListDocumentGenerator
