@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\Documentation\CookbookGenerator;
 use PhpCsFixer\Documentation\DocumentationLocator;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Documentation\ListDocumentGenerator;
@@ -186,6 +187,20 @@ final class DocumentationTest extends TestCase
             $generator->generateListingDocumentation($fixers),
             $listingFilePath,
             sprintf('Listing documentation is generated (please CONTRIBUTING.md), file "%s".', $listingFilePath)
+        );
+    }
+
+    public function testCookbookDocumentationIsUpToDate(): void
+    {
+        $locator = new DocumentationLocator();
+        $generator = new CookbookGenerator();
+
+        $cookbookFilePath = $locator->getCookbookPath();
+
+        static::assertFileEqualsString(
+            $generator->generateDocumentation(),
+            $cookbookFilePath,
+            sprintf('Cookbook documentation is generated (please CONTRIBUTING.md), file "%s".', $cookbookFilePath)
         );
     }
 

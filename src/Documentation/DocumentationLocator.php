@@ -79,4 +79,9 @@ final class DocumentationLocator
     {
         return $this->path.'/list.rst';
     }
+
+    public function getCookbookPath(): string
+    {
+        return $this->path.'/cookbook_fixers.rst';
+    }
 }

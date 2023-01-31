@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Documentation\CookbookGenerator;
 use PhpCsFixer\Documentation\DocumentationLocator;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Documentation\ListDocumentGenerator;
@@ -119,6 +120,11 @@ final class DocumentationCommand extends Command
         $filesystem->dumpFile(
             $locator->getListingFilePath(),
             $listDocumentGenerator->generateListingDocumentation($fixers)
+        );
+
+        $filesystem->dumpFile(
+            $locator->getCookbookPath(),
+            (new CookbookGenerator())->generateDocumentation()
         );
 
         $output->writeln('Docs updated.');
