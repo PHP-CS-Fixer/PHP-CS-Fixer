@@ -70,9 +70,16 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
                 '012345' => '012_345',
                 '0123456' => '0123_456',
                 '01234567' => '01_234_567',
-                '0o123456' => '0o123_456',
             ],
         ];
+
+        if (\PHP_VERSION_ID >= 8_01_00) {
+            // Test new 8.1 Octal notation
+            $cases['octal'] += [
+                '0o12345' => '0o12_345',
+                '0o123456' => '0o123_456',
+            ];
+        }
 
         foreach ($cases as $pairsType => $pairs) {
             foreach ($pairs as $withoutSeparator => $withSeparator) {
