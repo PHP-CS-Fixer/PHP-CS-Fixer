@@ -45,7 +45,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
         return new FixerDefinition(
             'Adds separators to numeric literals of any kind.',
             [
-                new CodeSample("<?php\n\$integer = 12345678;\n\$octal = 0o123456;\n\$binary = 0b00100100;\n\$hexadecimal = 0x3D458F4F;\n"),
+                new CodeSample("<?php\n\$integer = 12345678;\n\$octal = 0123456;\n\$binary = 0b00100100;\n\$hexadecimal = 0x3D458F4F;\n"),
                 new CodeSample(
                     "<?php \$var = 24_40_21;\n",
                     ['override_existing' => true]
