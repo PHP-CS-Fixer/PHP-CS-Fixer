@@ -68,11 +68,17 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         'phpstan-property',
         'phpstan-property-read',
         'phpstan-property-write',
+        'phpstan-assert',
+        'phpstan-assert-if-true',
+        'phpstan-assert-if-false',
         'psalm-param',
         'psalm-param-out',
         'psalm-property',
         'psalm-property-read',
         'psalm-property-write',
+        'psalm-assert',
+        'psalm-assert-if-true',
+        'psalm-assert-if-false',
     ];
 
     private const TAGS_WITH_METHOD_SIGNATURE = [
