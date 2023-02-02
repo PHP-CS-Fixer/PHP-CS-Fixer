@@ -19,7 +19,7 @@ If you are already using a linter to identify coding standards problems in your
 code, you know that fixing them by hand is tedious, especially on large
 projects. This tool does not only detect them, but also fixes them for you.
 
-## Supported versions
+## Supported PHP Versions
 
 > NOTE: Each new PHP version requires a huge effort to support the new syntax.
 > That's why the latest PHP version might not be supported yet. If you need it,
