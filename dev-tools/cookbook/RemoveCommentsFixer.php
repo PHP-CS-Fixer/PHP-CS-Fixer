@@ -44,9 +44,6 @@ final class RemoveCommentsFixer extends AbstractFixer
 
     // ...
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         // Check whether the collection is a candidate for fixing.
@@ -54,9 +51,6 @@ final class RemoveCommentsFixer extends AbstractFixer
         return $tokens->isTokenKindFound(T_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         // Add the fixing logic of the fixer here.
