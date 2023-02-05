@@ -17,8 +17,8 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\RuleSet\Sets\PERCS10RiskySet
+ * @covers \PhpCsFixer\RuleSet\Sets\PERCS1x0RiskySet
  */
-final class PERCS10RiskySetTest extends AbstractSetTest
+final class PERCS1x0RiskySetTest extends AbstractSetTest
 {
 }

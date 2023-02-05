@@ -23,17 +23,17 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  *
  * @see https://github.com/php-fig/per-coding-style/blob/1.0.0/spec.md
  */
-final class PERCS10Set extends AbstractRuleSetDescription
+final class PERCS1x0RiskySet extends AbstractRuleSetDescription
 {
     public function getName(): string
     {
-        return '@PER-CS1.0';
+        return '@PER-CS1.0:risky';
     }
 
     public function getRules(): array
     {
         return [
-            '@PSR12' => true,
+            '@PSR12:risky' => true,
         ];
     }
 
