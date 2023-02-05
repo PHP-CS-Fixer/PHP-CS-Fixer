@@ -71,26 +71,17 @@ Put this content inside:
     */
    final class RemoveCommentsFixer extends AbstractFixer
    {
-       /**
-        * {@inheritdoc}
-        */
        public function getDefinition(): FixerDefinition
        {
            // Return a definition of the fixer, it will be used in the documentation.
        }
 
-       /**
-        * {@inheritdoc}
-        */
        public function isCandidate(Tokens $tokens): bool
        {
            // Check whether the collection is a candidate for fixing.
            // Has to be ultra cheap to execute.
        }
 
-       /**
-        * {@inheritdoc}
-        */
        protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
        {
            // Add the fixing logic of the fixer here.
@@ -251,9 +242,6 @@ First, we need to create one method to describe what this fixer does:
 
    final class RemoveCommentsFixer extends AbstractFixer
    {
-       /**
-        * {@inheritdoc}
-        */
        public function getDefinition(): FixerDefinition
        {
            return new FixerDefinition(
@@ -285,9 +273,6 @@ Next, we must filter what type of tokens we want to fix. Here, we are interested
    {
        // ...
 
-       /**
-        * {@inheritdoc}
-        */
        public function isCandidate(Tokens $tokens): bool
        {
            return $tokens->isTokenKindFound(T_COMMENT);
@@ -304,9 +289,6 @@ For now, let us just make a fixer that applies no modification:
    {
        // ...
 
-       /**
-        * {@inheritdoc}
-        */
        protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
        {
            // no action
@@ -358,9 +340,6 @@ iterate the token(s) we are interested in.
    {
        // ...
 
-       /**
-        * {@inheritdoc}
-        */
        protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
        {
            foreach ($tokens as $index => $token) {
@@ -384,9 +363,6 @@ token is a semicolon.
    {
        // ...
 
-       /**
-        * {@inheritdoc}
-        */
        protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
        {
            foreach ($tokens as $index => $token) {
@@ -430,9 +406,6 @@ So the fixer in the end looks like this:
     */
    final class RemoveCommentsFixer extends AbstractFixer
    {
-       /**
-        * {@inheritdoc}
-        */
        public function getDefinition(): FixerDefinition
        {
            return new FixerDefinition(
@@ -445,17 +418,11 @@ So the fixer in the end looks like this:
            );
        }
 
-       /**
-        * {@inheritdoc}
-        */
        public function isCandidate(Tokens $tokens): bool
        {
            return $tokens->isTokenKindFound(T_COMMENT);
        }
 
-       /**
-        * {@inheritdoc}
-        */
        protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
        {
            foreach ($tokens as $index => $token) {

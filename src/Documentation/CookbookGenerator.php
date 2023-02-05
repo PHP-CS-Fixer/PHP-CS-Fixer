@@ -29,17 +29,17 @@ final class CookbookGenerator
         return strtr(
             file_get_contents(self::TEMPLATES_PATH.'template.rst'),
             [
-                '{{ empty_fixer }}' => $this->excludeLines($fixerContent, [1 => 4, 19 => 20, 34 => 41, 43 => 44, 53 => 53, 62 => 79]),
+                '{{ empty_fixer }}' => $this->excludeLines($fixerContent, [1 => 4, 19 => 20, 31 => 38, 40 => 41, 47 => 47, 53 => 70]),
                 '{{ empty_test }}' => $this->excludeLines($testContent, [1 => 4, 37 => 37, 40 => 49, 51 => 57, 59 => 59]),
                 '{{ test_no_change }}' => $this->excludeLines($testContent, [0 => 1, 4 => 36, 40 => 54, 60 => 60]),
                 '{{ test_changes }}' => $this->excludeLines($testContent, [0 => 1, 4 => 36, 47 => 58, 60 => 60]),
                 '{{ test }}' => $this->excludeLines($testContent, [1 => 1, 3 => 4, 24 => 25, 37 => 37, 47 => 59]),
-                '{{ fixer_definition }}' => $this->excludeLines($fixerContent, [0 => 1, 4 => 25, 33 => 33, 43 => 80]),
-                '{{ fixer_is_candidate }}' => $this->excludeLines($fixerContent, [0 => 1, 4 => 25, 28 => 43, 51 => 52, 55 => 80]),
-                '{{ fixer_apply_fix_empty }}' => $this->excludeLines($fixerContent, [0 => 1, 4 => 25, 28 => 43, 45 => 54, 61 => 78]),
-                '{{ fixer_apply_fix_partial }}' => $this->excludeLines($fixerContent, [0 => 1, 4 => 25, 28 => 43, 45 => 54, 61 => 61, 68 => 73, 76 => 80]),
-                '{{ fixer_apply_fix }}' => $this->excludeLines($fixerContent, [0 => 1, 4 => 25, 28 => 43, 45 => 54, 61 => 61, 67 => 67, 76 => 80]),
-                '{{ fixer }}' => $this->excludeLines($fixerContent, [1 => 4, 19 => 20, 33 => 33, 43 => 44, 51 => 52, 61 => 61, 67 => 67, 76 => 80]),
+                '{{ fixer_definition }}' => $this->excludeLines($fixerContent, [0 => 1, 4 => 25, 30 => 30, 40 => 71]),
+                '{{ fixer_is_candidate }}' => $this->excludeLines($fixerContent, [0 => 1, 4 => 25, 28 => 40, 45 => 46, 49 => 71]),
+                '{{ fixer_apply_fix_empty }}' => $this->excludeLines($fixerContent, [0 => 1, 4 => 25, 28 => 40, 42 => 48, 52 => 69]),
+                '{{ fixer_apply_fix_partial }}' => $this->excludeLines($fixerContent, [0 => 1, 4 => 25, 28 => 40, 42 => 48, 52 => 52, 59 => 64, 67 => 71]),
+                '{{ fixer_apply_fix }}' => $this->excludeLines($fixerContent, [0 => 1, 4 => 25, 28 => 40, 42 => 48, 52 => 52, 58 => 58, 67 => 71]),
+                '{{ fixer }}' => $this->excludeLines($fixerContent, [1 => 4, 19 => 20, 30 => 30, 40 => 41, 45 => 46, 52 => 52, 58 => 58, 67 => 71]),
             ]
         );
     }
