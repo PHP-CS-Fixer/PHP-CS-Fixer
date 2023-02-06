@@ -1111,6 +1111,90 @@ $fn = fn(
                 'on_multiline' => 'ensure_fully_multiline',
             ],
         ];
+
+        yield [
+            '<?php
+functionCall(
+    1,
+    2,
+    [
+        "a" => "b",
+    ]
+);',
+            '<?php
+functionCall(1, 2, [
+    "a" => "b",
+]);',
+            [
+                'on_multiline' => 'ensure_fully_multiline',
+                'on_nested_multiline' => 'always',
+            ],
+        ];
+
+        yield [
+            '<?php
+functionCall(
+    1,
+    2,
+    [
+        "a" => [
+            1, 2, 3
+        ],
+        "b" => "b",
+        "c" => "b",
+    ]
+);
+functionCall([
+    "a" => [
+        1, 2, 3
+    ],
+    "b" => "b",
+    "c" => "b",
+]);',
+            '<?php
+functionCall(1, 2, [
+    "a" => [
+        1, 2, 3
+    ],
+    "b" => "b",
+    "c" => "b",
+]);
+functionCall([
+    "a" => [
+        1, 2, 3
+    ],
+    "b" => "b",
+    "c" => "b",
+]);',
+            [
+                'on_multiline' => 'ensure_fully_multiline',
+                'on_nested_multiline' => 'ignore_single',
+            ],
+        ];
+
+        yield [
+            '<?php
+functionCall(
+    1,
+    2,
+    3,
+);
+functionCall(1, 2, [
+    "a" => "b",
+]);',
+            '<?php
+functionCall(
+    1, 2,
+    3,
+);
+functionCall(1, 2, [
+    "a" => "b",
+]);',
+            [
+                'on_multiline' => 'ensure_fully_multiline',
+                'on_nested_multiline' => 'ignore',
+            ],
+        ];
     }
 
     /**
