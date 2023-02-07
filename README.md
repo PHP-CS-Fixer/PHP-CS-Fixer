@@ -21,7 +21,8 @@ projects. This tool does not only detect them, but also fixes them for you.
 
 ## Supported PHP Versions
 
-> NOTE: Each new PHP version requires a huge effort to support the new syntax.
+> **Note**
+> Each new PHP version requires a huge effort to support the new syntax.
 > That's why the latest PHP version might not be supported yet. If you need it,
 > please, consider supporting the project in any convenient way, for example
 > with code contribution or reviewing existing RPs.
