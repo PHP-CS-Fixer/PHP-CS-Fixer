@@ -42,7 +42,7 @@ final class ReadmeTest extends TestCase
         // Unset the file to call __destruct(), closing the file handle.
         $file = null;
 
-        self::assertEqualsCanonicalizing([
+        static::assertEqualsCanonicalizing([
             '    if (\PHP_VERSION_ID === 80000) {'."\n",
             '    if (\PHP_VERSION_ID < 70400 || \PHP_VERSION_ID >= 80200) {'."\n",
         ], $phpVersionIdLines, 'Seems supported PHP versions changed in "./php-cs-fixer" - edit the README.md to match them!');
