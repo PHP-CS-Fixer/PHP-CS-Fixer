@@ -21,15 +21,18 @@ projects. This tool does not only detect them, but also fixes them for you.
 
 ## Supported PHP Versions
 
+* PHP 7.4
+* PHP 8.0 (except PHP 8.0.0 due to [bug in PHP tokenizer](https://bugs.php.net/bug.php?id=80462))
+* PHP 8.1
+
+To run PHP CS Fixer on yet unsupported versions "at your own risk" - leverage
+the [PHP_CS_FIXER_IGNORE_ENV](https://cs.symfony.com/doc/usage.html#environment-options).
+
 > **Note**
 > Each new PHP version requires a huge effort to support the new syntax.
 > That's why the latest PHP version might not be supported yet. If you need it,
 > please, consider supporting the project in any convenient way, for example
 > with code contribution or reviewing existing RPs.
-
-* PHP 7.4
-* PHP 8.0 (except PHP 8.0.0 due to [bug in PHP tokenizer](https://bugs.php.net/bug.php?id=80462))
-* PHP 8.1
 
 ## Documentation
 
