@@ -670,7 +670,7 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
         yield 'open brace not preceded by space and followed by a comment' => [
             '<?php class test
 {
-    public function example( // example
+    public function example() // example
     {
     }
 }
