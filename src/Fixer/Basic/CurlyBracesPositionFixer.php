@@ -312,7 +312,7 @@ $bar = function () { $result = true;
                         } else {
                             $tokens->clearAt($openBraceIndex + 1);
                         }
-                    } else {
+                    } elseif ($tokens[$openBraceIndex - 1]->isWhitespace()) {
                         $tokens->clearAt($openBraceIndex - 1);
                     }
                 }
