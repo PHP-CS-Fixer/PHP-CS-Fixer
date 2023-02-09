@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.14.4
+---------------------
+
+* bug: CurlyBracesPositionFixer - fix for open brace not preceded by space and followed by a comment (#6776)
+* docs: drop license end year (#6767)
+* DX: use numeric_literal_separator (#6766)
+* feature: Allow installation of `sebastian/diff:^5.0.0` (#6771)
+
 Changelog for v3.14.3
 ---------------------
 
