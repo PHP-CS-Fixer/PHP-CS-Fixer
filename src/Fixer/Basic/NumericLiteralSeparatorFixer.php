@@ -114,7 +114,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
 
         if (str_starts_with($lowerValue, '0b')) {
             // Binary
-            return $this->insertEveryRight($value, 4, 2);
+            return $this->insertEveryRight($value, 8, 2);
         }
 
         if (str_starts_with($lowerValue, '0x')) {
