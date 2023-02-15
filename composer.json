@@ -2,7 +2,7 @@
     "name": "friendsofphp/php-cs-fixer",
     "description": "A tool to automatically fix PHP code style",
     "license": "MIT",
-    "keywords": ["dev", "code style", "code-style", "fixer"],
+    "keywords": ["fixer", "standards", "static analysis"],
     "type": "application",
     "authors": [
         {
