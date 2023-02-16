@@ -2,13 +2,13 @@
     "name": "friendsofphp/php-cs-fixer",
     "description": "A tool to automatically fix PHP code style",
     "license": "MIT",
+    "type": "application",
     "keywords": [
         "fixer",
         "standards",
         "static analysis"
     ],
-    "type": "application",
-    "authors": [
+   "authors": [
         {
             "name": "Fabien Potencier",
             "email": "fabien@symfony.com"
