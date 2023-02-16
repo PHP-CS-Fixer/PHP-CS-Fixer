@@ -8,7 +8,7 @@
         "standards",
         "static analysis"
     ],
-   "authors": [
+    "authors": [
         {
             "name": "Fabien Potencier",
             "email": "fabien@symfony.com"
