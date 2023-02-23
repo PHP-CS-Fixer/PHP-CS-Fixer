@@ -243,4 +243,25 @@ FIXED;
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield 'first-class callable' => [
+            '<?php array_filter([], is_null(...));',
+        ];
+
+        yield 'first-class callable with leading slash' => [
+            '<?php array_filter([], \is_null(...));',
+        ];
+    }
 }

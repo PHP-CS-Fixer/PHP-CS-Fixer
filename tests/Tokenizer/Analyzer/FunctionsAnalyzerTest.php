@@ -342,6 +342,7 @@ class Foo {}
             [],
             '<?php
 strlen(...);
+\strlen(...);
 $closure(...);
 $invokableObject(...);
 $obj->method(...);
