@@ -350,7 +350,7 @@ class Foo {}',
     {
         yield [
             '<?php final readonly class A{}',
-            null,
+            '<?php readonly class A{}',
             ['consider_absent_docblock_as_internal_class' => true],
         ];
     }
