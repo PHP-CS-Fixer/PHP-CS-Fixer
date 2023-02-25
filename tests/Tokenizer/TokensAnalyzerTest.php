@@ -2388,7 +2388,7 @@ class MyTestWithAnonymousClass extends TestCase
     /**
      * @dataProvider provideGetClassyModifiersCases
      *
-     * @param array<string, int> $expectedModifiers
+     * @param array<string, null|int> $expectedModifiers
      */
     public function testGetClassyModifiers(array $expectedModifiers, int $index, string $source): void
     {
@@ -2418,7 +2418,7 @@ class MyTestWithAnonymousClass extends TestCase
      *
      * @dataProvider provideGetClassyModifiersOnPhp82Cases
      *
-     * @param array<string, int> $expectedModifiers
+     * @param array<string, null|int> $expectedModifiers
      */
     public function testGetClassyModifiersOnPhp82(array $expectedModifiers, int $index, string $source): void
     {
@@ -2440,6 +2440,18 @@ class MyTestWithAnonymousClass extends TestCase
             ['final' => 3, 'abstract' => null, 'readonly' => 1],
             5,
             '<?php readonly final class Foo {}',
+        ];
+
+        yield 'readonly abstract' => [
+            ['final' => null, 'abstract' => 3, 'readonly' => 1],
+            5,
+            '<?php readonly abstract class Foo {}',
+        ];
+
+        yield 'abstract readonly' => [
+            ['final' => null, 'abstract' => 1, 'readonly' => 3],
+            5,
+            '<?php abstract readonly class Foo {}',
         ];
 
         yield 'readonly final revered + comment' => [
