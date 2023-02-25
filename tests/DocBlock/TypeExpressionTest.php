@@ -152,6 +152,16 @@ final class TypeExpressionTest extends TestCase
         yield ['(int|\\Exception)', ['(int|\\Exception)']];
 
         yield ['($foo is int ? false : true)', ['($foo is int ? false : true)']];
+
+        yield ['\'\'', ['\'\'']];
+
+        yield ['\'foo\'', ['\'foo\'']];
+
+        yield ['\'\\\\\'', ['\'\\\\\'']];
+
+        yield ['\'\\\'\'', ['\'\\\'\'']];
+
+        yield ['\'a\\\'s"\\\\\n\r\t\'|"b\\"s\'\\\\\n\r\t"', ['\'a\\\'s"\\\\\n\r\t\'', '"b\\"s\'\\\\\n\r\t"']];
     }
 
     /**
