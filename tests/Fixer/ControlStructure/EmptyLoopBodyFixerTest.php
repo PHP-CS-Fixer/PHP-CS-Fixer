@@ -139,5 +139,11 @@ echo 1;
 ',
             ['style' => 'semicolon'],
         ];
+
+        yield 'empty "foreach" with comment' => [
+            '<?php foreach (Foo() as $f) {
+    // $this->add($f);
+}',
+        ];
     }
 }
