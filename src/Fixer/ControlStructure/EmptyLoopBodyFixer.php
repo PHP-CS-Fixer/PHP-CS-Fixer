@@ -101,7 +101,7 @@ final class EmptyLoopBodyFixer extends AbstractFixer implements ConfigurableFixe
                     return;
                 }
 
-                $braceCloseIndex = $tokens->getNextMeaningfulToken($braceOpenIndex);
+                $braceCloseIndex = $tokens->getNextNonWhitespace($braceOpenIndex);
 
                 if (!$tokens[$braceCloseIndex]->equals('}')) {
                     return;
