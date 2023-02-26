@@ -54,7 +54,6 @@ If you need to apply code styles that are not supported by the tool, you can
 
 Dedicated plugins exist for:
 
-* [Atom](https://github.com/Glavin001/atom-beautify)
 * [NetBeans](https://plugins.netbeans.apache.org/catalogue/?id=36)
 * [PhpStorm](https://www.jetbrains.com/help/phpstorm/using-php-cs-fixer.html)
 * [Sublime Text](https://github.com/benmatselby/sublime-phpcs)
