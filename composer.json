@@ -3,6 +3,12 @@
     "description": "A tool to automatically fix PHP code style",
     "license": "MIT",
     "type": "application",
+    "keywords": [
+        "fixer",
+        "standards",
+        "static analysis",
+        "static code analysis"
+    ],
     "authors": [
         {
             "name": "Fabien Potencier",
