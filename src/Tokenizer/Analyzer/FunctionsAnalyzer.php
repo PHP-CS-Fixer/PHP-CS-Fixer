@@ -65,12 +65,12 @@ final class FunctionsAnalyzer
             return false;
         }
 
-        if ($previousIsNamespaceSeparator) {
-            return true;
-        }
-
         if ($tokens[$tokens->getNextMeaningfulToken($nextIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
             return false;
+        }
+
+        if ($previousIsNamespaceSeparator) {
+            return true;
         }
 
         if ($tokens->isChanged() || $tokens->getCodeHash() !== $this->functionsAnalysis['tokens']) {
