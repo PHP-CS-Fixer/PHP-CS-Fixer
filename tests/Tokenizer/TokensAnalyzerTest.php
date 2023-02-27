@@ -2442,10 +2442,34 @@ class MyTestWithAnonymousClass extends TestCase
             '<?php readonly final class Foo {}',
         ];
 
-        yield 'readonly final revered + comment' => [
+        yield 'readonly final reversed' => [
+            ['final' => 1, 'abstract' => null, 'readonly' => 3],
+            5,
+            '<?php final readonly class Foo {}',
+        ];
+
+        yield 'readonly final reversed + comment' => [
             ['final' => 1, 'abstract' => null, 'readonly' => 5],
             7,
             '<?php final /* comment */ readonly class Foo {}',
+        ];
+
+        yield 'readonly abstract' => [
+            ['final' => null, 'abstract' => 3, 'readonly' => 1],
+            5,
+            '<?php readonly abstract class Foo {}',
+        ];
+
+        yield 'readonly abstract reversed' => [
+            ['final' => null, 'abstract' => 1, 'readonly' => 3],
+            5,
+            '<?php abstract readonly class Foo {}',
+        ];
+
+        yield 'readonly abstract reversed + comment' => [
+            ['final' => null, 'abstract' => 1, 'readonly' => 5],
+            7,
+            '<?php abstract /* comment */ readonly class Foo {}',
         ];
     }
 
