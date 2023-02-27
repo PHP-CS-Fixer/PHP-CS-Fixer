@@ -481,7 +481,7 @@ var_dump(Foo::Spades);',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield 'final readonly class - final after visibility method' => [
             '<?php

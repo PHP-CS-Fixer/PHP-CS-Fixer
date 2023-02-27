@@ -346,7 +346,7 @@ class Foo {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield [
             '<?php readonly final class A{}',

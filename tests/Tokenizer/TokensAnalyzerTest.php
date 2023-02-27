@@ -2398,7 +2398,7 @@ class MyTestWithAnonymousClass extends TestCase
         static::assertSame($expectedModifiers, $tokensAnalyzer->getClassyModifiers($index));
     }
 
-    public function provideGetClassyModifiersCases(): iterable
+    public static function provideGetClassyModifiersCases(): iterable
     {
         yield 'final' => [
             ['final' => 1, 'abstract' => null, 'readonly' => null],
@@ -2428,7 +2428,7 @@ class MyTestWithAnonymousClass extends TestCase
         static::assertSame($expectedModifiers, $tokensAnalyzer->getClassyModifiers($index));
     }
 
-    public function provideGetClassyModifiersOnPhp82Cases(): iterable
+    public static function provideGetClassyModifiersOnPhp82Cases(): iterable
     {
         yield 'readonly' => [
             ['final' => null, 'abstract' => null, 'readonly' => 1],

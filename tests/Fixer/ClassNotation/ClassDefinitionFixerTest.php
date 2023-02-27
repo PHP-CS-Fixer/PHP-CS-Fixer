@@ -752,7 +752,7 @@ $a = new class implements
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield 'final readonly works' => [
             '<?php final readonly class a

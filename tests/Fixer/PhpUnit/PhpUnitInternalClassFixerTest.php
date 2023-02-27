@@ -387,7 +387,7 @@ class Test extends TestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield 'If final is not added as an option, final classes will not be marked internal' => [
             '<?php

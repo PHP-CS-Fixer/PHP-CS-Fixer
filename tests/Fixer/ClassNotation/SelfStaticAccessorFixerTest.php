@@ -370,7 +370,7 @@ $b = function() { return static::class; };
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield 'simple' => [
             '<?php

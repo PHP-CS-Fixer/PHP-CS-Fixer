@@ -290,7 +290,7 @@ echo DocumentStats::DRAFT->getStatusName();
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield 'final readonly' => [
             '<?php

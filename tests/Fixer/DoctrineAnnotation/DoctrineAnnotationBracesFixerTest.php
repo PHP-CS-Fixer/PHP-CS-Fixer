@@ -560,7 +560,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield [
             '<?php

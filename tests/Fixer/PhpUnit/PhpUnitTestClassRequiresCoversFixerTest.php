@@ -276,7 +276,7 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield 'without docblock #2 (class is final)' => [
             '<?php
