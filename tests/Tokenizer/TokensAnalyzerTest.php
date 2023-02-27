@@ -2388,7 +2388,7 @@ class MyTestWithAnonymousClass extends TestCase
     /**
      * @dataProvider provideGetClassyModifiersCases
      *
-     * @param array<string, int> $expectedModifiers
+     * @param array<string, null|int> $expectedModifiers
      */
     public function testGetClassyModifiers(array $expectedModifiers, int $index, string $source): void
     {
@@ -2418,7 +2418,7 @@ class MyTestWithAnonymousClass extends TestCase
      *
      * @dataProvider provideGetClassyModifiersOnPhp82Cases
      *
-     * @param array<string, int> $expectedModifiers
+     * @param array<string, null|int> $expectedModifiers
      */
     public function testGetClassyModifiersOnPhp82(array $expectedModifiers, int $index, string $source): void
     {
