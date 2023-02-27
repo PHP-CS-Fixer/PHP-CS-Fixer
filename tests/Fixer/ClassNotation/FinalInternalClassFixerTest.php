@@ -349,8 +349,8 @@ class Foo {}',
     public function provideFix82Cases(): iterable
     {
         yield [
-            '<?php final readonly class A{}',
-            null,
+            '<?php readonly final class A{}',
+            '<?php readonly class A{}',
             ['consider_absent_docblock_as_internal_class' => true],
         ];
     }
