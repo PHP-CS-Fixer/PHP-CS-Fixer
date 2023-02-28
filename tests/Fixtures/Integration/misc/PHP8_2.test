@@ -17,10 +17,11 @@ final readonly class Foo
 }
 
 // https://wiki.php.net/rfc/fetch_property_in_const_expressions
-enum A: string {
+enum A: string
+{
     case B = 'B';
-    const C = [self::B->value => self::B];
-    const D = self::B?->value;
+    public const C = [self::B->value => self::B];
+    public const D = self::B?->value;
 }
 
 // https://wiki.php.net/rfc/null-false-standalone-types
@@ -105,7 +106,8 @@ READONLY       final       class       Foo
 }
 
 // https://wiki.php.net/rfc/fetch_property_in_const_expressions
-enum A: string {
+enum A: string
+{
     case B = 'B';
     const C = [self::B->value => self::B];
     const D = self::B?->value;
