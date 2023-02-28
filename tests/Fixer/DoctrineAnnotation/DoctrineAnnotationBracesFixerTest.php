@@ -33,9 +33,9 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithBracesCases(): array
+    public function provideFixWithBracesCases(): iterable
     {
-        $cases = $this->createTestCases([
+        yield from $this->createTestCases([
             ['
 /**
  * @Foo()
@@ -267,7 +267,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  */'],
         ]);
 
-        $cases[] = [
+        yield [
             '<?php
 
 /**
@@ -275,8 +275,6 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  */
 ',
         ];
-
-        return $cases;
     }
 
     /**
@@ -290,9 +288,9 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithoutBracesCases(): array
+    public function provideFixWithoutBracesCases(): iterable
     {
-        $cases = $this->createTestCases([
+        yield from $this->createTestCases([
             ['
 /**
  * Foo.
@@ -542,7 +540,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  */'],
         ]);
 
-        $cases[] = [
+        yield [
             '<?php
 
 /**
@@ -550,7 +548,37 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  */
 ',
         ];
+    }
 
-        return $cases;
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield [
+            '<?php
+
+/**
+ * @author John Doe
+ *
+ * @Baz\Bar
+ */
+readonly class FooClass{}',
+            '<?php
+
+/**
+ * @author John Doe
+ *
+ * @Baz\Bar ( )
+ */
+readonly class FooClass{}',
+        ];
     }
 }

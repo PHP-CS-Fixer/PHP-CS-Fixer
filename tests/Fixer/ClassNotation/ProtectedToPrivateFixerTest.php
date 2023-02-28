@@ -231,6 +231,88 @@ enum Foo: string
 Foo::Hearts->test();
             ',
         ];
+
+        yield 'enum with trait' => [
+            '<?php
+
+trait NamedDocumentStatus
+{
+    public function getStatusName(): string
+    {
+        return $this->getFoo();
+    }
+}
+
+enum DocumentStats {
+    use NamedDocumentStatus;
+
+    case DRAFT;
+
+    private function getFoo(): string {
+        return "X";
+    }
+}
+
+echo DocumentStats::DRAFT->getStatusName();
+',
+            '<?php
+
+trait NamedDocumentStatus
+{
+    public function getStatusName(): string
+    {
+        return $this->getFoo();
+    }
+}
+
+enum DocumentStats {
+    use NamedDocumentStatus;
+
+    case DRAFT;
+
+    protected function getFoo(): string {
+        return "X";
+    }
+}
+
+echo DocumentStats::DRAFT->getStatusName();
+',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield 'final readonly' => [
+            '<?php
+            final readonly class Foo {
+                private function noop(): void{}
+            }',
+            '<?php
+            final readonly class Foo {
+                protected function noop(): void{}
+            }',
+        ];
+
+        yield 'final readonly reversed' => [
+            '<?php
+            readonly final class Foo {
+                private function noop(): void{}
+            }',
+            '<?php
+            readonly final class Foo {
+                protected function noop(): void{}
+            }',
+        ];
     }
 
     private function getAttributesAndMethods(bool $original): string

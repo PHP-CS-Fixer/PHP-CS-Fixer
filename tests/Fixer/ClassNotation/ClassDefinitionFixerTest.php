@@ -431,6 +431,9 @@ TestInterface3, /**/     TestInterface4   ,
 
         $result = $method->invoke($this->fixer, $tokens, $expected['classy']);
 
+        ksort($expected);
+        ksort($result);
+
         static::assertSame($expected, $result);
     }
 
@@ -446,6 +449,9 @@ TestInterface3, /**/     TestInterface4   ,
                     'extends' => false,
                     'implements' => false,
                     'anonymousClass' => false,
+                    'final' => false,
+                    'abstract' => false,
+                    'readonly' => false,
                 ],
             ],
             [
@@ -457,6 +463,9 @@ TestInterface3, /**/     TestInterface4   ,
                     'extends' => false,
                     'implements' => false,
                     'anonymousClass' => false,
+                    'final' => 1,
+                    'abstract' => false,
+                    'readonly' => false,
                 ],
             ],
             [
@@ -468,6 +477,9 @@ TestInterface3, /**/     TestInterface4   ,
                     'extends' => false,
                     'implements' => false,
                     'anonymousClass' => false,
+                    'final' => false,
+                    'abstract' => 1,
+                    'readonly' => false,
                 ],
             ],
             [
@@ -483,6 +495,9 @@ TestInterface3, /**/     TestInterface4   ,
                     ],
                     'implements' => false,
                     'anonymousClass' => false,
+                    'final' => false,
+                    'abstract' => false,
+                    'readonly' => false,
                 ],
             ],
             [
@@ -498,6 +513,9 @@ TestInterface3, /**/     TestInterface4   ,
                     ],
                     'implements' => false,
                     'anonymousClass' => false,
+                    'final' => false,
+                    'abstract' => false,
+                    'readonly' => false,
                 ],
             ],
         ];
@@ -725,6 +743,40 @@ $a = new class implements
     }
 
     /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield 'final readonly works' => [
+            '<?php final readonly class a
+{}',
+            '<?php final           readonly      class a
+{}',
+        ];
+
+        yield 'final - readonly modifiers get sorted' => [
+            '<?php final readonly class a
+{}',
+            '<?php readonly final class a
+{}',
+        ];
+
+        yield 'abstract - readonly modifiers get sorted' => [
+            '<?php abstract readonly class a
+{}',
+            '<?php readonly abstract class a
+{}',
+        ];
+    }
+
+    /**
      * @param array<string, mixed> $expected
      */
     private static function assertConfigurationSame(array $expected, ClassDefinitionFixer $fixer): void
@@ -865,11 +917,24 @@ extends
                 "<?php abstract class F extends B implements C\n{}",
                 '<?php abstract    class    F    extends     B    implements C {}',
             ],
-            [
+            'multiline abstract extends implements with comments' => [
                 "<?php abstract class G extends       //
 B /*  */ implements C\n{}",
                 '<?php abstract    class     G     extends       //
 B/*  */implements C{}',
+            ],
+            'final extends implement' => [
+                "<?php final class G extends       //
+B /*  */ implements C\n{}",
+                '<?php final    class     G     extends       //
+B/*  */implements C{}',
+            ],
+            'final' => [
+                '<?php final class G        //
+/*  */
+{}',
+                '<?php final    class     G        //
+/*  */{}',
             ],
             [
                 '<?php

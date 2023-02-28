@@ -373,4 +373,41 @@ class Test extends TestCase
             ],
         ];
     }
+
+    /**
+     * @param array<string, mixed> $config
+     *
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input = null, array $config = []): void
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield 'If final is not added as an option, final classes will not be marked internal' => [
+            '<?php
+final readonly class Test extends TestCase
+{}
+',
+            null,
+            [
+                'types' => ['normal'],
+            ],
+        ];
+
+        yield [
+            '<?php
+/**
+ * @internal
+ */
+readonly final class Test extends TestCase {}',
+            '<?php
+readonly final class Test extends TestCase {}',
+        ];
+    }
 }

@@ -470,4 +470,47 @@ enum Foo: string
 var_dump(Foo::Spades);',
         ];
     }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield 'final readonly class - final after visibility method' => [
+            '<?php
+final readonly class Foo {
+    public function foo() {}
+    protected function bar() {}
+    private function baz() {}
+}',
+            '<?php
+final readonly class Foo {
+    public final function foo() {}
+    protected final function bar() {}
+    private final function baz() {}
+}',
+        ];
+
+        yield 'readonly comment final class - final before visibility method' => [
+            '<?php
+readonly /* X */ final class Foo {
+    public function foo() {}
+    protected function bar() {}
+    private function baz() {}
+}',
+            '<?php
+readonly /* X */ final class Foo {
+    final public function foo() {}
+    final protected function bar() {}
+    final private function baz() {}
+}',
+        ];
+    }
 }

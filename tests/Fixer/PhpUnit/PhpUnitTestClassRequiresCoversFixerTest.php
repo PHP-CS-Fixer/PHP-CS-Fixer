@@ -265,4 +265,38 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield 'without docblock #2 (class is final)' => [
+            '<?php
+
+                /**
+                 * @coversNothing
+                 */
+                readonly final class BarTest extends \PHPUnit_Framework_TestCase {}
+            ',
+            '<?php
+
+                readonly final class BarTest extends \PHPUnit_Framework_TestCase {}
+            ',
+        ];
+
+        yield 'without docblock #2 (class is abstract)' => [
+            '<?php
+                    abstract readonly class FooTest extends \PHPUnit_Framework_TestCase {}
+            ',
+            null,
+        ];
+    }
 }

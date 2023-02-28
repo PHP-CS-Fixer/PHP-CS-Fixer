@@ -2386,6 +2386,104 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
+     * @dataProvider provideGetClassyModifiersCases
+     *
+     * @param array<string, null|int> $expectedModifiers
+     */
+    public function testGetClassyModifiers(array $expectedModifiers, int $index, string $source): void
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        static::assertSame($expectedModifiers, $tokensAnalyzer->getClassyModifiers($index));
+    }
+
+    public static function provideGetClassyModifiersCases(): iterable
+    {
+        yield 'final' => [
+            ['final' => 1, 'abstract' => null, 'readonly' => null],
+            3,
+            '<?php final class Foo {}',
+        ];
+
+        yield 'abstract' => [
+            ['final' => null, 'abstract' => 3, 'readonly' => null],
+            5,
+            '<?php /* comment */ abstract class Foo {}',
+        ];
+    }
+
+    /**
+     * @requires PHP 8.2
+     *
+     * @dataProvider provideGetClassyModifiersOnPhp82Cases
+     *
+     * @param array<string, null|int> $expectedModifiers
+     */
+    public function testGetClassyModifiersOnPhp82(array $expectedModifiers, int $index, string $source): void
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        static::assertSame($expectedModifiers, $tokensAnalyzer->getClassyModifiers($index));
+    }
+
+    public static function provideGetClassyModifiersOnPhp82Cases(): iterable
+    {
+        yield 'readonly' => [
+            ['final' => null, 'abstract' => null, 'readonly' => 1],
+            3,
+            '<?php readonly class Foo {}',
+        ];
+
+        yield 'readonly final' => [
+            ['final' => 3, 'abstract' => null, 'readonly' => 1],
+            5,
+            '<?php readonly final class Foo {}',
+        ];
+
+        yield 'readonly final reversed' => [
+            ['final' => 1, 'abstract' => null, 'readonly' => 3],
+            5,
+            '<?php final readonly class Foo {}',
+        ];
+
+        yield 'readonly final reversed + comment' => [
+            ['final' => 1, 'abstract' => null, 'readonly' => 5],
+            7,
+            '<?php final /* comment */ readonly class Foo {}',
+        ];
+
+        yield 'readonly abstract' => [
+            ['final' => null, 'abstract' => 3, 'readonly' => 1],
+            5,
+            '<?php readonly abstract class Foo {}',
+        ];
+
+        yield 'readonly abstract reversed' => [
+            ['final' => null, 'abstract' => 1, 'readonly' => 3],
+            5,
+            '<?php abstract readonly class Foo {}',
+        ];
+
+        yield 'readonly abstract reversed + comment' => [
+            ['final' => null, 'abstract' => 1, 'readonly' => 5],
+            7,
+            '<?php abstract /* comment */ readonly class Foo {}',
+        ];
+    }
+
+    public function testGetClassyModifiersForNonClassyThrowsAnException(): void
+    {
+        $tokens = Tokens::fromCode('<?php echo 1;');
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $tokensAnalyzer->getClassyModifiers(1);
+    }
+
+    /**
      * @param array<int, bool> $expected
      */
     private function doIsConstantInvocationTest(array $expected, string $source): void

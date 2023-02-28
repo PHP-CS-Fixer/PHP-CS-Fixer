@@ -267,6 +267,11 @@ class B{}
                     'annotation_exclude' => ['abc'],
                 ],
             ],
+            [
+                '<?php final class A{}',
+                '<?php class A{}',
+                ['consider_absent_docblock_as_internal_class' => true],
+            ],
         ];
     }
 
@@ -325,6 +330,28 @@ $a = new class{};',
             '<?php
 #[Internal]
 class Foo {}',
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     *
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input, array $config): void
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield [
+            '<?php readonly final class A{}',
+            '<?php readonly class A{}',
+            ['consider_absent_docblock_as_internal_class' => true],
         ];
     }
 }
