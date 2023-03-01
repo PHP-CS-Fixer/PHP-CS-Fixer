@@ -16,6 +16,19 @@ final readonly class Foo
     public string $prop;
 }
 
+// https://wiki.php.net/rfc/fetch_property_in_const_expressions
+enum A: string
+{
+    case B = 'B';
+    public const C = [self::B->name => self::B->value];
+    public const D = self::B?->value;
+}
+
+#[Attr(A::B->name)]
+class E
+{
+}
+
 // https://wiki.php.net/rfc/null-false-standalone-types
 class FalseNull
 {
@@ -95,6 +108,19 @@ trait WithConstants
 READONLY       final       class       Foo
 {
     public string $prop;
+}
+
+// https://wiki.php.net/rfc/fetch_property_in_const_expressions
+enum A: string
+{
+    case B = 'B';
+    const C = [self::B -> name => self::B->value];
+    const D = self::B ?-> value;
+}
+
+#[Attr(A::B -> name)]
+class E
+{
 }
 
 // https://wiki.php.net/rfc/null-false-standalone-types
