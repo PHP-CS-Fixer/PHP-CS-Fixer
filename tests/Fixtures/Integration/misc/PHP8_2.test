@@ -24,6 +24,11 @@ enum A: string
     public const D = self::B?->value;
 }
 
+#[Attr(A::B->name)]
+class E
+{
+}
+
 // https://wiki.php.net/rfc/null-false-standalone-types
 class FalseNull
 {
@@ -111,6 +116,11 @@ enum A: string
     case B = 'B';
     const C = [self::B -> name => self::B->value];
     const D = self::B ?-> value;
+}
+
+#[Attr(A::B -> name)]
+class E
+{
 }
 
 // https://wiki.php.net/rfc/null-false-standalone-types
