@@ -323,4 +323,47 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
             ],
         ];
     }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideProcess82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testProcess82(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    public static function provideProcess82Cases(): iterable
+    {
+        yield 'disjunctive normal form types parameter' => [
+            '<?php function foo((A&B)|D $x): void {}',
+            [
+                7 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'disjunctive normal form types return' => [
+            '<?php function foo(): (A&B)|D {}',
+            [
+                10 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'disjunctive normal form types parameters' => [
+            '<?php function foo(
+                (A&B)|C|D $x,
+                A|(B&C)|D $y,
+                (A&B)|(C&D) $z,
+            ): void {}',
+            [
+                8 => CT::T_TYPE_INTERSECTION,
+                23 => CT::T_TYPE_INTERSECTION,
+                34 => CT::T_TYPE_INTERSECTION,
+                40 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+    }
 }

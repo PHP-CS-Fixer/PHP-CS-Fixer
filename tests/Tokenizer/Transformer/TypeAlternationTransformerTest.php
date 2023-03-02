@@ -411,4 +411,49 @@ class Foo
             ],
         ];
     }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideProcess82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testProcess82(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    public static function provideProcess82Cases(): iterable
+    {
+        yield 'disjunctive normal form types parameter' => [
+            '<?php function foo((A&B)|D $x): void {}',
+            [
+                10 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'disjunctive normal form types return' => [
+            '<?php function foo(): (A&B)|D {}',
+            [
+                13 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'disjunctive normal form types parameters' => [
+            '<?php function foo(
+                (A&B)|C|D $x,
+                A|(B&C)|D $y,
+                A|B|(C&D) $z,
+            ): void {}',
+            [
+                11 => CT::T_TYPE_ALTERNATION,
+                13 => CT::T_TYPE_ALTERNATION,
+                20 => CT::T_TYPE_ALTERNATION,
+                26 => CT::T_TYPE_ALTERNATION,
+                33 => CT::T_TYPE_ALTERNATION,
+                35 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+    }
 }
