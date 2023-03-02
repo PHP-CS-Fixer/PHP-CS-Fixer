@@ -90,7 +90,7 @@ trait WithConstants
 
 // https://wiki.php.net/rfc/dnf_types
 function generateSlug((HasTitle&HasId)|null $post) {
-    throw new \Exception("not implemented);
+    throw new \Exception("not implemented");
 }
 
 --INPUT--
@@ -173,5 +173,5 @@ trait      WithConstants      {
 
 // https://wiki.php.net/rfc/dnf_types
 function generateSlug((HasTitle&HasId)|null $post) {
-    throw new \Exception("not implemented);
+    throw new \Exception("not implemented");
 }
