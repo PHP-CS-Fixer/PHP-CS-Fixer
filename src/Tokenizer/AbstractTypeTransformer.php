@@ -22,75 +22,44 @@ namespace PhpCsFixer\Tokenizer;
 abstract class AbstractTypeTransformer extends AbstractTransformer
 {
     /**
-     * @param array{0: int, 1?: string}|string $originalToken
+     * @param array{0: int, 1: string}|string $originalToken
      */
-    protected function doProcess(Tokens $tokens, int $index, $originalToken): void
+    protected function doProcess(Tokens $tokens, int $candidateIndex, $originalToken): void
     {
-        if (!$tokens[$index]->equals($originalToken)) {
+        if (!$tokens[$candidateIndex]->equals($originalToken)) {
             return;
         }
 
-        $prevIndex = $this->getPreviousTokenCandidate($tokens, $index);
+        $index = $candidateIndex;
+        while ($index > 0) {
+            --$index;
 
-        /** @var Token $prevToken */
-        $prevToken = $tokens[$prevIndex];
+            if ($tokens[$index]->equalsAny([';', '{', '}', '='])) {
+                return;
+            }
 
-        if ($prevToken->isGivenKind([
-            CT::T_TYPE_COLON, // `:` is part of a function return type `foo(): X|Y`
-            CT::T_TYPE_ALTERNATION, // `|` is part of a union (chain) `X|Y`
-            CT::T_TYPE_INTERSECTION,
-            T_STATIC, T_VAR, T_PUBLIC, T_PROTECTED, T_PRIVATE, // `var X|Y $a;`, `private X|Y $a` or `public static X|Y $a`
-            CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, // promoted properties
-        ])) {
-            $this->replaceToken($tokens, $index);
+            $blockType = Tokens::detectBlockType($tokens[$index]);
+            if (null !== $blockType && !$blockType['isStart']) {
+                $index = $tokens->findBlockStart($blockType['type'], $index);
 
-            return;
+                continue;
+            }
+
+            if ($tokens[$index]->isGivenKind([
+                CT::T_TYPE_COLON, // `:` is part of a function return type `foo(): X|Y`
+                CT::T_TYPE_ALTERNATION, // `|` is part of a union (chain) `X|Y`
+                CT::T_TYPE_INTERSECTION,
+                T_STATIC, T_VAR, T_PUBLIC, T_PROTECTED, T_PRIVATE, // `var X|Y $a;`, `private X|Y $a` or `public static X|Y $a`
+                CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, // promoted properties
+                T_FN, T_FUNCTION,
+                T_CATCH,
+            ])) {
+                $this->replaceToken($tokens, $candidateIndex);
+
+                return;
+            }
         }
-
-        if (\defined('T_READONLY') && $prevToken->isGivenKind(T_READONLY)) { // @TODO: drop condition when PHP 8.1+ is required
-            $this->replaceToken($tokens, $index);
-
-            return;
-        }
-
-        if (!$prevToken->equalsAny(['(', ','])) {
-            return;
-        }
-
-        $prevPrevTokenIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-
-        if ($tokens[$prevPrevTokenIndex]->isGivenKind(T_CATCH)) {
-            $this->replaceToken($tokens, $index);
-
-            return;
-        }
-
-        $functionKinds = [[T_FUNCTION], [T_FN]];
-        $functionIndex = $tokens->getPrevTokenOfKind($prevIndex, $functionKinds);
-
-        if (null === $functionIndex) {
-            return;
-        }
-
-        $braceOpenIndex = $tokens->getNextTokenOfKind($functionIndex, ['(']);
-        $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $braceOpenIndex);
-
-        if ($braceCloseIndex < $index) {
-            return;
-        }
-
-        $this->replaceToken($tokens, $index);
     }
 
     abstract protected function replaceToken(Tokens $tokens, int $index): void;
-
-    private function getPreviousTokenCandidate(Tokens $tokens, int $index): int
-    {
-        $candidateIndex = $tokens->getTokenNotOfKindsSibling($index, -1, [T_CALLABLE, T_NS_SEPARATOR, T_STRING, CT::T_ARRAY_TYPEHINT, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT]);
-
-        return $tokens[$candidateIndex]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)
-            ? $this->getPreviousTokenCandidate($tokens, $tokens->getPrevTokenOfKind($index, [[T_ATTRIBUTE]]))
-            : $candidateIndex
-        ;
-    }
 }
