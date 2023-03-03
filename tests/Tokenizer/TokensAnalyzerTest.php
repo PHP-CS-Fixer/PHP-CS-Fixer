@@ -1910,6 +1910,44 @@ $b;',
     }
 
     /**
+     * @param array<int, bool> $expected
+     *
+     * @dataProvider provideIsBinaryOperator82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testIsBinaryOperator82(array $expected, string $source): void
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $isBinary) {
+            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+
+            if ($isBinary) {
+                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+            }
+        }
+    }
+
+    public static function provideIsBinaryOperator82Cases(): iterable
+    {
+        yield [
+            [15 => false],
+            '<?php class Dnf { public static I|(P&S11) $f2;}',
+        ];
+
+        yield [
+            [
+                7 => false,
+                19 => false,
+                29 => false,
+            ],
+            '<?php function Foo((A&B)|I $x): (X&Z)|(p\f\G&Y\Z)|z { return foo();}',
+        ];
+    }
+
+    /**
      * @dataProvider provideArrayExceptionsCases
      */
     public function testIsNotArray(string $source, int $tokenIndex): void
