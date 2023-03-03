@@ -702,7 +702,7 @@ class Tokens extends \SplFixedArray
      * @param list<array{0: int, 1?: string}|string|Token> $sequence      an array of token (kinds)
      * @param int                                          $start         start index, defaulting to the start of the file
      * @param null|int                                     $end           end index, defaulting to the end of the file
-     * @param bool|list<bool>                              $caseSensitive global case sensitiveness or a list of booleans, whose keys should match
+     * @param array<bool>|bool                             $caseSensitive global case sensitiveness or a list of booleans, whose keys should match
      *                                                                    the ones used in $sequence. If any is missing, the default case-sensitive
      *                                                                    comparison is used
      *
