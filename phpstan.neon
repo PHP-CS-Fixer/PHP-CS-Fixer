@@ -22,6 +22,7 @@ parameters:
         -
             message: '#Call to static method .+ with .+ will always evaluate to true.$#'
             path: tests
+            count: 24
 
         # baseline, should only shrink
         -
