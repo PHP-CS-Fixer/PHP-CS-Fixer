@@ -10,6 +10,7 @@ parameters:
         - tests
     excludePaths:
         - tests/Fixtures
+    treatPhpDocTypesAsCertain: false
     ignoreErrors:
         - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens)\.$/'
         - '/^Unsafe call to private method PhpCsFixer\\Tests\\[a-zA-Z\\]+::[a-zA-Z]+\(\) through static::\.$/'
@@ -17,6 +18,11 @@ parameters:
 
         # ignore PHPUnit data providers return type as they are not checked against the test methods anyway
         - '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type (array|iterable)\.$#'
+
+        -
+            message: '#Call to static method .+ with .+ will always evaluate to true.$#'
+            path: tests
+            count: 24
 
         # baseline, should only shrink
         -
