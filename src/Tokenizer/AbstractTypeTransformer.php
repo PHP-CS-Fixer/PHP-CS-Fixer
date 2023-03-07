@@ -21,45 +21,47 @@ namespace PhpCsFixer\Tokenizer;
  */
 abstract class AbstractTypeTransformer extends AbstractTransformer
 {
+    private const TYPE_END_TOKENS = [')', [T_CALLABLE], [T_NS_SEPARATOR], [T_STRING], [CT::T_ARRAY_TYPEHINT]];
+
+    private const TYPE_TOKENS = [
+        '|', '&', '(',
+        ...self::TYPE_END_TOKENS,
+        [CT::T_TYPE_ALTERNATION], [CT::T_TYPE_INTERSECTION], // some siblings may already be transformed
+        [T_WHITESPACE], [T_COMMENT], [T_DOC_COMMENT], // technically these can be inside of type tokens array
+    ];
+
+    abstract protected function replaceToken(Tokens $tokens, int $index): void;
+
     /**
      * @param array{0: int, 1: string}|string $originalToken
      */
-    protected function doProcess(Tokens $tokens, int $candidateIndex, $originalToken): void
+    protected function doProcess(Tokens $tokens, int $index, $originalToken): void
     {
-        if (!$tokens[$candidateIndex]->equals($originalToken)) {
+        if (!$tokens[$index]->equals($originalToken)) {
             return;
         }
 
-        $index = $candidateIndex;
-        while ($index > 0) {
-            --$index;
-
-            if ($tokens[$index]->equalsAny([';', '{', '}', '='])) {
-                return;
-            }
-
-            $blockType = Tokens::detectBlockType($tokens[$index]);
-            if (null !== $blockType && !$blockType['isStart']) {
-                $index = $tokens->findBlockStart($blockType['type'], $index);
-
-                continue;
-            }
-
-            if ($tokens[$index]->isGivenKind([
-                CT::T_TYPE_COLON, // `:` is part of a function return type `foo(): X|Y`
-                CT::T_TYPE_ALTERNATION, // `|` is part of a union (chain) `X|Y`
-                CT::T_TYPE_INTERSECTION,
-                T_STATIC, T_VAR, T_PUBLIC, T_PROTECTED, T_PRIVATE, // `var X|Y $a;`, `private X|Y $a` or `public static X|Y $a`
-                CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, // promoted properties
-                T_FN, T_FUNCTION,
-                T_CATCH,
-            ])) {
-                $this->replaceToken($tokens, $candidateIndex);
-
-                return;
-            }
+        if (!$this->isPartOfType($tokens, $index)) {
+            return;
         }
+
+        $this->replaceToken($tokens, $index);
     }
 
-    abstract protected function replaceToken(Tokens $tokens, int $index): void;
+    private function isPartOfType(Tokens $tokens, int $index): bool
+    {
+        // for parameter there will be variable after type
+        $variableIndex = $tokens->getTokenNotOfKindSibling($tokens->getNextMeaningfulToken($index), 1, self::TYPE_TOKENS);
+        if ($tokens[$variableIndex]->isGivenKind(T_VARIABLE)) {
+            return $tokens[$tokens->getPrevMeaningfulToken($variableIndex)]->equalsAny(self::TYPE_END_TOKENS);
+        }
+
+        // return types and non-capturing catches
+        $typeColonIndex = $tokens->getTokenNotOfKindSibling($index, -1, self::TYPE_TOKENS);
+        if ($tokens[$typeColonIndex]->isGivenKind([T_CATCH, CT::T_TYPE_COLON])) {
+            return true;
+        }
+
+        return false;
+    }
 }
