@@ -51,7 +51,7 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
     private function isPartOfType(Tokens $tokens, int $index): bool
     {
         // for parameter there will be variable after type
-        $variableIndex = $tokens->getTokenNotOfKindSibling($tokens->getNextMeaningfulToken($index), 1, self::TYPE_TOKENS);
+        $variableIndex = $tokens->getTokenNotOfKindSibling($index, 1, self::TYPE_TOKENS);
         if ($tokens[$variableIndex]->isGivenKind(T_VARIABLE)) {
             return $tokens[$tokens->getPrevMeaningfulToken($variableIndex)]->equalsAny(self::TYPE_END_TOKENS);
         }
