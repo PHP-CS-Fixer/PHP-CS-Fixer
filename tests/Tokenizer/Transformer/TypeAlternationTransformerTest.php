@@ -455,5 +455,33 @@ class Foo
                 35 => CT::T_TYPE_ALTERNATION,
             ],
         ];
+
+        yield 'bigger set of multiple DNF properties' => [
+            '<?php
+class Dnf
+{
+    public A|(C&D) $a;
+    protected (C&D)|B $b;
+    private (C&D)|(E&F)|(G&H) $c;
+    static (C&D)|Z $d;
+    public /* */ (C&D)|X $e;
+
+    public function foo($a, $b) {
+        return
+            $z|($A&$B)|(A::z&B\A::x)
+            || A::b|($A&$B)
+        ;
+    }
+}
+',
+            [
+                10 => CT::T_TYPE_ALTERNATION,
+                27 => CT::T_TYPE_ALTERNATION,
+                40 => CT::T_TYPE_ALTERNATION,
+                46 => CT::T_TYPE_ALTERNATION,
+                63 => CT::T_TYPE_ALTERNATION,
+                78 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
     }
 }

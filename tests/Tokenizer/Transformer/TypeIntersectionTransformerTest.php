@@ -57,6 +57,7 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
                 $x = ($y&$z);
                 function foo(){}
                 $a = $b&$c;
+                $a &+ $b;
             ',
         ];
 
@@ -363,6 +364,59 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
                 23 => CT::T_TYPE_INTERSECTION,
                 34 => CT::T_TYPE_INTERSECTION,
                 40 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'lambda with lots of DNF parameters and some others' => [
+            '<?php
+$a = function(
+    (X&Y)|C $a,
+    $b = array(1,2),
+    (\X&\Y)|C $c,
+    array $d = [1,2],
+    (\X&\Y)|C $e,
+    $x, $y, $z, P|(H&J) $uu,
+) {};
+
+function foo (array $a = array(66,88, $d = [99,44],array()), $e = [99,44],(C&V)|G|array $f = array()){};
+
+return new static();
+',
+            [
+                10 => CT::T_TYPE_INTERSECTION, // $a
+                34 => CT::T_TYPE_INTERSECTION, // $c
+                60 => CT::T_TYPE_INTERSECTION, // $e
+                83 => CT::T_TYPE_INTERSECTION, // $uu
+                142 => CT::T_TYPE_INTERSECTION, // $f
+            ],
+        ];
+
+        yield 'bigger set of multiple DNF properties' => [
+            '<?php
+class Dnf
+{
+    public A|(C&D) $a;
+    protected (C&D)|B $b;
+    private (C&D)|(E&F)|(G&H) $c;
+    static (C&D)|Z $d;
+    public /* */ (C&D)|X $e;
+
+    public function foo($a, $b) {
+        return
+            $z|($A&$B)|(A::z&B\A::x)
+            || A::b|($A&$B)
+        ;
+    }
+}
+',
+            [
+                13 => CT::T_TYPE_INTERSECTION,
+                24 => CT::T_TYPE_INTERSECTION,
+                37 => CT::T_TYPE_INTERSECTION,
+                43 => CT::T_TYPE_INTERSECTION,
+                49 => CT::T_TYPE_INTERSECTION,
+                60 => CT::T_TYPE_INTERSECTION,
+                75 => CT::T_TYPE_INTERSECTION,
             ],
         ];
     }
