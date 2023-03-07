@@ -910,5 +910,13 @@ var_dump(Foo::CAT->test());',
             '<?php trait Foo { public const Bar = 1; }',
             '<?php trait Foo { const Bar = 1; }',
         ];
+
+        yield [
+            '<?php class Foo {
+                public (A&B)|C|D $x;
+                protected A|(B&C)|D $y;
+                private A|B|(C&D) $z;
+            }',
+        ];
     }
 }
