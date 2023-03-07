@@ -31,7 +31,7 @@ projects. This tool does not only detect them, but also fixes them for you.
 > please, consider supporting the project in any convenient way, for example
 > with code contribution or reviewing existing RPs. To run PHP CS Fixer on yet
 > unsupported versions "at your own risk" - leverage the
-> [PHP_CS_FIXER_IGNORE_ENV](./doc/usage.html#environment-options).
+> [PHP_CS_FIXER_IGNORE_ENV](./doc/usage.rst#environment-options).
 
 ## Documentation
 
