@@ -419,5 +419,20 @@ class Dnf
                 75 => CT::T_TYPE_INTERSECTION,
             ],
         ];
+
+        yield 'arrow function with DNF types' => [
+            '<?php
+                $f1 = fn (): A|(B&C) => new Foo();
+                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();
+            ',
+            [
+                16 => CT::T_TYPE_INTERSECTION,
+                38 => CT::T_TYPE_INTERSECTION,
+                51 => CT::T_TYPE_INTERSECTION,
+                61 => CT::T_TYPE_INTERSECTION,
+                63 => CT::T_TYPE_INTERSECTION,
+                71 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
     }
 }

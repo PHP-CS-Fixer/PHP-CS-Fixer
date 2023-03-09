@@ -1918,11 +1918,12 @@ $b;',
      */
     public function testIsBinaryOperator82(array $expected, string $source): void
     {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        foreach ($expected as $index => $isBinary) {
+        foreach ($tokens as $index => $token) {
+            $isBinary = isset($expected[$index]);
             static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
-
             if ($isBinary) {
                 static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
                 static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
@@ -1933,17 +1934,25 @@ $b;',
     public static function provideIsBinaryOperator82Cases(): iterable
     {
         yield [
-            [15 => false],
+            [],
             '<?php class Dnf { public static I|(P&S11) $f2;}',
         ];
 
         yield [
-            [
-                7 => false,
-                19 => false,
-                29 => false,
-            ],
+            [],
             '<?php function Foo((A&B)|I $x): (X&Z)|(p\f\G&Y\Z)|z { return foo();}',
+        ];
+
+        $particularEndOfFile = 'A|(B&C); }';
+
+        yield sprintf('block "%s" at the end of file that is a type', $particularEndOfFile) => [
+            [],
+            '<?php abstract class A { abstract function foo(): '.$particularEndOfFile,
+        ];
+
+        yield sprintf('block "%s" at the end of file that is not a type', $particularEndOfFile) => [
+            [12 => true, 15 => true],
+            '<?php function foo() { return '.$particularEndOfFile,
         ];
     }
 

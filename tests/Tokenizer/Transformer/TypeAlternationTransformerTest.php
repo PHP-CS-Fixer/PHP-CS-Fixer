@@ -483,5 +483,19 @@ class Dnf
                 78 => CT::T_TYPE_ALTERNATION,
             ],
         ];
+
+        yield 'arrow function with DNF types' => [
+            '<?php
+                $f1 = fn (): A|(B&C) => new Foo();
+                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();
+            ',
+            [
+                13 => CT::T_TYPE_ALTERNATION,
+                41 => CT::T_TYPE_ALTERNATION,
+                48 => CT::T_TYPE_ALTERNATION,
+                66 => CT::T_TYPE_ALTERNATION,
+                68 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
     }
 }
