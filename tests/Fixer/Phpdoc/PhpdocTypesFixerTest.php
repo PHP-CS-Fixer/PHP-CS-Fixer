@@ -255,6 +255,15 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
                     * @param CALLABLE(BOOL, INT, STRING): FLOAT $c
                     */',
         ];
+
+        yield 'array shape with key name being also type name' => [
+            '<?php /**
+                    * @return array{FOO: bool, NULL: null|int, BAR: string|BAZ}
+                    */',
+            '<?php /**
+                    * @return array{FOO: BOOL, NULL: NULL|INT, BAR: STRING|BAZ}
+                    */',
+        ];
     }
 
     public function testWrongConfig(): void
