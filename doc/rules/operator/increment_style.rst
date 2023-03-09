@@ -28,11 +28,11 @@ Example #1
 
    --- Original
    +++ New
-    <?php
-   -$a++;
-   -$b--;
-   +++$a;
-   +--$b;
+     <?php
+   - $a++;
+   - $b--;
+   + ++$a;
+   + --$b;
 
 Example #2
 ~~~~~~~~~~
@@ -43,11 +43,11 @@ With configuration: ``['style' => 'post']``.
 
    --- Original
    +++ New
-    <?php
-   -++$a;
-   ---$b;
-   +$a++;
-   +$b--;
+     <?php
+   - ++$a;
+   - --$b;
+   + $a++;
+   + $b--;
 
 Rule sets
 ---------
