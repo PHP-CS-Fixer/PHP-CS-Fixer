@@ -128,6 +128,10 @@ function Foo(INTEGER $a) {}
                 '<?php function Foo(object $A): void {}',
                 '<?php function Foo(OBJECT $A): VOID {}',
             ],
+            [
+                '<?php return function (callable $c) {};',
+                '<?php return function (CALLABLE $c) {};',
+            ],
         ];
     }
 
