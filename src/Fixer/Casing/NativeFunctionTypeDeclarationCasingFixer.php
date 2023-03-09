@@ -118,7 +118,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_FUNCTION, T_STRING]);
+        return $tokens->isTokenKindFound(T_FUNCTION);
     }
 
     /**
