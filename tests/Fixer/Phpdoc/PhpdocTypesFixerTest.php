@@ -30,138 +30,114 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
+     *
+     * @param array<string, mixed> $configuration
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
+
         $this->doTest($expected, $input);
     }
 
-    public function testWindowsLinebreaks(): void
+    public static function provideFixCases(): iterable
     {
-        $this->doTest(
+        yield 'windows line breaks' => [
             "<?php /**\r\n * @param string|string[] \$bar\r\n *\r\n * @return int[]\r\n */\r\n",
-            "<?php /**\r\n * @param STRING|String[] \$bar\r\n *\r\n * @return inT[]\r\n */\r\n"
-        );
-    }
+            "<?php /**\r\n * @param STRING|String[] \$bar\r\n *\r\n * @return inT[]\r\n */\r\n",
+        ];
 
-    public function testConversion(): void
-    {
-        $expected = <<<'EOF'
-<?php
+        yield 'conversion' => [
+            '<?php
     /**
      * @param boolean|array|Foo $bar
      *
      * @return int|float
      */
 
-EOF;
-
-        $input = <<<'EOF'
-<?php
+',
+            '<?php
     /**
      * @param Boolean|Array|Foo $bar
      *
      * @return inT|Float
      */
 
-EOF;
-        $this->doTest($expected, $input);
-    }
+',
+        ];
 
-    public function testArrayStuff(): void
-    {
-        $expected = <<<'EOF'
-<?php
+        yield 'array stuff' => [
+            '<?php
     /**
      * @param string|string[] $bar
      *
      * @return int[]
      */
 
-EOF;
-
-        $input = <<<'EOF'
-<?php
+',
+            '<?php
     /**
      * @param STRING|String[] $bar
      *
      * @return inT[]
      */
 
-EOF;
-        $this->doTest($expected, $input);
-    }
+',
+        ];
 
-    public function testNestedArrayStuff(): void
-    {
-        $expected = <<<'EOF'
-<?php
+        yield 'nested array stuff' => [
+            '<?php
     /**
      * @return int[][][]
      */
-EOF;
-
-        $input = <<<'EOF'
-<?php
+',
+            '<?php
     /**
      * @return INT[][][]
      */
-EOF;
-        $this->doTest($expected, $input);
-    }
+',
+        ];
 
-    public function testMixedAndVoid(): void
-    {
-        $expected = <<<'EOF'
-<?php
+        yield 'mixed and void' => [
+            '<?php
     /**
      * @param mixed $foo
      *
      * @return void
      */
 
-EOF;
-
-        $input = <<<'EOF'
-<?php
+',
+            '<?php
     /**
      * @param Mixed $foo
      *
      * @return Void
      */
 
-EOF;
-        $this->doTest($expected, $input);
-    }
+',
+        ];
 
-    public function testIterableFix(): void
-    {
-        $expected = <<<'EOF'
-<?php
+        yield 'iterable' => [
+            '<?php
     /**
      * @param iterable $foo
      *
      * @return Itter
      */
 
-EOF;
-
-        $input = <<<'EOF'
-<?php
+',
+            '<?php
     /**
      * @param Iterable $foo
      *
      * @return Itter
      */
 
-EOF;
-        $this->doTest($expected, $input);
-    }
+',
+        ];
 
-    public function testMethodAndPropertyFix(): void
-    {
-        $expected = <<<'EOF'
-<?php
+        yield 'method and property' => [
+            '<?php
 /**
  * @method self foo()
  * @property int $foo
@@ -169,10 +145,8 @@ EOF;
  * @property-write mixed $baz
  */
 
-EOF;
-
-        $input = <<<'EOF'
-<?php
+',
+            '<?php
 /**
  * @method Self foo()
  * @property Int $foo
@@ -180,36 +154,26 @@ EOF;
  * @property-write MIXED $baz
  */
 
-EOF;
+',
+        ];
 
-        $this->doTest($expected, $input);
-    }
-
-    public function testThrows(): void
-    {
-        $expected = <<<'EOF'
-<?php
+        yield 'throws' => [
+            '<?php
 /**
  * @throws static
  */
 
-EOF;
-
-        $input = <<<'EOF'
-<?php
+',
+            '<?php
 /**
  * @throws STATIC
  */
 
-EOF;
+',
+        ];
 
-        $this->doTest($expected, $input);
-    }
-
-    public function testInlineDoc(): void
-    {
-        $expected = <<<'EOF'
-<?php
+        yield 'inline doc' => [
+            '<?php
     /**
      * Does stuff with stuffs.
      *
@@ -219,10 +183,8 @@ EOF;
      * }
      */
 
-EOF;
-
-        $input = <<<'EOF'
-<?php
+',
+            '<?php
     /**
      * Does stuff with stuffs.
      *
@@ -232,41 +194,30 @@ EOF;
      * }
      */
 
-EOF;
+',
+        ];
 
-        $this->doTest($expected, $input);
-    }
-
-    public function testWithConfig(): void
-    {
-        $expected = <<<'EOF'
-<?php
+        yield 'with config' => [
+            '<?php
     /**
      * @param self|array|Foo $bar
      *
      * @return int|float|callback
      */
 
-EOF;
-
-        $input = <<<'EOF'
-<?php
+',
+            '<?php
     /**
      * @param SELF|Array|Foo $bar
      *
      * @return inT|Float|callback
      */
 
-EOF;
+',
+            ['groups' => ['simple', 'meta']],
+        ];
 
-        $this->fixer->configure(['groups' => ['simple', 'meta']]);
-        $this->doTest($expected, $input);
-    }
-
-    public function testGenerics(): void
-    {
-        $this->fixer->configure(['groups' => ['simple', 'meta']]);
-        $this->doTest(
+        yield 'generics' => [
             '<?php
             /**
              * @param array<int, object> $a
@@ -288,12 +239,10 @@ EOF;
              * @param iterable<BOOLBOOLBOOL|INTINTINT|ARRAY_BOOL_INT_STRING_> $thisShouldNotBeChangedNeither
              *
              * @return ARRAY<INT, ARRAY<STRING, ARRAY<INT, DoNotChangeThisAsThisIsAClass>>>
-             */'
-        );
-    }
+             */',
+            ['groups' => ['simple', 'meta']],
+        ];
 
-    public static function provideFixCases(): iterable
-    {
         yield 'callable' => [
             '<?php /**
                     * @param callable() $a
@@ -304,6 +253,15 @@ EOF;
                     * @param CALLABLE() $a
                     * @param Callable(): VOID $b
                     * @param CALLABLE(BOOL, INT, STRING): FLOAT $c
+                    */',
+        ];
+
+        yield 'array shape with key name being also type name' => [
+            '<?php /**
+                    * @return array{FOO: bool, NULL: null|int, BAR: string|BAZ}
+                    */',
+            '<?php /**
+                    * @return array{FOO: BOOL, NULL: NULL|INT, BAR: STRING|BAZ}
                     */',
         ];
     }
