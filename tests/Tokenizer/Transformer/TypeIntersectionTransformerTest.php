@@ -57,6 +57,7 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
                 $x = ($y&$z);
                 function foo(){}
                 $a = $b&$c;
+                $a &+ $b;
             ',
         ];
 
@@ -320,6 +321,117 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
 ',
             [
                 45 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+    }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideProcess82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testProcess82(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    public static function provideProcess82Cases(): iterable
+    {
+        yield 'disjunctive normal form types parameter' => [
+            '<?php function foo((A&B)|D $x): void {}',
+            [
+                7 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'disjunctive normal form types return' => [
+            '<?php function foo(): (A&B)|D {}',
+            [
+                10 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'disjunctive normal form types parameters' => [
+            '<?php function foo(
+                (A&B)|C|D $x,
+                A|(B&C)|D $y,
+                (A&B)|(C&D) $z,
+            ): void {}',
+            [
+                8 => CT::T_TYPE_INTERSECTION,
+                23 => CT::T_TYPE_INTERSECTION,
+                34 => CT::T_TYPE_INTERSECTION,
+                40 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'lambda with lots of DNF parameters and some others' => [
+            '<?php
+$a = function(
+    (X&Y)|C $a,
+    $b = array(1,2),
+    (\X&\Y)|C $c,
+    array $d = [1,2],
+    (\X&\Y)|C $e,
+    $x, $y, $z, P|(H&J) $uu,
+) {};
+
+function foo (array $a = array(66,88, $d = [99,44],array()), $e = [99,44],(C&V)|G|array $f = array()){};
+
+return new static();
+',
+            [
+                10 => CT::T_TYPE_INTERSECTION, // $a
+                34 => CT::T_TYPE_INTERSECTION, // $c
+                60 => CT::T_TYPE_INTERSECTION, // $e
+                83 => CT::T_TYPE_INTERSECTION, // $uu
+                142 => CT::T_TYPE_INTERSECTION, // $f
+            ],
+        ];
+
+        yield 'bigger set of multiple DNF properties' => [
+            '<?php
+class Dnf
+{
+    public A|(C&D) $a;
+    protected (C&D)|B $b;
+    private (C&D)|(E&F)|(G&H) $c;
+    static (C&D)|Z $d;
+    public /* */ (C&D)|X $e;
+
+    public function foo($a, $b) {
+        return
+            $z|($A&$B)|(A::z&B\A::x)
+            || A::b|($A&$B)
+        ;
+    }
+}
+',
+            [
+                13 => CT::T_TYPE_INTERSECTION,
+                24 => CT::T_TYPE_INTERSECTION,
+                37 => CT::T_TYPE_INTERSECTION,
+                43 => CT::T_TYPE_INTERSECTION,
+                49 => CT::T_TYPE_INTERSECTION,
+                60 => CT::T_TYPE_INTERSECTION,
+                75 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'arrow function with DNF types' => [
+            '<?php
+                $f1 = fn (): A|(B&C) => new Foo();
+                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();
+            ',
+            [
+                16 => CT::T_TYPE_INTERSECTION,
+                38 => CT::T_TYPE_INTERSECTION,
+                51 => CT::T_TYPE_INTERSECTION,
+                61 => CT::T_TYPE_INTERSECTION,
+                63 => CT::T_TYPE_INTERSECTION,
+                71 => CT::T_TYPE_INTERSECTION,
             ],
         ];
     }

@@ -411,4 +411,91 @@ class Foo
             ],
         ];
     }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideProcess82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testProcess82(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    public static function provideProcess82Cases(): iterable
+    {
+        yield 'disjunctive normal form types parameter' => [
+            '<?php function foo((A&B)|D $x): void {}',
+            [
+                10 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'disjunctive normal form types return' => [
+            '<?php function foo(): (A&B)|D {}',
+            [
+                13 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'disjunctive normal form types parameters' => [
+            '<?php function foo(
+                (A&B)|C|D $x,
+                A|(B&C)|D $y,
+                A|B|(C&D) $z,
+            ): void {}',
+            [
+                11 => CT::T_TYPE_ALTERNATION,
+                13 => CT::T_TYPE_ALTERNATION,
+                20 => CT::T_TYPE_ALTERNATION,
+                26 => CT::T_TYPE_ALTERNATION,
+                33 => CT::T_TYPE_ALTERNATION,
+                35 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'bigger set of multiple DNF properties' => [
+            '<?php
+class Dnf
+{
+    public A|(C&D) $a;
+    protected (C&D)|B $b;
+    private (C&D)|(E&F)|(G&H) $c;
+    static (C&D)|Z $d;
+    public /* */ (C&D)|X $e;
+
+    public function foo($a, $b) {
+        return
+            $z|($A&$B)|(A::z&B\A::x)
+            || A::b|($A&$B)
+        ;
+    }
+}
+',
+            [
+                10 => CT::T_TYPE_ALTERNATION,
+                27 => CT::T_TYPE_ALTERNATION,
+                40 => CT::T_TYPE_ALTERNATION,
+                46 => CT::T_TYPE_ALTERNATION,
+                63 => CT::T_TYPE_ALTERNATION,
+                78 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'arrow function with DNF types' => [
+            '<?php
+                $f1 = fn (): A|(B&C) => new Foo();
+                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();
+            ',
+            [
+                13 => CT::T_TYPE_ALTERNATION,
+                41 => CT::T_TYPE_ALTERNATION,
+                48 => CT::T_TYPE_ALTERNATION,
+                66 => CT::T_TYPE_ALTERNATION,
+                68 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+    }
 }

@@ -101,6 +101,12 @@ trait WithConstants
     private const THREE = 'three';
 }
 
+// https://wiki.php.net/rfc/dnf_types
+function generateSlug((HasTitle&HasId)|null $post)
+{
+    throw new \Exception('not implemented');
+}
+
 --INPUT--
 <?php
 
@@ -190,4 +196,10 @@ trait      WithConstants      {
     public    const ONE   = 'one';
     protected const TWO   = 'two';
     private   const THREE = 'three';
+}
+
+// https://wiki.php.net/rfc/dnf_types
+function generateSlug((HasTitle&HasId)|null $post)
+{
+    throw new \Exception('not implemented');
 }
