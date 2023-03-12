@@ -68,7 +68,7 @@ return new static();
         ];
 
         yield 'one line function signatures with comments' => [
-            '<?php function Foo1 ((A&B)|C $x1, \C|(A&B) $x2,/**/(A&B)|I $xxx): void {}',
+            '<?php function Foo1 ((A&B)|C $x1, \C|(A&B) $x2,/* No (X&Y) ! */(A&B)|I $xxx): void {}',
             [
                 6 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, // $x1
                 10 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -231,7 +231,7 @@ class Dnf
             ],
         ];
 
-        yield 'constructor promotion' => [
+        yield 'constructor property promotion' => [
             '<?php
 class Dnf
 {
