@@ -94,6 +94,7 @@ final class TransformerTest extends TestCase
             [$transformers['type_colon'], $transformers['type_alternation']],
             [$transformers['array_typehint'], $transformers['type_intersection']],
             [$transformers['type_colon'], $transformers['type_intersection']],
+            [$transformers['type_alternation'], $transformers['disjunctive_normal_form_type_parenthesis']],
             [$transformers['use'], $transformers['type_colon']],
         ];
     }
