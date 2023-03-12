@@ -741,6 +741,43 @@ PHP;
         ];
     }
 
+    /**
+     * @requires PHP 8.2
+     *
+     * @dataProvider provideFindBlockEnd82Cases
+     *
+     * @param Tokens::BLOCK_TYPE_* $type
+     */
+    public function testFindBlockEnd82(int $expectedIndex, string $source, int $type, int $searchIndex): void
+    {
+        static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+    }
+
+    public static function provideFindBlockEnd82Cases(): iterable
+    {
+        yield [
+            11,
+            '<?php function foo(A|(B&C) $x) {}',
+            Tokens::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS,
+            7,
+        ];
+
+        yield [
+            11,
+            '<?php function foo((A&B&C)|D $x) {}',
+            Tokens::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS,
+            5,
+        ];
+        foreach ([7 => 11, 19 => 23, 27 => 35] as $openIndex => $closeIndex) {
+            yield [
+                $closeIndex,
+                '<?php function foo(A|(B&C)|D $x): (A&B)|bool|(C&D&E&F) {}',
+                Tokens::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS,
+                $openIndex,
+            ];
+        }
+    }
+
     public function testFindBlockEndInvalidType(): void
     {
         Tokens::clearCache();

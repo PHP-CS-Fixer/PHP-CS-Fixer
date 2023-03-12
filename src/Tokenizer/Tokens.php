@@ -42,6 +42,7 @@ class Tokens extends \SplFixedArray
     public const BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE = 9;
     public const BLOCK_TYPE_BRACE_CLASS_INSTANTIATION = 10;
     public const BLOCK_TYPE_ATTRIBUTE = 11;
+    public const BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS = 12;
 
     /**
      * Static class cache.
@@ -238,6 +239,10 @@ class Tokens extends \SplFixedArray
             self::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION => [
                 'start' => [CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('],
                 'end' => [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'],
+            ],
+            self::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS => [
+                'start' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, '('],
+                'end' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, ')'],
             ],
         ];
 
