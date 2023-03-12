@@ -758,21 +758,21 @@ PHP;
         yield [
             11,
             '<?php function foo(A|(B&C) $x) {}',
-            Tokens::BLOCK_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS,
+            Tokens::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS,
             7,
         ];
 
         yield [
             11,
             '<?php function foo((A&B&C)|D $x) {}',
-            Tokens::BLOCK_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS,
+            Tokens::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS,
             5,
         ];
         foreach ([7 => 11, 19 => 23, 27 => 35] as $openIndex => $closeIndex) {
             yield [
                 $closeIndex,
                 '<?php function foo(A|(B&C)|D $x): (A&B)|bool|(C&D&E&F) {}',
-                Tokens::BLOCK_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS,
+                Tokens::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS,
                 $openIndex,
             ];
         }
