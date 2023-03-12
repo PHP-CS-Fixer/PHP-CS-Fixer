@@ -3,6 +3,23 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.14.5
+---------------------
+
+* bug: EmptyLoopBodyFixer must keep comments inside (#6800)
+* bug: FunctionsAnalyzer - fix detecting global function (#6792)
+* bug: NativeFunctionTypeDeclarationCasingFixer - do not require T_STRING present in code (#6812)
+* bug: PhpdocTypesFixer - do not change case of array keys (#6810)
+* bug: PhpUnitTestAnnotationFixer - do not break single line @depends (#6824)
+* docs: Add supported PHP versions section to the README (#6768)
+* docs: drop Atom from readme, due to it's sunsetting (#6778)
+* DX: Add composer keywords (#6781)
+* DX: update PHPStan to 1.10.3 (#6805)
+* feature: [PHP8.2] Support for readonly classes (#6745)
+* minor: add custom tokens for Disjunctive Normal Form types parentheses (#6823)
+* minor: PHP8.2 - handle union and intersection types for DNF types (#6804)
+* minor: PHP8.2 - support property in const expressions (#6803)
+
 Changelog for v3.14.4
 ---------------------
 
