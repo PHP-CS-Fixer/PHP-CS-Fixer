@@ -35,32 +35,35 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.1'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
             job-description: 'with migration rules'
             migration-rules: 'yes' # should be checked on the highest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '8.1'
+            php-version: '8.2'
             job-description: 'with calculating code coverage'
             calculate-code-coverage: 'yes'
             phpunit-flags: '--testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml'
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '8.1'
+            php-version: '8.2'
             job-description: 'with deployment'
             execute-deployment: 'yes'
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '8.2'
+            php-version: '8.3'
             PHP_CS_FIXER_IGNORE_ENV: 1
             composer-flags: '--ignore-platform-req=PHP'
 
           - operating-system: 'windows-latest'
-            php-version: '8.1'
+            php-version: '8.2'
             job-description: 'on Windows'
             FAST_LINT_TEST_CASES: 1
 
           - operating-system: 'macos-latest'
-            php-version: '8.1'
+            php-version: '8.2'
             job-description: 'on macOS'
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
