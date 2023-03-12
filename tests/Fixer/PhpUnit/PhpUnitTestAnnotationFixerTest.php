@@ -976,6 +976,18 @@ class Test extends \PhpUnit\FrameWork\TestCase
 }',
                 ['style' => 'annotation'],
             ],
+            'do not touch single line @depends annotation when already correct' => [
+                '<?php class FooTest extends \PHPUnit\Framework\TestCase
+                {
+                    public function testOne() {}
+
+                    /** @depends testOne */
+                    public function testTwo() {}
+
+                    /**    @depends    testTwo    */
+                    public function testThree() {}
+                }',
+            ],
         ];
     }
 

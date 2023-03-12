@@ -380,13 +380,13 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     private function findWhereDependsFunctionNameStarts(array $line): int
     {
-        $counter = \count($line);
+        $index = stripos(implode('', $line), '@depends') + 8;
 
-        do {
-            --$counter;
-        } while (' ' !== $line[$counter]);
+        while (' ' === $line[$index]) {
+            ++$index;
+        }
 
-        return $counter + 1;
+        return $index;
     }
 
     /**
