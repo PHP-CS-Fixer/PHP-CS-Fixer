@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.15.0
+---------------------
+
+* bug: VisibilityRequiredFixer - handle DNF types (#6806)
+* DX: officially enable 8.2 support (#6825)
+
 Changelog for v3.14.5
 ---------------------
 
