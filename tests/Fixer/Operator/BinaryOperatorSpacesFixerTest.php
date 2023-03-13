@@ -3110,6 +3110,7 @@ function test()
                 public function qux(
                     bool|int | string &$reference
                 ) {}
+                public function quux(): static| TypeA {}
             }'
         );
     }
