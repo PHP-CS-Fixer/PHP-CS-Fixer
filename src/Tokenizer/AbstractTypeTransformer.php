@@ -56,12 +56,18 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
             return true;
         }
 
-        // for parameter there will be variable or reference after type
-        $variableIndex = $tokens->getTokenNotOfKindSibling($index, 1, self::TYPE_TOKENS);
-        if (!$tokens[$variableIndex]->isGivenKind(T_VARIABLE)) {
+        // for parameter there will be splat operator or variable after the type ("&" is ambiguous and can be reference or bitwise and)
+        $afterTypeIndex = $tokens->getTokenNotOfKindSibling($index, 1, self::TYPE_TOKENS);
+
+        if ($tokens[$afterTypeIndex]->isGivenKind(T_ELLIPSIS)) {
+            return true;
+        }
+
+        if (!$tokens[$afterTypeIndex]->isGivenKind(T_VARIABLE)) {
             return false;
         }
-        $beforeVariableIndex = $tokens->getPrevMeaningfulToken($variableIndex);
+
+        $beforeVariableIndex = $tokens->getPrevMeaningfulToken($afterTypeIndex);
         if ($tokens[$beforeVariableIndex]->equals('&')) {
             $prevIndex = $tokens->getPrevTokenOfKind($index, ['{', '}', ';', [T_FN], [T_FUNCTION]]);
 

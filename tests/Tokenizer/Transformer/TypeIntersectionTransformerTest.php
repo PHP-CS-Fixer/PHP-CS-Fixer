@@ -368,6 +368,19 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
                 45 => CT::T_TYPE_INTERSECTION,
             ],
         ];
+
+        yield 'splat operator' => [
+            '<?php class Foo {
+                function f1(bool&int ... $x) {}
+                function f2(bool&int $x, TypeA&\Bar\Baz&TypeB ...$y) {}
+            }',
+            [
+                12 => CT::T_TYPE_INTERSECTION,
+                28 => CT::T_TYPE_INTERSECTION,
+                35 => CT::T_TYPE_INTERSECTION,
+                40 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
     }
 
     /**
