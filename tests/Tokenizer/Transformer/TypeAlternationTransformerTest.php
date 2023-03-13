@@ -393,8 +393,8 @@ class Foo
             [
                 19 => CT::T_TYPE_ALTERNATION,
                 21 => CT::T_TYPE_ALTERNATION,
-                89 => CT::T_TYPE_ALTERNATION,
                 91 => CT::T_TYPE_ALTERNATION,
+                93 => CT::T_TYPE_ALTERNATION,
             ],
             '<?php
                 f(FOO|BAR|BAZ&$x);
