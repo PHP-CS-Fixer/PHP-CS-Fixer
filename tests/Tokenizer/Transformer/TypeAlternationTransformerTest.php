@@ -89,19 +89,6 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
                 ',
             ],
         ];
-
-        yield 'splat operator' => [
-            '<?php class Foo {
-                function f1(bool|int ... $x) {}
-                function f2(bool|int $x, TypeA|\Bar\Baz|TypeB ...$y) {}
-            }',
-            [
-                12 => CT::T_TYPE_ALTERNATION,
-                28 => CT::T_TYPE_ALTERNATION,
-                35 => CT::T_TYPE_ALTERNATION,
-                40 => CT::T_TYPE_ALTERNATION,
-            ],
-        ];
     }
 
     /**
@@ -378,6 +365,19 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
                 29 => CT::T_TYPE_ALTERNATION,
                 31 => CT::T_TYPE_ALTERNATION,
                 45 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'splat operator' => [
+            '<?php class Foo {
+                function f1(bool|int ... $x) {}
+                function f2(bool|int $x, TypeA|\Bar\Baz|TypeB ...$y) {}
+            }',
+            [
+                12 => CT::T_TYPE_ALTERNATION,
+                28 => CT::T_TYPE_ALTERNATION,
+                35 => CT::T_TYPE_ALTERNATION,
+                40 => CT::T_TYPE_ALTERNATION,
             ],
         ];
     }

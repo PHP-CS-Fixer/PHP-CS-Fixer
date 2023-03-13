@@ -68,7 +68,7 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
         }
 
         $beforeVariableIndex = $tokens->getPrevMeaningfulToken($afterTypeIndex);
-        if ($tokens[$beforeVariableIndex]->equalsAny(['&'])) {
+        if ($tokens[$beforeVariableIndex]->equals('&')) {
             $prevIndex = $tokens->getPrevTokenOfKind($index, ['{', '}', ';', [T_FN], [T_FUNCTION]]);
 
             return null !== $prevIndex && $tokens[$prevIndex]->isGivenKind([T_FN, T_FUNCTION]);
