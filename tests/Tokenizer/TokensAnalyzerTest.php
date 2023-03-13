@@ -1878,6 +1878,11 @@ $b;',
             [6 => false],
             '<?php function foo(callable|int $x) {}',
         ];
+
+        yield [
+            [6 => false],
+            '<?php function foo(bool|int &$x) {}',
+        ];
     }
 
     /**

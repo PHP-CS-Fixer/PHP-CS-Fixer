@@ -3107,6 +3107,9 @@ function test()
                     callable|array $a,
                     array|callable $b,
                 ) {}
+                public function qux(
+                    bool|int | string &$reference
+                ) {}
             }'
         );
     }

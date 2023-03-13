@@ -323,6 +323,25 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
                 45 => CT::T_TYPE_INTERSECTION,
             ],
         ];
+
+        yield 'parameters by reference' => [
+            '<?php
+                f(FOO|BAR|BAZ&$x);
+                function f1(FOO|BAR|BAZ&$x) {}
+                function f2(FOO&BAR&BAZ&$x) {} // Intersection found
+                f(FOO&BAR|BAZ&$x);
+                f(FOO|BAR&BAZ&$x);
+                fn(FOO&BAR&BAZ&$x) => 0; // Intersection found
+                fn(FOO|BAR|BAZ&$x) => 0;
+                f(FOO&BAR&BAZ&$x);
+            ',
+            [
+                35 => CT::T_TYPE_INTERSECTION,
+                37 => CT::T_TYPE_INTERSECTION,
+                75 => CT::T_TYPE_INTERSECTION,
+                77 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
     }
 
     /**
