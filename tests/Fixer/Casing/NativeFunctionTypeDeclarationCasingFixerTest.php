@@ -132,6 +132,10 @@ function Foo(INTEGER $a) {}
                 '<?php return function (callable $c) {};',
                 '<?php return function (CALLABLE $c) {};',
             ],
+            [
+                '<?php return fn (callable $c): int => 1;',
+                '<?php return fn (CALLABLE $c): INT => 1;',
+            ],
         ];
     }
 
@@ -162,6 +166,11 @@ function Foo(INTEGER $a) {}
             '<?php class T { public function Foo(Mixed $A): MIXED {}}',
         ];
 
+        yield 'mixed in arrow function' => [
+            '<?php return fn (mixed $c): mixed => 1;',
+            '<?php return fn (MiXeD $c): MIXED => 1;',
+        ];
+
         yield [
             '<?php function foo(int|bool $x) {}',
             '<?php function foo(INT|BOOL $x) {}',
@@ -185,6 +194,11 @@ function Foo(INTEGER $a) {}
         yield 'return type string|null' => [
             '<?php function foo(): string|null {}',
             '<?php function foo(): string|NULL {}',
+        ];
+
+        yield 'union types in arrow function' => [
+            '<?php return fn (string|null $c): int|null => 1;',
+            '<?php return fn (string|NULL $c): INT|NULL => 1;',
         ];
     }
 
@@ -218,6 +232,11 @@ function Foo(INTEGER $a) {}
 
     public static function provideFix82Cases(): iterable
     {
+        yield 'disjunctive normal form types in arrow function' => [
+            '<?php return fn ((A&B)|C|null $c): (X&Y)|Z|null => 1;',
+            '<?php return fn ((A&B)|C|Null $c): (X&Y)|Z|NULL => 1;',
+        ];
+
         foreach (['true', 'false', 'null'] as $type) {
             yield sprintf('standalone type `%s` in class method', $type) => [
                 sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', $type),
@@ -232,6 +251,11 @@ function Foo(INTEGER $a) {}
             yield sprintf('standalone type `%s` in closure', $type) => [
                 sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', $type),
                 sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', strtoupper($type)),
+            ];
+
+            yield sprintf('standalone type `%s` in arrow function', $type) => [
+                sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', $type),
+                sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', strtoupper($type)),
             ];
         }
     }
