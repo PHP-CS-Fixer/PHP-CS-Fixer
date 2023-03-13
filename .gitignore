@@ -10,3 +10,5 @@
 /php-cs-fixer.phar.asc
 /phpunit.xml
 /vendor/
+.env
+xdebug.log

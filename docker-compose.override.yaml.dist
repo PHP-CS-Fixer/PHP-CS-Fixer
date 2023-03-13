@@ -11,7 +11,13 @@ services:
       # Required for Docker Linux until natively supported.
       # See https://github.com/docker/for-linux/issues/264
       - 'host.docker.internal: 172.17.0.1'
+    environment:
+      # Switch to 'debug' when you want to enable XDebug
+      XDEBUG_MODE: off
+      XDEBUG_CONFIG: 'idekey=PHPSTORM client_host=host.docker.internal'
   php-8.0:
     <<: *php
   php-8.1:
+    <<: *php
+  php-8.2:
     <<: *php
