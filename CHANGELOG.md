@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.15.1
+---------------------
+
+* bug: BinaryOperatorSpacesFixer - fix for static in type (#6835)
+* bug: BinaryOperatorSpacesFixer - fix parameters with union types passed by reference (#6826)
+* bug: NoUnusedImportsFixer - fix for splat operator (#6836)
+* DX: fix CI (#6837)
+* feature: Support for type casing in arrow functions (#6831)
+* minor: fix CI on PHP 8.3 (#6827)
+
 Changelog for v3.15.0
 ---------------------
 
