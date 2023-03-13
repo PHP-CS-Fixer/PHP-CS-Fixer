@@ -655,7 +655,7 @@ else?><?php echo 5;',
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
 
-        $method = new \ReflectionMethod($this->fixer, 'getPreviousBlock');
+        $method = new \ReflectionMethod(get_parent_class($this->fixer), 'getPreviousBlock');
         $method->setAccessible(true);
 
         $result = $method->invoke($this->fixer, $tokens, $index);
