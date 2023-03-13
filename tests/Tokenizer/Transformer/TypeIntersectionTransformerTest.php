@@ -342,6 +342,32 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
                 77 => CT::T_TYPE_INTERSECTION,
             ],
         ];
+
+        yield 'self as type' => [
+            '<?php class Foo {
+                function f1(bool&self&int $x): void {}
+                function f2(): self&\stdClass {}
+            }',
+            [
+                12 => CT::T_TYPE_INTERSECTION,
+                14 => CT::T_TYPE_INTERSECTION,
+                34 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'static as type' => [
+            '<?php class Foo {
+                function f1(): static&TypeA {}
+                function f2(): TypeA&static&TypeB {}
+                function f3(): TypeA&static {}
+            }',
+            [
+                15 => CT::T_TYPE_INTERSECTION,
+                29 => CT::T_TYPE_INTERSECTION,
+                31 => CT::T_TYPE_INTERSECTION,
+                45 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
     }
 
     /**
