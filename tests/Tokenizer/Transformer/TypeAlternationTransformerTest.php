@@ -398,12 +398,12 @@ class Foo
             ],
             '<?php
                 f(FOO|BAR|BAZ&$x);
-                function f1(FOO|BAR|BAZ&$x) {}
+                function f1(FOO|BAR|BAZ&$x) {} // Alternation found
                 function f2(FOO&BAR&BAZ&$x) {}
                 f(FOO&BAR|BAZ&$x);
                 f(FOO|BAR&BAZ&$x);
                 fn(FOO&BAR&BAZ&$x) => 0;
-                fn(FOO|BAR|BAZ&$x) => 0;
+                fn(FOO|BAR|BAZ&$x) => 0; // Alternation found
                 f(FOO&BAR&BAZ&$x);
             ',
         ];
