@@ -50,18 +50,24 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
 
     private function isPartOfType(Tokens $tokens, int $index): bool
     {
-        // for parameter there will be variable after type
-        $variableIndex = $tokens->getTokenNotOfKindSibling($index, 1, self::TYPE_TOKENS);
-        if ($tokens[$variableIndex]->isGivenKind(T_VARIABLE)) {
-            return $tokens[$tokens->getPrevMeaningfulToken($variableIndex)]->equalsAny(self::TYPE_END_TOKENS);
-        }
-
         // return types and non-capturing catches
         $typeColonIndex = $tokens->getTokenNotOfKindSibling($index, -1, self::TYPE_TOKENS);
         if ($tokens[$typeColonIndex]->isGivenKind([T_CATCH, CT::T_TYPE_COLON])) {
             return true;
         }
 
-        return false;
+        // for parameter there will be variable or reference after type
+        $variableIndex = $tokens->getTokenNotOfKindSibling($index, 1, self::TYPE_TOKENS);
+        if (!$tokens[$variableIndex]->isGivenKind(T_VARIABLE)) {
+            return false;
+        }
+        $beforeVariableIndex = $tokens->getPrevMeaningfulToken($variableIndex);
+        if ($tokens[$beforeVariableIndex]->equals('&')) {
+            $prevIndex = $tokens->getPrevTokenOfKind($index, ['{', '}', ';', [T_FN], [T_FUNCTION]]);
+
+            return null !== $prevIndex && $tokens[$prevIndex]->isGivenKind([T_FN, T_FUNCTION]);
+        }
+
+        return $tokens[$beforeVariableIndex]->equalsAny(self::TYPE_END_TOKENS);
     }
 }
