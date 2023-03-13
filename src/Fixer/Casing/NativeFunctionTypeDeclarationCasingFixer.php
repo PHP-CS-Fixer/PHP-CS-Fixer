@@ -127,7 +127,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if ($tokens[$index]->isGivenKind([T_FUNCTION, T_FN])) {
                 $this->fixFunctionReturnType($tokens, $index);
                 $this->fixFunctionArgumentTypes($tokens, $index);
             }
