@@ -28,7 +28,7 @@ Symfony projects for instance).
 * If you are adding functionality or fixing a bug - add a test! Prefer adding new test cases over modifying existing ones.
 * Make sure there is no wrong file permissions in the repository: `./dev-tools/check_file_permissions.sh`.
 * Make sure there is no trailing spaces in the code: `./dev-tools/check_trailing_spaces.sh`.
-* Update documentation: `php dev-tools/doc.php`. This requires the highest version of PHP supported by PHP CS Fixer. If it is not installed on your system, you can run it in a Docker container instead: `docker run -it --rm --user="$(id -u):$(id -g)" -w="/app" --volume="$(pwd):/app" php:7.4-cli php dev-tools/doc.php`.
+* Update documentation: `php dev-tools/doc.php`. This requires the highest version of PHP supported by PHP CS Fixer. If it is not installed on your system, you can run it in a Docker container instead: `docker-compose run php-8.2 php dev-tools/doc.php`.
 * Install dev tools: `dev-tools/install.sh`
 * Run static analysis using PHPStan: `php -d memory_limit=256M dev-tools/vendor/bin/phpstan analyse`
 * Check if tests pass: `vendor/bin/phpunit`.
