@@ -1515,5 +1515,27 @@ const D = new Foo7(1,2);
                 }
             ',
         ];
+
+        yield [
+            '<?php
+                use Foo\Class1;
+                use Foo\Class2;
+                class C
+                {
+                   public function t(Class1 | Class2 $fields) {}
+                }
+            ',
+        ];
+
+        yield [
+            '<?php
+                use Foo\Class1;
+                use Foo\Class2;
+                class C
+                {
+                   public function t(Class1 | Class2 ...$fields) {}
+                }
+            ',
+        ];
     }
 }
