@@ -3,6 +3,10 @@ FROM php:8.1-cli-alpine3.16
 ARG DOCKER_USER_ID
 ARG DOCKER_GROUP_ID
 
+# https://blog.codito.dev/2022/11/composer-binary-only-docker-images/
+# https://github.com/composer/docker/pull/250
+COPY --from=composer/composer:2-bin /composer /usr/local/bin/composer
+
 RUN if ! getent group "${DOCKER_GROUP_ID}" > /dev/null; \
     then addgroup -S -g "${DOCKER_GROUP_ID}" devs; \
   fi \
@@ -15,10 +19,6 @@ RUN if ! getent group "${DOCKER_GROUP_ID}" > /dev/null; \
   && sync \
   && install-php-extensions \
     xdebug-3.1.2 \
-  # composer
-  && curl --output composer-setup.php https://getcomposer.org/installer \
-  && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-  && rm composer-setup.php \
   # xdebug command
   && curl --location --output /usr/local/bin/xdebug https://github.com/julienfalque/xdebug/releases/download/v2.0.0/xdebug \
   && chmod +x /usr/local/bin/xdebug
