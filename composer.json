@@ -81,8 +81,6 @@
     },
     "scripts": {
         "cs:check": "php php-cs-fixer fix --dry-run",
-        "cs:diff": "git diff HEAD --name-only --diff-filter=ACMR -- '*.php' | xargs -r php php-cs-fixer fix --dry-run --diff",
-        "cs:diff-fix": "git diff HEAD --name-only --diff-filter=ACMR -- '*.php' | xargs -r php php-cs-fixer fix",
         "cs:fix": "php php-cs-fixer fix",
         "dev-tools:check": [
             "./dev-tools/check_file_permissions.sh",
