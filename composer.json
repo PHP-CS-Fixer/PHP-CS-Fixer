@@ -95,12 +95,14 @@
         "qa": "@quality-assurance",
         "quality-assurance": [
             "Composer\\Config::disableProcessTimeout",
-            "@cs:check",
             "@sa",
             "@test"
         ],
         "sa": "@static-analysis",
-        "static-analysis": "@phpstan",
+        "static-analysis": [
+            "@phpstan",
+            "@cs:check"
+        ],
         "test": "@test:all",
         "test:all": [
             "Composer\\Config::disableProcessTimeout",
