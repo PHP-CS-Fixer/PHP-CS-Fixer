@@ -78,5 +78,59 @@
             "ergebnis/composer-normalize": true
         },
         "sort-packages": true
+    },
+    "scripts": {
+        "cs:check": "php php-cs-fixer fix --dry-run",
+        "cs:diff": "git diff HEAD --name-only --diff-filter=ACMR -- '*.php' | xargs -r php php-cs-fixer fix --dry-run --diff",
+        "cs:diff-fix": "git diff HEAD --name-only --diff-filter=ACMR -- '*.php' | xargs -r php php-cs-fixer fix",
+        "cs:fix": "php php-cs-fixer fix",
+        "dev-tools:check": [
+            "./dev-tools/check_file_permissions.sh",
+            "./dev-tools/check_trailing_spaces.sh"
+        ],
+        "dev-tools:docs": "php dev-tools/doc.php",
+        "dev-tools:install": "composer -d dev-tools install",
+        "mess-detector": "php dev-tools/vendor/bin/phpmd . ansi phpmd.xml",
+        "phpstan": "php -d memory_limit=256M dev-tools/vendor/bin/phpstan analyse",
+        "qa": "@quality-assurance",
+        "quality-assurance": [
+            "Composer\\Config::disableProcessTimeout",
+            "@cs:check",
+            "@sa",
+            "@test"
+        ],
+        "sa": "@static-analysis",
+        "static-analysis": "@phpstan",
+        "test": "@test:all",
+        "test:all": [
+            "Composer\\Config::disableProcessTimeout",
+            "phpunit --testsuite all"
+        ],
+        "test:branch": "git diff master... --name-only --diff-filter=ACMR -- '*Test.php' | xargs -r phpunit",
+        "test:coverage": [
+            "Composer\\Config::disableProcessTimeout",
+            "phpunit --testsuite coverage"
+        ],
+        "test:diff": "git diff HEAD --name-only --diff-filter=ACMR -- '*Test.php' | xargs -r phpunit"
+    },
+    "scripts-descriptions": {
+        "cs:check": "Check coding standards",
+        "cs:diff": "Check coding standards in modified files",
+        "cs:diff-fix": "Fix coding standards in modified files",
+        "cs:fix": "Fix coding standards",
+        "dev-tools:check": "Check DEV environment's requirements",
+        "dev-tools:docs": "Regenerate docs",
+        "dev-tools:install": "Install DEV tools",
+        "mess-detector": "Analyse code with Mess Detector",
+        "phpstan": "Run PHPStan analysis",
+        "qa": "Run QA suite",
+        "quality-assurance": "Run QA suite",
+        "sa": "Run static analysis",
+        "static-analysis": "Run static analysis",
+        "test": "Run tests",
+        "test:all": "Run all tests",
+        "test:branch": "Run tests modified in current branch (requires updated master branch)",
+        "test:coverage": "Run tool-related tests",
+        "test:diff": "Run modified tests"
     }
 }
