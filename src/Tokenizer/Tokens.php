@@ -27,6 +27,8 @@ use PhpCsFixer\Preg;
  *
  * @extends \SplFixedArray<Token>
  *
+ * @method Token offsetGet($offset)
+ *
  * @final
  */
 class Tokens extends \SplFixedArray
