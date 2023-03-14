@@ -80,7 +80,7 @@
         "sort-packages": true
     },
     "scripts": {
-        "cs:check": "php php-cs-fixer fix --dry-run",
+        "cs:check": "php php-cs-fixer fix --dry-run --diff",
         "cs:fix": "php php-cs-fixer fix",
         "dev-tools:check": [
             "./dev-tools/check_file_permissions.sh",
