@@ -453,8 +453,7 @@ class Foo {
 
         return $tokens[$colonIndex]->isGivenKind(CT::T_TYPE_COLON)
             ? $this->parseTypeHint($tokens, $tokens->getNextMeaningfulToken($colonIndex))
-            : self::NO_TYPE_INFO
-        ;
+            : self::NO_TYPE_INFO;
     }
 
     /**

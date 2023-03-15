@@ -286,8 +286,7 @@ while ($y) { continue (2); }
             || $this->isWrappedFnBody($tokens, $beforeOpenIndex, $afterCloseIndex)
             || $this->isWrappedForElement($tokens, $beforeOpenIndex, $afterCloseIndex)
             || $this->isWrappedLanguageConstructArgument($tokens, $beforeOpenIndex, $afterCloseIndex)
-            || $this->isWrappedSequenceElement($tokens, $beforeOpenIndex, $afterCloseIndex)
-        ;
+            || $this->isWrappedSequenceElement($tokens, $beforeOpenIndex, $afterCloseIndex);
     }
 
     private function isExitStatement(Tokens $tokens, int $beforeOpenIndex): bool
@@ -351,8 +350,7 @@ while ($y) { continue (2); }
             || $this->isSingleStatement($tokens, $beforeOpenIndex, $afterCloseIndex)
             || $this->isWrappedFnBody($tokens, $beforeOpenIndex, $afterCloseIndex)
             || $this->isWrappedForElement($tokens, $beforeOpenIndex, $afterCloseIndex)
-            || $this->isWrappedSequenceElement($tokens, $beforeOpenIndex, $afterCloseIndex)
-        ;
+            || $this->isWrappedSequenceElement($tokens, $beforeOpenIndex, $afterCloseIndex);
     }
 
     private function isWrappedPartOfOperation(Tokens $tokens, int $beforeOpenIndex, int $openIndex, int $closeIndex, int $afterCloseIndex): bool
@@ -419,8 +417,7 @@ while ($y) { continue (2); }
 
         return
             ($beforeIsStatementOpen && $afterIsBinaryOperation) // `<?php (X) +`
-            || ($beforeIsBinaryOperation && $afterIsStatementEnd) // `+ (X);`
-        ;
+            || ($beforeIsBinaryOperation && $afterIsStatementEnd); // `+ (X);`
     }
 
     // bounded `print|yield|yield from|require|require_once|include|include_once (X)`
@@ -473,8 +470,7 @@ while ($y) { continue (2); }
         return
             ($startIsComma && null !== $blockTypeEnd) // `,(X)]`
             || ($endIsComma && null !== $blockTypeStart) // `[(X),`
-            || (null !== $blockTypeEnd && null !== $blockTypeStart) // any type of `{(X)}`, `[(X)]` and `((X))`
-        ;
+            || (null !== $blockTypeEnd && null !== $blockTypeStart); // any type of `{(X)}`, `[(X)]` and `((X))`
     }
 
     // any of `for( (X); ;(X)) ;` note that the middle element is covered as 'single statement' as it is `; (X) ;`
@@ -700,14 +696,12 @@ while ($y) { continue (2); }
             !$this->isAccess($tokens, $afterCloseIndex)
             && !$tokens[$afterCloseIndex]->equalsAny([';', ',', [T_CLOSE_TAG]])
             && null === $this->getBlock($tokens, $afterCloseIndex, false)
-            && !($tokens[$afterCloseIndex]->equalsAny([':', ';']) && $tokens[$beforeOpenIndex]->isGivenKind(T_CASE))
-        ;
+            && !($tokens[$afterCloseIndex]->equalsAny([':', ';']) && $tokens[$beforeOpenIndex]->isGivenKind(T_CASE));
 
         $needsSpaceBefore =
             !$this->isPreUnaryOperation($tokens, $beforeOpenIndex)
             && !$tokens[$beforeOpenIndex]->equalsAny(['}', [T_EXIT], [T_OPEN_TAG]])
-            && null === $this->getBlock($tokens, $beforeOpenIndex, true)
-        ;
+            && null === $this->getBlock($tokens, $beforeOpenIndex, true);
 
         $this->removeBrace($tokens, $closeIndex, $needsSpaceAfter);
         $this->removeBrace($tokens, $openIndex, $needsSpaceBefore);

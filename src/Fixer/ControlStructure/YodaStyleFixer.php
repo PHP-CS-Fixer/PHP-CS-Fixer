@@ -389,8 +389,7 @@ return $foo === count($bar);
 
         return ($yoda && !$leftSideIsVariable) || (!$yoda && !$rightSideIsVariable)
             ? null
-            : ['left' => $left, 'right' => $right]
-        ;
+            : ['left' => $left, 'right' => $right];
     }
 
     /**

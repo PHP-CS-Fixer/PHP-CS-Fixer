@@ -185,8 +185,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         // If the function doesn't have test in its name, and no doc block, it is not a test
         return
             $this->isPHPDoc($tokens, $docBlockIndex)
-            && str_contains($tokens[$docBlockIndex]->getContent(), '@test')
-        ;
+            && str_contains($tokens[$docBlockIndex]->getContent(), '@test');
     }
 
     private function isMethod(Tokens $tokens, int $index): bool

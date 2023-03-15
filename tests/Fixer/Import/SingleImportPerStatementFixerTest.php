@@ -277,16 +277,14 @@ use G\{H,I/*1*/,/*2*/};
         $expected = '<?php
 use Space\Models\TestModelA;
 use Space\Models\TestModelB;
-use Space\Models\TestModel;'
-        ;
+use Space\Models\TestModel;';
 
         $input = '<?php
 use Space\Models\ {
     TestModelA,
     TestModelB,
     TestModel,
-};'
-        ;
+};';
 
         $this->doTest($expected, $input);
 

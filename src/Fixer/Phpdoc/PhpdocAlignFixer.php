@@ -311,8 +311,7 @@ EOF;
                 $line =
                     $item['indent']
                     .' * @'
-                    .$item['tag']
-                ;
+                    .$item['tag'];
 
                 if ($hasStatic) {
                     $line .=
@@ -320,8 +319,7 @@ EOF;
                             $tagMax - \strlen($item['tag']) + 1,
                             $item['static'] ? 1 : 0
                         )
-                        .($item['static'] ?: $this->getIndent(6 /* \strlen('static') */, 0))
-                    ;
+                        .($item['static'] ?: $this->getIndent(6 /* \strlen('static') */, 0));
                     $hintVerticalAlignIndent = 1;
                 } else {
                     $hintVerticalAlignIndent = $tagMax - \strlen($item['tag']) + 1;
@@ -332,8 +330,7 @@ EOF;
                         $hintVerticalAlignIndent,
                         $item['hint'] ? 1 : 0
                     )
-                    .$item['hint']
-                ;
+                    .$item['hint'];
 
                 if (!empty($item['var'])) {
                     $line .=
@@ -343,8 +340,7 @@ EOF;
                             !empty($item['desc'])
                             ? $this->getIndent($varMax - \strlen($item['var']) + 1).$item['desc'].$lineEnding
                             : $lineEnding
-                        )
-                    ;
+                        );
                 } elseif (!empty($item['desc'])) {
                     $line .= $this->getIndent($hintMax - \strlen($item['hint']) + 1).$item['desc'].$lineEnding;
                 } else {

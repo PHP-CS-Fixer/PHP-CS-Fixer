@@ -133,8 +133,7 @@ class Sample
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
             $expectedKinds = 'property' === $element['type']
                 ? $expectedKindsPropertyKinds
-                : $expectedKindsGeneric
-            ;
+                : $expectedKindsGeneric;
 
             while ($tokens[$prevIndex]->isGivenKind($expectedKinds)) {
                 if ($tokens[$prevIndex]->isGivenKind([T_ABSTRACT, T_FINAL])) {

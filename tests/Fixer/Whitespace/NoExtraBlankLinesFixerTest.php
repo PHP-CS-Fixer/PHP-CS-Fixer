@@ -1218,8 +1218,7 @@ enum Foo
     case CASE_1;
 
     %s
-}'
-        ;
+}';
 
         $enumAttributes = [
             'case CASE_2;',

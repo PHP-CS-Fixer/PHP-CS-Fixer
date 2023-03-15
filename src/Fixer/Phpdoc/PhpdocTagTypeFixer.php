@@ -202,8 +202,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
     {
         return
             Preg::match('/(^|\R)\h*[^@\s]\N*/', $this->cleanComment($parts[$index - 1]))
-            || Preg::match('/^.*?\R\s*[^@\s]/', $this->cleanComment($parts[$index + 1]))
-        ;
+            || Preg::match('/^.*?\R\s*[^@\s]/', $this->cleanComment($parts[$index + 1]));
     }
 
     private function cleanComment(string $comment): string
