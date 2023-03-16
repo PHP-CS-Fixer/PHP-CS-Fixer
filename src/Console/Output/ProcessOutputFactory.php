@@ -27,11 +27,7 @@ final class ProcessOutputFactory
                 return new NullOutput();
 
             case ProcessOutputInterface::OUTPUT_TYPE_DOTS:
-                return new ProcessOutput(
-                    $context->getOutput(),
-                    $context->getTerminalWidth(),
-                    $context->getFilesCount()
-                );
+                return new ProcessOutput($context);
 
             default:
                 throw new \RuntimeException(
