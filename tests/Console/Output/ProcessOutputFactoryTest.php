@@ -16,7 +16,7 @@ namespace PhpCsFixer\Tests\Console\Output;
 
 use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Console\Output\OutputContext;
-use PhpCsFixer\Console\Output\ProcessOutput;
+use PhpCsFixer\Console\Output\DotsOutput;
 use PhpCsFixer\Console\Output\ProcessOutputFactory;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\NullOutput as SymfonyNullOutput;
@@ -46,7 +46,7 @@ final class ProcessOutputFactoryTest extends TestCase
 
         yield 'none' => ['none', $context, NullOutput::class];
 
-        yield 'dots' => ['dots', $context, ProcessOutput::class];
+        yield 'dots' => ['dots', $context, DotsOutput::class];
 
         yield 'dots with null output' => ['dots', $nullContext, NullOutput::class];
 

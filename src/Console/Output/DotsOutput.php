@@ -18,11 +18,11 @@ use PhpCsFixer\FixerFileProcessedEvent;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Output writer to show the process of a FixCommand.
+ * Output writer to show the process of a FixCommand using dots and meaningful letters.
  *
  * @internal
  */
-final class ProcessOutput implements ProcessOutputInterface
+final class DotsOutput implements ProcessOutputInterface
 {
     /**
      * File statuses map.

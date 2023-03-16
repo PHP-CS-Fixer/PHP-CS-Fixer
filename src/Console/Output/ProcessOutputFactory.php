@@ -27,7 +27,7 @@ final class ProcessOutputFactory
                 return new NullOutput();
 
             case ProcessOutputInterface::OUTPUT_TYPE_DOTS:
-                return new ProcessOutput($context);
+                return new DotsOutput($context);
 
             default:
                 throw new \RuntimeException(

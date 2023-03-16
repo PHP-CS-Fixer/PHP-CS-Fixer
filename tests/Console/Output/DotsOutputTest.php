@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Console\Output;
 
 use PhpCsFixer\Console\Output\OutputContext;
-use PhpCsFixer\Console\Output\ProcessOutput;
+use PhpCsFixer\Console\Output\DotsOutput;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -23,16 +23,16 @@ use Symfony\Component\Console\Output\BufferedOutput;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Output\ProcessOutput
+ * @covers \PhpCsFixer\Console\Output\DotsOutput
  */
-final class ProcessOutputTest extends TestCase
+final class DotsOutputTest extends TestCase
 {
     /**
      * @param list<array{0: FixerFileProcessedEvent::STATUS_*, 1?: int}> $statuses
      *
      * @dataProvider provideProcessProgressOutputCases
      */
-    public function testProcessProgressOutput(array $statuses, string $expectedOutput, int $width): void
+    public function testDotsProgressOutput(array $statuses, string $expectedOutput, int $width): void
     {
         $nbFiles = 0;
         $this->foreachStatus($statuses, static function () use (&$nbFiles): void {
@@ -41,7 +41,7 @@ final class ProcessOutputTest extends TestCase
 
         $output = new BufferedOutput();
 
-        $processOutput = new ProcessOutput(new OutputContext($output, $width, $nbFiles));
+        $processOutput = new DotsOutput(new OutputContext($output, $width, $nbFiles));
 
         $this->foreachStatus($statuses, static function (int $status) use ($processOutput): void {
             $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
@@ -179,18 +179,18 @@ final class ProcessOutputTest extends TestCase
     public function testSleep(): void
     {
         $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot serialize PhpCsFixer\Console\Output\ProcessOutput');
+        $this->expectExceptionMessage('Cannot serialize PhpCsFixer\Console\Output\DotsOutput');
 
-        $processOutput = new ProcessOutput(new OutputContext(new BufferedOutput(), 1, 1));
+        $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
         $processOutput->__sleep();
     }
 
     public function testWakeup(): void
     {
         $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\Console\Output\ProcessOutput');
+        $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\Console\Output\DotsOutput');
 
-        $processOutput = new ProcessOutput(new OutputContext(new BufferedOutput(), 1, 1));
+        $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
         $processOutput->__wakeup();
     }
 
