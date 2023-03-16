@@ -12,8 +12,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Console\Output;
+namespace PhpCsFixer\Console\Output\Progress;
 
+use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\FixerFileProcessedEvent;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -22,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @internal
  */
-final class DotsOutput implements ProcessOutputInterface
+final class DotsOutput implements ProgressOutputInterface
 {
     /**
      * File statuses map.

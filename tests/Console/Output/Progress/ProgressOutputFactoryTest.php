@@ -12,21 +12,21 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Console\Output;
+namespace PhpCsFixer\Tests\Console\Output\Progress;
 
-use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Console\Output\OutputContext;
-use PhpCsFixer\Console\Output\DotsOutput;
-use PhpCsFixer\Console\Output\ProcessOutputFactory;
+use PhpCsFixer\Console\Output\Progress\DotsOutput;
+use PhpCsFixer\Console\Output\Progress\NullOutput;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\NullOutput as SymfonyNullOutput;
 
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Output\ProcessOutputFactory
+ * @covers \PhpCsFixer\Console\Output\Progress\ProgressOutputFactory
  */
-final class ProcessOutputFactoryTest extends TestCase
+final class ProgressOutputFactoryTest extends TestCase
 {
     /**
      * @dataProvider provideValidProcessOutputContextCases
@@ -36,7 +36,7 @@ final class ProcessOutputFactoryTest extends TestCase
         OutputContext $context,
         string $expectedOutputClass
     ): void {
-        self::assertInstanceOf($expectedOutputClass, ProcessOutputFactory::create($outputType, $context));
+        self::assertInstanceOf($expectedOutputClass, ProgressOutputFactory::create($outputType, $context));
     }
 
     public static function provideValidProcessOutputContextCases(): iterable
@@ -57,7 +57,7 @@ final class ProcessOutputFactoryTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        ProcessOutputFactory::create(
+        ProgressOutputFactory::create(
             'boom',
             new OutputContext(new SymfonyNullOutput(), 100, 10)
         );

@@ -12,10 +12,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Console\Output;
+namespace PhpCsFixer\Tests\Console\Output\Progress;
 
 use PhpCsFixer\Console\Output\OutputContext;
-use PhpCsFixer\Console\Output\DotsOutput;
+use PhpCsFixer\Console\Output\Progress\DotsOutput;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Output\DotsOutput
+ * @covers \PhpCsFixer\Console\Output\Progress\DotsOutput
  */
 final class DotsOutputTest extends TestCase
 {
@@ -179,7 +179,7 @@ final class DotsOutputTest extends TestCase
     public function testSleep(): void
     {
         $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot serialize PhpCsFixer\Console\Output\DotsOutput');
+        $this->expectExceptionMessage('Cannot serialize PhpCsFixer\Console\Output\Progress\DotsOutput');
 
         $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
         $processOutput->__sleep();
@@ -188,7 +188,7 @@ final class DotsOutputTest extends TestCase
     public function testWakeup(): void
     {
         $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\Console\Output\DotsOutput');
+        $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\Console\Output\Progress\DotsOutput');
 
         $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
         $processOutput->__wakeup();

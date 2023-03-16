@@ -12,14 +12,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Console\Output;
+namespace PhpCsFixer\Console\Output\Progress;
 
 use PhpCsFixer\FixerFileProcessedEvent;
 
 /**
  * @internal
  */
-final class NullOutput implements ProcessOutputInterface
+final class NullOutput implements ProgressOutputInterface
 {
     public function printLegend(): void
     {

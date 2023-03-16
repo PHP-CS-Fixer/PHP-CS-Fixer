@@ -20,8 +20,8 @@ use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Console\Output\OutputContext;
-use PhpCsFixer\Console\Output\ProcessOutputFactory;
-use PhpCsFixer\Console\Output\ProcessOutputInterface;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputInterface;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFileProcessedEvent;
@@ -275,7 +275,7 @@ EOF;
         }
 
         $progressType = $resolver->getProgressType();
-        $progressOutput = ProcessOutputFactory::create(
+        $progressOutput = ProgressOutputFactory::create(
             $resolver->getProgressType(),
             new OutputContext(
                 $stdErr,
@@ -288,7 +288,7 @@ EOF;
             $finder,
             $resolver->getFixers(),
             $resolver->getDiffer(),
-            ProcessOutputInterface::OUTPUT_TYPE_NONE !== $progressType ? $this->eventDispatcher : null,
+            ProgressOutputInterface::OUTPUT_TYPE_NONE !== $progressType ? $this->eventDispatcher : null,
             $this->errorsManager,
             $resolver->getLinter(),
             $resolver->isDryRun(),

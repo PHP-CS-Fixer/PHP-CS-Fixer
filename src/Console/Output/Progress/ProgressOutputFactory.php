@@ -12,21 +12,23 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Console\Output;
+namespace PhpCsFixer\Console\Output\Progress;
 
-final class ProcessOutputFactory
+use PhpCsFixer\Console\Output\OutputContext;
+
+final class ProgressOutputFactory
 {
-    public static function create(string $outputType, OutputContext $context): ProcessOutputInterface
+    public static function create(string $outputType, OutputContext $context): ProgressOutputInterface
     {
         if (null === $context->getOutput()) {
-            $outputType = ProcessOutputInterface::OUTPUT_TYPE_NONE;
+            $outputType = ProgressOutputInterface::OUTPUT_TYPE_NONE;
         }
 
         switch ($outputType) {
-            case ProcessOutputInterface::OUTPUT_TYPE_NONE:
+            case ProgressOutputInterface::OUTPUT_TYPE_NONE:
                 return new NullOutput();
 
-            case ProcessOutputInterface::OUTPUT_TYPE_DOTS:
+            case ProgressOutputInterface::OUTPUT_TYPE_DOTS:
                 return new DotsOutput($context);
 
             default:

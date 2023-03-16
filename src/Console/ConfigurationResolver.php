@@ -23,7 +23,7 @@ use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
-use PhpCsFixer\Console\Output\ProcessOutputInterface;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputInterface;
 use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Differ\DifferInterface;
@@ -415,19 +415,19 @@ final class ConfigurationResolver
 
                 if (null === $progressType) {
                     $progressType = $this->getConfig()->getHideProgress()
-                        ? ProcessOutputInterface::OUTPUT_TYPE_NONE
-                        : ProcessOutputInterface::OUTPUT_TYPE_DOTS;
-                } elseif (!\in_array($progressType, ProcessOutputInterface::OUTPUT_TYPES, true)) {
+                        ? ProgressOutputInterface::OUTPUT_TYPE_NONE
+                        : ProgressOutputInterface::OUTPUT_TYPE_DOTS;
+                } elseif (!\in_array($progressType, ProgressOutputInterface::OUTPUT_TYPES, true)) {
                     throw new InvalidConfigurationException(sprintf(
                         'The progress type "%s" is not defined, supported are %s.',
                         $progressType,
-                        Utils::naturalLanguageJoin(ProcessOutputInterface::OUTPUT_TYPES)
+                        Utils::naturalLanguageJoin(ProgressOutputInterface::OUTPUT_TYPES)
                     ));
                 }
 
                 $this->progress = $progressType;
             } else {
-                $this->progress = ProcessOutputInterface::OUTPUT_TYPE_NONE;
+                $this->progress = ProgressOutputInterface::OUTPUT_TYPE_NONE;
             }
         }
 
