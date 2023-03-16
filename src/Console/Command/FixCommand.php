@@ -21,6 +21,7 @@ use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Console\Output\ProcessOutput;
+use PhpCsFixer\Console\Output\ProcessOutputInterface;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Runner\Runner;
@@ -264,7 +265,7 @@ EOF;
             }
         }
 
-        $progressType = $resolver->getProgress();
+        $progressType = $resolver->getProgressType();
         $finder = new \ArrayIterator(iterator_to_array($resolver->getFinder()));
 
         if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
@@ -273,7 +274,7 @@ EOF;
             );
         }
 
-        if ('none' === $progressType || null === $stdErr) {
+        if (ProcessOutputInterface::OUTPUT_TYPE_NONE === $progressType || null === $stdErr) {
             $progressOutput = new NullOutput();
         } else {
             $progressOutput = new ProcessOutput(
@@ -288,7 +289,7 @@ EOF;
             $finder,
             $resolver->getFixers(),
             $resolver->getDiffer(),
-            'none' !== $progressType ? $this->eventDispatcher : null,
+            ProcessOutputInterface::OUTPUT_TYPE_NONE !== $progressType ? $this->eventDispatcher : null,
             $this->errorsManager,
             $resolver->getLinter(),
             $resolver->isDryRun(),

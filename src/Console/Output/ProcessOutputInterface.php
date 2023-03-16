@@ -19,5 +19,12 @@ namespace PhpCsFixer\Console\Output;
  */
 interface ProcessOutputInterface
 {
+    public const OUTPUT_TYPE_NONE = 'none';
+    public const OUTPUT_TYPE_DOTS = 'dots';
+    public const OUTPUT_TYPES = [
+        self::OUTPUT_TYPE_NONE,
+        self::OUTPUT_TYPE_DOTS,
+    ];
+
     public function printLegend(): void;
 }

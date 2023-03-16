@@ -23,6 +23,7 @@ use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\Console\Output\ProcessOutputInterface;
 use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Differ\DifferInterface;
@@ -406,26 +407,27 @@ final class ConfigurationResolver
     /**
      * @throws InvalidConfigurationException
      */
-    public function getProgress(): string
+    public function getProgressType(): string
     {
         if (null === $this->progress) {
             if (OutputInterface::VERBOSITY_VERBOSE <= $this->options['verbosity'] && 'txt' === $this->getFormat()) {
                 $progressType = $this->options['show-progress'];
-                $progressTypes = ['none', 'dots'];
 
                 if (null === $progressType) {
-                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : 'dots';
-                } elseif (!\in_array($progressType, $progressTypes, true)) {
+                    $progressType = $this->getConfig()->getHideProgress()
+                        ? ProcessOutputInterface::OUTPUT_TYPE_NONE
+                        : ProcessOutputInterface::OUTPUT_TYPE_DOTS;
+                } elseif (!\in_array($progressType, ProcessOutputInterface::OUTPUT_TYPES, true)) {
                     throw new InvalidConfigurationException(sprintf(
                         'The progress type "%s" is not defined, supported are %s.',
                         $progressType,
-                        Utils::naturalLanguageJoin($progressTypes)
+                        Utils::naturalLanguageJoin(ProcessOutputInterface::OUTPUT_TYPES)
                     ));
                 }
 
                 $this->progress = $progressType;
             } else {
-                $this->progress = 'none';
+                $this->progress = ProcessOutputInterface::OUTPUT_TYPE_NONE;
             }
         }
 
