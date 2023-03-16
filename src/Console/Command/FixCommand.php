@@ -19,8 +19,8 @@ use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\ErrorOutput;
-use PhpCsFixer\Console\Output\NullOutput;
-use PhpCsFixer\Console\Output\ProcessOutput;
+use PhpCsFixer\Console\Output\OutputContext;
+use PhpCsFixer\Console\Output\ProcessOutputFactory;
 use PhpCsFixer\Console\Output\ProcessOutputInterface;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
@@ -265,7 +265,6 @@ EOF;
             }
         }
 
-        $progressType = $resolver->getProgressType();
         $finder = new \ArrayIterator(iterator_to_array($resolver->getFinder()));
 
         if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
@@ -274,16 +273,16 @@ EOF;
             );
         }
 
-        if (ProcessOutputInterface::OUTPUT_TYPE_NONE === $progressType || null === $stdErr) {
-            $progressOutput = new NullOutput();
-        } else {
-            $progressOutput = new ProcessOutput(
+        $progressType = $resolver->getProgressType();
+        $progressOutput = ProcessOutputFactory::create(
+            $resolver->getProgressType(),
+            new OutputContext(
                 $stdErr,
                 $this->eventDispatcher,
                 (new Terminal())->getWidth(),
                 \count($finder)
-            );
-        }
+            )
+        );
 
         $runner = new Runner(
             $finder,
