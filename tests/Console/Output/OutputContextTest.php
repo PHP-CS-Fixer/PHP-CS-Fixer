@@ -15,9 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Console\Output;
 
 use PhpCsFixer\Console\Output\OutputContext;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @internal
@@ -30,13 +29,11 @@ final class OutputContextTest extends TestCase
     {
         $outputContext = new OutputContext(
             $output = new NullOutput(),
-            $dispatcher = new EventDispatcher(),
             $width = 100,
             $filesCount = 10
         );
 
         static::assertSame($output, $outputContext->getOutput());
-        static::assertSame($dispatcher, $outputContext->getEventDispatcher());
         static::assertSame($width, $outputContext->getTerminalWidth());
         static::assertSame($filesCount, $outputContext->getFilesCount());
     }

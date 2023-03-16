@@ -16,7 +16,6 @@ namespace PhpCsFixer\Console\Output;
 
 use PhpCsFixer\FixerFileProcessedEvent;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Output writer to show the process of a FixCommand.
@@ -41,8 +40,6 @@ final class ProcessOutput implements ProcessOutputInterface
 
     private OutputInterface $output;
 
-    private EventDispatcherInterface $eventDispatcher;
-
     private int $files;
 
     private int $processedFiles = 0;
@@ -52,22 +49,15 @@ final class ProcessOutput implements ProcessOutputInterface
      */
     private $symbolsPerLine;
 
-    public function __construct(OutputInterface $output, EventDispatcherInterface $dispatcher, int $width, int $nbFiles)
+    public function __construct(OutputInterface $output, int $width, int $nbFiles)
     {
         $this->output = $output;
-        $this->eventDispatcher = $dispatcher;
-        $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, [$this, 'onFixerFileProcessed']);
         $this->files = $nbFiles;
 
         // max number of characters per line
         // - total length x 2 (e.g. "  1 / 123" => 6 digits and padding spaces)
         // - 11               (extra spaces, parentheses and percentage characters, e.g. " x / x (100%)")
         $this->symbolsPerLine = max(1, $width - \strlen((string) $this->files) * 2 - 11);
-    }
-
-    public function __destruct()
-    {
-        $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, [$this, 'onFixerFileProcessed']);
     }
 
     /**

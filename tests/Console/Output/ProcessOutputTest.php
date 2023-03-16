@@ -18,7 +18,6 @@ use PhpCsFixer\Console\Output\ProcessOutput;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @internal
@@ -41,12 +40,7 @@ final class ProcessOutputTest extends TestCase
 
         $output = new BufferedOutput();
 
-        $processOutput = new ProcessOutput(
-            $output,
-            $this->prophesize(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class)->reveal(),
-            $width,
-            $nbFiles
-        );
+        $processOutput = new ProcessOutput($output, $width, $nbFiles);
 
         $this->foreachStatus($statuses, static function (int $status) use ($processOutput): void {
             $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
@@ -186,7 +180,7 @@ final class ProcessOutputTest extends TestCase
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot serialize PhpCsFixer\Console\Output\ProcessOutput');
 
-        $processOutput = new ProcessOutput(new BufferedOutput(), new EventDispatcher(), 1, 1);
+        $processOutput = new ProcessOutput(new BufferedOutput(), 1, 1);
         $processOutput->__sleep();
     }
 
@@ -195,7 +189,7 @@ final class ProcessOutputTest extends TestCase
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\Console\Output\ProcessOutput');
 
-        $processOutput = new ProcessOutput(new BufferedOutput(), new EventDispatcher(), 1, 1);
+        $processOutput = new ProcessOutput(new BufferedOutput(), 1, 1);
         $processOutput->__wakeup();
     }
 

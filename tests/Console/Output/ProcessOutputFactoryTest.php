@@ -18,9 +18,8 @@ use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\Console\Output\ProcessOutput;
 use PhpCsFixer\Console\Output\ProcessOutputFactory;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\NullOutput as SymfonyNullOutput;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @internal
@@ -30,7 +29,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 final class ProcessOutputFactoryTest extends TestCase
 {
     /**
-     * @dataProvider provideValidProcessOutputContexts
+     * @dataProvider provideValidProcessOutputContextCases
      */
     public function testValidProcessOutputIsCreated(
         string $outputType,
@@ -40,10 +39,10 @@ final class ProcessOutputFactoryTest extends TestCase
         self::assertInstanceOf($expectedOutputClass, ProcessOutputFactory::create($outputType, $context));
     }
 
-    public static function provideValidProcessOutputContexts(): iterable
+    public static function provideValidProcessOutputContextCases(): iterable
     {
-        $context = new OutputContext(new SymfonyNullOutput(), new EventDispatcher(), 100, 10);
-        $nullContext = new OutputContext(null, new EventDispatcher(), 100, 10);
+        $context = new OutputContext(new SymfonyNullOutput(), 100, 10);
+        $nullContext = new OutputContext(null, 100, 10);
 
         yield 'none' => ['none', $context, NullOutput::class];
 
@@ -60,7 +59,7 @@ final class ProcessOutputFactoryTest extends TestCase
 
         ProcessOutputFactory::create(
             'boom',
-            new OutputContext(new SymfonyNullOutput(), new EventDispatcher(), 100, 10)
+            new OutputContext(new SymfonyNullOutput(), 100, 10)
         );
     }
 }

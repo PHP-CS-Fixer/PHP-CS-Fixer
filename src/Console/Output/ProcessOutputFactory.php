@@ -29,7 +29,6 @@ final class ProcessOutputFactory
             case ProcessOutputInterface::OUTPUT_TYPE_DOTS:
                 return new ProcessOutput(
                     $context->getOutput(),
-                    $context->getEventDispatcher(),
                     $context->getTerminalWidth(),
                     $context->getFilesCount()
                 );

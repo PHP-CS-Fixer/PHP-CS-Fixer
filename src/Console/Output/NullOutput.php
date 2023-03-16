@@ -14,12 +14,18 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Output;
 
+use PhpCsFixer\FixerFileProcessedEvent;
+
 /**
  * @internal
  */
 final class NullOutput implements ProcessOutputInterface
 {
     public function printLegend(): void
+    {
+    }
+
+    public function onFixerFileProcessed(FixerFileProcessedEvent $event): void
     {
     }
 }

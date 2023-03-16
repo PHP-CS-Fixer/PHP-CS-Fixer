@@ -24,6 +24,7 @@ use PhpCsFixer\Console\Output\ProcessOutputFactory;
 use PhpCsFixer\Console\Output\ProcessOutputInterface;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -278,7 +279,6 @@ EOF;
             $resolver->getProgressType(),
             new OutputContext(
                 $stdErr,
-                $this->eventDispatcher,
                 (new Terminal())->getWidth(),
                 \count($finder)
             )
@@ -297,9 +297,11 @@ EOF;
             $resolver->shouldStopOnViolation()
         );
 
+        $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, [$progressOutput, 'onFixerFileProcessed']);
         $this->stopwatch->start('fixFiles');
         $changed = $runner->fix();
         $this->stopwatch->stop('fixFiles');
+        $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, [$progressOutput, 'onFixerFileProcessed']);
 
         $progressOutput->printLegend();
 
