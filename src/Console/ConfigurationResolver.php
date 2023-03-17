@@ -23,6 +23,7 @@ use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
@@ -421,9 +422,9 @@ final class ConfigurationResolver
                     $progressType = $this->getConfig()->getHideProgress()
                         ? ProgressOutputType::NONE
                         : ProgressOutputType::BAR;
-                } elseif (!\in_array($progressType, ProgressOutputType::all(), true)) {
+                } elseif (!(new ProgressOutputFactory())->supports($progressType)) {
                     throw new InvalidConfigurationException(\sprintf(
-                        'The progress type "%s" is not defined, supported are %s.',
+                        'The progress type "%s" is invalid, supported are %s.',
                         $progressType,
                         Utils::naturalLanguageJoin(ProgressOutputType::all())
                     ));

@@ -28,6 +28,8 @@ final class ProgressOutputFactory
         ProgressOutputType::NONE => NullOutput::class,
         ProgressOutputType::DOTS => DotsOutput::class,
         ProgressOutputType::BAR => PercentageBarOutput::class,
+        ProgressOutputType::DETAIL => DetailOutput::class,
+        ProgressOutputType::MEANINGFUL => OnlyMeaningfulOutput::class,
     ];
 
     public function create(string $outputType, OutputContext $context): ProgressOutputInterface
@@ -36,7 +38,7 @@ final class ProgressOutputFactory
             $outputType = ProgressOutputType::NONE;
         }
 
-        if (!$this->isBuiltInType($outputType)) {
+        if (!$this->supports($outputType)) {
             throw new \InvalidArgumentException(
                 \sprintf(
                     'Something went wrong, "%s" output type is not supported',
@@ -45,7 +47,17 @@ final class ProgressOutputFactory
             );
         }
 
+        if (ProgressOutputType::NONE === $outputType) {
+            return new NullOutput();
+        }
+
+        // @phpstan-ignore offsetAccess.notFound
         return new self::$outputTypeMap[$outputType]($context);
+    }
+
+    public function supports(string $outputType): bool
+    {
+        return $this->isBuiltInType($outputType);
     }
 
     private function isBuiltInType(string $outputType): bool

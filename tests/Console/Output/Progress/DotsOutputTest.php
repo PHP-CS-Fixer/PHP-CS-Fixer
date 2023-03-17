@@ -44,7 +44,7 @@ final class DotsOutputTest extends TestCase
         $processOutput = new DotsOutput(new OutputContext($output, $width, $nbFiles));
 
         $this->foreachStatus($statuses, static function (int $status) use ($processOutput): void {
-            $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
+            $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status, 'foo'));
         });
 
         self::assertSame($expectedOutput, $output->fetch());

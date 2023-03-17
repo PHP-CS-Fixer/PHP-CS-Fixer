@@ -26,8 +26,11 @@ final class FixerFileProcessedEventTest extends TestCase
     public function testFixerFileProcessedEvent(): void
     {
         $status = FixerFileProcessedEvent::STATUS_NO_CHANGES;
-        $event = new FixerFileProcessedEvent($status);
+        $appliedFixers = ['x', 'y', 'z'];
+        $event = new FixerFileProcessedEvent($status, 'foo', $appliedFixers);
 
+        self::assertSame('foo', $event->getFileRelativePath());
         self::assertSame($status, $event->getStatus());
+        self::assertSame($appliedFixers, $event->getAppliedFixers());
     }
 }

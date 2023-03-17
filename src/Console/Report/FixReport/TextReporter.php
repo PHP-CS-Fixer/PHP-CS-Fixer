@@ -48,7 +48,7 @@ final class TextReporter implements ReporterInterface
             $output .= PHP_EOL;
         }
 
-        return $output.$this->getFooter(
+        return ($reportSummary->shouldPrintFileSummary() ? $output : '').$this->getFooter(
             $reportSummary->getTime(),
             $identifiedFiles,
             $reportSummary->getFilesCount(),

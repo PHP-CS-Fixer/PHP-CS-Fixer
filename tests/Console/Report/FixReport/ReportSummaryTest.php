@@ -38,6 +38,7 @@ final class ReportSummaryTest extends TestCase
         $addAppliedFixers = true;
         $isDryRun = true;
         $isDecoratedOutput = false;
+        $printFileSummary = false;
 
         $reportSummary = new ReportSummary(
             $changed,
@@ -46,7 +47,8 @@ final class ReportSummaryTest extends TestCase
             $memory,
             $addAppliedFixers,
             $isDryRun,
-            $isDecoratedOutput
+            $isDecoratedOutput,
+            $printFileSummary
         );
 
         self::assertSame($changed, $reportSummary->getChanged());
@@ -56,5 +58,6 @@ final class ReportSummaryTest extends TestCase
         self::assertSame($addAppliedFixers, $reportSummary->shouldAddAppliedFixers());
         self::assertSame($isDryRun, $reportSummary->isDryRun());
         self::assertSame($isDecoratedOutput, $reportSummary->isDecoratedOutput());
+        self::assertSame($printFileSummary, $reportSummary->shouldPrintFileSummary());
     }
 }

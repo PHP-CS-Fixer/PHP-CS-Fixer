@@ -38,6 +38,8 @@ final class ReportSummary
 
     private bool $isDecoratedOutput;
 
+    private bool $printFileSummary;
+
     /**
      * @param array<string, array{appliedFixers: list<string>, diff: string}> $changed
      * @param int                                                             $time    duration in milliseconds
@@ -50,7 +52,8 @@ final class ReportSummary
         int $memory,
         bool $addAppliedFixers,
         bool $isDryRun,
-        bool $isDecoratedOutput
+        bool $isDecoratedOutput,
+        bool $printFileSummary
     ) {
         $this->changed = $changed;
         $this->filesCount = $filesCount;
@@ -59,6 +62,7 @@ final class ReportSummary
         $this->addAppliedFixers = $addAppliedFixers;
         $this->isDryRun = $isDryRun;
         $this->isDecoratedOutput = $isDecoratedOutput;
+        $this->printFileSummary = $printFileSummary;
     }
 
     public function isDecoratedOutput(): bool
@@ -97,5 +101,10 @@ final class ReportSummary
     public function shouldAddAppliedFixers(): bool
     {
         return $this->addAppliedFixers;
+    }
+
+    public function shouldPrintFileSummary(): bool
+    {
+        return $this->printFileSummary;
     }
 }

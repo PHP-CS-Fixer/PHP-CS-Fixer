@@ -275,7 +275,7 @@ final class Runner
                         // Dispatch an event for each file processed and dispatch its status (required for progress output)
                         $this->dispatchEvent(
                             FixerFileProcessedEvent::NAME,
-                            new FixerFileProcessedEvent($workerResponse['status'])
+                            new FixerFileProcessedEvent($workerResponse['status'], $fileRelativePath)
                         );
 
                         if (isset($workerResponse['fileHash'])) {
@@ -403,7 +403,7 @@ final class Runner
         } catch (LintingException $e) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
-                new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_INVALID)
+                new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_INVALID, $file->getPathname())
             );
 
             $this->errorsManager->report(new Error(Error::TYPE_INVALID, $name, $e));
@@ -443,14 +443,14 @@ final class Runner
         } catch (\ParseError $e) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
-                new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_LINT)
+                new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_LINT, $file->getPathname(), $appliedFixers)
             );
 
             $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e));
 
             return null;
         } catch (\Throwable $e) {
-            $this->processException($name, $e);
+            $this->processException($file, $e, $appliedFixers);
 
             return null;
         }
@@ -477,7 +477,7 @@ final class Runner
             } catch (LintingException $e) {
                 $this->dispatchEvent(
                     FixerFileProcessedEvent::NAME,
-                    new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_LINT)
+                    new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_LINT, $file->getPathname(), $appliedFixers)
                 );
 
                 $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e, $fixInfo['appliedFixers'], $fixInfo['diff']));
@@ -532,7 +532,12 @@ final class Runner
 
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
-            new FixerFileProcessedEvent(null !== $fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES, $name, $newHash)
+            new FixerFileProcessedEvent(
+                null !== $fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES,
+                $name,
+                $appliedFixers,
+                $newHash
+            )
         );
 
         return $fixInfo;
@@ -540,15 +545,21 @@ final class Runner
 
     /**
      * Process an exception that occurred.
+     *
+     * @param list<string> $appliedFixers
      */
-    private function processException(string $name, \Throwable $e): void
+    private function processException(\SplFileInfo $file, \Throwable $e, array $appliedFixers = []): void
     {
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
-            new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_EXCEPTION)
+            new FixerFileProcessedEvent(
+                FixerFileProcessedEvent::STATUS_EXCEPTION,
+                $file->getPathname(),
+                $appliedFixers
+            )
         );
 
-        $this->errorsManager->report(new Error(Error::TYPE_EXCEPTION, $name, $e));
+        $this->errorsManager->report(new Error(Error::TYPE_EXCEPTION, $file->getPathname(), $e));
     }
 
     private function dispatchEvent(string $name, Event $event): void

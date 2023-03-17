@@ -350,7 +350,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $fixEvent->getMemory(),
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),
-            $output->isDecorated()
+            $output->isDecorated(),
+            // Some progress output types print file info during analysis, so summary is not required (unless there's diff)
+            $progressOutput->shouldShowFileSummary() || '' !== (current($changed)['diff'] ?? '')
         );
 
         $output->isDecorated()
