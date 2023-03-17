@@ -339,7 +339,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
         $this->stopwatch->stop('fixFiles');
         $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, [$progressOutput, 'onFixerFileProcessed']);
 
-        $progressOutput->printLegend();
+        if (\count($changed) > 0) {
+            $progressOutput->printLegend();
+        }
 
         $fixEvent = $this->stopwatch->getEvent('fixFiles');
 
