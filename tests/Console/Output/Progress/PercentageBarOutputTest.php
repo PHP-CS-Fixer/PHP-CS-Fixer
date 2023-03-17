@@ -44,7 +44,7 @@ final class PercentageBarOutputTest extends TestCase
         $processOutput = new PercentageBarOutput(new OutputContext($output, $width, $nbFiles));
 
         $this->foreachStatus($statuses, static function (int $status) use ($processOutput): void {
-            $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
+            $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent(new \SplFileInfo(__FILE__), $status));
         });
 
         self::assertSame($expectedOutput, rtrim($output->fetch()));

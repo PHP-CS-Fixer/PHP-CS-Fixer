@@ -73,7 +73,8 @@ abstract class AbstractReporterTestCase extends TestCase
                 0,
                 false,
                 false,
-                false
+                false,
+                true
             ),
         ];
 
@@ -101,7 +102,8 @@ abstract class AbstractReporterTestCase extends TestCase
                 0,
                 false,
                 false,
-                false
+                false,
+                true
             ),
         ];
 
@@ -129,7 +131,8 @@ abstract class AbstractReporterTestCase extends TestCase
                 0,
                 false,
                 false,
-                false
+                false,
+                true
             ),
         ];
 
@@ -147,7 +150,8 @@ abstract class AbstractReporterTestCase extends TestCase
                 0,
                 true,
                 false,
-                false
+                false,
+                true
             ),
         ];
 
@@ -175,7 +179,8 @@ abstract class AbstractReporterTestCase extends TestCase
                 2_621_440, // 2.5 * 1024 * 1024
                 false,
                 false,
-                false
+                false,
+                true
             ),
         ];
 
@@ -195,6 +200,7 @@ abstract class AbstractReporterTestCase extends TestCase
                 10,
                 1_234,
                 2_621_440, // 2.5 * 1024 * 1024
+                true,
                 true,
                 true,
                 true
