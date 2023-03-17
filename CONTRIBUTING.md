@@ -29,7 +29,7 @@ Symfony projects for instance).
 * Make sure there is dev environment is correct: `composer dev-tools:check`.
 * Update documentation: `composer dev-tools:docs`. This requires the highest version of PHP supported by PHP CS Fixer. If it is not installed on your system, you can run it in a Docker container instead: `docker-compose run php-8.2 php dev-tools/doc.php`.
 * Install dev tools: `composer dev-tools:install`.
-* Run static analysis using PHPStan: `composer static-analysis`.
+* Run [PHPStan](https://phpstan.org/user-guide/getting-started): `composer phpstan`.
 * Check if tests pass: `composer test`.
 * Fix project itself: `composer cs:fix`.
 
