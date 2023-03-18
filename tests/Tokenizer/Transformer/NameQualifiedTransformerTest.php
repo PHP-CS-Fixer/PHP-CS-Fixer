@@ -42,8 +42,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
         $expectedTokens = Tokens::fromArray($expected);
         $tokens = null === $input
             ? Tokens::fromArray($expected)
-            : Tokens::fromArray($input)
-        ;
+            : Tokens::fromArray($input);
 
         $tokenCount = \count($tokens);
 

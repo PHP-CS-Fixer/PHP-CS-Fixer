@@ -44,8 +44,7 @@ final class HelpCommand extends BaseHelpCommand
     {
         return \is_array($value)
             ? static::arrayToString($value)
-            : static::scalarToString($value)
-        ;
+            : static::scalarToString($value);
     }
 
     /**
@@ -122,8 +121,7 @@ final class HelpCommand extends BaseHelpCommand
 
             $str .= \is_array($v)
                 ? static::arrayToString($v).', '
-                : static::scalarToString($v).', '
-            ;
+                : static::scalarToString($v).', ';
         }
 
         return substr($str, 0, -2).']';

@@ -182,8 +182,7 @@ Exit code of the fix command is built using following bit flags:
 * 32 - Configuration error of a Fixer.
 * 64 - Exception raised within the application.
 
-EOF
-        ;
+EOF;
     }
 
     /**
@@ -251,8 +250,7 @@ EOF
 
         $stdErr = $output instanceof ConsoleOutputInterface
             ? $output->getErrorOutput()
-            : ('txt' === $reporter->getFormat() ? $output : null)
-        ;
+            : ('txt' === $reporter->getFormat() ? $output : null);
 
         if (null !== $stdErr) {
             if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
@@ -324,8 +322,7 @@ EOF
 
         $output->isDecorated()
             ? $output->write($reporter->generate($reportSummary))
-            : $output->write($reporter->generate($reportSummary), false, OutputInterface::OUTPUT_RAW)
-        ;
+            : $output->write($reporter->generate($reportSummary), false, OutputInterface::OUTPUT_RAW);
 
         $invalidErrors = $this->errorsManager->getInvalidErrors();
         $exceptionErrors = $this->errorsManager->getExceptionErrors();

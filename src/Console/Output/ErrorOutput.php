@@ -150,7 +150,6 @@ final class ErrorOutput
     {
         return $this->isDecorated
             ? OutputFormatter::escape($string)
-            : $string
-        ;
+            : $string;
     }
 }

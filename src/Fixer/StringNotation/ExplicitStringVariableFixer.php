@@ -169,7 +169,6 @@ EOT
         return $token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)
             || $token->isGivenKind(T_START_HEREDOC)
             || '"' === $token->getContent()
-            || 'b"' === strtolower($token->getContent())
-        ;
+            || 'b"' === strtolower($token->getContent());
     }
 }

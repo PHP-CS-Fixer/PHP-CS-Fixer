@@ -298,8 +298,7 @@ RST;
 
             $attributes = 0 === \count($attributes)
                 ? ''
-                : ' *('.implode(', ', $attributes).')*'
-            ;
+                : ' *('.implode(', ', $attributes).')*';
 
             $summary = str_replace('`', '``', $fixer->getDefinition()->getSummary());
 
@@ -342,8 +341,7 @@ RST;
         $tokens = Tokens::fromCode($old);
         $file = $sample instanceof FileSpecificCodeSampleInterface
             ? $sample->getSplFileInfo()
-            : new StdinFileInfo()
-        ;
+            : new StdinFileInfo();
 
         if ($fixer instanceof ConfigurableFixerInterface) {
             $fixer->configure($sample->getConfiguration() ?? []);

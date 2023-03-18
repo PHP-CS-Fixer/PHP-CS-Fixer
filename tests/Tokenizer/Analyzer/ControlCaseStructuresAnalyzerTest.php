@@ -363,8 +363,7 @@ $expressionResult = match ($condition) {
     3, 4 => bar(),
     default => baz(),
 };
-'
-        ;
+';
 
         yield [
             [

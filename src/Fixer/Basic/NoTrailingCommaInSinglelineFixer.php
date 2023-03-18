@@ -50,8 +50,7 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
     {
         return
             $tokens->isTokenKindFound(',')
-            && $tokens->isAnyTokenKindsFound([')', CT::T_ARRAY_SQUARE_BRACE_CLOSE, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, CT::T_GROUP_IMPORT_BRACE_CLOSE])
-        ;
+            && $tokens->isAnyTokenKindsFound([')', CT::T_ARRAY_SQUARE_BRACE_CLOSE, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, CT::T_GROUP_IMPORT_BRACE_CLOSE]);
     }
 
     /**
@@ -154,8 +153,7 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
                     || Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE === $block['type']
                     || Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE === $block['type']
                     || Tokens::BLOCK_TYPE_PARENTHESIS_BRACE === $block['type']
-                ) && \in_array('arguments', $elements, true)
-            ;
+                ) && \in_array('arguments', $elements, true);
         }
 
         return false;

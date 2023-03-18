@@ -123,8 +123,7 @@ EOF;
             $isSingleQuotedString = $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('\'' === $content[0] || 'b\'' === $firstTwoCharacters);
             $isDoubleQuotedString =
                 ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('"' === $content[0] || 'b"' === $firstTwoCharacters))
-                || ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened)
-            ;
+                || ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened);
             $isHeredocSyntax = !$isSingleQuotedString && !$isDoubleQuotedString;
             if (
                 (false === $this->configuration['single_quoted'] && $isSingleQuotedString)
