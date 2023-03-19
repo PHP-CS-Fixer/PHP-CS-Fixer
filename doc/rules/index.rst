@@ -513,7 +513,7 @@ Operator
   Binary operators should be surrounded by space as configured.
 - `concat_space <./operator/concat_space.rst>`_
 
-  Concatenation should be spaced according configuration.
+  Concatenation should be spaced according to configuration.
 - `increment_style <./operator/increment_style.rst>`_
 
   Pre- or post-increment and decrement operators should be used if possible.

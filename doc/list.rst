@@ -285,7 +285,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypehintFixer <./../src/Fixer/Whitespace/CompactNullableTypehintFixer.php>`_
 -  `concat_space <./rules/operator/concat_space.rst>`_
 
-   Concatenation should be spaced according configuration.
+   Concatenation should be spaced according to configuration.
 
    Configuration options:
 

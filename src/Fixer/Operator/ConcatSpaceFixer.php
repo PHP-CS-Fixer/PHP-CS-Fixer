@@ -55,7 +55,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Concatenation should be spaced according configuration.',
+            'Concatenation should be spaced according to configuration.',
             [
                 new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';\n"
