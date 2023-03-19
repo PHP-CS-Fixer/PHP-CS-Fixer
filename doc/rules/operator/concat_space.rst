@@ -2,7 +2,7 @@
 Rule ``concat_space``
 =====================
 
-Concatenation should be spaced according configuration.
+Concatenation should be spaced according to configuration.
 
 Configuration
 -------------
