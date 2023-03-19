@@ -20,13 +20,13 @@ cd "$(dirname "$0")"
 
 mkdir -p bin
 
-VERSION_CB="2.22.2"
+VERSION_CB="2.23.3"
 VERSION_SC="stable"
 
 echo λλλ checkbashisms
 if [ ! -x bin/checkbashisms ]; then
     wget -qO- "https://deb.debian.org/debian/pool/main/d/devscripts/devscripts_${VERSION_CB}.tar.xz" \
-        | tar -xJv -O devscripts-${VERSION_CB}/scripts/checkbashisms.pl \
+        | tar -xJv -O devscripts/scripts/checkbashisms.pl \
         > bin/checkbashisms
     chmod u+x bin/checkbashisms
 fi
