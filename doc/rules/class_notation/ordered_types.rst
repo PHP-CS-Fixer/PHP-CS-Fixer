@@ -10,7 +10,7 @@ Configuration
 ``sort_algorithm``
 ~~~~~~~~~~~~~~~~~~
 
-The sorting algorithm to apply.
+Whether the types should be sorted alphabetically, or not sorted.
 
 Allowed values: ``'alpha'``, ``'none'``
 

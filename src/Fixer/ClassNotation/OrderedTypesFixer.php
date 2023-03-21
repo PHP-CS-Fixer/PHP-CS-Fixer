@@ -109,7 +109,7 @@ interface Bar
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('sort_algorithm', 'The sorting algorithm to apply.'))
+            (new FixerOptionBuilder('sort_algorithm', 'Whether the types should be sorted alphabetically, or not sorted.'))
                 ->setAllowedValues(['alpha', 'none'])
                 ->setDefault('alpha')
                 ->getOption(),
