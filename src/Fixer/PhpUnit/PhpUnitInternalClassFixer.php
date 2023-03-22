@@ -86,7 +86,6 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
             'internal',
             false,
             true,
-            true,
             ['internal']
         );
     }
