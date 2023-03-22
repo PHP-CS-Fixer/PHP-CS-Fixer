@@ -276,7 +276,7 @@ EOF;
 
         $progressType = $resolver->getProgressType();
         $progressOutput = ProgressOutputFactory::create(
-            $resolver->getProgressType(),
+            $progressType,
             new OutputContext(
                 $stdErr,
                 (new Terminal())->getWidth(),
