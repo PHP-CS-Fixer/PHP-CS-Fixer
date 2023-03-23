@@ -146,6 +146,64 @@ try {
     }
 
     /**
+     * @dataProvider providePhp80Cases
+     *
+     * @param null|array<string, string> $config
+     *
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80(string $expected, ?string $input = null, ?array $config = null): void
+    {
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<(string|null|array<string, string>)[]>
+     */
+    public static function providePhp80Cases(): iterable
+    {
+        yield 'sort alpha, null none' => [
+            "<?php\nclass Foo\n{\n    public A|null|Z \$bar;\n}\n",
+            "<?php\nclass Foo\n{\n    public Z|null|A \$bar;\n}\n",
+            ['sort_algorithm' => 'alpha', 'null_adjustment' => 'none'],
+        ];
+
+        yield 'sort alpha, null first' => [
+            "<?php\nclass Foo\n{\n    public null|A|Z \$bar;\n}\n",
+            "<?php\nclass Foo\n{\n    public Z|null|A \$bar;\n}\n",
+            ['sort_algorithm' => 'alpha', 'null_adjustment' => 'always_first'],
+        ];
+
+        yield 'sort alpha, null last' => [
+            "<?php\nclass Foo\n{\n    public A|Z|null \$bar;\n}\n",
+            "<?php\nclass Foo\n{\n    public Z|null|A \$bar;\n}\n",
+            ['sort_algorithm' => 'alpha', 'null_adjustment' => 'always_last'],
+        ];
+
+        yield 'sort none, null first' => [
+            "<?php\nclass Foo\n{\n    public null|Z|A \$bar;\n}\n",
+            "<?php\nclass Foo\n{\n    public Z|null|A \$bar;\n}\n",
+            ['sort_algorithm' => 'none', 'null_adjustment' => 'always_first'],
+        ];
+
+        yield 'sort none, null last' => [
+            "<?php\nclass Foo\n{\n    public Z|A|null \$bar;\n}\n",
+            "<?php\nclass Foo\n{\n    public Z|null|A \$bar;\n}\n",
+            ['sort_algorithm' => 'none', 'null_adjustment' => 'always_last'],
+        ];
+
+        yield 'sort none, null none' => [
+            "<?php\nclass Foo\n{\n    public Z|null|A \$bar;\n}\n",
+            null,
+            ['sort_algorithm' => 'none', 'null_adjustment' => 'none'],
+        ];
+    }
+
+    /**
      * @dataProvider provideDefaultCases
      *
      * @requires PHP 8.0
