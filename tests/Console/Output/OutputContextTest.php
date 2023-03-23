@@ -27,14 +27,14 @@ final class OutputContextTest extends TestCase
 {
     public function testProvidedValuesAreAccessible(): void
     {
-        $outputContext = new OutputContext(
-            $output = new NullOutput(),
-            $width = 100,
-            $filesCount = 10
-        );
+        $output = new NullOutput();
+        $width = 100;
+        $filesCount = 10;
 
-        static::assertSame($output, $outputContext->getOutput());
-        static::assertSame($width, $outputContext->getTerminalWidth());
-        static::assertSame($filesCount, $outputContext->getFilesCount());
+        $outputContext = new OutputContext($output, $width, $filesCount);
+
+        self::assertSame($output, $outputContext->getOutput());
+        self::assertSame($width, $outputContext->getTerminalWidth());
+        self::assertSame($filesCount, $outputContext->getFilesCount());
     }
 }
