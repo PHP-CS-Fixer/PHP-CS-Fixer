@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\Console\Output\Progress\DotsOutput;
 use PhpCsFixer\Console\Output\Progress\NullOutput;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\NullOutput as SymfonyNullOutput;
 
@@ -44,11 +45,11 @@ final class ProgressOutputFactoryTest extends TestCase
         $context = new OutputContext(new SymfonyNullOutput(), 100, 10);
         $nullContext = new OutputContext(null, 100, 10);
 
-        yield 'none' => ['none', $context, NullOutput::class];
+        yield 'none' => [ProgressOutputType::NONE, $context, NullOutput::class];
 
-        yield 'dots' => ['dots', $context, DotsOutput::class];
+        yield 'dots' => [ProgressOutputType::DOTS, $context, DotsOutput::class];
 
-        yield 'dots with null output' => ['dots', $nullContext, NullOutput::class];
+        yield 'dots with null output' => [ProgressOutputType::DOTS, $nullContext, NullOutput::class];
 
         yield 'unsupported type with null output' => ['boom', $nullContext, NullOutput::class];
     }
