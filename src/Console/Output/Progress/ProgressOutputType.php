@@ -14,14 +14,16 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Output\Progress;
 
-use PhpCsFixer\FixerFileProcessedEvent;
-
 /**
  * @internal
  */
-interface ProgressOutputInterface
+final class ProgressOutputType
 {
-    public function printLegend(): void;
+    public const NONE = 'none';
+    public const DOTS = 'dots';
 
-    public function onFixerFileProcessed(FixerFileProcessedEvent $event): void;
+    public const AVAILABLE = [
+        self::NONE,
+        self::DOTS,
+    ];
 }

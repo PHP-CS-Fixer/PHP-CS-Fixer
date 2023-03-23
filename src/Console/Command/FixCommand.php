@@ -21,7 +21,7 @@ use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
-use PhpCsFixer\Console\Output\Progress\ProgressOutputInterface;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFileProcessedEvent;
@@ -288,7 +288,7 @@ EOF;
             $finder,
             $resolver->getFixers(),
             $resolver->getDiffer(),
-            ProgressOutputInterface::OUTPUT_TYPE_NONE !== $progressType ? $this->eventDispatcher : null,
+            ProgressOutputType::NONE !== $progressType ? $this->eventDispatcher : null,
             $this->errorsManager,
             $resolver->getLinter(),
             $resolver->isDryRun(),

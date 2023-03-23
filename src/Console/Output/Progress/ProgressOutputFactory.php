@@ -24,7 +24,7 @@ final class ProgressOutputFactory
     public static function create(string $outputType, OutputContext $context): ProgressOutputInterface
     {
         if (null === $context->getOutput()) {
-            $outputType = ProgressOutputInterface::OUTPUT_TYPE_NONE;
+            $outputType = ProgressOutputType::NONE;
         }
 
         if (!self::isBuiltInType($outputType)) {
@@ -36,7 +36,7 @@ final class ProgressOutputFactory
             );
         }
 
-        return ProgressOutputInterface::OUTPUT_TYPE_NONE === $outputType
+        return ProgressOutputType::NONE === $outputType
             ? new NullOutput()
             : new DotsOutput($context);
     }
@@ -44,8 +44,8 @@ final class ProgressOutputFactory
     private static function isBuiltInType(string $outputType): bool
     {
         return \in_array($outputType, [
-            ProgressOutputInterface::OUTPUT_TYPE_NONE,
-            ProgressOutputInterface::OUTPUT_TYPE_DOTS,
+            ProgressOutputType::NONE,
+            ProgressOutputType::DOTS,
         ], true);
     }
 }

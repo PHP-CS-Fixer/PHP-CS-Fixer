@@ -19,7 +19,7 @@ use PhpCsFixer\Config;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
-use PhpCsFixer\Console\Output\Progress\ProgressOutputInterface;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Tests\Fixtures\DeprecatedFixer;
@@ -133,7 +133,7 @@ final class ConfigurationResolverTest extends TestCase
 
     public static function provideProgressTypeCases(): iterable
     {
-        foreach (ProgressOutputInterface::OUTPUT_TYPES as $outputType) {
+        foreach (ProgressOutputType::AVAILABLE as $outputType) {
             yield $outputType => [$outputType];
         }
     }
