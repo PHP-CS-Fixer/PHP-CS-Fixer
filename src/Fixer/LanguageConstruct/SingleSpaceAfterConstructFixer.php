@@ -100,6 +100,18 @@ final class SingleSpaceAfterConstructFixer extends AbstractProxyFixer implements
         'yield_from' => T_YIELD_FROM,
     ];
 
+    private SingleSpaceAroundConstructFixer $singleSpaceAroundConstructFixer;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct()
+    {
+        $this->singleSpaceAroundConstructFixer = new SingleSpaceAroundConstructFixer();
+
+        parent::__construct();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -115,8 +127,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractProxyFixer implements
     {
         parent::configure($configuration);
 
-        $fixer = array_values($this->proxyFixers)[0];
-        $fixer->configure([
+        $this->singleSpaceAroundConstructFixer->configure([
             'constructs_contain_a_single_space' => [
                 'yield_from',
             ],
@@ -181,9 +192,7 @@ yield  from  baz();
      */
     protected function createProxyFixers(): array
     {
-        $fixer = new SingleSpaceAroundConstructFixer();
-
-        return [$fixer];
+        return [$this->singleSpaceAroundConstructFixer];
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface

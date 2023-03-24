@@ -2571,6 +2571,8 @@ function Foo\bar;',
 
     /**
      * @dataProvider provideFixWithUseLambdaCases
+     *
+     * @param array<string, mixed> $configuration
      */
     public function testFixWithUseLambda(string $expected, ?string $input = null, ?array $configuration = null): void
     {
@@ -2805,6 +2807,8 @@ $bar; }',
 
     /**
      * @dataProvider provideFixWithYieldFromCases
+     *
+     * @param array<string, mixed> $configuration
      */
     public function testFixWithYieldFrom(string $expected, ?string $input = null, ?array $configuration = []): void
     {
