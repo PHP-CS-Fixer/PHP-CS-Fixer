@@ -607,6 +607,21 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
+        yield 'next line with newline before closing parenthesis and callable type' => [
+            '<?php
+                function foo($foo
+                ): callable {
+                    return function (): void {};
+                }',
+            '<?php
+                function foo($foo
+                ): callable
+                {
+                    return function (): void {};
+                }',
+            ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
+        ];
+
         yield 'next line with newline in signature but not before closing parenthesis and return type' => [
             '<?php
                 function foo(
