@@ -201,11 +201,11 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder(self::OPTION_ORDER, 'How the interfaces should be ordered'))
+            (new FixerOptionBuilder(self::OPTION_ORDER, 'How the interfaces should be ordered.'))
                 ->setAllowedValues(self::SUPPORTED_ORDER_OPTIONS)
                 ->setDefault(self::ORDER_ALPHA)
                 ->getOption(),
-            (new FixerOptionBuilder(self::OPTION_DIRECTION, 'Which direction the interfaces should be ordered'))
+            (new FixerOptionBuilder(self::OPTION_DIRECTION, 'Which direction the interfaces should be ordered.'))
                 ->setAllowedValues(self::SUPPORTED_DIRECTION_OPTIONS)
                 ->setDefault(self::DIRECTION_ASCEND)
                 ->getOption(),

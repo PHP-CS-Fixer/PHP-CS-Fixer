@@ -10,7 +10,7 @@ Configuration
 ``tags``
 ~~~~~~~~
 
-The list of tags to normalize
+The list of tags to normalize.
 
 Allowed types: ``array``
 

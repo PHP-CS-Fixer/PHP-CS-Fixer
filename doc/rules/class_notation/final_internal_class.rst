@@ -19,7 +19,7 @@ Configuration
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Class level annotations tags that must be set in order to fix the class. (case
-insensitive)
+insensitive).
 
 Allowed types: ``array``
 
@@ -29,7 +29,7 @@ Default value: ``['@internal']``
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Class level annotations tags that must be omitted to fix the class, even if all
-of the white list ones are used as well. (case insensitive)
+of the white list ones are used as well. (case insensitive).
 
 Allowed types: ``array``
 
@@ -38,7 +38,7 @@ Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', 
 ``consider_absent_docblock_as_internal_class``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Should classes without any DocBlock be fixed to final?
+Whether classes without any DocBlock should be fixed to final.
 
 Allowed types: ``bool``
 

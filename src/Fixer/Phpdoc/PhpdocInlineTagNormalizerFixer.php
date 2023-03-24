@@ -112,7 +112,7 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('tags', 'The list of tags to normalize'))
+            (new FixerOptionBuilder('tags', 'The list of tags to normalize.'))
                 ->setAllowedTypes(['array'])
                 ->setDefault(['example', 'id', 'internal', 'inheritdoc', 'inheritdocs', 'link', 'source', 'toc', 'tutorial'])
                 ->getOption(),

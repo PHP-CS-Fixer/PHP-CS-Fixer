@@ -38,7 +38,7 @@ Default value: ``false``
 ``noise_remaining_usages_exclude``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-List of global functions to exclude from removing ``@``
+List of global functions to exclude from removing ``@``.
 
 Allowed types: ``array``
 

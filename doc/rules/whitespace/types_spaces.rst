@@ -11,7 +11,7 @@ Configuration
 ``space``
 ~~~~~~~~~
 
-spacing to apply around union type and intersection type operators.
+Spacing to apply around union type and intersection type operators.
 
 Allowed values: ``'none'``, ``'single'``
 
@@ -20,7 +20,7 @@ Default value: ``'none'``
 ``space_multiple_catch``
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-spacing to apply around type operator when catching exceptions of multiple
+Spacing to apply around type operator when catching exceptions of multiple
 types, use ``null`` to follow the value configured for ``space``.
 
 Allowed values: ``'none'``, ``'single'``, ``null``

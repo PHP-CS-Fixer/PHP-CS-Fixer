@@ -193,15 +193,15 @@ class Foo {
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('allow_mixed', 'Whether type `mixed` without description is allowed (`true`) or considered superfluous (`false`)'))
+            (new FixerOptionBuilder('allow_mixed', 'Whether type `mixed` without description is allowed (`true`) or considered superfluous (`false`).'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
-            (new FixerOptionBuilder('remove_inheritdoc', 'Remove `@inheritDoc` tags'))
+            (new FixerOptionBuilder('remove_inheritdoc', 'Remove `@inheritDoc` tags.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
-            (new FixerOptionBuilder('allow_unused_params', 'Whether `param` annotation without actual signature is allowed (`true`) or considered superfluous (`false`)'))
+            (new FixerOptionBuilder('allow_unused_params', 'Whether `param` annotation without actual signature is allowed (`true`) or considered superfluous (`false`).'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),

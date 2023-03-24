@@ -121,7 +121,7 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerIn
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('space', 'spacing to apply between cast and variable.'))
+            (new FixerOptionBuilder('space', 'Spacing to apply between cast and variable.'))
                 ->setAllowedValues(['none', 'single'])
                 ->setDefault('single')
                 ->getOption(),

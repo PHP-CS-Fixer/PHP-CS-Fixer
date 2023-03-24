@@ -10,7 +10,7 @@ Configuration
 ``space``
 ~~~~~~~~~
 
-spacing to apply between cast and variable.
+Spacing to apply between cast and variable.
 
 Allowed values: ``'none'``, ``'single'``
 

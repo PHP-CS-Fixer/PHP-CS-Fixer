@@ -10,8 +10,8 @@ Configuration
 ``sort_algorithm``
 ~~~~~~~~~~~~~~~~~~
 
-whether the statements should be sorted alphabetically or by length, or not
-sorted
+Wwhether the statements should be sorted alphabetically or by length, or not
+sorted.
 
 Allowed values: ``'alpha'``, ``'length'``, ``'none'``
 

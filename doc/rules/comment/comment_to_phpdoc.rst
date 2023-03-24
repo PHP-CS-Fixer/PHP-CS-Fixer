@@ -19,7 +19,7 @@ Configuration
 ``ignored_tags``
 ~~~~~~~~~~~~~~~~
 
-List of ignored tags
+List of ignored tags.
 
 Allowed types: ``array``
 

@@ -287,7 +287,7 @@ class Example
                     'method_private',
                 ])
                 ->getOption(),
-            (new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted'))
+            (new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted.'))
                 ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_NONE)
                 ->getOption(),

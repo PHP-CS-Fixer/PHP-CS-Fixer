@@ -10,7 +10,7 @@ Configuration
 ``types``
 ~~~~~~~~~
 
-What types of classes to mark as internal
+What types of classes to mark as internal.
 
 Allowed values: a subset of ``['abstract', 'final', 'normal']``
 

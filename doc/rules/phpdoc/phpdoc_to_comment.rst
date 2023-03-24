@@ -10,7 +10,7 @@ Configuration
 ``ignored_tags``
 ~~~~~~~~~~~~~~~~
 
-List of ignored tags (matched case insensitively)
+List of ignored tags (matched case insensitively).
 
 Allowed types: ``array``
 

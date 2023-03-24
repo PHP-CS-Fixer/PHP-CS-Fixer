@@ -17,7 +17,7 @@ Configuration
 ``group``
 ~~~~~~~~~
 
-Define a specific group to be used in case no group is already in use
+Define a specific group to be used in case no group is already in use.
 
 Allowed values: ``'large'``, ``'medium'``, ``'small'``
 

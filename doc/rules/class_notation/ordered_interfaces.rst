@@ -10,7 +10,7 @@ Configuration
 ``order``
 ~~~~~~~~~
 
-How the interfaces should be ordered
+How the interfaces should be ordered.
 
 Allowed values: ``'alpha'``, ``'length'``
 
@@ -19,7 +19,7 @@ Default value: ``'alpha'``
 ``direction``
 ~~~~~~~~~~~~~
 
-Which direction the interfaces should be ordered
+Which direction the interfaces should be ordered.
 
 Allowed values: ``'ascend'``, ``'descend'``
 

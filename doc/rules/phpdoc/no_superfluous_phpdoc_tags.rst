@@ -12,7 +12,7 @@ Configuration
 ~~~~~~~~~~~~~~~
 
 Whether type ``mixed`` without description is allowed (``true``) or considered
-superfluous (``false``)
+superfluous (``false``).
 
 Allowed types: ``bool``
 
@@ -21,7 +21,7 @@ Default value: ``false``
 ``remove_inheritdoc``
 ~~~~~~~~~~~~~~~~~~~~~
 
-Remove ``@inheritDoc`` tags
+Remove ``@inheritDoc`` tags.
 
 Allowed types: ``bool``
 
@@ -31,7 +31,7 @@ Default value: ``false``
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Whether ``param`` annotation without actual signature is allowed (``true``) or
-considered superfluous (``false``)
+considered superfluous (``false``).
 
 Allowed types: ``bool``
 
