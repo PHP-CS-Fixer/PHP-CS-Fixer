@@ -2572,13 +2572,9 @@ function Foo\bar;',
     /**
      * @dataProvider provideFixWithUseLambdaCases
      */
-    public function testFixWithUseLambda(string $expected, ?string $input = null): void
+    public function testFixWithUseLambda(string $expected, ?string $input = null, ?array $configuration = null): void
     {
-        $this->fixer->configure([
-            'constructs_followed_by_a_single_space' => [
-                'use_lambda',
-            ],
-        ]);
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -2587,26 +2583,62 @@ function Foo\bar;',
     {
         return [
             [
-                '<?php $foo = function () use ($bar) {};',
                 '<?php $foo = function () use($bar) {};',
+                '<?php $foo = function ()use($bar) {};',
+                [
+                    'constructs_preceded_by_a_single_space' => ['use_lambda'],
+                    'constructs_followed_by_a_single_space' => [],
+                ]
+            ],
+            [
+                '<?php $foo = function ()use ($bar) {};',
+                '<?php $foo = function ()use($bar) {};',
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['use_lambda'],
+                ]
+            ],
+            [
+                '<?php $foo = function () use ($bar) {};',
+                '<?php $foo = function ()use($bar) {};',
+                [
+                    'constructs_preceded_by_a_single_space' => ['use_lambda'],
+                    'constructs_followed_by_a_single_space' => ['use_lambda'],
+                ]
             ],
             [
                 '<?php $foo = function () use ($bar) {};',
                 '<?php $foo = function () use  ($bar) {};',
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['use_lambda'],
+                ]
             ],
             [
                 '<?php $foo = function () use ($bar) {};',
                 '<?php $foo = function () use
 
 ($bar) {};',
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['use_lambda'],
+                ]
             ],
             [
                 '<?php $foo = function () use /* foo */($bar) {};',
                 '<?php $foo = function () use/* foo */($bar) {};',
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['use_lambda'],
+                ]
             ],
             [
                 '<?php $foo = function () use /* foo */($bar) {};',
                 '<?php $foo = function () use  /* foo */($bar) {};',
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['use_lambda'],
+                ]
             ],
         ];
     }

@@ -37,6 +37,14 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
     /**
      * @var array<string, null|int>
      */
+    private static array $tokenMapPrecededByASingleSpace = [
+        // for now, only one case - but we are ready to extend it, when we learn about new cases to cover
+        'use_lambda' => CT::T_USE_LAMBDA,
+    ];
+
+    /**
+     * @var array<string, null|int>
+     */
     private static array $tokenMapFollowedByASingleSpace = [
         'abstract' => T_ABSTRACT,
         'as' => T_AS,
@@ -107,6 +115,11 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
     private array $fixTokenMapFollowedByASingleSpace = [];
 
     /**
+     * @var array<string, int>
+     */
+    private array $fixTokenMapPrecededByASingleSpace = [];
+
+    /**
      * {@inheritdoc}
      */
     public function configure(array $configuration): void
@@ -123,6 +136,14 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
 
         if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
             self::$tokenMapFollowedByASingleSpace['enum'] = T_ENUM;
+        }
+
+        $this->fixTokenMapPrecededByASingleSpace = [];
+
+        foreach ($this->configuration['constructs_preceded_by_a_single_space'] as $key) {
+            if (null !== self::$tokenMapPrecededByASingleSpace[$key]) {
+                $this->fixTokenMapPrecededByASingleSpace[$key] = self::$tokenMapPrecededByASingleSpace[$key];
+            }
         }
 
         $this->fixTokenMapFollowedByASingleSpace = [];
@@ -163,10 +184,25 @@ throw  new  \Exception();
                 new CodeSample(
                     '<?php
 
+$foo = function& ()use($bar) {
+};
+',
+                    [
+                        'constructs_preceded_by_a_single_space' => [
+                            'use_lambda',
+                        ],
+                        'constructs_followed_by_a_single_space' => [
+                            'use_lambda',
+                        ],
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
+
 echo  "Hello!";
 ',
                     [
-                        'constructs_followed_by_a_single_space' => [ // FRS
+                        'constructs_followed_by_a_single_space' => [
                             'echo',
                         ],
                     ]
@@ -177,7 +213,7 @@ echo  "Hello!";
 yield  from  baz();
 ',
                     [
-                        'constructs_followed_by_a_single_space' => [ // FRS
+                        'constructs_followed_by_a_single_space' => [
                             'yield_from',
                         ],
                     ]
@@ -202,7 +238,11 @@ yield  from  baz();
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound(array_values($this->fixTokenMapFollowedByASingleSpace)) && !$tokens->hasAlternativeSyntax();
+        $tokenKinds = array_merge(
+            array_values($this->fixTokenMapPrecededByASingleSpace),
+            array_values($this->fixTokenMapFollowedByASingleSpace),
+        );
+        return $tokens->isAnyTokenKindsFound($tokenKinds) && !$tokens->hasAlternativeSyntax();
     }
 
     /**
@@ -210,6 +250,14 @@ yield  from  baz();
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $tokenKindsPrecededByASingleSpace = array_values($this->fixTokenMapPrecededByASingleSpace);
+
+        for ($index = $tokens->count() - 1; $index > 0; --$index) {
+            if ($tokens[$index]->isGivenKind($tokenKindsPrecededByASingleSpace)) {
+                $tokens->ensureWhitespaceAtIndex($index - 1, 1, ' ');
+            }
+        }
+
         $tokenKindsFollowedByASingleSpace = array_values($this->fixTokenMapFollowedByASingleSpace);
 
         for ($index = $tokens->count() - 2; $index >= 0; --$index) {
@@ -279,9 +327,15 @@ yield  from  baz();
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
+        $tokenMapPrecededByASingleSpaceKeys = array_keys(self::$tokenMapPrecededByASingleSpace);
         $tokenMapFollowedByASingleSpaceKeys = array_keys(self::$tokenMapFollowedByASingleSpace);
 
         return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('constructs_preceded_by_a_single_space', 'List of constructs which must be preceded by a single space.'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([new AllowedValueSubset($tokenMapPrecededByASingleSpaceKeys)])
+                ->setDefault($tokenMapPrecededByASingleSpaceKeys)
+                ->getOption(),
             (new FixerOptionBuilder('constructs_followed_by_a_single_space', 'List of constructs which must be followed by a single space.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset($tokenMapFollowedByASingleSpaceKeys)])
