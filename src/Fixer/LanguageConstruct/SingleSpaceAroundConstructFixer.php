@@ -279,16 +279,13 @@ yield  from  baz();
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $defaults = self::$tokenMapFollowedByASingleSpace;
-        $tokens = array_keys($defaults);
-
-        unset($defaults['type_colon']);
+        $tokenMapFollowedByASingleSpaceKeys = array_keys(self::$tokenMapFollowedByASingleSpace);
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('constructs_followed_by_a_single_space', 'List of constructs which must be followed by a single space.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset($tokens)])
-                ->setDefault(array_keys($defaults))
+                ->setAllowedValues([new AllowedValueSubset($tokenMapFollowedByASingleSpaceKeys)])
+                ->setDefault($tokenMapFollowedByASingleSpaceKeys)
                 ->getOption(),
         ]);
     }
