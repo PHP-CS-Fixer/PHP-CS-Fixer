@@ -142,7 +142,7 @@ class Foo
      * {@inheritdoc}
      *
      * Must run before HeredocIndentationFixer.
-     * Must run after ClassAttributesSeparationFixer, ClassDefinitionFixer, EmptyLoopBodyFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleLineThrowFixer, SingleSpaceAfterConstructFixer, SingleTraitInsertPerStatementFixer.
+     * Must run after ClassAttributesSeparationFixer, ClassDefinitionFixer, EmptyLoopBodyFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleLineThrowFixer, SingleSpaceAfterConstructFixer, SingleSpaceAroundConstructFixer, SingleTraitInsertPerStatementFixer.
      */
     public function getPriority(): int
     {

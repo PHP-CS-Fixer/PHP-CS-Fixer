@@ -263,7 +263,6 @@ yield  from  baz();
      *
      * Must run before BracesFixer, FunctionDeclarationFixer.
      * Must run after ModernizeStrposFixer.
-     * // FRS
      */
     public function getPriority(): int
     {

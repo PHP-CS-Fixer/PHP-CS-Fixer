@@ -77,7 +77,7 @@ if (strpos($haystack, $needle) === false) {}
     /**
      * {@inheritdoc}
      *
-     * Must run before BinaryOperatorSpacesFixer, NoExtraBlankLinesFixer, NoSpacesInsideParenthesisFixer, NoTrailingWhitespaceFixer, NotOperatorWithSpaceFixer, NotOperatorWithSuccessorSpaceFixer, PhpUnitDedicateAssertFixer, SingleSpaceAfterConstructFixer.
+     * Must run before BinaryOperatorSpacesFixer, NoExtraBlankLinesFixer, NoSpacesInsideParenthesisFixer, NoTrailingWhitespaceFixer, NotOperatorWithSpaceFixer, NotOperatorWithSuccessorSpaceFixer, PhpUnitDedicateAssertFixer, SingleSpaceAfterConstructFixer, SingleSpaceAroundConstructFixer.
      * Must run after StrictComparisonFixer.
      */
     public function getPriority(): int

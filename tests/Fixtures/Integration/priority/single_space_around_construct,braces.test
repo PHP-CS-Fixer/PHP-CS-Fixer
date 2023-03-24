@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: single_space_around_construct,braces.
+--RULESET--
+{ "single_space_around_construct": true, "braces": {"position_after_control_structures": "next"}}
+--EXPECT--
+<?php
+if (true)
+{
+}
+else
+{
+}
+
+--INPUT--
+<?php
+if (true) {
+}
+else {
+}

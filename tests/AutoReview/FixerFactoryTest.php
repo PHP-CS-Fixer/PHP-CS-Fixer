@@ -491,6 +491,7 @@ final class FixerFactoryTest extends TestCase
                 'not_operator_with_successor_space',
                 'php_unit_dedicate_assert',
                 'single_space_after_construct',
+                'single_space_around_construct',
             ],
             'modernize_types_casting' => [
                 'no_unneeded_control_parentheses',
@@ -790,6 +791,10 @@ final class FixerFactoryTest extends TestCase
                 'no_useless_concat_operator',
             ],
             'single_space_after_construct' => [
+                'braces',
+                'function_declaration',
+            ],
+            'single_space_around_construct' => [
                 'braces',
                 'function_declaration',
             ],
