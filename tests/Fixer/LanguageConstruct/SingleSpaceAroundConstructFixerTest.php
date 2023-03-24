@@ -2588,7 +2588,7 @@ function Foo\bar;',
                 [
                     'constructs_preceded_by_a_single_space' => ['use_lambda'],
                     'constructs_followed_by_a_single_space' => [],
-                ]
+                ],
             ],
             [
                 '<?php $foo = function ()use ($bar) {};',
@@ -2596,7 +2596,7 @@ function Foo\bar;',
                 [
                     'constructs_preceded_by_a_single_space' => [],
                     'constructs_followed_by_a_single_space' => ['use_lambda'],
-                ]
+                ],
             ],
             [
                 '<?php $foo = function () use ($bar) {};',
@@ -2604,7 +2604,7 @@ function Foo\bar;',
                 [
                     'constructs_preceded_by_a_single_space' => ['use_lambda'],
                     'constructs_followed_by_a_single_space' => ['use_lambda'],
-                ]
+                ],
             ],
             [
                 '<?php $foo = function () use ($bar) {};',
@@ -2612,7 +2612,7 @@ function Foo\bar;',
                 [
                     'constructs_preceded_by_a_single_space' => [],
                     'constructs_followed_by_a_single_space' => ['use_lambda'],
-                ]
+                ],
             ],
             [
                 '<?php $foo = function () use ($bar) {};',
@@ -2622,7 +2622,7 @@ function Foo\bar;',
                 [
                     'constructs_preceded_by_a_single_space' => [],
                     'constructs_followed_by_a_single_space' => ['use_lambda'],
-                ]
+                ],
             ],
             [
                 '<?php $foo = function () use /* foo */($bar) {};',
@@ -2630,7 +2630,7 @@ function Foo\bar;',
                 [
                     'constructs_preceded_by_a_single_space' => [],
                     'constructs_followed_by_a_single_space' => ['use_lambda'],
-                ]
+                ],
             ],
             [
                 '<?php $foo = function () use /* foo */($bar) {};',
@@ -2638,7 +2638,7 @@ function Foo\bar;',
                 [
                     'constructs_preceded_by_a_single_space' => [],
                     'constructs_followed_by_a_single_space' => ['use_lambda'],
-                ]
+                ],
             ],
         ];
     }
@@ -2806,51 +2806,104 @@ $bar; }',
     /**
      * @dataProvider provideFixWithYieldFromCases
      */
-    public function testFixWithYieldFrom(string $expected, ?string $input = null): void
+    public function testFixWithYieldFrom(string $expected, ?string $input = null, ?array $configuration = []): void
     {
-        $this->fixer->configure([
-            'constructs_followed_by_a_single_space' => [
-                'yield_from',
-            ],
-        ]);
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
 
     public static function provideFixWithYieldFromCases(): array
     {
-        return [
-            [
-                '<?php function foo() { yield from baz(); }',
-                '<?php function foo() { yield  from baz(); }',
+        $configFollowed = [
+            'constructs_contain_a_single_space' => [
             ],
+            'constructs_followed_by_a_single_space' => [
+                'yield_from',
+            ],
+        ];
+        $configContain = [
+            'constructs_contain_a_single_space' => [
+                'yield_from',
+            ],
+            'constructs_followed_by_a_single_space' => [
+            ],
+        ];
+        $configAll = [
+            'constructs_contain_a_single_space' => [
+                'yield_from',
+            ],
+            'constructs_followed_by_a_single_space' => [
+                'yield_from',
+            ],
+        ];
+
+        return [
             [
                 '<?php function foo() { yield from $foo; }',
                 '<?php function foo() { yield from$foo; }',
+                $configFollowed,
             ],
             [
                 '<?php function foo() { yield from baz(); }',
                 '<?php function foo() { yield from  baz(); }',
-            ],
-            [
-                '<?php function foo() { yield from baz(); }',
-                '<?php function foo() { yield  from  baz(); }',
+                $configFollowed,
             ],
             [
                 '<?php function foo() { yIeLd fRoM baz(); }',
-                '<?php function foo() { yIeLd  fRoM  baz(); }',
-            ],
-            [
-                '<?php function foo() { yield from baz(); }',
-                '<?php function foo() { yield
-
-from baz(); }',
+                '<?php function foo() { yIeLd fRoM  baz(); }',
+                $configFollowed,
             ],
             [
                 '<?php function foo() { yield from baz(); }',
                 '<?php function foo() { yield from
 
 baz(); }',
+                $configFollowed,
+            ],
+            [
+                '<?php function foo() { yield from /* foo */baz(); }',
+                '<?php function foo() { yield from/* foo */baz(); }',
+                $configFollowed,
+            ],
+            [
+                '<?php function foo() { yield from /* foo */baz(); }',
+                '<?php function foo() { yield from  /* foo */baz(); }',
+                $configFollowed,
+            ],
+            [
+                '<?php function foo() { yield from /* foo */baz(); }',
+                '<?php function foo() { yield from
+
+/* foo */baz(); }',
+                $configFollowed,
+            ],
+            [
+                '<?php function foo() { yield  from baz(); }',
+                '<?php function foo() { yield  from  baz(); }',
+                $configFollowed,
+            ],
+            [
+                '<?php function foo() { yield from  baz(); }',
+                '<?php function foo() { yield  from  baz(); }',
+                $configContain,
+            ],
+            [
+                '<?php function foo() { yield from baz(); }',
+                '<?php function foo() { yield  from  baz(); }',
+                $configAll,
+            ],
+            [
+                '<?php function foo() { yIeLd fRoM baz(); }',
+                '<?php function foo() { yIeLd  fRoM  baz(); }',
+                $configAll,
+            ],
+            [
+                '<?php function foo() { yield from baz(); }',
+                '<?php function foo() { yield
+
+from baz(); }',
+                $configContain,
             ],
             [
                 '<?php function foo() { yield from baz(); }',
@@ -2859,20 +2912,7 @@ baz(); }',
 from
 
 baz(); }',
-            ],
-            [
-                '<?php function foo() { yield from /* foo */baz(); }',
-                '<?php function foo() { yield from/* foo */baz(); }',
-            ],
-            [
-                '<?php function foo() { yield from /* foo */baz(); }',
-                '<?php function foo() { yield from  /* foo */baz(); }',
-            ],
-            [
-                '<?php function foo() { yield from /* foo */baz(); }',
-                '<?php function foo() { yield from
-
-/* foo */baz(); }',
+                $configAll,
             ],
         ];
     }
