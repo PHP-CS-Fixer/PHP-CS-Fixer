@@ -153,13 +153,13 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         };
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('annotation_include', 'Class level annotations tags that must be set in order to fix the class. (case insensitive).'))
+            (new FixerOptionBuilder('annotation_include', 'Class level annotations tags that must be set in order to fix the class (case insensitive).'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(['@internal'])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),
-            (new FixerOptionBuilder('annotation_exclude', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive).'))
+            (new FixerOptionBuilder('annotation_exclude', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well (case insensitive).'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault([

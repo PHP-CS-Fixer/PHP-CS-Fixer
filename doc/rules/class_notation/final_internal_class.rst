@@ -18,7 +18,7 @@ Configuration
 ``annotation_include``
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Class level annotations tags that must be set in order to fix the class. (case
+Class level annotations tags that must be set in order to fix the class (case
 insensitive).
 
 Allowed types: ``array``
@@ -29,7 +29,7 @@ Default value: ``['@internal']``
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Class level annotations tags that must be omitted to fix the class, even if all
-of the white list ones are used as well. (case insensitive).
+of the white list ones are used as well (case insensitive).
 
 Allowed types: ``array``
 
