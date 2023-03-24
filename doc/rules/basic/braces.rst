@@ -11,7 +11,7 @@ Warning
 This rule is deprecated and will be removed on next major version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You should use ``single_space_after_construct``, ``control_structure_braces``,
+You should use ``single_space_around_construct``, ``control_structure_braces``,
 ``curly_braces_position``, ``control_structure_continuation_position``,
 ``declare_parentheses``, ``statement_indentation``,
 ``no_multiple_statements_per_line`` and ``no_extra_blank_lines`` instead.

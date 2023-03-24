@@ -124,7 +124,7 @@ List of Available Rules
 
    The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
 
-   *warning deprecated*   Use ``single_space_after_construct``, ``control_structure_braces``,
+   *warning deprecated*   Use ``single_space_around_construct``, ``control_structure_braces``,
    ``curly_braces_position``, ``control_structure_continuation_position``,
    ``declare_parentheses``, ``statement_indentation``,
    ``no_multiple_statements_per_line`` and ``no_extra_blank_lines`` instead.
