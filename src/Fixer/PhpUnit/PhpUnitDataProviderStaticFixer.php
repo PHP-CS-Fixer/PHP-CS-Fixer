@@ -52,13 +52,29 @@ class FooTest extends TestCase {
                     '<?php
 class FooTest extends TestCase {
     /**
-     * @dataProvider provideSomethingCases
+     * @dataProvider provideSomethingCases1
+     * @dataProvider provideSomethingCases2
      */
     public function testSomething($expected, $actual) {}
-    public function provideSomethingCases() { $this->getData(); }
+    public function provideSomethingCases1() { $this->getData1(); }
+    public function provideSomethingCases2() { self::getData2(); }
 }
 ',
                     ['force' => true]
+                ),
+                new CodeSample(
+                    '<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideSomething1Cases
+     * @dataProvider provideSomething2Cases
+     */
+    public function testSomething($expected, $actual) {}
+    public function provideSomething1Cases() { $this->getData1(); }
+    public function provideSomething2Cases() { self::getData2(); }
+}
+',
+                    ['force' => false]
                 ),
             ],
             null,
@@ -80,7 +96,12 @@ class FooTest extends TestCase {
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('force', 'whether to make static data providers having dynamic class calls'))
+            (new FixerOptionBuilder(
+                'force',
+                'Whether to make the data providers static even if they have a dynamic class call'
+                .'(might introduce fatal error "using $this when not in object context"'
+                .' - you have to adjust code manually by converting dynamic calls to static ones).'
+            ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),

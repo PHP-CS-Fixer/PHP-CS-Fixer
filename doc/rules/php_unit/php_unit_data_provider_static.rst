@@ -18,7 +18,9 @@ Configuration
 ``force``
 ~~~~~~~~~
 
-whether to make static data providers having dynamic class calls
+Whether to make the data providers static even if they have a dynamic class
+call(might introduce fatal error "using $this when not in object context" - you
+have to adjust code manually by converting dynamic calls to static ones).
 
 Allowed types: ``bool``
 
@@ -58,11 +60,35 @@ With configuration: ``['force' => true]``.
     <?php
     class FooTest extends TestCase {
         /**
-         * @dataProvider provideSomethingCases
+         * @dataProvider provideSomethingCases1
+         * @dataProvider provideSomethingCases2
          */
         public function testSomething($expected, $actual) {}
-   -    public function provideSomethingCases() { $this->getData(); }
-   +    public static function provideSomethingCases() { $this->getData(); }
+   -    public function provideSomethingCases1() { $this->getData1(); }
+   -    public function provideSomethingCases2() { self::getData2(); }
+   +    public static function provideSomethingCases1() { $this->getData1(); }
+   +    public static function provideSomethingCases2() { self::getData2(); }
+    }
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['force' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class FooTest extends TestCase {
+        /**
+         * @dataProvider provideSomething1Cases
+         * @dataProvider provideSomething2Cases
+         */
+        public function testSomething($expected, $actual) {}
+        public function provideSomething1Cases() { $this->getData1(); }
+   -    public function provideSomething2Cases() { self::getData2(); }
+   +    public static function provideSomething2Cases() { self::getData2(); }
     }
 
 Rule sets

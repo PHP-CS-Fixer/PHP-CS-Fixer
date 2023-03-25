@@ -144,22 +144,50 @@ abstract class FooTest extends TestCase {
 }',
         ];
 
-        yield 'fix when containing dynamic calls and with `force` enabled' => [
+        yield 'fix when containing dynamic calls and with `force` disabled' => [
             '<?php
 class FooTest extends TestCase {
     /**
-     * @dataProvider provideFoo1Cases
+     * @dataProvider provideFooCases1
+     * @dataProvider provideFooCases2
      */
-    public function testFoo1() {}
-    public static function provideFoo1Cases() { $this->init(); }
+    public function testFoo() {}
+    public function provideFooCases1() { return $this->getFoo(); }
+    public static function provideFooCases2() { /* no dynamic calls */ }
 }',
             '<?php
 class FooTest extends TestCase {
     /**
-     * @dataProvider provideFoo1Cases
+     * @dataProvider provideFooCases1
+     * @dataProvider provideFooCases2
      */
-    public function testFoo1() {}
-    public function provideFoo1Cases() { $this->init(); }
+    public function testFoo() {}
+    public function provideFooCases1() { return $this->getFoo(); }
+    public function provideFooCases2() { /* no dynamic calls */ }
+}',
+            ['force' => false],
+        ];
+
+        yield 'fix when containing dynamic calls and with `force` enabled' => [
+            '<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideFooCases1
+     * @dataProvider provideFooCases2
+     */
+    public function testFoo() {}
+    public static function provideFooCases1() { return $this->getFoo(); }
+    public static function provideFooCases2() { /* no dynamic calls */ }
+}',
+            '<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideFooCases1
+     * @dataProvider provideFooCases2
+     */
+    public function testFoo() {}
+    public function provideFooCases1() { return $this->getFoo(); }
+    public function provideFooCases2() { /* no dynamic calls */ }
 }',
             ['force' => true],
         ];

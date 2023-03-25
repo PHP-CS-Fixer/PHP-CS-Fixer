@@ -2342,7 +2342,7 @@ List of Available Rules
    Configuration options:
 
    - | ``force``
-     | whether to make static data providers having dynamic class calls
+     | Whether to make the data providers static even if they have a dynamic class call(might introduce fatal error "using $this when not in object context" - you have to adjust code manually by converting dynamic calls to static ones).
      | Allowed types: ``bool``
      | Default value: ``false``
 
