@@ -18,9 +18,9 @@ Configuration
 ``force``
 ~~~~~~~~~
 
-Whether to make the data providers static even if they have a dynamic class
-call(might introduce fatal error "using $this when not in object context" - you
-have to adjust code manually by converting dynamic calls to static ones).
+Whether to make the data providers static even if they have a dynamic class call
+(may introduce fatal error "using $this when not in object context", and you may
+have to adjust the code manually by converting dynamic calls to static ones).
 
 Allowed types: ``bool``
 
