@@ -801,4 +801,26 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
                 }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield 'function (multiline + DNF return)' => [
+            '<?php
+                function foo(
+                    mixed $bar,
+                    mixed $baz,
+                ): (Foo&Bar)|int|null {
+                }',
+        ];
+    }
 }
