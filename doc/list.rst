@@ -338,23 +338,23 @@ List of Available Rules
    Configuration options:
 
    - | ``control_structures_opening_brace``
-     | The position of the opening brace of control structures body.
+     | The position of the opening brace of control structures‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
      | Default value: ``'same_line'``
    - | ``functions_opening_brace``
-     | The position of the opening brace of functions body.
+     | The position of the opening brace of functions‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
      | Default value: ``'next_line_unless_newline_at_signature_end'``
    - | ``anonymous_functions_opening_brace``
-     | The position of the opening brace of anonymous functions body.
+     | The position of the opening brace of anonymous functions‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
      | Default value: ``'same_line'``
    - | ``classes_opening_brace``
-     | The position of the opening brace of classes body.
+     | The position of the opening brace of classes‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
      | Default value: ``'next_line_unless_newline_at_signature_end'``
    - | ``anonymous_classes_opening_brace``
-     | The position of the opening brace of anonymous classes body.
+     | The position of the opening brace of anonymous classes‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
      | Default value: ``'same_line'``
    - | ``allow_single_line_empty_anonymous_classes``
@@ -1325,22 +1325,22 @@ List of Available Rules
    - | ``sets``
      | List of sets to fix. Defined sets are:
 
-* `@all` (all listed sets),
-* `@internal` (native functions),
-* `@exif` (EXIF functions),
-* `@ftp` (FTP functions),
-* `@IMAP` (IMAP functions),
-* `@ldap` (LDAP functions),
-* `@mbreg` (from `ext-mbstring`),
-* `@mysqli` (mysqli functions),
-* `@oci` (oci functions),
-* `@odbc` (odbc functions),
-* `@openssl` (openssl functions),
-* `@pcntl` (PCNTL functions),
-* `@pg` (pg functions),
-* `@posix` (POSIX functions),
-* `@snmp` (SNMP functions),
-* `@sodium` (libsodium functions),
+* `@all` (all listed sets);
+* `@internal` (native functions);
+* `@exif` (EXIF functions);
+* `@ftp` (FTP functions);
+* `@IMAP` (IMAP functions);
+* `@ldap` (LDAP functions);
+* `@mbreg` (from `ext-mbstring`);
+* `@mysqli` (mysqli functions);
+* `@oci` (oci functions);
+* `@odbc` (odbc functions);
+* `@openssl` (openssl functions);
+* `@pcntl` (PCNTL functions);
+* `@pg` (pg functions);
+* `@posix` (POSIX functions);
+* `@snmp` (SNMP functions);
+* `@sodium` (libsodium functions);
 * `@time` (time functions).
      | Allowed values: a subset of ``['@all', '@exif', '@ftp', '@IMAP', '@internal', '@ldap', '@mbreg', '@mysqli', '@oci', '@odbc', '@openssl', '@pcntl', '@pg', '@posix', '@snmp', '@sodium', '@time']``
      | Default value: ``['@internal', '@IMAP', '@pg']``
