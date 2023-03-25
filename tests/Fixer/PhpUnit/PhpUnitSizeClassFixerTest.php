@@ -316,4 +316,65 @@ class Test3 extends TestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string[]>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'it adds a docblock above when there is an attribute' => [
+            '<?php
+
+            /**
+             * @small
+             */
+            #[SimpleTest]
+            class Test extends TestCase
+            {
+            }
+            ',
+            '<?php
+
+            #[SimpleTest]
+            class Test extends TestCase
+            {
+            }
+            ',
+        ];
+
+        yield 'it adds the internal tag along other tags when there is an attribute' => [
+            '<?php
+
+            /**
+             * @coversNothing
+             *
+             * @small
+             */
+            #[SimpleTest]
+            class Test extends TestCase
+            {
+            }
+            ',
+            '<?php
+
+            /**
+             * @coversNothing
+             */
+            #[SimpleTest]
+            class Test extends TestCase
+            {
+            }
+            ',
+        ];
+    }
 }

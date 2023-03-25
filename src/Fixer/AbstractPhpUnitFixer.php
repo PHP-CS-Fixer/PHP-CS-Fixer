@@ -19,6 +19,7 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -50,12 +51,20 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     {
         $modifiers = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_COMMENT];
 
+        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
+            $modifiers[] = T_ATTRIBUTE;
+        }
+
         if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.2+ is required
             $modifiers[] = T_READONLY;
         }
 
         do {
             $index = $tokens->getPrevNonWhitespace($index);
+
+            if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                $index = $tokens->getPrevTokenOfKind($index, [[T_ATTRIBUTE]]);
+            }
         } while ($tokens[$index]->isGivenKind($modifiers));
 
         return $index;

@@ -166,4 +166,41 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix80ToCamelCaseCases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80ToCamelCase(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string[]>
+     */
+    public static function provideFix80ToCamelCaseCases(): iterable
+    {
+        yield '@depends annotation with class name in Snake_Case' => [
+            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                public function testMyApp () {}
+
+                /**
+                 * @depends Foo_Bar_Test::testMyApp
+                 */
+                #[SimpleTest]
+                public function testMyAppToo() {}
+            }',
+            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                public function test_my_app () {}
+
+                /**
+                 * @depends Foo_Bar_Test::test_my_app
+                 */
+                #[SimpleTest]
+                public function test_my_app_too() {}
+            }',
+        ];
+    }
 }
