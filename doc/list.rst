@@ -1899,7 +1899,7 @@ List of Available Rules
    Configuration options:
 
    - | ``sort_algorithm``
-     | Wwhether the statements should be sorted alphabetically or by length, or not sorted.
+     | Whether the statements should be sorted alphabetically or by length, or not sorted.
      | Allowed values: ``'alpha'``, ``'length'``, ``'none'``
      | Default value: ``'alpha'``
    - | ``imports_order``
@@ -1963,7 +1963,7 @@ List of Available Rules
      | Allowed values: a subset of ``['method', 'param', 'property', 'property-read', 'property-write', 'return', 'throws', 'type', 'var']``
      | Default value: ``['method', 'param', 'property', 'return', 'throws', 'type', 'var']``
    - | ``align``
-     | Align comments.
+     | How comments should be aligned.
      | Allowed values: ``'left'``, ``'vertical'``
      | Default value: ``'vertical'``
 
