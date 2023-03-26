@@ -1,3 +1,4 @@
+/.env
 /.php-cs-fixer.php
 /.phpunit.result.cache
 /box.json
@@ -10,3 +11,5 @@
 /php-cs-fixer.phar.asc
 /phpunit.xml
 /vendor/
+
+xdebug.log
