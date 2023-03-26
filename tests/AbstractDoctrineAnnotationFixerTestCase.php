@@ -47,36 +47,36 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
      *
      * @return list<array{0: string, 1?: string}>
      */
-    protected function createTestCases(array $commentCases): array
+    protected static function createTestCases(array $commentCases): array
     {
         $cases = [];
         foreach ($commentCases as $commentCase) {
             $cases[] = [
-                $this->withClassDocBlock($commentCase[0]),
-                isset($commentCase[1]) ? $this->withClassDocBlock($commentCase[1]) : null,
+                self::withClassDocBlock($commentCase[0]),
+                isset($commentCase[1]) ? self::withClassDocBlock($commentCase[1]) : null,
             ];
 
             $cases[] = [
-                $this->withPropertyDocBlock($commentCase[0]),
-                isset($commentCase[1]) ? $this->withPropertyDocBlock($commentCase[1]) : null,
+                self::withPropertyDocBlock($commentCase[0]),
+                isset($commentCase[1]) ? self::withPropertyDocBlock($commentCase[1]) : null,
             ];
 
             $cases[] = [
-                $this->withMethodDocBlock($commentCase[0]),
-                isset($commentCase[1]) ? $this->withMethodDocBlock($commentCase[1]) : null,
+                self::withMethodDocBlock($commentCase[0]),
+                isset($commentCase[1]) ? self::withMethodDocBlock($commentCase[1]) : null,
             ];
 
             $cases[] = [
-                $this->withWrongElementDocBlock($commentCase[0]),
+                self::withWrongElementDocBlock($commentCase[0]),
             ];
         }
 
         return $cases;
     }
 
-    private function withClassDocBlock(string $comment): string
+    private static function withClassDocBlock(string $comment): string
     {
-        return $this->with('<?php
+        return self::with('<?php
 
 %s
 class FooClass
@@ -84,9 +84,9 @@ class FooClass
 }', $comment, false);
     }
 
-    private function withPropertyDocBlock(string $comment): string
+    private static function withPropertyDocBlock(string $comment): string
     {
-        return $this->with('<?php
+        return self::with('<?php
 
 class FooClass
 {
@@ -95,9 +95,9 @@ class FooClass
 }', $comment, true);
     }
 
-    private function withMethodDocBlock(string $comment): string
+    private static function withMethodDocBlock(string $comment): string
     {
-        return $this->with('<?php
+        return self::with('<?php
 
 class FooClass
 {
@@ -108,15 +108,15 @@ class FooClass
 }', $comment, true);
     }
 
-    private function withWrongElementDocBlock(string $comment): string
+    private static function withWrongElementDocBlock(string $comment): string
     {
-        return $this->with('<?php
+        return self::with('<?php
 
 %s
 $foo = bar();', $comment, false);
     }
 
-    private function with(string $php, string $comment, bool $indent): string
+    private static function with(string $php, string $comment, bool $indent): string
     {
         $comment = trim($comment);
 

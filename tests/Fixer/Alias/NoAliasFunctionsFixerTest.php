@@ -34,7 +34,7 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         $defaultSets = [
             '@internal',
@@ -42,7 +42,7 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
             '@pg',
         ];
 
-        foreach ($this->provideAllCases() as $set => $cases) {
+        foreach (self::provideAllCases() as $set => $cases) {
             if (\in_array($set, $defaultSets, true)) {
                 yield from $cases;
             } else {
@@ -111,7 +111,7 @@ abstract class A
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfigurationCases(): iterable
+    public static function provideFixWithConfigurationCases(): iterable
     {
         yield '@internal' => [
             '<?php
@@ -225,7 +225,7 @@ abstract class A
             ['sets' => ['@exif']],
         ];
 
-        foreach ($this->provideAllCases() as $set => $cases) {
+        foreach (self::provideAllCases() as $set => $cases) {
             foreach ($cases as $case) {
                 yield [
                     $case[0],
@@ -253,7 +253,7 @@ abstract class A
         ];
     }
 
-    private function provideAllCases(): iterable
+    private static function provideAllCases(): iterable
     {
         $reflectionConstant = new \ReflectionClassConstant(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, 'SETS');
 

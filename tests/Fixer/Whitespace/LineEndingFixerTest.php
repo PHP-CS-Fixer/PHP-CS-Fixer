@@ -34,9 +34,9 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
-        $cases = $this->provideCommonCases();
+        $cases = self::provideCommonCases();
 
         $cases[] = [
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \n |\nTEST;\n",
@@ -84,11 +84,11 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): iterable
+    public static function provideMessyWhitespacesCases(): iterable
     {
         yield from array_map(static function (array $case): array {
             return array_reverse($case);
-        }, $this->provideCommonCases());
+        }, self::provideCommonCases());
 
         yield [
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\r\n",
@@ -101,7 +101,7 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    private function provideCommonCases(): array
+    private static function provideCommonCases(): array
     {
         return [
             'T_OPEN_TAG' => [

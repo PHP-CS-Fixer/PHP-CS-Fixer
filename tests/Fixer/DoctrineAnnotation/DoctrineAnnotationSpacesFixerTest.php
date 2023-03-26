@@ -57,9 +57,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixAll($expected, $input);
     }
 
-    public function provideFixAllCases(): array
+    public static function provideFixAllCases(): array
     {
-        $cases = $this->createTestCases([
+        $cases = self::createTestCases([
             ['
 /**
  * @Foo
@@ -372,9 +372,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixAroundParenthesesOnly($expected, $input);
     }
 
-    public function provideFixAroundParenthesesOnlyCases(): array
+    public static function provideFixAroundParenthesesOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo
@@ -626,9 +626,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixAroundCommasOnly($expected, $input);
     }
 
-    public function provideFixAroundCommasOnlyCases(): array
+    public static function provideFixAroundCommasOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo
@@ -892,9 +892,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceBeforeArgumentAssignmentOnly($expected, $input);
     }
 
-    public function provideFixWithSpaceBeforeArgumentAssignmentOnlyCases(): array
+    public static function provideFixWithSpaceBeforeArgumentAssignmentOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo(foo ="foo", bar ={"foo":"foo", "bar"="bar"})
@@ -940,9 +940,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceBeforeArgumentAssignmentOnly($expected, $input);
     }
 
-    public function provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases(): array
+    public static function provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
@@ -988,9 +988,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceAfterArgumentAssignmentOnly($expected, $input);
     }
 
-    public function provideFixWithSpaceAfterArgumentAssignmentOnlyCases(): array
+    public static function provideFixWithSpaceAfterArgumentAssignmentOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo(foo= "foo", bar= {"foo":"foo", "bar"="bar"})
@@ -1036,9 +1036,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceAfterArgumentAssignmentOnly($expected, $input);
     }
 
-    public function provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases(): array
+    public static function provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
@@ -1084,9 +1084,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceBeforeArrayAssignmentEqualOnly($expected, $input);
     }
 
-    public function provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases(): array
+    public static function provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar" ="bar"})
@@ -1132,9 +1132,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceBeforeArrayAssignmentEqualOnly($expected, $input);
     }
 
-    public function provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases(): array
+    public static function provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
@@ -1180,9 +1180,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceAfterArrayAssignmentEqualOnly($expected, $input);
     }
 
-    public function provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases(): array
+    public static function provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"= "bar"})
@@ -1228,9 +1228,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceAfterArrayAssignmentEqualOnly($expected, $input);
     }
 
-    public function provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases(): array
+    public static function provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
@@ -1276,9 +1276,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceBeforeArrayAssignmentColonOnly($expected, $input);
     }
 
-    public function provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases(): array
+    public static function provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo" :"foo", "bar"="bar"})
@@ -1324,9 +1324,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceBeforeArrayAssignmentColonOnly($expected, $input);
     }
 
-    public function provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases(): array
+    public static function provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
@@ -1372,9 +1372,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceAfterArrayAssignmentColonOnly($expected, $input);
     }
 
-    public function provideFixWithSpaceAfterArrayAssignmentColonOnlyCases(): array
+    public static function provideFixWithSpaceAfterArrayAssignmentColonOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo": "foo", "bar"="bar"})
@@ -1420,9 +1420,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceAfterArrayAssignmentColonOnly($expected, $input);
     }
 
-    public function provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases(): array
+    public static function provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})

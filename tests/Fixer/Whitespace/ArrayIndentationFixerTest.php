@@ -32,9 +32,9 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
-        return $this->withLongArraySyntaxCases([
+        return self::withLongArraySyntaxCases([
             [
                 <<<'EXPECTED'
 <?php
@@ -863,9 +863,9 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithTabsCases(): array
+    public static function provideFixWithTabsCases(): array
     {
-        return $this->withLongArraySyntaxCases([
+        return self::withLongArraySyntaxCases([
             [
                 <<<EXPECTED
 <?php
@@ -956,14 +956,14 @@ class Foo {
      *
      * @return list<array{0: string, 1?: string}>
      */
-    private function withLongArraySyntaxCases(array $cases): array
+    private static function withLongArraySyntaxCases(array $cases): array
     {
         $longSyntaxCases = [];
 
         foreach ($cases as $case) {
-            $case[0] = $this->toLongArraySyntax($case[0]);
+            $case[0] = self::toLongArraySyntax($case[0]);
             if (isset($case[1])) {
-                $case[1] = $this->toLongArraySyntax($case[1]);
+                $case[1] = self::toLongArraySyntax($case[1]);
             }
 
             $longSyntaxCases[] = $case;
@@ -972,7 +972,7 @@ class Foo {
         return array_merge($cases, $longSyntaxCases);
     }
 
-    private function toLongArraySyntax(string $php): string
+    private static function toLongArraySyntax(string $php): string
     {
         return strtr($php, [
             '[' => 'array(',
