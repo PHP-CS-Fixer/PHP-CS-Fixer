@@ -24,10 +24,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitDataProviderStaticFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, bool> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -139,6 +142,54 @@ abstract class FooTest extends TestCase {
     public function testFoo() {}
     abstract public function provideFooCases();
 }',
+        ];
+
+        yield 'fix when containing dynamic calls and with `force` disabled' => [
+            '<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideFooCases1
+     * @dataProvider provideFooCases2
+     */
+    public function testFoo() {}
+    public function provideFooCases1() { return $this->getFoo(); }
+    public static function provideFooCases2() { /* no dynamic calls */ }
+}',
+            '<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideFooCases1
+     * @dataProvider provideFooCases2
+     */
+    public function testFoo() {}
+    public function provideFooCases1() { return $this->getFoo(); }
+    public function provideFooCases2() { /* no dynamic calls */ }
+}',
+            ['force' => false],
+        ];
+
+        yield 'fix when containing dynamic calls and with `force` enabled' => [
+            '<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideFooCases1
+     * @dataProvider provideFooCases2
+     */
+    public function testFoo() {}
+    public static function provideFooCases1() { return $this->getFoo(); }
+    public static function provideFooCases2() { /* no dynamic calls */ }
+}',
+            '<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideFooCases1
+     * @dataProvider provideFooCases2
+     */
+    public function testFoo() {}
+    public function provideFooCases1() { return $this->getFoo(); }
+    public function provideFooCases2() { /* no dynamic calls */ }
+}',
+            ['force' => true],
         ];
     }
 }
