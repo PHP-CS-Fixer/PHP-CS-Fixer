@@ -11,7 +11,7 @@ Configuration
 ``comment_types``
 ~~~~~~~~~~~~~~~~~
 
-List of comment types to fix
+List of comment types to fix.
 
 Allowed values: a subset of ``['asterisk', 'hash']``
 

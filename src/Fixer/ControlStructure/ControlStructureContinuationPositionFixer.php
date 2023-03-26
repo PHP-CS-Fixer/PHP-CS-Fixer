@@ -96,7 +96,7 @@ if ($baz == true) {
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('position', 'the position of the keyword that continues the control structure.'))
+            (new FixerOptionBuilder('position', 'The position of the keyword that continues the control structure.'))
                 ->setAllowedValues([self::NEXT_LINE, self::SAME_LINE])
                 ->setDefault(self::SAME_LINE)
                 ->getOption(),

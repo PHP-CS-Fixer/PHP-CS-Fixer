@@ -10,7 +10,7 @@ Configuration
 ``tags``
 ~~~~~~~~
 
-The list of tags to fix
+The list of tags to fix.
 
 Allowed types: ``array``
 

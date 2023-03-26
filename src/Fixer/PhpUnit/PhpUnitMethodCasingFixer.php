@@ -90,7 +90,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('case', 'Apply camel or snake case to test methods'))
+            (new FixerOptionBuilder('case', 'Apply camel or snake case to test methods.'))
                 ->setAllowedValues([self::CAMEL_CASE, self::SNAKE_CASE])
                 ->setDefault(self::CAMEL_CASE)
                 ->getOption(),

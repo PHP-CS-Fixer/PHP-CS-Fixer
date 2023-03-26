@@ -176,7 +176,7 @@ $c = 3;
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('comment_types', 'List of comment types to fix'))
+            (new FixerOptionBuilder('comment_types', 'List of comment types to fix.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset(['asterisk', 'hash'])])
                 ->setDefault(['asterisk', 'hash'])

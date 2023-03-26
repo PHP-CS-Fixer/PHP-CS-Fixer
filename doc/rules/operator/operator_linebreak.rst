@@ -11,7 +11,7 @@ Configuration
 ``only_booleans``
 ~~~~~~~~~~~~~~~~~
 
-whether to limit operators to only boolean ones
+Whether to limit operators to only boolean ones.
 
 Allowed types: ``bool``
 
@@ -20,7 +20,7 @@ Default value: ``false``
 ``position``
 ~~~~~~~~~~~~
 
-whether to place operators at the beginning or at the end of the line
+Whether to place operators at the beginning or at the end of the line.
 
 Allowed values: ``'beginning'``, ``'end'``
 

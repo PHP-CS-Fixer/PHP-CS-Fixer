@@ -20,7 +20,7 @@ Default value: ``['method', 'param', 'property', 'return', 'throws', 'type', 'va
 ``align``
 ~~~~~~~~~
 
-Align comments
+How comments should be aligned.
 
 Allowed values: ``'left'``, ``'vertical'``
 

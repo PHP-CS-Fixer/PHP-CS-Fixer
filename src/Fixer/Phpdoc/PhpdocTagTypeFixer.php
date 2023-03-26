@@ -148,7 +148,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('tags', 'The list of tags to fix'))
+            (new FixerOptionBuilder('tags', 'The list of tags to fix.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $type) {

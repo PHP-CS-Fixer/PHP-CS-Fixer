@@ -20,24 +20,23 @@ Configuration
 
 List of sets to fix. Defined sets are:
 
-* ``@all`` (all listed sets)
-* ``@internal`` (native functions)
-* ``@exif`` (EXIF functions)
-* ``@ftp`` (FTP functions)
-* ``@IMAP`` (IMAP functions)
-* ``@ldap`` (LDAP functions)
-* ``@mbreg`` (from ``ext-mbstring``)
-* ``@mysqli`` (mysqli functions)
-* ``@oci`` (oci functions)
-* ``@odbc`` (odbc functions)
-* ``@openssl`` (openssl functions)
-* ``@pcntl`` (PCNTL functions)
-* ``@pg`` (pg functions)
-* ``@posix`` (POSIX functions)
-* ``@snmp`` (SNMP functions)
-* ``@sodium`` (libsodium functions)
-* ``@time`` (time functions)
-
+* ``@all`` (all listed sets);
+* ``@internal`` (native functions);
+* ``@exif`` (EXIF functions);
+* ``@ftp`` (FTP functions);
+* ``@IMAP`` (IMAP functions);
+* ``@ldap`` (LDAP functions);
+* ``@mbreg`` (from ``ext-mbstring``);
+* ``@mysqli`` (mysqli functions);
+* ``@oci`` (oci functions);
+* ``@odbc`` (odbc functions);
+* ``@openssl`` (openssl functions);
+* ``@pcntl`` (PCNTL functions);
+* ``@pg`` (pg functions);
+* ``@posix`` (POSIX functions);
+* ``@snmp`` (SNMP functions);
+* ``@sodium`` (libsodium functions);
+* ``@time`` (time functions).
 
 Allowed values: a subset of ``['@all', '@exif', '@ftp', '@IMAP', '@internal', '@ldap', '@mbreg', '@mysqli', '@oci', '@odbc', '@openssl', '@pcntl', '@pg', '@posix', '@snmp', '@sodium', '@time']``
 

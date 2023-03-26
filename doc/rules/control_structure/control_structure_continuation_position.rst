@@ -10,7 +10,7 @@ Configuration
 ``position``
 ~~~~~~~~~~~~
 
-the position of the keyword that continues the control structure.
+The position of the keyword that continues the control structure.
 
 Allowed values: ``'next_line'``, ``'same_line'``
 

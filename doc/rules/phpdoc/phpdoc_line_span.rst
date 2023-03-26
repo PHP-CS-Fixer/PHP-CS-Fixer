@@ -11,7 +11,7 @@ Configuration
 ``const``
 ~~~~~~~~~
 
-Whether const blocks should be single or multi line
+Whether const blocks should be single or multi line.
 
 Allowed values: ``'multi'``, ``'single'``, ``null``
 
@@ -20,7 +20,7 @@ Default value: ``'multi'``
 ``property``
 ~~~~~~~~~~~~
 
-Whether property doc blocks should be single or multi line
+Whether property doc blocks should be single or multi line.
 
 Allowed values: ``'multi'``, ``'single'``, ``null``
 
@@ -29,7 +29,7 @@ Default value: ``'multi'``
 ``method``
 ~~~~~~~~~~
 
-Whether method doc blocks should be single or multi line
+Whether method doc blocks should be single or multi line.
 
 Allowed values: ``'multi'``, ``'single'``, ``null``
 

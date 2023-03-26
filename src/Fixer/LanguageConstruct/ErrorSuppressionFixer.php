@@ -103,7 +103,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
-            (new FixerOptionBuilder(self::OPTION_NOISE_REMAINING_USAGES_EXCLUDE, 'List of global functions to exclude from removing `@`'))
+            (new FixerOptionBuilder(self::OPTION_NOISE_REMAINING_USAGES_EXCLUDE, 'List of global functions to exclude from removing `@`.'))
                 ->setAllowedTypes(['array'])
                 ->setDefault([])
                 ->getOption(),

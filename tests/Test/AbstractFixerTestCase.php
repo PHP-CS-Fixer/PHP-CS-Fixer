@@ -196,6 +196,11 @@ abstract class AbstractFixerTestCase extends TestCase
 
             foreach ($options as $option) {
                 static::assertMatchesRegularExpression('/^[a-z_]+[a-z]$/', $option->getName(), sprintf('[%s] Option %s is not snake_case.', $fixerName, $option->getName()));
+                static::assertMatchesRegularExpression(
+                    '/^[A-Z].+\.$/s',
+                    $option->getDescription(),
+                    sprintf('[%s] Description of option "%s" must start with capital letter and end with dot.', $fixerName, $option->getName())
+                );
             }
         }
 

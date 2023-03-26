@@ -76,7 +76,7 @@ List of Available Rules
      | Allowed values: ``'align'``, ``'align_by_scope'``, ``'align_single_space'``, ``'align_single_space_by_scope'``, ``'align_single_space_minimal'``, ``'align_single_space_minimal_by_scope'``, ``'no_space'``, ``'single_space'``, ``null``
      | Default value: ``'single_space'``
    - | ``operators``
-     | Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: `=`, `*`, `/`, `%`, `<`, `>`, `|`, `^`, `+`, `-`, `&`, `&=`, `&&`, `||`, `.=`, `/=`, `=>`, `==`, `>=`, `===`, `!=`, `<>`, `!==`, `<=`, `and`, `or`, `xor`, `-=`, `%=`, `*=`, `|=`, `+=`, `<<`, `<<=`, `>>`, `>>=`, `^=`, `**`, `**=`, `<=>`, `??`, `??=`
+     | Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: `=`, `*`, `/`, `%`, `<`, `>`, `|`, `^`, `+`, `-`, `&`, `&=`, `&&`, `||`, `.=`, `/=`, `=>`, `==`, `>=`, `===`, `!=`, `<>`, `!==`, `<=`, `and`, `or`, `xor`, `-=`, `%=`, `*=`, `|=`, `+=`, `<<`, `<<=`, `>>`, `>>=`, `^=`, `**`, `**=`, `<=>`, `??`, `??=`.
      | Allowed types: ``array``
      | Default value: ``[]``
 
@@ -135,15 +135,15 @@ List of Available Rules
      | Allowed types: ``bool``
      | Default value: ``false``
    - | ``position_after_functions_and_oop_constructs``
-     | whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).
+     | Whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).
      | Allowed values: ``'next'``, ``'same'``
      | Default value: ``'next'``
    - | ``position_after_control_structures``
-     | whether the opening brace should be placed on "next" or "same" line after control structures.
+     | Whether the opening brace should be placed on "next" or "same" line after control structures.
      | Allowed values: ``'next'``, ``'same'``
      | Default value: ``'same'``
    - | ``position_after_anonymous_constructs``
-     | whether the opening brace should be placed on "next" or "same" line after anonymous constructs (anonymous classes and lambda functions).
+     | Whether the opening brace should be placed on "next" or "same" line after anonymous constructs (anonymous classes and lambda functions).
      | Allowed values: ``'next'``, ``'same'``
      | Default value: ``'same'``
 
@@ -158,7 +158,7 @@ List of Available Rules
    Configuration options:
 
    - | ``space``
-     | spacing to apply between cast and variable.
+     | Spacing to apply between cast and variable.
      | Allowed values: ``'none'``, ``'single'``
      | Default value: ``'single'``
 
@@ -266,7 +266,7 @@ List of Available Rules
    Configuration options:
 
    - | ``ignored_tags``
-     | List of ignored tags
+     | List of ignored tags.
      | Allowed types: ``array``
      | Default value: ``[]``
 
@@ -325,7 +325,7 @@ List of Available Rules
    Configuration options:
 
    - | ``position``
-     | the position of the keyword that continues the control structure.
+     | The position of the keyword that continues the control structure.
      | Allowed values: ``'next_line'``, ``'same_line'``
      | Default value: ``'same_line'``
 
@@ -338,31 +338,31 @@ List of Available Rules
    Configuration options:
 
    - | ``control_structures_opening_brace``
-     | the position of the opening brace of control structures body.
+     | The position of the opening brace of control structures‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
      | Default value: ``'same_line'``
    - | ``functions_opening_brace``
-     | the position of the opening brace of functions body.
+     | The position of the opening brace of functions‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
      | Default value: ``'next_line_unless_newline_at_signature_end'``
    - | ``anonymous_functions_opening_brace``
-     | the position of the opening brace of anonymous functions body.
+     | The position of the opening brace of anonymous functions‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
      | Default value: ``'same_line'``
    - | ``classes_opening_brace``
-     | the position of the opening brace of classes body.
+     | The position of the opening brace of classes‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
      | Default value: ``'next_line_unless_newline_at_signature_end'``
    - | ``anonymous_classes_opening_brace``
-     | the position of the opening brace of anonymous classes body.
+     | The position of the opening brace of anonymous classes‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
      | Default value: ``'same_line'``
    - | ``allow_single_line_empty_anonymous_classes``
-     | allow anonymous classes to have opening and closing braces on the same line.
+     | Allow anonymous classes to have opening and closing braces on the same line.
      | Allowed types: ``bool``
      | Default value: ``true``
    - | ``allow_single_line_anonymous_functions``
-     | allow anonymous functions to have opening and closing braces on the same line.
+     | Allow anonymous functions to have opening and closing braces on the same line.
      | Allowed types: ``bool``
      | Default value: ``true``
 
@@ -549,11 +549,11 @@ List of Available Rules
      | Allowed values: ``'long'``, ``'short'``
      | Default value: ``'long'``
    - | ``long_function``
-     | The function to be used to expand the short echo tags
+     | The function to be used to expand the short echo tags.
      | Allowed values: ``'echo'``, ``'print'``
      | Default value: ``'echo'``
    - | ``shorten_simple_statements_only``
-     | Render short-echo tags only in case of simple code
+     | Render short-echo tags only in case of simple code.
      | Allowed types: ``bool``
      | Default value: ``true``
 
@@ -632,7 +632,7 @@ List of Available Rules
      | Allowed types: ``bool``
      | Default value: ``false``
    - | ``noise_remaining_usages_exclude``
-     | List of global functions to exclude from removing `@`
+     | List of global functions to exclude from removing `@`.
      | Allowed types: ``array``
      | Default value: ``[]``
 
@@ -729,15 +729,15 @@ List of Available Rules
    Configuration options:
 
    - | ``annotation_include``
-     | Class level annotations tags that must be set in order to fix the class. (case insensitive)
+     | Class level annotations tags that must be set in order to fix the class (case insensitive).
      | Allowed types: ``array``
      | Default value: ``['@internal']``
    - | ``annotation_exclude``
-     | Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)
+     | Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well (case insensitive).
      | Allowed types: ``array``
      | Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity', '@Document', '@ODM\\Document']``
    - | ``consider_absent_docblock_as_internal_class``
-     | Should classes without any DocBlock be fixed to final?
+     | Whether classes without any DocBlock should be fixed to final.
      | Allowed types: ``bool``
      | Default value: ``false``
 
@@ -1325,24 +1325,23 @@ List of Available Rules
    - | ``sets``
      | List of sets to fix. Defined sets are:
 
-* `@all` (all listed sets)
-* `@internal` (native functions)
-* `@exif` (EXIF functions)
-* `@ftp` (FTP functions)
-* `@IMAP` (IMAP functions)
-* `@ldap` (LDAP functions)
-* `@mbreg` (from `ext-mbstring`)
-* `@mysqli` (mysqli functions)
-* `@oci` (oci functions)
-* `@odbc` (odbc functions)
-* `@openssl` (openssl functions)
-* `@pcntl` (PCNTL functions)
-* `@pg` (pg functions)
-* `@posix` (POSIX functions)
-* `@snmp` (SNMP functions)
-* `@sodium` (libsodium functions)
-* `@time` (time functions)
-
+* `@all` (all listed sets);
+* `@internal` (native functions);
+* `@exif` (EXIF functions);
+* `@ftp` (FTP functions);
+* `@IMAP` (IMAP functions);
+* `@ldap` (LDAP functions);
+* `@mbreg` (from `ext-mbstring`);
+* `@mysqli` (mysqli functions);
+* `@oci` (oci functions);
+* `@odbc` (odbc functions);
+* `@openssl` (openssl functions);
+* `@pcntl` (PCNTL functions);
+* `@pg` (pg functions);
+* `@posix` (POSIX functions);
+* `@snmp` (SNMP functions);
+* `@sodium` (libsodium functions);
+* `@time` (time functions).
      | Allowed values: a subset of ``['@all', '@exif', '@ftp', '@IMAP', '@internal', '@ldap', '@mbreg', '@mysqli', '@oci', '@odbc', '@openssl', '@pcntl', '@pg', '@posix', '@snmp', '@sodium', '@time']``
      | Default value: ``['@internal', '@IMAP', '@pg']``
 
@@ -1591,15 +1590,15 @@ List of Available Rules
    Configuration options:
 
    - | ``allow_mixed``
-     | Whether type `mixed` without description is allowed (`true`) or considered superfluous (`false`)
+     | Whether type `mixed` without description is allowed (`true`) or considered superfluous (`false`).
      | Allowed types: ``bool``
      | Default value: ``false``
    - | ``remove_inheritdoc``
-     | Remove `@inheritDoc` tags
+     | Remove `@inheritDoc` tags.
      | Allowed types: ``bool``
      | Default value: ``false``
    - | ``allow_unused_params``
-     | Whether `param` annotation without actual signature is allowed (`true`) or considered superfluous (`false`)
+     | Whether `param` annotation without actual signature is allowed (`true`) or considered superfluous (`false`).
      | Allowed types: ``bool``
      | Default value: ``false``
 
@@ -1862,11 +1861,11 @@ List of Available Rules
    Configuration options:
 
    - | ``only_booleans``
-     | whether to limit operators to only boolean ones
+     | Whether to limit operators to only boolean ones.
      | Allowed types: ``bool``
      | Default value: ``false``
    - | ``position``
-     | whether to place operators at the beginning or at the end of the line
+     | Whether to place operators at the beginning or at the end of the line.
      | Allowed values: ``'beginning'``, ``'end'``
      | Default value: ``'beginning'``
 
@@ -1885,7 +1884,7 @@ List of Available Rules
      | Allowed values: a subset of ``['case', 'constant', 'constant_private', 'constant_protected', 'constant_public', 'construct', 'destruct', 'magic', 'method', 'method_abstract', 'method_private', 'method_private_abstract', 'method_private_abstract_static', 'method_private_static', 'method_protected', 'method_protected_abstract', 'method_protected_abstract_static', 'method_protected_static', 'method_public', 'method_public_abstract', 'method_public_abstract_static', 'method_public_static', 'method_static', 'phpunit', 'private', 'property', 'property_private', 'property_private_readonly', 'property_private_static', 'property_protected', 'property_protected_readonly', 'property_protected_static', 'property_public', 'property_public_readonly', 'property_public_static', 'property_static', 'protected', 'public', 'use_trait']``
      | Default value: ``['use_trait', 'case', 'constant_public', 'constant_protected', 'constant_private', 'property_public', 'property_protected', 'property_private', 'construct', 'destruct', 'magic', 'phpunit', 'method_public', 'method_protected', 'method_private']``
    - | ``sort_algorithm``
-     | How multiple occurrences of same type statements should be sorted
+     | How multiple occurrences of same type statements should be sorted.
      | Allowed values: ``'alpha'``, ``'none'``
      | Default value: ``'none'``
 
@@ -1900,7 +1899,7 @@ List of Available Rules
    Configuration options:
 
    - | ``sort_algorithm``
-     | whether the statements should be sorted alphabetically or by length, or not sorted
+     | Whether the statements should be sorted alphabetically or by length, or not sorted.
      | Allowed values: ``'alpha'``, ``'length'``, ``'none'``
      | Default value: ``'alpha'``
    - | ``imports_order``
@@ -1919,11 +1918,11 @@ List of Available Rules
    Configuration options:
 
    - | ``order``
-     | How the interfaces should be ordered
+     | How the interfaces should be ordered.
      | Allowed values: ``'alpha'``, ``'length'``
      | Default value: ``'alpha'``
    - | ``direction``
-     | Which direction the interfaces should be ordered
+     | Which direction the interfaces should be ordered.
      | Allowed values: ``'ascend'``, ``'descend'``
      | Default value: ``'ascend'``
 
@@ -1964,7 +1963,7 @@ List of Available Rules
      | Allowed values: a subset of ``['method', 'param', 'property', 'property-read', 'property-write', 'return', 'throws', 'type', 'var']``
      | Default value: ``['method', 'param', 'property', 'return', 'throws', 'type', 'var']``
    - | ``align``
-     | Align comments
+     | How comments should be aligned.
      | Allowed values: ``'left'``, ``'vertical'``
      | Default value: ``'vertical'``
 
@@ -1993,7 +1992,7 @@ List of Available Rules
    Configuration options:
 
    - | ``tags``
-     | The list of tags to normalize
+     | The list of tags to normalize.
      | Allowed types: ``array``
      | Default value: ``['example', 'id', 'internal', 'inheritdoc', 'inheritdocs', 'link', 'source', 'toc', 'tutorial']``
 
@@ -2008,15 +2007,15 @@ List of Available Rules
    Configuration options:
 
    - | ``const``
-     | Whether const blocks should be single or multi line
+     | Whether const blocks should be single or multi line.
      | Allowed values: ``'multi'``, ``'single'``, ``null``
      | Default value: ``'multi'``
    - | ``property``
-     | Whether property doc blocks should be single or multi line
+     | Whether property doc blocks should be single or multi line.
      | Allowed values: ``'multi'``, ``'single'``, ``null``
      | Default value: ``'multi'``
    - | ``method``
-     | Whether method doc blocks should be single or multi line
+     | Whether method doc blocks should be single or multi line.
      | Allowed values: ``'multi'``, ``'single'``, ``null``
      | Default value: ``'multi'``
 
@@ -2178,7 +2177,7 @@ List of Available Rules
    Configuration options:
 
    - | ``tags``
-     | The list of tags to fix
+     | The list of tags to fix.
      | Allowed types: ``array``
      | Default value: ``['api' => 'annotation', 'author' => 'annotation', 'copyright' => 'annotation', 'deprecated' => 'annotation', 'example' => 'annotation', 'global' => 'annotation', 'inheritDoc' => 'annotation', 'internal' => 'annotation', 'license' => 'annotation', 'method' => 'annotation', 'package' => 'annotation', 'param' => 'annotation', 'property' => 'annotation', 'return' => 'annotation', 'see' => 'annotation', 'since' => 'annotation', 'throws' => 'annotation', 'todo' => 'annotation', 'uses' => 'annotation', 'var' => 'annotation', 'version' => 'annotation']``
 
@@ -2193,7 +2192,7 @@ List of Available Rules
    Configuration options:
 
    - | ``ignored_tags``
-     | List of ignored tags (matched case insensitively)
+     | List of ignored tags (matched case insensitively).
      | Allowed types: ``array``
      | Default value: ``[]``
 
@@ -2421,7 +2420,7 @@ List of Available Rules
    Configuration options:
 
    - | ``types``
-     | What types of classes to mark as internal
+     | What types of classes to mark as internal.
      | Allowed values: a subset of ``['abstract', 'final', 'normal']``
      | Default value: ``['normal', 'final']``
 
@@ -2436,7 +2435,7 @@ List of Available Rules
    Configuration options:
 
    - | ``case``
-     | Apply camel or snake case to test methods
+     | Apply camel or snake case to test methods.
      | Allowed values: ``'camel_case'``, ``'snake_case'``
      | Default value: ``'camel_case'``
 
@@ -2542,7 +2541,7 @@ List of Available Rules
    Configuration options:
 
    - | ``group``
-     | Define a specific group to be used in case no group is already in use
+     | Define a specific group to be used in case no group is already in use.
      | Allowed values: ``'large'``, ``'medium'``, ``'small'``
      | Default value: ``'small'``
 
@@ -2823,7 +2822,7 @@ List of Available Rules
    Configuration options:
 
    - | ``comment_types``
-     | List of comment types to fix
+     | List of comment types to fix.
      | Allowed values: a subset of ``['asterisk', 'hash']``
      | Default value: ``['asterisk', 'hash']``
 
@@ -3035,11 +3034,11 @@ List of Available Rules
    Configuration options:
 
    - | ``space``
-     | spacing to apply around union type and intersection type operators.
+     | Spacing to apply around union type and intersection type operators.
      | Allowed values: ``'none'``, ``'single'``
      | Default value: ``'none'``
    - | ``space_multiple_catch``
-     | spacing to apply around type operator when catching exceptions of multiple types, use `null` to follow the value configured for `space`.
+     | Spacing to apply around type operator when catching exceptions of multiple types, use `null` to follow the value configured for `space`.
      | Allowed values: ``'none'``, ``'single'``, ``null``
      | Default value: ``null``
 

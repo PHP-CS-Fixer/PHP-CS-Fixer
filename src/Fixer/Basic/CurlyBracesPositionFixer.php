@@ -360,31 +360,31 @@ $bar = function () { $result = true;
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('control_structures_opening_brace', 'the position of the opening brace of control structures body.'))
+            (new FixerOptionBuilder('control_structures_opening_brace', 'The position of the opening brace of control structures‘ body.'))
                 ->setAllowedValues([self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END, self::SAME_LINE])
                 ->setDefault(self::SAME_LINE)
                 ->getOption(),
-            (new FixerOptionBuilder('functions_opening_brace', 'the position of the opening brace of functions body.'))
+            (new FixerOptionBuilder('functions_opening_brace', 'The position of the opening brace of functions‘ body.'))
                 ->setAllowedValues([self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END, self::SAME_LINE])
                 ->setDefault(self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END)
                 ->getOption(),
-            (new FixerOptionBuilder('anonymous_functions_opening_brace', 'the position of the opening brace of anonymous functions body.'))
+            (new FixerOptionBuilder('anonymous_functions_opening_brace', 'The position of the opening brace of anonymous functions‘ body.'))
                 ->setAllowedValues([self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END, self::SAME_LINE])
                 ->setDefault(self::SAME_LINE)
                 ->getOption(),
-            (new FixerOptionBuilder('classes_opening_brace', 'the position of the opening brace of classes body.'))
+            (new FixerOptionBuilder('classes_opening_brace', 'The position of the opening brace of classes‘ body.'))
                 ->setAllowedValues([self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END, self::SAME_LINE])
                 ->setDefault(self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END)
                 ->getOption(),
-            (new FixerOptionBuilder('anonymous_classes_opening_brace', 'the position of the opening brace of anonymous classes body.'))
+            (new FixerOptionBuilder('anonymous_classes_opening_brace', 'The position of the opening brace of anonymous classes‘ body.'))
                 ->setAllowedValues([self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END, self::SAME_LINE])
                 ->setDefault(self::SAME_LINE)
                 ->getOption(),
-            (new FixerOptionBuilder('allow_single_line_empty_anonymous_classes', 'allow anonymous classes to have opening and closing braces on the same line.'))
+            (new FixerOptionBuilder('allow_single_line_empty_anonymous_classes', 'Allow anonymous classes to have opening and closing braces on the same line.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
                 ->getOption(),
-            (new FixerOptionBuilder('allow_single_line_anonymous_functions', 'allow anonymous functions to have opening and closing braces on the same line.'))
+            (new FixerOptionBuilder('allow_single_line_anonymous_functions', 'Allow anonymous functions to have opening and closing braces on the same line.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
                 ->getOption(),

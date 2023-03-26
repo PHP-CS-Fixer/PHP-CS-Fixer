@@ -216,7 +216,7 @@ EOF;
             ])
         ;
 
-        $align = new FixerOptionBuilder('align', 'Align comments');
+        $align = new FixerOptionBuilder('align', 'How comments should be aligned.');
         $align
             ->setAllowedTypes(['string'])
             ->setAllowedValues([self::ALIGN_LEFT, self::ALIGN_VERTICAL])

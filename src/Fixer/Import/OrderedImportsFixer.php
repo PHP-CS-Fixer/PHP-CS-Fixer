@@ -251,7 +251,7 @@ use Bar;
         $supportedSortTypes = self::SUPPORTED_SORT_TYPES;
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('sort_algorithm', 'whether the statements should be sorted alphabetically or by length, or not sorted'))
+            (new FixerOptionBuilder('sort_algorithm', 'Whether the statements should be sorted alphabetically or by length, or not sorted.'))
                 ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_ALPHA)
                 ->getOption(),

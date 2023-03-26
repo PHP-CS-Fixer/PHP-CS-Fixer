@@ -19,7 +19,7 @@ Default value: ``['use_trait', 'case', 'constant_public', 'constant_protected', 
 ``sort_algorithm``
 ~~~~~~~~~~~~~~~~~~
 
-How multiple occurrences of same type statements should be sorted
+How multiple occurrences of same type statements should be sorted.
 
 Allowed values: ``'alpha'``, ``'none'``
 

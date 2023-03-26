@@ -20,7 +20,7 @@ Default value: ``'long'``
 ``long_function``
 ~~~~~~~~~~~~~~~~~
 
-The function to be used to expand the short echo tags
+The function to be used to expand the short echo tags.
 
 Allowed values: ``'echo'``, ``'print'``
 
@@ -29,7 +29,7 @@ Default value: ``'echo'``
 ``shorten_simple_statements_only``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Render short-echo tags only in case of simple code
+Render short-echo tags only in case of simple code.
 
 Allowed types: ``bool``
 
