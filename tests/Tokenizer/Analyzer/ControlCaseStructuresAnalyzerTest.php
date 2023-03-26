@@ -413,8 +413,6 @@ $expressionResult = match ($condition) {
         $serializeActual = serialize($analysis);
 
         if ($serializeExpected === $serializeActual) {
-            static::assertTrue(true);
-
             return;
         }
 
