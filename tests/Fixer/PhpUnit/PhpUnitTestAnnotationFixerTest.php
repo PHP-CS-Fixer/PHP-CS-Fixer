@@ -1077,5 +1077,37 @@ class Test extends \PhpUnit\FrameWork\TestCase
 }',
             ['style' => 'annotation'],
         ];
+
+        yield [
+            '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    /**
+     * @test
+     */
+    #[OneTest]
+    #[Internal]
+    public function itWorks() {}
+
+    /**
+     * @test
+     */
+    #[TwoTest]
+    #[Internal]
+    public function itDoesSomething() {}
+}',
+            '<?php
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    #[OneTest]
+    #[Internal]
+    public function testItWorks() {}
+
+    #[TwoTest]
+    #[Internal]
+    public function testItDoesSomething() {}
+}',
+            ['style' => 'annotation'],
+        ];
     }
 }

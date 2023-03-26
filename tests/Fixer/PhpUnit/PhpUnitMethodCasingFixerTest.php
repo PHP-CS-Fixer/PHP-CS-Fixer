@@ -202,5 +202,28 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
                 public function test_my_app_too() {}
             }',
         ];
+
+        yield '@depends annotation with class name in Snake_Case and attributes in between' => [
+            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                public function testMyApp () {}
+
+                /**
+                 * @depends Foo_Bar_Test::testMyApp
+                 */
+                #[SimpleTest]
+                #[Deprecated]
+                public function testMyAppToo() {}
+            }',
+            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                public function test_my_app () {}
+
+                /**
+                 * @depends Foo_Bar_Test::test_my_app
+                 */
+                #[SimpleTest]
+                #[Deprecated]
+                public function test_my_app_too() {}
+            }',
+        ];
     }
 }

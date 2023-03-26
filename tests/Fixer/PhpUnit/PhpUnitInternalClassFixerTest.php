@@ -433,6 +433,55 @@ class Test extends TestCase
             }
             ',
         ];
+
+        yield 'it adds a docblock above when there are attributes' => [
+            '<?php
+
+            /**
+             * @internal
+             */
+            #[SimpleTest]
+            #[Annotated]
+            class Test extends TestCase
+            {
+            }
+            ',
+            '<?php
+
+            #[SimpleTest]
+            #[Annotated]
+            class Test extends TestCase
+            {
+            }
+            ',
+        ];
+
+        yield 'it adds the internal tag along other tags when there are attributes' => [
+            '<?php
+
+            /**
+             * @coversNothing
+             *
+             * @internal
+             */
+            #[SimpleTest]
+            #[Annotated]
+            class Test extends TestCase
+            {
+            }
+            ',
+            '<?php
+
+            /**
+             * @coversNothing
+             */
+            #[SimpleTest]
+            #[Annotated]
+            class Test extends TestCase
+            {
+            }
+            ',
+        ];
     }
 
     /**
