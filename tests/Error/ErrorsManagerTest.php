@@ -50,7 +50,6 @@ final class ErrorsManagerTest extends TestCase
 
         $errors = $errorsManager->getInvalidErrors();
 
-        self::assertIsArray($errors);
         self::assertCount(1, $errors);
         self::assertSame($error, array_shift($errors));
 
@@ -73,7 +72,6 @@ final class ErrorsManagerTest extends TestCase
 
         $errors = $errorsManager->getExceptionErrors();
 
-        self::assertIsArray($errors);
         self::assertCount(1, $errors);
         self::assertSame($error, array_shift($errors));
 
@@ -96,7 +94,6 @@ final class ErrorsManagerTest extends TestCase
 
         $errors = $errorsManager->getLintErrors();
 
-        self::assertIsArray($errors);
         self::assertCount(1, $errors);
         self::assertSame($error, array_shift($errors));
 

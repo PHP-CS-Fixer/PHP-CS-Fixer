@@ -357,7 +357,7 @@ final class ProjectCodeTest extends TestCase
         }
 
         $covers = Preg::match('/@covers (\S*)/', $doc, $matches);
-        self::assertNotFalse($covers, sprintf('Missing @covers in PHPDoc of test class "%s".', $testClassName));
+        self::assertSame(1, $covers, sprintf('Missing @covers in PHPDoc of test class "%s".', $testClassName));
 
         array_shift($matches);
         $class = '\\'.str_replace('PhpCsFixer\Tests\\', 'PhpCsFixer\\', substr($testClassName, 0, -4));

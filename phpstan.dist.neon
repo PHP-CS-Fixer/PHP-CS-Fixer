@@ -19,10 +19,11 @@ parameters:
         # ignore PHPUnit data providers return type as they are not checked against the test methods anyway
         - '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type (array|iterable)\.$#'
 
+        # Architectural assertions (e.g. ensuring inheritance, composition)
         -
             message: '#Call to static method .+ with .+ will always evaluate to true.$#'
             path: tests
-            count: 24
+            count: 19
 
         # baseline, should only shrink
         -
