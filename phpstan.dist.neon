@@ -3,6 +3,10 @@ includes:
     - dev-tools/vendor/phpstan/phpstan/conf/bleedingEdge.neon
     - dev-tools/vendor/phpstan/phpstan-phpunit/extension.neon
 
+    # Baseline, should only shrink! To regenerate it, just execute:
+    # dev-tools/vendor/bin/phpstan analyse --generate-baseline=dev-tools/phpstan/baseline.php
+    - dev-tools/phpstan/baseline.php
+
 parameters:
     level: 6
     paths:
@@ -24,11 +28,5 @@ parameters:
             message: '#Call to static method .+ with .+ will always evaluate to true.$#'
             path: tests
             count: 19
-
-        # baseline, should only shrink
-        -
-            message: '#^.+no value type specified in iterable type.+\.$#'
-            path: src/Fixer
-            count: 37
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache
