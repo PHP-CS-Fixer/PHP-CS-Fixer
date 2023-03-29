@@ -67,7 +67,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             'coversNothing',
             true,
             false,
-            false,
             [
                 'covers',
                 'coversDefaultClass',

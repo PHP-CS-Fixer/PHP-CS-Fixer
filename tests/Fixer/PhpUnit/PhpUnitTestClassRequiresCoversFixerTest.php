@@ -109,6 +109,14 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
             'with one-line docblock but annotation is missing' => [
                 '<?php
 
+                    /**
+                     * Description.
+                     * @coversNothing
+                     */
+                    final class FooTest extends \PHPUnit_Framework_TestCase {}
+                ',
+                '<?php
+
                     /** Description. */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',

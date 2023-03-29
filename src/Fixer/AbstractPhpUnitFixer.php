@@ -70,13 +70,12 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         string $annotation,
         bool $addWithEmptyLineBeforePhpdoc,
         bool $addWithEmptyLineBeforeAnnotation,
-        bool $addInSingleLinePhpdoc,
         array $preventingAnnotations
     ): void {
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
 
         if ($this->isPHPDoc($tokens, $docBlockIndex)) {
-            $this->updateDocBlockIfNeeded($tokens, $docBlockIndex, $annotation, $addWithEmptyLineBeforeAnnotation, $addInSingleLinePhpdoc, $preventingAnnotations);
+            $this->updateDocBlockIfNeeded($tokens, $docBlockIndex, $annotation, $addWithEmptyLineBeforeAnnotation, $preventingAnnotations);
         } else {
             $this->createDocBlock($tokens, $docBlockIndex, $annotation, $addWithEmptyLineBeforePhpdoc);
         }
@@ -119,13 +118,9 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         int $docBlockIndex,
         string $annotation,
         bool $addWithEmptyLineBeforeAnnotation,
-        bool $addInSingleLinePhpdoc,
         array $preventingAnnotations
     ): void {
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
-        if (!$addInSingleLinePhpdoc && 1 === \count($doc->getLines())) {
-            return;
-        }
         foreach ($preventingAnnotations as $preventingAnnotation) {
             if ([] !== $doc->getAnnotationsOfType($preventingAnnotation)) {
                 return;
