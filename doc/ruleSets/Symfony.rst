@@ -129,9 +129,7 @@ Rules
   ``['comment_types' => ['hash']]``
 - `single_line_throw <./../rules/function_notation/single_line_throw.rst>`_
 - `single_quote <./../rules/string_notation/single_quote.rst>`_
-- `single_space_after_construct <./../rules/language_construct/single_space_after_construct.rst>`_
-  config:
-  ``['constructs' => ['abstract', 'as', 'attribute', 'break', 'case', 'catch', 'class', 'clone', 'comment', 'const', 'const_import', 'continue', 'do', 'echo', 'else', 'elseif', 'enum', 'extends', 'final', 'finally', 'for', 'foreach', 'function', 'function_import', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'insteadof', 'interface', 'match', 'named_argument', 'namespace', 'new', 'open_tag_with_echo', 'php_doc', 'php_open', 'print', 'private', 'protected', 'public', 'readonly', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'trait', 'try', 'type_colon', 'use', 'use_lambda', 'use_trait', 'var', 'while', 'yield', 'yield_from']]``
+- `single_space_around_construct <./../rules/language_construct/single_space_around_construct.rst>`_
 - `space_after_semicolon <./../rules/semicolon/space_after_semicolon.rst>`_
   config:
   ``['remove_in_empty_for_expressions' => true]``

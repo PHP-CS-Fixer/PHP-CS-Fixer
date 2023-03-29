@@ -465,7 +465,10 @@ Language Construct
 - `no_unset_on_property <./language_construct/no_unset_on_property.rst>`_ *(risky)*
 
   Properties should be set to ``null`` instead of using ``unset``.
-- `single_space_after_construct <./language_construct/single_space_after_construct.rst>`_
+- `single_space_after_construct <./language_construct/single_space_after_construct.rst>`_ *(deprecated)*
+
+  Ensures a single space after language constructs.
+- `single_space_around_construct <./language_construct/single_space_around_construct.rst>`_
 
   Ensures a single space after language constructs.
 

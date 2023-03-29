@@ -2856,6 +2856,8 @@ List of Available Rules
 
    Ensures a single space after language constructs.
 
+   *warning deprecated*   Use ``single_space_around_construct`` instead.
+
    Configuration options:
 
    - | ``constructs``
@@ -2864,9 +2866,30 @@ List of Available Rules
      | Default value: ``['abstract', 'as', 'attribute', 'break', 'case', 'catch', 'class', 'clone', 'comment', 'const', 'const_import', 'continue', 'do', 'echo', 'else', 'elseif', 'enum', 'extends', 'final', 'finally', 'for', 'foreach', 'function', 'function_import', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'insteadof', 'interface', 'match', 'named_argument', 'namespace', 'new', 'open_tag_with_echo', 'php_doc', 'php_open', 'print', 'private', 'protected', 'public', 'readonly', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'trait', 'try', 'use', 'use_lambda', 'use_trait', 'var', 'while', 'yield', 'yield_from']``
 
 
+   `Source PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixer <./../src/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixer.php>`_
+-  `single_space_around_construct <./rules/language_construct/single_space_around_construct.rst>`_
+
+   Ensures a single space after language constructs.
+
+   Configuration options:
+
+   - | ``constructs_contain_a_single_space``
+     | List of constructs which must contain a single space.
+     | Allowed values: a subset of ``['yield_from']``
+     | Default value: ``['yield_from']``
+   - | ``constructs_preceded_by_a_single_space``
+     | List of constructs which must be preceded by a single space.
+     | Allowed values: a subset of ``['use_lambda']``
+     | Default value: ``['use_lambda']``
+   - | ``constructs_followed_by_a_single_space``
+     | List of constructs which must be followed by a single space.
+     | Allowed values: a subset of ``['abstract', 'as', 'attribute', 'break', 'case', 'catch', 'class', 'clone', 'comment', 'const', 'const_import', 'continue', 'do', 'echo', 'else', 'elseif', 'enum', 'extends', 'final', 'finally', 'for', 'foreach', 'function', 'function_import', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'insteadof', 'interface', 'match', 'named_argument', 'namespace', 'new', 'open_tag_with_echo', 'php_doc', 'php_open', 'print', 'private', 'protected', 'public', 'readonly', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'trait', 'try', 'type_colon', 'use', 'use_lambda', 'use_trait', 'var', 'while', 'yield', 'yield_from']``
+     | Default value: ``['abstract', 'as', 'attribute', 'break', 'case', 'catch', 'class', 'clone', 'comment', 'const', 'const_import', 'continue', 'do', 'echo', 'else', 'elseif', 'enum', 'extends', 'final', 'finally', 'for', 'foreach', 'function', 'function_import', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'insteadof', 'interface', 'match', 'named_argument', 'namespace', 'new', 'open_tag_with_echo', 'php_doc', 'php_open', 'print', 'private', 'protected', 'public', 'readonly', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'trait', 'try', 'type_colon', 'use', 'use_lambda', 'use_trait', 'var', 'while', 'yield', 'yield_from']``
+
+
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
-   `Source PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixer <./../src/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixer.php>`_
+   `Source PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAroundConstructFixer <./../src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php>`_
 -  `single_trait_insert_per_statement <./rules/class_notation/single_trait_insert_per_statement.rst>`_
 
    Each trait ``use`` must be done as single statement.

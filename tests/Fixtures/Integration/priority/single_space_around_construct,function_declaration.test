@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: single_space_around_construct,function_declaration.
+--RULESET--
+{"function_declaration": {"closure_function_spacing": "none"}, "single_space_around_construct": true}
+--EXPECT--
+<?php
+
+function() {};
+
+--INPUT--
+<?php
+
+function () {};
