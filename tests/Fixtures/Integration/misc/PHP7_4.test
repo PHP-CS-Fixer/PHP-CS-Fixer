@@ -6,6 +6,7 @@ PHP 7.4 test.
     "array_syntax": false,
     "braces": false,
     "class_definition": false,
+    "curly_braces_position": false,
     "no_null_property_initialization": true,
     "no_unset_on_property": true,
     "pow_to_exponentiation": true,

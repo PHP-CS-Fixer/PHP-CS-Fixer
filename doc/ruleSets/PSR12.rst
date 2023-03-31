@@ -10,13 +10,13 @@ Rules
 - `@PSR2 <./PSR2.rst>`_
 - `blank_line_after_opening_tag <./../rules/php_tag/blank_line_after_opening_tag.rst>`_
 - `blank_line_between_import_groups <./../rules/whitespace/blank_line_between_import_groups.rst>`_
-- `braces <./../rules/basic/braces.rst>`_
-  config:
-  ``['allow_single_line_anonymous_class_with_empty_body' => true]``
 - `class_definition <./../rules/class_notation/class_definition.rst>`_
   config:
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 - `compact_nullable_typehint <./../rules/whitespace/compact_nullable_typehint.rst>`_
+- `curly_braces_position <./../rules/basic/curly_braces_position.rst>`_
+  config:
+  ``['allow_single_line_empty_anonymous_classes' => true]``
 - `declare_equal_normalize <./../rules/language_construct/declare_equal_normalize.rst>`_
 - `lowercase_cast <./../rules/cast_notation/lowercase_cast.rst>`_
 - `lowercase_static_reference <./../rules/casing/lowercase_static_reference.rst>`_

@@ -9,9 +9,11 @@ Rules
 
 - `@PSR1 <./PSR1.rst>`_
 - `blank_line_after_namespace <./../rules/namespace_notation/blank_line_after_namespace.rst>`_
-- `braces <./../rules/basic/braces.rst>`_
 - `class_definition <./../rules/class_notation/class_definition.rst>`_
 - `constant_case <./../rules/casing/constant_case.rst>`_
+- `control_structure_braces <./../rules/control_structure/control_structure_braces.rst>`_
+- `control_structure_continuation_position <./../rules/control_structure/control_structure_continuation_position.rst>`_
+- `curly_braces_position <./../rules/basic/curly_braces_position.rst>`_
 - `elseif <./../rules/control_structure/elseif.rst>`_
 - `function_declaration <./../rules/function_notation/function_declaration.rst>`_
 - `indentation_type <./../rules/whitespace/indentation_type.rst>`_
@@ -22,6 +24,7 @@ Rules
   ``['on_multiline' => 'ensure_fully_multiline']``
 - `no_break_comment <./../rules/control_structure/no_break_comment.rst>`_
 - `no_closing_tag <./../rules/php_tag/no_closing_tag.rst>`_
+- `no_multiple_statements_per_line <./../rules/basic/no_multiple_statements_per_line.rst>`_
 - `no_space_around_double_colon <./../rules/operator/no_space_around_double_colon.rst>`_
 - `no_spaces_after_function_name <./../rules/function_notation/no_spaces_after_function_name.rst>`_
 - `no_spaces_inside_parenthesis <./../rules/whitespace/no_spaces_inside_parenthesis.rst>`_
@@ -33,6 +36,7 @@ Rules
   ``['elements' => ['property']]``
 - `single_import_per_statement <./../rules/import/single_import_per_statement.rst>`_
 - `single_line_after_imports <./../rules/import/single_line_after_imports.rst>`_
+- `statement_indentation <./../rules/whitespace/statement_indentation.rst>`_
 - `switch_case_semicolon_to_colon <./../rules/control_structure/switch_case_semicolon_to_colon.rst>`_
 - `switch_case_space <./../rules/control_structure/switch_case_space.rst>`_
 - `visibility_required <./../rules/class_notation/visibility_required.rst>`_

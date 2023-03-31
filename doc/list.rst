@@ -124,6 +124,11 @@ List of Available Rules
 
    The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
 
+   *warning deprecated*   Use ``single_space_around_construct``, ``control_structure_braces``,
+   ``curly_braces_position``, ``control_structure_continuation_position``,
+   ``declare_parentheses``, ``statement_indentation``,
+   ``no_multiple_statements_per_line`` and ``no_extra_blank_lines`` instead.
+
    Configuration options:
 
    - | ``allow_single_line_anonymous_class_with_empty_body``
@@ -147,8 +152,6 @@ List of Available Rules
      | Allowed values: ``'next'``, ``'same'``
      | Default value: ``'same'``
 
-
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../src/Fixer/Basic/BracesFixer.php>`_
 -  `cast_spaces <./rules/cast_notation/cast_spaces.rst>`_
@@ -317,6 +320,8 @@ List of Available Rules
 
    The body of each control structure MUST be enclosed within braces.
 
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
    `Source PhpCsFixer\\Fixer\\ControlStructure\\ControlStructureBracesFixer <./../src/Fixer/ControlStructure/ControlStructureBracesFixer.php>`_
 -  `control_structure_continuation_position <./rules/control_structure/control_structure_continuation_position.rst>`_
 
@@ -329,6 +334,8 @@ List of Available Rules
      | Allowed values: ``'next_line'``, ``'same_line'``
      | Default value: ``'same_line'``
 
+
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\ControlStructureContinuationPositionFixer <./../src/Fixer/ControlStructure/ControlStructureContinuationPositionFixer.php>`_
 -  `curly_braces_position <./rules/basic/curly_braces_position.rst>`_
@@ -366,6 +373,8 @@ List of Available Rules
      | Allowed types: ``bool``
      | Default value: ``true``
 
+
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer <./../src/Fixer/Basic/CurlyBracesPositionFixer.php>`_
 -  `date_time_create_from_format_call <./rules/function_notation/date_time_create_from_format_call.rst>`_
@@ -409,6 +418,8 @@ List of Available Rules
 -  `declare_parentheses <./rules/language_construct/declare_parentheses.rst>`_
 
    There must not be spaces around ``declare`` statement parentheses.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\LanguageConstruct\\DeclareParenthesesFixer <./../src/Fixer/LanguageConstruct/DeclareParenthesesFixer.php>`_
 -  `declare_strict_types <./rules/strict/declare_strict_types.rst>`_
@@ -1507,6 +1518,8 @@ List of Available Rules
 -  `no_multiple_statements_per_line <./rules/basic/no_multiple_statements_per_line.rst>`_
 
    There must not be more than one statement per line.
+
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Basic\\NoMultipleStatementsPerLineFixer <./../src/Fixer/Basic/NoMultipleStatementsPerLineFixer.php>`_
 -  `no_null_property_initialization <./rules/class_notation/no_null_property_initialization.rst>`_
@@ -2929,6 +2942,8 @@ List of Available Rules
 -  `statement_indentation <./rules/whitespace/statement_indentation.rst>`_
 
    Each statement must be indented.
+
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\StatementIndentationFixer <./../src/Fixer/Whitespace/StatementIndentationFixer.php>`_
 -  `static_lambda <./rules/function_notation/static_lambda.rst>`_
