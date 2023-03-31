@@ -375,6 +375,116 @@ class Test extends TestCase
     }
 
     /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string[]>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'it adds a docblock above when there is an attribute' => [
+            '<?php
+
+            /**
+             * @internal
+             */
+            #[SimpleTest]
+            class Test extends TestCase
+            {
+            }
+            ',
+            '<?php
+
+            #[SimpleTest]
+            class Test extends TestCase
+            {
+            }
+            ',
+        ];
+
+        yield 'it adds the internal tag along other tags when there is an attribute' => [
+            '<?php
+
+            /**
+             * @coversNothing
+             *
+             * @internal
+             */
+            #[SimpleTest]
+            class Test extends TestCase
+            {
+            }
+            ',
+            '<?php
+
+            /**
+             * @coversNothing
+             */
+            #[SimpleTest]
+            class Test extends TestCase
+            {
+            }
+            ',
+        ];
+
+        yield 'it adds a docblock above when there are attributes' => [
+            '<?php
+
+            /**
+             * @internal
+             */
+            #[SimpleTest]
+            #[Annotated]
+            class Test extends TestCase
+            {
+            }
+            ',
+            '<?php
+
+            #[SimpleTest]
+            #[Annotated]
+            class Test extends TestCase
+            {
+            }
+            ',
+        ];
+
+        yield 'it adds the internal tag along other tags when there are attributes' => [
+            '<?php
+
+            /**
+             * @coversNothing
+             *
+             * @internal
+             */
+            #[SimpleTest]
+            #[Annotated]
+            class Test extends TestCase
+            {
+            }
+            ',
+            '<?php
+
+            /**
+             * @coversNothing
+             */
+            #[SimpleTest]
+            #[Annotated]
+            class Test extends TestCase
+            {
+            }
+            ',
+        ];
+    }
+
+    /**
      * @param array<string, mixed> $config
      *
      * @dataProvider provideFix82Cases
