@@ -151,5 +151,9 @@ final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
             '<?php if ($foo) { switch ($foo): case 1: ?> foo <?php endswitch; } ?>',
             '<?php if ($foo) switch ($foo): case 1: ?> foo <?php endswitch; ?>',
         ];
+
+        yield 'declare followed by closing tag' => [
+            '<?php declare(strict_types=1) ?>',
+        ];
     }
 }
