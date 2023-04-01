@@ -1062,9 +1062,9 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixWithDifferentCommentTextCases(): array
+    public static function provideTestFixWithDifferentCommentTextCases(): array
     {
-        $cases = $this->provideFixCases();
+        $cases = self::provideFixCases();
 
         $replaceCommentText = static function (string $php): string {
             return strtr($php, [
@@ -1120,9 +1120,9 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixWithDifferentLineEndingCases(): iterable
+    public static function provideTestFixWithDifferentLineEndingCases(): iterable
     {
-        foreach ($this->provideFixCases() as $case) {
+        foreach (self::provideFixCases() as $case) {
             $case[0] = str_replace("\n", "\r\n", $case[0]);
 
             if (isset($case[1])) {

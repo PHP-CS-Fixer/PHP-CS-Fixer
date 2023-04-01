@@ -37,13 +37,13 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases(): iterable
+    public static function provideTestFixCases(): iterable
     {
         yield ['<?php $self->foo();'];
 
         yield [self::generateTest('$self->foo();')];
 
-        foreach ($this->getMethodsMap() as $methodBefore => $methodAfter) {
+        foreach (self::getMethodsMap() as $methodBefore => $methodAfter) {
             yield [self::generateTest("\$sth->{$methodBefore}(1, 1);")];
 
             yield [self::generateTest("\$sth->{$methodAfter}(1, 1);")];
@@ -91,7 +91,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
             ];
         }
 
-        foreach ($this->getMethodsMap() as $methodBefore => $methodAfter) {
+        foreach (self::getMethodsMap() as $methodBefore => $methodAfter) {
             yield [
                 self::generateTest("static::{$methodAfter}(1, 2,);"),
                 self::generateTest("static::{$methodBefore}(1, 2,);"),
@@ -115,11 +115,11 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public function provideTestNoFixWithWrongNumberOfArgumentsCases(): array
+    public static function provideTestNoFixWithWrongNumberOfArgumentsCases(): array
     {
         $cases = [];
 
-        foreach ($this->getMethodsMap() as $candidate => $fix) {
+        foreach (self::getMethodsMap() as $candidate => $fix) {
             $cases[sprintf('do not change call to "%s" without arguments.', $candidate)] = [
                 self::generateTest(sprintf('$this->%s();', $candidate)),
             ];
@@ -151,7 +151,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     /**
      * @return array<string, string>
      */
-    private function getMethodsMap(): array
+    private static function getMethodsMap(): array
     {
         return [
             'assertAttributeEquals' => 'assertAttributeSame',

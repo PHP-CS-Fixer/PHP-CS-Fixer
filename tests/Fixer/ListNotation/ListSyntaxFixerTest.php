@@ -42,10 +42,10 @@ final class ListSyntaxFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixToLongSyntaxCases(): iterable
+    public static function provideFixToLongSyntaxCases(): iterable
     {
         // reverse testing
-        $shortCases = $this->provideFixToShortSyntaxCases();
+        $shortCases = self::provideFixToShortSyntaxCases();
 
         foreach ($shortCases as $label => $shortCase) {
             if ('messy comments case' === $label) {
@@ -208,9 +208,9 @@ $a;#
         ];
     }
 
-    public function provideFixToLongSyntaxPhp72Cases(): iterable
+    public static function provideFixToLongSyntaxPhp72Cases(): iterable
     {
-        return TestCaseUtils::swapExpectedInputTestCases($this->provideFixToShortSyntaxPhp72Cases());
+        return TestCaseUtils::swapExpectedInputTestCases(self::provideFixToShortSyntaxPhp72Cases());
     }
 
     /**
@@ -249,9 +249,9 @@ $a;#
         ];
     }
 
-    public function provideFixToLongSyntaxPhp73Cases(): iterable
+    public static function provideFixToLongSyntaxPhp73Cases(): iterable
     {
-        return TestCaseUtils::swapExpectedInputTestCases($this->provideFixToShortSyntaxPhp73Cases());
+        return TestCaseUtils::swapExpectedInputTestCases(self::provideFixToShortSyntaxPhp73Cases());
     }
 
     /**

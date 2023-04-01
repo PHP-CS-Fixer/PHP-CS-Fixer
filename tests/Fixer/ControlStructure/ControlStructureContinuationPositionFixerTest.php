@@ -286,9 +286,9 @@ final class ControlStructureContinuationPositionFixerTest extends AbstractFixerT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithWindowsLineEndingsCases(): iterable
+    public static function provideFixWithWindowsLineEndingsCases(): iterable
     {
-        foreach ($this->provideFixCases() as $label => $case) {
+        foreach (self::provideFixCases() as $label => $case) {
             yield $label => [
                 Preg::replace('/\n/', "\r\n", $case[0]),
                 isset($case[1]) ? Preg::replace('/\n/', "\r\n", $case[1]) : null,

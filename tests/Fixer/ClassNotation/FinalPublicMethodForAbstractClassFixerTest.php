@@ -36,9 +36,9 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
-        $original = $fixed = $this->getClassElementStubs();
+        $original = $fixed = self::getClassElementStubs();
         $fixed = str_replace('public function f1', 'final public function f1', $fixed);
         $fixed = str_replace('public static function f4', 'final public static function f4', $fixed);
         $fixed = str_replace('static public function f7', 'final static public function f7', $fixed);
@@ -103,7 +103,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
             'anonymous-class' => [
                 sprintf(
                     '<?php abstract class MyClass { private function test() { $a = new class { %s }; } }',
-                    $this->getClassElementStubs()
+                    self::getClassElementStubs()
                 ),
             ],
             'constant visibility' => [
@@ -116,7 +116,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         ];
     }
 
-    private function getClassElementStubs(): string
+    private static function getClassElementStubs(): string
     {
         return '
             public $a1;

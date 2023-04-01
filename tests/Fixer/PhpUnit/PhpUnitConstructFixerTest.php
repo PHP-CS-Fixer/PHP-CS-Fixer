@@ -48,7 +48,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public function provideTestFixCases(): array
+    public static function provideTestFixCases(): array
     {
         $cases = [
             ['$sth->assertSame(true, $foo);'],
@@ -141,11 +141,11 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
                     ',
                 ],
             ],
-            $this->generateCases('$this->assert%s%s($a); //%s %s', '$this->assert%s(%s, $a); //%s %s'),
-            $this->generateCases('$this->assert%s%s($a, "%s", "%s");', '$this->assert%s(%s, $a, "%s", "%s");'),
-            $this->generateCases('static::assert%s%s($a); //%s %s', 'static::assert%s(%s, $a); //%s %s'),
-            $this->generateCases('STATIC::assert%s%s($a); //%s %s', 'STATIC::assert%s(%s, $a); //%s %s'),
-            $this->generateCases('self::assert%s%s($a); //%s %s', 'self::assert%s(%s, $a); //%s %s')
+            self::generateCases('$this->assert%s%s($a); //%s %s', '$this->assert%s(%s, $a); //%s %s'),
+            self::generateCases('$this->assert%s%s($a, "%s", "%s");', '$this->assert%s(%s, $a, "%s", "%s");'),
+            self::generateCases('static::assert%s%s($a); //%s %s', 'static::assert%s(%s, $a); //%s %s'),
+            self::generateCases('STATIC::assert%s%s($a); //%s %s', 'STATIC::assert%s(%s, $a); //%s %s'),
+            self::generateCases('self::assert%s%s($a); //%s %s', 'self::assert%s(%s, $a); //%s %s')
         );
     }
 
@@ -205,7 +205,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     /**
      * @return list<array{string, string}>
      */
-    private function generateCases(string $expectedTemplate, string $inputTemplate): array
+    private static function generateCases(string $expectedTemplate, string $inputTemplate): array
     {
         $functionTypes = ['Same' => true, 'NotSame' => false, 'Equals' => true, 'NotEquals' => false];
         $cases = [];

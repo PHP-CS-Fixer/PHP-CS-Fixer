@@ -315,12 +315,12 @@ A#
         ];
     }
 
-    public function provideClassesCases(): array
+    public static function provideClassesCases(): array
     {
         return array_merge(
-            $this->provideClassyCases('class'),
-            $this->provideClassyExtendingCases('class'),
-            $this->provideClassyImplementsCases()
+            self::provideClassyCases('class'),
+            self::provideClassyExtendingCases('class'),
+            self::provideClassyImplementsCases()
         );
     }
 
@@ -374,11 +374,11 @@ A#
         ];
     }
 
-    public function provideInterfacesCases(): array
+    public static function provideInterfacesCases(): array
     {
         $cases = array_merge(
-            $this->provideClassyCases('interface'),
-            $this->provideClassyExtendingCases('interface')
+            self::provideClassyCases('interface'),
+            self::provideClassyExtendingCases('interface')
         );
 
         $cases[] = [
@@ -411,9 +411,9 @@ TestInterface3, /**/     TestInterface4   ,
         return $cases;
     }
 
-    public function provideTraitsCases(): array
+    public static function provideTraitsCases(): array
     {
-        return $this->provideClassyCases('trait');
+        return self::provideClassyCases('trait');
     }
 
     /**
@@ -803,7 +803,7 @@ $a = new class implements
         static::assertSame($expected, $result);
     }
 
-    private function provideClassyCases(string $classy): array
+    private static function provideClassyCases(string $classy): array
     {
         return [
             [
@@ -871,7 +871,7 @@ namespace {
         ];
     }
 
-    private function provideClassyExtendingCases(string $classy): array
+    private static function provideClassyExtendingCases(string $classy): array
     {
         return [
             [
@@ -901,7 +901,7 @@ extends
         ];
     }
 
-    private function provideClassyImplementsCases(): array
+    private static function provideClassyImplementsCases(): array
     {
         return [
             [

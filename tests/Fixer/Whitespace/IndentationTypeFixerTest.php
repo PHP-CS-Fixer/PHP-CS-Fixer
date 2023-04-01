@@ -307,10 +307,10 @@ function myFunction() {
         $this->doTest($input, $expected);
     }
 
-    public function provideMessyWhitespacesReversedCases(): array
+    public static function provideMessyWhitespacesReversedCases(): array
     {
         return array_filter(
-            $this->provideMessyWhitespacesCases(),
+            self::provideMessyWhitespacesCases(),
             static function (string $key): bool {
                 return !str_contains($key, 'mix indentation');
             },

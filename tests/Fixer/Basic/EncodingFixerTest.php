@@ -33,11 +33,11 @@ final class EncodingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input, $file);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
-        yield $this->prepareTestCase('test-utf8.case1.php', 'test-utf8.case1-bom.php');
+        yield self::prepareTestCase('test-utf8.case1.php', 'test-utf8.case1-bom.php');
 
-        yield $this->prepareTestCase('test-utf8.case2.php', 'test-utf8.case2-bom.php');
+        yield self::prepareTestCase('test-utf8.case2.php', 'test-utf8.case2-bom.php');
 
         yield ['<?php '];
     }
@@ -45,10 +45,10 @@ final class EncodingFixerTest extends AbstractFixerTestCase
     /**
      * @return array{string, string|null, \SplFileInfo}
      */
-    private function prepareTestCase(string $expectedFilename, ?string $inputFilename = null): array
+    private static function prepareTestCase(string $expectedFilename, ?string $inputFilename = null): array
     {
-        $expectedFile = $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$expectedFilename);
-        $inputFile = $inputFilename ? $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$inputFilename) : null;
+        $expectedFile = self::getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$expectedFilename);
+        $inputFile = $inputFilename ? self::getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$inputFilename) : null;
 
         return [
             file_get_contents($expectedFile->getRealPath()),

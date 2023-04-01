@@ -33,9 +33,9 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithBracesCases(): iterable
+    public static function provideFixWithBracesCases(): iterable
     {
-        yield from $this->createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo()
@@ -288,9 +288,9 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithoutBracesCases(): iterable
+    public static function provideFixWithoutBracesCases(): iterable
     {
-        yield from $this->createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * Foo.

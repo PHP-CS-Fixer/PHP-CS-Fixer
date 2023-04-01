@@ -354,7 +354,7 @@ abstract class AbstractFixerTestCase extends TestCase
         return new $fixerClassName();
     }
 
-    protected function getTestFile(string $filename = __FILE__): \SplFileInfo
+    protected static function getTestFile(string $filename = __FILE__): \SplFileInfo
     {
         static $files = [];
 
@@ -385,7 +385,7 @@ abstract class AbstractFixerTestCase extends TestCase
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');
         }
 
-        $file ??= $this->getTestFile();
+        $file ??= self::getTestFile();
         $fileIsSupported = $this->fixer->supports($file);
 
         if (null !== $input) {

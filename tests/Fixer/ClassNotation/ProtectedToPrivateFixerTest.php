@@ -33,10 +33,10 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
-        $attributesAndMethodsOriginal = $this->getAttributesAndMethods(true);
-        $attributesAndMethodsFixed = $this->getAttributesAndMethods(false);
+        $attributesAndMethodsOriginal = self::getAttributesAndMethods(true);
+        $attributesAndMethodsFixed = self::getAttributesAndMethods(false);
 
         return [
             'final-extends' => [
@@ -315,7 +315,7 @@ echo DocumentStats::DRAFT->getStatusName();
         ];
     }
 
-    private function getAttributesAndMethods(bool $original): string
+    private static function getAttributesAndMethods(bool $original): string
     {
         $attributesAndMethodsOriginal = '
 public $v1;

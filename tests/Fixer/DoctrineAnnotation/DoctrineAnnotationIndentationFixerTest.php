@@ -43,9 +43,9 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public static function provideFixCases(): array
     {
-        $cases = $this->createTestCases([
+        $cases = self::createTestCases([
             ['
 /**
  * Foo.
@@ -362,9 +362,9 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithIndentedMixedLinesCases(): array
+    public static function provideFixWithIndentedMixedLinesCases(): array
     {
-        return $this->createTestCases([
+        return self::createTestCases([
             ['
 /**
  * Foo.
