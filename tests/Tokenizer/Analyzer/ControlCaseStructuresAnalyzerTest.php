@@ -402,9 +402,8 @@ $expressionResult = match ($condition) {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf('Unexpected type "%d".', T_IF));
 
-        foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_IF]) as $analysis) {
-            echo 1; // we need to use `foreach` here to prevent PHP removing the call as optimization
-        }
+        // we use `iterator_to_array` to ensure generator is consumed and it has possibility to raise exception
+        iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_IF]));
     }
 
     private static function assertAnalysis(AbstractControlCaseStructuresAnalysis $expectedAnalysis, AbstractControlCaseStructuresAnalysis $analysis): void
