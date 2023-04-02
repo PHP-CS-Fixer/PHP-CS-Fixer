@@ -92,7 +92,7 @@ abstract class AbstractSetTest extends TestCase
         static::assertSame($setRulesSorted, $setRules);
     }
 
-    private static function assertSanityString(string $string): void
+    protected static function assertSanityString(string $string): void
     {
         static::assertSame(trim($string), $string);
         static::assertNotSame('', $string);
