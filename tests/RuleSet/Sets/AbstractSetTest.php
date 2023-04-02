@@ -67,6 +67,12 @@ abstract class AbstractSetTest extends TestCase
         }
     }
 
+    protected static function assertSanityString(string $string): void
+    {
+        static::assertSame(trim($string), $string);
+        static::assertNotSame('', $string);
+    }
+
     /**
      * @param array<string, array<string, mixed>|bool> $setRules
      */
@@ -90,12 +96,6 @@ abstract class AbstractSetTest extends TestCase
         ksort($setRulesSorted);
 
         static::assertSame($setRulesSorted, $setRules);
-    }
-
-    protected static function assertSanityString(string $string): void
-    {
-        static::assertSame(trim($string), $string);
-        static::assertNotSame('', $string);
     }
 
     private static function getSet(): RuleSetDescriptionInterface
