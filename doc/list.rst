@@ -1526,7 +1526,7 @@ List of Available Rules
 
    Properties MUST not be explicitly initialized with ``null`` except when they have a type declaration (PHP 7.4).
 
-   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\NoNullPropertyInitializationFixer <./../src/Fixer/ClassNotation/NoNullPropertyInitializationFixer.php>`_
 -  `no_php4_constructor <./rules/class_notation/no_php4_constructor.rst>`_

@@ -66,6 +66,7 @@ Rules
 - `no_leading_namespace_whitespace <./../rules/namespace_notation/no_leading_namespace_whitespace.rst>`_
 - `no_mixed_echo_print <./../rules/alias/no_mixed_echo_print.rst>`_
 - `no_multiline_whitespace_around_double_arrow <./../rules/array_notation/no_multiline_whitespace_around_double_arrow.rst>`_
+- `no_null_property_initialization <./../rules/class_notation/no_null_property_initialization.rst>`_
 - `no_short_bool_cast <./../rules/cast_notation/no_short_bool_cast.rst>`_
 - `no_singleline_whitespace_before_semicolons <./../rules/semicolon/no_singleline_whitespace_before_semicolons.rst>`_
 - `no_spaces_around_offset <./../rules/whitespace/no_spaces_around_offset.rst>`_
