@@ -9,7 +9,6 @@ Rules
 
 - `@PER <./PER.rst>`_
 - `@Symfony <./Symfony.rst>`_
-- `align_multiline_comment <./../rules/phpdoc/align_multiline_comment.rst>`_
 - `array_indentation <./../rules/whitespace/array_indentation.rst>`_
 - `blank_line_before_statement <./../rules/whitespace/blank_line_before_statement.rst>`_
   config:

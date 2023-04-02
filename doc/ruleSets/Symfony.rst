@@ -8,6 +8,7 @@ Rules
 -----
 
 - `@PSR12 <./PSR12.rst>`_
+- `align_multiline_comment <./../rules/phpdoc/align_multiline_comment.rst>`_
 - `array_syntax <./../rules/array_notation/array_syntax.rst>`_
 - `backtick_to_shell_exec <./../rules/alias/backtick_to_shell_exec.rst>`_
 - `binary_operator_spaces <./../rules/operator/binary_operator_spaces.rst>`_
