@@ -71,27 +71,18 @@ Put this content inside:
     */
    final class RemoveCommentsFixer extends AbstractFixer
    {
-       /**
-        * {@inheritdoc}
-        */
-       public function getDefinition()
+       public function getDefinition(): FixerDefinition
        {
            // Return a definition of the fixer, it will be used in the documentation.
        }
 
-       /**
-        * {@inheritdoc}
-        */
-       public function isCandidate(Tokens $tokens)
+       public function isCandidate(Tokens $tokens): bool
        {
            // Check whether the collection is a candidate for fixing.
            // Has to be ultra cheap to execute.
        }
 
-       /**
-        * {@inheritdoc}
-        */
-       protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+       protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
        {
            // Add the fixing logic of the fixer here.
        }
@@ -140,7 +131,7 @@ Now let us create the test file at
            $this->doTest($expected, $input);
        }
 
-       public function provideFixCases()
+       public static function provideFixCases()
        {
            return [];
        }
@@ -161,7 +152,7 @@ Keeping things as they are:
    // tests/Fixer/Comment/RemoveCommentsFixerTest.php
 
        // ...
-       public function provideFixCases()
+       public static function provideFixCases()
        {
            return [
                ['<?php echo "This should not be changed";'], // Each sub-array is a test
@@ -176,7 +167,7 @@ Ensuring things change:
    // tests/Fixer/Comment/RemoveCommentsFixerTest.php
 
        // ...
-       public function provideFixCases()
+       public static function provideFixCases()
        {
            return [
                [
@@ -209,32 +200,29 @@ like:
 
    namespace PhpCsFixer\Tests\Fixer\Comment;
 
-   use PhpCsFixer\Tests\Fixer\AbstractFixerTestBase;
+   use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
    /**
     * @author Your name <your@email.com>
     *
     * @internal
     */
-   final class RemoveCommentsFixerTest extends AbstractFixerTestBase
+   final class RemoveCommentsFixerTest extends AbstractFixerTestCase
    {
        /**
-        * @param string      $expected
-        * @param null|string $input
-        *
         * @dataProvider provideFixCases
         */
-       public function testFix($expected, $input = null)
+       public function testFix(string $expected, ?string $input = null): void
        {
            $this->doTest($expected, $input);
        }
 
-       public function provideFixCases()
+       public static function provideFixCases()
        {
            return [
                [
-                  '<?php echo "This should be changed"; ', // This is expected output
-                  '<?php echo "This should be changed"; /* Comment */', // This is input
+                   '<?php echo "This should be changed"; ', // This is expected output
+                   '<?php echo "This should be changed"; /* Comment */', // This is input
                ],
            ];
        }
@@ -254,10 +242,7 @@ First, we need to create one method to describe what this fixer does:
 
    final class RemoveCommentsFixer extends AbstractFixer
    {
-       /**
-        * {@inheritdoc}
-        */
-       public function getDefinition()
+       public function getDefinition(): FixerDefinition
        {
            return new FixerDefinition(
                'Removes all comments of the code that are preceded by `;` (semicolon).', // Trailing dot is important. We thrive to use English grammar properly.
@@ -288,10 +273,7 @@ Next, we must filter what type of tokens we want to fix. Here, we are interested
    {
        // ...
 
-       /**
-        * {@inheritdoc}
-        */
-       public function isCandidate(Tokens $tokens)
+       public function isCandidate(Tokens $tokens): bool
        {
            return $tokens->isTokenKindFound(T_COMMENT);
        }
@@ -303,14 +285,11 @@ For now, let us just make a fixer that applies no modification:
 
    // src/Fixer/Comment/RemoveCommentsFixer.php
 
-   class RemoveCommentsFixer extends AbstractFixer
+   final class RemoveCommentsFixer extends AbstractFixer
    {
        // ...
 
-       /**
-        * {@inheritdoc}
-        */
-       protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+       protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
        {
            // no action
        }
@@ -361,10 +340,7 @@ iterate the token(s) we are interested in.
    {
        // ...
 
-       /**
-        * {@inheritdoc}
-        */
-       protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+       protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
        {
            foreach ($tokens as $index => $token) {
                if (!$token->isGivenKind(T_COMMENT)) {
@@ -387,10 +363,7 @@ token is a semicolon.
    {
        // ...
 
-       /**
-        * {@inheritdoc}
-        */
-       protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+       protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
        {
            foreach ($tokens as $index => $token) {
                if (!$token->isGivenKind(T_COMMENT)) {
@@ -433,10 +406,7 @@ So the fixer in the end looks like this:
     */
    final class RemoveCommentsFixer extends AbstractFixer
    {
-       /**
-        * {@inheritdoc}
-        */
-       public function getDefinition()
+       public function getDefinition(): FixerDefinition
        {
            return new FixerDefinition(
                'Removes all comments of the code that are preceded by `;` (semicolon).', // Trailing dot is important. We thrive to use English grammar properly.
@@ -448,19 +418,14 @@ So the fixer in the end looks like this:
            );
        }
 
-       /**
-        * {@inheritdoc}
-        */
-       public function isCandidate(Tokens $tokens)
+       public function isCandidate(Tokens $tokens): bool
        {
            return $tokens->isTokenKindFound(T_COMMENT);
        }
 
-       /**
-        * {@inheritdoc}
-        */
-       protected function applyFix(\SplFileInfo $file, Tokens $tokens) {
-           foreach($tokens as $index => $token){
+       protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+       {
+           foreach ($tokens as $index => $token) {
                if (!$token->isGivenKind(T_COMMENT)) {
                    continue;
                }
