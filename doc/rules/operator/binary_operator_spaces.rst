@@ -12,7 +12,7 @@ Configuration
 
 Default fix strategy.
 
-Allowed values: ``'align'``, ``'align_by_scope'``, ``'align_single_space'``, ``'align_single_space_by_scope'``, ``'align_single_space_minimal'``, ``'align_single_space_minimal_by_scope'``, ``'no_space'``, ``'single_space'``, ``null``
+Allowed values: ``'align'``, ``'align_by_scope'``, ``'align_single_space'``, ``'align_single_space_by_scope'``, ``'align_single_space_minimal'``, ``'align_single_space_minimal_by_scope'``, ``'no_space'``, ``'single_space'``, ``'at_least_single_space'``, ``null``
 
 Default value: ``'single_space'``
 
@@ -244,6 +244,22 @@ With configuration: ``['operators' => ['=>' => 'align_single_space_minimal_by_sc
    +    "baz"           => 1,
     ];
 
+Example #13
+~~~~~~~~~~~
+
+With configuration: ``['default' => 'at_least_single_space']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    $array = [
+        "foo"            =>   1,
+   -    "baaaaaaaaaaar"=>  11,
+   +    "baaaaaaaaaaar" =>  11,
+    ];
+
 Rule sets
 ---------
 
@@ -254,3 +270,8 @@ The rule is part of the following rule sets:
 
 @Symfony
   Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``binary_operator_spaces`` rule with the default config.
+
+@PSR-12
+ Using the `@PRS-12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``binary_operator_spaces`` rule with with the config below:
+
+  ``['default' => ['at_least_single_space]``
