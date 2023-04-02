@@ -132,6 +132,15 @@ $a//
                 ['operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE]],
             ],
             [
+                '<?php $a =  1;
+                $b=2;
+                ',
+                '<?php $a =  1;
+                $b=2;
+                ',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::AT_LEAST_SINGLE_SPACE]],
+            ],
+            [
                 '<?php
     $var = [1 => 2];
     foreach ([
