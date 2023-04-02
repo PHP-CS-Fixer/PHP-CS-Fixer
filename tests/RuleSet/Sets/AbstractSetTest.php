@@ -76,7 +76,7 @@ abstract class AbstractSetTest extends TestCase
     /**
      * @param array<string, array<string, mixed>|bool> $setRules
      */
-    private static function assertRules(array $setRules, FixerFactory $factory, string $setName): void
+    protected static function assertRules(array $setRules, FixerFactory $factory, string $setName): void
     {
         $sawRule = false;
 
