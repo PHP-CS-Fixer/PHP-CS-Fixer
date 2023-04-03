@@ -450,6 +450,11 @@ abstract class AbstractFixerTestCase extends TestCase
         return null;
     }
 
+    protected static function assertCorrectCasing(string $needle, string $haystack, string $message): void
+    {
+        static::assertSame(substr_count(strtolower($haystack), strtolower($needle)), substr_count($haystack, $needle), $message);
+    }
+
     private function getLinter(): LinterInterface
     {
         static $linter = null;
@@ -470,11 +475,6 @@ abstract class AbstractFixerTestCase extends TestCase
         static::assertCorrectCasing($description, 'PHPDoc', sprintf('[%s] `PHPDoc` must be in correct casing in %s.', $fixerName, $descriptionType));
         static::assertCorrectCasing($description, 'PHPUnit', sprintf('[%s] `PHPUnit` must be in correct casing in %s.', $fixerName, $descriptionType));
         static::assertFalse(strpos($descriptionType, '``'), sprintf('[%s] The %s must no contain sequential backticks.', $fixerName, $descriptionType));
-    }
-
-    private static function assertCorrectCasing(string $needle, string $haystack, string $message): void
-    {
-        static::assertSame(substr_count(strtolower($haystack), strtolower($needle)), substr_count($haystack, $needle), $message);
     }
 
     /**

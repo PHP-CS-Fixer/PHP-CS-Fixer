@@ -67,10 +67,16 @@ abstract class AbstractSetTest extends TestCase
         }
     }
 
+    protected static function assertSanityString(string $string): void
+    {
+        static::assertSame(trim($string), $string);
+        static::assertNotSame('', $string);
+    }
+
     /**
      * @param array<string, array<string, mixed>|bool> $setRules
      */
-    private static function assertRules(array $setRules, FixerFactory $factory, string $setName): void
+    protected static function assertRules(array $setRules, FixerFactory $factory, string $setName): void
     {
         $sawRule = false;
 
@@ -90,12 +96,6 @@ abstract class AbstractSetTest extends TestCase
         ksort($setRulesSorted);
 
         static::assertSame($setRulesSorted, $setRules);
-    }
-
-    private static function assertSanityString(string $string): void
-    {
-        static::assertSame(trim($string), $string);
-        static::assertNotSame('', $string);
     }
 
     private static function getSet(): RuleSetDescriptionInterface

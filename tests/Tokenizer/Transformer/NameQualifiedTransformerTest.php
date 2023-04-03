@@ -50,7 +50,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
             $this->transformer->process($tokens, $tokens[$i], $i);
         }
 
-        self::assertTokens($expectedTokens, $tokens);
+        static::assertTokens($expectedTokens, $tokens);
 
         if (null === $input) {
             static::assertFalse($tokens->isChanged());
@@ -161,7 +161,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
      */
     public function testPriority(array $expected, string $source): void
     {
-        self::assertTokens(Tokens::fromArray($expected), Tokens::fromCode($source));
+        static::assertTokens(Tokens::fromArray($expected), Tokens::fromCode($source));
     }
 
     public static function providePriorityCases(): iterable

@@ -1280,7 +1280,7 @@ $bar;',
         $tokens->overrideRange($indexStart, $indexEnd, $items);
         $tokens->clearEmptyTokens();
 
-        self::assertTokens(Tokens::fromArray($expected), $tokens);
+        static::assertTokens(Tokens::fromArray($expected), $tokens);
     }
 
     /**
@@ -1295,7 +1295,7 @@ $bar;',
         $tokens->overrideRange($indexStart, $indexEnd, $items);
         $tokens->clearEmptyTokens();
 
-        self::assertTokens(Tokens::fromArray($expected), $tokens);
+        static::assertTokens(Tokens::fromArray($expected), $tokens);
     }
 
     public static function provideOverrideRangeCases(): iterable

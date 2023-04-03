@@ -210,7 +210,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         $errorsManager = new ErrorsManager();
-        $fixers = static::createFixers($case);
+        $fixers = self::createFixers($case);
         $runner = new Runner(
             new \ArrayIterator([new \SplFileInfo($tmpFile)]),
             $fixers,
@@ -315,7 +315,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                     static function (FixerInterface $fixer): int {
                         return $fixer->getPriority();
                     },
-                    static::createFixers($case)
+                    self::createFixers($case)
                 ))),
                 sprintf(
                     'Rules priorities are not differential enough. If rules would be used in reverse order then final output would be different than the expected one. For that, different priorities must be set up for used rules to ensure stable order of them. In "%s".',

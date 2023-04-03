@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 trait AssertTokensTrait
 {
-    private static function assertTokens(Tokens $expectedTokens, Tokens $inputTokens): void
+    protected static function assertTokens(Tokens $expectedTokens, Tokens $inputTokens): void
     {
         foreach ($expectedTokens as $index => $expectedToken) {
             if (!isset($inputTokens[$index])) {
