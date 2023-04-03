@@ -88,6 +88,9 @@ Rules
 - `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
 - `normalize_index_brace <./../rules/array_notation/normalize_index_brace.rst>`_
 - `object_operator_without_whitespace <./../rules/operator/object_operator_without_whitespace.rst>`_
+- `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_
+  config:
+  ``['only_booleans' => true]``
 - `ordered_imports <./../rules/import/ordered_imports.rst>`_
   config:
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``

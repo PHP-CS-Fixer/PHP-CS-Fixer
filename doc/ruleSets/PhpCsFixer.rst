@@ -38,9 +38,6 @@ Rules
   ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'negative_instanceof', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``
 - `no_useless_else <./../rules/control_structure/no_useless_else.rst>`_
 - `no_useless_return <./../rules/return_notation/no_useless_return.rst>`_
-- `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_
-  config:
-  ``['only_booleans' => true]``
 - `ordered_class_elements <./../rules/class_notation/ordered_class_elements.rst>`_
 - `php_unit_internal_class <./../rules/php_unit/php_unit_internal_class.rst>`_
 - `php_unit_test_class_requires_covers <./../rules/php_unit/php_unit_test_class_requires_covers.rst>`_

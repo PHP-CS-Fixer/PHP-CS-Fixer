@@ -135,6 +135,9 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_whitespace_before_comma_in_array' => true,
             'normalize_index_brace' => true,
             'object_operator_without_whitespace' => true,
+            'operator_linebreak' => [
+                'only_booleans' => true,
+            ],
             'ordered_imports' => [
                 'imports_order' => [
                     'class',

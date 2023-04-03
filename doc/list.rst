@@ -1883,7 +1883,7 @@ List of Available Rules
      | Default value: ``'beginning'``
 
 
-   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\OperatorLinebreakFixer <./../src/Fixer/Operator/OperatorLinebreakFixer.php>`_
 -  `ordered_class_elements <./rules/class_notation/ordered_class_elements.rst>`_
