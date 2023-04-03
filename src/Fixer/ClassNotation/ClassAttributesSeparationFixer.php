@@ -36,13 +36,6 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * Make sure there is one blank line above and below class elements.
  *
  * The exception is when an element is the first or last item in a 'classy'.
- *
- * @phpstan-type ClassToken array{
- *     index: int,
- *     open: int,
- *     close: int,
- *     elements: non-empty-list<array{token: \PhpCsFixer\Tokenizer\Token, type: string, index: int, start: int, end: int}>
- * }
  */
 final class ClassAttributesSeparationFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -260,7 +253,12 @@ class Sample
      * Deals with comments, PHPDocs and spaces above the element with respect to the position of the
      * element within the class, interface or trait.
      *
-     * @param ClassToken $class
+     * @param array{
+     *     index: int,
+     *     open: int,
+     *     close: int,
+     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
+     * } $class
      */
     private function fixSpaceAboveClassElement(Tokens $tokens, array $class, int $elementIndex): void
     {
@@ -366,7 +364,12 @@ class Sample
     }
 
     /**
-     * @param ClassToken $class
+     * @param array{
+     *     index: int,
+     *     open: int,
+     *     close: int,
+     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
+     * } $class
      */
     private function fixSpaceBelowClassElement(Tokens $tokens, array $class): void
     {
@@ -467,7 +470,14 @@ class Sample
     }
 
     /**
-     * @return \Generator<ClassToken>
+     * @TODO Introduce proper DTO instead of an array
+     *
+     * @return \Generator<array{
+     *     index: int,
+     *     open: int,
+     *     close: int,
+     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
+     * }>
      */
     private function getElementsByClass(Tokens $tokens): \Generator
     {

@@ -16,7 +16,6 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
@@ -36,8 +35,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @phpstan-type PhpDocEntry array{indent: string|null, tag: string|null, hint: string|null, var: string|null, static: string|null, desc?: string|null}
  */
 final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -360,7 +357,9 @@ EOF;
     }
 
     /**
-     * @return null|PhpDocEntry
+     * @TODO Introduce proper DTO instead of an array
+     *
+     * @return null|array{indent: null|string, tag: null|string, hint: null|string, var: null|string, static: null|string, desc?: null|string}
      */
     private function getMatches(string $line, bool $matchCommentOnly = false): ?array
     {
@@ -415,7 +414,7 @@ EOF;
     }
 
     /**
-     * @param non-empty-list<PhpDocEntry> $items
+     * @param non-empty-list<array{indent: null|string, tag: null|string, hint: null|string, var: null|string, static: null|string, desc?: null|string}> $items
      */
     private function getLeftAlignedDescriptionIndent(array $items, int $index): int
     {
