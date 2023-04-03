@@ -26,7 +26,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
         return [
             '@PER' => true,
             '@Symfony' => true,
-            'align_multiline_comment' => true,
             'array_indentation' => true,
             'blank_line_before_statement' => [
                 'statements' => [

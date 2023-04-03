@@ -25,6 +25,7 @@ final class SymfonySet extends AbstractRuleSetDescription
     {
         return [
             '@PSR12' => true,
+            'align_multiline_comment' => true,
             'array_syntax' => true,
             'backtick_to_shell_exec' => true,
             'binary_operator_spaces' => true,

@@ -14,7 +14,7 @@ List of Available Rules
      | Default value: ``'phpdocs_only'``
 
 
-   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Phpdoc\\AlignMultilineCommentFixer <./../src/Fixer/Phpdoc/AlignMultilineCommentFixer.php>`_
 -  `array_indentation <./rules/whitespace/array_indentation.rst>`_
