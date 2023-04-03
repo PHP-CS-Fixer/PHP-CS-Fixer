@@ -32,7 +32,6 @@ Rules
 - `no_extra_blank_lines <./../rules/whitespace/no_extra_blank_lines.rst>`_
   config:
   ``['tokens' => ['attribute', 'break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use']]``
-- `no_null_property_initialization <./../rules/class_notation/no_null_property_initialization.rst>`_
 - `no_superfluous_elseif <./../rules/control_structure/no_superfluous_elseif.rst>`_
 - `no_unneeded_control_parentheses <./../rules/control_structure/no_unneeded_control_parentheses.rst>`_
   config:

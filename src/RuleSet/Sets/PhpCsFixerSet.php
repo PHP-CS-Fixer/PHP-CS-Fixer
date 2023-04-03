@@ -82,7 +82,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
                     'use',
                 ],
             ],
-            'no_null_property_initialization' => true,
             'no_superfluous_elseif' => true,
             'no_unneeded_control_parentheses' => [
                 'statements' => [
