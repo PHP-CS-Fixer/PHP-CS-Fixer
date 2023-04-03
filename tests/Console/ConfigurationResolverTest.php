@@ -275,7 +275,7 @@ final class ConfigurationResolverTest extends TestCase
 
         $resolver = $this->createConfigurationResolver([
             'config' => $configFile,
-            'path' => [$dirBase.'case_1/.php-cs-fixer.dist.php', $dirBase.'case_1/foo.php'],
+            'path' => [$configFile, $dirBase.'case_1/foo.php'],
         ]);
 
         self::assertSame($configFile, $resolver->getConfigFile());
