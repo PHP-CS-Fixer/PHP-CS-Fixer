@@ -35,8 +35,8 @@ final class ListSetsCommandTest extends TestCase
         $resultRaw = $commandTester->getDisplay();
 
         $expectedResultStart = ' 1) @DoctrineAnnotation'.PHP_EOL.'      Rules covering Doctrine annotations';
-        static::assertStringStartsWith($expectedResultStart, $resultRaw);
-        static::assertSame(0, $commandTester->getStatusCode());
+        self::assertStringStartsWith($expectedResultStart, $resultRaw);
+        self::assertSame(0, $commandTester->getStatusCode());
     }
 
     public function testListWithJsonFormat(): void
@@ -47,8 +47,8 @@ final class ListSetsCommandTest extends TestCase
 
         $resultRaw = $commandTester->getDisplay();
 
-        static::assertJson($resultRaw);
-        static::assertSame(0, $commandTester->getStatusCode());
+        self::assertJson($resultRaw);
+        self::assertSame(0, $commandTester->getStatusCode());
     }
 
     /**

@@ -38,7 +38,7 @@ final class AbstractMigrationSetDescriptionTest extends TestCase
             }
         };
 
-        static::assertSame('Rules to improve code for PHP 9.9 compatibility.', $set->getDescription());
+        self::assertSame('Rules to improve code for PHP 9.9 compatibility.', $set->getDescription());
     }
 
     public function testGetDescriptionForPhpUnitMigrationSet(): void
@@ -55,7 +55,7 @@ final class AbstractMigrationSetDescriptionTest extends TestCase
             }
         };
 
-        static::assertSame('Rules to improve tests code for PHPUnit 3.0 compatibility.', $set->getDescription());
+        self::assertSame('Rules to improve tests code for PHPUnit 3.0 compatibility.', $set->getDescription());
     }
 
     public function testGetDescriptionForNoneMigrationSet(): void

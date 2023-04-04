@@ -33,8 +33,8 @@ final class ProjectFixerConfigurationTest extends TestCase
     {
         $config = $this->loadConfig();
 
-        static::assertEmpty($config->getCustomFixers());
-        static::assertNotEmpty($config->getRules());
+        self::assertEmpty($config->getCustomFixers());
+        self::assertNotEmpty($config->getRules());
 
         // call so the fixers get configured to reveal issue (like deprecated configuration used etc.)
         $resolver = new ConfigurationResolver(
@@ -51,7 +51,7 @@ final class ProjectFixerConfigurationTest extends TestCase
     {
         $rules = $rulesSorted = array_keys($this->loadConfig()->getRules());
         sort($rulesSorted);
-        static::assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php-cs-fixer.dist.php` of this project.');
+        self::assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php-cs-fixer.dist.php` of this project.');
     }
 
     private function loadConfig(): Config

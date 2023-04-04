@@ -377,7 +377,7 @@ class(){};
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        static::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
+        self::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
     }
 
     /**
@@ -389,7 +389,7 @@ class(){};
         $analyzer = new FunctionsAnalyzer();
         $actual = $analyzer->getFunctionReturnType($tokens, $methodIndex);
 
-        static::assertSame(serialize($expected), serialize($actual));
+        self::assertSame(serialize($expected), serialize($actual));
     }
 
     public static function provideFunctionsWithArgumentsCases(): iterable
@@ -624,7 +624,7 @@ class(){};
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        static::assertSame($isTheSameClassCall, $analyzer->isTheSameClassCall($tokens, $index));
+        self::assertSame($isTheSameClassCall, $analyzer->isTheSameClassCall($tokens, $index));
     }
 
     public static function provideIsTheSameClassCallCases(): iterable
@@ -710,7 +710,7 @@ class(){};
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        static::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
+        self::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
     }
 
     public static function provideFunctionsWithArgumentsPhp80Cases(): iterable
@@ -755,7 +755,7 @@ class(){};
             }
         }
 
-        static::assertSame(
+        self::assertSame(
             $expectedIndices,
             $actualIndices,
             sprintf(

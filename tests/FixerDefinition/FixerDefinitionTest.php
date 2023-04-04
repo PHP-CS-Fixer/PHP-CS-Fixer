@@ -29,7 +29,7 @@ final class FixerDefinitionTest extends TestCase
     {
         $definition = new FixerDefinition('Foo', []);
 
-        static::assertSame('Foo', $definition->getSummary());
+        self::assertSame('Foo', $definition->getSummary());
     }
 
     public function testGetCodeSamples(): void
@@ -41,28 +41,28 @@ final class FixerDefinitionTest extends TestCase
 
         $definition = new FixerDefinition('', $samples);
 
-        static::assertSame($samples, $definition->getCodeSamples());
+        self::assertSame($samples, $definition->getCodeSamples());
     }
 
     public function testGetDescription(): void
     {
         $definition = new FixerDefinition('', []);
 
-        static::assertNull($definition->getDescription());
+        self::assertNull($definition->getDescription());
 
         $definition = new FixerDefinition('', [], 'Foo');
 
-        static::assertSame('Foo', $definition->getDescription());
+        self::assertSame('Foo', $definition->getDescription());
     }
 
     public function testGetRiskyDescription(): void
     {
         $definition = new FixerDefinition('', []);
 
-        static::assertNull($definition->getRiskyDescription());
+        self::assertNull($definition->getRiskyDescription());
 
         $definition = new FixerDefinition('', [], null, 'Foo');
 
-        static::assertSame('Foo', $definition->getRiskyDescription());
+        self::assertSame('Foo', $definition->getRiskyDescription());
     }
 }

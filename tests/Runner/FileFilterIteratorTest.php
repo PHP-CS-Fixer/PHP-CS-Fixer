@@ -56,12 +56,12 @@ final class FileFilterIteratorTest extends TestCase
             $cache->reveal()
         );
 
-        static::assertCount(0, $events);
+        self::assertCount(0, $events);
 
         $files = iterator_to_array($filter);
 
-        static::assertCount(1, $files);
-        static::assertSame($fileInfo, reset($files));
+        self::assertCount(1, $files);
+        self::assertSame($fileInfo, reset($files));
     }
 
     public function testEmitSkipEventWhenCacheNeedFixingFalse(): void
@@ -87,14 +87,14 @@ final class FileFilterIteratorTest extends TestCase
             $cache->reveal()
         );
 
-        static::assertCount(0, $filter);
-        static::assertCount(1, $events);
+        self::assertCount(0, $filter);
+        self::assertCount(1, $events);
 
         /** @var FixerFileProcessedEvent $event */
         $event = reset($events);
 
-        static::assertInstanceOf(\PhpCsFixer\FixerFileProcessedEvent::class, $event);
-        static::assertSame(FixerFileProcessedEvent::STATUS_SKIPPED, $event->getStatus());
+        self::assertInstanceOf(\PhpCsFixer\FixerFileProcessedEvent::class, $event);
+        self::assertSame(FixerFileProcessedEvent::STATUS_SKIPPED, $event->getStatus());
     }
 
     public function testIgnoreEmptyFile(): void
@@ -120,14 +120,14 @@ final class FileFilterIteratorTest extends TestCase
             $cache->reveal()
         );
 
-        static::assertCount(0, $filter);
-        static::assertCount(1, $events);
+        self::assertCount(0, $filter);
+        self::assertCount(1, $events);
 
         /** @var FixerFileProcessedEvent $event */
         $event = reset($events);
 
-        static::assertInstanceOf(\PhpCsFixer\FixerFileProcessedEvent::class, $event);
-        static::assertSame(FixerFileProcessedEvent::STATUS_SKIPPED, $event->getStatus());
+        self::assertInstanceOf(\PhpCsFixer\FixerFileProcessedEvent::class, $event);
+        self::assertSame(FixerFileProcessedEvent::STATUS_SKIPPED, $event->getStatus());
     }
 
     public function testIgnore(): void
@@ -149,7 +149,7 @@ final class FileFilterIteratorTest extends TestCase
             $this->prophesize(\PhpCsFixer\Cache\CacheManagerInterface::class)->reveal()
         );
 
-        static::assertCount(0, $filter);
+        self::assertCount(0, $filter);
     }
 
     public function testWithoutDispatcher(): void
@@ -166,7 +166,7 @@ final class FileFilterIteratorTest extends TestCase
             $cache->reveal()
         );
 
-        static::assertCount(0, $filter);
+        self::assertCount(0, $filter);
     }
 
     public function testInvalidIterator(): void
@@ -194,8 +194,8 @@ final class FileFilterIteratorTest extends TestCase
     {
         $link = __DIR__.'/../Fixtures/Test/FileFilterIteratorTest/FileFilterIteratorTest.php.link';
 
-        static::assertTrue(is_link($link), 'Fixture data is no longer correct for this test.');
-        static::assertSame(__FILE__, realpath($link), 'Fixture data is no longer correct for this test.');
+        self::assertTrue(is_link($link), 'Fixture data is no longer correct for this test.');
+        self::assertSame(__FILE__, realpath($link), 'Fixture data is no longer correct for this test.');
 
         $file = new \SplFileInfo(__FILE__);
         $link = new \SplFileInfo($link);
@@ -213,7 +213,7 @@ final class FileFilterIteratorTest extends TestCase
         );
 
         $files = iterator_to_array($filter);
-        static::assertCount(1, $files);
-        static::assertSame($file, reset($files));
+        self::assertCount(1, $files);
+        self::assertSame($file, reset($files));
     }
 }

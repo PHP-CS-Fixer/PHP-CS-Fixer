@@ -115,10 +115,10 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         array_walk(
             $cases,
             static function (&$case): void {
-                $case[0] = static::generateTest($case[0]);
+                $case[0] = self::generateTest($case[0]);
 
                 if (isset($case[1])) {
-                    $case[1] = static::generateTest($case[1]);
+                    $case[1] = self::generateTest($case[1]);
                 }
             }
         );
@@ -169,12 +169,12 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     {
         return [
             [
-                static::generateTest('$this->assertTrue($a, );'),
-                static::generateTest('$this->assertSame(true, $a, );'),
+                self::generateTest('$this->assertTrue($a, );'),
+                self::generateTest('$this->assertSame(true, $a, );'),
             ],
             [
-                static::generateTest('$this->assertTrue($a, $message , );'),
-                static::generateTest('$this->assertSame(true, $a, $message , );'),
+                self::generateTest('$this->assertTrue($a, $message , );'),
+                self::generateTest('$this->assertSame(true, $a, $message , );'),
             ],
         ];
     }

@@ -34,7 +34,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption($name, 'Bar.'), 'baz');
 
-        static::assertSame($name, $option->getName());
+        self::assertSame($name, $option->getName());
     }
 
     public static function provideGetNameCases(): array
@@ -52,7 +52,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption('foo', $description), 'baz');
 
-        static::assertSame($description, $option->getDescription());
+        self::assertSame($description, $option->getDescription());
     }
 
     public static function provideGetDescriptionCases(): array
@@ -68,7 +68,7 @@ final class AliasedFixerOptionTest extends TestCase
      */
     public function testHasDefault(bool $hasDefault, AliasedFixerOption $input): void
     {
-        static::assertSame($hasDefault, $input->hasDefault());
+        self::assertSame($hasDefault, $input->hasDefault());
     }
 
     public static function provideHasDefaultCases(): array
@@ -92,7 +92,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', false, $default), 'baz');
 
-        static::assertSame($default, $option->getDefault());
+        self::assertSame($default, $option->getDefault());
     }
 
     public static function provideGetDefaultCases(): array
@@ -121,7 +121,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, $allowedTypes), 'baz');
 
-        static::assertSame($allowedTypes, $option->getAllowedTypes());
+        self::assertSame($allowedTypes, $option->getAllowedTypes());
     }
 
     public static function provideGetAllowedTypesCases(): array
@@ -142,7 +142,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, $allowedValues), 'baz');
 
-        static::assertSame($allowedValues, $option->getAllowedValues());
+        self::assertSame($allowedValues, $option->getAllowedValues());
     }
 
     public static function provideGetAllowedValuesCases(): array
@@ -158,19 +158,19 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, [static fn () => true]), 'baz');
         $allowedTypes = $option->getAllowedValues();
-        static::assertIsArray($allowedTypes);
-        static::assertCount(1, $allowedTypes);
-        static::assertArrayHasKey(0, $allowedTypes);
-        static::assertInstanceOf(\Closure::class, $allowedTypes[0]);
+        self::assertIsArray($allowedTypes);
+        self::assertCount(1, $allowedTypes);
+        self::assertArrayHasKey(0, $allowedTypes);
+        self::assertInstanceOf(\Closure::class, $allowedTypes[0]);
     }
 
     public function testGetNormalizers(): void
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.'), 'baz');
-        static::assertNull($option->getNormalizer());
+        self::assertNull($option->getNormalizer());
 
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, null, static fn () => null), 'baz');
-        static::assertInstanceOf(\Closure::class, $option->getNormalizer());
+        self::assertInstanceOf(\Closure::class, $option->getNormalizer());
     }
 
     /**
@@ -180,7 +180,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $options = new AliasedFixerOption(new FixerOption('foo', 'Bar', true, null, null, null, null), $alias);
 
-        static::assertSame($alias, $options->getAlias());
+        self::assertSame($alias, $options->getAlias());
     }
 
     public static function provideGetAliasCases(): array

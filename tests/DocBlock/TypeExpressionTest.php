@@ -34,7 +34,7 @@ final class TypeExpressionTest extends TestCase
     public function testGetTypes(string $typesExpression, array $expectedTypes): void
     {
         $expression = new TypeExpression($typesExpression, null, []);
-        static::assertSame($expectedTypes, $expression->getTypes());
+        self::assertSame($expectedTypes, $expression->getTypes());
     }
 
     public static function provideGetTypesCases(): iterable
@@ -170,7 +170,7 @@ final class TypeExpressionTest extends TestCase
     public function testGetTypesGlue(string $expectedTypesGlue, string $typesExpression): void
     {
         $expression = new TypeExpression($typesExpression, null, []);
-        static::assertSame($expectedTypesGlue, $expression->getTypesGlue());
+        self::assertSame($expectedTypesGlue, $expression->getTypesGlue());
     }
 
     public static function provideGetTypesGlueCases(): iterable
@@ -190,7 +190,7 @@ final class TypeExpressionTest extends TestCase
     public function testGetCommonType(string $typesExpression, ?string $expectedCommonType, NamespaceAnalysis $namespace = null, array $namespaceUses = []): void
     {
         $expression = new TypeExpression($typesExpression, $namespace, $namespaceUses);
-        static::assertSame($expectedCommonType, $expression->getCommonType());
+        self::assertSame($expectedCommonType, $expression->getCommonType());
     }
 
     public static function provideCommonTypeCases(): iterable
@@ -308,7 +308,7 @@ final class TypeExpressionTest extends TestCase
     public function testAllowsNull(string $typesExpression, bool $expectNullAllowed): void
     {
         $expression = new TypeExpression($typesExpression, null, []);
-        static::assertSame($expectNullAllowed, $expression->allowsNull());
+        self::assertSame($expectNullAllowed, $expression->allowsNull());
     }
 
     public static function provideAllowsNullCases(): iterable
@@ -341,7 +341,7 @@ final class TypeExpressionTest extends TestCase
             return strcasecmp($a->toString(), $b->toString());
         });
 
-        static::assertSame($expectResult, $expression->toString());
+        self::assertSame($expectResult, $expression->toString());
     }
 
     public static function provideSortTypesCases(): iterable

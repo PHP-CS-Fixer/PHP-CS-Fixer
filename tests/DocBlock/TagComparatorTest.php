@@ -41,7 +41,7 @@ final class TagComparatorTest extends TestCase
 
         $this->expectDeprecation('%AMethod PhpCsFixer\DocBlock\TagComparator::shouldBeTogether is deprecated and will be removed in version 4.0.');
 
-        static::assertSame($expected, TagComparator::shouldBeTogether($tag1, $tag2));
+        self::assertSame($expected, TagComparator::shouldBeTogether($tag1, $tag2));
     }
 
     public static function provideComparatorCases(): array
@@ -73,7 +73,7 @@ final class TagComparatorTest extends TestCase
 
         $this->expectDeprecation('%AMethod PhpCsFixer\DocBlock\TagComparator::shouldBeTogether is deprecated and will be removed in version 4.0.');
 
-        static::assertSame(
+        self::assertSame(
             $expected,
             TagComparator::shouldBeTogether($tag1, $tag2, $groups)
         );

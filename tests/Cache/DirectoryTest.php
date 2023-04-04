@@ -31,14 +31,14 @@ final class DirectoryTest extends TestCase
     {
         $reflection = new \ReflectionClass(Directory::class);
 
-        static::assertTrue($reflection->isFinal());
+        self::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsDirectoryInterface(): void
     {
         $reflection = new \ReflectionClass(Directory::class);
 
-        static::assertTrue($reflection->implementsInterface(DirectoryInterface::class));
+        self::assertTrue($reflection->implementsInterface(DirectoryInterface::class));
     }
 
     public function testGetRelativePathToReturnsFileIfAboveLevelOfDirectoryName(): void
@@ -48,7 +48,7 @@ final class DirectoryTest extends TestCase
 
         $directory = new Directory($directoryName);
 
-        static::assertSame($file, $directory->getRelativePathTo($file));
+        self::assertSame($file, $directory->getRelativePathTo($file));
     }
 
     public function testGetRelativePathToReturnsRelativePathIfWithinDirectoryName(): void
@@ -58,6 +58,6 @@ final class DirectoryTest extends TestCase
 
         $directory = new Directory($directoryName);
 
-        static::assertSame('bar'.\DIRECTORY_SEPARATOR.'hello.php', $directory->getRelativePathTo($file));
+        self::assertSame('bar'.\DIRECTORY_SEPARATOR.'hello.php', $directory->getRelativePathTo($file));
     }
 }

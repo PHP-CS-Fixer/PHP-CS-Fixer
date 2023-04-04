@@ -29,7 +29,7 @@ final class ProcessLinterTest extends AbstractLinterTestCase
 {
     public function testIsAsync(): void
     {
-        static::assertTrue($this->createLinter()->isAsync());
+        self::assertTrue($this->createLinter()->isAsync());
     }
 
     public function testSleep(): void

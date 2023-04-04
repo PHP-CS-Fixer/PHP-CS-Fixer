@@ -50,25 +50,25 @@ final class InstallViaComposerTest extends AbstractSmokeTest
         parent::setUpBeforeClass();
 
         if ('\\' === \DIRECTORY_SEPARATOR) {
-            static::markTestIncomplete('This test is broken on Windows');
+            self::markTestIncomplete('This test is broken on Windows');
         }
 
         try {
             CommandExecutor::create('php --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {
-            static::markTestSkippedOrFail('Missing `php` env script. Details:'."\n".$e->getMessage());
+            self::markTestSkippedOrFail('Missing `php` env script. Details:'."\n".$e->getMessage());
         }
 
         try {
             CommandExecutor::create('composer --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {
-            static::markTestSkippedOrFail('Missing `composer` env script. Details:'."\n".$e->getMessage());
+            self::markTestSkippedOrFail('Missing `composer` env script. Details:'."\n".$e->getMessage());
         }
 
         try {
             CommandExecutor::create('composer check', __DIR__.'/../..')->getResult();
         } catch (\RuntimeException $e) {
-            static::markTestSkippedOrFail('Composer check failed. Details:'."\n".$e->getMessage());
+            self::markTestSkippedOrFail('Composer check failed. Details:'."\n".$e->getMessage());
         }
     }
 
@@ -97,7 +97,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
             json_encode($initialComposerFileState, JSON_PRETTY_PRINT)
         );
 
-        static::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
+        self::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
 
         $fs->remove($tmpPath);
     }
@@ -107,7 +107,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
     {
         // Composer Artifact Repository requires `zip` extension
         if (!\extension_loaded('zip')) {
-            static::markTestSkippedOrFail('No zip extension available.');
+            self::markTestSkippedOrFail('No zip extension available.');
         }
 
         $fs = new Filesystem();
@@ -160,9 +160,9 @@ final class InstallViaComposerTest extends AbstractSmokeTest
             'git rm -r . && rm -rf .git',
         ];
 
-        static::assertCommandsWork($stepsToInitializeArtifact, $cwd);
-        static::assertCommandsWork($stepsToPrepareArtifact, $tmpArtifactPath);
-        static::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
+        self::assertCommandsWork($stepsToInitializeArtifact, $cwd);
+        self::assertCommandsWork($stepsToPrepareArtifact, $tmpArtifactPath);
+        self::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
 
         $fs->remove($tmpPath);
         $fs->remove($tmpArtifactPath);
@@ -174,7 +174,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
     private static function assertCommandsWork(array $commands, string $cwd): void
     {
         foreach ($commands as $command) {
-            static::assertSame(0, CommandExecutor::create($command, $cwd)->getResult()->getCode());
+            self::assertSame(0, CommandExecutor::create($command, $cwd)->getResult()->getCode());
         }
     }
 }

@@ -78,7 +78,7 @@ Files that were not fixed due to errors reported during %s:
             );
         }
 
-        static::assertStringStartsWith($startWith, $displayed);
+        self::assertStringStartsWith($startWith, $displayed);
     }
 
     public static function provideTestCases(): array
@@ -129,13 +129,13 @@ EOT;
 
         $displayed = $this->readFullStreamOutput($output);
 
-        static::assertStringContainsString($fixerName, $displayed);
-        static::assertStringContainsString($diffSpecificContext, $displayed);
+        self::assertStringContainsString($fixerName, $displayed);
+        self::assertStringContainsString($diffSpecificContext, $displayed);
 
-        static::assertStringContainsString($noDiffLintFixerName, $displayed);
+        self::assertStringContainsString($noDiffLintFixerName, $displayed);
 
-        static::assertStringNotContainsString($invalidErrorFixerName, $displayed);
-        static::assertStringNotContainsString($invalidDiff, $displayed);
+        self::assertStringNotContainsString($invalidErrorFixerName, $displayed);
+        self::assertStringNotContainsString($invalidDiff, $displayed);
     }
 
     private function createStreamOutput(int $verbosityLevel): StreamOutput

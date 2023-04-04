@@ -29,43 +29,43 @@ final class NamespaceAnalysisTest extends TestCase
     public function testFullName(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
-        static::assertSame('Full\NamespaceName', $analysis->getFullName());
+        self::assertSame('Full\NamespaceName', $analysis->getFullName());
     }
 
     public function testShortName(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
-        static::assertSame('NamespaceName', $analysis->getShortName());
-        static::assertFalse($analysis->isGlobalNamespace());
+        self::assertSame('NamespaceName', $analysis->getShortName());
+        self::assertFalse($analysis->isGlobalNamespace());
     }
 
     public function testStartIndex(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
-        static::assertSame(1, $analysis->getStartIndex());
+        self::assertSame(1, $analysis->getStartIndex());
     }
 
     public function testEndIndex(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
-        static::assertSame(2, $analysis->getEndIndex());
+        self::assertSame(2, $analysis->getEndIndex());
     }
 
     public function testScopeStartIndex(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
-        static::assertSame(1, $analysis->getScopeStartIndex());
+        self::assertSame(1, $analysis->getScopeStartIndex());
     }
 
     public function testScopeEndIndex(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
-        static::assertSame(10, $analysis->getScopeEndIndex());
+        self::assertSame(10, $analysis->getScopeEndIndex());
     }
 
     public function testGlobal(): void
     {
         $analysis = new NamespaceAnalysis('', '', 1, 2, 1, 10);
-        static::assertTrue($analysis->isGlobalNamespace());
+        self::assertTrue($analysis->isGlobalNamespace());
     }
 }

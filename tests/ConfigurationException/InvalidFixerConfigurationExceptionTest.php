@@ -32,7 +32,7 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
     {
         $exception = new InvalidFixerConfigurationException('foo', 'I cannot do that, Dave.');
 
-        static::assertInstanceOf(InvalidConfigurationException::class, $exception);
+        self::assertInstanceOf(InvalidConfigurationException::class, $exception);
     }
 
     public function testDefaults(): void
@@ -45,10 +45,10 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
             $message
         );
 
-        static::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
-        static::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
-        static::assertSame($fixerName, $exception->getFixerName());
-        static::assertNull($exception->getPrevious());
+        self::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        self::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
+        self::assertSame($fixerName, $exception->getFixerName());
+        self::assertNull($exception->getPrevious());
     }
 
     public function testConstructorSetsValues(): void
@@ -63,9 +63,9 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
             $previous
         );
 
-        static::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
-        static::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
-        static::assertSame($fixerName, $exception->getFixerName());
-        static::assertSame($previous, $exception->getPrevious());
+        self::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        self::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
+        self::assertSame($fixerName, $exception->getFixerName());
+        self::assertSame($previous, $exception->getPrevious());
     }
 }

@@ -29,10 +29,10 @@ final class EnumAnalysisTest extends TestCase
     {
         $analysis = new EnumAnalysis(10, 11, 15, []);
 
-        static::assertSame(10, $analysis->getIndex());
-        static::assertSame(11, $analysis->getOpenIndex());
-        static::assertSame(15, $analysis->getCloseIndex());
-        static::assertSame([], $analysis->getCases());
+        self::assertSame(10, $analysis->getIndex());
+        self::assertSame(11, $analysis->getOpenIndex());
+        self::assertSame(15, $analysis->getCloseIndex());
+        self::assertSame([], $analysis->getCases());
     }
 
     public function testEnumAnalysis2(): void
@@ -41,9 +41,9 @@ final class EnumAnalysisTest extends TestCase
 
         $analysis = new EnumAnalysis(15, 17, 190, [$caseAnalysis]);
 
-        static::assertSame(15, $analysis->getIndex());
-        static::assertSame(17, $analysis->getOpenIndex());
-        static::assertSame(190, $analysis->getCloseIndex());
-        static::assertSame([$caseAnalysis], $analysis->getCases());
+        self::assertSame(15, $analysis->getIndex());
+        self::assertSame(17, $analysis->getOpenIndex());
+        self::assertSame(190, $analysis->getCloseIndex());
+        self::assertSame([$caseAnalysis], $analysis->getCases());
     }
 }

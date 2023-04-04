@@ -48,8 +48,8 @@ final class CommentsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new CommentsAnalyzer();
 
-        static::assertSame($borders, $analyzer->getCommentBlockIndices($tokens, $index));
-        static::assertFalse($analyzer->isHeaderComment($tokens, $index));
+        self::assertSame($borders, $analyzer->getCommentBlockIndices($tokens, $index));
+        self::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
     public static function provideCommentsCases(): array
@@ -165,7 +165,7 @@ $bar;',
         $tokens = Tokens::fromCode($code);
         $analyzer = new CommentsAnalyzer();
 
-        static::assertTrue($analyzer->isHeaderComment($tokens, $index));
+        self::assertTrue($analyzer->isHeaderComment($tokens, $index));
     }
 
     public static function provideHeaderCommentCases(): array
@@ -187,7 +187,7 @@ $bar;',
         $tokens = Tokens::fromCode($code);
         $analyzer = new CommentsAnalyzer();
 
-        static::assertFalse($analyzer->isHeaderComment($tokens, $index));
+        self::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
     public static function provideNotHeaderCommentCases(): array
@@ -221,7 +221,7 @@ $bar;',
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
-        static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
+        self::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
     public static function providePhpdocCandidateCases(): array
@@ -274,7 +274,7 @@ $bar;',
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
-        static::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
+        self::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
     public static function provideNotPhpdocCandidateCases(): array
@@ -297,7 +297,7 @@ $bar;',
         $tokens = Tokens::fromCode('<?php /* @var int $x */ [$x] = [2];');
         $analyzer = new CommentsAnalyzer();
 
-        static::assertTrue($analyzer->isHeaderComment($tokens, 1));
+        self::assertTrue($analyzer->isHeaderComment($tokens, 1));
     }
 
     public function testNotPhpdocCandidate71(): void
@@ -305,7 +305,7 @@ $bar;',
         $tokens = Tokens::fromCode('<?php /* @var int $a */ [$b] = [2];');
         $analyzer = new CommentsAnalyzer();
 
-        static::assertFalse($analyzer->isBeforeStructuralElement($tokens, 1));
+        self::assertFalse($analyzer->isBeforeStructuralElement($tokens, 1));
     }
 
     /**
@@ -317,7 +317,7 @@ $bar;',
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
-        static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
+        self::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
     public static function providePhpdocCandidatePhp74Cases(): array
@@ -338,7 +338,7 @@ $bar;',
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
-        static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
+        self::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
     public static function providePhpdocCandidatePhp80Cases(): array
@@ -364,7 +364,7 @@ Class MyAnnotation3 {}'],
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
-        static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
+        self::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
     public static function providePhpdocCandidatePhp81Cases(): iterable

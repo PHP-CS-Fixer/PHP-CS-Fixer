@@ -279,7 +279,7 @@ private $d = 123;
         $method->setAccessible(true);
 
         $result = $method->invoke($this->fixer, $tokens, $index, 0);
-        static::assertSame(
+        self::assertSame(
             $expected,
             $result,
             sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson())

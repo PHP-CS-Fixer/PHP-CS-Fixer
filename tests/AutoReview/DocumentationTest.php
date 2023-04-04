@@ -47,7 +47,7 @@ final class DocumentationTest extends TestCase
 
         $path = $locator->getFixerDocumentationFilePath($fixer);
 
-        static::assertFileExists($path);
+        self::assertFileExists($path);
 
         $expected = $generator->generateFixerDocumentation($fixer);
         $actual = file_get_contents($path);
@@ -89,7 +89,7 @@ final class DocumentationTest extends TestCase
             $expected
         );
 
-        static::assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     public static function provideFixerCases(): iterable
@@ -114,7 +114,7 @@ final class DocumentationTest extends TestCase
     {
         $generator = new DocumentationLocator();
 
-        static::assertCount(
+        self::assertCount(
             \count($this->getFixers()) + 1,
             (new Finder())->files()->in($generator->getFixersDocumentationDirectoryPath())
         );
@@ -131,7 +131,7 @@ final class DocumentationTest extends TestCase
         foreach (RuleSets::getSetDefinitions() as $name => $definition) {
             $paths[$name] = $path = $locator->getRuleSetsDocumentationFilePath($name);
 
-            static::assertFileEqualsString(
+            self::assertFileEqualsString(
                 $generator->generateRuleSetsDocumentation($definition, $fixers),
                 $path,
                 sprintf('RuleSet documentation is generated (please see CONTRIBUTING.md), file "%s".', $path)
@@ -140,7 +140,7 @@ final class DocumentationTest extends TestCase
 
         $indexFilePath = $locator->getRuleSetsDocumentationIndexFilePath();
 
-        static::assertFileEqualsString(
+        self::assertFileEqualsString(
             $generator->generateRuleSetsDocumentationIndex($paths),
             $indexFilePath,
             sprintf('RuleSet documentation is generated (please CONTRIBUTING.md), file "%s".', $indexFilePath)
@@ -151,7 +151,7 @@ final class DocumentationTest extends TestCase
     {
         $generator = new DocumentationLocator();
 
-        static::assertCount(
+        self::assertCount(
             \count(RuleSets::getSetDefinitions()) + 1,
             (new Finder())->files()->in($generator->getRuleSetsDocumentationDirectoryPath())
         );
@@ -167,7 +167,7 @@ final class DocumentationTest extends TestCase
         $minimumVersionInformation = sprintf('PHP needs to be a minimum version of PHP %s.', $minimumVersion);
         $installationDocPath = realpath(__DIR__.'/../../doc/installation.rst');
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $minimumVersionInformation,
             file_get_contents($installationDocPath),
             sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation)
@@ -182,7 +182,7 @@ final class DocumentationTest extends TestCase
         $fixers = $this->getFixers();
         $listingFilePath = $locator->getListingFilePath();
 
-        static::assertFileEqualsString(
+        self::assertFileEqualsString(
             $generator->generateListingDocumentation($fixers),
             $listingFilePath,
             sprintf('Listing documentation is generated (please CONTRIBUTING.md), file "%s".', $listingFilePath)
@@ -191,8 +191,8 @@ final class DocumentationTest extends TestCase
 
     private static function assertFileEqualsString(string $expectedString, string $actualFilePath, string $message = ''): void
     {
-        static::assertFileExists($actualFilePath, $message);
-        static::assertSame($expectedString, file_get_contents($actualFilePath), $message);
+        self::assertFileExists($actualFilePath, $message);
+        self::assertSame($expectedString, file_get_contents($actualFilePath), $message);
     }
 
     /**

@@ -51,7 +51,7 @@ final class PharTest extends AbstractSmokeTest
         self::$pharName = 'php-cs-fixer.phar';
 
         if (!file_exists(self::$pharCwd.'/'.self::$pharName)) {
-            static::markTestSkippedOrFail('No phar file available.');
+            self::markTestSkippedOrFail('No phar file available.');
         }
     }
 
@@ -60,7 +60,7 @@ final class PharTest extends AbstractSmokeTest
         /** @phpstan-ignore-next-line to avoid `Ternary operator condition is always true|false.` */
         $shouldExpectCodename = Application::VERSION_CODENAME ? 1 : 0;
 
-        static::assertMatchesRegularExpression(
+        self::assertMatchesRegularExpression(
             sprintf("/^PHP CS Fixer (?<version>%s)(?<git_sha> \\([a-z0-9]+\\))?(?<codename> %s){%d}(?<by> by .*)\nPHP runtime: (?<php_version>\\d\\.\\d+\\..*)$/", Application::VERSION, Application::VERSION_CODENAME, $shouldExpectCodename),
             self::executePharCommand('--version')->getOutput()
         );
@@ -79,7 +79,7 @@ final class PharTest extends AbstractSmokeTest
             'name' => 'header_comment',
         ]);
 
-        static::assertSame(
+        self::assertSame(
             $commandTester->getDisplay(),
             self::executePharCommand('describe header_comment')->getOutput()
         );
@@ -87,7 +87,7 @@ final class PharTest extends AbstractSmokeTest
 
     public function testFix(): void
     {
-        static::assertSame(
+        self::assertSame(
             0,
             self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no 2>&1')->getCode()
         );
@@ -95,7 +95,7 @@ final class PharTest extends AbstractSmokeTest
 
     public function testFixHelp(): void
     {
-        static::assertSame(
+        self::assertSame(
             0,
             self::executePharCommand('fix --help')->getCode()
         );

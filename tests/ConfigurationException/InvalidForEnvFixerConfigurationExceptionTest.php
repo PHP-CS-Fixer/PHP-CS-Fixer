@@ -36,10 +36,10 @@ final class InvalidForEnvFixerConfigurationExceptionTest extends TestCase
             $message
         );
 
-        static::assertInstanceOf(InvalidFixerConfigurationException::class, $exception);
-        static::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
-        static::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
-        static::assertSame($fixerName, $exception->getFixerName());
-        static::assertNull($exception->getPrevious());
+        self::assertInstanceOf(InvalidFixerConfigurationException::class, $exception);
+        self::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        self::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
+        self::assertSame($fixerName, $exception->getFixerName());
+        self::assertNull($exception->getPrevious());
     }
 }

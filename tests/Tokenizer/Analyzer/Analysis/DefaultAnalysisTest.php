@@ -28,7 +28,7 @@ final class DefaultAnalysisTest extends TestCase
     {
         $analysis = new DefaultAnalysis(15, 16);
 
-        static::assertSame(15, $analysis->getIndex());
-        static::assertSame(16, $analysis->getColonIndex());
+        self::assertSame(15, $analysis->getIndex());
+        self::assertSame(16, $analysis->getColonIndex());
     }
 }

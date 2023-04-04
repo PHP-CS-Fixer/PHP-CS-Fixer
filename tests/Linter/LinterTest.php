@@ -28,7 +28,7 @@ final class LinterTest extends AbstractLinterTestCase
 {
     public function testIsAsync(): void
     {
-        static::assertSame(!class_exists(\CompileError::class), $this->createLinter()->isAsync());
+        self::assertSame(!class_exists(\CompileError::class), $this->createLinter()->isAsync());
     }
 
     /**

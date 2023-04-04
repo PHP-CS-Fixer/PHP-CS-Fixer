@@ -39,10 +39,10 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 
         $fixer = new ClassDefinitionFixer();
         $fixer->configure($defaultConfig);
-        static::assertConfigurationSame($defaultConfig, $fixer);
+        self::assertConfigurationSame($defaultConfig, $fixer);
 
         $fixer->configure([]);
-        static::assertConfigurationSame($defaultConfig, $fixer);
+        self::assertConfigurationSame($defaultConfig, $fixer);
     }
 
     /**
@@ -434,7 +434,7 @@ TestInterface3, /**/     TestInterface4   ,
         ksort($expected);
         ksort($result);
 
-        static::assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     public static function provideClassyDefinitionInfoCases(): array
@@ -784,7 +784,7 @@ $a = new class implements
         $reflectionProperty = new \ReflectionProperty($fixer, 'configuration');
         $reflectionProperty->setAccessible(true);
 
-        static::assertSame($expected, $reflectionProperty->getValue($fixer));
+        self::assertSame($expected, $reflectionProperty->getValue($fixer));
     }
 
     /**
@@ -794,13 +794,13 @@ $a = new class implements
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
-        static::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
+        self::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
         $method = new \ReflectionMethod($this->fixer, 'getClassyInheritanceInfo');
         $method->setAccessible(true);
 
         $result = $method->invoke($this->fixer, $tokens, $expected['start'], $label);
 
-        static::assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     private static function provideClassyCases(string $classy): array

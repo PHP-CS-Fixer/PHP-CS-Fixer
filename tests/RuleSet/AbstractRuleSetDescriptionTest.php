@@ -28,7 +28,7 @@ final class AbstractRuleSetDescriptionTest extends TestCase
     {
         $set = new TestRuleSet();
 
-        static::assertSame('@TestRule', $set->getName());
-        static::assertFalse($set->isRisky());
+        self::assertSame('@TestRule', $set->getName());
+        self::assertFalse($set->isRisky());
     }
 }

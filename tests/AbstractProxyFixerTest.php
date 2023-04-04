@@ -33,26 +33,26 @@ final class AbstractProxyFixerTest extends TestCase
     public function testCandidate(): void
     {
         $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true)]);
-        static::assertTrue($proxyFixer->isCandidate(new Tokens()));
+        self::assertTrue($proxyFixer->isCandidate(new Tokens()));
 
         $proxyFixer = $this->buildProxyFixer([new SimpleFixer(false)]);
-        static::assertFalse($proxyFixer->isCandidate(new Tokens()));
+        self::assertFalse($proxyFixer->isCandidate(new Tokens()));
 
         $proxyFixer = $this->buildProxyFixer([
             new SimpleFixer(false),
             new SimpleFixer(true),
         ]);
 
-        static::assertTrue($proxyFixer->isCandidate(new Tokens()));
+        self::assertTrue($proxyFixer->isCandidate(new Tokens()));
     }
 
     public function testRisky(): void
     {
         $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, false)]);
-        static::assertFalse($proxyFixer->isRisky());
+        self::assertFalse($proxyFixer->isRisky());
 
         $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, true)]);
-        static::assertTrue($proxyFixer->isRisky());
+        self::assertTrue($proxyFixer->isRisky());
 
         $proxyFixer = $this->buildProxyFixer([
             new SimpleFixer(true, false),
@@ -60,7 +60,7 @@ final class AbstractProxyFixerTest extends TestCase
             new SimpleFixer(true, false),
         ]);
 
-        static::assertTrue($proxyFixer->isRisky());
+        self::assertTrue($proxyFixer->isRisky());
     }
 
     public function testSupports(): void
@@ -68,10 +68,10 @@ final class AbstractProxyFixerTest extends TestCase
         $file = new \SplFileInfo(__FILE__);
 
         $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, false, false)]);
-        static::assertFalse($proxyFixer->supports($file));
+        self::assertFalse($proxyFixer->supports($file));
 
         $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, true, true)]);
-        static::assertTrue($proxyFixer->supports($file));
+        self::assertTrue($proxyFixer->supports($file));
 
         $proxyFixer = $this->buildProxyFixer([
             new SimpleFixer(true, false, false),
@@ -79,13 +79,13 @@ final class AbstractProxyFixerTest extends TestCase
             new SimpleFixer(true, false, true),
         ]);
 
-        static::assertTrue($proxyFixer->supports($file));
+        self::assertTrue($proxyFixer->supports($file));
     }
 
     public function testPrioritySingleFixer(): void
     {
         $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, false, false, 123)]);
-        static::assertSame(123, $proxyFixer->getPriority());
+        self::assertSame(123, $proxyFixer->getPriority());
     }
 
     public function testPriorityMultipleFixersNotSet(): void
@@ -115,7 +115,7 @@ final class AbstractProxyFixerTest extends TestCase
 
         $proxyFixer->setWhitespacesConfig($config);
 
-        static::assertSame($config, $whitespacesAwareFixer->getWhitespacesFixerConfig());
+        self::assertSame($config, $whitespacesAwareFixer->getWhitespacesFixerConfig());
     }
 
     public function testApplyFixInPriorityOrder(): void
@@ -126,8 +126,8 @@ final class AbstractProxyFixerTest extends TestCase
         $proxyFixer = $this->buildProxyFixer([$fixer1, $fixer2]);
         $proxyFixer->fix(new \SplFileInfo(__FILE__), Tokens::fromCode('<?php echo 1;'));
 
-        static::assertSame(2, $fixer1->isFixCalled());
-        static::assertSame(1, $fixer2->isFixCalled());
+        self::assertSame(2, $fixer1->isFixCalled());
+        self::assertSame(1, $fixer2->isFixCalled());
     }
 
     /**

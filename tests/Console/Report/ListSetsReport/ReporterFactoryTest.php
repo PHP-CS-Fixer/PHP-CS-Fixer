@@ -33,21 +33,21 @@ final class ReporterFactoryTest extends TestCase
         $builder = new ReporterFactory();
 
         $testInstance = $builder->registerBuiltInReporters();
-        static::assertSame($builder, $testInstance);
+        self::assertSame($builder, $testInstance);
 
         $double = $this->createReporterDouble('r1');
         $testInstance = $builder->registerReporter($double);
-        static::assertSame($builder, $testInstance);
+        self::assertSame($builder, $testInstance);
     }
 
     public function testRegisterBuiltInReports(): void
     {
         $builder = new ReporterFactory();
 
-        static::assertCount(0, $builder->getFormats());
+        self::assertCount(0, $builder->getFormats());
 
         $builder->registerBuiltInReporters();
-        static::assertSame(
+        self::assertSame(
             ['json', 'txt'],
             $builder->getFormats()
         );
@@ -65,9 +65,9 @@ final class ReporterFactoryTest extends TestCase
         $builder->registerReporter($r2);
         $builder->registerReporter($r3);
 
-        static::assertSame($r1, $builder->getReporter('r1'));
-        static::assertSame($r2, $builder->getReporter('r2'));
-        static::assertSame($r3, $builder->getReporter('r3'));
+        self::assertSame($r1, $builder->getReporter('r1'));
+        self::assertSame($r2, $builder->getReporter('r2'));
+        self::assertSame($r3, $builder->getReporter('r3'));
     }
 
     public function testGetFormats(): void
@@ -82,7 +82,7 @@ final class ReporterFactoryTest extends TestCase
         $builder->registerReporter($r2);
         $builder->registerReporter($r3);
 
-        static::assertSame(['r1', 'r2', 'r3'], $builder->getFormats());
+        self::assertSame(['r1', 'r2', 'r3'], $builder->getFormats());
     }
 
     public function testRegisterReportWithOccupiedFormat(): void

@@ -286,7 +286,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure([]);
 
-        static::assertCandidateTokenType(T_PRINT, $this->fixer);
+        self::assertCandidateTokenType(T_PRINT, $this->fixer);
     }
 
     /**
@@ -329,7 +329,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $reflectionProperty = new \ReflectionProperty($fixer, 'candidateTokenType');
         $reflectionProperty->setAccessible(true);
 
-        static::assertSame($expected, $reflectionProperty->getValue($fixer));
+        self::assertSame($expected, $reflectionProperty->getValue($fixer));
     }
 
     /**

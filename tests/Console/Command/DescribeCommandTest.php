@@ -72,7 +72,7 @@ Fixing examples:
    ----------- end diff -----------
 
 ';
-        static::assertSame($expected, $this->execute('Foo/bar', false)->getDisplay(true));
+        self::assertSame($expected, $this->execute('Foo/bar', false)->getDisplay(true));
     }
 
     public function testExecuteOutputWithDecoration(): void
@@ -113,12 +113,12 @@ Fixing examples:
 ";
         $actual = $this->execute('Foo/bar', true)->getDisplay(true);
 
-        static::assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     public function testExecuteStatusCode(): void
     {
-        static::assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
+        self::assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
     }
 
     public function testExecuteWithUnknownRuleName(): void
@@ -208,7 +208,7 @@ Fixing examples:
             ]
         );
 
-        static::assertStringContainsString(\get_class($mock), $commandTester->getDisplay(true));
+        self::assertStringContainsString(\get_class($mock), $commandTester->getDisplay(true));
     }
 
     private function execute(string $name, bool $decorated): CommandTester

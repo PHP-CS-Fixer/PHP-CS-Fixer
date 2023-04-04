@@ -58,7 +58,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
         $settings = $case->getSettings();
 
         if (!isset($settings['isExplicitPriorityCheck'])) {
-            static::markTestIncomplete('Missing `isExplicitPriorityCheck` extension setting.');
+            self::markTestIncomplete('Missing `isExplicitPriorityCheck` extension setting.');
         }
 
         if ($settings['isExplicitPriorityCheck']) {
@@ -68,7 +68,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
                     'priority'.\DIRECTORY_SEPARATOR.'braces,indentation_type,no_break_comment.test',
                     'priority'.\DIRECTORY_SEPARATOR.'standardize_not_equals,binary_operator_spaces.test',
                 ], true)) {
-                    static::markTestIncomplete(sprintf(
+                    self::markTestIncomplete(sprintf(
                         'Integration test `%s` was defined as explicit priority test, but no priority conflict was detected.'
                         ."\n".'Either integration test needs to be extended or moved from `priority` to `misc`.'
                         ."\n".'But don\'t do it blindly - it deserves investigation!',
@@ -77,7 +77,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
                 }
             }
 
-            static::assertNotSame(
+            self::assertNotSame(
                 $fixedInputCode,
                 $fixedInputCodeWithReversedFixers,
                 sprintf('Test "%s" in "%s" is expected to be priority check.', $case->getTitle(), $case->getFileName())
@@ -101,7 +101,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
             }
 
             if (\PHP_VERSION_ID >= $phpUpperLimit) {
-                static::markTestSkipped(sprintf('PHP lower than %d is required for "%s", current "%d".', $phpUpperLimit, $case->getFileName(), \PHP_VERSION_ID));
+                self::markTestSkipped(sprintf('PHP lower than %d is required for "%s", current "%d".', $phpUpperLimit, $case->getFileName(), \PHP_VERSION_ID));
             }
         }
 

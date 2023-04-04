@@ -35,7 +35,7 @@ final class RangeAnalyzerTest extends TestCase
     {
         $tokens = Tokens::fromCode($code);
 
-        static::assertSame($expected, RangeAnalyzer::rangeEqualsRange($tokens, $range1, $range2));
+        self::assertSame($expected, RangeAnalyzer::rangeEqualsRange($tokens, $range1, $range2));
     }
 
     public static function provideRangeEqualsRangeCases(): iterable
@@ -102,7 +102,7 @@ final class RangeAnalyzerTest extends TestCase
         ];
 
         foreach ($ranges as [$range1, $range2]) {
-            static::assertTrue(RangeAnalyzer::rangeEqualsRange($tokens, $range1, $range2));
+            self::assertTrue(RangeAnalyzer::rangeEqualsRange($tokens, $range1, $range2));
         }
     }
 }

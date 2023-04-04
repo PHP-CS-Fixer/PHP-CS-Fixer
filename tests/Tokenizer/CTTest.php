@@ -29,7 +29,7 @@ final class CTTest extends TestCase
     public function testUniqueValues(): void
     {
         $constants = $this->getConstants();
-        static::assertSame($constants, array_flip(array_flip($constants)), 'Values of CT::T_* constants must be unique.');
+        self::assertSame($constants, array_flip(array_flip($constants)), 'Values of CT::T_* constants must be unique.');
     }
 
     /**
@@ -37,12 +37,12 @@ final class CTTest extends TestCase
      */
     public function testHas(string $name, int $value): void
     {
-        static::assertTrue(CT::has($value));
+        self::assertTrue(CT::has($value));
     }
 
     public function testHasNotExists(): void
     {
-        static::assertFalse(CT::has(123));
+        self::assertFalse(CT::has(123));
     }
 
     /**
@@ -50,7 +50,7 @@ final class CTTest extends TestCase
      */
     public function testGetName(string $name, int $value): void
     {
-        static::assertSame('CT::'.$name, CT::getName($value));
+        self::assertSame('CT::'.$name, CT::getName($value));
     }
 
     public function testGetNameNotExists(): void
@@ -66,8 +66,8 @@ final class CTTest extends TestCase
      */
     public function testConstants(string $name, int $value): void
     {
-        static::assertGreaterThan(10000, $value);
-        static::assertFalse(\defined($name), 'The CT name must not use native T_* name.');
+        self::assertGreaterThan(10000, $value);
+        self::assertFalse(\defined($name), 'The CT name must not use native T_* name.');
     }
 
     public static function provideConstantsCases(): iterable

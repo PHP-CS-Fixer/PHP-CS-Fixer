@@ -42,8 +42,8 @@ final class PregTest extends TestCase
         $expectedResult = preg_match($pattern, $subject, $expectedMatches);
         $actualResult = Preg::match($pattern, $subject, $actualMatches);
 
-        static::assertSame($expectedResult, $actualResult);
-        static::assertSame($expectedMatches, $actualMatches);
+        self::assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedMatches, $actualMatches);
     }
 
     public static function providePatternValidationCases(): iterable
@@ -95,7 +95,7 @@ final class PregTest extends TestCase
         }
 
         if (null !== $expected) {
-            static::assertSame($expected, $actual);
+            self::assertSame($expected, $actual);
 
             return;
         }
@@ -136,7 +136,7 @@ final class PregTest extends TestCase
         }
 
         if (null !== $expected) {
-            static::assertSame((bool) $expected, $actual);
+            self::assertSame((bool) $expected, $actual);
 
             return;
         }
@@ -162,8 +162,8 @@ final class PregTest extends TestCase
         $expectedResult = preg_match_all($pattern, $subject, $expectedMatches);
         $actualResult = Preg::matchAll($pattern, $subject, $actualMatches);
 
-        static::assertSame($expectedResult, $actualResult);
-        static::assertSame($expectedMatches, $actualMatches);
+        self::assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedMatches, $actualMatches);
     }
 
     public function testReplaceFailing(): void
@@ -185,7 +185,7 @@ final class PregTest extends TestCase
         $expectedResult = preg_replace($pattern, 'foo', $subject);
         $actualResult = Preg::replace($pattern, 'foo', $subject);
 
-        static::assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     public function testReplaceCallbackFailing(): void
@@ -209,7 +209,7 @@ final class PregTest extends TestCase
         $expectedResult = preg_replace_callback($pattern, $callback, $subject);
         $actualResult = Preg::replaceCallback($pattern, $callback, $subject);
 
-        static::assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     public static function provideCommonCases(): array
@@ -239,7 +239,7 @@ final class PregTest extends TestCase
         $expectedResult = preg_split($pattern, $subject);
         $actualResult = Preg::split($pattern, $subject);
 
-        static::assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     public function testCorrectnessForUtf8String(): void
@@ -250,8 +250,8 @@ final class PregTest extends TestCase
         Preg::match($pattern, $subject, $methodMatches);
         preg_match($pattern, $subject, $functionMatches);
 
-        static::assertSame(['à'], $methodMatches);
-        static::assertNotSame(['à'], $functionMatches);
+        self::assertSame(['à'], $methodMatches);
+        self::assertNotSame(['à'], $functionMatches);
     }
 
     public function testCorrectnessForNonUtf8String(): void
@@ -262,7 +262,7 @@ final class PregTest extends TestCase
         Preg::match($pattern, $subject, $methodMatches);
         preg_match($pattern, $subject, $functionMatches);
 
-        static::assertSame([\chr(224)], $methodMatches);
-        static::assertNotSame([\chr(224)], $functionMatches);
+        self::assertSame([\chr(224)], $methodMatches);
+        self::assertNotSame([\chr(224)], $functionMatches);
     }
 }

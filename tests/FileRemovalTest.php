@@ -71,8 +71,8 @@ final class FileRemovalTest extends TestCase
      */
     public function testShutdownRemovesObservedFiles(): void
     {
-        static::assertFileDoesNotExist(sys_get_temp_dir().'/cs_fixer_foo.php');
-        static::assertFileExists(sys_get_temp_dir().'/cs_fixer_bar.php');
+        self::assertFileDoesNotExist(sys_get_temp_dir().'/cs_fixer_foo.php');
+        self::assertFileExists(sys_get_temp_dir().'/cs_fixer_bar.php');
     }
 
     public function testCleanRemovesObservedFiles(): void
@@ -86,9 +86,9 @@ final class FileRemovalTest extends TestCase
 
         $fileRemoval->clean();
 
-        static::assertFileDoesNotExist($fs->url().'/foo.php');
-        static::assertFileDoesNotExist($fs->url().'/baz.php');
-        static::assertFileExists($fs->url().'/bar.php');
+        self::assertFileDoesNotExist($fs->url().'/foo.php');
+        self::assertFileDoesNotExist($fs->url().'/baz.php');
+        self::assertFileExists($fs->url().'/bar.php');
     }
 
     public function testDestructRemovesObservedFiles(): void
@@ -102,9 +102,9 @@ final class FileRemovalTest extends TestCase
 
         $fileRemoval->__destruct();
 
-        static::assertFileDoesNotExist($fs->url().'/foo.php');
-        static::assertFileDoesNotExist($fs->url().'/baz.php');
-        static::assertFileExists($fs->url().'/bar.php');
+        self::assertFileDoesNotExist($fs->url().'/foo.php');
+        self::assertFileDoesNotExist($fs->url().'/baz.php');
+        self::assertFileExists($fs->url().'/bar.php');
     }
 
     public function testDeleteObservedFile(): void
@@ -118,8 +118,8 @@ final class FileRemovalTest extends TestCase
 
         $fileRemoval->delete($fs->url().'/foo.php');
 
-        static::assertFileDoesNotExist($fs->url().'/foo.php');
-        static::assertFileExists($fs->url().'/baz.php');
+        self::assertFileDoesNotExist($fs->url().'/foo.php');
+        self::assertFileExists($fs->url().'/baz.php');
     }
 
     public function testDeleteNonObservedFile(): void
@@ -130,7 +130,7 @@ final class FileRemovalTest extends TestCase
 
         $fileRemoval->delete($fs->url().'/foo.php');
 
-        static::assertFileDoesNotExist($fs->url().'/foo.php');
+        self::assertFileDoesNotExist($fs->url().'/foo.php');
     }
 
     public function testSleep(): void

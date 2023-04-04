@@ -42,7 +42,7 @@ final class StdinTest extends AbstractSmokeTest
         $fileResult = CommandExecutor::create("{$command} {$inputFile}", $cwd)->getResult(false);
         $stdinResult = CommandExecutor::create("{$command} - < {$inputFile}", $cwd)->getResult(false);
 
-        static::assertSame($fileResult->getCode(), $stdinResult->getCode());
+        self::assertSame($fileResult->getCode(), $stdinResult->getCode());
 
         $expectedError = str_replace(
             'Paths from configuration file have been overridden by paths provided as command arguments.'."\n",
@@ -50,7 +50,7 @@ final class StdinTest extends AbstractSmokeTest
             $fileResult->getError()
         );
 
-        static::assertSame($expectedError, $stdinResult->getError());
+        self::assertSame($expectedError, $stdinResult->getError());
 
         $fileResult = $this->unifyFooter($fileResult->getOutput());
 
@@ -66,7 +66,7 @@ final class StdinTest extends AbstractSmokeTest
             $fileResult
         );
 
-        static::assertSame(
+        self::assertSame(
             $fileResult,
             $this->unifyFooter($stdinResult->getOutput())
         );

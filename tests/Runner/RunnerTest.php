@@ -80,9 +80,9 @@ final class RunnerTest extends TestCase
 
         $changed = $runner->fix();
 
-        static::assertCount(2, $changed);
-        static::assertSame($expectedChangedInfo, array_pop($changed));
-        static::assertSame($expectedChangedInfo, array_pop($changed));
+        self::assertCount(2, $changed);
+        self::assertSame($expectedChangedInfo, array_pop($changed));
+        self::assertSame($expectedChangedInfo, array_pop($changed));
 
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
         $runner = new Runner(
@@ -100,8 +100,8 @@ final class RunnerTest extends TestCase
 
         $changed = $runner->fix();
 
-        static::assertCount(1, $changed);
-        static::assertSame($expectedChangedInfo, array_pop($changed));
+        self::assertCount(1, $changed);
+        self::assertSame($expectedChangedInfo, array_pop($changed));
     }
 
     /**
@@ -129,18 +129,18 @@ final class RunnerTest extends TestCase
         $changed = $runner->fix();
         $pathToInvalidFile = $path.\DIRECTORY_SEPARATOR.'somefile.php';
 
-        static::assertCount(0, $changed);
+        self::assertCount(0, $changed);
 
         $errors = $errorsManager->getInvalidErrors();
 
-        static::assertCount(1, $errors);
+        self::assertCount(1, $errors);
 
         $error = $errors[0];
 
-        static::assertInstanceOf(\PhpCsFixer\Error\Error::class, $error);
+        self::assertInstanceOf(\PhpCsFixer\Error\Error::class, $error);
 
-        static::assertSame(Error::TYPE_INVALID, $error->getType());
-        static::assertSame($pathToInvalidFile, $error->getFilePath());
+        self::assertSame(Error::TYPE_INVALID, $error->getType());
+        self::assertSame($pathToInvalidFile, $error->getFilePath());
     }
 
     /**
@@ -170,6 +170,6 @@ final class RunnerTest extends TestCase
 
         $runner->fix();
 
-        static::assertSame($path, $spy->passedFile->getPath());
+        self::assertSame($path, $spy->passedFile->getPath());
     }
 }
