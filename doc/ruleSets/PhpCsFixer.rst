@@ -46,6 +46,7 @@ Rules
 - `phpdoc_types_order <./../rules/phpdoc/phpdoc_types_order.rst>`_
 - `phpdoc_var_annotation_correct_order <./../rules/phpdoc/phpdoc_var_annotation_correct_order.rst>`_
 - `return_assignment <./../rules/return_notation/return_assignment.rst>`_
+- `self_static_accessor <./../rules/class_notation/self_static_accessor.rst>`_
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
 - `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_
   config:
