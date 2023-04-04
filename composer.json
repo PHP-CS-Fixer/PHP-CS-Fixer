@@ -40,6 +40,7 @@
         "symfony/stopwatch": "^5.4 || ^6.0"
     },
     "require-dev": {
+        "brianium/paratest": "^6.9",
         "justinrainbow/json-schema": "^5.2",
         "keradus/cli-executor": "^2.0",
         "mikey179/vfsstream": "^1.6.11",
