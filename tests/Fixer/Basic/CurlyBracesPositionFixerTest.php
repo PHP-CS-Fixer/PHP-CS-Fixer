@@ -778,6 +778,89 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
                     }
                 }',
         ];
+
+        yield 'constructor with promoted properties and empty body' => [
+            '<?php
+                class Foo
+                {
+                    function __construct(
+                        private $foo
+                    ) {}
+                }',
+            '<?php
+                class Foo
+                {
+                    function __construct(
+                        private $foo
+                    )
+                    {
+
+
+                    }
+                }',
+        ];
+
+        yield 'constructor with promoted properties and line comment in the body' => [
+            '<?php
+                class Foo
+                {
+                    function __construct(
+                        private $foo
+                    ) {} // Foo
+                }',
+            '<?php
+                class Foo
+                {
+                    function __construct(
+                        private $foo
+                    )
+                    {
+                        // Foo
+                    }
+                }',
+        ];
+
+        yield 'constructor with promoted properties and block comment in the body' => [
+            '<?php
+                class Foo
+                {
+                    function __construct(
+                        private $foo
+                    ) {} /* Foo */
+                }',
+            '<?php
+                class Foo
+                {
+                    function __construct(
+                        private $foo
+                    )
+                    {
+                        /* Foo */
+                    }
+                }',
+        ];
+
+        yield 'constructor with promoted properties and additional logic in the body' => [
+            '<?php
+                class Foo
+                {
+                    function __construct(
+                        private Bar $bar
+                    ) {
+                        $bar->baz();
+                    }
+                }',
+            '<?php
+                class Foo
+                {
+                    function __construct(
+                        private Bar $bar
+                    )
+                    {
+                        $bar->baz();
+                    }
+                }',
+        ];
     }
 
     /**
