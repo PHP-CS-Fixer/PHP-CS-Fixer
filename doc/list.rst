@@ -372,6 +372,10 @@ List of Available Rules
      | Allow anonymous functions to have opening and closing braces on the same line.
      | Allowed types: ``bool``
      | Default value: ``true``
+   - | ``allow_single_line_constructors``
+     | Allow constructors to have opening and closing braces on the same line (helpful e.g. when using promoted properties).
+     | Allowed types: ``bool``
+     | Default value: ``true``
 
 
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_

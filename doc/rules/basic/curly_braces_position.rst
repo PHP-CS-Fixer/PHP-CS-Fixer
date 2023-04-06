@@ -70,6 +70,16 @@ Allowed types: ``bool``
 
 Default value: ``true``
 
+``allow_single_line_constructors``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Allow constructors to have opening and closing braces on the same line (helpful
+e.g. when using promoted properties).
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
 Examples
 --------
 

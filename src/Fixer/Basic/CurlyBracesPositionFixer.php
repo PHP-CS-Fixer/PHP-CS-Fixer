@@ -388,6 +388,10 @@ $bar = function () { $result = true;
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
                 ->getOption(),
+            (new FixerOptionBuilder('allow_single_line_constructors', 'Allow constructors to have opening and closing braces on the same line (helpful e.g. when using promoted properties).'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
+                ->getOption(),
         ]);
     }
 
