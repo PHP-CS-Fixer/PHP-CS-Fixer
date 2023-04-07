@@ -53,6 +53,11 @@ jobs:
             execute-deployment: 'yes'
 
           - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
+            job-description: 'with process linter'
+            FAST_LINT_TEST_CASES: 'no'
+
+          - operating-system: 'ubuntu-20.04'
             php-version: '8.3'
             PHP_CS_FIXER_IGNORE_ENV: 1
             composer-flags: '--ignore-platform-req=PHP'
@@ -60,7 +65,6 @@ jobs:
           - operating-system: 'windows-latest'
             php-version: '8.2'
             job-description: 'on Windows'
-            FAST_LINT_TEST_CASES: 1
 
           - operating-system: 'macos-latest'
             php-version: '8.2'
@@ -133,7 +137,7 @@ jobs:
       - name: Run tests
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES || 1 }}
         run: vendor/bin/phpunit ${{ matrix.phpunit-flags }}
 
       - name: Upload coverage results to Coveralls
