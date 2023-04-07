@@ -43,6 +43,11 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
+            job-description: 'auto-review'
+            phpunit-flags: '--group auto-review'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
             job-description: 'with calculating code coverage'
             calculate-code-coverage: 'yes'
             phpunit-flags: '--testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml'
@@ -134,7 +139,7 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/phpunit ${{ matrix.phpunit-flags }}
+        run: vendor/bin/phpunit ${{ matrix.phpunit-flags || '--exclude-group auto-review' }}
 
       - name: Upload coverage results to Coveralls
         if: matrix.calculate-code-coverage == 'yes'
