@@ -96,6 +96,34 @@ final class TypeExpression
                 (?<name> # single type, e.g.: `null`, `int`, `\Foo\Bar`
                     [\\\\\w-]++
                 )
+                |
+                (?<parenthesized> # parenthesized type, e.g.: `(int)`, `(int|\stdClass)`
+                    (?<parenthesized_start>
+                        \(\h*
+                    )
+                    (?:
+                        (?<parenthesized_types>
+                            (?&types)
+                        )
+                        |
+                        (?<conditional> # conditional type, e.g.: `$foo is \Throwable ? false : $foo`
+                            (?<conditional_cond_left>
+                                (?:\$\w++)
+                                |
+                                (?<conditional_cond_left_types>(?&types))
+                            )
+                            (?<conditional_cond_middle>
+                                \h+(?i)is(?:\h+not)?(?-i)\h+
+                            )
+                            (?<conditional_cond_right_types>(?&types))
+                            (?<conditional_true_start>\h*\?\h*)
+                            (?<conditional_true_types>(?&types))
+                            (?<conditional_false_start>\h*:\h*)
+                            (?<conditional_false_types>(?&types))
+                        )
+                    )
+                    \h*\)
+                )
             )
         )
         (?:
@@ -319,6 +347,49 @@ final class TypeExpression
                 $index + \strlen($matches['object_like_array_start']),
                 $matches['object_like_array_keys']
             );
+
+            return;
+        }
+
+        if ('' !== ($matches['parenthesized'] ?? '')) {
+            $index += \strlen($matches['parenthesized_start']);
+
+            if ('' !== ($matches['conditional'] ?? '')) {
+                if ('' !== ($matches['conditional_cond_left_types'] ?? '')) {
+                    $this->innerTypeExpressions[] = [
+                        'start_index' => $index,
+                        'expression' => $this->inner($matches['conditional_cond_left_types']),
+                    ];
+                }
+
+                $index += \strlen($matches['conditional_cond_left']) + \strlen($matches['conditional_cond_middle']);
+
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $index,
+                    'expression' => $this->inner($matches['conditional_cond_right_types']),
+                ];
+
+                $index += \strlen($matches['conditional_cond_right_types']) + \strlen($matches['conditional_true_start']);
+
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $index,
+                    'expression' => $this->inner($matches['conditional_true_types']),
+                ];
+
+                $index += \strlen($matches['conditional_true_types']) + \strlen($matches['conditional_false_start']);
+
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $index,
+                    'expression' => $this->inner($matches['conditional_false_types']),
+                ];
+            } else {
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $index,
+                    'expression' => $this->inner($matches['parenthesized_types']),
+                ];
+            }
+
+            return;
         }
     }
 

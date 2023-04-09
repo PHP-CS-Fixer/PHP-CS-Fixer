@@ -146,6 +146,12 @@ final class TypeExpressionTest extends TestCase
         yield ['\\Closure(string|int, bool): bool', ['\\Closure(string|int, bool): bool']];
 
         yield ['array  <  int   , callable  (  string  )  :   bool  >', ['array  <  int   , callable  (  string  )  :   bool  >']];
+
+        yield ['(int)', ['(int)']];
+
+        yield ['(int|\\Exception)', ['(int|\\Exception)']];
+
+        yield ['($foo is int ? false : true)', ['($foo is int ? false : true)']];
     }
 
     /**
@@ -423,6 +429,36 @@ final class TypeExpressionTest extends TestCase
         yield 'nesty stuff' => [
             'array<Level11&array<Level2|array<Level31&Level32>>>',
             'array<array<array<Level31&Level32>|Level2>&Level11>',
+        ];
+
+        yield 'parenthesized' => [
+            '(Foo|Bar)',
+            '(Bar|Foo)',
+        ];
+
+        yield 'parenthesized intersect' => [
+            '(Foo&Bar)',
+            '(Bar&Foo)',
+        ];
+
+        yield 'parenthesized in closure return type' => [
+            'Closure(): (string|float)',
+            'Closure(): (float|string)',
+        ];
+
+        yield 'conditional with variable' => [
+            '($x is (CFoo|(CBaz&CBar)) ? (TFoo|(TBaz&TBar)) : (FFoo|(FBaz&FBar)))',
+            '($x is ((CBar&CBaz)|CFoo) ? ((TBar&TBaz)|TFoo) : ((FBar&FBaz)|FFoo))',
+        ];
+
+        yield 'conditional with type' => [
+            '((Foo|Bar) is x ? y : z)',
+            '((Bar|Foo) is x ? y : z)',
+        ];
+
+        yield 'conditional in conditional' => [
+            '((Foo|Bar) is x ? ($x is (CFoo|CBar) ? (TFoo|TBar) : (FFoo|FBar)) : z)',
+            '((Bar|Foo) is x ? ($x is (CBar|CFoo) ? (TBar|TFoo) : (FBar|FFoo)) : z)',
         ];
     }
 }

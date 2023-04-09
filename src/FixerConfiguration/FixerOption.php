@@ -33,7 +33,7 @@ final class FixerOption implements FixerOptionInterface
     private $allowedTypes;
 
     /**
-     * @var null|list<(callable(mixed): bool)|null|scalar>
+     * @var null|list<null|(callable(mixed): bool)|scalar>
      */
     private $allowedValues;
 
@@ -43,9 +43,9 @@ final class FixerOption implements FixerOptionInterface
     private $normalizer;
 
     /**
-     * @param mixed             $default
-     * @param null|list<string> $allowedTypes
-     * @param null|list<(callable(mixed): bool)|null|scalar> $allowedValues
+     * @param mixed                                          $default
+     * @param null|list<string>                              $allowedTypes
+     * @param null|list<null|(callable(mixed): bool)|scalar> $allowedValues
      */
     public function __construct(
         string $name,
