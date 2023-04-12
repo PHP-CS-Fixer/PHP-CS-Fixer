@@ -45,7 +45,7 @@ final class FinalInternalClassFixerTest extends AbstractFixerTestCase
         }
 
         return [
-            [
+            'fix multiple classes' => [
                 $expected,
                 $input,
             ],
@@ -139,6 +139,16 @@ abstract class class4 {}
                     class A {}
 ',
             ],
+            'indent before `class`' => [
+                '<?php /** @internal */
+                    final class class1
+                    {
+                    }',
+                '<?php /** @internal */
+                    class class1
+                    {
+                    }',
+            ],
         ];
     }
 
@@ -174,7 +184,7 @@ final class A{}
 /**
  * @CUSTOM
  */
-class B{}
+final class B{}
 ',
                 '<?php
 /**
@@ -299,13 +309,17 @@ $a = new class (){};',
 /** @internal */
 $a = new class{};',
         ];
+
+        yield [
+            '<?php $object = new /**/ class(){};',
+        ];
     }
 
     public function testConfigureSameAnnotationInBothLists(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
-            sprintf('#^%s$#', preg_quote('[final_internal_class] Annotation cannot be used in both the include and exclude list, got duplicates: "internal123".', '#'))
+            sprintf('#^%s$#', preg_quote('[final_internal_class] Annotation cannot be used in both "include" and "exclude" list, got duplicates: "internal123".', '#'))
         );
 
         $this->fixer->configure([
@@ -315,21 +329,161 @@ $a = new class{};',
     }
 
     /**
+     * @group legacy
+     */
+    public function testConfigureBothNewAndOldSet(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_include" and new option "include".', '#')));
+        $this->expectDeprecation('Option "annotation_include" for rule "final_internal_class" is deprecated and will be removed in version 4.0. Use "internal" to configure PHPDoc annotations tags and attributes.');
+
+        $this->fixer->configure([
+            'annotation_include' => ['@internal', 'a'],
+            'include' => ['@internal', 'b'],
+        ]);
+    }
+
+    /**
+     * @param array<string, list<string>> $config
+     *
      * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
-    public function testFix80(string $expected, ?string $input = null): void
+    public function testFix80(string $expected, ?string $input = null, array $config): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
     public static function provideFix80Cases(): iterable
     {
-        yield [
+        yield 'multiple attributes, all configured as not to fix' => [
+            '<?php
+#[X]
+#[A]
+class Foo {}',
+            null,
+            ['exclude' => ['a', 'X']],
+        ];
+
+        yield 'multiple attributes, one configured as to fix, one as not to fix' => [
             '<?php
 #[Internal]
+#[A]
 class Foo {}',
+            null,
+            [
+                'include' => ['internal'],
+                'exclude' => ['A'],
+            ],
+        ];
+
+        yield 'multiple attributes, one configured as to fix' => [
+            '<?php
+#[Internal]
+#[A]
+final class Foo {}',
+            '<?php
+#[Internal]
+#[A]
+class Foo {}',
+            ['include' => ['internal']],
+        ];
+
+        yield 'single attribute configured as to fix' => [
+            '<?php
+#[Internal]
+final class Foo {}',
+               '<?php
+#[Internal]
+class Foo {}',
+            ['include' => ['internal']],
+        ];
+
+        yield [
+            '<?php
+#[StandWithUkraine]
+class Foo {}',
+            null,
+            ['consider_absent_docblock_as_internal_class' => true],
+        ];
+
+        yield 'mixed bag of cases' => [
+            '<?php
+#[Entity(repositoryClass: PostRepository::class)]
+class User
+{}
+
+#[ORM\Entity]
+#[Index(name: "category_idx", columns: ["category"])]
+final class Article
+{}
+
+#[A]
+class ArticleB
+{}
+
+#[B]
+final class Foo {}
+
+#[C]
+class FooX {}
+
+$object1 = new #[ExampleAttribute] class(){};
+$object2 = new /* */ class(){};
+$object3 = new #[B] #[ExampleAttribute] class(){};
+
+/**
+ * @B
+ */
+final class PhpDocClass{}
+',
+            '<?php
+#[Entity(repositoryClass: PostRepository::class)]
+class User
+{}
+
+#[ORM\Entity]
+#[Index(name: "category_idx", columns: ["category"])]
+class Article
+{}
+
+#[A]
+class ArticleB
+{}
+
+#[B]
+class Foo {}
+
+#[C]
+class FooX {}
+
+$object1 = new #[ExampleAttribute] class(){};
+$object2 = new /* */ class(){};
+$object3 = new #[B] #[ExampleAttribute] class(){};
+
+/**
+ * @B
+ */
+class PhpDocClass{}
+',
+            [
+                'exclude' => ['Entity', 'A'],
+                'include' => ['orm\entity', 'B'],
+            ],
+        ];
+
+        yield 'positive on attribute, but negative on doc' => [
+            '<?php
+/** @final */
+#[A]
+class Foo {}',
+            null,
+            [
+                'exclude' => ['final'],
+                'include' => ['A'],
+            ],
         ];
     }
 

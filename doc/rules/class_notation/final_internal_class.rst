@@ -18,6 +18,8 @@ Configuration
 ``annotation_include``
 ~~~~~~~~~~~~~~~~~~~~~~
 
+.. warning:: This option is deprecated and will be removed on next major version. Use ``include`` to configure PHPDoc annotations tags and attributes.
+
 Class level annotations tags that must be set in order to fix the class (case
 insensitive).
 
@@ -28,12 +30,34 @@ Default value: ``['@internal']``
 ``annotation_exclude``
 ~~~~~~~~~~~~~~~~~~~~~~
 
+.. warning:: This option is deprecated and will be removed on next major version. Use ``exclude`` to configure PHPDoc annotations tags and attributes.
+
 Class level annotations tags that must be omitted to fix the class, even if all
 of the white list ones are used as well (case insensitive).
 
 Allowed types: ``array``
 
 Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity', '@Document', '@ODM\\Document']``
+
+``include``
+~~~~~~~~~~~
+
+Class level PHPDoc annotations tags or attributes of which one or more must be
+set in order to fix the class. (case insensitive)
+
+Allowed types: ``array``
+
+Default value: ``['internal']``
+
+``exclude``
+~~~~~~~~~~~
+
+Class level PHPDoc annotations tags or attributes which must all be omitted to
+fix the class. (case insensitive)
+
+Allowed types: ``array``
+
+Default value: ``['final', 'Entity', 'ORM\\Entity', 'ORM\\Mapping\\Entity', 'Mapping\\Entity', 'Document', 'ODM\\Document']``
 
 ``consider_absent_docblock_as_internal_class``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,7 +92,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['annotation_include' => ['@Custom'], 'annotation_exclude' => ['@not-fix']]``.
+With configuration: ``['include' => ['@Custom'], 'exclude' => ['@not-fix']]``.
 
 .. code-block:: diff
 
