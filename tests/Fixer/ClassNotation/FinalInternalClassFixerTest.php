@@ -296,6 +296,9 @@ class B{}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string|int, array{0: string, 1?: string}>
+     */
     public static function provideAnonymousClassesCases(): iterable
     {
         yield [
@@ -356,6 +359,9 @@ $a = new class{};',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string|int, array{0: string, 1: null|string, 2: array{consider_absent_docblock_as_internal_class? : bool, exclude?: list<string>, include?: list<string>}}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'multiple attributes, all configured as not to fix' => [
@@ -500,6 +506,9 @@ class Foo {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string|int, array{0: string, 1: null|string, 2: array{consider_absent_docblock_as_internal_class? : bool, exclude?: list<string>, include?: list<string>}}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield [

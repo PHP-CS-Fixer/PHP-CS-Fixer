@@ -308,6 +308,9 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         return $this->isConfiguredAsInclude($attributeCandidates);
     }
 
+    /**
+     * @param array<string, bool> $attributes
+     */
     private function isConfiguredAsInclude(array $attributes): bool
     {
         if (0 === \count($this->configuration['include'])) {
