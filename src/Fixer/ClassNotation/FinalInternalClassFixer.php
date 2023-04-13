@@ -197,7 +197,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         ;
 
         return new FixerConfigurationResolver([
-            new DeprecatedFixerOption($oldAnnotationIncludeOption, 'Use `internal` to configure PHPDoc annotations tags and attributes.'),
+            new DeprecatedFixerOption($oldAnnotationIncludeOption, 'Use `include` to configure PHPDoc annotations tags and attributes.'),
             new DeprecatedFixerOption($oldAnnotationExcludeOption, 'Use `exclude` to configure PHPDoc annotations tags and attributes.'),
             (new FixerOptionBuilder('include', 'Class level PHPDoc annotations tags or attributes of which one or more must be set in order to fix the class. (case insensitive).'))
                 ->setAllowedTypes(['array'])
