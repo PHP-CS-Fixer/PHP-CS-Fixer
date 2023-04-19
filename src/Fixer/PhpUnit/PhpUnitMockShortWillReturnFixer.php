@@ -126,6 +126,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $tokens->clearTokenAndMergeSurroundingWhitespace($functionToRemoveIndex);
             $tokens->clearTokenAndMergeSurroundingWhitespace($openingBraceIndex);
             $tokens->clearTokenAndMergeSurroundingWhitespace($closingBraceIndex);
+
+            $commaAfterClosingBraceIndex = $tokens->getNextMeaningfulToken($closingBraceIndex);
+            if ($tokens[$commaAfterClosingBraceIndex]->equals(',')) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($commaAfterClosingBraceIndex);
+            }
         }
     }
 }

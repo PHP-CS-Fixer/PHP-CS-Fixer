@@ -267,7 +267,7 @@ class FooTest extends TestCase {
                 '<?php
 class FooTest extends TestCase {
     public function testFoo() {
-        $someMock->method("someMethod")->willReturn( 10 ,  , );
+        $someMock->method("someMethod")->willReturn( 10 ,   );
     }
 }',
                 '<?php
