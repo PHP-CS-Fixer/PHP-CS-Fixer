@@ -1282,6 +1282,38 @@ switch ($foo) {
                 };
             ',
         ];
+
+        yield 'switch with break and nested match' => [
+            '<?php switch ($value) {
+                case 1:
+                    $x = match (true) {
+                        default => 2
+                    };
+                    break;
+                default:
+                    $x = 3;
+            }',
+        ];
+
+        yield 'switch without break and nested match' => [
+            '<?php switch ($value) {
+                case 1:
+                    $x = match (true) {
+                        default => 2
+                    };
+                    // no break
+                default:
+                    $x = 3;
+            }',
+            '<?php switch ($value) {
+                case 1:
+                    $x = match (true) {
+                        default => 2
+                    };
+                default:
+                    $x = 3;
+            }',
+        ];
     }
 
     /**
