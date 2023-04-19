@@ -357,6 +357,9 @@ switch ($foo) {
 
         if (null === $structureKinds) {
             $structureKinds = [T_FOR, T_FOREACH, T_WHILE, T_IF, T_ELSEIF, T_SWITCH, T_FUNCTION];
+            if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required
+                $structureKinds[] = T_MATCH;
+            }
         }
 
         return $structureKinds;
