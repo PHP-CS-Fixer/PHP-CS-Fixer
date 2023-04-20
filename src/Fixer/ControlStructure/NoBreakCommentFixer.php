@@ -141,7 +141,7 @@ switch ($foo) {
         $commentPosition = null;
 
         for ($i = $casePosition + 1, $max = \count($tokens); $i < $max; ++$i) {
-            if ($tokens[$i]->isGivenKind([T_SWITCH, T_IF, T_ELSE, T_ELSEIF, T_FOR, T_FOREACH, T_WHILE, T_DO, T_FUNCTION, T_CLASS])) {
+            if ($tokens[$i]->isGivenKind([...self::getParenthesisedStructureKinds(), T_ELSE, T_DO, T_CLASS])) {
                 $empty = false;
                 $i = $this->getStructureEnd($tokens, $i);
 
@@ -312,7 +312,7 @@ switch ($foo) {
     {
         $initialToken = $tokens[$position];
 
-        if ($initialToken->isGivenKind([T_FOR, T_FOREACH, T_WHILE, T_IF, T_ELSEIF, T_SWITCH, T_FUNCTION])) {
+        if ($initialToken->isGivenKind(self::getParenthesisedStructureKinds())) {
             $position = $tokens->findBlockEnd(
                 Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
                 $tokens->getNextTokenOfKind($position, ['('])
@@ -346,5 +346,22 @@ switch ($foo) {
         }
 
         return $position;
+    }
+
+    /**
+     * @return array<int>
+     */
+    private static function getParenthesisedStructureKinds(): array
+    {
+        static $structureKinds = null;
+
+        if (null === $structureKinds) {
+            $structureKinds = [T_FOR, T_FOREACH, T_WHILE, T_IF, T_ELSEIF, T_SWITCH, T_FUNCTION];
+            if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required
+                $structureKinds[] = T_MATCH;
+            }
+        }
+
+        return $structureKinds;
     }
 }
