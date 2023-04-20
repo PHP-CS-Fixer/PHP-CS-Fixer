@@ -186,11 +186,6 @@ final class Token
         // detect unknown keys
         unset($otherPrototype[0], $otherPrototype[1]);
 
-        /*
-         * @phpstan-ignore-next-line This validation is required when the method
-         *                           is called in a codebase that does not use
-         *                           static analysis.
-         */
         return empty($otherPrototype);
     }
 
