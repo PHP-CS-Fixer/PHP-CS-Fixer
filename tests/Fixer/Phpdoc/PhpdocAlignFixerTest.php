@@ -1495,6 +1495,24 @@ class Foo {}
         ');
     }
 
+    public function testTypesParenthesized(): void
+    {
+        $this->doTest(
+            '<?php
+            /**
+             * @param list<string>                                   $allowedTypes
+             * @param null|list<\Closure(mixed): (bool|null|scalar)> $allowedValues
+             */
+            ',
+            '<?php
+            /**
+             * @param list<string> $allowedTypes
+             * @param null|list<\Closure(mixed): (bool|null|scalar)> $allowedValues
+             */
+            '
+        );
+    }
+
     /**
      * @dataProvider provideCallableTypesWithUglyCodeCases
      */
