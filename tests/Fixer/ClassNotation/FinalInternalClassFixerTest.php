@@ -170,7 +170,7 @@ abstract class class4 {}
                 "<?php\n/** @CUSTOM */final class A{}",
                 "<?php\n/** @CUSTOM */class A{}",
                 [
-                    'annotation_include' => ['@Custom'],
+                    'include' => ['@Custom'],
                 ],
             ],
             [
@@ -199,7 +199,7 @@ class A{}
 class B{}
 ',
                 [
-                    'annotation_include' => ['@Custom', '@abc'],
+                    'include' => ['@Custom', '@abc'],
                 ],
             ],
             [
@@ -246,8 +246,8 @@ class B{}
  class C{}
 ',
                 [
-                    'annotation_include' => ['@Custom', '@internal'],
-                    'annotation_exclude' => ['@not-fix'],
+                    'include' => ['@Custom', '@internal'],
+                    'exclude' => ['@not-fix'],
                 ],
             ],
             [
@@ -274,7 +274,7 @@ class A{}
 class B{}
 ',
                 [
-                    'annotation_exclude' => ['abc'],
+                    'exclude' => ['abc'],
                 ],
             ],
             [
@@ -326,8 +326,8 @@ $a = new class{};',
         );
 
         $this->fixer->configure([
-            'annotation_include' => ['@internal123', 'a'],
-            'annotation_exclude' => ['@internal123', 'b'],
+            'include' => ['@internal123', 'a'],
+            'exclude' => ['@internal123', 'b'],
         ]);
     }
 
@@ -353,7 +353,7 @@ $a = new class{};',
      *
      * @requires PHP 8.0
      */
-    public function testFix80(string $expected, ?string $input = null, array $config): void
+    public function testFix80(string $expected, ?string $input, array $config): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
