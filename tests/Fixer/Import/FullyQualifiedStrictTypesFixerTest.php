@@ -103,6 +103,11 @@ namespace A\B\C\D
             '<?php use \A\Exception; function foo(Exception $e) {}',
             '<?php use \A\Exception; function foo(\A\Exception $e) {}',
         ];
+
+        yield 'common prefix' => [
+            '<?php namespace Foo; function foo(\FooBar $v): \FooBar {}',
+            null,
+        ];
     }
 
     /**
