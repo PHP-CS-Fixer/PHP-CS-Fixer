@@ -1,0 +1,33 @@
+--TEST--
+Integration of fixers: php_unit_mock_short_will_return,trailing_comma_in_multiline.
+--RULESET--
+{"php_unit_mock_short_will_return": true, "trailing_comma_in_multiline": {"elements": ["arguments"]}}
+--EXPECT--
+<?php
+class FooTest extends TestCase
+{
+    public function test(): void
+    {
+        $service->method('some')->willReturnCallback(
+            
+                function (mixed $event) {
+                },
+            
+        );
+    }
+}
+
+--INPUT--
+<?php
+class FooTest extends TestCase
+{
+    public function test(): void
+    {
+        $service->method('some')->will(
+            $this->returnCallback(
+                function (mixed $event) {
+                }
+            )
+        );
+    }
+}
