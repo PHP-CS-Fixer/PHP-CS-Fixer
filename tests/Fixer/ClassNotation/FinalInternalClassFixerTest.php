@@ -297,7 +297,7 @@ class B{}
     }
 
     /**
-     * @return iterable<string|int, array{0: string, 1?: string}>
+     * @return iterable<int|string, array{0: string, 1?: string}>
      */
     public static function provideAnonymousClassesCases(): iterable
     {
@@ -360,7 +360,7 @@ $a = new class{};',
     }
 
     /**
-     * @return iterable<string|int, array{0: string, 1: null|string, 2: array{consider_absent_docblock_as_internal_class? : bool, exclude?: list<string>, include?: list<string>}}>
+     * @return iterable<int|string, array{0: string, 1: null|string, 2: array{consider_absent_docblock_as_internal_class? : bool, exclude?: list<string>, include?: list<string>}}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -401,7 +401,7 @@ class Foo {}',
             '<?php
 #[Internal]
 final class Foo {}',
-               '<?php
+            '<?php
 #[Internal]
 class Foo {}',
             ['include' => ['internal']],
@@ -507,7 +507,7 @@ class Foo {}',
     }
 
     /**
-     * @return iterable<string|int, array{0: string, 1: null|string, 2: array{consider_absent_docblock_as_internal_class? : bool, exclude?: list<string>, include?: list<string>}}>
+     * @return iterable<int|string, array{0: string, 1: null|string, 2: array{consider_absent_docblock_as_internal_class? : bool, exclude?: list<string>, include?: list<string>}}>
      */
     public static function provideFix82Cases(): iterable
     {
