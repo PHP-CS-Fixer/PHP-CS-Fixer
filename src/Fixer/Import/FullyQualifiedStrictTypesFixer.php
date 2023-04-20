@@ -152,13 +152,15 @@ class SomeClass
         $namespaceNameLength = \strlen($namespaceName);
         $types = $this->getTypes($tokens, $typeStartIndex, $type->getEndIndex());
 
+        $prefix = $namespaceName ? '\\'.$namespaceName.'\\' : '\\';
         foreach ($types as $typeName => [$startIndex, $endIndex]) {
-            if (!str_starts_with($typeName, '\\')) {
+            $typeNameLower = strtolower($typeName);
+            if (!str_starts_with($typeNameLower, $prefix)) {
                 continue; // no shorter type possible
             }
 
             $typeName = substr($typeName, 1);
-            $typeNameLower = strtolower($typeName);
+            $typeNameLower = substr($typeNameLower, 1);
 
             if (isset($uses[$typeNameLower])) {
                 // if the type without leading "\" equals any of the full "uses" long names, it can be replaced with the short one
