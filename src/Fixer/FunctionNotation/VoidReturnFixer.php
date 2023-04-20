@@ -236,16 +236,26 @@ final class VoidReturnFixer extends AbstractFixer
      */
     private function findReturnAnnotations(Tokens $tokens, int $index): array
     {
-        do {
-            $index = $tokens->getPrevNonWhitespace($index);
-        } while ($tokens[$index]->isGivenKind([
+        $previousTokens = [
             T_ABSTRACT,
             T_FINAL,
             T_PRIVATE,
             T_PROTECTED,
             T_PUBLIC,
             T_STATIC,
-        ]));
+        ];
+
+        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
+            $previousTokens[] = T_ATTRIBUTE;
+        }
+
+        do {
+            $index = $tokens->getPrevNonWhitespace($index);
+
+            if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                $index = $tokens->getPrevTokenOfKind($index, [[T_ATTRIBUTE]]);
+            }
+        } while ($tokens[$index]->isGivenKind($previousTokens));
 
         if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
             return [];
