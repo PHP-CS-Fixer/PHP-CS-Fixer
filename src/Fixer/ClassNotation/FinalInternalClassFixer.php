@@ -52,13 +52,13 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         ],
     ];
 
-    private bool $checkAnnotations;
+    private bool $checkAttributes;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->checkAnnotations = \PHP_VERSION_ID >= 80000;
+        $this->checkAttributes = \PHP_VERSION_ID >= 80000;
     }
 
     /**
@@ -235,7 +235,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
 
         $index = $tokens->getPrevNonWhitespace($index);
 
-        if ($this->checkAnnotations && $tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+        if ($this->checkAttributes && $tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
             if (!$this->isClassCandidateBasedOnAttribute($tokens, $index)) {
                 return false;
             }
@@ -345,7 +345,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
 
             if ($oldConfigIsSet) {
                 $this->configuration[$newConfigKey] = $this->configuration[$oldConfigKey];
-                $this->checkAnnotations = false; // run in old mode
+                $this->checkAttributes = false; // run in old mode
             }
 
             // if ($newConfigIsSet) - only new config is set, all good

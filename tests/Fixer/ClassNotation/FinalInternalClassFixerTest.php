@@ -334,7 +334,7 @@ $a = new class{};',
     /**
      * @group legacy
      */
-    public function testConfigureBothNewAndOldSet(): void
+    public function testConfigureBothNewAndOldIncludeSet(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_include" and new option "include".', '#')));
@@ -343,6 +343,21 @@ $a = new class{};',
         $this->fixer->configure([
             'annotation_include' => ['@internal', 'a'],
             'include' => ['@internal', 'b'],
+        ]);
+    }
+
+    /**
+     * @group legacy
+     */
+    public function testConfigureBothNewAndOldExcludeSet(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_exclude" and new option "exclude".', '#')));
+        $this->expectDeprecation('Option "annotation_exclude" for rule "final_internal_class" is deprecated and will be removed in version 4.0. Use "exclude" to configure PHPDoc annotations tags and attributes.');
+
+        $this->fixer->configure([
+            'annotation_exclude' => ['@internal', 'a'],
+            'exclude' => ['@internal', 'b'],
         ]);
     }
 
