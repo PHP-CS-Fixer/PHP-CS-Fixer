@@ -552,28 +552,6 @@ declare(strict_types=1) ?>',
             [
                 [
                     'header' => 'tmp',
-                    'location' => 'after_declare_strict',
-                ],
-                '#!/usr/bin/env php
-<?php
-declare(strict_types=1);
-
-/*
- * tmp
- */
-
-namespace A\B;
-
-echo 1;',
-                '#!/usr/bin/env php
-<?php
-declare(strict_types=1);namespace A\B;
-
-echo 1;',
-            ],
-            [
-                [
-                    'header' => 'tmp',
                     'location' => 'after_open',
                 ],
                 'Short mixed file A
@@ -731,7 +709,8 @@ echo 1;'
             ['<?= 1?>'],
             ["<?= 1?><?php\n"],
             ["<?= 1?>\n<?php\n"],
-            ["<?php\n// comment 1\n?><?php\n// comment 2\n"],
+            ["#!/usr/bin/env php\n<?php\ndeclare(strict_types=1);\n\n/*\n* tmp\n*/\n\nnamespace A\\B;\n\necho 1;"],
+            ['<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta http-equiv="X-UA-Compatible" content="IE=edge">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>Document</title>\n</head>\n<body>\n  \n</body>\n</html>'],
         ];
     }
 

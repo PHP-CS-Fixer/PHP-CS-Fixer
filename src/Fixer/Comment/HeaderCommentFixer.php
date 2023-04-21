@@ -118,7 +118,13 @@ echo 1;
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isMonolithicPhp();
+        if (0 === $tokens->count()) {
+            return false;
+        }
+
+        $firstToken = $tokens[0];
+
+        return $firstToken->isGivenKind([T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO]);
     }
 
     /**
