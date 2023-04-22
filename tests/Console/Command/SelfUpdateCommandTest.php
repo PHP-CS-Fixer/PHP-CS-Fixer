@@ -107,7 +107,7 @@ final class SelfUpdateCommandTest extends TestCase
         $versionChecker->getLatestVersion()->willReturn($latestVersion);
 
         $versionChecker
-            ->getLatestVersionOfMajor($this->getCurrentMajorVersion())
+            ->getLatestVersionOfMajor(self::getCurrentMajorVersion())
             ->willReturn($latestMinorVersion)
         ;
 
@@ -135,12 +135,12 @@ final class SelfUpdateCommandTest extends TestCase
         static::assertSame(0, $commandTester->getStatusCode());
     }
 
-    public function provideExecuteCases(): array
+    public static function provideExecuteCases(): array
     {
         $currentVersion = Application::VERSION;
-        $minorRelease = $this->getNewMinorReleaseVersion();
-        $majorRelease = $this->getNewMajorReleaseVersion();
-        $major = $this->getNewMajorVersion();
+        $minorRelease = self::getNewMinorReleaseVersion();
+        $majorRelease = self::getNewMajorReleaseVersion();
+        $major = self::getNewMajorVersion();
 
         $currentContents = 'Current PHP CS Fixer.';
         $minorContents = 'New minor version of PHP CS Fixer.';
@@ -251,7 +251,7 @@ OUTPUT;
 
         $newMinorVersion = $this->getNewMinorReleaseVersion();
         $versionChecker
-            ->getLatestVersionOfMajor($this->getCurrentMajorVersion())
+            ->getLatestVersionOfMajor(self::getCurrentMajorVersion())
             ->will(function () use ($latestMinorVersionSuccess, $newMinorVersion): string {
                 if ($latestMinorVersionSuccess) {
                     return $newMinorVersion;
@@ -389,23 +389,23 @@ OUTPUT;
         return "{$this->root->url()}/php-cs-fixer";
     }
 
-    private function getCurrentMajorVersion(): int
+    private static function getCurrentMajorVersion(): int
     {
         return (int) preg_replace('/^v?(\d+).*$/', '$1', Application::VERSION);
     }
 
-    private function getNewMinorReleaseVersion(): string
+    private static function getNewMinorReleaseVersion(): string
     {
-        return "{$this->getCurrentMajorVersion()}.999.0";
+        return self::getCurrentMajorVersion().'.999.0';
     }
 
-    private function getNewMajorVersion(): int
+    private static function getNewMajorVersion(): int
     {
-        return $this->getCurrentMajorVersion() + 1;
+        return self::getCurrentMajorVersion() + 1;
     }
 
-    private function getNewMajorReleaseVersion(): string
+    private static function getNewMajorReleaseVersion(): string
     {
-        return $this->getNewMajorVersion().'.0.0';
+        return self::getNewMajorVersion().'.0.0';
     }
 }

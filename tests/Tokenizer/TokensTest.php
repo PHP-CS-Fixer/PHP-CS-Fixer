@@ -1150,9 +1150,9 @@ echo $a;',
         static::assertSame($expected, $tokens->generateCode());
     }
 
-    public function provideRemoveTrailingWhitespaceCases(): iterable
+    public static function provideRemoveTrailingWhitespaceCases(): iterable
     {
-        $leadingCases = $this->provideRemoveLeadingWhitespaceCases();
+        $leadingCases = self::provideRemoveLeadingWhitespaceCases();
 
         foreach ($leadingCases as $leadingCase) {
             $leadingCase[0] -= 2;

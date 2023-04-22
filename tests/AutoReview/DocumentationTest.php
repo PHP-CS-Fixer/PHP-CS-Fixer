@@ -92,9 +92,9 @@ final class DocumentationTest extends TestCase
         static::assertSame($expected, $actual);
     }
 
-    public function provideFixerCases(): iterable
+    public static function provideFixerCases(): iterable
     {
-        foreach ($this->getFixers() as $fixer) {
+        foreach (self::getFixers() as $fixer) {
             yield $fixer->getName() => [$fixer];
         }
     }
@@ -198,7 +198,7 @@ final class DocumentationTest extends TestCase
     /**
      * @return list<FixerInterface>
      */
-    private function getFixers(): array
+    private static function getFixers(): array
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
