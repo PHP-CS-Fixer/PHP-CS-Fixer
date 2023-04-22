@@ -57,7 +57,7 @@ final class JunitReporterTest extends AbstractReporterTestCase
         return 'junit';
     }
 
-    protected function createNoErrorReport(): string
+    protected static function createNoErrorReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -69,7 +69,7 @@ final class JunitReporterTest extends AbstractReporterTestCase
 XML;
     }
 
-    protected function createSimpleReport(): string
+    protected static function createSimpleReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -83,7 +83,7 @@ XML;
 XML;
     }
 
-    protected function createWithDiffReport(): string
+    protected static function createWithDiffReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -102,7 +102,7 @@ this text is a diff ;)]]></failure>
 XML;
     }
 
-    protected function createWithAppliedFixersReport(): string
+    protected static function createWithAppliedFixersReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -119,7 +119,7 @@ XML;
 XML;
     }
 
-    protected function createWithTimeAndMemoryReport(): string
+    protected static function createWithTimeAndMemoryReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -133,7 +133,7 @@ XML;
 XML;
     }
 
-    protected function createComplexReport(): string
+    protected static function createComplexReport(): string
     {
         return <<<'XML'
 <?xml version="1.0"?>

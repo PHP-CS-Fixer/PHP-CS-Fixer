@@ -62,11 +62,11 @@ abstract class AbstractReporterTestCase extends TestCase
         $this->assertFormat($expectedReport, $actualReport);
     }
 
-    final public function provideGenerateCases(): array
+    final public static function provideGenerateCases(): array
     {
         return [
             'no errors' => [
-                $this->createNoErrorReport(),
+                static::createNoErrorReport(),
                 new ReportSummary(
                     [],
                     10,
@@ -78,7 +78,7 @@ abstract class AbstractReporterTestCase extends TestCase
                 ),
             ],
             'simple' => [
-                $this->createSimpleReport(),
+                static::createSimpleReport(),
                 new ReportSummary(
                     [
                         'someFile.php' => [
@@ -95,7 +95,7 @@ abstract class AbstractReporterTestCase extends TestCase
                 ),
             ],
             'with diff' => [
-                $this->createWithDiffReport(),
+                static::createWithDiffReport(),
                 new ReportSummary(
                     [
                         'someFile.php' => [
@@ -112,7 +112,7 @@ abstract class AbstractReporterTestCase extends TestCase
                 ),
             ],
             'with applied fixers' => [
-                $this->createWithAppliedFixersReport(),
+                static::createWithAppliedFixersReport(),
                 new ReportSummary(
                     [
                         'someFile.php' => [
@@ -129,7 +129,7 @@ abstract class AbstractReporterTestCase extends TestCase
                 ),
             ],
             'with time and memory' => [
-                $this->createWithTimeAndMemoryReport(),
+                static::createWithTimeAndMemoryReport(),
                 new ReportSummary(
                     [
                         'someFile.php' => [
@@ -146,7 +146,7 @@ abstract class AbstractReporterTestCase extends TestCase
                 ),
             ],
             'complex' => [
-                $this->createComplexReport(),
+                static::createComplexReport(),
                 new ReportSummary(
                     [
                         'someFile.php' => [
@@ -173,17 +173,17 @@ abstract class AbstractReporterTestCase extends TestCase
 
     abstract protected function getFormat(): string;
 
-    abstract protected function createNoErrorReport(): string;
+    abstract protected static function createNoErrorReport(): string;
 
-    abstract protected function createSimpleReport(): string;
+    abstract protected static function createSimpleReport(): string;
 
-    abstract protected function createWithDiffReport(): string;
+    abstract protected static function createWithDiffReport(): string;
 
-    abstract protected function createWithAppliedFixersReport(): string;
+    abstract protected static function createWithAppliedFixersReport(): string;
 
-    abstract protected function createWithTimeAndMemoryReport(): string;
+    abstract protected static function createWithTimeAndMemoryReport(): string;
 
-    abstract protected function createComplexReport(): string;
+    abstract protected static function createComplexReport(): string;
 
     abstract protected function assertFormat(string $expected, string $input): void;
 }

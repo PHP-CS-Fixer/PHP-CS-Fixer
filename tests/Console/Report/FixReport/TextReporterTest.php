@@ -27,13 +27,13 @@ use PhpCsFixer\Console\Report\FixReport\TextReporter;
  */
 final class TextReporterTest extends AbstractReporterTestCase
 {
-    protected function createNoErrorReport(): string
+    protected static function createNoErrorReport(): string
     {
         return <<<'TEXT'
 TEXT;
     }
 
-    protected function createSimpleReport(): string
+    protected static function createSimpleReport(): string
     {
         return str_replace(
             "\n",
@@ -45,7 +45,7 @@ TEXT
         );
     }
 
-    protected function createWithDiffReport(): string
+    protected static function createWithDiffReport(): string
     {
         return str_replace(
             "\n",
@@ -61,7 +61,7 @@ TEXT
         );
     }
 
-    protected function createWithAppliedFixersReport(): string
+    protected static function createWithAppliedFixersReport(): string
     {
         return str_replace(
             "\n",
@@ -73,7 +73,7 @@ TEXT
         );
     }
 
-    protected function createWithTimeAndMemoryReport(): string
+    protected static function createWithTimeAndMemoryReport(): string
     {
         return str_replace(
             "\n",
@@ -87,7 +87,7 @@ TEXT
         );
     }
 
-    protected function createComplexReport(): string
+    protected static function createComplexReport(): string
     {
         return str_replace(
             "\n",

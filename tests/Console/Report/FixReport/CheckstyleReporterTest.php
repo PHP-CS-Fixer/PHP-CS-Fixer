@@ -45,7 +45,7 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
         self::$xsd = null;
     }
 
-    protected function createNoErrorReport(): string
+    protected static function createNoErrorReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -53,7 +53,7 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
 XML;
     }
 
-    protected function createSimpleReport(): string
+    protected static function createSimpleReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -65,7 +65,7 @@ XML;
 XML;
     }
 
-    protected function createWithDiffReport(): string
+    protected static function createWithDiffReport(): string
     {
         // NOTE: checkstyle format does NOT include diffs
         return <<<'XML'
@@ -78,7 +78,7 @@ XML;
 XML;
     }
 
-    protected function createWithAppliedFixersReport(): string
+    protected static function createWithAppliedFixersReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -91,7 +91,7 @@ XML;
 XML;
     }
 
-    protected function createWithTimeAndMemoryReport(): string
+    protected static function createWithTimeAndMemoryReport(): string
     {
         // NOTE: checkstyle format does NOT include time or memory
         return <<<'XML'
@@ -104,7 +104,7 @@ XML;
 XML;
     }
 
-    protected function createComplexReport(): string
+    protected static function createComplexReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
