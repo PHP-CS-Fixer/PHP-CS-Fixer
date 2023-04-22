@@ -316,9 +316,9 @@ final class ProjectCodeTest extends TestCase
         ));
     }
 
-    public function provideDataProviderMethodCases(): iterable
+    public static function provideDataProviderMethodCases(): iterable
     {
-        foreach ($this->provideTestClassCases() as $testClassName) {
+        foreach (self::provideTestClassCases() as $testClassName) {
             $testClassName = reset($testClassName);
             $reflectionClass = new \ReflectionClass($testClassName);
 
@@ -580,23 +580,23 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideSrcClassCases(): array
+    public static function provideSrcClassCases(): array
     {
         return array_map(
             static function (string $item): array {
                 return [$item];
             },
-            $this->getSrcClasses()
+            self::getSrcClasses()
         );
     }
 
-    public function provideSrcClassesNotAbuseInterfacesCases(): array
+    public static function provideSrcClassesNotAbuseInterfacesCases(): array
     {
         return array_map(
             static function (string $item): array {
                 return [$item];
             },
-            array_filter($this->getSrcClasses(), static function (string $className): bool {
+            array_filter(self::getSrcClasses(), static function (string $className): bool {
                 $rc = new \ReflectionClass($className);
 
                 $doc = false !== $rc->getDocComment()
@@ -636,12 +636,12 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideSrcConcreteClassCases(): array
+    public static function provideSrcConcreteClassCases(): array
     {
         return array_map(
             static fn (string $item): array => [$item],
             array_filter(
-                $this->getSrcClasses(),
+                self::getSrcClasses(),
                 static function (string $className): bool {
                     $rc = new \ReflectionClass($className);
 
@@ -666,12 +666,12 @@ final class ProjectCodeTest extends TestCase
         yield from self::$testClassCases;
     }
 
-    public function provideClassesWherePregFunctionsAreForbiddenCases(): array
+    public static function provideClassesWherePregFunctionsAreForbiddenCases(): array
     {
         return array_map(
             static fn (string $item): array => [$item],
             array_filter(
-                $this->getSrcClasses(),
+                self::getSrcClasses(),
                 static fn (string $className): bool => Preg::class !== $className,
             ),
         );
@@ -772,7 +772,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @return list<class-string>
      */
-    private function getSrcClasses(): array
+    private static function getSrcClasses(): array
     {
         static $classes;
 

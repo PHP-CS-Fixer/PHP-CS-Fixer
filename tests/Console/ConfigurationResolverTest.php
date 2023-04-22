@@ -195,9 +195,9 @@ final class ConfigurationResolverTest extends TestCase
         static::assertInstanceOf($expectedClass, $resolver->getConfig());
     }
 
-    public function provideResolveConfigFileDefaultCases(): array
+    public static function provideResolveConfigFileDefaultCases(): array
     {
-        $dirBase = $this->getFixtureDir();
+        $dirBase = self::getFixtureDir();
 
         return [
             [
@@ -237,7 +237,7 @@ final class ConfigurationResolverTest extends TestCase
             '#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php-cs-fixer\.dist\.php" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#'
         );
 
-        $dirBase = $this->getFixtureDir();
+        $dirBase = self::getFixtureDir();
 
         $resolver = $this->createConfigurationResolver(['path' => [$dirBase.'case_5']]);
 
@@ -249,7 +249,7 @@ final class ConfigurationResolverTest extends TestCase
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessageMatches('/^The format "xls" is not defined, supported are "checkstyle", "gitlab", "json", "junit", "txt", "xml"\.$/');
 
-        $dirBase = $this->getFixtureDir();
+        $dirBase = self::getFixtureDir();
 
         $resolver = $this->createConfigurationResolver(['path' => [$dirBase.'case_7']]);
 
@@ -261,7 +261,7 @@ final class ConfigurationResolverTest extends TestCase
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessageMatches('/^For multiple paths config parameter is required\.$/');
 
-        $dirBase = $this->getFixtureDir();
+        $dirBase = self::getFixtureDir();
 
         $resolver = $this->createConfigurationResolver(['path' => [$dirBase.'case_1/.php-cs-fixer.dist.php', $dirBase.'case_1/foo.php']]);
 
@@ -270,7 +270,7 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolveConfigFileChooseFileWithPathArrayAndConfig(): void
     {
-        $dirBase = $this->getFixtureDir();
+        $dirBase = self::getFixtureDir();
 
         $resolver = $this->createConfigurationResolver([
             'config' => $dirBase.'case_1/.php-cs-fixer.dist.php',
@@ -1222,7 +1222,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         static::assertSame($expected, $actual);
     }
 
-    private function getFixtureDir(): string
+    private static function getFixtureDir(): string
     {
         return realpath(__DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.\DIRECTORY_SEPARATOR).'/';
     }
