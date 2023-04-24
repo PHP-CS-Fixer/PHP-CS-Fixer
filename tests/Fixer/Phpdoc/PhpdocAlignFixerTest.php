@@ -342,8 +342,10 @@ EOF;
     /**
      * @param  EngineInterface $templating
      * @param  mixed           &$reference A parameter passed by reference
+     *                                     Multiline description
      * @throws Bar             description bar
      * @return Foo             description foo
+     *                         multiline description
      */
 
 EOF;
@@ -353,8 +355,10 @@ EOF;
     /**
      * @param EngineInterface       $templating
      * @param  mixed    &$reference     A parameter passed by reference
+     *                                  Multiline description
      * @throws   Bar description bar
      * @return  Foo     description foo
+     *                  multiline description
      */
 
 EOF;
@@ -1556,5 +1560,36 @@ class Foo {}
          * @var            \Closure(int, bool): bool       $fn6
          */
         EOT];
+    }
+
+    public function testFixCustomTags(): void
+    {
+        $this->fixer->configure(['tags' => ['param', 'phpstan-param']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param         EngineInterface $templating
+     * @param         string          $format
+     * @phpstan-param int             $code       An HTTP response status code
+     * @param         bool            $debug
+     * @param         mixed           &$reference A parameter passed by reference
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param  EngineInterface $templating
+     * @param string      $format
+     * @phpstan-param  int  $code       An HTTP response status code
+     * @param    bool         $debug
+     * @param  mixed    &$reference     A parameter passed by reference
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
     }
 }
