@@ -170,48 +170,46 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             return $newValue;
         };
 
-        $oldAnnotationIncludeOption = new FixerOptionBuilder('annotation_include', 'Class level PHPDoc annotations tags that must be set in order to fix the class. (case insensitive).');
-        $oldAnnotationIncludeOption = $oldAnnotationIncludeOption
-            ->setAllowedTypes(['array'])
-            ->setAllowedValues($annotationsAsserts)
-            ->setDefault(
-                array_map(
-                    static function (string $string) {
-                        return '@'.$string;
-                    },
-                    self::DEFAULTS['include'],
-                ),
-            )
-            ->setNormalizer($annotationsNormalizer)
-            ->getOption()
-        ;
-
-        $oldAnnotationExcludeOption = new FixerOptionBuilder('annotation_exclude', 'Class level PHPDoc annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive).');
-        $oldAnnotationExcludeOption = $oldAnnotationExcludeOption
-            ->setAllowedTypes(['array'])
-            ->setAllowedValues($annotationsAsserts)
-            ->setDefault(
-                array_map(
-                    static function (string $string) {
-                        return '@'.$string;
-                    },
-                    self::DEFAULTS['exclude'],
-                ),
-            )
-            ->setNormalizer($annotationsNormalizer)
-            ->getOption()
-        ;
-
         return new FixerConfigurationResolver([
-            new DeprecatedFixerOption($oldAnnotationIncludeOption, 'Use `include` to configure PHPDoc annotations tags and attributes.'),
-            new DeprecatedFixerOption($oldAnnotationExcludeOption, 'Use `exclude` to configure PHPDoc annotations tags and attributes.'),
-            (new FixerOptionBuilder('include', 'Class level PHPDoc annotations tags or attributes of which one or more must be set in order to fix the class. (case insensitive).'))
+            new DeprecatedFixerOption(
+                (new FixerOptionBuilder('annotation_include', 'Class level attribute or annotation tags that must be set in order to fix the class (case insensitive).'))
+                    ->setAllowedTypes(['array'])
+                    ->setAllowedValues($annotationsAsserts)
+                    ->setDefault(
+                        array_map(
+                            static function (string $string) {
+                                return '@'.$string;
+                            },
+                            self::DEFAULTS['include'],
+                        ),
+                    )
+                    ->setNormalizer($annotationsNormalizer)
+                    ->getOption(),
+                'Use `include` to configure PHPDoc annotations tags and attributes.',
+            ),
+            new DeprecatedFixerOption(
+                (new FixerOptionBuilder('annotation_exclude', 'Class level attribute or annotation tags that must be omitted to fix the class, even if all of the white list ones are used as well (case insensitive).'))
+                    ->setAllowedTypes(['array'])
+                    ->setAllowedValues($annotationsAsserts)
+                    ->setDefault(
+                        array_map(
+                            static function (string $string) {
+                                return '@'.$string;
+                            },
+                            self::DEFAULTS['exclude'],
+                        ),
+                    )
+                    ->setNormalizer($annotationsNormalizer)
+                    ->getOption(),
+                'Use `exclude` to configure PHPDoc annotations tags and attributes.',
+            ),
+            (new FixerOptionBuilder('include', 'Class level attribute or annotation tags that must be set in order to fix the class (case insensitive).'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(self::DEFAULTS['include'])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),
-            (new FixerOptionBuilder('exclude', 'Class level PHPDoc annotations tags or attributes which must all be omitted to fix the class. (case insensitive).'))
+            (new FixerOptionBuilder('exclude', 'Class level attribute or annotation tags that must be omitted to fix the class, even if all of the white list ones are used as well (case insensitive).'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(self::DEFAULTS['exclude'])

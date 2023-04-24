@@ -20,8 +20,8 @@ Configuration
 
 .. warning:: This option is deprecated and will be removed on next major version. Use ``include`` to configure PHPDoc annotations tags and attributes.
 
-Class level PHPDoc annotations tags that must be set in order to fix the class.
-(case insensitive).
+Class level attribute or annotation tags that must be set in order to fix the
+class (case insensitive).
 
 Allowed types: ``array``
 
@@ -32,8 +32,8 @@ Default value: ``['@internal']``
 
 .. warning:: This option is deprecated and will be removed on next major version. Use ``exclude`` to configure PHPDoc annotations tags and attributes.
 
-Class level PHPDoc annotations tags that must be omitted to fix the class, even
-if all of the white list ones are used as well. (case insensitive).
+Class level attribute or annotation tags that must be omitted to fix the class,
+even if all of the white list ones are used as well (case insensitive).
 
 Allowed types: ``array``
 
@@ -42,8 +42,8 @@ Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', 
 ``include``
 ~~~~~~~~~~~
 
-Class level PHPDoc annotations tags or attributes of which one or more must be
-set in order to fix the class. (case insensitive).
+Class level attribute or annotation tags that must be set in order to fix the
+class (case insensitive).
 
 Allowed types: ``array``
 
@@ -52,8 +52,8 @@ Default value: ``['internal']``
 ``exclude``
 ~~~~~~~~~~~
 
-Class level PHPDoc annotations tags or attributes which must all be omitted to
-fix the class. (case insensitive).
+Class level attribute or annotation tags that must be omitted to fix the class,
+even if all of the white list ones are used as well (case insensitive).
 
 Allowed types: ``array``
 
