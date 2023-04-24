@@ -174,7 +174,14 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $oldAnnotationIncludeOption = $oldAnnotationIncludeOption
             ->setAllowedTypes(['array'])
             ->setAllowedValues($annotationsAsserts)
-            ->setDefault(['@internal'])
+            ->setDefault(
+                array_map(
+                    static function (string $string) {
+                        return '@'.$string;
+                    },
+                    self::DEFAULTS['include'],
+                ),
+            )
             ->setNormalizer($annotationsNormalizer)
             ->getOption()
         ;
@@ -183,15 +190,14 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $oldAnnotationExcludeOption = $oldAnnotationExcludeOption
             ->setAllowedTypes(['array'])
             ->setAllowedValues($annotationsAsserts)
-            ->setDefault([
-                '@final',
-                '@Entity',
-                '@ORM\Entity',
-                '@ORM\Mapping\Entity',
-                '@Mapping\Entity',
-                '@Document',
-                '@ODM\Document',
-            ])
+            ->setDefault(
+                array_map(
+                    static function (string $string) {
+                        return '@'.$string;
+                    },
+                    self::DEFAULTS['exclude'],
+                ),
+            )
             ->setNormalizer($annotationsNormalizer)
             ->getOption()
         ;
