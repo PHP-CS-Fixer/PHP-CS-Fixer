@@ -708,6 +708,11 @@ use Baz;
             ],
             'with_case_insensitive_matches_in_comments' => [
                 '<?php
+
+//foo
+#bar
+/*baz*/',
+                '<?php
 use Foo;
 use Bar;
 use Baz;
@@ -796,6 +801,8 @@ EOF
 class Foo extends \PHPUnit_Framework_TestCase
 {
     /**
+     * The exception is thrown when foo = bar
+     *
      * @expectedException \Exception
      */
     public function testBar()
@@ -810,6 +817,8 @@ use Some\Exception;
 class Foo extends \PHPUnit_Framework_TestCase
 {
     /**
+     * The exception is thrown when foo = bar
+     *
      * @expectedException \Exception
      */
     public function testBar()
