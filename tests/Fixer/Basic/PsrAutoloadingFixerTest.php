@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use Prophecy\Prophet;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
@@ -37,7 +38,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
             $this->fixer->configure(['dir' => $dir]);
         }
 
-        $this->doTest($expected, $input, $this->getTestFile(__FILE__));
+        $this->doTest($expected, $input, self::getTestFile(__FILE__));
     }
 
     public static function provideFixNewCases(): iterable
@@ -165,7 +166,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
     public function testFix(string $expected, ?string $input = null, ?\SplFileInfo $file = null, ?string $dir = null): void
     {
         if (null === $file) {
-            $file = $this->getTestFile(__FILE__);
+            $file = self::getTestFile(__FILE__);
         }
         if (null !== $dir) {
             $this->fixer->configure(['dir' => $dir]);
@@ -174,10 +175,10 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input, $file);
     }
 
-    public function provideFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
-        $fileProphecy = $this->prophesize();
-        $fileProphecy->willExtend(\SplFileInfo::class);
+        $prophet = new Prophet();
+        $fileProphecy = $prophet->prophesize(\SplFileInfo::class);
         $fileProphecy->willBeConstructedWith(['']);
         $fileProphecy->getBasename('.php')->willReturn('Bar');
         $fileProphecy->getExtension()->willReturn('php');
@@ -296,7 +297,7 @@ namespace Foo\Bar\Baz\FIXER\Basic;
 class PsrAutoloadingFixer {}
 ',
             null,
-            $this->getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
+            self::getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
         ];
 
         yield [ // namespace partially matching directory structure with comment
@@ -305,7 +306,7 @@ namespace /* hi there */ Foo\Bar\Baz\FIXER\Basic;
 class /* hi there */ PsrAutoloadingFixer {}
 ',
             null,
-            $this->getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
+            self::getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
         ];
 
         yield [ // namespace not matching directory structure
@@ -314,7 +315,7 @@ namespace Foo\Bar\Baz;
 class PsrAutoloadingFixer {}
 ',
             null,
-            $this->getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
+            self::getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
         ];
 
         yield [ // namespace partially matching directory structure with configured directory
@@ -326,7 +327,7 @@ class PsrAutoloadingFixer {}
 namespace Foo\Bar\Baz\FIXER\Basic;
 class PsrAutoloadingFixer {}
 ',
-            $this->getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
+            self::getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
             __DIR__.'/../../../src/',
         ];
 
@@ -339,7 +340,7 @@ class /* hi there */ PsrAutoloadingFixer {}
 namespace /* hi there */ Foo\Bar\Baz\FIXER\Basic;
 class /* hi there */ PsrAutoloadingFixer {}
 ',
-            $this->getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
+            self::getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
             __DIR__.'/../../../src/',
         ];
 
@@ -349,7 +350,7 @@ namespace Foo\Bar\Baz;
 class PsrAutoloadingFixer {}
 ',
             null,
-            $this->getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
+            self::getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
             __DIR__.'/../../../src/Fixer/Basic',
         ];
 
@@ -364,7 +365,7 @@ class PsrAutoloadingFixer {}
         ];
     }
 
-    public function provideIgnoredCases(): array
+    public static function provideIgnoredCases(): array
     {
         $cases = ['.php', 'Foo.class.php', '4Foo.php', '$#.php'];
 
@@ -396,7 +397,7 @@ class PsrAutoloadingFixer {}
 namespace Aaa;
 class Bar {}',
                 null,
-                $this->getTestFile($case),
+                self::getTestFile($case),
             ];
         }, $cases);
     }
@@ -475,7 +476,7 @@ class extends stdClass {};
      */
     public function testFix81(string $expected, ?string $input = null): void
     {
-        $this->doTest($expected, $input, $this->getTestFile(__FILE__));
+        $this->doTest($expected, $input, self::getTestFile(__FILE__));
     }
 
     public static function providePhp81Cases(): iterable

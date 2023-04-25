@@ -41,7 +41,7 @@ final class TextReporterTest extends AbstractReporterTestCase
         static::assertSame($expected, $input);
     }
 
-    protected function createSimpleReport(): string
+    protected static function createSimpleReport(): string
     {
         return str_replace("\n", PHP_EOL, ' 1) @PhpCsFixer
       Rule set as used by the PHP-CS-Fixer development team, highly opinionated.

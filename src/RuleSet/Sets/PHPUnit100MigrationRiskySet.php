@@ -25,7 +25,7 @@ final class PHPUnit100MigrationRiskySet extends AbstractMigrationSetDescription
     {
         return [
             '@PHPUnit84Migration:risky' => true,
-            'php_unit_data_provider_static' => true,
+            'php_unit_data_provider_static' => ['force' => true],
         ];
     }
 }

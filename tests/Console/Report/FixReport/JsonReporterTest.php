@@ -27,7 +27,7 @@ use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
  */
 final class JsonReporterTest extends AbstractReporterTestCase
 {
-    protected function createSimpleReport(): string
+    protected static function createSimpleReport(): string
     {
         return <<<'JSON'
 {
@@ -44,7 +44,7 @@ final class JsonReporterTest extends AbstractReporterTestCase
 JSON;
     }
 
-    protected function createWithDiffReport(): string
+    protected static function createWithDiffReport(): string
     {
         return <<<'JSON'
 {
@@ -62,7 +62,7 @@ JSON;
 JSON;
     }
 
-    protected function createWithAppliedFixersReport(): string
+    protected static function createWithAppliedFixersReport(): string
     {
         return <<<'JSON'
 {
@@ -80,7 +80,7 @@ JSON;
 JSON;
     }
 
-    protected function createWithTimeAndMemoryReport(): string
+    protected static function createWithTimeAndMemoryReport(): string
     {
         return <<<'JSON'
 {
@@ -97,7 +97,7 @@ JSON;
 JSON;
     }
 
-    protected function createComplexReport(): string
+    protected static function createComplexReport(): string
     {
         return <<<'JSON'
 {
@@ -131,7 +131,7 @@ JSON;
         return 'json';
     }
 
-    protected function createNoErrorReport(): string
+    protected static function createNoErrorReport(): string
     {
         return <<<'JSON'
 {

@@ -42,7 +42,7 @@ final class JsonReporterTest extends AbstractReporterTestCase
         static::assertJsonStringEqualsJsonString($expected, $input);
     }
 
-    protected function createSimpleReport(): string
+    protected static function createSimpleReport(): string
     {
         return '{
     "sets": {
