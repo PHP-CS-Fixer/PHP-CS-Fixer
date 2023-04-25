@@ -56,6 +56,7 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
         }
 
         if ($tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny([
+            ')',
             ']',
             [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
             [CT::T_ARRAY_SQUARE_BRACE_CLOSE],

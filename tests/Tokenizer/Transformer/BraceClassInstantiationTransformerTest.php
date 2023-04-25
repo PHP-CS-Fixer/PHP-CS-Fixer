@@ -341,12 +341,14 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
                 ],
             ],
             [
-                '<?php $result = ($function)(new Argument);',
+                '<?php $result = ($function)(new Argument());',
                 [
                     5 => '(',
                     7 => ')',
                     8 => '(',
-                    12 => ')',
+                    12 => '(',
+                    13 => ')',
+                    14 => ')',
                 ],
                 [
                     '(',
