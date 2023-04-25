@@ -340,6 +340,23 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
                     CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ],
             ],
+            [
+                '<?php $result = ($function)(new Argument());',
+                [
+                    5 => '(',
+                    7 => ')',
+                    8 => '(',
+                    12 => '(',
+                    13 => ')',
+                    14 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
         ];
     }
 
