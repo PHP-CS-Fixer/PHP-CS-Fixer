@@ -784,6 +784,18 @@ foo(function () {
     // comment
 }, );',
         ];
+
+        yield 'multiline arguments starting with "new" keyword' => [
+            '<?php
+$result1 = foo(
+    new Bar1(),
+    1
+);
+$result2 = ($function)(
+    new Bar2(),
+    2
+);',
+        ];
     }
 
     /**
