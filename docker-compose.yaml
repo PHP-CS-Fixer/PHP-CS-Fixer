@@ -29,4 +29,4 @@ services:
     build:
       args:
         PHP_VERSION: "8.2"
-        PHP_XDEBUG_VERSION: "3.2.0"
+        PHP_XDEBUG_VERSION: "3.2.1"
