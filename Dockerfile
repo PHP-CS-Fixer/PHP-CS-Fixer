@@ -1,7 +1,10 @@
-FROM php:7.4-cli-alpine3.16
+ARG PHP_VERSION
+
+FROM php:${PHP_VERSION}-cli-alpine3.16
 
 ARG DOCKER_USER_ID
 ARG DOCKER_GROUP_ID
+ARG PHP_XDEBUG_VERSION
 
 # https://blog.codito.dev/2022/11/composer-binary-only-docker-images/
 # https://github.com/composer/docker/pull/250
@@ -18,9 +21,10 @@ RUN if ! getent group "${DOCKER_GROUP_ID}" > /dev/null; \
   && chmod +x /usr/local/bin/install-php-extensions \
   && sync \
   && install-php-extensions \
-    xdebug-3.1.2 \
+    pcntl \
+    xdebug-${PHP_XDEBUG_VERSION} \
   # xdebug command
   && curl --location --output /usr/local/bin/xdebug https://github.com/julienfalque/xdebug/releases/download/v2.0.0/xdebug \
   && chmod +x /usr/local/bin/xdebug
 
-COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+COPY docker/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
