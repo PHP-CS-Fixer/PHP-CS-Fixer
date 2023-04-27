@@ -1174,6 +1174,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     {
         return [
             [null, '/my/path/my/file', 'path/my/file'],
+            ['/my/path/.php-cs-fixer.cache', '/my/path/my/file', 'my/file'],
             ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', 'dir2/file'],
             ['dir/.php-cs-fixer.cache', '/my/path/dir/dir3/file', 'dir3/file'],
         ];
