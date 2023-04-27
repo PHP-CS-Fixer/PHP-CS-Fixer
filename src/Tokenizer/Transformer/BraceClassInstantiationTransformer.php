@@ -60,6 +60,7 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
             ']',
             [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
             [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
+            [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE],
             [T_ARRAY],
             [T_CLASS],
             [T_ELSEIF],

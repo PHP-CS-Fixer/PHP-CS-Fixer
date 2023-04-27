@@ -794,6 +794,10 @@ $result1 = foo(
 $result2 = ($function)(
     new Bar2(),
     2
+);
+$result3 = (new Argument())(
+    new Bar3(),
+    3
 );',
         ];
     }
