@@ -88,7 +88,7 @@ final class TypeExpression
                     (?i)
                     null | true | false
                     | -?(?:\d+(?:\.\d*)?|\.\d+) # all sorts of numbers with or without minus, e.g.: 1, 1.1, 1., .1, -1
-                    | \'[^\']+?\' | "[^"]+?"
+                    | \'(?:[^\'\\\\]|\\\\.)+?\' | "(?:[^"\\\\]|\\\\.)+?"
                     | [@$]?(?:this | self | static)
                     (?-i)
                 )
