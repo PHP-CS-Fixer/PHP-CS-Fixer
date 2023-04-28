@@ -101,15 +101,15 @@ final class PharTest extends AbstractSmokeTest
         );
     }
 
-    public static function provideCacheCases(): iterable
+    public static function provideReportCases(): iterable
     {
         yield ['yes'];
     }
 
     /**
-     * @dataProvider provideCacheCases
+     * @dataProvider provideReportCases
      */
-    public function testCache(string $usingCache): void
+    public function testReport(string $usingCache): void
     {
         try {
             $json = self::executePharCommand(sprintf(
