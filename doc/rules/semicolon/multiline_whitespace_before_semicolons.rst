@@ -31,7 +31,7 @@ Example #1
    --- Original
    +++ New
     <?php
-    function foo () {
+    function foo() {
    -    return 1 + 2
    -        ;
    +    return 1 + 2;
@@ -47,12 +47,11 @@ With configuration: ``['strategy' => 'new_line_for_chained_calls']``.
    --- Original
    +++ New
     <?php
-                            $this->method1()
-                                ->method2()
-   -                            ->method(3);
-   +                            ->method(3)
+    $object->method1()
+        ->method2()
+   -    ->method(3);
+   +    ->method(3)
    +;
-                        ?>
 
 Rule sets
 ---------
