@@ -119,7 +119,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
         // e.g. @param <hint> <$var>
         if ([] !== $tagsWithNameToAlign) {
-            $types[] = '(?P<tag>'.implode('|', $tagsWithNameToAlign).')\s+(?P<hint>(?:'.TypeExpression::REGEX_TYPES.')?)\s+(?P<var>(?:&|\.{3})?\$\S+)';
+            $types[] = '(?P<tag>'.implode('|', $tagsWithNameToAlign).')\s+(?P<hint>(?:'.TypeExpression::REGEX_TYPES.')?)\s*(?P<var>(?:&|\.{3})?\$\S+)';
         }
 
         // e.g. @return <hint>
