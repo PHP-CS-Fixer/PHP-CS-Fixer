@@ -177,6 +177,17 @@ class SomeClass
             } elseif ($typeNameLower !== $namespaceName && str_starts_with($typeNameLower, $namespaceName)) {
                 // if the type starts with namespace and the type is not the same as the namespace it can be shortened
                 $typeNameShort = substr($typeName, $namespaceNameLength + 1);
+
+                // if short names are the same, but long one are different then it cannot be shortened
+                foreach ($uses as $useLongName => $useShortName) {
+                    if (
+                        strtolower($typeNameShort) === strtolower($useShortName)
+                        && strtolower($typeName) !== strtolower($useLongName)
+                    ) {
+                        continue 2;
+                    }
+                }
+
                 $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($typeNameShort));
             }
         }
