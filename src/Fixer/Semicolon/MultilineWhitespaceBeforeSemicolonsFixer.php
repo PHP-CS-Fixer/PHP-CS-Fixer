@@ -54,7 +54,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
             [
                 new CodeSample(
                     '<?php
-function foo () {
+function foo() {
     return 1 + 2
         ;
 }
@@ -62,10 +62,9 @@ function foo () {
                 ),
                 new CodeSample(
                     '<?php
-                        $this->method1()
-                            ->method2()
-                            ->method(3);
-                    ?>
+$object->method1()
+    ->method2()
+    ->method(3);
 ',
                     ['strategy' => self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]
                 ),
