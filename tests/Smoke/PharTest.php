@@ -101,8 +101,48 @@ final class PharTest extends AbstractSmokeTest
         );
     }
 
+    public static function provideReportCases(): iterable
+    {
+        yield ['yes'];
+    }
+
+    /**
+     * @dataProvider provideReportCases
+     */
+    public function testReport(string $usingCache): void
+    {
+        try {
+            $json = self::executePharCommand(sprintf(
+                'fix %s --dry-run --format=json --rules=\'%s\' --using-cache=%s',
+                __FILE__,
+                json_encode(['concat_space' => ['spacing' => 'one']]),
+                $usingCache,
+            ))->getOutput();
+
+            static::assertJson($json);
+
+            $report = json_decode($json, true);
+            static::assertIsArray($report);
+            static::assertArrayHasKey('files', $report);
+            static::assertCount(1, $report['files']);
+            static::assertArrayHasKey(0, $report['files']);
+
+            static::assertSame(
+                'tests/Smoke/PharTest.php',
+                $report['files'][0]['name'],
+            );
+        } catch (\Throwable $exception) {
+            throw $exception;
+        } finally {
+            $cacheFile = __DIR__.'/../../.php-cs-fixer.cache';
+            if (file_exists($cacheFile)) {
+                unlink($cacheFile);
+            }
+        }
+    }
+
     private static function executePharCommand(string $params): CliResult
     {
-        return CommandExecutor::create('php '.self::$pharName.' '.$params, self::$pharCwd)->getResult();
+        return CommandExecutor::create('php '.self::$pharName.' '.$params, self::$pharCwd)->getResult(false);
     }
 }
