@@ -512,6 +512,7 @@ final readonly class Test extends TestCase
 
         yield [
             '<?php
+
 /**
  * @internal
  */

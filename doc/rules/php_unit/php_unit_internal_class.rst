@@ -29,6 +29,7 @@ Example #1
    --- Original
    +++ New
     <?php
+   +
    +/**
    + * @internal
    + */
