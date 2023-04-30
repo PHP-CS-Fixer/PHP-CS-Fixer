@@ -645,37 +645,39 @@ class X
 ',
         ];
 
-        yield from [
-            [
-                ['tags' => ['type']],
-                "<?php\r\n\t/**\r\n\t * @type Type This is a variable.\r\n\t */",
-                "<?php\r\n\t/**\r\n\t * @type   Type   This is a variable.\r\n\t */",
-                new WhitespacesFixerConfig("\t", "\r\n"),
-            ],
-            [
-                ['tags' => ['param', 'return']],
-                "<?php\r\n/**\r\n * @param int    \$limit\r\n * @param string \$more\r\n *\r\n * @return array\r\n */",
-                "<?php\r\n/**\r\n * @param   int       \$limit\r\n * @param   string       \$more\r\n *\r\n * @return array\r\n */",
-                new WhitespacesFixerConfig("\t", "\r\n"),
-            ],
-            [
-                [],
-                "<?php\r\n/**\r\n * @param int    \$limit\r\n * @param string \$more\r\n *\r\n * @return array\r\n */",
-                "<?php\r\n/**\r\n * @param   int       \$limit\r\n * @param   string       \$more\r\n *\r\n * @return array\r\n */",
-                new WhitespacesFixerConfig("\t", "\r\n"),
-            ],
-            [
-                [],
-                "<?php\n/**\n * @param int \$a\n * @param int \$b\n *               ABC\n */",
-                "<?php\n/**\n * @param    int \$a\n * @param    int   \$b\n * ABC\n */",
-                new WhitespacesFixerConfig('    ', "\n"),
-            ],
-            [
-                [],
-                "<?php\r\n/**\r\n * @param int \$z\r\n * @param int \$b\r\n *               XYZ\r\n */",
-                "<?php\r\n/**\r\n * @param    int \$z\r\n * @param    int   \$b\r\n * XYZ\r\n */",
-                new WhitespacesFixerConfig('    ', "\r\n"),
-            ],
+        yield 'messy whitespaces 1' => [
+            ['tags' => ['type']],
+            "<?php\r\n\t/**\r\n\t * @type Type This is a variable.\r\n\t */",
+            "<?php\r\n\t/**\r\n\t * @type   Type   This is a variable.\r\n\t */",
+            new WhitespacesFixerConfig("\t", "\r\n"),
+        ];
+
+        yield 'messy whitespaces 2' => [
+            ['tags' => ['param', 'return']],
+            "<?php\r\n/**\r\n * @param int    \$limit\r\n * @param string \$more\r\n *\r\n * @return array\r\n */",
+            "<?php\r\n/**\r\n * @param   int       \$limit\r\n * @param   string       \$more\r\n *\r\n * @return array\r\n */",
+            new WhitespacesFixerConfig("\t", "\r\n"),
+        ];
+
+        yield 'messy whitespaces 3' => [
+            [],
+            "<?php\r\n/**\r\n * @param int    \$limit\r\n * @param string \$more\r\n *\r\n * @return array\r\n */",
+            "<?php\r\n/**\r\n * @param   int       \$limit\r\n * @param   string       \$more\r\n *\r\n * @return array\r\n */",
+            new WhitespacesFixerConfig("\t", "\r\n"),
+        ];
+
+        yield 'messy whitespaces 4' => [
+            [],
+            "<?php\n/**\n * @param int \$a\n * @param int \$b\n *               ABC\n */",
+            "<?php\n/**\n * @param    int \$a\n * @param    int   \$b\n * ABC\n */",
+            new WhitespacesFixerConfig('    ', "\n"),
+        ];
+
+        yield 'messy whitespaces 5' => [
+            [],
+            "<?php\r\n/**\r\n * @param int \$z\r\n * @param int \$b\r\n *               XYZ\r\n */",
+            "<?php\r\n/**\r\n * @param    int \$z\r\n * @param    int   \$b\r\n * XYZ\r\n */",
+            new WhitespacesFixerConfig('    ', "\r\n"),
         ];
 
         yield 'badly formatted' => [
@@ -1011,10 +1013,9 @@ class X
 ',
         ];
 
-        yield from [
-            'variadic params 1' => [
-                ['tags' => ['param']],
-                '<?php
+        yield 'variadic params 1' => [
+            ['tags' => ['param']],
+            '<?php
 final class Sample
 {
     /**
@@ -1027,7 +1028,7 @@ final class Sample
     }
 }
 ',
-                '<?php
+            '<?php
 final class Sample
 {
     /**
@@ -1040,10 +1041,11 @@ final class Sample
     }
 }
 ',
-            ],
-            'variadic params 2' => [
-                ['tags' => ['param']],
-                '<?php
+        ];
+
+        yield 'variadic params 2' => [
+            ['tags' => ['param']],
+            '<?php
 final class Sample
 {
     /**
@@ -1056,7 +1058,7 @@ final class Sample
     }
 }
 ',
-                '<?php
+            '<?php
 final class Sample
 {
     /**
@@ -1069,10 +1071,11 @@ final class Sample
     }
 }
 ',
-            ],
-            'variadic params 3' => [
-                ['tags' => ['param'], 'align' => PhpdocAlignFixer::ALIGN_LEFT],
-                '<?php
+        ];
+
+        yield 'variadic params 3' => [
+            ['tags' => ['param'], 'align' => PhpdocAlignFixer::ALIGN_LEFT],
+            '<?php
 final class Sample
 {
     /**
@@ -1085,7 +1088,7 @@ final class Sample
     }
 }
 ',
-                '<?php
+            '<?php
 final class Sample
 {
     /**
@@ -1098,10 +1101,11 @@ final class Sample
     }
 }
 ',
-            ],
-            'variadic params 4' => [
-                ['tags' => ['property', 'property-read', 'property-write']],
-                '<?php
+        ];
+
+        yield 'variadic params 4' => [
+            ['tags' => ['property', 'property-read', 'property-write']],
+            '<?php
 /**
  * @property       string $myMagicProperty      magic property
  * @property-read  string $myMagicReadProperty  magic read-only property
@@ -1109,7 +1113,7 @@ final class Sample
  */
 class Foo {}
 ',
-                '<?php
+            '<?php
 /**
  * @property string $myMagicProperty magic property
  * @property-read string $myMagicReadProperty magic read-only property
@@ -1117,36 +1121,35 @@ class Foo {}
  */
 class Foo {}
 ',
-            ],
         ];
 
-        yield from [
-            'invalid PHPDoc 1' => [
-                ['tags' => ['param', 'return', 'throws', 'type', 'var']],
-                '<?php
+        yield 'invalid PHPDoc 1' => [
+            ['tags' => ['param', 'return', 'throws', 'type', 'var']],
+            '<?php
 /**
  * @ Security("is_granted(\'CANCEL\', giftCard)")
  */
  ',
-            ],
-            'invalid PHPDoc 2' => [
-                ['tags' => ['param', 'return', 'throws', 'type', 'var', 'method']],
-                '<?php
+        ];
+
+        yield 'invalid PHPDoc 2' => [
+            ['tags' => ['param', 'return', 'throws', 'type', 'var', 'method']],
+            '<?php
 /**
  * @ Security("is_granted(\'CANCEL\', giftCard)")
  */
  ',
-            ],
-            'invalid PHPDoc 3' => [
-                ['tags' => ['param', 'return', 'throws', 'type', 'var']],
-                '<?php
+        ];
+
+        yield 'invalid PHPDoc 3' => [
+            ['tags' => ['param', 'return', 'throws', 'type', 'var']],
+            '<?php
 /**
  * @ Security("is_granted(\'CANCEL\', giftCard)")
  * @     foo   bar
  *   @ foo
  */
  ',
-            ],
         ];
 
         yield 'types containing callables' => [
