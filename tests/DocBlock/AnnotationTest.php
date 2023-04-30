@@ -504,6 +504,7 @@ final class AnnotationTest extends TestCase
             [['bool', 'int'], '* @param bool|int ...$foo'],
             [['bool', 'int'], '* @param bool|int &$foo'],
             [['bool', 'int'], '* @param bool|int &...$foo'],
+            [['bool', 'int'], '* @param bool|int$foo'],
             [['bool', 'int'], '* @param bool|int&$foo'],
             [['bool', 'int'], '* @param bool|int&...$foo'],
             [['bar', 'baz', 'foo'], '* @param Foo|Bar&Baz&$param'],

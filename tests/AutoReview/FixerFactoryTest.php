@@ -685,10 +685,6 @@ final class FixerFactoryTest extends TestCase
                 'phpdoc_align',
                 'phpdoc_order',
             ],
-            'phpdoc_annotation_without_dot' => [
-                'phpdoc_types',
-                'phpdoc_types_order',
-            ],
             'phpdoc_line_span' => [
                 'no_superfluous_phpdoc_tags',
             ],
