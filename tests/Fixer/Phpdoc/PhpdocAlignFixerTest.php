@@ -25,7 +25,37 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class PhpdocAlignFixerTest extends AbstractFixerTestCase
 {
-    public function testFix(): void
+    /**
+     * @dataProvider provideFixCases
+     *
+     * @param array{align: string, tags: array<string>} $configuration
+     */
+    public function testFix(array $configuration, string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixCases(): iterable
+    {
+        yield [
+            ['tags' => ['param']],
+            '<?php
+                    /**
+                     * @param int $a
+                     * @param int $b
+                     * @param int $c
+                     */',
+            '<?php
+                    /**
+                     * @param int    $a
+                     * @param int $b
+                     * @param int$c
+                     */',
+        ];
+    }
+
+    public function testFixAligningParams(): void
     {
         $this->fixer->configure(['tags' => ['param']]);
 
