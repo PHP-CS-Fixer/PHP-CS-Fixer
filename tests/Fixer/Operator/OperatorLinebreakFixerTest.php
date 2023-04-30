@@ -39,7 +39,7 @@ final class OperatorLinebreakFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        foreach (static::pairs() as $key => $value) {
+        foreach (self::pairs() as $key => $value) {
             yield sprintf('%s when position is "beginning"', $key) => $value;
 
             yield sprintf('%s when position is "end"', $key) => [

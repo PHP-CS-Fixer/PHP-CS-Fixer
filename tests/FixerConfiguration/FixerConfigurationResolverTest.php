@@ -71,7 +71,7 @@ final class FixerConfigurationResolverTest extends TestCase
         ];
         $configuration = new FixerConfigurationResolver($options);
 
-        static::assertSame($options, $configuration->getOptions());
+        self::assertSame($options, $configuration->getOptions());
     }
 
     public function testResolve(): void
@@ -79,7 +79,7 @@ final class FixerConfigurationResolverTest extends TestCase
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.'),
         ]);
-        static::assertSame(
+        self::assertSame(
             ['foo' => 'bar'],
             $configuration->resolve(['foo' => 'bar'])
         );
@@ -101,7 +101,7 @@ final class FixerConfigurationResolverTest extends TestCase
             new FixerOption('foo', 'Bar.', false, 'baz'),
         ]);
 
-        static::assertSame(
+        self::assertSame(
             ['foo' => 'baz'],
             $configuration->resolve([])
         );
@@ -113,7 +113,7 @@ final class FixerConfigurationResolverTest extends TestCase
             new FixerOption('foo', 'Bar.', true, null, ['int']),
         ]);
 
-        static::assertSame(
+        self::assertSame(
             ['foo' => 1],
             $configuration->resolve(['foo' => 1])
         );
@@ -128,7 +128,7 @@ final class FixerConfigurationResolverTest extends TestCase
             new FixerOption('foo', 'Bar.', true, null, null, [true, false]),
         ]);
 
-        static::assertSame(
+        self::assertSame(
             ['foo' => true],
             $configuration->resolve(['foo' => true])
         );
@@ -143,7 +143,7 @@ final class FixerConfigurationResolverTest extends TestCase
             new FixerOption('foo', 'Bar.', true, null, null, [new AllowedValueSubset(['foo', 'bar'])]),
         ]);
 
-        static::assertSame(
+        self::assertSame(
             ['foo' => ['bar']],
             $configuration->resolve(['foo' => ['bar']])
         );
@@ -170,7 +170,7 @@ final class FixerConfigurationResolverTest extends TestCase
             }),
         ]);
 
-        static::assertSame(
+        self::assertSame(
             ['foo' => 1],
             $configuration->resolve(['foo' => '1'])
         );
@@ -189,7 +189,7 @@ final class FixerConfigurationResolverTest extends TestCase
         } catch (InvalidOptionsException $caught) {
         }
 
-        static::assertSame($exception, $caught);
+        self::assertSame($exception, $caught);
     }
 
     public function testResolveWithAliasedDuplicateConfig(): void

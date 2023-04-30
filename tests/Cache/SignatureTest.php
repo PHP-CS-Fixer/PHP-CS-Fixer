@@ -30,14 +30,14 @@ final class SignatureTest extends TestCase
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
 
-        static::assertTrue($reflection->isFinal());
+        self::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsSignatureInterface(): void
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
 
-        static::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\SignatureInterface::class));
+        self::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\SignatureInterface::class));
     }
 
     public function testConstructorSetsValues(): void
@@ -50,11 +50,11 @@ final class SignatureTest extends TestCase
 
         $signature = new Signature($php, $version, $indent, $lineEnding, $rules);
 
-        static::assertSame($php, $signature->getPhpVersion());
-        static::assertSame($version, $signature->getFixerVersion());
-        static::assertSame($indent, $signature->getIndent());
-        static::assertSame($lineEnding, $signature->getLineEnding());
-        static::assertSame($rules, $signature->getRules());
+        self::assertSame($php, $signature->getPhpVersion());
+        self::assertSame($version, $signature->getFixerVersion());
+        self::assertSame($indent, $signature->getIndent());
+        self::assertSame($lineEnding, $signature->getLineEnding());
+        self::assertSame($rules, $signature->getRules());
     }
 
     /**
@@ -62,7 +62,7 @@ final class SignatureTest extends TestCase
      */
     public function testEqualsReturnsFalseIfValuesAreNotIdentical(Signature $signature, Signature $anotherSignature): void
     {
-        static::assertFalse($signature->equals($anotherSignature));
+        self::assertFalse($signature->equals($anotherSignature));
     }
 
     public static function provideEqualsReturnsFalseIfValuesAreNotIdenticalCases(): iterable
@@ -112,6 +112,6 @@ final class SignatureTest extends TestCase
         $signature = new Signature($php, $version, $indent, $lineEnding, $rules);
         $anotherSignature = new Signature($php, $version, $indent, $lineEnding, $rules);
 
-        static::assertTrue($signature->equals($anotherSignature));
+        self::assertTrue($signature->equals($anotherSignature));
     }
 }

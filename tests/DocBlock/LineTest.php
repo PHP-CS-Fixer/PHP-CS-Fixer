@@ -125,8 +125,8 @@ final class LineTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
 
-        static::assertSame($content, $line->getContent());
-        static::assertSame($content, (string) $line);
+        self::assertSame($content, $line->getContent());
+        self::assertSame($content, (string) $line);
     }
 
     /**
@@ -137,8 +137,8 @@ final class LineTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
 
-        static::assertSame(0 === $pos, $line->isTheStart());
-        static::assertSame(14 === $pos, $line->isTheEnd());
+        self::assertSame(0 === $pos, $line->isTheStart());
+        self::assertSame(14 === $pos, $line->isTheEnd());
     }
 
     public static function provideLinesCases(): iterable
@@ -156,7 +156,7 @@ final class LineTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
 
-        static::assertSame($useful, $line->containsUsefulContent());
+        self::assertSame($useful, $line->containsUsefulContent());
     }
 
     public static function provideLinesWithUsefulCases(): iterable
@@ -174,7 +174,7 @@ final class LineTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
 
-        static::assertSame($tag, $line->containsATag());
+        self::assertSame($tag, $line->containsATag());
     }
 
     public static function provideLinesWithTagCases(): iterable
@@ -188,18 +188,18 @@ final class LineTest extends TestCase
     {
         $line = new Line("     * @param \$foo Hi!\n");
 
-        static::assertSame("     * @param \$foo Hi!\n", $line->getContent());
+        self::assertSame("     * @param \$foo Hi!\n", $line->getContent());
 
         $line->addBlank();
-        static::assertSame("     * @param \$foo Hi!\n     *\n", $line->getContent());
+        self::assertSame("     * @param \$foo Hi!\n     *\n", $line->getContent());
 
         $line->setContent("\t * test\r\n");
-        static::assertSame("\t * test\r\n", $line->getContent());
+        self::assertSame("\t * test\r\n", $line->getContent());
 
         $line->addBlank();
-        static::assertSame("\t * test\r\n\t *\r\n", $line->getContent());
+        self::assertSame("\t * test\r\n\t *\r\n", $line->getContent());
 
         $line->remove();
-        static::assertSame('', $line->getContent());
+        self::assertSame('', $line->getContent());
     }
 }

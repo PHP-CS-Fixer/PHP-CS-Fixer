@@ -28,14 +28,14 @@ final class AbstractTransformerTest extends TestCase
     {
         $transformer = new FooTransformer();
 
-        static::assertSame(0, $transformer->getPriority());
-        static::assertSame('foo', $transformer->getName());
+        self::assertSame(0, $transformer->getPriority());
+        self::assertSame('foo', $transformer->getName());
     }
 
     public function testCustomTokens(): void
     {
         $transformer = new FooTransformer();
 
-        static::assertSame([], $transformer->getCustomTokens());
+        self::assertSame([], $transformer->getCustomTokens());
     }
 }

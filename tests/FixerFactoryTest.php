@@ -36,20 +36,20 @@ final class FixerFactoryTest extends TestCase
         $factory = new FixerFactory();
 
         $testInstance = $factory->registerBuiltInFixers();
-        static::assertSame($factory, $testInstance);
+        self::assertSame($factory, $testInstance);
 
         $testInstance = $factory->registerCustomFixers(
             [$this->createFixerDouble('Foo/f1'), $this->createFixerDouble('Foo/f2')]
         );
 
-        static::assertSame($factory, $testInstance);
+        self::assertSame($factory, $testInstance);
 
         $testInstance = $factory->registerFixer(
             $this->createFixerDouble('f3'),
             false
         );
 
-        static::assertSame($factory, $testInstance);
+        self::assertSame($factory, $testInstance);
 
         $ruleSetProphecy = $this->prophesize(RuleSetInterface::class);
         $ruleSetProphecy->getRules()->willReturn([]);
@@ -57,7 +57,7 @@ final class FixerFactoryTest extends TestCase
             $ruleSetProphecy->reveal()
         );
 
-        static::assertSame($factory, $testInstance);
+        self::assertSame($factory, $testInstance);
     }
 
     /**
@@ -88,7 +88,7 @@ final class FixerFactoryTest extends TestCase
 
         sort($fixers);
 
-        static::assertSame($fixerClasses, $fixers);
+        self::assertSame($fixerClasses, $fixers);
     }
 
     /**
@@ -109,7 +109,7 @@ final class FixerFactoryTest extends TestCase
         }
 
         // There are no rules that forces $fxs[1] to be prioritized before $fxs[3]. We should not test against that
-        static::assertSame([$fxs[2], $fxs[0]], \array_slice($factory->getFixers(), 0, 2));
+        self::assertSame([$fxs[2], $fxs[0]], \array_slice($factory->getFixers(), 0, 2));
     }
 
     /**
@@ -128,9 +128,9 @@ final class FixerFactoryTest extends TestCase
         $factory->registerFixer($f1, false);
         $factory->registerCustomFixers([$f2, $f3]);
 
-        static::assertTrue(\in_array($f1, $factory->getFixers(), true));
-        static::assertTrue(\in_array($f2, $factory->getFixers(), true));
-        static::assertTrue(\in_array($f3, $factory->getFixers(), true));
+        self::assertTrue(\in_array($f1, $factory->getFixers(), true));
+        self::assertTrue(\in_array($f2, $factory->getFixers(), true));
+        self::assertTrue(\in_array($f3, $factory->getFixers(), true));
     }
 
     /**
@@ -159,7 +159,7 @@ final class FixerFactoryTest extends TestCase
             ->useRuleSet(new RuleSet([]))
         ;
 
-        static::assertCount(0, $factory->getFixers());
+        self::assertCount(0, $factory->getFixers());
 
         $factory = (new FixerFactory())
             ->registerBuiltInFixers()
@@ -167,8 +167,8 @@ final class FixerFactoryTest extends TestCase
         ;
 
         $fixers = $factory->getFixers();
-        static::assertCount(1, $fixers);
-        static::assertSame('strict_comparison', $fixers[0]->getName());
+        self::assertCount(1, $fixers);
+        self::assertSame('strict_comparison', $fixers[0]->getName());
     }
 
     /**
@@ -237,10 +237,10 @@ final class FixerFactoryTest extends TestCase
         $factory->registerFixer($f1, false);
         $factory->registerCustomFixers([$f2, $f3]);
 
-        static::assertTrue($factory->hasRule('f1'), 'Should have f1 fixer');
-        static::assertTrue($factory->hasRule('Foo/f2'), 'Should have f2 fixer');
-        static::assertTrue($factory->hasRule('Foo/f3'), 'Should have f3 fixer');
-        static::assertFalse($factory->hasRule('dummy'), 'Should not have dummy fixer');
+        self::assertTrue($factory->hasRule('f1'), 'Should have f1 fixer');
+        self::assertTrue($factory->hasRule('Foo/f2'), 'Should have f2 fixer');
+        self::assertTrue($factory->hasRule('Foo/f3'), 'Should have f3 fixer');
+        self::assertFalse($factory->hasRule('dummy'), 'Should not have dummy fixer');
     }
 
     public function testHasRuleWithChangedRuleSet(): void
@@ -252,12 +252,12 @@ final class FixerFactoryTest extends TestCase
         $factory->registerFixer($f1, false);
         $factory->registerFixer($f2, false);
 
-        static::assertTrue($factory->hasRule('f1'), 'Should have f1 fixer');
-        static::assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');
+        self::assertTrue($factory->hasRule('f1'), 'Should have f1 fixer');
+        self::assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');
 
         $factory->useRuleSet(new RuleSet(['f2' => true]));
-        static::assertFalse($factory->hasRule('f1'), 'Should not have f1 fixer');
-        static::assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');
+        self::assertFalse($factory->hasRule('f1'), 'Should not have f1 fixer');
+        self::assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');
     }
 
     /**
@@ -286,7 +286,7 @@ final class FixerFactoryTest extends TestCase
         $factory = new FixerFactory();
         $method = new \ReflectionMethod($factory, 'generateConflictMessage');
         $method->setAccessible(true);
-        static::assertSame(
+        self::assertSame(
             'Rule contains conflicting fixers:
 - "a" with "b"
 - "c" with "d", "e", "f"

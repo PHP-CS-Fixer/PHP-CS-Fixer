@@ -38,14 +38,14 @@ final class CodeSampleTest extends TestCase
             $configuration
         );
 
-        static::assertSame($code, $codeSample->getCode());
-        static::assertSame($configuration, $codeSample->getConfiguration());
+        self::assertSame($code, $codeSample->getCode());
+        self::assertSame($configuration, $codeSample->getConfiguration());
     }
 
     public function testConfigurationDefaultsToNull(): void
     {
         $codeSample = new CodeSample('<php echo $foo;');
 
-        static::assertNull($codeSample->getConfiguration());
+        self::assertNull($codeSample->getConfiguration());
     }
 }

@@ -33,7 +33,7 @@ final class ShortDescriptionTest extends TestCase
         $doc = new DocBlock($input);
         $shortDescription = new ShortDescription($doc);
 
-        static::assertSame($expected, $shortDescription->getEnd());
+        self::assertSame($expected, $shortDescription->getEnd());
     }
 
     public static function provideGetEndCases(): array

@@ -35,14 +35,14 @@ final class CacheTest extends TestCase
     {
         $reflection = new \ReflectionClass(Cache::class);
 
-        static::assertTrue($reflection->isFinal());
+        self::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsCacheInterface(): void
     {
         $reflection = new \ReflectionClass(Cache::class);
 
-        static::assertTrue($reflection->implementsInterface(CacheInterface::class));
+        self::assertTrue($reflection->implementsInterface(CacheInterface::class));
     }
 
     public function testConstructorSetsValues(): void
@@ -51,7 +51,7 @@ final class CacheTest extends TestCase
 
         $cache = new Cache($signature);
 
-        static::assertSame($signature, $cache->getSignature());
+        self::assertSame($signature, $cache->getSignature());
     }
 
     public function testDefaults(): void
@@ -62,8 +62,8 @@ final class CacheTest extends TestCase
 
         $file = 'test.php';
 
-        static::assertFalse($cache->has($file));
-        static::assertNull($cache->get($file));
+        self::assertFalse($cache->has($file));
+        self::assertNull($cache->get($file));
     }
 
     public function testCanSetAndGetValue(): void
@@ -77,8 +77,8 @@ final class CacheTest extends TestCase
 
         $cache->set($file, $hash);
 
-        static::assertTrue($cache->has($file));
-        static::assertSame($hash, $cache->get($file));
+        self::assertTrue($cache->has($file));
+        self::assertSame($hash, $cache->get($file));
     }
 
     public function testCanClearValue(): void
@@ -93,7 +93,7 @@ final class CacheTest extends TestCase
         $cache->set($file, $hash);
         $cache->clear($file);
 
-        static::assertNull($cache->get($file));
+        self::assertNull($cache->get($file));
     }
 
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsInvalid(): void
@@ -153,9 +153,9 @@ final class CacheTest extends TestCase
         $cache->set($file, $hash);
         $cached = Cache::fromJson($cache->toJson());
 
-        static::assertTrue($cached->getSignature()->equals($signature));
-        static::assertTrue($cached->has($file));
-        static::assertSame($hash, $cached->get($file));
+        self::assertTrue($cached->getSignature()->equals($signature));
+        self::assertTrue($cached->has($file));
+        self::assertSame($hash, $cached->get($file));
     }
 
     public static function provideCanConvertToAndFromJsonCases(): array

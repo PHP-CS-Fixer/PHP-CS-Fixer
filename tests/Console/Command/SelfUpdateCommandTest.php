@@ -78,7 +78,7 @@ final class SelfUpdateCommandTest extends TestCase
         $application = new Application();
         $application->add($command);
 
-        static::assertSame($command, $application->find($name));
+        self::assertSame($command, $application->find($name));
     }
 
     public static function provideCommandNameCases(): array
@@ -130,9 +130,9 @@ final class SelfUpdateCommandTest extends TestCase
 
         $commandTester = $this->execute($command, $input, $decorated);
 
-        static::assertSame($expectedFileContents, file_get_contents($this->getToolPath()));
-        static::assertDisplay($expectedDisplay, $commandTester);
-        static::assertSame(0, $commandTester->getStatusCode());
+        self::assertSame($expectedFileContents, file_get_contents($this->getToolPath()));
+        self::assertDisplay($expectedDisplay, $commandTester);
+        self::assertSame(0, $commandTester->getStatusCode());
     }
 
     public static function provideExecuteCases(): array
@@ -269,11 +269,11 @@ OUTPUT;
 
         $commandTester = $this->execute($command, $input, $decorated);
 
-        static::assertDisplay(
+        self::assertDisplay(
             "\033[37;41mUnable to determine newest version: Foo.\033[39;49m\n",
             $commandTester
         );
-        static::assertSame(1, $commandTester->getStatusCode());
+        self::assertSame(1, $commandTester->getStatusCode());
     }
 
     public static function provideExecuteWhenNotAbleToGetLatestVersionsCases(): array
@@ -315,11 +315,11 @@ OUTPUT;
 
         $commandTester = $this->execute($command, $input, $decorated);
 
-        static::assertDisplay(
+        self::assertDisplay(
             "\033[37;41mSelf-update is available only for PHAR version.\033[39;49m\n",
             $commandTester
         );
-        static::assertSame(1, $commandTester->getStatusCode());
+        self::assertSame(1, $commandTester->getStatusCode());
     }
 
     public static function provideExecuteWhenNotInstalledAsPharCases(): array
@@ -362,7 +362,7 @@ OUTPUT;
             $expectedDisplay = preg_replace("/\033\\[(\\d+;)*\\d+m/", '', $expectedDisplay);
         }
 
-        static::assertSame(
+        self::assertSame(
             $expectedDisplay,
             $commandTester->getDisplay(true)
         );

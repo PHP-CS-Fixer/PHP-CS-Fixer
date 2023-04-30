@@ -36,7 +36,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
     {
         $builder = new ProcessLinterProcessBuilder($executable);
 
-        static::assertSame(
+        self::assertSame(
             $expected,
             $builder->build($file)->getCommandLine()
         );
@@ -52,7 +52,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
     {
         $builder = new ProcessLinterProcessBuilder($executable);
 
-        static::assertSame(
+        self::assertSame(
             $expected,
             $builder->build($file)->getCommandLine()
         );

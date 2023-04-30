@@ -147,8 +147,8 @@ JSON;
 
     protected function assertFormat(string $expected, string $input): void
     {
-        static::assertJsonSchema($input);
-        static::assertJsonStringEqualsJsonString($expected, $input);
+        self::assertJsonSchema($input);
+        self::assertJsonStringEqualsJsonString($expected, $input);
     }
 
     private static function assertJsonSchema(string $json): void
@@ -163,7 +163,7 @@ JSON;
             (object) ['$ref' => 'file://'.realpath($jsonPath)]
         );
 
-        static::assertTrue(
+        self::assertTrue(
             $validator->isValid(),
             implode(
                 "\n",

@@ -293,7 +293,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
 
         $this->fixer->fix($this->getTestFile(), $tokens);
 
-        static::assertNull($this->lintSource($tokens->generateCode()));
+        self::assertNull($this->lintSource($tokens->generateCode()));
     }
 
     public static function provideMethodWillNotCauseSyntaxErrorCases(): iterable

@@ -47,7 +47,7 @@ final class ConfigTest extends TestCase
             new ToolInfo()
         );
 
-        static::assertSame(
+        self::assertSame(
             [
                 'cast_spaces' => true,
                 'statement_indentation' => true,
@@ -68,7 +68,7 @@ final class ConfigTest extends TestCase
             new ToolInfo()
         );
 
-        static::assertSame(
+        self::assertSame(
             [
                 'array_syntax' => [
                     'syntax' => 'short',
@@ -115,7 +115,7 @@ final class ConfigTest extends TestCase
                 'verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE,
             ]
         );
-        static::assertStringMatchesFormat(
+        self::assertStringMatchesFormat(
             sprintf('%%ALoaded config custom_config_test from "%s".%%A', $customConfigFile),
             $commandTester->getDisplay(true)
         );
@@ -130,10 +130,10 @@ final class ConfigTest extends TestCase
             false
         );
 
-        static::assertCount(1, $items);
+        self::assertCount(1, $items);
 
         $item = reset($items);
-        static::assertSame('somefile.php', $item->getFilename());
+        self::assertSame('somefile.php', $item->getFilename());
     }
 
     public function testThatCustomFinderWorks(): void
@@ -148,8 +148,8 @@ final class ConfigTest extends TestCase
             false
         );
 
-        static::assertCount(1, $items);
-        static::assertSame('somefile.php', $items[0]->getFilename());
+        self::assertCount(1, $items);
+        self::assertSame('somefile.php', $items[0]->getFilename());
     }
 
     public function testThatCustomSymfonyFinderWorks(): void
@@ -164,15 +164,15 @@ final class ConfigTest extends TestCase
             false
         );
 
-        static::assertCount(1, $items);
-        static::assertSame('somefile.php', $items[0]->getFilename());
+        self::assertCount(1, $items);
+        self::assertSame('somefile.php', $items[0]->getFilename());
     }
 
     public function testThatCacheFileHasDefaultValue(): void
     {
         $config = new Config();
 
-        static::assertSame('.php-cs-fixer.cache', $config->getCacheFile());
+        self::assertSame('.php-cs-fixer.cache', $config->getCacheFile());
     }
 
     public function testThatCacheFileCanBeMutated(): void
@@ -182,14 +182,14 @@ final class ConfigTest extends TestCase
         $config = new Config();
         $config->setCacheFile($cacheFile);
 
-        static::assertSame($cacheFile, $config->getCacheFile());
+        self::assertSame($cacheFile, $config->getCacheFile());
     }
 
     public function testThatMutatorHasFluentInterface(): void
     {
         $config = new Config();
 
-        static::assertSame($config, $config->setCacheFile('some-directory/some.file'));
+        self::assertSame($config, $config->setCacheFile('some-directory/some.file'));
     }
 
     /**
@@ -203,49 +203,49 @@ final class ConfigTest extends TestCase
         $config = new Config();
         $config->registerCustomFixers($suite);
 
-        static::assertSame($expected, $config->getCustomFixers());
+        self::assertSame($expected, $config->getCustomFixers());
     }
 
     public function testConfigDefault(): void
     {
         $config = new Config();
 
-        static::assertSame('.php-cs-fixer.cache', $config->getCacheFile());
-        static::assertSame([], $config->getCustomFixers());
-        static::assertSame('txt', $config->getFormat());
-        static::assertFalse($config->getHideProgress());
-        static::assertSame('    ', $config->getIndent());
-        static::assertSame("\n", $config->getLineEnding());
-        static::assertSame('default', $config->getName());
-        static::assertNull($config->getPhpExecutable());
-        static::assertFalse($config->getRiskyAllowed());
-        static::assertSame(['@PSR12' => true], $config->getRules());
-        static::assertTrue($config->getUsingCache());
+        self::assertSame('.php-cs-fixer.cache', $config->getCacheFile());
+        self::assertSame([], $config->getCustomFixers());
+        self::assertSame('txt', $config->getFormat());
+        self::assertFalse($config->getHideProgress());
+        self::assertSame('    ', $config->getIndent());
+        self::assertSame("\n", $config->getLineEnding());
+        self::assertSame('default', $config->getName());
+        self::assertNull($config->getPhpExecutable());
+        self::assertFalse($config->getRiskyAllowed());
+        self::assertSame(['@PSR12' => true], $config->getRules());
+        self::assertTrue($config->getUsingCache());
 
         $finder = $config->getFinder();
-        static::assertInstanceOf(Finder::class, $finder);
+        self::assertInstanceOf(Finder::class, $finder);
 
         $config->setFormat('xml');
-        static::assertSame('xml', $config->getFormat());
+        self::assertSame('xml', $config->getFormat());
 
         $config->setHideProgress(true);
-        static::assertTrue($config->getHideProgress());
+        self::assertTrue($config->getHideProgress());
 
         $config->setIndent("\t");
-        static::assertSame("\t", $config->getIndent());
+        self::assertSame("\t", $config->getIndent());
 
         $finder = new Finder();
         $config->setFinder($finder);
-        static::assertSame($finder, $config->getFinder());
+        self::assertSame($finder, $config->getFinder());
 
         $config->setLineEnding("\r\n");
-        static::assertSame("\r\n", $config->getLineEnding());
+        self::assertSame("\r\n", $config->getLineEnding());
 
         $config->setPhpExecutable(null);
-        static::assertNull($config->getPhpExecutable());
+        self::assertNull($config->getPhpExecutable());
 
         $config->setUsingCache(false);
-        static::assertFalse($config->getUsingCache());
+        self::assertFalse($config->getUsingCache());
     }
 
     public static function provideRegisterCustomFixersCases(): array
@@ -266,7 +266,7 @@ final class ConfigTest extends TestCase
         $anonymousConfig = new Config();
         $namedConfig = new Config('foo');
 
-        static::assertSame($anonymousConfig->getName(), 'default');
-        static::assertSame($namedConfig->getName(), 'foo');
+        self::assertSame($anonymousConfig->getName(), 'default');
+        self::assertSame($namedConfig->getName(), 'foo');
     }
 }

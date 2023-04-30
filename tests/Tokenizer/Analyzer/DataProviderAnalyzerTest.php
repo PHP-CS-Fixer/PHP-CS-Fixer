@@ -38,7 +38,7 @@ final class DataProviderAnalyzerTest extends TestCase
         }
         $analyzer = new DataProviderAnalyzer();
 
-        static::assertSame(serialize($expected), serialize($analyzer->getDataProviders($tokens, $startIndex, $endIndex)));
+        self::assertSame(serialize($expected), serialize($analyzer->getDataProviders($tokens, $startIndex, $endIndex)));
     }
 
     /**

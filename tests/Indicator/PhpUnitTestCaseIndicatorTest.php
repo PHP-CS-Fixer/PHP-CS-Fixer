@@ -46,7 +46,7 @@ final class PhpUnitTestCaseIndicatorTest extends TestCase
      */
     public function testIsPhpUnitClass(bool $expected, Tokens $tokens, int $index): void
     {
-        static::assertSame($expected, $this->indicator->isPhpUnitClass($tokens, $index));
+        self::assertSame($expected, $this->indicator->isPhpUnitClass($tokens, $index));
     }
 
     public static function provideIsPhpUnitClassCases(): iterable
@@ -162,7 +162,7 @@ class Foo extends A implements TestInterface, SomethingElse
         $classes = $this->indicator->findPhpUnitClasses($tokens);
         $classes = iterator_to_array($classes);
 
-        static::assertSame($expectedIndexes, $classes);
+        self::assertSame($expectedIndexes, $classes);
     }
 
     public static function provideFindPhpUnitClassesCases(): iterable

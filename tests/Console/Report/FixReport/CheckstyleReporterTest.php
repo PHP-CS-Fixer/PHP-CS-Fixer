@@ -135,7 +135,7 @@ XML;
         $formatter = new OutputFormatter();
         $input = $formatter->format($input);
 
-        static::assertThat($input, new XmlMatchesXsd(self::$xsd));
-        static::assertXmlStringEqualsXmlString($expected, $input);
+        self::assertThat($input, new XmlMatchesXsd(self::$xsd));
+        self::assertXmlStringEqualsXmlString($expected, $input);
     }
 }

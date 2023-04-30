@@ -38,8 +38,8 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected function assertFormat(string $expected, string $input): void
     {
-        static::assertJsonSchema($input);
-        static::assertJsonStringEqualsJsonString($expected, $input);
+        self::assertJsonSchema($input);
+        self::assertJsonStringEqualsJsonString($expected, $input);
     }
 
     protected static function createSimpleReport(): string
@@ -72,7 +72,7 @@ final class JsonReporterTest extends AbstractReporterTestCase
             (object) ['$ref' => 'file://'.realpath($jsonPath)]
         );
 
-        static::assertTrue(
+        self::assertTrue(
             $validator->isValid(),
             implode(
                 "\n",

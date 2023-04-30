@@ -50,7 +50,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
         $reflectionProperty = new \ReflectionProperty($this->fixer, 'configuration');
         $reflectionProperty->setAccessible(true);
 
-        static::assertSame(
+        self::assertSame(
             ['replacements' => [
                 'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
             ],

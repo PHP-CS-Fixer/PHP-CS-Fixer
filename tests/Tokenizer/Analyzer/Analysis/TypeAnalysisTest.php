@@ -29,24 +29,24 @@ final class TypeAnalysisTest extends TestCase
     public function testName(): void
     {
         $analysis = new TypeAnalysis('string', 1, 2);
-        static::assertSame('string', $analysis->getName());
-        static::assertFalse($analysis->isNullable());
+        self::assertSame('string', $analysis->getName());
+        self::assertFalse($analysis->isNullable());
 
         $analysis = new TypeAnalysis('?\foo\bar', 1, 2);
-        static::assertSame('\foo\bar', $analysis->getName());
-        static::assertTrue($analysis->isNullable());
+        self::assertSame('\foo\bar', $analysis->getName());
+        self::assertTrue($analysis->isNullable());
     }
 
     public function testStartIndex(): void
     {
         $analysis = new TypeAnalysis('string', 10, 20);
-        static::assertSame(10, $analysis->getStartIndex());
+        self::assertSame(10, $analysis->getStartIndex());
     }
 
     public function testEndIndex(): void
     {
         $analysis = new TypeAnalysis('string', 1, 27);
-        static::assertSame(27, $analysis->getEndIndex());
+        self::assertSame(27, $analysis->getEndIndex());
     }
 
     /**
@@ -55,7 +55,7 @@ final class TypeAnalysisTest extends TestCase
     public function testReserved(string $type, bool $expected): void
     {
         $analysis = new TypeAnalysis($type, 1, 2);
-        static::assertSame($expected, $analysis->isReservedType());
+        self::assertSame($expected, $analysis->isReservedType());
     }
 
     public static function provideReservedCases(): array

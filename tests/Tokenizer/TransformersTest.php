@@ -37,8 +37,8 @@ final class TransformersTest extends TestCase
         $tokens = Tokens::fromCode($input);
 
         foreach ($expectedTokenKinds as $index => $expected) {
-            static::assertTrue($tokens->offsetExists($index));
-            static::assertTrue($tokens[$index]->isGivenKind($expected));
+            self::assertTrue($tokens->offsetExists($index));
+            self::assertTrue($tokens[$index]->isGivenKind($expected));
         }
     }
 

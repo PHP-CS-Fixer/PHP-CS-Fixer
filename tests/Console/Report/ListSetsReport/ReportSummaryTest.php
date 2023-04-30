@@ -36,6 +36,6 @@ final class ReportSummaryTest extends TestCase
             $sets
         );
 
-        static::assertSame($sets, $reportSummary->getSets());
+        self::assertSame($sets, $reportSummary->getSets());
     }
 }

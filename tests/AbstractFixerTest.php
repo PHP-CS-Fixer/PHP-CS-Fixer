@@ -29,16 +29,16 @@ final class AbstractFixerTest extends TestCase
     {
         $fixer = new UnconfigurableFixer();
 
-        static::assertFalse($fixer->isRisky());
-        static::assertTrue($fixer->supports(new \SplFileInfo(__FILE__)));
+        self::assertFalse($fixer->isRisky());
+        self::assertTrue($fixer->supports(new \SplFileInfo(__FILE__)));
     }
 
     public function testConfigureUnconfigurable(): void
     {
         $fixer = new UnconfigurableFixer();
 
-        static::assertSame(0, $fixer->getPriority());
-        static::assertSame('unconfigurable', $fixer->getName());
+        self::assertSame(0, $fixer->getPriority());
+        self::assertSame('unconfigurable', $fixer->getName());
 
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot configure using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
@@ -82,8 +82,8 @@ final class AbstractFixerTest extends TestCase
 
         $config = $fixer->getWhitespacesConfig();
 
-        static::assertSame('    ', $config->getIndent());
-        static::assertSame("\n", $config->getLineEnding());
+        self::assertSame('    ', $config->getIndent());
+        self::assertSame("\n", $config->getLineEnding());
 
         $newConfig = new WhitespacesFixerConfig("\t", "\r\n");
 
@@ -91,7 +91,7 @@ final class AbstractFixerTest extends TestCase
 
         $config = $fixer->getWhitespacesConfig();
 
-        static::assertSame("\t", $config->getIndent());
-        static::assertSame("\r\n", $config->getLineEnding());
+        self::assertSame("\t", $config->getIndent());
+        self::assertSame("\r\n", $config->getLineEnding());
     }
 }

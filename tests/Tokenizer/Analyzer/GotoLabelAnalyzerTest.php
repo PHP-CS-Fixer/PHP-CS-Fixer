@@ -36,7 +36,7 @@ final class GotoLabelAnalyzerTest extends TestCase
         $analyzer = new GotoLabelAnalyzer();
 
         foreach ($tokens as $index => $isClassy) {
-            static::assertSame(
+            self::assertSame(
                 \in_array($index, $expectedTrue, true),
                 $analyzer->belongsToGoToLabel($tokens, $index)
             );

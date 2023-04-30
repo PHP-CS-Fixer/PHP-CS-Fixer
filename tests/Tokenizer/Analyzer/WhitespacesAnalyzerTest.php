@@ -32,7 +32,7 @@ final class WhitespacesAnalyzerTest extends TestCase
     {
         $tokens = Tokens::fromCode($code);
 
-        static::assertSame($indent, WhitespacesAnalyzer::detectIndent($tokens, $index));
+        self::assertSame($indent, WhitespacesAnalyzer::detectIndent($tokens, $index));
     }
 
     public static function provideIndentCases(): iterable

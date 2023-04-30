@@ -37,10 +37,10 @@ final class FileLintingIteratorTest extends TestCase
             $fileLintingIteratorProphecy->reveal()
         );
 
-        static::assertNull($fileLintingIterator->current());
-        static::assertNull($fileLintingIterator->currentLintingResult());
-        static::assertSame($iterator, $fileLintingIterator->getInnerIterator());
-        static::assertFalse($fileLintingIterator->valid());
+        self::assertNull($fileLintingIterator->current());
+        self::assertNull($fileLintingIterator->currentLintingResult());
+        self::assertSame($iterator, $fileLintingIterator->getInnerIterator());
+        self::assertFalse($fileLintingIterator->valid());
     }
 
     public function testFileLintingIterator(): void
@@ -60,7 +60,7 @@ final class FileLintingIteratorTest extends TestCase
 
         // test when not touched current is null
 
-        static::assertNull($fileLintingIterator->currentLintingResult());
+        self::assertNull($fileLintingIterator->currentLintingResult());
 
         // test iterating
 
@@ -81,15 +81,15 @@ final class FileLintingIteratorTest extends TestCase
         $iterations = 0;
 
         foreach ($fileLintingIterator as $lintedFile) {
-            static::assertSame($file, $lintedFile);
-            static::assertSame($lintingResultInterface, $fileLintingIterator->currentLintingResult());
+            self::assertSame($file, $lintedFile);
+            self::assertSame($lintingResultInterface, $fileLintingIterator->currentLintingResult());
             ++$iterations;
         }
 
-        static::assertSame(1, $iterations);
+        self::assertSame(1, $iterations);
 
         $fileLintingIterator->next();
 
-        static::assertNull($fileLintingIterator->currentLintingResult());
+        self::assertNull($fileLintingIterator->currentLintingResult());
     }
 }

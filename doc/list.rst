@@ -2725,6 +2725,8 @@ List of Available Rules
 
    Inside a ``final`` class or anonymous class ``self`` should be preferred to ``static``.
 
+   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+
    `Source PhpCsFixer\\Fixer\\ClassNotation\\SelfStaticAccessorFixer <./../src/Fixer/ClassNotation/SelfStaticAccessorFixer.php>`_
 -  `semicolon_after_instruction <./rules/semicolon/semicolon_after_instruction.rst>`_
 

@@ -38,7 +38,7 @@ final class TextReporterTest extends AbstractReporterTestCase
 
     protected function assertFormat(string $expected, string $input): void
     {
-        static::assertSame($expected, $input);
+        self::assertSame($expected, $input);
     }
 
     protected static function createSimpleReport(): string

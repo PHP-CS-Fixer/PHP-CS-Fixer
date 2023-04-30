@@ -31,7 +31,7 @@ final class ReferenceAnalyzerTest extends TestCase
     {
         $analyzer = new ReferenceAnalyzer();
 
-        static::assertFalse($analyzer->isReference(Tokens::fromCode('<?php $foo;$bar;$baz;'), 3));
+        self::assertFalse($analyzer->isReference(Tokens::fromCode('<?php $foo;$bar;$baz;'), 3));
     }
 
     public function testReferenceAndNonReferenceTogether(): void
@@ -40,8 +40,8 @@ final class ReferenceAnalyzerTest extends TestCase
 
         $tokens = Tokens::fromCode('<?php function foo(&$bar = BAZ & QUX) {};');
 
-        static::assertTrue($analyzer->isReference($tokens, 5));
-        static::assertFalse($analyzer->isReference($tokens, 12));
+        self::assertTrue($analyzer->isReference($tokens, 5));
+        self::assertFalse($analyzer->isReference($tokens, 12));
     }
 
     /**
@@ -156,7 +156,7 @@ class Foo {
 
         foreach ($tokens as $index => $token) {
             if ('&' === $token->getContent()) {
-                static::assertSame($expected, $analyzer->isReference($tokens, $index));
+                self::assertSame($expected, $analyzer->isReference($tokens, $index));
             }
         }
     }

@@ -49,12 +49,12 @@ final class ReportSummaryTest extends TestCase
             $isDecoratedOutput
         );
 
-        static::assertSame($changed, $reportSummary->getChanged());
-        static::assertSame($filesCount, $reportSummary->getFilesCount());
-        static::assertSame($time, $reportSummary->getTime());
-        static::assertSame($memory, $reportSummary->getMemory());
-        static::assertSame($addAppliedFixers, $reportSummary->shouldAddAppliedFixers());
-        static::assertSame($isDryRun, $reportSummary->isDryRun());
-        static::assertSame($isDecoratedOutput, $reportSummary->isDecoratedOutput());
+        self::assertSame($changed, $reportSummary->getChanged());
+        self::assertSame($filesCount, $reportSummary->getFilesCount());
+        self::assertSame($time, $reportSummary->getTime());
+        self::assertSame($memory, $reportSummary->getMemory());
+        self::assertSame($addAppliedFixers, $reportSummary->shouldAddAppliedFixers());
+        self::assertSame($isDryRun, $reportSummary->isDryRun());
+        self::assertSame($isDecoratedOutput, $reportSummary->isDecoratedOutput());
     }
 }

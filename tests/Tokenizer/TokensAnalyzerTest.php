@@ -48,7 +48,7 @@ final class TokensAnalyzerTest extends TestCase
 
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        static::assertSame(
+        self::assertSame(
             $expectedElements,
             $tokensAnalyzer->getClassyElements()
         );
@@ -210,7 +210,7 @@ PHP;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
 
-        static::assertSame(
+        self::assertSame(
             [
                 11 => [
                     'classIndex' => 1,
@@ -264,7 +264,7 @@ PHP;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
 
-        static::assertSame(
+        self::assertSame(
             [
                 9 => [
                     'classIndex' => 1,
@@ -377,7 +377,7 @@ PHP;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
 
-        static::assertSame(
+        self::assertSame(
             [
                 9 => [
                     'classIndex' => 1,
@@ -479,7 +479,7 @@ PHP;
             ];
         }
 
-        static::assertSame($expected, $elements);
+        self::assertSame($expected, $elements);
     }
 
     /**
@@ -503,7 +503,7 @@ PHP;
             }
         );
 
-        static::assertSame($expected, $elements);
+        self::assertSame($expected, $elements);
     }
 
     public static function provideGetClassyElements81Cases(): iterable
@@ -689,7 +689,7 @@ enum Foo: string
             },
         );
 
-        static::assertSame($expected, $elements);
+        self::assertSame($expected, $elements);
     }
 
     public static function provideGetClassyElements82Cases(): iterable
@@ -726,7 +726,7 @@ enum Foo: string
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $expectedValue) {
-            static::assertSame($expectedValue, $tokensAnalyzer->isAnonymousClass($index));
+            self::assertSame($expectedValue, $tokensAnalyzer->isAnonymousClass($index));
         }
     }
 
@@ -792,7 +792,7 @@ enum Foo: string
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isLambda) {
-            static::assertSame($isLambda, $tokensAnalyzer->isLambda($index));
+            self::assertSame($isLambda, $tokensAnalyzer->isLambda($index));
         }
     }
 
@@ -892,7 +892,7 @@ preg_replace_callback(
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $expectedValue) {
-            static::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
+            self::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
         }
     }
 
@@ -921,7 +921,7 @@ preg_replace_callback(
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $expectedValue) {
-            static::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
+            self::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
         }
     }
 
@@ -1369,7 +1369,7 @@ abstract class Baz
                 continue;
             }
 
-            static::assertFalse($tokensAnalyzer->isConstantInvocation($index));
+            self::assertFalse($tokensAnalyzer->isConstantInvocation($index));
         }
     }
 
@@ -1383,11 +1383,11 @@ abstract class Baz
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isUnary) {
-            static::assertSame($isUnary, $tokensAnalyzer->isUnarySuccessorOperator($index));
+            self::assertSame($isUnary, $tokensAnalyzer->isUnarySuccessorOperator($index));
 
             if ($isUnary) {
-                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-                static::assertFalse($tokensAnalyzer->isBinaryOperator($index));
+                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+                self::assertFalse($tokensAnalyzer->isBinaryOperator($index));
             }
         }
     }
@@ -1444,11 +1444,11 @@ abstract class Baz
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isUnary) {
-            static::assertSame($isUnary, $tokensAnalyzer->isUnaryPredecessorOperator($index));
+            self::assertSame($isUnary, $tokensAnalyzer->isUnaryPredecessorOperator($index));
 
             if ($isUnary) {
-                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                static::assertFalse($tokensAnalyzer->isBinaryOperator($index));
+                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                self::assertFalse($tokensAnalyzer->isBinaryOperator($index));
             }
         }
     }
@@ -1529,11 +1529,11 @@ abstract class Baz
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isBinary) {
-            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            self::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
 
             if ($isBinary) {
-                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
             }
         }
     }
@@ -1701,8 +1701,8 @@ $b;',
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        static::assertTrue($tokensAnalyzer->isArray($tokenIndex), 'Expected to be an array.');
-        static::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
+        self::assertTrue($tokensAnalyzer->isArray($tokenIndex), 'Expected to be an array.');
+        self::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
     }
 
     public static function provideIsArrayCases(): array
@@ -1780,7 +1780,7 @@ $b;',
         foreach ($tokens as $index => $token) {
             $expect = \in_array($index, $tokenIndexes, true);
 
-            static::assertSame(
+            self::assertSame(
                 $expect,
                 $tokensAnalyzer->isArray($index),
                 sprintf('Expected %sarray, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
@@ -1814,11 +1814,11 @@ $b;',
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isBinary) {
-            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            self::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
 
             if ($isBinary) {
-                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
             }
         }
     }
@@ -1848,11 +1848,11 @@ $b;',
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isBinary) {
-            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            self::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
 
             if ($isBinary) {
-                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
             }
         }
     }
@@ -1897,11 +1897,11 @@ $b;',
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isBinary) {
-            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            self::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
 
             if ($isBinary) {
-                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
             }
         }
     }
@@ -1928,10 +1928,10 @@ $b;',
 
         foreach ($tokens as $index => $token) {
             $isBinary = isset($expected[$index]);
-            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            self::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
             if ($isBinary) {
-                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
             }
         }
     }
@@ -1969,7 +1969,7 @@ $b;',
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        static::assertFalse($tokensAnalyzer->isArray($tokenIndex));
+        self::assertFalse($tokensAnalyzer->isArray($tokenIndex));
     }
 
     /**
@@ -2011,7 +2011,7 @@ $b;',
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        static::assertSame($isBlockMultiline, $tokensAnalyzer->isBlockMultiline($tokens, $tokenIndex));
+        self::assertSame($isBlockMultiline, $tokensAnalyzer->isBlockMultiline($tokens, $tokenIndex));
     }
 
     public static function provideIsBlockMultilineCases(): iterable
@@ -2059,7 +2059,7 @@ $b;',
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $attributes = $tokensAnalyzer->getMethodAttributes($index);
 
-        static::assertSame($expected, $attributes);
+        self::assertSame($expected, $attributes);
     }
 
     public static function provideGetFunctionPropertiesCases(): array
@@ -2188,7 +2188,7 @@ SRC;
                 continue;
             }
 
-            static::assertSame(
+            self::assertSame(
                 $expected[$index],
                 $tokensAnalyzer->isWhilePartOfDoWhile($index),
                 sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $expected[$index] ? '' : 'not ')
@@ -2206,7 +2206,7 @@ SRC;
         $tokens = Tokens::fromCode($input);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
+        self::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
     public static function provideGetImportUseIndexesCases(): array
@@ -2343,7 +2343,7 @@ class MyTestWithAnonymousClass extends TestCase
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
 
-        static::assertSame([
+        self::assertSame([
             13 => [
                 'classIndex' => 1,
                 'token' => $tokens[13],
@@ -2390,7 +2390,7 @@ class MyTestWithAnonymousClass extends TestCase
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        static::assertSame($expected, $tokensAnalyzer->isSuperGlobal($index));
+        self::assertSame($expected, $tokensAnalyzer->isSuperGlobal($index));
     }
 
     public static function provideIsSuperGlobalCases(): array
@@ -2447,7 +2447,7 @@ class MyTestWithAnonymousClass extends TestCase
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        static::assertSame($expectedModifiers, $tokensAnalyzer->getClassyModifiers($index));
+        self::assertSame($expectedModifiers, $tokensAnalyzer->getClassyModifiers($index));
     }
 
     public static function provideGetClassyModifiersCases(): iterable
@@ -2477,7 +2477,7 @@ class MyTestWithAnonymousClass extends TestCase
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        static::assertSame($expectedModifiers, $tokensAnalyzer->getClassyModifiers($index));
+        self::assertSame($expectedModifiers, $tokensAnalyzer->getClassyModifiers($index));
     }
 
     public static function provideGetClassyModifiersOnPhp82Cases(): iterable
@@ -2542,7 +2542,7 @@ class MyTestWithAnonymousClass extends TestCase
     {
         $tokens = Tokens::fromCode($source);
 
-        static::assertCount(
+        self::assertCount(
             $tokens->countTokenKind(T_STRING),
             $expected,
             'All T_STRING tokens must be tested'
@@ -2551,7 +2551,7 @@ class MyTestWithAnonymousClass extends TestCase
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($expected as $index => $expectedValue) {
-            static::assertSame(
+            self::assertSame(
                 $expectedValue,
                 $tokensAnalyzer->isConstantInvocation($index),
                 sprintf('Token at index '.$index.' should match the expected value (%s).', $expectedValue ? 'true' : 'false')

@@ -92,7 +92,7 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
      */
     public function testDoNotChange(string $source): void
     {
-        static::assertNotChange($source);
+        self::assertNotChange($source);
     }
 
     public static function provideDoNotChangeCases(): iterable
@@ -145,7 +145,7 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
         Tokens::clearCache();
 
         foreach (Tokens::fromCode($source) as $token) {
-            static::assertFalse($token->isGivenKind([
+            self::assertFalse($token->isGivenKind([
                 CT::T_NAMED_ARGUMENT_NAME,
                 CT::T_NAMED_ARGUMENT_COLON,
             ]));

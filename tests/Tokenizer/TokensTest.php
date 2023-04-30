@@ -44,7 +44,7 @@ final class TokensTest extends TestCase
 
         $tokens = Tokens::fromCode($code);
 
-        static::assertSame($countBefore, $tokens->count());
+        self::assertSame($countBefore, $tokens->count());
     }
 
     /**
@@ -64,7 +64,7 @@ final class TokensTest extends TestCase
     ): void {
         $tokens = Tokens::fromCode($source);
 
-        static::assertEqualsTokensArray(
+        self::assertEqualsTokensArray(
             $expected,
             $tokens->findSequence(
                 $sequence,
@@ -338,10 +338,10 @@ PHP;
         $tokens->clearRange($fooIndex, $barIndex - 1);
 
         $newPublicIndexes = array_keys($tokens->findGivenKind(T_PUBLIC));
-        static::assertSame($barIndex, reset($newPublicIndexes));
+        self::assertSame($barIndex, reset($newPublicIndexes));
 
         for ($i = $fooIndex; $i < $barIndex; ++$i) {
-            static::assertTrue($tokens[$i]->isWhitespace());
+            self::assertTrue($tokens[$i]->isWhitespace());
         }
     }
 
@@ -351,7 +351,7 @@ PHP;
     public function testMonolithicPhpDetection(bool $isMonolithic, string $source): void
     {
         $tokens = Tokens::fromCode($source);
-        static::assertSame($isMonolithic, $tokens->isMonolithicPhp());
+        self::assertSame($isMonolithic, $tokens->isMonolithicPhp());
     }
 
     public static function provideMonolithicPhpDetectionCases(): iterable
@@ -453,17 +453,17 @@ EOF;
 
         $tokens = Tokens::fromCode($code);
 
-        static::assertTrue($tokens->isTokenKindFound(T_CLASS));
-        static::assertTrue($tokens->isTokenKindFound(T_RETURN));
-        static::assertFalse($tokens->isTokenKindFound(T_INTERFACE));
-        static::assertFalse($tokens->isTokenKindFound(T_ARRAY));
+        self::assertTrue($tokens->isTokenKindFound(T_CLASS));
+        self::assertTrue($tokens->isTokenKindFound(T_RETURN));
+        self::assertFalse($tokens->isTokenKindFound(T_INTERFACE));
+        self::assertFalse($tokens->isTokenKindFound(T_ARRAY));
 
-        static::assertTrue($tokens->isAllTokenKindsFound([T_CLASS, T_RETURN]));
-        static::assertFalse($tokens->isAllTokenKindsFound([T_CLASS, T_INTERFACE]));
+        self::assertTrue($tokens->isAllTokenKindsFound([T_CLASS, T_RETURN]));
+        self::assertFalse($tokens->isAllTokenKindsFound([T_CLASS, T_INTERFACE]));
 
-        static::assertTrue($tokens->isAnyTokenKindsFound([T_CLASS, T_RETURN]));
-        static::assertTrue($tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]));
-        static::assertFalse($tokens->isAnyTokenKindsFound([T_INTERFACE, T_ARRAY]));
+        self::assertTrue($tokens->isAnyTokenKindsFound([T_CLASS, T_RETURN]));
+        self::assertTrue($tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]));
+        self::assertFalse($tokens->isAnyTokenKindsFound([T_INTERFACE, T_ARRAY]));
     }
 
     public function testFindGivenKind(): void
@@ -487,36 +487,36 @@ PHP;
 
         /** @var Token[] $found */
         $found = $tokens->findGivenKind(T_CLASS);
-        static::assertCount(1, $found);
-        static::assertArrayHasKey(1, $found);
-        static::assertSame(T_CLASS, $found[1]->getId());
+        self::assertCount(1, $found);
+        self::assertArrayHasKey(1, $found);
+        self::assertSame(T_CLASS, $found[1]->getId());
 
         $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION]);
-        static::assertCount(2, $found);
-        static::assertArrayHasKey(T_CLASS, $found);
-        static::assertIsArray($found[T_CLASS]);
-        static::assertCount(1, $found[T_CLASS]);
-        static::assertArrayHasKey(1, $found[T_CLASS]);
-        static::assertSame(T_CLASS, $found[T_CLASS][1]->getId());
+        self::assertCount(2, $found);
+        self::assertArrayHasKey(T_CLASS, $found);
+        self::assertIsArray($found[T_CLASS]);
+        self::assertCount(1, $found[T_CLASS]);
+        self::assertArrayHasKey(1, $found[T_CLASS]);
+        self::assertSame(T_CLASS, $found[T_CLASS][1]->getId());
 
-        static::assertArrayHasKey(T_FUNCTION, $found);
-        static::assertIsArray($found[T_FUNCTION]);
-        static::assertCount(2, $found[T_FUNCTION]);
-        static::assertArrayHasKey(9, $found[T_FUNCTION]);
-        static::assertSame(T_FUNCTION, $found[T_FUNCTION][9]->getId());
-        static::assertArrayHasKey(26, $found[T_FUNCTION]);
-        static::assertSame(T_FUNCTION, $found[T_FUNCTION][26]->getId());
+        self::assertArrayHasKey(T_FUNCTION, $found);
+        self::assertIsArray($found[T_FUNCTION]);
+        self::assertCount(2, $found[T_FUNCTION]);
+        self::assertArrayHasKey(9, $found[T_FUNCTION]);
+        self::assertSame(T_FUNCTION, $found[T_FUNCTION][9]->getId());
+        self::assertArrayHasKey(26, $found[T_FUNCTION]);
+        self::assertSame(T_FUNCTION, $found[T_FUNCTION][26]->getId());
 
         // test offset and limits of the search
         $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION], 10);
-        static::assertCount(0, $found[T_CLASS]);
-        static::assertCount(1, $found[T_FUNCTION]);
-        static::assertArrayHasKey(26, $found[T_FUNCTION]);
+        self::assertCount(0, $found[T_CLASS]);
+        self::assertCount(1, $found[T_FUNCTION]);
+        self::assertArrayHasKey(26, $found[T_FUNCTION]);
 
         $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION], 2, 10);
-        static::assertCount(0, $found[T_CLASS]);
-        static::assertCount(1, $found[T_FUNCTION]);
-        static::assertArrayHasKey(9, $found[T_FUNCTION]);
+        self::assertCount(0, $found[T_CLASS]);
+        self::assertCount(1, $found[T_FUNCTION]);
+        self::assertArrayHasKey(9, $found[T_FUNCTION]);
     }
 
     /**
@@ -648,12 +648,12 @@ PHP;
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
         if (1 === $direction) {
-            static::assertSame($expectedIndex, $tokens->getNextTokenOfKind($index, $findTokens, $caseSensitive));
+            self::assertSame($expectedIndex, $tokens->getNextTokenOfKind($index, $findTokens, $caseSensitive));
         } else {
-            static::assertSame($expectedIndex, $tokens->getPrevTokenOfKind($index, $findTokens, $caseSensitive));
+            self::assertSame($expectedIndex, $tokens->getPrevTokenOfKind($index, $findTokens, $caseSensitive));
         }
 
-        static::assertSame($expectedIndex, $tokens->getTokenOfKindSibling($index, $direction, $findTokens, $caseSensitive));
+        self::assertSame($expectedIndex, $tokens->getTokenOfKindSibling($index, $direction, $findTokens, $caseSensitive));
     }
 
     public static function provideTokenOfKindSiblingCases(): array
@@ -692,7 +692,7 @@ PHP;
      */
     public function testFindBlockEnd(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
-        static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+        self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
     public static function provideFindBlockEndCases(): array
@@ -723,7 +723,7 @@ PHP;
      */
     public function testFindBlockEnd80(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
-        static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+        self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
     public static function provideFindBlockEnd80Cases(): array
@@ -750,7 +750,7 @@ PHP;
      */
     public function testFindBlockEnd82(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
-        static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+        self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
     public static function provideFindBlockEnd82Cases(): iterable
@@ -806,7 +806,7 @@ PHP;
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php foo(1, 2);');
 
-        static::assertSame(7, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2));
+        self::assertSame(7, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2));
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Invalid param \$startIndex - not a proper block "start"\.$/');
@@ -819,7 +819,7 @@ PHP;
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php foo(1, 2);');
 
-        static::assertSame(2, $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 7));
+        self::assertSame(2, $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 7));
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Invalid param \$startIndex - not a proper block "end"\.$/');
@@ -832,8 +832,8 @@ PHP;
         $code = '';
         $tokens = Tokens::fromCode($code);
 
-        static::assertCount(0, $tokens);
-        static::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        self::assertCount(0, $tokens);
+        self::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
     }
 
     public function testEmptyTokensMultiple(): void
@@ -841,16 +841,16 @@ PHP;
         $code = '';
 
         $tokens = Tokens::fromCode($code);
-        static::assertFalse($tokens->isChanged());
+        self::assertFalse($tokens->isChanged());
 
         $tokens->insertAt(0, new Token([T_WHITESPACE, ' ']));
-        static::assertCount(1, $tokens);
-        static::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
-        static::assertTrue($tokens->isChanged());
+        self::assertCount(1, $tokens);
+        self::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        self::assertTrue($tokens->isChanged());
 
         $tokens2 = Tokens::fromCode($code);
-        static::assertCount(0, $tokens2);
-        static::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        self::assertCount(0, $tokens2);
+        self::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
     }
 
     public function testFromArray(): void
@@ -860,15 +860,15 @@ PHP;
         $tokens1 = Tokens::fromCode($code);
         $tokens2 = Tokens::fromArray($tokens1->toArray());
 
-        static::assertTrue($tokens1->isTokenKindFound(T_OPEN_TAG));
-        static::assertTrue($tokens2->isTokenKindFound(T_OPEN_TAG));
-        static::assertSame($tokens1->getCodeHash(), $tokens2->getCodeHash());
+        self::assertTrue($tokens1->isTokenKindFound(T_OPEN_TAG));
+        self::assertTrue($tokens2->isTokenKindFound(T_OPEN_TAG));
+        self::assertSame($tokens1->getCodeHash(), $tokens2->getCodeHash());
     }
 
     public function testFromArrayEmpty(): void
     {
         $tokens = Tokens::fromArray([]);
-        static::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        self::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
     }
 
     /**
@@ -878,7 +878,7 @@ PHP;
     {
         $tokens = Tokens::fromArray([$token]);
         Tokens::clearCache();
-        static::assertSame($isEmpty, $tokens->isEmptyAt(0), $token->toJson());
+        self::assertSame($isEmpty, $tokens->isEmptyAt(0), $token->toJson());
     }
 
     public static function provideIsEmptyCases(): array
@@ -897,15 +897,15 @@ PHP;
 
         $tokensClone = clone $tokens;
 
-        static::assertTrue($tokens->isTokenKindFound(T_OPEN_TAG));
-        static::assertTrue($tokensClone->isTokenKindFound(T_OPEN_TAG));
+        self::assertTrue($tokens->isTokenKindFound(T_OPEN_TAG));
+        self::assertTrue($tokensClone->isTokenKindFound(T_OPEN_TAG));
 
         $count = \count($tokens);
-        static::assertCount($count, $tokensClone);
+        self::assertCount($count, $tokensClone);
 
         for ($i = 0; $i < $count; ++$i) {
-            static::assertTrue($tokens[$i]->equals($tokensClone[$i]));
-            static::assertNotSame($tokens[$i], $tokensClone[$i]);
+            self::assertTrue($tokens[$i]->equals($tokensClone[$i]));
+            self::assertNotSame($tokens[$i], $tokensClone[$i]);
         }
     }
 
@@ -917,7 +917,7 @@ PHP;
         $tokens = Tokens::fromCode($input);
         $tokens->ensureWhitespaceAtIndex($index, $offset, $whiteSpace);
         $tokens->clearEmptyTokens();
-        static::assertTokens(Tokens::fromCode($expected), $tokens);
+        self::assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
     public static function provideEnsureWhitespaceAtIndexCases(): array
@@ -1063,12 +1063,12 @@ echo $a;',
             ]
         );
 
-        static::assertTrue($tokens->isChanged());
+        self::assertTrue($tokens->isChanged());
 
         $expected = Tokens::fromCode(sprintf($template, 'private $name;'));
-        static::assertFalse($expected->isChanged());
+        self::assertFalse($expected->isChanged());
 
-        static::assertTokens($expected, $tokens);
+        self::assertTokens($expected, $tokens);
     }
 
     /**
@@ -1081,7 +1081,7 @@ echo $a;',
         $tokens = Tokens::fromCode($input ?? $expected);
         $tokens->removeLeadingWhitespace($index, $whitespaces);
 
-        static::assertSame($expected, $tokens->generateCode());
+        self::assertSame($expected, $tokens->generateCode());
     }
 
     public static function provideRemoveLeadingWhitespaceCases(): array
@@ -1147,7 +1147,7 @@ echo $a;',
         $tokens = Tokens::fromCode($input ?? $expected);
         $tokens->removeTrailingWhitespace($index, $whitespaces);
 
-        static::assertSame($expected, $tokens->generateCode());
+        self::assertSame($expected, $tokens->generateCode());
     }
 
     public static function provideRemoveTrailingWhitespaceCases(): iterable
@@ -1170,7 +1170,7 @@ echo $a;',
         $tokens->removeLeadingWhitespace(3);
 
         $tokens->clearEmptyTokens();
-        static::assertTokens(Tokens::fromCode("<?php\nMY_INDEX_IS_THREE;foo();"), $tokens);
+        self::assertTokens(Tokens::fromCode("<?php\nMY_INDEX_IS_THREE;foo();"), $tokens);
     }
 
     public function testRemovingTrailingWhitespaceWithEmptyTokenInCollection(): void
@@ -1182,7 +1182,7 @@ echo $a;',
         $tokens->removeTrailingWhitespace(1);
 
         $tokens->clearEmptyTokens();
-        static::assertTokens(Tokens::fromCode("<?php\nMY_INDEX_IS_ONE;foo();"), $tokens);
+        self::assertTokens(Tokens::fromCode("<?php\nMY_INDEX_IS_ONE;foo();"), $tokens);
     }
 
     /**
@@ -1197,8 +1197,8 @@ echo $a;',
 
         $tokens->removeLeadingWhitespace(4);
 
-        static::assertSame($originalCount, $tokens->count());
-        static::assertSame(
+        self::assertSame($originalCount, $tokens->count());
+        self::assertSame(
             '<?php
                                     // Foo
 $bar;',
@@ -1218,8 +1218,8 @@ $bar;',
 
         $tokens->removeTrailingWhitespace(2);
 
-        static::assertSame($originalCount, $tokens->count());
-        static::assertSame(
+        self::assertSame($originalCount, $tokens->count());
+        self::assertSame(
             '<?php
                                     // Foo
 $bar;',
@@ -1235,7 +1235,7 @@ $bar;',
     public function testDetectBlockType(?array $expected, string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
-        static::assertSame($expected, Tokens::detectBlockType($tokens[$index]));
+        self::assertSame($expected, Tokens::detectBlockType($tokens[$index]));
     }
 
     public static function provideDetectBlockTypeCases(): iterable
@@ -1280,7 +1280,7 @@ $bar;',
         $tokens->overrideRange($indexStart, $indexEnd, $items);
         $tokens->clearEmptyTokens();
 
-        static::assertTokens(Tokens::fromArray($expected), $tokens);
+        self::assertTokens(Tokens::fromArray($expected), $tokens);
     }
 
     /**
@@ -1295,7 +1295,7 @@ $bar;',
         $tokens->overrideRange($indexStart, $indexEnd, $items);
         $tokens->clearEmptyTokens();
 
-        static::assertTokens(Tokens::fromArray($expected), $tokens);
+        self::assertTokens(Tokens::fromArray($expected), $tokens);
     }
 
     public static function provideOverrideRangeCases(): iterable
@@ -1394,7 +1394,7 @@ $bar;',
     public function testInitialChangedState(): void
     {
         $tokens = Tokens::fromCode("<?php\n");
-        static::assertFalse($tokens->isChanged());
+        self::assertFalse($tokens->isChanged());
 
         $tokens = Tokens::fromArray(
             [
@@ -1403,7 +1403,7 @@ $bar;',
                 new Token(';'),
             ]
         );
-        static::assertFalse($tokens->isChanged());
+        self::assertFalse($tokens->isChanged());
     }
 
     /**
@@ -1416,7 +1416,7 @@ $bar;',
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
 
-        static::assertSame($expectIndex, $tokens->getMeaningfulTokenSibling($index, $direction));
+        self::assertSame($expectIndex, $tokens->getMeaningfulTokenSibling($index, $direction));
     }
 
     public static function provideGetMeaningfulTokenSiblingCases(): iterable
@@ -1463,7 +1463,7 @@ EOF;
             16 => $slices,
             6 => $slices,
         ]);
-        static::assertTokens(Tokens::fromCode($expected), $tokens);
+        self::assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
     public static function provideInsertSlicesAtMultiplePlacesCases(): iterable
@@ -1506,15 +1506,15 @@ EOF
     {
         $tokens = Tokens::fromCode('<?php echo 1234567890;');
 
-        static::assertFalse($tokens->isChanged());
-        static::assertFalse($tokens->isTokenKindFound(T_COMMENT));
-        static::assertSame(5, $tokens->getSize());
+        self::assertFalse($tokens->isChanged());
+        self::assertFalse($tokens->isTokenKindFound(T_COMMENT));
+        self::assertSame(5, $tokens->getSize());
 
         $tokens->insertSlices([1 => new Token([T_COMMENT, '/* comment */'])]);
 
-        static::assertTrue($tokens->isChanged());
-        static::assertTrue($tokens->isTokenKindFound(T_COMMENT));
-        static::assertSame(6, $tokens->getSize());
+        self::assertTrue($tokens->isChanged());
+        self::assertTrue($tokens->isTokenKindFound(T_COMMENT));
+        self::assertSame(6, $tokens->getSize());
     }
 
     /**
@@ -1525,7 +1525,7 @@ EOF
     public function testInsertSlices(Tokens $expected, Tokens $tokens, array $slices): void
     {
         $tokens->insertSlices($slices);
-        static::assertTokens($expected, $tokens);
+        self::assertTokens($expected, $tokens);
     }
 
     public static function provideInsertSlicesCases(): iterable
@@ -1634,7 +1634,7 @@ EOF
         $tokens = $this->getBlockEdgeCachingTestTokens();
 
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
-        static::assertSame(9, $endIndex);
+        self::assertSame(9, $endIndex);
 
         $tokens->offsetSet(5, new Token('('));
         $tokens->offsetSet(9, new Token('('));
@@ -1650,15 +1650,15 @@ EOF
         $tokens = $this->getBlockEdgeCachingTestTokens();
 
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
-        static::assertSame(9, $endIndex);
+        self::assertSame(9, $endIndex);
 
         $tokens->clearAt(7); // note: offsetUnset doesn't work here
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
-        static::assertSame(9, $endIndex);
+        self::assertSame(9, $endIndex);
 
         $tokens->clearEmptyTokens();
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
-        static::assertSame(8, $endIndex);
+        self::assertSame(8, $endIndex);
     }
 
     public function testBlockEdgeCachingInsertSlices(): void
@@ -1666,12 +1666,12 @@ EOF
         $tokens = $this->getBlockEdgeCachingTestTokens();
 
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
-        static::assertSame(9, $endIndex);
+        self::assertSame(9, $endIndex);
 
         $tokens->insertSlices([6 => [new Token([T_COMMENT, '/* A */'])], new Token([T_COMMENT, '/* B */'])]);
 
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
-        static::assertSame(11, $endIndex);
+        self::assertSame(11, $endIndex);
     }
 
     private function getBlockEdgeCachingTestTokens(): Tokens
@@ -1702,22 +1702,22 @@ EOF
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
 
-        static::assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex));
-        static::assertSame($searchIndex, $tokens->findBlockStart($type, $expectedIndex));
+        self::assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex));
+        self::assertSame($searchIndex, $tokens->findBlockStart($type, $expectedIndex));
 
         $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
-        static::assertIsArray($detectedType);
-        static::assertArrayHasKey('type', $detectedType);
-        static::assertArrayHasKey('isStart', $detectedType);
-        static::assertSame($type, $detectedType['type']);
-        static::assertTrue($detectedType['isStart']);
+        self::assertIsArray($detectedType);
+        self::assertArrayHasKey('type', $detectedType);
+        self::assertArrayHasKey('isStart', $detectedType);
+        self::assertSame($type, $detectedType['type']);
+        self::assertTrue($detectedType['isStart']);
 
         $detectedType = Tokens::detectBlockType($tokens[$expectedIndex]);
-        static::assertIsArray($detectedType);
-        static::assertArrayHasKey('type', $detectedType);
-        static::assertArrayHasKey('isStart', $detectedType);
-        static::assertSame($type, $detectedType['type']);
-        static::assertFalse($detectedType['isStart']);
+        self::assertIsArray($detectedType);
+        self::assertArrayHasKey('type', $detectedType);
+        self::assertArrayHasKey('isStart', $detectedType);
+        self::assertSame($type, $detectedType['type']);
+        self::assertFalse($detectedType['isStart']);
     }
 
     /**
@@ -1727,19 +1727,19 @@ EOF
     private static function assertEqualsTokensArray(array $expected = null, array $input = null): void
     {
         if (null === $expected) {
-            static::assertNull($input);
+            self::assertNull($input);
 
             return;
         }
 
         if (null === $input) {
-            static::fail('While "input" is <null>, "expected" is not.');
+            self::fail('While "input" is <null>, "expected" is not.');
         }
 
-        static::assertSame(array_keys($expected), array_keys($input), 'Both arrays need to have same keys.');
+        self::assertSame(array_keys($expected), array_keys($input), 'Both arrays need to have same keys.');
 
         foreach ($expected as $index => $expectedToken) {
-            static::assertTrue(
+            self::assertTrue(
                 $expectedToken->equals($input[$index]),
                 sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson())
             );
@@ -1758,12 +1758,12 @@ EOF
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
         }
 
-        static::assertSame(\count($expected), $tokens->count());
+        self::assertSame(\count($expected), $tokens->count());
         foreach ($expected as $index => $expectedToken) {
             $token = $tokens[$index];
             $expectedPrototype = $expectedToken->getPrototype();
 
-            static::assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype), $token->toJson()));
+            self::assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype), $token->toJson()));
         }
     }
 }

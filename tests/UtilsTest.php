@@ -55,10 +55,10 @@ final class UtilsTest extends TestCase
     public function testCamelCaseToUnderscore(string $expected, string $input = null): void
     {
         if (null !== $input) {
-            static::assertSame($expected, Utils::camelCaseToUnderscore($input));
+            self::assertSame($expected, Utils::camelCaseToUnderscore($input));
         }
 
-        static::assertSame($expected, Utils::camelCaseToUnderscore($expected));
+        self::assertSame($expected, Utils::camelCaseToUnderscore($expected));
     }
 
     public static function provideCamelCaseToUnderscoreCases(): array
@@ -123,7 +123,7 @@ final class UtilsTest extends TestCase
     {
         $token = new Token($input);
 
-        static::assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
+        self::assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
     }
 
     public static function provideCalculateTrailingWhitespaceIndentCases(): array
@@ -160,7 +160,7 @@ final class UtilsTest extends TestCase
         callable $getComparableValueCallback,
         callable $compareValuesCallback
     ): void {
-        static::assertSame(
+        self::assertSame(
             $expected,
             Utils::stableSort($elements, $getComparableValueCallback, $compareValuesCallback)
         );
@@ -205,7 +205,7 @@ final class UtilsTest extends TestCase
             $this->createFixerDouble('f4', -10),
         ];
 
-        static::assertSame(
+        self::assertSame(
             [
                 $fixers[2],
                 $fixers[0],
@@ -230,7 +230,7 @@ final class UtilsTest extends TestCase
      */
     public function testNaturalLanguageJoinWithBackticks(string $joined, array $names): void
     {
-        static::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
+        self::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
     }
 
     public static function provideNaturalLanguageJoinWithBackticksCases(): array
@@ -264,7 +264,7 @@ final class UtilsTest extends TestCase
         Utils::triggerDeprecation(new \DomainException($message));
 
         $triggered = Utils::getTriggeredDeprecations();
-        static::assertContains($message, $triggered);
+        self::assertContains($message, $triggered);
     }
 
     public function testTriggerDeprecationWhenFutureModeIsOn(): void
@@ -280,11 +280,11 @@ final class UtilsTest extends TestCase
         } catch (\Exception $futureModeException) {
         }
 
-        static::assertInstanceOf(\RuntimeException::class, $futureModeException);
-        static::assertSame($exception, $futureModeException->getPrevious());
+        self::assertInstanceOf(\RuntimeException::class, $futureModeException);
+        self::assertSame($exception, $futureModeException->getPrevious());
 
         $triggered = Utils::getTriggeredDeprecations();
-        static::assertNotContains($message, $triggered);
+        self::assertNotContains($message, $triggered);
     }
 
     private function createFixerDouble(string $name, int $priority): FixerInterface

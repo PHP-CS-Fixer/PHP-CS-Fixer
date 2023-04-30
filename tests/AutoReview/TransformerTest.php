@@ -35,7 +35,7 @@ final class TransformerTest extends TestCase
      */
     public function testTransformerPriority(TransformerInterface $first, TransformerInterface $second): void
     {
-        static::assertLessThan(
+        self::assertLessThan(
             $first->getPriority(),
             $second->getPriority(),
             sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first))
@@ -67,7 +67,7 @@ final class TransformerTest extends TestCase
             }
         }
 
-        static::fail(sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
+        self::fail(sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
     }
 
     public static function provideTransformerPriorityCases(): array

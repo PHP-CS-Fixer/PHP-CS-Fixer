@@ -32,7 +32,7 @@ final class DiffConsoleFormatterTest extends TestCase
     {
         $diffFormatter = new DiffConsoleFormatter($isDecoratedOutput, $template);
 
-        static::assertSame(
+        self::assertSame(
             str_replace(PHP_EOL, "\n", $expected),
             str_replace(PHP_EOL, "\n", $diffFormatter->format($diff, $lineTemplate))
         );

@@ -32,8 +32,8 @@ final class TokensTest extends TestCase
         $token = new Token([T_DOC_COMMENT, $docComment]);
         $tokens = Tokens::createFromDocComment($token);
 
-        static::assertCount(1, $tokens);
-        static::assertSame($docComment, $tokens->getCode());
+        self::assertCount(1, $tokens);
+        self::assertSame($docComment, $tokens->getCode());
     }
 
     /**

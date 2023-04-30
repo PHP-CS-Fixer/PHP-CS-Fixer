@@ -406,7 +406,7 @@ final class Token
      */
     public function isKeyword(): bool
     {
-        $keywords = static::getKeywords();
+        $keywords = self::getKeywords();
 
         return $this->isArray && isset($keywords[$this->id]);
     }
@@ -428,7 +428,7 @@ final class Token
      */
     public function isMagicConstant(): bool
     {
-        $magicConstants = static::getMagicConstants();
+        $magicConstants = self::getMagicConstants();
 
         return $this->isArray && isset($magicConstants[$this->id]);
     }

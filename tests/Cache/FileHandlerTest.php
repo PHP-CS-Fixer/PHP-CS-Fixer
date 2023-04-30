@@ -47,7 +47,7 @@ final class FileHandlerTest extends TestCase
 
         $handler = new FileHandler($file);
 
-        static::assertInstanceOf(\PhpCsFixer\Cache\FileHandlerInterface::class, $handler);
+        self::assertInstanceOf(\PhpCsFixer\Cache\FileHandlerInterface::class, $handler);
     }
 
     public function testConstructorSetsFile(): void
@@ -56,7 +56,7 @@ final class FileHandlerTest extends TestCase
 
         $handler = new FileHandler($file);
 
-        static::assertSame($file, $handler->getFile());
+        self::assertSame($file, $handler->getFile());
     }
 
     public function testReadReturnsNullIfFileDoesNotExist(): void
@@ -65,7 +65,7 @@ final class FileHandlerTest extends TestCase
 
         $handler = new FileHandler($file);
 
-        static::assertNull($handler->read());
+        self::assertNull($handler->read());
     }
 
     public function testReadReturnsNullIfContentCanNotBeDeserialized(): void
@@ -76,7 +76,7 @@ final class FileHandlerTest extends TestCase
 
         $handler = new FileHandler($file);
 
-        static::assertNull($handler->read());
+        self::assertNull($handler->read());
     }
 
     public function testReadReturnsCache(): void
@@ -93,8 +93,8 @@ final class FileHandlerTest extends TestCase
 
         $cached = $handler->read();
 
-        static::assertInstanceOf(\PhpCsFixer\Cache\CacheInterface::class, $cached);
-        static::assertTrue($cached->getSignature()->equals($signature));
+        self::assertInstanceOf(\PhpCsFixer\Cache\CacheInterface::class, $cached);
+        self::assertTrue($cached->getSignature()->equals($signature));
     }
 
     public function testWriteThrowsIOExceptionIfFileCanNotBeWritten(): void
@@ -124,11 +124,11 @@ final class FileHandlerTest extends TestCase
 
         $handler->write($cache);
 
-        static::assertFileExists($file);
+        self::assertFileExists($file);
 
         $actualCacheJson = file_get_contents($file);
 
-        static::assertSame($cache->toJson(), $actualCacheJson);
+        self::assertSame($cache->toJson(), $actualCacheJson);
     }
 
     public function testWriteCacheToDirectory(): void
@@ -150,7 +150,7 @@ final class FileHandlerTest extends TestCase
     {
         $file = __DIR__.'/../Fixtures/cache-file-handler/cache-file';
         if (is_writable($file)) {
-            static::markTestSkipped(sprintf('File "%s" must be not writeable for this tests.', realpath($file)));
+            self::markTestSkipped(sprintf('File "%s" must be not writeable for this tests.', realpath($file)));
         }
 
         $handler = new FileHandler($file);
@@ -169,15 +169,15 @@ final class FileHandlerTest extends TestCase
         $file = __DIR__.'/../Fixtures/cache-file-handler/rw_cache.test';
         @unlink($file);
 
-        static::assertFileDoesNotExist($file);
+        self::assertFileDoesNotExist($file);
 
         $handler = new FileHandler($file);
         $handler->write(new Cache($this->createSignature()));
 
-        static::assertFileExists($file);
-        static::assertTrue(@is_file($file), sprintf('Failed cache "%s" `is_file`.', $file));
-        static::assertTrue(@is_writable($file), sprintf('Failed cache "%s" `is_writable`.', $file));
-        static::assertTrue(@is_readable($file), sprintf('Failed cache "%s" `is_readable`.', $file));
+        self::assertFileExists($file);
+        self::assertTrue(@is_file($file), sprintf('Failed cache "%s" `is_file`.', $file));
+        self::assertTrue(@is_writable($file), sprintf('Failed cache "%s" `is_writable`.', $file));
+        self::assertTrue(@is_readable($file), sprintf('Failed cache "%s" `is_readable`.', $file));
 
         @unlink($file);
     }
