@@ -1161,6 +1161,34 @@ function foo(){}
 function foo(){}
             ',
         ];
+
+        yield [
+            ['tokens' => ['attribute']],
+            '<?php class Foo
+            {
+                protected function f1(string $x): string { return "r1"; }
+
+                protected function f2(string $x): string { return "r1"; }
+
+                protected function f3(#[Attr] string $x): string { return "r1"; }
+
+                protected function f4(string $x): string { return "r1"; }
+            }',
+        ];
+
+        yield [
+            ['tokens' => ['attribute']],
+            '<?php abstract class Foo
+            {
+                abstract protected function f1(string $x): string;
+
+                abstract protected function f2(string $x): string;
+
+                abstract protected function f3(#[Attr] string $x): string;
+
+                abstract protected function f4(string $x): string;
+            }',
+        ];
     }
 
     /**

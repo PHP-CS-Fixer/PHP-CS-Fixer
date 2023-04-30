@@ -418,8 +418,24 @@ switch($a) {
     private function removeEmptyLinesAfterLineWithTokenAt(int $index): void
     {
         // find the line break
+        $parenthesesDepth = 0;
         $tokenCount = \count($this->tokens);
         for ($end = $index; $end < $tokenCount; ++$end) {
+            if ($this->tokens[$end]->equals('(')) {
+                ++$parenthesesDepth;
+
+                continue;
+            }
+
+            if ($this->tokens[$end]->equals(')')) {
+                --$parenthesesDepth;
+                if ($parenthesesDepth < 0) {
+                    return;
+                }
+
+                continue;
+            }
+
             if (
                 $this->tokens[$end]->equals('}')
                 || str_contains($this->tokens[$end]->getContent(), "\n")
