@@ -69,7 +69,6 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
             $tokens,
             $classIndex,
             $this->configuration['group'],
-            false,
             true,
             self::SIZES
         );

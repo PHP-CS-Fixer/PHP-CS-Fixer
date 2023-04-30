@@ -65,7 +65,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $tokens,
             $classIndex,
             'coversNothing',
-            true,
             false,
             [
                 'covers',
