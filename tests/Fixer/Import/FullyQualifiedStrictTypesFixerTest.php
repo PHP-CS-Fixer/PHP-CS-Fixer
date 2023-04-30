@@ -577,7 +577,7 @@ namespace {
 ',
         ];
 
-        yield 'Test FQCN is not removed when class with the same name is imported' => [
+        yield 'Test FQCN is not removed when class with the same name, but different namespace, is imported' => [
             '<?php namespace Foo;
                 use Bar\TheClass;
                 class Test
