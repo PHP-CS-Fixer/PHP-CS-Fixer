@@ -26,18 +26,25 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class PhpdocAlignFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixOneCases
-     * @dataProvider provideFixTwoCases
+     * @dataProvider provideFixCases
      *
      * @param array{align: string, tags: array<string>} $configuration
      */
-    public function testFix(array $configuration, string $expected, ?string $input = null): void
-    {
+    public function testFix(
+        array $configuration,
+        string $expected,
+        ?string $input = null,
+        ?WhitespacesFixerConfig $whitespacesFixerConfig = null
+    ): void {
         $this->fixer->configure($configuration);
+        if (null !== $whitespacesFixerConfig) {
+            $this->fixer->setWhitespacesConfig($whitespacesFixerConfig);
+        }
+
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixOneCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'none, one and four spaces between type and variable' => [
             ['tags' => ['param']],
@@ -637,24 +644,8 @@ class X
          */
 ',
         ];
-    }
 
-    /**
-     * @param array<string, mixed> $config
-     *
-     * @dataProvider provideMessyWhitespacesCases
-     */
-    public function testMessyWhitespaces(array $config, string $expected, string $input, WhitespacesFixerConfig $whitespacesFixerConfig): void
-    {
-        $this->fixer->configure($config);
-        $this->fixer->setWhitespacesConfig($whitespacesFixerConfig);
-
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideMessyWhitespacesCases(): array
-    {
-        return [
+        yield from [
             [
                 ['tags' => ['type']],
                 "<?php\r\n\t/**\r\n\t * @type Type This is a variable.\r\n\t */",
@@ -686,10 +677,7 @@ class X
                 new WhitespacesFixerConfig('    ', "\r\n"),
             ],
         ];
-    }
 
-    public static function provideFixTwoCases(): iterable
-    {
         yield 'badly formatted' => [
             ['tags' => ['var']],
             "<?php\n    /**\n     * @var Foo */\n",
