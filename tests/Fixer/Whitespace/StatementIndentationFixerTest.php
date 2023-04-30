@@ -800,6 +800,20 @@ $result3 = (new Argument())(
     3
 );',
         ];
+
+        yield 'comments at the end of if/elseif/else blocks' => [
+            '<?php
+if ($foo) {
+    echo "foo";
+    // foo
+} elseif ($bar) {
+    echo "bar";
+    // bar
+} else {
+    echo "baz";
+    // baz
+}',
+        ];
     }
 
     /**
