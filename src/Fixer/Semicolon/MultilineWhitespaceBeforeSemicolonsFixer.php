@@ -23,7 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -284,34 +284,6 @@ $object->method1()
             }
         } while (!($tokens[$index]->isGivenKind([T_VARIABLE, T_STRING, T_NS_SEPARATOR]) && $tokens[$index - 1]->isGivenKind([T_WHITESPACE, T_OPEN_TAG]) || $tokens[$index]->isGivenKind([CT::T_BRACE_CLASS_INSTANTIATION_CLOSE])));
 
-        return $chained ? $this->getIndentAt($tokens, $index) : null;
-    }
-
-    private function getIndentAt(Tokens $tokens, int $index): ?string
-    {
-        $content = '';
-        $lineEnding = $this->whitespacesConfig->getLineEnding();
-
-        // find line ending token
-        for ($index; $index > 0; --$index) {
-            if (false !== strstr($tokens[$index]->getContent(), $lineEnding)) {
-                break;
-            }
-        }
-
-        if ($tokens[$index]->isWhitespace()) {
-            $content = $tokens[$index]->getContent();
-            --$index;
-        }
-
-        if ($tokens[$index]->isGivenKind(T_OPEN_TAG)) {
-            $content = $tokens[$index]->getContent().$content;
-        }
-
-        if (1 === Preg::match('/\R{1}(\h*)$/', $content, $matches)) {
-            return $matches[1];
-        }
-
-        return null;
+        return $chained ? WhitespacesAnalyzer::detectIndent($tokens, $index) : null;
     }
 }
