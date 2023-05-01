@@ -47,6 +47,16 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before PhpdocSeparationFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
