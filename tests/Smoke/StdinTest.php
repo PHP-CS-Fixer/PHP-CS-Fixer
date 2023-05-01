@@ -59,9 +59,8 @@ final class StdinTest extends AbstractSmokeTest
         $fileResult = str_replace("\n--- ".$path."\n", "\n--- php://stdin\n", $fileResult);
         $fileResult = str_replace("\n+++ ".$path."\n", "\n+++ php://stdin\n", $fileResult);
 
-        $path = str_replace('/', \DIRECTORY_SEPARATOR, basename(realpath($cwd)).'/'.$inputFile);
         $fileResult = Preg::replace(
-            '#/?'.preg_quote($path, '#').'#',
+            '#/?'.preg_quote($inputFile, '#').'#',
             'php://stdin',
             $fileResult
         );
