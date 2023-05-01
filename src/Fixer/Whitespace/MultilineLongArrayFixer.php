@@ -58,7 +58,8 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
     }
 
     /**
-     *  Must run before ArrayIndentationFixer, WhitespaceAfterCommaInArrayFixer, NoTrailingCommaInSinglelineFixer.
+     *  Must run before ArrayIndentationFixer, WhitespaceAfterCommaInArrayFixer, NoTrailingCommaInSinglelineFixer,
+     *  TrailingCommaInMultilineFixer, NoWhitespaceBeforeCommaInArrayFixer.
      */
     public function getPriority(): int
     {
