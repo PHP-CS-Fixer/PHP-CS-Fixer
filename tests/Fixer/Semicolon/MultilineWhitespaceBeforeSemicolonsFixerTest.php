@@ -883,9 +883,28 @@ Service
                 ?>',
             ],
             [
-                '<?php $this
-        ->methodA()
-        ->methodB();',
+                '<?php
+$object
+    ->methodA()
+    ->methodB()
+;
+',
+                '<?php
+$object
+    ->methodA()
+    ->methodB();
+',
+            ],
+            [
+                '<?php $object
+    ->methodA()
+    ->methodB()
+;
+',
+                '<?php $object
+    ->methodA()
+    ->methodB();
+',
             ],
             [
                 "<?php\n\$this\n    ->one()\n    ->two(2, )\n;",
