@@ -77,13 +77,12 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         Tokens $tokens,
         int $index,
         string $annotation,
-        bool $addWithEmptyLineBeforeAnnotation,
         array $preventingAnnotations
     ): void {
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
 
         if ($this->isPHPDoc($tokens, $docBlockIndex)) {
-            $this->updateDocBlockIfNeeded($tokens, $docBlockIndex, $annotation, $addWithEmptyLineBeforeAnnotation, $preventingAnnotations);
+            $this->updateDocBlockIfNeeded($tokens, $docBlockIndex, $annotation, $preventingAnnotations);
         } else {
             $this->createDocBlock($tokens, $docBlockIndex, $annotation);
         }
@@ -125,7 +124,6 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         Tokens $tokens,
         int $docBlockIndex,
         string $annotation,
-        bool $addWithEmptyLineBeforeAnnotation,
         array $preventingAnnotations
     ): void {
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
@@ -135,7 +133,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
             }
         }
         $doc = $this->makeDocBlockMultiLineIfNeeded($doc, $tokens, $docBlockIndex, $annotation);
-        $lines = $this->addInternalAnnotation($doc, $tokens, $docBlockIndex, $annotation, $addWithEmptyLineBeforeAnnotation);
+        $lines = $this->addInternalAnnotation($doc, $tokens, $docBlockIndex, $annotation);
         $lines = implode('', $lines);
 
         $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
@@ -144,13 +142,12 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     /**
      * @return array<Line>
      */
-    private function addInternalAnnotation(DocBlock $docBlock, Tokens $tokens, int $docBlockIndex, string $annotation, bool $addWithEmptyLineBeforeAnnotation): array
+    private function addInternalAnnotation(DocBlock $docBlock, Tokens $tokens, int $docBlockIndex, string $annotation): array
     {
         $lines = $docBlock->getLines();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
         $lineEnd = $this->whitespacesConfig->getLineEnding();
-        $extraLine = $addWithEmptyLineBeforeAnnotation ? $lineEnd.$originalIndent.' *' : '';
-        array_splice($lines, -1, 0, $originalIndent.' *'.$extraLine.' @'.$annotation.$lineEnd);
+        array_splice($lines, -1, 0, $originalIndent.' * @'.$annotation.$lineEnd);
 
         return $lines;
     }
