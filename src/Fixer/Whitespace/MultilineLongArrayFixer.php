@@ -91,7 +91,6 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        // TODO Handle nested arrays where the middle ones should be single line and the outer one should be multiline.
         $tokensToInsert = [];
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
@@ -114,7 +113,7 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
             }
 
             for ($i = $endIndex - 1; $i > $startIndex; --$i) {
-                $i = $this->skipNonArrayElements($i, $tokens);
+                $i = $this->skipNestedStructures($i, $tokens);
                 if (!$tokens[$i]->equals(',')) {
                     continue;
                 }
@@ -130,9 +129,7 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
             }
         }
 
-        if ([] !== $tokensToInsert) {
-            $tokens->insertSlices($tokensToInsert);
-        }
+        $tokens->insertSlices($tokensToInsert);
     }
 
     /**
@@ -180,22 +177,24 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
     }
 
     /**
-     * Method to move index over the non-array elements like function calls or function declarations.
+     * Moves the index over nested arrays and non-array structures like callbacks.
      *
      * @return int New index
      */
-    private function skipNonArrayElements(int $index, Tokens $tokens): int
+    private function skipNestedStructures(int $index, Tokens $tokens): int
     {
         if ($tokens[$index]->equals('}')) {
             return $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
         }
 
+        if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
+            return $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+        }
+
         if ($tokens[$index]->equals(')')) {
             $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-            $startIndex = $tokens->getPrevMeaningfulToken($startIndex);
-            if (!$tokens[$startIndex]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
-                return $startIndex;
-            }
+
+            return $tokens->getPrevMeaningfulToken($startIndex);
         }
 
         if ($tokens[$index]->equals(',') && $this->commaIsPartOfImplementsList($index, $tokens)) {
