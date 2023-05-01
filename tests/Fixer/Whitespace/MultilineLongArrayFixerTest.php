@@ -40,6 +40,34 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): array
     {
         return [
+            // Old style array
+            [
+                <<<'EXPECTED'
+            <?php
+            $foo = array(
+            'foo',
+            'bar' => 'baz'
+            );
+            EXPECTED,
+                <<<'INPUT'
+            <?php
+            $foo = array('foo','bar' => 'baz');
+            INPUT,
+            ],
+            // Old style array with comments
+            [
+                <<<'EXPECTED'
+            <?php
+            $foo = array /* comment */ (
+            'foo',
+            'bar' => 'baz'
+            );
+            EXPECTED,
+                <<<'INPUT'
+            <?php
+            $foo = array /* comment */ ('foo','bar' => 'baz');
+            INPUT,
+            ],
             [
                 // Empty array
                 <<<'EXPECTED'
@@ -59,7 +87,7 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
                 ['max_length' => -1],
             ],
             [
-                // Single-line array.
+                // Single-line array
                 <<<'EXPECTED'
             <?php
             $foo = [
@@ -73,7 +101,7 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
             INPUT,
             ],
             [
-                // Single-line array shorter than max_length.
+                // Single-line array shorter than max_length
                 <<<'EXPECTED'
             <?php
             $foo = ['foo','bar' => 'baz',];
@@ -82,7 +110,7 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
                 ['max_length' => 30],
             ],
             [
-                // Single-line array with negative max_length.
+                // Single-line array with negative max_length
                 <<<'EXPECTED'
             <?php
             $foo = ['foo','bar' => 'baz',];
@@ -91,7 +119,7 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
                 ['max_length' => -1],
             ],
             [
-                // Single line array longer than max_length.
+                // Single line array longer than max_length
                 <<<'EXPECTED'
             <?php
             $foo = [
@@ -121,7 +149,7 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
                 ['max_length' => 30],
             ],
             [
-                // Multi line array shorter than max_length with tabs.
+                // Multi line array shorter than max_length with tabs
                 <<<'EXPECTED'
             <?php
             $foo = ['foo','bar' => 'baz',];
@@ -136,7 +164,7 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
                 ['max_length' => 30],
             ],
             [
-                // Multi line array with negative max_length.
+                // Multi line array with negative max_length
                 <<<'EXPECTED'
             <?php
             $foo = ['foo','bar' => 'baz',];
@@ -151,7 +179,7 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
                 ['max_length' => -1],
             ],
             [
-                // Multi line array longer than max_length.
+                // Multi line array longer than max_length
                 <<<'EXPECTED'
             <?php
             $foo = [
@@ -163,7 +191,7 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
                 ['max_length' => 10],
             ],
             [
-                // Single element array shorter than max length.
+                // Single element array shorter than max length
                 <<<'EXPECTED'
             <?php
             $foo = ['foo'];
@@ -172,7 +200,7 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
                 ['max_length' => 10],
             ],
             [
-                // Single element array longer than max length.
+                // Single element array longer than max length
                 <<<'EXPECTED'
             <?php
             $foo = [
@@ -186,7 +214,7 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
                 ['max_length' => 10],
             ],
             [
-                // Space after comma.
+                // Space after comma
                 <<<'EXPECTED'
             <?php
             $foo = [
@@ -200,7 +228,7 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
             INPUT,
             ],
             [
-                // Comma after last element.
+                // Comma after last element
                 <<<'EXPECTED'
             <?php
             $foo = [
@@ -214,7 +242,7 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
             INPUT,
             ],
             [
-                // No comma after last element.
+                // No comma after last element
                 <<<'EXPECTED'
             <?php
             $foo = [
@@ -227,8 +255,34 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
             $foo = ['foo','bar' => 2];
             INPUT,
             ],
+            // Function and method call in array
             [
-                // Nested arrays.
+                <<<'EXPECTED'
+            <?php $foo = [
+            'foo',
+            'bar' => getFoo(),
+            'baz' => $this->getFoo(1)
+            ];
+            EXPECTED,
+                <<<'INPUT'
+            <?php $foo = ['foo', 'bar' => getFoo(), 'baz' => $this->getFoo(1)];
+            INPUT,
+            ],
+            // Operators in array
+            [
+                <<<'EXPECTED'
+            <?php $foo = [
+            'foo',
+            'bar' => $a ?? $b,
+            $a === 1
+            ];
+            EXPECTED,
+                <<<'INPUT'
+            <?php $foo = ['foo', 'bar' => $a ?? $b, $a === 1];
+            INPUT,
+            ],
+            [
+                // Nested arrays
                 <<<'EXPECTED'
             <?php
             $foo = [
@@ -242,6 +296,22 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
             <?php
             $foo = ['foo','bar' => ['baz' => 'foo'],];
             INPUT,
+            ],
+            [
+                // Multiple nested arrays with max_length
+                <<<'EXPECTED'
+            <?php
+            $foo = [
+            'foo',
+            'bar' => ['baz' => ['foo']],
+            ['baj']
+            ];
+            EXPECTED,
+                <<<'INPUT'
+            <?php
+            $foo = ['foo','bar' => ['baz' => ['foo']], ['baj']];
+            INPUT,
+                ['max_length' => 15],
             ],
             [
                 // Nested arrays 2
@@ -274,6 +344,93 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
             <?php
             $foo = ['foo','bar' => 'foo is [baz]',];
             INPUT,
+            ],
+            [
+                // Single line array with arrow function
+                <<<'EXPECTED'
+            <?php
+            $foo = [
+            'foo',
+            'bar' => fn($i) => 'baz'
+            ];
+            EXPECTED,
+                <<<'INPUT'
+            <?php
+            $foo = ['foo','bar' => fn($i) => 'baz'];
+            INPUT,
+            ],
+            [
+                // Single line array with anonymous function
+                <<<'EXPECTED'
+            <?php
+            $foo = [
+            'foo',
+            'bar' => function( $x ,$y) { return $x + $y; }
+            ];
+            EXPECTED,
+                <<<'INPUT'
+            <?php
+            $foo = ['foo','bar' => function( $x ,$y) { return $x + $y; }];
+            INPUT,
+            ],
+            [
+                // Internal short arrays inside long one.
+                <<<'EXPECTED'
+            <?php
+            $foo = [
+                'foo' => ['short' => $array,],
+                'bar' => ['other' => 'short','array' => 3,],
+            ];
+            EXPECTED,
+                <<<'INPUT'
+            <?php
+            $foo = [
+                'foo' => [
+                    'short' => $array,
+                ],
+                'bar' => [
+                    'other' => 'short',
+                    'array' => 3,
+                ],
+            ];
+            INPUT,
+                ['max_length' => 40],
+            ],
+            // don't change anonymous class implements list but change array inside
+            [
+                <<<'EXPECTED'
+            <?php
+            $x = [
+            1,
+            "2",
+            "c" => new class implements Foo ,Bar { const FOO = [
+            "x",
+            "y"
+            ]; },
+            $y
+            ];
+            EXPECTED,
+                <<<'INPUT'
+            <?php
+            $x = [1,  "2","c" => new class implements Foo ,Bar { const FOO = ["x","y"]; },$y ];
+            INPUT,
+            ],
+            // don't change anonymous class implements list and don't change small array inside.
+            [
+                <<<'EXPECTED'
+            <?php
+            $x = [
+            1,
+            "2",
+            "c" => new class implements Foo ,Bar { const FOO = ["x","y"]; },
+            $y
+            ];
+            EXPECTED,
+                <<<'INPUT'
+            <?php
+            $x = [1,  "2","c" => new class implements Foo ,Bar { const FOO = ["x","y"]; },$y ];
+            INPUT,
+                ['max_length' => 15],
             ],
         ];
     }
