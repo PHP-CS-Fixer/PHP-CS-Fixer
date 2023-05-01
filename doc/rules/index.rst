@@ -907,6 +907,9 @@ Whitespace
 - `method_chaining_indentation <./whitespace/method_chaining_indentation.rst>`_
 
   Method chaining MUST be properly indented. Method chaining with different levels of indentation is not supported.
+- `multiline_long_array <./whitespace/multiline_long_array.rst>`_
+
+  A singleline array should be broken into multiple lines if it exceeds configured limit.
 - `no_extra_blank_lines <./whitespace/no_extra_blank_lines.rst>`_
 
   Removes extra blank lines and/or blank lines following configuration.
