@@ -119,15 +119,15 @@ final class PharTest extends AbstractSmokeTest
                 $usingCache,
             ))->getOutput();
 
-            static::assertJson($json);
+            self::assertJson($json);
 
             $report = json_decode($json, true);
-            static::assertIsArray($report);
-            static::assertArrayHasKey('files', $report);
-            static::assertCount(1, $report['files']);
-            static::assertArrayHasKey(0, $report['files']);
+            self::assertIsArray($report);
+            self::assertArrayHasKey('files', $report);
+            self::assertCount(1, $report['files']);
+            self::assertArrayHasKey(0, $report['files']);
 
-            static::assertSame(
+            self::assertSame(
                 'tests/Smoke/PharTest.php',
                 $report['files'][0]['name'],
             );
