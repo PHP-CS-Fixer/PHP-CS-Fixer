@@ -21,5 +21,7 @@ Rules
 - `no_unset_on_property <./../rules/language_construct/no_unset_on_property.rst>`_
 - `php_unit_strict <./../rules/php_unit/php_unit_strict.rst>`_
 - `php_unit_test_case_static_method_calls <./../rules/php_unit/php_unit_test_case_static_method_calls.rst>`_
+  config:
+  ``['call_type' => 'self']``
 - `strict_comparison <./../rules/strict/strict_comparison.rst>`_
 - `strict_param <./../rules/strict/strict_param.rst>`_
