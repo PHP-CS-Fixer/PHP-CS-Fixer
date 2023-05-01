@@ -309,9 +309,10 @@ final class ConfigurationResolver
                 $absolutePath = $filesystem->isAbsolutePath($path)
                     ? $path
                     : $this->cwd.\DIRECTORY_SEPARATOR.$path;
+                $absolutePath = \dirname($absolutePath);
             }
 
-            $this->directory = new Directory(\dirname($absolutePath));
+            $this->directory = new Directory($absolutePath);
         }
 
         return $this->directory;
