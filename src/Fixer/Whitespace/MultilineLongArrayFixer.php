@@ -49,7 +49,7 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'A singleline array should be broken into multiple lines if it exceeds configured limit.',
+            'A single-line array should be broken into multiple lines if it exceeds configured limit.',
             [
                 new CodeSample("<?php\n\$array = ['a very very long element','another very long element'];\n"),
                 new CodeSample("<?php\n\$array = ['a very very long element','another very long element'];\n", ['max_length' => 10]),

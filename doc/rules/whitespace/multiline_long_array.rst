@@ -2,8 +2,8 @@
 Rule ``multiline_long_array``
 =============================
 
-A singleline array should be broken into multiple lines if it exceeds configured
-limit.
+A single-line array should be broken into multiple lines if it exceeds
+configured limit.
 
 Configuration
 -------------
@@ -11,7 +11,8 @@ Configuration
 ``max_length``
 ~~~~~~~~~~~~~~
 
-Maximum length for single-line arrays. 0 : multi-line only, -1 : single-line only.
+Maximum length for single-line arrays. 0 : multi-line only, -1 : single-line
+only.
 
 Allowed types: ``int``
 
