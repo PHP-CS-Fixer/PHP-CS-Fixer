@@ -109,7 +109,8 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
 
             $shouldBeMultiline = $this->maxArrayLen > -1 ? $this->computeArrayLen($tokens, $startIndex, $endIndex) > $this->maxArrayLen : false;
 
-            if ($token = $this->handleLineEnding($startIndex, $tokens, $shouldBeMultiline)) {
+            $token = $this->handleLineEnding($startIndex, $tokens, $shouldBeMultiline);
+            if (null !== $token) {
                 $tokensToInsert[$startIndex + 1] = $token;
             }
 
@@ -119,13 +120,15 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
                     continue;
                 }
 
-                if ($token = $this->handleLineEnding($i, $tokens, $shouldBeMultiline)) {
+                $token = $this->handleLineEnding($i, $tokens, $shouldBeMultiline);
+                if (null !== $token) {
                     $tokensToInsert[$i + 1] = $token;
                 }
             }
 
             $prevToken = $tokens->getPrevMeaningfulToken($endIndex);
-            if ($token = $this->handleLineEnding($prevToken, $tokens, $shouldBeMultiline)) {
+            $token = $this->handleLineEnding($prevToken, $tokens, $shouldBeMultiline);
+            if (null !== $token) {
                 $tokensToInsert[$prevToken + 1] = $token;
             }
         }
