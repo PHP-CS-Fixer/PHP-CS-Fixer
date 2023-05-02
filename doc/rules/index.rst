@@ -45,6 +45,9 @@ Array Notation
 - `array_syntax <./array_notation/array_syntax.rst>`_
 
   PHP arrays should be declared using the configured syntax.
+- `multiline_long_array <./array_notation/multiline_long_array.rst>`_
+
+  A single-line array should be broken into multiple lines if it exceeds configured limit.
 - `no_multiline_whitespace_around_double_arrow <./array_notation/no_multiline_whitespace_around_double_arrow.rst>`_
 
   Operator ``=>`` should not be surrounded by multi-line whitespaces.
@@ -931,9 +934,6 @@ Whitespace
 - `method_chaining_indentation <./whitespace/method_chaining_indentation.rst>`_
 
   Method chaining MUST be properly indented. Method chaining with different levels of indentation is not supported.
-- `multiline_long_array <./whitespace/multiline_long_array.rst>`_
-
-  A single-line array should be broken into multiple lines if it exceeds configured limit.
 - `no_extra_blank_lines <./whitespace/no_extra_blank_lines.rst>`_
 
   Removes extra blank lines and/or blank lines following configuration.
