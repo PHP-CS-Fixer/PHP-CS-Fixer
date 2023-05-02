@@ -12,7 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Fixer\Whitespace;
+namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
@@ -21,7 +21,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Comment\RemoveCommentsFixer
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\MultilineLongArrayFixer
  */
 final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
 {
