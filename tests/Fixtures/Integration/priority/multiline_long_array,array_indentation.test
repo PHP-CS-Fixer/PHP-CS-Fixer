@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: multiline_long_array,array_indentation.
+--RULESET--
+{"multiline_long_array": {"max_length": 0}, "array_indentation": true}
+--EXPECT--
+<?php
+
+$foo = [
+    'foo',
+    'bar' => 'baz'
+];
+
+--INPUT--
+<?php
+
+$foo = ['foo','bar' => 'baz'];

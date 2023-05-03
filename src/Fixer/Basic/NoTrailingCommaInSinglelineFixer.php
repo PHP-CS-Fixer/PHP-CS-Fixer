@@ -47,6 +47,14 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
             && $tokens->isAnyTokenKindsFound([')', CT::T_ARRAY_SQUARE_BRACE_CLOSE, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, CT::T_GROUP_IMPORT_BRACE_CLOSE]);
     }
 
+    /**
+     * Must run after MultilineLongArrayFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $elements = ['arguments', 'array_destructuring', 'array', 'group_import'];

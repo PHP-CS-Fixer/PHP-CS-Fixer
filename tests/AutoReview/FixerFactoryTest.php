@@ -532,6 +532,12 @@ final class FixerFactoryTest extends TestCase
             'modernize_types_casting' => [
                 'no_unneeded_control_parentheses',
             ],
+            'multiline_long_array' => [
+                'array_indentation',
+                'no_trailing_comma_in_singleline',
+                'trailing_comma_in_multiline',
+                'whitespace_after_comma_in_array',
+            ],
             'multiline_whitespace_before_semicolons' => [
                 'space_after_semicolon',
             ],
