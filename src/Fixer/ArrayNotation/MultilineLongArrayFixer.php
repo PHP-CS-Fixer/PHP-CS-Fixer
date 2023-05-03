@@ -58,17 +58,13 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
     }
 
     /**
-     *  Must run before ArrayIndentationFixer, WhitespaceAfterCommaInArrayFixer, NoTrailingCommaInSinglelineFixer,
-     *  TrailingCommaInMultilineFixer, NoWhitespaceBeforeCommaInArrayFixer.
+     * Must run before ArrayIndentationFixer, NoTrailingCommaInSinglelineFixer, TrailingCommaInMultilineFixer, WhitespaceAfterCommaInArrayFixer.
      */
     public function getPriority(): int
     {
         return 50;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
