@@ -215,30 +215,23 @@ $object->method1()
      */
     private function findWhitespaceBeforeFirstCall(int $index, Tokens $tokens): ?string
     {
-        $lineEnding = $this->whitespacesConfig->getLineEnding();
         $isMultilineCall = false;
-
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
         while (!$tokens[$prevIndex]->equalsAny([';', '{', '}', [T_OPEN_TAG], [T_ELSE]])) {
             $index = $prevIndex;
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-            if ($tokens[$index]->equals(')')) {
-                $prevIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            $blockType = Tokens::detectBlockType($tokens[$index]);
+            if (null !== $blockType && !$blockType['isStart']) {
+                $prevIndex = $tokens->findBlockStart($blockType['type'], $index);
 
                 continue;
             }
 
             if ($tokens[$index]->isObjectOperator() || $tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
-                while ($tokens[--$index]->isWhitespace() || $tokens[$index]->isComment()) {
-                    if (false !== strstr($tokens[$index]->getContent(), $lineEnding)) {
-                        $isMultilineCall = true;
-
-                        break;
-                    }
-                }
-                $prevIndex = $index;
+                $prevIndex = $tokens->getPrevMeaningfulToken($index);
+                $isMultilineCall |= $tokens->isPartialCodeMultiline($prevIndex, $index);
             }
         }
 

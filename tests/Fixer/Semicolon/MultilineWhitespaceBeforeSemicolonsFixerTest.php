@@ -1022,12 +1022,12 @@ $this
                         ->method1()
                         ->method2()
                     ;
-                ?>',
+                ',
                 '<?php
                     foo("bar")
                         ->method1()
                         ->method2();
-                ?>',
+                ',
             ],
             [
                 '<?php
@@ -1035,12 +1035,21 @@ $this
                         ->method1()
                         ->method2()
                     ;
-                ?>',
+                ',
                 '<?php
                     $result = $arrayOfAwesomeObjects["most awesome object"]
                         ->method1()
                         ->method2();
-                ?>',
+                ',
+            ],
+            [
+                '<?php
+                    $foo;
+                    $bar = [
+                        1 => 2,
+                        3 => $baz->method(),
+                    ];
+                ',
             ],
         ];
     }
