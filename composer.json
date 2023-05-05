@@ -80,16 +80,16 @@
         "sort-packages": true
     },
     "scripts": {
-        "cs:check": "php php-cs-fixer fix --dry-run --diff",
-        "cs:fix": "php php-cs-fixer fix",
+        "cs:check": "@php php-cs-fixer fix --dry-run --diff",
+        "cs:fix": "@php php-cs-fixer fix",
         "dev-tools:check": [
             "./dev-tools/check_file_permissions.sh",
             "./dev-tools/check_trailing_spaces.sh"
         ],
-        "dev-tools:docs": "php dev-tools/doc.php",
-        "dev-tools:install": "composer -d dev-tools install",
-        "mess-detector": "php dev-tools/vendor/bin/phpmd . ansi phpmd.xml",
-        "phpstan": "php -d memory_limit=256M dev-tools/vendor/bin/phpstan analyse",
+        "dev-tools:docs": "@php dev-tools/doc.php",
+        "dev-tools:install": "@composer -d dev-tools install",
+        "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi phpmd.xml",
+        "phpstan": "@php -d memory_limit=256M dev-tools/vendor/bin/phpstan analyse",
         "qa": "@quality-assurance",
         "quality-assurance": [
             "Composer\\Config::disableProcessTimeout",
