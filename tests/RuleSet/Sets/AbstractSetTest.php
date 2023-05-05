@@ -38,13 +38,13 @@ abstract class AbstractSetTest extends TestCase
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
 
-        static::assertSanityString($setName);
-        static::assertSanityString($setDescription);
-        static::assertStringEndsWith('.', $setDescription, sprintf('Ruleset description of "%s" must end with ".", got "%s".', $setName, $setDescription));
-        static::assertRules($setRules, $factory, $setName);
+        self::assertSanityString($setName);
+        self::assertSanityString($setDescription);
+        self::assertStringEndsWith('.', $setDescription, sprintf('Ruleset description of "%s" must end with ".", got "%s".', $setName, $setDescription));
+        self::assertRules($setRules, $factory, $setName);
 
         if (1 === preg_match('/(\d+)(\d)Migration/', \get_class($set), $matches)) {
-            static::assertStringEndsWith(
+            self::assertStringEndsWith(
                 sprintf(' %d.%d compatibility.', $matches[1], $matches[2]),
                 $setDescription,
                 sprintf('Set %s has incorrect description: "%s".', $setName, $setDescription)
@@ -54,23 +54,23 @@ abstract class AbstractSetTest extends TestCase
         try {
             $factory->useRuleSet(new RuleSet($set->getRules()));
         } catch (InvalidForEnvFixerConfigurationException $e) {
-            static::markTestSkipped(sprintf('Cannot test set "%s" on this environment. %s', $setName, $e->getMessage()));
+            self::markTestSkipped(sprintf('Cannot test set "%s" on this environment. %s', $setName, $e->getMessage()));
         }
 
         foreach ($factory->getFixers() as $fixer) {
             $fixerName = $fixer->getName();
-            static::assertSame($isRiskySet, $fixer->isRisky(), sprintf('Is risky mismatch between set "%s" and rule "%s".', $setName, $fixerName));
+            self::assertSame($isRiskySet, $fixer->isRisky(), sprintf('Is risky mismatch between set "%s" and rule "%s".', $setName, $fixerName));
 
             if (isset($setRules[$fixerName])) {
-                static::assertTrue(\is_bool($setRules[$fixerName]) || \is_array($setRules[$fixerName]));
+                self::assertTrue(\is_bool($setRules[$fixerName]) || \is_array($setRules[$fixerName]));
             }
         }
     }
 
     protected static function assertSanityString(string $string): void
     {
-        static::assertSame(trim($string), $string);
-        static::assertNotSame('', $string);
+        self::assertSame(trim($string), $string);
+        self::assertNotSame('', $string);
     }
 
     /**
@@ -81,21 +81,21 @@ abstract class AbstractSetTest extends TestCase
         $sawRule = false;
 
         foreach ($setRules as $rule => $config) {
-            static::assertIsString($rule, $setName);
+            self::assertIsString($rule, $setName);
 
             if (str_starts_with($rule, '@')) {
-                static::assertFalse($sawRule, sprintf('Ruleset "%s" should define all sets it extends first and than list by rule configuration overrides.', $setName));
+                self::assertFalse($sawRule, sprintf('Ruleset "%s" should define all sets it extends first and than list by rule configuration overrides.', $setName));
                 RuleSets::getSetDefinition($setName);
             } else {
                 $sawRule = true;
-                static::assertTrue($factory->hasRule($rule), $rule);
+                self::assertTrue($factory->hasRule($rule), $rule);
             }
         }
 
         $setRulesSorted = $setRules;
         ksort($setRulesSorted);
 
-        static::assertSame($setRulesSorted, $setRules);
+        self::assertSame($setRulesSorted, $setRules);
     }
 
     private static function getSet(): RuleSetDescriptionInterface

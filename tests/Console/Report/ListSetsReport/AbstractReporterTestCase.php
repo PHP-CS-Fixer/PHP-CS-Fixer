@@ -48,7 +48,7 @@ abstract class AbstractReporterTestCase extends TestCase
 
     final public function testGetFormat(): void
     {
-        static::assertSame(
+        self::assertSame(
             $this->getFormat(),
             $this->reporter->getFormat()
         );
