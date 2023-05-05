@@ -179,7 +179,7 @@ final class DotsOutputTest extends TestCase
     public function testSleep(): void
     {
         $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot serialize PhpCsFixer\Console\Output\Progress\DotsOutput');
+        $this->expectExceptionMessage('Cannot serialize '.DotsOutput::class);
 
         $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
         $processOutput->__sleep();
@@ -188,7 +188,7 @@ final class DotsOutputTest extends TestCase
     public function testWakeup(): void
     {
         $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\Console\Output\Progress\DotsOutput');
+        $this->expectExceptionMessage('Cannot unserialize '.DotsOutput::class);
 
         $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
         $processOutput->__wakeup();
