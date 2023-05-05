@@ -24,7 +24,6 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
-use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -122,7 +121,7 @@ $object->method1()
             $previousIndex = $index - 1;
             $previous = $tokens[$previousIndex];
 
-            $indent = $this->findWhitespaceBeforeFirstCall($index - 1, $tokens);
+            $indent = $this->findWhitespaceBeforeFirstCall($index, $tokens);
             if (self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS === $this->configuration['strategy'] && null !== $indent) {
                 if ($previous->isWhitespace() && $previous->getContent() === $lineEnding.$indent) {
                     continue;
@@ -206,7 +205,7 @@ $object->method1()
     }
 
     /**
-     * Checks if the semicolon closes a chained call and returns the whitespace of the first call at $index.
+     * Checks if the semicolon closes a multiline call and returns the whitespace of the first call at $index.
      * i.e. it will return the whitespace marked with '____' in the example underneath.
      *
      * ..
@@ -216,74 +215,26 @@ $object->method1()
      */
     private function findWhitespaceBeforeFirstCall(int $index, Tokens $tokens): ?string
     {
-        $lineEnding = $this->whitespacesConfig->getLineEnding();
-        $chained = false;
+        $isMultilineCall = false;
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        // skip whitespace between semicolon and closed bracket
-        while ($tokens[$index]->isWhitespace() || $tokens[$index]->isComment()) {
-            --$index;
+        while (!$tokens[$prevIndex]->equalsAny([';', '{', '}', [T_OPEN_TAG], [T_ELSE]])) {
+            $index = $prevIndex;
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+            $blockType = Tokens::detectBlockType($tokens[$index]);
+            if (null !== $blockType && !$blockType['isStart']) {
+                $prevIndex = $tokens->findBlockStart($blockType['type'], $index);
+
+                continue;
+            }
+
+            if ($tokens[$index]->isObjectOperator() || $tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
+                $prevIndex = $tokens->getPrevMeaningfulToken($index);
+                $isMultilineCall |= $tokens->isPartialCodeMultiline($prevIndex, $index);
+            }
         }
-        do {
-            // semicolon followed by a closing bracket?
-            if ($tokens[$index]->equals(')')) {
-                // find opening bracket
-                $openingBrackets = 1;
-                for (--$index; $index > 0; --$index) {
-                    if ($tokens[$index]->equals(')')) {
-                        ++$openingBrackets;
 
-                        continue;
-                    }
-
-                    if ($tokens[$index]->equals('(')) {
-                        if (1 === $openingBrackets) {
-                            break;
-                        }
-                        --$openingBrackets;
-                    }
-                }
-                --$index;
-            }
-
-            // method name
-            if (!$tokens[$index]->isGivenKind(T_STRING)) {
-                if (!$tokens[$index]->isGivenKind(CT::T_DYNAMIC_PROP_BRACE_CLOSE)) {
-                    return null;
-                }
-                // find opening curly bracket
-                $openingCurlyBrackets = 1;
-                for (--$index; $index > 0; --$index) {
-                    if ($tokens[$index]->isGivenKind(CT::T_DYNAMIC_PROP_BRACE_CLOSE)) {
-                        ++$openingCurlyBrackets;
-
-                        continue;
-                    }
-
-                    if ($tokens[$index]->isGivenKind(CT::T_DYNAMIC_PROP_BRACE_OPEN)) {
-                        if (1 === $openingCurlyBrackets) {
-                            break;
-                        }
-                        --$openingCurlyBrackets;
-                    }
-                }
-            }
-
-            // ->, ?-> or ::
-            if (!$tokens[--$index]->isObjectOperator() && !$tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
-                return null;
-            }
-
-            while ($tokens[--$index]->isWhitespace() || $tokens[$index]->isComment()) {
-                if (false !== strstr($tokens[$index]->getContent(), $lineEnding)) {
-                    $chained = true;
-                }
-            }
-
-            while ($tokens[$index]->isGivenKind(T_STRING) && $tokens[$index - 1]->isGivenKind(T_NS_SEPARATOR) || $tokens[$index]->isGivenKind(T_NS_SEPARATOR) && $tokens[$index - 1]->isGivenKind(T_STRING)) {
-                --$index;
-            }
-        } while (!($tokens[$index]->isGivenKind([T_VARIABLE, T_STRING, T_NS_SEPARATOR]) && $tokens[$index - 1]->isGivenKind([T_WHITESPACE, T_OPEN_TAG]) || $tokens[$index]->isGivenKind([CT::T_BRACE_CLASS_INSTANTIATION_CLOSE])));
-
-        return $chained ? WhitespacesAnalyzer::detectIndent($tokens, $index) : null;
+        return $isMultilineCall ? WhitespacesAnalyzer::detectIndent($tokens, $index) : null;
     }
 }
