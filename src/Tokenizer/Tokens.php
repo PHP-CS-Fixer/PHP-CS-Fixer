@@ -93,9 +93,7 @@ class Tokens extends \SplFixedArray
     private array $foundTokenKinds = [];
 
     /**
-     * namespaces declared in tokens
-     *
-     * @var list<NamespaceAnalysis>|null
+     * @var null|list<NamespaceAnalysis>
      */
     private ?array $namespaceDeclarations = null;
 
@@ -1181,6 +1179,7 @@ class Tokens extends \SplFixedArray
         if (null === $this->namespaceDeclarations) {
             $this->namespaceDeclarations = (new NamespacesAnalyzer())->getDeclarations($this);
         }
+
         return $this->namespaceDeclarations;
     }
 
