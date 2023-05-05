@@ -20,7 +20,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class EmptyBodyFixer extends AbstractFixer
+final class SingleLineEmptyBodyFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -58,13 +58,11 @@ final class EmptyBodyFixer extends AbstractFixer
             }
 
             $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
-            \assert(\is_int($openBraceIndex));
             if (!$tokens[$openBraceIndex]->equals('{')) {
                 continue;
             }
 
             $closeBraceIndex = $tokens->getNextNonWhitespace($openBraceIndex);
-            \assert(\is_int($closeBraceIndex));
             if (!$tokens[$closeBraceIndex]->equals('}')) {
                 continue;
             }

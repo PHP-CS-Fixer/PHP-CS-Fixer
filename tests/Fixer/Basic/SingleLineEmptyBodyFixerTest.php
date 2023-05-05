@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Basic\EmptyBodyFixer
+ * @covers \PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer
  */
-final class EmptyBodyFixerTest extends AbstractFixerTestCase
+final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases

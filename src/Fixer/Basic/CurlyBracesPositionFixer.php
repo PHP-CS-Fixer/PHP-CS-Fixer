@@ -150,7 +150,7 @@ $bar = function () { $result = true;
     /**
      * {@inheritdoc}
      *
-     * Must run before EmptyBodyFixer.
+     * Must run before SingleLineEmptyBodyFixer.
      * Must run after ControlStructureBracesFixer.
      */
     public function getPriority(): int

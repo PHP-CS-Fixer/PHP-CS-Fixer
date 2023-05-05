@@ -73,9 +73,6 @@ Basic
 - `curly_braces_position <./basic/curly_braces_position.rst>`_
 
   Curly braces must be placed as configured.
-- `empty_body <./basic/empty_body.rst>`_
-
-  Empty body of class or function must be abbreviated as ``{}`` and placed on the same line as the previous symbol, separated by a space.
 - `encoding <./basic/encoding.rst>`_
 
   PHP code MUST use only UTF-8 without BOM (remove BOM).
@@ -94,6 +91,9 @@ Basic
 - `psr_autoloading <./basic/psr_autoloading.rst>`_ *(risky)*
 
   Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.
+- `single_line_empty_body <./basic/single_line_empty_body.rst>`_
+
+  Empty body of class or function must be abbreviated as ``{}`` and placed on the same line as the previous symbol, separated by a space.
 
 Casing
 ------
