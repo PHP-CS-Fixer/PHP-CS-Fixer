@@ -272,13 +272,13 @@ $c = get_class($d);
     /**
      * @param list<NamespaceAnalysis> $namespaces
      */
-    private function fixFunctionCalls(Tokens $tokens, callable $functionFilter, int $start, int $end, bool $tryToRemove, $namespaces): void
+    private function fixFunctionCalls(Tokens $tokens, callable $functionFilter, int $start, int $end, bool $tryToRemove, array $namespaces): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
 
         $tokensToInsert = [];
         for ($index = $start; $index < $end; ++$index) {
-            if (!$functionsAnalyzer->isGlobalFunctionCallWithNamespaces($tokens, $index, $namespaces)) {
+            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index, $namespaces)) {
                 continue;
             }
 

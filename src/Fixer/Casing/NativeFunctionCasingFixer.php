@@ -72,7 +72,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
 
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             // test if we are at a function all
-            if (!$functionsAnalyzer->isGlobalFunctionCallWithNamespaces($tokens, $index, $namespaceDeclarations)) {
+            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index, $namespaceDeclarations)) {
                 continue;
             }
 

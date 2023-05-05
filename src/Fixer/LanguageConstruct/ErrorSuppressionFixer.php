@@ -132,7 +132,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
                 continue;
             }
 
-            if (!$functionsAnalyzer->isGlobalFunctionCallWithNamespaces($tokens, $index, $namespaces)) {
+            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index, $namespaces)) {
                 continue;
             }
 

@@ -35,43 +35,55 @@ final class FunctionsAnalyzer
     /**
      * Important: risky because of the limited (file) scope of the tool.
      *
-     * Faster version of isGlobalFunctionCall() which allows to pass in the namespace and therefore pre-compute it.
-     *
      * @param list<NamespaceAnalysis> $namespaceDeclarations
      */
-    public function isGlobalFunctionCallWithNamespaces(Tokens $tokens, int $index, array $namespaceDeclarations): bool
+    public function isGlobalFunctionCall(Tokens $tokens, int $index, array $namespaceDeclarations = null): bool
     {
-        $check = $this->checkPreconditions($tokens, $index);
-        if (\is_bool($check)) {
-            return $check;
+        if (!$tokens[$index]->isGivenKind(T_STRING)) {
+            return false;
         }
 
-        return $this->checkGlobalFunctionCall($tokens, $index, $namespaceDeclarations);
-    }
+        $nextIndex = $tokens->getNextMeaningfulToken($index);
 
-    /**
-     * Important: risky because of the limited (file) scope of the tool.
-     */
-    public function isGlobalFunctionCall(Tokens $tokens, int $index): bool
-    {
-        $check = $this->checkPreconditions($tokens, $index);
-        if (\is_bool($check)) {
-            return $check;
+        if (!$tokens[$nextIndex]->equals('(')) {
+            return false;
         }
 
-        $namespaceAnalyzer = new NamespacesAnalyzer();
-        $declarations = $namespaceAnalyzer->getDeclarations($tokens);
+        $previousIsNamespaceSeparator = false;
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        return $this->checkGlobalFunctionCall($tokens, $index, $declarations);
-    }
+        if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            $previousIsNamespaceSeparator = true;
+            $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
+        }
 
-    /**
-     * @param list<NamespaceAnalysis> $namespaceDeclarations
-     */
-    private function checkGlobalFunctionCall(Tokens $tokens, int $index, array $namespaceDeclarations): bool
-    {
+        $possibleKind = array_merge([T_DOUBLE_COLON, T_FUNCTION, CT::T_NAMESPACE_OPERATOR, T_NEW, CT::T_RETURN_REF, T_STRING], Token::getObjectOperatorKinds());
+
+        // @TODO: drop condition when PHP 8.0+ is required
+        if (\defined('T_ATTRIBUTE')) {
+            $possibleKind[] = T_ATTRIBUTE;
+        }
+
+        if ($tokens[$prevIndex]->isGivenKind($possibleKind)) {
+            return false;
+        }
+
+        if ($tokens[$tokens->getNextMeaningfulToken($nextIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
+            return false;
+        }
+
+        if ($previousIsNamespaceSeparator) {
+            return true;
+        }
+
         if ($tokens->isChanged() || $tokens->getCodeHash() !== $this->functionsAnalysis['tokens']) {
             $this->buildFunctionsAnalysis($tokens);
+        }
+
+        // for BC, fallback to re-analyzing
+        if (null === $namespaceDeclarations) {
+            $namespaceAnalyzer = new NamespacesAnalyzer();
+            $namespaceDeclarations = $namespaceAnalyzer->getDeclarations($tokens);
         }
 
         // figure out in which namespace we are
@@ -128,48 +140,6 @@ final class FunctionsAnalyzer
         }
 
         return true;
-    }
-
-    private function checkPreconditions(Tokens $tokens, int $index): ?bool
-    {
-        if (!$tokens[$index]->isGivenKind(T_STRING)) {
-            return false;
-        }
-
-        $nextIndex = $tokens->getNextMeaningfulToken($index);
-
-        if (!$tokens[$nextIndex]->equals('(')) {
-            return false;
-        }
-
-        $previousIsNamespaceSeparator = false;
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
-
-        if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
-            $previousIsNamespaceSeparator = true;
-            $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-        }
-
-        $possibleKind = array_merge([T_DOUBLE_COLON, T_FUNCTION, CT::T_NAMESPACE_OPERATOR, T_NEW, CT::T_RETURN_REF, T_STRING], Token::getObjectOperatorKinds());
-
-        // @TODO: drop condition when PHP 8.0+ is required
-        if (\defined('T_ATTRIBUTE')) {
-            $possibleKind[] = T_ATTRIBUTE;
-        }
-
-        if ($tokens[$prevIndex]->isGivenKind($possibleKind)) {
-            return false;
-        }
-
-        if ($tokens[$tokens->getNextMeaningfulToken($nextIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
-            return false;
-        }
-
-        if ($previousIsNamespaceSeparator) {
-            return true;
-        }
-
-        return null;
     }
 
     /**
