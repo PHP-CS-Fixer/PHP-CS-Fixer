@@ -243,4 +243,55 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
             ',
         ];
     }
+
+    /**
+     * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'single-line promoted properties' => [
+            '<?php class Foo
+                {
+                    public function __construct(private int $x, private int $y) {}
+                }
+            ',
+            '<?php class Foo
+                {
+                    public function __construct(private int $x, private int $y)
+                    {
+                    }
+                }
+            ',
+        ];
+
+        yield 'multi-line promoted properties' => [
+            '<?php class Foo
+                {
+                    public function __construct(
+                        private int $x,
+                        private int $y,
+                    ) {}
+                }
+            ',
+            '<?php class Foo
+                {
+                    public function __construct(
+                        private int $x,
+                        private int $y,
+                    ) {
+                    }
+                }
+            ',
+        ];
+    }
 }
