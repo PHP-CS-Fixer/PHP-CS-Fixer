@@ -37,7 +37,7 @@ final class ProgressOutputFactoryTest extends TestCase
         OutputContext $context,
         string $expectedOutputClass
     ): void {
-        self::assertInstanceOf($expectedOutputClass, ProgressOutputFactory::create($outputType, $context));
+        self::assertInstanceOf($expectedOutputClass, (new ProgressOutputFactory())->create($outputType, $context));
     }
 
     public static function provideValidProcessOutputContextCases(): iterable
@@ -58,7 +58,7 @@ final class ProgressOutputFactoryTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        ProgressOutputFactory::create(
+        (new ProgressOutputFactory())->create(
             'boom',
             new OutputContext(new SymfonyNullOutput(), 100, 10)
         );

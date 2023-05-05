@@ -21,7 +21,7 @@ use PhpCsFixer\Console\Output\OutputContext;
  */
 final class ProgressOutputFactory
 {
-    public static function create(string $outputType, OutputContext $context): ProgressOutputInterface
+    public function create(string $outputType, OutputContext $context): ProgressOutputInterface
     {
         if (null === $context->getOutput()) {
             $outputType = ProgressOutputType::NONE;
@@ -41,7 +41,7 @@ final class ProgressOutputFactory
             : new DotsOutput($context);
     }
 
-    private static function isBuiltInType(string $outputType): bool
+    private function isBuiltInType(string $outputType): bool
     {
         return \in_array($outputType, [
             ProgressOutputType::NONE,

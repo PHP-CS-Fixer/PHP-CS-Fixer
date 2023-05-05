@@ -63,6 +63,8 @@ final class FixCommand extends Command
 
     private ToolInfoInterface $toolInfo;
 
+    private ProgressOutputFactory $progressOutputFactory;
+
     public function __construct(ToolInfoInterface $toolInfo)
     {
         parent::__construct();
@@ -72,6 +74,7 @@ final class FixCommand extends Command
         $this->stopwatch = new Stopwatch();
         $this->defaultConfig = new Config();
         $this->toolInfo = $toolInfo;
+        $this->progressOutputFactory = new ProgressOutputFactory();
     }
 
     /**
@@ -275,7 +278,7 @@ EOF;
         }
 
         $progressType = $resolver->getProgressType();
-        $progressOutput = ProgressOutputFactory::create(
+        $progressOutput = $this->progressOutputFactory->create(
             $progressType,
             new OutputContext(
                 $stdErr,
