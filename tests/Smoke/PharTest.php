@@ -103,6 +103,8 @@ final class PharTest extends AbstractSmokeTest
 
     public static function provideReportCases(): iterable
     {
+        yield ['no'];
+
         yield ['yes'];
     }
 
