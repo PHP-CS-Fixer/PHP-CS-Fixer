@@ -666,10 +666,14 @@ final class FixerFactoryTest extends TestCase
             ],
             'php_unit_internal_class' => [
                 'final_internal_class',
+                'phpdoc_separation',
             ],
             'php_unit_no_expectation_annotation' => [
                 'no_empty_phpdoc',
                 'php_unit_expectation',
+            ],
+            'php_unit_size_class' => [
+                'phpdoc_separation',
             ],
             'php_unit_test_annotation' => [
                 'no_empty_phpdoc',
@@ -678,6 +682,9 @@ final class FixerFactoryTest extends TestCase
             ],
             'php_unit_test_case_static_method_calls' => [
                 'self_static_accessor',
+            ],
+            'php_unit_test_class_requires_covers' => [
+                'phpdoc_separation',
             ],
             'phpdoc_add_missing_param_annotation' => [
                 'no_empty_phpdoc',

@@ -1,0 +1,31 @@
+--TEST--
+Integration of fixers: php_unit_test_class_requires_covers,phpdoc_separation.
+--RULESET--
+{"php_unit_test_class_requires_covers": true, "phpdoc_separation": true}
+--EXPECT--
+<?php
+/**
+ * @author John Doe
+ *
+ * @coversNothing
+ */
+final class FooTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        foo();
+    }
+}
+
+--INPUT--
+<?php
+/**
+ * @author John Doe
+ */
+final class FooTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        foo();
+    }
+}
