@@ -195,18 +195,18 @@ $c = get_class($d);
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $namespaces = (new NamespacesAnalyzer())->getDeclarations($tokens);
+
         if ('all' === $this->configuration['scope']) {
-            $this->fixFunctionCalls($tokens, $this->functionFilter, 0, \count($tokens) - 1, false);
+            $this->fixFunctionCalls($tokens, $this->functionFilter, 0, \count($tokens) - 1, false, $namespaces);
 
             return;
         }
 
-        $namespaces = (new NamespacesAnalyzer())->getDeclarations($tokens);
-
         // 'scope' is 'namespaced' here
         /** @var NamespaceAnalysis $namespace */
         foreach (array_reverse($namespaces) as $namespace) {
-            $this->fixFunctionCalls($tokens, $this->functionFilter, $namespace->getScopeStartIndex(), $namespace->getScopeEndIndex(), $namespace->isGlobalNamespace());
+            $this->fixFunctionCalls($tokens, $this->functionFilter, $namespace->getScopeStartIndex(), $namespace->getScopeEndIndex(), $namespace->isGlobalNamespace(), $namespaces);
         }
     }
 
@@ -269,13 +269,16 @@ $c = get_class($d);
         ]);
     }
 
-    private function fixFunctionCalls(Tokens $tokens, callable $functionFilter, int $start, int $end, bool $tryToRemove): void
+    /**
+     * @param list<NamespaceAnalysis> $namespaces
+     */
+    private function fixFunctionCalls(Tokens $tokens, callable $functionFilter, int $start, int $end, bool $tryToRemove, $namespaces): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
 
         $tokensToInsert = [];
         for ($index = $start; $index < $end; ++$index) {
-            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
+            if (!$functionsAnalyzer->isGlobalFunctionCallWithNamespaces($tokens, $index, $namespaces)) {
                 continue;
             }
 

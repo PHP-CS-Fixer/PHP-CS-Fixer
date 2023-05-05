@@ -23,6 +23,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -120,6 +121,8 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
             return strtolower($function);
         }, $this->configuration[self::OPTION_NOISE_REMAINING_USAGES_EXCLUDE]);
 
+        $namespaces = (new NamespacesAnalyzer())->getDeclarations($tokens);
+
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
@@ -129,7 +132,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
                 continue;
             }
 
-            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
+            if (!$functionsAnalyzer->isGlobalFunctionCallWithNamespaces($tokens, $index, $namespaces)) {
                 continue;
             }
 
