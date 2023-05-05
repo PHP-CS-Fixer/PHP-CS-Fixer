@@ -19,7 +19,6 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -67,12 +66,9 @@ final class NativeFunctionCasingFixer extends AbstractFixer
             $nativeFunctionNames = $this->getNativeFunctionNames();
         }
 
-        $namespaceAnalyzer = new NamespacesAnalyzer();
-        $namespaceDeclarations = $namespaceAnalyzer->getDeclarations($tokens);
-
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             // test if we are at a function all
-            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index, $namespaceDeclarations)) {
+            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
                 continue;
             }
 

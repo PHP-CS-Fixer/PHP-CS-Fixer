@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer;
 
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 
 /**
  * Collection of code tokens.
@@ -89,6 +91,13 @@ class Tokens extends \SplFixedArray
      * @var array<int|string, int>
      */
     private array $foundTokenKinds = [];
+
+    /**
+     * namespaces declared in tokens
+     *
+     * @var list<NamespaceAnalysis>|null
+     */
+    private ?array $namespaceDeclarations = null;
 
     /**
      * Clone tokens collection.
@@ -268,6 +277,7 @@ class Tokens extends \SplFixedArray
     {
         if ($this->getSize() !== $size) {
             $this->changed = true;
+            $this->namespaceDeclarations = null;
 
             return parent::setSize($size);
         }
@@ -283,6 +293,7 @@ class Tokens extends \SplFixedArray
     public function offsetUnset($index): void
     {
         $this->changed = true;
+        $this->namespaceDeclarations = null;
         $this->unregisterFoundToken($this[$index]);
 
         parent::offsetUnset($index);
@@ -303,6 +314,7 @@ class Tokens extends \SplFixedArray
 
         if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
             $this->changed = true;
+            $this->namespaceDeclarations = null;
 
             if (isset($this[$index])) {
                 $this->unregisterFoundToken($this[$index]);
@@ -852,6 +864,7 @@ class Tokens extends \SplFixedArray
 
         $oldSize = \count($this);
         $this->changed = true;
+        $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
         $this->setSize($oldSize + $itemsCount);
@@ -1006,6 +1019,7 @@ class Tokens extends \SplFixedArray
 
         $this->changeCodeHash(self::calculateCodeHash($code));
         $this->changed = true;
+        $this->namespaceDeclarations = null;
     }
 
     public function toJson(): string
@@ -1157,6 +1171,17 @@ class Tokens extends \SplFixedArray
         }
 
         $this->clearAt($nextIndex);
+    }
+
+    /**
+     * @return list<NamespaceAnalysis>
+     */
+    public function getNamespaceDeclarations(): array
+    {
+        if (null === $this->namespaceDeclarations) {
+            $this->namespaceDeclarations = (new NamespacesAnalyzer())->getDeclarations($this);
+        }
+        return $this->namespaceDeclarations;
     }
 
     /**

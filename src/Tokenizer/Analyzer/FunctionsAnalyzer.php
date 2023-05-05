@@ -34,10 +34,8 @@ final class FunctionsAnalyzer
 
     /**
      * Important: risky because of the limited (file) scope of the tool.
-     *
-     * @param list<NamespaceAnalysis> $namespaceDeclarations
      */
-    public function isGlobalFunctionCall(Tokens $tokens, int $index, array $namespaceDeclarations = null): bool
+    public function isGlobalFunctionCall(Tokens $tokens, int $index): bool
     {
         if (!$tokens[$index]->isGivenKind(T_STRING)) {
             return false;
@@ -80,18 +78,12 @@ final class FunctionsAnalyzer
             $this->buildFunctionsAnalysis($tokens);
         }
 
-        // for BC, fallback to re-analyzing
-        if (null === $namespaceDeclarations) {
-            $namespaceAnalyzer = new NamespacesAnalyzer();
-            $namespaceDeclarations = $namespaceAnalyzer->getDeclarations($tokens);
-        }
-
         // figure out in which namespace we are
         $scopeStartIndex = 0;
         $scopeEndIndex = \count($tokens) - 1;
         $inGlobalNamespace = false;
 
-        foreach ($namespaceDeclarations as $declaration) {
+        foreach ($tokens->getNamespaceDeclarations() as $declaration) {
             $scopeStartIndex = $declaration->getScopeStartIndex();
             $scopeEndIndex = $declaration->getScopeEndIndex();
 
