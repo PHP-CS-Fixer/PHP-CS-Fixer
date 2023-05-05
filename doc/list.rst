@@ -2845,6 +2845,11 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Comment\\SingleLineCommentStyleFixer <./../src/Fixer/Comment/SingleLineCommentStyleFixer.php>`_
+-  `single_line_empty_body <./rules/basic/single_line_empty_body.rst>`_
+
+   Empty body of class or function must be abbreviated as ``{}`` and placed on the same line as the previous symbol, separated by a space.
+
+   `Source PhpCsFixer\\Fixer\\Basic\\SingleLineEmptyBodyFixer <./../src/Fixer/Basic/SingleLineEmptyBodyFixer.php>`_
 -  `single_line_throw <./rules/function_notation/single_line_throw.rst>`_
 
    Throwing exception must be done in single line.

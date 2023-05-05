@@ -369,6 +369,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'class_definition' => [
                 'braces',
+                'single_line_empty_body',
             ],
             'class_keyword_remove' => [
                 'no_unused_imports',
@@ -394,6 +395,9 @@ final class FixerFactoryTest extends TestCase
                 'control_structure_continuation_position',
                 'curly_braces_position',
                 'no_multiple_statements_per_line',
+            ],
+            'curly_braces_position' => [
+                'single_line_empty_body',
             ],
             'declare_strict_types' => [
                 'blank_line_after_opening_tag',

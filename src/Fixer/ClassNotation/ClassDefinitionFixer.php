@@ -104,7 +104,7 @@ $foo = new class(){};
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer.
+     * Must run before BracesFixer, SingleLineEmptyBodyFixer.
      * Must run after NewWithBracesFixer.
      */
     public function getPriority(): int
