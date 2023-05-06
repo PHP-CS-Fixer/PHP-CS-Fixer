@@ -11,7 +11,7 @@ Using this rule is risky
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 Risky when the method: contains dynamic generated calls to the instance, is
-dynamically referenced, is referenced inside a Trait the class uses
+dynamically referenced, is referenced inside a Trait the class uses.
 
 Examples
 --------

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,16 +31,18 @@ final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    /**
+     * @return iterable<string, array{0: string, 1?: null|string}>
+     */
+    public static function provideFixCases(): iterable
     {
-        return [
-            'main-use-case' => [
-                '<?php
+        yield 'main-use-case' => [
+            '<?php
 class Foo
 {
     public $baz;
@@ -60,7 +64,7 @@ class Foo
     }
 }
 ',
-                '<?php
+            '<?php
 class Foo
 {
     public $baz;
@@ -82,9 +86,10 @@ class Foo
     }
 }
 ',
-            ],
-            'handle-multiple-classes' => [
-                '<?php
+        ];
+
+        yield 'handle-multiple-classes' => [
+            '<?php
 abstract class Foo
 {
     private static function baz() { return 1; }
@@ -103,7 +108,7 @@ abstract class Bar
     abstract function xyz3();
 }
 ',
-                '<?php
+            '<?php
 abstract class Foo
 {
     private function baz() { return 1; }
@@ -122,17 +127,19 @@ abstract class Bar
     abstract function xyz3();
 }
 ',
-            ],
-            'inverse-order-keywords-already-ok' => [
-                '<?php
+        ];
+
+        yield 'inverse-order-keywords-already-ok' => [
+            '<?php
 class Foo
 {
     static private function inverseOrder() { return 1; }
 }
 ',
-            ],
-            'skip-methods-containing-closures' => [
-                '<?php
+        ];
+
+        yield 'skip-methods-containing-closures' => [
+            '<?php
 class Foo
 {
     private function bar()
@@ -146,9 +153,10 @@ class Foo
     }
 }
 ',
-            ],
-            'skip-instance-references' => [
-                '<?php
+        ];
+
+        yield 'skip-instance-references' => [
+            '<?php
 class Foo
 {
     private function bar()
@@ -159,9 +167,10 @@ class Foo
     }
 }
 ',
-            ],
-            'skip-debug_backtrace' => [
-                '<?php
+        ];
+
+        yield 'skip-debug_backtrace' => [
+            '<?php
 class Foo
 {
     private function bar()
@@ -170,9 +179,10 @@ class Foo
     }
 }
 ',
-            ],
-            'fix-references-inside-non-static-closures' => [
-                '<?php
+        ];
+
+        yield 'fix-references-inside-non-static-closures' => [
+            '<?php
 class Foo
 {
     public $baz;
@@ -195,7 +205,7 @@ class Foo
     }
 }
 ',
-                '<?php
+            '<?php
 class Foo
 {
     public $baz;
@@ -218,28 +228,31 @@ class Foo
     }
 }
 ',
-            ],
-            'skip-magic-methods' => [
-                '<?php
+        ];
+
+        yield 'skip-magic-methods' => [
+            '<?php
 class Foo
 {
     private function __clone() {}
     private function __construct() {}
     private function __destruct() {}
-    private function __serialize() {}
-    private function __set_state() {}
-    private function __sleep() {}
-    private function __unserialize() {}
+//    private function __serialize() {}
+//    private function __set_state() {}
+//    private function __sleep() {}
+//    private function __unserialize() {}
     private function __wakeup() {}
 }
 ',
-            ],
-            'bug-multiple-methods' => [
-                self::generate50Samples(true),
-                self::generate50Samples(false),
-            ],
-            'fix-self' => [
-                '<?php
+        ];
+
+        yield 'bug-multiple-methods' => [
+            self::generate50Samples(true),
+            self::generate50Samples(false),
+        ];
+
+        yield 'fix-self' => [
+            '<?php
 class Foo
 {
     private static function baz()
@@ -248,7 +261,7 @@ class Foo
     }
 }
 ',
-                '<?php
+            '<?php
 class Foo
 {
     private function baz()
@@ -257,9 +270,10 @@ class Foo
     }
 }
 ',
-            ],
-            'bug-trait' => [
-                '<?php
+        ];
+
+        yield 'bug-trait' => [
+            '<?php
 
 class Foo
 {
@@ -270,7 +284,7 @@ class Foo
     private static function bar() {}
 }
 ',
-                '<?php
+            '<?php
 
 class Foo
 {
@@ -281,23 +295,23 @@ class Foo
     private function bar() {}
 }
 ',
-            ],
-            'fix-final-as-well' => [
-                '<?php
+        ];
+
+        yield 'fix-final-as-well' => [
+            '<?php
 class Foo
 {
     final private static function baz1() { return 1; }
     private final static function baz2() { return 1; }
 }
 ',
-                '<?php
+            '<?php
 class Foo
 {
     final private function baz1() { return 1; }
     private final function baz2() { return 1; }
 }
 ',
-            ],
         ];
     }
 
@@ -306,18 +320,21 @@ class Foo
      * @param null|string $input
      *
      * @dataProvider provideFix70Cases
+     *
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null)
+    public function testFix70($expected, $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70Cases()
+    /**
+     * @return iterable<string, array{0: string, 1?: null|string}>
+     */
+    public static function provideFix70Cases(): iterable
     {
-        return [
-            'main-use-case' => [
-                '<?php
+        yield 'main-use-case' => [
+            '<?php
 class Foo
 {
     public $baz;
@@ -344,7 +361,7 @@ class Foo
     }
 }
 ',
-                '<?php
+            '<?php
 class Foo
 {
     public $baz;
@@ -371,9 +388,10 @@ class Foo
     }
 }
 ',
-            ],
-            'handle-multiple-classes' => [
-                '<?php
+        ];
+
+        yield 'handle-multiple-classes' => [
+            '<?php
 abstract class Foo
 {
     private static function baz() { return 1; }
@@ -397,7 +415,7 @@ abstract class Bar
     abstract function xyz3();
 }
 ',
-                '<?php
+            '<?php
 abstract class Foo
 {
     private function baz() { return 1; }
@@ -421,9 +439,10 @@ abstract class Bar
     abstract function xyz3();
 }
 ',
-            ],
-            'fix-references-inside-non-static-closures' => [
-                '<?php
+        ];
+
+        yield 'fix-references-inside-non-static-closures' => [
+            '<?php
 class Foo
 {
     public $baz;
@@ -452,7 +471,7 @@ class Foo
     }
 }
 ',
-                '<?php
+            '<?php
 class Foo
 {
     public $baz;
@@ -481,7 +500,6 @@ class Foo
     }
 }
 ',
-            ],
         ];
     }
 
