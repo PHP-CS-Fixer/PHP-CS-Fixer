@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,7 +28,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class StaticPrivateMethodFixer extends AbstractFixer
 {
     /**
-     * @var array
+     * @var array<string, true>
      */
     private $magicNames = [
         '__clone' => true,
@@ -39,9 +41,6 @@ final class StaticPrivateMethodFixer extends AbstractFixer
         '__wakeup' => true,
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -68,7 +67,7 @@ class Foo
             'Risky when the method:'
             .' contains dynamic generated calls to the instance,'
             .' is dynamically referenced,'
-            .' is referenced inside a Trait the class uses'
+            .' is referenced inside a Trait the class uses.'
         );
     }
 
@@ -93,9 +92,6 @@ class Foo
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -116,11 +112,11 @@ class Foo
      * @param int $classOpen
      * @param int $classClose
      */
-    private function fixClass(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, $classOpen, $classClose)
+    private function fixClass(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, $classOpen, $classClose): void
     {
         $fixedMethods = [];
         foreach ($this->getClassMethods($tokens, $classOpen, $classClose) as $methodData) {
-            list($functionKeywordIndex, $methodOpen, $methodClose) = $methodData;
+            [$functionKeywordIndex, $methodOpen, $methodClose] = $methodData;
 
             if ($this->skipMethod($tokens, $tokensAnalyzer, $functionKeywordIndex, $methodOpen, $methodClose)) {
                 continue;
@@ -130,7 +126,7 @@ class Foo
             $methodName = $tokens[$methodNameIndex]->getContent();
             $fixedMethods[$methodName] = true;
 
-            $tokens->insertAt($functionKeywordIndex, [new Token([T_STATIC, 'static']), new Token([T_WHITESPACE, ' '])]);
+            $tokens->insertSlices([$functionKeywordIndex => [new Token([T_STATIC, 'static']), new Token([T_WHITESPACE, ' '])]]);
         }
 
         if (0 === \count($fixedMethods)) {
@@ -139,7 +135,7 @@ class Foo
 
         $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
         foreach ($this->getClassMethods($tokens, $classOpen, $classClose) as $methodData) {
-            list(, $methodOpen, $methodClose) = $methodData;
+            [, $methodOpen, $methodClose] = $methodData;
 
             $this->fixReferencesInFunction($tokens, $tokensAnalyzer, $methodOpen, $methodClose, $fixedMethods);
         }
@@ -193,7 +189,7 @@ class Foo
                 if (
                     !$tokens[$operatorIndex]->isGivenKind(T_OBJECT_OPERATOR)
                     || $methodName !== $tokens[$methodNameIndex]->getContent()
-                    || $tokens[$argumentsBraceIndex]->equals(['('])
+                    || $tokens[$argumentsBraceIndex]->equals('(')
                 ) {
                     return true;
                 }
@@ -212,7 +208,7 @@ class Foo
      * @param int                 $methodClose
      * @param array<string, bool> $fixedMethods
      */
-    private function fixReferencesInFunction(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, $methodOpen, $methodClose, array $fixedMethods)
+    private function fixReferencesInFunction(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, $methodOpen, $methodClose, array $fixedMethods): void
     {
         for ($index = $methodOpen + 1; $index < $methodClose - 1; ++$index) {
             if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
@@ -264,7 +260,7 @@ class Foo
      * @param int $classOpen
      * @param int $classClose
      *
-     * @return array
+     * @return array<array<int>>
      */
     private function getClassMethods(Tokens $tokens, $classOpen, $classClose)
     {
