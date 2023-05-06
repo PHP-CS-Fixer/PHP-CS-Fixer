@@ -10,7 +10,7 @@
         "mi-schi/phpmd-extension": "^4.3.0",
         "phpmd/phpmd": "^2.13.0",
         "phpstan/phpstan": "^1.10.14",
-        "phpstan/phpstan-phpunit": "^1.3.3"
+        "phpstan/phpstan-phpunit": "^1.3.11"
     },
     "config": {
         "allow-plugins": {

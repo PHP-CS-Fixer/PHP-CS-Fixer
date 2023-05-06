@@ -271,13 +271,14 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveConfigFileChooseFileWithPathArrayAndConfig(): void
     {
         $dirBase = self::getFixtureDir();
+        $configFile = $dirBase.'case_1/.php-cs-fixer.dist.php';
 
         $resolver = $this->createConfigurationResolver([
-            'config' => $dirBase.'case_1/.php-cs-fixer.dist.php',
-            'path' => [$dirBase.'case_1/.php-cs-fixer.dist.php', $dirBase.'case_1/foo.php'],
+            'config' => $configFile,
+            'path' => [$configFile, $dirBase.'case_1/foo.php'],
         ]);
 
-        self::assertInstanceOf(\PhpCsFixer\Console\ConfigurationResolver::class, $resolver);
+        self::assertSame($configFile, $resolver->getConfigFile());
     }
 
     /**

@@ -9,6 +9,7 @@
 /docker-compose.override.yaml
 /php-cs-fixer.phar
 /php-cs-fixer.phar.asc
+/phpstan.neon
 /phpunit.xml
 /vendor/
 

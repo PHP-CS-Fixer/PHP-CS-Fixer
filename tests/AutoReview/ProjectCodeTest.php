@@ -356,8 +356,8 @@ final class ProjectCodeTest extends TestCase
             return;
         }
 
-        $covers = Preg::match('/@covers (\S*)/', $doc, $matches);
-        self::assertNotFalse($covers, sprintf('Missing @covers in PHPDoc of test class "%s".', $testClassName));
+        $covers = Preg::matchAll('/@covers (\S*)/', $doc, $matches);
+        self::assertGreaterThanOrEqual(1, $covers, sprintf('Missing @covers in PHPDoc of test class "%s".', $testClassName));
 
         array_shift($matches);
         $class = '\\'.str_replace('PhpCsFixer\Tests\\', 'PhpCsFixer\\', substr($testClassName, 0, -4));
@@ -365,9 +365,10 @@ final class ProjectCodeTest extends TestCase
         $parentClassName = false === $parentClass ? null : '\\'.$parentClass->getName();
 
         foreach ($matches as $match) {
+            $classMatch = array_shift($match);
             self::assertTrue(
-                $match === $class || $parentClassName === $match,
-                sprintf('Unexpected @covers "%s" for "%s".', $match, $testClassName)
+                $classMatch === $class || $parentClassName === $classMatch,
+                sprintf('Unexpected @covers "%s" for "%s".', $classMatch, $testClassName)
             );
         }
     }

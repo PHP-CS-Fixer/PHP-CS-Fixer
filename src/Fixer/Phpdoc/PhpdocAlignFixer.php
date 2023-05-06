@@ -16,7 +16,6 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
@@ -358,7 +357,9 @@ EOF;
     }
 
     /**
-     * @return null|array<string, null|string>
+     * @TODO Introduce proper DTO instead of an array
+     *
+     * @return null|array{indent: null|string, tag: null|string, hint: null|string, var: null|string, static: null|string, desc?: null|string}
      */
     private function getMatches(string $line, bool $matchCommentOnly = false): ?array
     {
@@ -413,7 +414,7 @@ EOF;
     }
 
     /**
-     * @param array[] $items
+     * @param non-empty-list<array{indent: null|string, tag: null|string, hint: null|string, var: null|string, static: null|string, desc?: null|string}> $items
      */
     private function getLeftAlignedDescriptionIndent(array $items, int $index): int
     {

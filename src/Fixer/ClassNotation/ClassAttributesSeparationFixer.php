@@ -252,6 +252,13 @@ class Sample
      *
      * Deals with comments, PHPDocs and spaces above the element with respect to the position of the
      * element within the class, interface or trait.
+     *
+     * @param array{
+     *     index: int,
+     *     open: int,
+     *     close: int,
+     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
+     * } $class
      */
     private function fixSpaceAboveClassElement(Tokens $tokens, array $class, int $elementIndex): void
     {
@@ -356,6 +363,14 @@ class Sample
         throw new \RuntimeException(sprintf('Unknown spacing "%s".', $spacing));
     }
 
+    /**
+     * @param array{
+     *     index: int,
+     *     open: int,
+     *     close: int,
+     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
+     * } $class
+     */
     private function fixSpaceBelowClassElement(Tokens $tokens, array $class): void
     {
         $element = $class['elements'][0];
@@ -454,6 +469,16 @@ class Sample
         return $start;
     }
 
+    /**
+     * @TODO Introduce proper DTO instead of an array
+     *
+     * @return \Generator<array{
+     *     index: int,
+     *     open: int,
+     *     close: int,
+     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
+     * }>
+     */
     private function getElementsByClass(Tokens $tokens): \Generator
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
