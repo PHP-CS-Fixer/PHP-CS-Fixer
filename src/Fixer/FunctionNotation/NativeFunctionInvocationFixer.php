@@ -24,7 +24,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -201,7 +200,7 @@ $c = get_class($d);
             return;
         }
 
-        $namespaces = (new NamespacesAnalyzer())->getDeclarations($tokens);
+        $namespaces = $tokens->getNamespaceDeclarations();
 
         // 'scope' is 'namespaced' here
         /** @var NamespaceAnalysis $namespace */
