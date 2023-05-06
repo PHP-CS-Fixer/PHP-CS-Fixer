@@ -20,7 +20,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -94,11 +93,10 @@ class SomeClass
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $namespacesAnalyzer = new NamespacesAnalyzer();
         $namespaceUsesAnalyzer = new NamespaceUsesAnalyzer();
         $functionsAnalyzer = new FunctionsAnalyzer();
 
-        foreach ($namespacesAnalyzer->getDeclarations($tokens) as $namespace) {
+        foreach ($tokens->getNamespaceDeclarations() as $namespace) {
             $namespaceName = strtolower($namespace->getFullName());
             $uses = [];
 

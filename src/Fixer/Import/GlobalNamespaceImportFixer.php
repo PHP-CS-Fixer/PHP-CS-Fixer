@@ -29,7 +29,6 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -118,7 +117,7 @@ if (count($x)) {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $namespaceAnalyses = (new NamespacesAnalyzer())->getDeclarations($tokens);
+        $namespaceAnalyses = $tokens->getNamespaceDeclarations();
 
         if (1 !== \count($namespaceAnalyses) || $namespaceAnalyses[0]->isGlobalNamespace()) {
             return;
@@ -451,7 +450,7 @@ if (count($x)) {
             $useDeclaration = end($useDeclarations);
             $index = $useDeclaration->getEndIndex() + 1;
         } else {
-            $namespace = (new NamespacesAnalyzer())->getDeclarations($tokens)[0];
+            $namespace = $tokens->getNamespaceDeclarations()[0];
             $index = $namespace->getEndIndex() + 1;
         }
 
