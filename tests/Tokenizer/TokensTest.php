@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -1672,6 +1673,43 @@ EOF
 
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
         self::assertSame(11, $endIndex);
+    }
+
+    public function testNamespaceDeclarations(): void
+    {
+        $code = '<?php // no namespaces';
+        $tokens = Tokens::fromCode($code);
+
+        self::assertSame(
+            serialize([
+                new NamespaceAnalysis(
+                    '',
+                    '',
+                    0,
+                    0,
+                    0,
+                    1
+                ),
+            ]),
+            serialize($tokens->getNamespaceDeclarations())
+        );
+
+        $newNS = '<?php namespace Foo\Bar;';
+        $tokens->insertAt(2, Tokens::fromCode($newNS));
+
+        self::assertSame(
+            serialize([
+                new NamespaceAnalysis(
+                    'Foo\Bar',
+                    'Bar',
+                    3,
+                    8,
+                    3,
+                    8
+                ),
+            ]),
+            serialize($tokens->getNamespaceDeclarations())
+        );
     }
 
     private function getBlockEdgeCachingTestTokens(): Tokens
