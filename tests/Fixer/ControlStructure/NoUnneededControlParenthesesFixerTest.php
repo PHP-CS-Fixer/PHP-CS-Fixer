@@ -84,6 +84,9 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 '<?php clone (new Foo());',
             ],
             [
+                '<?php (new Foo())->bar();',
+            ],
+            [
                 '<?php
                 foo(clone $a);
                 foo(clone $a, 1);
@@ -339,6 +342,47 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 '<?php
                 $var = clone ($obj1->getSubject() ?? $obj2);
                 ',
+            ],
+            [
+                '<?php $stuff += $foo ? $bar() : $baz /* (╯°□°)╯︵ ┻━┻ */ ;',
+                '<?php $stuff += ($foo ? $bar() : $baz) /* (╯°□°)╯︵ ┻━┻ */ ;',
+            ],
+            [
+                '<?php $stuff = $baz ? $this->foo() : $this->bar();',
+                '<?php $stuff = ($baz) ? $this->foo() : $this->bar();',
+            ],
+            [
+                '<?php $stuff = $this->baz ? $this->foo() : $this->bar();',
+                '<?php $stuff = ($this->baz) ? $this->foo() : $this->bar();',
+            ],
+            [
+                '<?php $stuff = ($this->baz)() ? $foo["bar"]($baz) : $foo->{$baz}($bar);',
+            ],
+            [
+                '<?php $stuff = ($this->baz)($a) ? $this->foo() : $this->bar();',
+                '<?php $stuff = (($this->baz)($a)) ? $this->foo() : $this->bar();',
+            ],
+            [
+                '<?php $stuff = $baz($a) ? $this->foo() : $this->bar();',
+            ],
+            [
+                '<?php $stuff = $baz($a, $b->c->d()) ? $this->foo() : $this->bar();',
+                '<?php $stuff = ($baz($a, $b->c->d())) ? $this->foo() : $this->bar();',
+            ],
+            [
+                '<?php $stuff = Foo::bar() ? $this->foo() : $this->bar();',
+                '<?php $stuff = (Foo::bar()) ? $this->foo() : $this->bar();',
+            ],
+            [
+                '<?php $stuff = (Foo::bar())($baz) ? $this->foo() : $this->bar();',
+            ],
+            [
+                // Even if it would work without parentheses in this case, let's ensure we keep them for readability.
+                // Unparenthesised ternaries were deprecated in 7.4 and cause fatal error in 8.0+
+                "<?php
+                echo ((1 == 2 ? 'a' : 3 == 4) ? 'b' : 5 == 6) ? 'c' : 'd';
+                echo 1 == 2 ? 'a' : (3 == 4 ? 'b' : (5 == 6 ? 'c' : 'd'));
+                ",
             ],
         ];
     }
