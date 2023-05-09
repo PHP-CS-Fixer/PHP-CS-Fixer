@@ -280,12 +280,20 @@ while ($y) { continue (2); }
 
     private function isUselessWrapped(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
     {
+        // We need to lookbehind/lookahead for meaningful tokens, so we should start from parentheses,
+        // because there can be no whitespace between them and before/after tokens,
+        // so looking for first prev/next meaningful token could skip one token if we started from before/after tokens.
+        $openIndex = $tokens->getNextTokenOfKind($beforeOpenIndex, ['(']);
+        $closeIndex = $tokens->getPrevTokenOfKind($afterCloseIndex, [')']);
+
         return
             $this->isSingleStatement($tokens, $beforeOpenIndex, $afterCloseIndex)
             || $this->isWrappedFnBody($tokens, $beforeOpenIndex, $afterCloseIndex)
             || $this->isWrappedForElement($tokens, $beforeOpenIndex, $afterCloseIndex)
             || $this->isWrappedLanguageConstructArgument($tokens, $beforeOpenIndex, $afterCloseIndex)
-            || $this->isWrappedSequenceElement($tokens, $beforeOpenIndex, $afterCloseIndex);
+            || $this->isWrappedSequenceElement($tokens, $beforeOpenIndex, $afterCloseIndex)
+            || $this->isWrappedValueFetch($tokens, $openIndex, $closeIndex)
+            || $this->isWrappedAssignment($tokens, $openIndex, $closeIndex);
     }
 
     private function isExitStatement(Tokens $tokens, int $beforeOpenIndex): bool
@@ -533,6 +541,41 @@ while ($y) { continue (2); }
     private function isPreUnaryOperation(Tokens $tokens, int $index): bool
     {
         return $this->tokensAnalyzer->isUnaryPredecessorOperator($index) || $tokens[$index]->isCast();
+    }
+
+    private function isWrappedValueFetch(Tokens $tokens, int $openIndex, int $closeIndex): bool
+    {
+        $firstTokenInsideIndex = $tokens->getNextMeaningfulToken($openIndex);
+
+        if ($tokens[$firstTokenInsideIndex]->isGivenKind(T_VARIABLE)) {
+            $afterVariableIndex = $tokens->getNextMeaningfulToken($firstTokenInsideIndex);
+
+            if (
+                // Fix simple variables wrapped in parentheses: ($foo) ...
+                $closeIndex === $afterVariableIndex
+                // ...but do not touch single-argument calls on invokable objects: ($invokable->object)($arg)
+                && !$tokens[$tokens->getPrevMeaningfulToken($openIndex)]->equalsAny([')', ']', [CT::T_DYNAMIC_PROP_BRACE_CLOSE]])
+            ) {
+                return true;
+            }
+
+            // Variable contains invokable object which is being invoked: ($var(1, 2, 3))
+            if ($tokens[$afterVariableIndex]->equals('(')) {
+                $invocationEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $afterVariableIndex);
+
+                if ($closeIndex === $tokens->getNextMeaningfulToken($invocationEndIndex)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private function isWrappedAssignment(Tokens $tokens, int $openIndex, int $closeIndex): bool
+    {
+        return '=' === substr($tokens[$tokens->getPrevMeaningfulToken($openIndex)]->getContent(), -1)
+            && $tokens[$tokens->getNextMeaningfulToken($closeIndex)]->equals(';');
     }
 
     private function getBeforePreUnaryOperation(Tokens $tokens, int $index): int
