@@ -89,6 +89,10 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             '<?php clone (new Foo());',
         ];
 
+        yield 'Keep parentheses for inline instantiation with method call' => [
+            '<?php (new Foo())->bar();',
+        ];
+
         yield [
             '<?php
                 foo(clone $a);
@@ -372,6 +376,57 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             '<?php
                 $var = clone ($obj1->getSubject() ?? $obj2);
                 ',
+        ];
+
+        yield 'whole ternary' => [
+            '<?php $stuff += $foo ? $bar() : $baz /* (╯°□°)╯︵ ┻━┻ */ ;',
+            '<?php $stuff += ($foo ? $bar() : $baz) /* (╯°□°)╯︵ ┻━┻ */ ;',
+        ];
+
+        yield 'left operand of ternary (simple variable)' => [
+            '<?php $stuff = $baz ? $this->foo() : $this->bar();',
+            '<?php $stuff = ($baz) ? $this->foo() : $this->bar();',
+        ];
+
+        yield 'left operand of ternary (property fetch)' => [
+            '<?php $stuff = $this->baz ? $this->foo() : $this->bar();',
+            '<?php $stuff = ($this->baz) ? $this->foo() : $this->bar();',
+        ];
+
+        yield 'keep for left operand of ternary with invocation of callable stored under property (differentiate from method call)' => [
+            '<?php $stuff = ($this->baz)() ? $foo["bar"]($baz) : $foo->{$baz}($bar);',
+        ];
+
+        yield 'left operand of ternary with invocation of callable stored in a property (outer parentheses)' => [
+            '<?php $stuff = ($this->baz)($a) ? $this->foo() : $this->bar();',
+            '<?php $stuff = (($this->baz)($a)) ? $this->foo() : $this->bar();',
+        ];
+
+        yield 'keep for left operand of ternary with invocation of callable stored in a variable' => [
+            '<?php $stuff = $baz($a) ? $this->foo() : $this->bar();',
+        ];
+
+        yield 'left operand of ternary with invocation of callable stored in a variable (outer parentheses)' => [
+            '<?php $stuff = $baz($a, $b->c->d()) ? $this->foo() : $this->bar();',
+            '<?php $stuff = ($baz($a, $b->c->d())) ? $this->foo() : $this->bar();',
+        ];
+
+        yield 'left operand of ternary with static method call' => [
+            '<?php $stuff = Foo::bar() ? $this->foo() : $this->bar();',
+            '<?php $stuff = (Foo::bar()) ? $this->foo() : $this->bar();',
+        ];
+
+        yield 'keep for left operand of ternary with static method call returning callable with instant invocation' => [
+            '<?php $stuff = (Foo::bar())($baz) ? $this->foo() : $this->bar();',
+        ];
+
+        yield 'keep for nested ternaries' => [
+            // Even if it would work without parentheses in this case, let's ensure we keep them for readability.
+            // Unparenthesised ternaries were deprecated in 7.4 and cause fatal error in 8.0+
+            "<?php
+                echo ((1 == 2 ? 'a' : 3 == 4) ? 'b' : 5 == 6) ? 'c' : 'd';
+                echo 1 == 2 ? 'a' : (3 == 4 ? 'b' : (5 == 6 ? 'c' : 'd'));
+                ",
         ];
     }
 
