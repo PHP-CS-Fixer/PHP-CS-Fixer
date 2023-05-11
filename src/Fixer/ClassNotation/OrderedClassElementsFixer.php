@@ -16,7 +16,6 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -277,7 +276,7 @@ class Example
                                 return true;
                             }
 
-                            if (is_string($value) && substr($value, 0, 7) === 'method:') {
+                            if (\is_string($value) && 'method:' === substr($value, 0, 7)) {
                                 return true;
                             }
                         }
