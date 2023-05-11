@@ -1172,6 +1172,8 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * @internal This is performance-related workaround for lack of proper DI, may be removed at some point
+     *
      * @return list<NamespaceAnalysis>
      */
     public function getNamespaceDeclarations(): array
