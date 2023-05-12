@@ -219,9 +219,9 @@ class Example
             ],
             'Accepts a subset of pre-defined element types, special element groups, and custom patterns.
 
-Element types: `[\'' . implode('\', \'', array_keys(self::$typeHierarchy)) . '\']`
+Element types: `[\''.implode('\', \'', array_keys(self::$typeHierarchy)).'\']`
 
-Special element types: `[\'' . implode('\', \'', array_keys(self::$specialTypes)) . '\']`
+Special element types: `[\''.implode('\', \'', array_keys(self::$specialTypes)).'\']`
 
 Custom values:
 
