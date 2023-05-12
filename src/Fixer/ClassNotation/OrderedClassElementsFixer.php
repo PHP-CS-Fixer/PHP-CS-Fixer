@@ -216,7 +216,16 @@ class Example
 ',
                     ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA]
                 ),
-            ]
+            ],
+            'Accepts a subset of pre-defined element types, special element groups, and custom patterns.
+
+Element types: `[\'' . implode('\', \'', array_keys(self::$typeHierarchy)) . '\']`
+
+Special element types: `[\'' . implode('\', \'', array_keys(self::$specialTypes)) . '\']`
+
+Custom values:
+
+- `method:*`: specify a single method name (e.g. `method:__invoke`) to set the relative order of that specific method'
         );
     }
 
