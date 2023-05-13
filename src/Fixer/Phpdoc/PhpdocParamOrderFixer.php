@@ -39,6 +39,17 @@ final class PhpdocParamOrderFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before PhpdocAlignFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     */
+    public function getPriority(): int
+    {
+        return parent::getPriority();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -98,14 +109,11 @@ function m($a, array $b, Foo $c) {}
     }
 
     /**
-     * Fetch a list of function parameter names.
-     *
-     * @param Tokens $tokens
      * @param int    $paramBlockStart
      *
      * @return Token[]
      */
-    private function getFunctionParamNames(Tokens $tokens, $paramBlockStart)
+    private function getFunctionParamNames(Tokens $tokens, $paramBlockStart): array
     {
         $paramBlockEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $paramBlockStart);
 
