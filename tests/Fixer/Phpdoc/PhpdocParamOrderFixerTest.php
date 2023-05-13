@@ -928,6 +928,31 @@ EOT;
         $this->doTest($expected, $input);
     }
 
+    public function testArrowFunction(): void
+    {
+        $expected = <<<'EOT'
+<?php
+/**
+ * @param array $a
+ * @param       $b
+ * @param Foo   $c
+ * @param int   $d
+ */
+$closure = fn (array $a, $b, Foo $c, $d) => null;
+EOT;
+        $input = <<<'EOT'
+<?php
+/**
+ * @param       $b
+ * @param int   $d
+ * @param Foo   $c
+ * @param array $a
+ */
+$closure = fn (array $a, $b, Foo $c, $d) => null;
+EOT;
+        $this->doTest($expected, $input);
+    }
+
     public function testInterface(): void
     {
         $expected = <<<'EOT'

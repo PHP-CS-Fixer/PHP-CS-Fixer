@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocParamOrderFixer extends AbstractFixer
 {
-    const PARAM_TAG = 'param';
+    private const PARAM_TAG = 'param';
 
     /**
      * {@inheritdoc}
@@ -72,7 +72,7 @@ function m($a, array $b, Foo $c) {}
             }
 
             // Check for function / closure token
-            $nextFunctionToken = $tokens->getNextTokenOfKind($index, [[T_FUNCTION]]);
+            $nextFunctionToken = $tokens->getNextTokenOfKind($index, [[T_FUNCTION], [T_FN]]);
             if (null === $nextFunctionToken) {
                 return;
             }
@@ -86,10 +86,12 @@ function m($a, array $b, Foo $c) {}
             $doc = new DocBlock($tokens[$index]->getContent());
             $paramAnnotations = $doc->getAnnotationsOfType(static::PARAM_TAG);
 
-            if (\count($paramAnnotations)) {
-                $paramNames = $this->getFunctionParamNames($tokens, $paramBlockStart);
-                $doc = $this->rewriteDocBlock($doc, $paramNames, $paramAnnotations);
+            if ([] === $paramAnnotations) {
+                continue;
             }
+
+            $paramNames = $this->getFunctionParamNames($tokens, $paramBlockStart);
+            $doc = $this->rewriteDocBlock($doc, $paramNames, $paramAnnotations);
 
             $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
         }
