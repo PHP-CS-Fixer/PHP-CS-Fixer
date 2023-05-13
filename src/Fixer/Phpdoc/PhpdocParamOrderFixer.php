@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -95,7 +97,7 @@ function m($a, array $b, Foo $c) {}
             }
 
             $doc = new DocBlock($tokens[$index]->getContent());
-            $paramAnnotations = $doc->getAnnotationsOfType(static::PARAM_TAG);
+            $paramAnnotations = $doc->getAnnotationsOfType(self::PARAM_TAG);
 
             if ([] === $paramAnnotations) {
                 continue;
@@ -109,7 +111,7 @@ function m($a, array $b, Foo $c) {}
     }
 
     /**
-     * @param int    $paramBlockStart
+     * @param int $paramBlockStart
      *
      * @return Token[]
      */
@@ -132,7 +134,6 @@ function m($a, array $b, Foo $c) {}
     /**
      * Overwrite the param annotations in order.
      *
-     * @param DocBlock     $doc
      * @param Token[]      $paramNames
      * @param Annotation[] $paramAnnotations
      *
@@ -208,7 +209,6 @@ function m($a, array $b, Foo $c) {}
     /**
      * Fetch all annotations except the param ones.
      *
-     * @param DocBlock     $doc
      * @param Annotation[] $paramAnnotations
      *
      * @return string[]
@@ -228,7 +228,7 @@ function m($a, array $b, Foo $c) {}
                 continue;
             }
 
-            if ($annotation->getTag()->getName() !== static::PARAM_TAG) {
+            if (self::PARAM_TAG !== $annotation->getTag()->getName()) {
                 $otherAnnotations[] = $annotation->getContent();
             }
         }

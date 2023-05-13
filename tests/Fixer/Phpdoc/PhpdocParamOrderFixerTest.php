@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,6 +20,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @author Jonathan Gruber <gruberjonathan@gmail.com>
  *
  * @internal
+ *
  * @coversNothing
  */
 final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
