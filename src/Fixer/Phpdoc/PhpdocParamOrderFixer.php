@@ -111,11 +111,9 @@ function m($a, array $b, Foo $c) {}
     }
 
     /**
-     * @param int $paramBlockStart
-     *
      * @return Token[]
      */
-    private function getFunctionParamNames(Tokens $tokens, $paramBlockStart): array
+    private function getFunctionParamNames(Tokens $tokens, int $paramBlockStart): array
     {
         $paramBlockEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $paramBlockStart);
 
@@ -136,10 +134,8 @@ function m($a, array $b, Foo $c) {}
      *
      * @param Token[]      $paramNames
      * @param Annotation[] $paramAnnotations
-     *
-     * @return DocBlock
      */
-    private function rewriteDocBlock(DocBlock $doc, array $paramNames, array $paramAnnotations)
+    private function rewriteDocBlock(DocBlock $doc, array $paramNames, array $paramAnnotations): DocBlock
     {
         $orderedAnnotations = $this->sortParamAnnotations($paramNames, $paramAnnotations);
         $otherAnnotations = $this->getOtherAnnotationsBetweenParams($doc, $paramAnnotations);
@@ -178,7 +174,7 @@ function m($a, array $b, Foo $c) {}
      *
      * @return string[]
      */
-    private function sortParamAnnotations(array $funcParamNames, array $paramAnnotations)
+    private function sortParamAnnotations(array $funcParamNames, array $paramAnnotations): array
     {
         $validParams = [];
         foreach ($funcParamNames as $paramName) {
@@ -213,7 +209,7 @@ function m($a, array $b, Foo $c) {}
      *
      * @return string[]
      */
-    private function getOtherAnnotationsBetweenParams(DocBlock $doc, array $paramAnnotations)
+    private function getOtherAnnotationsBetweenParams(DocBlock $doc, array $paramAnnotations): array
     {
         if (0 === \count($paramAnnotations)) {
             return [];
@@ -240,11 +236,10 @@ function m($a, array $b, Foo $c) {}
      * Return the indices of the lines of a specific parameter annotation.
      *
      * @param Annotation[] $paramAnnotations
-     * @param string       $identifier
      *
      * @return null|array<int>
      */
-    private function findParamAnnotationByIdentifier(array $paramAnnotations, $identifier)
+    private function findParamAnnotationByIdentifier(array $paramAnnotations, string $identifier): ?array
     {
         $blockLevel = 0;
         $blockMatch = false;
