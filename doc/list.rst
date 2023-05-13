@@ -2107,6 +2107,11 @@ List of Available Rules
    Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Phpdoc\\PhpdocOrderByValueFixer <./../src/Fixer/Phpdoc/PhpdocOrderByValueFixer.php>`_
+-  `phpdoc_param_order <./rules/phpdoc/phpdoc_param_order.rst>`_
+
+   Orders all ``@param`` annotations in DocBlocks according to method signature.
+
+   `Source PhpCsFixer\\Fixer\\Phpdoc\\PhpdocParamOrderFixer <./../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php>`_
 -  `phpdoc_return_self_reference <./rules/phpdoc/phpdoc_return_self_reference.rst>`_
 
    The type of ``@return`` annotations of methods returning a reference to itself must the configured one.
