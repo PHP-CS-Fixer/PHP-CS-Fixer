@@ -706,6 +706,9 @@ PHPDoc
 - `phpdoc_order <./phpdoc/phpdoc_order.rst>`_
 
   Annotations in PHPDoc should be ordered in defined sequence.
+- `phpdoc_param_order <./phpdoc/phpdoc_param_order.rst>`_
+
+  Orders all ``@param`` annotations in DocBlocks according to method signature.
 - `phpdoc_return_self_reference <./phpdoc/phpdoc_return_self_reference.rst>`_
 
   The type of ``@return`` annotations of methods returning a reference to itself must the configured one.
