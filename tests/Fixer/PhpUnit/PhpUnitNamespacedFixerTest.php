@@ -49,6 +49,14 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
                 '<?php new \PHPUnit\Framework\MockObject\Stub\ReturnStub();',
                 '<?php new \PHPUnit_Framework_MockObject_Stub_Return();',
             ],
+            'class_mapping_bogus_fqcn_lowercase' => [
+                '<?php new \PHPUnit\Framework\MockObject\Stub\ReturnStub();',
+                '<?php new \phpunit_framework_mockobject_stub_return();',
+            ],
+            'class_mapping_bogus_fqcn_uppercase' => [
+                '<?php new \PHPUnit\Framework\MockObject\Stub\ReturnStub();',
+                '<?php new \PHPUNIT_FRAMEWORK_MOCKOBJECT_STUB_RETURN();',
+            ],
             [
                 '<?php
     final class MyTest extends \PHPUnit\Framework\TestCase
@@ -249,6 +257,12 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
                 {
                     const FOO = Bar::PHPUNIT_FOO;
                 }',
+            ],
+            [
+                '<?php
+
+                define(\'PHPUNIT_COMPOSER_INSTALL\', dirname(__DIR__).\'/vendor/autoload.php\');
+                require PHPUNIT_COMPOSER_INSTALL;',
             ],
         ];
     }
