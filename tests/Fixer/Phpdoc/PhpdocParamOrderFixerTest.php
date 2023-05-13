@@ -21,7 +21,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @coversNothing
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocParamOrderFixer
  */
 final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
 {
