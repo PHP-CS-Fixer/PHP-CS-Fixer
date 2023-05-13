@@ -22,7 +22,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
 {
-    public function testNoChanges()
+    public function testNoChanges(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -36,7 +36,7 @@ EOT;
         $this->doTest($expected);
     }
 
-    public function testNoChangesMultiple()
+    public function testNoChangesMultiple(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -51,7 +51,7 @@ EOT;
         $this->doTest($expected);
     }
 
-    public function testOnlyParamsUntyped()
+    public function testOnlyParamsUntyped(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -82,7 +82,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testOnlyParamsUntypedMixed()
+    public function testOnlyParamsUntypedMixed(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -113,7 +113,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testOnlyParamsTyped()
+    public function testOnlyParamsTyped(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -144,7 +144,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testOnlyParamsUndocumented()
+    public function testOnlyParamsUndocumented(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -173,7 +173,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testOnlyParamsSuperfluousAnnotation()
+    public function testOnlyParamsSuperfluousAnnotation(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -202,7 +202,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testOnlyParamsSuperfluousAnnotations()
+    public function testOnlyParamsSuperfluousAnnotations(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -235,7 +235,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testParamsUntyped()
+    public function testParamsUntyped(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -274,7 +274,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testParamsTyped()
+    public function testParamsTyped(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -313,7 +313,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testParamsDescription()
+    public function testParamsDescription(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -352,7 +352,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testParamsMultilineDescription()
+    public function testParamsMultilineDescription(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -397,7 +397,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testComplexTypes()
+    public function testComplexTypes(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -428,7 +428,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testVariousMethodDeclarations()
+    public function testVariousMethodDeclarations(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -577,7 +577,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testParamsWithOtherAnnotationsInBetween()
+    public function testParamsWithOtherAnnotationsInBetween(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -622,7 +622,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testParamsBlankLines()
+    public function testParamsBlankLines(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -673,7 +673,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testNestedPhpdoc()
+    public function testNestedPhpdoc(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -710,7 +710,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testMultiNestedPhpdoc()
+    public function testMultiNestedPhpdoc(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -761,7 +761,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testMultipleNestedPhpdoc()
+    public function testMultipleNestedPhpdoc(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -820,7 +820,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testNonMatchingParamName()
+    public function testNonMatchingParamName(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -845,7 +845,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testPlainFunction()
+    public function testPlainFunction(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -874,7 +874,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testCommentsInSignature()
+    public function testCommentsInSignature(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -903,7 +903,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testClosure()
+    public function testClosure(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -928,7 +928,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testInterface()
+    public function testInterface(): void
     {
         $expected = <<<'EOT'
 <?php
@@ -977,7 +977,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testPhp7ParamTypes()
+    public function testPhp7ParamTypes(): void
     {
         $expected = <<<'EOT'
 <?php

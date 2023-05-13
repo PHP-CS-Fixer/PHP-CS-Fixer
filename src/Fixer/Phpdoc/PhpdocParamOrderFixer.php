@@ -17,6 +17,7 @@ use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -31,7 +32,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
@@ -39,7 +40,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Orders all `@param` annotations in DocBlocks according to method signature.',
@@ -63,7 +64,7 @@ function m($a, array $b, Foo $c) {}
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -100,7 +101,7 @@ function m($a, array $b, Foo $c) {}
      * @param Tokens $tokens
      * @param int    $paramBlockStart
      *
-     * @return string[]
+     * @return Token[]
      */
     private function getFunctionParamNames(Tokens $tokens, $paramBlockStart)
     {
@@ -112,7 +113,7 @@ function m($a, array $b, Foo $c) {}
             null !== $i && $i < $paramBlockEnd;
             $i = $tokens->getNextTokenOfKind($i, [[T_VARIABLE]])
         ) {
-            $paramNames[] = $tokens[$i]->getContent();
+            $paramNames[] = $tokens[$i];
         }
 
         return $paramNames;
@@ -170,7 +171,7 @@ function m($a, array $b, Foo $c) {}
     {
         $validParams = [];
         foreach ($funcParamNames as $paramName) {
-            $indices = $this->findParamAnnotationByIdentifier($paramAnnotations, $paramName);
+            $indices = $this->findParamAnnotationByIdentifier($paramAnnotations, $paramName->getContent());
 
             // Found an exactly matching @param annotation
             if (\is_array($indices)) {
@@ -197,8 +198,8 @@ function m($a, array $b, Foo $c) {}
     /**
      * Fetch all annotations except the param ones.
      *
-     * @param DocBlock $doc
-     * @param array    $paramAnnotations
+     * @param DocBlock     $doc
+     * @param Annotation[] $paramAnnotations
      *
      * @return string[]
      */
@@ -231,7 +232,7 @@ function m($a, array $b, Foo $c) {}
      * @param Annotation[] $paramAnnotations
      * @param string       $identifier
      *
-     * @return null|array
+     * @return null|array<int>
      */
     private function findParamAnnotationByIdentifier(array $paramAnnotations, $identifier)
     {
