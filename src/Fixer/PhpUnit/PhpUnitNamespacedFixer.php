@@ -121,7 +121,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 'PHPUnit_Util_XML' => 'PHPUnit\Util\Xml',
             ];
         } elseif (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_5_7)) {
-            $this->originalClassRegEx = '/^PHPUnit_Framework_TestCase|PHPUnit_Framework_Assert|PHPUnit_Framework_BaseTestListener|PHPUnit_Framework_TestListener$/i';
+            $this->originalClassRegEx = '/^PHPUnit_Framework_(TestCase|Assert|BaseTestListener|TestListener)+$/i';
             $this->classMap = [];
         } else {
             $this->originalClassRegEx = '/^PHPUnit_Framework_TestCase$/i';
