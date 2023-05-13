@@ -435,7 +435,7 @@ EOT;
     {
         $expected = <<<'EOT'
 <?php
-class C {
+abstract class C {
     /**
      * @param Foo   $a
      * @param array $b
@@ -507,7 +507,7 @@ class C {
 EOT;
         $input = <<<'EOT'
 <?php
-class C {
+abstract class C {
     /**
      * @param array $b
      * @param Foo   $a
