@@ -88,6 +88,9 @@ Rules
 - `no_useless_nullsafe_operator <./../rules/operator/no_useless_nullsafe_operator.rst>`_
 - `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
 - `normalize_index_brace <./../rules/array_notation/normalize_index_brace.rst>`_
+- `nullable_type_declaration_for_default_null_value <./../rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_
+  config:
+  ``['use_nullable_type_declaration' => false]``
 - `object_operator_without_whitespace <./../rules/operator/object_operator_without_whitespace.rst>`_
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_
   config:
@@ -124,7 +127,6 @@ Rules
   config:
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 - `phpdoc_var_without_name <./../rules/phpdoc/phpdoc_var_without_name.rst>`_
-- `protected_to_private <./../rules/class_notation/protected_to_private.rst>`_
 - `semicolon_after_instruction <./../rules/semicolon/semicolon_after_instruction.rst>`_
 - `simple_to_complex_string_variable <./../rules/string_notation/simple_to_complex_string_variable.rst>`_
 - `single_class_element_per_statement <./../rules/class_notation/single_class_element_per_statement.rst>`_

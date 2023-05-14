@@ -25,3 +25,8 @@ Rules
   ``['call_type' => 'self']``
 - `strict_comparison <./../rules/strict/strict_comparison.rst>`_
 - `strict_param <./../rules/strict/strict_param.rst>`_
+
+Disabled rules
+--------------
+
+- `get_class_to_class_keyword <./../rules/language_construct/get_class_to_class_keyword.rst>`_

@@ -19,11 +19,15 @@ Rules
   config:
   ``['b_mode' => false]``
 - `function_to_constant <./../rules/language_construct/function_to_constant.rst>`_
+- `get_class_to_class_keyword <./../rules/language_construct/get_class_to_class_keyword.rst>`_
 - `implode_call <./../rules/function_notation/implode_call.rst>`_
 - `is_null <./../rules/language_construct/is_null.rst>`_
 - `logical_operators <./../rules/operator/logical_operators.rst>`_
+- `modernize_strpos <./../rules/alias/modernize_strpos.rst>`_
 - `modernize_types_casting <./../rules/cast_notation/modernize_types_casting.rst>`_
 - `native_constant_invocation <./../rules/constant_notation/native_constant_invocation.rst>`_
+  config:
+  ``['strict' => false]``
 - `native_function_invocation <./../rules/function_notation/native_function_invocation.rst>`_
   config:
   ``['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]``

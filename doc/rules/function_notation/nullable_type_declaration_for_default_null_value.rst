@@ -53,3 +53,13 @@ With configuration: ``['use_nullable_type_declaration' => false]``.
    -function sample(?string $str = null)
    +function sample(string $str = null)
     {}
+
+Rule sets
+---------
+
+The rule is part of the following rule set:
+
+@Symfony
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``nullable_type_declaration_for_default_null_value`` rule with the config below:
+
+  ``['use_nullable_type_declaration' => false]``
