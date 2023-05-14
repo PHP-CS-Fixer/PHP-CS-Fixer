@@ -94,7 +94,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: none, dom, json, tokenizer, xml
+          extensions: none, dom, json, simplexml, tokenizer, xml, xmlwriter
           coverage: ${{ steps.code-coverage-driver.outputs.result }}
           tools: flex
         env:
