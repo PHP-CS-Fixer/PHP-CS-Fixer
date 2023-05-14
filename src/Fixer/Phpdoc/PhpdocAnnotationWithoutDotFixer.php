@@ -33,9 +33,6 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
      */
     private array $tags = ['throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -60,17 +57,11 @@ function foo ($bar) {}
         return 17;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {

@@ -99,9 +99,6 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
      */
     private array $typePosition;
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -146,17 +143,11 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -232,9 +223,6 @@ class Example
         return 65;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($i = 1, $count = $tokens->count(); $i < $count; ++$i) {
@@ -260,9 +248,6 @@ class Example
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

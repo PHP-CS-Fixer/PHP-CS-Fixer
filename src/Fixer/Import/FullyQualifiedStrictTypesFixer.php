@@ -30,9 +30,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class FullyQualifiedStrictTypesFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -80,17 +77,11 @@ class SomeClass
         return 7;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_FUNCTION);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $namespaceUsesAnalyzer = new NamespaceUsesAnalyzer();

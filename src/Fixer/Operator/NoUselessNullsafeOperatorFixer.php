@@ -24,9 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class NoUselessNullsafeOperatorFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -47,17 +44,11 @@ class Foo extends Bar
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return \PHP_VERSION_ID >= 8_00_00 && $tokens->isAllTokenKindsFound([T_VARIABLE, T_NULLSAFE_OBJECT_OPERATOR]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {

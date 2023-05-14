@@ -24,9 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class LowercaseCastFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -71,17 +68,11 @@ final class LowercaseCastFixer extends AbstractFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getCastTokenKinds());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {

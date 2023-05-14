@@ -28,9 +28,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class RegularCallableCallFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -69,9 +66,6 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         return 2;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
@@ -82,9 +76,6 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();

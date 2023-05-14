@@ -26,9 +26,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class TernaryToNullCoalescingFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -51,17 +48,11 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_ISSET);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $issetIndices = array_keys($tokens->findGivenKind(T_ISSET));

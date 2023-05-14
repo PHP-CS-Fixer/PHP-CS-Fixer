@@ -29,9 +29,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class GetClassToClassKeywordFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -62,25 +59,16 @@ final class GetClassToClassKeywordFixer extends AbstractFixer
         return 1;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return \PHP_VERSION_ID >= 8_00_00 && $tokens->isAllTokenKindsFound([T_STRING, T_VARIABLE]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();

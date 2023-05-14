@@ -29,9 +29,6 @@ final class SwitchContinueToBreakFixer extends AbstractFixer
      */
     private array $switchLevels = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -77,17 +74,11 @@ switch ($foo) {
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_SWITCH, T_CONTINUE]) && !$tokens->hasAlternativeSyntax();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $count = \count($tokens);

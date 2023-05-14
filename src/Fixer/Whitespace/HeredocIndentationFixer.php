@@ -34,9 +34,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class HeredocIndentationFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -93,17 +90,11 @@ SAMPLE
         return -26;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_START_HEREDOC);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

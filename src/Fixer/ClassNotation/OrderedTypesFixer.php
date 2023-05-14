@@ -37,9 +37,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -95,17 +92,11 @@ interface Bar
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

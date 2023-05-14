@@ -77,9 +77,6 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -107,9 +104,6 @@ $a = substr_count($a, $b);
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();

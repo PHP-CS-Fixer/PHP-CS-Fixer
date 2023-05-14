@@ -61,9 +61,6 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
         self::LONG_FUNCTION_PRINT,
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         $sample = <<<'EOT'
@@ -97,9 +94,6 @@ EOT;
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         if (self::FORMAT_SHORT === $this->configuration[self::OPTION_FORMAT]) {
@@ -109,9 +103,6 @@ EOT;
         return $tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -130,9 +121,6 @@ EOT;
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if (self::FORMAT_SHORT === $this->configuration[self::OPTION_FORMAT]) {

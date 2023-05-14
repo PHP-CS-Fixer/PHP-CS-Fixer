@@ -35,9 +35,6 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
      */
     private $fixCallback;
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -49,9 +46,6 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -82,17 +76,11 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound('.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $callBack = $this->fixCallback;
@@ -103,9 +91,6 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

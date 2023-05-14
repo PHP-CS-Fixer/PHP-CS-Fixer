@@ -170,9 +170,6 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
      */
     private array $operators = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -180,9 +177,6 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
         $this->operators = $this->resolveOperatorsFromConfig();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -314,17 +308,11 @@ $array = [
         return -32;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -355,9 +343,6 @@ $array = [
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

@@ -35,9 +35,6 @@ use Symfony\Component\OptionsResolver\Options;
  */
 final class FinalInternalClassFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -52,9 +49,6 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -85,25 +79,16 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         return 67;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_CLASS);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -124,9 +109,6 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $annotationsAsserts = [static function (array $values): bool {

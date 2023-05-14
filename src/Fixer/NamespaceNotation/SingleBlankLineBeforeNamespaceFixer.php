@@ -25,9 +25,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -39,25 +36,16 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNames
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_NAMESPACE);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         return -21;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {

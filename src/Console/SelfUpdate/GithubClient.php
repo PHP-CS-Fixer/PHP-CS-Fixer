@@ -19,9 +19,6 @@ namespace PhpCsFixer\Console\SelfUpdate;
  */
 final class GithubClient implements GithubClientInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getTags(): array
     {
         $url = 'https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/tags';

@@ -41,9 +41,6 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
      */
     private $candidateTokenType;
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -57,9 +54,6 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -81,17 +75,11 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
         return -10;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound($this->candidateTokenType);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $callBack = $this->callBack;
@@ -102,9 +90,6 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

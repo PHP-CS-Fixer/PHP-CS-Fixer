@@ -82,9 +82,6 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
      */
     private const SUPPORTED_SORT_ALGORITHMS = [self::SORT_ALPHA, self::SORT_LENGTH, self::SORT_NONE];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -180,17 +177,11 @@ use Bar;
         return -30;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_USE);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -243,9 +234,6 @@ use Bar;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $supportedSortTypes = self::SUPPORTED_SORT_TYPES;

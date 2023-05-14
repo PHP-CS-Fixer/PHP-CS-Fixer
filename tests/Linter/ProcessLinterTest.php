@@ -50,9 +50,6 @@ final class ProcessLinterTest extends AbstractLinterTestCase
         $linter->__wakeup();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createLinter(): LinterInterface
     {
         return new ProcessLinter();

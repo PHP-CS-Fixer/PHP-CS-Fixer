@@ -27,9 +27,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class MultilineCommentOpeningClosingFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -57,17 +54,11 @@ EOT
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {

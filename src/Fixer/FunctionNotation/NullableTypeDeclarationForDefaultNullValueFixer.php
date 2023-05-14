@@ -33,9 +33,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -53,9 +50,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_VARIABLE) && $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN]);
@@ -71,9 +65,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
         return 1;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -84,9 +75,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();

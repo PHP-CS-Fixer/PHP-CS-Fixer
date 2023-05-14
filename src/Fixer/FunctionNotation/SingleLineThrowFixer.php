@@ -31,9 +31,6 @@ final class SingleLineThrowFixer extends AbstractFixer
     private const REMOVE_WHITESPACE_AROUND_TOKENS = ['(', [T_DOUBLE_COLON]];
     private const REMOVE_WHITESPACE_BEFORE_TOKENS = [')', ']', ',', ';'];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -44,9 +41,6 @@ final class SingleLineThrowFixer extends AbstractFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_THROW);
@@ -62,9 +56,6 @@ final class SingleLineThrowFixer extends AbstractFixer
         return 36;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {

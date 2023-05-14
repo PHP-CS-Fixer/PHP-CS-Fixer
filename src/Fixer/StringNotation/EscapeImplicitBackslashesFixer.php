@@ -31,9 +31,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class EscapeImplicitBackslashesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         $codeSample = <<<'EOF'
@@ -76,9 +73,6 @@ EOF;
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]);
@@ -95,9 +89,6 @@ EOF;
         return 15;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         static $singleQuotedRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![\\\'\\\\])/';
@@ -147,9 +138,6 @@ EOF;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

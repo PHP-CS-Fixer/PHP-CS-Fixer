@@ -27,9 +27,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -60,9 +57,6 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
         return 31;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         // replacement patterns

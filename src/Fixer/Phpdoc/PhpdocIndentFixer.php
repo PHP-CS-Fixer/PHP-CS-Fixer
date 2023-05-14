@@ -29,9 +29,6 @@ use PhpCsFixer\Utils;
  */
 final class PhpdocIndentFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -59,17 +56,11 @@ class DocBlocks
         return 20;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {

@@ -34,7 +34,7 @@ Rules
 - `no_superfluous_elseif <./../rules/control_structure/no_superfluous_elseif.rst>`_
 - `no_superfluous_phpdoc_tags <./../rules/phpdoc/no_superfluous_phpdoc_tags.rst>`_
   config:
-  ``['allow_mixed' => true, 'allow_unused_params' => true]``
+  ``['allow_mixed' => true, 'remove_inheritdoc' => true]``
 - `no_unneeded_control_parentheses <./../rules/control_structure/no_unneeded_control_parentheses.rst>`_
   config:
   ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'negative_instanceof', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``

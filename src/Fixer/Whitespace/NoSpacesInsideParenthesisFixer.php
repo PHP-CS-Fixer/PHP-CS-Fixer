@@ -28,9 +28,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoSpacesInsideParenthesisFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -58,17 +55,11 @@ function foo( \$bar, \$baz )
         return 2;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound('(');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {

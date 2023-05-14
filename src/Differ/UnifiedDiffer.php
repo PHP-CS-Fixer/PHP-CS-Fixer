@@ -20,9 +20,6 @@ use SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder;
 
 final class UnifiedDiffer implements DifferInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function diff(string $old, string $new, ?\SplFileInfo $file = null): string
     {
         if (null === $file) {

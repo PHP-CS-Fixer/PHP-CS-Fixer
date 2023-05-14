@@ -53,9 +53,6 @@ final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer 
         'iterable' => 'assertIsIterable',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -92,9 +89,6 @@ final class MyTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
@@ -110,9 +104,6 @@ final class MyTest extends \PHPUnit\Framework\TestCase
         return -16;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -124,9 +115,6 @@ final class MyTest extends \PHPUnit\Framework\TestCase
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $anonymousClassIndices = [];

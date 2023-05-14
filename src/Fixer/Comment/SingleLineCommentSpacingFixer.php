@@ -24,9 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class SingleLineCommentSpacingFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -53,17 +50,11 @@ final class SingleLineCommentSpacingFixer extends AbstractFixer
         return 1;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; 0 <= $index; --$index) {

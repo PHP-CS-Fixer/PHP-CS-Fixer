@@ -102,9 +102,6 @@ final class SingleSpaceAfterConstructFixer extends AbstractProxyFixer implements
 
     private SingleSpaceAroundConstructFixer $singleSpaceAroundConstructFixer;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct()
     {
         $this->singleSpaceAroundConstructFixer = new SingleSpaceAroundConstructFixer();
@@ -112,17 +109,11 @@ final class SingleSpaceAfterConstructFixer extends AbstractProxyFixer implements
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSuccessorsNames(): array
     {
         return array_keys($this->proxyFixers);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -136,9 +127,6 @@ final class SingleSpaceAfterConstructFixer extends AbstractProxyFixer implements
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -187,9 +175,6 @@ yield  from  baz();
         return parent::getPriority();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createProxyFixers(): array
     {
         return [$this->singleSpaceAroundConstructFixer];

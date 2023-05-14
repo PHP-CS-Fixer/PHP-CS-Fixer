@@ -31,9 +31,6 @@ final class PhpdocParamOrderFixer extends AbstractFixer
 {
     private const PARAM_TAG = 'param';
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
@@ -50,9 +47,6 @@ final class PhpdocParamOrderFixer extends AbstractFixer
         return parent::getPriority();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -74,9 +68,6 @@ function m($a, array $b, Foo $c) {}
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {

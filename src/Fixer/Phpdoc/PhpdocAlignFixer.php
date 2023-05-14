@@ -101,9 +101,6 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
      */
     private $align;
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -139,9 +136,6 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         $this->align = $this->configuration['align'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         $code = <<<'EOF'
@@ -183,17 +177,11 @@ EOF;
         return -42;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
@@ -211,9 +199,6 @@ EOF;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $tags = new FixerOptionBuilder('tags', 'The tags that should be aligned.');

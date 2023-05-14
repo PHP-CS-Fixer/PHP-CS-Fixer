@@ -29,34 +29,22 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class TypeAlternationTransformer extends AbstractTypeTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         // needs to run after ArrayTypehintTransformer, TypeColonTransformer and AttributeTransformer
         return -15;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId(): int
     {
         return 7_01_00;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Tokens $tokens, Token $token, int $index): void
     {
         $this->doProcess($tokens, $index, '|');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomTokens(): array
     {
         return [CT::T_TYPE_ALTERNATION];

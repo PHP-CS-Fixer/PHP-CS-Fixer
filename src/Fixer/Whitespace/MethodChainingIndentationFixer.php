@@ -28,9 +28,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class MethodChainingIndentationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -39,17 +36,11 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getObjectOperatorKinds());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();

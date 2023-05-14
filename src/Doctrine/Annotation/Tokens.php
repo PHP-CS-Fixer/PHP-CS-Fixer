@@ -265,7 +265,7 @@ final class Tokens extends \SplFixedArray
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $index
      *
      * @throws \OutOfBoundsException
      */

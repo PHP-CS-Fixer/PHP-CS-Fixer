@@ -25,25 +25,16 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NameQualifiedTransformer extends AbstractTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         return 1; // must run before NamespaceOperatorTransformer
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId(): int
     {
         return 8_00_00;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Tokens $tokens, Token $token, int $index): void
     {
         if ($token->isGivenKind([T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED])) {
@@ -53,9 +44,6 @@ final class NameQualifiedTransformer extends AbstractTransformer
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomTokens(): array
     {
         return [];

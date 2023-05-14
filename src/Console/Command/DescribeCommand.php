@@ -77,9 +77,6 @@ final class DescribeCommand extends Command
         $this->fixerFactory = $fixerFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -92,9 +89,6 @@ final class DescribeCommand extends Command
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity() && $output instanceof ConsoleOutputInterface) {

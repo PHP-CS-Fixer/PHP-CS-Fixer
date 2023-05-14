@@ -30,9 +30,6 @@ final class ReturnAssignmentFixer extends AbstractFixer
      */
     private $tokensAnalyzer;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -52,17 +49,11 @@ final class ReturnAssignmentFixer extends AbstractFixer
         return -15;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_FUNCTION, T_RETURN, T_VARIABLE]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokenCount = \count($tokens);

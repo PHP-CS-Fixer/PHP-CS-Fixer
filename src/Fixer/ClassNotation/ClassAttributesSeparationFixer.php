@@ -56,9 +56,6 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
      */
     private array $classElementTypes = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -70,9 +67,6 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -164,17 +158,11 @@ class Sample
         return 55;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($this->getElementsByClass($tokens) as $class) {
@@ -198,9 +186,6 @@ class Sample
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

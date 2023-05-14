@@ -193,9 +193,6 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
         'ｚ' => 'z',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -206,25 +203,16 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_VARIABLE, T_STRING]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {

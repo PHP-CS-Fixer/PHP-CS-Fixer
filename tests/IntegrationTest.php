@@ -30,17 +30,11 @@ use PhpCsFixer\Tests\Test\InternalIntegrationCaseFactory;
  */
 final class IntegrationTest extends AbstractIntegrationTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
     protected static function getFixturesDir(): string
     {
         return __DIR__.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'Integration';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function getTempFile(): string
     {
         return tempnam(sys_get_temp_dir(), 'PHP-CS-Fixer');

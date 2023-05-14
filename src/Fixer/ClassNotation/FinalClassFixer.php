@@ -24,9 +24,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
  */
 final class FinalClassFixer extends AbstractProxyFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -47,9 +44,6 @@ class MyApp {}
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createProxyFixers(): array
     {
         $fixer = new FinalInternalClassFixer();

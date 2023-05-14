@@ -34,9 +34,6 @@ final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFix
         'null' => true,
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -71,9 +68,6 @@ class Foo {
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
@@ -95,9 +89,6 @@ class Foo {
         return isset($this->skippedTypes[$type]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 < $index; --$index) {

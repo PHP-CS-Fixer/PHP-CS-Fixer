@@ -29,9 +29,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class SelfAccessorFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -57,25 +54,16 @@ class Sample
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);

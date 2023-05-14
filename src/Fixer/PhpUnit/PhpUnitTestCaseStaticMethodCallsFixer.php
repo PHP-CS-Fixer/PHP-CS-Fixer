@@ -309,9 +309,6 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         self::CALL_TYPE_STATIC => [[T_DOUBLE_COLON, '::'], [T_STATIC, 'static']],
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         $codeSample = '<?php
@@ -347,17 +344,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $thisFixer = $this;
@@ -401,9 +392,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $analyzer = new TokensAnalyzer($tokens);

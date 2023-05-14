@@ -60,17 +60,11 @@ final class RuleSet implements RuleSetInterface
         $this->resolveSet($set);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasRule(string $rule): bool
     {
         return \array_key_exists($rule, $this->rules);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRuleConfiguration(string $rule): ?array
     {
         if (!$this->hasRule($rule)) {
@@ -84,9 +78,6 @@ final class RuleSet implements RuleSetInterface
         return $this->rules[$rule];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRules(): array
     {
         return $this->rules;

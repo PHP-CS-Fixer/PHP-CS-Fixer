@@ -30,9 +30,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class NoUnneededFinalMethodFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -73,9 +70,6 @@ class Bar
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         if (!$tokens->isAllTokenKindsFound([T_FINAL, T_FUNCTION])) {
@@ -94,9 +88,6 @@ class Bar
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($this->getMethods($tokens) as $element) {
@@ -116,9 +107,6 @@ class Bar
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

@@ -26,9 +26,6 @@ final class SelfStaticAccessorFixer extends AbstractFixer
 {
     private TokensAnalyzer $tokensAnalyzer;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -88,9 +85,6 @@ $a = new class() {
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_CLASS, T_STATIC]) && $tokens->isAnyTokenKindsFound([T_DOUBLE_COLON, T_NEW, T_INSTANCEOF]);
@@ -106,9 +100,6 @@ $a = new class() {
         return -10;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);

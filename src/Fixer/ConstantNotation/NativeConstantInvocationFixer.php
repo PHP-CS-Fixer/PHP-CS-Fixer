@@ -44,9 +44,6 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
      */
     private array $caseInsensitiveConstantsToEscape = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -105,25 +102,16 @@ namespace {
         return 10;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -174,9 +162,6 @@ namespace {
         ksort($this->caseInsensitiveConstantsToEscape);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if ('all' === $this->configuration['scope']) {
@@ -198,9 +183,6 @@ namespace {
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $constantChecker = static function (array $value): bool {

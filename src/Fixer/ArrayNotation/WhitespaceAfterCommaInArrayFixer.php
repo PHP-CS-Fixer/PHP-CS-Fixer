@@ -32,9 +32,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -46,17 +43,11 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements Co
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -67,9 +58,6 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements Co
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensToInsert = [];

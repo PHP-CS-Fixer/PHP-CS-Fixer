@@ -39,17 +39,11 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
      */
     private array $ignoredTags = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
@@ -67,9 +61,6 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
         return 26;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -83,9 +74,6 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -98,9 +86,6 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -111,9 +96,6 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $commentsAnalyzer = new CommentsAnalyzer();

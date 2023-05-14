@@ -48,9 +48,6 @@ final class PhpUnitNamespacedFixer extends AbstractFixer implements Configurable
      */
     private $classMap;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         $codeSample = '<?php
@@ -77,25 +74,16 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -141,9 +129,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $importedOriginalClassesMap = [];
@@ -191,9 +176,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

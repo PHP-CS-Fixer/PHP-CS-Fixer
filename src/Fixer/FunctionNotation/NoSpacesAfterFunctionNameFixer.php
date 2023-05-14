@@ -29,9 +29,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -51,17 +48,11 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
         return 2;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionyTokenKinds(), [T_STRING]));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionyTokens = $this->getFunctionyTokenKinds();

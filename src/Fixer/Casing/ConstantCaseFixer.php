@@ -40,9 +40,6 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
      */
     private $fixFunction;
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -60,9 +57,6 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -74,17 +68,11 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -95,9 +83,6 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $fixFunction = $this->fixFunction;

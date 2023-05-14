@@ -32,26 +32,17 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ImportTransformer extends AbstractTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         // Should run after CurlyBraceTransformer and ReturnRefTransformer
         return -1;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId(): int
     {
         return 5_06_00;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->isGivenKind([T_CONST, T_FUNCTION])) {
@@ -74,9 +65,6 @@ final class ImportTransformer extends AbstractTransformer
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomTokens(): array
     {
         return [CT::T_CONST_IMPORT, CT::T_FUNCTION_IMPORT];

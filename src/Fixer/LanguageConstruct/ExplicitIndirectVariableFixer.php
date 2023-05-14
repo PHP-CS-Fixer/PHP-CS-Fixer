@@ -27,9 +27,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ExplicitIndirectVariableFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -49,17 +46,11 @@ EOT
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_VARIABLE);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index > 1; --$index) {

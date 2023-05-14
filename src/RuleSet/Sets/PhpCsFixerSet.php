@@ -84,7 +84,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'no_superfluous_elseif' => true,
             'no_superfluous_phpdoc_tags' => [
                 'allow_mixed' => true,
-                'allow_unused_params' => true,
+                'remove_inheritdoc' => true,
             ],
             'no_unneeded_control_parentheses' => [
                 'statements' => [

@@ -28,17 +28,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ReturnRefTransformer extends AbstractTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId(): int
     {
         return 5_00_00;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Tokens $tokens, Token $token, int $index): void
     {
         if ($token->equals('&') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([T_FUNCTION, T_FN])) {
@@ -46,9 +40,6 @@ final class ReturnRefTransformer extends AbstractTransformer
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomTokens(): array
     {
         return [CT::T_RETURN_REF];

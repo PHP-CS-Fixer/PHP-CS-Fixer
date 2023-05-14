@@ -35,9 +35,6 @@ use Symfony\Component\OptionsResolver\Options;
  */
 final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -73,9 +70,6 @@ switch ($foo) {
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_SWITCH);
@@ -91,9 +85,6 @@ switch ($foo) {
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -116,9 +107,6 @@ switch ($foo) {
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; $index >= 0; --$index) {

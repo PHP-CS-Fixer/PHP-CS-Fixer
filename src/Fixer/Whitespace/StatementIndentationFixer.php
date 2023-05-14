@@ -41,9 +41,6 @@ final class StatementIndentationFixer extends AbstractFixer implements Whitespac
         $this->bracesFixerCompatibility = $bracesFixerCompatibility;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -74,9 +71,6 @@ else {
         return parent::getPriority();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return true;

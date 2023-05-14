@@ -22,17 +22,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractFopenFlagFixer extends AbstractFunctionReferenceFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_STRING, T_CONSTANT_ENCAPSED_STRING]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();

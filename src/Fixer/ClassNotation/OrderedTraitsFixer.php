@@ -23,9 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class OrderedTraitsFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -38,25 +35,16 @@ final class OrderedTraitsFixer extends AbstractFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(CT::T_USE_TRAIT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($this->findUseStatementsGroups($tokens) as $uses) {

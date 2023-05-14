@@ -60,9 +60,6 @@ final class BracesFixer extends AbstractProxyFixer implements ConfigurableFixerI
      */
     private $controlStructureContinuationPositionFixer;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -150,9 +147,6 @@ class Foo
         return 35;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSuccessorsNames(): array
     {
         return array_keys($this->proxyFixers);
@@ -179,9 +173,6 @@ class Foo
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

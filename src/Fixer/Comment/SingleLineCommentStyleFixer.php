@@ -42,9 +42,6 @@ final class SingleLineCommentStyleFixer extends AbstractFixer implements Configu
      */
     private $hashEnabled;
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -53,9 +50,6 @@ final class SingleLineCommentStyleFixer extends AbstractFixer implements Configu
         $this->hashEnabled = \in_array('hash', $this->configuration['comment_types'], true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -112,17 +106,11 @@ $c = 3;
         return -31;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
@@ -170,9 +158,6 @@ $c = 3;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

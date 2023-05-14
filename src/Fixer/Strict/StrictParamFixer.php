@@ -28,9 +28,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class StrictParamFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -41,17 +38,11 @@ final class StrictParamFixer extends AbstractFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
@@ -67,9 +58,6 @@ final class StrictParamFixer extends AbstractFixer
         return 31;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();

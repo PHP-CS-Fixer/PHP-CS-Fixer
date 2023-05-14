@@ -30,26 +30,17 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class UseTransformer extends AbstractTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         // Should run after CurlyBraceTransformer and before TypeColonTransformer
         return -5;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId(): int
     {
         return 5_03_00;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Tokens $tokens, Token $token, int $index): void
     {
         if ($token->isGivenKind(T_USE) && $this->isUseForLambda($tokens, $index)) {
@@ -93,9 +84,6 @@ final class UseTransformer extends AbstractTransformer
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomTokens(): array
     {
         return [CT::T_USE_TRAIT, CT::T_USE_LAMBDA];

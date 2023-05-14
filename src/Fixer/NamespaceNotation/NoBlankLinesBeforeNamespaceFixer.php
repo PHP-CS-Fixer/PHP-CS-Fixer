@@ -25,17 +25,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoBlankLinesBeforeNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_NAMESPACE);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -58,9 +52,6 @@ final class NoBlankLinesBeforeNamespaceFixer extends AbstractLinesBeforeNamespac
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {

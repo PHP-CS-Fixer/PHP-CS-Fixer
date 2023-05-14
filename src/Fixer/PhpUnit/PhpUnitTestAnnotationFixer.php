@@ -36,17 +36,11 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class PhpUnitTestAnnotationFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -80,9 +74,6 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         return 10;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         if ('annotation' === $this->configuration['style']) {
@@ -92,9 +83,6 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
