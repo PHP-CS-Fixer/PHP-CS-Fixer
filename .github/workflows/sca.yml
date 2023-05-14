@@ -35,8 +35,12 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
+          extensions: none
           coverage: none # without this Xdebug will be enabled
           tools: cs2pr
+
+      - name: Count and show PHP modules
+        run: php -m | wc -l && php -m
 
       - name: Get Composer cache directory
         id: composer-cache
