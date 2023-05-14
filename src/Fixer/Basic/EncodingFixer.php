@@ -79,7 +79,7 @@ echo "Hello!";
     {
         $content = $tokens[0]->getContent();
 
-        if (0 === strncmp($content, $this->BOM, 3)) {
+        if (str_starts_with($content, $this->BOM)) {
             $newContent = substr($content, 3);
 
             if ('' === $newContent) {
