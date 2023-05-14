@@ -95,7 +95,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           extensions: none, dom, json, opcache, simplexml, tokenizer, xml, xmlwriter, zip
-          ini-values: opcache.enable_cli=1
           coverage: ${{ steps.code-coverage-driver.outputs.result }}
           tools: flex
         env:

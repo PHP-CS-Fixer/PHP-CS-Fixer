@@ -36,12 +36,8 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           extensions: none, dom, mbstring, opcache, simplexml, tokenizer, xml, xmlwriter
-          ini-values: opcache.enable_cli=1
           coverage: none # without this Xdebug will be enabled
           tools: cs2pr
-
-      - name: Count and show PHP modules
-        run: php -m | wc -l && php -m
 
       - name: Get Composer cache directory
         id: composer-cache
