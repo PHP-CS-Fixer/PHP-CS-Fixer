@@ -28,17 +28,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NamespaceOperatorTransformer extends AbstractTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId(): int
     {
         return 5_03_00;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->isGivenKind(T_NAMESPACE)) {
@@ -52,9 +46,6 @@ final class NamespaceOperatorTransformer extends AbstractTransformer
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomTokens(): array
     {
         return [CT::T_NAMESPACE_OPERATOR];

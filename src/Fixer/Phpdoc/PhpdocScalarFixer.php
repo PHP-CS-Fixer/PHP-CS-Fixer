@@ -43,9 +43,6 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements Config
         'str' => 'string',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -102,9 +99,6 @@ function sample($a, $b, $c)
         return 15;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $types = array_keys(self::$types);
@@ -117,9 +111,6 @@ function sample($a, $b, $c)
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function normalize(string $type): string
     {
         if (\in_array($type, $this->configuration['types'], true)) {

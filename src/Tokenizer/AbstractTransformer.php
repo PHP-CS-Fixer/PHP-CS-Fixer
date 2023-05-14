@@ -23,9 +23,6 @@ use PhpCsFixer\Utils;
  */
 abstract class AbstractTransformer implements TransformerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         $nameParts = explode('\\', static::class);
@@ -34,16 +31,10 @@ abstract class AbstractTransformer implements TransformerInterface
         return Utils::camelCaseToUnderscore($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getCustomTokens(): array;
 }

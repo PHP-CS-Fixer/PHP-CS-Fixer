@@ -28,17 +28,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -66,9 +60,6 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if (0 === \count($this->configuration['tags'])) {
@@ -106,9 +97,6 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

@@ -31,9 +31,6 @@ final class LinterTest extends AbstractLinterTestCase
         self::assertSame(!class_exists(\CompileError::class), $this->createLinter()->isAsync());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createLinter(): LinterInterface
     {
         return new Linter();

@@ -84,9 +84,6 @@ final class HelpCommand extends BaseHelpCommand
         return $allowed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $output->getFormatter()->setStyle('url', new OutputFormatterStyle('blue'));

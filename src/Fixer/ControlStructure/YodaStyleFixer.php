@@ -48,9 +48,6 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
      */
     private $candidateTypes;
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -58,9 +55,6 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
         $this->resolveConfiguration();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -120,25 +114,16 @@ return $foo === count($bar);
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound($this->candidateTypes);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->fixTokens($tokens);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

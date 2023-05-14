@@ -22,17 +22,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class NoUselessElseFixer extends AbstractNoUselessElseFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_ELSE);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -54,9 +48,6 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
         return parent::getPriority();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {

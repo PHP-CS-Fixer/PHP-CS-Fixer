@@ -42,9 +42,6 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
      */
     public const STYLE_POST = 'post';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -70,17 +67,11 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
         return 15;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_INC, T_DEC]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -91,9 +82,6 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);

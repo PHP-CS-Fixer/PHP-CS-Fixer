@@ -29,17 +29,11 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
      */
     private $functionsAnalyzer;
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;

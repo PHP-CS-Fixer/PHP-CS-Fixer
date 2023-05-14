@@ -35,9 +35,6 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
      */
     private $indent;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -59,17 +56,11 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         return 50;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT, T_WHITESPACE]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->indent = $this->whitespacesConfig->getIndent();

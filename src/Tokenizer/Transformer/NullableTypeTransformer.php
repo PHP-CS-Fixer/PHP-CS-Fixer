@@ -28,26 +28,17 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NullableTypeTransformer extends AbstractTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         // needs to run after TypeColonTransformer
         return -20;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId(): int
     {
         return 7_01_00;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->equals('?')) {
@@ -84,9 +75,6 @@ final class NullableTypeTransformer extends AbstractTransformer
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomTokens(): array
     {
         return [CT::T_NULLABLE_TYPE];

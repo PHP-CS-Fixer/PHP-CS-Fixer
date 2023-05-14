@@ -37,9 +37,6 @@ final class EncodingFixer extends AbstractFixer
         $this->bom = pack('CCC', 0xEF, 0xBB, 0xBF);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -55,26 +52,17 @@ echo "Hello!";
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         // must run first (at least before Fixers that using Tokens) - for speed reason of whole fixing process
         return 100;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $content = $tokens[0]->getContent();

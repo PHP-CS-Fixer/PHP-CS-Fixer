@@ -26,17 +26,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -68,9 +62,6 @@ class Bar {}
         return -20;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         static $forbiddenSuccessors = [

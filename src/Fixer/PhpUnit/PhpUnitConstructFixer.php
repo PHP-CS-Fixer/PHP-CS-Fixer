@@ -42,17 +42,11 @@ final class PhpUnitConstructFixer extends AbstractPhpUnitFixer implements Config
         'assertNotSame' => 'fixAssertNegative',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -99,9 +93,6 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
         return -8;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         // no assertions to be fixed - fast return
@@ -122,9 +113,6 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

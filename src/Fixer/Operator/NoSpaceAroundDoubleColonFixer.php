@@ -22,9 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class NoSpaceAroundDoubleColonFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -33,17 +30,11 @@ final class NoSpaceAroundDoubleColonFixer extends AbstractFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOUBLE_COLON);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 2; $index > 1; --$index) {

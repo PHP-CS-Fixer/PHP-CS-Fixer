@@ -37,9 +37,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class PsrAutoloadingFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -66,9 +63,6 @@ class InvalidName {}
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -84,33 +78,21 @@ class InvalidName {}
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         return -10;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(\SplFileInfo $file): bool
     {
         if ($file instanceof StdinFileInfo) {
@@ -142,9 +124,6 @@ class InvalidName {}
         return !Preg::match('{[/\\\\](stub|fixture)s?[/\\\\]}i', $file->getRealPath());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -155,9 +134,6 @@ class InvalidName {}
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokenAnalyzer = new TokensAnalyzer($tokens);

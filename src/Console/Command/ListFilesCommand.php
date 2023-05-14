@@ -49,9 +49,6 @@ final class ListFilesCommand extends Command
         $this->toolInfo = $toolInfo;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this

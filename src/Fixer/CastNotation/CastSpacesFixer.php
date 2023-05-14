@@ -39,9 +39,6 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerIn
         "\x0B" => '',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -72,17 +69,11 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerIn
         return -10;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getCastTokenKinds());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
@@ -115,9 +106,6 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerIn
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

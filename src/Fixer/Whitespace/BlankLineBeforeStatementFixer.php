@@ -68,9 +68,6 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
      */
     private array $fixTokenMap = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -84,9 +81,6 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         $this->fixTokenMap = array_values($this->fixTokenMap);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -251,17 +245,11 @@ if (true) {
         return -21;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound($this->fixTokenMap);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $analyzer = new TokensAnalyzer($tokens);
@@ -287,9 +275,6 @@ if (true) {
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

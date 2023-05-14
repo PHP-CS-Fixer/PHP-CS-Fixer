@@ -71,9 +71,6 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
 
     private string $patternToFix = '';
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -96,9 +93,6 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -146,9 +140,6 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
         return 16;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function normalize(string $type): string
     {
         return Preg::replaceCallback(
@@ -160,9 +151,6 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $possibleGroups = array_keys(self::POSSIBLE_TYPES);

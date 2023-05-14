@@ -70,9 +70,6 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
 
     private TokensAnalyzer $tokensAnalyzer;
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         if (isset($configuration['tokens']) && \in_array('use_trait', $configuration['tokens'], true)) {
@@ -117,9 +114,6 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -268,17 +262,11 @@ switch($a) {
         return -20;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->tokens = $tokens;
@@ -289,9 +277,6 @@ switch($a) {
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

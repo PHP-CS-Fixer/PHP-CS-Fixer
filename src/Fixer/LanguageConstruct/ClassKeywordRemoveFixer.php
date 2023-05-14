@@ -36,9 +36,6 @@ final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedF
      */
     private array $imports = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -56,9 +53,6 @@ $className = Baz::class;
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSuccessorsNames(): array
     {
         return [];
@@ -74,17 +68,11 @@ $className = Baz::class;
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(CT::T_CLASS_CONSTANT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $previousNamespaceScopeEndIndex = 0;

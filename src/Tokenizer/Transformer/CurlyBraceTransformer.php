@@ -36,17 +36,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class CurlyBraceTransformer extends AbstractTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId(): int
     {
         return 5_00_00;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Tokens $tokens, Token $token, int $index): void
     {
         $this->transformIntoCurlyCloseBrace($tokens, $token, $index);
@@ -57,9 +51,6 @@ final class CurlyBraceTransformer extends AbstractTransformer
         $this->transformIntoGroupUseBraces($tokens, $token, $index);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomTokens(): array
     {
         return [

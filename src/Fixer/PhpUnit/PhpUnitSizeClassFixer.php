@@ -32,9 +32,6 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
 {
     private const SIZES = ['small', 'medium', 'large'];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(

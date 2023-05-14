@@ -23,17 +23,11 @@ use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
  */
 final class JsonReporter implements ReporterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getFormat(): string
     {
         return 'json';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function generate(ReportSummary $reportSummary): string
     {
         $sets = $reportSummary->getSets();

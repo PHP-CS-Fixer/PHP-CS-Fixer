@@ -56,9 +56,6 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
 
     private const MATCH_EXPRESSIONS = 'match';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -86,17 +83,11 @@ SAMPLE
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN, '(']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -123,9 +114,6 @@ SAMPLE
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $fixArrays = \in_array(self::ELEMENTS_ARRAYS, $this->configuration['elements'], true);

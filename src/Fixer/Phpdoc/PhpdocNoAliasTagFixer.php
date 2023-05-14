@@ -34,9 +34,6 @@ use PhpCsFixer\Preg;
  */
 final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -107,9 +104,6 @@ final class Example
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -125,9 +119,6 @@ final class Example
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createProxyFixers(): array
     {
         return [new GeneralPhpdocTagRenameFixer()];

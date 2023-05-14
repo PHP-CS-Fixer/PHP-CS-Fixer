@@ -40,9 +40,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class GlobalNamespaceImportFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -101,9 +98,6 @@ if (count($x)) {
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_DOC_COMMENT, T_NS_SEPARATOR, T_USE])
@@ -112,9 +106,6 @@ if (count($x)) {
             && $tokens->isMonolithicPhp();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $namespaceAnalyses = $tokens->getNamespaceDeclarations();
