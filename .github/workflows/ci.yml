@@ -17,63 +17,63 @@ jobs:
       fail-fast: false
       matrix:
         include:
-#          - operating-system: 'ubuntu-20.04'
-#            php-version: '7.4'
-#            job-description: 'with lowest deps'
-#            composer-flags: '--prefer-stable --prefer-lowest' # should be checked on the lowest supported PHP version
-#
-#          - operating-system: 'ubuntu-20.04'
-#            php-version: '7.4'
-#            job-description: 'with PHPDoc to type rules'
-#            phpdoc-to-type-rules: 'yes' # should be checked on the lowest supported PHP version
-#
-#          - operating-system: 'ubuntu-20.04'
-#            php-version: '7.4'
-#            job-description: 'with Symfony ^5'
-#            execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
-#
-#          - operating-system: 'ubuntu-20.04'
-#            php-version: '8.0'
-#            job-description: 'with Symfony ^6'
-#            execute-flex-with-symfony-version: '^6' # explicit check for Symfony 6.x compatibility
-#
-#          - operating-system: 'ubuntu-20.04'
-#            php-version: '8.1'
-#
-#          - operating-system: 'ubuntu-20.04'
-#            php-version: '8.2'
-#            job-description: 'with migration rules'
-#            migration-rules: 'yes' # should be checked on the highest supported PHP version
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.4'
+            job-description: 'with lowest deps'
+            composer-flags: '--prefer-stable --prefer-lowest' # should be checked on the lowest supported PHP version
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.4'
+            job-description: 'with PHPDoc to type rules'
+            phpdoc-to-type-rules: 'yes' # should be checked on the lowest supported PHP version
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.4'
+            job-description: 'with Symfony ^5'
+            execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.0'
+            job-description: 'with Symfony ^6'
+            execute-flex-with-symfony-version: '^6' # explicit check for Symfony 6.x compatibility
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.1'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
+            job-description: 'with migration rules'
+            migration-rules: 'yes' # should be checked on the highest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
             job-description: 'auto-review'
             phpunit-flags: '--group auto-review'
 
-#          - operating-system: 'ubuntu-20.04'
-#            php-version: '8.2'
-#            job-description: 'with calculating code coverage'
-#            calculate-code-coverage: 'yes'
-#            phpunit-flags: '--testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml'
-#
-#          - operating-system: 'ubuntu-20.04'
-#            php-version: '8.2'
-#            job-description: 'with deployment'
-#            execute-deployment: 'yes'
-#
-#          - operating-system: 'ubuntu-20.04'
-#            php-version: '8.3'
-#            PHP_CS_FIXER_IGNORE_ENV: 1
-#            composer-flags: '--ignore-platform-req=PHP'
-#
-#          - operating-system: 'windows-latest'
-#            php-version: '8.2'
-#            job-description: 'on Windows'
-#            FAST_LINT_TEST_CASES: 1
-#
-#          - operating-system: 'macos-latest'
-#            php-version: '8.2'
-#            job-description: 'on macOS'
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
+            job-description: 'with calculating code coverage'
+            calculate-code-coverage: 'yes'
+            phpunit-flags: '--testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
+            job-description: 'with deployment'
+            execute-deployment: 'yes'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.3'
+            PHP_CS_FIXER_IGNORE_ENV: 1
+            composer-flags: '--ignore-platform-req=PHP'
+
+          - operating-system: 'windows-latest'
+            php-version: '8.2'
+            job-description: 'on Windows'
+            FAST_LINT_TEST_CASES: 1
+
+          - operating-system: 'macos-latest'
+            php-version: '8.2'
+            job-description: 'on macOS'
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
 
@@ -94,6 +94,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
+          extensions: none
           coverage: ${{ steps.code-coverage-driver.outputs.result }}
           tools: flex
         env:
@@ -103,80 +104,80 @@ jobs:
       - name: Count and show PHP modules
         run: php -m | wc -l && php -m
 
-#      - name: Get Composer cache directory
-#        id: composer-cache
-#        shell: bash
-#        run: echo "dir=$(composer config cache-dir)" >> $GITHUB_OUTPUT
-#
-#      - name: Cache dependencies
-#        uses: actions/cache@v3
-#        with:
-#          path: ${{ steps.composer-cache.outputs.dir }}
-#          key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-${{ matrix.composer-flags }}
-#          restore-keys: |
-#            composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-
-#            composer-${{ runner.os }}-${{ matrix.php-version }}-
-#            composer-${{ runner.os }}-
-#            composer-
-#
-#      - name: Configure Symfony Flex
-#        if: matrix.execute-flex-with-symfony-version
-#        run: composer config extra.symfony.require ${{ matrix.execute-flex-with-symfony-version }}
-#
-#      - name: Install dependencies
-#        uses: nick-invision/retry@v2
-#        with:
-#          timeout_minutes: 5
-#          max_attempts: 5
-#          retry_wait_seconds: 30
-#          command: |
-#            composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.composer-flags }}
-#            composer info -D
-#
-#      # execute migration rules before running tests and self-fixing,
-#      # so that we know that our codebase is future-ready
-#      - name: Run PHP CS Fixer with migration rules
-#        if: matrix.migration-rules == 'yes'
-#        run: php php-cs-fixer fix --config .php-cs-fixer.php-highest.php -q
-#
-#      - name: Disable time limit for tests when collecting coverage
-#        if: matrix.calculate-code-coverage == 'yes'
-#        run: sed 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' phpunit.xml.dist > phpunit.xml
-#
-#      - name: Run tests
-#        env:
-#          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-#          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-#        run: vendor/bin/phpunit ${{ matrix.phpunit-flags || '--exclude-group auto-review' }}
-#
-#      - name: Upload coverage results to Coveralls
-#        if: matrix.calculate-code-coverage == 'yes'
-#        env:
-#          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        run: php vendor/bin/php-coveralls --verbose
-#
-#      - name: Run PHP CS Fixer with PHPDoc to type rules
-#        if: matrix.phpdoc-to-type-rules == 'yes'
-#        run: php php-cs-fixer fix --diff --dry-run -v --config .php-cs-fixer.php-lowest.php
-#
-#      - name: Run PHP CS Fixer
-#        env:
-#          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-#          PHP_CS_FIXER_FUTURE_MODE: 1
-#        run: php php-cs-fixer fix --diff --dry-run -v
-#
-#      - name: Execute deployment checks
-#        if: matrix.execute-deployment == 'yes'
-#        run: |
-#          ./dev-tools/build.sh
-#          PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 vendor/bin/phpunit tests/Smoke/
-#
-#      - name: Execute deployment post-hook
-#        if: matrix.execute-deployment == 'yes' && startsWith(github.ref, 'refs/tags/v')
-#        env:
-#          TRAVIS_TOKEN: ${{ secrets.TRAVIS_TOKEN }}
-#        run: |
-#          # ensure that deployment is happening only if tag matches version of PHP CS Fixer
-#          test $(php dev-tools/info-extractor.php | jq -r .version.vnumber) == "${GITHUB_REF#refs/tags/}"
-#          # trigger website update
-#          ./dev-tools/trigger-website.sh ${TRAVIS_TOKEN} ${GITHUB_REF#refs/tags/}
+      - name: Get Composer cache directory
+        id: composer-cache
+        shell: bash
+        run: echo "dir=$(composer config cache-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-${{ matrix.composer-flags }}
+          restore-keys: |
+            composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-
+            composer-${{ runner.os }}-${{ matrix.php-version }}-
+            composer-${{ runner.os }}-
+            composer-
+
+      - name: Configure Symfony Flex
+        if: matrix.execute-flex-with-symfony-version
+        run: composer config extra.symfony.require ${{ matrix.execute-flex-with-symfony-version }}
+
+      - name: Install dependencies
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          retry_wait_seconds: 30
+          command: |
+            composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.composer-flags }}
+            composer info -D
+
+      # execute migration rules before running tests and self-fixing,
+      # so that we know that our codebase is future-ready
+      - name: Run PHP CS Fixer with migration rules
+        if: matrix.migration-rules == 'yes'
+        run: php php-cs-fixer fix --config .php-cs-fixer.php-highest.php -q
+
+      - name: Disable time limit for tests when collecting coverage
+        if: matrix.calculate-code-coverage == 'yes'
+        run: sed 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' phpunit.xml.dist > phpunit.xml
+
+      - name: Run tests
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+        run: vendor/bin/phpunit ${{ matrix.phpunit-flags || '--exclude-group auto-review' }}
+
+      - name: Upload coverage results to Coveralls
+        if: matrix.calculate-code-coverage == 'yes'
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: php vendor/bin/php-coveralls --verbose
+
+      - name: Run PHP CS Fixer with PHPDoc to type rules
+        if: matrix.phpdoc-to-type-rules == 'yes'
+        run: php php-cs-fixer fix --diff --dry-run -v --config .php-cs-fixer.php-lowest.php
+
+      - name: Run PHP CS Fixer
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          PHP_CS_FIXER_FUTURE_MODE: 1
+        run: php php-cs-fixer fix --diff --dry-run -v
+
+      - name: Execute deployment checks
+        if: matrix.execute-deployment == 'yes'
+        run: |
+          ./dev-tools/build.sh
+          PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 vendor/bin/phpunit tests/Smoke/
+
+      - name: Execute deployment post-hook
+        if: matrix.execute-deployment == 'yes' && startsWith(github.ref, 'refs/tags/v')
+        env:
+          TRAVIS_TOKEN: ${{ secrets.TRAVIS_TOKEN }}
+        run: |
+          # ensure that deployment is happening only if tag matches version of PHP CS Fixer
+          test $(php dev-tools/info-extractor.php | jq -r .version.vnumber) == "${GITHUB_REF#refs/tags/}"
+          # trigger website update
+          ./dev-tools/trigger-website.sh ${TRAVIS_TOKEN} ${GITHUB_REF#refs/tags/}
