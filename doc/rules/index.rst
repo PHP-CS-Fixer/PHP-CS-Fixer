@@ -187,6 +187,9 @@ Class Notation
 - `ordered_traits <./class_notation/ordered_traits.rst>`_ *(risky)*
 
   Trait ``use`` statements must be sorted alphabetically.
+- `ordered_types <./class_notation/ordered_types.rst>`_
+
+  Sort union types and intersection types using configured order.
 - `protected_to_private <./class_notation/protected_to_private.rst>`_
 
   Converts ``protected`` variables and methods to ``private`` where possible.

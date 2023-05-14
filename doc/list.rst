@@ -1950,6 +1950,23 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\OrderedTraitsFixer <./../src/Fixer/ClassNotation/OrderedTraitsFixer.php>`_
+-  `ordered_types <./rules/class_notation/ordered_types.rst>`_
+
+   Sort union types and intersection types using configured order.
+
+   Configuration options:
+
+   - | ``sort_algorithm``
+     | Whether the types should be sorted alphabetically, or not sorted.
+     | Allowed values: ``'alpha'``, ``'none'``
+     | Default value: ``'alpha'``
+   - | ``null_adjustment``
+     | Forces the position of `null` (overrides `sort_algorithm`).
+     | Allowed values: ``'always_first'``, ``'always_last'``, ``'none'``
+     | Default value: ``'always_first'``
+
+
+   `Source PhpCsFixer\\Fixer\\ClassNotation\\OrderedTypesFixer <./../src/Fixer/ClassNotation/OrderedTypesFixer.php>`_
 -  `phpdoc_add_missing_param_annotation <./rules/phpdoc/phpdoc_add_missing_param_annotation.rst>`_
 
    PHPDoc should contain ``@param`` for all params.
