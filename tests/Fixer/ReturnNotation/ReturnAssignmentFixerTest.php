@@ -977,6 +977,22 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                 }
                 ',
             ],
+            'try finally' => [
+                '<?php
+                function add($a, $b): mixed
+                {
+                    try {
+                        $result = $a + $b;
+
+                        return $result;
+                    } catch (\Throwable $th) {
+                        throw $th;
+                    } finally {
+                        echo \'result:\', $result, \PHP_EOL;
+                    }
+                }
+                ',
+            ],
         ];
     }
 
