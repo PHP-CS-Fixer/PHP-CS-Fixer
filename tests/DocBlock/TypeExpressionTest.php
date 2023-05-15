@@ -156,6 +156,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['\\Closure(string|int, bool): bool', ['\\Closure(string|int, bool): bool']];
 
+        yield ['\\Closure(float|int): (bool|int)', ['\\Closure(float|int): (bool|int)']];
+
         yield ['array  <  int   , callable  (  string  )  :   bool  >', ['array  <  int   , callable  (  string  )  :   bool  >']];
 
         yield ['(int)', ['(int)']];
@@ -404,7 +406,7 @@ final class TypeExpressionTest extends TestCase
 
         yield 'simple in callable return type' => [
             'callable(): string|float',
-            'callable(): float|string',
+            'callable(): string|float',
         ];
 
         yield 'simple in closure argument' => [
@@ -419,12 +421,12 @@ final class TypeExpressionTest extends TestCase
 
         yield 'simple in closure return type' => [
             'Closure(): string|float',
-            'Closure(): float|string',
+            'Closure(): string|float',
         ];
 
         yield 'with multiple nesting levels' => [
             'array{0: Foo<int|bool>|Bar<callable(string|float|array<int|bool>): Foo|Bar>}',
-            'array{0: Bar<callable(array<bool|int>|float|string): Bar|Foo>|Foo<bool|int>}',
+            'array{0: Bar<Bar|callable(array<bool|int>|float|string): Foo>|Foo<bool|int>}',
         ];
 
         yield 'nullable generic' => [
@@ -434,7 +436,7 @@ final class TypeExpressionTest extends TestCase
 
         yield 'nullable callable' => [
             '?callable(Foo|Bar): Foo|Bar',
-            '?callable(Bar|Foo): Bar|Foo',
+            '?callable(Bar|Foo): Foo|Bar',
         ];
 
         yield 'nullable array shape' => [

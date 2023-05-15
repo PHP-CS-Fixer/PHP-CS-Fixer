@@ -57,7 +57,7 @@ final class TypeExpression
                     \h*\)
                     (?:
                         \h*\:\h*
-                        (?<callable_return>(?&types))
+                        (?<callable_return>(?&type))
                     )?
                 )
                 |
@@ -88,7 +88,7 @@ final class TypeExpression
                     (?i)
                     null | true | false
                     | -?(?:\d+(?:\.\d*)?|\.\d+) # all sorts of numbers with or without minus, e.g.: 1, 1.1, 1., .1, -1
-                    | \'(?:[^\'\\\\]|\\\\.)+?\' | "(?:[^"\\\\]|\\\\.)+?"
+                    | \'(?:[^\'\\\\]|\\\\.)*?\' | "(?:[^"\\\\]|\\\\.)*?"
                     | [@$]?(?:this | self | static)
                     (?-i)
                 )
