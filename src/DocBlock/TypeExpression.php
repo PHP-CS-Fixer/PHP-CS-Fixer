@@ -416,11 +416,20 @@ final class TypeExpression
 
     private function parseObjectLikeArrayInnerTypes(int $startIndex, string $value): void
     {
-        $addedPrefix = 'array{';
         while ('' !== $value) {
             Preg::match(
+                '{^(?:(?=1)0'.self::REGEX_TYPES.'|(?<object_like_array_inner2>(?&object_like_array_inner))(?:\h*,\h*)?)}x',
+                $value,
+                $prematches
+            );
+            $consumedValue = $prematches['object_like_array_inner2'];
+            $consumedValueLength = \strlen($consumedValue);
+            $consumedCommaLength = \strlen($prematches[0]) - $consumedValueLength;
+
+            $addedPrefix = 'array{';
+            Preg::match(
                 '{^'.self::REGEX_TYPES.'$}x',
-                $addedPrefix.$value.'}',
+                $addedPrefix.$consumedValue.'}',
                 $matches,
                 PREG_OFFSET_CAPTURE
             );
@@ -430,17 +439,8 @@ final class TypeExpression
                 'expression' => $this->inner($matches['object_like_array_inner_value'][0]),
             ];
 
-            $consumedValueLength = $matches['object_like_array_inner'][1]
-                + \strlen($matches['object_like_array_inner'][0])
-                - \strlen($addedPrefix);
-            $startIndex += $consumedValueLength;
-            $value = substr($value, $consumedValueLength);
-
-            if (Preg::match('{^\h*,\h*}', $value, $matches)) {
-                $consumedValueLength = \strlen($matches[0]);
-                $startIndex += $consumedValueLength;
-                $value = substr($value, $consumedValueLength);
-            }
+            $startIndex += $consumedValueLength + $consumedCommaLength;
+            $value = substr($value, $consumedValueLength + $consumedCommaLength);
         }
     }
 
