@@ -390,6 +390,16 @@ final class TypeExpressionTest extends TestCase
             'array{bool|int}',
         ];
 
+        yield 'array shape with multiple colons - array shape' => [
+            'array{array{x:int|bool}, a:array{x:int|bool}}',
+            'array{array{x:bool|int}, a:array{x:bool|int}}',
+        ];
+
+        yield 'array shape with multiple colons - callable' => [
+            'array{array{x:int|bool}, int|bool, callable(): void}',
+            'array{array{x:bool|int}, bool|int, callable(): void}',
+        ];
+
         yield 'simple in callable argument' => [
             'callable(int|bool)',
             'callable(bool|int)',
