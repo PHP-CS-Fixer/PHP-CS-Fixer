@@ -204,7 +204,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @return array<self::BLOCK_TYPE_*, array<'start'|'end', string|array{int, string}>>
+     * @return array<self::BLOCK_TYPE_*, array<'end'|'start', array{int, string}|string>>
      */
     public static function getBlockEdgeDefinitions(): array
     {
@@ -535,9 +535,9 @@ class Tokens extends \SplFixedArray
      *
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int $index token index
+     * @param int                           $index         token index
      * @param list<array{int}|string|Token> $tokens        possible tokens
-     * @param bool $caseSensitive perform a case sensitive comparison
+     * @param bool                          $caseSensitive perform a case sensitive comparison
      */
     public function getNextTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
@@ -583,9 +583,9 @@ class Tokens extends \SplFixedArray
      * Get index for closest previous token of given kind.
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int $index token index
+     * @param int                           $index         token index
      * @param list<array{int}|string|Token> $tokens        possible tokens
-     * @param bool $caseSensitive perform a case sensitive comparison
+     * @param bool                          $caseSensitive perform a case sensitive comparison
      */
     public function getPrevTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
@@ -595,10 +595,10 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token of given kind.
      *
-     * @param int  $index     token index
-     * @param -1|1 $direction
-     * @param list<array{int}|string|Token> $tokens possible tokens
-     * @param bool $caseSensitive perform a case sensitive comparison
+     * @param int                           $index         token index
+     * @param -1|1                          $direction
+     * @param list<array{int}|string|Token> $tokens        possible tokens
+     * @param bool                          $caseSensitive perform a case sensitive comparison
      */
     public function getTokenOfKindSibling(int $index, int $direction, array $tokens = [], bool $caseSensitive = true): ?int
     {
@@ -626,9 +626,9 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token not of given kind.
      *
-     * @param int  $index     token index
-     * @param -1|1 $direction
-     * @param list<array{int}|string|Token> $tokens possible tokens
+     * @param int                           $index     token index
+     * @param -1|1                          $direction
+     * @param list<array{int}|string|Token> $tokens    possible tokens
      */
     public function getTokenNotOfKindSibling(int $index, int $direction, array $tokens = []): ?int
     {

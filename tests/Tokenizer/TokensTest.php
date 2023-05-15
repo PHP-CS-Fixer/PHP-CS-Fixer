@@ -623,8 +623,8 @@ PHP;
     }
 
     /**
-     * @param ?int $expectedIndex
-     * @param -1|1 $direction
+     * @param ?int                          $expectedIndex
+     * @param -1|1                          $direction
      * @param list<array{int}|string|Token> $findTokens
      *
      * @dataProvider provideTokenOfKindSiblingCases

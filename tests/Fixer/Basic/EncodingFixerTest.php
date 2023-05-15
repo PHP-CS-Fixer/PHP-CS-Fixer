@@ -43,7 +43,7 @@ final class EncodingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return array{string, string|null, \SplFileInfo}
+     * @return array{string, null|string, \SplFileInfo}
      */
     private static function prepareTestCase(string $expectedFilename, ?string $inputFilename = null): array
     {
