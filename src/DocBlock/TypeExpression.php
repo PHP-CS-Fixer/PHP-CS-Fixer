@@ -42,7 +42,7 @@ final class TypeExpression
                                 (?<object_like_array_inner_value>(?&types))
                             )
                             (?:\h*,\h*(?&object_like_array_inner))*
-                        )
+                        )?
                     \h*\}
                 )
                 |
@@ -346,7 +346,7 @@ final class TypeExpression
         if ('' !== ($matches['object_like_array'] ?? '')) {
             $this->parseObjectLikeArrayInnerTypes(
                 $index + \strlen($matches['object_like_array_start']),
-                $matches['object_like_array_inners']
+                $matches['object_like_array_inners'] ?? ''
             );
 
             return;

@@ -103,6 +103,10 @@ final class TypeExpressionTest extends TestCase
 
         yield ['A & B', ['A', 'B']];
 
+        yield ['array{}', ['array{}']];
+
+        yield ['object{ }', ['object{ }']];
+
         yield ['array{1: bool, 2: bool}', ['array{1: bool, 2: bool}']];
 
         yield ['array{a: int|string, b?: bool}', ['array{a: int|string, b?: bool}']];
