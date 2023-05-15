@@ -111,6 +111,10 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array { a : int | string , b ? : A<B, C> }', ['array { a : int | string , b ? : A<B, C> }']];
 
+        yield ['array{bool, int}', ['array{bool, int}']];
+
+        yield ['object{ bool, foo2: int }', ['object{ bool, foo2: int }']];
+
         yield ['callable(string)', ['callable(string)']];
 
         yield ['callable(string): bool', ['callable(string): bool']];
@@ -379,6 +383,11 @@ final class TypeExpressionTest extends TestCase
         yield 'simple in array shape with multiple keys' => [
             'array{0: int|bool, "foo": int|bool}',
             'array{0: bool|int, "foo": bool|int}',
+        ];
+
+        yield 'simple in array shape with implicit key' => [
+            'array{int|bool}',
+            'array{bool|int}',
         ];
 
         yield 'simple in callable argument' => [

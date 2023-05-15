@@ -35,10 +35,10 @@ final class TypeExpression
             (?<nullable>\??)
             (?:
                 (?<object_like_array>
-                    (?<object_like_array_start>array\h*\{)
+                    (?<object_like_array_start>(array|object)\h*\{)
                         (?<object_like_array_keys>
                             (?<object_like_array_key>
-                                \h*[^?:\h]+\h*\??\h*:\h*(?&types)
+                                \h*(?:(?:(?&constant)|(?&name))\h*\??\h*:\h*)?(?&types)
                             )
                             (?:\h*,(?&object_like_array_key))*
                         )
@@ -422,7 +422,7 @@ final class TypeExpression
     {
         while ('' !== $value) {
             Preg::match(
-                '{(?<_start>^.+?:\h*)'.self::REGEX_TYPES.'\h*(?:,|$)}x',
+                '{(?<_start>^(?:.+?:)?\h*)'.self::REGEX_TYPES.'\h*(?:,|$)}x',
                 $value,
                 $matches
             );
@@ -433,7 +433,7 @@ final class TypeExpression
             ];
 
             $newValue = Preg::replace(
-                '/^.+?:\h*'.preg_quote($matches['types'], '/').'(\h*\,\h*)?/',
+                '/^(?:.+?:)?\h*'.preg_quote($matches['types'], '/').'(\h*\,\h*)?/',
                 '',
                 $value
             );
