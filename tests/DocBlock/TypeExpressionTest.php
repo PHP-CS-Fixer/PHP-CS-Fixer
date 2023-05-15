@@ -439,6 +439,11 @@ final class TypeExpressionTest extends TestCase
             'array{0: Bar<callable(array<bool|int>|float|string): Bar|Foo>|Foo<bool|int>}',
         ];
 
+        yield 'complex type with Closure with $this' => [
+            'array<string, string|array{ string|\Closure(mixed, string, $this): (int|float) }>|false',
+            'array<string, array{ \Closure(mixed, string, $this): (float|int)|string }|string>|false',
+        ];
+
         yield 'nullable generic' => [
             '?array<Foo|Bar>',
             '?array<Bar|Foo>',
