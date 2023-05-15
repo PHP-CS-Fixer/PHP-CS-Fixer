@@ -35,6 +35,17 @@ final class TypeExpressionTest extends TestCase
     {
         $expression = new TypeExpression($typesExpression, null, []);
         self::assertSame($expectedTypes, $expression->getTypes());
+
+        $unionTestNs = '__UnionTest__';
+        $unionExpression = new TypeExpression(
+            $unionTestNs.'\\A|'.$typesExpression.'|'.$unionTestNs.'\\Z',
+            null,
+            []
+        );
+        self::assertSame(
+            [$unionTestNs.'\\A', ...$expectedTypes, $unionTestNs.'\\Z'],
+            [...$unionExpression->getTypes()]
+        );
     }
 
     public static function provideGetTypesCases(): iterable
