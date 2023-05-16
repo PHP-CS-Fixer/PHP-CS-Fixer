@@ -76,7 +76,7 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('max_length', 'Maximum length for single-line arrays. 0 : multi-line only, -1 : single-line only.'))
+            (new FixerOptionBuilder('max_length', 'Maximum length in characters (whitespaces excluded) for single-line arrays. 0 : multi-line only, -1 : single-line only.'))
                 ->setAllowedTypes(['int'])
                 ->setDefault(0)
                 ->getOption(),
