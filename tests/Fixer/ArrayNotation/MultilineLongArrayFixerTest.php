@@ -40,394 +40,298 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'Old style array' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = array(
-            'foo',
-            'bar' => 'baz'
-            );
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = array('foo','bar' => 'baz');
-            INPUT,
+            '<?php
+$foo = array(
+"foo",
+"bar" => "baz"
+);',
+            '<?php
+$foo = array("foo","bar" => "baz");',
         ];
 
         yield 'Old style array with comments' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = array /* comment */ (
-            'foo',
-            'bar' => 'baz'
-            );
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = array /* comment */ ('foo','bar' => 'baz');
-            INPUT,
+            '<?php
+$foo = array /* comment */ (
+"foo",
+"bar" => "baz"
+);',
+            '<?php
+$foo = array /* comment */ ("foo","bar" => "baz");',
         ];
 
         yield 'Empty array with zero max length' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [];
-            EXPECTED,
+            '<?php
+$foo = [];',
             null,
             ['max_length' => 0],
         ];
 
         yield 'Empty array with negative max length' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [];
-            EXPECTED,
+            '<?php
+$foo = [];',
             null,
             ['max_length' => -1],
         ];
 
         yield 'Single-line array' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => 'baz',
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = ['foo','bar' => 'baz',];
-            INPUT,
+            '<?php
+$foo = [
+"foo",
+"bar" => "baz",
+];',
+            '<?php
+$foo = ["foo","bar" => "baz",];',
         ];
 
         yield 'Single-line array shorter than max_length' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = ['foo','bar' => 'baz',];
-            EXPECTED,
+            '<?php
+$foo = ["foo","bar" => "baz",];',
             null,
             ['max_length' => 30],
         ];
 
         yield 'Single-line array with negative max_length' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = ['foo','bar' => 'baz',];
-            EXPECTED,
+            '<?php
+$foo = ["foo","bar" => "baz",];',
             null,
             ['max_length' => -1],
         ];
 
         yield 'Single line array longer than max_length' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => 'baz',
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = ['foo','bar' => 'baz',];
-            INPUT,
+            '<?php
+$foo = [
+"foo",
+"bar" => "baz",
+];',
+            '<?php
+$foo = ["foo","bar" => "baz",];',
             ['max_length' => 10],
         ];
 
         yield 'Multi line array shorter than max_length.' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = ['foo','bar' => 'baz',];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => 'baz',
-            ];
-            INPUT,
+            '<?php
+$foo = ["foo","bar" => "baz",];',
+            '<?php
+$foo = [
+"foo",
+"bar" => "baz",
+];',
             ['max_length' => 30],
         ];
 
         yield 'Multi line array shorter than max_length with tabs' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = ['foo','bar' => 'baz',];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = [
-                'foo',
-                'bar' => 'baz',
-            ];
-            INPUT,
+            '<?php
+$foo = ["foo","bar" => "baz",];',
+            '<?php
+$foo = [
+    "foo",
+    "bar" => "baz",
+];',
             ['max_length' => 30],
         ];
 
         yield 'Multi line array with negative max_length' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = ['foo','bar' => 'baz',];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => 'baz',
-            ];
-            INPUT,
+            '<?php
+$foo = ["foo","bar" => "baz",];',
+            '<?php
+$foo = [
+"foo",
+"bar" => "baz",
+];',
             ['max_length' => -1],
         ];
 
         yield 'Multi line array longer than max_length' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => 'baz',
-            ];
-            EXPECTED,
+            '<?php
+$foo = [
+"foo",
+"bar" => "baz",
+];',
             null,
             ['max_length' => 10],
         ];
 
         yield 'Single element array shorter than max length' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = ['foo'];
-            EXPECTED,
+            '<?php
+$foo = ["foo"];',
             null,
             ['max_length' => 10],
         ];
 
         yield 'Single element array longer than max length' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-            'foobarbaz'
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = ['foobarbaz'];
-            INPUT,
+            '<?php
+$foo = [
+"foobarbaz"
+];',
+            '<?php
+$foo = ["foobarbaz"];',
             ['max_length' => 10],
         ];
 
         yield 'Space after comma' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => 'baz',
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = ['foo', 'bar' => 'baz',];
-            INPUT,
+            '<?php
+$foo = [
+"foo",
+"bar" => "baz",
+];',
+            '<?php
+$foo = ["foo", "bar" => "baz",];',
         ];
 
         yield 'Comma after last element' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => 2,
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = ['foo','bar' => 2,];
-            INPUT,
+            '<?php
+$foo = [
+"foo",
+"bar" => 2,
+];',
+            '<?php
+$foo = ["foo","bar" => 2,];',
         ];
 
         yield 'No comma after last element' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => 2
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = ['foo','bar' => 2];
-            INPUT,
+            '<?php
+$foo = [
+"foo",
+"bar" => 2
+];',
+            '<?php
+$foo = ["foo","bar" => 2];',
         ];
 
         yield 'Function and method call in array' => [
-            <<<'EXPECTED'
-            <?php $foo = [
-            'foo',
-            'bar' => getFoo(),
-            'baz' => $this->getFoo(1)
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php $foo = ['foo', 'bar' => getFoo(), 'baz' => $this->getFoo(1)];
-            INPUT,
+            '<?php
+$foo = [
+"foo",
+"bar" => getFoo(),
+"baz" => $this->getFoo(1)
+];',
+            '<?php
+$foo = ["foo", "bar" => getFoo(), "baz" => $this->getFoo(1)];',
         ];
 
         yield 'Operators in array' => [
-            <<<'EXPECTED'
-            <?php $foo = [
-            'foo',
-            'bar' => $a ?? $b,
-            $a === 1
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php $foo = ['foo', 'bar' => $a ?? $b, $a === 1];
-            INPUT,
+            '<?php
+$foo = [
+"foo",
+"bar" => $a ?? $b,
+$a === 1
+];',
+            '<?php
+$foo = ["foo", "bar" => $a ?? $b, $a === 1];',
         ];
 
         yield 'Nested arrays' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => [
-            'baz' => 'foo'
-            ],
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = ['foo','bar' => ['baz' => 'foo'],];
-            INPUT,
+            '<?php
+$foo = [
+"foo",
+"bar" => [
+"baz" => "foo"
+],
+];',
+            '<?php
+$foo = ["foo","bar" => ["baz" => "foo"],];',
         ];
 
         yield 'Multiple nested arrays with max_length' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => ['baz' => ['foo']],
-            ['baj']
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = ['foo','bar' => ['baz' => ['foo']], ['baj']];
-            INPUT,
+            '<?php
+$foo = [
+"foo",
+"bar" => ["baz" => ["foo"]],
+["baj"]
+];',
+            '<?php
+$foo = ["foo","bar" => ["baz" => ["foo"]], ["baj"]];',
             ['max_length' => 15],
         ];
 
         yield 'Nested arrays 2' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => [
-            'baz' => [
-            'foo'
-            ]
-            ],
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = ['foo','bar' => ['baz' => ['foo']],];
-            INPUT,
+            '<?php
+$foo = [
+"foo",
+"bar" => [
+"baz" => [
+"foo"
+]
+],
+];',
+            '<?php
+$foo = ["foo","bar" => ["baz" => ["foo"]],];',
         ];
 
         yield 'Single line array with brackets inside of a string' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => 'foo is [baz]',
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = ['foo','bar' => 'foo is [baz]',];
-            INPUT,
+            '<?php
+$foo = [
+"foo",
+"bar" => "foo is [baz]",
+];',
+            '<?php
+$foo = ["foo","bar" => "foo is [baz]",];',
         ];
 
         yield 'Single line array with arrow function' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => fn($i) => 'baz'
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = ['foo','bar' => fn($i) => 'baz'];
-            INPUT,
+            '<?php
+$foo = [
+"foo",
+"bar" => fn($i) => "baz"
+];',
+            '<?php
+$foo = ["foo","bar" => fn($i) => "baz"];',
         ];
 
         yield 'Single line array with anonymous function' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-            'foo',
-            'bar' => function( $x ,$y) { return $x + $y; }
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = ['foo','bar' => function( $x ,$y) { return $x + $y; }];
-            INPUT,
+            '<?php
+$foo = [
+"foo",
+"bar" => function( $x ,$y) { return $x + $y; }
+];',
+            '<?php
+$foo = ["foo","bar" => function( $x ,$y) { return $x + $y; }];',
         ];
 
         yield 'Internal short arrays inside long one.' => [
-            <<<'EXPECTED'
-            <?php
-            $foo = [
-                'foo' => ['short' => $array,],
-                'bar' => ['other' => 'short','array' => 3,],
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $foo = [
-                'foo' => [
-                    'short' => $array,
-                ],
-                'bar' => [
-                    'other' => 'short',
-                    'array' => 3,
-                ],
-            ];
-            INPUT,
+            '<?php
+$foo = [
+    "foo" => ["short" => $array,],
+    "bar" => ["other" => "short","array" => 3,],
+];',
+            '<?php
+$foo = [
+    "foo" => [
+        "short" => $array,
+    ],
+    "bar" => [
+        "other" => "short",
+        "array" => 3,
+    ],
+];',
             ['max_length' => 40],
         ];
 
         yield 'don\'t change anonymous class implements list but change array inside' => [
-            <<<'EXPECTED'
-            <?php
-            $x = [
-            1,
-            "2",
-            "c" => new class implements Foo, Bar { const FOO = [
-            "x",
-            "y"
-            ]; },
-            $y
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $x = [1,  "2","c" => new class implements Foo, Bar { const FOO = ["x","y"]; },$y ];
-            INPUT,
+            '<?php
+$x = [
+1,
+"2",
+"c" => new class implements Foo, Bar { const FOO = [
+"x",
+"y"
+]; },
+$y
+];',
+            '<?php
+$x = [1,  "2","c" => new class implements Foo, Bar { const FOO = ["x","y"]; },$y ];',
         ];
 
         yield 'don\'t change anonymous class implements list and don\'t change small array inside.' => [
-            <<<'EXPECTED'
-            <?php
-            $x = [
-            1,
-            "2",
-            "c" => new class implements Foo, Bar { const FOO = ["x","y"]; },
-            $y
-            ];
-            EXPECTED,
-            <<<'INPUT'
-            <?php
-            $x = [1, "2", "c" => new class implements Foo, Bar { const FOO = ["x","y"]; },$y ];
-            INPUT,
+            '<?php
+$x = [
+1,
+"2",
+"c" => new class implements Foo, Bar { const FOO = ["x","y"]; },
+$y
+];',
+            '<?php
+$x = [1, "2", "c" => new class implements Foo, Bar { const FOO = ["x","y"]; },$y ];',
             ['max_length' => 15],
         ];
     }
