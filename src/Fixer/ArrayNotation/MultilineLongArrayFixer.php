@@ -103,7 +103,11 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
                 $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
             }
 
-            $shouldBeMultiline = $this->maxArrayLen > -1 ? $this->computeArrayLen($tokens, $startIndex, $endIndex) > $this->maxArrayLen : false;
+            if ($this->maxArrayLen > -1) {
+                $shouldBeMultiline = $this->computeArrayLen($tokens, $startIndex, $endIndex) > $this->maxArrayLen;
+            } else {
+                $shouldBeMultiline = false;
+            }
 
             $token = $this->handleLineEnding($startIndex, $tokens, $shouldBeMultiline);
             if (null !== $token) {
