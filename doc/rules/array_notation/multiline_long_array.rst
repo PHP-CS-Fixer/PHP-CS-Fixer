@@ -11,8 +11,8 @@ Configuration
 ``max_length``
 ~~~~~~~~~~~~~~
 
-Maximum length for single-line arrays. 0 : multi-line only, -1 : single-line
-only.
+Maximum length in characters (whitespaces excluded) for single-line arrays. 0 :
+multi-line only, -1 : single-line only.
 
 Allowed types: ``int``
 
