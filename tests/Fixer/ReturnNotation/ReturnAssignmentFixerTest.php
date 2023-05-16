@@ -627,10 +627,10 @@ var names are case-insensitive */ return $a   ;}
                     if (isSomeContiotion()) {
                         return getSomeResult();
                     }
-                
+
                     try {
                         $result = getResult();
-                
+
                         return $result;
                     } catch (\Throwable $exception) {
                         error_log($exception->getMessage());
@@ -644,13 +644,13 @@ var names are case-insensitive */ return $a   ;}
                 {
                     if (isSomeContiotion()) {
                         $result = getSomeResult();
-                
+
                         return $result;
                     }
-                
+
                     try {
                         $result = getResult();
-                
+
                         return $result;
                     } catch (\Throwable $exception) {
                         error_log($exception->getMessage());
@@ -658,7 +658,7 @@ var names are case-insensitive */ return $a   ;}
                         baz($result);
                     }
                 }
-                '
+                ',
             ],
         ];
     }
