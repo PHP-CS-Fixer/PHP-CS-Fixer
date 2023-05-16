@@ -327,5 +327,32 @@ $y
 $x = [1, "2", "c" => new class implements Foo, Bar { const FOO = ["x","y"]; },$y ];',
             ['max_length' => 15],
         ];
+
+        yield 'Comment in single-line array' => [
+            '<?php
+$letters = [
+"a",
+/* @todo: add some other letters one day */ "z"
+];',
+            '<?php
+$letters = ["a", /* @todo: add some other letters one day */ "z"];',
+            ['max_length' => 20],
+        ];
+
+        yield 'Comments in multi-line array' => [
+            '<?php
+$letters = [
+"a",
+// This is the letter a
+"z",
+/** This is not the letter a */
+];',
+            '<?php
+$letters = [
+"a", // This is the letter a
+"z", /** This is not the letter a */
+];',
+            ['max_length' => 20],
+        ];
     }
 }
