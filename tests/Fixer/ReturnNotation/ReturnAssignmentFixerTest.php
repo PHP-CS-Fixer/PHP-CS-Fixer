@@ -620,6 +620,46 @@ var names are case-insensitive */ return $a   ;}
                     }
                 ',
             ],
+            'try finally' => [
+                '<?php
+                function foo()
+                {
+                    if (isSomeContiotion()) {
+                        return getSomeResult();
+                    }
+                
+                    try {
+                        $result = getResult();
+                
+                        return $result;
+                    } catch (\Throwable $exception) {
+                        error_log($exception->getMessage());
+                    } finally {
+                        baz($result);
+                    }
+                }
+                ',
+                '<?php
+                function foo()
+                {
+                    if (isSomeContiotion()) {
+                        $result = getSomeResult();
+                
+                        return $result;
+                    }
+                
+                    try {
+                        $result = getResult();
+                
+                        return $result;
+                    } catch (\Throwable $exception) {
+                        error_log($exception->getMessage());
+                    } finally {
+                        baz($result);
+                    }
+                }
+                '
+            ],
         ];
     }
 
