@@ -90,13 +90,6 @@ $foo = ["foo","bar" => "baz",];',
             ['max_length' => 30],
         ];
 
-        yield 'Single-line array with negative max_length' => [
-            '<?php
-$foo = ["foo","bar" => "baz",];',
-            null,
-            ['max_length' => -1],
-        ];
-
         yield 'Single line array longer than max_length' => [
             '<?php
 $foo = [
