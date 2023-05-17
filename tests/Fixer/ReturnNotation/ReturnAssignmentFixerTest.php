@@ -620,6 +620,88 @@ var names are case-insensitive */ return $a   ;}
                     }
                 ',
             ],
+            'try catch' => [
+                '<?php
+                function foo()
+                {
+                    if (isSomeContiotion()) {
+                        return getSomeResult();
+                    }
+
+                    try {
+                        $result = getResult();
+
+                        return $result;
+                    } catch (\Throwable $exception) {
+                        baz($result ?? null);
+                    }
+                }
+                ',
+                '<?php
+                function foo()
+                {
+                    if (isSomeContiotion()) {
+                        $result = getSomeResult();
+
+                        return $result;
+                    }
+
+                    try {
+                        $result = getResult();
+
+                        return $result;
+                    } catch (\Throwable $exception) {
+                        baz($result ?? null);
+                    }
+                }
+                ',
+            ],
+            'try catch2' => [
+                '<?php
+                function foo()
+                {
+                    try {
+                        return getResult();
+                    } catch (\Throwable $exception) {
+                        error_log($exception->getMessage());
+                    }
+
+                    if (isSomeContiotion()) {
+                        return getSomeResult();
+                    }
+
+                    try {
+                        $result = $a + $b;
+                        return $result;
+                    } catch (\Throwable $th) {
+                        var_dump($result ?? null);
+                    }
+                }
+                ',
+                '<?php
+                function foo()
+                {
+                    try {
+                        $result = getResult();
+                        return $result;
+                    } catch (\Throwable $exception) {
+                        error_log($exception->getMessage());
+                    }
+
+                    if (isSomeContiotion()) {
+                        $result = getSomeResult();
+                        return $result;
+                    }
+
+                    try {
+                        $result = $a + $b;
+                        return $result;
+                    } catch (\Throwable $th) {
+                        var_dump($result ?? null);
+                    }
+                }
+                ',
+            ],
             'try finally' => [
                 '<?php
                 function foo()
@@ -656,6 +738,56 @@ var names are case-insensitive */ return $a   ;}
                         error_log($exception->getMessage());
                     } finally {
                         baz($result);
+                    }
+                }
+                ',
+            ],
+            'try finally2' => [
+                '<?php
+                function foo()
+                {
+                    try {
+                        return getResult();
+                    } catch (\Throwable $exception) {
+                        error_log($exception->getMessage());
+                    }
+
+                    if (isSomeContiotion()) {
+                        return getSomeResult();
+                    }
+
+                    try {
+                        $result = $a + $b;
+                        return $result;
+                    } catch (\Throwable $th) {
+                        throw $th;
+                    } finally {
+                        echo "result:", $result, \PHP_EOL;
+                    }
+                }
+                ',
+                '<?php
+                function foo()
+                {
+                    try {
+                        $result = getResult();
+                        return $result;
+                    } catch (\Throwable $exception) {
+                        error_log($exception->getMessage());
+                    }
+
+                    if (isSomeContiotion()) {
+                        $result = getSomeResult();
+                        return $result;
+                    }
+
+                    try {
+                        $result = $a + $b;
+                        return $result;
+                    } catch (\Throwable $th) {
+                        throw $th;
+                    } finally {
+                        echo "result:", $result, \PHP_EOL;
                     }
                 }
                 ',

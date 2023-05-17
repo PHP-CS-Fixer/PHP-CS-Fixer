@@ -84,10 +84,11 @@ final class ReturnAssignmentFixer extends AbstractFixer
                     $functionCloseIndex
                 );
 
+                $functionCloseIndex += $tokensAdded;
                 $totalTokensAdded += $tokensAdded;
             } while ($tokensAdded > 0);
 
-            $index = $functionCloseIndex + $totalTokensAdded;
+            $index = $functionCloseIndex;
             $tokenCount += $totalTokensAdded;
         }
     }
@@ -275,18 +276,9 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 continue;
             }
 
-            // Check if there is a finally block and if the variable is used in it
-            $tryIndex = $tokens->getPrevTokenOfKind($returnVarIndex, [[T_TRY]]);
-            if (null !== $tryIndex && $tryIndex > $functionOpenIndex && $tryIndex < $functionCloseIndex) {
-                $finallyIndex = $tokens->getNextTokenOfKind($endReturnVarIndex, [[T_FINALLY]]);
-                if (null !== $finallyIndex && $finallyIndex < $functionCloseIndex) {
-                    $finallyOpenIndex = $tokens->getNextTokenOfKind($finallyIndex, ['{']);
-                    $finallyCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $finallyOpenIndex);
-                    $varIndex = $tokens->getNextTokenOfKind($finallyOpenIndex, [$tokens[$returnVarIndex]]);
-                    if ($varIndex && $varIndex < $finallyCloseIndex) {
-                        continue;
-                    }
-                }
+            // Check if there is a `catch` or `finally` block between the assignment and the return
+            if ($this->isUsedInCatchOrFinally($tokens, $returnVarIndex, $functionOpenIndex, $functionCloseIndex)) {
+                continue;
             }
 
             // Note: here we are @ "[;{}] $a = [^;{<? ? >] ; return $a;"
@@ -476,5 +468,59 @@ final class ReturnAssignmentFixer extends AbstractFixer
         $index = $tokens->getPrevMeaningfulToken($index);
 
         return $tokens[$index]->isGivenKind(T_MATCH) ? $index : null;
+    }
+
+    private function isUsedInCatchOrFinally(Tokens $tokens, int $returnVarIndex, int $functionOpenIndex, int $functionCloseIndex): bool
+    {
+        // Find try
+        $tryIndex = $tokens->getPrevTokenOfKind($returnVarIndex, [[T_TRY]]);
+        if (null === $tryIndex || $tryIndex <= $functionOpenIndex || $tryIndex >= $functionCloseIndex) {
+            return false;
+        }
+        $tryOpenIndex = $tokens->getNextTokenOfKind($tryIndex, ['{']);
+        $tryCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tryOpenIndex);
+
+        // Find finally
+        $nextIndex = $tokens->getNextMeaningfulToken($tryCloseIndex);
+        if (null === $nextIndex) {
+            return false;
+        }
+
+        if ($tokens[$nextIndex]->isGivenKind(T_CATCH)) {
+            $catchOpenIndex = $tokens->getNextTokenOfKind($nextIndex, ['{']);
+            $catchCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $catchOpenIndex);
+
+            if ($catchCloseIndex >= $functionCloseIndex) {
+                return false;
+            }
+            $varIndex = $tokens->getNextTokenOfKind($catchOpenIndex, [$tokens[$returnVarIndex]]);
+            // Check if the variable is used in the finally block
+            if (null !== $varIndex && $varIndex < $catchCloseIndex) {
+                return true;
+            }
+
+            $nextIndex = $tokens->getNextMeaningfulToken($catchCloseIndex);
+            if (null === $nextIndex) {
+                return false;
+            }
+        }
+
+        if (!$tokens[$nextIndex]->isGivenKind(T_FINALLY)) {
+            return false;
+        }
+
+        $finallyIndex = $nextIndex;
+        if (null === $finallyIndex || $finallyIndex >= $functionCloseIndex) {
+            return false;
+        }
+        $finallyOpenIndex = $tokens->getNextTokenOfKind($finallyIndex, ['{']);
+        $finallyCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $finallyOpenIndex);
+        $varIndex = $tokens->getNextTokenOfKind($finallyOpenIndex, [$tokens[$returnVarIndex]]);
+        // Check if the variable is used in the finally block
+        if (null !== $varIndex && $varIndex < $finallyCloseIndex) {
+            return true;
+        }
+
+        return false;
     }
 }
