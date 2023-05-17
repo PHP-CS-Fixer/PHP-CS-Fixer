@@ -510,7 +510,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
         }
 
         $finallyIndex = $nextIndex;
-        if (null === $finallyIndex || $finallyIndex >= $functionCloseIndex) {
+        if ($finallyIndex >= $functionCloseIndex) {
             return false;
         }
         $finallyOpenIndex = $tokens->getNextTokenOfKind($finallyIndex, ['{']);
