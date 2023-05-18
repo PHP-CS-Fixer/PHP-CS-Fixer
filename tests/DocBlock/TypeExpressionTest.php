@@ -103,6 +103,10 @@ final class TypeExpressionTest extends TestCase
 
         yield ['A & B', ['A', 'B']];
 
+        yield ['array{}', ['array{}']];
+
+        yield ['object{ }', ['object{ }']];
+
         yield ['array{1: bool, 2: bool}', ['array{1: bool, 2: bool}']];
 
         yield ['array{a: int|string, b?: bool}', ['array{a: int|string, b?: bool}']];
@@ -110,6 +114,10 @@ final class TypeExpressionTest extends TestCase
         yield ['array{\'a\': "a", "b"?: \'b\'}', ['array{\'a\': "a", "b"?: \'b\'}']];
 
         yield ['array { a : int | string , b ? : A<B, C> }', ['array { a : int | string , b ? : A<B, C> }']];
+
+        yield ['array{bool, int}', ['array{bool, int}']];
+
+        yield ['object{ bool, foo2: int }', ['object{ bool, foo2: int }']];
 
         yield ['callable(string)', ['callable(string)']];
 
@@ -381,6 +389,21 @@ final class TypeExpressionTest extends TestCase
             'array{0: bool|int, "foo": bool|int}',
         ];
 
+        yield 'simple in array shape with implicit key' => [
+            'array{int|bool}',
+            'array{bool|int}',
+        ];
+
+        yield 'array shape with multiple colons - array shape' => [
+            'array{array{x:int|bool}, a:array{x:int|bool}}',
+            'array{array{x:bool|int}, a:array{x:bool|int}}',
+        ];
+
+        yield 'array shape with multiple colons - callable' => [
+            'array{array{x:int|bool}, int|bool, callable(): void}',
+            'array{array{x:bool|int}, bool|int, callable(): void}',
+        ];
+
         yield 'simple in callable argument' => [
             'callable(int|bool)',
             'callable(bool|int)',
@@ -414,6 +437,11 @@ final class TypeExpressionTest extends TestCase
         yield 'with multiple nesting levels' => [
             'array{0: Foo<int|bool>|Bar<callable(string|float|array<int|bool>): Foo|Bar>}',
             'array{0: Bar<callable(array<bool|int>|float|string): Bar|Foo>|Foo<bool|int>}',
+        ];
+
+        yield 'complex type with Closure with $this' => [
+            'array<string, string|array{ string|\Closure(mixed, string, $this): (int|float) }>|false',
+            'array<string, array{ \Closure(mixed, string, $this): (float|int)|string }|string>|false',
         ];
 
         yield 'nullable generic' => [

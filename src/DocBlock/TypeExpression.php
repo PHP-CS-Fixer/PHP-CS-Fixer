@@ -35,13 +35,14 @@ final class TypeExpression
             (?<nullable>\??)
             (?:
                 (?<object_like_array>
-                    (?<object_like_array_start>array\h*\{)
-                        (?<object_like_array_keys>
-                            (?<object_like_array_key>
-                                \h*[^?:\h]+\h*\??\h*:\h*(?&types)
+                    (?<object_like_array_start>(array|object)\h*\{\h*)
+                        (?<object_like_array_inners>
+                            (?<object_like_array_inner>
+                                (?<object_like_array_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
+                                (?<object_like_array_inner_value>(?&types))
                             )
-                            (?:\h*,(?&object_like_array_key))*
-                        )
+                            (?:\h*,\h*(?&object_like_array_inner))*
+                        )?
                     \h*\}
                 )
                 |
@@ -343,9 +344,9 @@ final class TypeExpression
         }
 
         if ('' !== ($matches['object_like_array'] ?? '')) {
-            $this->parseObjectLikeArrayKeys(
+            $this->parseObjectLikeArrayInnerTypes(
                 $index + \strlen($matches['object_like_array_start']),
-                $matches['object_like_array_keys']
+                $matches['object_like_array_inners'] ?? ''
             );
 
             return;
@@ -397,7 +398,7 @@ final class TypeExpression
     {
         while ('' !== $value) {
             Preg::match(
-                '{^'.self::REGEX_TYPES.'\h*(?:,|$)}x',
+                '{^'.self::REGEX_TYPES.'(?:\h*,\h*|$)}x',
                 $value,
                 $matches
             );
@@ -407,39 +408,39 @@ final class TypeExpression
                 'expression' => $this->inner($matches['types']),
             ];
 
-            $newValue = Preg::replace(
-                '/^'.preg_quote($matches['types'], '/').'(\h*\,\h*)?/',
-                '',
-                $value
-            );
-
-            $startIndex += \strlen($value) - \strlen($newValue);
-            $value = $newValue;
+            $consumedValueLength = \strlen($matches[0]);
+            $startIndex += $consumedValueLength;
+            $value = substr($value, $consumedValueLength);
         }
     }
 
-    private function parseObjectLikeArrayKeys(int $startIndex, string $value): void
+    private function parseObjectLikeArrayInnerTypes(int $startIndex, string $value): void
     {
         while ('' !== $value) {
             Preg::match(
-                '{(?<_start>^.+?:\h*)'.self::REGEX_TYPES.'\h*(?:,|$)}x',
+                '{^(?:(?=1)0'.self::REGEX_TYPES.'|(?<object_like_array_inner2>(?&object_like_array_inner))(?:\h*,\h*)?)}x',
                 $value,
-                $matches
+                $prematches
+            );
+            $consumedValue = $prematches['object_like_array_inner2'];
+            $consumedValueLength = \strlen($consumedValue);
+            $consumedCommaLength = \strlen($prematches[0]) - $consumedValueLength;
+
+            $addedPrefix = 'array{';
+            Preg::match(
+                '{^'.self::REGEX_TYPES.'$}x',
+                $addedPrefix.$consumedValue.'}',
+                $matches,
+                PREG_OFFSET_CAPTURE
             );
 
             $this->innerTypeExpressions[] = [
-                'start_index' => $startIndex + \strlen($matches['_start']),
-                'expression' => $this->inner($matches['types']),
+                'start_index' => $startIndex + $matches['object_like_array_inner_value'][1] - \strlen($addedPrefix),
+                'expression' => $this->inner($matches['object_like_array_inner_value'][0]),
             ];
 
-            $newValue = Preg::replace(
-                '/^.+?:\h*'.preg_quote($matches['types'], '/').'(\h*\,\h*)?/',
-                '',
-                $value
-            );
-
-            $startIndex += \strlen($value) - \strlen($newValue);
-            $value = $newValue;
+            $startIndex += $consumedValueLength + $consumedCommaLength;
+            $value = substr($value, $consumedValueLength + $consumedCommaLength);
         }
     }
 
