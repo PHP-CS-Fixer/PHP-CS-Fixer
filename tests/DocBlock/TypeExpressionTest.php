@@ -35,6 +35,17 @@ final class TypeExpressionTest extends TestCase
     {
         $expression = new TypeExpression($typesExpression, null, []);
         self::assertSame($expectedTypes, $expression->getTypes());
+
+        $unionTestNs = '__UnionTest__';
+        $unionExpression = new TypeExpression(
+            $unionTestNs.'\\A|'.$typesExpression.'|'.$unionTestNs.'\\Z',
+            null,
+            []
+        );
+        self::assertSame(
+            [$unionTestNs.'\\A', ...$expectedTypes, $unionTestNs.'\\Z'],
+            [...$unionExpression->getTypes()]
+        );
     }
 
     public static function provideGetTypesCases(): iterable
@@ -152,6 +163,8 @@ final class TypeExpressionTest extends TestCase
         yield ['\\Closure(string): bool', ['\\Closure(string): bool']];
 
         yield ['\\Closure(string|int, bool): bool', ['\\Closure(string|int, bool): bool']];
+
+        yield ['\\Closure(float|int): (bool|int)', ['\\Closure(float|int): (bool|int)']];
 
         yield ['array  <  int   , callable  (  string  )  :   bool  >', ['array  <  int   , callable  (  string  )  :   bool  >']];
 
@@ -415,8 +428,13 @@ final class TypeExpressionTest extends TestCase
         ];
 
         yield 'simple in callable return type' => [
-            'callable(): string|float',
-            'callable(): float|string',
+            'callable(): (string|float)',
+            'callable(): (float|string)',
+        ];
+
+        yield 'callable with union return type and within union itself' => [
+            'callable(): (string|float)|bool',
+            'bool|callable(): (float|string)',
         ];
 
         yield 'simple in closure argument' => [
@@ -430,13 +448,23 @@ final class TypeExpressionTest extends TestCase
         ];
 
         yield 'simple in closure return type' => [
-            'Closure(): string|float',
-            'Closure(): float|string',
+            'Closure(): (string|float)',
+            'Closure(): (float|string)',
+        ];
+
+        yield 'closure with union return type and within union itself' => [
+            'Closure(): (string|float)|bool',
+            'bool|Closure(): (float|string)',
         ];
 
         yield 'with multiple nesting levels' => [
-            'array{0: Foo<int|bool>|Bar<callable(string|float|array<int|bool>): Foo|Bar>}',
-            'array{0: Bar<callable(array<bool|int>|float|string): Bar|Foo>|Foo<bool|int>}',
+            'array{0: Foo<int|bool>|Bar<callable(string|float|array<int|bool>): (Foo|Bar)>}',
+            'array{0: Bar<callable(array<bool|int>|float|string): (Bar|Foo)>|Foo<bool|int>}',
+        ];
+
+        yield 'with multiple nesting levels and callable within union' => [
+            'array{0: Foo<int|bool>|Bar<callable(string|float|array<int|bool>): (Foo|Bar)|Baz>}',
+            'array{0: Bar<Baz|callable(array<bool|int>|float|string): (Bar|Foo)>|Foo<bool|int>}',
         ];
 
         yield 'complex type with Closure with $this' => [
@@ -450,8 +478,15 @@ final class TypeExpressionTest extends TestCase
         ];
 
         yield 'nullable callable' => [
-            '?callable(Foo|Bar): Foo|Bar',
-            '?callable(Bar|Foo): Bar|Foo',
+            '?callable(Foo|Bar): (Foo|Bar)',
+            '?callable(Bar|Foo): (Bar|Foo)',
+        ];
+
+        // This union type makes no sense in general (it should be `Bar|callable|null`)
+        // but let's ensure nullable types are also sorted.
+        yield 'nullable callable with union return type and within union itself' => [
+            '?callable(Foo|Bar): (Foo|Bar)|?Bar',
+            '?Bar|?callable(Bar|Foo): (Bar|Foo)',
         ];
 
         yield 'nullable array shape' => [
