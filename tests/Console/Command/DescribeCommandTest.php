@@ -23,6 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Tests\Fixtures\DescribeCommand\DescribeFixtureFixer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use Prophecy\Argument;
@@ -209,6 +210,41 @@ Fixing examples:
         );
 
         self::assertStringContainsString(\get_class($mock), $commandTester->getDisplay(true));
+    }
+
+    public function testCommandDescribesCustomFixer(): void
+    {
+        $application = new Application();
+        $application->add(new DescribeCommand());
+
+        $command = $application->find('describe');
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            'name' => (new DescribeFixtureFixer())->getName(),
+            '--config' => __DIR__.'/../../Fixtures/DescribeCommand/.php-cs-fixer.fixture.php',
+        ]);
+
+        $expected =
+"Description of Vendor/describe_fixture rule.
+Fixture for describe command.
+
+Fixing examples:
+ * Example #1.
+   ---------- begin diff ----------
+   --- Original
+   +++ New
+   @@ -1,2 +1,2 @@
+    <?php
+   -echo 'describe fixture';
+   +echo 'fixture for describe';
+   ".'
+   ----------- end diff -----------
+
+';
+        self::assertSame($expected, $commandTester->getDisplay(true));
+        self::assertSame(0, $commandTester->getStatusCode());
     }
 
     private function execute(string $name, bool $decorated): CommandTester

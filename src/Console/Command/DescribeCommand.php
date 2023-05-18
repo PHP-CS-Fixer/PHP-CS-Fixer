@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Config;
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Differ\FullDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
@@ -30,6 +32,7 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\ToolInfo;
 use PhpCsFixer\Utils;
 use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -37,6 +40,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -83,6 +87,7 @@ final class DescribeCommand extends Command
             ->setDefinition(
                 [
                     new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
+                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
                 ]
             )
             ->setDescription('Describe rule / ruleset.')
@@ -95,6 +100,15 @@ final class DescribeCommand extends Command
             $stdErr = $output->getErrorOutput();
             $stdErr->writeln($this->getApplication()->getLongVersion());
         }
+
+        $resolver = new ConfigurationResolver(
+            new Config(),
+            ['config' => $input->getOption('config')],
+            getcwd(),
+            new ToolInfo()
+        );
+
+        $this->fixerFactory->registerCustomFixers($resolver->getConfig()->getCustomFixers());
 
         $name = $input->getArgument('name');
 
