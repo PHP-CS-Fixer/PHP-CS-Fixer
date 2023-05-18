@@ -1161,7 +1161,7 @@ List of Available Rules
    *warning risky* Risky if ``strpos``, ``str_starts_with`` or ``str_contains`` functions are
    overridden.
 
-   Part of rule sets `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_ `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
+   Part of rule sets `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Alias\\ModernizeStrposFixer <./../src/Fixer/Alias/ModernizeStrposFixer.php>`_
 -  `modernize_types_casting <./rules/cast_notation/modernize_types_casting.rst>`_

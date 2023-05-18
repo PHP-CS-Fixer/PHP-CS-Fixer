@@ -30,3 +30,4 @@ Disabled rules
 --------------
 
 - `get_class_to_class_keyword <./../rules/language_construct/get_class_to_class_keyword.rst>`_
+- `modernize_strpos <./../rules/alias/modernize_strpos.rst>`_

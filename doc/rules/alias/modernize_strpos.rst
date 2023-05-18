@@ -42,8 +42,5 @@ The rule is part of the following rule sets:
 @PHP80Migration:risky
   Using the `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ rule set will enable the ``modernize_strpos`` rule.
 
-@PhpCsFixer:risky
-  Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``modernize_strpos`` rule.
-
 @Symfony:risky
   Using the `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ rule set will enable the ``modernize_strpos`` rule.
