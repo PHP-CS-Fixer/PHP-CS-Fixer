@@ -439,6 +439,11 @@ final class TypeExpressionTest extends TestCase
             '?callable(Bar|Foo): Foo|Bar',
         ];
 
+        yield 'nullable callable and union' => [
+            '?callable(Foo|Bar): (Foo|Bar)|Bar',
+            '?callable(Bar|Foo): (Bar|Foo)|Bar',
+        ];
+
         yield 'nullable array shape' => [
             '?array{0: Foo|Bar}',
             '?array{0: Bar|Foo}',
