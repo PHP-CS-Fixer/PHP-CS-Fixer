@@ -52,9 +52,15 @@ final class TypeExpressionTest extends TestCase
     {
         yield ['int', ['int']];
 
-        yield ['Foo[][]', ['Foo[][]']];
+        yield ['?int', ['?int']];
+
+        yield ['? int', ['? int']];
 
         yield ['int[]', ['int[]']];
+
+        yield ['Foo[][]', ['Foo[][]']];
+
+        yield ['Foo [ ]  []', ['Foo [ ]  []']];
 
         yield ['int[]|null', ['int[]', 'null']];
 

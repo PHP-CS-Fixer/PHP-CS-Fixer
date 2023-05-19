@@ -32,7 +32,7 @@ final class TypeExpression
     public const REGEX_TYPES = '
     (?<types> # several types separated by `|` or `&`
         (?<type> # single type
-            (?<nullable>\??)
+            (?<nullable>\??\h*)
             (?:
                 (?<object_like_array>
                     (?<object_like_array_start>(array|object)\h*\{\h*)
@@ -82,7 +82,7 @@ final class TypeExpression
                 )
                 |
                 (?<array> # array expression, e.g.: `string[]`, `string[][]`
-                    (?&name)(\[\])+
+                    (?&name)(\h*\[\h*\])+
                 )
                 |
                 (?<constant> # single constant value (case insensitive), e.g.: 1, `\'a\'`
