@@ -57,6 +57,8 @@ final class TypeExpressionTest extends TestCase
 
         // TODO yield ['Foo🚀', ['Foo🚀']];
 
+        yield ['positive-int', ['positive-int']];
+
         yield ['?int', ['?int']];
 
         yield ['? int', ['? int']];
@@ -90,6 +92,8 @@ final class TypeExpressionTest extends TestCase
         yield ['gen<int,  gener<string, null|bool>>', ['gen<int,  gener<string, null|bool>>']];
 
         yield ['gen<int>[][]', ['gen<int>[][]']];
+
+        yield ['non-empty-array<int>', ['non-empty-array<int>']];
 
         yield ['null|gen<int,  gener<string, bool>>|int|string[]', ['null', 'gen<int,  gener<string, bool>>', 'int', 'string[]']];
 
@@ -194,6 +198,8 @@ final class TypeExpressionTest extends TestCase
         yield ['(int|\\Exception)', ['(int|\\Exception)']];
 
         yield ['($foo is int ? false : true)', ['($foo is int ? false : true)']];
+
+        // TODO yield ['($foo🚀3 is int ? false : true)', ['($foo🚀3 is int ? false : true)']];
 
         yield ['\'a\\\'s"\\\\\n\r\t\'|"b\\"s\'\\\\\n\r\t"', ['\'a\\\'s"\\\\\n\r\t\'', '"b\\"s\'\\\\\n\r\t"']];
     }
