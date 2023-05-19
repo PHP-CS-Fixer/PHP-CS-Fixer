@@ -138,6 +138,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array{bool, int}', ['array{bool, int}']];
 
+        yield ['array{bool,}', ['array{bool,}']];
+
         yield ['list{int, bool}', ['list{int, bool}']];
 
         yield ['object{ bool, foo2: int }', ['object{ bool, foo2: int }']];
@@ -145,6 +147,8 @@ final class TypeExpressionTest extends TestCase
         yield ['callable(string)', ['callable(string)']];
 
         yield ['callable(string): bool', ['callable(string): bool']];
+
+        yield ['callable(string,): bool', ['callable(string,): bool']];
 
         yield ['callable(array<int, string>, array<int, Foo>): bool', ['callable(array<int, string>, array<int, Foo>): bool']];
 
@@ -419,6 +423,16 @@ final class TypeExpressionTest extends TestCase
             'array{bool|int}',
         ];
 
+        yield 'simple in array shape with trailing comma' => [
+            'array{int|bool,}',
+            'array{bool|int,}',
+        ];
+
+        yield 'simple in array shape with multiple types with trailing comma' => [
+            'array{int|bool, Foo|Bar, }',
+            'array{bool|int, Bar|Foo, }',
+        ];
+
         yield 'simple in array shape' => [
             'list{int, Foo|Bar}',
             'list{int, Bar|Foo}',
@@ -462,6 +476,16 @@ final class TypeExpressionTest extends TestCase
         yield 'closure with multiple arguments' => [
             'Closure(int|bool, null|array)',
             'Closure(bool|int, array|null)',
+        ];
+
+        yield 'simple in closure argument with trailing comma' => [
+            'Closure(int|bool,)',
+            'Closure(bool|int,)',
+        ];
+
+        yield 'simple in closure argument multiple arguments with trailing comma' => [
+            'Closure(int|bool, null|array,)',
+            'Closure(bool|int, array|null,)',
         ];
 
         yield 'simple in closure return type' => [

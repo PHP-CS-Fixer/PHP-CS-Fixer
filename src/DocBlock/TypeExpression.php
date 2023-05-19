@@ -41,7 +41,11 @@ final class TypeExpression
                                 (?<object_like_array_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
                                 (?<object_like_array_inner_value>(?&types))
                             )
-                            (?:\h*,\h*(?&object_like_array_inner))*
+                            (?:
+                                \h*,\h*
+                                (?&object_like_array_inner)
+                            )*
+                            (?:\h*,\h*)?
                         )?
                     \h*\}
                 )
@@ -54,6 +58,7 @@ final class TypeExpression
                                 \h*,\h*
                                 (?&types)
                             )*
+                            (?:\h*,\h*)?
                         )?
                     \h*\)
                     (?:
