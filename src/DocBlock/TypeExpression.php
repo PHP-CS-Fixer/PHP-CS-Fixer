@@ -81,10 +81,6 @@ final class TypeExpression
                     (?&name)::(\*|\w+\*?)
                 )
                 |
-                (?<array> # array expression, e.g.: `string[]`, `string[][]`
-                    (?&name)(\h*\[\h*\])+
-                )
-                |
                 (?<constant> # single constant value (case insensitive), e.g.: 1, `\'a\'`
                     (?i)
                     null | true | false
@@ -125,6 +121,9 @@ final class TypeExpression
                     )
                     \h*\)
                 )
+            )
+            (?<array> # array, e.g.: `string[]`, `array<int, string>[][]`
+                (\h*\[\h*\])*
             )
         )
         (?:

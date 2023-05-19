@@ -84,6 +84,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['gen<int,  gener<string, null|bool>>', ['gen<int,  gener<string, null|bool>>']];
 
+        yield ['gen<int>[][]', ['gen<int>[][]']];
+
         yield ['null|gen<int,  gener<string, bool>>|int|string[]', ['null', 'gen<int,  gener<string, bool>>', 'int', 'string[]']];
 
         yield ['null|gen<int,  gener<string, bool>>|int|array<int, string>|string[]', ['null', 'gen<int,  gener<string, bool>>', 'int', 'array<int, string>', 'string[]']];
@@ -107,6 +109,8 @@ final class TypeExpressionTest extends TestCase
         yield ['Foo::A|Foo::B', ['Foo::A', 'Foo::B']];
 
         yield ['Foo::A*', ['Foo::A*']];
+
+        yield ['?Foo::*[]', ['?Foo::*[]']];
 
         yield ['array<Foo::A*>|null', ['array<Foo::A*>', 'null']];
 
