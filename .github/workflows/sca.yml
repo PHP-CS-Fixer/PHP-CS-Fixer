@@ -35,6 +35,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
+          extensions: none, dom, mbstring, opcache, simplexml, tokenizer, xml, xmlwriter
           coverage: none # without this Xdebug will be enabled
           tools: cs2pr
 
