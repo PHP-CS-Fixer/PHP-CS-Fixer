@@ -111,6 +111,14 @@ $a = function() use ($b) { new class($b){}; }; // do not fix
 $a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; // do fix
 ',
             ],
+            'anonymous class with a string argument' => [
+                '<?php $function = function () {
+                    new class("bar") {};
+                };',
+                '<?php $function = function () use ($foo) {
+                    new class("bar") {};
+                };',
+            ],
         ];
     }
 
