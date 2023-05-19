@@ -27,6 +27,13 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
  */
 final class ArgumentAnalysisTest extends TestCase
 {
+    public function testWithoutName(): void
+    {
+        $analysis = new ArgumentAnalysis(null, null, null, null);
+        self::assertNull($analysis->getName());
+        self::assertNull($analysis->getNameIndex());
+    }
+
     public function testName(): void
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, null);
