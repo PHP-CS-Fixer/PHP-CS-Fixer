@@ -1911,7 +1911,7 @@ List of Available Rules
    Custom values:
 
    - ``method:*``: specify a single method name (e.g. ``method:__invoke``) to
-   set the relative order of that specific method
+   set the order of that specific method
 
    Configuration options:
 
