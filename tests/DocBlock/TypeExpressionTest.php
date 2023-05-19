@@ -52,6 +52,10 @@ final class TypeExpressionTest extends TestCase
     {
         yield ['int', ['int']];
 
+        yield ['Foo5', ['Foo5']];
+
+        // TODO yield ['Foo🚀', ['Foo🚀']];
+
         yield ['?int', ['?int']];
 
         yield ['? int', ['? int']];
