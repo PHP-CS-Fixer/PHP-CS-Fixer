@@ -117,6 +117,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Foo::A*', ['Foo::A*']];
 
+        yield ['Foo::*A*_Bar', ['Foo::*A*_Bar']];
+
         yield ['?Foo::*[]', ['?Foo::*[]']];
 
         yield ['array<Foo::A*>|null', ['array<Foo::A*>', 'null']];

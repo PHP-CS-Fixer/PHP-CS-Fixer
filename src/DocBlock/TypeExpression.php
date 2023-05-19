@@ -83,7 +83,7 @@ final class TypeExpression
                 )
                 |
                 (?<class_constant> # class constants with optional wildcard, e.g.: `Foo::*`, `Foo::CONST_A`, `FOO::CONST_*`
-                    (?&name)::(\*|\w++\*?)
+                    (?&name)::\*?(?:\w++\*?)*
                 )
                 |
                 (?<constant> # single constant value (case insensitive), e.g.: 1, -1.8E+6, `\'a\'`
@@ -104,7 +104,7 @@ final class TypeExpression
                 )
                 |
                 (?<name> # single type, e.g.: `null`, `int`, `\Foo\Bar`
-                    [\\\\\w-]++
+                    [\\\\\w\-]++
                 )
                 |
                 (?<parenthesized> # parenthesized type, e.g.: `(int)`, `(int|\stdClass)`
