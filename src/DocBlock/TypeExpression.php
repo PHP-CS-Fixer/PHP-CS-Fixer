@@ -35,7 +35,7 @@ final class TypeExpression
             (?<nullable>\??\h*)
             (?:
                 (?<object_like_array>
-                    (?<object_like_array_start>(array|list|object)\h*\{\h*)
+                    (?<object_like_array_start>(?:array|list|object)\h*\{\h*)
                         (?<object_like_array_inners>
                             (?<object_like_array_inner>
                                 (?<object_like_array_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
@@ -86,11 +86,19 @@ final class TypeExpression
                     (?&name)::(\*|\w+\*?)
                 )
                 |
-                (?<constant> # single constant value (case insensitive), e.g.: 1, `\'a\'`
+                (?<constant> # single constant value (case insensitive), e.g.: 1, -1.8E+6, `\'a\'`
                     (?i)
                     null | true | false
-                    | -?(?:\d+(?:\.\d*)?|\.\d+) # all sorts of numbers with or without minus, e.g.: 1, 1.1, 1., .1, -1
-                    | \'(?:[^\'\\\\]|\\\\.)*?\' | "(?:[^"\\\\]|\\\\.)*?"
+                    | [+-]?(?:
+                        (?:0b[01]++(?:_[01]++)*+)
+                        | (?:0o[0-7]++(?:_[0-7]++)*+)
+                        | (?:0x[\da-f]++(?:_[\da-f]++)*+)
+                        | (?:(?<constant_digits>\d++(?:_\d++)*+)|(?=\.\d))
+                          (?:\.(?&constant_digits)|(?<=\d)\.)?+
+                          (?:e[+-]?(?&constant_digits))?+
+                    )
+                    | \'(?:[^\'\\\\]|\\\\.)*?\'
+                    | "(?:[^"\\\\]|\\\\.)*?"
                     | [@$]?(?:this | self | static)
                     (?-i)
                 )

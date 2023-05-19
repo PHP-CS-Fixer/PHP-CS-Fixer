@@ -29,6 +29,7 @@ final class TypeExpressionTest extends TestCase
     /**
      * @param string[] $expectedTypes
      *
+     * @dataProvider provideGetConstTypesCases
      * @dataProvider provideGetTypesCases
      */
     public function testGetTypes(string $typesExpression, array $expectedTypes): void
@@ -194,15 +195,54 @@ final class TypeExpressionTest extends TestCase
 
         yield ['($foo is int ? false : true)', ['($foo is int ? false : true)']];
 
-        yield ['\'\'', ['\'\'']];
-
-        yield ['\'foo\'', ['\'foo\'']];
-
-        yield ['\'\\\\\'', ['\'\\\\\'']];
-
-        yield ['\'\\\'\'', ['\'\\\'\'']];
-
         yield ['\'a\\\'s"\\\\\n\r\t\'|"b\\"s\'\\\\\n\r\t"', ['\'a\\\'s"\\\\\n\r\t\'', '"b\\"s\'\\\\\n\r\t"']];
+    }
+
+    public static function provideGetConstTypesCases(): iterable
+    {
+        foreach ([
+            'null',
+            'true',
+            'FALSE',
+
+            '123',
+            '+123',
+            '-123',
+            '0b0110101',
+            '0o777',
+            '0x7Fb4',
+            '-0O777',
+            '-0X7Fb4',
+            '123_456',
+            '0b01_01_01',
+            '-0X7_Fb_4',
+            '18_446_744_073_709_551_616', // 64-bit unsigned long + 1, larger than PHP_INT_MAX
+
+            '123.4',
+            '.123',
+            '123.',
+            '123e4',
+            '123E4',
+            '12.3e4',
+            '+123.5',
+            '-123.',
+            '-123.4',
+            '-.123',
+            '-123.',
+            '-123e-4',
+            '-12.3e-4',
+            '-1_2.3_4e5_6',
+            '123E+80',
+            '8.2023437675747321', // greater precision than 64-bit double
+            '-0.0',
+
+            '\'\'',
+            '\'foo\'',
+            '\'\\\\\'',
+            '\'\\\'\'',
+        ] as $type) {
+            yield [$type, [$type]];
+        }
     }
 
     /**
@@ -577,6 +617,11 @@ final class TypeExpressionTest extends TestCase
         yield 'conditional in conditional' => [
             '((Foo|Bar) is x ? ($x is (CFoo|CBar) ? (TFoo|TBar) : (FFoo|FBar)) : z)',
             '((Bar|Foo) is x ? ($x is (CBar|CFoo) ? (TBar|TFoo) : (FBar|FFoo)) : z)',
+        ];
+
+        yield 'large numbers' => [
+            '18_446_744_073_709_551_616|-8.2023437675747321e-18_446_744_073_709_551_616',
+            '-8.2023437675747321e-18_446_744_073_709_551_616|18_446_744_073_709_551_616',
         ];
     }
 }
