@@ -55,6 +55,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Foo5', ['Foo5']];
 
+        yield ['🚀_kůň', ['🚀_kůň']];
+
         yield ['positive-int', ['positive-int']];
 
         yield ['?int', ['?int']];
@@ -117,7 +119,7 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Foo::A*', ['Foo::A*']];
 
-        yield ['Foo::*A*_Bar', ['Foo::*A*_Bar']];
+        yield ['Foo::*0*_Bar', ['Foo::*0*_Bar']];
 
         yield ['?Foo::*[]', ['?Foo::*[]']];
 
@@ -198,6 +200,8 @@ final class TypeExpressionTest extends TestCase
         yield ['(int|\\Exception)', ['(int|\\Exception)']];
 
         yield ['($foo is int ? false : true)', ['($foo is int ? false : true)']];
+
+        yield ['($foo🚀3 is int ? false : true)', ['($foo🚀3 is int ? false : true)']];
 
         yield ['\'a\\\'s"\\\\\n\r\t\'|"b\\"s\'\\\\\n\r\t"', ['\'a\\\'s"\\\\\n\r\t\'', '"b\\"s\'\\\\\n\r\t"']];
     }
