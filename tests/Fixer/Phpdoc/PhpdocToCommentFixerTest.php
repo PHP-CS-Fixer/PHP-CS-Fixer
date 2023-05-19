@@ -39,7 +39,7 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideDocblocksCases(): array
+    public static function provideDocblocksCases(): iterable
     {
         $cases = [];
 
@@ -681,7 +681,14 @@ foreach($connections as $key => $sqlite) {
             ['ignored_tags' => ['todo']],
         ];
 
-        return $cases;
+        yield from $cases;
+
+        yield 'do not convert before fn' => [
+            '<?php // needed because by default first comment is never fixed
+            /** @param int $x */
+            fn ($x) => $x + 42;
+            ',
+        ];
     }
 
     public static function provideTraitsCases(): array
