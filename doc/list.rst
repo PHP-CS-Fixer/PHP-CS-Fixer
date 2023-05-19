@@ -903,7 +903,7 @@ List of Available Rules
 
    *warning risky* Risky if the ``get_class`` function is overridden.
 
-   Part of rule set `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_
+   Part of rule sets `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\LanguageConstruct\\GetClassToClassKeywordFixer <./../src/Fixer/LanguageConstruct/GetClassToClassKeywordFixer.php>`_
 -  `global_namespace_import <./rules/import/global_namespace_import.rst>`_
@@ -1161,7 +1161,7 @@ List of Available Rules
    *warning risky* Risky if ``strpos``, ``str_starts_with`` or ``str_contains`` functions are
    overridden.
 
-   Part of rule set `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_
+   Part of rule sets `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Alias\\ModernizeStrposFixer <./../src/Fixer/Alias/ModernizeStrposFixer.php>`_
 -  `modernize_types_casting <./rules/cast_notation/modernize_types_casting.rst>`_
@@ -1851,6 +1851,8 @@ List of Available Rules
      | Allowed types: ``bool``
      | Default value: ``true``
 
+
+   Part of rule set `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\NullableTypeDeclarationForDefaultNullValueFixer <./../src/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixer.php>`_
 -  `object_operator_without_whitespace <./rules/operator/object_operator_without_whitespace.rst>`_
@@ -2660,7 +2662,7 @@ List of Available Rules
 
    Converts ``protected`` variables and methods to ``private`` where possible.
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\ProtectedToPrivateFixer <./../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php>`_
 -  `psr_autoloading <./rules/basic/psr_autoloading.rst>`_

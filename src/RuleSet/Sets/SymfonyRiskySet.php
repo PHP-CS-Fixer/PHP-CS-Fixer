@@ -36,11 +36,13 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
                 'b_mode' => false,
             ],
             'function_to_constant' => true,
+            'get_class_to_class_keyword' => true,
             'implode_call' => true,
             'is_null' => true,
             'logical_operators' => true,
+            'modernize_strpos' => true,
             'modernize_types_casting' => true,
-            'native_constant_invocation' => true,
+            'native_constant_invocation' => ['strict' => false],
             'native_function_invocation' => [
                 'include' => [
                     '@compiler_optimized',
