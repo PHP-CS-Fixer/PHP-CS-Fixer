@@ -36,6 +36,8 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
      * @param null|Token[] $input
      *
      * @dataProvider provideProcessCases
+     *
+     * @requires PHP 8.0
      */
     public function testProcess(array $expected, array $input = null): void
     {
@@ -62,10 +64,6 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        if (\PHP_VERSION_ID < 8_00_00) {
-            return; // PHPUnit still calls this for no reason on non PHP8.0
-        }
-
         yield 'string' => [
             [
                 new Token([T_OPEN_TAG, "<?php\n"]),
