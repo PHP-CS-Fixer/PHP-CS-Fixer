@@ -4125,16 +4125,16 @@ declare   (   ticks   =   1   )   {
     /**
      * @param array<string, mixed> $configuration
      *
-     * @dataProvider provideFix70Cases
+     * @dataProvider provideFixCases
      */
-    public function testFix70(string $expected, ?string $input = null, array $configuration = []): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix70Cases(): iterable
+    public static function provideFixCases(): iterable
     {
         return [
             [
