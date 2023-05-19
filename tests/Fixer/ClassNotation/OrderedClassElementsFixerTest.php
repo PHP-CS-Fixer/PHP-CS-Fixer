@@ -996,6 +996,37 @@ abstract class Foo
 EOT
                 ,
             ],
+            [
+                [
+                    'method:foo',
+                    'method_public',
+                    'method:bar',
+                    'method:baz',
+                    'magic',
+                ],
+                <<<'EOT'
+<?php
+
+abstract class Foo
+{
+    public function pub() {}
+    public function bar() {}
+    public function __toString() {}
+}
+EOT
+                ,
+                <<<'EOT'
+<?php
+
+abstract class Foo
+{
+    public function __toString() {}
+    public function pub() {}
+    public function bar() {}
+}
+EOT
+                ,
+            ],
         ];
     }
 
