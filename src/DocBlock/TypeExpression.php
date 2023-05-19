@@ -35,7 +35,7 @@ final class TypeExpression
             (?<nullable>\??\h*)
             (?:
                 (?<object_like_array>
-                    (?<object_like_array_start>(array|object)\h*\{\h*)
+                    (?<object_like_array_start>(array|list|object)\h*\{\h*)
                         (?<object_like_array_inners>
                             (?<object_like_array_inner>
                                 (?<object_like_array_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
