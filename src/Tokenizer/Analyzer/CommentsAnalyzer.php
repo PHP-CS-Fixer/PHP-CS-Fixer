@@ -169,6 +169,7 @@ final class CommentsAnalyzer
                 T_PUBLIC,
                 T_VAR,
                 T_FUNCTION,
+                T_FN,
                 T_ABSTRACT,
                 T_CONST,
                 T_NAMESPACE,
