@@ -324,6 +324,7 @@ $bar;',
     {
         return [
             ['<?php /* Before anonymous function */ $fn = fn($x) => $x + 1;'],
+            ['<?php /* Before anonymous function */ fn($x) => $x + 1;'],
         ];
     }
 
