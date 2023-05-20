@@ -624,7 +624,7 @@ var names are case-insensitive */ return $a   ;}
                 '<?php
                 function foo()
                 {
-                    if (isSomeContiotion()) {
+                    if (isSomeCondition()) {
                         return getSomeResult();
                     }
 
@@ -640,7 +640,7 @@ var names are case-insensitive */ return $a   ;}
                 '<?php
                 function foo()
                 {
-                    if (isSomeContiotion()) {
+                    if (isSomeCondition()) {
                         $result = getSomeResult();
 
                         return $result;
@@ -666,7 +666,7 @@ var names are case-insensitive */ return $a   ;}
                         error_log($exception->getMessage());
                     }
 
-                    if (isSomeContiotion()) {
+                    if (isSomeCondition()) {
                         return getSomeResult();
                     }
 
@@ -688,7 +688,7 @@ var names are case-insensitive */ return $a   ;}
                         error_log($exception->getMessage());
                     }
 
-                    if (isSomeContiotion()) {
+                    if (isSomeCondition()) {
                         $result = getSomeResult();
                         return $result;
                     }
@@ -706,7 +706,7 @@ var names are case-insensitive */ return $a   ;}
                 '<?php
                 function foo()
                 {
-                    if (isSomeContiotion()) {
+                    if (isSomeCondition()) {
                         return getSomeResult();
                     }
 
@@ -724,7 +724,7 @@ var names are case-insensitive */ return $a   ;}
                 '<?php
                 function foo()
                 {
-                    if (isSomeContiotion()) {
+                    if (isSomeCondition()) {
                         $result = getSomeResult();
 
                         return $result;
@@ -752,7 +752,7 @@ var names are case-insensitive */ return $a   ;}
                         error_log($exception->getMessage());
                     }
 
-                    if (isSomeContiotion()) {
+                    if (isSomeCondition()) {
                         return getSomeResult();
                     }
 
@@ -776,7 +776,7 @@ var names are case-insensitive */ return $a   ;}
                         error_log($exception->getMessage());
                     }
 
-                    if (isSomeContiotion()) {
+                    if (isSomeCondition()) {
                         $result = getSomeResult();
                         return $result;
                     }
