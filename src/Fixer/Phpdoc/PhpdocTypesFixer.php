@@ -80,7 +80,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
         }, $this->configuration['groups']));
 
         $this->patternToFix = sprintf(
-            '/(?<![a-zA-Z0-9_\x80-\xff]\\\\)(\b|.(?=\$))(%s)\b(?!(\\\\|:))/i',
+            '/(?<![\dA-Z_a-z\x80-\xff]\\\\)(\b|.(?=\$))(%s)\b(?!(\\\\|:))/i',
             implode(
                 '|',
                 array_map(

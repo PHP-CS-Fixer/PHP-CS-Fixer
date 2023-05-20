@@ -31,7 +31,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private const CLASS_REGEX = '/^\\\\?[a-zA-Z_\\x80-\\xff](?:\\\\?[a-zA-Z0-9_\\x80-\\xff]+)*$/';
+    private const CLASS_REGEX = '/^\\\\?[A-Z_a-z\x80-\xff](?:\\\\?[\dA-Z_a-z\x80-\xff]+)*$/';
 
     /**
      * @var array<string, int>
