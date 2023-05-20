@@ -474,7 +474,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
     {
         // Find try
         $tryIndex = $tokens->getPrevTokenOfKind($returnVarIndex, [[T_TRY]]);
-        if (null === $tryIndex || $tryIndex <= $functionOpenIndex || $tryIndex >= $functionCloseIndex) {
+        if (null === $tryIndex || $tryIndex <= $functionOpenIndex) {
             return false;
         }
         $tryOpenIndex = $tokens->getNextTokenOfKind($tryIndex, ['{']);
