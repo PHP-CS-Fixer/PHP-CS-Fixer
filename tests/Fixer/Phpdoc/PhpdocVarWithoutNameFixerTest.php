@@ -503,6 +503,32 @@ class A
     public static $static = "foo";
 }',
             ],
+            'testFixClosureWithThis' => [
+                <<<'EOF'
+<?php
+
+class Foo
+{
+    /**
+     * @var array<string, string|array{ string|\Closure(mixed, string, $this): int|float }>|false Hello!
+     */
+    public $foo;
+}
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+class Foo
+{
+    /**
+     * @var array<string, string|array{ string|\Closure(mixed, string, $this): int|float }>|false $foo Hello!
+     */
+    public $foo;
+}
+EOF
+                ,
+            ],
         ];
     }
 
