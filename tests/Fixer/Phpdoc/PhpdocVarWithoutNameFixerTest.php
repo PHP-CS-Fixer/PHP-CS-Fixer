@@ -513,6 +513,12 @@ class Foo
      * @var array<string, string|array{ string|\Closure(mixed, string, $this): int|float }>|false Hello!
      */
     public $foo;
+
+    /** @var int Hello! */
+    public $foo2;
+
+    /** @var int Hello! */
+    public $foo3;
 }
 EOF
                 ,
@@ -525,6 +531,12 @@ class Foo
      * @var array<string, string|array{ string|\Closure(mixed, string, $this): int|float }>|false $foo Hello!
      */
     public $foo;
+
+    /** @var int $thi Hello! */
+    public $foo2;
+
+    /** @var int $thiss Hello! */
+    public $foo3;
 }
 EOF
                 ,
