@@ -3122,6 +3122,13 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\UnaryOperatorSpacesFixer <./../src/Fixer/Operator/UnaryOperatorSpacesFixer.php>`_
+-  `union_null <./rules/language_construct/union_null.rst>`_
+
+   Replaces ? with the corresponding union type.
+
+   Rule is applied only in a PHP 8.0+ environment.
+
+   `Source PhpCsFixer\\Fixer\\LanguageConstruct\\UnionNullFixer <./../src/Fixer/LanguageConstruct/UnionNullFixer.php>`_
 -  `use_arrow_functions <./rules/function_notation/use_arrow_functions.rst>`_
 
    Anonymous functions with one-liner return statement must use arrow functions.

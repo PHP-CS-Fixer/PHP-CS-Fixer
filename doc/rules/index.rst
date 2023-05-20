@@ -477,6 +477,9 @@ Language Construct
 - `single_space_around_construct <./language_construct/single_space_around_construct.rst>`_
 
   Ensures a single space after language constructs.
+- `union_null <./language_construct/union_null.rst>`_
+
+  Replaces ? with the corresponding union type.
 
 List Notation
 -------------
