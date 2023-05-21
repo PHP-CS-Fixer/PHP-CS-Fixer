@@ -72,17 +72,12 @@ final class UnionNullFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens): bool
     {
         // we want a function with variables or
-        return ($tokens->isTokenKindFound(T_VARIABLE) && $tokens->isAnyTokenKindsFound(self::FUNCTION_TOKENS))
-            || ($tokens->isTokenKindFound(T_CLASS) && $tokens->isAnyTokenKindsFound(self::PROPERTY_TOKENS));
+        return \PHP_VERSION_ID >= 8_00_00 && (($tokens->isTokenKindFound(T_VARIABLE) && $tokens->isAnyTokenKindsFound(self::FUNCTION_TOKENS))
+            || ($tokens->isTokenKindFound(T_CLASS) && $tokens->isAnyTokenKindsFound(self::PROPERTY_TOKENS)));
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        // Union types are unsupported
-        if (\PHP_VERSION_ID < 8_00_00) {
-            return;
-        }
-
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
