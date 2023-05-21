@@ -88,14 +88,59 @@ final class UnionNullFixerTest extends AbstractFixerTestCase
 class Foo
 {
     private {type} $foo = null;
-    private readonly {type} $foo2;
     private static {type} $fooS = null;
     protected {type} $foo3 = null;
-    protected readonly {type} $foo4;
     protected static {type} $fooS2 = null;
     public {type} $foo5 = null;
-    public readonly {type} $foo6;
     public static {type} $fooS3 = null;
+}
+
+?>
+CLASS;
+
+        $build = fn (string $a, string $b) => [
+            str_replace('{type}', $a, $template),
+            str_replace('{type}', $b, $template),
+        ];
+
+        yield $build(
+            'int|null',
+            '?int'
+        );
+
+        yield $build(
+            'string|null',
+            '?string'
+        );
+
+        yield $build(
+            'object|null',
+            '?object'
+        );
+    }
+    
+    /**
+     * @dataProvider providePropertyReadonlyCases
+     */
+    public function testPropertyReadonly(string $expected, ?string $input = null): void
+    {
+        if (\PHP_VERSION_ID < 8_10_00) {
+            self::markTestSkipped('PHP >= 8.1 is required.');
+        }
+
+        $this->doTest($expected, $input);
+    }
+    
+    public static function providePropertyReadonlyCases(): iterable
+    {
+        $template = <<<'CLASS'
+<?php
+
+class Foo
+{
+    private readonly {type} $foo;
+    protected readonly {type} $foo2;
+    public readonly {type} $foo3;
 }
 
 ?>
