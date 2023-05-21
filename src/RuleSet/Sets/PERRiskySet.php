@@ -41,6 +41,6 @@ final class PERRiskySet extends AbstractRuleSetDescription
 
     public function getDescription(): string
     {
-        return 'Alias for the PER-CS rules. It is recommended you use @PER-CS instead.';
+        return 'Alias for the PER-CS risky rules. It is recommended you use ``@PER-CS:risky`` instead.';
     }
 }

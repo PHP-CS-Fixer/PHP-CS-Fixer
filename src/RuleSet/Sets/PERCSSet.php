@@ -22,8 +22,7 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  * @see https://www.php-fig.org/per/coding-style/
  *
  * This Ruleset always points to the latest version of PER-CS.
- * To fix on a specific version of PER-CS, use `PERCS10` (the 1.0 release),
- * `PERCS11` (the 1.1 release), etc.
+ * To fix on a specific version of PER-CS, use `PER-CS1.0` (the 1.0 release) etc.
  */
 final class PERCSSet extends AbstractRuleSetDescription
 {

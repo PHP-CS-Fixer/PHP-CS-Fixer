@@ -21,9 +21,8 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  *
  * @see https://www.php-fig.org/per/coding-style/
  *
- * This Ruleset always points to the latest version of PER-CS.
- * To fix on a specific version of PER-CS, use `PERCS10` (the 1.0 release),
- * `PERCS11` (the 1.1 release), etc.
+ * This Ruleset always points to the latest version of PER-CS risky rules.
+ * To fix on a specific version of PER-CS risky rules, use `PER-CS1.0:risky` etc.
  */
 final class PERCSRiskySet extends AbstractRuleSetDescription
 {
@@ -41,6 +40,6 @@ final class PERCSRiskySet extends AbstractRuleSetDescription
 
     public function getDescription(): string
     {
-        return 'Rules that follow the latest `PER Coding Style <https://www.php-fig.org/per/coding-style/>`_.';
+        return 'Risky rules that follow the latest `PER Coding Style <https://www.php-fig.org/per/coding-style/>`_.';
     }
 }
