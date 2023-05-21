@@ -1,8 +1,13 @@
-================
+===================
 Rule ``union_null``
-================
+===================
 
-Replaces ``?int`` types with ``int|null``.
+Replaces ? with the corresponding union type.
+
+Description
+-----------
+
+Rule is applied only in a PHP 8.0+ environment.
 
 Examples
 --------
