@@ -24,9 +24,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class UnionNullFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideParameters
+     * @dataProvider provideParameterCases
      */
-    public function testParameters(string $expected, ?string $input = null): void
+    public function testParameter(string $expected, ?string $input = null): void
     {
         if (\PHP_VERSION_ID < 8_00_00) {
             self::markTestSkipped('PHP >= 8.0 is required.');
@@ -35,7 +35,7 @@ final class UnionNullFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideParameters(): iterable
+    public static function provideParameterCases(): iterable
     {
         yield [
             '<?php function foo(int|null $a = null) {} ?>',
@@ -69,9 +69,9 @@ final class UnionNullFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideProperties
+     * @dataProvider providePropertyCases
      */
-    public function testProperties(string $expected, ?string $input = null): void
+    public function testProperty(string $expected, ?string $input = null): void
     {
         if (\PHP_VERSION_ID < 8_00_00) {
             self::markTestSkipped('PHP >= 8.0 is required.');
@@ -80,7 +80,7 @@ final class UnionNullFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideProperties(): iterable
+    public static function providePropertyCases(): iterable
     {
         $template = <<<'CLASS'
 <?php
