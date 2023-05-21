@@ -1,5 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
@@ -20,7 +32,7 @@ final class UnionNullFixer extends AbstractFixer
     private const PROPERTY_TOKENS = [
         T_PRIVATE,
         T_PROTECTED,
-        T_PUBLIC
+        T_PUBLIC,
     ];
 
     private FunctionsAnalyzer $functionAnalyzer;
@@ -41,7 +53,7 @@ final class UnionNullFixer extends AbstractFixer
                 ),
                 new CodeSample(
                     "<?php\nclass Foo {\n  private ?string \$str = null;\n}\n",
-                )
+                ),
             ],
             'Rule is applied only in a PHP 8.0+ environment.'
         );
@@ -60,8 +72,8 @@ final class UnionNullFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens): bool
     {
         // we want a function with variables or
-        return ($tokens->isTokenKindFound(T_VARIABLE) && $tokens->isAnyTokenKindsFound(self::FUNCTION_TOKENS)) ||
-            ($tokens->isTokenKindFound(T_CLASS) && $tokens->isAnyTokenKindsFound(self::PROPERTY_TOKENS));
+        return ($tokens->isTokenKindFound(T_VARIABLE) && $tokens->isAnyTokenKindsFound(self::FUNCTION_TOKENS))
+            || ($tokens->isTokenKindFound(T_CLASS) && $tokens->isAnyTokenKindsFound(self::PROPERTY_TOKENS));
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -96,13 +108,13 @@ final class UnionNullFixer extends AbstractFixer
             if (
                 // Skip, if the parameter
                 // - doesn't have a type declaration
-                !$argumentInfo->hasTypeAnalysis() ||
+                !$argumentInfo->hasTypeAnalysis()
                 // - there's no nullability
-                !$argumentTypeInfo->isNullable() ||
+                || !$argumentTypeInfo->isNullable()
                 // - we're changing to a union and this parameter already is one
                 // there can never be a ? sign when using unions as PHP disallows it
                 // so there's no need to check anything here
-                str_contains($argumentTypeInfo->getName(), '|')) {
+                || str_contains($argumentTypeInfo->getName(), '|')) {
                 continue;
             }
             $tokens->clearTokenAndMergeSurroundingWhitespace($argumentTypeInfo->getStartIndex());
@@ -157,7 +169,7 @@ final class UnionNullFixer extends AbstractFixer
         }
 
         // we only need to skip one token because it's not possible to have a static readonly
-        if (in_array($tokens[$next]->getId(), $skip)) {
+        if (\in_array($tokens[$next]->getId(), $skip, true)) {
             $next = $tokens->getNonWhitespaceSibling($next, 1);
         }
 
