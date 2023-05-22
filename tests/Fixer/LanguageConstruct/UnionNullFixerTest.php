@@ -26,6 +26,22 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class UnionNullFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @dataProvider provideReturnTypeCases
+     */
+    public function testReturnType(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideReturnTypeCases(): iterable
+    {
+        yield [
+            '<?php function foo(): string|null {} ?>',
+            '<?php function foo(): ?string {} ?>',
+        ];
+    }
+
+    /**
      * @dataProvider provideParameterCases
      */
     public function testParameter(string $expected, ?string $input = null): void
@@ -118,7 +134,7 @@ CLASS;
      */
     public function testPropertyReadonly(string $expected, ?string $input = null): void
     {
-        if (\PHP_VERSION_ID < 8_10_00) {
+        if (\PHP_VERSION_ID < 8_01_00) {
             self::markTestSkipped('PHP >= 8.1 is required.');
         }
 

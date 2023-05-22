@@ -54,6 +54,12 @@ final class UnionNullFixer extends AbstractFixer
                 new CodeSample(
                     "<?php\nclass Foo {\n  private ?string \$str = null;\n}\n",
                 ),
+                new CodeSample(
+                    "<?php\nfunction sample(): ?string\n{}\n"
+                ),
+                new CodeSample(
+                    "<?php\n\$fn = fn (): ?int => 5;\n"
+                ),
             ],
             'Rule is applied only in a PHP 8.0+ environment.'
         );
@@ -62,7 +68,7 @@ final class UnionNullFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens): bool
     {
         // we want a function with variables or
-        return \PHP_VERSION_ID >= 8_00_00 && (($tokens->isTokenKindFound(T_VARIABLE) && $tokens->isAnyTokenKindsFound(self::FUNCTION_TOKENS))
+        return \PHP_VERSION_ID >= 8_00_00 && ($tokens->isAnyTokenKindsFound(self::FUNCTION_TOKENS)
             || ($tokens->isTokenKindFound(T_CLASS) && $tokens->isAnyTokenKindsFound(self::PROPERTY_TOKENS)));
     }
 
@@ -83,18 +89,20 @@ final class UnionNullFixer extends AbstractFixer
 
     private function processFunction(Tokens $tokens, int $index): void
     {
+        // starting from return type since we're moving backwards
+        $this->processReturnType($tokens, $index);
         $arguments = $this->functionAnalyzer->getFunctionArguments($tokens, $index);
-        // fix params
 
+        // fix arguments
         foreach (array_reverse($arguments) as $argumentInfo) {
             // we don't touch this unless it's available anyway so it's fine to get it earlier
             $argumentTypeInfo = $argumentInfo->getTypeAnalysis();
 
             if (
-                // Skip, if the parameter
+                // Skip, if parameter
                 // - doesn't have a type declaration
                 !$argumentInfo->hasTypeAnalysis()
-                // - there's no nullability
+                // - doesn't have nullability
                 || !$argumentTypeInfo->isNullable()
                 // - we're changing to a union and this parameter already is one
                 // there can never be a ? sign when using unions as PHP disallows it
@@ -102,6 +110,7 @@ final class UnionNullFixer extends AbstractFixer
                 || str_contains($argumentTypeInfo->getName(), '|')) {
                 continue;
             }
+
             $tokens->clearTokenAndMergeSurroundingWhitespace($argumentTypeInfo->getStartIndex());
             $tokens->insertAt(
                 $argumentTypeInfo->getEndIndex() + 1,
@@ -111,6 +120,31 @@ final class UnionNullFixer extends AbstractFixer
                 ]
             );
         }
+    }
+
+    private function processReturnType(Tokens $tokens, int $index): void
+    {
+        $type = $this->functionAnalyzer->getFunctionReturnType($tokens, $index);
+
+        if (null === $type) {
+            return;
+        }
+
+        // Skip, if return type
+        // - doesn't have nullability
+        // - is already a union
+        if (!$type->isNullable() || str_contains($type->getName(), '|')) {
+            return;
+        }
+
+        $tokens->clearTokenAndMergeSurroundingWhitespace($type->getStartIndex());
+        $tokens->insertAt(
+            $type->getEndIndex() + 1,
+            [
+                new Token([CT::T_TYPE_ALTERNATION, '|']),
+                new Token([T_STRING, 'null']),
+            ]
+        );
     }
 
     private function processProperty(Tokens $tokens, int $index): void

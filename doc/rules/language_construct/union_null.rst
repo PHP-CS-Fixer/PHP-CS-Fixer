@@ -36,3 +36,26 @@ Example #2
    -  private ?string $str = null;
    +  private string|null $str = null;
     }
+
+Example #3
+~~~~~~~~~~
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -function sample(): ?string
+   +function sample(): string|null
+    {}
+
+Example #4
+~~~~~~~~~~
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -$fn = fn (): ?int => 5;
+   +$fn = fn (): int|null => 5;
