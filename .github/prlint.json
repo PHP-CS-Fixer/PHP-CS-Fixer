@@ -5,7 +5,7 @@
       "message": "Your title needs to match the convention: use '(feature|bug|minor|docs|DX):' prefix."
     },
     {
-      "pattern": "((?<=`)@\\S+`)|(^[^@]*$)",
+      "pattern": "((?<=`)@\\S*`)|(^[^@]*$)",
       "message": "Put backticks around @keyword so it does not reference a GitHub user."
     }
   ]
