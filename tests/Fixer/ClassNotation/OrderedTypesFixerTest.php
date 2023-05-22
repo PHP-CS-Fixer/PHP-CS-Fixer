@@ -40,7 +40,7 @@ final class OrderedTypesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<string, string[]|(string|null|array<string, string>)[]>
+     * @return iterable<string, (null|array<string, string>|string)[]|string[]>
      */
     public static function provideFixCases(): iterable
     {
@@ -162,7 +162,7 @@ try {
     }
 
     /**
-     * @return iterable<(string|null|array<string, string>)[]>
+     * @return iterable<(null|array<string, string>|string)[]>
      */
     public static function providePhp80Cases(): iterable
     {
@@ -214,7 +214,7 @@ try {
     }
 
     /**
-     * @return iterable<string[]|(string|null|array<string, string>)[]>
+     * @return iterable<(null|array<string, string>|string)[]|string[]>
      */
     public static function provideDefaultCases(): iterable
     {
@@ -330,7 +330,7 @@ try {
     }
 
     /**
-     * @return iterable<string[]|(string|null|string[])[]>
+     * @return iterable<(null|string|string[])[]|string[]>
      */
     public static function provideAlphaAlgorithmAndNullAlwaysLastCases(): iterable
     {
@@ -446,7 +446,7 @@ try {
     }
 
     /**
-     * @return iterable<string[]|(string|null|array<string, string>)[]>
+     * @return iterable<(null|array<string, string>|string)[]|string[]>
      */
     public static function provideAlphaAlgorithmOnlyCases(): iterable
     {
@@ -561,7 +561,7 @@ try {
     }
 
     /**
-     * @return iterable<string[]|(string|null|array<string, string>)[]>
+     * @return iterable<(null|array<string, string>|string)[]|string[]>
      */
     public static function provideSandwichedWhitespaceOrCommentInTypeCases(): iterable
     {
@@ -603,7 +603,7 @@ try {
     }
 
     /**
-     * @return iterable<string[]|(string|null|array<string, string>)[]>
+     * @return iterable<(null|array<string, string>|string)[]|string[]>
      */
     public static function providePhp81Cases(): iterable
     {
@@ -660,7 +660,7 @@ try {
     }
 
     /**
-     * @return iterable<string[]|(string|null|array<string, string>)[]>
+     * @return iterable<(null|array<string, string>|string)[]|string[]>
      */
     public static function providePhp82Cases(): iterable
     {

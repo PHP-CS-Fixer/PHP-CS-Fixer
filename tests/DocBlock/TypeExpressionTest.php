@@ -29,6 +29,7 @@ final class TypeExpressionTest extends TestCase
     /**
      * @param string[] $expectedTypes
      *
+     * @dataProvider provideGetConstTypesCases
      * @dataProvider provideGetTypesCases
      */
     public function testGetTypes(string $typesExpression, array $expectedTypes): void
@@ -52,9 +53,21 @@ final class TypeExpressionTest extends TestCase
     {
         yield ['int', ['int']];
 
-        yield ['Foo[][]', ['Foo[][]']];
+        yield ['Foo5', ['Foo5']];
+
+        yield ['🚀_kůň', ['🚀_kůň']];
+
+        yield ['positive-int', ['positive-int']];
+
+        yield ['?int', ['?int']];
+
+        yield ['? int', ['? int']];
 
         yield ['int[]', ['int[]']];
+
+        yield ['Foo[][]', ['Foo[][]']];
+
+        yield ['Foo [ ]  []', ['Foo [ ]  []']];
 
         yield ['int[]|null', ['int[]', 'null']];
 
@@ -77,6 +90,10 @@ final class TypeExpressionTest extends TestCase
         yield ['gen<int,  gener<string, bool>>', ['gen<int,  gener<string, bool>>']];
 
         yield ['gen<int,  gener<string, null|bool>>', ['gen<int,  gener<string, null|bool>>']];
+
+        yield ['gen<int>[][]', ['gen<int>[][]']];
+
+        yield ['non-empty-array<int>', ['non-empty-array<int>']];
 
         yield ['null|gen<int,  gener<string, bool>>|int|string[]', ['null', 'gen<int,  gener<string, bool>>', 'int', 'string[]']];
 
@@ -101,6 +118,10 @@ final class TypeExpressionTest extends TestCase
         yield ['Foo::A|Foo::B', ['Foo::A', 'Foo::B']];
 
         yield ['Foo::A*', ['Foo::A*']];
+
+        yield ['Foo::*0*_Bar', ['Foo::*0*_Bar']];
+
+        yield ['?Foo::*[]', ['?Foo::*[]']];
 
         yield ['array<Foo::A*>|null', ['array<Foo::A*>', 'null']];
 
@@ -128,11 +149,17 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array{bool, int}', ['array{bool, int}']];
 
+        yield ['array{bool,}', ['array{bool,}']];
+
+        yield ['list{int, bool}', ['list{int, bool}']];
+
         yield ['object{ bool, foo2: int }', ['object{ bool, foo2: int }']];
 
         yield ['callable(string)', ['callable(string)']];
 
         yield ['callable(string): bool', ['callable(string): bool']];
+
+        yield ['callable(string,): bool', ['callable(string,): bool']];
 
         yield ['callable(array<int, string>, array<int, Foo>): bool', ['callable(array<int, string>, array<int, Foo>): bool']];
 
@@ -174,15 +201,56 @@ final class TypeExpressionTest extends TestCase
 
         yield ['($foo is int ? false : true)', ['($foo is int ? false : true)']];
 
-        yield ['\'\'', ['\'\'']];
-
-        yield ['\'foo\'', ['\'foo\'']];
-
-        yield ['\'\\\\\'', ['\'\\\\\'']];
-
-        yield ['\'\\\'\'', ['\'\\\'\'']];
+        yield ['($foo🚀3 is int ? false : true)', ['($foo🚀3 is int ? false : true)']];
 
         yield ['\'a\\\'s"\\\\\n\r\t\'|"b\\"s\'\\\\\n\r\t"', ['\'a\\\'s"\\\\\n\r\t\'', '"b\\"s\'\\\\\n\r\t"']];
+    }
+
+    public static function provideGetConstTypesCases(): iterable
+    {
+        foreach ([
+            'null',
+            'true',
+            'FALSE',
+
+            '123',
+            '+123',
+            '-123',
+            '0b0110101',
+            '0o777',
+            '0x7Fb4',
+            '-0O777',
+            '-0X7Fb4',
+            '123_456',
+            '0b01_01_01',
+            '-0X7_Fb_4',
+            '18_446_744_073_709_551_616', // 64-bit unsigned long + 1, larger than PHP_INT_MAX
+
+            '123.4',
+            '.123',
+            '123.',
+            '123e4',
+            '123E4',
+            '12.3e4',
+            '+123.5',
+            '-123.',
+            '-123.4',
+            '-.123',
+            '-123.',
+            '-123e-4',
+            '-12.3e-4',
+            '-1_2.3_4e5_6',
+            '123E+80',
+            '8.2023437675747321', // greater precision than 64-bit double
+            '-0.0',
+
+            '\'\'',
+            '\'foo\'',
+            '\'\\\\\'',
+            '\'\\\'\'',
+        ] as $type) {
+            yield [$type, [$type]];
+        }
     }
 
     /**
@@ -407,6 +475,21 @@ final class TypeExpressionTest extends TestCase
             'array{bool|int}',
         ];
 
+        yield 'simple in array shape with trailing comma' => [
+            'array{int|bool,}',
+            'array{bool|int,}',
+        ];
+
+        yield 'simple in array shape with multiple types with trailing comma' => [
+            'array{int|bool, Foo|Bar, }',
+            'array{bool|int, Bar|Foo, }',
+        ];
+
+        yield 'simple in array shape' => [
+            'list{int, Foo|Bar}',
+            'list{int, Bar|Foo}',
+        ];
+
         yield 'array shape with multiple colons - array shape' => [
             'array{array{x:int|bool}, a:array{x:int|bool}}',
             'array{array{x:bool|int}, a:array{x:bool|int}}',
@@ -445,6 +528,16 @@ final class TypeExpressionTest extends TestCase
         yield 'closure with multiple arguments' => [
             'Closure(int|bool, null|array)',
             'Closure(bool|int, array|null)',
+        ];
+
+        yield 'simple in closure argument with trailing comma' => [
+            'Closure(int|bool,)',
+            'Closure(bool|int,)',
+        ];
+
+        yield 'simple in closure argument multiple arguments with trailing comma' => [
+            'Closure(int|bool, null|array,)',
+            'Closure(bool|int, array|null,)',
         ];
 
         yield 'simple in closure return type' => [
@@ -532,6 +625,11 @@ final class TypeExpressionTest extends TestCase
         yield 'conditional in conditional' => [
             '((Foo|Bar) is x ? ($x is (CFoo|CBar) ? (TFoo|TBar) : (FFoo|FBar)) : z)',
             '((Bar|Foo) is x ? ($x is (CBar|CFoo) ? (TBar|TFoo) : (FBar|FFoo)) : z)',
+        ];
+
+        yield 'large numbers' => [
+            '18_446_744_073_709_551_616|-8.2023437675747321e-18_446_744_073_709_551_616',
+            '-8.2023437675747321e-18_446_744_073_709_551_616|18_446_744_073_709_551_616',
         ];
     }
 }

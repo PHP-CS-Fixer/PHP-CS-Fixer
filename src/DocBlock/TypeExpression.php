@@ -32,16 +32,20 @@ final class TypeExpression
     public const REGEX_TYPES = '
     (?<types> # several types separated by `|` or `&`
         (?<type> # single type
-            (?<nullable>\??)
+            (?<nullable>\??\h*)
             (?:
                 (?<object_like_array>
-                    (?<object_like_array_start>(array|object)\h*\{\h*)
+                    (?<object_like_array_start>(?:array|list|object)\h*\{\h*)
                         (?<object_like_array_inners>
                             (?<object_like_array_inner>
                                 (?<object_like_array_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
                                 (?<object_like_array_inner_value>(?&types))
                             )
-                            (?:\h*,\h*(?&object_like_array_inner))*
+                            (?:
+                                \h*,\h*
+                                (?&object_like_array_inner)
+                            )*
+                            (?:\h*,\h*)?
                         )?
                     \h*\}
                 )
@@ -54,6 +58,7 @@ final class TypeExpression
                                 \h*,\h*
                                 (?&types)
                             )*
+                            (?:\h*,\h*)?
                         )?
                     \h*\)
                     (?:
@@ -78,24 +83,32 @@ final class TypeExpression
                 )
                 |
                 (?<class_constant> # class constants with optional wildcard, e.g.: `Foo::*`, `Foo::CONST_A`, `FOO::CONST_*`
-                    (?&name)::(\*|\w+\*?)
+                    (?&name)::\*?(?:(?&identifier)\*?)*
                 )
                 |
-                (?<array> # array expression, e.g.: `string[]`, `string[][]`
-                    (?&name)(\[\])+
-                )
-                |
-                (?<constant> # single constant value (case insensitive), e.g.: 1, `\'a\'`
+                (?<constant> # single constant value (case insensitive), e.g.: 1, -1.8E+6, `\'a\'`
                     (?i)
                     null | true | false
-                    | -?(?:\d+(?:\.\d*)?|\.\d+) # all sorts of numbers with or without minus, e.g.: 1, 1.1, 1., .1, -1
-                    | \'(?:[^\'\\\\]|\\\\.)*?\' | "(?:[^"\\\\]|\\\\.)*?"
+                    # all sorts of numbers: with or without sign, supports literal separator and several numeric systems,
+                    # e.g.: 1, +1.1, 1., .1, -1, 123E+8, 123_456_789, 0x7Fb4, 0b0110, 0o777
+                    | [+-]?(?:
+                        (?:0b[01]++(?:_[01]++)*+)
+                        | (?:0o[0-7]++(?:_[0-7]++)*+)
+                        | (?:0x[\da-f]++(?:_[\da-f]++)*+)
+                        | (?:(?<constant_digits>\d++(?:_\d++)*+)|(?=\.\d))
+                          (?:\.(?&constant_digits)|(?<=\d)\.)?+
+                          (?:e[+-]?(?&constant_digits))?+
+                    )
+                    | \'(?:[^\'\\\\]|\\\\.)*+\'
+                    | "(?:[^"\\\\]|\\\\.)*+"
                     | [@$]?(?:this | self | static)
                     (?-i)
                 )
                 |
-                (?<name> # single type, e.g.: `null`, `int`, `\Foo\Bar`
-                    [\\\\\w-]++
+                (?<name> # full name, e.g.: `int`, `\DateTime`, `\Foo\Bar`
+                    \\\\?+
+                    (?<identifier>(?!(?<!\*)\d)[^\x00-\x2f\x3a-\x40\x5b-\x5e\x60\x7b-\x7f]++)
+                    (?:[\\\\\-](?&identifier))*+
                 )
                 |
                 (?<parenthesized> # parenthesized type, e.g.: `(int)`, `(int|\stdClass)`
@@ -109,7 +122,7 @@ final class TypeExpression
                         |
                         (?<conditional> # conditional type, e.g.: `$foo is \Throwable ? false : $foo`
                             (?<conditional_cond_left>
-                                (?:\$\w++)
+                                (?:\$(?&identifier))
                                 |
                                 (?<conditional_cond_left_types>(?&types))
                             )
@@ -125,6 +138,9 @@ final class TypeExpression
                     )
                     \h*\)
                 )
+            )
+            (?<array> # array, e.g.: `string[]`, `array<int, string>[][]`
+                (\h*\[\h*\])*
             )
         )
         (?:
