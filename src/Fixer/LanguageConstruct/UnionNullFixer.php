@@ -59,16 +59,6 @@ final class UnionNullFixer extends AbstractFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * Must run after NullableTypeDeclarationForDefaultNullValueFixer.
-     */
-    public function getPriority(): int
-    {
-        return 2;
-    }
-
     public function isCandidate(Tokens $tokens): bool
     {
         // we want a function with variables or

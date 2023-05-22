@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\UnionNullFixer
+ *
+ * @requires PHP 8.0
  */
 final class UnionNullFixerTest extends AbstractFixerTestCase
 {
@@ -28,10 +30,6 @@ final class UnionNullFixerTest extends AbstractFixerTestCase
      */
     public function testParameter(string $expected, ?string $input = null): void
     {
-        if (\PHP_VERSION_ID < 8_00_00) {
-            self::markTestSkipped('PHP >= 8.0 is required.');
-        }
-
         $this->doTest($expected, $input);
     }
 
@@ -73,10 +71,6 @@ final class UnionNullFixerTest extends AbstractFixerTestCase
      */
     public function testProperty(string $expected, ?string $input = null): void
     {
-        if (\PHP_VERSION_ID < 8_00_00) {
-            self::markTestSkipped('PHP >= 8.0 is required.');
-        }
-
         $this->doTest($expected, $input);
     }
 
@@ -118,7 +112,7 @@ CLASS;
             '?object'
         );
     }
-    
+
     /**
      * @dataProvider providePropertyReadonlyCases
      */
@@ -130,7 +124,7 @@ CLASS;
 
         $this->doTest($expected, $input);
     }
-    
+
     public static function providePropertyReadonlyCases(): iterable
     {
         $template = <<<'CLASS'

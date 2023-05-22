@@ -20,8 +20,9 @@ Example #1
    --- Original
    +++ New
     <?php
-   -function foo(?int $a = null) {}
-   +function foo(int|null $a = null) {}
+   -function sample(?string $str = null)
+   +function sample(string|null $str = null)
+    {}
 
 Example #2
 ~~~~~~~~~~
@@ -32,6 +33,6 @@ Example #2
    +++ New
     <?php
     class Foo {
-   -  public ?int $foo;
-   +  public int|null $foo;
+   -  private ?string $str = null;
+   +  private string|null $str = null;
     }
