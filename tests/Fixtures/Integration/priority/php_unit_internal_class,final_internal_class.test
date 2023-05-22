@@ -4,6 +4,7 @@ Integration of fixers: php_unit_internal_class,final_internal_class.
 {"php_unit_internal_class": true, "final_internal_class": true}
 --EXPECT--
 <?php
+
 /**
  * @internal
  */

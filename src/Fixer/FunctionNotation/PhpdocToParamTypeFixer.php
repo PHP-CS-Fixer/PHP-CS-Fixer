@@ -45,9 +45,6 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
         'void' => true,
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -80,9 +77,6 @@ function bar($foo) {}
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_FUNCTION);
@@ -104,9 +98,6 @@ function bar($foo) {}
         return isset(self::SKIPPED_TYPES[$type]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 < $index; --$index) {

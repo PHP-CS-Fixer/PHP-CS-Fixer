@@ -35,14 +35,14 @@ final class FileCacheManagerTest extends TestCase
     {
         $reflection = new \ReflectionClass(FileCacheManager::class);
 
-        static::assertTrue($reflection->isFinal());
+        self::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsCacheManagerInterface(): void
     {
         $reflection = new \ReflectionClass(FileCacheManager::class);
 
-        static::assertTrue($reflection->implementsInterface(CacheManagerInterface::class));
+        self::assertTrue($reflection->implementsInterface(CacheManagerInterface::class));
     }
 
     public function testCreatesCacheIfHandlerReturnedNoCache(): void
@@ -143,7 +143,7 @@ final class FileCacheManagerTest extends TestCase
             $signature
         );
 
-        static::assertTrue($manager->needFixing($file, $fileContent));
+        self::assertTrue($manager->needFixing($file, $fileContent));
     }
 
     public function testNeedFixingReturnsTrueIfCachedHashIsDifferent(): void
@@ -175,7 +175,7 @@ final class FileCacheManagerTest extends TestCase
             $signature
         );
 
-        static::assertTrue($manager->needFixing($file, $fileContent));
+        self::assertTrue($manager->needFixing($file, $fileContent));
     }
 
     public function testNeedFixingReturnsFalseIfCachedHashIsIdentical(): void
@@ -206,7 +206,7 @@ final class FileCacheManagerTest extends TestCase
             $signature
         );
 
-        static::assertFalse($manager->needFixing($file, $fileContent));
+        self::assertFalse($manager->needFixing($file, $fileContent));
     }
 
     public function testNeedFixingUsesRelativePathToFile(): void
@@ -244,7 +244,7 @@ final class FileCacheManagerTest extends TestCase
             $directoryProphecy->reveal()
         );
 
-        static::assertTrue($manager->needFixing($file, $fileContent));
+        self::assertTrue($manager->needFixing($file, $fileContent));
     }
 
     public function testSetFileSetsHashOfFileContent(): void

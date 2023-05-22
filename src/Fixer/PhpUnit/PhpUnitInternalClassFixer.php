@@ -32,9 +32,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface, ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -52,7 +49,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
     /**
      * {@inheritdoc}
      *
-     * Must run before FinalInternalClassFixer.
+     * Must run before FinalInternalClassFixer, PhpdocSeparationFixer.
      */
     public function getPriority(): int
     {
@@ -84,8 +81,6 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
             $tokens,
             $classIndex,
             'internal',
-            false,
-            true,
             ['internal']
         );
     }

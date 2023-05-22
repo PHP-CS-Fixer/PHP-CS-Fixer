@@ -32,16 +32,21 @@ final class TypeExpression
     public const REGEX_TYPES = '
     (?<types> # several types separated by `|` or `&`
         (?<type> # single type
-            (?<nullable>\??)
+            (?<nullable>\??\h*)
             (?:
                 (?<object_like_array>
-                    (?<object_like_array_start>array\h*\{)
-                        (?<object_like_array_keys>
-                            (?<object_like_array_key>
-                                \h*[^?:\h]+\h*\??\h*:\h*(?&types)
+                    (?<object_like_array_start>(?:array|list|object)\h*\{\h*)
+                        (?<object_like_array_inners>
+                            (?<object_like_array_inner>
+                                (?<object_like_array_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
+                                (?<object_like_array_inner_value>(?&types))
                             )
-                            (?:\h*,(?&object_like_array_key))*
-                        )
+                            (?:
+                                \h*,\h*
+                                (?&object_like_array_inner)
+                            )*
+                            (?:\h*,\h*)?
+                        )?
                     \h*\}
                 )
                 |
@@ -53,11 +58,12 @@ final class TypeExpression
                                 \h*,\h*
                                 (?&types)
                             )*
+                            (?:\h*,\h*)?
                         )?
                     \h*\)
                     (?:
                         \h*\:\h*
-                        (?<callable_return>(?&types))
+                        (?<callable_return>(?&type))
                     )?
                 )
                 |
@@ -77,25 +83,64 @@ final class TypeExpression
                 )
                 |
                 (?<class_constant> # class constants with optional wildcard, e.g.: `Foo::*`, `Foo::CONST_A`, `FOO::CONST_*`
-                    (?&name)::(\*|\w+\*?)
+                    (?&name)::\*?(?:(?&identifier)\*?)*
                 )
                 |
-                (?<array> # array expression, e.g.: `string[]`, `string[][]`
-                    (?&name)(\[\])+
-                )
-                |
-                (?<constant> # single constant value (case insensitive), e.g.: 1, `\'a\'`
+                (?<constant> # single constant value (case insensitive), e.g.: 1, -1.8E+6, `\'a\'`
                     (?i)
                     null | true | false
-                    | -?(?:\d+(?:\.\d*)?|\.\d+) # all sorts of numbers with or without minus, e.g.: 1, 1.1, 1., .1, -1
-                    | \'[^\']+?\' | "[^"]+?"
+                    # all sorts of numbers: with or without sign, supports literal separator and several numeric systems,
+                    # e.g.: 1, +1.1, 1., .1, -1, 123E+8, 123_456_789, 0x7Fb4, 0b0110, 0o777
+                    | [+-]?(?:
+                        (?:0b[01]++(?:_[01]++)*+)
+                        | (?:0o[0-7]++(?:_[0-7]++)*+)
+                        | (?:0x[\da-f]++(?:_[\da-f]++)*+)
+                        | (?:(?<constant_digits>\d++(?:_\d++)*+)|(?=\.\d))
+                          (?:\.(?&constant_digits)|(?<=\d)\.)?+
+                          (?:e[+-]?(?&constant_digits))?+
+                    )
+                    | \'(?:[^\'\\\\]|\\\\.)*+\'
+                    | "(?:[^"\\\\]|\\\\.)*+"
                     | [@$]?(?:this | self | static)
                     (?-i)
                 )
                 |
-                (?<name> # single type, e.g.: `null`, `int`, `\Foo\Bar`
-                    [\\\\\w-]++
+                (?<name> # full name, e.g.: `int`, `\DateTime`, `\Foo\Bar`
+                    \\\\?+
+                    (?<identifier>(?!(?<!\*)\d)[^\x00-\x2f\x3a-\x40\x5b-\x5e\x60\x7b-\x7f]++)
+                    (?:[\\\\\-](?&identifier))*+
                 )
+                |
+                (?<parenthesized> # parenthesized type, e.g.: `(int)`, `(int|\stdClass)`
+                    (?<parenthesized_start>
+                        \(\h*
+                    )
+                    (?:
+                        (?<parenthesized_types>
+                            (?&types)
+                        )
+                        |
+                        (?<conditional> # conditional type, e.g.: `$foo is \Throwable ? false : $foo`
+                            (?<conditional_cond_left>
+                                (?:\$(?&identifier))
+                                |
+                                (?<conditional_cond_left_types>(?&types))
+                            )
+                            (?<conditional_cond_middle>
+                                \h+(?i)is(?:\h+not)?(?-i)\h+
+                            )
+                            (?<conditional_cond_right_types>(?&types))
+                            (?<conditional_true_start>\h*\?\h*)
+                            (?<conditional_true_types>(?&types))
+                            (?<conditional_false_start>\h*:\h*)
+                            (?<conditional_false_types>(?&types))
+                        )
+                    )
+                    \h*\)
+                )
+            )
+            (?<array> # array, e.g.: `string[]`, `array<int, string>[][]`
+                (\h*\[\h*\])*
             )
         )
         (?:
@@ -315,10 +360,53 @@ final class TypeExpression
         }
 
         if ('' !== ($matches['object_like_array'] ?? '')) {
-            $this->parseObjectLikeArrayKeys(
+            $this->parseObjectLikeArrayInnerTypes(
                 $index + \strlen($matches['object_like_array_start']),
-                $matches['object_like_array_keys']
+                $matches['object_like_array_inners'] ?? ''
             );
+
+            return;
+        }
+
+        if ('' !== ($matches['parenthesized'] ?? '')) {
+            $index += \strlen($matches['parenthesized_start']);
+
+            if ('' !== ($matches['conditional'] ?? '')) {
+                if ('' !== ($matches['conditional_cond_left_types'] ?? '')) {
+                    $this->innerTypeExpressions[] = [
+                        'start_index' => $index,
+                        'expression' => $this->inner($matches['conditional_cond_left_types']),
+                    ];
+                }
+
+                $index += \strlen($matches['conditional_cond_left']) + \strlen($matches['conditional_cond_middle']);
+
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $index,
+                    'expression' => $this->inner($matches['conditional_cond_right_types']),
+                ];
+
+                $index += \strlen($matches['conditional_cond_right_types']) + \strlen($matches['conditional_true_start']);
+
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $index,
+                    'expression' => $this->inner($matches['conditional_true_types']),
+                ];
+
+                $index += \strlen($matches['conditional_true_types']) + \strlen($matches['conditional_false_start']);
+
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $index,
+                    'expression' => $this->inner($matches['conditional_false_types']),
+                ];
+            } else {
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $index,
+                    'expression' => $this->inner($matches['parenthesized_types']),
+                ];
+            }
+
+            return;
         }
     }
 
@@ -326,7 +414,7 @@ final class TypeExpression
     {
         while ('' !== $value) {
             Preg::match(
-                '{^'.self::REGEX_TYPES.'\h*(?:,|$)}x',
+                '{^'.self::REGEX_TYPES.'(?:\h*,\h*|$)}x',
                 $value,
                 $matches
             );
@@ -336,39 +424,39 @@ final class TypeExpression
                 'expression' => $this->inner($matches['types']),
             ];
 
-            $newValue = Preg::replace(
-                '/^'.preg_quote($matches['types'], '/').'(\h*\,\h*)?/',
-                '',
-                $value
-            );
-
-            $startIndex += \strlen($value) - \strlen($newValue);
-            $value = $newValue;
+            $consumedValueLength = \strlen($matches[0]);
+            $startIndex += $consumedValueLength;
+            $value = substr($value, $consumedValueLength);
         }
     }
 
-    private function parseObjectLikeArrayKeys(int $startIndex, string $value): void
+    private function parseObjectLikeArrayInnerTypes(int $startIndex, string $value): void
     {
         while ('' !== $value) {
             Preg::match(
-                '{(?<_start>^.+?:\h*)'.self::REGEX_TYPES.'\h*(?:,|$)}x',
+                '{^(?:(?=1)0'.self::REGEX_TYPES.'|(?<object_like_array_inner2>(?&object_like_array_inner))(?:\h*,\h*)?)}x',
                 $value,
-                $matches
+                $prematches
+            );
+            $consumedValue = $prematches['object_like_array_inner2'];
+            $consumedValueLength = \strlen($consumedValue);
+            $consumedCommaLength = \strlen($prematches[0]) - $consumedValueLength;
+
+            $addedPrefix = 'array{';
+            Preg::match(
+                '{^'.self::REGEX_TYPES.'$}x',
+                $addedPrefix.$consumedValue.'}',
+                $matches,
+                PREG_OFFSET_CAPTURE
             );
 
             $this->innerTypeExpressions[] = [
-                'start_index' => $startIndex + \strlen($matches['_start']),
-                'expression' => $this->inner($matches['types']),
+                'start_index' => $startIndex + $matches['object_like_array_inner_value'][1] - \strlen($addedPrefix),
+                'expression' => $this->inner($matches['object_like_array_inner_value'][0]),
             ];
 
-            $newValue = Preg::replace(
-                '/^.+?:\h*'.preg_quote($matches['types'], '/').'(\h*\,\h*)?/',
-                '',
-                $value
-            );
-
-            $startIndex += \strlen($value) - \strlen($newValue);
-            $value = $newValue;
+            $startIndex += $consumedValueLength + $consumedCommaLength;
+            $value = substr($value, $consumedValueLength + $consumedCommaLength);
         }
     }
 

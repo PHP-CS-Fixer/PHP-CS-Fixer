@@ -183,7 +183,7 @@ class User
         Tokens::clearCache();
 
         foreach (Tokens::fromCode($source) as $token) {
-            static::assertFalse($token->isGivenKind([
+            self::assertFalse($token->isGivenKind([
                 CT::T_ATTRIBUTE_CLOSE,
             ]));
         }

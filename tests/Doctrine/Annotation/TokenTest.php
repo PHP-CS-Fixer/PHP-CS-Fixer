@@ -31,8 +31,8 @@ final class TokenTest extends TestCase
     {
         $token = new Token();
 
-        static::assertSame(DocLexer::T_NONE, $token->getType());
-        static::assertSame('', $token->getContent());
+        self::assertSame(DocLexer::T_NONE, $token->getType());
+        self::assertSame('', $token->getContent());
     }
 
     public function testConstructorSetsValues(): void
@@ -45,8 +45,8 @@ final class TokenTest extends TestCase
             $content
         );
 
-        static::assertSame($type, $token->getType());
-        static::assertSame($content, $token->getContent());
+        self::assertSame($type, $token->getType());
+        self::assertSame($content, $token->getContent());
     }
 
     public function testCanModifyType(): void
@@ -57,7 +57,7 @@ final class TokenTest extends TestCase
 
         $token->setType($type);
 
-        static::assertSame($type, $token->getType());
+        self::assertSame($type, $token->getType());
     }
 
     /**
@@ -71,7 +71,7 @@ final class TokenTest extends TestCase
 
         $token->setType($type);
 
-        static::assertTrue($token->isType($types));
+        self::assertTrue($token->isType($types));
     }
 
     public static function provideIsTypeCases(): array
@@ -102,7 +102,7 @@ final class TokenTest extends TestCase
 
         $token->setType($type);
 
-        static::assertFalse($token->isType($types));
+        self::assertFalse($token->isType($types));
     }
 
     public static function provideIsNotTypeCases(): array
@@ -129,7 +129,7 @@ final class TokenTest extends TestCase
 
         $token->setContent($content);
 
-        static::assertSame($content, $token->getContent());
+        self::assertSame($content, $token->getContent());
     }
 
     public function testCanClearContent(): void
@@ -141,6 +141,6 @@ final class TokenTest extends TestCase
         $token->setContent($content);
         $token->clear();
 
-        static::assertSame('', $token->getContent());
+        self::assertSame('', $token->getContent());
     }
 }

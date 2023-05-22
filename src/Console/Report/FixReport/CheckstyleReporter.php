@@ -23,17 +23,11 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  */
 final class CheckstyleReporter implements ReporterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getFormat(): string
     {
         return 'checkstyle';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function generate(ReportSummary $reportSummary): string
     {
         if (!\extension_loaded('dom')) {

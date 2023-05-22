@@ -34,7 +34,7 @@ final class TagTest extends TestCase
     {
         $tag = new Tag(new Line($input));
 
-        static::assertSame($expected, $tag->getName());
+        self::assertSame($expected, $tag->getName());
 
         if ('other' === $expected) {
             $this->expectException(\RuntimeException::class);
@@ -43,7 +43,7 @@ final class TagTest extends TestCase
 
         $tag->setName($new);
 
-        static::assertSame($new, $tag->getName());
+        self::assertSame($new, $tag->getName());
     }
 
     public static function provideNameCases(): array
@@ -69,7 +69,7 @@ final class TagTest extends TestCase
     {
         $tag = new Tag(new Line($input));
 
-        static::assertSame($expected, $tag->valid());
+        self::assertSame($expected, $tag->valid());
     }
 
     public static function provideValidCases(): array

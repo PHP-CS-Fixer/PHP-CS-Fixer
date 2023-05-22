@@ -44,17 +44,11 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolve(array $configuration): array
     {
         $resolver = new OptionsResolver();

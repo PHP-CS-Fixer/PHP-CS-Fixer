@@ -108,8 +108,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_singleline_whitespace_before_semicolons' => true,
             'no_spaces_around_offset' => true,
             'no_superfluous_phpdoc_tags' => [
-                'allow_mixed' => true,
-                'allow_unused_params' => true,
+                'remove_inheritdoc' => true,
             ],
             'no_trailing_comma_in_singleline' => true,
             'no_unneeded_control_parentheses' => [
@@ -135,6 +134,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_useless_nullsafe_operator' => true,
             'no_whitespace_before_comma_in_array' => true,
             'normalize_index_brace' => true,
+            'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => false],
             'object_operator_without_whitespace' => true,
             'operator_linebreak' => [
                 'only_booleans' => true,
@@ -183,7 +183,6 @@ final class SymfonySet extends AbstractRuleSetDescription
                 'sort_algorithm' => 'none',
             ],
             'phpdoc_var_without_name' => true,
-            'protected_to_private' => true,
             'semicolon_after_instruction' => true,
             'simple_to_complex_string_variable' => true,
             'single_class_element_per_statement' => true,

@@ -28,25 +28,22 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class EncodingFixer extends AbstractFixer
 {
-    private string $BOM;
+    private string $bom;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->BOM = pack('CCC', 0xEF, 0xBB, 0xBF);
+        $this->bom = pack('CCC', 0xEF, 0xBB, 0xBF);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'PHP code MUST use only UTF-8 without BOM (remove BOM).',
             [
                 new CodeSample(
-                    $this->BOM.'<?php
+                    $this->bom.'<?php
 
 echo "Hello!";
 '
@@ -55,31 +52,22 @@ echo "Hello!";
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         // must run first (at least before Fixers that using Tokens) - for speed reason of whole fixing process
         return 100;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $content = $tokens[0]->getContent();
 
-        if (0 === strncmp($content, $this->BOM, 3)) {
+        if (str_starts_with($content, $this->bom)) {
             $newContent = substr($content, 3);
 
             if ('' === $newContent) {

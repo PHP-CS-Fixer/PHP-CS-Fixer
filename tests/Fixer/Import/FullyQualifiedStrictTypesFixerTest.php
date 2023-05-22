@@ -103,6 +103,11 @@ namespace A\B\C\D
             '<?php use \A\Exception; function foo(Exception $e) {}',
             '<?php use \A\Exception; function foo(\A\Exception $e) {}',
         ];
+
+        yield 'common prefix' => [
+            '<?php namespace Foo; function foo(\FooBar $v): \FooBar {}',
+            null,
+        ];
     }
 
     /**
@@ -522,7 +527,7 @@ class SomeClass
     public function doSomething(
         \Ping\Something $something,
         Pung\Pang $other,
-        Pung $other1,
+        \Ping\Pong\Pung $other1,
         Pang\Pung $other2,
         Pyng\Pung\Pong $other3,
         \Foo\Bar\Baz\Buz $other4
@@ -570,6 +575,18 @@ namespace {
     function withReference(\Exception &$e) {}
     }
 ',
+        ];
+
+        yield 'Test FQCN is not removed when class with the same name, but different namespace, is imported' => [
+            '<?php namespace Foo;
+                use Bar\TheClass;
+                class Test
+                {
+                    public function __construct(
+                        \Foo\TheClass $x
+                    ) {}
+                }
+            ',
         ];
     }
 

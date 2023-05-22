@@ -31,9 +31,6 @@ use PhpCsFixer\Preg;
  */
 final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -61,9 +58,6 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver(array_merge(
@@ -105,9 +99,6 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function fixAnnotations(Tokens $doctrineAnnotationTokens): void
     {
         if (true === $this->configuration['around_parentheses']) {

@@ -26,7 +26,7 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix74(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -35,13 +35,11 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
      * @dataProvider provideFixDeprecatedCases
      *
      * @group legacy
+     *
+     * @requires PHP <8.0
      */
     public function testFix74Deprecated(string $expected, ?string $input = null): void
     {
-        if (\PHP_VERSION_ID >= 8_00_00) {
-            static::markTestSkipped('PHP < 8.0 is required.');
-        }
-
         $this->expectDeprecation('%AThe (real) cast is deprecated, use (float) instead');
 
         $this->doTest($expected, $input);

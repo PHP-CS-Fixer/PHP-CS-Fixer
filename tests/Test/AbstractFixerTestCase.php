@@ -94,7 +94,7 @@ abstract class AbstractFixerTestCase extends TestCase
         if ($this->fixer->isRisky()) {
             self::assertValidDescription($this->fixer->getName(), 'risky description', $this->fixer->getDefinition()->getRiskyDescription());
         } else {
-            static::assertNull($this->fixer->getDefinition()->getRiskyDescription(), sprintf('[%s] Fixer is not risky so no description of it expected.', $this->fixer->getName()));
+            self::assertNull($this->fixer->getDefinition()->getRiskyDescription(), sprintf('[%s] Fixer is not risky so no description of it expected.', $this->fixer->getName()));
         }
 
         if ($this->fixer instanceof AbstractProxyFixer) {
@@ -104,7 +104,7 @@ abstract class AbstractFixerTestCase extends TestCase
         $reflection = new \ReflectionMethod($this->fixer, 'isRisky');
 
         // If fixer is not risky then the method `isRisky` from `AbstractFixer` must be used
-        static::assertSame(
+        self::assertSame(
             !$this->fixer->isRisky(),
             AbstractFixer::class === $reflection->getDeclaringClass()->getName()
         );
@@ -119,32 +119,32 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertValidDescription($fixerName, 'summary', $definition->getSummary());
 
         $samples = $definition->getCodeSamples();
-        static::assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixerName));
+        self::assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixerName));
 
         $configSamplesProvided = [];
         $dummyFileInfo = new StdinFileInfo();
 
         foreach ($samples as $sampleCounter => $sample) {
-            static::assertInstanceOf(CodeSampleInterface::class, $sample, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
-            static::assertIsInt($sampleCounter);
+            self::assertInstanceOf(CodeSampleInterface::class, $sample, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+            self::assertIsInt($sampleCounter);
 
             $code = $sample->getCode();
 
-            static::assertNotEmpty($code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+            self::assertNotEmpty($code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
 
             if (!$this->fixer instanceof SingleBlankLineAtEofFixer) {
-                static::assertStringEndsWith("\n", $code, sprintf('[%s] Sample #%d must end with linebreak', $fixerName, $sampleCounter));
+                self::assertStringEndsWith("\n", $code, sprintf('[%s] Sample #%d must end with linebreak', $fixerName, $sampleCounter));
             }
 
             $config = $sample->getConfiguration();
 
             if (null !== $config) {
-                static::assertTrue($fixerIsConfigurable, sprintf('[%s] Sample #%d has configuration, but the fixer is not configurable.', $fixerName, $sampleCounter));
+                self::assertTrue($fixerIsConfigurable, sprintf('[%s] Sample #%d has configuration, but the fixer is not configurable.', $fixerName, $sampleCounter));
 
                 $configSamplesProvided[$sampleCounter] = $config;
             } elseif ($fixerIsConfigurable) {
                 if (!$sample instanceof VersionSpecificCodeSampleInterface) {
-                    static::assertArrayNotHasKey('default', $configSamplesProvided, sprintf('[%s] Multiple non-versioned samples with default configuration.', $fixerName));
+                    self::assertArrayNotHasKey('default', $configSamplesProvided, sprintf('[%s] Multiple non-versioned samples with default configuration.', $fixerName));
                 }
 
                 $configSamplesProvided['default'] = true;
@@ -166,7 +166,7 @@ abstract class AbstractFixerTestCase extends TestCase
                 $tokens
             );
 
-            static::assertTrue($tokens->isChanged(), sprintf('[%s] Sample #%d is not changed during fixing.', $fixerName, $sampleCounter));
+            self::assertTrue($tokens->isChanged(), sprintf('[%s] Sample #%d is not changed during fixing.', $fixerName, $sampleCounter));
 
             $duplicatedCodeSample = array_search(
                 $sample,
@@ -174,7 +174,7 @@ abstract class AbstractFixerTestCase extends TestCase
                 false
             );
 
-            static::assertFalse(
+            self::assertFalse(
                 $duplicatedCodeSample,
                 sprintf('[%s] Sample #%d duplicates #%d.', $fixerName, $sampleCounter, $duplicatedCodeSample)
             );
@@ -183,20 +183,20 @@ abstract class AbstractFixerTestCase extends TestCase
         if ($fixerIsConfigurable) {
             if (isset($configSamplesProvided['default'])) {
                 reset($configSamplesProvided);
-                static::assertSame('default', key($configSamplesProvided), sprintf('[%s] First sample must be for the default configuration.', $fixerName));
+                self::assertSame('default', key($configSamplesProvided), sprintf('[%s] First sample must be for the default configuration.', $fixerName));
             } elseif (!isset($this->allowedFixersWithoutDefaultCodeSample[$fixerName])) {
-                static::assertArrayHasKey($fixerName, $this->allowedRequiredOptions, sprintf('[%s] Has no sample for default configuration.', $fixerName));
+                self::assertArrayHasKey($fixerName, $this->allowedRequiredOptions, sprintf('[%s] Has no sample for default configuration.', $fixerName));
             }
 
             if (\count($configSamplesProvided) < 2) {
-                static::fail(sprintf('[%s] Configurable fixer only provides a default configuration sample and none for its configuration options.', $fixerName));
+                self::fail(sprintf('[%s] Configurable fixer only provides a default configuration sample and none for its configuration options.', $fixerName));
             }
 
             $options = $this->fixer->getConfigurationDefinition()->getOptions();
 
             foreach ($options as $option) {
-                static::assertMatchesRegularExpression('/^[a-z_]+[a-z]$/', $option->getName(), sprintf('[%s] Option %s is not snake_case.', $fixerName, $option->getName()));
-                static::assertMatchesRegularExpression(
+                self::assertMatchesRegularExpression('/^[a-z_]+[a-z]$/', $option->getName(), sprintf('[%s] Option %s is not snake_case.', $fixerName, $option->getName()));
+                self::assertMatchesRegularExpression(
                     '/^[A-Z].+\.$/s',
                     $option->getDescription(),
                     sprintf('[%s] Description of option "%s" must start with capital letter and end with dot.', $fixerName, $option->getName())
@@ -204,14 +204,14 @@ abstract class AbstractFixerTestCase extends TestCase
             }
         }
 
-        static::assertIsInt($this->fixer->getPriority());
+        self::assertIsInt($this->fixer->getPriority());
     }
 
     final public function testFixersAreFinal(): void
     {
         $reflection = new \ReflectionClass($this->fixer);
 
-        static::assertTrue(
+        self::assertTrue(
             $reflection->isFinal(),
             sprintf('Fixer "%s" must be declared "final".', $this->fixer->getName())
         );
@@ -219,7 +219,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
     final public function testDeprecatedFixersHaveCorrectSummary(): void
     {
-        static::assertStringNotContainsString(
+        self::assertStringNotContainsString(
             'DEPRECATED',
             $this->fixer->getDefinition()->getSummary(),
             'Fixer cannot contain word "DEPRECATED" in summary'
@@ -229,10 +229,10 @@ abstract class AbstractFixerTestCase extends TestCase
         $comment = $reflection->getDocComment();
 
         if ($this->fixer instanceof DeprecatedFixerInterface) {
-            static::assertIsString($comment, sprintf('Missing class PHPDoc for deprecated fixer "%s".', $this->fixer->getName()));
-            static::assertStringContainsString('@deprecated', $comment);
+            self::assertIsString($comment, sprintf('Missing class PHPDoc for deprecated fixer "%s".', $this->fixer->getName()));
+            self::assertStringContainsString('@deprecated', $comment);
         } elseif (\is_string($comment)) {
-            static::assertStringNotContainsString('@deprecated', $comment);
+            self::assertStringNotContainsString('@deprecated', $comment);
         }
     }
 
@@ -305,9 +305,9 @@ abstract class AbstractFixerTestCase extends TestCase
                 'strict_param',
                 'void_return',
             ], true)) {
-                static::markTestIncomplete(sprintf('Fixer "%s" may be optimized to use `Tokens::insertSlices` instead of `%s`, please help and optimize it.', $fixerName, implode(', ', $allowedMethods)));
+                self::markTestIncomplete(sprintf('Fixer "%s" may be optimized to use `Tokens::insertSlices` instead of `%s`, please help and optimize it.', $fixerName, implode(', ', $allowedMethods)));
             }
-            static::fail(sprintf('Fixer "%s" shall be optimized to use `Tokens::insertSlices` instead of `%s`.', $fixerName, implode(', ', $allowedMethods)));
+            self::fail(sprintf('Fixer "%s" shall be optimized to use `Tokens::insertSlices` instead of `%s`.', $fixerName, implode(', ', $allowedMethods)));
         }
 
         $this->addToAssertionCount(1);
@@ -324,10 +324,10 @@ abstract class AbstractFixerTestCase extends TestCase
         $configurationDefinition = $this->fixer->getConfigurationDefinition();
 
         foreach ($configurationDefinition->getOptions() as $option) {
-            static::assertInstanceOf(FixerOptionInterface::class, $option);
-            static::assertNotEmpty($option->getDescription());
+            self::assertInstanceOf(FixerOptionInterface::class, $option);
+            self::assertNotEmpty($option->getDescription());
 
-            static::assertSame(
+            self::assertSame(
                 !isset($this->allowedRequiredOptions[$this->fixer->getName()][$option->getName()]),
                 $option->hasDefault(),
                 sprintf(
@@ -339,7 +339,7 @@ abstract class AbstractFixerTestCase extends TestCase
                 )
             );
 
-            static::assertStringNotContainsString(
+            self::assertStringNotContainsString(
                 'DEPRECATED',
                 $option->getDescription(),
                 'Option description cannot contain word "DEPRECATED"'
@@ -389,27 +389,27 @@ abstract class AbstractFixerTestCase extends TestCase
         $fileIsSupported = $this->fixer->supports($file);
 
         if (null !== $input) {
-            static::assertNull($this->lintSource($input));
+            self::assertNull($this->lintSource($input));
 
             Tokens::clearCache();
             $tokens = Tokens::fromCode($input);
 
             if ($fileIsSupported) {
-                static::assertTrue($this->fixer->isCandidate($tokens), 'Fixer must be a candidate for input code.');
-                static::assertFalse($tokens->isChanged(), 'Fixer must not touch Tokens on candidate check.');
+                self::assertTrue($this->fixer->isCandidate($tokens), 'Fixer must be a candidate for input code.');
+                self::assertFalse($tokens->isChanged(), 'Fixer must not touch Tokens on candidate check.');
                 $this->fixer->fix($file, $tokens);
             }
 
-            static::assertThat(
+            self::assertThat(
                 $tokens->generateCode(),
                 new IsIdenticalString($expected),
                 'Code build on input code must match expected code.'
             );
-            static::assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
+            self::assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
 
             $tokens->clearEmptyTokens();
 
-            static::assertSame(
+            self::assertSame(
                 \count($tokens),
                 \count(array_unique(array_map(static function (Token $token): string {
                     return spl_object_hash($token);
@@ -419,10 +419,10 @@ abstract class AbstractFixerTestCase extends TestCase
 
             Tokens::clearCache();
             $expectedTokens = Tokens::fromCode($expected);
-            static::assertTokens($expectedTokens, $tokens);
+            self::assertTokens($expectedTokens, $tokens);
         }
 
-        static::assertNull($this->lintSource($expected));
+        self::assertNull($this->lintSource($expected));
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode($expected);
@@ -431,12 +431,12 @@ abstract class AbstractFixerTestCase extends TestCase
             $this->fixer->fix($file, $tokens);
         }
 
-        static::assertThat(
+        self::assertThat(
             $tokens->generateCode(),
             new IsIdenticalString($expected),
             'Code build on expected code must not change.'
         );
-        static::assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
+        self::assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
     }
 
     protected function lintSource(string $source): ?string
@@ -452,7 +452,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
     protected static function assertCorrectCasing(string $needle, string $haystack, string $message): void
     {
-        static::assertSame(substr_count(strtolower($haystack), strtolower($needle)), substr_count($haystack, $needle), $message);
+        self::assertSame(substr_count(strtolower($haystack), strtolower($needle)), substr_count($haystack, $needle), $message);
     }
 
     private function getLinter(): LinterInterface
@@ -470,11 +470,11 @@ abstract class AbstractFixerTestCase extends TestCase
 
     private static function assertValidDescription(string $fixerName, string $descriptionType, string $description): void
     {
-        static::assertMatchesRegularExpression('/^[A-Z`][^"]+\.$/', $description, sprintf('[%s] The %s must start with capital letter or a ` and end with dot.', $fixerName, $descriptionType));
-        static::assertStringNotContainsString('phpdocs', $description, sprintf('[%s] `PHPDoc` must not be in the plural in %s.', $fixerName, $descriptionType));
-        static::assertCorrectCasing($description, 'PHPDoc', sprintf('[%s] `PHPDoc` must be in correct casing in %s.', $fixerName, $descriptionType));
-        static::assertCorrectCasing($description, 'PHPUnit', sprintf('[%s] `PHPUnit` must be in correct casing in %s.', $fixerName, $descriptionType));
-        static::assertFalse(strpos($descriptionType, '``'), sprintf('[%s] The %s must no contain sequential backticks.', $fixerName, $descriptionType));
+        self::assertMatchesRegularExpression('/^[A-Z`][^"]+\.$/', $description, sprintf('[%s] The %s must start with capital letter or a ` and end with dot.', $fixerName, $descriptionType));
+        self::assertStringNotContainsString('phpdocs', $description, sprintf('[%s] `PHPDoc` must not be in the plural in %s.', $fixerName, $descriptionType));
+        self::assertCorrectCasing($description, 'PHPDoc', sprintf('[%s] `PHPDoc` must be in correct casing in %s.', $fixerName, $descriptionType));
+        self::assertCorrectCasing($description, 'PHPUnit', sprintf('[%s] `PHPUnit` must be in correct casing in %s.', $fixerName, $descriptionType));
+        self::assertFalse(strpos($descriptionType, '``'), sprintf('[%s] The %s must no contain sequential backticks.', $fixerName, $descriptionType));
     }
 
     /**

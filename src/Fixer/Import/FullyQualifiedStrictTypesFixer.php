@@ -20,7 +20,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -31,9 +30,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class FullyQualifiedStrictTypesFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -81,24 +77,17 @@ class SomeClass
         return 7;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_FUNCTION);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $namespacesAnalyzer = new NamespacesAnalyzer();
         $namespaceUsesAnalyzer = new NamespaceUsesAnalyzer();
         $functionsAnalyzer = new FunctionsAnalyzer();
 
-        foreach ($namespacesAnalyzer->getDeclarations($tokens) as $namespace) {
+        foreach ($tokens->getNamespaceDeclarations() as $namespace) {
             $namespaceName = strtolower($namespace->getFullName());
             $uses = [];
 
@@ -152,13 +141,15 @@ class SomeClass
         $namespaceNameLength = \strlen($namespaceName);
         $types = $this->getTypes($tokens, $typeStartIndex, $type->getEndIndex());
 
+        $prefix = $namespaceName ? '\\'.$namespaceName.'\\' : '\\';
         foreach ($types as $typeName => [$startIndex, $endIndex]) {
-            if (!str_starts_with($typeName, '\\')) {
+            $typeNameLower = strtolower($typeName);
+            if (!str_starts_with($typeNameLower, $prefix)) {
                 continue; // no shorter type possible
             }
 
             $typeName = substr($typeName, 1);
-            $typeNameLower = strtolower($typeName);
+            $typeNameLower = substr($typeNameLower, 1);
 
             if (isset($uses[$typeNameLower])) {
                 // if the type without leading "\" equals any of the full "uses" long names, it can be replaced with the short one
@@ -175,6 +166,17 @@ class SomeClass
             } elseif ($typeNameLower !== $namespaceName && str_starts_with($typeNameLower, $namespaceName)) {
                 // if the type starts with namespace and the type is not the same as the namespace it can be shortened
                 $typeNameShort = substr($typeName, $namespaceNameLength + 1);
+
+                // if short names are the same, but long one are different then it cannot be shortened
+                foreach ($uses as $useLongName => $useShortName) {
+                    if (
+                        strtolower($typeNameShort) === strtolower($useShortName)
+                        && strtolower($typeName) !== strtolower($useLongName)
+                    ) {
+                        continue 2;
+                    }
+                }
+
                 $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($typeNameShort));
             }
         }

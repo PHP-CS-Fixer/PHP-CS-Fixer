@@ -31,7 +31,7 @@ final class InvalidConfigurationExceptionTest extends TestCase
     {
         $exception = new InvalidConfigurationException('I cannot do that, Dave.');
 
-        static::assertInstanceOf(\InvalidArgumentException::class, $exception);
+        self::assertInstanceOf(\InvalidArgumentException::class, $exception);
     }
 
     public function testDefaults(): void
@@ -40,9 +40,9 @@ final class InvalidConfigurationExceptionTest extends TestCase
 
         $exception = new InvalidConfigurationException($message);
 
-        static::assertSame($message, $exception->getMessage());
-        static::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG, $exception->getCode());
-        static::assertNull($exception->getPrevious());
+        self::assertSame($message, $exception->getMessage());
+        self::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG, $exception->getCode());
+        self::assertNull($exception->getPrevious());
     }
 
     public function testConstructorSetsValues(): void
@@ -57,8 +57,8 @@ final class InvalidConfigurationExceptionTest extends TestCase
             $previous
         );
 
-        static::assertSame($message, $exception->getMessage());
-        static::assertSame($code, $exception->getCode());
-        static::assertSame($previous, $exception->getPrevious());
+        self::assertSame($message, $exception->getMessage());
+        self::assertSame($code, $exception->getCode());
+        self::assertSame($previous, $exception->getPrevious());
     }
 }

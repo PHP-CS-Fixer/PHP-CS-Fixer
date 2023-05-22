@@ -2,7 +2,10 @@ version: '3.8'
 
 services:
   php-7.4: &php
-    build: docker/php-7.4
+    build:
+      args:
+        PHP_VERSION: "7.4"
+        PHP_XDEBUG_VERSION: "3.1.2"
     working_dir: /app
     volumes:
       - .:/app
@@ -11,10 +14,19 @@ services:
       PHP_CS_FIXER_ALLOW_XDEBUG: 1
   php-8.0:
     <<: *php
-    build: docker/php-8.0
+    build:
+      args:
+        PHP_VERSION: "8.0"
+        PHP_XDEBUG_VERSION: "3.1.2"
   php-8.1:
     <<: *php
-    build: docker/php-8.1
+    build:
+      args:
+        PHP_VERSION: "8.1"
+        PHP_XDEBUG_VERSION: "3.1.2"
   php-8.2:
     <<: *php
-    build: docker/php-8.2
+    build:
+      args:
+        PHP_VERSION: "8.2"
+        PHP_XDEBUG_VERSION: "3.2.1"

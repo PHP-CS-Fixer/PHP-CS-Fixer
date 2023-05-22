@@ -52,14 +52,14 @@ final class TextDiffTest extends TestCase
         );
 
         if ($isDecorated !== $commandTester->getOutput()->isDecorated()) {
-            static::markTestSkipped(sprintf('Output should %sbe decorated.', $isDecorated ? '' : 'not '));
+            self::markTestSkipped(sprintf('Output should %sbe decorated.', $isDecorated ? '' : 'not '));
         }
 
         if ($isDecorated !== $commandTester->getOutput()->getFormatter()->isDecorated()) {
-            static::markTestSkipped(sprintf('Formatter should %sbe decorated.', $isDecorated ? '' : 'not '));
+            self::markTestSkipped(sprintf('Formatter should %sbe decorated.', $isDecorated ? '' : 'not '));
         }
 
-        static::assertStringMatchesFormat($expected, $commandTester->getDisplay(false));
+        self::assertStringMatchesFormat($expected, $commandTester->getDisplay(false));
     }
 
     public static function provideDiffReportingCases(): iterable
@@ -94,7 +94,7 @@ TEST;
         $formats = $factory->registerBuiltInReporters()->getFormats();
         sort($formats);
 
-        static::assertSame(
+        self::assertSame(
             ['checkstyle', 'gitlab', 'json', 'junit', 'txt', 'xml'],
             $formats
         );

@@ -23,6 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Tests\Fixtures\DescribeCommand\DescribeFixtureFixer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use Prophecy\Argument;
@@ -72,7 +73,7 @@ Fixing examples:
    ----------- end diff -----------
 
 ';
-        static::assertSame($expected, $this->execute('Foo/bar', false)->getDisplay(true));
+        self::assertSame($expected, $this->execute('Foo/bar', false)->getDisplay(true));
     }
 
     public function testExecuteOutputWithDecoration(): void
@@ -113,12 +114,12 @@ Fixing examples:
 ";
         $actual = $this->execute('Foo/bar', true)->getDisplay(true);
 
-        static::assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     public function testExecuteStatusCode(): void
     {
-        static::assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
+        self::assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
     }
 
     public function testExecuteWithUnknownRuleName(): void
@@ -208,7 +209,42 @@ Fixing examples:
             ]
         );
 
-        static::assertStringContainsString(\get_class($mock), $commandTester->getDisplay(true));
+        self::assertStringContainsString(\get_class($mock), $commandTester->getDisplay(true));
+    }
+
+    public function testCommandDescribesCustomFixer(): void
+    {
+        $application = new Application();
+        $application->add(new DescribeCommand());
+
+        $command = $application->find('describe');
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            'name' => (new DescribeFixtureFixer())->getName(),
+            '--config' => __DIR__.'/../../Fixtures/DescribeCommand/.php-cs-fixer.fixture.php',
+        ]);
+
+        $expected =
+"Description of Vendor/describe_fixture rule.
+Fixture for describe command.
+
+Fixing examples:
+ * Example #1.
+   ---------- begin diff ----------
+   --- Original
+   +++ New
+   @@ -1,2 +1,2 @@
+    <?php
+   -echo 'describe fixture';
+   +echo 'fixture for describe';
+   ".'
+   ----------- end diff -----------
+
+';
+        self::assertSame($expected, $commandTester->getDisplay(true));
+        self::assertSame(0, $commandTester->getStatusCode());
     }
 
     private function execute(string $name, bool $decorated): CommandTester

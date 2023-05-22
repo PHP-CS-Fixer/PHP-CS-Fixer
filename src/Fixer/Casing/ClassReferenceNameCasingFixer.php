@@ -19,7 +19,6 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -27,9 +26,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class ClassReferenceNameCasingFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -40,24 +36,17 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $namespacesAnalyzer = new NamespacesAnalyzer();
         $namespaceUsesAnalyzer = new NamespaceUsesAnalyzer();
         $classNames = $this->getClassNames();
 
-        foreach ($namespacesAnalyzer->getDeclarations($tokens) as $namespace) {
+        foreach ($tokens->getNamespaceDeclarations() as $namespace) {
             $uses = [];
 
             foreach ($namespaceUsesAnalyzer->getDeclarationsInNamespace($tokens, $namespace) as $use) {

@@ -40,17 +40,11 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
         )}
     )$/x';
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -78,9 +72,6 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if (0 === \count($this->configuration['tags'])) {
@@ -142,9 +133,6 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

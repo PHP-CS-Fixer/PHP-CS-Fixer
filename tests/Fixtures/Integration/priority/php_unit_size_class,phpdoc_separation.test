@@ -1,0 +1,31 @@
+--TEST--
+Integration of fixers: php_unit_size_class,phpdoc_separation.
+--RULESET--
+{"php_unit_size_class": true, "phpdoc_separation": true}
+--EXPECT--
+<?php
+/**
+ * @author John Doe
+ *
+ * @small
+ */
+final class FooTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        foo();
+    }
+}
+
+--INPUT--
+<?php
+/**
+ * @author John Doe
+ */
+final class FooTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        foo();
+    }
+}

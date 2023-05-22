@@ -33,9 +33,6 @@ final class NoShortBoolCastFixer extends AbstractFixer
         return -9;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -44,17 +41,11 @@ final class NoShortBoolCastFixer extends AbstractFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound('!');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; $index > 1; --$index) {

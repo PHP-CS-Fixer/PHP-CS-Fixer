@@ -132,9 +132,6 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
      */
     private array $fixTokenMapPrecededByASingleSpace = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -188,9 +185,6 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -269,9 +263,6 @@ yield  from  baz();
         return 36;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         $tokenKinds = array_merge(
@@ -283,9 +274,6 @@ yield  from  baz();
         return $tokens->isAnyTokenKindsFound($tokenKinds) && !$tokens->hasAlternativeSyntax();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokenKindsContainASingleSpace = array_values($this->fixTokenMapContainASingleSpace);

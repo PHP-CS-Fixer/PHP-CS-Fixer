@@ -195,7 +195,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
     protected function doTest(IntegrationCase $case): void
     {
         if (\PHP_VERSION_ID < $case->getRequirement('php')) {
-            static::markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), \PHP_VERSION_ID));
+            self::markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), \PHP_VERSION_ID));
         }
 
         $input = $case->getInputCode();
@@ -228,17 +228,17 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
         if (!$errorsManager->isEmpty()) {
             $errors = $errorsManager->getExceptionErrors();
-            static::assertEmpty($errors, sprintf('Errors reported during fixing of file "%s": %s', $case->getFileName(), $this->implodeErrors($errors)));
+            self::assertEmpty($errors, sprintf('Errors reported during fixing of file "%s": %s', $case->getFileName(), $this->implodeErrors($errors)));
 
             $errors = $errorsManager->getInvalidErrors();
-            static::assertEmpty($errors, sprintf('Errors reported during linting before fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
+            self::assertEmpty($errors, sprintf('Errors reported during linting before fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
 
             $errors = $errorsManager->getLintErrors();
-            static::assertEmpty($errors, sprintf('Errors reported during linting after fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
+            self::assertEmpty($errors, sprintf('Errors reported during linting after fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
         }
 
         if (!$case->hasInputCode()) {
-            static::assertEmpty(
+            self::assertEmpty(
                 $changed,
                 sprintf(
                     "Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n%s.\nDiff.:\n%s.",
@@ -252,9 +252,9 @@ abstract class AbstractIntegrationTestCase extends TestCase
             return;
         }
 
-        static::assertNotEmpty($changed, sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
+        self::assertNotEmpty($changed, sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
         $fixedInputCode = file_get_contents($tmpFile);
-        static::assertThat(
+        self::assertThat(
             $fixedInputCode,
             new IsIdenticalString($expected),
             sprintf(
@@ -286,7 +286,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             $runner->fix();
             $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
 
-            static::assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
+            self::assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
         }
 
         // run the test again with the `expected` part, this should always stay the same
@@ -309,7 +309,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         // If output is different depends on rules order - we need to verify that the rules are ordered by priority.
         // If not, any order is valid.
         if ($fixedInputCode !== $fixedInputCodeWithReversedFixers) {
-            static::assertGreaterThan(
+            self::assertGreaterThan(
                 1,
                 \count(array_unique(array_map(
                     static function (FixerInterface $fixer): int {

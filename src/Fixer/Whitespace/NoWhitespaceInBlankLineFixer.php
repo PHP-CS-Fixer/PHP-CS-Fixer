@@ -27,9 +27,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -48,17 +45,11 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
         return -19;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         // skip first as it cannot be a white space token

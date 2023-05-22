@@ -41,8 +41,8 @@ final class VersionSpecificCodeSampleTest extends TestCase
             $configuration
         );
 
-        static::assertSame($code, $codeSample->getCode());
-        static::assertSame($configuration, $codeSample->getConfiguration());
+        self::assertSame($code, $codeSample->getCode());
+        self::assertSame($configuration, $codeSample->getConfiguration());
     }
 
     public function testConfigurationDefaultsToNull(): void
@@ -52,7 +52,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
             $this->createVersionSpecificationMock()->reveal()
         );
 
-        static::assertNull($codeSample->getConfiguration());
+        self::assertNull($codeSample->getConfiguration());
     }
 
     /**
@@ -72,7 +72,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
             $versionSpecification->reveal()
         );
 
-        static::assertSame($isSatisfied, $codeSample->isSuitableFor($version));
+        self::assertSame($isSatisfied, $codeSample->isSuitableFor($version));
     }
 
     public static function provideIsSuitableForVersionUsesVersionSpecificationCases(): array

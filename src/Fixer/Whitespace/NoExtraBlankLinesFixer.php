@@ -70,9 +70,6 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
 
     private TokensAnalyzer $tokensAnalyzer;
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         if (isset($configuration['tokens']) && \in_array('use_trait', $configuration['tokens'], true)) {
@@ -117,9 +114,6 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -268,17 +262,11 @@ switch($a) {
         return -20;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->tokens = $tokens;
@@ -289,9 +277,6 @@ switch($a) {
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -418,8 +403,24 @@ switch($a) {
     private function removeEmptyLinesAfterLineWithTokenAt(int $index): void
     {
         // find the line break
+        $parenthesesDepth = 0;
         $tokenCount = \count($this->tokens);
         for ($end = $index; $end < $tokenCount; ++$end) {
+            if ($this->tokens[$end]->equals('(')) {
+                ++$parenthesesDepth;
+
+                continue;
+            }
+
+            if ($this->tokens[$end]->equals(')')) {
+                --$parenthesesDepth;
+                if ($parenthesesDepth < 0) {
+                    return;
+                }
+
+                continue;
+            }
+
             if (
                 $this->tokens[$end]->equals('}')
                 || str_contains($this->tokens[$end]->getContent(), "\n")

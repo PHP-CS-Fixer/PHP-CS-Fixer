@@ -185,9 +185,6 @@ Exit code of the fix command is built using following bit flags:
 EOF;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -211,9 +208,6 @@ EOF;
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $verbosity = $output->getVerbosity();

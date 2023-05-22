@@ -51,15 +51,15 @@ final class DocBlockTest extends TestCase
     {
         $doc = new DocBlock(self::$sample);
 
-        static::assertSame(self::$sample, $doc->getContent());
-        static::assertSame(self::$sample, (string) $doc);
+        self::assertSame(self::$sample, $doc->getContent());
+        self::assertSame(self::$sample, (string) $doc);
     }
 
     public function testEmptyContent(): void
     {
         $doc = new DocBlock('');
 
-        static::assertSame('', $doc->getContent());
+        self::assertSame('', $doc->getContent());
     }
 
     public function testGetLines(): void
@@ -67,14 +67,14 @@ final class DocBlockTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $lines = $doc->getLines();
 
-        static::assertCount(15, $lines);
+        self::assertCount(15, $lines);
 
         foreach ($lines as $index => $line) {
-            static::assertInstanceOf(\PhpCsFixer\DocBlock\Line::class, $line);
-            static::assertSame($doc->getLine($index), $line);
+            self::assertInstanceOf(\PhpCsFixer\DocBlock\Line::class, $line);
+            self::assertSame($doc->getLine($index), $line);
         }
 
-        static::assertEmpty($doc->getLine(15));
+        self::assertEmpty($doc->getLine(15));
     }
 
     public function testGetAnnotations(): void
@@ -82,14 +82,14 @@ final class DocBlockTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $annotations = $doc->getAnnotations();
 
-        static::assertCount(5, $annotations);
+        self::assertCount(5, $annotations);
 
         foreach ($annotations as $index => $annotation) {
-            static::assertInstanceOf(\PhpCsFixer\DocBlock\Annotation::class, $annotation);
-            static::assertSame($doc->getAnnotation($index), $annotation);
+            self::assertInstanceOf(\PhpCsFixer\DocBlock\Annotation::class, $annotation);
+            self::assertSame($doc->getAnnotation($index), $annotation);
         }
 
-        static::assertEmpty($doc->getAnnotation(5));
+        self::assertEmpty($doc->getAnnotation(5));
     }
 
     public function testGetAnnotationsOfTypeParam(): void
@@ -97,7 +97,7 @@ final class DocBlockTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $annotations = $doc->getAnnotationsOfType('param');
 
-        static::assertCount(3, $annotations);
+        self::assertCount(3, $annotations);
 
         $first = '     * @param string $hello
 ';
@@ -107,9 +107,9 @@ final class DocBlockTest extends TestCase
         $third = '     * @param adkjbadjasbdand $asdnjkasd
 ';
 
-        static::assertSame($first, $annotations[0]->getContent());
-        static::assertSame($second, $annotations[1]->getContent());
-        static::assertSame($third, $annotations[2]->getContent());
+        self::assertSame($first, $annotations[0]->getContent());
+        self::assertSame($second, $annotations[1]->getContent());
+        self::assertSame($third, $annotations[2]->getContent());
     }
 
     public function testGetAnnotationsOfTypeThrows(): void
@@ -117,14 +117,14 @@ final class DocBlockTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $annotations = $doc->getAnnotationsOfType('throws');
 
-        static::assertCount(1, $annotations);
+        self::assertCount(1, $annotations);
 
         $content = '     * @throws \Exception asdnjkasd
      * asdasdasdasdasdasdasdasd
      * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
 ';
 
-        static::assertSame($content, $annotations[0]->getContent());
+        self::assertSame($content, $annotations[0]->getContent());
     }
 
     public function testGetAnnotationsOfTypeReturn(): void
@@ -132,12 +132,12 @@ final class DocBlockTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $annotations = $doc->getAnnotationsOfType('return');
 
-        static::assertCount(1, $annotations);
+        self::assertCount(1, $annotations);
 
         $content = '     * @return void
 ';
 
-        static::assertSame($content, $annotations[0]->getContent());
+        self::assertSame($content, $annotations[0]->getContent());
     }
 
     public function testGetAnnotationsOfTypeFoo(): void
@@ -145,14 +145,14 @@ final class DocBlockTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $annotations = $doc->getAnnotationsOfType('foo');
 
-        static::assertCount(0, $annotations);
+        self::assertCount(0, $annotations);
     }
 
     public function testIsMultiLIne(): void
     {
         $doc = new DocBlock(self::$sample);
 
-        static::assertTrue($doc->isMultiLine());
+        self::assertTrue($doc->isMultiLine());
     }
 
     /**
@@ -167,7 +167,7 @@ final class DocBlockTest extends TestCase
             $outputDocBlock = $inputDocBlock;
         }
 
-        static::assertSame($outputDocBlock, $doc->getContent());
+        self::assertSame($outputDocBlock, $doc->getContent());
     }
 
     public static function provideDocBlocksToConvertToMultiLineCases(): array
@@ -212,7 +212,7 @@ final class DocBlockTest extends TestCase
             $outputDocBlock = $inputDocBlock;
         }
 
-        static::assertSame($outputDocBlock, $doc->getContent());
+        self::assertSame($outputDocBlock, $doc->getContent());
     }
 
     public static function provideDocBlocksToConvertToSingleLineCases(): array

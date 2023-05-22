@@ -23,7 +23,6 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -45,9 +44,6 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
      */
     private array $caseInsensitiveConstantsToEscape = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -106,25 +102,16 @@ namespace {
         return 10;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -175,9 +162,6 @@ namespace {
         ksort($this->caseInsensitiveConstantsToEscape);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if ('all' === $this->configuration['scope']) {
@@ -186,7 +170,7 @@ namespace {
             return;
         }
 
-        $namespaces = (new NamespacesAnalyzer())->getDeclarations($tokens);
+        $namespaces = $tokens->getNamespaceDeclarations();
 
         // 'scope' is 'namespaced' here
         /** @var NamespaceAnalysis $namespace */
@@ -199,9 +183,6 @@ namespace {
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $constantChecker = static function (array $value): bool {

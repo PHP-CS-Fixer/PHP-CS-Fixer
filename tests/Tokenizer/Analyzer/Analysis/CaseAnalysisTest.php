@@ -28,7 +28,7 @@ final class CaseAnalysisTest extends TestCase
     {
         $analysis = new CaseAnalysis(12, 20);
 
-        static::assertSame(12, $analysis->getIndex());
-        static::assertSame(20, $analysis->getColonIndex());
+        self::assertSame(12, $analysis->getIndex());
+        self::assertSame(20, $analysis->getColonIndex());
     }
 }

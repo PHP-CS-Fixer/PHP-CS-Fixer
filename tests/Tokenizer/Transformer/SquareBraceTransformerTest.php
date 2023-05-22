@@ -42,12 +42,12 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 
         $tokens = Tokens::fromCode($source);
         foreach ($inspectIndexes as $index) {
-            static::assertTrue($tokens->offsetExists($index), sprintf('Index %d does not exist.', $index));
+            self::assertTrue($tokens->offsetExists($index), sprintf('Index %d does not exist.', $index));
         }
 
         foreach ($tokens as $index => $token) {
             if (\in_array($index, $inspectIndexes, true)) {
-                static::assertSame('[', $tokens[$index]->getContent(), sprintf('Token @ index %d must have content \']\'', $index));
+                self::assertSame('[', $tokens[$index]->getContent(), sprintf('Token @ index %d must have content \']\'', $index));
                 $exp = $expected;
             } elseif ('[' === $tokens[$index]->getContent()) {
                 $exp = !$expected;
@@ -55,7 +55,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
                 continue;
             }
 
-            static::assertSame(
+            self::assertSame(
                 $expected,
                 $method->invoke($transformer, $tokens, $index),
                 sprintf('Excepted token "%s" @ index %d %sto be detected as short array.', $tokens[$index]->toJson(), $index, $exp ? '' : 'not ')

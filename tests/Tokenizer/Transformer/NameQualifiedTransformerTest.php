@@ -36,6 +36,8 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
      * @param null|Token[] $input
      *
      * @dataProvider provideProcessCases
+     *
+     * @requires PHP 8.0
      */
     public function testProcess(array $expected, array $input = null): void
     {
@@ -50,22 +52,18 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
             $this->transformer->process($tokens, $tokens[$i], $i);
         }
 
-        static::assertTokens($expectedTokens, $tokens);
+        self::assertTokens($expectedTokens, $tokens);
 
         if (null === $input) {
-            static::assertFalse($tokens->isChanged());
+            self::assertFalse($tokens->isChanged());
         } else {
             self::testProcess($expected);
-            static::assertTrue($tokens->isChanged());
+            self::assertTrue($tokens->isChanged());
         }
     }
 
     public static function provideProcessCases(): iterable
     {
-        if (\PHP_VERSION_ID < 8_00_00) {
-            return; // PHPUnit still calls this for no reason on non PHP8.0
-        }
-
         yield 'string' => [
             [
                 new Token([T_OPEN_TAG, "<?php\n"]),
@@ -161,7 +159,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
      */
     public function testPriority(array $expected, string $source): void
     {
-        static::assertTokens(Tokens::fromArray($expected), Tokens::fromCode($source));
+        self::assertTokens(Tokens::fromArray($expected), Tokens::fromCode($source));
     }
 
     public static function providePriorityCases(): iterable

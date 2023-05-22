@@ -19,9 +19,6 @@ namespace PhpCsFixer;
  */
 final class PharChecker implements PharCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function checkFileValidity(string $filename): ?string
     {
         try {

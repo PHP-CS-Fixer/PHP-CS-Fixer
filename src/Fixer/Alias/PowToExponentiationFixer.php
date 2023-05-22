@@ -25,18 +25,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         // minimal candidate to fix is seven tokens: pow(x,y);
         return $tokens->count() > 7 && $tokens->isTokenKindFound(T_STRING);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -61,9 +55,6 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
         return 32;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $candidates = $this->findPowCalls($tokens);

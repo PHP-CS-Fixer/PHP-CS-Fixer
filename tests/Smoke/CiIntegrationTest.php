@@ -48,13 +48,13 @@ final class CiIntegrationTest extends AbstractSmokeTest
         try {
             CommandExecutor::create('composer --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {
-            static::markTestSkippedOrFail('Missing `composer` env script. Details:'."\n".$e->getMessage());
+            self::markTestSkippedOrFail('Missing `composer` env script. Details:'."\n".$e->getMessage());
         }
 
         try {
             CommandExecutor::create('composer check', __DIR__.'/../..')->getResult();
         } catch (\RuntimeException $e) {
-            static::markTestSkippedOrFail('Composer check failed. Details:'."\n".$e->getMessage());
+            self::markTestSkippedOrFail('Composer check failed. Details:'."\n".$e->getMessage());
         }
 
         try {
@@ -67,7 +67,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
                 'git commit -m "init" -q',
             ]);
         } catch (\RuntimeException $e) {
-            static::markTestSkippedOrFail($e->getMessage());
+            self::markTestSkippedOrFail($e->getMessage());
         }
     }
 
@@ -127,7 +127,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
             'echo "$CHANGED_FILES"',
         ]);
 
-        static::assertSame(implode("\n", $expectedResult1Lines)."\n", $result1->getOutput());
+        self::assertSame(implode("\n", $expectedResult1Lines)."\n", $result1->getOutput());
 
         $result2 = self::executeScript([
             $steps[0],
@@ -137,7 +137,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
             'echo "${EXTRA_ARGS}"',
         ]);
 
-        static::assertSame(implode("\n", $expectedResult2Lines), $result2->getOutput());
+        self::assertSame(implode("\n", $expectedResult2Lines), $result2->getOutput());
 
         $result3 = self::executeScript([
             $steps[0],
@@ -185,15 +185,15 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
             preg_quote('Legend: .-no changes, F-fixed, S-skipped (cached or empty file), I-invalid file syntax (file ignored), E-error', '/')
         );
 
-        static::assertMatchesRegularExpression($pattern, $result3->getError());
+        self::assertMatchesRegularExpression($pattern, $result3->getError());
 
         preg_match($pattern, $result3->getError(), $matches);
 
-        static::assertArrayHasKey(1, $matches);
-        static::assertSame(substr_count($expectedResult3FilesDots, '.'), substr_count($matches[1], '.'));
-        static::assertSame(substr_count($expectedResult3FilesDots, 'S'), substr_count($matches[1], 'S'));
+        self::assertArrayHasKey(1, $matches);
+        self::assertSame(substr_count($expectedResult3FilesDots, '.'), substr_count($matches[1], '.'));
+        self::assertSame(substr_count($expectedResult3FilesDots, 'S'), substr_count($matches[1], 'S'));
 
-        static::assertMatchesRegularExpression(
+        self::assertMatchesRegularExpression(
             '/^\s*Found \d+ of \d+ files that can be fixed in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
             $result3->getOutput()
         );

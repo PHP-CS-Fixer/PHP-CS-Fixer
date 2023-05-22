@@ -226,6 +226,55 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array<string>>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield [
+            '<?php
+
+            class Foo
+            {
+                /**
+                 * @return int|false
+                 */
+                #[\ReturnTypeWillChange]
+                public function test() {}
+            }
+            ',
+        ];
+
+        yield [
+            '<?php
+
+            /**
+             * @return void
+             */
+            #[\Deprecated]
+            function test(): void {};
+            ',
+            '<?php
+
+            /**
+             * @return void
+             */
+            #[\Deprecated]
+            function test() {};
+            ',
+        ];
+    }
+
+    /**
      * Test if magic method is handled without causing syntax error.
      *
      * @dataProvider provideMethodWillNotCauseSyntaxErrorCases
@@ -244,7 +293,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
 
         $this->fixer->fix($this->getTestFile(), $tokens);
 
-        static::assertNull($this->lintSource($tokens->generateCode()));
+        self::assertNull($this->lintSource($tokens->generateCode()));
     }
 
     public static function provideMethodWillNotCauseSyntaxErrorCases(): iterable

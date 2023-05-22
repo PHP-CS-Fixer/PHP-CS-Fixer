@@ -68,9 +68,9 @@ Files that were not fixed due to errors reported during %s:
         if ($verbosityLevel >= OutputInterface::VERBOSITY_DEBUG) {
             $startWith .= sprintf(
                 '
-      PhpCsFixer\Tests\Console\Output\ErrorOutputTest->getErrorAndLineNumber()
+      PhpCsFixer\Tests\Console\Output\ErrorOutputTest::getErrorAndLineNumber()
         in %s at line %d
-      PhpCsFixer\Tests\Console\Output\ErrorOutputTest->provideTestCases()
+      PhpCsFixer\Tests\Console\Output\ErrorOutputTest::provideTestCases()
       ReflectionMethod->invoke()
 ',
                 __FILE__,
@@ -78,13 +78,13 @@ Files that were not fixed due to errors reported during %s:
             );
         }
 
-        static::assertStringStartsWith($startWith, $displayed);
+        self::assertStringStartsWith($startWith, $displayed);
     }
 
-    public function provideTestCases(): array
+    public static function provideTestCases(): array
     {
         $lineNumber = __LINE__;
-        [$exceptionLineNumber, $error] = $this->getErrorAndLineNumber(); // note: keep call and __LINE__ separated with one line break
+        [$exceptionLineNumber, $error] = self::getErrorAndLineNumber(); // note: keep call and __LINE__ separated with one line break
         ++$lineNumber;
 
         return [
@@ -129,13 +129,13 @@ EOT;
 
         $displayed = $this->readFullStreamOutput($output);
 
-        static::assertStringContainsString($fixerName, $displayed);
-        static::assertStringContainsString($diffSpecificContext, $displayed);
+        self::assertStringContainsString($fixerName, $displayed);
+        self::assertStringContainsString($diffSpecificContext, $displayed);
 
-        static::assertStringContainsString($noDiffLintFixerName, $displayed);
+        self::assertStringContainsString($noDiffLintFixerName, $displayed);
 
-        static::assertStringNotContainsString($invalidErrorFixerName, $displayed);
-        static::assertStringNotContainsString($invalidDiff, $displayed);
+        self::assertStringNotContainsString($invalidErrorFixerName, $displayed);
+        self::assertStringNotContainsString($invalidDiff, $displayed);
     }
 
     private function createStreamOutput(int $verbosityLevel): StreamOutput
@@ -160,7 +160,7 @@ EOT;
     /**
      * @return array{int, Error}
      */
-    private function getErrorAndLineNumber(): array
+    private static function getErrorAndLineNumber(): array
     {
         $lineNumber = __LINE__;
         $exception = new \RuntimeException(// note: keep exception constructor and __LINE__ separated with one line break

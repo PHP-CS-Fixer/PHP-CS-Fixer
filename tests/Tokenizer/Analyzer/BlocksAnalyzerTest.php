@@ -35,7 +35,7 @@ final class BlocksAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new BlocksAnalyzer();
 
-        static::assertTrue($analyzer->isBlock($tokens, $openIndex, $closeIndex));
+        self::assertTrue($analyzer->isBlock($tokens, $openIndex, $closeIndex));
     }
 
     public static function provideBlocksCases(): array
@@ -64,7 +64,7 @@ final class BlocksAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new BlocksAnalyzer();
 
-        static::assertSame($isBlock, $analyzer->isBlock($tokens, $openIndex, $closeIndex));
+        self::assertSame($isBlock, $analyzer->isBlock($tokens, $openIndex, $closeIndex));
     }
 
     public static function provideNonBlocksCases(): array

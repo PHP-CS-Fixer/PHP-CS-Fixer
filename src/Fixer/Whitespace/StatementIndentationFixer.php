@@ -41,9 +41,6 @@ final class StatementIndentationFixer extends AbstractFixer implements Whitespac
         $this->bracesFixerCompatibility = $bracesFixerCompatibility;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -74,9 +71,6 @@ else {
         return parent::getPriority();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
@@ -304,19 +298,17 @@ else {
                             }
                         }
 
-                        if (!$this->isCommentForControlSructureContinuation($tokens, $index + 1)) {
-                            $endIndex = $scopes[$currentScope]['end_index'];
+                        $endIndex = $scopes[$currentScope]['end_index'];
 
-                            if (!$scopes[$currentScope]['end_index_inclusive']) {
-                                ++$endIndex;
-                            }
+                        if (!$scopes[$currentScope]['end_index_inclusive']) {
+                            ++$endIndex;
+                        }
 
-                            if (
-                                (null !== $firstNonWhitespaceTokenIndex && $firstNonWhitespaceTokenIndex < $endIndex)
-                                || (null !== $nextNewlineIndex && $nextNewlineIndex < $endIndex)
-                            ) {
-                                $indent = true;
-                            }
+                        if (
+                            (null !== $firstNonWhitespaceTokenIndex && $firstNonWhitespaceTokenIndex < $endIndex)
+                            || (null !== $nextNewlineIndex && $nextNewlineIndex < $endIndex)
+                        ) {
+                            $indent = true;
                         }
                     }
 
@@ -494,36 +486,6 @@ else {
         }
 
         return $regularIndent;
-    }
-
-    private function isCommentForControlSructureContinuation(Tokens $tokens, int $index): bool
-    {
-        if (!isset($tokens[$index], $tokens[$index + 1])) {
-            return false;
-        }
-
-        if (!$tokens[$index]->isComment() || 1 !== Preg::match('~^(//|#)~', $tokens[$index]->getContent())) {
-            return false;
-        }
-
-        if (!$tokens[$index + 1]->isWhitespace() || 1 !== Preg::match('/\R/', $tokens[$index + 1]->getContent())) {
-            return false;
-        }
-
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if (null !== $prevIndex && $tokens[$prevIndex]->equals('{')) {
-            return false;
-        }
-
-        $index = $tokens->getNextMeaningfulToken($index + 1);
-
-        if (null === $index || !$tokens[$index]->equals('}')) {
-            return false;
-        }
-
-        $index = $tokens->getNextMeaningfulToken($index);
-
-        return null !== $index && $tokens[$index]->isGivenKind([T_ELSE, T_ELSEIF]);
     }
 
     /**

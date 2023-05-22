@@ -29,9 +29,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class GroupImportFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -44,17 +41,11 @@ final class GroupImportFixer extends AbstractFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_USE);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $useWithSameNamespaces = $this->getSameNamespaces($tokens);
@@ -208,7 +199,7 @@ final class GroupImportFixer extends AbstractFixer
 
         $tokens->insertAt($insertIndex, $newTokens);
 
-        return \count($newTokens) + 1;
+        return \count($newTokens);
     }
 
     /**
@@ -252,15 +243,14 @@ final class GroupImportFixer extends AbstractFixer
         $insertIndex += $newTokensCount;
 
         if ($useDeclaration->isAliased()) {
-            $inserted = $this->insertToGroupUseWithAlias($tokens, $insertIndex + 1, $useDeclaration);
+            $inserted = $this->insertToGroupUseWithAlias($tokens, $insertIndex + 1, $useDeclaration) + 1;
             $insertedTokens += $inserted;
             $insertIndex += $inserted;
         }
 
         $tokens->insertAt($insertIndex, new Token([T_STRING, $useDeclaration->getShortName()]));
-        ++$insertedTokens;
 
-        return $insertedTokens;
+        return ++$insertedTokens;
     }
 
     /**

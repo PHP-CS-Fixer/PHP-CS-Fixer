@@ -31,9 +31,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NewWithBracesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -62,17 +59,11 @@ final class NewWithBracesFixer extends AbstractFixer implements ConfigurableFixe
         return 37;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_NEW);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         static $nextTokenKinds = null;
@@ -164,9 +155,6 @@ final class NewWithBracesFixer extends AbstractFixer implements ConfigurableFixe
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

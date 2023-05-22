@@ -22,7 +22,6 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -34,9 +33,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class NoUnusedImportsFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -56,17 +52,11 @@ final class NoUnusedImportsFixer extends AbstractFixer
         return -10;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_USE);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
@@ -75,7 +65,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             return;
         }
 
-        foreach ((new NamespacesAnalyzer())->getDeclarations($tokens) as $namespace) {
+        foreach ($tokens->getNamespaceDeclarations() as $namespace) {
             $currentNamespaceUseDeclarations = [];
             $currentNamespaceUseDeclarationIndices = [];
 

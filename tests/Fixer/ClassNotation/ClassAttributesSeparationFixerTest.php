@@ -29,7 +29,7 @@ final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFixCases(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -279,7 +279,7 @@ private $d = 123;
         $method->setAccessible(true);
 
         $result = $method->invoke($this->fixer, $tokens, $index, 0);
-        static::assertSame(
+        self::assertSame(
             $expected,
             $result,
             sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson())

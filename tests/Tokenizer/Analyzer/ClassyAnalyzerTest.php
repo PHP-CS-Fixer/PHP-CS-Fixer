@@ -217,7 +217,7 @@ final class ClassyAnalyzerTest extends TestCase
         $analyzer = new ClassyAnalyzer();
 
         foreach ($expected as $index => $isClassy) {
-            static::assertSame($isClassy, $analyzer->isClassyInvocation($tokens, $index), sprintf('Token at index %d should match the expected value "%s".', $index, true === $isClassy ? 'true' : 'false'));
+            self::assertSame($isClassy, $analyzer->isClassyInvocation($tokens, $index), sprintf('Token at index %d should match the expected value "%s".', $index, true === $isClassy ? 'true' : 'false'));
         }
     }
 }

@@ -24,9 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -48,9 +45,6 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
         return 1;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();

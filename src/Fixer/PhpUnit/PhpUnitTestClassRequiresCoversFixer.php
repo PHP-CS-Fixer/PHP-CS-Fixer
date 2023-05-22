@@ -27,9 +27,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class PhpUnitTestClassRequiresCoversFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -50,6 +47,16 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before PhpdocSeparationFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
@@ -65,8 +72,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $tokens,
             $classIndex,
             'coversNothing',
-            true,
-            false,
             [
                 'covers',
                 'coversDefaultClass',

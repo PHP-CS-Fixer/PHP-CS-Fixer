@@ -35,9 +35,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwareFixerInterface, ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -63,17 +60,11 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
         return 7;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

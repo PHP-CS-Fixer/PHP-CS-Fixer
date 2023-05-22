@@ -29,7 +29,7 @@ final class NewVersionCheckerTest extends TestCase
     {
         $checker = new NewVersionChecker($this->createGithubClientStub());
 
-        static::assertSame('v2.4.1', $checker->getLatestVersion());
+        self::assertSame('v2.4.1', $checker->getLatestVersion());
     }
 
     /**
@@ -39,7 +39,7 @@ final class NewVersionCheckerTest extends TestCase
     {
         $checker = new NewVersionChecker($this->createGithubClientStub());
 
-        static::assertSame($expectedVersion, $checker->getLatestVersionOfMajor($majorVersion));
+        self::assertSame($expectedVersion, $checker->getLatestVersionOfMajor($majorVersion));
     }
 
     public static function provideLatestVersionOfMajorCases(): array
@@ -58,11 +58,11 @@ final class NewVersionCheckerTest extends TestCase
     {
         $checker = new NewVersionChecker($this->createGithubClientStub());
 
-        static::assertSame(
+        self::assertSame(
             $expectedResult,
             $checker->compareVersions($versionA, $versionB)
         );
-        static::assertSame(
+        self::assertSame(
             -$expectedResult,
             $checker->compareVersions($versionB, $versionA)
         );

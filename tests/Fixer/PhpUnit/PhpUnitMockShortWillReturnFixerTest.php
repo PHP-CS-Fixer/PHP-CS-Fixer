@@ -263,6 +263,20 @@ class FooTest extends TestCase {
     }
 }',
             ],
+            'with trailing commas' => [
+                '<?php
+class FooTest extends TestCase {
+    public function testFoo() {
+        $someMock->method("someMethod")->willReturn( 10 ,   );
+    }
+}',
+                '<?php
+class FooTest extends TestCase {
+    public function testFoo() {
+        $someMock->method("someMethod")->will($this->returnValue( 10 , ) , );
+    }
+}',
+            ],
         ];
     }
 

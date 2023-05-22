@@ -30,11 +30,11 @@ final class ApplicationTest extends TestCase
             .' by <comment>Fabien Potencier<\\/comment> and <comment>Dariusz Ruminski<\\/comment>.'
             ."\nPHP runtime: <info>\\d+.\\d+.\\d+(-dev)?<\\/info>$/";
 
-        static::assertMatchesRegularExpression($regex, (new Application())->getLongVersion());
+        self::assertMatchesRegularExpression($regex, (new Application())->getLongVersion());
     }
 
     public function testGetMajorVersion(): void
     {
-        static::assertSame(3, Application::getMajorVersion());
+        self::assertSame(3, Application::getMajorVersion());
     }
 }

@@ -27,9 +27,6 @@ use PhpCsFixer\Preg;
 
 final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotationFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -44,9 +41,6 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver(array_merge(
@@ -60,9 +54,6 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function fixAnnotations(Tokens $doctrineAnnotationTokens): void
     {
         $annotationPositions = [];

@@ -28,9 +28,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -53,17 +50,11 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
         return 6;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT) && $tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         // min. offset 4 as minimal candidate is @: <?php\n/** @inheritdoc */class min{}

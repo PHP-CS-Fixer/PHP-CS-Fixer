@@ -45,9 +45,6 @@ final class PhpUnitMethodCasingFixer extends AbstractPhpUnitFixer implements Con
      */
     public const SNAKE_CASE = 'snake_case';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -84,9 +81,6 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -97,9 +91,6 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         for ($index = $endIndex - 1; $index > $startIndex; --$index) {

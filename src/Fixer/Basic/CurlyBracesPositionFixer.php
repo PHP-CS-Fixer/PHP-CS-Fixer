@@ -46,9 +46,6 @@ final class CurlyBracesPositionFixer extends AbstractFixer implements Configurab
      */
     public const SAME_LINE = 'same_line';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -139,9 +136,6 @@ $bar = function () { $result = true;
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound('{');
@@ -150,6 +144,7 @@ $bar = function () { $result = true;
     /**
      * {@inheritdoc}
      *
+     * Must run before SingleLineEmptyBodyFixer.
      * Must run after ControlStructureBracesFixer.
      */
     public function getPriority(): int
@@ -157,9 +152,6 @@ $bar = function () { $result = true;
         return parent::getPriority();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $classyTokens = Token::getClassyTokenKinds();
@@ -354,9 +346,6 @@ $bar = function () { $result = true;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

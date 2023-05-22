@@ -26,9 +26,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class NoEmptyStatementFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -52,17 +49,11 @@ final class NoEmptyStatementFixer extends AbstractFixer
         return 40;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(';');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {

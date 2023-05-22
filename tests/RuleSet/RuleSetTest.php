@@ -60,14 +60,14 @@ final class RuleSetTest extends TestCase
             $fixers[$fixer->getName()] = $fixer;
         }
 
-        static::assertArrayHasKey($ruleName, $fixers, sprintf('RuleSet "%s" contains unknown rule.', $setName));
+        self::assertArrayHasKey($ruleName, $fixers, sprintf('RuleSet "%s" contains unknown rule.', $setName));
 
         if (true === $ruleConfig) {
             return; // rule doesn't need configuration.
         }
 
         $fixer = $fixers[$ruleName];
-        static::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
+        self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
 
         try {
             $fixer->configure($ruleConfig); // test fixer accepts the configuration
@@ -105,7 +105,7 @@ final class RuleSetTest extends TestCase
             $defaultConfig[$option->getName()] = $option->getDefault();
         }
 
-        static::assertNotSame(
+        self::assertNotSame(
             $this->sortNestedArray($defaultConfig, $ruleName),
             $this->sortNestedArray($ruleConfig, $ruleName),
             sprintf('Rule "%s" (in RuleSet "%s") has default config passed.', $ruleName, $setName)
@@ -123,7 +123,7 @@ final class RuleSetTest extends TestCase
 
         $fixer = current($factory->getFixers());
 
-        static::assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
+        self::assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
     }
 
     public static function provideAllRulesFromSetsCases(): iterable
@@ -145,7 +145,7 @@ final class RuleSetTest extends TestCase
     {
         $setNames = RuleSets::getSetDefinitionNames();
 
-        static::assertNotEmpty($setNames);
+        self::assertNotEmpty($setNames);
     }
 
     public function testResolveRulesWithInvalidSet(): void
@@ -175,7 +175,7 @@ final class RuleSetTest extends TestCase
             'strict_comparison' => true,
         ]);
 
-        static::assertSameRules(
+        self::assertSameRules(
             [
                 'braces' => true,
                 'full_opening_tag' => true,
@@ -193,7 +193,7 @@ final class RuleSetTest extends TestCase
             'strict_comparison' => true,
         ]);
 
-        static::assertSameRules(
+        self::assertSameRules(
             [
                 'blank_line_after_namespace' => true,
                 'class_definition' => true,
@@ -239,7 +239,7 @@ final class RuleSetTest extends TestCase
             'encoding' => true,
         ]);
 
-        static::assertSameRules(
+        self::assertSameRules(
             [
                 'blank_line_after_namespace' => true,
                 'constant_case' => true,
@@ -289,7 +289,7 @@ final class RuleSetTest extends TestCase
                 ->getFixers()
             ;
         } catch (InvalidForEnvFixerConfigurationException $exception) {
-            static::markTestSkipped($exception->getMessage());
+            self::markTestSkipped($exception->getMessage());
         }
 
         $fixerNames = [];
@@ -299,7 +299,7 @@ final class RuleSetTest extends TestCase
             }
         }
 
-        static::assertCount(
+        self::assertCount(
             0,
             $fixerNames,
             sprintf(
@@ -384,7 +384,7 @@ final class RuleSetTest extends TestCase
             return;
         }
 
-        static::fail(sprintf(
+        self::fail(sprintf(
             '"%s" defines rules the same as it extends from: %s',
             $set->getName(),
             implode(', ', $duplicates),
@@ -403,7 +403,7 @@ final class RuleSetTest extends TestCase
      */
     public function testPhpUnitTargetVersionHasSet(string $version): void
     {
-        static::assertContains(
+        self::assertContains(
             sprintf('@PHPUnit%sMigration:risky', str_replace('.', '', $version)),
             RuleSets::getSetDefinitionNames(),
             sprintf('PHPUnit target version %s is missing its set in %s.', $version, RuleSet::class)
@@ -527,6 +527,6 @@ final class RuleSetTest extends TestCase
         ksort($expected);
         ksort($actual);
 
-        static::assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 }

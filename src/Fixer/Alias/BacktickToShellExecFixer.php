@@ -27,17 +27,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class BacktickToShellExecFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound('`');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -66,9 +60,6 @@ EOT
         return 17;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $backtickStarted = false;

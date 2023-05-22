@@ -31,7 +31,7 @@ interface Contract
 
 class Implementation implements Contract
 {
-    public function method(?Foo $foo = null): ?bool
+    public function method(Foo $foo = null): ?bool
     {
         return is_null($foo);
     }

@@ -84,7 +84,7 @@ final class VersionSpecificationTest extends TestCase
             $maximum
         );
 
-        static::assertTrue($versionSpecification->isSatisfiedBy($actual));
+        self::assertTrue($versionSpecification->isSatisfiedBy($actual));
     }
 
     public static function provideIsSatisfiedByReturnsTrueCases(): array
@@ -107,7 +107,7 @@ final class VersionSpecificationTest extends TestCase
             $maximum
         );
 
-        static::assertFalse($versionSpecification->isSatisfiedBy($actual));
+        self::assertFalse($versionSpecification->isSatisfiedBy($actual));
     }
 
     public static function provideIsSatisfiedByReturnsFalseCases(): array

@@ -24,17 +24,11 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  */
 final class JunitReporter implements ReporterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getFormat(): string
     {
         return 'junit';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function generate(ReportSummary $reportSummary): string
     {
         if (!\extension_loaded('dom')) {

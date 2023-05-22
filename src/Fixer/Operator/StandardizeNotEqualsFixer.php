@@ -26,9 +26,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class StandardizeNotEqualsFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -47,17 +44,11 @@ final class StandardizeNotEqualsFixer extends AbstractFixer
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_IS_NOT_EQUAL);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {

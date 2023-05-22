@@ -29,12 +29,9 @@ final class TokenizerLinterTest extends AbstractLinterTestCase
 {
     public function testIsAsync(): void
     {
-        static::assertFalse($this->createLinter()->isAsync());
+        self::assertFalse($this->createLinter()->isAsync());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createLinter(): LinterInterface
     {
         return new TokenizerLinter();

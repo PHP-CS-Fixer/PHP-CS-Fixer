@@ -35,7 +35,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($source);
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            static::assertSame(
+            self::assertSame(
                 \in_array($index, $expectedPositives, true),
                 (new AlternativeSyntaxAnalyzer())->belongsToAlternativeSyntax($tokens, $index),
                 '@ index: '.$index
@@ -93,7 +93,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
     {
         $analyzer = new AlternativeSyntaxAnalyzer();
 
-        static::assertSame(
+        self::assertSame(
             $expectedResult,
             $analyzer->findAlternativeSyntaxBlockEnd(
                 Tokens::fromCode($code),

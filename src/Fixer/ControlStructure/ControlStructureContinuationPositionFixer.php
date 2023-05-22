@@ -46,9 +46,6 @@ final class ControlStructureContinuationPositionFixer extends AbstractFixer impl
         T_WHILE,
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(

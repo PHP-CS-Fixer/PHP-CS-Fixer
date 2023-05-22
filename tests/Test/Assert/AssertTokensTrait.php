@@ -33,13 +33,13 @@ trait AssertTokensTrait
 
             $inputToken = $inputTokens[$index];
 
-            static::assertTrue(
+            self::assertTrue(
                 $expectedToken->equals($inputToken),
                 sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson(), $inputToken->toJson())
             );
 
             $expectedTokenKind = $expectedToken->isArray() ? $expectedToken->getId() : $expectedToken->getContent();
-            static::assertTrue(
+            self::assertTrue(
                 $inputTokens->isTokenKindFound($expectedTokenKind),
                 sprintf(
                     'The token kind %s (%s) must be found in tokens collection.',
@@ -49,6 +49,6 @@ trait AssertTokensTrait
             );
         }
 
-        static::assertSame($expectedTokens->count(), $inputTokens->count(), 'Both collections must have the same length.');
+        self::assertSame($expectedTokens->count(), $inputTokens->count(), 'Both collections must have the same length.');
     }
 }

@@ -25,7 +25,7 @@ $header = <<<'EOF'
 $finder = PhpCsFixer\Finder::create()
     ->ignoreDotFiles(false)
     ->ignoreVCSIgnored(true)
-    ->exclude('tests/Fixtures')
+    ->exclude(['dev-tools/phpstan', 'tests/Fixtures'])
     ->in(__DIR__)
     ->append([
         __DIR__.'/dev-tools/doc.php',

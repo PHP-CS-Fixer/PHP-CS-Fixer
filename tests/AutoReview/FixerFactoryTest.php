@@ -40,9 +40,9 @@ final class FixerFactoryTest extends TestCase
 
         foreach (self::getFixerWithFixedPosition() as $fixerName => $offset) {
             if ($offset < 0) {
-                static::assertSame($fixerName, $fixers[\count($fixers) + $offset]->getName(), $fixerName);
+                self::assertSame($fixerName, $fixers[\count($fixers) + $offset]->getName(), $fixerName);
             } else {
-                static::assertSame($fixerName, $fixers[$offset]->getName(), $fixerName);
+                self::assertSame($fixerName, $fixers[$offset]->getName(), $fixerName);
             }
         }
     }
@@ -63,7 +63,7 @@ final class FixerFactoryTest extends TestCase
                 foreach ($edges as $edge) {
                     $second = $fixers[$edge];
 
-                    static::assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', $edge, $fixerName));
+                    self::assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', $edge, $fixerName));
                 }
             }
         }
@@ -119,22 +119,22 @@ final class FixerFactoryTest extends TestCase
             sort($expected);
             sort($actual);
 
-            static::assertSame(
+            self::assertSame(
                 sprintf('Integration of fixers: %s,%s.', $fixerName, $edge),
                 $test->getTitle(),
                 sprintf('Please fix the title in "%s".', $file)
             );
 
-            static::assertCount(2, $rules, sprintf('Only the two rules that are tested for priority should be in the ruleset of "%s".', $file));
+            self::assertCount(2, $rules, sprintf('Only the two rules that are tested for priority should be in the ruleset of "%s".', $file));
 
             foreach ($rules as $name => $config) {
-                static::assertNotFalse($config, sprintf('The rule "%s" in "%s" may not be disabled for the test.', $name, $file));
+                self::assertNotFalse($config, sprintf('The rule "%s" in "%s" may not be disabled for the test.', $name, $file));
             }
 
-            static::assertSame($expected, $actual, sprintf('The ruleset of "%s" must contain the rules for the priority test.', $file));
+            self::assertSame($expected, $actual, sprintf('The ruleset of "%s" must contain the rules for the priority test.', $file));
         }
 
-        static::assertCount(0, $missingIntegrationsTests, sprintf("There shall be an integration test. How do you know that priority set up is good, if there is no integration test to check it?\nMissing:\n- %s", implode("\n- ", $missingIntegrationsTests)));
+        self::assertCount(0, $missingIntegrationsTests, sprintf("There shall be an integration test. How do you know that priority set up is good, if there is no integration test to check it?\nMissing:\n- %s", implode("\n- ", $missingIntegrationsTests)));
     }
 
     public static function provideFixersPriorityCasesHaveIntegrationCases(): iterable
@@ -151,9 +151,9 @@ final class FixerFactoryTest extends TestCase
     {
         $fileName = $file->getFilename();
 
-        static::assertTrue($file->isFile(), sprintf('Expected only files in the priority integration test directory, got "%s".', $fileName));
-        static::assertFalse($file->isLink(), sprintf('No (sym)links expected the priority integration test directory, got "%s".', $fileName));
-        static::assertSame(
+        self::assertTrue($file->isFile(), sprintf('Expected only files in the priority integration test directory, got "%s".', $fileName));
+        self::assertFalse($file->isLink(), sprintf('No (sym)links expected the priority integration test directory, got "%s".', $fileName));
+        self::assertSame(
             1,
             preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test(-(in|out)\.php)?$#', $fileName, $matches),
             sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
@@ -162,7 +162,7 @@ final class FixerFactoryTest extends TestCase
         [, $fixerName1, $fixerName2] = $matches;
         $graph = self::getFixersPriorityGraph();
 
-        static::assertTrue(
+        self::assertTrue(
             isset($graph[$fixerName1]) && \in_array($fixerName2, $graph[$fixerName1], true),
             sprintf('Missing priority test entry for file "%s".', $fileName)
         );
@@ -182,12 +182,12 @@ final class FixerFactoryTest extends TestCase
         $previous = '';
 
         foreach (self::getFixersPriorityGraph() as $fixerName => $edges) {
-            static::assertLessThan(0, strcmp($previous, $fixerName), sprintf('Not sorted "%s" "%s".', $previous, $fixerName));
+            self::assertLessThan(0, strcmp($previous, $fixerName), sprintf('Not sorted "%s" "%s".', $previous, $fixerName));
 
             $edgesSorted = $edges;
             sort($edgesSorted);
 
-            static::assertSame($edgesSorted, $edges, sprintf('Fixer "%s" edges are not sorted', $fixerName));
+            self::assertSame($edgesSorted, $edges, sprintf('Fixer "%s" edges are not sorted', $fixerName));
             $previous = $fixerName;
         }
     }
@@ -270,7 +270,7 @@ final class FixerFactoryTest extends TestCase
                 $message .= sprintf("\n--------------------------------------------------\n%s\n%s", $fixers[$fixerName]['short_classname'], $issue);
             }
 
-            static::fail($message);
+            self::fail($message);
         }
     }
 
@@ -321,11 +321,11 @@ final class FixerFactoryTest extends TestCase
             if (isset($missing[$knownIssue])) {
                 unset($missing[$knownIssue]);
             } else {
-                static::fail(sprintf('No longer found known issue "%s", please update the set.', $knownIssue));
+                self::fail(sprintf('No longer found known issue "%s", please update the set.', $knownIssue));
             }
         }
 
-        static::assertEmpty($missing, 'Fixers without default priority and without priority tests: "'.implode('", "', array_keys($missing)).'."');
+        self::assertEmpty($missing, 'Fixers without default priority and without priority tests: "'.implode('", "', array_keys($missing)).'."');
     }
 
     /**
@@ -369,6 +369,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'class_definition' => [
                 'braces',
+                'single_line_empty_body',
             ],
             'class_keyword_remove' => [
                 'no_unused_imports',
@@ -394,6 +395,9 @@ final class FixerFactoryTest extends TestCase
                 'control_structure_continuation_position',
                 'curly_braces_position',
                 'no_multiple_statements_per_line',
+            ],
+            'curly_braces_position' => [
+                'single_line_empty_body',
             ],
             'declare_strict_types' => [
                 'blank_line_after_opening_tag',
@@ -653,6 +657,9 @@ final class FixerFactoryTest extends TestCase
             'ordered_imports' => [
                 'blank_line_between_import_groups',
             ],
+            'ordered_types' => [
+                'types_spaces',
+            ],
             'php_unit_construct' => [
                 'php_unit_dedicate_assert',
             ],
@@ -666,10 +673,14 @@ final class FixerFactoryTest extends TestCase
             ],
             'php_unit_internal_class' => [
                 'final_internal_class',
+                'phpdoc_separation',
             ],
             'php_unit_no_expectation_annotation' => [
                 'no_empty_phpdoc',
                 'php_unit_expectation',
+            ],
+            'php_unit_size_class' => [
+                'phpdoc_separation',
             ],
             'php_unit_test_annotation' => [
                 'no_empty_phpdoc',
@@ -679,15 +690,14 @@ final class FixerFactoryTest extends TestCase
             'php_unit_test_case_static_method_calls' => [
                 'self_static_accessor',
             ],
+            'php_unit_test_class_requires_covers' => [
+                'phpdoc_separation',
+            ],
             'phpdoc_add_missing_param_annotation' => [
                 'no_empty_phpdoc',
                 'no_superfluous_phpdoc_tags',
                 'phpdoc_align',
                 'phpdoc_order',
-            ],
-            'phpdoc_annotation_without_dot' => [
-                'phpdoc_types',
-                'phpdoc_types_order',
             ],
             'phpdoc_line_span' => [
                 'no_superfluous_phpdoc_tags',

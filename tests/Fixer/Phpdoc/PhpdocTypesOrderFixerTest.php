@@ -178,6 +178,10 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @param null|callable(null|foo, null|bar): array<string, T> $callback */',
                 '<?php /** @param null|callable(foo|null, bar|null): array<string, T> $callback */',
             ],
+            [
+                '<?php /** @param null|string$foo */',
+                '<?php /** @param string|null$foo */',
+            ],
         ];
     }
 

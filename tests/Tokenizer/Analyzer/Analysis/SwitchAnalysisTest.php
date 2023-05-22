@@ -32,11 +32,11 @@ final class SwitchAnalysisTest extends TestCase
     {
         $analysis = new SwitchAnalysis(10, 11, 15, [], null);
 
-        static::assertSame(10, $analysis->getIndex());
-        static::assertSame(11, $analysis->getOpenIndex());
-        static::assertSame(15, $analysis->getCloseIndex());
-        static::assertSame([], $analysis->getCases());
-        static::assertNull($analysis->getDefaultAnalysis());
+        self::assertSame(10, $analysis->getIndex());
+        self::assertSame(11, $analysis->getOpenIndex());
+        self::assertSame(15, $analysis->getCloseIndex());
+        self::assertSame([], $analysis->getCases());
+        self::assertNull($analysis->getDefaultAnalysis());
     }
 
     public function testSwitchAnalysis2(): void
@@ -46,10 +46,10 @@ final class SwitchAnalysisTest extends TestCase
 
         $analysis = new SwitchAnalysis(15, 17, 190, [$caseAnalysis], $defaultAnalysis);
 
-        static::assertSame(15, $analysis->getIndex());
-        static::assertSame(17, $analysis->getOpenIndex());
-        static::assertSame(190, $analysis->getCloseIndex());
-        static::assertSame([$caseAnalysis], $analysis->getCases());
-        static::assertSame($defaultAnalysis, $analysis->getDefaultAnalysis());
+        self::assertSame(15, $analysis->getIndex());
+        self::assertSame(17, $analysis->getOpenIndex());
+        self::assertSame(190, $analysis->getCloseIndex());
+        self::assertSame([$caseAnalysis], $analysis->getCases());
+        self::assertSame($defaultAnalysis, $analysis->getDefaultAnalysis());
     }
 }

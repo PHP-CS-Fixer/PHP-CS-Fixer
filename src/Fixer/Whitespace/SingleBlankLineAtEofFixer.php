@@ -31,9 +31,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SingleBlankLineAtEofFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -45,26 +42,17 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         // must run last to be sure the file is properly formatted before it runs
         return -50;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $count = $tokens->count();

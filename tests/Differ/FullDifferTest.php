@@ -42,6 +42,6 @@ final class FullDifferTest extends AbstractDifferTestCase
 ';
         $differ = new FullDiffer();
 
-        static::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
+        self::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
     }
 }

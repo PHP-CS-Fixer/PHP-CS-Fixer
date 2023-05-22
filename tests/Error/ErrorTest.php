@@ -26,8 +26,8 @@ final class ErrorTest extends TestCase
 {
     public function testThatErrorTypeConstantValuesAreDifferent(): void
     {
-        static::assertNotSame(Error::TYPE_INVALID, Error::TYPE_EXCEPTION);
-        static::assertNotSame(Error::TYPE_EXCEPTION, Error::TYPE_LINT);
+        self::assertNotSame(Error::TYPE_INVALID, Error::TYPE_EXCEPTION);
+        self::assertNotSame(Error::TYPE_EXCEPTION, Error::TYPE_LINT);
     }
 
     public function testConstructorSetsValues(): void
@@ -40,11 +40,11 @@ final class ErrorTest extends TestCase
             $filePath
         );
 
-        static::assertSame($type, $error->getType());
-        static::assertSame($filePath, $error->getFilePath());
-        static::assertNull($error->getSource());
-        static::assertSame([], $error->getAppliedFixers());
-        static::assertNull($error->getDiff());
+        self::assertSame($type, $error->getType());
+        self::assertSame($filePath, $error->getFilePath());
+        self::assertNull($error->getSource());
+        self::assertSame([], $error->getAppliedFixers());
+        self::assertNull($error->getDiff());
     }
 
     public function testConstructorSetsValues2(): void
@@ -63,10 +63,10 @@ final class ErrorTest extends TestCase
             $diff
         );
 
-        static::assertSame($type, $error->getType());
-        static::assertSame($filePath, $error->getFilePath());
-        static::assertSame($source, $error->getSource());
-        static::assertSame($appliedFixers, $error->getAppliedFixers());
-        static::assertSame($diff, $error->getDiff());
+        self::assertSame($type, $error->getType());
+        self::assertSame($filePath, $error->getFilePath());
+        self::assertSame($source, $error->getSource());
+        self::assertSame($appliedFixers, $error->getAppliedFixers());
+        self::assertSame($diff, $error->getDiff());
     }
 }

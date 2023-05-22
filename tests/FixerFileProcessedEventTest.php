@@ -28,6 +28,6 @@ final class FixerFileProcessedEventTest extends TestCase
         $status = FixerFileProcessedEvent::STATUS_NO_CHANGES;
         $event = new FixerFileProcessedEvent($status);
 
-        static::assertSame($status, $event->getStatus());
+        self::assertSame($status, $event->getStatus());
     }
 }

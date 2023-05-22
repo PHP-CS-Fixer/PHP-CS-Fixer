@@ -60,9 +60,6 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         ],
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -82,17 +79,11 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         return 1;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_IF, T_RETURN, T_STRING]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($ifIndex = $tokens->count() - 1; 0 <= $ifIndex; --$ifIndex) {

@@ -46,7 +46,7 @@ final class DescribeCommandTest extends TestCase
             'name' => $fixerName,
         ]);
 
-        static::assertSame(0, $commandTester->getStatusCode());
+        self::assertSame(0, $commandTester->getStatusCode());
     }
 
     public static function provideDescribeCommandCases(): iterable

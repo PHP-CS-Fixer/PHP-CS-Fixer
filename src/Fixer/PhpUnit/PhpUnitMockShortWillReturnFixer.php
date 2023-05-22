@@ -37,9 +37,6 @@ final class PhpUnitMockShortWillReturnFixer extends AbstractPhpUnitFixer
         'returnvaluemap' => 'willReturnMap',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -65,17 +62,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
@@ -126,6 +117,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $tokens->clearTokenAndMergeSurroundingWhitespace($functionToRemoveIndex);
             $tokens->clearTokenAndMergeSurroundingWhitespace($openingBraceIndex);
             $tokens->clearTokenAndMergeSurroundingWhitespace($closingBraceIndex);
+
+            $commaAfterClosingBraceIndex = $tokens->getNextMeaningfulToken($closingBraceIndex);
+            if ($tokens[$commaAfterClosingBraceIndex]->equals(',')) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($commaAfterClosingBraceIndex);
+            }
         }
     }
 }

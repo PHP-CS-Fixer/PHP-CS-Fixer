@@ -30,9 +30,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
  */
 final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -49,9 +46,6 @@ final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixe
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver(array_merge(
@@ -65,9 +59,6 @@ final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixe
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function fixAnnotations(Tokens $doctrineAnnotationTokens): void
     {
         if ('without_braces' === $this->configuration['syntax']) {

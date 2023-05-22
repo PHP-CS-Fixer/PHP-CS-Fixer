@@ -43,8 +43,8 @@ final class HelpCommand extends BaseHelpCommand
     public static function toString($value): string
     {
         return \is_array($value)
-            ? static::arrayToString($value)
-            : static::scalarToString($value);
+            ? self::arrayToString($value)
+            : self::scalarToString($value);
     }
 
     /**
@@ -84,9 +84,6 @@ final class HelpCommand extends BaseHelpCommand
         return $allowed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $output->getFormatter()->setStyle('url', new OutputFormatterStyle('blue'));
@@ -116,12 +113,12 @@ final class HelpCommand extends BaseHelpCommand
 
         foreach ($value as $k => $v) {
             if ($isHash) {
-                $str .= static::scalarToString($k).' => ';
+                $str .= self::scalarToString($k).' => ';
             }
 
             $str .= \is_array($v)
-                ? static::arrayToString($v).', '
-                : static::scalarToString($v).', ';
+                ? self::arrayToString($v).', '
+                : self::scalarToString($v).', ';
         }
 
         return substr($str, 0, -2).']';

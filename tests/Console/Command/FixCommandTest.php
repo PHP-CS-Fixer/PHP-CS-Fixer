@@ -37,7 +37,7 @@ final class FixCommandTest extends TestCase
             '--show-progress' => 'none',
         ]);
 
-        static::assertSame(
+        self::assertSame(
             Command::SUCCESS,
             $cmdTester->getStatusCode()
         );

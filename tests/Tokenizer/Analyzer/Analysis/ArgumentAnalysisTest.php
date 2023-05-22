@@ -30,37 +30,37 @@ final class ArgumentAnalysisTest extends TestCase
     public function testName(): void
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, null);
-        static::assertSame('$name', $analysis->getName());
-        static::assertSame(1, $analysis->getNameIndex());
+        self::assertSame('$name', $analysis->getName());
+        self::assertSame(1, $analysis->getNameIndex());
     }
 
     public function testDefault(): void
     {
         $analysis = new ArgumentAnalysis('$name', 1, 'default', null);
-        static::assertTrue($analysis->hasDefault());
-        static::assertSame('default', $analysis->getDefault());
+        self::assertTrue($analysis->hasDefault());
+        self::assertSame('default', $analysis->getDefault());
     }
 
     public function testNoDefaultFound(): void
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, null);
-        static::assertFalse($analysis->hasDefault());
-        static::assertNull($analysis->getDefault());
+        self::assertFalse($analysis->hasDefault());
+        self::assertNull($analysis->getDefault());
     }
 
     public function testType(): void
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, new TypeAnalysis('string', 1, 4));
-        static::assertTrue($analysis->hasTypeAnalysis());
-        static::assertSame('string', $analysis->getTypeAnalysis()->getName());
-        static::assertSame(1, $analysis->getTypeAnalysis()->getStartIndex());
-        static::assertSame(4, $analysis->getTypeAnalysis()->getEndIndex());
+        self::assertTrue($analysis->hasTypeAnalysis());
+        self::assertSame('string', $analysis->getTypeAnalysis()->getName());
+        self::assertSame(1, $analysis->getTypeAnalysis()->getStartIndex());
+        self::assertSame(4, $analysis->getTypeAnalysis()->getEndIndex());
     }
 
     public function testNoTypeFound(): void
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, null);
-        static::assertFalse($analysis->hasDefault());
-        static::assertNull($analysis->getDefault());
+        self::assertFalse($analysis->hasDefault());
+        self::assertNull($analysis->getDefault());
     }
 }

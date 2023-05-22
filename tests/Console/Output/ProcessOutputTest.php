@@ -52,7 +52,7 @@ final class ProcessOutputTest extends TestCase
             $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
         });
 
-        static::assertSame($expectedOutput, $output->fetch());
+        self::assertSame($expectedOutput, $output->fetch());
     }
 
     public static function provideProcessProgressOutputCases(): array

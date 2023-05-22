@@ -41,7 +41,7 @@ final class FileReaderTest extends TestCase
     {
         $instance = FileReader::createSingleton();
 
-        static::assertSame($instance, FileReader::createSingleton());
+        self::assertSame($instance, FileReader::createSingleton());
     }
 
     public function testRead(): void
@@ -52,7 +52,7 @@ final class FileReaderTest extends TestCase
 
         $reader = new FileReader();
 
-        static::assertSame('<?php echo "hi";', $reader->read($fs->url().'/foo.php'));
+        self::assertSame('<?php echo "hi";', $reader->read($fs->url().'/foo.php'));
     }
 
     public function testReadStdinCaches(): void
@@ -62,8 +62,8 @@ final class FileReaderTest extends TestCase
         stream_wrapper_unregister('php');
         stream_wrapper_register('php', StdinFakeStream::class);
 
-        static::assertSame('<?php echo "foo";', $reader->read('php://stdin'));
-        static::assertSame('<?php echo "foo";', $reader->read('php://stdin'));
+        self::assertSame('<?php echo "foo";', $reader->read('php://stdin'));
+        self::assertSame('<?php echo "foo";', $reader->read('php://stdin'));
     }
 
     public function testThrowsExceptionOnFail(): void

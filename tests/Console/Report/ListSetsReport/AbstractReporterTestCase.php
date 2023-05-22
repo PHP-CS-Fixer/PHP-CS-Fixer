@@ -48,7 +48,7 @@ abstract class AbstractReporterTestCase extends TestCase
 
     final public function testGetFormat(): void
     {
-        static::assertSame(
+        self::assertSame(
             $this->getFormat(),
             $this->reporter->getFormat()
         );
@@ -64,10 +64,10 @@ abstract class AbstractReporterTestCase extends TestCase
         $this->assertFormat($expectedReport, $actualReport);
     }
 
-    final public function provideGenerateCases(): iterable
+    final public static function provideGenerateCases(): iterable
     {
         yield 'example' => [
-            $this->createSimpleReport(),
+            static::createSimpleReport(),
             new ReportSummary([
                 new SymfonyRiskySet(),
                 new PhpCsFixerSet(),
@@ -81,5 +81,5 @@ abstract class AbstractReporterTestCase extends TestCase
 
     abstract protected function assertFormat(string $expected, string $input): void;
 
-    abstract protected function createSimpleReport(): string;
+    abstract protected static function createSimpleReport(): string;
 }

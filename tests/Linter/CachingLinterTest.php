@@ -37,7 +37,7 @@ final class CachingLinterTest extends TestCase
 
         $linter = new CachingLinter($sublinter->reveal());
 
-        static::assertSame($isAsync, $linter->isAsync());
+        self::assertSame($isAsync, $linter->isAsync());
     }
 
     public static function provideIsAsyncCases(): array
@@ -66,10 +66,10 @@ final class CachingLinterTest extends TestCase
 
         $linter = new CachingLinter($sublinter->reveal());
 
-        static::assertSame($result1->reveal(), $linter->lintFile($fs->url().'/foo.php'));
-        static::assertSame($result1->reveal(), $linter->lintFile($fs->url().'/foo.php'));
-        static::assertSame($result1->reveal(), $linter->lintFile($fs->url().'/bar.php'));
-        static::assertSame($result2->reveal(), $linter->lintFile($fs->url().'/baz.php'));
+        self::assertSame($result1->reveal(), $linter->lintFile($fs->url().'/foo.php'));
+        self::assertSame($result1->reveal(), $linter->lintFile($fs->url().'/foo.php'));
+        self::assertSame($result1->reveal(), $linter->lintFile($fs->url().'/bar.php'));
+        self::assertSame($result2->reveal(), $linter->lintFile($fs->url().'/baz.php'));
     }
 
     public function testLintSourceIsCalledOnceOnSameContent(): void
@@ -83,8 +83,8 @@ final class CachingLinterTest extends TestCase
 
         $linter = new CachingLinter($sublinter->reveal());
 
-        static::assertSame($result1->reveal(), $linter->lintSource('<?php echo "baz";'));
-        static::assertSame($result1->reveal(), $linter->lintSource('<?php echo "baz";'));
-        static::assertSame($result2->reveal(), $linter->lintSource('<?php echo "foobarbaz";'));
+        self::assertSame($result1->reveal(), $linter->lintSource('<?php echo "baz";'));
+        self::assertSame($result1->reveal(), $linter->lintSource('<?php echo "baz";'));
+        self::assertSame($result2->reveal(), $linter->lintSource('<?php echo "foobarbaz";'));
     }
 }

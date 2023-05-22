@@ -26,26 +26,17 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NamedArgumentTransformer extends AbstractTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         // needs to run after TypeColonTransformer
         return -15;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId(): int
     {
         return 8_00_00;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Tokens $tokens, Token $token, int $index): void
     {
         if (!$tokens[$index]->equals(':')) {
@@ -72,9 +63,6 @@ final class NamedArgumentTransformer extends AbstractTransformer
         $tokens[$index] = new Token([CT::T_NAMED_ARGUMENT_COLON, ':']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomTokens(): array
     {
         return [

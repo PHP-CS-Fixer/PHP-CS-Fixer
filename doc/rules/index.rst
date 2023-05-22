@@ -91,6 +91,9 @@ Basic
 - `psr_autoloading <./basic/psr_autoloading.rst>`_ *(risky)*
 
   Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.
+- `single_line_empty_body <./basic/single_line_empty_body.rst>`_
+
+  Empty body of class or function must be abbreviated as ``{}`` and placed on the same line as the previous symbol, separated by a space.
 
 Casing
 ------
@@ -184,6 +187,9 @@ Class Notation
 - `ordered_traits <./class_notation/ordered_traits.rst>`_ *(risky)*
 
   Trait ``use`` statements must be sorted alphabetically.
+- `ordered_types <./class_notation/ordered_types.rst>`_
+
+  Sort union types and intersection types using configured order.
 - `protected_to_private <./class_notation/protected_to_private.rst>`_
 
   Converts ``protected`` variables and methods to ``private`` where possible.
@@ -703,6 +709,9 @@ PHPDoc
 - `phpdoc_order <./phpdoc/phpdoc_order.rst>`_
 
   Annotations in PHPDoc should be ordered in defined sequence.
+- `phpdoc_param_order <./phpdoc/phpdoc_param_order.rst>`_
+
+  Orders all ``@param`` annotations in DocBlocks according to method signature.
 - `phpdoc_return_self_reference <./phpdoc/phpdoc_return_self_reference.rst>`_
 
   The type of ``@return`` annotations of methods returning a reference to itself must the configured one.

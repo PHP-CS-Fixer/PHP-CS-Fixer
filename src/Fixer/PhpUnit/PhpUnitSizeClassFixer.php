@@ -32,9 +32,6 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
 {
     private const SIZES = ['small', 'medium', 'large'];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -45,6 +42,16 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
             ],
             'The special groups [small, medium, large] provides a way to identify tests that are taking long to be executed.'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before PhpdocSeparationFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -69,8 +76,6 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
             $tokens,
             $classIndex,
             $this->configuration['group'],
-            false,
-            true,
             self::SIZES
         );
     }

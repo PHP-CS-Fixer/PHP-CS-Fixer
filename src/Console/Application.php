@@ -39,8 +39,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    public const VERSION = '3.16.1-DEV';
-    public const VERSION_CODENAME = 'BoY42';
+    public const VERSION = '3.17.1-DEV';
+    public const VERSION_CODENAME = 'Brazilian Kangaroo';
 
     private ToolInfo $toolInfo;
 
@@ -67,9 +67,6 @@ final class Application extends BaseApplication
         return (int) explode('.', self::VERSION)[0];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function doRun(InputInterface $input, OutputInterface $output): int
     {
         $stdErr = $output instanceof ConsoleOutputInterface
@@ -110,9 +107,6 @@ final class Application extends BaseApplication
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLongVersion(): string
     {
         $commit = '@git-commit@';
@@ -131,9 +125,6 @@ final class Application extends BaseApplication
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDefaultCommands(): array
     {
         return [new HelpCommand(), new ListCommand()];

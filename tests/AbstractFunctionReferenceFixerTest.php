@@ -38,11 +38,11 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
     ): void {
         $fixer = new FunctionReferenceTestFixer();
 
-        static::assertTrue($fixer->isRisky());
+        self::assertTrue($fixer->isRisky());
 
         $tokens = Tokens::fromCode($source);
 
-        static::assertSame(
+        self::assertSame(
             $expected,
             $fixer->findTest(
                 $functionNameToSearch,
@@ -52,7 +52,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
             )
         );
 
-        static::assertFalse($tokens->isChanged());
+        self::assertFalse($tokens->isChanged());
     }
 
     public static function provideAbstractFunctionReferenceFixerCases(): array

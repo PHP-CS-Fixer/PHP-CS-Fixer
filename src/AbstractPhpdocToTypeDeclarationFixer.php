@@ -58,9 +58,6 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
      */
     private static array $syntaxValidationCache = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
@@ -68,9 +65,6 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
 
     abstract protected function isSkippedType(string $type): bool;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

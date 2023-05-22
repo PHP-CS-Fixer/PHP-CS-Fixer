@@ -3,6 +3,10 @@ includes:
     - dev-tools/vendor/phpstan/phpstan/conf/bleedingEdge.neon
     - dev-tools/vendor/phpstan/phpstan-phpunit/extension.neon
 
+    # Baseline, should only shrink! To regenerate it, just execute:
+    # dev-tools/vendor/bin/phpstan analyse --generate-baseline=dev-tools/phpstan/baseline.php
+    - dev-tools/phpstan/baseline.php
+
 parameters:
     level: 6
     paths:
@@ -10,6 +14,7 @@ parameters:
         - tests
     excludePaths:
         - tests/Fixtures
+    reportUnmatchedIgnoredErrors: true # Do not allow outdated errors in the baseline
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
         - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens)\.$/'
@@ -21,12 +26,6 @@ parameters:
         -
             message: '#Call to static method .+ with .+ will always evaluate to true.$#'
             path: tests
-            count: 24
-
-        # baseline, should only shrink
-        -
-            message: '#^.+no value type specified in iterable type.+\.$#'
-            path: src/Fixer
-            count: 40
+            count: 19
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache

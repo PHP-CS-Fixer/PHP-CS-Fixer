@@ -30,9 +30,6 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
 {
     use Indentation;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -51,17 +48,11 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
         return -1;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(';');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 1, $max = \count($tokens) - 1; $index < $max; ++$index) {

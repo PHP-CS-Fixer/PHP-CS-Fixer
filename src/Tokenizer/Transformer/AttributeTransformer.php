@@ -26,26 +26,17 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class AttributeTransformer extends AbstractTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         // must run before all other transformers that might touch attributes
         return 200;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId(): int
     {
         return 8_00_00;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Tokens $tokens, Token $token, int $index): void
     {
         if (!$tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
@@ -67,9 +58,6 @@ final class AttributeTransformer extends AbstractTransformer
         $tokens[$index] = new Token([CT::T_ATTRIBUTE_CLOSE, ']']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomTokens(): array
     {
         return [

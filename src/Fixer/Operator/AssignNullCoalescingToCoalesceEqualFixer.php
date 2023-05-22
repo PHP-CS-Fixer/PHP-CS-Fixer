@@ -26,9 +26,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class AssignNullCoalescingToCoalesceEqualFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -53,17 +50,11 @@ final class AssignNullCoalescingToCoalesceEqualFixer extends AbstractFixer
         return -1;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_COALESCE);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; $index > 3; --$index) {

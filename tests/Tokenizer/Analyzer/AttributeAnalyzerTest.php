@@ -32,7 +32,7 @@ final class AttributeAnalyzerTest extends TestCase
     {
         $tokens = Tokens::fromCode('<?php class Foo { private $bar; }');
         foreach ($tokens as $index => $token) {
-            static::assertFalse(AttributeAnalyzer::isAttribute($tokens, $index));
+            self::assertFalse(AttributeAnalyzer::isAttribute($tokens, $index));
         }
     }
 
@@ -48,16 +48,16 @@ final class AttributeAnalyzerTest extends TestCase
         foreach ($tokens as $index => $token) {
             if ($token->equals([T_STRING, 'Foo'])) {
                 if (isset($testedIndex)) {
-                    static::fail('Test is run against index of "Foo", multiple occurrences found.');
+                    self::fail('Test is run against index of "Foo", multiple occurrences found.');
                 }
                 $testedIndex = $index;
             }
         }
         if (!isset($testedIndex)) {
-            static::fail('Test is run against index of "Foo", but it was not found in the code.');
+            self::fail('Test is run against index of "Foo", but it was not found in the code.');
         }
 
-        static::assertSame($isInAttribute, AttributeAnalyzer::isAttribute($tokens, $testedIndex));
+        self::assertSame($isInAttribute, AttributeAnalyzer::isAttribute($tokens, $testedIndex));
     }
 
     /**

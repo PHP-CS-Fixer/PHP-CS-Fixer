@@ -38,9 +38,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class SingleClassElementPerStatementFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
@@ -56,9 +53,6 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
         return 56;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -87,9 +81,6 @@ final class Example
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $analyzer = new TokensAnalyzer($tokens);
@@ -104,9 +95,6 @@ final class Example
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $values = ['const', 'property'];

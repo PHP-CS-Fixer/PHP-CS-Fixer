@@ -1046,7 +1046,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
     }
 
     /**
-     * @return iterable<(string|array<string, string>)[]>
+     * @return iterable<(array<string, string>|string)[]>
      */
     public static function provideFix80Cases(): iterable
     {

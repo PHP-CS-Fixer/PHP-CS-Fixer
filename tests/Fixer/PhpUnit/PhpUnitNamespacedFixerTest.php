@@ -265,8 +265,8 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
 
         $this->fixer->fix($this->getTestFile(), $tokens);
 
-        static::assertTrue($tokens->isChanged());
-        static::assertStringNotContainsString('_', $tokens->generateCode());
+        self::assertTrue($tokens->isChanged());
+        self::assertStringNotContainsString('_', $tokens->generateCode());
     }
 
     public static function provideClassIsFixedCases(): iterable

@@ -28,9 +28,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractPhpUnitFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     final public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_CLASS, T_STRING]);
@@ -77,16 +74,14 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         Tokens $tokens,
         int $index,
         string $annotation,
-        bool $addWithEmptyLineBeforePhpdoc,
-        bool $addWithEmptyLineBeforeAnnotation,
         array $preventingAnnotations
     ): void {
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
 
         if ($this->isPHPDoc($tokens, $docBlockIndex)) {
-            $this->updateDocBlockIfNeeded($tokens, $docBlockIndex, $annotation, $addWithEmptyLineBeforeAnnotation, $preventingAnnotations);
+            $this->updateDocBlockIfNeeded($tokens, $docBlockIndex, $annotation, $preventingAnnotations);
         } else {
-            $this->createDocBlock($tokens, $docBlockIndex, $annotation, $addWithEmptyLineBeforePhpdoc);
+            $this->createDocBlock($tokens, $docBlockIndex, $annotation);
         }
     }
 
@@ -95,7 +90,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         return $tokens[$index]->isGivenKind(T_DOC_COMMENT);
     }
 
-    private function createDocBlock(Tokens $tokens, int $docBlockIndex, string $annotation, bool $addWithEmptyLineBeforePhpdoc): void
+    private function createDocBlock(Tokens $tokens, int $docBlockIndex, string $annotation): void
     {
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
@@ -106,7 +101,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         $index = $tokens->getNextMeaningfulToken($docBlockIndex);
         $tokens->insertAt($index, $toInsert);
 
-        if ($addWithEmptyLineBeforePhpdoc && !$tokens[$index - 1]->isGivenKind(T_WHITESPACE)) {
+        if (!$tokens[$index - 1]->isGivenKind(T_WHITESPACE)) {
             $extraNewLines = $this->whitespacesConfig->getLineEnding();
 
             if (!$tokens[$index - 1]->isGivenKind(T_OPEN_TAG)) {
@@ -126,7 +121,6 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         Tokens $tokens,
         int $docBlockIndex,
         string $annotation,
-        bool $addWithEmptyLineBeforeAnnotation,
         array $preventingAnnotations
     ): void {
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
@@ -136,7 +130,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
             }
         }
         $doc = $this->makeDocBlockMultiLineIfNeeded($doc, $tokens, $docBlockIndex, $annotation);
-        $lines = $this->addInternalAnnotation($doc, $tokens, $docBlockIndex, $annotation, $addWithEmptyLineBeforeAnnotation);
+        $lines = $this->addInternalAnnotation($doc, $tokens, $docBlockIndex, $annotation);
         $lines = implode('', $lines);
 
         $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
@@ -145,13 +139,12 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     /**
      * @return array<Line>
      */
-    private function addInternalAnnotation(DocBlock $docBlock, Tokens $tokens, int $docBlockIndex, string $annotation, bool $addWithEmptyLineBeforeAnnotation): array
+    private function addInternalAnnotation(DocBlock $docBlock, Tokens $tokens, int $docBlockIndex, string $annotation): array
     {
         $lines = $docBlock->getLines();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
         $lineEnd = $this->whitespacesConfig->getLineEnding();
-        $extraLine = $addWithEmptyLineBeforeAnnotation ? $lineEnd.$originalIndent.' *' : '';
-        array_splice($lines, -1, 0, $originalIndent.' *'.$extraLine.' @'.$annotation.$lineEnd);
+        array_splice($lines, -1, 0, $originalIndent.' * @'.$annotation.$lineEnd);
 
         return $lines;
     }

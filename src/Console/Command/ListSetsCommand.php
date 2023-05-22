@@ -40,9 +40,6 @@ final class ListSetsCommand extends Command
      */
     protected static $defaultName = 'list-sets';
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this

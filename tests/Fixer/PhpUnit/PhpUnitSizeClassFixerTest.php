@@ -88,7 +88,6 @@ class Test extends TestCase
 
 /**
  * @coversNothing
- *
  * @small
  */
 class Test extends TestCase
@@ -160,7 +159,6 @@ if (class_exists("Foo\Bar")) {
      *
      *
      * @covers \Other\Class
-     *
      * @small
      */
     class Test Extends TestCase
@@ -188,7 +186,6 @@ if (class_exists("Foo\Bar")) {
 
 /**
  * @coversNothing
- *
  *
  *
  *
@@ -247,7 +244,6 @@ class Test extends TestCase
 
 /**
  * @coversNothing
- *
  * @small
  */
 class Test extends TestCase
@@ -357,7 +353,6 @@ class Test3 extends TestCase
 
             /**
              * @coversNothing
-             *
              * @small
              */
             #[SimpleTest]
@@ -406,7 +401,6 @@ class Test3 extends TestCase
 
             /**
              * @coversNothing
-             *
              * @small
              */
             #[SimpleTest]

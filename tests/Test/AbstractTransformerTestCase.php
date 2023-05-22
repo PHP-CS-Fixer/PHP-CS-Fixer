@@ -48,14 +48,14 @@ abstract class AbstractTransformerTestCase extends TestCase
 
     public function testGetPriority(): void
     {
-        static::assertIsInt($this->transformer->getPriority(), $this->transformer->getName());
+        self::assertIsInt($this->transformer->getPriority(), $this->transformer->getName());
     }
 
     public function testGetName(): void
     {
         $name = $this->transformer->getName();
 
-        static::assertMatchesRegularExpression('/^[a-z]+[a-z_]*[a-z]$/', $name);
+        self::assertMatchesRegularExpression('/^[a-z]+[a-z_]*[a-z]$/', $name);
     }
 
     public function testGetCustomTokens(): void
@@ -63,10 +63,10 @@ abstract class AbstractTransformerTestCase extends TestCase
         $name = $this->transformer->getName();
         $customTokens = $this->transformer->getCustomTokens();
 
-        static::assertIsArray($customTokens, $name);
+        self::assertIsArray($customTokens, $name);
 
         foreach ($customTokens as $customToken) {
-            static::assertIsInt($customToken, $name);
+            self::assertIsInt($customToken, $name);
         }
     }
 
@@ -75,15 +75,15 @@ abstract class AbstractTransformerTestCase extends TestCase
         $name = $this->transformer->getName();
         $requiredPhpVersionId = $this->transformer->getRequiredPhpVersionId();
 
-        static::assertIsInt($requiredPhpVersionId, $name);
-        static::assertGreaterThanOrEqual(5_00_00, $requiredPhpVersionId, $name);
+        self::assertIsInt($requiredPhpVersionId, $name);
+        self::assertGreaterThanOrEqual(5_00_00, $requiredPhpVersionId, $name);
     }
 
     public function testTransformersIsFinal(): void
     {
         $transformerRef = new \ReflectionClass($this->transformer);
 
-        static::assertTrue(
+        self::assertTrue(
             $transformerRef->isFinal(),
             sprintf('Transformer "%s" must be declared "final."', $this->transformer->getName())
         );
@@ -104,7 +104,7 @@ abstract class AbstractTransformerTestCase extends TestCase
             $this->transformer->process($tokens, $token, $index);
         }
 
-        static::assertFalse($tokens->isChanged());
+        self::assertFalse($tokens->isChanged());
     }
 
     /**
@@ -117,7 +117,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         $tokens = new TokensWithObservedTransformers();
         $tokens->setCode($source);
 
-        static::assertSame(
+        self::assertSame(
             \count($expectedTokens),
             $this->countTokenPrototypes(
                 $tokens,
@@ -135,8 +135,8 @@ abstract class AbstractTransformerTestCase extends TestCase
         $customTokensOfTransformer = $this->transformer->getCustomTokens();
 
         foreach ($customTokensOfTransformer as $customTokenOfTransformer) {
-            static::assertTrue(CT::has($customTokenOfTransformer), sprintf('Unknown custom token id "%d" in "%s".', $transformerName, $customTokenOfTransformer));
-            static::assertStringStartsWith('CT::', CT::getName($customTokenOfTransformer));
+            self::assertTrue(CT::has($customTokenOfTransformer), sprintf('Unknown custom token id "%d" in "%s".', $transformerName, $customTokenOfTransformer));
+            self::assertStringStartsWith('CT::', CT::getName($customTokenOfTransformer));
         }
 
         $customTokensOfTransformerList = implode(', ', array_map(
@@ -149,7 +149,7 @@ abstract class AbstractTransformerTestCase extends TestCase
                 $customTokenName = Token::getNameForId($modification);
 
                 if ($appliedTransformerName === $transformerName) {
-                    static::assertContains(
+                    self::assertContains(
                         $modification,
                         $customTokensOfTransformer,
                         sprintf(
@@ -159,7 +159,7 @@ abstract class AbstractTransformerTestCase extends TestCase
                         )
                     );
                 } else {
-                    static::assertNotContains(
+                    self::assertNotContains(
                         $modification,
                         $customTokensOfTransformer,
                         sprintf(
@@ -174,18 +174,18 @@ abstract class AbstractTransformerTestCase extends TestCase
 
         foreach ($expectedTokens as $index => $tokenIdOrContent) {
             if (\is_string($tokenIdOrContent)) {
-                static::assertTrue($tokens[$index]->equals($tokenIdOrContent), sprintf('The token at index %d should be %s, got %s', $index, json_encode($tokenIdOrContent), $tokens[$index]->toJson()));
+                self::assertTrue($tokens[$index]->equals($tokenIdOrContent), sprintf('The token at index %d should be %s, got %s', $index, json_encode($tokenIdOrContent), $tokens[$index]->toJson()));
 
                 continue;
             }
 
-            static::assertSame(
+            self::assertSame(
                 CT::has($tokenIdOrContent) ? CT::getName($tokenIdOrContent) : token_name($tokenIdOrContent),
                 $tokens[$index]->getName(),
                 sprintf('Token name should be the same. Got token "%s" at index %d.', $tokens[$index]->toJson(), $index)
             );
 
-            static::assertSame(
+            self::assertSame(
                 $tokenIdOrContent,
                 $tokens[$index]->getId(),
                 sprintf('Token id should be the same. Got token "%s" at index %d.', $tokens[$index]->toJson(), $index)

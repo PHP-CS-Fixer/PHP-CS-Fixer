@@ -811,7 +811,7 @@ switch ($a) {
 
     public function testDefinition(): void
     {
-        static::assertInstanceOf(\PhpCsFixer\FixerDefinition\FixerDefinitionInterface::class, $this->fixer->getDefinition());
+        self::assertInstanceOf(\PhpCsFixer\FixerDefinition\FixerDefinitionInterface::class, $this->fixer->getDefinition());
     }
 
     /**

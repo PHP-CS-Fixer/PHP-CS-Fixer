@@ -7,6 +7,10 @@ on:
 permissions:
   contents: read # to fetch code (actions/checkout)
 
+concurrency:
+  group: sca-${{ github.head_ref || github.run_id }} # will be canceled on subsequent pushes in pull requests but not branches
+  cancel-in-progress: true
+
 jobs:
   tests:
     strategy:
@@ -23,7 +27,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -31,15 +35,16 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
+          extensions: none, dom, mbstring, opcache, simplexml, tokenizer, xml, xmlwriter
           coverage: none # without this Xdebug will be enabled
           tools: cs2pr
 
       - name: Get Composer cache directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-dir)"
+        run: echo "dir=$(composer config cache-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-${{ matrix.composer-flags }}

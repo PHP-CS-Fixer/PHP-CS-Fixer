@@ -7,6 +7,10 @@ on:
 permissions:
   contents: read # to fetch code (actions/checkout)
 
+concurrency:
+  group: ci-${{ github.head_ref || github.run_id }} # will be canceled on subsequent pushes in pull requests but not branches
+  cancel-in-progress: true
+
 jobs:
   tests:
     strategy:
@@ -40,6 +44,11 @@ jobs:
             php-version: '8.2'
             job-description: 'with migration rules'
             migration-rules: 'yes' # should be checked on the highest supported PHP version
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
+            job-description: 'auto-review'
+            phpunit-flags: '--group auto-review'
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
@@ -85,6 +94,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
+          extensions: none, dom, json, opcache, simplexml, tokenizer, xml, xmlwriter, zip
           coverage: ${{ steps.code-coverage-driver.outputs.result }}
           tools: flex
         env:
@@ -93,7 +103,8 @@ jobs:
 
       - name: Get Composer cache directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-dir)"
+        shell: bash
+        run: echo "dir=$(composer config cache-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache dependencies
         uses: actions/cache@v3
@@ -134,7 +145,7 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/phpunit ${{ matrix.phpunit-flags }}
+        run: vendor/bin/phpunit ${{ matrix.phpunit-flags || '--exclude-group auto-review' }}
 
       - name: Upload coverage results to Coveralls
         if: matrix.calculate-code-coverage == 'yes'

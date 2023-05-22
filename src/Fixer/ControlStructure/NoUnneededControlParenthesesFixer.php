@@ -125,9 +125,6 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
 
     private TokensAnalyzer $tokensAnalyzer;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -170,17 +167,11 @@ while ($y) { continue (2); }
         return 30;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(['(', CT::T_BRACE_CLASS_INSTANTIATION_OPEN]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -258,9 +249,6 @@ while ($y) { continue (2); }
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $defaults = array_filter(

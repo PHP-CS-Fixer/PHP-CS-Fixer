@@ -41,7 +41,7 @@ final class FinderTest extends TestCase
             ->ignoreDotFiles(false)
         ;
 
-        static::assertContains(
+        self::assertContains(
             realpath(__DIR__.'/../.php-cs-fixer.dist.php'),
             array_map(
                 function (SplFileInfo $file): string {

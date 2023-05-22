@@ -784,6 +784,36 @@ foo(function () {
     // comment
 }, );',
         ];
+
+        yield 'multiline arguments starting with "new" keyword' => [
+            '<?php
+$result1 = foo(
+    new Bar1(),
+    1
+);
+$result2 = ($function)(
+    new Bar2(),
+    2
+);
+$result3 = (new Argument())(
+    new Bar3(),
+    3
+);',
+        ];
+
+        yield 'comments at the end of if/elseif/else blocks' => [
+            '<?php
+if ($foo) {
+    echo "foo";
+    // foo
+} elseif ($bar) {
+    echo "bar";
+    // bar
+} else {
+    echo "baz";
+    // baz
+}',
+        ];
     }
 
     /**

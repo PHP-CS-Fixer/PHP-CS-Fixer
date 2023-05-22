@@ -29,7 +29,6 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -41,9 +40,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class GlobalNamespaceImportFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -102,9 +98,6 @@ if (count($x)) {
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_DOC_COMMENT, T_NS_SEPARATOR, T_USE])
@@ -113,12 +106,9 @@ if (count($x)) {
             && $tokens->isMonolithicPhp();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $namespaceAnalyses = (new NamespacesAnalyzer())->getDeclarations($tokens);
+        $namespaceAnalyses = $tokens->getNamespaceDeclarations();
 
         if (1 !== \count($namespaceAnalyses) || $namespaceAnalyses[0]->isGlobalNamespace()) {
             return;
@@ -451,7 +441,7 @@ if (count($x)) {
             $useDeclaration = end($useDeclarations);
             $index = $useDeclaration->getEndIndex() + 1;
         } else {
-            $namespace = (new NamespacesAnalyzer())->getDeclarations($tokens)[0];
+            $namespace = $tokens->getNamespaceDeclarations()[0];
             $index = $namespace->getEndIndex() + 1;
         }
 

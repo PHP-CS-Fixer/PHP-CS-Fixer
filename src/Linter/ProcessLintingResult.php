@@ -35,9 +35,6 @@ final class ProcessLintingResult implements LintingResultInterface
         $this->path = $path;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function check(): void
     {
         if (!$this->isSuccessful()) {

@@ -30,25 +30,25 @@ final class AliasedFixerOptionBuilderTest extends TestCase
     public function testSetDefault(): void
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
-        static::assertSame($builder, $builder->setDefault('baz'));
+        self::assertSame($builder, $builder->setDefault('baz'));
     }
 
     public function testSetAllowedTypes(): void
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
-        static::assertSame($builder, $builder->setAllowedTypes(['bool']));
+        self::assertSame($builder, $builder->setAllowedTypes(['bool']));
     }
 
     public function testSetAllowedValues(): void
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
-        static::assertSame($builder, $builder->setAllowedValues(['baz']));
+        self::assertSame($builder, $builder->setAllowedValues(['baz']));
     }
 
     public function testSetNormalizer(): void
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
-        static::assertSame($builder, $builder->setNormalizer(static fn () => null));
+        self::assertSame($builder, $builder->setNormalizer(static fn () => null));
     }
 
     public function testGetOption(): void
@@ -62,13 +62,13 @@ final class AliasedFixerOptionBuilderTest extends TestCase
             ->getOption()
         ;
 
-        static::assertSame('foo', $option->getName());
-        static::assertSame('Bar.', $option->getDescription());
-        static::assertTrue($option->hasDefault());
-        static::assertSame('baz', $option->getDefault());
-        static::assertSame(['bool'], $option->getAllowedTypes());
-        static::assertSame([true, false], $option->getAllowedValues());
-        static::assertInstanceOf(\Closure::class, $option->getNormalizer());
-        static::assertSame('baz', $option->getAlias());
+        self::assertSame('foo', $option->getName());
+        self::assertSame('Bar.', $option->getDescription());
+        self::assertTrue($option->hasDefault());
+        self::assertSame('baz', $option->getDefault());
+        self::assertSame(['bool'], $option->getAllowedTypes());
+        self::assertSame([true, false], $option->getAllowedValues());
+        self::assertInstanceOf(\Closure::class, $option->getNormalizer());
+        self::assertSame('baz', $option->getAlias());
     }
 }

@@ -30,9 +30,6 @@ use Symfony\Component\OptionsResolver\Options;
 
 final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -77,17 +74,11 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
         return 11;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -165,9 +156,6 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if (0 === \count($this->configuration['replacements'])) {

@@ -33,7 +33,7 @@ final class HelpCommandTest extends TestCase
      */
     public function testToString(string $expected, $input): void
     {
-        static::assertSame($expected, HelpCommand::toString($input));
+        self::assertSame($expected, HelpCommand::toString($input));
     }
 
     public static function provideToStringCases(): iterable
@@ -68,7 +68,7 @@ final class HelpCommandTest extends TestCase
      */
     public function testGetDisplayableAllowedValues($expected, FixerOptionInterface $input): void
     {
-        static::assertSame($expected, HelpCommand::getDisplayableAllowedValues($input));
+        self::assertSame($expected, HelpCommand::getDisplayableAllowedValues($input));
     }
 
     public static function provideGetDisplayableAllowedValuesCases(): iterable

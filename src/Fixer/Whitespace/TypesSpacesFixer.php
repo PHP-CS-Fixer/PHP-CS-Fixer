@@ -40,9 +40,6 @@ final class TypesSpacesFixer extends AbstractFixer implements ConfigurableFixerI
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -65,15 +62,19 @@ final class TypesSpacesFixer extends AbstractFixer implements ConfigurableFixerI
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after OrderedTypesFixer.
      */
+    public function getPriority(): int
+    {
+        return -1;
+    }
+
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

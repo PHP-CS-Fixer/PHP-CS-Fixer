@@ -913,7 +913,7 @@ List of Available Rules
 
    *warning risky* Risky if the ``get_class`` function is overridden.
 
-   Part of rule set `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_
+   Part of rule sets `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\LanguageConstruct\\GetClassToClassKeywordFixer <./../src/Fixer/LanguageConstruct/GetClassToClassKeywordFixer.php>`_
 -  `global_namespace_import <./rules/import/global_namespace_import.rst>`_
@@ -1171,7 +1171,7 @@ List of Available Rules
    *warning risky* Risky if ``strpos``, ``str_starts_with`` or ``str_contains`` functions are
    overridden.
 
-   Part of rule set `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_
+   Part of rule sets `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Alias\\ModernizeStrposFixer <./../src/Fixer/Alias/ModernizeStrposFixer.php>`_
 -  `modernize_types_casting <./rules/cast_notation/modernize_types_casting.rst>`_
@@ -1862,6 +1862,8 @@ List of Available Rules
      | Default value: ``true``
 
 
+   Part of rule set `@Symfony <./ruleSets/Symfony.rst>`_
+
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\NullableTypeDeclarationForDefaultNullValueFixer <./../src/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixer.php>`_
 -  `object_operator_without_whitespace <./rules/operator/object_operator_without_whitespace.rst>`_
 
@@ -1960,6 +1962,23 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\OrderedTraitsFixer <./../src/Fixer/ClassNotation/OrderedTraitsFixer.php>`_
+-  `ordered_types <./rules/class_notation/ordered_types.rst>`_
+
+   Sort union types and intersection types using configured order.
+
+   Configuration options:
+
+   - | ``sort_algorithm``
+     | Whether the types should be sorted alphabetically, or not sorted.
+     | Allowed values: ``'alpha'``, ``'none'``
+     | Default value: ``'alpha'``
+   - | ``null_adjustment``
+     | Forces the position of `null` (overrides `sort_algorithm`).
+     | Allowed values: ``'always_first'``, ``'always_last'``, ``'none'``
+     | Default value: ``'always_first'``
+
+
+   `Source PhpCsFixer\\Fixer\\ClassNotation\\OrderedTypesFixer <./../src/Fixer/ClassNotation/OrderedTypesFixer.php>`_
 -  `phpdoc_add_missing_param_annotation <./rules/phpdoc/phpdoc_add_missing_param_annotation.rst>`_
 
    PHPDoc should contain ``@param`` for all params.
@@ -1983,7 +2002,7 @@ List of Available Rules
 
    - | ``tags``
      | The tags that should be aligned.
-     | Allowed values: a subset of ``['method', 'param', 'property', 'property-read', 'property-write', 'return', 'throws', 'type', 'var']``
+     | Allowed types: ``array``
      | Default value: ``['method', 'param', 'property', 'return', 'throws', 'type', 'var']``
    - | ``align``
      | How comments should be aligned.
@@ -2117,6 +2136,11 @@ List of Available Rules
    Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Phpdoc\\PhpdocOrderByValueFixer <./../src/Fixer/Phpdoc/PhpdocOrderByValueFixer.php>`_
+-  `phpdoc_param_order <./rules/phpdoc/phpdoc_param_order.rst>`_
+
+   Orders all ``@param`` annotations in DocBlocks according to method signature.
+
+   `Source PhpCsFixer\\Fixer\\Phpdoc\\PhpdocParamOrderFixer <./../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php>`_
 -  `phpdoc_return_self_reference <./rules/phpdoc/phpdoc_return_self_reference.rst>`_
 
    The type of ``@return`` annotations of methods returning a reference to itself must the configured one.
@@ -2648,7 +2672,7 @@ List of Available Rules
 
    Converts ``protected`` variables and methods to ``private`` where possible.
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\ProtectedToPrivateFixer <./../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php>`_
 -  `psr_autoloading <./rules/basic/psr_autoloading.rst>`_
@@ -2734,6 +2758,8 @@ List of Available Rules
 -  `self_static_accessor <./rules/class_notation/self_static_accessor.rst>`_
 
    Inside a ``final`` class or anonymous class ``self`` should be preferred to ``static``.
+
+   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\SelfStaticAccessorFixer <./../src/Fixer/ClassNotation/SelfStaticAccessorFixer.php>`_
 -  `semicolon_after_instruction <./rules/semicolon/semicolon_after_instruction.rst>`_
@@ -2853,6 +2879,11 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Comment\\SingleLineCommentStyleFixer <./../src/Fixer/Comment/SingleLineCommentStyleFixer.php>`_
+-  `single_line_empty_body <./rules/basic/single_line_empty_body.rst>`_
+
+   Empty body of class or function must be abbreviated as ``{}`` and placed on the same line as the previous symbol, separated by a space.
+
+   `Source PhpCsFixer\\Fixer\\Basic\\SingleLineEmptyBodyFixer <./../src/Fixer/Basic/SingleLineEmptyBodyFixer.php>`_
 -  `single_line_throw <./rules/function_notation/single_line_throw.rst>`_
 
    Throwing exception must be done in single line.

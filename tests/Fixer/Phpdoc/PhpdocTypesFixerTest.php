@@ -264,6 +264,11 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
                     * @return array{FOO: BOOL, NULL: NULL|INT, BAR: STRING|BAZ}
                     */',
         ];
+
+        yield 'no space between type and variable' => [
+            '<?php /** @param null|string$foo */',
+            '<?php /** @param NULL|STRING$foo */',
+        ];
     }
 
     public function testWrongConfig(): void

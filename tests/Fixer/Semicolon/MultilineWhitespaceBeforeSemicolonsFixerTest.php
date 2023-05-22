@@ -883,9 +883,28 @@ Service
                 ?>',
             ],
             [
-                '<?php $this
-        ->methodA()
-        ->methodB();',
+                '<?php
+$object
+    ->methodA()
+    ->methodB()
+;
+',
+                '<?php
+$object
+    ->methodA()
+    ->methodB();
+',
+            ],
+            [
+                '<?php $object
+    ->methodA()
+    ->methodB()
+;
+',
+                '<?php $object
+    ->methodA()
+    ->methodB();
+',
             ],
             [
                 "<?php\n\$this\n    ->one()\n    ->two(2, )\n;",
@@ -996,6 +1015,41 @@ $this
     ->{$bar ? \'bar\' : \'baz\'}()
 ;
 ',
+            ],
+            [
+                '<?php
+                    foo("bar")
+                        ->method1()
+                        ->method2()
+                    ;
+                ',
+                '<?php
+                    foo("bar")
+                        ->method1()
+                        ->method2();
+                ',
+            ],
+            [
+                '<?php
+                    $result = $arrayOfAwesomeObjects["most awesome object"]
+                        ->method1()
+                        ->method2()
+                    ;
+                ',
+                '<?php
+                    $result = $arrayOfAwesomeObjects["most awesome object"]
+                        ->method1()
+                        ->method2();
+                ',
+            ],
+            [
+                '<?php
+                    $foo;
+                    $bar = [
+                        1 => 2,
+                        3 => $baz->method(),
+                    ];
+                ',
             ],
         ];
     }

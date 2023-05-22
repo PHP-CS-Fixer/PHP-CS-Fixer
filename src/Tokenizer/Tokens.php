@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer;
 
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 
 /**
  * Collection of code tokens.
@@ -89,6 +91,11 @@ class Tokens extends \SplFixedArray
      * @var array<int|string, int>
      */
     private array $foundTokenKinds = [];
+
+    /**
+     * @var null|list<NamespaceAnalysis>
+     */
+    private ?array $namespaceDeclarations = null;
 
     /**
      * Clone tokens collection.
@@ -197,7 +204,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @return array<self::BLOCK_TYPE_*, array<'start'|'end', string|array{int, string}>>
+     * @return array<self::BLOCK_TYPE_*, array<'end'|'start', array{int, string}|string>>
      */
     public static function getBlockEdgeDefinitions(): array
     {
@@ -268,6 +275,7 @@ class Tokens extends \SplFixedArray
     {
         if ($this->getSize() !== $size) {
             $this->changed = true;
+            $this->namespaceDeclarations = null;
 
             return parent::setSize($size);
         }
@@ -283,6 +291,7 @@ class Tokens extends \SplFixedArray
     public function offsetUnset($index): void
     {
         $this->changed = true;
+        $this->namespaceDeclarations = null;
         $this->unregisterFoundToken($this[$index]);
 
         parent::offsetUnset($index);
@@ -303,6 +312,7 @@ class Tokens extends \SplFixedArray
 
         if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
             $this->changed = true;
+            $this->namespaceDeclarations = null;
 
             if (isset($this[$index])) {
                 $this->unregisterFoundToken($this[$index]);
@@ -525,9 +535,9 @@ class Tokens extends \SplFixedArray
      *
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int $index token index
+     * @param int                           $index         token index
      * @param list<array{int}|string|Token> $tokens        possible tokens
-     * @param bool $caseSensitive perform a case sensitive comparison
+     * @param bool                          $caseSensitive perform a case sensitive comparison
      */
     public function getNextTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
@@ -573,9 +583,9 @@ class Tokens extends \SplFixedArray
      * Get index for closest previous token of given kind.
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int $index token index
+     * @param int                           $index         token index
      * @param list<array{int}|string|Token> $tokens        possible tokens
-     * @param bool $caseSensitive perform a case sensitive comparison
+     * @param bool                          $caseSensitive perform a case sensitive comparison
      */
     public function getPrevTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
@@ -585,10 +595,10 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token of given kind.
      *
-     * @param int  $index     token index
-     * @param -1|1 $direction
-     * @param list<array{int}|string|Token> $tokens possible tokens
-     * @param bool $caseSensitive perform a case sensitive comparison
+     * @param int                           $index         token index
+     * @param -1|1                          $direction
+     * @param list<array{int}|string|Token> $tokens        possible tokens
+     * @param bool                          $caseSensitive perform a case sensitive comparison
      */
     public function getTokenOfKindSibling(int $index, int $direction, array $tokens = [], bool $caseSensitive = true): ?int
     {
@@ -616,9 +626,9 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token not of given kind.
      *
-     * @param int  $index     token index
-     * @param -1|1 $direction
-     * @param list<array{int}|string|Token> $tokens possible tokens
+     * @param int                           $index     token index
+     * @param -1|1                          $direction
+     * @param list<array{int}|string|Token> $tokens    possible tokens
      */
     public function getTokenNotOfKindSibling(int $index, int $direction, array $tokens = []): ?int
     {
@@ -852,6 +862,7 @@ class Tokens extends \SplFixedArray
 
         $oldSize = \count($this);
         $this->changed = true;
+        $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
         $this->setSize($oldSize + $itemsCount);
@@ -1006,6 +1017,7 @@ class Tokens extends \SplFixedArray
 
         $this->changeCodeHash(self::calculateCodeHash($code));
         $this->changed = true;
+        $this->namespaceDeclarations = null;
     }
 
     public function toJson(): string
@@ -1157,6 +1169,20 @@ class Tokens extends \SplFixedArray
         }
 
         $this->clearAt($nextIndex);
+    }
+
+    /**
+     * @internal This is performance-related workaround for lack of proper DI, may be removed at some point
+     *
+     * @return list<NamespaceAnalysis>
+     */
+    public function getNamespaceDeclarations(): array
+    {
+        if (null === $this->namespaceDeclarations) {
+            $this->namespaceDeclarations = (new NamespacesAnalyzer())->getDeclarations($this);
+        }
+
+        return $this->namespaceDeclarations;
     }
 
     /**

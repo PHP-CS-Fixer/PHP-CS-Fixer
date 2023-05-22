@@ -40,9 +40,6 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
      */
     private const ORDER_DEFAULT = ['param', 'throws', 'return'];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         $code = <<<'EOF'
@@ -70,9 +67,6 @@ EOF;
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
@@ -89,9 +83,6 @@ EOF;
         return -2;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -109,9 +100,6 @@ EOF;
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
