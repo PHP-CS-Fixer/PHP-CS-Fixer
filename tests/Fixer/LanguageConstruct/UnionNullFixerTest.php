@@ -39,6 +39,11 @@ final class UnionNullFixerTest extends AbstractFixerTestCase
             '<?php function foo(): string|null {} ?>',
             '<?php function foo(): ?string {} ?>',
         ];
+
+        yield [
+            '<?php $fn = fn (): string|null => null; ?>',
+            '<?php $fn = fn (): ?string => null; ?>',
+        ];
     }
 
     /**
