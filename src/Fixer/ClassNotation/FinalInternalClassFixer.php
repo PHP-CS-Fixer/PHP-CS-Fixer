@@ -219,24 +219,22 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             return false; // ignore class; it is abstract or already final
         }
 
-        $index = $tokens->getPrevNonWhitespace($index);
+        $attributeDecision = $phpDocDecision = null;
 
-        if ($this->checkAttributes && $tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-            if (!$this->isClassCandidateBasedOnAttribute($tokens, $index)) {
-                return false;
-            }
-
-            while ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
-            }
-
-            $index = $tokens->getPrevNonWhitespace($index);
-
-            return !$tokens[$index]->isGivenKind(T_DOC_COMMENT) || $this->isClassCandidateBasedOnPhpDoc($tokens, $index);
+        if ($this->checkAttributes && $attributeIndex = $tokens->getPrevTokenOfKind($index, [[CT::T_ATTRIBUTE_CLOSE]])) {
+            $attributeDecision = $this->isClassCandidateBasedOnAttribute($tokens, $attributeIndex);
         }
 
-        if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
-            return $this->isClassCandidateBasedOnPhpDoc($tokens, $index);
+        if ($commentIndex = $tokens->getPrevTokenOfKind($index, [[T_DOC_COMMENT]])) {
+            $phpDocDecision = $this->isClassCandidateBasedOnPhpDoc($tokens, $commentIndex);
+        }
+
+        if (false === $attributeDecision || false === $phpDocDecision) {
+            return false;
+        }
+
+        if (true === $attributeDecision || true === $phpDocDecision) {
+            return true;
         }
 
         return $this->configuration['consider_absent_docblock_as_internal_class'];
@@ -265,30 +263,35 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         return $this->isConfiguredAsInclude($tags);
     }
 
-    private function isClassCandidateBasedOnAttribute(Tokens $tokens, int $attributeCloseIndex): bool
+    private function isClassCandidateBasedOnAttribute(Tokens $tokens, int $index): bool
     {
         $attributeCandidates = [];
 
-        while ($tokens[$attributeCloseIndex]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-            $attributeStartIndex = $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $attributeCloseIndex);
+        while ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            $attributeStartIndex = $nextMeaningfulIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
             $attributeString = '';
 
-            do {
-                $index = $tokens->getNextMeaningfulToken($index);
+            $attributes = [];
+            while ($nextMeaningfulIndex < $index && $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($nextMeaningfulIndex)) {
+                if (!$tokens[$nextMeaningfulIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
+                    if ($attributeString) {
+                        $attributeCandidates[$attributeString] = true;
+                        $attributeString = '';
+                    }
 
-                if (!$tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
-                    break;
+                    continue;
                 }
 
-                $attributeString .= strtolower($tokens[$index]->getContent());
-            } while ($index < $attributeCloseIndex);
-
-            if (isset($this->configuration['exclude'][$attributeString])) {
-                return false;
+                $attributeString .= strtolower($tokens[$nextMeaningfulIndex]->getContent());
             }
 
-            $attributeCandidates[$attributeString] = true;
-            $attributeCloseIndex = $tokens->getPrevNonWhitespace($attributeStartIndex);
+            $index = $tokens->getPrevNonWhitespace($attributeStartIndex);
+        }
+
+        foreach ($attributeCandidates as $attributeCandidate => $true) {
+            if (isset($this->configuration['exclude'][$attributeCandidate])) {
+                return false;
+            }
         }
 
         return $this->isConfiguredAsInclude($attributeCandidates);
