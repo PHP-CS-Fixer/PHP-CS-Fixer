@@ -506,6 +506,18 @@ class Foo {}',
                 'include' => ['A'],
             ],
         ];
+
+        yield 'positive on doc, but attribute on doc' => [
+            '<?php
+/** @a */
+#[Internal]
+class Foo {}',
+            null,
+            [
+                'exclude' => ['Internal'],
+                'include' => ['A'],
+            ],
+        ];
     }
 
     /**
