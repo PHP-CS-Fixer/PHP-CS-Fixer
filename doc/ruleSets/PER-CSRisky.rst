@@ -2,7 +2,7 @@
 Rule set ``@PER-CS:risky``
 ==========================
 
-Rules that follow the latest `PER Coding Style <https://www.php-fig.org/per/coding-style/>`_. This set contains rules that are risky.
+Risky rules that follow the latest `PER Coding Style <https://www.php-fig.org/per/coding-style/>`_. This set contains rules that are risky.
 
 Rules
 -----
