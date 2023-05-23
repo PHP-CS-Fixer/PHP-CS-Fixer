@@ -23,7 +23,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class UnionNullFixer extends AbstractFixer
+final class NullableTypeFixer extends AbstractFixer
 {
     private const FUNCTION_TOKENS = [
         T_FN,
@@ -63,6 +63,16 @@ final class UnionNullFixer extends AbstractFixer
             ],
             'Rule is applied only in a PHP 8.0+ environment.'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before OrderedTypesFixer.
+     */
+    public function getPriority(): int
+    {
+        return 1;
     }
 
     public function isCandidate(Tokens $tokens): bool
@@ -113,10 +123,10 @@ final class UnionNullFixer extends AbstractFixer
 
             $tokens->clearTokenAndMergeSurroundingWhitespace($argumentTypeInfo->getStartIndex());
             $tokens->insertAt(
-                $argumentTypeInfo->getEndIndex() + 1,
+                $argumentTypeInfo->getStartIndex(),
                 [
-                    new Token([CT::T_TYPE_ALTERNATION, '|']),
                     new Token([T_STRING, 'null']),
+                    new Token([CT::T_TYPE_ALTERNATION, '|']),
                 ]
             );
         }
@@ -139,10 +149,10 @@ final class UnionNullFixer extends AbstractFixer
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($type->getStartIndex());
         $tokens->insertAt(
-            $type->getEndIndex() + 1,
+            $type->getStartIndex(),
             [
-                new Token([CT::T_TYPE_ALTERNATION, '|']),
                 new Token([T_STRING, 'null']),
+                new Token([CT::T_TYPE_ALTERNATION, '|']),
             ]
         );
     }
@@ -162,14 +172,14 @@ final class UnionNullFixer extends AbstractFixer
             return;
         }
 
+        $tokens->clearTokenAndMergeSurroundingWhitespace($typeIndex);
         $tokens->insertAt(
-            $typeIndex + 2,
+            $typeIndex,
             [
-                new Token([CT::T_TYPE_ALTERNATION, '|']),
                 new Token([T_STRING, 'null']),
+                new Token([CT::T_TYPE_ALTERNATION, '|']),
             ]
         );
-        $tokens->clearTokenAndMergeSurroundingWhitespace($typeIndex);
     }
 
     private function getNullableTypeStart(Tokens $tokens, int $index): ?int

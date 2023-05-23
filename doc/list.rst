@@ -1838,6 +1838,13 @@ List of Available Rules
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\NoWhitespaceInBlankLineFixer <./../src/Fixer/Whitespace/NoWhitespaceInBlankLineFixer.php>`_
+-  `nullable_type <./rules/language_construct/nullable_type.rst>`_
+
+   Replaces ? with the corresponding union type.
+
+   Rule is applied only in a PHP 8.0+ environment.
+
+   `Source PhpCsFixer\\Fixer\\LanguageConstruct\\NullableTypeFixer <./../src/Fixer/LanguageConstruct/NullableTypeFixer.php>`_
 -  `nullable_type_declaration_for_default_null_value <./rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 
    Adds or removes ``?`` before type declarations for parameters with a default ``null`` value.
@@ -3122,13 +3129,6 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\UnaryOperatorSpacesFixer <./../src/Fixer/Operator/UnaryOperatorSpacesFixer.php>`_
--  `union_null <./rules/language_construct/union_null.rst>`_
-
-   Replaces ? with the corresponding union type.
-
-   Rule is applied only in a PHP 8.0+ environment.
-
-   `Source PhpCsFixer\\Fixer\\LanguageConstruct\\UnionNullFixer <./../src/Fixer/LanguageConstruct/UnionNullFixer.php>`_
 -  `use_arrow_functions <./rules/function_notation/use_arrow_functions.rst>`_
 
    Anonymous functions with one-liner return statement must use arrow functions.

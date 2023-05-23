@@ -19,11 +19,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\LanguageConstruct\UnionNullFixer
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\NullableTypeFixer
  *
  * @requires PHP 8.0
  */
-final class UnionNullFixerTest extends AbstractFixerTestCase
+final class NullableTypeFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideReturnTypeCases
@@ -36,12 +36,12 @@ final class UnionNullFixerTest extends AbstractFixerTestCase
     public static function provideReturnTypeCases(): iterable
     {
         yield [
-            '<?php function foo(): string|null {} ?>',
+            '<?php function foo(): null|string {} ?>',
             '<?php function foo(): ?string {} ?>',
         ];
 
         yield [
-            '<?php $fn = fn (): string|null => null; ?>',
+            '<?php $fn = fn (): null|string => null; ?>',
             '<?php $fn = fn (): ?string => null; ?>',
         ];
     }
@@ -57,32 +57,32 @@ final class UnionNullFixerTest extends AbstractFixerTestCase
     public static function provideParameterCases(): iterable
     {
         yield [
-            '<?php function foo(int|null $a = null) {} ?>',
+            '<?php function foo(null|int $a = null) {} ?>',
             '<?php function foo(?int $a = null) {} ?>',
         ];
 
         yield [
-            '<?php $a = fn (int|null $a = null) => $a; ?>',
+            '<?php $a = fn (null|int $a = null) => $a; ?>',
             '<?php $a = fn (?int $a = null) => $a; ?>',
         ];
 
         yield [
-            "<?php class Foo {\npublic function foo(int|null \$a = null) {} }\n?>",
+            "<?php class Foo {\npublic function foo(null|int \$a = null) {} }\n?>",
             "<?php class Foo {\npublic function foo(?int \$a = null) {} }\n?>",
         ];
 
         yield [
-            "<?php class Foo {\npublic static function foo(int|null \$a = null) {} }\n?>",
+            "<?php class Foo {\npublic static function foo(null|int \$a = null) {} }\n?>",
             "<?php class Foo {\npublic static function foo(?int \$a = null) {} }\n?>",
         ];
 
         yield [
-            "<?php class Foo {\npublic function foo() {\n\$fn = fn (int|null \$a = null) => \$a;\n} }\n?>",
+            "<?php class Foo {\npublic function foo() {\n\$fn = fn (null|int \$a = null) => \$a;\n} }\n?>",
             "<?php class Foo {\npublic function foo() {\n\$fn = fn (?int \$a = null) => \$a;\n} }\n?>",
         ];
 
         yield [
-            "<?php class Foo {\npublic static function foo() {\n\$fn = fn (int|null \$a = null) => \$a;\n} }\n?>",
+            "<?php class Foo {\npublic static function foo() {\n\$fn = fn (null|int \$a = null) => \$a;\n} }\n?>",
             "<?php class Foo {\npublic static function foo() {\n\$fn = fn (?int \$a = null) => \$a;\n} }\n?>",
         ];
     }
@@ -119,17 +119,17 @@ CLASS;
         ];
 
         yield $build(
-            'int|null',
+            'null|int',
             '?int'
         );
 
         yield $build(
-            'string|null',
+            'null|string',
             '?string'
         );
 
         yield $build(
-            'object|null',
+            'null|object',
             '?object'
         );
     }
@@ -167,17 +167,17 @@ CLASS;
         ];
 
         yield $build(
-            'int|null',
+            'null|int',
             '?int'
         );
 
         yield $build(
-            'string|null',
+            'null|string',
             '?string'
         );
 
         yield $build(
-            'object|null',
+            'null|object',
             '?object'
         );
     }

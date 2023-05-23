@@ -1,0 +1,43 @@
+--TEST--
+Integration of fixers: nullable_type,ordered_types.
+--RULESET--
+{"nullable_type": true, "ordered_types": {"sort_algorithm": "none", "null_adjustment": "always_last"}}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+
+class Foo
+{
+    public string|null $bar = null;
+    protected object|null $baz = null;
+    private int|null $num = null;
+
+    public static function foo(): string|null
+    {}
+
+    protected function baz(): self|null
+    {}
+
+    private function bar(int|null $foo): object|null
+    {}
+}
+
+--INPUT--
+<?php
+
+class Foo
+{
+    public ?string $bar = null;
+    protected ?object $baz = null;
+    private ?int $num = null;
+
+    public static function foo(): ?string
+    {}
+
+    protected function baz(): ?self
+    {}
+
+    private function bar(?int $foo): ?object
+    {}
+}

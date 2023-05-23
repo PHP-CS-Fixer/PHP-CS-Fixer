@@ -471,15 +471,15 @@ Language Construct
 - `no_unset_on_property <./language_construct/no_unset_on_property.rst>`_ *(risky)*
 
   Properties should be set to ``null`` instead of using ``unset``.
+- `nullable_type <./language_construct/nullable_type.rst>`_
+
+  Replaces ? with the corresponding union type.
 - `single_space_after_construct <./language_construct/single_space_after_construct.rst>`_ *(deprecated)*
 
   Ensures a single space after language constructs.
 - `single_space_around_construct <./language_construct/single_space_around_construct.rst>`_
 
   Ensures a single space after language constructs.
-- `union_null <./language_construct/union_null.rst>`_
-
-  Replaces ? with the corresponding union type.
 
 List Notation
 -------------

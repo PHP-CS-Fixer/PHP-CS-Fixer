@@ -1,6 +1,6 @@
-===================
-Rule ``union_null``
-===================
+======================
+Rule ``nullable_type``
+======================
 
 Replaces ? with the corresponding union type.
 
@@ -21,7 +21,7 @@ Example #1
    +++ New
     <?php
    -function sample(?string $str = null)
-   +function sample(string|null $str = null)
+   +function sample(null|string $str = null)
     {}
 
 Example #2
@@ -34,7 +34,7 @@ Example #2
     <?php
     class Foo {
    -  private ?string $str = null;
-   +  private string|null $str = null;
+   +  private null|string $str = null;
     }
 
 Example #3
@@ -46,7 +46,7 @@ Example #3
    +++ New
     <?php
    -function sample(): ?string
-   +function sample(): string|null
+   +function sample(): null|string
     {}
 
 Example #4
@@ -58,4 +58,4 @@ Example #4
    +++ New
     <?php
    -$fn = fn (): ?int => 5;
-   +$fn = fn (): int|null => 5;
+   +$fn = fn (): null|int => 5;
