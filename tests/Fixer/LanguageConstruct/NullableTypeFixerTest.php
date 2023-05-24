@@ -136,13 +136,11 @@ CLASS;
 
     /**
      * @dataProvider providePropertyReadonlyCases
+     *
+     * @requires PHP 8.1
      */
     public function testPropertyReadonly(string $expected, ?string $input = null): void
     {
-        if (\PHP_VERSION_ID < 8_01_00) {
-            self::markTestSkipped('PHP >= 8.1 is required.');
-        }
-
         $this->doTest($expected, $input);
     }
 
