@@ -307,6 +307,8 @@ final class TypeExpression
             );
 
             if ([] === $matches) { // invalid phpdoc type
+                // TODO once all phpdoc types are parsed strictly using self::REGEX_TYPES,
+                // the parse cannot fail and we can throw here safely
                 return;
             }
 
@@ -349,8 +351,7 @@ final class TypeExpression
                 $matches['callable_arguments'] ?? ''
             );
 
-            $return = $matches['callable_return'] ?? null;
-            if (null !== $return) {
+            if ('' !== ($matches['callable_return'] ?? '')) {
                 $this->innerTypeExpressions[] = [
                     'start_index' => \strlen($this->value) - \strlen($matches['callable_return']),
                     'expression' => $this->inner($matches['callable_return']),
