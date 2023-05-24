@@ -31,6 +31,14 @@ final class TypeExpression
      */
     public const REGEX_TYPES = '
     (?<types> # several types separated by `|` or `&`
+'.self::REGEX_TYPE.'
+        (?:
+            \h*(?<glue>[|&])\h*
+            (?&type)
+        )*+
+    )';
+
+    private const REGEX_TYPE = '
         (?<type> # single type
             (?<nullable>\??\h*)
             (?:
@@ -39,7 +47,7 @@ final class TypeExpression
                         (?<object_like_array_inners>
                             (?<object_like_array_inner>
                                 (?<object_like_array_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
-                                (?<object_like_array_inner_value>(?&types))
+                                (?<object_like_array_inner_value>(?&types_inner))
                             )
                             (?:
                                 \h*,\h*
@@ -53,10 +61,10 @@ final class TypeExpression
                 (?<callable> # callable syntax, e.g. `callable(string): bool`
                     (?<callable_start>(?:callable|\\\\?Closure)\h*\(\h*)
                         (?<callable_arguments>
-                            (?&types)
+                            (?&types_inner)
                             (?:
                                 \h*,\h*
-                                (?&types)
+                                (?&types_inner)
                             )*
                             (?:\h*,\h*)?
                         )?
@@ -73,10 +81,10 @@ final class TypeExpression
                         \h*<\h*
                     )
                         (?<generic_types>
-                            (?&types)
+                            (?&types_inner)
                             (?:
                                 \h*,\h*
-                                (?&types)
+                                (?&types_inner)
                             )*
                         )
                     \h*>
@@ -117,23 +125,23 @@ final class TypeExpression
                     )
                     (?:
                         (?<parenthesized_types>
-                            (?&types)
+                            (?&types_inner)
                         )
                         |
                         (?<conditional> # conditional type, e.g.: `$foo is \Throwable ? false : $foo`
                             (?<conditional_cond_left>
                                 (?:\$(?&identifier))
                                 |
-                                (?<conditional_cond_left_types>(?&types))
+                                (?<conditional_cond_left_types>(?&types_inner))
                             )
                             (?<conditional_cond_middle>
                                 \h+(?i)is(?:\h+not)?(?-i)\h+
                             )
-                            (?<conditional_cond_right_types>(?&types))
+                            (?<conditional_cond_right_types>(?&types_inner))
                             (?<conditional_true_start>\h*\?\h*)
-                            (?<conditional_true_types>(?&types))
+                            (?<conditional_true_types>(?&types_inner))
                             (?<conditional_false_start>\h*:\h*)
-                            (?<conditional_false_types>(?&types))
+                            (?<conditional_false_types>(?&types_inner))
                         )
                     )
                     \h*\)
@@ -142,13 +150,16 @@ final class TypeExpression
             (?<array> # array, e.g.: `string[]`, `array<int, string>[][]`
                 (\h*\[\h*\])*
             )
-        )
-        (?:
-            \h*(?<glue>[|&])\h*
-            (?&type)
-        )*
-    )
-    ';
+            (?:(?=1)0
+                (?<types_inner>
+                    (?&type)
+                    (?:
+                        \h*[|&]\h*
+                        (?&type)
+                    )*+
+                )
+            |)
+        )';
 
     private string $value;
 
@@ -434,11 +445,11 @@ final class TypeExpression
     {
         while ('' !== $value) {
             Preg::match(
-                '{^(?:(?=1)0'.self::REGEX_TYPES.'|(?<object_like_array_inner2>(?&object_like_array_inner))(?:\h*,\h*)?)}x',
+                '{^(?:(?=1)0'.self::REGEX_TYPES.'|(?<_object_like_array_inner>(?&object_like_array_inner))(?:\h*,\h*)?)}x',
                 $value,
                 $prematches
             );
-            $consumedValue = $prematches['object_like_array_inner2'];
+            $consumedValue = $prematches['_object_like_array_inner'];
             $consumedValueLength = \strlen($consumedValue);
             $consumedCommaLength = \strlen($prematches[0]) - $consumedValueLength;
 
