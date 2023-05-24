@@ -298,51 +298,42 @@ final class TypeExpression
     {
         $value = $this->value;
 
-        Preg::match(
-            '{^'.self::REGEX_TYPES.'$}x',
-            $value,
-            $matches
-        );
+        $index = 0;
+        while (true) {
+            Preg::match(
+                '{^'.self::REGEX_TYPE.'(?:\h*(?<glue>[|&])\h*)?}x',
+                $value,
+                $matches
+            );
 
-        if ([] === $matches) {
-            return;
-        }
+            if ([] === $matches) { // invalid phpdoc type
+                return;
+            }
 
-        $this->typesGlue = $matches['glue'] ?? $this->typesGlue;
-
-        $index = '' !== $matches['nullable'] ? 1 : 0;
-
-        if ($matches['type'] !== $matches['types']) {
-            $this->isUnionType = true;
-
-            while (true) {
-                $innerType = $matches['type'];
-
-                $newValue = Preg::replace(
-                    '/^'.preg_quote($innerType, '/').'(\h*[|&]\h*)?/',
-                    '',
-                    $value
-                );
-
-                $this->innerTypeExpressions[] = [
-                    'start_index' => $index,
-                    'expression' => $this->inner($innerType),
-                ];
-
-                if ('' === $newValue) {
-                    return;
+            if (!$this->isUnionType) {
+                if (($matches['glue'] ?? '') === '') {
+                    break;
                 }
 
-                $index += \strlen($value) - \strlen($newValue);
-                $value = $newValue;
+                $this->isUnionType = true;
+                $this->typesGlue = $matches['glue'];
+            }
 
-                Preg::match(
-                    '{^'.self::REGEX_TYPES.'$}x',
-                    $value,
-                    $matches
-                );
+            $this->innerTypeExpressions[] = [
+                'start_index' => $index,
+                'expression' => $this->inner($matches['type']),
+            ];
+
+            $consumedValueLength = \strlen($matches[0]);
+            $index += $consumedValueLength;
+            $value = substr($value, $consumedValueLength);
+
+            if ('' === $value) {
+                return;
             }
         }
+
+        $index = '' !== $matches['nullable'] ? 1 : 0;
 
         if ('' !== ($matches['generic'] ?? '')) {
             $this->parseCommaSeparatedInnerTypes(
