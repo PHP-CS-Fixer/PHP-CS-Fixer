@@ -915,6 +915,118 @@ abstract class Foo
 EOT
                 ,
             ],
+            [
+                [
+                    'construct',
+                    'method:__invoke',
+                    'destruct',
+                    'method_public_static',
+                    'method:custom1',
+                    'method_public_abstract_static',
+                    'method_protected_static',
+                    'method_protected_abstract_static',
+                    'method_private_static',
+                    'method_public',
+                    'method:custom3',
+                    'method_public_abstract',
+                    'method_protected',
+                    'method_protected_abstract',
+                    'method_private',
+                    'method:custom2',
+                    'magic',
+                ],
+                <<<'EOT'
+<?php
+
+abstract class Foo
+{
+    protected function __construct() {}
+    public function __invoke() {}
+    public function __destruct() {}
+    public static function pubStatFunc1() {}
+    static function pubStatFunc2() {}
+    public static function pubStatFunc3() {}
+    private function custom1() {}
+    abstract public static function absPubStatFunc();
+    protected static function protStatFunc() {}
+    abstract protected static function absProtStatFunc();
+    private static function privStatFunc() {}
+    public function pubFunc1() {}
+    function pubFunc2() {}
+    public function pubFunc3() {}
+    abstract public function custom3();
+    abstract public function absPubFunc();
+    protected function protFunc() {}
+    abstract protected function absProtFunc();
+    private function privFunc() {}
+    protected static function custom2() {}
+    public function __get($prop) {}
+    public function __toString() {}
+}
+EOT
+                ,
+                <<<'EOT'
+<?php
+
+abstract class Foo
+{
+    public function __get($prop) {}
+    private function custom1() {}
+    abstract public function absPubFunc();
+    private static function privStatFunc() {}
+    public function pubFunc1() {}
+    abstract protected function absProtFunc();
+    public function __toString() {}
+    protected function protFunc() {}
+    function pubFunc2() {}
+    abstract protected static function absProtStatFunc();
+    public function __destruct() {}
+    public static function pubStatFunc1() {}
+    public function __invoke() {}
+    public function pubFunc3() {}
+    static function pubStatFunc2() {}
+    private function privFunc() {}
+    abstract public static function absPubStatFunc();
+    protected function __construct() {}
+    public static function pubStatFunc3() {}
+    protected static function protStatFunc() {}
+    abstract public function custom3();
+    protected static function custom2() {}
+}
+EOT
+                ,
+            ],
+            [
+                [
+                    'method:foo',
+                    'method_public',
+                    'method:bar',
+                    'method:baz',
+                    'magic',
+                ],
+                <<<'EOT'
+<?php
+
+abstract class Foo
+{
+    public function pub() {}
+    public function bar() {}
+    public function __toString() {}
+}
+EOT
+                ,
+                <<<'EOT'
+<?php
+
+abstract class Foo
+{
+    public function __toString() {}
+    public function pub() {}
+    public function bar() {}
+}
+EOT
+                ,
+            ],
         ];
     }
 

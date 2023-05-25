@@ -16,7 +16,6 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -208,7 +207,16 @@ class Example
 ',
                     ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA]
                 ),
-            ]
+            ],
+            'Accepts a subset of pre-defined element types, special element groups, and custom patterns.
+
+Element types: `[\''.implode('\', \'', array_keys(self::$typeHierarchy)).'\']`
+
+Special element types: `[\''.implode('\', \'', array_keys(self::$specialTypes)).'\']`
+
+Custom values:
+
+- `method:*`: specify a single method name (e.g. `method:__invoke`) to set the order of that specific method'
         );
     }
 
@@ -250,10 +258,26 @@ class Example
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
+        $builtIns = array_keys(array_merge(self::$typeHierarchy, self::$specialTypes));
+
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes)))])
+                ->setAllowedValues([
+                    static function (array $values) use ($builtIns): bool {
+                        foreach ($values as $value) {
+                            if (\in_array($value, $builtIns, true)) {
+                                return true;
+                            }
+
+                            if (\is_string($value) && 'method:' === substr($value, 0, 7)) {
+                                return true;
+                            }
+                        }
+
+                        return false;
+                    },
+                ])
                 ->setDefault([
                     'use_trait',
                     'case',
@@ -464,6 +488,12 @@ class Example
 
         foreach ($elements as &$element) {
             $type = $element['type'];
+
+            if (\in_array($type, ['method', 'magic', 'phpunit'], true) && isset($this->typePosition["method:{$element['name']}"])) {
+                $element['position'] = $this->typePosition["method:{$element['name']}"];
+
+                continue;
+            }
 
             if (\array_key_exists($type, self::$specialTypes)) {
                 if (isset($this->typePosition[$type])) {
