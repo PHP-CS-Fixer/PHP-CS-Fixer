@@ -1165,7 +1165,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                 }
                 ',
             ],
-            'try finally2' => [
+            'try with multiple catch blocks' => [
                 '<?php
                 function foo() {
                     try {
