@@ -1165,6 +1165,20 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                 }
                 ',
             ],
+            'try finally2' => [
+                '<?php
+                function foo() {
+                    try {
+                        $bar = bar();
+                
+                        return $bar;
+                    } catch (\LogicException $e) {
+                        echo "catch ... ";
+                    } catch (\RuntimeException $e) {
+                        echo $bar;
+                    }
+                }'
+            ],
         ];
     }
 

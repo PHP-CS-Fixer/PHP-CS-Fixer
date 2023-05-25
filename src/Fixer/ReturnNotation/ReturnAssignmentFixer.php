@@ -480,13 +480,14 @@ final class ReturnAssignmentFixer extends AbstractFixer
         $tryOpenIndex = $tokens->getNextTokenOfKind($tryIndex, ['{']);
         $tryCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tryOpenIndex);
 
-        // Find finally
+        // Find catch or finally
         $nextIndex = $tokens->getNextMeaningfulToken($tryCloseIndex);
         if (null === $nextIndex) {
             return false;
         }
 
-        if ($tokens[$nextIndex]->isGivenKind(T_CATCH)) {
+        // Find catches
+        while ($tokens[$nextIndex]->isGivenKind(T_CATCH)) {
             $catchOpenIndex = $tokens->getNextTokenOfKind($nextIndex, ['{']);
             $catchCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $catchOpenIndex);
 
