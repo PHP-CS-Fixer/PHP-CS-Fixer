@@ -656,7 +656,7 @@ var names are case-insensitive */ return $a   ;}
                 }
                 ',
             ],
-            'try catch2' => [
+            'multiple try/catch blocks separated with conditional return' => [
                 '<?php
                 function foo()
                 {
@@ -702,7 +702,7 @@ var names are case-insensitive */ return $a   ;}
                 }
                 ',
             ],
-            'try finally' => [
+            'try/catch/finally' => [
                 '<?php
                 function foo()
                 {
@@ -742,7 +742,7 @@ var names are case-insensitive */ return $a   ;}
                 }
                 ',
             ],
-            'try finally2' => [
+            'multiple try/catch separated with conditional return, with finally block' => [
                 '<?php
                 function foo()
                 {
@@ -1149,7 +1149,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                 }
                 ',
             ],
-            'try finally' => [
+            'try/catch/finally' => [
                 '<?php
                 function add($a, $b): mixed
                 {
@@ -1179,6 +1179,60 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                     }
                 }',
             ],
+            'try/catch/finally with some comments' => [
+                '<?php
+                function add($a, $b): mixed
+                {
+                    try {
+                        $result = $a + $b;
+
+                        return $result;
+                    } /* foo */ catch /** bar */ (\LogicException $th) {
+                        throw $th;
+                    }
+                    // Or maybe this....
+                    catch (\RuntimeException $th) {
+                        throw $th;
+                    }
+                    # Print the result anyway
+                    finally {
+                        echo \'result:\', $result, \PHP_EOL;
+                    }
+                }
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideDoNotFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testDoNotFix80(string $expected): void
+    {
+        $this->doTest($expected);
+    }
+
+    public static function provideDoNotFix80Cases(): iterable
+    {
+        yield 'try with non-capturing catch block' => [
+            '<?php
+                function add($a, $b): mixed
+                {
+                    try {
+                        $result = $a + $b;
+
+                        return $result;
+                    }
+                    catch (\Throwable) {
+                        noop();
+                    }
+                    finally {
+                        echo \'result:\', $result, \PHP_EOL;
+                    }
+                }
+                ',
         ];
     }
 
