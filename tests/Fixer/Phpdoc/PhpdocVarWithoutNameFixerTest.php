@@ -519,6 +519,9 @@ class Foo
 
     /** @var int Hello! */
     public $foo3;
+
+    /** @var int Hello! */
+    public $foo4;
 }
 EOF
                 ,
@@ -537,6 +540,9 @@ class Foo
 
     /** @var int $thiss Hello! */
     public $foo3;
+
+    /** @var int $this2 Hello! */
+    public $foo4;
 }
 EOF
                 ,
