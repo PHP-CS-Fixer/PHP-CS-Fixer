@@ -23,7 +23,7 @@ Consider your codebase as follow:
     ├── bar.php
     ├── somedir
     └── maindir
-        ├── submaindir
+        ├── subdir
         └── baz.php
 ```
 
