@@ -17,12 +17,14 @@ The example below will add two rules to the default list of PSR12 set rules:
 Consider your codebase as follow:
 
 ```
-src/
-    maindir/
-    somedir/
-    otherdir/
-        resources.php
-.php-cs-fixer.php
+├── .php-cs-fixer.php
+└── src
+    ├── foo.php
+    ├── bar.php
+    ├── somedir
+    └── maindir
+        ├── submaindir
+        └── baz.php
 ```
 
 .. code-block:: php
@@ -30,9 +32,9 @@ src/
     <?php
 
     $finder = PhpCsFixer\Finder::create()
-        ->in(__DIR__)
-        ->exclude('somedir')
-        ->notPath('otherdir/resources.php')
+        ->in(__DIR__) // 'src'
+        ->exclude(['somedir', 'foo.php'])
+        ->notPath('bar.php')
     ;
 
     $config = new PhpCsFixer\Config();
