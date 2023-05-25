@@ -14,14 +14,25 @@ With the ``--config`` option you can specify the path to the
 
 The example below will add two rules to the default list of PSR12 set rules:
 
+Consider your codebase as follow:
+
+```
+src/
+    maindir/
+    somedir/
+    otherdir/
+        resources.php
+.php-cs-fixer.php
+```
+
 .. code-block:: php
 
     <?php
 
     $finder = PhpCsFixer\Finder::create()
-        ->exclude('somedir')
-        ->notPath('src/Symfony/Component/Translation/Tests/fixtures/resources.php')
         ->in(__DIR__)
+        ->exclude('somedir')
+        ->notPath('otherdir/resources.php')
     ;
 
     $config = new PhpCsFixer\Config();
@@ -36,7 +47,7 @@ The example below will add two rules to the default list of PSR12 set rules:
 **NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, try ``notPath``.
 Both ``exclude`` and ``notPath`` methods accept only relative paths to the ones defined with the ``in`` method.
 
-See `Symfony\\Finder <https://symfony.com/doc/current/components/finder.html>`_
+See `Symfony\\Finder <https://symfony.com/doc/current/components/finder.html#location>`_
 online documentation for other `Finder` methods.
 
 You may also use an exclude list for the rules instead of the above shown include approach.
