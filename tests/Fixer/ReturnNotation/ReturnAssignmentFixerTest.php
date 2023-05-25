@@ -1170,14 +1170,14 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                 function foo() {
                     try {
                         $bar = bar();
-                
+
                         return $bar;
                     } catch (\LogicException $e) {
                         echo "catch ... ";
                     } catch (\RuntimeException $e) {
                         echo $bar;
                     }
-                }'
+                }',
             ],
         ];
     }
