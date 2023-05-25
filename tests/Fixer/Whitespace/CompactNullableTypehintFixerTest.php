@@ -140,4 +140,22 @@ final class CompactNullableTypehintFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'static return' => [
+            "<?php\nclass Foo { public function bar(): ?static {} }\n",
+            "<?php\nclass Foo { public function bar(): ?   static {} }\n",
+        ];
+    }
 }
