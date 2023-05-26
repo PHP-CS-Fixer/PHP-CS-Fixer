@@ -417,6 +417,10 @@ final class TypeExpressionTest extends TestCase
         yield ['bool', false];
 
         yield ['string', false];
+
+        yield ['?int', true];
+
+        yield ['bool|?\Closure(): void', true];
     }
 
     /**

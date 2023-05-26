@@ -275,7 +275,7 @@ final class TypeExpression
     public function allowsNull(): bool
     {
         foreach ($this->getTypes() as $type) {
-            if (\in_array($type, ['null', 'mixed'], true)) {
+            if (\in_array($type, ['null', 'mixed'], true) || str_starts_with($type, '?')) {
                 return true;
             }
         }
