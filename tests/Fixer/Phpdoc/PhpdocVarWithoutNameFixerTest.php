@@ -503,7 +503,7 @@ class A
     public static $static = "foo";
 }',
             ],
-            'testFixClosureWithThis' => [
+            'complex type with union containing callable that has `$this` in signature' => [
                 <<<'EOF'
 <?php
 
