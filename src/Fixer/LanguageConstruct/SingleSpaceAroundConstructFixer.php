@@ -320,7 +320,7 @@ yield  from  baz();
 
             if (
                 $token->isGivenKind(T_STATIC)
-                && !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind([T_FUNCTION, T_VARIABLE])
+                && !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind([T_FN, T_FUNCTION, T_NS_SEPARATOR, T_STRING, T_VARIABLE, CT::T_ARRAY_TYPEHINT, CT::T_NULLABLE_TYPE])
             ) {
                 continue;
             }
