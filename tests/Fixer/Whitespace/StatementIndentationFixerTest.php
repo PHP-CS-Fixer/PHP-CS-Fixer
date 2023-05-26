@@ -185,6 +185,129 @@ class Foo {
  }',
         ];
 
+        yield 'multiple class methods with many permutations of visibility modifiers' => [
+            '<?php
+abstract class Test {
+    final protected function test_final_protected() {}
+    static private function test_static_private() {}
+    private function test_private() {}
+    private static function test_private_static() {}
+    abstract public static function test_abstract_public_static();
+    abstract static public function test_abstract_static_public();
+    abstract public function test_abstract_public();
+    protected abstract function test_protected_abstract();
+    public abstract function test_public_abstract();
+    final static protected function test_final_static_protected() {}
+    final private static function test_final_private_static() {}
+    public final function test_public_final() {}
+    final private function test_final_private() {}
+    static final public function test_static_final_public() {}
+    protected abstract static function test_protected_abstract_static();
+    public static abstract function test_public_static_abstract();
+    protected static abstract function test_protected_static_abstract();
+    static final function test_static_final() {}
+    final static private function test_final_static_private() {}
+    static protected abstract function test_static_protected_abstract();
+    public abstract static function test_public_abstract_static();
+    static final protected function test_static_final_protected() {}
+    final public static function test_final_public_static() {}
+    static final private function test_static_final_private() {}
+    abstract protected function test_abstract_protected();
+    abstract static protected function test_abstract_static_protected();
+    private static final function test_private_static_final() {}
+    final static function test_final_static() {}
+    protected static function test_protected_static() {}
+    protected function test_protected() {}
+    public static function test_public_static() {}
+    final function test_final() {}
+    abstract protected static function test_abstract_protected_static();
+    static protected function test_static_protected() {}
+    static abstract function test_static_abstract();
+    static abstract protected function test_static_abstract_protected();
+    protected final static function test_protected_final_static() {}
+    static public final function test_static_public_final() {}
+    public final static function test_public_final_static() {}
+    abstract static function test_abstract_static();
+    public static final function test_public_static_final() {}
+    static function test_static() {}
+    abstract function test_abstract();
+    static protected final function test_static_protected_final() {}
+    static private final function test_static_private_final() {}
+    private final function test_private_final() {}
+    static public abstract function test_static_public_abstract();
+    protected static final function test_protected_static_final() {}
+    final protected static function test_final_protected_static() {}
+    final static public function test_final_static_public() {}
+    static public function test_static_public() {}
+    function test_() {}
+    static abstract public function test_static_abstract_public();
+    final public function test_final_public() {}
+    private final static function test_private_final_static() {}
+    protected final function test_protected_final() {}
+    public function test_public() {}
+}',
+            '<?php
+abstract class Test {
+                      final protected function test_final_protected() {}
+                 static private function test_static_private() {}
+                    private function test_private() {}
+             private static function test_private_static() {}
+        abstract public static function test_abstract_public_static();
+                 abstract static public function test_abstract_static_public();
+abstract public function test_abstract_public();
+protected abstract function test_protected_abstract();
+       public abstract function test_public_abstract();
+       final static protected function test_final_static_protected() {}
+                     final private static function test_final_private_static() {}
+           public final function test_public_final() {}
+                      final private function test_final_private() {}
+            static final public function test_static_final_public() {}
+           protected abstract static function test_protected_abstract_static();
+                 public static abstract function test_public_static_abstract();
+                       protected static abstract function test_protected_static_abstract();
+                      static final function test_static_final() {}
+                final static private function test_final_static_private() {}
+             static protected abstract function test_static_protected_abstract();
+ public abstract static function test_public_abstract_static();
+     static final protected function test_static_final_protected() {}
+      final public static function test_final_public_static() {}
+     static final private function test_static_final_private() {}
+  abstract protected function test_abstract_protected();
+      abstract static protected function test_abstract_static_protected();
+                    private static final function test_private_static_final() {}
+               final static function test_final_static() {}
+           protected static function test_protected_static() {}
+        protected function test_protected() {}
+   public static function test_public_static() {}
+         final function test_final() {}
+                   abstract protected static function test_abstract_protected_static();
+     static protected function test_static_protected() {}
+      static abstract function test_static_abstract();
+        static abstract protected function test_static_abstract_protected();
+               protected final static function test_protected_final_static() {}
+static public final function test_static_public_final() {}
+       public final static function test_public_final_static() {}
+                    abstract static function test_abstract_static();
+                    public static final function test_public_static_final() {}
+   static function test_static() {}
+          abstract function test_abstract();
+                      static protected final function test_static_protected_final() {}
+                       static private final function test_static_private_final() {}
+        private final function test_private_final() {}
+                  static public abstract function test_static_public_abstract();
+                     protected static final function test_protected_static_final() {}
+                  final protected static function test_final_protected_static() {}
+               final static public function test_final_static_public() {}
+                  static public function test_static_public() {}
+                    function test_() {}
+                       static abstract public function test_static_abstract_public();
+          final public function test_final_public() {}
+                 private final static function test_private_final_static() {}
+                protected final function test_protected_final() {}
+  public function test_public() {}
+}',
+        ];
+
         yield 'trait method definition arguments' => [
             '<?php
 trait Foo {
