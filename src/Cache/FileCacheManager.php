@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Cache;
 
+use PhpCsFixer\Cache\Signature\ConfigSignatureInterface;
+
 /**
  * Class supports caching information about state of fixing files.
  *
@@ -36,7 +38,7 @@ final class FileCacheManager implements CacheManagerInterface
 
     private FileHandlerInterface $handler;
 
-    private SignatureInterface $signature;
+    private ConfigSignatureInterface $signature;
 
     private bool $isDryRun;
 
@@ -53,7 +55,7 @@ final class FileCacheManager implements CacheManagerInterface
 
     public function __construct(
         FileHandlerInterface $handler,
-        SignatureInterface $signature,
+        ConfigSignatureInterface $signature,
         bool $isDryRun = false,
         ?DirectoryInterface $cacheDirectory = null
     ) {

@@ -12,14 +12,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Cache;
+namespace PhpCsFixer\Cache\Signature;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
  */
-interface SignatureInterface
+interface ConfigSignatureInterface
 {
     public function getPhpVersion(): string;
 

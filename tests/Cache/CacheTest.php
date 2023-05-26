@@ -16,8 +16,8 @@ namespace PhpCsFixer\Tests\Cache;
 
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\CacheInterface;
-use PhpCsFixer\Cache\Signature;
-use PhpCsFixer\Cache\SignatureInterface;
+use PhpCsFixer\Cache\Signature\ConfigSignature;
+use PhpCsFixer\Cache\Signature\ConfigSignatureInterface;
 use PhpCsFixer\Config;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
@@ -143,7 +143,7 @@ final class CacheTest extends TestCase
     /**
      * @dataProvider provideCanConvertToAndFromJsonCases
      */
-    public function testCanConvertToAndFromJson(SignatureInterface $signature): void
+    public function testCanConvertToAndFromJson(ConfigSignatureInterface $signature): void
     {
         $cache = new Cache($signature);
 
@@ -163,7 +163,7 @@ final class CacheTest extends TestCase
         $toolInfo = new ToolInfo();
         $config = new Config();
 
-        yield [new Signature(
+        yield [new ConfigSignature(
             PHP_VERSION,
             '2.0',
             '  ',
@@ -174,7 +174,7 @@ final class CacheTest extends TestCase
             ]
         )];
 
-        yield [new Signature(
+        yield [new ConfigSignature(
             PHP_VERSION,
             $toolInfo->getVersion(),
             $config->getIndent(),
@@ -190,7 +190,7 @@ final class CacheTest extends TestCase
     {
         $invalidUtf8Sequence = "\xB1\x31";
 
-        $signature = $this->prophesize(SignatureInterface::class);
+        $signature = $this->prophesize(ConfigSignatureInterface::class);
         $signature->getPhpVersion()->willReturn('7.1.0');
         $signature->getFixerVersion()->willReturn('2.2.0');
         $signature->getIndent()->willReturn('    ');
@@ -212,8 +212,8 @@ final class CacheTest extends TestCase
         $cache->toJson();
     }
 
-    private function getSignatureDouble(): SignatureInterface
+    private function getSignatureDouble(): ConfigSignatureInterface
     {
-        return $this->prophesize(SignatureInterface::class)->reveal();
+        return $this->prophesize(ConfigSignatureInterface::class)->reveal();
     }
 }

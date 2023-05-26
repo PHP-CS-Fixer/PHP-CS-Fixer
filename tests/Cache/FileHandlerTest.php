@@ -16,8 +16,8 @@ namespace PhpCsFixer\Tests\Cache;
 
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\FileHandler;
-use PhpCsFixer\Cache\Signature;
-use PhpCsFixer\Cache\SignatureInterface;
+use PhpCsFixer\Cache\Signature\ConfigSignature;
+use PhpCsFixer\Cache\Signature\ConfigSignatureInterface;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Filesystem\Exception\IOException;
 
@@ -212,9 +212,9 @@ final class FileHandlerTest extends TestCase
         return __DIR__.'/.php-cs-fixer.cache';
     }
 
-    private function createSignature(): SignatureInterface
+    private function createSignature(): ConfigSignatureInterface
     {
-        return new Signature(
+        return new ConfigSignature(
             PHP_VERSION,
             '2.0',
             '    ',

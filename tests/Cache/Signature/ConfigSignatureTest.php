@@ -12,9 +12,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Cache;
+namespace PhpCsFixer\Tests\Cache\Signature;
 
-use PhpCsFixer\Cache\Signature;
+use PhpCsFixer\Cache\Signature\ConfigSignature;
+use PhpCsFixer\Cache\Signature\ConfigSignatureInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -22,22 +23,22 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Cache\Signature
+ * @covers \PhpCsFixer\Cache\Signature\ConfigSignature
  */
-final class SignatureTest extends TestCase
+final class ConfigSignatureTest extends TestCase
 {
     public function testIsFinal(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
+        $reflection = new \ReflectionClass(ConfigSignature::class);
 
         self::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsSignatureInterface(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
+        $reflection = new \ReflectionClass(ConfigSignature::class);
 
-        self::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\SignatureInterface::class));
+        self::assertTrue($reflection->implementsInterface(ConfigSignatureInterface::class));
     }
 
     public function testConstructorSetsValues(): void
@@ -48,7 +49,7 @@ final class SignatureTest extends TestCase
         $lineEnding = PHP_EOL;
         $rules = ['foo' => true, 'bar' => false];
 
-        $signature = new Signature($php, $version, $indent, $lineEnding, $rules);
+        $signature = new ConfigSignature($php, $version, $indent, $lineEnding, $rules);
 
         self::assertSame($php, $signature->getPhpVersion());
         self::assertSame($version, $signature->getFixerVersion());
@@ -60,7 +61,7 @@ final class SignatureTest extends TestCase
     /**
      * @dataProvider provideEqualsReturnsFalseIfValuesAreNotIdenticalCases
      */
-    public function testEqualsReturnsFalseIfValuesAreNotIdentical(Signature $signature, Signature $anotherSignature): void
+    public function testEqualsReturnsFalseIfValuesAreNotIdentical(ConfigSignature $signature, ConfigSignature $anotherSignature): void
     {
         self::assertFalse($signature->equals($anotherSignature));
     }
@@ -73,31 +74,31 @@ final class SignatureTest extends TestCase
         $lineEnding = "\n";
         $rules = ['foo' => true, 'bar' => false];
 
-        $base = new Signature($php, $version, $indent, $lineEnding, $rules);
+        $base = new ConfigSignature($php, $version, $indent, $lineEnding, $rules);
 
         yield 'php' => [
             $base,
-            new Signature('50400', $version, $indent, $lineEnding, $rules),
+            new ConfigSignature('50400', $version, $indent, $lineEnding, $rules),
         ];
 
         yield 'version' => [
             $base,
-            new Signature($php, '2.12', $indent, $lineEnding, $rules),
+            new ConfigSignature($php, '2.12', $indent, $lineEnding, $rules),
         ];
 
         yield 'indent' => [
             $base,
-            new Signature($php, $version, "\t", $lineEnding, $rules),
+            new ConfigSignature($php, $version, "\t", $lineEnding, $rules),
         ];
 
         yield 'lineEnding' => [
             $base,
-            new Signature($php, $version, $indent, "\r\n", $rules),
+            new ConfigSignature($php, $version, $indent, "\r\n", $rules),
         ];
 
         yield 'rules' => [
             $base,
-            new Signature($php, $version, $indent, $lineEnding, ['foo' => false]),
+            new ConfigSignature($php, $version, $indent, $lineEnding, ['foo' => false]),
         ];
     }
 
@@ -109,8 +110,8 @@ final class SignatureTest extends TestCase
         $lineEnding = PHP_EOL;
         $rules = ['foo' => true, 'bar' => false];
 
-        $signature = new Signature($php, $version, $indent, $lineEnding, $rules);
-        $anotherSignature = new Signature($php, $version, $indent, $lineEnding, $rules);
+        $signature = new ConfigSignature($php, $version, $indent, $lineEnding, $rules);
+        $anotherSignature = new ConfigSignature($php, $version, $indent, $lineEnding, $rules);
 
         self::assertTrue($signature->equals($anotherSignature));
     }

@@ -20,7 +20,7 @@ use PhpCsFixer\Cache\DirectoryInterface;
 use PhpCsFixer\Cache\FileCacheManager;
 use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\NullCacheManager;
-use PhpCsFixer\Cache\Signature;
+use PhpCsFixer\Cache\Signature\ConfigSignature;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
@@ -227,7 +227,7 @@ final class ConfigurationResolver
             } else {
                 $this->cacheManager = new FileCacheManager(
                     new FileHandler($cacheFile),
-                    new Signature(
+                    new ConfigSignature(
                         PHP_VERSION,
                         $this->toolInfo->getVersion(),
                         $this->getConfig()->getIndent(),

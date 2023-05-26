@@ -18,7 +18,7 @@ use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\FileCacheManager;
 use PhpCsFixer\Cache\FileHandlerInterface;
-use PhpCsFixer\Cache\SignatureInterface;
+use PhpCsFixer\Cache\Signature\ConfigSignatureInterface;
 use PhpCsFixer\Tests\TestCase;
 use Prophecy\Argument;
 
@@ -47,7 +47,7 @@ final class FileCacheManagerTest extends TestCase
 
     public function testCreatesCacheIfHandlerReturnedNoCache(): void
     {
-        $signature = $this->prophesize(SignatureInterface::class)->reveal();
+        $signature = $this->prophesize(ConfigSignatureInterface::class)->reveal();
 
         $handlerProphecy = $this->prophesize(FileHandlerInterface::class);
         $handlerProphecy->read()->shouldBeCalled()->willReturn(null);
@@ -64,9 +64,9 @@ final class FileCacheManagerTest extends TestCase
 
     public function testCreatesCacheIfCachedSignatureIsDifferent(): void
     {
-        $cachedSignature = $this->prophesize(SignatureInterface::class)->reveal();
+        $cachedSignature = $this->prophesize(ConfigSignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize(SignatureInterface::class);
+        $signatureProphecy = $this->prophesize(ConfigSignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->shouldBeCalled()->willReturn(false);
         $signature = $signatureProphecy->reveal();
 
@@ -89,9 +89,9 @@ final class FileCacheManagerTest extends TestCase
 
     public function testUsesCacheIfCachedSignatureIsEqualAndNoFileWasUpdated(): void
     {
-        $cachedSignature = $this->prophesize(SignatureInterface::class)->reveal();
+        $cachedSignature = $this->prophesize(ConfigSignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize(SignatureInterface::class);
+        $signatureProphecy = $this->prophesize(ConfigSignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
@@ -117,9 +117,9 @@ final class FileCacheManagerTest extends TestCase
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->prophesize(SignatureInterface::class)->reveal();
+        $cachedSignature = $this->prophesize(ConfigSignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize(SignatureInterface::class);
+        $signatureProphecy = $this->prophesize(ConfigSignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
@@ -148,9 +148,9 @@ final class FileCacheManagerTest extends TestCase
         $fileContent = '<?php echo "Hello!"';
         $previousFileContent = '<?php echo "Hello, world!"';
 
-        $cachedSignature = $this->prophesize(SignatureInterface::class)->reveal();
+        $cachedSignature = $this->prophesize(ConfigSignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize(SignatureInterface::class);
+        $signatureProphecy = $this->prophesize(ConfigSignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
@@ -179,9 +179,9 @@ final class FileCacheManagerTest extends TestCase
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->prophesize(SignatureInterface::class)->reveal();
+        $cachedSignature = $this->prophesize(ConfigSignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize(SignatureInterface::class);
+        $signatureProphecy = $this->prophesize(ConfigSignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
@@ -215,9 +215,9 @@ final class FileCacheManagerTest extends TestCase
         $directoryProphecy = $this->prophesize(\PhpCsFixer\Cache\DirectoryInterface::class);
         $directoryProphecy->getRelativePathTo(Argument::is($file))->willReturn($relativePathToFile);
 
-        $cachedSignature = $this->prophesize(SignatureInterface::class)->reveal();
+        $cachedSignature = $this->prophesize(ConfigSignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize(SignatureInterface::class);
+        $signatureProphecy = $this->prophesize(ConfigSignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
@@ -249,9 +249,9 @@ final class FileCacheManagerTest extends TestCase
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->prophesize(SignatureInterface::class)->reveal();
+        $cachedSignature = $this->prophesize(ConfigSignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize(SignatureInterface::class);
+        $signatureProphecy = $this->prophesize(ConfigSignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
@@ -281,9 +281,9 @@ final class FileCacheManagerTest extends TestCase
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->prophesize(SignatureInterface::class)->reveal();
+        $cachedSignature = $this->prophesize(ConfigSignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize(SignatureInterface::class);
+        $signatureProphecy = $this->prophesize(ConfigSignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
@@ -316,9 +316,9 @@ final class FileCacheManagerTest extends TestCase
         $fileContent = '<?php echo "Hello!"';
         $previousFileContent = '<?php echo "Hello, world!"';
 
-        $cachedSignature = $this->prophesize(SignatureInterface::class)->reveal();
+        $cachedSignature = $this->prophesize(ConfigSignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize(SignatureInterface::class);
+        $signatureProphecy = $this->prophesize(ConfigSignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 
@@ -354,9 +354,9 @@ final class FileCacheManagerTest extends TestCase
         $directoryProphecy = $this->prophesize(\PhpCsFixer\Cache\DirectoryInterface::class);
         $directoryProphecy->getRelativePathTo(Argument::is($file))->willReturn($relativePathToFile);
 
-        $cachedSignature = $this->prophesize(SignatureInterface::class)->reveal();
+        $cachedSignature = $this->prophesize(ConfigSignatureInterface::class)->reveal();
 
-        $signatureProphecy = $this->prophesize(SignatureInterface::class);
+        $signatureProphecy = $this->prophesize(ConfigSignatureInterface::class);
         $signatureProphecy->equals(Argument::is($cachedSignature))->willReturn(true);
         $signature = $signatureProphecy->reveal();
 

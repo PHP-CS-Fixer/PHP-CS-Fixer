@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Cache;
 
+use PhpCsFixer\Cache\Signature\ConfigSignatureInterface;
+
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
@@ -21,7 +23,7 @@ namespace PhpCsFixer\Cache;
  */
 interface CacheInterface
 {
-    public function getSignature(): SignatureInterface;
+    public function getSignature(): ConfigSignatureInterface;
 
     public function has(string $file): bool;
 

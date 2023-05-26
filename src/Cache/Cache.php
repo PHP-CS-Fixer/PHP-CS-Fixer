@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Cache;
 
+use PhpCsFixer\Cache\Signature\ConfigSignature;
+use PhpCsFixer\Cache\Signature\ConfigSignatureInterface;
 use PhpCsFixer\Utils;
 
 /**
@@ -23,19 +25,19 @@ use PhpCsFixer\Utils;
  */
 final class Cache implements CacheInterface
 {
-    private SignatureInterface $signature;
+    private ConfigSignatureInterface $signature;
 
     /**
      * @var array<string, string>
      */
     private array $hashes = [];
 
-    public function __construct(SignatureInterface $signature)
+    public function __construct(ConfigSignatureInterface $signature)
     {
         $this->signature = $signature;
     }
 
-    public function getSignature(): SignatureInterface
+    public function getSignature(): ConfigSignatureInterface
     {
         return $this->signature;
     }
@@ -118,7 +120,7 @@ final class Cache implements CacheInterface
             ));
         }
 
-        $signature = new Signature(
+        $signature = new ConfigSignature(
             $data['php'],
             $data['version'],
             $data['indent'],

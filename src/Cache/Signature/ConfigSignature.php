@@ -12,14 +12,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Cache;
+namespace PhpCsFixer\Cache\Signature;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
  */
-final class Signature implements SignatureInterface
+final class ConfigSignature implements ConfigSignatureInterface
 {
     private string $phpVersion;
 
@@ -71,7 +71,7 @@ final class Signature implements SignatureInterface
         return $this->rules;
     }
 
-    public function equals(SignatureInterface $signature): bool
+    public function equals(ConfigSignatureInterface $signature): bool
     {
         return $this->phpVersion === $signature->getPhpVersion()
             && $this->fixerVersion === $signature->getFixerVersion()
