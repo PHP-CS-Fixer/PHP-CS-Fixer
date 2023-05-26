@@ -2390,6 +2390,10 @@ function bar() {} }',
 array $c; }',
             ],
             [
+                '<?php $a = static fn(): bool => true;',
+                '<?php $a = static    fn(): bool => true;',
+            ],
+            [
                 '<?php class Foo { function bar() { return new static(); } }',
             ],
             [
