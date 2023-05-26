@@ -68,7 +68,13 @@ final class ConfigSignature implements ConfigSignatureInterface
 
     public function getRules(): array
     {
-        return $this->rules;
+        return array_map(
+            static fn (FixerSignature $signature) => [
+                'hash' => $signature->getContentHash(),
+                'config' => $signature->getConfig(),
+            ],
+            $this->rules->getFixerSignatures()
+        );
     }
 
     public function equals(ConfigSignatureInterface $signature): bool
@@ -78,21 +84,5 @@ final class ConfigSignature implements ConfigSignatureInterface
             && $this->indent === $signature->getIndent()
             && $this->lineEnding === $signature->getLineEnding()
             && $this->rules === $signature->getRules();
-    }
-
-    /**
-     * @param array<string, array<string, mixed>|bool> $data
-     *
-     * @return array<string, array<string, mixed>|bool>
-     */
-    private static function makeJsonEncodable(array $data): array
-    {
-        array_walk_recursive($data, static function (&$item): void {
-            if (\is_string($item) && !mb_detect_encoding($item, 'utf-8', true)) {
-                $item = base64_encode($item);
-            }
-        });
-
-        return $data;
     }
 }
