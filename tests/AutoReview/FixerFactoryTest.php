@@ -653,8 +653,13 @@ final class FixerFactoryTest extends TestCase
                 'no_extra_blank_lines',
                 'no_spaces_inside_parenthesis',
             ],
+            'nullable_type_declaration' => [
+                'ordered_types',
+                'types_spaces',
+            ],
             'nullable_type_declaration_for_default_null_value' => [
                 'no_unreachable_default_argument_value',
+                'nullable_type_declaration',
                 'ordered_types',
             ],
             'ordered_class_elements' => [
@@ -815,6 +820,7 @@ final class FixerFactoryTest extends TestCase
             'single_space_around_construct' => [
                 'braces',
                 'function_declaration',
+                'nullable_type_declaration',
             ],
             'single_trait_insert_per_statement' => [
                 'braces',
