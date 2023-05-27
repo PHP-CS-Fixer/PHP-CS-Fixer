@@ -879,7 +879,7 @@ List of Available Rules
 
    Ensure single space between function's argument and its typehint.
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   *warning deprecated*   Use ``type_declaration_spaces`` instead.
 
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\FunctionTypehintSpaceFixer <./../src/Fixer/FunctionNotation/FunctionTypehintSpaceFixer.php>`_
 -  `general_phpdoc_annotation_remove <./rules/phpdoc/general_phpdoc_annotation_remove.rst>`_
@@ -3194,6 +3194,21 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\TypesSpacesFixer <./../src/Fixer/Whitespace/TypesSpacesFixer.php>`_
+-  `type_declaration_spaces <./rules/whitespace/type_declaration_spaces.rst>`_
+
+   Ensure single space between a variable and its type declaration in function arguments and properties.
+
+   Configuration options:
+
+   - | ``elements``
+     | Structural elements where the spacing after the type declaration should be fixed.
+     | Allowed values: a subset of ``['function', 'property']``
+     | Default value: ``['function', 'property']``
+
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Whitespace\\TypeDeclarationSpacesFixer <./../src/Fixer/Whitespace/TypeDeclarationSpacesFixer.php>`_
 -  `unary_operator_spaces <./rules/operator/unary_operator_spaces.rst>`_
 
    Unary operators should be placed adjacent to their operands.
