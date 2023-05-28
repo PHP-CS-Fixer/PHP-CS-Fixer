@@ -482,8 +482,6 @@ final class ConfigurationResolver
             }
         }
 
-        $this->usingCache = $this->usingCache && ($this->toolInfo->isInstalledAsPhar() || $this->toolInfo->isInstalledByComposer());
-
         return $this->usingCache;
     }
 
