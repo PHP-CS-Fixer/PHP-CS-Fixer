@@ -56,11 +56,6 @@ final class FixerSignature
         return $signature;
     }
 
-    public function equals(self $signature): bool
-    {
-        return $this->contentHash === $signature->getContentHash();
-    }
-
     public function getName(): string
     {
         return $this->name;
