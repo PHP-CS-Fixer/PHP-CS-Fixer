@@ -36,7 +36,13 @@ final class RulesSignature
         }
 
         ksort($this->fixerSignatures);
-        $this->hash = md5(var_export($this->fixerSignatures, true));
+        $this->hash = md5(json_encode(array_map(
+            static fn (FixerSignature $signature) => [
+                'hash' => $signature->getContentHash(),
+                'config' => $signature->getConfig(),
+            ],
+            $this->fixerSignatures
+        )));
     }
 
     public function equals(self $signature): bool

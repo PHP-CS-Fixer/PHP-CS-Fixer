@@ -32,7 +32,7 @@ final class RulesSignatureTest extends TestCase
             FixerSignature::fromInstance(new SignatureFixer(), true)
         );
 
-        self::assertSame('c561b45d3402d7d0ef99640fea87da5e', $signature->getHash());
+        self::assertSame('5b6fc67e73d9fc77157f9c51a49ab2d3', $signature->getHash());
         self::assertCount(1, $signature->getFixerSignatures());
     }
 
