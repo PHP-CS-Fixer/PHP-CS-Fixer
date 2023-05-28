@@ -18,6 +18,8 @@ use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\Signature\ConfigSignature;
 use PhpCsFixer\Cache\Signature\ConfigSignatureInterface;
+use PhpCsFixer\Cache\Signature\FixerSignature;
+use PhpCsFixer\Cache\Signature\RulesSignature;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Filesystem\Exception\IOException;
 
@@ -95,6 +97,35 @@ final class FileHandlerTest extends TestCase
 
         self::assertInstanceOf(\PhpCsFixer\Cache\CacheInterface::class, $cached);
         self::assertTrue($cached->getSignature()->equals($signature));
+    }
+
+    /**
+     * This test ensures that cache file without rules' signatures can be read.
+     * It will be invalidated because of lack of hashes, but it won't fail the process in any way.
+     */
+    public function testReadLegacyFormatReturnsCache(): void
+    {
+        $file = $this->getFile();
+        file_put_contents($file, '{"php":"8.2.4","version":"3.17.1-DEV","indent":"    ","lineEnding":"\n","rules":{"bar":false,"foo":true},"hashes":{}}');
+
+        $handler = new FileHandler($file);
+        $cached = $handler->read();
+
+        // Theoretically it's the same set of rules with the same config, but it contains rules' hashes,
+        // while cache created above is missing them - signatures are not equal.
+        $signature = new ConfigSignature(
+            '8.2.4',
+            '3.17.1-DEV',
+            '    ',
+            "\n",
+            new RulesSignature(
+                FixerSignature::fromRawValues('foo', '123', true),
+                FixerSignature::fromRawValues('bar', '456', false)
+            )
+        );
+
+        self::assertInstanceOf(\PhpCsFixer\Cache\CacheInterface::class, $cached);
+        self::assertFalse($cached->getSignature()->equals($signature));
     }
 
     public function testWriteThrowsIOExceptionIfFileCanNotBeWritten(): void
@@ -219,7 +250,10 @@ final class FileHandlerTest extends TestCase
             '2.0',
             '    ',
             PHP_EOL,
-            ['foo' => true, 'bar' => false],
+            new RulesSignature(
+                FixerSignature::fromRawValues('foo', '', true),
+                FixerSignature::fromRawValues('bar', '', false)
+            ),
         );
     }
 }

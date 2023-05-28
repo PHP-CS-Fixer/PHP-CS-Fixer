@@ -18,6 +18,8 @@ use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\Signature\ConfigSignature;
 use PhpCsFixer\Cache\Signature\ConfigSignatureInterface;
+use PhpCsFixer\Cache\Signature\FixerSignature;
+use PhpCsFixer\Cache\Signature\RulesSignature;
 use PhpCsFixer\Config;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
@@ -168,10 +170,10 @@ final class CacheTest extends TestCase
             '2.0',
             '  ',
             "\r\n",
-            [
-                'foo' => true,
-                'bar' => true,
-            ]
+            new RulesSignature(
+                FixerSignature::fromRawValues('foo', '', true),
+                FixerSignature::fromRawValues('bar', '', true)
+            )
         )];
 
         yield [new ConfigSignature(
@@ -179,10 +181,13 @@ final class CacheTest extends TestCase
             $toolInfo->getVersion(),
             $config->getIndent(),
             $config->getLineEnding(),
-            [
-                // value encoded in ANSI, not UTF
-                'header_comment' => ['header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)],
-            ]
+            new RulesSignature(
+                FixerSignature::fromRawValues(
+                    'header_comment',
+                    '',
+                    ['header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)]
+                )
+            )
         )];
     }
 

@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\Cache\Signature;
 
 use PhpCsFixer\Cache\Signature\ConfigSignature;
 use PhpCsFixer\Cache\Signature\ConfigSignatureInterface;
+use PhpCsFixer\Cache\Signature\FixerSignature;
+use PhpCsFixer\Cache\Signature\RulesSignature;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -47,15 +49,20 @@ final class ConfigSignatureTest extends TestCase
         $version = '3.0';
         $indent = '    ';
         $lineEnding = PHP_EOL;
-        $rules = ['foo' => true, 'bar' => false];
 
-        $signature = new ConfigSignature($php, $version, $indent, $lineEnding, $rules);
+        $signature = new ConfigSignature($php, $version, $indent, $lineEnding, new RulesSignature(
+            FixerSignature::fromRawValues('foo', '', true),
+            FixerSignature::fromRawValues('bar', '', false)
+        ));
 
         self::assertSame($php, $signature->getPhpVersion());
         self::assertSame($version, $signature->getFixerVersion());
         self::assertSame($indent, $signature->getIndent());
         self::assertSame($lineEnding, $signature->getLineEnding());
-        self::assertSame($rules, $signature->getRules());
+        self::assertSame(
+            ['bar' => ['hash' => '', 'config' => false], 'foo' => ['hash' => '', 'config' => true]],
+            $signature->getRules()
+        );
     }
 
     /**
@@ -72,7 +79,10 @@ final class ConfigSignatureTest extends TestCase
         $version = '2.0';
         $indent = '    ';
         $lineEnding = "\n";
-        $rules = ['foo' => true, 'bar' => false];
+        $rules = new RulesSignature(
+            FixerSignature::fromRawValues('foo', '', true),
+            FixerSignature::fromRawValues('bar', '', false)
+        );
 
         $base = new ConfigSignature($php, $version, $indent, $lineEnding, $rules);
 
@@ -98,7 +108,9 @@ final class ConfigSignatureTest extends TestCase
 
         yield 'rules' => [
             $base,
-            new ConfigSignature($php, $version, $indent, $lineEnding, ['foo' => false]),
+            new ConfigSignature($php, $version, $indent, $lineEnding, new RulesSignature(
+                FixerSignature::fromRawValues('foo', '', false)
+            )),
         ];
     }
 
@@ -108,7 +120,7 @@ final class ConfigSignatureTest extends TestCase
         $version = '2.0';
         $indent = '    ';
         $lineEnding = PHP_EOL;
-        $rules = ['foo' => true, 'bar' => false];
+        $rules = new RulesSignature(FixerSignature::fromRawValues('foo', '', true));
 
         $signature = new ConfigSignature($php, $version, $indent, $lineEnding, $rules);
         $anotherSignature = new ConfigSignature($php, $version, $indent, $lineEnding, $rules);

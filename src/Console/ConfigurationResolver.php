@@ -21,6 +21,8 @@ use PhpCsFixer\Cache\FileCacheManager;
 use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature\ConfigSignature;
+use PhpCsFixer\Cache\Signature\FixerSignature;
+use PhpCsFixer\Cache\Signature\RulesSignature;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
@@ -232,7 +234,7 @@ final class ConfigurationResolver
                         $this->toolInfo->getVersion(),
                         $this->getConfig()->getIndent(),
                         $this->getConfig()->getLineEnding(),
-                        $this->getRules()
+                        $this->getRulesSignature()
                     ),
                     $this->isDryRun(),
                     $this->getDirectory()
@@ -607,6 +609,16 @@ final class ConfigurationResolver
         }
 
         return $this->ruleSet;
+    }
+
+    private function getRulesSignature(): RulesSignature
+    {
+        $rules = $this->getRules();
+
+        return new RulesSignature(...array_map(
+            static fn (FixerInterface $fixer) => FixerSignature::fromInstance($fixer, $rules[$fixer->getName()]),
+            $this->getFixers()
+        ));
     }
 
     private function isStdIn(): bool

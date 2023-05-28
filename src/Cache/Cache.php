@@ -16,6 +16,8 @@ namespace PhpCsFixer\Cache;
 
 use PhpCsFixer\Cache\Signature\ConfigSignature;
 use PhpCsFixer\Cache\Signature\ConfigSignatureInterface;
+use PhpCsFixer\Cache\Signature\FixerSignature;
+use PhpCsFixer\Cache\Signature\RulesSignature;
 use PhpCsFixer\Utils;
 
 /**
@@ -125,15 +127,29 @@ final class Cache implements CacheInterface
             $data['version'],
             $data['indent'],
             $data['lineEnding'],
-            $data['rules']
+            self::createRulesSignatures($data['rules'])
         );
 
         $cache = new self($signature);
 
         // before v3.11.1 the hashes were crc32 encoded and saved as integers
         // @TODO: remove the to string cast/array_map in v4.0
-        $cache->hashes = array_map(fn ($v): string => \is_int($v) ? (string) $v : $v, $data['hashes']);
+        $cache->hashes = array_map(static fn ($v): string => \is_int($v) ? (string) $v : $v, $data['hashes']);
 
         return $cache;
+    }
+
+    /**
+     * @param array<string, array{hash: string, config: array<string, mixed>|bool}> $rules
+     */
+    private static function createRulesSignatures(array $rules): RulesSignature
+    {
+        $signatures = [];
+
+        foreach ($rules as $name => $data) {
+            $signatures[] = FixerSignature::fromRawValues($name, $data['hash'] ?? '', $data['config'] ?? false);
+        }
+
+        return new RulesSignature(...$signatures);
     }
 }

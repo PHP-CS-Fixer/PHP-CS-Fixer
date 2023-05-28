@@ -29,8 +29,10 @@ interface ConfigSignatureInterface
 
     public function getLineEnding(): string;
 
+    public function getRulesSignature(): RulesSignature;
+
     /**
-     * @return array<string, array<string, mixed>|bool>
+     * @return array<string, array{hash: string, config: array<string, mixed>|bool}>
      */
     public function getRules(): array;
 

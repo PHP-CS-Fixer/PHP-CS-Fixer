@@ -29,21 +29,20 @@ final class ConfigSignature implements ConfigSignatureInterface
 
     private string $lineEnding;
 
-    /**
-     * @var array<string, array<string, mixed>|bool>
-     */
-    private array $rules;
+    private RulesSignature $rules;
 
-    /**
-     * @param array<string, array<string, mixed>|bool> $rules
-     */
-    public function __construct(string $phpVersion, string $fixerVersion, string $indent, string $lineEnding, array $rules)
-    {
+    public function __construct(
+        string $phpVersion,
+        string $fixerVersion,
+        string $indent,
+        string $lineEnding,
+        RulesSignature $rules
+    ) {
         $this->phpVersion = $phpVersion;
         $this->fixerVersion = $fixerVersion;
         $this->indent = $indent;
         $this->lineEnding = $lineEnding;
-        $this->rules = self::makeJsonEncodable($rules);
+        $this->rules = $rules;
     }
 
     public function getPhpVersion(): string
@@ -66,6 +65,14 @@ final class ConfigSignature implements ConfigSignatureInterface
         return $this->lineEnding;
     }
 
+    public function getRulesSignature(): RulesSignature
+    {
+        return $this->rules;
+    }
+
+    /**
+     * @return array<string, array{hash: string, config: array<string, mixed>|bool}>
+     */
     public function getRules(): array
     {
         return array_map(
@@ -83,6 +90,6 @@ final class ConfigSignature implements ConfigSignatureInterface
             && $this->fixerVersion === $signature->getFixerVersion()
             && $this->indent === $signature->getIndent()
             && $this->lineEnding === $signature->getLineEnding()
-            && $this->rules === $signature->getRules();
+            && $this->rules->equals($signature->getRulesSignature());
     }
 }
