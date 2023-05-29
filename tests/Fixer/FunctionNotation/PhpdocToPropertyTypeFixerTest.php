@@ -146,6 +146,10 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { /** @var null|Bar */ private ?Bar $foo; }',
                 '<?php class Foo { /** @var null|Bar */ private $foo; }',
             ],
+            'nullable type with ? notation in phpDoc' => [
+                '<?php class Foo { /** @var ?Bar */ private ?Bar $foo; }',
+                '<?php class Foo { /** @var ?Bar */ private $foo; }',
+            ],
             'nullable type reverse order' => [
                 '<?php class Foo { /** @var Bar|null */ private ?Bar $foo; }',
                 '<?php class Foo { /** @var Bar|null */ private $foo; }',
