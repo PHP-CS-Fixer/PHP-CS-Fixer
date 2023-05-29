@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: no_useless_concat_operator,const_type_required.
+--RULESET--
+{"no_useless_concat_operator": true, "const_type_required": true}
+--REQUIREMENTS--
+{"php": 80300}
+--EXPECT--
+<?php
+class Foo
+{
+    public const string BAR = '12';
+}
+
+--INPUT--
+<?php
+class Foo
+{
+    public const BAR = '1'.'2';
+}

@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: no_unneeded_control_parentheses,const_type_required.
+--RULESET--
+{"no_unneeded_control_parentheses": true, "const_type_required": true}
+--REQUIREMENTS--
+{"php": 80300}
+--EXPECT--
+<?php
+class Foo
+{
+    public const int BAR = 1;
+}
+
+--INPUT--
+<?php
+class Foo
+{
+    public const BAR = (1);
+}
