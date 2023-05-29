@@ -420,7 +420,7 @@ final class TypeExpressionTest extends TestCase
 
         yield ['?int', true];
 
-        yield ['bool|?\Closure(): void', true];
+        yield ['?\Closure(): void', true];
     }
 
     /**
