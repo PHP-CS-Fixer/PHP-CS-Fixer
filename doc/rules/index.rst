@@ -176,6 +176,9 @@ Class Notation
 - `class_definition <./class_notation/class_definition.rst>`_
 
   Whitespace around the keywords of a class, trait, enum or interfaces definition should be one space.
+- `const_type_required <./class_notation/const_type_required.rst>`_
+
+  Class constants must be typed.
 - `final_class <./class_notation/final_class.rst>`_ *(risky)*
 
   All classes must be final, except abstract ones and Doctrine entities.

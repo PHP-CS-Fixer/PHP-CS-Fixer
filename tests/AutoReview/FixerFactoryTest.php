@@ -635,6 +635,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'no_unneeded_control_parentheses' => [
                 'concat_space',
+                'const_type_required',
                 'no_trailing_whitespace',
             ],
             'no_unneeded_curly_braces' => [
@@ -659,6 +660,7 @@ final class FixerFactoryTest extends TestCase
                 'single_line_after_imports',
             ],
             'no_useless_concat_operator' => [
+                'const_type_required',
                 'date_time_create_from_format_call',
                 'ereg_to_preg',
                 'php_unit_dedicate_assert_internal_type',

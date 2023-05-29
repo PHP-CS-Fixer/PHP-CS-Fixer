@@ -396,6 +396,11 @@ List of Available Rules
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Casing\\ConstantCaseFixer <./../src/Fixer/Casing/ConstantCaseFixer.php>`_
+-  `const_type_required <./rules/class_notation/const_type_required.rst>`_
+
+   Class constants must be typed.
+
+   `Source PhpCsFixer\\Fixer\\ClassNotation\\ConstTypeRequiredFixer <./../src/Fixer/ClassNotation/ConstTypeRequiredFixer.php>`_
 -  `control_structure_braces <./rules/control_structure/control_structure_braces.rst>`_
 
    The body of each control structure MUST be enclosed within braces.
