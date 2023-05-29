@@ -61,6 +61,7 @@ final class NullableTypeTransformer extends AbstractTransformer
                 [T_PUBLIC],
                 [T_VAR],
                 [T_STATIC],
+                [T_CONST],
             ];
 
             if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required

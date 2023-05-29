@@ -202,4 +202,37 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
             ',
         ];
     }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideProcess83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testProcess83(array $expectedTokens, string $source): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                CT::T_NULLABLE_TYPE,
+            ]
+        );
+    }
+
+    public static function provideProcess83Cases(): iterable
+    {
+        yield 'nullable class constant' => [
+            [
+                12 => CT::T_NULLABLE_TYPE,
+            ],
+            '<?php
+                class Foo
+                {
+                    public const ?string FOO = null;
+                }
+            ',
+        ];
+    }
 }
