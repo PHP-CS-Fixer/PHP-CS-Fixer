@@ -366,6 +366,12 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Collection<int, string>', 'Collection'];
 
+        yield ['array{string}', 'array'];
+
+        yield ['array { 1: string, \Closure(): void }', 'array'];
+
+        yield ['Closure(): void', 'Closure'];
+
         yield ['array<int, string>|iterable<int, string>', 'iterable'];
 
         yield ['int[]|string[]', 'array'];

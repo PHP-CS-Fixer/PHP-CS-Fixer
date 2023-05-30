@@ -254,7 +254,7 @@ final class TypeExpression
 
             if (1 === Preg::match('/\[\h*\]$/', $type)) {
                 $type = 'array';
-            } elseif (1 === Preg::match('/^(.+?)\h*</', $type, $matches)) {
+            } elseif (1 === Preg::match('/^(.+?)\h*[<{(]/', $type, $matches)) {
                 $type = $matches[1];
             }
 
