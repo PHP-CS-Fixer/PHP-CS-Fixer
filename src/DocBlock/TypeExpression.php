@@ -252,9 +252,9 @@ final class TypeExpression
                 $type = substr($type, 1);
             }
 
-            if (1 === Preg::match('/\[\]$/', $type)) {
+            if (1 === Preg::match('/\[\h*\]$/', $type)) {
                 $type = 'array';
-            } elseif (1 === Preg::match('/^(.+?)</', $type, $matches)) {
+            } elseif (1 === Preg::match('/^(.+?)\h*</', $type, $matches)) {
                 $type = $matches[1];
             }
 

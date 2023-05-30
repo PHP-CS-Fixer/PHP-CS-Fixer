@@ -330,6 +330,10 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array[][]', 'array'];
 
+        yield ['bool [ ]', 'array'];
+
+        yield ['bool [ ][ ]', 'array'];
+
         yield ['array|iterable', 'iterable'];
 
         yield ['iterable|array', 'iterable'];
@@ -345,6 +349,8 @@ final class TypeExpressionTest extends TestCase
         yield ['array<string>', 'array'];
 
         yield ['array<int, string>', 'array'];
+
+        yield ['array < string >', 'array'];
 
         yield ['list<int>', 'array'];
 
