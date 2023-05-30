@@ -495,7 +495,7 @@ class PhpDocClass{}
             ],
         ];
 
-        yield 'positive on attribute, but negative on doc' => [
+        yield 'include by attribute, but exclude by doc' => [
             '<?php
 /** @final */
 #[A]
@@ -507,7 +507,7 @@ class Foo {}',
             ],
         ];
 
-        yield 'positive on doc, but attribute on doc' => [
+        yield 'include by phpDoc, but exclude by attribute' => [
             '<?php
 /** @a */
 #[Internal]
@@ -538,13 +538,13 @@ class Foo {}',
      */
     public static function provideFix82Cases(): iterable
     {
-        yield 'readonly attribute' => [
+        yield 'readonly with enabled `consider_absent_docblock_as_internal_class`' => [
             '<?php readonly final class A{}',
             '<?php readonly class A{}',
             ['consider_absent_docblock_as_internal_class' => true],
         ];
 
-        yield 'readonly attribute with comment' => [
+        yield 'readonly with `internal` attribute and comment in-between' => [
             '<?php #[Internal] readonly /* comment */ final class A{}',
             '<?php #[Internal] readonly /* comment */ class A{}',
             ['consider_absent_docblock_as_internal_class' => true],
