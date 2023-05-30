@@ -25,10 +25,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 final class ReturnAssignmentFixer extends AbstractFixer
 {
-    /**
-     * @var TokensAnalyzer
-     */
-    private $tokensAnalyzer;
+    private TokensAnalyzer $tokensAnalyzer;
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -395,20 +392,18 @@ final class ReturnAssignmentFixer extends AbstractFixer
     {
         do {
             $index = $tokens->getPrevMeaningfulToken($index);
-        } while ($tokens[$index]->equalsAny([',', [T_STRING], [T_IMPLEMENTS], [T_EXTENDS]]));
+        } while ($tokens[$index]->equalsAny([',', [T_STRING], [T_IMPLEMENTS], [T_EXTENDS], [T_NS_SEPARATOR]]));
 
-        if ($tokens[$index]->equals(')')) {
+        if ($tokens[$index]->equals(')')) { // skip constructor braces and content within
             $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
             $index = $tokens->getPrevMeaningfulToken($index);
         }
 
-        if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+        if (!$tokens[$index]->isGivenKind(T_CLASS) || !$this->tokensAnalyzer->isAnonymousClass($index)) {
             return null;
         }
 
-        $index = $tokens->getPrevMeaningfulToken($index);
-
-        return $tokens[$index]->isGivenKind(T_NEW) ? $index : null;
+        return $tokens->getPrevTokenOfKind($index, [[T_NEW]]);
     }
 
     /**
