@@ -236,12 +236,7 @@ function m($a, array $b, Foo $c) {}
         $blockMatch = false;
         $blockIndices = [];
 
-        $typeDeclaration = sprintf('[\w\s<>,%s]*', preg_quote('\[]|?'));
-        $paramRegex = sprintf(
-            '/\*\s*@param\s*%s\s*&?\$\b%s\b/',
-            $typeDeclaration,
-            substr($identifier, 1) // Remove starting `$` from variable name
-        );
+        $paramRegex = '/\*\s*@param\s*[\w\s<>,\\\\\[\]|?]*\s*&?(?=\$\b)'.preg_quote($identifier).'\b/';
 
         foreach ($paramAnnotations as $i => $param) {
             $blockStart = Preg::match('/\s*{\s*/', $param->getContent());
