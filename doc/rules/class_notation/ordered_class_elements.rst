@@ -4,6 +4,31 @@ Rule ``ordered_class_elements``
 
 Orders the elements of classes/interfaces/traits/enums.
 
+Description
+-----------
+
+Accepts a subset of pre-defined element types, special element groups, and
+custom patterns.
+
+Element types: ``['use_trait', 'public', 'protected', 'private', 'case',
+'constant', 'constant_public', 'constant_protected', 'constant_private',
+'property', 'property_static', 'property_public', 'property_protected',
+'property_private', 'property_public_readonly', 'property_protected_readonly',
+'property_private_readonly', 'property_public_static',
+'property_protected_static', 'property_private_static', 'method',
+'method_abstract', 'method_static', 'method_public', 'method_protected',
+'method_private', 'method_public_abstract', 'method_protected_abstract',
+'method_private_abstract', 'method_public_abstract_static',
+'method_protected_abstract_static', 'method_private_abstract_static',
+'method_public_static', 'method_protected_static', 'method_private_static']``
+
+Special element types: ``['construct', 'destruct', 'magic', 'phpunit']``
+
+Custom values:
+
+- ``method:*``: specify a single method name (e.g. ``method:__invoke``) to set
+the order of that specific method
+
 Configuration
 -------------
 
@@ -12,7 +37,7 @@ Configuration
 
 List of strings defining order of elements.
 
-Allowed values: a subset of ``['case', 'constant', 'constant_private', 'constant_protected', 'constant_public', 'construct', 'destruct', 'magic', 'method', 'method_abstract', 'method_private', 'method_private_abstract', 'method_private_abstract_static', 'method_private_static', 'method_protected', 'method_protected_abstract', 'method_protected_abstract_static', 'method_protected_static', 'method_public', 'method_public_abstract', 'method_public_abstract_static', 'method_public_static', 'method_static', 'phpunit', 'private', 'property', 'property_private', 'property_private_readonly', 'property_private_static', 'property_protected', 'property_protected_readonly', 'property_protected_static', 'property_public', 'property_public_readonly', 'property_public_static', 'property_static', 'protected', 'public', 'use_trait']``
+Allowed types: ``array``
 
 Default value: ``['use_trait', 'case', 'constant_public', 'constant_protected', 'constant_private', 'property_public', 'property_protected', 'property_private', 'construct', 'destruct', 'magic', 'phpunit', 'method_public', 'method_protected', 'method_private']``
 

@@ -50,6 +50,7 @@ final class CompactNullableTypehintFixer extends AbstractFixer
             CT::T_ARRAY_TYPEHINT,
             T_CALLABLE,
             T_NS_SEPARATOR,
+            T_STATIC,
             T_STRING,
         ];
 
