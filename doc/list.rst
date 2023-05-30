@@ -2340,7 +2340,7 @@ List of Available Rules
    - | ``groups``
      | Type groups to fix.
      | Allowed values: a subset of ``['alias', 'meta', 'simple']``
-     | Default value: ``['simple', 'meta']``
+     | Default value: ``['simple', 'alias', 'meta']``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_

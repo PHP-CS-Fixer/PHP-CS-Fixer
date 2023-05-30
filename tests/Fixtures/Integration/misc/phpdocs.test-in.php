@@ -18,7 +18,7 @@ class Foo {
  * FooBar
  *
  * @throws Exception
- * @param Mixed $fo This is mixed.
+ * @param inTeGer $fo This is int.
  *
  * @param float $bar This is float.
  * @param int $b Test phpdoc_param_order
