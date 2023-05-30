@@ -170,6 +170,9 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
     protected function getCommonTypeFromAnnotation(Annotation $annotation, bool $isReturnType): ?array
     {
         $typesExpression = $annotation->getTypeExpression();
+        if (null === $typesExpression) {
+            return null;
+        }
 
         $commonType = $typesExpression->getCommonType();
         $isNullable = $typesExpression->allowsNull();
