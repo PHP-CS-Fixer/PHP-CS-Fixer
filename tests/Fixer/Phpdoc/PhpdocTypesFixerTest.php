@@ -50,7 +50,7 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
         yield 'conversion' => [
             '<?php
     /**
-     * @param boolean|array|Foo $bar
+     * @param mixed|array|Foo $bar
      *
      * @return int|float
      */
@@ -58,7 +58,7 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
 ',
             '<?php
     /**
-     * @param Boolean|Array|Foo $bar
+     * @param Mixed|Array|Foo $bar
      *
      * @return inT|Float
      */
@@ -141,7 +141,7 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
 /**
  * @method self foo()
  * @property int $foo
- * @property-read boolean $bar
+ * @property-read scalar $bar
  * @property-write mixed $baz
  */
 
@@ -150,7 +150,7 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
 /**
  * @method Self foo()
  * @property Int $foo
- * @property-read Boolean $bar
+ * @property-read Scalar $bar
  * @property-write MIXED $baz
  */
 
@@ -268,6 +268,16 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
         yield 'no space between type and variable' => [
             '<?php /** @param null|string$foo */',
             '<?php /** @param NULL|STRING$foo */',
+        ];
+
+        yield 'Callback class must be not lower cased by default' => [
+            '<?php
+    /**
+     * @param Callback $foo
+     *
+     * @return Callback
+     */
+',
         ];
     }
 
