@@ -223,7 +223,7 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
              * @param array<int, object> $a
              * @param array<iterable> $b
              * @param array<parent|$this|self> $c
-             * @param array<\int, \object> $d
+             * @param array<\INT, \OBJECT> $d
              * @param iterable<Foo\Int\Bar|Foo\Int|Int\Bar> $thisShouldNotBeChanged
              * @param iterable<BOOLBOOLBOOL|INTINTINT|ARRAY_BOOL_INT_STRING_> $thisShouldNotBeChangedNeither
              *

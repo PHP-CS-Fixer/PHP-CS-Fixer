@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractPhpdocTypesFixer;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -67,7 +68,8 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
         ],
     ];
 
-    private string $patternToFix = '';
+    /** @var array<string, true> */
+    private array $typesSetToFix;
 
     public function configure(array $configuration): void
     {
@@ -77,15 +79,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
             return self::POSSIBLE_TYPES[$group];
         }, $this->configuration['groups']));
 
-        $this->patternToFix = '/(?<![^\x00-\x2f\x3a-\x40\x5b-\x5e\x60\x7b-\x7f]\\\\)(\b|(?=\$))('.implode(
-                '|',
-                array_map(
-                    static function (string $type): string {
-                        return preg_quote($type, '/');
-                    },
-                    $typesToFix
-                )
-            ).')\b(?!(\\\\|:))/i';
+        $this->typesSetToFix = array_combine($typesToFix, array_fill(0, \count($typesToFix), true));
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -138,9 +132,14 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
     protected function normalize(string $type): string
     {
         return Preg::replaceCallback(
-            $this->patternToFix,
+            '/(\b|(?=\$|\\\\))(\$|\\\\)?'.TypeExpression::REGEX_IDENTIFIER.'(?!\\\\|\h*:)/',
             function (array $matches): string {
-                return strtolower($matches[0]);
+                $valueLower = strtolower($matches[0]);
+                if (isset($this->typesSetToFix[$valueLower])) {
+                    return $valueLower;
+                }
+
+                return $matches[0];
             },
             $type
         );
