@@ -248,10 +248,12 @@ final class TypeExpression
                 continue;
             }
 
+            if (str_starts_with($type, '?')) {
+                $type = substr($type, 1);
+            }
+
             if (isset($aliases[$type])) {
                 $type = $aliases[$type];
-            } elseif (str_starts_with($type, '?')) {
-                $type = substr($type, 1);
             } elseif (1 === Preg::match('/\[\]$/', $type)) {
                 $type = 'array';
             } elseif (1 === Preg::match('/^(.+?)</', $type, $matches)) {

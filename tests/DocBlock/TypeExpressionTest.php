@@ -368,6 +368,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['?int', 'int'];
 
+        yield ['?array<Foo>', 'array'];
+
         yield ['void', 'void'];
 
         yield ['never', 'never'];
