@@ -119,6 +119,9 @@ Casing
 - `magic_method_casing <./casing/magic_method_casing.rst>`_
 
   Magic method definitions and calls must be using the correct casing.
+- `native_const_type_declaration_casing <./casing/native_const_type_declaration_casing.rst>`_
+
+  Native type hints for constants should use the correct case.
 - `native_function_casing <./casing/native_function_casing.rst>`_
 
   Function defined by PHP should be called using the correct casing.
