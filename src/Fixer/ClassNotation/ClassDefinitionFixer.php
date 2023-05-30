@@ -316,7 +316,7 @@ $foo = new class(){};
         }
 
         if ($def['anonymousClass']) {
-            $startIndex = $tokens->getPrevMeaningfulToken($classyIndex); // go to "new" for anonymous class
+            $startIndex = $tokens->getPrevTokenOfKind($classyIndex, [[T_NEW]]); // go to "new" for anonymous class
         } else {
             $modifiers = $tokensAnalyzer->getClassyModifiers($classyIndex);
             $startIndex = $classyIndex;

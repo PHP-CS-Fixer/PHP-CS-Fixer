@@ -715,6 +715,29 @@ $a = new class implements
     }
 
     /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'anonymous class, single attribute' => [
+            '<?php $a = new #[FOO] class(2) {};',
+            '<?php $a = new    #[FOO]   class(2){};',
+        ];
+
+        yield 'anonymous class, multiple attributes' => [
+            '<?php $a = new #[FOO] #[BAR] class {};',
+            '<?php $a = new    #[FOO]    #[BAR]  class  {};',
+        ];
+    }
+
+    /**
      * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
@@ -773,6 +796,39 @@ $a = new class implements
 {}',
             '<?php readonly abstract class a
 {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testFix83(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix83Cases(): iterable
+    {
+        yield 'anonymous class, readonly, missing spacing' => [
+            '<?php $a = new readonly class {};',
+            '<?php $a = new readonly class{};',
+        ];
+
+        yield 'anonymous class, readonly, to much spacing' => [
+            '<?php $a = new readonly class {};',
+            '<?php $a = new      readonly   class  {};',
+        ];
+
+        yield 'anonymous class, single attribute' => [
+            '<?php $a = new #[BAR] readonly class {};',
+            '<?php $a = new        #[BAR]   readonly class{};',
+        ];
+
+        yield 'anonymous class, multiple attributes' => [
+            '<?php $a = new #[FOO] #[BAR] readonly class {};',
+            '<?php $a = new    #[FOO]    #[BAR]   readonly class   {};',
         ];
     }
 
