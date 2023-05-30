@@ -346,6 +346,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array<int, string>', 'array'];
 
+        yield ['list<int>', 'array'];
+
         yield ['iterable<string>', 'iterable'];
 
         yield ['iterable<int, string>', 'iterable'];
@@ -369,6 +371,8 @@ final class TypeExpressionTest extends TestCase
         yield ['?int', 'int'];
 
         yield ['?array<Foo>', 'array'];
+
+        yield ['?list<Foo>', 'array'];
 
         yield ['void', 'void'];
 

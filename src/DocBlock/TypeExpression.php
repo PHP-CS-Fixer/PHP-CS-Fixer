@@ -252,12 +252,14 @@ final class TypeExpression
                 $type = substr($type, 1);
             }
 
-            if (isset($aliases[$type])) {
-                $type = $aliases[$type];
-            } elseif (1 === Preg::match('/\[\]$/', $type)) {
+            if (1 === Preg::match('/\[\]$/', $type)) {
                 $type = 'array';
             } elseif (1 === Preg::match('/^(.+?)</', $type, $matches)) {
                 $type = $matches[1];
+            }
+
+            if (isset($aliases[$type])) {
+                $type = $aliases[$type];
             }
 
             if (null === $mainType || $type === $mainType) {
@@ -550,6 +552,7 @@ final class TypeExpression
             'double' => 'float',
             'false' => 'bool',
             'integer' => 'int',
+            'list' => 'array',
             'real' => 'float',
             'true' => 'bool',
         ];
