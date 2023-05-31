@@ -124,11 +124,6 @@ The rule is part of the following rule sets:
 
   ``['order' => ['use_trait']]``
 
-@PER-CS
-  Using the `@PER-CS <./../../ruleSets/PER-CS.rst>`_ rule set will enable the ``ordered_class_elements`` rule with the config below:
-
-  ``['order' => ['use_trait']]``
-
 @PER-CS1.0
   Using the `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ rule set will enable the ``ordered_class_elements`` rule with the config below:
 

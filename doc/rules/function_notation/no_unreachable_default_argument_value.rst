@@ -36,9 +36,6 @@ The rule is part of the following rule sets:
 @PER-CS1.0:risky
   Using the `@PER-CS1.0:risky <./../../ruleSets/PER-CS1.0Risky.rst>`_ rule set will enable the ``no_unreachable_default_argument_value`` rule.
 
-@PER-CS:risky
-  Using the `@PER-CS:risky <./../../ruleSets/PER-CSRisky.rst>`_ rule set will enable the ``no_unreachable_default_argument_value`` rule.
-
 @PER:risky
   Using the `@PER:risky <./../../ruleSets/PERRisky.rst>`_ rule set will enable the ``no_unreachable_default_argument_value`` rule.
 

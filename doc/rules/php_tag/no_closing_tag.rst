@@ -30,9 +30,6 @@ The rule is part of the following rule sets:
 @PER
   Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``no_closing_tag`` rule.
 
-@PER-CS
-  Using the `@PER-CS <./../../ruleSets/PER-CS.rst>`_ rule set will enable the ``no_closing_tag`` rule.
-
 @PER-CS1.0
   Using the `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ rule set will enable the ``no_closing_tag`` rule.
 
