@@ -1,4 +1,0 @@
---TEST--
-Integration of @PER-CS.
---RULESET--
-{"@PER-CS": true}
