@@ -30,12 +30,12 @@ final class PERSet extends AbstractRuleSetDescription
     public function getRules(): array
     {
         return [
-            '@PER-CS' => true,
+            '@PER-CS1.0' => true,
         ];
     }
 
     public function getDescription(): string
     {
-        return 'Alias for the PER-CS rules. It is recommended you use ``@PER-CS`` instead.';
+        return 'Alias for the PER-CS rules. It is recommended you use ``@PER-CS1.0`` instead.';
     }
 }
