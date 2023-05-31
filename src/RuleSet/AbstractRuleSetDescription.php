@@ -28,8 +28,7 @@ abstract class AbstractRuleSetDescription implements RuleSetDescriptionInterface
     public function getName(): string
     {
         $name = substr(static::class, 1 + strrpos(static::class, '\\'), -3);
-        $name = Preg::replace('/(\d)x(\d)/', '\1.\2', $name);
-        $name = str_replace('_', '-', $name);
+        $name = Preg::replace('/\dx\d/', '\1.\2', $name);
 
         return '@'.str_replace('Risky', ':risky', $name);
     }
