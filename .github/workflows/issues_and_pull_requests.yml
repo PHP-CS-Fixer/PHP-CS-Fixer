@@ -1,6 +1,6 @@
 # https://docs.github.com/en/actions
 
-name: "Issues and pull requests"
+name: "Issues and Pull Requests"
 
 on:
   schedule:
@@ -13,13 +13,13 @@ env:
   DAYS_BEFORE_PR_STALE: 90
 
 jobs:
-  prune:
-    name: "Issues"
+  handle_stale:
+    name: "Handle stale state"
 
     runs-on: "ubuntu-latest"
 
     steps:
-      - name: "Prune stale issues and pull requests"
+      - name: "Handle stale issues and pull requests"
         uses: "actions/stale@v8"
         with:
           close-pr-label: "status/to recover"
