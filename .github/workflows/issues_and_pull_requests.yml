@@ -9,7 +9,7 @@ on:
 env:
   DAYS_BEFORE_ISSUE_CLOSE: 30
   DAYS_BEFORE_ISSUE_STALE: 90
-  DAYS_BEFORE_PR_CLOSE: 30
+  DAYS_BEFORE_PR_CLOSE: 14
   DAYS_BEFORE_PR_STALE: 90
 
 jobs:
@@ -39,3 +39,5 @@ jobs:
             Since this pull request has not had any activity within the last ${{ env.DAYS_BEFORE_PR_STALE }} days, I have marked it as stale.
 
             I will close it if no further activity occurs within the next ${{ env.DAYS_BEFORE_PR_CLOSE }} days.
+
+            Please keep your branch up-to-date by rebasing it when main branch is ahead of it, thanks in advance!
