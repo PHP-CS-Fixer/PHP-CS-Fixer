@@ -780,6 +780,23 @@ enum Foo: string
                 '<?php enum foo {}',
             ];
         }
+
+        if (\PHP_VERSION_ID >= 8_03_00) {
+            yield 'simple readonly anonymous class' => [
+                [9 => true],
+                '<?php $instance = new readonly class {};',
+            ];
+
+            yield 'readonly anonymous class with attribute' => [
+                [13 => true],
+                '<?php $instance = new #[Foo] readonly class {};',
+            ];
+
+            yield 'readonly anonymous class with multiple attributes' => [
+                [17 => true],
+                '<?php $instance = new #[Foo] #[BAR] readonly class {};',
+            ];
+        }
     }
 
     /**
