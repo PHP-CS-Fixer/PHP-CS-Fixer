@@ -1064,7 +1064,7 @@ function foo(&$c) {
             ',
         ];
 
-        yield 'annotation for anonymous class' => [
+        yield 'attribute before anonymous `class`' => [
             '<?php
                 function A()
                 {
@@ -1109,7 +1109,7 @@ function foo(&$c) {
             ',
         ];
 
-        yield 'annotation for anonymous readonly class' => [
+        yield 'attribute before anonymous `readonly class`' => [
             '<?php
                 function A()
                 {
