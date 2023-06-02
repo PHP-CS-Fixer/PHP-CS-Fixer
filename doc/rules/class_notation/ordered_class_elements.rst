@@ -50,6 +50,15 @@ Allowed values: ``'alpha'``, ``'none'``
 
 Default value: ``'none'``
 
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether the sorting should be case sensitive.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
@@ -137,6 +146,26 @@ With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha'
    -    public function A(){}
         public function C(){}
    +    public function D(){}
+    }
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha', 'case_sensitive' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Example
+    {
+   +    public function AA(){}
+   +    public function AWs(){}
+        public function Aa(){}
+   -    public function AA(){}
+        public function AwS(){}
+   -    public function AWs(){}
     }
 
 Rule sets
