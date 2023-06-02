@@ -303,4 +303,74 @@ class Foo {
 }',
         ];
     }
+
+    /**
+     * @param array<mixed> $configuration
+     *
+     * @dataProvider provideFixCasesWithConfiguration
+     */
+    public function testFixWithConfiguration(array $configuration, string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
+    public static function provideFixCasesWithConfiguration(): iterable
+    {
+        yield 'with case sensitive order' => [
+            [
+                'case_sensitive' => true,
+            ],
+            '<?php
+class Foo {
+    use AA;
+    use Aaa;
+}',
+            '<?php
+class Foo {
+    use Aaa;
+    use AA;
+}',
+        ];
+
+        yield 'with length' => [
+            [
+                'order' => 'length',
+            ],
+            '<?php
+class Foo {
+    use A;
+    use Aa;
+    use Aaa;
+}',
+            '<?php
+class Foo {
+    use Aaa;
+    use A;
+    use Aa;
+}',
+        ];
+
+        yield 'with length descend' => [
+            [
+                'order' => 'length',
+                'direction' => 'descend',
+            ],
+            '<?php
+class Foo {
+    use Aaa;
+    use Aa;
+    use A;
+}',
+            '<?php
+class Foo {
+    use Aa;
+    use A;
+    use Aaa;
+}',
+        ];
+    }
 }

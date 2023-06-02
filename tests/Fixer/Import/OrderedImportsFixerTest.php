@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Import;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\Import\OrderedImportsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -753,7 +752,7 @@ use some\b\{
 };
 ',
             [
-                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'sort_algorithm' => 'alpha',
                 'imports_order' => ['class', 'const', 'function'],
             ],
         ];
@@ -780,7 +779,7 @@ use const some\a\{
 };
 ',
             [
-                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'sort_algorithm' => 'alpha',
                 'imports_order' => ['class', 'const', 'function'],
             ],
         ];
@@ -863,7 +862,7 @@ use function B\fn_a;
 use C\B;
             ',
             [
-                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'sort_algorithm' => 'alpha',
                 'imports_order' => ['class', 'function', 'const'],
             ],
         ];
@@ -939,7 +938,7 @@ use function X\X;
 use Z\Z;
             ',
             [
-                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'sort_algorithm' => 'alpha',
                 'imports_order' => ['class', 'function', 'const'],
             ],
         ];
@@ -956,7 +955,7 @@ use const Y\Y;
 use Z\Z;
             ',
             [
-                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'sort_algorithm' => 'alpha',
                 'imports_order' => ['class', 'const', 'function'],
             ],
         ];
@@ -973,7 +972,7 @@ use Y\Y;
 use function Z\Z;
             ',
             [
-                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'sort_algorithm' => 'alpha',
                 'imports_order' => ['function', 'class', 'const'],
             ],
         ];
@@ -990,7 +989,7 @@ use const Y\Y;
 use function Z\Z;
             ',
             [
-                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'sort_algorithm' => 'alpha',
                 'imports_order' => ['function', 'const', 'class'],
             ],
         ];
@@ -1007,7 +1006,7 @@ use function Y\Y;
 use const Z\Z;
             ',
             [
-                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'sort_algorithm' => 'alpha',
                 'imports_order' => ['const', 'function', 'class'],
             ],
         ];
@@ -1024,7 +1023,7 @@ use Y\Y;
 use const Z\Z;
             ',
             [
-                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'sort_algorithm' => 'alpha',
                 'imports_order' => ['const', 'class', 'function'],
             ],
         ];
@@ -1043,7 +1042,7 @@ use A\A10;
 use A\A1;
             ',
             [
-                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'sort_algorithm' => 'alpha',
             ],
         ];
 
@@ -1103,8 +1102,8 @@ use function some\a\{fn_a, fn_b, fn_c,};
 ',
             $input,
             [
-                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
-                'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+                'sort_algorithm' => 'alpha',
+                'imports_order' => ['class', 'const', 'function'],
             ],
         ];
 
@@ -1118,8 +1117,8 @@ use function some\a\{fn_a, fn_b, fn_c,};
 ',
             $input,
             [
-                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-                'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+                'sort_algorithm' => 'length',
+                'imports_order' => ['class', 'const', 'function'],
             ],
         ];
 
@@ -1133,8 +1132,8 @@ use function some\a\{fn_a, fn_b, fn_c,};
 ',
             $input,
             [
-                'sort_algorithm' => OrderedImportsFixer::SORT_NONE,
-                'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+                'sort_algorithm' => 'none',
+                'imports_order' => ['class', 'const', 'function'],
             ],
         ];
     }
@@ -1145,7 +1144,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
         $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Unknown sort types "foo" and "bar".');
 
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            'sort_algorithm' => 'alpha',
             'imports_order' => ['class', 'const', 'function', 'foo', 'bar'],
         ]);
     }
@@ -1162,7 +1161,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
         $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "function".');
 
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            'sort_algorithm' => 'alpha',
             'imports_order' => ['class', 'const'],
         ]);
     }
@@ -1173,7 +1172,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
         $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "class".');
 
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            'sort_algorithm' => 'alpha',
             'imports_order' => ['const', 'function', 'bar'],
         ]);
     }
@@ -1206,7 +1205,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
 
         yield [
             [
-                'sort_algorithm' => [OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH],
+                'sort_algorithm' => ['alpha', 'length'],
                 'imports_order' => null,
             ],
             'array',
@@ -1224,7 +1223,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public function testByLengthFixWithSameLength(): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'sort_algorithm' => 'length',
             'imports_order' => null,
         ]);
 
@@ -1282,7 +1281,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public function testByLengthFixWithMultipleNamespace(): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'sort_algorithm' => 'length',
             'imports_order' => null,
         ]);
 
@@ -1410,7 +1409,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public function testByLengthFixWithComment(): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'sort_algorithm' => 'length',
             'imports_order' => null,
         ]);
 
@@ -1500,7 +1499,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public function testByLength(): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'sort_algorithm' => 'length',
             'imports_order' => null,
         ]);
 
@@ -1580,7 +1579,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public function testByLengthFixWithTraitImports(): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'sort_algorithm' => 'length',
             'imports_order' => null,
         ]);
 
@@ -1676,7 +1675,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public function testByLengthFixWithDifferentCases(): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'sort_algorithm' => 'length',
             'imports_order' => null,
         ]);
 
@@ -1720,7 +1719,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public function testByLengthOrderWithTrailingDigit(): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'sort_algorithm' => 'length',
             'imports_order' => null,
         ]);
 
@@ -1760,7 +1759,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public function testByLengthCodeWithImportsOnly(): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'sort_algorithm' => 'length',
             'imports_order' => null,
         ]);
 
@@ -1784,7 +1783,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public function testByLengthWithoutUses(): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'sort_algorithm' => 'length',
             'imports_order' => null,
         ]);
 
@@ -1803,7 +1802,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public function testFixByLength(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'sort_algorithm' => 'length',
             'imports_order' => null,
         ]);
 
@@ -1949,8 +1948,8 @@ use const ZZZ;
     public function testFixTypesOrderAndLength(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+            'sort_algorithm' => 'length',
+            'imports_order' => ['class', 'const', 'function'],
         ]);
 
         $this->doTest($expected, $input);
@@ -2004,7 +2003,7 @@ use function some\f\{fn_c, fn_d, fn_e};
     public function testFixTypesOrderAndAlphabet(string $expected, ?string $input = null, array $importOrder = null): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            'sort_algorithm' => 'alpha',
             'imports_order' => $importOrder,
         ]);
 
@@ -2058,7 +2057,7 @@ use Aaa\Bbb;
 use const some\b\{ConstE};
 use function some\a\{fn_a, fn_b};
 ',
-            [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+            ['class', 'const', 'function'],
         ];
     }
 
@@ -2070,7 +2069,7 @@ use function some\a\{fn_a, fn_b};
     public function testFixTypesOrderAndNone(string $expected, ?string $input = null, array $importOrder = null): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_NONE,
+            'sort_algorithm' => 'none',
             'imports_order' => $importOrder,
         ]);
 
@@ -2124,14 +2123,14 @@ use Aaa\Bbb;
 use const some\b\{ConstE};
 use function some\a\{fn_a, fn_b};
 ',
-            [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+            ['class', 'const', 'function'],
         ];
     }
 
     public function testFixByNone(): void
     {
         $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_NONE,
+            'sort_algorithm' => 'none',
             'imports_order' => null,
         ]);
 
@@ -2176,5 +2175,61 @@ use function some\a\{fn_a, fn_b};
             EOF;
 
         $this->doTest($expected);
+    }
+
+    public function testFixWithCaseSensitive(): void
+    {
+        $this->fixer->configure([
+            'case_sensitive' => true,
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+
+use AA;
+use Aaa;
+
+class Foo { }
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use Aaa;
+use AA;
+
+class Foo { }
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixWithDirectionDescend(): void
+    {
+        $this->fixer->configure([
+            'direction' => 'descend',
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+
+use C;
+use B;
+use A;
+
+class Foo { }
+EOF;
+
+        $input = <<<'EOF'
+<?php
+
+use B;
+use A;
+use C;
+
+class Foo { }
+EOF;
+
+        $this->doTest($expected, $input);
     }
 }

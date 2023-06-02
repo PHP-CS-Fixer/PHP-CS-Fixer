@@ -16,6 +16,24 @@ Allowed values: ``'alpha'`` and ``'none'``
 
 Default value: ``'alpha'``
 
+``direction``
+~~~~~~~~~~~~~
+
+Which direction the types should be sorted.
+
+Allowed values: ``'ascend'``, ``'descend'``
+
+Default value: ``'ascend'``
+
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether the sorting should be case sensitive.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``null_adjustment``
 ~~~~~~~~~~~~~~~~~~~
 
@@ -101,6 +119,36 @@ With configuration: ``['sort_algorithm' => 'alpha', 'null_adjustment' => 'none']
     /**
    - * @param null|string|int|\Foo $bar
    + * @param \Foo|int|null|string $bar
+     */
+
+Example #6
+~~~~~~~~~~
+
+With configuration: ``['case_sensitive' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    /**
+   - * @param Aaa|AA $bar
+   + * @param AA|Aaa $bar
+     */
+
+Example #7
+~~~~~~~~~~
+
+With configuration: ``['direction' => 'descend']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    /**
+   - * @param string|array|int $bar
+   + * @param string|int|array $bar
      */
 
 Rule sets

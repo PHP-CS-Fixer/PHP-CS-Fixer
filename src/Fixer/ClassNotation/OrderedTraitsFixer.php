@@ -14,21 +14,55 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\ClassNotation;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractOrderFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class OrderedTraitsFixer extends AbstractFixer
+final class OrderedTraitsFixer extends AbstractOrderFixer implements ConfigurableFixerInterface
 {
+    /** @internal */
+    private const OPTION_ORDER = 'order';
+
+    /**
+     * Array of supported sort orders in configuration.
+     *
+     * @var string[]
+     */
+    private const SUPPORTED_SORT_ORDER_OPTIONS = [
+        AbstractOrderFixer::SORT_ORDER_ALPHA,
+        AbstractOrderFixer::SORT_ORDER_LENGTH,
+    ];
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Trait `use` statements must be sorted alphabetically.',
+            'Trait `use` statements must be sorted alphabetically or by length.',
             [
                 new CodeSample("<?php class Foo { \nuse Z; use A; }\n"),
+                new CodeSample(
+                    "<?php class Foo { \nuse Aaa; use A; use Aa; }\n",
+                    [self::OPTION_ORDER => AbstractOrderFixer::SORT_ORDER_LENGTH]
+                ),
+                new CodeSample(
+                    "<?php class Foo { \nuse Aaa; use A; use Aa; }\n",
+                    [
+                        self::OPTION_ORDER => AbstractOrderFixer::SORT_ORDER_LENGTH,
+                        AbstractOrderFixer::OPTION_DIRECTION => AbstractOrderFixer::DIRECTION_DESCEND,
+                    ]
+                ),
+                new CodeSample(
+                    "<?php class Foo { \nuse Aaa; use AA; }\n",
+                    [
+                        AbstractOrderFixer::OPTION_CASE_SENSITIVE => true,
+                    ]
+                ),
             ],
             null,
             'Risky when depending on order of the imports.'
@@ -45,11 +79,34 @@ final class OrderedTraitsFixer extends AbstractFixer
         return true;
     }
 
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder(self::OPTION_ORDER, 'How the traits should be ordered.'))
+                ->setAllowedValues(self::SUPPORTED_SORT_ORDER_OPTIONS)
+                ->setDefault(AbstractOrderFixer::SORT_ORDER_ALPHA)
+                ->getOption(),
+            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_DIRECTION, 'Which direction the traits should be ordered by.'))
+                ->setAllowedValues(AbstractOrderFixer::SUPPORTED_DIRECTION_OPTIONS)
+                ->setDefault(AbstractOrderFixer::DIRECTION_ASCEND)
+                ->getOption(),
+            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_CASE_SENSITIVE, 'Whether the sorting should be case sensitive.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
+    }
+
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($this->findUseStatementsGroups($tokens) as $uses) {
             $this->sortUseStatements($tokens, $uses);
         }
+    }
+
+    protected function getSortOrderOptionName(): string
+    {
+        return self::OPTION_ORDER;
     }
 
     /**
@@ -163,7 +220,9 @@ final class OrderedTraitsFixer extends AbstractFixer
         };
 
         $sortedElements = $elements;
-        uasort($sortedElements, static fn (Tokens $useA, Tokens $useB): int => strcasecmp($toTraitName($useA), $toTraitName($useB)));
+        uasort($sortedElements, function (Tokens $useA, Tokens $useB) use ($toTraitName): int {
+            return $this->sortElementsWithSortAlgorithm($toTraitName($useA), $toTraitName($useB));
+        });
 
         $sortedElements = array_combine(
             array_keys($elements),

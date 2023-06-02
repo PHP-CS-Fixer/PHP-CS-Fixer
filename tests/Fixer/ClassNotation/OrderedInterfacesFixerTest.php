@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
-use PhpCsFixer\Fixer\ClassNotation\OrderedInterfacesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -131,7 +130,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
      */
     public function testFixAlphaDescend(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure([OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND]);
+        $this->fixer->configure(['direction' => 'descend']);
         $this->doTest($expected, $input);
     }
 
@@ -157,7 +156,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
      */
     public function testFixLength(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure([OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH]);
+        $this->fixer->configure(['order' => 'length']);
         $this->doTest($expected, $input);
     }
 
@@ -199,8 +198,8 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
     public function testFixLengthDescend(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
-            OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH,
-            OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND,
+            'order' => 'length',
+            'direction' => 'descend',
         ]);
         $this->doTest($expected, $input);
     }
@@ -234,6 +233,53 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                          A\B\C\D
                     { /* */ }
                 ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixCaseSensitiveAlphaCases
+     */
+    public function testFixCaseSensitiveAlpha(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'order' => 'alpha',
+            'case_sensitive' => true,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixCaseSensitiveAlphaCases(): array
+    {
+        return [
+            'single' => [
+                '<?php class A implements A {}',
+            ],
+            'multiple' => [
+                '<?php class A implements AA, Aaa, FF, Fff {}',
+                '<?php class A implements Fff, Aaa, FF, AA {}',
+            ],
+            'mixed' => [
+                '<?php class T implements \F\Q\C\N, Partially\Q\C\N, /* Who mixes these? */ UnNamespaced {}',
+                '<?php class T implements /* Who mixes these? */ UnNamespaced, \F\Q\C\N, Partially\Q\C\N {}',
+            ],
+            'normalized' => [
+                '<?php
+                    class A implements
+                         A\B\C\D,
+                         AAa\B\C\D,
+                         ABCDE,
+                         Aaa\B\C\D
+                    { /* */ }
+                ',
+                '<?php
+                    class A implements
+                         Aaa\B\C\D,
+                         AAa\B\C\D,
+                         ABCDE,
+                         A\B\C\D
+                    { /* */ }
+                ',
+            ],
         ];
     }
 }

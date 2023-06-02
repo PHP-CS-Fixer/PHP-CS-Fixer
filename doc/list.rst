@@ -1971,6 +1971,10 @@ List of Available Rules
      | How multiple occurrences of same type statements should be sorted.
      | Allowed values: ``'alpha'`` and ``'none'``
      | Default value: ``'none'``
+   - | ``direction``
+     | Which direction the elements should be ordered.
+     | Allowed values: ``'ascend'``, ``'descend'``
+     | Default value: ``'ascend'``
    - | ``case_sensitive``
      | Whether the sorting should be case sensitive.
      | Allowed types: ``bool``
@@ -1990,6 +1994,14 @@ List of Available Rules
      | Whether the statements should be sorted alphabetically or by length, or not sorted.
      | Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
      | Default value: ``'alpha'``
+   - | ``direction``
+     | Which direction the types should be sorted.
+     | Allowed values: ``'ascend'``, ``'descend'``
+     | Default value: ``'ascend'``
+   - | ``case_sensitive``
+     | Whether the sorting should be case sensitive.
+     | Allowed types: ``bool``
+     | Default value: ``false``
    - | ``imports_order``
      | Defines the order of import types.
      | Allowed types: ``array`` and ``null``
@@ -2013,14 +2025,34 @@ List of Available Rules
      | Which direction the interfaces should be ordered.
      | Allowed values: ``'ascend'`` and ``'descend'``
      | Default value: ``'ascend'``
+   - | ``case_sensitive``
+     | Whether the sorting should be case sensitive.
+     | Allowed types: ``bool``
+     | Default value: ``false``
 
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\OrderedInterfacesFixer <./../src/Fixer/ClassNotation/OrderedInterfacesFixer.php>`_
 -  `ordered_traits <./rules/class_notation/ordered_traits.rst>`_
 
-   Trait ``use`` statements must be sorted alphabetically.
+   Trait ``use`` statements must be sorted alphabetically or by length.
 
    *warning risky* Risky when depending on order of the imports.
+
+   Configuration options:
+
+   - | ``order``
+     | How the traits should be ordered.
+     | Allowed values: ``'alpha'``, ``'length'``
+     | Default value: ``'alpha'``
+   - | ``direction``
+     | Which direction the traits should be ordered by.
+     | Allowed values: ``'ascend'``, ``'descend'``
+     | Default value: ``'ascend'``
+   - | ``case_sensitive``
+     | Whether the sorting should be case sensitive.
+     | Allowed types: ``bool``
+     | Default value: ``false``
+
 
    Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
@@ -2035,6 +2067,14 @@ List of Available Rules
      | Whether the types should be sorted alphabetically, or not sorted.
      | Allowed values: ``'alpha'`` and ``'none'``
      | Default value: ``'alpha'``
+   - | ``direction``
+     | Which direction the types should be sorted.
+     | Allowed values: ``'ascend'``, ``'descend'``
+     | Default value: ``'ascend'``
+   - | ``case_sensitive``
+     | Whether the sorting should be case sensitive.
+     | Allowed types: ``bool``
+     | Default value: ``false``
    - | ``null_adjustment``
      | Forces the position of ``null`` (overrides ``sort_algorithm``).
      | Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
@@ -2406,6 +2446,14 @@ List of Available Rules
      | The sorting algorithm to apply.
      | Allowed values: ``'alpha'`` and ``'none'``
      | Default value: ``'alpha'``
+   - | ``direction``
+     | Which direction the types should be sorted.
+     | Allowed values: ``'ascend'``, ``'descend'``
+     | Default value: ``'ascend'``
+   - | ``case_sensitive``
+     | Whether the sorting should be case sensitive.
+     | Allowed types: ``bool``
+     | Default value: ``false``
    - | ``null_adjustment``
      | Forces the position of ``null`` (overrides ``sort_algorithm``).
      | Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``

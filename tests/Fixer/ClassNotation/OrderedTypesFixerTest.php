@@ -705,4 +705,50 @@ try {
             ['sort_algorithm' => 'alpha'],
         ];
     }
+
+    /**
+     * @dataProvider provideCaseSensitiveCases
+     */
+    public function testFixWithCaseSensitive(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'case_sensitive' => true,
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<(null|array<string, string>|string)[]|string[]>
+     */
+    public static function provideCaseSensitiveCases(): iterable
+    {
+        yield [
+            "<?php\nclass Foo\n{\n    public null|AAa|Aa \$bar = null;\n}\n",
+            "<?php\nclass Foo\n{\n    public Aa|AAa|null \$bar = null;\n}\n",
+        ];
+    }
+
+    /**
+     * @dataProvider provideDirectionDescendCases
+     */
+    public function testFixWithDirectionDescend(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'direction' => 'descend',
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<(null|array<string, string>|string)[]|string[]>
+     */
+    public static function provideDirectionDescendCases(): iterable
+    {
+        yield [
+            "<?php\nclass Foo\n{\n    public null|string|int|array \$bar = null;\n}\n",
+            "<?php\nclass Foo\n{\n    public array|string|int|null \$bar = null;\n}\n",
+        ];
+    }
 }

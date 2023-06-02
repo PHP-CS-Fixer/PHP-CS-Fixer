@@ -16,6 +16,24 @@ Allowed values: ``'alpha'`` and ``'none'``
 
 Default value: ``'alpha'``
 
+``direction``
+~~~~~~~~~~~~~
+
+Which direction the types should be sorted.
+
+Allowed values: ``'ascend'``, ``'descend'``
+
+Default value: ``'ascend'``
+
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether the sorting should be case sensitive.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``null_adjustment``
 ~~~~~~~~~~~~~~~~~~~
 
@@ -50,6 +68,38 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
+With configuration: ``['case_sensitive' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    interface Foo
+    {
+   -    public function bar(\Aaa|\AA $foo): string|int;
+   +    public function bar(\AA|\Aaa $foo): int|string;
+    }
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['direction' => 'descend']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    interface Foo
+    {
+   -    public function bar(array|int|string $foo): int|string;
+   +    public function bar(string|int|array $foo): string|int;
+    }
+
+Example #4
+~~~~~~~~~~
+
 With configuration: ``['null_adjustment' => 'always_last']``.
 
 .. code-block:: diff
@@ -66,7 +116,7 @@ With configuration: ``['null_adjustment' => 'always_last']``.
    +    public function foo(\Countable&\Stringable $obj): int;
     }
 
-Example #3
+Example #5
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'none', 'null_adjustment' => 'always_last']``.

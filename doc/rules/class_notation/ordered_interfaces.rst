@@ -25,6 +25,15 @@ Allowed values: ``'ascend'`` and ``'descend'``
 
 Default value: ``'ascend'``
 
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether the sorting should be case sensitive.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
@@ -95,3 +104,37 @@ With configuration: ``['order' => 'length', 'direction' => 'descend']``.
 
    -interface ExampleB extends MuchLonger, Short, Longer {}
    +interface ExampleB extends MuchLonger, Longer, Short {}
+
+Example #5
+~~~~~~~~~~
+
+With configuration: ``['order' => 'alpha']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+
+   -final class ExampleA implements IgnorecaseB, IgNoReCaSeA, IgnoreCaseC {}
+   +final class ExampleA implements IgNoReCaSeA, IgnorecaseB, IgnoreCaseC {}
+
+   -interface ExampleB extends IgnorecaseB, IgNoReCaSeA, IgnoreCaseC {}
+   +interface ExampleB extends IgNoReCaSeA, IgnorecaseB, IgnoreCaseC {}
+
+Example #6
+~~~~~~~~~~
+
+With configuration: ``['order' => 'alpha', 'case_sensitive' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+
+   -final class ExampleA implements Casesensitivea, CaseSensitiveA, CasesensitiveA {}
+   +final class ExampleA implements CaseSensitiveA, CasesensitiveA, Casesensitivea {}
+
+   -interface ExampleB extends Casesensitivea, CaseSensitiveA, CasesensitiveA {}
+   +interface ExampleB extends CaseSensitiveA, CasesensitiveA, Casesensitivea {}

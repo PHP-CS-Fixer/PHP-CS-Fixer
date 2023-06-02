@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\ClassNotation;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractOrderFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -29,17 +29,20 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-final class OrderedClassElementsFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class OrderedClassElementsFixer extends AbstractOrderFixer implements ConfigurableFixerInterface
 {
-    /** @internal */
-    public const SORT_ALPHA = 'alpha';
+    private const OPTION_ORDER = 'order';
 
-    /** @internal */
-    public const SORT_NONE = 'none';
+    private const OPTION_SORT_ALGORITHM = 'sort_algorithm';
 
-    private const SUPPORTED_SORT_ALGORITHMS = [
-        self::SORT_NONE,
-        self::SORT_ALPHA,
+    /**
+     * Array of supported sort orders in configuration.
+     *
+     * @var string[]
+     */
+    private const SUPPORTED_SORT_ORDER_OPTIONS = [
+        AbstractOrderFixer::SORT_ORDER_NONE,
+        AbstractOrderFixer::SORT_ORDER_ALPHA,
     ];
 
     /**
@@ -105,7 +108,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         $this->typePosition = [];
         $pos = 0;
 
-        foreach ($this->configuration['order'] as $type) {
+        foreach ($this->configuration[self::OPTION_ORDER] as $type) {
             $this->typePosition[$type] = $pos++;
         }
 
@@ -131,7 +134,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
             $this->typePosition[$type] = null;
         }
 
-        $lastPosition = \count($this->configuration['order']);
+        $lastPosition = \count($this->configuration[self::OPTION_ORDER]);
 
         foreach ($this->typePosition as &$pos) {
             if (null === $pos) {
@@ -193,7 +196,7 @@ class Example
     private function B(){}
 }
 ',
-                    ['order' => ['method_private', 'method_public']]
+                    [self::OPTION_ORDER => ['method_private', 'method_public']]
                 ),
                 new CodeSample(
                     '<?php
@@ -205,7 +208,26 @@ class Example
     public function C(){}
 }
 ',
-                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA]
+                    [
+                        self::OPTION_ORDER => ['method_public'],
+                        self::OPTION_SORT_ALGORITHM => AbstractOrderFixer::SORT_ORDER_ALPHA,
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
+class Example
+{
+    public function D(){}
+    public function B(){}
+    public function A(){}
+    public function C(){}
+}
+',
+                    [
+                        self::OPTION_ORDER => ['method_public'],
+                        self::OPTION_SORT_ALGORITHM => AbstractOrderFixer::SORT_ORDER_ALPHA,
+                        AbstractOrderFixer::OPTION_DIRECTION => AbstractOrderFixer::DIRECTION_DESCEND,
+                    ]
                 ),
                 new CodeSample(
                     '<?php
@@ -217,7 +239,11 @@ class Example
     public function AWs(){}
 }
 ',
-                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA, 'case_sensitive' => true]
+                    [
+                        self::OPTION_ORDER => ['method_public'],
+                        self::OPTION_SORT_ALGORITHM => AbstractOrderFixer::SORT_ORDER_ALPHA,
+                        AbstractOrderFixer::OPTION_CASE_SENSITIVE => true,
+                    ]
                 ),
             ],
             'Accepts a subset of pre-defined element types, special element groups, and custom patterns.
@@ -273,7 +299,7 @@ Custom values:
         $builtIns = array_keys(array_merge(self::$typeHierarchy, self::$specialTypes));
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
+            (new FixerOptionBuilder(self::OPTION_ORDER, 'List of strings defining order of elements.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([
                     static function (array $values) use ($builtIns): bool {
@@ -308,15 +334,24 @@ Custom values:
                     'method_private',
                 ])
                 ->getOption(),
-            (new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted.'))
-                ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
-                ->setDefault(self::SORT_NONE)
+            (new FixerOptionBuilder(self::OPTION_SORT_ALGORITHM, 'How multiple occurrences of same type statements should be sorted.'))
+                ->setAllowedValues(self::SUPPORTED_SORT_ORDER_OPTIONS)
+                ->setDefault(AbstractOrderFixer::SORT_ORDER_NONE)
                 ->getOption(),
-            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
+            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_DIRECTION, 'Which direction the elements should be ordered.'))
+                ->setAllowedValues(AbstractOrderFixer::SUPPORTED_DIRECTION_OPTIONS)
+                ->setDefault(AbstractOrderFixer::DIRECTION_ASCEND)
+                ->getOption(),
+            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_CASE_SENSITIVE, 'Whether the sorting should be case sensitive.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
         ]);
+    }
+
+    protected function getSortOrderOptionName(): string
+    {
+        return self::OPTION_SORT_ALGORITHM;
     }
 
     /**
@@ -548,7 +583,7 @@ Custom values:
 
         usort($elements, function (array $a, array $b): int {
             if ($a['position'] === $b['position']) {
-                return $this->sortGroupElements($a, $b);
+                return $this->sortElementsWithSortAlgorithm($a['name'], $b['name']);
             }
 
             return $a['position'] <=> $b['position'];
@@ -581,16 +616,6 @@ Custom values:
      *     position: int,
      * } $b
      */
-    private function sortGroupElements(array $a, array $b): int
-    {
-        if (self::SORT_ALPHA === $this->configuration['sort_algorithm']) {
-            return $this->configuration['case_sensitive']
-                ? strcmp($a['name'], $b['name'])
-                : strcasecmp($a['name'], $b['name']);
-        }
-
-        return $a['start'] <=> $b['start'];
-    }
 
     /**
      * @param list<array{

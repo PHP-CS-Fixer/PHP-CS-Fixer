@@ -192,7 +192,7 @@ Class Notation
   Orders the interfaces in an ``implements`` or ``interface extends`` clause.
 - `ordered_traits <./class_notation/ordered_traits.rst>`_ *(risky)*
 
-  Trait ``use`` statements must be sorted alphabetically.
+  Trait ``use`` statements must be sorted alphabetically or by length.
 - `ordered_types <./class_notation/ordered_types.rst>`_
 
   Sort union types and intersection types using configured order.
