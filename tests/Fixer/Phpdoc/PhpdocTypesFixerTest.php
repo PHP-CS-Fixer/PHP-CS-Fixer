@@ -269,6 +269,16 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
             '<?php /** @param null|string$foo */',
             '<?php /** @param NULL|STRING$foo */',
         ];
+
+        yield '"Callback" class in phpdoc must not be lowered' => [
+            '<?php
+    /**
+     * @param Callback $foo
+     *
+     * @return Callback
+     */
+',
+        ];
     }
 
     public function testWrongConfig(): void

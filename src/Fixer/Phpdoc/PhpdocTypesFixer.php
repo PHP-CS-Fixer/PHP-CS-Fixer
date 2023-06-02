@@ -50,10 +50,8 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
         ],
         'alias' => [
             'boolean',
-            'callback',
             'double',
             'integer',
-            'real',
         ],
         'meta' => [
             '$this',
