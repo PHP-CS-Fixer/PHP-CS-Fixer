@@ -307,7 +307,7 @@ class Foo {
     /**
      * @param array<mixed> $configuration
      *
-     * @dataProvider provideFixCasesWithConfiguration
+     * @dataProvider provideFixCasesWithConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, string $expected, ?string $input = null): void
     {
@@ -318,7 +318,7 @@ class Foo {
     /**
      * @return iterable<mixed>
      */
-    public static function provideFixCasesWithConfiguration(): iterable
+    public static function provideFixCasesWithConfigurationCases(): iterable
     {
         yield 'with case sensitive order' => [
             [
