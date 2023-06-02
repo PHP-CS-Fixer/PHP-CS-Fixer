@@ -484,7 +484,7 @@ var names are case-insensitive */ return $a   ;}
 
                     function E()
                     {
-                        return new class extends Y implements O,P {};
+                        return new class extends Y implements A\O,P {};
                     }
                 ',
                 '<?php
@@ -514,7 +514,7 @@ var names are case-insensitive */ return $a   ;}
 
                     function E()
                     {
-                        $c = new class extends Y implements O,P {};
+                        $c = new class extends Y implements A\O,P {};
                         return $c;
                     }
                 ',
@@ -1061,6 +1061,67 @@ function foo(&$c) {
 
                 return $return_value;
             }
+            ',
+        ];
+
+        yield 'attribute before anonymous `class`' => [
+            '<?php
+                function A()
+                {
+                    return new #[Foo] class {};
+                }
+            ',
+            '<?php
+                function A()
+                {
+                    $a = new #[Foo] class {};
+                    return $a;
+                }
+            ',
+        ];
+    }
+
+    /**
+     * @requires PHP 8.3
+     *
+     * @dataProvider providePhp83Cases
+     */
+    public function testFixPhp83(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function providePhp83Cases(): iterable
+    {
+        yield 'anonymous readonly class' => [
+            '<?php
+                function A()
+                {
+                    return new readonly class {};
+                }
+            ',
+            '<?php
+                function A()
+                {
+                    $a = new readonly class {};
+                    return $a;
+                }
+            ',
+        ];
+
+        yield 'attribute before anonymous `readonly class`' => [
+            '<?php
+                function A()
+                {
+                    return new #[Foo] readonly class {};
+                }
+            ',
+            '<?php
+                function A()
+                {
+                    $a = new #[Foo] readonly class {};
+                    return $a;
+                }
             ',
         ];
     }
