@@ -31,18 +31,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class OrderedClassElementsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @internal
-     *
-     * @deprecated use `alpha_case_insensitive` instead
-     */
+    /** @internal */
     public const SORT_ALPHA = 'alpha';
-
-    /** @internal */
-    public const SORT_ALPHA_CASE_INSENSITIVE = 'alpha_case_insensitive';
-
-    /** @internal */
-    public const SORT_ALPHA_CASE_SENSITIVE = 'alpha_case_sensitive';
 
     /** @internal */
     public const SORT_NONE = 'none';
@@ -50,8 +40,6 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     private const SUPPORTED_SORT_ALGORITHMS = [
         self::SORT_NONE,
         self::SORT_ALPHA,
-        self::SORT_ALPHA_CASE_INSENSITIVE,
-        self::SORT_ALPHA_CASE_SENSITIVE,
     ];
 
     /**
@@ -217,7 +205,7 @@ class Example
     public function C(){}
 }
 ',
-                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA_CASE_INSENSITIVE]
+                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA]
                 ),
                 new CodeSample(
                     '<?php
@@ -229,7 +217,7 @@ class Example
     public function AWs(){}
 }
 ',
-                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA_CASE_SENSITIVE]
+                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA, 'case_sensitive' => true]
                 ),
             ],
             'Accepts a subset of pre-defined element types, special element groups, and custom patterns.
@@ -323,6 +311,10 @@ Custom values:
             (new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted.'))
                 ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_NONE)
+                ->getOption(),
+            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
                 ->getOption(),
         ]);
     }
@@ -593,14 +585,16 @@ Custom values:
     {
         $selectedSortAlgorithm = $this->configuration['sort_algorithm'];
 
-        if (
-            self::SORT_ALPHA === $selectedSortAlgorithm || self::SORT_ALPHA_CASE_INSENSITIVE === $selectedSortAlgorithm
-        ) {
-            return strcasecmp($a['name'], $b['name']);
-        }
+        if (self::SORT_ALPHA === $selectedSortAlgorithm) {
+            $isCaseSensitive = $this->configuration['case_sensitive'];
 
-        if (self::SORT_ALPHA_CASE_SENSITIVE === $selectedSortAlgorithm) {
-            return strcmp($a['name'], $b['name']);
+            if (false === $isCaseSensitive) {
+                return strcasecmp($a['name'], $b['name']);
+            }
+
+            if ($isCaseSensitive) {
+                return strcmp($a['name'], $b['name']);
+            }
         }
 
         return $a['start'] <=> $b['start'];

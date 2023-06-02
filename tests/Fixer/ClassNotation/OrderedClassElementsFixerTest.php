@@ -1039,16 +1039,6 @@ EOT
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
-
-        if (
-            isset($configuration['sort_algorithm'])
-            && OrderedClassElementsFixer::SORT_ALPHA === $configuration['sort_algorithm']
-        ) {
-            $configuration['sort_algorithm'] = OrderedClassElementsFixer::SORT_ALPHA_CASE_INSENSITIVE;
-
-            $this->fixer->configure($configuration);
-            $this->doTest($expected, $input);
-        }
     }
 
     public static function provideSortingConfigurationCases(): array
@@ -1398,7 +1388,7 @@ class Foo
 EOT
             ],
             [
-                ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA_CASE_SENSITIVE],
+                ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA, 'case_sensitive' => true],
                 <<<'EOT'
 <?php
 

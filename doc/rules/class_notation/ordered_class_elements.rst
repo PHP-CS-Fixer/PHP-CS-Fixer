@@ -46,9 +46,18 @@ Default value: ``['use_trait', 'case', 'constant_public', 'constant_protected', 
 
 How multiple occurrences of same type statements should be sorted.
 
-Allowed values: ``'alpha'``, ``'alpha_case_insensitive'``, ``'alpha_case_sensitive'``, ``'none'``
+Allowed values: ``'alpha'``, ``'none'``
 
 Default value: ``'none'``
+
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether the sorting should be case sensitive.
+
+Allowed types: ``bool``
+
+Default value: ``false``
 
 Examples
 --------
@@ -122,7 +131,7 @@ With configuration: ``['order' => ['method_private', 'method_public']]``.
 Example #3
 ~~~~~~~~~~
 
-With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha_case_insensitive']``.
+With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha']``.
 
 .. code-block:: diff
 
@@ -142,7 +151,7 @@ With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha_
 Example #4
 ~~~~~~~~~~
 
-With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha_case_sensitive']``.
+With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha', 'case_sensitive' => true]``.
 
 .. code-block:: diff
 
