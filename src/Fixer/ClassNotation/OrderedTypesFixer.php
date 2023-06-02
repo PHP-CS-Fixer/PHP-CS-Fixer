@@ -84,24 +84,26 @@ try {
 }
 '
                 ),
-                new CodeSample(
+                new VersionSpecificCodeSample(
                     '<?php
 interface Foo
 {
     public function bar(\Aaa|\AA $foo): string|int;
 }
 ',
+                    new VersionSpecification(8_00_00),
                     [
                         AbstractOrderFixer::OPTION_CASE_SENSITIVE => true,
                     ]
                 ),
-                new CodeSample(
+                new VersionSpecificCodeSample(
                     '<?php
 interface Foo
 {
     public function bar(array|int|string $foo): int|string;
 }
 ',
+                    new VersionSpecification(8_00_00),
                     [
                         AbstractOrderFixer::OPTION_DIRECTION => AbstractOrderFixer::DIRECTION_DESCEND,
                     ]
@@ -115,7 +117,7 @@ interface Foo
     public function foo(\Stringable&\Countable $obj): int;
 }
 ',
-                    new VersionSpecification(80100),
+                    new VersionSpecification(8_01_00),
                     [self::OPTION_NULL_ADJUSTMENT => self::NULL_ADJUSTMENT_ALWAYS_LAST]
                 ),
                 new VersionSpecificCodeSample(
@@ -125,7 +127,7 @@ interface Bar
     public function bar(null|string|int $foo): string|int;
 }
 ',
-                    new VersionSpecification(80000),
+                    new VersionSpecification(8_00_00),
                     [
                         self::OPTION_SORT_ALGORITHM => AbstractOrderFixer::SORT_ORDER_NONE,
                         self::OPTION_NULL_ADJUSTMENT => self::NULL_ADJUSTMENT_ALWAYS_LAST,
@@ -422,7 +424,7 @@ interface Bar
                 }
             }
 
-            return $this->sortElementsWithSortAlgorithm($a, $b);
+            return $this->getScoreWithSortAlgorithm($a, $b);
         });
 
         return $types;

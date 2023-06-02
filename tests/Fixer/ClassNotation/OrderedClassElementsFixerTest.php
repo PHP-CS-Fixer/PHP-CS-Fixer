@@ -1450,16 +1450,16 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
 <?php
 class Example
 {
-    public static $pubStatProp2;
-    public static $pubStatProp1;
+    private function F(){}
+    private function E(){}
     public function D(){}
     public function C1(){}
     public function C(){}
     public function B2(){}
     public function B1(){}
     public function A(){}
-    private function F(){}
-    private function E(){}
+    public static $pubStatProp2;
+    public static $pubStatProp1;
 }
 EOT
                 ,

@@ -20,7 +20,7 @@ Default value: ``'alpha'``
 ``direction``
 ~~~~~~~~~~~~~
 
-Which direction the types should be sorted.
+Which direction the imports should be sorted.
 
 Allowed values: ``'ascend'``, ``'descend'``
 

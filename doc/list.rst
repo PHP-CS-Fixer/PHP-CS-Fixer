@@ -1995,7 +1995,7 @@ List of Available Rules
      | Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
      | Default value: ``'alpha'``
    - | ``direction``
-     | Which direction the types should be sorted.
+     | Which direction the imports should be sorted.
      | Allowed values: ``'ascend'``, ``'descend'``
      | Default value: ``'ascend'``
    - | ``case_sensitive``

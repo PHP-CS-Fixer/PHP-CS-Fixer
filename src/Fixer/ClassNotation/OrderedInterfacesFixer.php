@@ -139,7 +139,7 @@ final class OrderedInterfacesFixer extends AbstractOrderFixer implements Configu
             }
 
             usort($interfaces, function (array $first, array $second): int {
-                return $this->sortElementsWithSortAlgorithm($first['normalized'], $second['normalized']);
+                return $this->getScoreWithSortAlgorithm($first['normalized'], $second['normalized']);
             });
 
             $changed = false;

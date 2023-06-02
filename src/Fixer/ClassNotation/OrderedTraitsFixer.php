@@ -221,7 +221,7 @@ final class OrderedTraitsFixer extends AbstractOrderFixer implements Configurabl
 
         $sortedElements = $elements;
         uasort($sortedElements, function (Tokens $useA, Tokens $useB) use ($toTraitName): int {
-            return $this->sortElementsWithSortAlgorithm($toTraitName($useA), $toTraitName($useB));
+            return $this->getScoreWithSortAlgorithm($toTraitName($useA), $toTraitName($useB));
         });
 
         $sortedElements = array_combine(

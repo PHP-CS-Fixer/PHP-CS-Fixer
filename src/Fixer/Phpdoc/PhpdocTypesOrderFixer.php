@@ -239,7 +239,7 @@ final class PhpdocTypesOrderFixer extends AbstractOrderFixer implements Configur
                     }
                 }
 
-                return $this->sortElementsWithSortAlgorithm($a, $b);
+                return $this->getScoreWithSortAlgorithm($a, $b);
             }
         );
 

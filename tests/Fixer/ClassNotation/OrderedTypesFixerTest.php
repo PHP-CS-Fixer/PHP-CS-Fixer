@@ -708,6 +708,8 @@ try {
 
     /**
      * @dataProvider provideCaseSensitiveCases
+     *
+     * @requires PHP 8.0
      */
     public function testFixWithCaseSensitive(string $expected, ?string $input = null): void
     {
@@ -731,6 +733,8 @@ try {
 
     /**
      * @dataProvider provideDirectionDescendCases
+     *
+     * @requires PHP 8.0
      */
     public function testFixWithDirectionDescend(string $expected, ?string $input = null): void
     {

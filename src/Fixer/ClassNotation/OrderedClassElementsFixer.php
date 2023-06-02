@@ -583,10 +583,10 @@ Custom values:
 
         usort($elements, function (array $a, array $b): int {
             if ($a['position'] === $b['position']) {
-                return $this->sortElementsWithSortAlgorithm($a['name'], $b['name']);
+                return $this->sortGroupElements($a, $b);
             }
 
-            return $a['position'] <=> $b['position'];
+            return $this->getScoreWithDirection($a['position'] <=> $b['position']);
         });
 
         return $elements;
@@ -616,6 +616,16 @@ Custom values:
      *     position: int,
      * } $b
      */
+    private function sortGroupElements(array $a, array $b): int
+    {
+        $selectedSortAlgorithm = $this->configuration['sort_algorithm'];
+
+        if (AbstractOrderFixer::SORT_ORDER_ALPHA === $selectedSortAlgorithm) {
+            return $this->getScoreWithSortAlgorithm($a['name'], $b['name']);
+        }
+
+        return $this->getScoreWithDirection($a['start'] <=> $b['start']);
+    }
 
     /**
      * @param list<array{

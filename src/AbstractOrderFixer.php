@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer;
 
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-
 /**
  * @author Alexey Polyvanyi <aleksey.polyvanyi@eonx.com>
  *
@@ -72,44 +70,35 @@ abstract class AbstractOrderFixer extends AbstractFixer
 
     abstract protected function getSortOrderOptionName(): string;
 
-    protected function sortElementsWithSortAlgorithm(
+    protected function getScoreWithSortAlgorithm(
         string $element1,
         string $element2,
         bool $useAlphaSortWhenEqualLength = false
     ): int {
         $sortOrder = $this->configuration[$this->getSortOrderOptionName()];
+        $score = 0;
 
-        switch ($sortOrder) {
-            case self::SORT_ORDER_ALPHA:
+        if (self::SORT_ORDER_ALPHA === $sortOrder) {
+            $score = $this->configuration[self::OPTION_CASE_SENSITIVE]
+                ? strcmp($element1, $element2)
+                : strcasecmp($element1, $element2);
+        }
+
+        if (self::SORT_ORDER_LENGTH === $sortOrder) {
+            $score = \strlen($element1) - \strlen($element2);
+
+            if (0 === $score && $useAlphaSortWhenEqualLength) {
                 $score = $this->configuration[self::OPTION_CASE_SENSITIVE]
                     ? strcmp($element1, $element2)
                     : strcasecmp($element1, $element2);
-
-                break;
-
-            case self::SORT_ORDER_LENGTH:
-                $score = \strlen($element1) - \strlen($element2);
-
-                if (0 === $score && $useAlphaSortWhenEqualLength) {
-                    $score = $this->configuration[self::OPTION_CASE_SENSITIVE]
-                        ? strcmp($element1, $element2)
-                        : strcasecmp($element1, $element2);
-                }
-
-                break;
-
-            case self::SORT_ORDER_NONE:
-                $score = 0;
-
-                break;
-
-            default:
-                throw new InvalidFixerConfigurationException(
-                    $this->getName(),
-                    sprintf('Unknown sort order "%s".', $sortOrder)
-                );
+            }
         }
 
+        return $this->getScoreWithDirection($score);
+    }
+
+    protected function getScoreWithDirection(int $score): int
+    {
         if (self::DIRECTION_DESCEND === $this->configuration[self::OPTION_DIRECTION]) {
             $score *= -1;
         }

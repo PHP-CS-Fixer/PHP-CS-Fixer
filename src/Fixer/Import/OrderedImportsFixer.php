@@ -289,7 +289,7 @@ use Bar;
         $firstNamespace = str_replace('\\', ' ', $this->prepareNamespace($first['namespace']));
         $secondNamespace = str_replace('\\', ' ', $this->prepareNamespace($second['namespace']));
 
-        return $this->sortElementsWithSortAlgorithm($firstNamespace, $secondNamespace);
+        return $this->getScoreWithSortAlgorithm($firstNamespace, $secondNamespace);
     }
 
     /**
@@ -305,7 +305,7 @@ use Bar;
         $firstNamespace = (self::IMPORT_TYPE_CLASS === $first['importType'] ? '' : $first['importType'].' ').$this->prepareNamespace($first['namespace']);
         $secondNamespace = (self::IMPORT_TYPE_CLASS === $second['importType'] ? '' : $second['importType'].' ').$this->prepareNamespace($second['namespace']);
 
-        return $this->sortElementsWithSortAlgorithm($firstNamespace, $secondNamespace, true);
+        return $this->getScoreWithSortAlgorithm($firstNamespace, $secondNamespace, true);
     }
 
     private function prepareNamespace(string $namespace): string
