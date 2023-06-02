@@ -1923,7 +1923,7 @@ List of Available Rules
      | Default value: ``['use_trait', 'case', 'constant_public', 'constant_protected', 'constant_private', 'property_public', 'property_protected', 'property_private', 'construct', 'destruct', 'magic', 'phpunit', 'method_public', 'method_protected', 'method_private']``
    - | ``sort_algorithm``
      | How multiple occurrences of same type statements should be sorted.
-     | Allowed values: ``'alpha'``, ``'none'``
+     | Allowed values: ``'alpha'``, ``'alpha_case_insensitive'``, ``'alpha_case_sensitive'``, ``'none'``
      | Default value: ``'none'``
 
 

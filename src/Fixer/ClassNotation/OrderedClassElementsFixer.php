@@ -31,8 +31,18 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class OrderedClassElementsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /** @internal */
+    /**
+     * @internal
+     *
+     * @deprecated use `alpha_case_insensitive` instead
+     */
     public const SORT_ALPHA = 'alpha';
+
+    /** @internal */
+    public const SORT_ALPHA_CASE_INSENSITIVE = 'alpha_case_insensitive';
+
+    /** @internal */
+    public const SORT_ALPHA_CASE_SENSITIVE = 'alpha_case_sensitive';
 
     /** @internal */
     public const SORT_NONE = 'none';
@@ -40,6 +50,8 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     private const SUPPORTED_SORT_ALGORITHMS = [
         self::SORT_NONE,
         self::SORT_ALPHA,
+        self::SORT_ALPHA_CASE_INSENSITIVE,
+        self::SORT_ALPHA_CASE_SENSITIVE,
     ];
 
     /**
@@ -205,7 +217,19 @@ class Example
     public function C(){}
 }
 ',
-                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA]
+                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA_CASE_INSENSITIVE]
+                ),
+                new CodeSample(
+                    '<?php
+class Example
+{
+    public function Aa(){}
+    public function AA(){}
+    public function AwS(){}
+    public function AWs(){}
+}
+',
+                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA_CASE_SENSITIVE]
                 ),
             ],
             'Accepts a subset of pre-defined element types, special element groups, and custom patterns.
@@ -569,8 +593,14 @@ Custom values:
     {
         $selectedSortAlgorithm = $this->configuration['sort_algorithm'];
 
-        if (self::SORT_ALPHA === $selectedSortAlgorithm) {
+        if (
+            self::SORT_ALPHA === $selectedSortAlgorithm || self::SORT_ALPHA_CASE_INSENSITIVE === $selectedSortAlgorithm
+        ) {
             return strcasecmp($a['name'], $b['name']);
+        }
+
+        if (self::SORT_ALPHA_CASE_SENSITIVE === $selectedSortAlgorithm) {
+            return strcmp($a['name'], $b['name']);
         }
 
         return $a['start'] <=> $b['start'];

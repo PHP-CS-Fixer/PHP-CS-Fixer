@@ -46,7 +46,7 @@ Default value: ``['use_trait', 'case', 'constant_public', 'constant_protected', 
 
 How multiple occurrences of same type statements should be sorted.
 
-Allowed values: ``'alpha'``, ``'none'``
+Allowed values: ``'alpha'``, ``'alpha_case_insensitive'``, ``'alpha_case_sensitive'``, ``'none'``
 
 Default value: ``'none'``
 
@@ -122,7 +122,7 @@ With configuration: ``['order' => ['method_private', 'method_public']]``.
 Example #3
 ~~~~~~~~~~
 
-With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha']``.
+With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha_case_insensitive']``.
 
 .. code-block:: diff
 
@@ -137,6 +137,26 @@ With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha'
    -    public function A(){}
         public function C(){}
    +    public function D(){}
+    }
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha_case_sensitive']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Example
+    {
+   +    public function AA(){}
+   +    public function AWs(){}
+        public function Aa(){}
+   -    public function AA(){}
+        public function AwS(){}
+   -    public function AWs(){}
     }
 
 Rule sets
