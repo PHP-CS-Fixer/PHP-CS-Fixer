@@ -586,15 +586,9 @@ Custom values:
         $selectedSortAlgorithm = $this->configuration['sort_algorithm'];
 
         if (self::SORT_ALPHA === $selectedSortAlgorithm) {
-            $isCaseSensitive = $this->configuration['case_sensitive'];
-
-            if (false === $isCaseSensitive) {
-                return strcasecmp($a['name'], $b['name']);
-            }
-
-            if ($isCaseSensitive) {
-                return strcmp($a['name'], $b['name']);
-            }
+            return $this->configuration['case_sensitive']
+                ? strcmp($a['name'], $b['name'])
+                : strcasecmp($a['name'], $b['name']);
         }
 
         return $a['start'] <=> $b['start'];
