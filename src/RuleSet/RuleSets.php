@@ -112,6 +112,6 @@ final class RuleSets
 
     private static function sortSetDefinitions(): void
     {
-        uksort(self::$setDefinitions, static fn(string $x, string $y): int => strnatcmp($x, $y));
+        uksort(self::$setDefinitions, static fn (string $x, string $y): int => strnatcmp($x, $y));
     }
 }
