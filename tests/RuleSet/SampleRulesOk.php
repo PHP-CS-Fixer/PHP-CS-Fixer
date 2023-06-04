@@ -44,9 +44,6 @@ class SampleRulesOk implements RuleSetDescriptionInterface
         return 'Description';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getRules(): array
     {
         return [
