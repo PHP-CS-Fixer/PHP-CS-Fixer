@@ -25,7 +25,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class OrderedImportsFixerTest extends AbstractFixerTestCase
 {
-    public function testFixWithMultipleNamespace(): void
+    /**
+     * @dataProvider provideFixWithMultipleNamespaceCases
+     */
+    public function testFixWithMultipleNamespace(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixWithMultipleNamespaceCases(): iterable
     {
         $expected = <<<'EOF'
 <?php
@@ -145,7 +153,80 @@ namespace BlaRoo {
 }
 EOF;
 
-        $this->doTest($expected, $input);
+        yield [$expected, $input];
+
+        $expected = <<<'EOF'
+<?php namespace Space1 {
+    use Foo\Bar\Foo;
+    use Symfony\Annotation\Template;
+}
+
+namespace Space2 { use A,B; }
+
+namespace Space3 {
+    use Symfony\Annotation\Template;
+    use Symfony\Doctrine\Entities\Entity0, Zoo\Bar;
+    echo Bar::C;
+    use A\B;
+}
+
+namespace Space4{}
+EOF;
+
+        $input = <<<'EOF'
+<?php namespace Space1 {
+    use Symfony\Annotation\Template;
+    use Foo\Bar\Foo;
+}
+
+namespace Space2 { use B,A; }
+
+namespace Space3 {
+    use Zoo\Bar;
+    use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity0;
+    echo Bar::C;
+    use A\B;
+}
+
+namespace Space4{}
+EOF;
+
+        yield [$expected, $input];
+
+        $expected =
+            '<?php
+                use B;
+                use C;
+                $foo = new C();
+                use A;
+            ';
+
+        $input =
+            '<?php
+                use C;
+                use B;
+                $foo = new C();
+                use A;
+            ';
+
+        yield [$expected, $input];
+
+        yield 'open-close groups' => [
+            '
+                <?php use X ?>
+                <?php use Z ?>
+                <?php echo X::class ?>
+                <?php use E ?>   output
+                <?php use F ?><?php echo E::class; use A; ?>
+            ',
+            '
+                <?php use Z ?>
+                <?php use X ?>
+                <?php echo X::class ?>
+                <?php use F ?>   output
+                <?php use E ?><?php echo E::class; use A; ?>
+            ',
+        ];
     }
 
     public function testFixWithComment(): void
@@ -165,14 +246,12 @@ use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar /* He there */ as FooBaz;
  use Foo\Bir as FBB;
 use Foo\Zar\Baz;
 use SomeClass;
-   use /* check */Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar as ZooBar;
+   use /* check */Symfony\Annotation\Template, Zoo\Bar as ZooBar;
+use Zoo\Tar;
 
 $a = new Bar();
 $a = new FooBaz();
 $a = new someclass();
-
-use Zoo\Tar;
 
 class AnnotatedClass
 {
@@ -212,8 +291,6 @@ $a = new Bar();
 $a = new FooBaz();
 $a = new someclass();
 
-use Symfony\Doctrine\Entities\Entity;
-
 class AnnotatedClass
 {
     /**
@@ -243,9 +320,7 @@ use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
  use Foo\Bir as FBB;
 use Foo\Zar\Baz;
 use SomeClass;
-   use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar as ZooBar;
-
+   use Symfony\Annotation\Template, Zoo\Bar as ZooBar;
 use Zoo\Tar;
 
 trait Foo {}
@@ -280,8 +355,6 @@ use Foo\Zar\Baz;
 use Symfony\Annotation\Template;
    use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
 use SomeClass;
-
-use Symfony\Doctrine\Entities\Entity;
 
 trait Foo {}
 
@@ -326,14 +399,12 @@ use Foo\Bar, Foo\Bar\Foo as Fooo;
 use Foo\Bir as FBB;
 use Foo\Zar\Baz;
 use SomeClass;
-   use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar as ZooBar;
+   use Symfony\Annotation\Template, Zoo\Bar as ZooBar;
+use Zoo\Tar;
 
 $a = new Bar();
 $a = new FooBaz();
 $a = new someclass();
-
-use Zoo\Tar;
 
 class AnnotatedClass
 {
@@ -375,8 +446,6 @@ use SomeClass;
 $a = new Bar();
 $a = new FooBaz();
 $a = new someclass();
-
-use Symfony\Doctrine\Entities\Entity;
 
 class AnnotatedClass
 {
@@ -579,14 +648,12 @@ use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
  use Foo\Bir as FBB;
 use Foo\Zar\Baz;
 use SomeClass;
-   use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar as ZooBar;
+   use Symfony\Annotation\Template, Zoo\Bar as ZooBar;
+use Zoo\Tar;
 
 $a = new Bar();
 $a = new FooBaz();
 $a = new someclass();
-
-use Zoo\Tar;
 
 class AnnotatedClass
 {
@@ -625,8 +692,6 @@ use SomeClass;
 $a = new Bar();
 $a = new FooBaz();
 $a = new someclass();
-
-use Symfony\Doctrine\Entities\Entity;
 
 class AnnotatedClass
 {
@@ -1234,11 +1299,11 @@ namespace FooRoo {
     use Zoo\Bar as ZooBar, Foo\Bar\Foo as Fooo;
     use Foo\Bar\FooBar as FooBaz;
 
+    use Symfony\Annotation\Template;
+
     $a = new Bar();
     $a = new FooBaz();
     $a = new someclass();
-
-    use Symfony\Annotation\Template;
 
     class AnnotatedClass
     {
@@ -1293,11 +1358,11 @@ namespace FooRoo {
     use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
     use SomeClass;
 
+    use Zoo\Tar2;
+
     $a = new Bar();
     $a = new FooBaz();
     $a = new someclass();
-
-    use Zoo\Tar2;
 
     class AnnotatedClass
     {
