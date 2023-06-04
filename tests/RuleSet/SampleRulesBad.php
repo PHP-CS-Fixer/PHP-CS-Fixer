@@ -43,6 +43,9 @@ class SampleRulesBad
         return 'Description';
     }
 
+    /**
+     * @return array<string, array<string, mixed>|bool>
+     */
     public function getRules(): array
     {
         return [

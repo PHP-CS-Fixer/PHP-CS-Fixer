@@ -223,6 +223,8 @@ final class ConfigTest extends TestCase
     }
 
     /**
+     * @param array<string, string> $ruleSets
+     *
      * @dataProvider provideRegisterCustomRuleSetsCases
      */
     public function testRegisterCustomRuleSets(?string $expectedException, array $ruleSets): void
@@ -235,7 +237,7 @@ final class ConfigTest extends TestCase
         $config->registerCustomRuleSets($ruleSets);
 
         if (empty($expectedException)) {
-            static::assertContains(array_keys($ruleSets)[0], RuleSets::getSetDefinitionNames());
+            self::assertContains(array_keys($ruleSets)[0], RuleSets::getSetDefinitionNames());
         }
     }
 
@@ -293,7 +295,7 @@ final class ConfigTest extends TestCase
         yield [$fixers, new \ArrayIterator($fixers)];
     }
 
-    public function provideRegisterCustomRuleSetsCases(): array
+    public static function provideRegisterCustomRuleSetsCases(): array
     {
         $ruleSetGood = [
             '@RulesOk' => SampleRulesOk::class,
