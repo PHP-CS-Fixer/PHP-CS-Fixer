@@ -197,36 +197,36 @@ Integration of %s.
     public function testRegisterRuleSetOK(): void
     {
         RuleSets::registerRuleSet('@MyRules', SampleRulesOk::class);
-        static::assertContains('@MyRules', RuleSets::getSetDefinitionNames());
+        self::assertContains('@MyRules', RuleSets::getSetDefinitionNames());
     }
 
     public function testRegisterRuleSetBadName(): void
     {
-        static::expectException(\InvalidArgumentException::class);
+        self::expectException(\InvalidArgumentException::class);
         RuleSets::registerRuleSet('MyRules', SampleRulesOk::class);
     }
 
     public function testRegisterRuleSetMissingClass(): void
     {
-        static::expectException(\InvalidArgumentException::class);
+        self::expectException(\InvalidArgumentException::class);
         RuleSets::registerRuleSet('@MyRules', '\This\Class\Does\Not\Exists');
     }
 
     public function testRegisterRuleSetOverlappingName(): void
     {
-        static::expectException(\InvalidArgumentException::class);
+        self::expectException(\InvalidArgumentException::class);
         RuleSets::registerRuleSet('@PSR12', SampleRulesOk::class);
     }
 
     public function testRegisterRuleSetInvalidName(): void
     {
-        static::expectException(\InvalidArgumentException::class);
+        self::expectException(\InvalidArgumentException::class);
         RuleSets::registerRuleSet('@My Class', SampleRulesOk::class);
     }
 
     public function testRegisterRuleSetInvalidClass(): void
     {
-        static::expectException(\InvalidArgumentException::class);
+        self::expectException(\InvalidArgumentException::class);
         RuleSets::registerRuleSet('@MyClass', SampleRulesBad::class);
     }
 
@@ -234,7 +234,7 @@ Integration of %s.
     {
         RuleSets::registerRuleSet('@MySet', SampleRulesOk::class);
         $set = RuleSets::getSetDefinition('@MySet');
-        static::assertSame('@RulesOk', $set->getName());
+        self::assertSame('@RulesOk', $set->getName());
     }
 
     /**
