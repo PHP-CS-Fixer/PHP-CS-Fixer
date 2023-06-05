@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet;
 
-use PhpCsFixer\Preg;
-
 /**
  * @internal
  */
@@ -28,7 +26,6 @@ abstract class AbstractRuleSetDescription implements RuleSetDescriptionInterface
     public function getName(): string
     {
         $name = substr(static::class, 1 + strrpos(static::class, '\\'), -3);
-        $name = Preg::replace('/\dx\d/', '\1.\2', $name);
 
         return '@'.str_replace('Risky', ':risky', $name);
     }
