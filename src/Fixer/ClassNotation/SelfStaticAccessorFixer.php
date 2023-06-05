@@ -103,8 +103,14 @@ enum Foo
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return ($tokens->isAllTokenKindsFound([T_CLASS, T_STATIC])
-            || (\defined('T_ENUM') && $tokens->isAllTokenKindsFound([T_ENUM, T_STATIC]))) // @TODO drop condition when PHP 8.1+ is required
+        $classyTypes = [T_CLASS];
+
+        if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
+            $classyTypes[] = T_ENUM;
+        }
+
+        return $tokens->isTokenKindFound(T_STATIC)
+            && $tokens->isAnyTokenKindsFound($classyTypes)
             && $tokens->isAnyTokenKindsFound([T_DOUBLE_COLON, T_NEW, T_INSTANCEOF]);
     }
 
@@ -130,21 +136,24 @@ enum Foo
         $classyIndex = $tokens->getNextTokenOfKind(0, $classyTokensOfInterest);
 
         while (null !== $classyIndex) {
-            $modifiers = $this->tokensAnalyzer->getClassyModifiers($classyIndex);
+            if ($tokens[$classyIndex]->isGivenKind(T_CLASS)) {
+                $modifiers = $this->tokensAnalyzer->getClassyModifiers($classyIndex);
 
-            if (
-                isset($modifiers['final'])
-                || $this->tokensAnalyzer->isAnonymousClass($classyIndex)
-                || (\defined('T_ENUM') && $tokens[$classyIndex]->isGivenKind(T_ENUM)) // @TODO drop condition when PHP 8.1+ is required
-            ) {
-                $classyIndex = $this->fixClass($tokens, $classyIndex);
+                if (
+                    isset($modifiers['final'])
+                    || $this->tokensAnalyzer->isAnonymousClass($classyIndex)
+                ) {
+                    $classyIndex = $this->fixClassy($tokens, $classyIndex);
+                }
+            } else {
+                $classyIndex = $this->fixClassy($tokens, $classyIndex);
             }
 
             $classyIndex = $tokens->getNextTokenOfKind($classyIndex, $classyTokensOfInterest);
         }
     }
 
-    private function fixClass(Tokens $tokens, int $index): int
+    private function fixClassy(Tokens $tokens, int $index): int
     {
         $index = $tokens->getNextTokenOfKind($index, ['{']);
         $classOpenCount = 1;
@@ -178,7 +187,7 @@ enum Foo
                         } elseif ($tokens[$index]->equals('{')) {
                             ++$openCount;
                         } else {
-                            $index = $this->fixClass($tokens, $index);
+                            $index = $this->fixClassy($tokens, $index);
                         }
                     } while ($openCount > 0);
                 }

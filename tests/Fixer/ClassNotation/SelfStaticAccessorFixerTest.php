@@ -365,7 +365,7 @@ $b = function() { return static::class; };
      *
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected, ?string $input = null): void
+    public function testFix81(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -413,6 +413,55 @@ enum Foo
     }
 }
 ',
+        ];
+
+        yield 'enum with nested anonymous class' => [
+            '<?php
+                enum Suit: int implements SomeIntInterface, Z
+                {
+                    case Hearts = 1;
+                    case Clubs = 3;
+                    public const HEARTS = self::Hearts;
+
+                    public function Foo(): string
+                    {
+                        return self::Hearts->Bar()->getBar() . self::class . self::Clubs->value;
+                    }
+
+                    public function Bar(): object
+                    {
+                        return new class {
+                            public function getBar()
+                            {
+                                return self::class;
+                            }
+                        };
+                    }
+                }
+            ',
+            '<?php
+                enum Suit: int implements SomeIntInterface, Z
+                {
+                    case Hearts = 1;
+                    case Clubs = 3;
+                    public const HEARTS = self::Hearts;
+
+                    public function Foo(): string
+                    {
+                        return static::Hearts->Bar()->getBar() . static::class . static::Clubs->value;
+                    }
+
+                    public function Bar(): object
+                    {
+                        return new class {
+                            public function getBar()
+                            {
+                                return static::class;
+                            }
+                        };
+                    }
+                }
+            ',
         ];
     }
 
