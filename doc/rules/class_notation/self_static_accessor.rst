@@ -2,8 +2,8 @@
 Rule ``self_static_accessor``
 =============================
 
-Inside a ``final`` class, anonymous class, or enums, ``self`` should be
-preferred over ``static``.
+Inside an enum or ``final``/anonymous class, ``self`` should be preferred over
+``static``.
 
 Examples
 --------

@@ -31,7 +31,7 @@ final class SelfStaticAccessorFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Inside a `final` class, anonymous class, or enums, `self` should be preferred over `static`.',
+            'Inside an enum or `final`/anonymous class, `self` should be preferred over `static`.',
             [
                 new CodeSample(
                     '<?php
