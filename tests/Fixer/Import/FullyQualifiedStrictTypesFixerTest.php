@@ -108,6 +108,26 @@ namespace A\B\C\D
             '<?php namespace Foo; function foo(\FooBar $v): \FooBar {}',
             null,
         ];
+
+        yield 'issue #7025 - non-empty namespace, import and FQCN in argument' => [
+            '<?php namespace foo\bar\baz;
+
+use foo\baz\buzz;
+
+class A {
+    public function b(buzz $buzz): void {
+    }
+}',
+            '<?php namespace foo\bar\baz;
+
+use foo\baz\buzz;
+
+class A {
+    public function b(\foo\baz\buzz $buzz): void {
+    }
+}',
+            null,
+        ];
     }
 
     /**
