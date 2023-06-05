@@ -198,7 +198,7 @@ Class Notation
   Inside class or interface element ``self`` should be preferred to the class name itself.
 - `self_static_accessor <./class_notation/self_static_accessor.rst>`_
 
-  Inside a ``final`` class or anonymous class ``self`` should be preferred to ``static``.
+  Inside an enum or ``final``/anonymous class, ``self`` should be preferred over ``static``.
 - `single_class_element_per_statement <./class_notation/single_class_element_per_statement.rst>`_
 
   There MUST NOT be more than one property or constant declared per statement.

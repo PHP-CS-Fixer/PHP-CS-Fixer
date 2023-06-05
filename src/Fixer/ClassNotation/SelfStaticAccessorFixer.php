@@ -18,6 +18,8 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -29,7 +31,7 @@ final class SelfStaticAccessorFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Inside a `final` class or anonymous class `self` should be preferred to `static`.',
+            'Inside an enum or `final`/anonymous class, `self` should be preferred over `static`.',
             [
                 new CodeSample(
                     '<?php
@@ -81,13 +83,29 @@ $a = new class() {
 };
 '
                 ),
+                new VersionSpecificCodeSample(
+                    '<?php
+enum Foo
+{
+    public const A = 123;
+
+    public static function bar(): void
+    {
+        echo static::A;
+    }
+}
+',
+                    new VersionSpecification(8_01_00)
+                ),
             ]
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_STATIC]) && $tokens->isAnyTokenKindsFound([T_DOUBLE_COLON, T_NEW, T_INSTANCEOF]);
+        return ($tokens->isAllTokenKindsFound([T_CLASS, T_STATIC])
+            || (\defined('T_ENUM') && $tokens->isAllTokenKindsFound([T_ENUM, T_STATIC]))) // @TODO drop condition when PHP 8.1+ is required
+            && $tokens->isAnyTokenKindsFound([T_DOUBLE_COLON, T_NEW, T_INSTANCEOF]);
     }
 
     /**
@@ -102,17 +120,27 @@ $a = new class() {
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $classyTokensOfInterest = [[T_CLASS]];
+
+        if (\defined('T_ENUM')) {
+            $classyTokensOfInterest[] = [T_ENUM]; // @TODO drop condition when PHP 8.1+ is required
+        }
+
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
-        $classIndex = $tokens->getNextTokenOfKind(0, [[T_CLASS]]);
+        $classyIndex = $tokens->getNextTokenOfKind(0, $classyTokensOfInterest);
 
-        while (null !== $classIndex) {
-            $modifiers = $this->tokensAnalyzer->getClassyModifiers($classIndex);
+        while (null !== $classyIndex) {
+            $modifiers = $this->tokensAnalyzer->getClassyModifiers($classyIndex);
 
-            if (isset($modifiers['final']) || $this->tokensAnalyzer->isAnonymousClass($classIndex)) {
-                $classIndex = $this->fixClass($tokens, $classIndex);
+            if (
+                isset($modifiers['final'])
+                || $this->tokensAnalyzer->isAnonymousClass($classyIndex)
+                || (\defined('T_ENUM') && $tokens[$classyIndex]->isGivenKind(T_ENUM)) // @TODO drop condition when PHP 8.1+ is required
+            ) {
+                $classyIndex = $this->fixClass($tokens, $classyIndex);
             }
 
-            $classIndex = $tokens->getNextTokenOfKind($classIndex, [[T_CLASS]]);
+            $classyIndex = $tokens->getNextTokenOfKind($classyIndex, $classyTokensOfInterest);
         }
     }
 

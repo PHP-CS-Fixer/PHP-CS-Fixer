@@ -2774,7 +2774,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\ClassNotation\\SelfAccessorFixer <./../src/Fixer/ClassNotation/SelfAccessorFixer.php>`_
 -  `self_static_accessor <./rules/class_notation/self_static_accessor.rst>`_
 
-   Inside a ``final`` class or anonymous class ``self`` should be preferred to ``static``.
+   Inside an enum or ``final``/anonymous class, ``self`` should be preferred over ``static``.
 
    Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 

@@ -361,6 +361,62 @@ $b = function() { return static::class; };
     }
 
     /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield 'enums' => [
+            '<?php
+enum Foo
+{
+    case Baz;
+
+    private const BAR = \'foo\';
+
+    public static function bar(): Foo
+    {
+        return self::Baz;
+    }
+
+    public static function baz(mixed $other): void
+    {
+        if ($other instanceof self) {
+            echo self::BAR;
+        }
+    }
+}
+',
+            '<?php
+enum Foo
+{
+    case Baz;
+
+    private const BAR = \'foo\';
+
+    public static function bar(): Foo
+    {
+        return static::Baz;
+    }
+
+    public static function baz(mixed $other): void
+    {
+        if ($other instanceof static) {
+            echo static::BAR;
+        }
+    }
+}
+',
+        ];
+    }
+
+    /**
      * @dataProvider provideFix82Cases
      *
      * @requires PHP 8.2
