@@ -122,7 +122,7 @@ final class Utils
     }
 
     /**
-     * Join names in natural language wrapped in string $wrapper.
+     * Join names in natural language using specified wrapper (double quote by default).
      *
      * @param string[] $names
      *
@@ -132,6 +132,10 @@ final class Utils
     {
         if (0 === \count($names)) {
             throw new \InvalidArgumentException('Array of names cannot be empty.');
+        }
+
+        if (\strlen($wrapper) > 1) {
+            throw new \InvalidArgumentException('Wrapper should be a single-char string or empty.');
         }
 
         $names = array_map(static function (string $name) use ($wrapper): string {

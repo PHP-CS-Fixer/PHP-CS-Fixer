@@ -224,15 +224,21 @@ final class UtilsTest extends TestCase
         Utils::naturalLanguageJoin([]);
     }
 
+    public function testNaturalLanguageJoinThrowsInvalidArgumentExceptionForMoreThanOneCharWrapper(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Wrapper should be a single-char string or empty.');
+
+        Utils::naturalLanguageJoin(['a', 'b'], 'foo');
+    }
+
     /**
      * @dataProvider provideNaturalLanguageJoinCases
      *
      * @param list<string> $names
      */
-    public function testNaturalLanguageJoin(string $joined, array $names, ?string $wrapper = null): void
+    public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"'): void
     {
-        $wrapper ??= '"';
-
         self::assertSame($joined, Utils::naturalLanguageJoin($names, $wrapper));
     }
 
@@ -283,6 +289,21 @@ final class UtilsTest extends TestCase
                 '?a?, ?b? and ?c?',
                 ['a', 'b', 'c'],
                 '?',
+            ],
+            [
+                'a',
+                ['a'],
+                '',
+            ],
+            [
+                'a and b',
+                ['a', 'b'],
+                '',
+            ],
+            [
+                'a, b and c',
+                ['a', 'b', 'c'],
+                '',
             ],
         ];
     }
