@@ -122,20 +122,20 @@ final class Utils
     }
 
     /**
-     * Join names in natural language wrapped in backticks, e.g. `a`, `b` and `c`.
+     * Join names in natural language wrapped in string $wrapper.
      *
      * @param string[] $names
      *
      * @throws \InvalidArgumentException
      */
-    public static function naturalLanguageJoinWithBackticks(array $names): string
+    public static function naturalLanguageJoin(array $names, string $wrapper = '"'): string
     {
         if (0 === \count($names)) {
             throw new \InvalidArgumentException('Array of names cannot be empty.');
         }
 
-        $names = array_map(static function (string $name): string {
-            return sprintf('`%s`', $name);
+        $names = array_map(static function (string $name) use ($wrapper): string {
+            return sprintf('%2$s%1$s%2$s', $name, $wrapper);
         }, $names);
 
         $last = array_pop($names);
@@ -145,6 +145,18 @@ final class Utils
         }
 
         return $last;
+    }
+
+    /**
+     * Join names in natural language wrapped in backticks, e.g. `a`, `b` and `c`.
+     *
+     * @param string[] $names
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function naturalLanguageJoinWithBackticks(array $names): string
+    {
+        return self::naturalLanguageJoin($names, '`');
     }
 
     public static function triggerDeprecation(\Exception $futureException): void
