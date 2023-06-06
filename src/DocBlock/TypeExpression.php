@@ -334,7 +334,7 @@ final class TypeExpression
             }
         }
 
-        $index = '' !== $matches['nullable'] ? 1 : 0;
+        $index = \strlen($matches['nullable']);
 
         if ('' !== ($matches['generic'] ?? '')) {
             $this->parseCommaSeparatedInnerTypes(

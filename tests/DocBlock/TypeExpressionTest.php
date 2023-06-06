@@ -157,7 +157,7 @@ final class TypeExpressionTest extends TestCase
 
         yield ['callable(string)', ['callable(string)']];
 
-        yield ['callable(string): bool', ['callable(string): bool']];
+        yield ['? callable(string): bool', ['? callable(string): bool']];
 
         yield ['callable(string,): bool', ['callable(string,): bool']];
 
