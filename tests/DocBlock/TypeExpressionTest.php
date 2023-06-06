@@ -34,11 +34,11 @@ final class TypeExpressionTest extends TestCase
      */
     public function testGetTypes(string $typesExpression, array $expectedTypes): void
     {
-        $expression = new TypeExpression($typesExpression, null, []);
+        $expression = $this->parseTypeExpression($typesExpression, null, []);
         self::assertSame($expectedTypes, $expression->getTypes());
 
         $unionTestNs = '__UnionTest__';
-        $unionExpression = new TypeExpression(
+        $unionExpression = $this->parseTypeExpression(
             $unionTestNs.'\\A|'.$typesExpression.'|'.$unionTestNs.'\\Z',
             null,
             []
@@ -424,7 +424,7 @@ final class TypeExpressionTest extends TestCase
      */
     public function testSortTypes(string $typesExpression, string $expectResult): void
     {
-        $expression = new TypeExpression($typesExpression, null, []);
+        $expression = $this->parseTypeExpression($typesExpression, null, []);
 
         $expression->sortTypes(static function (TypeExpression $a, TypeExpression $b): int {
             return strcasecmp($a->toString(), $b->toString());
@@ -631,5 +631,41 @@ final class TypeExpressionTest extends TestCase
             '18_446_744_073_709_551_616|-8.2023437675747321e-18_446_744_073_709_551_616',
             '-8.2023437675747321e-18_446_744_073_709_551_616|18_446_744_073_709_551_616',
         ];
+    }
+
+    private function checkInnerTypeExpressionsStartIndex(TypeExpression $typeExpression): void
+    {
+        $innerTypeExpressions = \Closure::bind(fn () => $typeExpression->innerTypeExpressions, null, TypeExpression::class)();
+        foreach ($innerTypeExpressions as ['start_index' => $innerStartIndex, 'expression' => $innerExpression]) {
+            self::assertSame(
+                $innerExpression->toString(),
+                substr($typeExpression->toString(), $innerStartIndex, \strlen($innerExpression->toString()))
+            );
+
+            $this->checkInnerTypeExpressionsStartIndex($innerExpression);
+        }
+    }
+
+    /**
+     * Parse type expression with and without PCRE JIT.
+     *
+     * @param NamespaceUseAnalysis[] $namespaceUses
+     */
+    private function parseTypeExpression(string $value, ?NamespaceAnalysis $namespace, array $namespaceUses): TypeExpression
+    {
+        $pcreJitBackup = ini_get('pcre.jit');
+
+        try {
+            foreach (['1'] as $pcreJit) {
+                ini_set('pcre.jit', $pcreJit);
+
+                $expression = new TypeExpression($value, null, []);
+                $this->checkInnerTypeExpressionsStartIndex($expression);
+            }
+        } finally {
+            ini_set('pcre.jit', $pcreJitBackup);
+        }
+
+        return $expression;
     }
 }
