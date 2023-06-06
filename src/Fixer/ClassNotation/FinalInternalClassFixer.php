@@ -221,8 +221,12 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             CT::T_ATTRIBUTE_CLOSE,
             T_DOC_COMMENT,
             T_COMMENT, // Skip comments
-            T_READONLY, // Skip readonly
         ];
+
+        if (\defined('T_READONLY')) {
+            // Skip readonly classes for PHP 8.2+
+            $acceptTypes[] = T_READONLY;
+        }
 
         while ($currentIndex) {
             $currentIndex = $tokens->getPrevNonWhitespace($currentIndex);
