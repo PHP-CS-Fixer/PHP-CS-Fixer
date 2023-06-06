@@ -253,6 +253,28 @@ final class TypeExpressionTest extends TestCase
         }
     }
 
+    public function testHugeType(): void
+    {
+        $nFlat = 2_000;
+        $types = [];
+        for ($i = 0; $i < $nFlat; ++$i) {
+            $types[] = '\X\Foo'.$i;
+        }
+        $str = implode('|', $types);
+        $expression = new TypeExpression($str, null, []);
+        self::assertSame($types, $expression->getTypes());
+
+        $nRecursive = 100;
+        for ($i = 0; $i < $nRecursive; ++$i) {
+            $str = 'array'.($i % 2 ? '{' : '<').$str.($i % 2 ? '}' : '>');
+        }
+
+        $typeLeft = '\Closure(A|B): void';
+        $typeRight = '\Closure('.$typeLeft.'): void';
+        $expression = new TypeExpression($typeLeft.'|('.$str.')|'.$typeRight, null, []);
+        self::assertSame([$typeLeft, '('.$str.')', $typeRight], $expression->getTypes());
+    }
+
     /**
      * @dataProvider provideGetTypesGlueCases
      */
