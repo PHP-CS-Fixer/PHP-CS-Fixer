@@ -24,16 +24,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
+     * @param array<string, string> $config
      *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
-        if (0 !== \count($config)) {
-            $this->fixer->configure($config);
-        }
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
@@ -221,9 +218,6 @@ final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPhp70Cases
      *
      * @requires PHP 7.0
