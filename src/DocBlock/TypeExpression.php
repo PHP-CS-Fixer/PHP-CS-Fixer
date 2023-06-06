@@ -341,11 +341,7 @@ final class TypeExpression
                 $index + \strlen($matches['generic_start']),
                 $matches['generic_types']
             );
-
-            return;
-        }
-
-        if ('' !== ($matches['callable'] ?? '')) {
+        } elseif ('' !== ($matches['callable'] ?? '')) {
             $this->parseCommaSeparatedInnerTypes(
                 $index + \strlen($matches['callable_start']),
                 $matches['callable_arguments'] ?? ''
@@ -357,20 +353,12 @@ final class TypeExpression
                     'expression' => $this->inner($matches['callable_return']),
                 ];
             }
-
-            return;
-        }
-
-        if ('' !== ($matches['object_like_array'] ?? '')) {
+        } elseif ('' !== ($matches['object_like_array'] ?? '')) {
             $this->parseObjectLikeArrayInnerTypes(
                 $index + \strlen($matches['object_like_array_start']),
                 $matches['object_like_array_inners'] ?? ''
             );
-
-            return;
-        }
-
-        if ('' !== ($matches['parenthesized'] ?? '')) {
+        } elseif ('' !== ($matches['parenthesized'] ?? '')) {
             $index += \strlen($matches['parenthesized_start']);
 
             if ('' !== ($matches['conditional'] ?? '')) {
@@ -407,8 +395,6 @@ final class TypeExpression
                     'expression' => $this->inner($matches['parenthesized_types']),
                 ];
             }
-
-            return;
         }
     }
 
