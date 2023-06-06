@@ -193,7 +193,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
     }
 
     /**
-     * Get the key and the end position index.
+     * Retrieves the key and the end position index.
      *
      * @return mixed[]
      */
