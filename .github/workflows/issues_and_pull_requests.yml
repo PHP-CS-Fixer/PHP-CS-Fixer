@@ -1,0 +1,43 @@
+# https://docs.github.com/en/actions
+
+name: "Issues and Pull Requests"
+
+on:
+  schedule:
+    - cron: "0 12 * * *"
+
+env:
+  DAYS_BEFORE_ISSUE_CLOSE: 30
+  DAYS_BEFORE_ISSUE_STALE: 90
+  DAYS_BEFORE_PR_CLOSE: 14
+  DAYS_BEFORE_PR_STALE: 90
+
+jobs:
+  handle_stale:
+    name: "Handle stale state"
+
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Handle stale issues and pull requests"
+        uses: "actions/stale@v8"
+        with:
+          close-pr-label: "status/to recover"
+          days-before-issue-close: "${{ env.DAYS_BEFORE_ISSUE_CLOSE }}"
+          days-before-issue-stale: "${{ env.DAYS_BEFORE_ISSUE_STALE }}"
+          days-before-pr-close: "${{ env.DAYS_BEFORE_PR_CLOSE }}"
+          days-before-pr-stale: "${{ env.DAYS_BEFORE_PR_STALE }}"
+          labels-to-add-when-unstale: "status/to verify"
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          stale-issue-label: "status/stale"
+          stale-issue-message: |
+            Since this issue has not had any activity within the last ${{ env.DAYS_BEFORE_ISSUE_STALE }} days, I have marked it as stale.
+
+            I will close it if no further activity occurs within the next ${{ env.DAYS_BEFORE_ISSUE_CLOSE }} days.
+          stale-pr-label: "status/stale"
+          stale-pr-message: |
+            Since this pull request has not had any activity within the last ${{ env.DAYS_BEFORE_PR_STALE }} days, I have marked it as stale.
+
+            I will close it if no further activity occurs within the next ${{ env.DAYS_BEFORE_PR_CLOSE }} days.
+
+            Please keep your branch up-to-date by rebasing it when main branch is ahead of it, thanks in advance!

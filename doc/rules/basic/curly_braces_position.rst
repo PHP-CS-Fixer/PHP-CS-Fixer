@@ -239,6 +239,11 @@ The rule is part of the following rule sets:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
+@PER-CS1.0
+  Using the `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ rule set will enable the ``curly_braces_position`` rule with the config below:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
 @PSR2
   Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``curly_braces_position`` rule with the default config.
 

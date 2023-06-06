@@ -50,6 +50,15 @@ Allowed values: ``'alpha'``, ``'none'``
 
 Default value: ``'none'``
 
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether the sorting should be case sensitive.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
@@ -139,6 +148,26 @@ With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha'
    +    public function D(){}
     }
 
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha', 'case_sensitive' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Example
+    {
+   +    public function AA(){}
+   +    public function AWs(){}
+        public function Aa(){}
+   -    public function AA(){}
+        public function AwS(){}
+   -    public function AWs(){}
+    }
+
 Rule sets
 ---------
 
@@ -146,6 +175,11 @@ The rule is part of the following rule sets:
 
 @PER
   Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``ordered_class_elements`` rule with the config below:
+
+  ``['order' => ['use_trait']]``
+
+@PER-CS1.0
+  Using the `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ rule set will enable the ``ordered_class_elements`` rule with the config below:
 
   ``['order' => ['use_trait']]``
 

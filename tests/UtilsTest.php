@@ -216,6 +216,98 @@ final class UtilsTest extends TestCase
         );
     }
 
+    public function testNaturalLanguageJoinThrowsInvalidArgumentExceptionForEmptyArray(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Array of names cannot be empty.');
+
+        Utils::naturalLanguageJoin([]);
+    }
+
+    public function testNaturalLanguageJoinThrowsInvalidArgumentExceptionForMoreThanOneCharWrapper(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Wrapper should be a single-char string or empty.');
+
+        Utils::naturalLanguageJoin(['a', 'b'], 'foo');
+    }
+
+    /**
+     * @dataProvider provideNaturalLanguageJoinCases
+     *
+     * @param list<string> $names
+     */
+    public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"'): void
+    {
+        self::assertSame($joined, Utils::naturalLanguageJoin($names, $wrapper));
+    }
+
+    /**
+     * @return iterable<array<null|array<string>|string>>
+     */
+    public static function provideNaturalLanguageJoinCases(): iterable
+    {
+        yield from [
+            [
+                '"a"',
+                ['a'],
+            ],
+            [
+                '"a" and "b"',
+                ['a', 'b'],
+            ],
+            [
+                '"a", "b" and "c"',
+                ['a', 'b', 'c'],
+            ],
+            [
+                '\'a\'',
+                ['a'],
+                '\'',
+            ],
+            [
+                '\'a\' and \'b\'',
+                ['a', 'b'],
+                '\'',
+            ],
+            [
+                '\'a\', \'b\' and \'c\'',
+                ['a', 'b', 'c'],
+                '\'',
+            ],
+            [
+                '?a?',
+                ['a'],
+                '?',
+            ],
+            [
+                '?a? and ?b?',
+                ['a', 'b'],
+                '?',
+            ],
+            [
+                '?a?, ?b? and ?c?',
+                ['a', 'b', 'c'],
+                '?',
+            ],
+            [
+                'a',
+                ['a'],
+                '',
+            ],
+            [
+                'a and b',
+                ['a', 'b'],
+                '',
+            ],
+            [
+                'a, b and c',
+                ['a', 'b', 'c'],
+                '',
+            ],
+        ];
+    }
+
     public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray(): void
     {
         $this->expectException(\InvalidArgumentException::class);

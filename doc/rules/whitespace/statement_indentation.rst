@@ -32,6 +32,9 @@ The rule is part of the following rule sets:
 @PER
   Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``statement_indentation`` rule.
 
+@PER-CS1.0
+  Using the `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ rule set will enable the ``statement_indentation`` rule.
+
 @PSR2
   Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``statement_indentation`` rule.
 

@@ -19,23 +19,26 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 /**
  * @internal
  *
- * @deprecated
+ * PER Coding Style v1.0.
  *
- * @TODO 4.0 remove me
- *
- * Last updated to PER Coding Style v1.0.
+ * @see https://github.com/php-fig/per-coding-style/blob/1.0.0/spec.md
  */
-final class PERSet extends AbstractRuleSetDescription
+final class PERCS1x0Set extends AbstractRuleSetDescription
 {
+    public function getName(): string
+    {
+        return '@PER-CS1.0';
+    }
+
     public function getRules(): array
     {
         return [
-            '@PER-CS1.0' => true,
+            '@PSR12' => true,
         ];
     }
 
     public function getDescription(): string
     {
-        return 'Alias for the PER-CS rules. It is recommended you use ``@PER-CS1.0`` instead.';
+        return 'Rules that follow `PER Coding Style 1.0 <https://www.php-fig.org/per/coding-style/>`_.';
     }
 }

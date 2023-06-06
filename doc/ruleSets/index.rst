@@ -3,6 +3,8 @@ List of Available Rule sets
 ===========================
 - `@DoctrineAnnotation <./DoctrineAnnotation.rst>`_
 - `@PER <./PER.rst>`_
+- `@PER-CS1.0 <./PER-CS1.0.rst>`_
+- `@PER-CS1.0:risky <./PER-CS1.0Risky.rst>`_
 - `@PER:risky <./PERRisky.rst>`_
 - `@PHP54Migration <./PHP54Migration.rst>`_
 - `@PHP56Migration:risky <./PHP56MigrationRisky.rst>`_
