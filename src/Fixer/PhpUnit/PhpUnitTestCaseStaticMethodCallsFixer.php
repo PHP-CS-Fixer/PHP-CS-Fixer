@@ -27,6 +27,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
@@ -366,8 +367,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                         if (!isset($thisFixer->staticMethods[$method])) {
                             throw new InvalidOptionsException(
                                 sprintf(
-                                    'Unexpected "methods" key, expected any of "%s", got "%s".',
-                                    implode('", "', array_keys($thisFixer->staticMethods)),
+                                    'Unexpected "methods" key, expected any of %s, got "%s".',
+                                    Utils::naturalLanguageJoin(array_keys($thisFixer->staticMethods)),
                                     \gettype($method).'#'.$method
                                 )
                             );
@@ -376,9 +377,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                         if (!isset($thisFixer->allowedValues[$value])) {
                             throw new InvalidOptionsException(
                                 sprintf(
-                                    'Unexpected value for method "%s", expected any of "%s", got "%s".',
+                                    'Unexpected value for method "%s", expected any of %s, got "%s".',
                                     $method,
-                                    implode('", "', array_keys($thisFixer->allowedValues)),
+                                    Utils::naturalLanguageJoin(array_keys($thisFixer->allowedValues)),
                                     \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value)
                                 )
                             );

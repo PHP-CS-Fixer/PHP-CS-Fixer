@@ -12,7 +12,7 @@ Configuration
 
 The position of the keyword that continues the control structure.
 
-Allowed values: ``'next_line'``, ``'same_line'``
+Allowed values: ``'next_line'`` and ``'same_line'``
 
 Default value: ``'same_line'``
 

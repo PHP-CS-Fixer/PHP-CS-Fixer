@@ -215,7 +215,7 @@ final class DescribeCommand extends Command
                     }, $allowed);
                 }
 
-                $line .= ' ('.implode(', ', $allowed).')';
+                $line .= ' ('.Utils::naturalLanguageJoin($allowed, '').')';
 
                 $description = Preg::replace('/(`.+?`)/', '<info>$1</info>', OutputFormatter::escape($option->getDescription()));
                 $line .= ': '.lcfirst(Preg::replace('/\.$/', '', $description)).'; ';

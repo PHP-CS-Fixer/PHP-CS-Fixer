@@ -14,7 +14,7 @@ Configuration
 Forbid multi-line whitespace or move the semicolon to the new line for chained
 calls.
 
-Allowed values: ``'new_line_for_chained_calls'``, ``'no_multi_line'``
+Allowed values: ``'new_line_for_chained_calls'`` and ``'no_multi_line'``
 
 Default value: ``'no_multi_line'``
 

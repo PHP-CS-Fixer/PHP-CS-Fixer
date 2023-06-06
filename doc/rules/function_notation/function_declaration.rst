@@ -12,7 +12,7 @@ Configuration
 
 Spacing to use before open parenthesis for closures.
 
-Allowed values: ``'none'``, ``'one'``
+Allowed values: ``'none'`` and ``'one'``
 
 Default value: ``'one'``
 
@@ -21,7 +21,7 @@ Default value: ``'one'``
 
 Spacing to use before open parenthesis for short arrow functions.
 
-Allowed values: ``'none'``, ``'one'``
+Allowed values: ``'none'`` and ``'one'``
 
 Default value: ``'one'``
 

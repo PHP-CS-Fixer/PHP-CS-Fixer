@@ -12,7 +12,7 @@ Configuration
 
 Whether to use the ``long`` or ``short`` array syntax.
 
-Allowed values: ``'long'``, ``'short'``
+Allowed values: ``'long'`` and ``'short'``
 
 Default value: ``'short'``
 

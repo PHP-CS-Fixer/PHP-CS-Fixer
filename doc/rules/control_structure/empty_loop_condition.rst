@@ -12,7 +12,7 @@ Configuration
 
 Style of empty loop-condition.
 
-Allowed values: ``'for'``, ``'while'``
+Allowed values: ``'for'`` and ``'while'``
 
 Default value: ``'while'``
 

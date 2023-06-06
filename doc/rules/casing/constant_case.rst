@@ -13,7 +13,7 @@ Configuration
 
 Whether to use the ``upper`` or ``lower`` case syntax.
 
-Allowed values: ``'lower'``, ``'upper'``
+Allowed values: ``'lower'`` and ``'upper'``
 
 Default value: ``'lower'``
 

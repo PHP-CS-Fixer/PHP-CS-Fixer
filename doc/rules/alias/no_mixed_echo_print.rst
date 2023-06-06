@@ -12,7 +12,7 @@ Configuration
 
 The desired language construct.
 
-Allowed values: ``'echo'``, ``'print'``
+Allowed values: ``'echo'`` and ``'print'``
 
 Default value: ``'echo'``
 
