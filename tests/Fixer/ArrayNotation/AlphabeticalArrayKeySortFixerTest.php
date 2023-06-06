@@ -29,7 +29,7 @@ final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = []): void
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         if (0 !== \count($config)) {
             $this->fixer->configure($config);
@@ -228,7 +228,7 @@ final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP 7.0
      */
-    public function testFixPhp70($expected, $input = null): void
+    public function testFixPhp70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
