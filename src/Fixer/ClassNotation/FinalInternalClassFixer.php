@@ -18,7 +18,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -153,38 +152,34 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         };
 
         return new FixerConfigurationResolver([
-            new DeprecatedFixerOption(
-                (new FixerOptionBuilder('annotation_include', 'Class level attribute or annotation tags that must be set in order to fix the class (case insensitive).'))
-                    ->setAllowedTypes(['array'])
-                    ->setAllowedValues($annotationsAsserts)
-                    ->setDefault(
-                        array_map(
-                            static function (string $string) {
-                                return '@'.$string;
-                            },
-                            self::DEFAULTS['include'],
-                        ),
-                    )
-                    ->setNormalizer($annotationsNormalizer)
-                    ->getOption(),
-                'Use `include` to configure PHPDoc annotations tags and attributes.',
-            ),
-            new DeprecatedFixerOption(
-                (new FixerOptionBuilder('annotation_exclude', 'Class level attribute or annotation tags that must be omitted to fix the class, even if all of the white list ones are used as well (case insensitive).'))
-                    ->setAllowedTypes(['array'])
-                    ->setAllowedValues($annotationsAsserts)
-                    ->setDefault(
-                        array_map(
-                            static function (string $string) {
-                                return '@'.$string;
-                            },
-                            self::DEFAULTS['exclude'],
-                        ),
-                    )
-                    ->setNormalizer($annotationsNormalizer)
-                    ->getOption(),
-                'Use `exclude` to configure PHPDoc annotations tags and attributes.',
-            ),
+            (new FixerOptionBuilder('annotation_include', 'Class level attribute or annotation tags that must be set in order to fix the class (case insensitive).'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues($annotationsAsserts)
+                ->setDefault(
+                    array_map(
+                        static function (string $string) {
+                            return '@'.$string;
+                        },
+                        self::DEFAULTS['include'],
+                    ),
+                )
+                ->setNormalizer($annotationsNormalizer)
+                ->setDeprecationMessage('Use `include` to configure PHPDoc annotations tags and attributes.')
+                ->getOption(),
+            (new FixerOptionBuilder('annotation_exclude', 'Class level attribute or annotation tags that must be omitted to fix the class, even if all of the white list ones are used as well (case insensitive).'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues($annotationsAsserts)
+                ->setDefault(
+                    array_map(
+                        static function (string $string) {
+                            return '@'.$string;
+                        },
+                        self::DEFAULTS['exclude'],
+                    ),
+                )
+                ->setNormalizer($annotationsNormalizer)
+                ->setDeprecationMessage('Use `exclude` to configure PHPDoc annotations tags and attributes.')
+                ->getOption(),
             (new FixerOptionBuilder('include', 'Class level attribute or annotation tags that must be set in order to fix the class (case insensitive).'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
