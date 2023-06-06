@@ -80,7 +80,7 @@ final class ListFilesCommand extends Command
         /** @var \SplFileInfo $file */
         foreach ($finder as $file) {
             if ($file->isFile()) {
-                $relativePath = str_replace($cwd, '.', $file->getRealPath());
+                $relativePath = '.'.substr($file->getRealPath(), \strlen($cwd));
                 // unify directory separators across operating system
                 $relativePath = str_replace('/', \DIRECTORY_SEPARATOR, $relativePath);
 
