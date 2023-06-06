@@ -633,16 +633,37 @@ final class TypeExpressionTest extends TestCase
         ];
     }
 
-    private function checkInnerTypeExpressionsStartIndex(TypeExpression $typeExpression): void
+    /**
+     * @return list<array{int, string}|list>
+     */
+    private function checkInnerTypeExpressionsStartIndex(TypeExpression $typeExpression): array
     {
         $innerTypeExpressions = \Closure::bind(fn () => $typeExpression->innerTypeExpressions, null, TypeExpression::class)();
+
+        $res = [];
         foreach ($innerTypeExpressions as ['start_index' => $innerStartIndex, 'expression' => $innerExpression]) {
+            $innerExpressionStr = $innerExpression->toString();
             self::assertSame(
-                $innerExpression->toString(),
-                substr($typeExpression->toString(), $innerStartIndex, \strlen($innerExpression->toString()))
+                $innerExpressionStr,
+                substr($typeExpression->toString(), $innerStartIndex, \strlen($innerExpressionStr))
             );
 
-            $this->checkInnerTypeExpressionsStartIndex($innerExpression);
+            $res[] = [$innerStartIndex, $innerExpressionStr];
+
+            $res[] = $this->checkInnerTypeExpressionsStartIndex($innerExpression);
+        }
+
+        return $res;
+    }
+
+    private function clearPcreRegexCache(): void
+    {
+        // there is no explicit php function to clear PCRE regex cache, but based
+        // on https://www.php.net/manual/en/intro.pcre.php there are 4096 cache slots
+        // pruned in FIFO fashion, so to clear the cache, replace all existing
+        // cache slots with dummy regexes
+        for ($i = 0; $i < 4096; ++$i) {
+            preg_match('/^' . $i . '/', '');
         }
     }
 
@@ -655,15 +676,25 @@ final class TypeExpressionTest extends TestCase
     {
         $pcreJitBackup = \ini_get('pcre.jit');
 
+        $innerExpressionsDataWithoutJit = null;
+
         try {
-            foreach (['1'] as $pcreJit) {
-                ini_set('pcre.jit', $pcreJit);
+            foreach ([false, true] as $pcreJit) {
+                ini_set('pcre.jit', $pcreJit ? '1' : '0');
+                $this->clearPcreRegexCache();
 
                 $expression = new TypeExpression($value, null, []);
-                $this->checkInnerTypeExpressionsStartIndex($expression);
+                $innerExpressionsData = $this->checkInnerTypeExpressionsStartIndex($expression);
+
+                if (false === $pcreJit) {
+                    $innerExpressionsDataWithoutJit = $innerExpressionsData;
+                } else {
+                    self::assertSame($innerExpressionsDataWithoutJit, $innerExpressionsData);
+                }
             }
         } finally {
             ini_set('pcre.jit', $pcreJitBackup);
+            $this->clearPcreRegexCache();
         }
 
         return $expression;
