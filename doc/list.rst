@@ -17,6 +17,21 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Phpdoc\\AlignMultilineCommentFixer <./../src/Fixer/Phpdoc/AlignMultilineCommentFixer.php>`_
+-  `alphabetical_array_key_sort <./rules/array_notation/alphabetical_array_key_sort.rst>`_
+
+   Sorts keyed array by alphabetical order.
+
+   *warning risky* Risky when the order of the array has an impact on the code execution.
+
+   Configuration options:
+
+   - | ``sort_special_key_mode``
+     | Whether the special keys should be on top `special_case_on_top` or bottom (default) `special_case_on_bottom`.
+     | Allowed values: ``'special_case_on_bottom'``, ``'special_case_on_top'``
+     | Default value: ``'special_case_on_bottom'``
+
+
+   `Source PhpCsFixer\\Fixer\\ArrayNotation\\AlphabeticalArrayKeySortFixer <./../src/Fixer/ArrayNotation/AlphabeticalArrayKeySortFixer.php>`_
 -  `array_indentation <./rules/whitespace/array_indentation.rst>`_
 
    Each element of an array must be indented exactly once.

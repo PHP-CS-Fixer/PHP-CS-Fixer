@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,13 +15,16 @@
 namespace PhpCsFixer\Fixer\ArrayNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -27,14 +32,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Lars Grevelink <lars.grevelink@mobian.global>
  * @author Leander Philippo <lphilippo@adventive.es>
  */
-final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
-        // Return a definition of the fixer, it will be used in the documentation.
         return new FixerDefinition(
             'Sorts keyed array by alphabetical order.',
             [
@@ -55,37 +56,25 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_ARRAY) || $tokens->isTokenKindFound(CT::T_ARRAY_SQUARE_BRACE_OPEN);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->sortTokens($tokens);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('sort_special_key_mode', 'In which way to sort the special keys'))
+            (new FixerOptionBuilder('sort_special_key_mode', 'Whether the special keys should be on top `special_case_on_top` or bottom (default) `special_case_on_bottom`.'))
                 ->setAllowedValues(['special_case_on_bottom', 'special_case_on_top'])
                 ->setDefault('special_case_on_bottom')
                 ->getOption(),
