@@ -685,7 +685,7 @@ final class TypeExpressionTest extends TestCase
         // pruned in FIFO fashion, so to clear the cache, replace all existing
         // cache slots with dummy regexes
         for ($i = 0; $i < 4096; ++$i) {
-            preg_match('/^' . $i . '/', '');
+            preg_match('/^'.$i.'/', '');
         }
     }
 
