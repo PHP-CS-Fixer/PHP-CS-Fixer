@@ -24,7 +24,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
-use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -81,10 +80,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function sortTokens(Tokens $tokens)
+    protected function sortTokens(Tokens $tokens): void
     {
         $lastProcessedIndex = null;
         foreach ($tokens as $index => $token) {
@@ -95,7 +91,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
             if ($token->isGivenKind(T_ARRAY) || $token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                 $clonedTokens = clone $tokens;
 
-                list($startIndex, $endIndex) = $this->getArrayIndexes($tokens, $index);
+                [$startIndex, $endIndex] = $this->getArrayIndexes($tokens, $index);
 
                 $content = [];
                 while (null !== $startIndex && $startIndex < $endIndex) {
@@ -105,7 +101,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                     }
 
                     if ($tokens[$startIndex]->isGivenKind(T_DOUBLE_ARROW)) {
-                        list($key, $keyTokenIndex) = $this->getKeyAndEndPosition($clonedTokens, $startIndex);
+                        [$key, $keyTokenIndex] = $this->getKeyAndEndPosition($clonedTokens, $startIndex);
 
                         $valueTokenIndex = $tokens->getNextMeaningfulToken($startIndex);
 
@@ -143,8 +139,8 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                     $tokens->overrideRange(0, $tokens->count() - 1, $clonedTokens);
                 } else {
                     foreach (array_reverse($sorting, true) as $original => $replacement) {
-                        list($startOriginalIndex, $endOriginalIndex) = $content[$original];
-                        list($startReplacementIndex, $endReplacementIndex) = $content[$replacement];
+                        [$startOriginalIndex, $endOriginalIndex] = $content[$original];
+                        [$startReplacementIndex, $endReplacementIndex] = $content[$replacement];
 
                         $newTokens = \array_slice($clonedTokens->toArray(), $startReplacementIndex, $endReplacementIndex - $startReplacementIndex + 1);
 
@@ -159,10 +155,8 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
 
     /**
      * Calculation sorting score base on configuration.
-     *
-     * @return array
      */
-    protected function sortContentKeys(array $contentKeys)
+    protected function sortContentKeys(array $contentKeys): array
     {
         $sortMode = $this->configuration['sort_special_key_mode'];
         $specialSortDirection = ('special_case_on_top' === $sortMode) ? -1 : 1;
@@ -190,14 +184,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
         return $contentKeys;
     }
 
-    /**
-     * Get the key and the end position index.
-     *
-     * @param int $startIndex
-     *
-     * @return array
-     */
-    private function getKeyAndEndPosition(Tokens $clonedTokens, $startIndex)
+    private function getKeyAndEndPosition(Tokens $clonedTokens, int $startIndex): array
     {
         $prevItemEndIndex = $clonedTokens->getPrevMeaningfulToken($clonedTokens->getPrevMeaningfulToken($startIndex));
         $prevItemEndToken = $clonedTokens[$prevItemEndIndex];
@@ -252,14 +239,10 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
 
     /**
      * Sort nested array tokens and return the end index.
-     *
-     * @param int $index
-     *
-     * @return int
      */
-    private function sortNestedTokens(Tokens $clonedTokens, $index)
+    private function sortNestedTokens(Tokens $clonedTokens, int $index): int
     {
-        list($nestedTokenStartIndex, $nestedTokenEndIndex) = $this->getArrayIndexes($clonedTokens, $index);
+        [$nestedTokenStartIndex, $nestedTokenEndIndex] = $this->getArrayIndexes($clonedTokens, $index);
 
         $nestedArrayTokens = Tokens::fromArray(\array_slice($clonedTokens->toArray(), $nestedTokenStartIndex, $nestedTokenEndIndex - $nestedTokenStartIndex + 1));
 
@@ -277,11 +260,9 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
     /**
      * Get start and end index of an array.
      *
-     * @param int $startIndex
-     *
-     * @return array
+     * @return array<int, int>
      */
-    private function getArrayIndexes(Tokens $tokens, $startIndex)
+    private function getArrayIndexes(Tokens $tokens, int $startIndex): array
     {
         if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
             $startParentheses = $tokens->getNextTokenOfKind($startIndex, ['(']);
@@ -298,12 +279,8 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
 
     /**
      * Checks if the token represents a special key.
-     *
-     * @param string $value
-     *
-     * @return bool
      */
-    private function isSpecialKey($value)
+    private function isSpecialKey(string $value): bool
     {
         $tokens = Tokens::fromCode($value);
 
