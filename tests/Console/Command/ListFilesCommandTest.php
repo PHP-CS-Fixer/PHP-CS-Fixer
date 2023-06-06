@@ -42,6 +42,34 @@ final class ListFilesCommandTest extends TestCase
     }
 
     /**
+     * @requires OS Linux|Darwin
+     *
+     * Skip test on Windows as `getcwd()` includes the drive letter with a colon `:` which is illegal in filenames.
+     */
+    public function testListFilesDoesNotCorruptListWithGetcwdInName(): void
+    {
+        $cwd = getcwd();
+        self::assertIsString($cwd, 'Cannot get the current working directory.');
+
+        $tempFile = __DIR__.'/../../Fixtures/ListFilesTest/using-getcwd/'.ltrim($cwd, '/').'-out.php';
+        $tempDir = \dirname($tempFile);
+        mkdir($tempDir, 0777, true);
+        file_put_contents($tempFile, '<?php function a() {   }');
+        $tempFile = realpath($tempFile);
+        self::assertFileExists($tempFile);
+
+        $commandTester = $this->doTestExecute([
+            '--config' => __DIR__.'/../../Fixtures/ListFilesTest/.php-cs-fixer.using-getcwd.php',
+        ]);
+        $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, '.'.substr($tempFile, \strlen($cwd)));
+        self::assertSame(0, $commandTester->getStatusCode());
+        self::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
+
+        unlink($tempFile);
+        rmdir($tempDir);
+    }
+
+    /**
      * @param array<string, bool|string> $arguments
      */
     private function doTestExecute(array $arguments): CommandTester
