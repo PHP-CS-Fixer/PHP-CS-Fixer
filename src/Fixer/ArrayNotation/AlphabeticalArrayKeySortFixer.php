@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,11 +15,13 @@
 namespace PhpCsFixer\Fixer\ArrayNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -25,18 +29,15 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Abdurrahman Uymaz <abdurrahman.uymaz@mobian.global>
  * @author Lars Grevelink <lars.grevelink@mobian.global>
- * @author Leander Philippo <lphilippo@adventive.es>
+ * @author Leander Philippo <leander.philippo@mobian.global>
  */
-final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         // Return a definition of the fixer, it will be used in the documentation.
         return new FixerDefinition(
-            'Sorts keyed array by alphabetical order.',
+            'Sorts keyed arrays by alphabetical order.',
             [
                 new CodeSample(
                     "<?php\n\$sample = array('b' => '2', 'a' => '1', 'd' => '5');\n"
@@ -55,37 +56,25 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_ARRAY) || $tokens->isTokenKindFound(CT::T_ARRAY_SQUARE_BRACE_OPEN);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->sortTokens($tokens);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('sort_special_key_mode', 'In which way to sort the special keys'))
+            (new FixerOptionBuilder('sort_special_key_mode', 'Whether to sort the specials keys on the bottom `special_case_on_bottom` or top `special_case_on_top`.'))
                 ->setAllowedValues(['special_case_on_bottom', 'special_case_on_top'])
                 ->setDefault('special_case_on_bottom')
                 ->getOption(),
@@ -93,9 +82,9 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
     }
 
     /**
-     * {@inheritdoc}
+     * Sort the tokens in the correct order.
      */
-    protected function sortTokens(Tokens $tokens)
+    protected function sortTokens(Tokens $tokens): void
     {
         $lastProcessedIndex = null;
         foreach ($tokens as $index => $token) {
@@ -106,7 +95,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
             if ($token->isGivenKind(T_ARRAY) || $token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                 $clonedTokens = clone $tokens;
 
-                list($startIndex, $endIndex) = $this->getArrayIndexes($tokens, $index);
+                [$startIndex, $endIndex] = $this->getArrayIndexes($tokens, $index);
 
                 $content = [];
                 while (null !== $startIndex && $startIndex < $endIndex) {
@@ -116,7 +105,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                     }
 
                     if ($tokens[$startIndex]->isGivenKind(T_DOUBLE_ARROW)) {
-                        list($key, $keyTokenIndex) = $this->getKeyAndEndPosition($clonedTokens, $startIndex);
+                        [$key, $keyTokenIndex] = $this->getKeyAndEndPosition($clonedTokens, $startIndex);
 
                         $valueTokenIndex = $tokens->getNextMeaningfulToken($startIndex);
 
@@ -154,8 +143,8 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                     $tokens->overrideRange(0, $tokens->count() - 1, $clonedTokens);
                 } else {
                     foreach (array_reverse($sorting, true) as $original => $replacement) {
-                        list($startOriginalIndex, $endOriginalIndex) = $content[$original];
-                        list($startReplacementIndex, $endReplacementIndex) = $content[$replacement];
+                        [$startOriginalIndex, $endOriginalIndex] = $content[$original];
+                        [$startReplacementIndex, $endReplacementIndex] = $content[$replacement];
 
                         $newTokens = \array_slice($clonedTokens->toArray(), $startReplacementIndex, $endReplacementIndex - $startReplacementIndex + 1);
 
@@ -270,7 +259,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
      */
     private function sortNestedTokens(Tokens $clonedTokens, $index)
     {
-        list($nestedTokenStartIndex, $nestedTokenEndIndex) = $this->getArrayIndexes($clonedTokens, $index);
+        [$nestedTokenStartIndex, $nestedTokenEndIndex] = $this->getArrayIndexes($clonedTokens, $index);
 
         $nestedArrayTokens = Tokens::fromArray(\array_slice($clonedTokens->toArray(), $nestedTokenStartIndex, $nestedTokenEndIndex - $nestedTokenStartIndex + 1));
 
