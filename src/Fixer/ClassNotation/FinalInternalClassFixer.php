@@ -214,28 +214,47 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             return false; // ignore class; it is abstract or already final
         }
 
-        $attributeDecision = $phpDocDecision = null;
+        $decisions = [];
+        $currentIndex = $index;
 
-        if ($this->checkAttributes && $attributeIndex = $tokens->getPrevTokenOfKind($index, [[CT::T_ATTRIBUTE_CLOSE]])) {
-            $attributeDecision = $this->isClassCandidateBasedOnAttribute($tokens, $attributeIndex);
+        $acceptTypes = [
+            CT::T_ATTRIBUTE_CLOSE,
+            T_DOC_COMMENT,
+            T_COMMENT, // Skip comments
+            T_READONLY, // Skip readonly
+        ];
+
+        while ($currentIndex) {
+            $currentIndex = $tokens->getPrevNonWhitespace($currentIndex);
+
+            if (!$tokens[$currentIndex]->isGivenKind($acceptTypes)) {
+                break;
+            }
+
+            if ($this->checkAttributes && $tokens[$currentIndex]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                $attributeStartIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $currentIndex);
+                $decisions[] = $this->isClassCandidateBasedOnAttribute($tokens, $attributeStartIndex, $currentIndex);
+
+                $currentIndex = $attributeStartIndex;
+            }
+
+            if ($tokens[$currentIndex]->isGivenKind([T_DOC_COMMENT])) {
+                $decisions[] = $this->isClassCandidateBasedOnPhpDoc($tokens, $currentIndex);
+            }
         }
 
-        if ($commentIndex = $tokens->getPrevTokenOfKind($index, [[T_DOC_COMMENT]])) {
-            $phpDocDecision = $this->isClassCandidateBasedOnPhpDoc($tokens, $commentIndex);
-        }
-
-        if (false === $attributeDecision || false === $phpDocDecision) {
+        if (false !== array_search(false, $decisions, true)) {
             return false;
         }
 
-        if (true === $attributeDecision || true === $phpDocDecision) {
+        if (false !== array_search(true, $decisions, true)) {
             return true;
         }
 
-        return $this->configuration['consider_absent_docblock_as_internal_class'];
+        return !\count($decisions) && $this->configuration['consider_absent_docblock_as_internal_class'];
     }
 
-    private function isClassCandidateBasedOnPhpDoc(Tokens $tokens, int $index): bool
+    private function isClassCandidateBasedOnPhpDoc(Tokens $tokens, int $index): ?bool
     {
         $doc = new DocBlock($tokens[$index]->getContent());
         $tags = [];
@@ -255,41 +274,43 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             $tags[$tag] = true;
         }
 
-        return $this->isConfiguredAsInclude($tags);
-    }
-
-    private function isClassCandidateBasedOnAttribute(Tokens $tokens, int $index): bool
-    {
-        $attributeCandidates = [];
-
-        while ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-            $attributeStartIndex = $nextMeaningfulIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
-            $attributeString = '';
-
-            $attributes = [];
-            while ($nextMeaningfulIndex < $index && $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($nextMeaningfulIndex)) {
-                if (!$tokens[$nextMeaningfulIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
-                    if ($attributeString) {
-                        $attributeCandidates[$attributeString] = true;
-                        $attributeString = '';
-                    }
-
-                    continue;
-                }
-
-                $attributeString .= strtolower($tokens[$nextMeaningfulIndex]->getContent());
-            }
-
-            $index = $tokens->getPrevNonWhitespace($attributeStartIndex);
+        if ($this->isConfiguredAsInclude($tags)) {
+            return true;
         }
 
-        foreach ($attributeCandidates as $attributeCandidate => $true) {
+        return null;
+    }
+
+    private function isClassCandidateBasedOnAttribute(Tokens $tokens, int $startIndex, int $endIndex): ?bool
+    {
+        $attributeCandidates = [];
+        $attributeString = '';
+        $currentIndex = $startIndex;
+
+        while ($currentIndex < $endIndex && $currentIndex = $tokens->getNextMeaningfulToken($currentIndex)) {
+            if (!$tokens[$currentIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
+                if ($attributeString) {
+                    $attributeCandidates[$attributeString] = true;
+                    $attributeString = '';
+                }
+
+                continue;
+            }
+
+            $attributeString .= strtolower($tokens[$currentIndex]->getContent());
+        }
+
+        foreach (array_keys($attributeCandidates) as $attributeCandidate) {
             if (isset($this->configuration['exclude'][$attributeCandidate])) {
                 return false;
             }
         }
 
-        return $this->isConfiguredAsInclude($attributeCandidates);
+        if ($this->isConfiguredAsInclude($attributeCandidates)) {
+            return true;
+        }
+
+        return null;
     }
 
     /**

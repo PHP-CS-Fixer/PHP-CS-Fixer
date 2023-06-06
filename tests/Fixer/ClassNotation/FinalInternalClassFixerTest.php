@@ -149,6 +149,38 @@ abstract class class4 {}
                     {
                     }',
             ],
+            'multiple classes, first with internal annotation and second without internal annotation' => [
+                '<?php
+
+/** @internal */
+final class Foo {}
+
+class Bar {}
+',
+                '<?php
+
+/** @internal */
+class Foo {}
+
+class Bar {}
+',
+            ],
+            'multiple classes, first without internal annotation and second with internal annotation' => [
+                '<?php
+
+class Foo {}
+
+/** @internal */
+final class Bar {}
+',
+                '<?php
+
+class Foo {}
+
+/** @internal */
+class Bar {}
+',
+            ],
         ];
     }
 
@@ -422,7 +454,7 @@ class Foo {}',
             ['include' => ['internal']],
         ];
 
-        yield [
+        yield 'class that should be ignored as it has an attribute not included with absent docblock as true' => [
             '<?php
 #[StandWithUkraine]
 class Foo {}',
@@ -495,6 +527,34 @@ class PhpDocClass{}
             ],
         ];
 
+        yield 'multiple classes, first configured with attribute, second without attribute' => [
+            '<?php
+#[Internal]
+final class Foo {}
+
+class Bar {}',
+            '<?php
+#[Internal]
+class Foo {}
+
+class Bar {}',
+            ['include' => ['internal']],
+        ];
+
+        yield 'multiple classes, first configured without attribute, second with attribute' => [
+            '<?php
+class Foo {}
+
+#[Internal]
+final class Bar {}',
+            '<?php
+class Foo {}
+
+#[Internal]
+class Bar {}',
+            ['include' => ['internal']],
+        ];
+
         yield 'include by attribute, but exclude by doc' => [
             '<?php
 /** @final */
@@ -516,6 +576,26 @@ class Foo {}',
             [
                 'exclude' => ['Internal'],
                 'include' => ['A'],
+            ],
+        ];
+
+        yield 'comment between attributes' => [
+            '<?php
+#[A]
+/**
+ * @B
+ */
+#[C]
+final class Foo {}',
+            '<?php
+#[A]
+/**
+ * @B
+ */
+#[C]
+class Foo {}',
+            [
+                'include' => ['A', 'C'],
             ],
         ];
     }
