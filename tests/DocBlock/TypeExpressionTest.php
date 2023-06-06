@@ -653,7 +653,7 @@ final class TypeExpressionTest extends TestCase
      */
     private function parseTypeExpression(string $value, ?NamespaceAnalysis $namespace, array $namespaceUses): TypeExpression
     {
-        $pcreJitBackup = ini_get('pcre.jit');
+        $pcreJitBackup = \ini_get('pcre.jit');
 
         try {
             foreach (['1'] as $pcreJit) {

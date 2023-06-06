@@ -299,11 +299,10 @@ final class TypeExpression
 
         $this->typesGlue = $matches['glue'] ?? $this->typesGlue;
 
-        $index = '' !== $matches['nullable'] ? 1 : 0;
-
         if ($matches['type'] !== $matches['types']) {
             $this->isUnionType = true;
 
+            $index = 0;
             while (true) {
                 $innerType = $matches['type'];
 
@@ -332,6 +331,8 @@ final class TypeExpression
                 );
             }
         }
+
+        $index = '' !== $matches['nullable'] ? 1 : 0;
 
         if ('' !== ($matches['generic'] ?? '')) {
             $this->parseCommaSeparatedInnerTypes(
