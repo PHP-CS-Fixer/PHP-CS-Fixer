@@ -334,14 +334,15 @@ final class TypeExpression
             }
         }
 
-        $index = \strlen($matches['nullable'][0]);
+        $nullableLength = \strlen($matches['nullable'][0]);
+        $index = $nullableLength;
 
-        if ('' !== ($matches['generic'][0] ?? '')) {
+        if ('' !== ($matches['generic'][0] ?? '') && $matches['generic'][1] === $nullableLength) {
             $this->parseCommaSeparatedInnerTypes(
                 $index + \strlen($matches['generic_start'][0]),
                 $matches['generic_types'][0]
             );
-        } elseif ('' !== ($matches['callable'][0] ?? '')) {
+        } elseif ('' !== ($matches['callable'][0] ?? '') && $matches['callable'][1] === $nullableLength) {
             $this->parseCommaSeparatedInnerTypes(
                 $index + \strlen($matches['callable_start'][0]),
                 $matches['callable_arguments'][0] ?? ''
@@ -353,12 +354,12 @@ final class TypeExpression
                     'expression' => $this->inner($matches['callable_return'][0]),
                 ];
             }
-        } elseif ('' !== ($matches['object_like_array'][0] ?? '')) {
+        } elseif ('' !== ($matches['object_like_array'][0] ?? '') && $matches['object_like_array'][1] === $nullableLength) {
             $this->parseObjectLikeArrayInnerTypes(
                 $index + \strlen($matches['object_like_array_start'][0]),
                 $matches['object_like_array_inners'][0] ?? ''
             );
-        } elseif ('' !== ($matches['parenthesized'][0] ?? '')) {
+        } elseif ('' !== ($matches['parenthesized'][0] ?? '') && $matches['parenthesized'][1] === $nullableLength) {
             $index += \strlen($matches['parenthesized_start'][0]);
 
             if ('' !== ($matches['conditional'][0] ?? '')) {
