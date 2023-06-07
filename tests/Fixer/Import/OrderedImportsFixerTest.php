@@ -1077,7 +1077,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public function testUnknownOrderTypes(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Unknown sort types "foo", "bar".');
+        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Unknown sort types "foo" and "bar".');
 
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,

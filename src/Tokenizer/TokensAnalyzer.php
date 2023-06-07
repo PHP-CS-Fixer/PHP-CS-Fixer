@@ -286,6 +286,10 @@ final class TokensAnalyzer
 
         $index = $this->tokens->getPrevMeaningfulToken($index);
 
+        if (\defined('T_READONLY') && $this->tokens[$index]->isGivenKind(T_READONLY)) { // @TODO: drop condition when PHP 8.1+ is required
+            $index = $this->tokens->getPrevMeaningfulToken($index);
+        }
+
         while ($this->tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
             $index = $this->tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
             $index = $this->tokens->getPrevMeaningfulToken($index);

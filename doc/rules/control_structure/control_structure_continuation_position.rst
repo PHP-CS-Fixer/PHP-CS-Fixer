@@ -12,7 +12,7 @@ Configuration
 
 The position of the keyword that continues the control structure.
 
-Allowed values: ``'next_line'``, ``'same_line'``
+Allowed values: ``'next_line'`` and ``'same_line'``
 
 Default value: ``'same_line'``
 
@@ -62,6 +62,9 @@ The rule is part of the following rule sets:
 
 @PER
   Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``control_structure_continuation_position`` rule with the default config.
+
+@PER-CS1.0
+  Using the `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ rule set will enable the ``control_structure_continuation_position`` rule with the default config.
 
 @PSR2
   Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``control_structure_continuation_position`` rule with the default config.

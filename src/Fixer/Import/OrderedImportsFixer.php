@@ -28,6 +28,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
@@ -250,18 +251,18 @@ use Bar;
                         $missing = array_diff($supportedSortTypes, $value);
                         if (\count($missing) > 0) {
                             throw new InvalidOptionsException(sprintf(
-                                'Missing sort %s "%s".',
+                                'Missing sort %s %s.',
                                 1 === \count($missing) ? 'type' : 'types',
-                                implode('", "', $missing)
+                                Utils::naturalLanguageJoin($missing)
                             ));
                         }
 
                         $unknown = array_diff($value, $supportedSortTypes);
                         if (\count($unknown) > 0) {
                             throw new InvalidOptionsException(sprintf(
-                                'Unknown sort %s "%s".',
+                                'Unknown sort %s %s.',
                                 1 === \count($unknown) ? 'type' : 'types',
-                                implode('", "', $unknown)
+                                Utils::naturalLanguageJoin($unknown)
                             ));
                         }
                     }

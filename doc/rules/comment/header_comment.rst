@@ -21,7 +21,7 @@ This option is required.
 
 Comment syntax type.
 
-Allowed values: ``'comment'``, ``'PHPDoc'``
+Allowed values: ``'comment'`` and ``'PHPDoc'``
 
 Default value: ``'comment'``
 
@@ -30,7 +30,7 @@ Default value: ``'comment'``
 
 The location of the inserted header.
 
-Allowed values: ``'after_declare_strict'``, ``'after_open'``
+Allowed values: ``'after_declare_strict'`` and ``'after_open'``
 
 Default value: ``'after_declare_strict'``
 
@@ -39,7 +39,7 @@ Default value: ``'after_declare_strict'``
 
 Whether the header should be separated from the file content with a new line.
 
-Allowed values: ``'both'``, ``'bottom'``, ``'none'``, ``'top'``
+Allowed values: ``'both'``, ``'bottom'``, ``'none'`` and ``'top'``
 
 Default value: ``'both'``
 

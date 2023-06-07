@@ -207,6 +207,18 @@ class Example
 ',
                     ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA]
                 ),
+                new CodeSample(
+                    '<?php
+class Example
+{
+    public function Aa(){}
+    public function AA(){}
+    public function AwS(){}
+    public function AWs(){}
+}
+',
+                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA, 'case_sensitive' => true]
+                ),
             ],
             'Accepts a subset of pre-defined element types, special element groups, and custom patterns.
 
@@ -299,6 +311,10 @@ Custom values:
             (new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted.'))
                 ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_NONE)
+                ->getOption(),
+            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
                 ->getOption(),
         ]);
     }
@@ -570,7 +586,9 @@ Custom values:
         $selectedSortAlgorithm = $this->configuration['sort_algorithm'];
 
         if (self::SORT_ALPHA === $selectedSortAlgorithm) {
-            return strcasecmp($a['name'], $b['name']);
+            return $this->configuration['case_sensitive']
+                ? strcmp($a['name'], $b['name'])
+                : strcasecmp($a['name'], $b['name']);
         }
 
         return $a['start'] <=> $b['start'];

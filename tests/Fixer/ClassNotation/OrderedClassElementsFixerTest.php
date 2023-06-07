@@ -1364,6 +1364,52 @@ class Foo
 }
 EOT
             ],
+            [
+                ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA],
+                <<<'EOT'
+<?php
+
+class Foo
+{
+    const A_ = 1;
+    const AA = 2;
+    const Ab = 3;
+}
+EOT
+                , <<<'EOT'
+<?php
+
+class Foo
+{
+    const AA = 2;
+    const Ab = 3;
+    const A_ = 1;
+}
+EOT
+            ],
+            [
+                ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA, 'case_sensitive' => true],
+                <<<'EOT'
+<?php
+
+class Foo
+{
+    const AA = 2;
+    const A_ = 1;
+    const Ab = 3;
+}
+EOT
+                , <<<'EOT'
+<?php
+
+class Foo
+{
+    const AA = 2;
+    const Ab = 3;
+    const A_ = 1;
+}
+EOT
+            ],
         ];
     }
 
