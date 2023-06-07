@@ -23,7 +23,6 @@ use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
-use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Differ\DifferInterface;
@@ -776,7 +775,7 @@ final class ConfigurationResolver
                         '"%s" is renamed (did you mean "%s"?%s), ',
                         $unknownFixer,
                         $renamedRules[$unknownFixer]['new_name'],
-                        isset($renamedRules[$unknownFixer]['config']) ? ' (note: use configuration "'.HelpCommand::toString($renamedRules[$unknownFixer]['config']).'")' : ''
+                        isset($renamedRules[$unknownFixer]['config']) ? ' (note: use configuration "'.Utils::toString($renamedRules[$unknownFixer]['config']).'")' : ''
                     );
                 } else { // Go to normal matcher if it is not a renamed rule
                     $matcher = new WordMatcher($availableFixers);

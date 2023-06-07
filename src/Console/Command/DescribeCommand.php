@@ -210,8 +210,8 @@ final class DescribeCommand extends Command
                 } else {
                     $allowed = array_map(static function ($value): string {
                         return $value instanceof AllowedValueSubset
-                            ? 'a subset of <comment>'.HelpCommand::toString($value->getAllowedValues()).'</comment>'
-                            : '<comment>'.HelpCommand::toString($value).'</comment>';
+                            ? 'a subset of <comment>'.Utils::toString($value->getAllowedValues()).'</comment>'
+                            : '<comment>'.Utils::toString($value).'</comment>';
                     }, $allowed);
                 }
 
@@ -223,7 +223,7 @@ final class DescribeCommand extends Command
                 if ($option->hasDefault()) {
                     $line .= sprintf(
                         'defaults to <comment>%s</comment>',
-                        HelpCommand::toString($option->getDefault())
+                        Utils::toString($option->getDefault())
                     );
                 } else {
                     $line .= '<comment>required</comment>';
@@ -296,7 +296,7 @@ final class DescribeCommand extends Command
                     if (null === $configuration) {
                         $output->writeln(sprintf(' * Example #%d. Fixing with the <comment>default</comment> configuration.', $index + 1));
                     } else {
-                        $output->writeln(sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, HelpCommand::toString($codeSample->getConfiguration())));
+                        $output->writeln(sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, Utils::toString($codeSample->getConfiguration())));
                     }
                 } else {
                     $output->writeln(sprintf(' * Example #%d.', $index + 1));
@@ -349,7 +349,7 @@ final class DescribeCommand extends Command
                 $rule,
                 $fixer->isRisky() ? ' <error>risky</error>' : '',
                 $definition->getSummary(),
-                true !== $config ? sprintf("   <comment>| Configuration: %s</comment>\n", HelpCommand::toString($config)) : ''
+                true !== $config ? sprintf("   <comment>| Configuration: %s</comment>\n", Utils::toString($config)) : ''
             );
         }
 
