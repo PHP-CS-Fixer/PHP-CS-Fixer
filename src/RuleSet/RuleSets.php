@@ -73,12 +73,15 @@ final class RuleSets
         return $definitions[$name];
     }
 
+    /**
+     * @param class-string<RuleSetDescriptionInterface> $class
+     */
     public static function registerRuleSet(string $name, string $class): bool
     {
         $preg = new Preg();
 
-        if (1 !== $preg->match('/^@[a-z0-9]+$/i', $name)) {
-            throw new \InvalidArgumentException('RuleSet name can contain only letters (a-z, A-Z) and numbers, and it must begin with @.');
+        if (1 !== $preg->match('/^@[a-z0-9_\/\.-]+$/i', $name)) {
+            throw new \InvalidArgumentException('RuleSet name can contain only letters (a-z, A-Z), numbers, underscores, slashes, dots, hyphens, and it must begin with @.');
         }
 
         if (!class_exists($class, true)) {
@@ -93,7 +96,7 @@ final class RuleSets
 
         $set = new $class();
 
-        if (!$set instanceof RuleSetDescriptionInterface) {
+        if (!\in_array(RuleSetDescriptionInterface::class, class_implements($set), true)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Class "%s" does must be an instance of "%s".',

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
@@ -189,6 +190,15 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
+    /**
+     * Adds custom rule sets.
+     *
+     * `$ruleSets` must follow `'@RuleName' => RuleSetDescriptionInterface::class` convention.
+     *
+     * @param array<string, class-string<RuleSetDescriptionInterface>> $ruleSets
+     *
+     * @todo Introduce it in ConfigInterface in 4.0
+     */
     public function registerCustomRuleSets(array $ruleSets): ConfigInterface
     {
         foreach ($ruleSets as $name => $class) {
