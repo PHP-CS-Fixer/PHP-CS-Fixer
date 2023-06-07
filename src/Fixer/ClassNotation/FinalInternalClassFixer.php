@@ -324,13 +324,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             return true;
         }
 
-        foreach ($this->configuration['include'] as $tag => $true) {
-            if (isset($attributes[$tag])) {
-                return true;
-            }
-        }
-
-        return false;
+        return count(array_intersect_key($this->configuration['include'], $attributes)) > 0;
     }
 
     private function assertConfigHasNoConflicts(): void
