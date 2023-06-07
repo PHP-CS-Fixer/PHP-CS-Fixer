@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Token;
  *
  * @internal
  *
- * @deprecated This is a God Class antipattern. Don't extend it. It is fine to use logic that is already here [so we don't trigger deprecation warnings], but over time logic should move to dedicated, single-responsibility classes.
+ * @deprecated This is a God Class anti-pattern. Don't expand it. It is fine to use logic that is already here (that's why we don't trigger deprecation warnings), but over time logic should be moved to dedicated, single-responsibility classes.
  */
 final class Utils
 {
