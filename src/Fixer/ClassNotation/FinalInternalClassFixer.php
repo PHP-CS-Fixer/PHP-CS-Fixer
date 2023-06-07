@@ -304,10 +304,8 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             $attributeString .= strtolower($tokens[$currentIndex]->getContent());
         }
 
-        foreach (array_keys($attributeCandidates) as $attributeCandidate) {
-            if (isset($this->configuration['exclude'][$attributeCandidate])) {
-                return false;
-            }
+        if (count(array_intersect_key($this->configuration['exclude'], $attributeCandidates)) > 0) {
+            return false;
         }
 
         if ($this->isConfiguredAsInclude($attributeCandidates)) {
