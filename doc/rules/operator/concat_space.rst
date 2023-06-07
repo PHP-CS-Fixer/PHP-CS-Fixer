@@ -12,7 +12,7 @@ Configuration
 
 Spacing to apply around concatenation operator.
 
-Allowed values: ``'none'``, ``'one'``
+Allowed values: ``'none'`` and ``'one'``
 
 Default value: ``'none'``
 

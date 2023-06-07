@@ -289,8 +289,8 @@ final class FixerFactoryTest extends TestCase
         self::assertSame(
             'Rule contains conflicting fixers:
 - "a" with "b"
-- "c" with "d", "e", "f"
-- "d" with "g", "h"
+- "c" with "d", "e" and "f"
+- "d" with "g" and "h"
 - "e" with "a"',
             $method->invoke(
                 $factory,

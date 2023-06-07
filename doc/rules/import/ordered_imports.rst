@@ -13,7 +13,7 @@ Configuration
 Whether the statements should be sorted alphabetically or by length, or not
 sorted.
 
-Allowed values: ``'alpha'``, ``'length'``, ``'none'``
+Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
 
 Default value: ``'alpha'``
 
@@ -22,7 +22,7 @@ Default value: ``'alpha'``
 
 Defines the order of import types.
 
-Allowed types: ``array``, ``null``
+Allowed types: ``array`` and ``null``
 
 Default value: ``null``
 

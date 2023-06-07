@@ -50,7 +50,7 @@ Default value: ``['null', 'false', 'true']``
 
 Only fix constant invocations that are made within a namespace or fix all.
 
-Allowed values: ``'all'``, ``'namespaced'``
+Allowed values: ``'all'`` and ``'namespaced'``
 
 Default value: ``'all'``
 

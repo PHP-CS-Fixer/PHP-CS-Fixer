@@ -30,6 +30,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
@@ -198,8 +199,8 @@ class Sample
                         if (!\in_array($type, $supportedTypes, true)) {
                             throw new InvalidOptionsException(
                                 sprintf(
-                                    'Unexpected element type, expected any of "%s", got "%s".',
-                                    implode('", "', $supportedTypes),
+                                    'Unexpected element type, expected any of %s, got "%s".',
+                                    Utils::naturalLanguageJoin($supportedTypes),
                                     \gettype($type).'#'.$type
                                 )
                             );
@@ -210,9 +211,9 @@ class Sample
                         if (!\in_array($spacing, $supportedSpacings, true)) {
                             throw new InvalidOptionsException(
                                 sprintf(
-                                    'Unexpected spacing for element type "%s", expected any of "%s", got "%s".',
+                                    'Unexpected spacing for element type "%s", expected any of %s, got "%s".',
                                     $spacing,
-                                    implode('", "', $supportedSpacings),
+                                    Utils::naturalLanguageJoin($supportedSpacings),
                                     \is_object($spacing) ? \get_class($spacing) : (null === $spacing ? 'null' : \gettype($spacing).'#'.$spacing)
                                 )
                             );

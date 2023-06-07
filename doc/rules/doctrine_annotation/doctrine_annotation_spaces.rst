@@ -46,7 +46,7 @@ Default value: ``true``
 
 Whether to add, remove or ignore spaces before argument assignment operator.
 
-Allowed types: ``null``, ``bool``
+Allowed types: ``null`` and ``bool``
 
 Default value: ``false``
 
@@ -55,7 +55,7 @@ Default value: ``false``
 
 Whether to add, remove or ignore spaces after argument assignment operator.
 
-Allowed types: ``null``, ``bool``
+Allowed types: ``null`` and ``bool``
 
 Default value: ``false``
 
@@ -64,7 +64,7 @@ Default value: ``false``
 
 Whether to add, remove or ignore spaces before array ``=`` assignment operator.
 
-Allowed types: ``null``, ``bool``
+Allowed types: ``null`` and ``bool``
 
 Default value: ``true``
 
@@ -73,7 +73,7 @@ Default value: ``true``
 
 Whether to add, remove or ignore spaces after array assignment ``=`` operator.
 
-Allowed types: ``null``, ``bool``
+Allowed types: ``null`` and ``bool``
 
 Default value: ``true``
 
@@ -82,7 +82,7 @@ Default value: ``true``
 
 Whether to add, remove or ignore spaces before array ``:`` assignment operator.
 
-Allowed types: ``null``, ``bool``
+Allowed types: ``null`` and ``bool``
 
 Default value: ``true``
 
@@ -91,7 +91,7 @@ Default value: ``true``
 
 Whether to add, remove or ignore spaces after array assignment ``:`` operator.
 
-Allowed types: ``null``, ``bool``
+Allowed types: ``null`` and ``bool``
 
 Default value: ``true``
 

@@ -12,7 +12,7 @@ Configuration
 
 Style of empty loop-bodies.
 
-Allowed values: ``'braces'``, ``'semicolon'``
+Allowed values: ``'braces'`` and ``'semicolon'``
 
 Default value: ``'semicolon'``
 

@@ -176,13 +176,13 @@ class F
         return [
             [
                 ['replacements' => [1 => 'a']],
-                'Invalid configuration: Unknown key "integer#1", expected any of "this", "@this", "$self", "@self", "$static", "@static".',
+                'Invalid configuration: Unknown key "integer#1", expected any of "this", "@this", "$self", "@self", "$static" and "@static".',
             ],
             [
                 ['replacements' => [
                     'this' => 'foo',
                 ]],
-                'Invalid configuration: Unknown value "string#foo", expected any of "$this", "static", "self".',
+                'Invalid configuration: Unknown value "string#foo", expected any of "$this", "static" and "self".',
             ],
         ];
     }

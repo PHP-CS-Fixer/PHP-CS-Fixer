@@ -620,6 +620,178 @@ var names are case-insensitive */ return $a   ;}
                     }
                 ',
             ],
+            'try catch' => [
+                '<?php
+                function foo()
+                {
+                    if (isSomeCondition()) {
+                        return getSomeResult();
+                    }
+
+                    try {
+                        $result = getResult();
+
+                        return $result;
+                    } catch (\Throwable $exception) {
+                        baz($result ?? null);
+                    }
+                }
+                ',
+                '<?php
+                function foo()
+                {
+                    if (isSomeCondition()) {
+                        $result = getSomeResult();
+
+                        return $result;
+                    }
+
+                    try {
+                        $result = getResult();
+
+                        return $result;
+                    } catch (\Throwable $exception) {
+                        baz($result ?? null);
+                    }
+                }
+                ',
+            ],
+            'multiple try/catch blocks separated with conditional return' => [
+                '<?php
+                function foo()
+                {
+                    try {
+                        return getResult();
+                    } catch (\Throwable $exception) {
+                        error_log($exception->getMessage());
+                    }
+
+                    if (isSomeCondition()) {
+                        return getSomeResult();
+                    }
+
+                    try {
+                        $result = $a + $b;
+                        return $result;
+                    } catch (\Throwable $th) {
+                        var_dump($result ?? null);
+                    }
+                }
+                ',
+                '<?php
+                function foo()
+                {
+                    try {
+                        $result = getResult();
+                        return $result;
+                    } catch (\Throwable $exception) {
+                        error_log($exception->getMessage());
+                    }
+
+                    if (isSomeCondition()) {
+                        $result = getSomeResult();
+                        return $result;
+                    }
+
+                    try {
+                        $result = $a + $b;
+                        return $result;
+                    } catch (\Throwable $th) {
+                        var_dump($result ?? null);
+                    }
+                }
+                ',
+            ],
+            'try/catch/finally' => [
+                '<?php
+                function foo()
+                {
+                    if (isSomeCondition()) {
+                        return getSomeResult();
+                    }
+
+                    try {
+                        $result = getResult();
+
+                        return $result;
+                    } catch (\Throwable $exception) {
+                        error_log($exception->getMessage());
+                    } finally {
+                        baz($result);
+                    }
+                }
+                ',
+                '<?php
+                function foo()
+                {
+                    if (isSomeCondition()) {
+                        $result = getSomeResult();
+
+                        return $result;
+                    }
+
+                    try {
+                        $result = getResult();
+
+                        return $result;
+                    } catch (\Throwable $exception) {
+                        error_log($exception->getMessage());
+                    } finally {
+                        baz($result);
+                    }
+                }
+                ',
+            ],
+            'multiple try/catch separated with conditional return, with finally block' => [
+                '<?php
+                function foo()
+                {
+                    try {
+                        return getResult();
+                    } catch (\Throwable $exception) {
+                        error_log($exception->getMessage());
+                    }
+
+                    if (isSomeCondition()) {
+                        return getSomeResult();
+                    }
+
+                    try {
+                        $result = $a + $b;
+                        return $result;
+                    } catch (\Throwable $th) {
+                        throw $th;
+                    } finally {
+                        echo "result:", $result, \PHP_EOL;
+                    }
+                }
+                ',
+                '<?php
+                function foo()
+                {
+                    try {
+                        $result = getResult();
+                        return $result;
+                    } catch (\Throwable $exception) {
+                        error_log($exception->getMessage());
+                    }
+
+                    if (isSomeCondition()) {
+                        $result = getSomeResult();
+                        return $result;
+                    }
+
+                    try {
+                        $result = $a + $b;
+                        return $result;
+                    } catch (\Throwable $th) {
+                        throw $th;
+                    } finally {
+                        echo "result:", $result, \PHP_EOL;
+                    }
+                }
+                ',
+            ],
         ];
     }
 
@@ -977,6 +1149,90 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                 }
                 ',
             ],
+            'try/catch/finally' => [
+                '<?php
+                function add($a, $b): mixed
+                {
+                    try {
+                        $result = $a + $b;
+
+                        return $result;
+                    } catch (\Throwable $th) {
+                        throw $th;
+                    } finally {
+                        echo \'result:\', $result, \PHP_EOL;
+                    }
+                }
+                ',
+            ],
+            'try with multiple catch blocks' => [
+                '<?php
+                function foo() {
+                    try {
+                        $bar = bar();
+
+                        return $bar;
+                    } catch (\LogicException $e) {
+                        echo "catch ... ";
+                    } catch (\RuntimeException $e) {
+                        echo $bar;
+                    }
+                }',
+            ],
+            'try/catch/finally with some comments' => [
+                '<?php
+                function add($a, $b): mixed
+                {
+                    try {
+                        $result = $a + $b;
+
+                        return $result;
+                    } /* foo */ catch /** bar */ (\LogicException $th) {
+                        throw $th;
+                    }
+                    // Or maybe this....
+                    catch (\RuntimeException $th) {
+                        throw $th;
+                    }
+                    # Print the result anyway
+                    finally {
+                        echo \'result:\', $result, \PHP_EOL;
+                    }
+                }
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideDoNotFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testDoNotFix80(string $expected): void
+    {
+        $this->doTest($expected);
+    }
+
+    public static function provideDoNotFix80Cases(): iterable
+    {
+        yield 'try with non-capturing catch block' => [
+            '<?php
+                function add($a, $b): mixed
+                {
+                    try {
+                        $result = $a + $b;
+
+                        return $result;
+                    }
+                    catch (\Throwable) {
+                        noop();
+                    }
+                    finally {
+                        echo \'result:\', $result, \PHP_EOL;
+                    }
+                }
+                ',
         ];
     }
 

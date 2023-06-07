@@ -12,7 +12,7 @@ Configuration
 
 The position of the opening brace of control structures‘ body.
 
-Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
 Default value: ``'same_line'``
 
@@ -21,7 +21,7 @@ Default value: ``'same_line'``
 
 The position of the opening brace of functions‘ body.
 
-Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
 Default value: ``'next_line_unless_newline_at_signature_end'``
 
@@ -30,7 +30,7 @@ Default value: ``'next_line_unless_newline_at_signature_end'``
 
 The position of the opening brace of anonymous functions‘ body.
 
-Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
 Default value: ``'same_line'``
 
@@ -39,7 +39,7 @@ Default value: ``'same_line'``
 
 The position of the opening brace of classes‘ body.
 
-Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
 Default value: ``'next_line_unless_newline_at_signature_end'``
 
@@ -48,7 +48,7 @@ Default value: ``'next_line_unless_newline_at_signature_end'``
 
 The position of the opening brace of anonymous classes‘ body.
 
-Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
 Default value: ``'same_line'``
 
