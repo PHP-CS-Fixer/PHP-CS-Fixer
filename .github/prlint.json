@@ -1,8 +1,8 @@
 {
   "title": [
     {
-      "pattern": "^(feature|bug|minor|docs|DX|chore):\\s.+\\S$",
-      "message": "Your title needs to match the convention: use '(feature|bug|minor|docs|DX|chore):' prefix."
+      "pattern": "^(feat(ure)?|bug|chore|CI|docs|DX|refactor|test)(\\([a-zA-Z0-9]+\\))?:\\s{1}.+\\S$",
+      "message": "PR title does not meet requirement, use Conventional Commits format using one of these categories: feature, bug, chore, ci, docs, DX, refactor, test"
     },
     {
       "pattern": "((?<=`)@\\S*`)|(^[^@]*$)",
