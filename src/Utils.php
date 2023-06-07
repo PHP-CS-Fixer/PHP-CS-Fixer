@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Token;
  * @author Odín del Río <odin.drp@gmail.com>
  *
  * @internal
+ *
+ * @deprecated This is a God Class antipattern. Don't extend it. It is fine to use logic that is already here [so we don't trigger deprecation warnings], but over time logic should move to dedicated, single-responsibility classes.
  */
 final class Utils
 {
