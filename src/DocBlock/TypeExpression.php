@@ -31,6 +31,14 @@ final class TypeExpression
      */
     public const REGEX_TYPES = '
     (?<types> # several types separated by `|` or `&`
+'.self::REGEX_TYPE.'
+        (?:
+            \h*(?<glue>[|&])\h*
+            (?&type)
+        )*+
+    )';
+
+    private const REGEX_TYPE = '
         (?<type> # single type
             (?<nullable>\??\h*)
             (?:
@@ -39,7 +47,7 @@ final class TypeExpression
                         (?<object_like_array_inners>
                             (?<object_like_array_inner>
                                 (?<object_like_array_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
-                                (?<object_like_array_inner_value>(?&types))
+                                (?<object_like_array_inner_value>(?&types_inner))
                             )
                             (?:
                                 \h*,\h*
@@ -53,10 +61,10 @@ final class TypeExpression
                 (?<callable> # callable syntax, e.g. `callable(string): bool`
                     (?<callable_start>(?:callable|\\\\?Closure)\h*\(\h*)
                         (?<callable_arguments>
-                            (?&types)
+                            (?&types_inner)
                             (?:
                                 \h*,\h*
-                                (?&types)
+                                (?&types_inner)
                             )*
                             (?:\h*,\h*)?
                         )?
@@ -73,10 +81,10 @@ final class TypeExpression
                         \h*<\h*
                     )
                         (?<generic_types>
-                            (?&types)
+                            (?&types_inner)
                             (?:
                                 \h*,\h*
-                                (?&types)
+                                (?&types_inner)
                             )*
                         )
                     \h*>
@@ -117,23 +125,23 @@ final class TypeExpression
                     )
                     (?:
                         (?<parenthesized_types>
-                            (?&types)
+                            (?&types_inner)
                         )
                         |
                         (?<conditional> # conditional type, e.g.: `$foo is \Throwable ? false : $foo`
                             (?<conditional_cond_left>
                                 (?:\$(?&identifier))
                                 |
-                                (?<conditional_cond_left_types>(?&types))
+                                (?<conditional_cond_left_types>(?&types_inner))
                             )
                             (?<conditional_cond_middle>
                                 \h+(?i)is(?:\h+not)?(?-i)\h+
                             )
-                            (?<conditional_cond_right_types>(?&types))
+                            (?<conditional_cond_right_types>(?&types_inner))
                             (?<conditional_true_start>\h*\?\h*)
-                            (?<conditional_true_types>(?&types))
+                            (?<conditional_true_types>(?&types_inner))
                             (?<conditional_false_start>\h*:\h*)
-                            (?<conditional_false_types>(?&types))
+                            (?<conditional_false_types>(?&types_inner))
                         )
                     )
                     \h*\)
@@ -142,13 +150,16 @@ final class TypeExpression
             (?<array> # array, e.g.: `string[]`, `array<int, string>[][]`
                 (\h*\[\h*\])*
             )
-        )
-        (?:
-            \h*(?<glue>[|&])\h*
-            (?&type)
-        )*
-    )
-    ';
+            (?:(?=1)0
+                (?<types_inner>
+                    (?&type)
+                    (?:
+                        \h*[|&]\h*
+                        (?&type)
+                    )*+
+                )
+            |)
+        )';
 
     private string $value;
 
@@ -285,53 +296,45 @@ final class TypeExpression
 
     private function parse(): void
     {
-        $value = $this->value;
+        $index = 0;
+        while (true) {
+            Preg::match(
+                '{\G'.self::REGEX_TYPE.'(?:\h*(?<glue>[|&])\h*|$)}x',
+                $this->value,
+                $matches,
+                0,
+                $index
+            );
 
-        Preg::match(
-            '{^'.self::REGEX_TYPES.'$}x',
-            $value,
-            $matches
-        );
+            if ([] === $matches) { // invalid phpdoc type
+                // TODO once all phpdoc types are parsed strictly using self::REGEX_TYPES,
+                // the parse cannot fail and we can throw here safely
+                return;
+            }
 
-        if ([] === $matches) {
-            return;
-        }
-
-        $this->typesGlue = $matches['glue'] ?? $this->typesGlue;
-
-        $index = '' !== $matches['nullable'] ? 1 : 0;
-
-        if ($matches['type'] !== $matches['types']) {
-            $this->isUnionType = true;
-
-            while (true) {
-                $innerType = $matches['type'];
-
-                $newValue = Preg::replace(
-                    '/^'.preg_quote($innerType, '/').'(\h*[|&]\h*)?/',
-                    '',
-                    $value
-                );
-
-                $this->innerTypeExpressions[] = [
-                    'start_index' => $index,
-                    'expression' => $this->inner($innerType),
-                ];
-
-                if ('' === $newValue) {
-                    return;
+            if (!$this->isUnionType) {
+                if (($matches['glue'] ?? '') === '') {
+                    break;
                 }
 
-                $index += \strlen($value) - \strlen($newValue);
-                $value = $newValue;
+                $this->isUnionType = true;
+                $this->typesGlue = $matches['glue'];
+            }
 
-                Preg::match(
-                    '{^'.self::REGEX_TYPES.'$}x',
-                    $value,
-                    $matches
-                );
+            $this->innerTypeExpressions[] = [
+                'start_index' => $index,
+                'expression' => $this->inner($matches['type']),
+            ];
+
+            $consumedValueLength = \strlen($matches[0]);
+            $index += $consumedValueLength;
+
+            if (\strlen($this->value) === $index) {
+                return;
             }
         }
+
+        $index = '' !== $matches['nullable'] ? 1 : 0;
 
         if ('' !== ($matches['generic'] ?? '')) {
             $this->parseCommaSeparatedInnerTypes(
@@ -348,8 +351,7 @@ final class TypeExpression
                 $matches['callable_arguments'] ?? ''
             );
 
-            $return = $matches['callable_return'] ?? null;
-            if (null !== $return) {
+            if ('' !== ($matches['callable_return'] ?? '')) {
                 $this->innerTypeExpressions[] = [
                     'start_index' => \strlen($this->value) - \strlen($matches['callable_return']),
                     'expression' => $this->inner($matches['callable_return']),
@@ -412,33 +414,37 @@ final class TypeExpression
 
     private function parseCommaSeparatedInnerTypes(int $startIndex, string $value): void
     {
-        while ('' !== $value) {
+        $index = 0;
+        while (\strlen($value) !== $index) {
             Preg::match(
-                '{^'.self::REGEX_TYPES.'(?:\h*,\h*|$)}x',
+                '{\G'.self::REGEX_TYPES.'(?:\h*,\h*|$)}x',
                 $value,
-                $matches
+                $matches,
+                0,
+                $index
             );
 
             $this->innerTypeExpressions[] = [
-                'start_index' => $startIndex,
+                'start_index' => $startIndex + $index,
                 'expression' => $this->inner($matches['types']),
             ];
 
-            $consumedValueLength = \strlen($matches[0]);
-            $startIndex += $consumedValueLength;
-            $value = substr($value, $consumedValueLength);
+            $index += \strlen($matches[0]);
         }
     }
 
     private function parseObjectLikeArrayInnerTypes(int $startIndex, string $value): void
     {
-        while ('' !== $value) {
+        $index = 0;
+        while (\strlen($value) !== $index) {
             Preg::match(
-                '{^(?:(?=1)0'.self::REGEX_TYPES.'|(?<object_like_array_inner2>(?&object_like_array_inner))(?:\h*,\h*)?)}x',
+                '{\G(?:(?=1)0'.self::REGEX_TYPES.'|(?<_object_like_array_inner>(?&object_like_array_inner))(?:\h*,\h*|$))}x',
                 $value,
-                $prematches
+                $prematches,
+                0,
+                $index
             );
-            $consumedValue = $prematches['object_like_array_inner2'];
+            $consumedValue = $prematches['_object_like_array_inner'];
             $consumedValueLength = \strlen($consumedValue);
             $consumedCommaLength = \strlen($prematches[0]) - $consumedValueLength;
 
@@ -451,12 +457,11 @@ final class TypeExpression
             );
 
             $this->innerTypeExpressions[] = [
-                'start_index' => $startIndex + $matches['object_like_array_inner_value'][1] - \strlen($addedPrefix),
+                'start_index' => $startIndex + $index + $matches['object_like_array_inner_value'][1] - \strlen($addedPrefix),
                 'expression' => $this->inner($matches['object_like_array_inner_value'][0]),
             ];
 
-            $startIndex += $consumedValueLength + $consumedCommaLength;
-            $value = substr($value, $consumedValueLength + $consumedCommaLength);
+            $index += $consumedValueLength + $consumedCommaLength;
         }
     }
 
