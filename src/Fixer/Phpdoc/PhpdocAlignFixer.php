@@ -103,6 +103,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         $tagsWithMethodSignatureToAlign = array_intersect($this->configuration['tags'], self::TAGS_WITH_METHOD_SIGNATURE);
         $tagsWithoutNameToAlign = array_diff($this->configuration['tags'], $tagsWithNameToAlign, $tagsWithMethodSignatureToAlign);
 
+        $indentRegex = '^(?P<indent>(?:\ {2}|\t)*)\ ?';
+
         $types = [];
 
         // e.g. @param <hint> <$var>
@@ -123,7 +125,6 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         // optional <desc>
         $desc = '(?:\s+(?P<desc>\V*))';
 
-        $indentRegex = '^(?P<indent>(?:\ {2}|\t)*)\ ?';
         $this->regex = '/'.$indentRegex.'\*\h*@(?J)(?:'.implode('|', $types).')'.$desc.'\h*\r?$/x';
         $this->regexCommentLine = '/'.$indentRegex.'\*(?!\h?+@)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/';
         $this->align = $this->configuration['align'];
