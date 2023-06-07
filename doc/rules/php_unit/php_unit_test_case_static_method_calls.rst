@@ -22,7 +22,7 @@ Configuration
 
 The call type to use for referring to PHPUnit methods.
 
-Allowed values: ``'self'``, ``'static'``, ``'this'``
+Allowed values: ``'self'``, ``'static'`` and ``'this'``
 
 Default value: ``'static'``
 

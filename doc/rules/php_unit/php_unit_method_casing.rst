@@ -12,7 +12,7 @@ Configuration
 
 Apply camel or snake case to test methods.
 
-Allowed values: ``'camel_case'``, ``'snake_case'``
+Allowed values: ``'camel_case'`` and ``'snake_case'``
 
 Default value: ``'camel_case'``
 

@@ -44,7 +44,7 @@ Whether the opening brace should be placed on "next" or "same" line after classy
 constructs (non-anonymous classes, interfaces, traits, methods and non-lambda
 functions).
 
-Allowed values: ``'next'``, ``'same'``
+Allowed values: ``'next'`` and ``'same'``
 
 Default value: ``'next'``
 
@@ -54,7 +54,7 @@ Default value: ``'next'``
 Whether the opening brace should be placed on "next" or "same" line after
 control structures.
 
-Allowed values: ``'next'``, ``'same'``
+Allowed values: ``'next'`` and ``'same'``
 
 Default value: ``'same'``
 
@@ -64,7 +64,7 @@ Default value: ``'same'``
 Whether the opening brace should be placed on "next" or "same" line after
 anonymous constructs (anonymous classes and lambda functions).
 
-Allowed values: ``'next'``, ``'same'``
+Allowed values: ``'next'`` and ``'same'``
 
 Default value: ``'same'``
 

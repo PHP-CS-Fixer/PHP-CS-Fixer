@@ -26,6 +26,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 
@@ -145,17 +146,17 @@ class Sample
 
                         if (!isset($default[$from])) {
                             throw new InvalidOptionsException(sprintf(
-                                'Unknown key "%s", expected any of "%s".',
+                                'Unknown key "%s", expected any of %s.',
                                 \gettype($from).'#'.$from,
-                                implode('", "', array_keys($default))
+                                Utils::naturalLanguageJoin(array_keys($default))
                             ));
                         }
 
                         if (!\in_array($to, self::$toTypes, true)) {
                             throw new InvalidOptionsException(sprintf(
-                                'Unknown value "%s", expected any of "%s".',
+                                'Unknown value "%s", expected any of %s.',
                                 \is_object($to) ? \get_class($to) : \gettype($to).(\is_resource($to) ? '' : '#'.$to),
-                                implode('", "', self::$toTypes)
+                                Utils::naturalLanguageJoin(self::$toTypes)
                             ));
                         }
 

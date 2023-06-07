@@ -116,16 +116,16 @@ RST;
                         $allowedKind = 'Allowed values';
                         $allowed = array_map(static function ($value): string {
                             return $value instanceof AllowedValueSubset
-                                ? 'a subset of ``'.HelpCommand::toString($value->getAllowedValues()).'``'
-                                : '``'.HelpCommand::toString($value).'``';
+                                ? 'a subset of ``'.Utils::toString($value->getAllowedValues()).'``'
+                                : '``'.Utils::toString($value).'``';
                         }, $allowed);
                     }
 
-                    $allowed = implode(', ', $allowed);
+                    $allowed = Utils::naturalLanguageJoin($allowed, '');
                     $documentation .= "\n     | {$allowedKind}: {$allowed}";
 
                     if ($option->hasDefault()) {
-                        $default = HelpCommand::toString($option->getDefault());
+                        $default = Utils::toString($option->getDefault());
                         $documentation .= "\n     | Default value: ``{$default}``";
                     } else {
                         $documentation .= "\n     | This option is required.";

@@ -108,7 +108,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
             [
                 ['@xxx'],
                 InvalidFixerConfigurationException::class,
-                '[native_function_invocation] Invalid configuration: Unknown set "@xxx", known sets are "@all", "@internal", "@compiler_optimized".',
+                '[native_function_invocation] Invalid configuration: Unknown set "@xxx", known sets are "@all", "@internal" and "@compiler_optimized".',
             ],
             [
                 [' x '],

@@ -13,7 +13,7 @@ Configuration
 Whether the indentation should be the same as in the start token line or one
 level more.
 
-Allowed values: ``'same_as_start'``, ``'start_plus_one'``
+Allowed values: ``'same_as_start'`` and ``'start_plus_one'``
 
 Default value: ``'start_plus_one'``
 

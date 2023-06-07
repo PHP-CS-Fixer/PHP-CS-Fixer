@@ -40,7 +40,7 @@ Default value: ``['@compiler_optimized']``
 
 Only fix function calls that are made within a namespace or fix all.
 
-Allowed values: ``'all'``, ``'namespaced'``
+Allowed values: ``'all'`` and ``'namespaced'``
 
 Default value: ``'all'``
 

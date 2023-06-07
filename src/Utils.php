@@ -189,4 +189,49 @@ final class Utils
 
         return $triggeredDeprecations;
     }
+
+    /**
+     * @param mixed $value
+     */
+    public static function toString($value): string
+    {
+        return \is_array($value)
+            ? self::arrayToString($value)
+            : self::scalarToString($value);
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private static function scalarToString($value): string
+    {
+        $str = var_export($value, true);
+
+        return Preg::replace('/\bNULL\b/', 'null', $str);
+    }
+
+    /**
+     * @param array<mixed> $value
+     */
+    private static function arrayToString(array $value): string
+    {
+        if (0 === \count($value)) {
+            return '[]';
+        }
+
+        $isHash = !array_is_list($value);
+        $str = '[';
+
+        foreach ($value as $k => $v) {
+            if ($isHash) {
+                $str .= self::scalarToString($k).' => ';
+            }
+
+            $str .= \is_array($v)
+                ? self::arrayToString($v).', '
+                : self::scalarToString($v).', ';
+        }
+
+        return substr($str, 0, -2).']';
+    }
 }

@@ -13,7 +13,7 @@ Configuration
 
 Spacing to apply around the equal sign.
 
-Allowed values: ``'none'``, ``'single'``
+Allowed values: ``'none'`` and ``'single'``
 
 Default value: ``'none'``
 

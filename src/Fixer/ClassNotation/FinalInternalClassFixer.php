@@ -29,6 +29,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Options;
 
 /**
@@ -355,7 +356,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $intersect = array_intersect_assoc($this->configuration['include'], $this->configuration['exclude']);
 
         if (\count($intersect) > 0) {
-            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both "include" and "exclude" list, got duplicates: "%s".', implode('", "', array_keys($intersect))));
+            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both "include" and "exclude" list, got duplicates: %s.', Utils::naturalLanguageJoin(array_keys($intersect))));
         }
     }
 }

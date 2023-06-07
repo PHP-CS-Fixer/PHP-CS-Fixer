@@ -21,7 +21,7 @@ Default value: ``['abstract', 'access', 'code', 'deprec', 'encode', 'exception',
 
 Whether to add or remove braces.
 
-Allowed values: ``'with_braces'``, ``'without_braces'``
+Allowed values: ``'with_braces'`` and ``'without_braces'``
 
 Default value: ``'without_braces'``
 
