@@ -14,7 +14,7 @@ Configuration
 
 Style for equal (``==``, ``!=``) statements.
 
-Allowed types: ``bool``, ``null``
+Allowed types: ``bool`` and ``null``
 
 Default value: ``true``
 
@@ -23,7 +23,7 @@ Default value: ``true``
 
 Style for identical (``===``, ``!==``) statements.
 
-Allowed types: ``bool``, ``null``
+Allowed types: ``bool`` and ``null``
 
 Default value: ``true``
 
@@ -32,7 +32,7 @@ Default value: ``true``
 
 Style for less and greater than (``<``, ``<=``, ``>``, ``>=``) statements.
 
-Allowed types: ``bool``, ``null``
+Allowed types: ``bool`` and ``null``
 
 Default value: ``null``
 

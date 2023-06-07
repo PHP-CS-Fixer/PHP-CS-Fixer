@@ -21,7 +21,7 @@ Configuration
 
 Whether to use the @test annotation or not.
 
-Allowed values: ``'annotation'``, ``'prefix'``
+Allowed values: ``'annotation'`` and ``'prefix'``
 
 Default value: ``'prefix'``
 

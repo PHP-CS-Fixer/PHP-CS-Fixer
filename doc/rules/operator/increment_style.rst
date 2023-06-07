@@ -12,7 +12,7 @@ Configuration
 
 Whether to use pre- or post-increment and decrement operators.
 
-Allowed values: ``'post'``, ``'pre'``
+Allowed values: ``'post'`` and ``'pre'``
 
 Default value: ``'pre'``
 

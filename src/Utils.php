@@ -122,20 +122,24 @@ final class Utils
     }
 
     /**
-     * Join names in natural language wrapped in backticks, e.g. `a`, `b` and `c`.
+     * Join names in natural language using specified wrapper (double quote by default).
      *
      * @param string[] $names
      *
      * @throws \InvalidArgumentException
      */
-    public static function naturalLanguageJoinWithBackticks(array $names): string
+    public static function naturalLanguageJoin(array $names, string $wrapper = '"'): string
     {
         if (0 === \count($names)) {
             throw new \InvalidArgumentException('Array of names cannot be empty.');
         }
 
-        $names = array_map(static function (string $name): string {
-            return sprintf('`%s`', $name);
+        if (\strlen($wrapper) > 1) {
+            throw new \InvalidArgumentException('Wrapper should be a single-char string or empty.');
+        }
+
+        $names = array_map(static function (string $name) use ($wrapper): string {
+            return sprintf('%2$s%1$s%2$s', $name, $wrapper);
         }, $names);
 
         $last = array_pop($names);
@@ -145,6 +149,18 @@ final class Utils
         }
 
         return $last;
+    }
+
+    /**
+     * Join names in natural language wrapped in backticks, e.g. `a`, `b` and `c`.
+     *
+     * @param string[] $names
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function naturalLanguageJoinWithBackticks(array $names): string
+    {
+        return self::naturalLanguageJoin($names, '`');
     }
 
     public static function triggerDeprecation(\Exception $futureException): void
@@ -172,5 +188,50 @@ final class Utils
         sort($triggeredDeprecations);
 
         return $triggeredDeprecations;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public static function toString($value): string
+    {
+        return \is_array($value)
+            ? self::arrayToString($value)
+            : self::scalarToString($value);
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private static function scalarToString($value): string
+    {
+        $str = var_export($value, true);
+
+        return Preg::replace('/\bNULL\b/', 'null', $str);
+    }
+
+    /**
+     * @param array<mixed> $value
+     */
+    private static function arrayToString(array $value): string
+    {
+        if (0 === \count($value)) {
+            return '[]';
+        }
+
+        $isHash = !array_is_list($value);
+        $str = '[';
+
+        foreach ($value as $k => $v) {
+            if ($isHash) {
+                $str .= self::scalarToString($k).' => ';
+            }
+
+            $str .= \is_array($v)
+                ? self::arrayToString($v).', '
+                : self::scalarToString($v).', ';
+        }
+
+        return substr($str, 0, -2).']';
     }
 }

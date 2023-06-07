@@ -22,7 +22,7 @@ Configuration
 
 If provided, the directory where the project code is placed.
 
-Allowed types: ``null``, ``string``
+Allowed types: ``null`` and ``string``
 
 Default value: ``null``
 

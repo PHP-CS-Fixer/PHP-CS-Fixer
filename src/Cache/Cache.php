@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Cache;
 
+use PhpCsFixer\Utils;
+
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
@@ -111,8 +113,8 @@ final class Cache implements CacheInterface
 
         if (\count($missingKeys) > 0) {
             throw new \InvalidArgumentException(sprintf(
-                'JSON data is missing keys "%s"',
-                implode('", "', $missingKeys)
+                'JSON data is missing keys %s',
+                Utils::naturalLanguageJoin(array_keys($missingKeys))
             ));
         }
 

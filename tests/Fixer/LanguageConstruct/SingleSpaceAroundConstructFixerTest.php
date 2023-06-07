@@ -2369,6 +2369,31 @@ function bar() {} }',
                 '<?php class Foo { static  /* foo */function bar() {} }',
             ],
             [
+                '<?php class Foo { public static ?int $x; }',
+                '<?php class Foo { public static?int $x; }',
+            ],
+            [
+                '<?php class Foo { public static ?int $x; }',
+                '<?php class Foo { public static   ?int $x; }',
+            ],
+            [
+                '<?php class Foo { public static int $x; }',
+                '<?php class Foo { public static   int $x; }',
+            ],
+            [
+                '<?php class Foo { public static \Closure $a; }',
+                '<?php class Foo { public static    \Closure $a; }',
+            ],
+            [
+                '<?php class Foo { public static array $c; }',
+                '<?php class Foo { public static
+array $c; }',
+            ],
+            [
+                '<?php $a = static fn(): bool => true;',
+                '<?php $a = static    fn(): bool => true;',
+            ],
+            [
                 '<?php class Foo { function bar() { return new static(); } }',
             ],
             [

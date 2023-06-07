@@ -262,6 +262,8 @@ $bar;',
             ['<?php /* @var string $s */ echo($s);'],
             ['<?php /* @var User $bar */ ($baz = tmp())->doSomething();'],
             ['<?php /* @var User $bar */ list($bar) = a();'],
+            ['<?php /* Before anonymous function */ $fn = fn($x) => $x + 1;'],
+            ['<?php /* Before anonymous function */ fn($x) => $x + 1;'],
         ];
     }
 
@@ -306,25 +308,6 @@ $bar;',
         $analyzer = new CommentsAnalyzer();
 
         self::assertFalse($analyzer->isBeforeStructuralElement($tokens, 1));
-    }
-
-    /**
-     * @dataProvider providePhpdocCandidatePhp74Cases
-     */
-    public function testPhpdocCandidatePhp74(string $code): void
-    {
-        $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
-        $analyzer = new CommentsAnalyzer();
-
-        self::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
-    }
-
-    public static function providePhpdocCandidatePhp74Cases(): array
-    {
-        return [
-            ['<?php /* Before anonymous function */ $fn = fn($x) => $x + 1;'],
-        ];
     }
 
     /**

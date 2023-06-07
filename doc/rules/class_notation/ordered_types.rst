@@ -12,7 +12,7 @@ Configuration
 
 Whether the types should be sorted alphabetically, or not sorted.
 
-Allowed values: ``'alpha'``, ``'none'``
+Allowed values: ``'alpha'`` and ``'none'``
 
 Default value: ``'alpha'``
 
@@ -21,7 +21,7 @@ Default value: ``'alpha'``
 
 Forces the position of ``null`` (overrides ``sort_algorithm``).
 
-Allowed values: ``'always_first'``, ``'always_last'``, ``'none'``
+Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
 
 Default value: ``'always_first'``
 

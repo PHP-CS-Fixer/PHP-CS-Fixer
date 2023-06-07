@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Documentation;
 
-use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\Utils;
 
 /**
  * @internal
@@ -76,7 +76,7 @@ final class RuleSetDocumentationGenerator
                     }
 
                     if (!\is_bool($config)) {
-                        $doc .= "\n  config:\n  ``".HelpCommand::toString($config).'``';
+                        $doc .= "\n  config:\n  ``".Utils::toString($config).'``';
                     }
                 }
             };

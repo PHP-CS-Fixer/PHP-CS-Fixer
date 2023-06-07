@@ -63,6 +63,11 @@ The rule is part of the following rule sets:
 
   ``['group_to_single_imports' => false]``
 
+@PER-CS1.0
+  Using the `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ rule set will enable the ``single_import_per_statement`` rule with the config below:
+
+  ``['group_to_single_imports' => false]``
+
 @PSR2
   Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``single_import_per_statement`` rule with the default config.
 

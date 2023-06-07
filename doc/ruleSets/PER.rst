@@ -2,9 +2,9 @@
 Rule set ``@PER``
 =================
 
-Rules that follow `PER Coding Style <https://www.php-fig.org/per/coding-style/>`_.
+Alias for the PER-CS rules. It is recommended you use ``@PER-CS1.0`` instead.
 
 Rules
 -----
 
-- `@PSR12 <./PSR12.rst>`_
+- `@PER-CS1.0 <./PER-CS1.0.rst>`_

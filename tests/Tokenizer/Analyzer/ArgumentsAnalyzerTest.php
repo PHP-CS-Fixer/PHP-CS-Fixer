@@ -178,6 +178,13 @@ final class ArgumentsAnalyzerTest extends TestCase
             null
         )];
 
+        yield ['<?php foo($a, "b")?>', 5, 6, new ArgumentAnalysis(
+            null,
+            null,
+            null,
+            null
+        )];
+
         yield ['<?php function($a, $b = array(1,2), $c = 3){};', 3, 3, new ArgumentAnalysis(
             '$a',
             3,

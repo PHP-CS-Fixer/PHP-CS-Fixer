@@ -12,7 +12,7 @@ Configuration
 
 Spacing to use before open parenthesis for closures.
 
-Allowed values: ``'none'``, ``'one'``
+Allowed values: ``'none'`` and ``'one'``
 
 Default value: ``'one'``
 
@@ -21,7 +21,7 @@ Default value: ``'one'``
 
 Spacing to use before open parenthesis for short arrow functions.
 
-Allowed values: ``'none'``, ``'one'``
+Allowed values: ``'none'`` and ``'one'``
 
 Default value: ``'one'``
 
@@ -96,6 +96,9 @@ The rule is part of the following rule sets:
 
 @PER
   Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``function_declaration`` rule with the default config.
+
+@PER-CS1.0
+  Using the `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ rule set will enable the ``function_declaration`` rule with the default config.
 
 @PSR2
   Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``function_declaration`` rule with the default config.

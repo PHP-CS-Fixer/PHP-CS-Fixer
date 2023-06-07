@@ -72,39 +72,41 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
             ],
         ];
 
-        yield 'relative 1' => [
-            [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_NAMESPACE, 'namespace']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Transformer']),
-                new Token(';'),
-            ],
-            [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_NAME_RELATIVE, 'namespace\Transformer']),
-                new Token(';'),
-            ],
-        ];
+        if (\defined('T_NAME_RELATIVE')) { // @TODO: drop condition when PHP 8.0+ is required
+            yield 'relative 1' => [
+                [
+                    new Token([T_OPEN_TAG, "<?php\n"]),
+                    new Token([T_NAMESPACE, 'namespace']),
+                    new Token([T_NS_SEPARATOR, '\\']),
+                    new Token([T_STRING, 'Transformer']),
+                    new Token(';'),
+                ],
+                [
+                    new Token([T_OPEN_TAG, "<?php\n"]),
+                    new Token([T_NAME_RELATIVE, 'namespace\Transformer']),
+                    new Token(';'),
+                ],
+            ];
 
-        yield 'relative 2' => [
-            [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_NAMESPACE, 'namespace']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Transformer']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Foo']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar']),
-                new Token(';'),
-            ],
-            [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_NAME_RELATIVE, 'namespace\Transformer\Foo\Bar']),
-                new Token(';'),
-            ],
-        ];
+            yield 'relative 2' => [
+                [
+                    new Token([T_OPEN_TAG, "<?php\n"]),
+                    new Token([T_NAMESPACE, 'namespace']),
+                    new Token([T_NS_SEPARATOR, '\\']),
+                    new Token([T_STRING, 'Transformer']),
+                    new Token([T_NS_SEPARATOR, '\\']),
+                    new Token([T_STRING, 'Foo']),
+                    new Token([T_NS_SEPARATOR, '\\']),
+                    new Token([T_STRING, 'Bar']),
+                    new Token(';'),
+                ],
+                [
+                    new Token([T_OPEN_TAG, "<?php\n"]),
+                    new Token([T_NAME_RELATIVE, 'namespace\Transformer\Foo\Bar']),
+                    new Token(';'),
+                ],
+            ];
+        }
 
         yield 'name fully qualified 1' => [
             [

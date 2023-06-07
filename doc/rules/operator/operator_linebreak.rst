@@ -22,7 +22,7 @@ Default value: ``false``
 
 Whether to place operators at the beginning or at the end of the line.
 
-Allowed values: ``'beginning'``, ``'end'``
+Allowed values: ``'beginning'`` and ``'end'``
 
 Default value: ``'beginning'``
 

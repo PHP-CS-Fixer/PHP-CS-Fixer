@@ -27,6 +27,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
@@ -350,15 +351,15 @@ $array = [
                 ->setDefault(self::SINGLE_SPACE)
                 ->setAllowedValues(self::$allowedValues)
                 ->getOption(),
-            (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: `'.implode('`, `', self::SUPPORTED_OPERATORS).'`.'))
+            (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: '.Utils::naturalLanguageJoinWithBackticks(self::SUPPORTED_OPERATORS).'.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $option): bool {
                     foreach ($option as $operator => $value) {
                         if (!\in_array($operator, self::SUPPORTED_OPERATORS, true)) {
                             throw new InvalidOptionsException(
                                 sprintf(
-                                    'Unexpected "operators" key, expected any of "%s", got "%s".',
-                                    implode('", "', self::SUPPORTED_OPERATORS),
+                                    'Unexpected "operators" key, expected any of %s, got "%s".',
+                                    Utils::naturalLanguageJoin(self::SUPPORTED_OPERATORS),
                                     \gettype($operator).'#'.$operator
                                 )
                             );
@@ -367,9 +368,12 @@ $array = [
                         if (!\in_array($value, self::$allowedValues, true)) {
                             throw new InvalidOptionsException(
                                 sprintf(
-                                    'Unexpected value for operator "%s", expected any of "%s", got "%s".',
+                                    'Unexpected value for operator "%s", expected any of %s, got "%s".',
                                     $operator,
-                                    implode('", "', self::$allowedValues),
+                                    Utils::naturalLanguageJoin(array_map(
+                                        static fn ($value): string => Utils::toString($value),
+                                        self::$allowedValues
+                                    )),
                                     \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value)
                                 )
                             );
