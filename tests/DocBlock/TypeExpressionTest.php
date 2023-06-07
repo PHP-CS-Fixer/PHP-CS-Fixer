@@ -155,9 +155,19 @@ final class TypeExpressionTest extends TestCase
 
         yield ['object{ bool, foo2: int }', ['object{ bool, foo2: int }']];
 
+        yield ['ArRAY{ 1 }', ['ArRAY{ 1 }']];
+
+        yield ['lIst{ 1 }', ['lIst{ 1 }']];
+
+        yield ['OBJECT { x: 1 }', ['OBJECT { x: 1 }']];
+
+        yield ['callable', ['callable']];
+
         yield ['callable(string)', ['callable(string)']];
 
         yield ['? callable(string): bool', ['? callable(string): bool']];
+
+        yield ['CAllable(string): bool', ['CAllable(string): bool']];
 
         yield ['callable(string,): bool', ['callable(string,): bool']];
 
@@ -174,6 +184,8 @@ final class TypeExpressionTest extends TestCase
         yield ['Closure()', ['Closure()']];
 
         yield ['Closure(string)', ['Closure(string)']];
+
+        yield ['\\closure(string): void', ['\\closure(string): void']];
 
         yield ['\\Closure', ['\\Closure']];
 

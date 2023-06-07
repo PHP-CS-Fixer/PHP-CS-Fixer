@@ -43,7 +43,7 @@ final class TypeExpression
             (?<nullable>\??\h*)
             (?:
                 (?<object_like_array>
-                    (?<object_like_array_start>(?:array|list|object)\h*\{\h*)
+                    (?<object_like_array_start>(?i)(?:array|list|object)(?-i)\h*\{\h*)
                         (?<object_like_array_inners>
                             (?<object_like_array_inner>
                                 (?<object_like_array_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
@@ -59,7 +59,7 @@ final class TypeExpression
                 )
                 |
                 (?<callable> # callable syntax, e.g. `callable(string): bool`
-                    (?<callable_start>(?:callable|\\\\?Closure)\h*\(\h*)
+                    (?<callable_start>(?i)(?:callable|\\\\?Closure)(?-i)\h*\(\h*)
                         (?<callable_arguments>
                             (?&types_inner)
                             (?:
