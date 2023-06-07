@@ -1307,5 +1307,21 @@ class Foo {}
 
 ',
         ];
+
+        yield 'no/2+ spaces after comment star' => [
+            [],
+            '<?php
+/**
+ * @property string $age  @Atk4\Field()
+ * @property string $city @Atk4\Field()
+ */
+',
+            '<?php
+/**
+ *  @property string $age           @Atk4\Field()
+*@property    string $city          @Atk4\Field()
+ */
+',
+        ];
     }
 }

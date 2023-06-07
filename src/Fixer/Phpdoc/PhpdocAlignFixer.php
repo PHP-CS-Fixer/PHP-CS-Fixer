@@ -86,15 +86,9 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         'psalm-method',
     ];
 
-    /**
-     * @var string
-     */
-    private $regex;
+    private string $regex;
 
-    /**
-     * @var string
-     */
-    private $regexCommentLine;
+    private string $regexCommentLine;
 
     /**
      * @var string
@@ -109,7 +103,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         $tagsWithMethodSignatureToAlign = array_intersect($this->configuration['tags'], self::TAGS_WITH_METHOD_SIGNATURE);
         $tagsWithoutNameToAlign = array_diff($this->configuration['tags'], $tagsWithNameToAlign, $tagsWithMethodSignatureToAlign);
 
-        $indent = '(?P<indent>(?:\ {2}|\t)*)';
+        $indentRegex = '^(?P<indent>(?:\ {2}|\t)*)\ ?';
 
         $types = [];
 
@@ -131,8 +125,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         // optional <desc>
         $desc = '(?:\s+(?P<desc>\V*))';
 
-        $this->regex = '/^'.$indent.'\ \*\ @(?J)(?:'.implode('|', $types).')'.$desc.'\s*$/ux';
-        $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/u';
+        $this->regex = '/'.$indentRegex.'\*\h*@(?J)(?:'.implode('|', $types).')'.$desc.'\h*\r?$/x';
+        $this->regexCommentLine = '/'.$indentRegex.'\*(?!\h?+@)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/';
         $this->align = $this->configuration['align'];
     }
 
