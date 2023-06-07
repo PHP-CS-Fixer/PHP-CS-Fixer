@@ -121,7 +121,7 @@ RST;
                         }, $allowed);
                     }
 
-                    $allowed = implode(', ', $allowed);
+                    $allowed = Utils::naturalLanguageJoin($allowed, '');
                     $documentation .= "\n     | {$allowedKind}: {$allowed}";
 
                     if ($option->hasDefault()) {

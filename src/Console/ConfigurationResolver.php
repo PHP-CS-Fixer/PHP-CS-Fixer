@@ -343,7 +343,7 @@ final class ConfigurationResolver
                 );
 
                 if (\count($riskyFixers) > 0) {
-                    throw new InvalidConfigurationException(sprintf('The rules contain risky fixers ("%s"), but they are not allowed to run. Perhaps you forget to use --allow-risky=yes option?', implode('", "', $riskyFixers)));
+                    throw new InvalidConfigurationException(sprintf('The rules contain risky fixers (%s), but they are not allowed to run. Perhaps you forget to use --allow-risky=yes option?', Utils::naturalLanguageJoin($riskyFixers)));
                 }
             }
         }
@@ -417,9 +417,9 @@ final class ConfigurationResolver
                     $progressType = $this->getConfig()->getHideProgress() ? 'none' : 'dots';
                 } elseif (!\in_array($progressType, $progressTypes, true)) {
                     throw new InvalidConfigurationException(sprintf(
-                        'The progress type "%s" is not defined, supported are "%s".',
+                        'The progress type "%s" is not defined, supported are %s.',
                         $progressType,
-                        implode('", "', $progressTypes)
+                        Utils::naturalLanguageJoin($progressTypes)
                     ));
                 }
 
@@ -446,7 +446,7 @@ final class ConfigurationResolver
                 $formats = $reporterFactory->getFormats();
                 sort($formats);
 
-                throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are "%s".', $format, implode('", "', $formats)));
+                throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, Utils::naturalLanguageJoin($formats)));
             }
         }
 
@@ -831,9 +831,9 @@ final class ConfigurationResolver
             true
         )) {
             throw new InvalidConfigurationException(sprintf(
-                'The path-mode "%s" is not defined, supported are "%s".',
+                'The path-mode "%s" is not defined, supported are %s.',
                 $this->options['path-mode'],
-                implode('", "', $modes)
+                Utils::naturalLanguageJoin($modes)
             ));
         }
 

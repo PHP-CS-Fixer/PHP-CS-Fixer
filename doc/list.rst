@@ -10,7 +10,7 @@ List of Available Rules
 
    - | ``comment_type``
      | Whether to fix PHPDoc comments only (`phpdocs_only`), any multi-line comment whose lines all start with an asterisk (`phpdocs_like`) or any multi-line comment (`all_multiline`).
-     | Allowed values: ``'all_multiline'``, ``'phpdocs_like'``, ``'phpdocs_only'``
+     | Allowed values: ``'all_multiline'``, ``'phpdocs_like'`` and ``'phpdocs_only'``
      | Default value: ``'phpdocs_only'``
 
 
@@ -41,7 +41,7 @@ List of Available Rules
 
    - | ``syntax``
      | Whether to use the `long` or `short` array syntax.
-     | Allowed values: ``'long'``, ``'short'``
+     | Allowed values: ``'long'`` and ``'short'``
      | Default value: ``'short'``
 
 
@@ -73,10 +73,10 @@ List of Available Rules
 
    - | ``default``
      | Default fix strategy.
-     | Allowed values: ``'align'``, ``'align_by_scope'``, ``'align_single_space'``, ``'align_single_space_by_scope'``, ``'align_single_space_minimal'``, ``'align_single_space_minimal_by_scope'``, ``'no_space'``, ``'single_space'``, ``null``
+     | Allowed values: ``'align'``, ``'align_by_scope'``, ``'align_single_space'``, ``'align_single_space_by_scope'``, ``'align_single_space_minimal'``, ``'align_single_space_minimal_by_scope'``, ``'no_space'``, ``'single_space'`` and ``null``
      | Default value: ``'single_space'``
    - | ``operators``
-     | Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: `=`, `*`, `/`, `%`, `<`, `>`, `|`, `^`, `+`, `-`, `&`, `&=`, `&&`, `||`, `.=`, `/=`, `=>`, `==`, `>=`, `===`, `!=`, `<>`, `!==`, `<=`, `and`, `or`, `xor`, `-=`, `%=`, `*=`, `|=`, `+=`, `<<`, `<<=`, `>>`, `>>=`, `^=`, `**`, `**=`, `<=>`, `??`, `??=`.
+     | Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: `=`, `*`, `/`, `%`, `<`, `>`, `|`, `^`, `+`, `-`, `&`, `&=`, `&&`, `||`, `.=`, `/=`, `=>`, `==`, `>=`, `===`, `!=`, `<>`, `!==`, `<=`, `and`, `or`, `xor`, `-=`, `%=`, `*=`, `|=`, `+=`, `<<`, `<<=`, `>>`, `>>=`, `^=`, `**`, `**=`, `<=>`, `??` and `??=`.
      | Allowed types: ``array``
      | Default value: ``[]``
 
@@ -141,15 +141,15 @@ List of Available Rules
      | Default value: ``false``
    - | ``position_after_functions_and_oop_constructs``
      | Whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).
-     | Allowed values: ``'next'``, ``'same'``
+     | Allowed values: ``'next'`` and ``'same'``
      | Default value: ``'next'``
    - | ``position_after_control_structures``
      | Whether the opening brace should be placed on "next" or "same" line after control structures.
-     | Allowed values: ``'next'``, ``'same'``
+     | Allowed values: ``'next'`` and ``'same'``
      | Default value: ``'same'``
    - | ``position_after_anonymous_constructs``
      | Whether the opening brace should be placed on "next" or "same" line after anonymous constructs (anonymous classes and lambda functions).
-     | Allowed values: ``'next'``, ``'same'``
+     | Allowed values: ``'next'`` and ``'same'``
      | Default value: ``'same'``
 
 
@@ -162,7 +162,7 @@ List of Available Rules
 
    - | ``space``
      | Spacing to apply between cast and variable.
-     | Allowed values: ``'none'``, ``'single'``
+     | Allowed values: ``'none'`` and ``'single'``
      | Default value: ``'single'``
 
 
@@ -294,7 +294,7 @@ List of Available Rules
 
    - | ``spacing``
      | Spacing to apply around concatenation operator.
-     | Allowed values: ``'none'``, ``'one'``
+     | Allowed values: ``'none'`` and ``'one'``
      | Default value: ``'none'``
 
 
@@ -309,7 +309,7 @@ List of Available Rules
 
    - | ``case``
      | Whether to use the `upper` or `lower` case syntax.
-     | Allowed values: ``'lower'``, ``'upper'``
+     | Allowed values: ``'lower'`` and ``'upper'``
      | Default value: ``'lower'``
 
 
@@ -331,7 +331,7 @@ List of Available Rules
 
    - | ``position``
      | The position of the keyword that continues the control structure.
-     | Allowed values: ``'next_line'``, ``'same_line'``
+     | Allowed values: ``'next_line'`` and ``'same_line'``
      | Default value: ``'same_line'``
 
 
@@ -346,23 +346,23 @@ List of Available Rules
 
    - | ``control_structures_opening_brace``
      | The position of the opening brace of control structures‘ body.
-     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
      | Default value: ``'same_line'``
    - | ``functions_opening_brace``
      | The position of the opening brace of functions‘ body.
-     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
      | Default value: ``'next_line_unless_newline_at_signature_end'``
    - | ``anonymous_functions_opening_brace``
      | The position of the opening brace of anonymous functions‘ body.
-     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
      | Default value: ``'same_line'``
    - | ``classes_opening_brace``
      | The position of the opening brace of classes‘ body.
-     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
      | Default value: ``'next_line_unless_newline_at_signature_end'``
    - | ``anonymous_classes_opening_brace``
      | The position of the opening brace of anonymous classes‘ body.
-     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'``
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
      | Default value: ``'same_line'``
    - | ``allow_single_line_empty_anonymous_classes``
      | Allow anonymous classes to have opening and closing braces on the same line.
@@ -408,7 +408,7 @@ List of Available Rules
 
    - | ``space``
      | Spacing to apply around the equal sign.
-     | Allowed values: ``'none'``, ``'single'``
+     | Allowed values: ``'none'`` and ``'single'``
      | Default value: ``'none'``
 
 
@@ -452,7 +452,7 @@ List of Available Rules
      | Default value: ``['abstract', 'access', 'code', 'deprec', 'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc', 'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar', 'staticVar', 'throw', 'api', 'author', 'category', 'copyright', 'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal', 'license', 'link', 'method', 'package', 'param', 'property', 'property-read', 'property-write', 'return', 'see', 'since', 'source', 'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var', 'version', 'after', 'afterClass', 'backupGlobals', 'backupStaticAttributes', 'before', 'beforeClass', 'codeCoverageIgnore', 'codeCoverageIgnoreStart', 'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass', 'coversNothing', 'dataProvider', 'depends', 'expectedException', 'expectedExceptionCode', 'expectedExceptionMessage', 'expectedExceptionMessageRegExp', 'group', 'large', 'medium', 'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses', 'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses', 'SuppressWarnings', 'noinspection', 'package_version', 'enduml', 'startuml', 'psalm', 'phpstan', 'template', 'fix', 'FIXME', 'fixme', 'override']``
    - | ``operator``
      | The operator to use.
-     | Allowed values: ``':'``, ``'='``
+     | Allowed values: ``':'`` and ``'='``
      | Default value: ``'='``
 
 
@@ -471,7 +471,7 @@ List of Available Rules
      | Default value: ``['abstract', 'access', 'code', 'deprec', 'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc', 'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar', 'staticVar', 'throw', 'api', 'author', 'category', 'copyright', 'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal', 'license', 'link', 'method', 'package', 'param', 'property', 'property-read', 'property-write', 'return', 'see', 'since', 'source', 'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var', 'version', 'after', 'afterClass', 'backupGlobals', 'backupStaticAttributes', 'before', 'beforeClass', 'codeCoverageIgnore', 'codeCoverageIgnoreStart', 'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass', 'coversNothing', 'dataProvider', 'depends', 'expectedException', 'expectedExceptionCode', 'expectedExceptionMessage', 'expectedExceptionMessageRegExp', 'group', 'large', 'medium', 'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses', 'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses', 'SuppressWarnings', 'noinspection', 'package_version', 'enduml', 'startuml', 'psalm', 'phpstan', 'template', 'fix', 'FIXME', 'fixme', 'override']``
    - | ``syntax``
      | Whether to add or remove braces.
-     | Allowed values: ``'with_braces'``, ``'without_braces'``
+     | Allowed values: ``'with_braces'`` and ``'without_braces'``
      | Default value: ``'without_braces'``
 
 
@@ -522,27 +522,27 @@ List of Available Rules
      | Default value: ``true``
    - | ``before_argument_assignments``
      | Whether to add, remove or ignore spaces before argument assignment operator.
-     | Allowed types: ``null``, ``bool``
+     | Allowed types: ``null`` and ``bool``
      | Default value: ``false``
    - | ``after_argument_assignments``
      | Whether to add, remove or ignore spaces after argument assignment operator.
-     | Allowed types: ``null``, ``bool``
+     | Allowed types: ``null`` and ``bool``
      | Default value: ``false``
    - | ``before_array_assignments_equals``
      | Whether to add, remove or ignore spaces before array `=` assignment operator.
-     | Allowed types: ``null``, ``bool``
+     | Allowed types: ``null`` and ``bool``
      | Default value: ``true``
    - | ``after_array_assignments_equals``
      | Whether to add, remove or ignore spaces after array assignment `=` operator.
-     | Allowed types: ``null``, ``bool``
+     | Allowed types: ``null`` and ``bool``
      | Default value: ``true``
    - | ``before_array_assignments_colon``
      | Whether to add, remove or ignore spaces before array `:` assignment operator.
-     | Allowed types: ``null``, ``bool``
+     | Allowed types: ``null`` and ``bool``
      | Default value: ``true``
    - | ``after_array_assignments_colon``
      | Whether to add, remove or ignore spaces after array assignment `:` operator.
-     | Allowed types: ``null``, ``bool``
+     | Allowed types: ``null`` and ``bool``
      | Default value: ``true``
 
 
@@ -557,11 +557,11 @@ List of Available Rules
 
    - | ``format``
      | The desired language construct.
-     | Allowed values: ``'long'``, ``'short'``
+     | Allowed values: ``'long'`` and ``'short'``
      | Default value: ``'long'``
    - | ``long_function``
      | The function to be used to expand the short echo tags.
-     | Allowed values: ``'echo'``, ``'print'``
+     | Allowed values: ``'echo'`` and ``'print'``
      | Default value: ``'echo'``
    - | ``shorten_simple_statements_only``
      | Render short-echo tags only in case of simple code.
@@ -587,7 +587,7 @@ List of Available Rules
 
    - | ``style``
      | Style of empty loop-bodies.
-     | Allowed values: ``'braces'``, ``'semicolon'``
+     | Allowed values: ``'braces'`` and ``'semicolon'``
      | Default value: ``'semicolon'``
 
 
@@ -602,7 +602,7 @@ List of Available Rules
 
    - | ``style``
      | Style of empty loop-condition.
-     | Allowed values: ``'for'``, ``'while'``
+     | Allowed values: ``'for'`` and ``'while'``
      | Default value: ``'while'``
 
 
@@ -814,11 +814,11 @@ List of Available Rules
 
    - | ``closure_function_spacing``
      | Spacing to use before open parenthesis for closures.
-     | Allowed values: ``'none'``, ``'one'``
+     | Allowed values: ``'none'`` and ``'one'``
      | Default value: ``'one'``
    - | ``closure_fn_spacing``
      | Spacing to use before open parenthesis for short arrow functions.
-     | Allowed values: ``'none'``, ``'one'``
+     | Allowed values: ``'none'`` and ``'one'``
      | Default value: ``'one'``
    - | ``trailing_comma_single_line``
      | Whether trailing commas are allowed in single line signatures.
@@ -914,15 +914,15 @@ List of Available Rules
 
    - | ``import_constants``
      | Whether to import, not import or ignore global constants.
-     | Allowed values: ``false``, ``null``, ``true``
+     | Allowed values: ``false``, ``null`` and ``true``
      | Default value: ``null``
    - | ``import_functions``
      | Whether to import, not import or ignore global functions.
-     | Allowed values: ``false``, ``null``, ``true``
+     | Allowed values: ``false``, ``null`` and ``true``
      | Default value: ``null``
    - | ``import_classes``
      | Whether to import, not import or ignore global classes.
-     | Allowed values: ``false``, ``null``, ``true``
+     | Allowed values: ``false``, ``null`` and ``true``
      | Default value: ``true``
 
 
@@ -946,15 +946,15 @@ List of Available Rules
      | This option is required.
    - | ``comment_type``
      | Comment syntax type.
-     | Allowed values: ``'comment'``, ``'PHPDoc'``
+     | Allowed values: ``'comment'`` and ``'PHPDoc'``
      | Default value: ``'comment'``
    - | ``location``
      | The location of the inserted header.
-     | Allowed values: ``'after_declare_strict'``, ``'after_open'``
+     | Allowed values: ``'after_declare_strict'`` and ``'after_open'``
      | Default value: ``'after_declare_strict'``
    - | ``separate``
      | Whether the header should be separated from the file content with a new line.
-     | Allowed values: ``'both'``, ``'bottom'``, ``'none'``, ``'top'``
+     | Allowed values: ``'both'``, ``'bottom'``, ``'none'`` and ``'top'``
      | Default value: ``'both'``
 
 
@@ -967,7 +967,7 @@ List of Available Rules
 
    - | ``indentation``
      | Whether the indentation should be the same as in the start token line or one level more.
-     | Allowed values: ``'same_as_start'``, ``'start_plus_one'``
+     | Allowed values: ``'same_as_start'`` and ``'start_plus_one'``
      | Default value: ``'start_plus_one'``
 
 
@@ -1005,7 +1005,7 @@ List of Available Rules
 
    - | ``style``
      | Whether to use pre- or post-increment and decrement operators.
-     | Allowed values: ``'post'``, ``'pre'``
+     | Allowed values: ``'post'`` and ``'pre'``
      | Default value: ``'pre'``
 
 
@@ -1064,7 +1064,7 @@ List of Available Rules
 
    - | ``syntax``
      | Whether to use the `long` or `short` `list` syntax.
-     | Allowed values: ``'long'``, ``'short'``
+     | Allowed values: ``'long'`` and ``'short'``
      | Default value: ``'short'``
 
 
@@ -1136,7 +1136,7 @@ List of Available Rules
      | Default value: ``false``
    - | ``on_multiline``
      | Defines how to handle function arguments lists that contain newlines.
-     | Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'``, ``'ignore'``
+     | Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'`` and ``'ignore'``
      | Default value: ``'ensure_fully_multiline'``
    - | ``after_heredoc``
      | Whether the whitespace between heredoc end and comma should be removed.
@@ -1189,7 +1189,7 @@ List of Available Rules
 
    - | ``strategy``
      | Forbid multi-line whitespace or move the semicolon to the new line for chained calls.
-     | Allowed values: ``'new_line_for_chained_calls'``, ``'no_multi_line'``
+     | Allowed values: ``'new_line_for_chained_calls'`` and ``'no_multi_line'``
      | Default value: ``'no_multi_line'``
 
 
@@ -1218,7 +1218,7 @@ List of Available Rules
      | Default value: ``['null', 'false', 'true']``
    - | ``scope``
      | Only fix constant invocations that are made within a namespace or fix all.
-     | Allowed values: ``'all'``, ``'namespaced'``
+     | Allowed values: ``'all'`` and ``'namespaced'``
      | Default value: ``'all'``
    - | ``strict``
      | Whether leading `\` of constant invocation not meant to have it should be removed.
@@ -1254,7 +1254,7 @@ List of Available Rules
      | Default value: ``['@compiler_optimized']``
    - | ``scope``
      | Only fix function calls that are made within a namespace or fix all.
-     | Allowed values: ``'all'``, ``'namespaced'``
+     | Allowed values: ``'all'`` and ``'namespaced'``
      | Default value: ``'all'``
    - | ``strict``
      | Whether leading `\` of function call not meant to have it should be removed.
@@ -1501,7 +1501,7 @@ List of Available Rules
 
    - | ``use``
      | The desired language construct.
-     | Allowed values: ``'echo'``, ``'print'``
+     | Allowed values: ``'echo'`` and ``'print'``
      | Default value: ``'echo'``
 
 
@@ -1881,7 +1881,7 @@ List of Available Rules
      | Default value: ``false``
    - | ``position``
      | Whether to place operators at the beginning or at the end of the line.
-     | Allowed values: ``'beginning'``, ``'end'``
+     | Allowed values: ``'beginning'`` and ``'end'``
      | Default value: ``'beginning'``
 
 
@@ -1923,7 +1923,7 @@ List of Available Rules
      | Default value: ``['use_trait', 'case', 'constant_public', 'constant_protected', 'constant_private', 'property_public', 'property_protected', 'property_private', 'construct', 'destruct', 'magic', 'phpunit', 'method_public', 'method_protected', 'method_private']``
    - | ``sort_algorithm``
      | How multiple occurrences of same type statements should be sorted.
-     | Allowed values: ``'alpha'``, ``'none'``
+     | Allowed values: ``'alpha'`` and ``'none'``
      | Default value: ``'none'``
    - | ``case_sensitive``
      | Whether the sorting should be case sensitive.
@@ -1942,11 +1942,11 @@ List of Available Rules
 
    - | ``sort_algorithm``
      | Whether the statements should be sorted alphabetically or by length, or not sorted.
-     | Allowed values: ``'alpha'``, ``'length'``, ``'none'``
+     | Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
      | Default value: ``'alpha'``
    - | ``imports_order``
      | Defines the order of import types.
-     | Allowed types: ``array``, ``null``
+     | Allowed types: ``array`` and ``null``
      | Default value: ``null``
 
 
@@ -1961,11 +1961,11 @@ List of Available Rules
 
    - | ``order``
      | How the interfaces should be ordered.
-     | Allowed values: ``'alpha'``, ``'length'``
+     | Allowed values: ``'alpha'`` and ``'length'``
      | Default value: ``'alpha'``
    - | ``direction``
      | Which direction the interfaces should be ordered.
-     | Allowed values: ``'ascend'``, ``'descend'``
+     | Allowed values: ``'ascend'`` and ``'descend'``
      | Default value: ``'ascend'``
 
 
@@ -1987,11 +1987,11 @@ List of Available Rules
 
    - | ``sort_algorithm``
      | Whether the types should be sorted alphabetically, or not sorted.
-     | Allowed values: ``'alpha'``, ``'none'``
+     | Allowed values: ``'alpha'`` and ``'none'``
      | Default value: ``'alpha'``
    - | ``null_adjustment``
      | Forces the position of `null` (overrides `sort_algorithm`).
-     | Allowed values: ``'always_first'``, ``'always_last'``, ``'none'``
+     | Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
      | Default value: ``'always_first'``
 
 
@@ -2023,7 +2023,7 @@ List of Available Rules
      | Default value: ``['method', 'param', 'property', 'return', 'throws', 'type', 'var']``
    - | ``align``
      | How comments should be aligned.
-     | Allowed values: ``'left'``, ``'vertical'``
+     | Allowed values: ``'left'`` and ``'vertical'``
      | Default value: ``'vertical'``
 
 
@@ -2067,15 +2067,15 @@ List of Available Rules
 
    - | ``const``
      | Whether const blocks should be single or multi line.
-     | Allowed values: ``'multi'``, ``'single'``, ``null``
+     | Allowed values: ``'multi'``, ``'single'`` and ``null``
      | Default value: ``'multi'``
    - | ``property``
      | Whether property doc blocks should be single or multi line.
-     | Allowed values: ``'multi'``, ``'single'``, ``null``
+     | Allowed values: ``'multi'``, ``'single'`` and ``null``
      | Default value: ``'multi'``
    - | ``method``
      | Whether method doc blocks should be single or multi line.
-     | Allowed values: ``'multi'``, ``'single'``, ``null``
+     | Allowed values: ``'multi'``, ``'single'`` and ``null``
      | Default value: ``'multi'``
 
 
@@ -2358,11 +2358,11 @@ List of Available Rules
 
    - | ``sort_algorithm``
      | The sorting algorithm to apply.
-     | Allowed values: ``'alpha'``, ``'none'``
+     | Allowed values: ``'alpha'`` and ``'none'``
      | Default value: ``'alpha'``
    - | ``null_adjustment``
      | Forces the position of `null` (overrides `sort_algorithm`).
-     | Allowed values: ``'always_first'``, ``'always_last'``, ``'none'``
+     | Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
      | Default value: ``'always_first'``
 
 
@@ -2427,7 +2427,7 @@ List of Available Rules
 
    - | ``target``
      | Target version of PHPUnit.
-     | Allowed values: ``'3.0'``, ``'3.5'``, ``'5.0'``, ``'5.6'``, ``'newest'``
+     | Allowed values: ``'3.0'``, ``'3.5'``, ``'5.0'``, ``'5.6'`` and ``'newest'``
      | Default value: ``'newest'``
 
 
@@ -2445,7 +2445,7 @@ List of Available Rules
 
    - | ``target``
      | Target version of PHPUnit.
-     | Allowed values: ``'7.5'``, ``'newest'``
+     | Allowed values: ``'7.5'`` and ``'newest'``
      | Default value: ``'newest'``
 
 
@@ -2463,7 +2463,7 @@ List of Available Rules
 
    - | ``target``
      | Target version of PHPUnit.
-     | Allowed values: ``'5.2'``, ``'5.6'``, ``'8.4'``, ``'newest'``
+     | Allowed values: ``'5.2'``, ``'5.6'``, ``'8.4'`` and ``'newest'``
      | Default value: ``'newest'``
 
 
@@ -2500,7 +2500,7 @@ List of Available Rules
 
    - | ``case``
      | Apply camel or snake case to test methods.
-     | Allowed values: ``'camel_case'``, ``'snake_case'``
+     | Allowed values: ``'camel_case'`` and ``'snake_case'``
      | Default value: ``'camel_case'``
 
 
@@ -2518,7 +2518,7 @@ List of Available Rules
 
    - | ``target``
      | Target version of PHPUnit.
-     | Allowed values: ``'5.4'``, ``'5.5'``, ``'newest'``
+     | Allowed values: ``'5.4'``, ``'5.5'`` and ``'newest'``
      | Default value: ``'newest'``
 
 
@@ -2556,7 +2556,7 @@ List of Available Rules
 
    - | ``target``
      | Target version of PHPUnit.
-     | Allowed values: ``'4.8'``, ``'5.7'``, ``'6.0'``, ``'newest'``
+     | Allowed values: ``'4.8'``, ``'5.7'``, ``'6.0'`` and ``'newest'``
      | Default value: ``'newest'``
 
 
@@ -2574,7 +2574,7 @@ List of Available Rules
 
    - | ``target``
      | Target version of PHPUnit.
-     | Allowed values: ``'3.2'``, ``'4.3'``, ``'newest'``
+     | Allowed values: ``'3.2'``, ``'4.3'`` and ``'newest'``
      | Default value: ``'newest'``
    - | ``use_class_const``
      | Use ::class notation.
@@ -2606,7 +2606,7 @@ List of Available Rules
 
    - | ``group``
      | Define a specific group to be used in case no group is already in use.
-     | Allowed values: ``'large'``, ``'medium'``, ``'small'``
+     | Allowed values: ``'large'``, ``'medium'`` and ``'small'``
      | Default value: ``'small'``
 
 
@@ -2640,7 +2640,7 @@ List of Available Rules
 
    - | ``style``
      | Whether to use the @test annotation or not.
-     | Allowed values: ``'annotation'``, ``'prefix'``
+     | Allowed values: ``'annotation'`` and ``'prefix'``
      | Default value: ``'prefix'``
 
 
@@ -2658,7 +2658,7 @@ List of Available Rules
 
    - | ``call_type``
      | The call type to use for referring to PHPUnit methods.
-     | Allowed values: ``'self'``, ``'static'``, ``'this'``
+     | Allowed values: ``'self'``, ``'static'`` and ``'this'``
      | Default value: ``'static'``
    - | ``methods``
      | Dictionary of `method` => `call_type` values that differ from the default strategy.
@@ -2703,7 +2703,7 @@ List of Available Rules
 
    - | ``dir``
      | If provided, the directory where the project code is placed.
-     | Allowed types: ``null``, ``string``
+     | Allowed types: ``null`` and ``string``
      | Default value: ``null``
 
 
@@ -2755,7 +2755,7 @@ List of Available Rules
 
    - | ``space_before``
      | Spacing to apply before colon.
-     | Allowed values: ``'none'``, ``'one'``
+     | Allowed values: ``'none'`` and ``'one'``
      | Default value: ``'none'``
 
 
@@ -3131,11 +3131,11 @@ List of Available Rules
 
    - | ``space``
      | Spacing to apply around union type and intersection type operators.
-     | Allowed values: ``'none'``, ``'single'``
+     | Allowed values: ``'none'`` and ``'single'``
      | Default value: ``'none'``
    - | ``space_multiple_catch``
      | Spacing to apply around type operator when catching exceptions of multiple types, use `null` to follow the value configured for `space`.
-     | Allowed values: ``'none'``, ``'single'``, ``null``
+     | Allowed values: ``'none'``, ``'single'`` and ``null``
      | Default value: ``null``
 
 
@@ -3206,15 +3206,15 @@ List of Available Rules
 
    - | ``equal``
      | Style for equal (`==`, `!=`) statements.
-     | Allowed types: ``bool``, ``null``
+     | Allowed types: ``bool`` and ``null``
      | Default value: ``true``
    - | ``identical``
      | Style for identical (`===`, `!==`) statements.
-     | Allowed types: ``bool``, ``null``
+     | Allowed types: ``bool`` and ``null``
      | Default value: ``true``
    - | ``less_and_greater``
      | Style for less and greater than (`<`, `<=`, `>`, `>=`) statements.
-     | Allowed types: ``bool``, ``null``
+     | Allowed types: ``bool`` and ``null``
      | Default value: ``null``
    - | ``always_move_variable``
      | Whether variables should always be on non assignable side when applying Yoda style.

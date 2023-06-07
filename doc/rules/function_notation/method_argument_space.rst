@@ -25,7 +25,7 @@ Default value: ``false``
 
 Defines how to handle function arguments lists that contain newlines.
 
-Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'``, ``'ignore'``
+Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'`` and ``'ignore'``
 
 Default value: ``'ensure_fully_multiline'``
 
