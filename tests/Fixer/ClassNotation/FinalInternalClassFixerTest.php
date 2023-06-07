@@ -189,7 +189,7 @@ class Bar {}
      *
      * @dataProvider provideFixWithConfigCases
      */
-    public function testFixWithConfig(string $expected, ?string $input, array $config): void
+    public function testFixWithConfig(string $expected, string $input, array $config): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -314,15 +314,20 @@ class B{}
                 '<?php class A{}',
                 ['consider_absent_docblock_as_internal_class' => true],
             ],
-            'class with annotation that does not wholly match included tag' => [
+            'class with annotation with matching include and partial matching exclude' => [
+                '<?php
+
+/** @HelloWorld */
+final class Foo {}
+',
                 '<?php
 
 /** @HelloWorld */
 class Foo {}
 ',
-                null,
                 [
-                    'include' => ['Hello'],
+                    'include' => ['HelloWorld'],
+                    'exclude' => ['Hello'],
                 ],
             ],
         ];
