@@ -21,7 +21,7 @@ Default value: ``['abstract', 'access', 'code', 'deprec', 'encode', 'exception',
 
 The operator to use.
 
-Allowed values: ``':'``, ``'='``
+Allowed values: ``':'`` and ``'='``
 
 Default value: ``'='``
 

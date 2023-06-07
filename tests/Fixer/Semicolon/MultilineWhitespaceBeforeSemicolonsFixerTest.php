@@ -78,6 +78,9 @@ final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTe
                 "<?php\n;",
             ],
             [
+                '<?= $a; ?>',
+            ],
+            [
                 '<?php
 $this
     ->setName(\'readme1\')

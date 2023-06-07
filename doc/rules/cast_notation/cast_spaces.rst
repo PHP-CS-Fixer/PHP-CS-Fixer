@@ -12,7 +12,7 @@ Configuration
 
 Spacing to apply between cast and variable.
 
-Allowed values: ``'none'``, ``'single'``
+Allowed values: ``'none'`` and ``'single'``
 
 Default value: ``'single'``
 

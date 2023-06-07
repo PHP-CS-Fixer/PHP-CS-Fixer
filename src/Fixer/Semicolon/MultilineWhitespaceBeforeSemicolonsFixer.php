@@ -206,7 +206,7 @@ $object->method1()
         $isMultilineCall = false;
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        while (!$tokens[$prevIndex]->equalsAny([';', '{', '}', [T_OPEN_TAG], [T_ELSE]])) {
+        while (!$tokens[$prevIndex]->equalsAny([';', '{', '}', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO], [T_ELSE]])) {
             $index = $prevIndex;
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 

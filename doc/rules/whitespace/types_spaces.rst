@@ -13,7 +13,7 @@ Configuration
 
 Spacing to apply around union type and intersection type operators.
 
-Allowed values: ``'none'``, ``'single'``
+Allowed values: ``'none'`` and ``'single'``
 
 Default value: ``'none'``
 
@@ -23,7 +23,7 @@ Default value: ``'none'``
 Spacing to apply around type operator when catching exceptions of multiple
 types, use ``null`` to follow the value configured for ``space``.
 
-Allowed values: ``'none'``, ``'single'``, ``null``
+Allowed values: ``'none'``, ``'single'`` and ``null``
 
 Default value: ``null``
 

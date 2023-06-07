@@ -12,7 +12,7 @@ Configuration
 
 Whether to import, not import or ignore global constants.
 
-Allowed values: ``false``, ``null``, ``true``
+Allowed values: ``false``, ``null`` and ``true``
 
 Default value: ``null``
 
@@ -21,7 +21,7 @@ Default value: ``null``
 
 Whether to import, not import or ignore global functions.
 
-Allowed values: ``false``, ``null``, ``true``
+Allowed values: ``false``, ``null`` and ``true``
 
 Default value: ``null``
 
@@ -30,7 +30,7 @@ Default value: ``null``
 
 Whether to import, not import or ignore global classes.
 
-Allowed values: ``false``, ``null``, ``true``
+Allowed values: ``false``, ``null`` and ``true``
 
 Default value: ``true``
 

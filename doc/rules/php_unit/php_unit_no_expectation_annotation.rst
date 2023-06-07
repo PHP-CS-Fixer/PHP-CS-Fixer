@@ -22,7 +22,7 @@ Configuration
 
 Target version of PHPUnit.
 
-Allowed values: ``'3.2'``, ``'4.3'``, ``'newest'``
+Allowed values: ``'3.2'``, ``'4.3'`` and ``'newest'``
 
 Default value: ``'newest'``
 

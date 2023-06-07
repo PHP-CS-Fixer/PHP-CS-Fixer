@@ -73,6 +73,13 @@ abstract class AbstractSetTest extends TestCase
         self::assertNotSame('', $string);
     }
 
+    protected static function getSet(): RuleSetDescriptionInterface
+    {
+        $setClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
+
+        return new $setClassName();
+    }
+
     /**
      * @param array<string, array<string, mixed>|bool> $setRules
      */
@@ -96,12 +103,5 @@ abstract class AbstractSetTest extends TestCase
         ksort($setRulesSorted);
 
         self::assertSame($setRulesSorted, $setRules);
-    }
-
-    private static function getSet(): RuleSetDescriptionInterface
-    {
-        $setClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
-
-        return new $setClassName();
     }
 }

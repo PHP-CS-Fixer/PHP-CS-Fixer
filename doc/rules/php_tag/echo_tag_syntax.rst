@@ -13,7 +13,7 @@ Configuration
 
 The desired language construct.
 
-Allowed values: ``'long'``, ``'short'``
+Allowed values: ``'long'`` and ``'short'``
 
 Default value: ``'long'``
 
@@ -22,7 +22,7 @@ Default value: ``'long'``
 
 The function to be used to expand the short echo tags.
 
-Allowed values: ``'echo'``, ``'print'``
+Allowed values: ``'echo'`` and ``'print'``
 
 Default value: ``'echo'``
 

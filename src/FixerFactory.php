@@ -227,7 +227,7 @@ final class FixerFactory
             );
 
             if (\count($report[$fixer]) > 0) {
-                $message .= sprintf("\n- \"%s\" with \"%s\"", $fixer, implode('", "', $report[$fixer]));
+                $message .= sprintf("\n- \"%s\" with %s", $fixer, Utils::naturalLanguageJoin($report[$fixer]));
             }
         }
 

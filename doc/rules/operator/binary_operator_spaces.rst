@@ -12,7 +12,7 @@ Configuration
 
 Default fix strategy.
 
-Allowed values: ``'align'``, ``'align_by_scope'``, ``'align_single_space'``, ``'align_single_space_by_scope'``, ``'align_single_space_minimal'``, ``'align_single_space_minimal_by_scope'``, ``'no_space'``, ``'single_space'``, ``null``
+Allowed values: ``'align'``, ``'align_by_scope'``, ``'align_single_space'``, ``'align_single_space_by_scope'``, ``'align_single_space_minimal'``, ``'align_single_space_minimal_by_scope'``, ``'no_space'``, ``'single_space'`` and ``null``
 
 Default value: ``'single_space'``
 
@@ -24,7 +24,7 @@ the default strategy. Supported are: ``=``, ``*``, ``/``, ``%``, ``<``, ``>``,
 ``|``, ``^``, ``+``, ``-``, ``&``, ``&=``, ``&&``, ``||``, ``.=``, ``/=``,
 ``=>``, ``==``, ``>=``, ``===``, ``!=``, ``<>``, ``!==``, ``<=``, ``and``,
 ``or``, ``xor``, ``-=``, ``%=``, ``*=``, ``|=``, ``+=``, ``<<``, ``<<=``,
-``>>``, ``>>=``, ``^=``, ``**``, ``**=``, ``<=>``, ``??``, ``??=``.
+``>>``, ``>>=``, ``^=``, ``**``, ``**=``, ``<=>``, ``??`` and ``??=``.
 
 Allowed types: ``array``
 

@@ -13,7 +13,7 @@ Configuration
 Whether the statements should be sorted alphabetically or by length, or not
 sorted.
 
-Allowed values: ``'alpha'``, ``'length'``, ``'none'``
+Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
 
 Default value: ``'alpha'``
 
@@ -22,7 +22,7 @@ Default value: ``'alpha'``
 
 Defines the order of import types.
 
-Allowed types: ``array``, ``null``
+Allowed types: ``array`` and ``null``
 
 Default value: ``null``
 
@@ -139,6 +139,11 @@ The rule is part of the following rule sets:
 
 @PER
   Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``ordered_imports`` rule with the config below:
+
+  ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
+
+@PER-CS1.0
+  Using the `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ rule set will enable the ``ordered_imports`` rule with the config below:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
