@@ -125,8 +125,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         // optional <desc>
         $desc = '(?:\s+(?P<desc>\V*))';
 
-        $this->regex = '/'.$indentRegex.'\*\h*@(?J)(?:'.implode('|', $types).')'.$desc.'\h*\r?$/x';
-        $this->regexCommentLine = '/'.$indentRegex.'\*(?!\h?+@)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/';
+        $this->regex = '/'.$indentRegex.'\*\ @(?J)(?:'.implode('|', $types).')'.$desc.'\h*\r?$/x';
+        $this->regexCommentLine = '/'.$indentRegex.'\*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/';
         $this->align = $this->configuration['align'];
     }
 
