@@ -34,11 +34,11 @@ final class TypeExpressionTest extends TestCase
      */
     public function testGetTypes(string $typesExpression, array $expectedTypes): void
     {
-        $expression = new TypeExpression($typesExpression, null, []);
+        $expression = $this->parseTypeExpression($typesExpression, null, []);
         self::assertSame($expectedTypes, $expression->getTypes());
 
         $unionTestNs = '__UnionTest__';
-        $unionExpression = new TypeExpression(
+        $unionExpression = $this->parseTypeExpression(
             $unionTestNs.'\\A|'.$typesExpression.'|'.$unionTestNs.'\\Z',
             null,
             []
@@ -155,9 +155,19 @@ final class TypeExpressionTest extends TestCase
 
         yield ['object{ bool, foo2: int }', ['object{ bool, foo2: int }']];
 
+        yield ['ArRAY{ 1 }', ['ArRAY{ 1 }']];
+
+        yield ['lIst{ 1 }', ['lIst{ 1 }']];
+
+        yield ['OBJECT { x: 1 }', ['OBJECT { x: 1 }']];
+
+        yield ['callable', ['callable']];
+
         yield ['callable(string)', ['callable(string)']];
 
-        yield ['callable(string): bool', ['callable(string): bool']];
+        yield ['? callable(string): bool', ['? callable(string): bool']];
+
+        yield ['CAllable(string): bool', ['CAllable(string): bool']];
 
         yield ['callable(string,): bool', ['callable(string,): bool']];
 
@@ -174,6 +184,8 @@ final class TypeExpressionTest extends TestCase
         yield ['Closure()', ['Closure()']];
 
         yield ['Closure(string)', ['Closure(string)']];
+
+        yield ['\\closure(string): void', ['\\closure(string): void']];
 
         yield ['\\Closure', ['\\Closure']];
 
@@ -446,7 +458,7 @@ final class TypeExpressionTest extends TestCase
      */
     public function testSortTypes(string $typesExpression, string $expectResult): void
     {
-        $expression = new TypeExpression($typesExpression, null, []);
+        $expression = $this->parseTypeExpression($typesExpression, null, []);
 
         $expression->sortTypes(static function (TypeExpression $a, TypeExpression $b): int {
             return strcasecmp($a->toString(), $b->toString());
@@ -653,5 +665,72 @@ final class TypeExpressionTest extends TestCase
             '18_446_744_073_709_551_616|-8.2023437675747321e-18_446_744_073_709_551_616',
             '-8.2023437675747321e-18_446_744_073_709_551_616|18_446_744_073_709_551_616',
         ];
+    }
+
+    /**
+     * @return list<array{int, string}|list>
+     */
+    private function checkInnerTypeExpressionsStartIndex(TypeExpression $typeExpression): array
+    {
+        $innerTypeExpressions = \Closure::bind(fn () => $typeExpression->innerTypeExpressions, null, TypeExpression::class)();
+
+        $res = [];
+        foreach ($innerTypeExpressions as ['start_index' => $innerStartIndex, 'expression' => $innerExpression]) {
+            $innerExpressionStr = $innerExpression->toString();
+            self::assertSame(
+                $innerExpressionStr,
+                substr($typeExpression->toString(), $innerStartIndex, \strlen($innerExpressionStr))
+            );
+
+            $res[] = [$innerStartIndex, $innerExpressionStr];
+
+            $res[] = $this->checkInnerTypeExpressionsStartIndex($innerExpression);
+        }
+
+        return $res;
+    }
+
+    private function clearPcreRegexCache(): void
+    {
+        // there is no explicit php function to clear PCRE regex cache, but based
+        // on https://www.php.net/manual/en/intro.pcre.php there are 4096 cache slots
+        // pruned in FIFO fashion, so to clear the cache, replace all existing
+        // cache slots with dummy regexes
+        for ($i = 0; $i < 4096; ++$i) {
+            preg_match('/^'.$i.'/', '');
+        }
+    }
+
+    /**
+     * Parse type expression with and without PCRE JIT.
+     *
+     * @param NamespaceUseAnalysis[] $namespaceUses
+     */
+    private function parseTypeExpression(string $value, ?NamespaceAnalysis $namespace, array $namespaceUses): TypeExpression
+    {
+        $pcreJitBackup = \ini_get('pcre.jit');
+
+        $innerExpressionsDataWithoutJit = null;
+
+        try {
+            foreach ([false, true] as $pcreJit) {
+                ini_set('pcre.jit', $pcreJit ? '1' : '0');
+                $this->clearPcreRegexCache();
+
+                $expression = new TypeExpression($value, null, []);
+                $innerExpressionsData = $this->checkInnerTypeExpressionsStartIndex($expression);
+
+                if (false === $pcreJit) {
+                    $innerExpressionsDataWithoutJit = $innerExpressionsData;
+                } else {
+                    self::assertSame($innerExpressionsDataWithoutJit, $innerExpressionsData);
+                }
+            }
+        } finally {
+            ini_set('pcre.jit', $pcreJitBackup);
+            $this->clearPcreRegexCache();
+        }
+
+        return $expression;
     }
 }

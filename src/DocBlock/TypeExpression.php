@@ -43,7 +43,7 @@ final class TypeExpression
             (?<nullable>\??\h*)
             (?:
                 (?<object_like_array>
-                    (?<object_like_array_start>(?:array|list|object)\h*\{\h*)
+                    (?<object_like_array_start>(?i)(?:array|list|object)(?-i)\h*\{\h*)
                         (?<object_like_array_inners>
                             (?<object_like_array_inner>
                                 (?<object_like_array_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
@@ -59,7 +59,7 @@ final class TypeExpression
                 )
                 |
                 (?<callable> # callable syntax, e.g. `callable(string): bool`
-                    (?<callable_start>(?:callable|\\\\?Closure)\h*\(\h*)
+                    (?<callable_start>(?i)(?:callable|\\\\?Closure)(?-i)\h*\(\h*)
                         (?<callable_arguments>
                             (?&types_inner)
                             (?:
@@ -302,7 +302,7 @@ final class TypeExpression
                 '{\G'.self::REGEX_TYPE.'(?:\h*(?<glue>[|&])\h*|$)}x',
                 $this->value,
                 $matches,
-                0,
+                PREG_OFFSET_CAPTURE,
                 $index
             );
 
@@ -313,20 +313,20 @@ final class TypeExpression
             }
 
             if (!$this->isUnionType) {
-                if (($matches['glue'] ?? '') === '') {
+                if (($matches['glue'][0] ?? '') === '') {
                     break;
                 }
 
                 $this->isUnionType = true;
-                $this->typesGlue = $matches['glue'];
+                $this->typesGlue = $matches['glue'][0];
             }
 
             $this->innerTypeExpressions[] = [
                 'start_index' => $index,
-                'expression' => $this->inner($matches['type']),
+                'expression' => $this->inner($matches['type'][0]),
             ];
 
-            $consumedValueLength = \strlen($matches[0]);
+            $consumedValueLength = \strlen($matches[0][0]);
             $index += $consumedValueLength;
 
             if (\strlen($this->value) === $index) {
@@ -334,81 +334,68 @@ final class TypeExpression
             }
         }
 
-        $index = '' !== $matches['nullable'] ? 1 : 0;
+        $nullableLength = \strlen($matches['nullable'][0]);
+        $index = $nullableLength;
 
-        if ('' !== ($matches['generic'] ?? '')) {
+        if ('' !== ($matches['generic'][0] ?? '') && $matches['generic'][1] === $nullableLength) {
             $this->parseCommaSeparatedInnerTypes(
-                $index + \strlen($matches['generic_start']),
-                $matches['generic_types']
+                $index + \strlen($matches['generic_start'][0]),
+                $matches['generic_types'][0]
             );
-
-            return;
-        }
-
-        if ('' !== ($matches['callable'] ?? '')) {
+        } elseif ('' !== ($matches['callable'][0] ?? '') && $matches['callable'][1] === $nullableLength) {
             $this->parseCommaSeparatedInnerTypes(
-                $index + \strlen($matches['callable_start']),
-                $matches['callable_arguments'] ?? ''
+                $index + \strlen($matches['callable_start'][0]),
+                $matches['callable_arguments'][0] ?? ''
             );
 
             if ('' !== ($matches['callable_return'] ?? '')) {
                 $this->innerTypeExpressions[] = [
-                    'start_index' => \strlen($this->value) - \strlen($matches['callable_return']),
-                    'expression' => $this->inner($matches['callable_return']),
+                    'start_index' => \strlen($this->value) - \strlen($matches['callable_return'][0]),
+                    'expression' => $this->inner($matches['callable_return'][0]),
                 ];
             }
-
-            return;
-        }
-
-        if ('' !== ($matches['object_like_array'] ?? '')) {
+        } elseif ('' !== ($matches['object_like_array'][0] ?? '') && $matches['object_like_array'][1] === $nullableLength) {
             $this->parseObjectLikeArrayInnerTypes(
-                $index + \strlen($matches['object_like_array_start']),
-                $matches['object_like_array_inners'] ?? ''
+                $index + \strlen($matches['object_like_array_start'][0]),
+                $matches['object_like_array_inners'][0] ?? ''
             );
+        } elseif ('' !== ($matches['parenthesized'][0] ?? '') && $matches['parenthesized'][1] === $nullableLength) {
+            $index += \strlen($matches['parenthesized_start'][0]);
 
-            return;
-        }
-
-        if ('' !== ($matches['parenthesized'] ?? '')) {
-            $index += \strlen($matches['parenthesized_start']);
-
-            if ('' !== ($matches['conditional'] ?? '')) {
-                if ('' !== ($matches['conditional_cond_left_types'] ?? '')) {
+            if ('' !== ($matches['conditional'][0] ?? '')) {
+                if ('' !== ($matches['conditional_cond_left_types'][0] ?? '')) {
                     $this->innerTypeExpressions[] = [
                         'start_index' => $index,
-                        'expression' => $this->inner($matches['conditional_cond_left_types']),
+                        'expression' => $this->inner($matches['conditional_cond_left_types'][0]),
                     ];
                 }
 
-                $index += \strlen($matches['conditional_cond_left']) + \strlen($matches['conditional_cond_middle']);
+                $index += \strlen($matches['conditional_cond_left'][0]) + \strlen($matches['conditional_cond_middle'][0]);
 
                 $this->innerTypeExpressions[] = [
                     'start_index' => $index,
-                    'expression' => $this->inner($matches['conditional_cond_right_types']),
+                    'expression' => $this->inner($matches['conditional_cond_right_types'][0]),
                 ];
 
-                $index += \strlen($matches['conditional_cond_right_types']) + \strlen($matches['conditional_true_start']);
+                $index += \strlen($matches['conditional_cond_right_types'][0]) + \strlen($matches['conditional_true_start'][0]);
 
                 $this->innerTypeExpressions[] = [
                     'start_index' => $index,
-                    'expression' => $this->inner($matches['conditional_true_types']),
+                    'expression' => $this->inner($matches['conditional_true_types'][0]),
                 ];
 
-                $index += \strlen($matches['conditional_true_types']) + \strlen($matches['conditional_false_start']);
+                $index += \strlen($matches['conditional_true_types'][0]) + \strlen($matches['conditional_false_start'][0]);
 
                 $this->innerTypeExpressions[] = [
                     'start_index' => $index,
-                    'expression' => $this->inner($matches['conditional_false_types']),
+                    'expression' => $this->inner($matches['conditional_false_types'][0]),
                 ];
             } else {
                 $this->innerTypeExpressions[] = [
                     'start_index' => $index,
-                    'expression' => $this->inner($matches['parenthesized_types']),
+                    'expression' => $this->inner($matches['parenthesized_types'][0]),
                 ];
             }
-
-            return;
         }
     }
 
