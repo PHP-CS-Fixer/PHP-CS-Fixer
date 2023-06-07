@@ -130,14 +130,6 @@ final class CustomConfig implements ConfigInterface, UnsupportedPhpVersionAllowe
     /**
      * {@inheritdoc}
      */
-    public function registerCustomRuleSets(iterable $ruleSets): ConfigInterface
-    {
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setCacheFile(string $cacheFile): ConfigInterface
     {
         return $this;
