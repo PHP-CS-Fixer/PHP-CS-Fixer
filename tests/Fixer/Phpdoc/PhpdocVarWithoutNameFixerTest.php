@@ -547,6 +547,34 @@ class Foo
 EOF
                 ,
             ],
+            'testFixMultibyteVariableName' => [
+                <<<'EOF'
+<?php
+
+class Foo
+{
+    /** @var int Hello! */
+    public $foo;
+
+    /** @var 🚀 🚀 */
+    public $foo2;
+}
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+class Foo
+{
+    /** @var int $my🚀 Hello! */
+    public $foo;
+
+    /** @var 🚀 $my 🚀 */
+    public $foo2;
+}
+EOF
+                ,
+            ],
         ];
     }
 

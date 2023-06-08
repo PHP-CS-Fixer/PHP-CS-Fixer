@@ -77,9 +77,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
             return self::POSSIBLE_TYPES[$group];
         }, $this->configuration['groups']));
 
-        $this->patternToFix = sprintf(
-            '/(?<![a-zA-Z0-9_\x80-\xff]\\\\)(\b|.(?=\$))(%s)\b(?!(\\\\|:))/i',
-            implode(
+        $this->patternToFix = '/(?<![^\x00-\x2f\x3a-\x40\x5b-\x5e\x60\x7b-\x7f]\\\\)(\b|(?=\$))('.implode(
                 '|',
                 array_map(
                     static function (string $type): string {
@@ -87,8 +85,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
                     },
                     $typesToFix
                 )
-            )
-        );
+            ).')\b(?!(\\\\|:))/i';
     }
 
     public function getDefinition(): FixerDefinitionInterface

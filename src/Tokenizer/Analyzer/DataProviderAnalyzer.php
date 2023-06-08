@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -24,6 +25,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class DataProviderAnalyzer
 {
+    private const REGEX_CLASS = '(?:\\\\?+'.TypeExpression::REGEX_IDENTIFIER
+        .'(\\\\'.TypeExpression::REGEX_IDENTIFIER.')*+)';
+
     /**
      * @return array<int> indices of data provider definitions
      */
@@ -43,7 +47,7 @@ final class DataProviderAnalyzer
                 continue;
             }
 
-            Preg::matchAll('/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/', $tokens[$docCommentIndex]->getContent(), $matches);
+            Preg::matchAll('/@dataProvider\h+(('.self::REGEX_CLASS.'::)?'.TypeExpression::REGEX_IDENTIFIER.')/', $tokens[$docCommentIndex]->getContent(), $matches);
 
             /** @var array<string> $matches */
             $matches = $matches[1];
