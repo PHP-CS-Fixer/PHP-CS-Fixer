@@ -873,6 +873,18 @@ class Foo
 }
 ',
         ];
+
+        yield 'phpDoc over enum case' => [
+            '<?php
+enum Foo: int
+{
+    /**
+     * @deprecated do not convert this
+     */
+    case BAR = 1;
+}
+',
+        ];
     }
 
     /**
