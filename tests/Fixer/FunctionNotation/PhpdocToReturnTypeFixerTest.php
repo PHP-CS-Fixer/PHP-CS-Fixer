@@ -203,6 +203,10 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @return null|Bar */ function my_foo(): ?Bar {}',
                 '<?php /** @return null|Bar */ function my_foo() {}',
             ],
+            'nullable type with ? notation in phpDoc' => [
+                '<?php /** @return ?Bar */ function my_foo(): ?Bar {}',
+                '<?php /** @return ?Bar */ function my_foo() {}',
+            ],
             'nullable type reverse order' => [
                 '<?php /** @return Bar|null */ function my_foo(): ?Bar {}',
                 '<?php /** @return Bar|null */ function my_foo() {}',

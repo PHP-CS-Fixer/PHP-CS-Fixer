@@ -259,12 +259,18 @@ final class TypeExpression
                 continue;
             }
 
+            if (str_starts_with($type, '?')) {
+                $type = substr($type, 1);
+            }
+
+            if (1 === Preg::match('/\[\h*\]$/', $type)) {
+                $type = 'array';
+            } elseif (1 === Preg::match('/^(.+?)\h*[<{(]/', $type, $matches)) {
+                $type = $matches[1];
+            }
+
             if (isset($aliases[$type])) {
                 $type = $aliases[$type];
-            } elseif (1 === Preg::match('/\[\]$/', $type)) {
-                $type = 'array';
-            } elseif (1 === Preg::match('/^(.+?)</', $type, $matches)) {
-                $type = $matches[1];
             }
 
             if (null === $mainType || $type === $mainType) {
@@ -286,7 +292,7 @@ final class TypeExpression
     public function allowsNull(): bool
     {
         foreach ($this->getTypes() as $type) {
-            if (\in_array($type, ['null', 'mixed'], true)) {
+            if (\in_array($type, ['null', 'mixed'], true) || str_starts_with($type, '?')) {
                 return true;
             }
         }
@@ -538,6 +544,7 @@ final class TypeExpression
             'double' => 'float',
             'false' => 'bool',
             'integer' => 'int',
+            'list' => 'array',
             'real' => 'float',
             'true' => 'bool',
         ];

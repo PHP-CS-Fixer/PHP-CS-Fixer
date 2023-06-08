@@ -364,6 +364,10 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array[][]', 'array'];
 
+        yield ['bool [ ]', 'array'];
+
+        yield ['bool [ ][ ]', 'array'];
+
         yield ['array|iterable', 'iterable'];
 
         yield ['iterable|array', 'iterable'];
@@ -380,6 +384,10 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array<int, string>', 'array'];
 
+        yield ['array < string >', 'array'];
+
+        yield ['list<int>', 'array'];
+
         yield ['iterable<string>', 'iterable'];
 
         yield ['iterable<int, string>', 'iterable'];
@@ -392,6 +400,12 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Collection<int, string>', 'Collection'];
 
+        yield ['array{string}', 'array'];
+
+        yield ['array { 1: string, \Closure(): void }', 'array'];
+
+        yield ['Closure(): void', 'Closure'];
+
         yield ['array<int, string>|iterable<int, string>', 'iterable'];
 
         yield ['int[]|string[]', 'array'];
@@ -399,6 +413,12 @@ final class TypeExpressionTest extends TestCase
         yield ['int|null', 'int'];
 
         yield ['null|int', 'int'];
+
+        yield ['?int', 'int'];
+
+        yield ['?array<Foo>', 'array'];
+
+        yield ['?list<Foo>', 'array'];
 
         yield ['void', 'void'];
 
@@ -451,6 +471,10 @@ final class TypeExpressionTest extends TestCase
         yield ['bool', false];
 
         yield ['string', false];
+
+        yield ['?int', true];
+
+        yield ['?\Closure(): void', true];
     }
 
     /**

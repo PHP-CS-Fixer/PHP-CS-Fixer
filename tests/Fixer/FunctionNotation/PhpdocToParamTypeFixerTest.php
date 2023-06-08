@@ -296,6 +296,10 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @param null|Foo $foo */ function my_foo(?Foo $foo) {}',
                 '<?php /** @param null|Foo $foo */ function my_foo($foo) {}',
             ],
+            'nullable with ? notation in phpDoc' => [
+                '<?php /** @param ?Foo $foo */ function my_foo(?Foo $foo) {}',
+                '<?php /** @param ?Foo $foo */ function my_foo($foo) {}',
+            ],
             'array and iterable param' => [
                 '<?php /** @param Foo[]|iterable $foo */ function my_foo(iterable $foo) {}',
                 '<?php /** @param Foo[]|iterable $foo */ function my_foo($foo) {}',
