@@ -714,6 +714,9 @@ final class TypeExpressionTest extends TestCase
         return $res;
     }
 
+    /**
+     * Should be removed once https://github.com/php/php-src/pull/11396 is merged.
+     */
     private function clearPcreRegexCache(): void
     {
         // there is no explicit php function to clear PCRE regex cache, but based
