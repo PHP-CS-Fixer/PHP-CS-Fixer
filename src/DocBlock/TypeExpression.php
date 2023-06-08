@@ -357,7 +357,7 @@ final class TypeExpression
                 $matches['callable_arguments'][0] ?? ''
             );
 
-            if ('' !== ($matches['callable_return'] ?? '')) {
+            if ('' !== ($matches['callable_return'][0] ?? '')) {
                 $this->innerTypeExpressions[] = [
                     'start_index' => \strlen($this->value) - \strlen($matches['callable_return'][0]),
                     'expression' => $this->inner($matches['callable_return'][0]),

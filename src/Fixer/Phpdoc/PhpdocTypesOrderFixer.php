@@ -131,11 +131,13 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
 
             foreach ($annotations as $annotation) {
                 // fix main types
-                $annotation->setTypes(
-                    $this->sortTypes(
-                        $annotation->getTypeExpression()
-                    )
-                );
+                if (null !== $annotation->getTypeExpression()) {
+                    $annotation->setTypes(
+                        $this->sortTypes(
+                            $annotation->getTypeExpression()
+                        )
+                    );
+                }
 
                 // fix @method parameters types
                 $line = $doc->getLine($annotation->getStart());
