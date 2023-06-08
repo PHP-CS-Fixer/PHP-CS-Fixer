@@ -370,4 +370,41 @@ Class MyAnnotation3 {}'],
             '<?php /* Before enum */ enum Foo {}',
         ];
     }
+
+    /**
+     * @dataProvider provideNotPhpdocCandidatePhp811Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testNotPhpdocCandidatePhp81(string $code): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $analyzer = new CommentsAnalyzer();
+
+        self::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
+    }
+
+    public static function provideNotPhpdocCandidatePhp811Cases(): iterable
+    {
+        yield 'enum and switch' => [
+            '<?php
+            enum E {}
+            switch ($x) {
+                /* */
+                case 1: return 2;
+            }
+            ',
+        ];
+
+        yield 'switch and enum' => [
+            '<?php
+            switch ($x) {
+                /* */
+                case 1: return 2;
+            }
+            enum E {}
+            ',
+        ];
+    }
 }
