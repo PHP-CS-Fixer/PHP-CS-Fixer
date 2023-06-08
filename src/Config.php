@@ -166,7 +166,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
     }
 
     /**
-     * Registers custom rule sets to be used the same way as built-in rule sets
+     * Registers custom rule sets to be used the same way as built-in rule sets.
      *
      * `$ruleSets` must follow `'@RuleName' => RuleSetDescriptionInterface::class` convention.
      *
