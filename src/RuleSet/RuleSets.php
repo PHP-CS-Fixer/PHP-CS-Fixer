@@ -76,7 +76,7 @@ final class RuleSets
     /**
      * @param class-string<RuleSetDescriptionInterface> $class
      */
-    public static function registerRuleSet(string $name, string $class): bool
+    public static function registerRuleSet(string $name, string $class): void
     {
         $preg = new Preg();
 
@@ -107,8 +107,6 @@ final class RuleSets
         self::$setDefinitions[$name] = new $class();
 
         self::sortSetDefinitions();
-
-        return true;
     }
 
     private static function sortSetDefinitions(): void
