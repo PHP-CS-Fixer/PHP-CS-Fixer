@@ -187,21 +187,15 @@ Integration of %s.
         self::assertContains($goodName, RuleSets::getSetDefinitionNames());
     }
 
-    /**
-     * @return array<int, array<int, string>>
-     */
-    public static function provideRegisterRuleSetOkCases(): array
+    public static function provideRegisterRuleSetOkCases(): iterable
     {
-        $goodNames = [
-            '@MyRules',
-            '@MyRules-1.0',
-            '@MyRules_1_0',
-            '@MyRules/1.0',
-        ];
+        yield 'Simple name' => ['@MyRules'];
 
-        return array_map(static function (string $goodName): array {
-            return [$goodName];
-        }, $goodNames);
+        yield 'Versioned with dash and X.Y' => ['@MyRules-1.0'];
+
+        yield 'Versioned with underscores' => ['@MyRules_1_0'];
+
+        yield 'Vendor/Ruleset' => ['@Vendor/MyRules'];
     }
 
     /**
@@ -213,27 +207,21 @@ Integration of %s.
         RuleSets::registerRuleSet('MyRules', SampleRulesOk::class);
     }
 
-    /**
-     * @return array<int, array<int, string>>
-     */
-    public static function provideRegisterRuleSetBadNameCases(): array
+    public static function provideRegisterRuleSetBadNameCases(): iterable
     {
-        $badNames = [
-            'MyRules', // Doesn't start with @
-            'MyRules,', // Contains comma
-            '@MyRules,', // Contains comma
-            '@MyRules#', // Contains hash
-        ];
+        yield 'Does not start with @' => ['MyRules'];
 
-        return array_map(static function (string $badName): array {
-            return [$badName];
-        }, $badNames);
+        yield 'Contains comma 1' => ['MyRules,'];
+
+        yield 'Contains comma 2' => ['@MyRules,'];
+
+        yield 'Contains hash' => ['@MyRules#'];
     }
 
     public function testRegisterRuleSetMissingClass(): void
     {
         self::expectException(\InvalidArgumentException::class);
-        /** @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         RuleSets::registerRuleSet('@MyRules', '\This\Class\Does\Not\Exists');
     }
 
@@ -252,7 +240,7 @@ Integration of %s.
     public function testRegisterRuleSetInvalidClass(): void
     {
         self::expectException(\InvalidArgumentException::class);
-        /** @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         RuleSets::registerRuleSet('@MyClass', SampleRulesBad::class);
     }
 
