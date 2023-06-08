@@ -75,4 +75,120 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
             ['<?php $anonymClass = new class {};'],
         ];
     }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): array
+    {
+        return [
+            ['<?php #[Entity] class MyEntity {}'],
+            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] class MyEntity {}'],
+            ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] class MyEntity {}'],
+            ['<?php #[Document] class MyDocument {}'],
+            ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] class MyEntity {}'],
+            ['<?php #[Entity] class MyEntity {}'],
+            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\entity] class MyEntity {}'],
+            ['<?php #[IgnoredAttribute] #[Entity] class MyEntity {}'],
+            ['<?php #[IgnoredAttribute("Some-Value"), Entity] class MyEntity {}'],
+
+            // Test with comments in between attributes and class
+            ['<?php #[Entity] /* some comment */ class MyEntity {}'],
+            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] /* some comment */ class MyEntity {}'],
+            ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] /* some comment */ class MyEntity {}'],
+            ['<?php #[Document] /* some comment */ class MyDocument {}'],
+            ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] /* some comment */ class MyEntity {}'],
+            ['<?php #[Entity] /* some comment */ class MyEntity {}'],
+            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\entity] /* some comment */ class MyEntity {}'],
+            ['<?php use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute] #[Entity] /* some comment */ class MyEntity {}'],
+            ['<?php use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute("Some-Value"), Entity] /* some comment */ class MyEntity {}'],
+
+            // Test with comments before the class
+            ['<?php /* some comment */ #[Entity] class MyEntity {}'],
+            ['<?php /* some comment */ use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] class MyEntity {}'],
+            ['<?php /* some comment */ use Doctrine\ORM; #[ORM\Mapping\Entity] class MyEntity {}'],
+            ['<?php /* some comment */ #[Document] class MyDocument {}'],
+            ['<?php /* some comment */ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] class MyEntity {}'],
+            ['<?php /* some comment */ #[Entity] class MyEntity {}'],
+            ['<?php /* some comment */ use Doctrine\ORM\Mapping as ORM; #[ORM\entity] class MyEntity {}'],
+            ['<?php /* some comment */ use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute] #[Entity] class MyEntity {}'],
+            ['<?php /* some comment */ use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute, Entity] class MyEntity {}'],
+
+            // Multiline tests
+            [
+                <<<'EOF'
+                <?php
+                use Doctrine\ORM;
+                #[IgnoredAttribute("Some-Value"), IgnoredAttribute("Another-Value")]
+                #[ORM\Mapping\Entity]
+                /**
+                 * multi
+                 * line
+                 */
+                class MyEntity {}
+                EOF,
+            ],
+            [
+                <<<'EOF'
+                <?php
+                use Doctrine\ORM;
+                #[
+                    IgnoredAttribute("Some-Value"),
+                    IgnoredAttribute("Another-Value"),#
+                    ORM\Mapping\Entity,
+                ]
+                /**
+                 * multi
+                 * line
+                 */
+                class MyEntity {}
+                EOF,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): array
+    {
+        return [
+            ['<?php #[Entity] readonly class MyEntity {}'],
+            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] readonly class MyEntity {}'],
+            ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] readonly class MyEntity {}'],
+            ['<?php #[Document] readonly class MyDocument {}'],
+            ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] readonly class MyEntity {}'],
+            ['<?php #[Entity] readonly class MyEntity {}'],
+            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\entity] readonly class MyEntity {}'],
+            ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] readonly class MyEntity {}'],
+            ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] readonly /* ... */ class MyEntity {}'],
+            [
+                <<<'EOF'
+                <?php
+                use Doctrine\ORM;
+                #[ORM\Mapping\Entity]
+                readonly
+                /**
+                 * multi
+                 * line
+                 */
+                class MyEntity {}
+                EOF,
+            ],
+        ];
+    }
 }
