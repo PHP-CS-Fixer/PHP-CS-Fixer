@@ -94,9 +94,7 @@ final class RuleSets
             throw new \InvalidArgumentException(sprintf('Set "%s" is already defined.', $name));
         }
 
-        $set = new $class();
-
-        if (!\in_array(RuleSetDescriptionInterface::class, class_implements($set), true)) {
+        if (!\in_array(RuleSetDescriptionInterface::class, class_implements($class), true)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Class "%s" does must be an instance of "%s".',
@@ -106,7 +104,7 @@ final class RuleSets
             );
         }
 
-        self::$setDefinitions[$name] = $set;
+        self::$setDefinitions[$name] = new $class();
 
         self::sortSetDefinitions();
 
