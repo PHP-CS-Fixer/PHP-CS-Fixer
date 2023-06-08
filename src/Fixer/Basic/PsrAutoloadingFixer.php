@@ -103,7 +103,7 @@ class InvalidName {}
             // ignore file with extension other than php
             ('php' !== $file->getExtension())
             // ignore file with name that cannot be a class name
-            || 0 === Preg::match('/^(?!\d)[\dA-Z_a-z\x80-\xff]+$/', $file->getBasename('.php'))
+            || 0 === Preg::match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $file->getBasename('.php'))
         ) {
             return false;
         }

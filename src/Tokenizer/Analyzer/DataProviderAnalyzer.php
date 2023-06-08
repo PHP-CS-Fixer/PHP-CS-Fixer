@@ -43,7 +43,7 @@ final class DataProviderAnalyzer
                 continue;
             }
 
-            Preg::matchAll('/@dataProvider\s+([\dA-Z_a-z\x80-\xff\-.:\\\\]+)/', $tokens[$docCommentIndex]->getContent(), $matches);
+            Preg::matchAll('/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/', $tokens[$docCommentIndex]->getContent(), $matches);
 
             /** @var array<string> $matches */
             $matches = $matches[1];
