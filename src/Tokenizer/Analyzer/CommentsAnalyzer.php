@@ -194,11 +194,10 @@ final class CommentsAnalyzer
             return true;
         }
 
-        if ($token->isGivenKind(T_CASE)
-            && \defined('T_ENUM')
-            && null !== $tokens->getPrevTokenOfKind($index, [[T_ENUM]])
-        ) {
-            return true;
+        if ($token->isGivenKind(T_CASE) && \defined('T_ENUM')) {
+            $caseParent = $tokens->getPrevTokenOfKind($index, [[T_ENUM], [T_SWITCH]]);
+
+            return null === $caseParent || $tokens[$caseParent]->isGivenKind([T_ENUM]);
         }
 
         if ($token->isGivenKind(T_STATIC)) {
