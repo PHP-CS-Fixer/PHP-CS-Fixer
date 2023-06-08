@@ -47,7 +47,7 @@ final class RulesSignature
 
     public function equals(self $signature): bool
     {
-        return $this->hash === $signature->getHash();
+        return $this->hash === $signature->hash;
     }
 
     /**
