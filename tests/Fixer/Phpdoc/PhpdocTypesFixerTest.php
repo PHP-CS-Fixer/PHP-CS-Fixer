@@ -202,7 +202,7 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
     /**
      * @param self|array|Foo $bar
      *
-     * @return int|float|callback
+     * @return int|float|boolean|Double
      */
 
 ',
@@ -210,7 +210,7 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
     /**
      * @param SELF|Array|Foo $bar
      *
-     * @return inT|Float|callback
+     * @return inT|Float|boolean|Double
      */
 
 ',
