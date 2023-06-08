@@ -97,7 +97,7 @@ final class RuleSets
         if (!\in_array(RuleSetDescriptionInterface::class, class_implements($class), true)) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Class "%s" does must be an instance of "%s".',
+                    'Class "%s" must be an instance of "%s".',
                     $class,
                     RuleSetDescriptionInterface::class
                 )
