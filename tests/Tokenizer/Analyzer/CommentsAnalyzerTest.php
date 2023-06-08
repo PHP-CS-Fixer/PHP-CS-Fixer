@@ -264,6 +264,7 @@ $bar;',
             ['<?php /* @var User $bar */ list($bar) = a();'],
             ['<?php /* Before anonymous function */ $fn = fn($x) => $x + 1;'],
             ['<?php /* Before anonymous function */ fn($x) => $x + 1;'],
+            ['<?php /* @var int $x */ [$x] = [2];'],
         ];
     }
 
@@ -291,23 +292,8 @@ $bar;',
 
                 static::bar();',
             ],
+            ['<?php /* @var int $a */ [$b] = [2];'],
         ];
-    }
-
-    public function testPhpdocCandidate71(): void
-    {
-        $tokens = Tokens::fromCode('<?php /* @var int $x */ [$x] = [2];');
-        $analyzer = new CommentsAnalyzer();
-
-        self::assertTrue($analyzer->isHeaderComment($tokens, 1));
-    }
-
-    public function testNotPhpdocCandidate71(): void
-    {
-        $tokens = Tokens::fromCode('<?php /* @var int $a */ [$b] = [2];');
-        $analyzer = new CommentsAnalyzer();
-
-        self::assertFalse($analyzer->isBeforeStructuralElement($tokens, 1));
     }
 
     /**
