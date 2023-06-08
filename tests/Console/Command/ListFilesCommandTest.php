@@ -19,6 +19,8 @@ use PhpCsFixer\Console\Command\ListFilesCommand;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * @internal
@@ -27,6 +29,39 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class ListFilesCommandTest extends TestCase
 {
+    /**
+     * @var false|string
+     */
+    private $oldCwd;
+    private string $tempFixtureDirectory;
+    private static Filesystem $filesystem;
+
+    public static function setUpBeforeClass(): void
+    {
+        self::$filesystem = new Filesystem();
+    }
+
+    protected function setUp(): void
+    {
+        $this->oldCwd = getcwd();
+        $this->tempFixtureDirectory = sys_get_temp_dir().'/Fixtures';
+
+        if (!self::$filesystem->exists($this->tempFixtureDirectory)) {
+            self::$filesystem->mkdir($this->tempFixtureDirectory);
+        }
+    }
+
+    protected function tearDown(): void
+    {
+        if (false !== $this->oldCwd && getcwd() !== $this->oldCwd) {
+            chdir($this->oldCwd);
+        }
+
+        if (self::$filesystem->exists($this->tempFixtureDirectory)) {
+            self::$filesystem->remove($this->tempFixtureDirectory);
+        }
+    }
+
     public function testListWithConfig(): void
     {
         $commandTester = $this->doTestExecute([
@@ -48,25 +83,20 @@ final class ListFilesCommandTest extends TestCase
      */
     public function testListFilesDoesNotCorruptListWithGetcwdInName(): void
     {
-        $cwd = getcwd();
-        self::assertIsString($cwd, 'Cannot get the current working directory.');
+        $newCwd = sys_get_temp_dir();
+        chdir($newCwd);
 
-        $tempFile = __DIR__.'/../../Fixtures/ListFilesTest/using-getcwd/'.ltrim($cwd, '/').'-out.php';
-        $tempDir = \dirname($tempFile);
-        mkdir($tempDir, 0777, true);
-        file_put_contents($tempFile, '<?php function a() {   }');
+        $tempFile = $this->tempFixtureDirectory.'/'.ltrim($newCwd, '/').'-out.php';
+        self::$filesystem->dumpFile($tempFile, '<?php function a() {   }');
         $tempFile = realpath($tempFile);
         self::assertFileExists($tempFile);
 
         $commandTester = $this->doTestExecute([
             '--config' => __DIR__.'/../../Fixtures/ListFilesTest/.php-cs-fixer.using-getcwd.php',
         ]);
-        $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, '.'.substr($tempFile, \strlen($cwd)));
+        $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, './'.Path::makeRelative($tempFile, $newCwd));
         self::assertSame(0, $commandTester->getStatusCode());
         self::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
-
-        unlink($tempFile);
-        rmdir($tempDir);
     }
 
     /**
