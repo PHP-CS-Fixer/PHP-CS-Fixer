@@ -320,16 +320,6 @@ $bar;',
 #[CustomAnnotationA]
 Class MyAnnotation3 {}',
         ];
-
-        yield 'enum with deprecated case' => [
-            '<?php
-enum Foo: int {
-    /**
-     * @deprecated Lorem ipsum
-     */
-    case BAR = 1;
-}',
-        ];
     }
 
     /**
@@ -378,6 +368,16 @@ enum Foo: int {
 
         yield 'enum' => [
             '<?php /* Before enum */ enum Foo {}',
+        ];
+
+        yield 'enum with deprecated case' => [
+            '<?php
+enum Foo: int {
+    /**
+     * @deprecated Lorem ipsum
+     */
+    case BAR = 1;
+}',
         ];
     }
 
