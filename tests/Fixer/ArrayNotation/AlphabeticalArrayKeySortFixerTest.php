@@ -85,12 +85,28 @@ final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
                 ],
             ],
             [
-                '<?php array("a" => "value2", "b" => "value3", "c" => "value1");',
-                '<?php array("c" => "value1", "a" => "value2", "b" => "value3");',
+                '<?php array("a" => "a", "b" => "b", "c" => "c");',
+                '<?php array("c" => "c", "a" => "a", "b" => "b");',
             ],
             [
-                '<?php ["a" => "value2", "b" => "value3", "c" => "value1"];',
-                '<?php ["c" => "value1", "a" => "value2", "b" => "value3"];',
+                '<?php array(1 => "one", 2 => "two", 3 => "three");',
+                '<?php array(3 => "three", 1 => "one", 2 => "two");',
+            ],
+            [
+                '<?php array("a" => "a", "b" => "b", 1 => "one", 2 => "two");',
+                '<?php array("b" => "b", 1 => "one", 2 => "two", "a" => "a");',
+            ],
+            [
+                '<?php ["a" => "a", "b" => "b", "c" => "c"];',
+                '<?php ["c" => "c", "a" => "a", "b" => "b"];',
+            ],
+            [
+                '<?php [1 => "one", 2 => "two", 3 => "three"];',
+                '<?php [3 => "three", 1 => "one", 2 => "two"];',
+            ],
+            [
+                '<?php ["a" => "a", "b" => "b", 1 => "one", 2 => "two"];',
+                '<?php ["b" => "b", 1 => "one", 2 => "two", "a" => "a"];',
             ],
             [
                 '<?php ["a" => "value3", "b" => "value4", "c" => "value5", foo() . " baz" => "value1", bar() => "value2"];',
@@ -100,7 +116,6 @@ final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
                 '<?php ["a" => "value3", "b" => "value4", kar() => "value4", foo() . " baz" => "value1", bar() => "value2"];',
                 '<?php ["b" => "value4", kar() => "value4", foo() . " baz" => "value1", "a" => "value3", bar() => "value2"];',
             ],
-
             [
                 '<?php array("a" => "hey how, am i doing", "b" => "value3", "c" => "value1");',
                 '<?php array("c" => "value1", "a" => "hey how, am i doing", "b" => "value3");',

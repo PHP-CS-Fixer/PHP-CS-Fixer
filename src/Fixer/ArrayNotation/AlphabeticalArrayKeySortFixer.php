@@ -186,7 +186,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                 return -$specialSortDirection;
             }
 
-            return strcmp($a, $b);
+            return strcmp((string) $a, (string) $b);
         });
 
         return $contentKeys;
@@ -292,10 +292,16 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
 
     /**
      * Checks if the token represents a special key.
+     *
+     * @param int|string $value
      */
-    private function isSpecialKey(string $value): bool
+    private function isSpecialKey($value): bool
     {
-        $tokens = Tokens::fromCode($value);
+        if (\is_int($value)) {
+            return false;
+        }
+
+        $tokens = Tokens::fromCode((string) $value);
 
         if ($tokens->count() > 1) {
             return true;
