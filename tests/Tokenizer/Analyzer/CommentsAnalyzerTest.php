@@ -328,7 +328,7 @@ enum Foo: int {
      * @deprecated Lorem ipsum
      */
     case BAR = 1;
-}'
+}',
         ];
     }
 
