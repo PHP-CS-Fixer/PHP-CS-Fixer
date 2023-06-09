@@ -1054,6 +1054,24 @@ $this
                     ];
                 ',
             ],
+            [
+                '<?php
+switch ($foo) {
+    case 1:
+        $bar
+            ->baz()
+        ;
+}
+',
+                '<?php
+switch ($foo) {
+    case 1:
+        $bar
+            ->baz()
+              ;
+}
+',
+            ],
         ];
     }
 
