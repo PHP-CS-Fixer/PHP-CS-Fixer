@@ -29,37 +29,16 @@ use Symfony\Component\Filesystem\Path;
  */
 final class ListFilesCommandTest extends TestCase
 {
-    /**
-     * @var false|string
-     */
-    private $oldCwd;
-    private string $tempFixtureDirectory;
-    private static Filesystem $filesystem;
+    private static ?Filesystem $filesystem;
 
     public static function setUpBeforeClass(): void
     {
         self::$filesystem = new Filesystem();
     }
 
-    protected function setUp(): void
+    public static function tearDownAfterClass(): void
     {
-        $this->oldCwd = getcwd();
-        $this->tempFixtureDirectory = sys_get_temp_dir().'/Fixtures';
-
-        if (!self::$filesystem->exists($this->tempFixtureDirectory)) {
-            self::$filesystem->mkdir($this->tempFixtureDirectory);
-        }
-    }
-
-    protected function tearDown(): void
-    {
-        if (false !== $this->oldCwd && getcwd() !== $this->oldCwd) {
-            chdir($this->oldCwd);
-        }
-
-        if (self::$filesystem->exists($this->tempFixtureDirectory)) {
-            self::$filesystem->remove($this->tempFixtureDirectory);
-        }
+        self::$filesystem = null;
     }
 
     public function testListWithConfig(): void
@@ -83,20 +62,23 @@ final class ListFilesCommandTest extends TestCase
      */
     public function testListFilesDoesNotCorruptListWithGetcwdInName(): void
     {
-        $newCwd = sys_get_temp_dir();
-        chdir($newCwd);
+        try {
+            $tmpDir = __DIR__.'/../../Fixtures/ListFilesTest/using-getcwd';
+            $tmpFile = $tmpDir.'/'.ltrim(getcwd(), '/').'-out.php';
+            self::$filesystem->dumpFile($tmpFile, '<?php function a() {  }');
 
-        $tempFile = $this->tempFixtureDirectory.'/'.ltrim($newCwd, '/').'-out.php';
-        self::$filesystem->dumpFile($tempFile, '<?php function a() {   }');
-        $tempFile = realpath($tempFile);
-        self::assertFileExists($tempFile);
+            $tmpFile = realpath($tmpFile);
+            self::assertFileExists($tmpFile);
 
-        $commandTester = $this->doTestExecute([
-            '--config' => __DIR__.'/../../Fixtures/ListFilesTest/.php-cs-fixer.using-getcwd.php',
-        ]);
-        $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, './'.Path::makeRelative($tempFile, $newCwd));
-        self::assertSame(0, $commandTester->getStatusCode());
-        self::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
+            $commandTester = $this->doTestExecute([
+                '--config' => __DIR__.'/../../Fixtures/ListFilesTest/.php-cs-fixer.using-getcwd.php',
+            ]);
+            $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, './'.Path::makeRelative($tmpFile, getcwd()));
+            self::assertSame(0, $commandTester->getStatusCode());
+            self::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
+        } finally {
+            self::$filesystem->remove($tmpDir);
+        }
     }
 
     /**
