@@ -195,9 +195,9 @@ final class FixerFactory
     }
 
     /**
-     * @return null|string[]
+     * @return string[]
      */
-    private function getFixersConflicts(FixerInterface $fixer): ?array
+    private function getFixersConflicts(FixerInterface $fixer): array
     {
         static $conflictMap = [
             'no_blank_lines_before_namespace' => ['single_blank_line_before_namespace'],
