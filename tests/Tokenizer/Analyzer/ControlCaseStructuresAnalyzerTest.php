@@ -409,15 +409,6 @@ $expressionResult = match ($condition) {
 
     private static function assertAnalysis(AbstractControlCaseStructuresAnalysis $expectedAnalysis, AbstractControlCaseStructuresAnalysis $analysis): void
     {
-        $serializeExpected = serialize($expectedAnalysis);
-        $serializeActual = serialize($analysis);
-
-        if ($serializeExpected === $serializeActual) {
-            self::assertTrue(true);
-
-            return;
-        }
-
         self::assertSame($expectedAnalysis->getIndex(), $analysis->getIndex(), 'index');
         self::assertSame($expectedAnalysis->getOpenIndex(), $analysis->getOpenIndex(), 'open index');
         self::assertSame($expectedAnalysis->getCloseIndex(), $analysis->getCloseIndex(), 'close index');
@@ -447,6 +438,9 @@ $expressionResult = match ($condition) {
             }
         }
 
-        self::assertSame($serializeExpected, $serializeActual);
+        static::assertSame(
+            serialize($expectedAnalysis),
+            serialize($analysis)
+        );
     }
 }
