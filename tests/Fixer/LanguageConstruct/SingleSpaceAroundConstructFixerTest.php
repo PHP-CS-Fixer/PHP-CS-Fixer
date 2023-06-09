@@ -293,6 +293,39 @@ as $bar) {}',
                 ],
             ],
             [
+                '<?php foreach (range(1, 12) as $num) {}',
+                '<?php foreach (range(1, 12)as $num) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
+            ],
+            [
+                '<?php foreach (range(1, 12) as $num) {}',
+                '<?php foreach (range(1, 12)   as $num) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
+            ],
+            [
+                '<?php foreach ([1, 2, 3, 4] as $int) {}',
+                '<?php foreach ([1, 2, 3, 4]as $int) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
+            ],
+            [
+                '<?php foreach ([1, 2, 3, 4] as $int) {}',
+                '<?php foreach ([1, 2, 3, 4]
+                as $int) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
+            ],
+            [
                 '<?php
 
 class Foo
