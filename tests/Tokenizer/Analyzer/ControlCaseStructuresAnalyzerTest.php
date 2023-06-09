@@ -437,7 +437,7 @@ $expressionResult = match ($condition) {
             }
         }
 
-        static::assertSame(
+        self::assertSame(
             serialize($expectedAnalysis),
             serialize($analysis)
         );
