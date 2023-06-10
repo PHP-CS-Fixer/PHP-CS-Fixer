@@ -346,23 +346,23 @@ List of Available Rules
 
    - | ``control_structures_opening_brace``
      | The position of the opening brace of control structures‘ body.
-     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'`` and ``same_line_without_extra_space``
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'`` and ``'same_line_without_extra_space'``
      | Default value: ``'same_line'``
    - | ``functions_opening_brace``
      | The position of the opening brace of functions‘ body.
-     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'`` and ``same_line_without_extra_space``
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'`` and ``'same_line_without_extra_space'``
      | Default value: ``'next_line_unless_newline_at_signature_end'``
    - | ``anonymous_functions_opening_brace``
      | The position of the opening brace of anonymous functions‘ body.
-     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'`` and ``same_line_without_extra_space``
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'`` and ``'same_line_without_extra_space'``
      | Default value: ``'same_line'``
    - | ``classes_opening_brace``
      | The position of the opening brace of classes‘ body.
-     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'`` and ``same_line_without_extra_space``
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'`` and ``'same_line_without_extra_space'``
      | Default value: ``'next_line_unless_newline_at_signature_end'``
    - | ``anonymous_classes_opening_brace``
      | The position of the opening brace of anonymous classes‘ body.
-     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'`` and ``same_line_without_extra_space``
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'``, ``'same_line'`` and ``'same_line_without_extra_space'``
      | Default value: ``'same_line'``
    - | ``allow_single_line_empty_anonymous_classes``
      | Allow anonymous classes to have opening and closing braces on the same line.

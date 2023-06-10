@@ -137,6 +137,14 @@ $bar = function () { $result = true;
 ',
                     ['allow_single_line_anonymous_functions' => true]
                 ),
+                new CodeSample(
+                    '<?php
+class Foo
+{
+}
+',
+                    ['classes_opening_brace' => self::SAME_LINE_WITHOUT_EXTRA_SPACE]
+                ),
             ]
         );
     }
