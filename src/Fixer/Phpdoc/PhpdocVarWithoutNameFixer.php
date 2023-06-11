@@ -115,7 +115,7 @@ final class Foo
     {
         $content = $line->getContent();
 
-        Preg::matchAll('/ \$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $content, $matches);
+        Preg::matchAll('/ (?!\$this(?![a-zA-Z0-9_\x7f-\xff]))\$(?!\d)[a-zA-Z0-9_\x7f-\xff]+/', $content, $matches);
 
         if (isset($matches[0][0])) {
             $line->setContent(str_replace($matches[0][0], '', $content));
