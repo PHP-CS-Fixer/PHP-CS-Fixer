@@ -36,7 +36,7 @@ final class TypeExpression
      *
      * @internal
      */
-    public const REGEX_TYPES = '(?<types>(?x) # several types separated by `|` or `&`
+    public const REGEX_TYPES = '(?<types>(?x) # one or several types separated by `|` or `&`
 '.self::REGEX_TYPE.'
         (?:
             \h*(?<glue>[|&])\h*
