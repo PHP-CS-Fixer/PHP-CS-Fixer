@@ -113,7 +113,12 @@ final class TypeExpression
                     )
                     | \'(?:[^\'\\\\]|\\\\.)*+\'
                     | "(?:[^"\\\\]|\\\\.)*+"
-                    | [@$]?(?:this | self | static)
+                    (?-i)
+                )
+                |
+                (?<this> # self reference, e.g.: $this, $self, @static
+                    (?i)
+                    [@$](?:this | self | static)
                     (?-i)
                 )
                 |

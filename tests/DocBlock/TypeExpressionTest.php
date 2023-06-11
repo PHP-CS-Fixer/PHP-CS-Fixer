@@ -343,6 +343,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array{'];
 
+        yield ['array{ $this: 5 }'];
+
         yield ['g<,>'];
 
         yield ['g<no_trailing_comma,>'];
