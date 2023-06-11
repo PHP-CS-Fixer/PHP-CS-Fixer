@@ -409,10 +409,11 @@ class C {
      * @param Foo[]|\Bar\Baz $a
      * @param Foo|Bar $b
      * @param array<int, FooInterface>|string $c
-     * @param array<[int, int]> $d
+     * @param array<array{int, int}> $d
      * @param ?Foo $e
+     * @param \Closure(( $b is Bar ? bool : int)): $this $f
      */
-    public function m($a, $b, $c, $d, $e) {}
+    public function m($a, $b, $c, $d, $e, $f) {}
 }
 EOT;
         $input = <<<'EOT'
@@ -421,11 +422,12 @@ class C {
     /**
      * @param array<int, FooInterface>|string $c
      * @param Foo|Bar $b
-     * @param array<[int, int]> $d
+     * @param array<array{int, int}> $d
      * @param ?Foo $e
+     * @param \Closure(( $b is Bar ? bool : int)): $this $f
      * @param Foo[]|\Bar\Baz $a
      */
-    public function m($a, $b, $c, $d, $e) {}
+    public function m($a, $b, $c, $d, $e, $f) {}
 }
 EOT;
         $this->doTest($expected, $input);
