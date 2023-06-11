@@ -285,6 +285,52 @@ final class TypeExpressionTest extends TestCase
 
         yield ['class cannot contain space'];
 
+        yield ['\\\\class_with_double_backslash'];
+
+        yield ['class\\\\with_double_backslash'];
+
+        yield ['class_with_end_backslash\\'];
+
+        yield ['class/with_slash'];
+
+        yield ['class--with_double_dash'];
+
+        yield ['class.with_dot'];
+
+        yield ['class,with_comma'];
+
+        yield ['class@with_at_sign'];
+
+        yield ['class:with_colon'];
+
+        yield ['class#with_hash'];
+
+        yield ['class//with_double_slash'];
+
+        yield ['class$with_dollar'];
+
+        yield ['class:with_colon'];
+
+        yield ['class;with_semicolon'];
+
+        yield ['class=with_equal_sign'];
+
+        yield ['class+with_plus'];
+
+        yield ['class?with_question_mark'];
+
+        yield ['class*with_star'];
+
+        yield ['class%with_percent'];
+
+        yield ['(unclosed_parenthesis'];
+
+        yield [')unclosed_parenthesis'];
+
+        yield ['unclosed_parenthesis('];
+
+        yield ['((unclosed_parenthesis)'];
+
         yield ['array<'];
 
         yield ['array<<'];
@@ -297,9 +343,19 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array{'];
 
+        yield ['g<,>'];
+
+        yield ['g<no_trailing_comma,>'];
+
+        yield ['g<,no_leading_comma>'];
+
         yield ['10__000'];
 
         yield ['[ array_syntax_is_invalid ]'];
+
+        yield ['\' unclosed string'];
+
+        yield ['\' unclosed string \\\''];
     }
 
     public function testHugeType(): void
