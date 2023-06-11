@@ -152,7 +152,7 @@ final class TypeExpression
                     \h*\)
                 )
             )
-            (?<array> # array, e.g.: `string[]`, `array<int, string>[][]`
+            (?<array_offset> # array offset, e.g.: `string[]`, `array<int, string>[][]`
                 (\h*\[\h*\])*
             )
             (?:(?=1)0
