@@ -265,6 +265,43 @@ final class TypeExpressionTest extends TestCase
         }
     }
 
+    /**
+     * @dataProvider provideParseInvalidExceptionCases
+     */
+    public function testParseInvalidException(string $value): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Unable to parse phpdoc type');
+        new TypeExpression($value, null, []);
+    }
+
+    public static function provideParseInvalidExceptionCases(): iterable
+    {
+        yield [''];
+
+        yield ['0_class_cannot_start_with_number'];
+
+        yield ['$0_variable_cannot_start_with_number'];
+
+        yield ['class cannot contain space'];
+
+        yield ['array<'];
+
+        yield ['array<<'];
+
+        yield ['array>'];
+
+        yield ['array<<>'];
+
+        yield ['array<>>'];
+
+        yield ['array{'];
+
+        yield ['10__000'];
+
+        yield ['[ array_syntax_is_invalid ]'];
+    }
+
     public function testHugeType(): void
     {
         $nFlat = 2_000;

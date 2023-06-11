@@ -317,10 +317,8 @@ final class TypeExpression
                 $index
             );
 
-            if ([] === $matches) { // invalid phpdoc type
-                // TODO once all phpdoc types are parsed strictly using self::REGEX_TYPES,
-                // the parse cannot fail and we can throw here safely
-                return;
+            if ([] === $matches) {
+                throw new \Exception('Unable to parse phpdoc type '.var_export($this->value, true));
             }
 
             if (!$this->isUnionType) {
