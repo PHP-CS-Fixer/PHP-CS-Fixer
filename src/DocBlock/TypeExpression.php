@@ -169,7 +169,7 @@ final class TypeExpression
 
     private bool $isUnionType = false;
 
-    private string $typesGlue;
+    private string $typesGlue = '|';
 
     /**
      * @var list<array{start_index: int, expression: self}>
