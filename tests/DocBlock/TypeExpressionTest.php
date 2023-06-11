@@ -335,8 +335,6 @@ final class TypeExpressionTest extends TestCase
 
     public static function provideGetTypesGlueCases(): iterable
     {
-        yield ['|', 'string']; // for backward behaviour
-
         yield ['|', 'bool|string'];
 
         yield ['&', 'Foo&Bar'];

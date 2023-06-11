@@ -169,12 +169,12 @@ final class TypeExpression
 
     private bool $isUnionType = false;
 
+    private string $typesGlue;
+
     /**
      * @var list<array{start_index: int, expression: self}>
      */
     private array $innerTypeExpressions = [];
-
-    private string $typesGlue = '|';
 
     private ?NamespaceAnalysis $namespace;
 
