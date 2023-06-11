@@ -25,12 +25,11 @@ use PhpCsFixer\Utils;
 final class TypeExpression
 {
     /**
-     * Regex to match any types, shall be used with `x` modifier.
+     * Regex to match any phpdoc type.
      *
      * @internal
      */
-    public const REGEX_TYPES = '
-    (?<types> # several types separated by `|` or `&`
+    public const REGEX_TYPES = '(?<types>(?x) # several types separated by `|` or `&`
 '.self::REGEX_TYPE.'
         (?:
             \h*(?<glue>[|&])\h*
@@ -38,8 +37,7 @@ final class TypeExpression
         )*+
     )';
 
-    private const REGEX_TYPE = '
-        (?<type> # single type
+    private const REGEX_TYPE = '(?<type>(?x) # single type
             (?<nullable>\??\h*)
             (?:
                 (?<object_like_array>
@@ -305,7 +303,7 @@ final class TypeExpression
         $index = 0;
         while (true) {
             Preg::match(
-                '{\G'.self::REGEX_TYPE.'(?:\h*(?<glue>[|&])\h*|$)}x',
+                '{\G'.self::REGEX_TYPE.'(?:\h*(?<glue>[|&])\h*|$)}',
                 $this->value,
                 $matches,
                 PREG_OFFSET_CAPTURE,
@@ -410,7 +408,7 @@ final class TypeExpression
         $index = 0;
         while (\strlen($value) !== $index) {
             Preg::match(
-                '{\G'.self::REGEX_TYPES.'(?:\h*,\h*|$)}x',
+                '{\G'.self::REGEX_TYPES.'(?:\h*,\h*|$)}',
                 $value,
                 $matches,
                 0,
@@ -431,7 +429,7 @@ final class TypeExpression
         $index = 0;
         while (\strlen($value) !== $index) {
             Preg::match(
-                '{\G(?:(?=1)0'.self::REGEX_TYPES.'|(?<_object_like_array_inner>(?&object_like_array_inner))(?:\h*,\h*|$))}x',
+                '{\G(?:(?=1)0'.self::REGEX_TYPES.'|(?<_object_like_array_inner>(?&object_like_array_inner))(?:\h*,\h*|$))}',
                 $value,
                 $prematches,
                 0,
@@ -443,7 +441,7 @@ final class TypeExpression
 
             $addedPrefix = 'array{';
             Preg::match(
-                '{^'.self::REGEX_TYPES.'$}x',
+                '{^'.self::REGEX_TYPES.'$}',
                 $addedPrefix.$consumedValue.'}',
                 $matches,
                 PREG_OFFSET_CAPTURE
