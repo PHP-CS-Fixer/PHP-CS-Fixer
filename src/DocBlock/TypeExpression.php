@@ -101,10 +101,9 @@ final class TypeExpression
                 |
                 (?<constant> # single constant value (case insensitive), e.g.: 1, -1.8E+6, `\'a\'`
                     (?i)
-                    null | true | false
                     # all sorts of numbers: with or without sign, supports literal separator and several numeric systems,
                     # e.g.: 1, +1.1, 1., .1, -1, 123E+8, 123_456_789, 0x7Fb4, 0b0110, 0o777
-                    | [+-]?(?:
+                    [+-]?(?:
                         (?:0b[01]++(?:_[01]++)*+)
                         | (?:0o[0-7]++(?:_[0-7]++)*+)
                         | (?:0x[\da-f]++(?:_[\da-f]++)*+)
