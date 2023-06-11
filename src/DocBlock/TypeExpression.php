@@ -25,6 +25,13 @@ use PhpCsFixer\Utils;
 final class TypeExpression
 {
     /**
+     * Regex to match any php identifier.
+     *
+     * @internal
+     */
+    public const REGEX_IDENTIFIER = '(?:(?!(?<!\*)\d)[^\x00-\x2f\x3a-\x40\x5b-\x5e\x60\x7b-\x7f]++)';
+
+    /**
      * Regex to match any phpdoc type.
      *
      * @internal
@@ -111,9 +118,9 @@ final class TypeExpression
                     (?-i)
                 )
                 |
-                (?<name> # full name, e.g.: `int`, `\DateTime`, `\Foo\Bar`
+                (?<name> # full name, e.g.: `int`, `\DateTime`, `\Foo\Bar`, `positive-int`
                     \\\\?+
-                    (?<identifier>(?!(?<!\*)\d)[^\x00-\x2f\x3a-\x40\x5b-\x5e\x60\x7b-\x7f]++)
+                    (?<identifier>'.self::REGEX_IDENTIFIER.')
                     (?:[\\\\\-](?&identifier))*+
                 )
                 |
