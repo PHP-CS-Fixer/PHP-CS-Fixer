@@ -47,16 +47,16 @@ final class TypeExpression
     private const REGEX_TYPE = '(?<type>(?x) # single type
             (?<nullable>\??\h*)
             (?:
-                (?<object_like_array>
-                    (?<object_like_array_start>(?i)(?:array|list|object)(?-i)\h*\{\h*)
-                        (?<object_like_array_inners>
-                            (?<object_like_array_inner>
-                                (?<object_like_array_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
-                                (?<object_like_array_inner_value>(?&types_inner))
+                (?<shape>
+                    (?<shape_start>(?i)(?:array|list|object)(?-i)\h*\{\h*)
+                        (?<shape_inners>
+                            (?<shape_inner>
+                                (?<shape_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
+                                (?<shape_inner_value>(?&types_inner))
                             )
                             (?:
                                 \h*,\h*
-                                (?&object_like_array_inner)
+                                (?&shape_inner)
                             )*
                             (?:\h*,\h*)?
                         )?
@@ -363,10 +363,10 @@ final class TypeExpression
                     'expression' => $this->inner($matches['callable_return'][0]),
                 ];
             }
-        } elseif ('' !== ($matches['object_like_array'][0] ?? '') && $matches['object_like_array'][1] === $nullableLength) {
-            $this->parseObjectLikeArrayInnerTypes(
-                $index + \strlen($matches['object_like_array_start'][0]),
-                $matches['object_like_array_inners'][0] ?? ''
+        } elseif ('' !== ($matches['shape'][0] ?? '') && $matches['shape'][1] === $nullableLength) {
+            $this->parseShapeInnerTypes(
+                $index + \strlen($matches['shape_start'][0]),
+                $matches['shape_inners'][0] ?? ''
             );
         } elseif ('' !== ($matches['parenthesized'][0] ?? '') && $matches['parenthesized'][1] === $nullableLength) {
             $index += \strlen($matches['parenthesized_start'][0]);
@@ -429,18 +429,18 @@ final class TypeExpression
         }
     }
 
-    private function parseObjectLikeArrayInnerTypes(int $startIndex, string $value): void
+    private function parseShapeInnerTypes(int $startIndex, string $value): void
     {
         $index = 0;
         while (\strlen($value) !== $index) {
             Preg::match(
-                '{\G(?:(?=1)0'.self::REGEX_TYPES.'|(?<_object_like_array_inner>(?&object_like_array_inner))(?:\h*,\h*|$))}',
+                '{\G(?:(?=1)0'.self::REGEX_TYPES.'|(?<_shape_inner>(?&shape_inner))(?:\h*,\h*|$))}',
                 $value,
                 $prematches,
                 0,
                 $index
             );
-            $consumedValue = $prematches['_object_like_array_inner'];
+            $consumedValue = $prematches['_shape_inner'];
             $consumedValueLength = \strlen($consumedValue);
             $consumedCommaLength = \strlen($prematches[0]) - $consumedValueLength;
 
@@ -453,8 +453,8 @@ final class TypeExpression
             );
 
             $this->innerTypeExpressions[] = [
-                'start_index' => $startIndex + $index + $matches['object_like_array_inner_value'][1] - \strlen($addedPrefix),
-                'expression' => $this->inner($matches['object_like_array_inner_value'][0]),
+                'start_index' => $startIndex + $index + $matches['shape_inner_value'][1] - \strlen($addedPrefix),
+                'expression' => $this->inner($matches['shape_inner_value'][0]),
             ];
 
             $index += $consumedValueLength + $consumedCommaLength;
