@@ -152,6 +152,16 @@ final class Runner
         $old = FileReader::createSingleton()->read($file->getRealPath());
 
         $tokens = Tokens::fromCode($old);
+
+        if (!$tokens->isMonolithicPhp()) {
+            $this->dispatchEvent(
+                FixerFileProcessedEvent::NAME,
+                new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_NON_MONOLITHIC)
+            );
+
+            return null;
+        }
+
         $oldHash = $tokens->getCodeHash();
 
         $newHash = $oldHash;

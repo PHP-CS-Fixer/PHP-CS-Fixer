@@ -128,11 +128,12 @@ final class ProcessOutputTest extends TestCase
                     [FixerFileProcessedEvent::STATUS_INVALID],
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES, 40],
                     [FixerFileProcessedEvent::STATUS_INVALID],
-                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 15],
+                    [FixerFileProcessedEvent::STATUS_NO_CHANGES, 14],
+                    [FixerFileProcessedEvent::STATUS_NON_MONOLITHIC],
                 ],
                 '...................E......EFFF.................................  63 / 189 ( 33%)'.PHP_EOL.
                 '.................S............................................. 126 / 189 ( 67%)'.PHP_EOL.
-                '....I.I........................................I............... 189 / 189 (100%)',
+                '....I.I........................................I..............M 189 / 189 (100%)',
                 80,
             ],
             [

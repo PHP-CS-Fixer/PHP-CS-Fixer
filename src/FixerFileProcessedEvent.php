@@ -36,6 +36,7 @@ final class FixerFileProcessedEvent extends Event
     public const STATUS_FIXED = 4;
     public const STATUS_EXCEPTION = 5;
     public const STATUS_LINT = 6;
+    public const STATUS_NON_MONOLITHIC = 7;
 
     private int $status;
 
