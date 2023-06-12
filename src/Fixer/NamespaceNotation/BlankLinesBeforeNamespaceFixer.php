@@ -51,9 +51,12 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
         return $tokens->isTokenKindFound(T_NAMESPACE);
     }
 
+    /**
+     * Must run after BlankLineAfterOpeningTagFixer.
+     */
     public function getPriority(): int
     {
-        return -21;
+        return 0;
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface

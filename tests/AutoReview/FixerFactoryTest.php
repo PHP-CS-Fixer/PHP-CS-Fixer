@@ -356,6 +356,7 @@ final class FixerFactoryTest extends TestCase
                 'single_quote',
             ],
             'blank_line_after_opening_tag' => [
+                'blank_lines_before_namespace',
                 'no_blank_lines_before_namespace',
             ],
             'braces' => [
