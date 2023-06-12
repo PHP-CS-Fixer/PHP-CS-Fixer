@@ -1325,5 +1325,31 @@ class Foo {}
  */
 ',
         ];
+
+        yield '2+ spaces after comment star must be kept' => [
+            [],
+            '<?php
+/**
+ * @param array $parameters {
+ *
+ *     @var string $name   Long
+ *                         comment for $name.
+ *     @var string $target Just target...
+ *
+ * }
+ */
+',
+            '<?php
+/**
+ *@param array $parameters {
+ *
+ *     @var string $name   Long
+ *                         comment for $name.
+ *     @var string $target Just target...
+ *
+ * }
+ */
+',
+        ];
     }
 }
