@@ -104,5 +104,9 @@ final class BlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
         yield 'correct min and max range' => [2, 4, true];
 
         yield 'min higher than max' => [4, 2, false];
+
+        yield 'min lower than 0' => [-2, 2, false];
+
+        yield 'max lower than 0' => [-4, -2, false];
     }
 }

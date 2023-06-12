@@ -62,15 +62,32 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
             (new FixerOptionBuilder('min_line_breaks', 'Minimum line breaks that should exist before namespace declaration.'))
                 ->setAllowedTypes(['int'])
                 ->setDefault(2)
+                ->setNormalizer(function (Options $options, $value): int {
+                    if ($value < 0) {
+                        throw new InvalidFixerConfigurationException(
+                            (new self())->getName(),
+                            'Option `min_line_breaks` cannot be lower than 0.'
+                        );
+                    }
+
+                    return $value;
+                })
                 ->getOption(),
             (new FixerOptionBuilder('max_line_breaks', 'Maximum line breaks that should exist before namespace declaration.'))
                 ->setAllowedTypes(['int'])
                 ->setDefault(2)
                 ->setNormalizer(function (Options $options, $value): int {
+                    if ($value < 0) {
+                        throw new InvalidFixerConfigurationException(
+                            (new self())->getName(),
+                            'Option `max_line_breaks` cannot be lower than 0.'
+                        );
+                    }
+
                     if ($value < $options['min_line_breaks']) {
                         throw new InvalidFixerConfigurationException(
                             (new self())->getName(),
-                            'Option `max_line_breaks` cannot have lower value than `min_line_breaks`'
+                            'Option `max_line_breaks` cannot have lower value than `min_line_breaks`.'
                         );
                     }
 
