@@ -1387,5 +1387,22 @@ class Foo {}
  */
 ',
         ];
+
+        yield 'multiple nested levels of weird @param scopes' => [
+            [],
+            '/**
+ * @param array $foo {
+ *   @var array $bar {
+ *     @var array $baz {
+ *       @var bool $abc Something
+ *       @var int $xyz Another thing
+ *       @var array $yetAnother {
+ *         @var string $wtf 😩
+ *       }
+ *     }
+ *   }
+ * }
+ */'
+        ];
     }
 }
