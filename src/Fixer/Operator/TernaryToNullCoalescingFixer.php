@@ -89,7 +89,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             return; // some weird stuff inside the isset
         }
 
-        if ($issetTokens->generateCode() === '$this') {
+        if ('$this' === $issetTokens->generateCode()) {
             return; // null coalescing operator does not with $this
         }
 
