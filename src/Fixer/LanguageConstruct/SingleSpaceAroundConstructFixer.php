@@ -46,7 +46,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
      * @var array<string, null|int>
      */
     private static array $tokenMapPrecededByASingleSpace = [
-        // for now, only one case - but we are ready to extend it, when we learn about new cases to cover
+        'as' => T_AS,
         'use_lambda' => CT::T_USE_LAMBDA,
     ];
 

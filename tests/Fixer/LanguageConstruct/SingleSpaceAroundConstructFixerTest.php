@@ -204,14 +204,12 @@ abstract class Foo
 
     /**
      * @dataProvider provideFixWithAsCases
+     *
+     * @param array<string, string[]> $config
      */
-    public function testFixWithAs(string $expected, ?string $input = null): void
+    public function testFixWithAs(string $expected, ?string $input = null, array $config = []): void
     {
-        $this->fixer->configure([
-            'constructs_followed_by_a_single_space' => [
-                'as',
-            ],
-        ]);
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
@@ -222,24 +220,110 @@ abstract class Foo
             [
                 '<?php foreach ($foo as $bar) {}',
                 '<?php foreach ($foo as$bar) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['as'],
+                ],
             ],
             [
                 '<?php foreach ($foo as $bar) {}',
                 '<?php foreach ($foo as  $bar) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['as'],
+                ],
+            ],
+            [
+                '<?php foreach ($foo as $bar) {}',
+                '<?php foreach ($foo  as $bar) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
             ],
             [
                 '<?php foreach ($foo as $bar) {}',
                 '<?php foreach ($foo as
 
 $bar) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['as'],
+                ],
+            ],
+            [
+                '<?php foreach ($foo as $bar) {}',
+                '<?php foreach ($foo
+as $bar) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
             ],
             [
                 '<?php foreach ($foo as /* foo */$bar) {}',
                 '<?php foreach ($foo as/* foo */$bar) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['as'],
+                ],
+            ],
+            [
+                '<?php foreach ($foo/* foo */ as $bar) {}',
+                '<?php foreach ($foo/* foo */as $bar) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
             ],
             [
                 '<?php foreach ($foo as /* foo */$bar) {}',
                 '<?php foreach ($foo as  /* foo */$bar) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['as'],
+                ],
+            ],
+            [
+                '<?php foreach ($foo /* foo */ as $bar) {}',
+                '<?php foreach ($foo /* foo */    as $bar) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
+            ],
+            [
+                '<?php foreach (range(1, 12) as $num) {}',
+                '<?php foreach (range(1, 12)as $num) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
+            ],
+            [
+                '<?php foreach (range(1, 12) as $num) {}',
+                '<?php foreach (range(1, 12)   as $num) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
+            ],
+            [
+                '<?php foreach ([1, 2, 3, 4] as $int) {}',
+                '<?php foreach ([1, 2, 3, 4]as $int) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
+            ],
+            [
+                '<?php foreach ([1, 2, 3, 4] as $int) {}',
+                '<?php foreach ([1, 2, 3, 4]
+                as $int) {}',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
             ],
             [
                 '<?php
@@ -258,6 +342,10 @@ class Foo
         Bar::baz as  bar;
     }
 }',
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['as'],
+                ],
             ],
             [
                 '<?php
@@ -278,6 +366,10 @@ class Foo
 bar;
     }
 }',
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['as'],
+                ],
             ],
             [
                 '<?php
@@ -296,6 +388,11 @@ class Foo
         Bar::baz as/* foo */bar;
     }
 }',
+
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['as'],
+                ],
             ],
             [
                 '<?php
@@ -314,6 +411,138 @@ class Foo
         Bar::baz as  /* foo */bar;
     }
 }',
+                [
+                    'constructs_preceded_by_a_single_space' => [],
+                    'constructs_followed_by_a_single_space' => ['as'],
+                ],
+            ],
+            [
+                '<?php
+namespace Foo;
+
+use Bar as Baz;
+
+final class Qux extends Baz {}
+',
+                '<?php
+namespace Foo;
+
+use Bar    as Baz;
+
+final class Qux extends Baz {}
+',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
+            ],
+            [
+                '<?php
+namespace Foo;
+
+use Bar as Baz;
+
+final class Qux extends Baz {}
+',
+                '<?php
+namespace Foo;
+
+use Bar
+    as Baz;
+
+final class Qux extends Baz {}
+',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
+            ],
+            [
+                '<?php
+namespace Foo;
+
+use Bar /** foo */ as Baz;
+
+final class Qux extends Baz {}
+',
+                '<?php
+namespace Foo;
+
+use Bar /** foo */as Baz;
+
+final class Qux extends Baz {}
+',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
+            ],
+            [
+                '<?php
+class Foo
+{
+    use Bar {
+        Bar::baz as bar;
+    }
+}
+',
+                '<?php
+class Foo
+{
+    use Bar {
+        Bar::baz    as bar;
+    }
+}
+',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
+            ],
+            [
+                '<?php
+class Foo
+{
+    use Bar {
+        Bar::baz as bar;
+    }
+}
+',
+                '<?php
+class Foo
+{
+    use Bar {
+        Bar::baz
+as bar;
+    }
+}
+',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
+            ],
+            [
+                '<?php
+class Foo
+{
+    use Bar {
+        Bar::baz/** foo */ as bar;
+    }
+}
+',
+                '<?php
+class Foo
+{
+    use Bar {
+        Bar::baz/** foo */as bar;
+    }
+}
+',
+                [
+                    'constructs_preceded_by_a_single_space' => ['as'],
+                    'constructs_followed_by_a_single_space' => [],
+                ],
             ],
         ];
     }
