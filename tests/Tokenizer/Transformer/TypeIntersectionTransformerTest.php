@@ -25,7 +25,7 @@ use PhpCsFixer\Tokenizer\CT;
 final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int> $expectedTokens
+     * @param array<int, int|string> $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
@@ -58,6 +58,8 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
                 function foo(){}
                 $a = $b&$c;
                 $a &+ $b;
+                const A1 = B&C;
+                const B1 = D::X & C;
             ',
         ];
 
@@ -66,6 +68,20 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
                 '<?php $a = $b&$c;',
                 [
                     6 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+                ],
+            ];
+
+            yield 'do not fix, close/open' => [
+                '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
+                [
+                    20 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+                ],
+            ];
+
+            yield 'do not fix, foreach' => [
+                '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
+                [
+                    19 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
                 ],
             ];
         }
