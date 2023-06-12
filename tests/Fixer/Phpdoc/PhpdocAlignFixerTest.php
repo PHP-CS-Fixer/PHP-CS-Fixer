@@ -1345,7 +1345,6 @@ class Foo {}
  *     @var string $name   Long
  *                         comment for $name.
  *     @var string $target Just target...
- *
  * }
  */
 
@@ -1355,7 +1354,6 @@ class Foo {}
  * '."\t".'@var string $name   Long
  * '."\t".'                    comment for $name.
  * '."\t".'@var string $target Just target...
- *
  * }
  */
 ',
@@ -1376,7 +1374,6 @@ class Foo {}
  *     @var string $name   Long
  *                         comment for $name.
  *     @var string $target Just target...
- *
  * }
  */
 
@@ -1386,7 +1383,6 @@ class Foo {}
  * '."\t".'@var string $name   Long
  * '."\t".'                    comment for $name.
  * '."\t".'@var string $target Just target...
- *
  * }
  */
 ',
