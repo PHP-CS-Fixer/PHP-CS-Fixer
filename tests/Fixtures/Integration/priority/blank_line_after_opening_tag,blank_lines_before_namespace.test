@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: blank_line_after_opening_tag,blank_lines_before_namespace.
+--RULESET--
+{"blank_line_after_opening_tag": true, "blank_lines_before_namespace": {"min_line_breaks": 0, "max_line_breaks": 0}}
+--EXPECT--
+<?php namespace A;
+
+class A
+{
+}
+
+--INPUT--
+<?php
+
+namespace A;
+
+class A
+{
+}

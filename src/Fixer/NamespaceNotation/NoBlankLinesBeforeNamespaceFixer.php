@@ -54,6 +54,8 @@ final class NoBlankLinesBeforeNamespaceFixer extends AbstractProxyFixer implemen
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Must run after BlankLineAfterOpeningTagFixer.
      */
     public function getPriority(): int
