@@ -4,6 +4,14 @@ Rule ``single_blank_line_before_namespace``
 
 There should be exactly one blank line before a namespace declaration.
 
+Warning
+-------
+
+This rule is deprecated and will be removed on next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``blank_lines_before_namespace`` instead.
+
 Examples
 --------
 

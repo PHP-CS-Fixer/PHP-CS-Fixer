@@ -491,16 +491,19 @@ Namespace Notation
 - `blank_line_after_namespace <./namespace_notation/blank_line_after_namespace.rst>`_
 
   There MUST be one blank line after the namespace declaration.
+- `blank_lines_before_namespace <./namespace_notation/blank_lines_before_namespace.rst>`_
+
+  Controls blank lines before a namespace declaration.
 - `clean_namespace <./namespace_notation/clean_namespace.rst>`_
 
   Namespace must not contain spacing, comments or PHPDoc.
-- `no_blank_lines_before_namespace <./namespace_notation/no_blank_lines_before_namespace.rst>`_
+- `no_blank_lines_before_namespace <./namespace_notation/no_blank_lines_before_namespace.rst>`_ *(deprecated)*
 
   There should be no blank lines before a namespace declaration.
 - `no_leading_namespace_whitespace <./namespace_notation/no_leading_namespace_whitespace.rst>`_
 
   The namespace declaration line shouldn't contain leading whitespace.
-- `single_blank_line_before_namespace <./namespace_notation/single_blank_line_before_namespace.rst>`_
+- `single_blank_line_before_namespace <./namespace_notation/single_blank_line_before_namespace.rst>`_ *(deprecated)*
 
   There should be exactly one blank line before a namespace declaration.
 
