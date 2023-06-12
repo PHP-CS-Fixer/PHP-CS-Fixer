@@ -25,9 +25,9 @@ final class PSR12Set extends AbstractRuleSetDescription
     {
         return [
             '@PSR2' => true,
-            'blank_lines_before_namespace' => true,
             'blank_line_after_opening_tag' => true,
             'blank_line_between_import_groups' => true,
+            'blank_lines_before_namespace' => true,
             'class_definition' => [
                 'inline_constructor_arguments' => false, // handled by method_argument_space fixer
                 'space_before_parenthesis' => true, // defined in PSR12 ¶8. Anonymous Classes
