@@ -1308,7 +1308,7 @@ class Foo {}
 ',
         ];
 
-        yield '0/1/2 spaces after comment star' => [
+        yield '0/1/(1+1) spaces after comment star' => [
             [],
             '<?php
 /**
@@ -1326,11 +1326,21 @@ class Foo {}
 ',
         ];
 
-        yield '2+ spaces after comment star must be kept' => [
+        yield '1+2+ spaces after comment star must be kept' => [
             [],
             '<?php
 /**
- * @param array $parameters {
+ * @param array $pWith1And2Spaces {
+ *
+ *   @var string $name   Long
+ *                       comment for $name.
+ *   @var string $target Just target...
+ *
+ * }
+ */
+
+/**
+ * @param array $pWith1And4Spaces {
  *
  *     @var string $name   Long
  *                         comment for $name.
@@ -1338,14 +1348,44 @@ class Foo {}
  *
  * }
  */
+
+/**
+ * @param array $pWith1SpaceAnd1Tab {
+ *
+ * '."\t".'@var string $name   Long
+ * '."\t".'                    comment for $name.
+ * '."\t".'@var string $target Just target...
+ *
+ * }
+ */
 ',
             '<?php
 /**
- *@param array $parameters {
+ *@param array $pWith1And2Spaces {
+ *
+ *   @var string $name   Long
+ *                       comment for $name.
+ *   @var string $target Just target...
+ *
+ * }
+ */
+
+/**
+ *@param array $pWith1And4Spaces {
  *
  *     @var string $name   Long
  *                         comment for $name.
  *     @var string $target Just target...
+ *
+ * }
+ */
+
+/**
+ *@param array $pWith1SpaceAnd1Tab {
+ *
+ * '."\t".'@var string $name   Long
+ * '."\t".'                    comment for $name.
+ * '."\t".'@var string $target Just target...
  *
  * }
  */
