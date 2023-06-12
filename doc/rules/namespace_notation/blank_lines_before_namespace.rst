@@ -68,3 +68,23 @@ With configuration: ``['max_line_breaks' => 2]``.
 
    -
     namespace A{}
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+@PER
+  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``blank_lines_before_namespace`` rule with the default config.
+
+@PER-CS1.0
+  Using the `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ rule set will enable the ``blank_lines_before_namespace`` rule with the default config.
+
+@PSR12
+  Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``blank_lines_before_namespace`` rule with the default config.
+
+@PhpCsFixer
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``blank_lines_before_namespace`` rule with the default config.
+
+@Symfony
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``blank_lines_before_namespace`` rule with the default config.
