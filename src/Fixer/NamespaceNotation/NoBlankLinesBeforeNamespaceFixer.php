@@ -31,9 +31,7 @@ final class NoBlankLinesBeforeNamespaceFixer extends AbstractProxyFixer implemen
 {
     public function getSuccessorsNames(): array
     {
-        return [
-            (new BlankLinesBeforeNamespaceFixer())->getName(),
-        ];
+        return array_keys($this->proxyFixers);
     }
 
     public function isCandidate(Tokens $tokens): bool

@@ -31,9 +31,7 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractProxyFixer imple
 {
     public function getSuccessorsNames(): array
     {
-        return [
-            (new BlankLinesBeforeNamespaceFixer())->getName(),
-        ];
+        return array_keys($this->proxyFixers);
     }
 
     public function getDefinition(): FixerDefinitionInterface
