@@ -197,7 +197,7 @@ final class CommentsAnalyzer
         if ($token->isGivenKind(T_CASE) && \defined('T_ENUM')) {
             $caseParent = $tokens->getPrevTokenOfKind($index, [[T_ENUM], [T_SWITCH]]);
 
-            return null === $caseParent || $tokens[$caseParent]->isGivenKind([T_ENUM]);
+            return $tokens[$caseParent]->isGivenKind([T_ENUM]);
         }
 
         if ($token->isGivenKind(T_STATIC)) {
