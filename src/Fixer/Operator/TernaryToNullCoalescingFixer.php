@@ -89,7 +89,9 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             return; // some weird stuff inside the isset
         }
 
-        if ('$this' === $issetTokens->generateCode()) {
+        $issetCode = $issetTokens->generateCode();
+
+        if ('$this' !== strtolower($issetCode)) {
             return; // null coalescing operator does not with $this
         }
 
@@ -97,7 +99,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
         $ternaryColonIndex = $tokens->getNextTokenOfKind($ternaryQuestionMarkIndex, [':']);
         $ternaryFirstOperandTokens = $this->getMeaningfulSequence($tokens, $ternaryQuestionMarkIndex, $ternaryColonIndex);
 
-        if ($issetTokens->generateCode() !== $ternaryFirstOperandTokens->generateCode()) {
+        if ($issetCode !== $ternaryFirstOperandTokens->generateCode()) {
             return; // regardless of non-meaningful tokens, the operands are different
         }
 
