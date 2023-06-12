@@ -8,9 +8,9 @@ Rules
 -----
 
 - `@PSR2 <./PSR2.rst>`_
-- `blank_lines_before_namespace <./../rules/namespace_notation/blank_lines_before_namespace.rst>`_
 - `blank_line_after_opening_tag <./../rules/php_tag/blank_line_after_opening_tag.rst>`_
 - `blank_line_between_import_groups <./../rules/whitespace/blank_line_between_import_groups.rst>`_
+- `blank_lines_before_namespace <./../rules/namespace_notation/blank_lines_before_namespace.rst>`_
 - `class_definition <./../rules/class_notation/class_definition.rst>`_
   config:
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
