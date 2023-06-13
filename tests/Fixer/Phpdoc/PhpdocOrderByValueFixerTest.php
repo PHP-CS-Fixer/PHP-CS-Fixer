@@ -28,7 +28,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideInvalidAnnotationCases
+     * @dataProvider provideConfigureRejectsInvalidControlStatementCases
      *
      * @param mixed $annotation
      */
@@ -43,7 +43,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    public static function provideInvalidAnnotationCases(): array
+    public static function provideConfigureRejectsInvalidControlStatementCases(): array
     {
         return [
             'null' => [null],

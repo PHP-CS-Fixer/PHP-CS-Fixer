@@ -524,7 +524,7 @@ PHP;
      * @param int[]   $indexes  to clear
      * @param Token[] $expected tokens
      *
-     * @dataProvider provideGetClearTokenAndMergeSurroundingWhitespaceCases
+     * @dataProvider provideClearTokenAndMergeSurroundingWhitespaceCases
      */
     public function testClearTokenAndMergeSurroundingWhitespace(string $source, array $indexes, array $expected): void
     {
@@ -534,7 +534,7 @@ PHP;
         }
     }
 
-    public static function provideGetClearTokenAndMergeSurroundingWhitespaceCases(): array
+    public static function provideClearTokenAndMergeSurroundingWhitespaceCases(): array
     {
         $clearToken = new Token('');
 

@@ -388,7 +388,7 @@ EOT
     /**
      * @param array<string, mixed> $configuration
      *
-     * @dataProvider provideConfigurationCases
+     * @dataProvider provideFixWithConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, string $expected, string $input): void
     {
@@ -396,7 +396,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public static function provideConfigurationCases(): array
+    public static function provideFixWithConfigurationCases(): array
     {
         return [
             [
@@ -1033,7 +1033,7 @@ EOT
     /**
      * @param array<string, mixed> $configuration
      *
-     * @dataProvider provideSortingConfigurationCases
+     * @dataProvider provideFixWithSortingAlgorithmCases
      */
     public function testFixWithSortingAlgorithm(array $configuration, string $expected, string $input): void
     {
@@ -1041,7 +1041,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public static function provideSortingConfigurationCases(): array
+    public static function provideFixWithSortingAlgorithmCases(): array
     {
         return [
             [

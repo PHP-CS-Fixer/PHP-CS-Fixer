@@ -30,7 +30,7 @@ use PhpCsFixer\Tests\TestCase;
 final class TagComparatorTest extends TestCase
 {
     /**
-     * @dataProvider provideComparatorCases
+     * @dataProvider provideComparatorTogetherCases
      *
      * @group legacy
      */
@@ -44,7 +44,7 @@ final class TagComparatorTest extends TestCase
         self::assertSame($expected, TagComparator::shouldBeTogether($tag1, $tag2));
     }
 
-    public static function provideComparatorCases(): array
+    public static function provideComparatorTogetherCases(): array
     {
         return [
             ['return', 'return', true],
@@ -60,7 +60,7 @@ final class TagComparatorTest extends TestCase
     }
 
     /**
-     * @dataProvider provideComparatorWithDefinedGroupsCases
+     * @dataProvider provideComparatorTogetherWithDefinedGroupsCases
      *
      * @param string[][] $groups
      *
@@ -79,7 +79,7 @@ final class TagComparatorTest extends TestCase
         );
     }
 
-    public static function provideComparatorWithDefinedGroupsCases(): array
+    public static function provideComparatorTogetherWithDefinedGroupsCases(): array
     {
         return [
             [[['param', 'return']], 'return', 'return', true],

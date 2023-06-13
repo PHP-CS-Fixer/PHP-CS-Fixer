@@ -30,7 +30,7 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
@@ -39,7 +39,7 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [

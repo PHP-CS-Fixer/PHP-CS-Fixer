@@ -28,7 +28,7 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideTestCases
+     * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
@@ -36,7 +36,7 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [

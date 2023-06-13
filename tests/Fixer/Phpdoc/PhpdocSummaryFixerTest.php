@@ -360,14 +360,14 @@ EOF;
     }
 
     /**
-     * @dataProvider provideInheritDocCases
+     * @dataProvider provideWithInheritDocCases
      */
     public function testWithInheritDoc(string $expected): void
     {
         $this->doTest($expected);
     }
 
-    public static function provideInheritDocCases(): array
+    public static function provideWithInheritDocCases(): array
     {
         return [
             [

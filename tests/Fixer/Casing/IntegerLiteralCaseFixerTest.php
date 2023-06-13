@@ -54,7 +54,7 @@ final class IntegerLiteralCaseFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix80Cases
+     * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
      */
@@ -63,7 +63,7 @@ final class IntegerLiteralCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php $foo = 0o123;',

@@ -359,14 +359,14 @@ EOF;
     }
 
     /**
-     * @dataProvider provideCommentCases
+     * @dataProvider provideFixWithCommentsCases
      */
     public function testFixWithComments(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideCommentCases(): array
+    public static function provideFixWithCommentsCases(): array
     {
         return [
             [
@@ -413,14 +413,14 @@ EOF
     }
 
     /**
-     * @dataProvider provideLineBreakCases
+     * @dataProvider provideFixWithLineBreaksCases
      */
     public function testFixWithLineBreaks(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideLineBreakCases(): iterable
+    public static function provideFixWithLineBreaksCases(): iterable
     {
         $input = '<?php //
 
@@ -775,7 +775,7 @@ class Foo
     }
 
     /**
-     * @dataProvider provideOneAndInLineCases
+     * @dataProvider provideOneOrInLineCasesCases
      */
     public function testOneOrInLineCases(string $expected, ?string $input = null): void
     {
@@ -792,7 +792,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public static function provideOneAndInLineCases(): iterable
+    public static function provideOneOrInLineCasesCases(): iterable
     {
         yield [
             "<?php\n\n\$a = function() use (\$b) { while(3<1)break; \$c = \$b[1]; while(\$b<1)continue; if (true) throw \$e; return 1; };\n\n",
@@ -825,7 +825,7 @@ class Foo
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideBraceCases
+     * @dataProvider provideBracesCases
      */
     public function testBraces(array $config, string $expected, ?string $input = null): void
     {
@@ -834,7 +834,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public static function provideBraceCases(): array
+    public static function provideBracesCases(): array
     {
         return [
             [
@@ -965,7 +965,7 @@ class Foo
     /**
      * @param list<string> $config
      *
-     * @dataProvider provideSwitchCases
+     * @dataProvider provideInSwitchStatementCases
      */
     public function testInSwitchStatement(array $config, string $expected, ?string $input = null): void
     {
@@ -974,7 +974,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public static function provideSwitchCases(): array
+    public static function provideInSwitchStatementCases(): array
     {
         return [
             [

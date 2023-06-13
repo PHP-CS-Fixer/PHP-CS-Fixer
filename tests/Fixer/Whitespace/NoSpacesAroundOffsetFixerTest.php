@@ -27,7 +27,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideInsideCases
+     * @dataProvider provideFixSpaceInsideOffsetCases
      */
     public function testFixSpaceInsideOffset(string $expected, ?string $input = null): void
     {
@@ -35,7 +35,7 @@ final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideOutsideCases
+     * @dataProvider provideFixSpaceOutsideOffsetCases
      */
     public function testFixSpaceOutsideOffset(string $expected, ?string $input = null): void
     {
@@ -65,14 +65,14 @@ EOF;
     }
 
     /**
-     * @dataProvider provideCommentCases
+     * @dataProvider provideCommentsCasesCases
      */
     public function testCommentsCases(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideCommentCases(): array
+    public static function provideCommentsCasesCases(): array
     {
         return [
             [
@@ -115,7 +115,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public static function provideOutsideCases(): iterable
+    public static function provideFixSpaceOutsideOffsetCases(): iterable
     {
         yield from [
             [
@@ -206,7 +206,7 @@ $var = $arr[0]{     0
         }
     }
 
-    public static function provideInsideCases(): array
+    public static function provideFixSpaceInsideOffsetCases(): array
     {
         return [
             [
@@ -295,7 +295,7 @@ $var = $arr[0][     0
     /**
      * @param list<string> $configuration
      *
-     * @dataProvider provideConfigurationCases
+     * @dataProvider provideFixWithConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, string $expected, string $input): void
     {
@@ -303,7 +303,7 @@ $var = $arr[0][     0
         $this->doTest($expected, $input);
     }
 
-    public static function provideConfigurationCases(): iterable
+    public static function provideFixWithConfigurationCases(): iterable
     {
         $tests = [
             [

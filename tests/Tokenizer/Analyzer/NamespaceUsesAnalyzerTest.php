@@ -32,7 +32,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
     /**
      * @param list<NamespaceUseAnalysis> $expected
      *
-     * @dataProvider provideNamespaceUsesCases
+     * @dataProvider provideUsesFromTokensCases
      */
     public function testUsesFromTokens(string $code, array $expected): void
     {
@@ -45,7 +45,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         );
     }
 
-    public static function provideNamespaceUsesCases(): array
+    public static function provideUsesFromTokensCases(): array
     {
         return [
             ['<?php // no uses', [], []],

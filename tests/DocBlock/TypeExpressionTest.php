@@ -308,7 +308,7 @@ final class TypeExpressionTest extends TestCase
     /**
      * @param NamespaceUseAnalysis[] $namespaceUses
      *
-     * @dataProvider provideCommonTypeCases
+     * @dataProvider provideGetCommonTypeCases
      */
     public function testGetCommonType(string $typesExpression, ?string $expectedCommonType, NamespaceAnalysis $namespace = null, array $namespaceUses = []): void
     {
@@ -316,7 +316,7 @@ final class TypeExpressionTest extends TestCase
         self::assertSame($expectedCommonType, $expression->getCommonType());
     }
 
-    public static function provideCommonTypeCases(): iterable
+    public static function provideGetCommonTypeCases(): iterable
     {
         $globalNamespace = new NamespaceAnalysis('', '', 0, 999, 0, 999);
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);

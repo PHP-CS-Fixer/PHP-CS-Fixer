@@ -87,7 +87,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider providePropertyCases
+     * @dataProvider providePropertyFixCases
      */
     public function testPropertyFix(string $expected, ?string $input = null): void
     {
@@ -99,7 +99,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function providePropertyCases(): array
+    public static function providePropertyFixCases(): array
     {
         return [
             [
@@ -126,7 +126,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideTypeToVarCases
+     * @dataProvider provideTypeToVarFixCases
      */
     public function testTypeToVarFix(string $expected, ?string $input = null): void
     {
@@ -137,7 +137,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideTypeToVarCases(): array
+    public static function provideTypeToVarFixCases(): array
     {
         return [
             [
@@ -184,7 +184,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideVarToTypeCases
+     * @dataProvider provideVarToTypeFixCases
      */
     public function testVarToTypeFix(string $expected, ?string $input = null): void
     {
@@ -195,7 +195,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideVarToTypeCases(): array
+    public static function provideVarToTypeFixCases(): array
     {
         return [
             [

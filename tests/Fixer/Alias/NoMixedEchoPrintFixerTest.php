@@ -28,7 +28,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideEchoToPrintFixCases
+     * @dataProvider provideFixEchoToPrintCases
      * @dataProvider provideEchoToPrintFixNewCases
      */
     public function testFixEchoToPrint(string $expected, ?string $input = null): void
@@ -37,7 +37,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideEchoToPrintFixCases(): array
+    public static function provideFixEchoToPrintCases(): array
     {
         return [
             [
@@ -145,7 +145,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider providePrintToEchoFixCases
+     * @dataProvider provideFixPrintToEchoCases
      * @dataProvider providePrintToEchoFixNewCases
      */
     public function testFixPrintToEcho(string $expected, ?string $input = null): void
@@ -154,7 +154,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function providePrintToEchoFixCases(): array
+    public static function provideFixPrintToEchoCases(): array
     {
         return [
             [

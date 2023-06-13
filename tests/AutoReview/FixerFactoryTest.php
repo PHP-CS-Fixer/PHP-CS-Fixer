@@ -72,7 +72,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @param string[] $edges
      *
-     * @dataProvider provideFixersPriorityCasesHaveIntegrationCases
+     * @dataProvider provideFixersPriorityCasesHaveIntegrationTestCases
      */
     public function testFixersPriorityCasesHaveIntegrationTest(string $fixerName, array $edges): void
     {
@@ -137,7 +137,7 @@ final class FixerFactoryTest extends TestCase
         self::assertCount(0, $missingIntegrationsTests, sprintf("There shall be an integration test. How do you know that priority set up is good, if there is no integration test to check it?\nMissing:\n- %s", implode("\n- ", $missingIntegrationsTests)));
     }
 
-    public static function provideFixersPriorityCasesHaveIntegrationCases(): iterable
+    public static function provideFixersPriorityCasesHaveIntegrationTestCases(): iterable
     {
         foreach (self::getFixersPriorityGraph() as $fixerName => $edges) {
             yield $fixerName => [$fixerName, $edges];
@@ -145,7 +145,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIntegrationTestFilesCases
+     * @dataProvider providePriorityIntegrationTestFilesAreListedAsPriorityCasesCases
      */
     public function testPriorityIntegrationTestFilesAreListedAsPriorityCases(\SplFileInfo $file): void
     {
@@ -168,7 +168,7 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
-    public static function provideIntegrationTestFilesCases(): iterable
+    public static function providePriorityIntegrationTestFilesAreListedAsPriorityCasesCases(): iterable
     {
         foreach (new \DirectoryIterator(self::getIntegrationPriorityDirectory()) as $candidate) {
             if (!$candidate->isDot()) {

@@ -1470,7 +1470,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideFixWithConfigCases
+     * @dataProvider provideWithConfigCases
      */
     public function testWithConfig(array $config, string $expected, string $input): void
     {
@@ -1481,7 +1481,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         $this->doTest($input);
     }
 
-    public static function provideFixWithConfigCases(): iterable
+    public static function provideWithConfigCases(): iterable
     {
         yield 'config: break' => [
             ['statements' => ['break']],

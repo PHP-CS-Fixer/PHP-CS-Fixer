@@ -396,7 +396,7 @@ EOF;
     }
 
     /**
-     * @dataProvider provideBasicCodeWithDifferentOrdersCases
+     * @dataProvider provideFixBasicCaseWithDifferentOrdersCases
      *
      * @param array<string, mixed> $config
      */
@@ -410,7 +410,7 @@ EOF;
     /**
      * @return array<array<null|array<string, mixed>|string>>
      */
-    public static function provideBasicCodeWithDifferentOrdersCases(): array
+    public static function provideFixBasicCaseWithDifferentOrdersCases(): array
     {
         $input = <<<'EOF'
 <?php
@@ -519,7 +519,7 @@ EOF;
     }
 
     /**
-     * @dataProvider provideCompleteCasesWithCustomOrdersCases
+     * @dataProvider provideFixCompleteCasesWithCustomOrdersCases
      *
      * @param array<string, mixed> $config
      */
@@ -533,7 +533,7 @@ EOF;
     /**
      * @return array<string, array<int, string|string[][]>>
      */
-    public static function provideCompleteCasesWithCustomOrdersCases(): array
+    public static function provideFixCompleteCasesWithCustomOrdersCases(): array
     {
         return [
             'intepacuthre' => [

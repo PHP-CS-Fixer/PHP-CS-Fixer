@@ -689,7 +689,7 @@ echo Foo::A, Foo::B;
     /**
      * @param array<string, mixed> $configuration
      *
-     * @dataProvider provideConfigurationCases
+     * @dataProvider provideFixWithConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, string $expected): void
     {
@@ -707,7 +707,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public static function provideConfigurationCases(): array
+    public static function provideFixWithConfigurationCases(): array
     {
         return [
             [

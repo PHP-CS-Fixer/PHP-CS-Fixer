@@ -156,7 +156,7 @@ final class DocBlockTest extends TestCase
     }
 
     /**
-     * @dataProvider provideDocBlocksToConvertToMultiLineCases
+     * @dataProvider provideMakeMultiLIneCases
      */
     public function testMakeMultiLIne(string $inputDocBlock, string $outputDocBlock = null, string $indent = '', string $newLine = "\n"): void
     {
@@ -170,7 +170,7 @@ final class DocBlockTest extends TestCase
         self::assertSame($outputDocBlock, $doc->getContent());
     }
 
-    public static function provideDocBlocksToConvertToMultiLineCases(): array
+    public static function provideMakeMultiLIneCases(): array
     {
         return [
             'It keeps a multi line doc block as is' => [
@@ -201,7 +201,7 @@ final class DocBlockTest extends TestCase
     }
 
     /**
-     * @dataProvider provideDocBlocksToConvertToSingleLineCases
+     * @dataProvider provideMakeSingleLineCases
      */
     public function testMakeSingleLine(string $inputDocBlock, string $outputDocBlock = null): void
     {
@@ -215,7 +215,7 @@ final class DocBlockTest extends TestCase
         self::assertSame($outputDocBlock, $doc->getContent());
     }
 
-    public static function provideDocBlocksToConvertToSingleLineCases(): array
+    public static function provideMakeSingleLineCases(): array
     {
         return [
             'It keeps a single line doc block as is' => [
