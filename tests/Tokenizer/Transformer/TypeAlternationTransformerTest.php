@@ -28,11 +28,11 @@ use PhpCsFixer\Tokenizer\CT;
 final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int> $expectedTokens
+     * @param array<int, int|string> $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
-    public function testProcess(string $source, array $expectedTokens = []): void
+    public function testProcess(string $source, array $expectedTokens): void
     {
         $this->doTest(
             $source,
@@ -86,7 +86,34 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
                     $x = ($y|$z);
                     function foo(){}
                     $a = $b|$c;
+                    const A = B|C;
+                    const B = D::X|C ?>
                 ',
+                [
+                    6 => '|',
+                    15 => '|',
+                    24 => '|',
+                    35 => '|',
+                    52 => '|',
+                    76 => '|',
+                    94 => '|',
+                    105 => '|',
+                    118 => '|',
+                ],
+            ],
+            'do not fix, close/open' => [
+                '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
+                [
+                    16 => '|',
+                    18 => '|',
+                ],
+            ],
+            'do not fix, foreach' => [
+                '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
+                [
+                    15 => '|',
+                    17 => '|',
+                ],
             ],
         ];
     }
