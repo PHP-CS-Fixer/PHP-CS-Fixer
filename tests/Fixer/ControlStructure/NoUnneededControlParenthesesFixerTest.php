@@ -1681,6 +1681,11 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $fn8 = fn(): int|bool => (123456);
             ',
         ];
+
+        yield [
+            '<?php echo 1 + $obj?->value + 3;',
+            '<?php echo 1 + ($obj?->value) + 3;',
+        ];
     }
 
     /**
