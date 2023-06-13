@@ -26,6 +26,6 @@ parameters:
         -
             message: '#Call to static method .+ with .+ will always evaluate to true.$#'
             path: tests
-            count: 19
+            count: 18
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache
