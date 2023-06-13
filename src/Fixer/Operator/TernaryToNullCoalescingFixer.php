@@ -91,7 +91,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
 
         $issetCode = $issetTokens->generateCode();
 
-        if ('$this' !== strtolower($issetCode)) {
+        if ('$this' === strtolower($issetCode)) {
             return; // null coalescing operator does not with $this
         }
 
