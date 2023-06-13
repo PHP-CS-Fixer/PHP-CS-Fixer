@@ -779,6 +779,37 @@ PHP;
         }
     }
 
+    /**
+     * @requires PHP 8.3
+     *
+     * @dataProvider provideFindBlockEnd83Cases
+     *
+     * @param Tokens::BLOCK_TYPE_* $type
+     */
+    public function testFindBlockEnd83(int $expectedIndex, string $source, int $type, int $searchIndex): void
+    {
+        self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+    }
+
+    public static function provideFindBlockEnd83Cases(): iterable
+    {
+        yield 'simple dynamic class constant fetch' => [
+            7,
+            '<?php echo Foo::{$bar};',
+            Tokens::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE,
+            5,
+        ];
+
+        foreach ([[5, 7], [9, 11]] as $startEnd) {
+            yield 'chained dynamic class constant fetch: '.$startEnd[0] => [
+                $startEnd[1],
+                "<?php echo Foo::{'BAR'}::{'BLA'}::{static_method}(1,2) ?>",
+                Tokens::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE,
+                $startEnd[0],
+            ];
+        }
+    }
+
     public function testFindBlockEndInvalidType(): void
     {
         Tokens::clearCache();

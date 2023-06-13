@@ -49,6 +49,7 @@ final class CurlyBraceTransformer extends AbstractTransformer
         $this->transformIntoDynamicVarBraces($tokens, $token, $index);
         $this->transformIntoCurlyIndexBraces($tokens, $token, $index);
         $this->transformIntoGroupUseBraces($tokens, $token, $index);
+        $this->transformIntoDynamicClassConstantFetchBraces($tokens, $token, $index);
     }
 
     public function getCustomTokens(): array
@@ -64,6 +65,8 @@ final class CurlyBraceTransformer extends AbstractTransformer
             CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
             CT::T_GROUP_IMPORT_BRACE_OPEN,
             CT::T_GROUP_IMPORT_BRACE_CLOSE,
+            CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+            CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
         ];
     }
 
@@ -198,6 +201,45 @@ final class CurlyBraceTransformer extends AbstractTransformer
 
         $tokens[$index] = new Token([CT::T_GROUP_IMPORT_BRACE_OPEN, '{']);
         $tokens[$closeIndex] = new Token([CT::T_GROUP_IMPORT_BRACE_CLOSE, '}']);
+    }
+
+    private function transformIntoDynamicClassConstantFetchBraces(Tokens $tokens, Token $token, int $index): void
+    {
+        if (\PHP_VERSION_ID < 8_03_00) {
+            return; // @TODO: drop condition when PHP 8.3+ is required or majority of the users are using 8.3+
+        }
+
+        if (!$token->equals('{')) {
+            return;
+        }
+
+        $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($index);
+
+        while (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind(T_DOUBLE_COLON)) {
+            if (!$tokens[$prevMeaningfulTokenIndex]->equals(')')) {
+                return;
+            }
+
+            $prevMeaningfulTokenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevMeaningfulTokenIndex);
+            $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulTokenIndex);
+
+            if (!$tokens[$prevMeaningfulTokenIndex]->equals('}')) {
+                return;
+            }
+
+            $prevMeaningfulTokenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $prevMeaningfulTokenIndex);
+            $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulTokenIndex);
+        }
+
+        $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $index);
+        $nextMeaningfulTokenIndexAfterCloseIndex = $tokens->getNextMeaningfulToken($closeIndex);
+
+        if (!$tokens[$nextMeaningfulTokenIndexAfterCloseIndex]->equalsAny([';', [T_CLOSE_TAG], [T_DOUBLE_COLON]])) {
+            return;
+        }
+
+        $tokens[$index] = new Token([CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN, '{']);
+        $tokens[$closeIndex] = new Token([CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}']);
     }
 
     /**
