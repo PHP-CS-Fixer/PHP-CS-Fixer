@@ -1,0 +1,77 @@
+====================================
+Rule ``php_unit_data_provider_name``
+====================================
+
+Data provider names used only once must match the name of the test.
+
+Warning
+-------
+
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixer could be risky if one is calling data provider by name as function.
+
+Configuration
+-------------
+
+``prefix``
+~~~~~~~~~~
+
+Prefix that replaces "test".
+
+Allowed types: ``string``
+
+Default value: ``'provide'``
+
+``suffix``
+~~~~~~~~~~
+
+Suffix to be present at the end.
+
+Allowed types: ``string``
+
+Default value: ``'Cases'``
+
+Examples
+--------
+
+Example #1
+~~~~~~~~~~
+
+*Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class FooTest extends TestCase {
+        /**
+   -     * @dataProvider dataProvider
+   +     * @dataProvider provideSomethingCases
+         */
+        public function testSomething($expected, $actual) {}
+   -    public function dataProvider() {}
+   +    public function provideSomethingCases() {}
+    }
+
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['prefix' => 'data_', 'suffix' => '']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class FooTest extends TestCase {
+        /**
+   -     * @dataProvider dt_prvdr_ftr
+   +     * @dataProvider data_feature
+         */
+        public function test_feature($expected, $actual) {}
+   -    public function dt_prvdr_ftr() {}
+   +    public function data_feature() {}
+    }

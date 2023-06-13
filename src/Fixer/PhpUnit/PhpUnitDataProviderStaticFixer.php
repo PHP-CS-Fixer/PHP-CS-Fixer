@@ -109,7 +109,7 @@ class FooTest extends TestCase {
 
         $inserts = [];
         foreach ($dataProviderAnalyzer->getDataProviders($tokens, $startIndex, $endIndex) as $dataProviderDefinitionIndex) {
-            $methodStartIndex = $tokens->getNextTokenOfKind($dataProviderDefinitionIndex, ['{']);
+            $methodStartIndex = $tokens->getNextTokenOfKind($dataProviderDefinitionIndex->getNameIndex(), ['{']);
             if (null !== $methodStartIndex) {
                 $methodEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodStartIndex);
 
@@ -117,7 +117,7 @@ class FooTest extends TestCase {
                     continue;
                 }
             }
-            $functionIndex = $tokens->getPrevTokenOfKind($dataProviderDefinitionIndex, [[T_FUNCTION]]);
+            $functionIndex = $tokens->getPrevTokenOfKind($dataProviderDefinitionIndex->getNameIndex(), [[T_FUNCTION]]);
 
             $methodAttributes = $tokensAnalyzer->getMethodAttributes($functionIndex);
             if (false !== $methodAttributes['static']) {

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -25,7 +26,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class DataProviderAnalyzer
 {
     /**
-     * @return array<int> indices of data provider definitions
+     * @return array<DataProviderAnalysis>
      */
     public function getDataProviders(Tokens $tokens, int $startIndex, int $endIndex): array
     {
@@ -53,18 +54,22 @@ final class DataProviderAnalyzer
             }
         }
 
-        $dataProviderDefinitions = [];
+        $dataProviderAnalyses = [];
         foreach ($dataProviders as $dataProviderName => $dataProviderUsages) {
             $lowercaseDataProviderName = strtolower($dataProviderName);
             if (!\array_key_exists($lowercaseDataProviderName, $methods)) {
                 continue;
             }
-            $dataProviderDefinitions[$methods[$lowercaseDataProviderName]] = $methods[$lowercaseDataProviderName];
+            $dataProviderAnalyses[$methods[$lowercaseDataProviderName]] = new DataProviderAnalysis(
+                $tokens[$methods[$lowercaseDataProviderName]]->getContent(),
+                $methods[$lowercaseDataProviderName],
+                $dataProviderUsages,
+            );
         }
 
-        ksort($dataProviderDefinitions);
+        ksort($dataProviderAnalyses);
 
-        return array_values($dataProviderDefinitions);
+        return array_values($dataProviderAnalyses);
     }
 
     /**
