@@ -92,7 +92,6 @@ else {
             T_CASE,
             T_DEFAULT,
             T_TRY,
-            T_FUNCTION,
             T_CLASS,
             T_INTERFACE,
             T_TRAIT,
@@ -118,6 +117,20 @@ else {
             0,
             $this->extractIndent($this->computeNewLineContent($tokens, 0)),
         );
+
+        $methodModifierTokens = [
+            //  https://github.com/php/php-langspec/blob/master/spec/19-grammar.md#grammar-visibility-modifier
+            T_PUBLIC,
+            T_PROTECTED,
+            T_PRIVATE,
+            //  https://github.com/php/php-langspec/blob/master/spec/19-grammar.md#grammar-static-modifier
+            T_STATIC,
+            //  https://github.com/php/php-langspec/blob/master/spec/19-grammar.md#grammar-class-modifier
+            T_ABSTRACT,
+            T_FINAL,
+        ];
+
+        $methodModifierIndents = [];
 
         /**
          * @var list<array{
@@ -233,6 +246,49 @@ else {
                             $alternativeBlockStarts[$endIndex] = $index;
                         }
 
+                        break;
+                    }
+                }
+
+                $scopes[] = [
+                    'type' => 'block_signature',
+                    'skip' => false,
+                    'end_index' => $endIndex,
+                    'end_index_inclusive' => true,
+                    'initial_indent' => $this->getLineIndentationWithBracesCompatibility($tokens, $index, $lastIndent),
+                    'is_indented_block' => $token->isGivenKind([T_EXTENDS, T_IMPLEMENTS]),
+                ];
+
+                continue;
+            }
+
+            if ($token->isGivenKind($methodModifierTokens)) {
+                $methodModifierIndents[$index] = $lastIndent;
+
+                continue;
+            }
+
+            if ($token->isGivenKind(T_FUNCTION)) {
+                $x = $tokens->getPrevMeaningfulToken($index);
+                while (
+                    null !== $x
+                    && $tokens[$x]->isGivenKind($methodModifierTokens)
+                    && \array_key_exists($x, $methodModifierIndents)
+                ) {
+                    $lastIndent = $methodModifierIndents[$x];
+                    $x = $tokens->getPrevMeaningfulToken($x);
+                }
+
+                $methodModifierIndents = [];
+
+                for ($endIndex = $index + 1, $max = \count($tokens); $endIndex < $max; ++$endIndex) {
+                    if ($tokens[$endIndex]->equals('(')) {
+                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex);
+
+                        continue;
+                    }
+
+                    if ($tokens[$endIndex]->equalsAny(['{', ';'])) {
                         break;
                     }
                 }
