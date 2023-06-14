@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,12 +31,12 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public static function provideTestFixCases()
     {
         return [
             'if with side effect in body' => [

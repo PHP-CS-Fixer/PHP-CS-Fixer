@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,9 +25,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoEmptyBlockFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -40,26 +39,17 @@ final class NoEmptyBlockFixer extends AbstractFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         // Should be run after NoEmptyCommentFixer and before NoTrailingWhitespaceFixer.
         return 1;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([
@@ -74,12 +64,9 @@ final class NoEmptyBlockFixer extends AbstractFixer
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
+        for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
             if ($token->isGivenKind(T_DO)) {
@@ -103,10 +90,9 @@ final class NoEmptyBlockFixer extends AbstractFixer
     }
 
     /**
-     * @param int    $doIndex
-     * @param Tokens $tokens
+     * @param int $doIndex
      */
-    private function fixDoWhile($doIndex, Tokens $tokens)
+    private function fixDoWhile($doIndex, Tokens $tokens): void
     {
         $openBodyIndex = $tokens->getNextMeaningfulToken($doIndex);
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
@@ -130,10 +116,9 @@ final class NoEmptyBlockFixer extends AbstractFixer
     }
 
     /**
-     * @param int    $elseIndex
-     * @param Tokens $tokens
+     * @param int $elseIndex
      */
-    private function fixElse($elseIndex, Tokens $tokens)
+    private function fixElse($elseIndex, Tokens $tokens): void
     {
         $openBodyIndex = $tokens->getNextMeaningfulToken($elseIndex);
 
@@ -158,10 +143,9 @@ final class NoEmptyBlockFixer extends AbstractFixer
     }
 
     /**
-     * @param int    $finallyIndex
-     * @param Tokens $tokens
+     * @param int $finallyIndex
      */
-    private function fixFinally($finallyIndex, Tokens $tokens)
+    private function fixFinally($finallyIndex, Tokens $tokens): void
     {
         $openBodyIndex = $tokens->getNextMeaningfulToken($finallyIndex);
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
@@ -174,10 +158,9 @@ final class NoEmptyBlockFixer extends AbstractFixer
     }
 
     /**
-     * @param int    $forIndex
-     * @param Tokens $tokens
+     * @param int $forIndex
      */
-    private function fixFor($forIndex, Tokens $tokens)
+    private function fixFor($forIndex, Tokens $tokens): void
     {
         $openBraceIndex = $tokens->getNextMeaningfulToken($forIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
@@ -220,10 +203,9 @@ final class NoEmptyBlockFixer extends AbstractFixer
     }
 
     /**
-     * @param int    $ifIndex
-     * @param Tokens $tokens
+     * @param int $ifIndex
      */
-    private function fixIf($ifIndex, Tokens $tokens)
+    private function fixIf($ifIndex, Tokens $tokens): void
     {
         $openBraceIndex = $tokens->getNextMeaningfulToken($ifIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
@@ -277,10 +259,9 @@ final class NoEmptyBlockFixer extends AbstractFixer
     }
 
     /**
-     * @param int    $switchIndex
-     * @param Tokens $tokens
+     * @param int $switchIndex
      */
-    private function fixSwitch($switchIndex, Tokens $tokens)
+    private function fixSwitch($switchIndex, Tokens $tokens): void
     {
         $openBraceIndex = $tokens->getNextMeaningfulToken($switchIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
@@ -309,10 +290,9 @@ final class NoEmptyBlockFixer extends AbstractFixer
     }
 
     /**
-     * @param int    $tryIndex
-     * @param Tokens $tokens
+     * @param int $tryIndex
      */
-    private function fixTry($tryIndex, Tokens $tokens)
+    private function fixTry($tryIndex, Tokens $tokens): void
     {
         $openBodyIndex = $tokens->getNextMeaningfulToken($tryIndex);
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
@@ -348,10 +328,9 @@ final class NoEmptyBlockFixer extends AbstractFixer
     }
 
     /**
-     * @param int    $whileIndex
-     * @param Tokens $tokens
+     * @param int $whileIndex
      */
-    private function fixWhile($whileIndex, Tokens $tokens)
+    private function fixWhile($whileIndex, Tokens $tokens): void
     {
         // make sure it's not part of a do-while statement
         $closeDoBodyIndex = $tokens->getPrevMeaningfulToken($whileIndex);
@@ -406,11 +385,10 @@ final class NoEmptyBlockFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      */
-    private function clearRangeKeepComments(Tokens $tokens, $startIndex, $endIndex)
+    private function clearRangeKeepComments(Tokens $tokens, $startIndex, $endIndex): void
     {
         for ($index = $endIndex; $startIndex <= $index; --$index) {
             if (!$tokens[$index]->isGivenKind([T_COMMENT, T_DOC_COMMENT])) {
