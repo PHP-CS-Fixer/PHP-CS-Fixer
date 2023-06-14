@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -25,7 +26,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'There must not be any empty blocks.',
@@ -35,14 +36,14 @@ final class NoEmptyBlockFixer extends AbstractFixer
                 new CodeSample("<?php while (\$foo) {}\n"),
             ],
             null,
-            'Risky if the block has side effects'
+            'Risky if the block has side effects.'
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         // Should be run after NoEmptyCommentFixer and before NoTrailingWhitespaceFixer.
         return 1;
@@ -51,7 +52,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -59,7 +60,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([
             T_DO,
@@ -76,7 +77,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
