@@ -185,7 +185,6 @@ final class FixerDefinition implements FixerDefinitionInterface
         \PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer::class => true,
         \PhpCsFixer\Fixer\Operator\TernaryToElvisOperatorFixer::class => true,
         \PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer::class => true,
-        \PhpCsFixer\Fixer\Operator\UnaryOperatorSpacesFixer::class => true,
         \PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer::class => true,
         \PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer::class => true,
         \PhpCsFixer\Fixer\PhpTag\FullOpeningTagFixer::class => true,

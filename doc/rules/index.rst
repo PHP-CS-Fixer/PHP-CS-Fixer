@@ -547,10 +547,10 @@ Operator
 - `no_useless_nullsafe_operator <./operator/no_useless_nullsafe_operator.rst>`_
 
   There should not be useless ``null-safe-operators`` ``?->`` used.
-- `not_operator_with_space <./operator/not_operator_with_space.rst>`_
+- `not_operator_with_space <./operator/not_operator_with_space.rst>`_ *(deprecated)*
 
   Logical NOT operators (``!``) should have leading and trailing whitespaces.
-- `not_operator_with_successor_space <./operator/not_operator_with_successor_space.rst>`_
+- `not_operator_with_successor_space <./operator/not_operator_with_successor_space.rst>`_ *(deprecated)*
 
   Logical NOT operators (``!``) should have one trailing whitespace.
 - `object_operator_without_whitespace <./operator/object_operator_without_whitespace.rst>`_
@@ -576,7 +576,7 @@ Operator
   Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
 - `unary_operator_spaces <./operator/unary_operator_spaces.rst>`_
 
-  Unary operators should be placed adjacent to their operands.
+  Unary operators should be surrounded by space as configured.
 
 PHP Tag
 -------

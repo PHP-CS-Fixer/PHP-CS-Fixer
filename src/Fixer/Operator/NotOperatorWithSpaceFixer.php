@@ -14,17 +14,19 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\Operator;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
+ *
+ * @deprecated
  */
-final class NotOperatorWithSpaceFixer extends AbstractFixer
+final class NotOperatorWithSpaceFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -44,7 +46,7 @@ if (!$bar) {
     /**
      * {@inheritdoc}
      *
-     * Must run after ModernizeStrposFixer, UnaryOperatorSpacesFixer.
+     * Must run after ModernizeStrposFixer.
      */
     public function getPriority(): int
     {
@@ -56,20 +58,16 @@ if (!$bar) {
         return $tokens->isTokenKindFound('!');
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+    public function getSuccessorsNames(): array
     {
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            $token = $tokens[$index];
+        return array_keys($this->proxyFixers);
+    }
 
-            if ($token->equals('!')) {
-                if (!$tokens[$index + 1]->isWhitespace()) {
-                    $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
-                }
+    protected function createProxyFixers(): array
+    {
+        $fixer = new UnaryOperatorSpacesFixer();
+        $fixer->configure(['operators' => ['!' => 'leading_and_trailing_spaces']]);
 
-                if (!$tokens[$index - 1]->isWhitespace()) {
-                    $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
-                }
-            }
-        }
+        return [$fixer];
     }
 }

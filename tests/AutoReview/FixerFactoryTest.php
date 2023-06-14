@@ -500,6 +500,7 @@ final class FixerFactoryTest extends TestCase
                 'php_unit_dedicate_assert',
                 'single_space_after_construct',
                 'single_space_around_construct',
+                'unary_operator_spaces',
             ],
             'modernize_types_casting' => [
                 'no_unneeded_control_parentheses',
@@ -853,10 +854,6 @@ final class FixerFactoryTest extends TestCase
             ],
             'ternary_to_null_coalescing' => [
                 'assign_null_coalescing_to_coalesce_equal',
-            ],
-            'unary_operator_spaces' => [
-                'not_operator_with_space',
-                'not_operator_with_successor_space',
             ],
             'use_arrow_functions' => [
                 'function_declaration',

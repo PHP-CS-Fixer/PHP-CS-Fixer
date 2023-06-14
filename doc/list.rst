@@ -1348,10 +1348,14 @@ List of Available Rules
 
    Logical NOT operators (``!``) should have leading and trailing whitespaces.
 
+   *warning deprecated*   Use ``unary_operator_spaces`` instead.
+
    `Source PhpCsFixer\\Fixer\\Operator\\NotOperatorWithSpaceFixer <./../src/Fixer/Operator/NotOperatorWithSpaceFixer.php>`_
 -  `not_operator_with_successor_space <./rules/operator/not_operator_with_successor_space.rst>`_
 
    Logical NOT operators (``!``) should have one trailing whitespace.
+
+   *warning deprecated*   Use ``unary_operator_spaces`` instead.
 
    `Source PhpCsFixer\\Fixer\\Operator\\NotOperatorWithSuccessorSpaceFixer <./../src/Fixer/Operator/NotOperatorWithSuccessorSpaceFixer.php>`_
 -  `no_alias_functions <./rules/alias/no_alias_functions.rst>`_
@@ -3224,7 +3228,28 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Whitespace\\TypeDeclarationSpacesFixer <./../src/Fixer/Whitespace/TypeDeclarationSpacesFixer.php>`_
 -  `unary_operator_spaces <./rules/operator/unary_operator_spaces.rst>`_
 
-   Unary operators should be placed adjacent to their operands.
+   Unary operators should be surrounded by space as configured.
+
+   When using the ``no_spaces`` option, the leading whitespace in unary
+   successor operators will only be removed. Likewise, the trailing whitespace
+   in unary predecessor operators will only be removed. The ``leading_space``
+   option will force a leading whitespace but the opposite side of the operator
+   will be unchanged. Conversely, the ``trailing_space`` option will force a
+   trailing whitespace but the opposite side of the operator will be unchanged.
+   Use the ``leading_and_trailing_spaces`` option to force whitespaces on both
+   sides of the unary operator.
+
+   Configuration options:
+
+   - | ``default``
+     | Default fix strategy.
+     | Allowed values: ``'leading_and_trailing_spaces'``, ``'leading_space'``, ``'no_spaces'``, ``'trailing_space'`` and ``null``
+     | Default value: ``'no_spaces'``
+   - | ``operators``
+     | Dictionary of `unary operator` => `fix strategy` values that differ from the default strategy. Supported operators are `++`, `--`, `+`, `-`, `&`, `!`, `~`, `@` and `...`.
+     | Allowed types: ``array``
+     | Default value: ``[]``
+
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 

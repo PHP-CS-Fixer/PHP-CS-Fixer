@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: modernize_strpos,unary_operator_spaces.
+--RULESET--
+{"modernize_strpos": true, "unary_operator_spaces": {"operators": {"!": "leading_space"}}}
+--EXPECT--
+<?php
+$a = !str_starts_with($haystack, $needle)  ;
+
+--INPUT--
+<?php
+$a = strpos($haystack, $needle) !== 0;
