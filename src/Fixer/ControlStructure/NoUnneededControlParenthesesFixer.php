@@ -69,28 +69,6 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         [T_INCLUDE_ONCE],
     ];
 
-    private const NOOP_TYPES = [
-        '$',
-        [T_CONSTANT_ENCAPSED_STRING],
-        [T_DNUMBER],
-        [T_DOUBLE_COLON],
-        [T_LNUMBER],
-        [T_NS_SEPARATOR],
-        [T_OBJECT_OPERATOR],
-        [T_STRING],
-        [T_VARIABLE],
-        [T_STATIC],
-        // magic constants
-        [T_CLASS_C],
-        [T_DIR],
-        [T_FILE],
-        [T_FUNC_C],
-        [T_LINE],
-        [T_METHOD_C],
-        [T_NS_C],
-        [T_TRAIT_C],
-    ];
-
     private const CONFIG_OPTIONS = [
         'break',
         'clone',
@@ -123,7 +101,42 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         T_INCLUDE_ONCE,
     ];
 
+    /**
+     * @var list<list<int>|string>
+     */
+    private array $noopTypes;
+
     private TokensAnalyzer $tokensAnalyzer;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->noopTypes = [
+            '$',
+            [T_CONSTANT_ENCAPSED_STRING],
+            [T_DNUMBER],
+            [T_DOUBLE_COLON],
+            [T_LNUMBER],
+            [T_NS_SEPARATOR],
+            [T_STRING],
+            [T_VARIABLE],
+            [T_STATIC],
+            // magic constants
+            [T_CLASS_C],
+            [T_DIR],
+            [T_FILE],
+            [T_FUNC_C],
+            [T_LINE],
+            [T_METHOD_C],
+            [T_NS_C],
+            [T_TRAIT_C],
+        ];
+
+        foreach (Token::getObjectOperatorKinds() as $kind) {
+            $this->noopTypes[] = [$kind];
+        }
+    }
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -643,7 +656,7 @@ while ($y) { continue (2); }
                 continue;
             }
 
-            if (!$tokens[$startIndex]->equalsAny(self::NOOP_TYPES)) {
+            if (!$tokens[$startIndex]->equalsAny($this->noopTypes)) {
                 return true;
             }
         }
