@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: no_empty_comment,no_trailing_whitespace.
+Integration of fixers: no_empty_block,no_trailing_whitespace.
 --RULESET--
 {"no_empty_block": true, "no_trailing_whitespace": true}
 --EXPECT--

@@ -36,7 +36,10 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestFixCases()
+    /**
+     * @return array{string, array<string>}
+     */
+    public static function provideTestFixCases(): array
     {
         return [
             'if with side effect in body' => [
