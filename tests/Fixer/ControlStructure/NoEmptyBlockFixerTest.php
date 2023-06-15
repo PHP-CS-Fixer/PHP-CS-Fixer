@@ -36,588 +36,743 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array{string, array<string>}
-     */
-    public static function provideTestFixCases(): array
+    public static function provideTestFixCases(): iterable
     {
-        return [
-            'if with side effect in body' => [
-                '<?php if ($foo) { echo 1; }',
-            ],
-            'if with side effect in braces' => [
-                '<?php ',
-                '<?php if ($foo->bar()) {}',
-            ],
-            'if without side effect' => [
-                '<?php ',
-                '<?php if ($foo) {}',
-            ],
-            'if without side effect but comment in body' => [
-                '<?php if ($foo) { /* todo */ }',
-            ],
-            'if without side effect but doc comment in body' => [
-                '<?php if ($foo) { /** todo */ }',
-            ],
-            'if without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
-                '<?php /*1*/if/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/',
-            ],
-            'if without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*/',
-                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/',
-            ],
-            'if with side effect in elseif body' => [
-                '<?php if ($foo) {} elseif ($bar) { baz(); }',
-            ],
-            'if with side effect in elseif braces' => [
-                '<?php ',
-                '<?php if ($foo) {} elseif ($foo->baz()) {}',
-            ],
-            'if without side effect and elseif without side effect' => [
-                '<?php ',
-                '<?php if ($foo) {} elseif ($bar) {}',
-            ],
-            'if without side effect and elseif without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*//*9*//*10*//*11*/',
-                '<?php /*1*/if/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/elseif/*7*/(/*8*/$bar/*9*/)/*10*/{}/*11*/',
-            ],
-            'if without side effect and elseif without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*//**9*//**10*//**11*/',
-                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/elseif/**7*/(/**8*/$bar/**9*/)/**10*/{}/**11*/',
-            ],
-            'elseif without side effect but comment in body' => [
-                '<?php if ($foo) {} elseif ($bar) { /* todo */ }',
-            ],
-            'elseif without side effect but doc comment in body' => [
-                '<?php if ($foo) {} elseif ($bar) { /** todo */ }',
-            ],
-            'multiple elseif without side effect' => [
-                '<?php ',
-                '<?php if ($foo) {} elseif ($bar) {} elseif ($baz) {} elseif ($boz) {}',
-            ],
-            'multiple elseif one with side effect' => [
-                '<?php if ($foo) {} elseif ($bar) { foo(); } elseif ($baz) {} elseif ($boz) {}',
-            ],
-            'if with side effect in else' => [
-                '<?php if ($foo) {} else { bar(); }',
-            ],
-            'if with else without side effect' => [
-                '<?php ',
-                '<?php if ($foo) {} else {}',
-            ],
-            'if with else without side effect but comment in body' => [
-                '<?php if ($foo) {} else { /* todo */ }',
-            ],
-            'if with else without side effect but doc comment in body' => [
-                '<?php if ($foo) {} else { /** todo */ }',
-            ],
-            'if with else without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/',
-                '<?php /*1*/if/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/else/*7*/{}/*8*/',
-            ],
-            'if with else without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/',
-                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/else/**7*/{}/**8*/',
-            ],
-            'if with side effect in braces and else without side effect' => [
-                '<?php ',
-                '<?php if ($foo->bar()) {} else {}',
-            ],
-            'if with side effect in body and else without side effect' => [
-                '<?php if ($foo) { bar(); } ',
-                '<?php if ($foo) { bar(); } else {}',
-            ],
-            'if compact' => [
-                '<?php ',
-                '<?php if($foo){}elseif($bar){}else{}',
-            ],
-            'if spaced' => [
-                '<?php ',
-                '<?php if   (   $foo )  {     }   elseif   (  $bar )   { }',
-            ],
-            'if nested' => [
-                '<?php ',
-                '<?php if ($foo) { if ($bar) {} }',
-            ],
-            'alternate if with side effect in body' => [
-                '<?php if ($foo): echo 1; endif;',
-            ],
-            'alternate if with side effect in braces' => [
-                '<?php ',
-                '<?php if ($foo->bar()): endif;',
-            ],
-            'alternate if without side effect' => [
-                '<?php ',
-                '<?php if ($foo): endif;',
-            ],
-            'alternate if without side effect but comment in body' => [
-                '<?php if ($foo): /* todo */ endif;',
-            ],
-            'alternate if without side effect but doc comment in body' => [
-                '<?php if ($foo): /** todo */ endif;',
-            ],
-            'alternate if without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*/',
-                '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): endif;/*5*/',
-            ],
-            'alternate if without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*/',
-                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): endif;/**5*/',
-            ],
-            'alternate if with side effect in elseif body' => [
-                '<?php if ($foo): elseif ($bar): baz(); endif;',
-            ],
-            'alternate if with side effect in elseif braces' => [
-                '<?php ',
-                '<?php if ($foo): elseif ($foo->baz()): endif;',
-            ],
-            'alternate if without side effect and elseif without side effect' => [
-                '<?php ',
-                '<?php if ($foo): elseif ($bar): endif;',
-            ],
-            'alternate if without side effect and elseif without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/',
-                '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): elseif/*5*/(/*6*/$bar/*7*/): endif;/*8*/',
-            ],
-            'alternate if without side effect and elseif without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/',
-                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): elseif/**5*/(/**6*/$bar/**7*/): endif;/**8*/',
-            ],
-            'alternate elseif without side effect but comment in body' => [
-                '<?php if ($foo): elseif ($bar): /* todo */ endif;',
-            ],
-            'alternate elseif without side effect but doc comment in body' => [
-                '<?php if ($foo): elseif ($bar): /** todo */ endif;',
-            ],
-            'alternate multiple elseif without side effect' => [
-                '<?php ',
-                '<?php if ($foo): elseif ($bar): elseif ($baz): elseif ($boz): endif;',
-            ],
-            'alternate multiple elseif one with side effect' => [
-                '<?php if ($foo): elseif ($bar): foo(); elseif ($baz): elseif ($boz): endif;',
-            ],
-            'alternate if with side effect in else' => [
-                '<?php if ($foo): else: bar(); endif;',
-            ],
-            'alternate if with else without side effect' => [
-                '<?php ',
-                '<?php if ($foo): else: endif;',
-            ],
-            'alternate if with else without side effect but comment in body' => [
-                '<?php if ($foo): else: /* todo */ endif;',
-            ],
-            'alternate if with else without side effect but doc comment in body' => [
-                '<?php if ($foo): else: /** todo */ endif;',
-            ],
-            'alternate if with else without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*/',
-                '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): else: endif;/*5*/',
-            ],
-            'alternate if with else without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*/',
-                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): else: endif;/**5*/',
-            ],
-            'alternate if with side effect in braces and else without side effect' => [
-                '<?php ',
-                '<?php if ($foo->bar()): else: endif;',
-            ],
-            'alternate if with side effect in body and else without side effect' => [
-                '<?php if ($foo): bar();  endif;',
-                '<?php if ($foo): bar(); else: endif;',
-            ],
-            'alternate if compact' => [
-                '<?php ',
-                '<?php if($foo):elseif($bar):else:endif;',
-            ],
-            'alternate if spaced' => [
-                '<?php ',
-                '<?php if   (   $foo ):    elseif   (  $bar ):   endif;',
-            ],
-            'alternate end tag if with side effect in body' => [
-                '<?php if ($foo): echo 1; endif ?>',
-            ],
-            'alternate end tag if with side effect in braces' => [
-                '<?php ?>',
-                '<?php if ($foo->bar()): endif ?>',
-            ],
-            'alternate end tag if without side effect' => [
-                '<?php ?>',
-                '<?php if ($foo): endif ?>',
-            ],
-            'alternate end tag if without side effect but comment in body' => [
-                '<?php if ($foo): /* todo */ endif ?>',
-            ],
-            'alternate end tag if without side effect but doc comment in body' => [
-                '<?php if ($foo): /** todo */ endif ?>',
-            ],
-            'alternate end tag if without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*/?>',
-                '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): endif ?>',
-            ],
-            'alternate end tag if without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*/?>',
-                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): endif ?>',
-            ],
-            'alternate end tag if with side effect in elseif body' => [
-                '<?php if ($foo): elseif ($bar): baz(); endif ?>',
-            ],
-            'alternate end tag if with side effect in elseif braces' => [
-                '<?php ?>',
-                '<?php if ($foo): elseif ($foo->baz()): endif ?>',
-            ],
-            'alternate end tag if without side effect and elseif without side effect' => [
-                '<?php ?>',
-                '<?php if ($foo): elseif ($bar): endif ?>',
-            ],
-            'alternate end tag if without side effect and elseif without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/?>',
-                '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): elseif/*5*/(/*6*/$bar/*7*/): endif ?>',
-            ],
-            'alternate end tag if without side effect and elseif without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/?>',
-                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): elseif/**5*/(/**6*/$bar/**7*/): endif ?>',
-            ],
-            'alternate end tag elseif without side effect but comment in body' => [
-                '<?php if ($foo): elseif ($bar): /* todo */ endif ?>',
-            ],
-            'alternate end tag elseif without side effect but doc comment in body' => [
-                '<?php if ($foo): elseif ($bar): /** todo */ endif ?>',
-            ],
-            'alternate end tag multiple elseif without side effect' => [
-                '<?php ?>',
-                '<?php if ($foo): elseif ($bar): elseif ($baz): elseif ($boz): endif ?>',
-            ],
-            'alternate end tag multiple elseif one with side effect' => [
-                '<?php if ($foo): elseif ($bar): foo(); elseif ($baz): elseif ($boz): endif ?>',
-            ],
-            'alternate end tag if with side effect in else' => [
-                '<?php if ($foo): else: bar(); endif ?>',
-            ],
-            'alternate end tag if with else without side effect' => [
-                '<?php ?>',
-                '<?php if ($foo): else: endif ?>',
-            ],
-            'alternate end tag if with else without side effect but comment in body' => [
-                '<?php if ($foo): else: /* todo */ endif ?>',
-            ],
-            'alternate end tag if with else without side effect but doc comment in body' => [
-                '<?php if ($foo): else: /** todo */ endif ?>',
-            ],
-            'alternate end tag if with else without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*/?>',
-                '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): else: endif ?>',
-            ],
-            'alternate end tag if with else without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*/?>',
-                '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): else: endif ?>',
-            ],
-            'alternate end tag if with side effect in braces and else without side effect' => [
-                '<?php ?>',
-                '<?php if ($foo->bar()): else: endif ?>',
-            ],
-            'alternate end tag if with side effect in body and else without side effect' => [
-                '<?php if ($foo): bar();  endif ?>',
-                '<?php if ($foo): bar(); else: endif ?>',
-            ],
-            'alternate end tag if compact' => [
-                '<?php ?>',
-                '<?php if($foo):elseif($bar):else:endif ?>',
-            ],
-            'alternate end tag if spaced' => [
-                '<?php ?>',
-                '<?php if   (   $foo ):    elseif   (  $bar ):   endif ?>',
-            ],
-            'do while with side effect in body' => [
-                '<?php do { foo(); } while($foo);',
-            ],
-            'do while with side effect in braces' => [
-                '<?php ',
-                '<?php do {} while (foo());',
-            ],
-            'do while without side effects' => [
-                '<?php ',
-                '<?php do {} while ($foo);',
-            ],
-            'do while without side effects but comment in body' => [
-                '<?php do { /* todo */ } while ($foo);',
-            ],
-            'do while without side effects but doc comment in body' => [
-                '<?php do { /** todo */ } while ($foo);',
-            ],
-            'do while without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/',
-                '<?php /*1*/do/*2*/{}/*3*/while/*4*/(/*5*/$foo/*6*/)/*7*/;/*8*/',
-            ],
-            'do while without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/',
-                '<?php /**1*/do/**2*/{}/**3*/while/**4*/(/**5*/$foo/**6*/)/**7*/;/**8*/',
-            ],
-            'do while nested' => [
-                '<?php ',
-                '<?php do { do {} while ($foo); } while ($bar);',
-            ],
-            'do while end tag with side effect in body' => [
-                '<?php do { foo(); } while($foo) ?>',
-            ],
-            'do while end tag with side effect in braces' => [
-                '<?php ?>',
-                '<?php do {} while (foo()) ?>',
-            ],
-            'do while end tag without side effects' => [
-                '<?php ?>',
-                '<?php do {} while ($foo) ?>',
-            ],
-            'do while end tag without side effects but comment in body' => [
-                '<?php do { /* todo */ } while ($foo) ?>',
-            ],
-            'do while end tag without side effects but doc comment in body' => [
-                '<?php do { /** todo */ } while ($foo) ?>',
-            ],
-            'do while end tag without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/ ?>',
-                '<?php /*1*/do/*2*/{}/*3*/while/*4*/(/*5*/$foo/*6*/)/*7*/;/*8*/ ?>',
-            ],
-            'do while end tag without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/ ?>',
-                '<?php /**1*/do/**2*/{}/**3*/while/**4*/(/**5*/$foo/**6*/)/**7*/;/**8*/ ?>',
-            ],
-            'for with side effect in body' => [
-                '<?php for (;;) { foo(); }',
-            ],
-            'for with side effect in braces' => [
-                '<?php ',
-                '<?php for ($i = 0; $i < count($foo); ++$i) {}',
-            ],
-            'for without side effects' => [
-                '<?php ',
-                '<?php for (;;) {}',
-            ],
-            'for without side effects but comment in body' => [
-                '<?php for (;;) { /* todo */ }',
-            ],
-            'for without side effects but doc comment in body' => [
-                '<?php for (;;) { /** todo */ }',
-            ],
-            'for without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
-                '<?php /*1*/for/*2*/(/*3*/;/*4*/;/*5*/)/*6*/{}/*7*/',
-            ],
-            'for without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/',
-                '<?php /**1*/for/**2*/(/**3*/;/**4*/;/**5*/)/**6*/{}/**7*/',
-            ],
-            'for nested' => [
-                '<?php ',
-                '<?php for (;;) { for(;;) {} }',
-            ],
-            'for alternate with side effect in body' => [
-                '<?php for (;;): foo(); endfor;',
-            ],
-            'for alternate with side effect in braces' => [
-                '<?php ',
-                '<?php for ($i = 0; $i < count($foo); ++$i): endfor;',
-            ],
-            'for alternate without side effects' => [
-                '<?php ',
-                '<?php for (;;): endfor;',
-            ],
-            'for alternate without side effects but comment in body' => [
-                '<?php for (;;): /* todo */ endfor;',
-            ],
-            'for alternate without side effects but doc comment in body' => [
-                '<?php for (;;): /** todo */ endfor;',
-            ],
-            'for alternate without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
-                '<?php /*1*/for/*2*/(/*3*/;/*4*/;/*5*/)/*6*/: endfor;/*7*/',
-            ],
-            'for alternate without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/',
-                '<?php /**1*/for/**2*/(/**3*/;/**4*/;/**5*/)/**6*/: endfor;/**7*/',
-            ],
-            'for alternate end tag with side effect in body' => [
-                '<?php for (;;): foo(); endfor ?>',
-            ],
-            'for alternate end tag with side effect in braces' => [
-                '<?php ?>',
-                '<?php for ($i = 0; $i < count($foo); ++$i): endfor ?>',
-            ],
-            'for alternate end tag without side effects' => [
-                '<?php ?>',
-                '<?php for (;;): endfor ?>',
-            ],
-            'for alternate end tag without side effects but comment in body' => [
-                '<?php for (;;): /* todo */ endfor ?>',
-            ],
-            'for alternate end tag without side effects but doc comment in body' => [
-                '<?php for (;;): /** todo */ endfor ?>',
-            ],
-            'for alternate end tag without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/ ?>',
-                '<?php /*1*/for/*2*/(/*3*/;/*4*/;/*5*/)/*6*/: endfor;/*7*/ ?>',
-            ],
-            'for alternate end tag without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/ ?>',
-                '<?php /**1*/for/**2*/(/**3*/;/**4*/;/**5*/)/**6*/: endfor;/**7*/ ?>',
-            ],
-            'switch with side effect in body' => [
-                '<?php switch ($foo) { case 1: foo(); }',
-            ],
-            'switch with side effect in braces' => [
-                '<?php ',
-                '<?php switch ($foo->bar()) {}',
-            ],
-            'switch without side effects' => [
-                '<?php ',
-                '<?php switch ($foo) {}',
-            ],
-            'switch without side effects with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
-                '<?php /*1*/switch/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/',
-            ],
-            'switch without side effects with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*/',
-                '<?php /**1*/switch/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/',
-            ],
-            'switch without side effects but comment in body' => [
-                '<?php switch ($foo) { /* todo */ }',
-            ],
-            'switch without side effects but doc comment in body' => [
-                '<?php switch ($foo) { /** todo */ }',
-            ],
-            'alternate switch with side effect in body' => [
-                '<?php switch ($foo): case 1: foo(); endswitch;',
-            ],
-            'alternate switch with side effect in braces' => [
-                '<?php ',
-                '<?php switch ($foo->bar()): endswitch;',
-            ],
-            'alternate switch without side effects' => [
-                '<?php ',
-                '<?php switch ($foo): endswitch;',
-            ],
-            'alternate switch without side effects with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
-                '<?php /*1*/switch/*2*/(/*3*/$foo/*4*/)/*5*/: endswitch/*6*/;/*7*/',
-            ],
-            'alternate switch without side effects with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/',
-                '<?php /**1*/switch/**2*/(/**3*/$foo/**4*/)/**5*/: endswitch/**6*/;/**7*/',
-            ],
-            'alternate switch without side effects but comment in body' => [
-                '<?php switch ($foo): /* todo */ endswitch;',
-            ],
-            'alternate switch without side effects but doc comment in body' => [
-                '<?php switch ($foo): /** todo */ endswitch;',
-            ],
-            'alternate end tag switch with side effect in body' => [
-                '<?php switch ($foo): case 1: foo(); endswitch ?>',
-            ],
-            'alternate end tag switch with side effect in braces' => [
-                '<?php ?>',
-                '<?php switch ($foo->bar()): endswitch ?>',
-            ],
-            'alternate end tag switch without side effects' => [
-                '<?php ?>',
-                '<?php switch ($foo): endswitch ?>',
-            ],
-            'alternate end tag switch without side effects with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/ ?>',
-                '<?php /*1*/switch/*2*/(/*3*/$foo/*4*/)/*5*/: endswitch/*6*/ ?>',
-            ],
-            'alternate end tag switch without side effects with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*/ ?>',
-                '<?php /**1*/switch/**2*/(/**3*/$foo/**4*/)/**5*/: endswitch/**6*/ ?>',
-            ],
-            'alternate end tag switch without side effects but comment in body' => [
-                '<?php switch ($foo): /* todo */ endswitch ?>',
-            ],
-            'alternate end tag switch without side effects but doc comment in body' => [
-                '<?php switch ($foo): /** todo */ endswitch ?>',
-            ],
-            'try with side effects' => [
-                '<?php try { foo(); } catch (Exception $e) {}',
-            ],
-            'try with side effects in catch' => [
-                '<?php ',
-                '<?php try {} catch (Exception $e) { foo(); }',
-            ],
-            'try without side effects in catch' => [
-                '<?php ',
-                '<?php try {} catch (Exception $e) {}',
-            ],
-            'try without side effects and finally with side effects' => [
-                '<?php try {} finally { foo(); }',
-            ],
-            'try and finally without side effects' => [
-                '<?php ',
-                '<?php try {} finally {}',
-            ],
-            'try catch and finally without side effects' => [
-                '<?php ',
-                '<?php try {} catch (Exception $e) {} finally {}',
-            ],
-            'try nested' => [
-                '<?php ',
-                '<?php try { try {} catch (Exception $e) {} } catch (Exception $e) {}',
-            ],
-            'while with side effect in body' => [
-                '<?php while ($foo) { foo(); }',
-            ],
-            'while with side effect in braces' => [
-                '<?php ',
-                '<?php while (foo()) {}',
-            ],
-            'while without side effects' => [
-                '<?php ',
-                '<?php while ($foo) {}',
-            ],
-            'while without side effects but comment in body' => [
-                '<?php while ($foo) { /* todo */ }',
-            ],
-            'while without side effects but doc comment in body' => [
-                '<?php while ($foo) { /** todo */ }',
-            ],
-            'while without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
-                '<?php /*1*/while/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/',
-            ],
-            'while without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*/',
-                '<?php /**1*/while/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/',
-            ],
-            'while nested' => [
-                '<?php ',
-                '<?php while ($bar) { while ($foo) {} }',
-            ],
-            'while end tag with side effect in body' => [
-                '<?php while($foo) { foo(); } ?>',
-            ],
-            'while end tag with side effect in braces' => [
-                '<?php ?>',
-                '<?php while (foo()) {} ?>',
-            ],
-            'while end tag without side effects' => [
-                '<?php ?>',
-                '<?php while ($foo) {} ?>',
-            ],
-            'while end tag without side effects but comment in body' => [
-                '<?php while ($foo) { /* todo */ } ?>',
-            ],
-            'while end tag without side effects but doc comment in body' => [
-                '<?php while ($foo) { /** todo */ } ?>',
-            ],
-            'while end tag without side effect with comments' => [
-                '<?php /*1*//*2*//*3*//*4*//*5*//*6*/ ?>',
-                '<?php /*1*/while/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/ ?>',
-            ],
-            'while end tag without side effect with doc comments' => [
-                '<?php /**1*//**2*//**3*//**4*//**5*//**6*/ ?>',
-                '<?php /**1*/while/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/ ?>',
-            ],
-            'general test 0' => [
-                '
+        yield 'if with side effect in body' => [
+            '<?php if ($foo) { echo 1; }',
+        ];
+
+        yield 'if with side effect in braces' => [
+            '<?php ',
+            '<?php if ($foo->bar()) {}',
+        ];
+
+        yield 'if without side effect' => [
+            '<?php ',
+            '<?php if ($foo) {}',
+        ];
+
+        yield 'if without side effect but comment in body' => [
+            '<?php if ($foo) { /* todo */ }',
+        ];
+
+        yield 'if without side effect but doc comment in body' => [
+            '<?php if ($foo) { /** todo */ }',
+        ];
+
+        yield 'if without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
+            '<?php /*1*/if/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/',
+        ];
+
+        yield 'if without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*/',
+            '<?php /**1*/if/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/',
+        ];
+
+        yield 'if with side effect in elseif body' => [
+            '<?php if ($foo) {} elseif ($bar) { baz(); }',
+        ];
+
+        yield 'if with side effect in elseif braces' => [
+            '<?php ',
+            '<?php if ($foo) {} elseif ($foo->baz()) {}',
+        ];
+
+        yield 'if without side effect and elseif without side effect' => [
+            '<?php ',
+            '<?php if ($foo) {} elseif ($bar) {}',
+        ];
+
+        yield 'if without side effect and elseif without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*//*9*//*10*//*11*/',
+            '<?php /*1*/if/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/elseif/*7*/(/*8*/$bar/*9*/)/*10*/{}/*11*/',
+        ];
+
+        yield 'if without side effect and elseif without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*//**9*//**10*//**11*/',
+            '<?php /**1*/if/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/elseif/**7*/(/**8*/$bar/**9*/)/**10*/{}/**11*/',
+        ];
+
+        yield 'elseif without side effect but comment in body' => [
+            '<?php if ($foo) {} elseif ($bar) { /* todo */ }',
+        ];
+
+        yield 'elseif without side effect but doc comment in body' => [
+            '<?php if ($foo) {} elseif ($bar) { /** todo */ }',
+        ];
+
+        yield 'multiple elseif without side effect' => [
+            '<?php ',
+            '<?php if ($foo) {} elseif ($bar) {} elseif ($baz) {} elseif ($boz) {}',
+        ];
+
+        yield 'multiple elseif one with side effect' => [
+            '<?php if ($foo) {} elseif ($bar) { foo(); } elseif ($baz) {} elseif ($boz) {}',
+        ];
+
+        yield 'if with side effect in else' => [
+            '<?php if ($foo) {} else { bar(); }',
+        ];
+
+        yield 'if with else without side effect' => [
+            '<?php ',
+            '<?php if ($foo) {} else {}',
+        ];
+
+        yield 'if with else without side effect but comment in body' => [
+            '<?php if ($foo) {} else { /* todo */ }',
+        ];
+
+        yield 'if with else without side effect but doc comment in body' => [
+            '<?php if ($foo) {} else { /** todo */ }',
+        ];
+
+        yield 'if with else without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/',
+            '<?php /*1*/if/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/else/*7*/{}/*8*/',
+        ];
+
+        yield 'if with else without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/',
+            '<?php /**1*/if/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/else/**7*/{}/**8*/',
+        ];
+
+        yield 'if with side effect in braces and else without side effect' => [
+            '<?php ',
+            '<?php if ($foo->bar()) {} else {}',
+        ];
+
+        yield 'if with side effect in body and else without side effect' => [
+            '<?php if ($foo) { bar(); } ',
+            '<?php if ($foo) { bar(); } else {}',
+        ];
+
+        yield 'if compact' => [
+            '<?php ',
+            '<?php if($foo){}elseif($bar){}else{}',
+        ];
+
+        yield 'if spaced' => [
+            '<?php ',
+            '<?php if   (   $foo )  {     }   elseif   (  $bar )   { }',
+        ];
+
+        yield 'if nested' => [
+            '<?php ',
+            '<?php if ($foo) { if ($bar) {} }',
+        ];
+
+        yield 'alternate if with side effect in body' => [
+            '<?php if ($foo): echo 1; endif;',
+        ];
+
+        yield 'alternate if with side effect in braces' => [
+            '<?php ',
+            '<?php if ($foo->bar()): endif;',
+        ];
+
+        yield 'alternate if without side effect' => [
+            '<?php ',
+            '<?php if ($foo): endif;',
+        ];
+
+        yield 'alternate if without side effect but comment in body' => [
+            '<?php if ($foo): /* todo */ endif;',
+        ];
+
+        yield 'alternate if without side effect but doc comment in body' => [
+            '<?php if ($foo): /** todo */ endif;',
+        ];
+
+        yield 'alternate if without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*/',
+            '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): endif;/*5*/',
+        ];
+
+        yield 'alternate if without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*/',
+            '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): endif;/**5*/',
+        ];
+
+        yield 'alternate if with side effect in elseif body' => [
+            '<?php if ($foo): elseif ($bar): baz(); endif;',
+        ];
+
+        yield 'alternate if with side effect in elseif braces' => [
+            '<?php ',
+            '<?php if ($foo): elseif ($foo->baz()): endif;',
+        ];
+
+        yield 'alternate if without side effect and elseif without side effect' => [
+            '<?php ',
+            '<?php if ($foo): elseif ($bar): endif;',
+        ];
+
+        yield 'alternate if without side effect and elseif without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/',
+            '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): elseif/*5*/(/*6*/$bar/*7*/): endif;/*8*/',
+        ];
+
+        yield 'alternate if without side effect and elseif without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/',
+            '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): elseif/**5*/(/**6*/$bar/**7*/): endif;/**8*/',
+        ];
+
+        yield 'alternate elseif without side effect but comment in body' => [
+            '<?php if ($foo): elseif ($bar): /* todo */ endif;',
+        ];
+
+        yield 'alternate elseif without side effect but doc comment in body' => [
+            '<?php if ($foo): elseif ($bar): /** todo */ endif;',
+        ];
+
+        yield 'alternate multiple elseif without side effect' => [
+            '<?php ',
+            '<?php if ($foo): elseif ($bar): elseif ($baz): elseif ($boz): endif;',
+        ];
+
+        yield 'alternate multiple elseif one with side effect' => [
+            '<?php if ($foo): elseif ($bar): foo(); elseif ($baz): elseif ($boz): endif;',
+        ];
+
+        yield 'alternate if with side effect in else' => [
+            '<?php if ($foo): else: bar(); endif;',
+        ];
+
+        yield 'alternate if with else without side effect' => [
+            '<?php ',
+            '<?php if ($foo): else: endif;',
+        ];
+
+        yield 'alternate if with else without side effect but comment in body' => [
+            '<?php if ($foo): else: /* todo */ endif;',
+        ];
+
+        yield 'alternate if with else without side effect but doc comment in body' => [
+            '<?php if ($foo): else: /** todo */ endif;',
+        ];
+
+        yield 'alternate if with else without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*/',
+            '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): else: endif;/*5*/',
+        ];
+
+        yield 'alternate if with else without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*/',
+            '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): else: endif;/**5*/',
+        ];
+
+        yield 'alternate if with side effect in braces and else without side effect' => [
+            '<?php ',
+            '<?php if ($foo->bar()): else: endif;',
+        ];
+
+        yield 'alternate if with side effect in body and else without side effect' => [
+            '<?php if ($foo): bar();  endif;',
+            '<?php if ($foo): bar(); else: endif;',
+        ];
+
+        yield 'alternate if compact' => [
+            '<?php ',
+            '<?php if($foo):elseif($bar):else:endif;',
+        ];
+
+        yield 'alternate if spaced' => [
+            '<?php ',
+            '<?php if   (   $foo ):    elseif   (  $bar ):   endif;',
+        ];
+
+        yield 'alternate end tag if with side effect in body' => [
+            '<?php if ($foo): echo 1; endif ?>',
+        ];
+
+        yield 'alternate end tag if with side effect in braces' => [
+            '<?php ?>',
+            '<?php if ($foo->bar()): endif ?>',
+        ];
+
+        yield 'alternate end tag if without side effect' => [
+            '<?php ?>',
+            '<?php if ($foo): endif ?>',
+        ];
+
+        yield 'alternate end tag if without side effect but comment in body' => [
+            '<?php if ($foo): /* todo */ endif ?>',
+        ];
+
+        yield 'alternate end tag if without side effect but doc comment in body' => [
+            '<?php if ($foo): /** todo */ endif ?>',
+        ];
+
+        yield 'alternate end tag if without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*/?>',
+            '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): endif ?>',
+        ];
+
+        yield 'alternate end tag if without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*/?>',
+            '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): endif ?>',
+        ];
+
+        yield 'alternate end tag if with side effect in elseif body' => [
+            '<?php if ($foo): elseif ($bar): baz(); endif ?>',
+        ];
+
+        yield 'alternate end tag if with side effect in elseif braces' => [
+            '<?php ?>',
+            '<?php if ($foo): elseif ($foo->baz()): endif ?>',
+        ];
+
+        yield 'alternate end tag if without side effect and elseif without side effect' => [
+            '<?php ?>',
+            '<?php if ($foo): elseif ($bar): endif ?>',
+        ];
+
+        yield 'alternate end tag if without side effect and elseif without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/?>',
+            '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): elseif/*5*/(/*6*/$bar/*7*/): endif ?>',
+        ];
+
+        yield 'alternate end tag if without side effect and elseif without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/?>',
+            '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): elseif/**5*/(/**6*/$bar/**7*/): endif ?>',
+        ];
+
+        yield 'alternate end tag elseif without side effect but comment in body' => [
+            '<?php if ($foo): elseif ($bar): /* todo */ endif ?>',
+        ];
+
+        yield 'alternate end tag elseif without side effect but doc comment in body' => [
+            '<?php if ($foo): elseif ($bar): /** todo */ endif ?>',
+        ];
+
+        yield 'alternate end tag multiple elseif without side effect' => [
+            '<?php ?>',
+            '<?php if ($foo): elseif ($bar): elseif ($baz): elseif ($boz): endif ?>',
+        ];
+
+        yield 'alternate end tag multiple elseif one with side effect' => [
+            '<?php if ($foo): elseif ($bar): foo(); elseif ($baz): elseif ($boz): endif ?>',
+        ];
+
+        yield 'alternate end tag if with side effect in else' => [
+            '<?php if ($foo): else: bar(); endif ?>',
+        ];
+
+        yield 'alternate end tag if with else without side effect' => [
+            '<?php ?>',
+            '<?php if ($foo): else: endif ?>',
+        ];
+
+        yield 'alternate end tag if with else without side effect but comment in body' => [
+            '<?php if ($foo): else: /* todo */ endif ?>',
+        ];
+
+        yield 'alternate end tag if with else without side effect but doc comment in body' => [
+            '<?php if ($foo): else: /** todo */ endif ?>',
+        ];
+
+        yield 'alternate end tag if with else without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*/?>',
+            '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): else: endif ?>',
+        ];
+
+        yield 'alternate end tag if with else without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*/?>',
+            '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): else: endif ?>',
+        ];
+
+        yield 'alternate end tag if with side effect in braces and else without side effect' => [
+            '<?php ?>',
+            '<?php if ($foo->bar()): else: endif ?>',
+        ];
+
+        yield 'alternate end tag if with side effect in body and else without side effect' => [
+            '<?php if ($foo): bar();  endif ?>',
+            '<?php if ($foo): bar(); else: endif ?>',
+        ];
+
+        yield 'alternate end tag if compact' => [
+            '<?php ?>',
+            '<?php if($foo):elseif($bar):else:endif ?>',
+        ];
+
+        yield 'alternate end tag if spaced' => [
+            '<?php ?>',
+            '<?php if   (   $foo ):    elseif   (  $bar ):   endif ?>',
+        ];
+
+        yield 'do while with side effect in body' => [
+            '<?php do { foo(); } while($foo);',
+        ];
+
+        yield 'do while with side effect in braces' => [
+            '<?php ',
+            '<?php do {} while (foo());',
+        ];
+
+        yield 'do while without side effects' => [
+            '<?php ',
+            '<?php do {} while ($foo);',
+        ];
+
+        yield 'do while without side effects but comment in body' => [
+            '<?php do { /* todo */ } while ($foo);',
+        ];
+
+        yield 'do while without side effects but doc comment in body' => [
+            '<?php do { /** todo */ } while ($foo);',
+        ];
+
+        yield 'do while without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/',
+            '<?php /*1*/do/*2*/{}/*3*/while/*4*/(/*5*/$foo/*6*/)/*7*/;/*8*/',
+        ];
+
+        yield 'do while without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/',
+            '<?php /**1*/do/**2*/{}/**3*/while/**4*/(/**5*/$foo/**6*/)/**7*/;/**8*/',
+        ];
+
+        yield 'do while nested' => [
+            '<?php ',
+            '<?php do { do {} while ($foo); } while ($bar);',
+        ];
+
+        yield 'do while end tag with side effect in body' => [
+            '<?php do { foo(); } while($foo) ?>',
+        ];
+
+        yield 'do while end tag with side effect in braces' => [
+            '<?php ?>',
+            '<?php do {} while (foo()) ?>',
+        ];
+
+        yield 'do while end tag without side effects' => [
+            '<?php ?>',
+            '<?php do {} while ($foo) ?>',
+        ];
+
+        yield 'do while end tag without side effects but comment in body' => [
+            '<?php do { /* todo */ } while ($foo) ?>',
+        ];
+
+        yield 'do while end tag without side effects but doc comment in body' => [
+            '<?php do { /** todo */ } while ($foo) ?>',
+        ];
+
+        yield 'do while end tag without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/ ?>',
+            '<?php /*1*/do/*2*/{}/*3*/while/*4*/(/*5*/$foo/*6*/)/*7*/;/*8*/ ?>',
+        ];
+
+        yield 'do while end tag without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/ ?>',
+            '<?php /**1*/do/**2*/{}/**3*/while/**4*/(/**5*/$foo/**6*/)/**7*/;/**8*/ ?>',
+        ];
+
+        yield 'for with side effect in body' => [
+            '<?php for (;;) { foo(); }',
+        ];
+
+        yield 'for with side effect in braces' => [
+            '<?php ',
+            '<?php for ($i = 0; $i < count($foo); ++$i) {}',
+        ];
+
+        yield 'for without side effects' => [
+            '<?php ',
+            '<?php for (;;) {}',
+        ];
+
+        yield 'for without side effects but comment in body' => [
+            '<?php for (;;) { /* todo */ }',
+        ];
+
+        yield 'for without side effects but doc comment in body' => [
+            '<?php for (;;) { /** todo */ }',
+        ];
+
+        yield 'for without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
+            '<?php /*1*/for/*2*/(/*3*/;/*4*/;/*5*/)/*6*/{}/*7*/',
+        ];
+
+        yield 'for without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/',
+            '<?php /**1*/for/**2*/(/**3*/;/**4*/;/**5*/)/**6*/{}/**7*/',
+        ];
+
+        yield 'for nested' => [
+            '<?php ',
+            '<?php for (;;) { for(;;) {} }',
+        ];
+
+        yield 'for alternate with side effect in body' => [
+            '<?php for (;;): foo(); endfor;',
+        ];
+
+        yield 'for alternate with side effect in braces' => [
+            '<?php ',
+            '<?php for ($i = 0; $i < count($foo); ++$i): endfor;',
+        ];
+
+        yield 'for alternate without side effects' => [
+            '<?php ',
+            '<?php for (;;): endfor;',
+        ];
+
+        yield 'for alternate without side effects but comment in body' => [
+            '<?php for (;;): /* todo */ endfor;',
+        ];
+
+        yield 'for alternate without side effects but doc comment in body' => [
+            '<?php for (;;): /** todo */ endfor;',
+        ];
+
+        yield 'for alternate without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
+            '<?php /*1*/for/*2*/(/*3*/;/*4*/;/*5*/)/*6*/: endfor;/*7*/',
+        ];
+
+        yield 'for alternate without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/',
+            '<?php /**1*/for/**2*/(/**3*/;/**4*/;/**5*/)/**6*/: endfor;/**7*/',
+        ];
+
+        yield 'for alternate end tag with side effect in body' => [
+            '<?php for (;;): foo(); endfor ?>',
+        ];
+
+        yield 'for alternate end tag with side effect in braces' => [
+            '<?php ?>',
+            '<?php for ($i = 0; $i < count($foo); ++$i): endfor ?>',
+        ];
+
+        yield 'for alternate end tag without side effects' => [
+            '<?php ?>',
+            '<?php for (;;): endfor ?>',
+        ];
+
+        yield 'for alternate end tag without side effects but comment in body' => [
+            '<?php for (;;): /* todo */ endfor ?>',
+        ];
+
+        yield 'for alternate end tag without side effects but doc comment in body' => [
+            '<?php for (;;): /** todo */ endfor ?>',
+        ];
+
+        yield 'for alternate end tag without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/ ?>',
+            '<?php /*1*/for/*2*/(/*3*/;/*4*/;/*5*/)/*6*/: endfor;/*7*/ ?>',
+        ];
+
+        yield 'for alternate end tag without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/ ?>',
+            '<?php /**1*/for/**2*/(/**3*/;/**4*/;/**5*/)/**6*/: endfor;/**7*/ ?>',
+        ];
+
+        yield 'switch with side effect in body' => [
+            '<?php switch ($foo) { case 1: foo(); }',
+        ];
+
+        yield 'switch with side effect in braces' => [
+            '<?php ',
+            '<?php switch ($foo->bar()) {}',
+        ];
+
+        yield 'switch without side effects' => [
+            '<?php ',
+            '<?php switch ($foo) {}',
+        ];
+
+        yield 'switch without side effects with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
+            '<?php /*1*/switch/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/',
+        ];
+
+        yield 'switch without side effects with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*/',
+            '<?php /**1*/switch/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/',
+        ];
+
+        yield 'switch without side effects but comment in body' => [
+            '<?php switch ($foo) { /* todo */ }',
+        ];
+
+        yield 'switch without side effects but doc comment in body' => [
+            '<?php switch ($foo) { /** todo */ }',
+        ];
+
+        yield 'alternate switch with side effect in body' => [
+            '<?php switch ($foo): case 1: foo(); endswitch;',
+        ];
+
+        yield 'alternate switch with side effect in braces' => [
+            '<?php ',
+            '<?php switch ($foo->bar()): endswitch;',
+        ];
+
+        yield 'alternate switch without side effects' => [
+            '<?php ',
+            '<?php switch ($foo): endswitch;',
+        ];
+
+        yield 'alternate switch without side effects with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
+            '<?php /*1*/switch/*2*/(/*3*/$foo/*4*/)/*5*/: endswitch/*6*/;/*7*/',
+        ];
+
+        yield 'alternate switch without side effects with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/',
+            '<?php /**1*/switch/**2*/(/**3*/$foo/**4*/)/**5*/: endswitch/**6*/;/**7*/',
+        ];
+
+        yield 'alternate switch without side effects but comment in body' => [
+            '<?php switch ($foo): /* todo */ endswitch;',
+        ];
+
+        yield 'alternate switch without side effects but doc comment in body' => [
+            '<?php switch ($foo): /** todo */ endswitch;',
+        ];
+
+        yield 'alternate end tag switch with side effect in body' => [
+            '<?php switch ($foo): case 1: foo(); endswitch ?>',
+        ];
+
+        yield 'alternate end tag switch with side effect in braces' => [
+            '<?php ?>',
+            '<?php switch ($foo->bar()): endswitch ?>',
+        ];
+
+        yield 'alternate end tag switch without side effects' => [
+            '<?php ?>',
+            '<?php switch ($foo): endswitch ?>',
+        ];
+
+        yield 'alternate end tag switch without side effects with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*/ ?>',
+            '<?php /*1*/switch/*2*/(/*3*/$foo/*4*/)/*5*/: endswitch/*6*/ ?>',
+        ];
+
+        yield 'alternate end tag switch without side effects with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*/ ?>',
+            '<?php /**1*/switch/**2*/(/**3*/$foo/**4*/)/**5*/: endswitch/**6*/ ?>',
+        ];
+
+        yield 'alternate end tag switch without side effects but comment in body' => [
+            '<?php switch ($foo): /* todo */ endswitch ?>',
+        ];
+
+        yield 'alternate end tag switch without side effects but doc comment in body' => [
+            '<?php switch ($foo): /** todo */ endswitch ?>',
+        ];
+
+        yield 'try with side effects' => [
+            '<?php try { foo(); } catch (Exception $e) {}',
+        ];
+
+        yield 'try with side effects in catch' => [
+            '<?php ',
+            '<?php try {} catch (Exception $e) { foo(); }',
+        ];
+
+        yield 'try without side effects in catch' => [
+            '<?php ',
+            '<?php try {} catch (Exception $e) {}',
+        ];
+
+        yield 'try without side effects and finally with side effects' => [
+            '<?php try {} finally { foo(); }',
+        ];
+
+        yield 'try and finally without side effects' => [
+            '<?php ',
+            '<?php try {} finally {}',
+        ];
+
+        yield 'try catch and finally without side effects' => [
+            '<?php ',
+            '<?php try {} catch (Exception $e) {} finally {}',
+        ];
+
+        yield 'try nested' => [
+            '<?php ',
+            '<?php try { try {} catch (Exception $e) {} } catch (Exception $e) {}',
+        ];
+
+        yield 'while with side effect in body' => [
+            '<?php while ($foo) { foo(); }',
+        ];
+
+        yield 'while with side effect in braces' => [
+            '<?php ',
+            '<?php while (foo()) {}',
+        ];
+
+        yield 'while without side effects' => [
+            '<?php ',
+            '<?php while ($foo) {}',
+        ];
+
+        yield 'while without side effects but comment in body' => [
+            '<?php while ($foo) { /* todo */ }',
+        ];
+
+        yield 'while without side effects but doc comment in body' => [
+            '<?php while ($foo) { /** todo */ }',
+        ];
+
+        yield 'while without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
+            '<?php /*1*/while/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/',
+        ];
+
+        yield 'while without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*/',
+            '<?php /**1*/while/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/',
+        ];
+
+        yield 'while nested' => [
+            '<?php ',
+            '<?php while ($bar) { while ($foo) {} }',
+        ];
+
+        yield 'while end tag with side effect in body' => [
+            '<?php while($foo) { foo(); } ?>',
+        ];
+
+        yield 'while end tag with side effect in braces' => [
+            '<?php ?>',
+            '<?php while (foo()) {} ?>',
+        ];
+
+        yield 'while end tag without side effects' => [
+            '<?php ?>',
+            '<?php while ($foo) {} ?>',
+        ];
+
+        yield 'while end tag without side effects but comment in body' => [
+            '<?php while ($foo) { /* todo */ } ?>',
+        ];
+
+        yield 'while end tag without side effects but doc comment in body' => [
+            '<?php while ($foo) { /** todo */ } ?>',
+        ];
+
+        yield 'while end tag without side effect with comments' => [
+            '<?php /*1*//*2*//*3*//*4*//*5*//*6*/ ?>',
+            '<?php /*1*/while/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/ ?>',
+        ];
+
+        yield 'while end tag without side effect with doc comments' => [
+            '<?php /**1*//**2*//**3*//**4*//**5*//**6*/ ?>',
+            '<?php /**1*/while/**2*/(/**3*/$foo/**4*/)/**5*/{}/**6*/ ?>',
+        ];
+
+        yield 'general test 0' => [
+            '
 <?php
 
 namespace Foo;
@@ -631,7 +786,7 @@ class Bar
         } }
 }
 ',
-                '
+            '
 <?php
 
 namespace Foo;
@@ -657,7 +812,6 @@ class Bar
     }
 }
 ',
-            ],
         ];
     }
 }
