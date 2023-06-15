@@ -29,6 +29,7 @@ final class FixerNameValidator
             return Preg::match('/^[a-z][a-z0-9_]*$/', $name);
         }
 
-        return Preg::match('/^[A-Z][a-zA-Z0-9]*\/[a-z][a-z0-9_]*$/', $name);
+        // See: https://regex101.com/r/UngJUn/3
+        return Preg::match('/^[a-zA-Z][a-zA-Z0-9]*(?!$)((\/[a-z][a-z0-9_]*)?|(\\\[a-zA-Z][a-zA-Z0-9_]*)*){1}$/', $name);
     }
 }
