@@ -772,8 +772,7 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'general test 0' => [
-            '
-<?php
+            '<?php
 
 namespace Foo;
 
@@ -786,8 +785,7 @@ class Bar
         } }
 }
 ',
-            '
-<?php
+            '<?php
 
 namespace Foo;
 
