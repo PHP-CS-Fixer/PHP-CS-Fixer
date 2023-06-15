@@ -21,7 +21,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author ntzm
+ * @author Nat Zimmermann <nathanielzimmermann@gmail.com>
  */
 final class NoEmptyBlockFixer extends AbstractFixer
 {

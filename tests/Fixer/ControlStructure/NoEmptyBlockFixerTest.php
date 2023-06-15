@@ -17,7 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author ntzm
+ * @author Nat Zimmermann <nathanielzimmermann@gmail.com>
  *
  * @internal
  *
