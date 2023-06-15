@@ -231,10 +231,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
                 $closeBodyIndex = $nextIndex;
             }
 
-            if (null === $closeBodyIndex) {
-                return;
-            }
-
             if ($tokens[$closeBodyIndex]->isGivenKind(T_ELSE)) {
                 // if `else` still exists, it means that it has a body, as
                 // `fixElse` is run before this
