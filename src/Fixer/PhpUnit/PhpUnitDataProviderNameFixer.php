@@ -104,7 +104,6 @@ class FooTest extends TestCase {
             $usageIndex = $dataProviderAnalysis->getUsageIndices()[0];
 
             $testNameIndex = $tokens->getNextTokenOfKind($usageIndex, [[T_STRING]]);
-            \assert(\is_int($testNameIndex));
 
             $dataProviderNewName = $this->getProviderNameForTestName($tokens[$testNameIndex]->getContent());
             if (null !== $tokens->findSequence([[T_FUNCTION], [T_STRING, $dataProviderNewName]], $startIndex, $endIndex)) {
