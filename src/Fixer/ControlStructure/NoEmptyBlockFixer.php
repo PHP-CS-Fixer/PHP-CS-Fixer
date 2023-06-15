@@ -47,7 +47,6 @@ final class NoEmptyBlockFixer extends AbstractFixer
      */
     public function getPriority(): int
     {
-        // Should be run after NoEmptyCommentFixer and before NoTrailingWhitespaceFixer.
         return 1;
     }
 
@@ -95,10 +94,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
     }
 
-    /**
-     * @param int $doIndex
-     */
-    private function fixDoWhile($doIndex, Tokens $tokens): void
+    private function fixDoWhile(int $doIndex, Tokens $tokens): void
     {
         $openBodyIndex = $tokens->getNextMeaningfulToken($doIndex);
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
@@ -121,10 +117,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $this->clearRangeKeepComments($tokens, $doIndex, $closeBraceIndex);
     }
 
-    /**
-     * @param int $elseIndex
-     */
-    private function fixElse($elseIndex, Tokens $tokens): void
+    private function fixElse(int $elseIndex, Tokens $tokens): void
     {
         $openBodyIndex = $tokens->getNextMeaningfulToken($elseIndex);
 
@@ -148,10 +141,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $this->clearRangeKeepComments($tokens, $elseIndex, $closeBodyIndex);
     }
 
-    /**
-     * @param int $finallyIndex
-     */
-    private function fixFinally($finallyIndex, Tokens $tokens): void
+    private function fixFinally(int $finallyIndex, Tokens $tokens): void
     {
         $openBodyIndex = $tokens->getNextMeaningfulToken($finallyIndex);
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
@@ -163,10 +153,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $this->clearRangeKeepComments($tokens, $finallyIndex, $closeBodyIndex);
     }
 
-    /**
-     * @param int $forIndex
-     */
-    private function fixFor($forIndex, Tokens $tokens): void
+    private function fixFor(int $forIndex, Tokens $tokens): void
     {
         $openBraceIndex = $tokens->getNextMeaningfulToken($forIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
@@ -208,10 +195,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $this->clearRangeKeepComments($tokens, $forIndex, $closeBodyIndex);
     }
 
-    /**
-     * @param int $ifIndex
-     */
-    private function fixIf($ifIndex, Tokens $tokens): void
+    private function fixIf(int $ifIndex, Tokens $tokens): void
     {
         $openBraceIndex = $tokens->getNextMeaningfulToken($ifIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
@@ -260,10 +244,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         }
     }
 
-    /**
-     * @param int $switchIndex
-     */
-    private function fixSwitch($switchIndex, Tokens $tokens): void
+    private function fixSwitch(int $switchIndex, Tokens $tokens): void
     {
         $openBraceIndex = $tokens->getNextMeaningfulToken($switchIndex);
         $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
@@ -291,10 +272,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $this->clearRangeKeepComments($tokens, $switchIndex, $closeBodyIndex);
     }
 
-    /**
-     * @param int $tryIndex
-     */
-    private function fixTry($tryIndex, Tokens $tokens): void
+    private function fixTry(int $tryIndex, Tokens $tokens): void
     {
         $openBodyIndex = $tokens->getNextMeaningfulToken($tryIndex);
         $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
@@ -329,10 +307,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $this->clearRangeKeepComments($tokens, $tryIndex, $clearRangeIndexEnd);
     }
 
-    /**
-     * @param int $whileIndex
-     */
-    private function fixWhile($whileIndex, Tokens $tokens): void
+    private function fixWhile(int $whileIndex, Tokens $tokens): void
     {
         // make sure it's not part of a do-while statement
         $closeDoBodyIndex = $tokens->getPrevMeaningfulToken($whileIndex);
@@ -386,11 +361,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
         $this->clearRangeKeepComments($tokens, $whileIndex, $closeBodyIndex);
     }
 
-    /**
-     * @param int $startIndex
-     * @param int $endIndex
-     */
-    private function clearRangeKeepComments(Tokens $tokens, $startIndex, $endIndex): void
+    private function clearRangeKeepComments(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         for ($index = $endIndex; $startIndex <= $index; --$index) {
             if (!$tokens[$index]->isGivenKind([T_COMMENT, T_DOC_COMMENT])) {
