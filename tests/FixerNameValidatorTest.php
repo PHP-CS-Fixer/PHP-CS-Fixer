@@ -92,6 +92,12 @@ final class FixerNameValidatorTest extends TestCase
 
         yield ['OneFoo\2Bar', true, false];
 
+        yield ['PhpCsFixer\Restricted', true, false];
+
+        yield ['phpcsfixer\Restricted', true, false];
+
+        yield ['PHPCSFIXER\Restricted', true, false];
+
         yield ['_Foo\bar', true, false];
 
         yield ['Foo\Bar-Bara', true, false];
