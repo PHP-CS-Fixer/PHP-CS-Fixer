@@ -38,7 +38,7 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
     /**
      * {@inheritdoc}
      *
-     * Must run before NoBlankLinesBeforeNamespaceFixer.
+     * Must run before BlankLinesBeforeNamespaceFixer, NoBlankLinesBeforeNamespaceFixer.
      * Must run after DeclareStrictTypesFixer.
      */
     public function getPriority(): int

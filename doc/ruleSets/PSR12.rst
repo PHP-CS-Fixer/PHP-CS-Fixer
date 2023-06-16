@@ -10,6 +10,7 @@ Rules
 - `@PSR2 <./PSR2.rst>`_
 - `blank_line_after_opening_tag <./../rules/php_tag/blank_line_after_opening_tag.rst>`_
 - `blank_line_between_import_groups <./../rules/whitespace/blank_line_between_import_groups.rst>`_
+- `blank_lines_before_namespace <./../rules/namespace_notation/blank_lines_before_namespace.rst>`_
 - `class_definition <./../rules/class_notation/class_definition.rst>`_
   config:
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
@@ -32,7 +33,6 @@ Rules
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 - `return_type_declaration <./../rules/function_notation/return_type_declaration.rst>`_
 - `short_scalar_cast <./../rules/cast_notation/short_scalar_cast.rst>`_
-- `single_blank_line_before_namespace <./../rules/namespace_notation/single_blank_line_before_namespace.rst>`_
 - `single_import_per_statement <./../rules/import/single_import_per_statement.rst>`_
   config:
   ``['group_to_single_imports' => false]``

@@ -84,6 +84,25 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\BinaryOperatorSpacesFixer <./../src/Fixer/Operator/BinaryOperatorSpacesFixer.php>`_
+-  `blank_lines_before_namespace <./rules/namespace_notation/blank_lines_before_namespace.rst>`_
+
+   Controls blank lines before a namespace declaration.
+
+   Configuration options:
+
+   - | ``min_line_breaks``
+     | Minimum line breaks that should exist before namespace declaration.
+     | Allowed types: ``int``
+     | Default value: ``2``
+   - | ``max_line_breaks``
+     | Maximum line breaks that should exist before namespace declaration.
+     | Allowed types: ``int``
+     | Default value: ``2``
+
+
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\NamespaceNotation\\BlankLinesBeforeNamespaceFixer <./../src/Fixer/NamespaceNotation/BlankLinesBeforeNamespaceFixer.php>`_
 -  `blank_line_after_namespace <./rules/namespace_notation/blank_line_after_namespace.rst>`_
 
    There MUST be one blank line after the namespace declaration.
@@ -1416,6 +1435,8 @@ List of Available Rules
 -  `no_blank_lines_before_namespace <./rules/namespace_notation/no_blank_lines_before_namespace.rst>`_
 
    There should be no blank lines before a namespace declaration.
+
+   *warning deprecated*   Use ``blank_lines_before_namespace`` instead.
 
    `Source PhpCsFixer\\Fixer\\NamespaceNotation\\NoBlankLinesBeforeNamespaceFixer <./../src/Fixer/NamespaceNotation/NoBlankLinesBeforeNamespaceFixer.php>`_
 -  `no_break_comment <./rules/control_structure/no_break_comment.rst>`_
@@ -2844,7 +2865,7 @@ List of Available Rules
 
    There should be exactly one blank line before a namespace declaration.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   *warning deprecated*   Use ``blank_lines_before_namespace`` instead.
 
    `Source PhpCsFixer\\Fixer\\NamespaceNotation\\SingleBlankLineBeforeNamespaceFixer <./../src/Fixer/NamespaceNotation/SingleBlankLineBeforeNamespaceFixer.php>`_
 -  `single_class_element_per_statement <./rules/class_notation/single_class_element_per_statement.rst>`_
