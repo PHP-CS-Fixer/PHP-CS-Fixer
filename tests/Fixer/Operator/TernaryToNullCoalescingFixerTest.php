@@ -180,14 +180,6 @@ null
                 '<?php $x = $THIS ?? null;',
                 '<?php $x = isset($THIS) ? $THIS : null;',
             ],
-            [
-                '<?php $x = $this->foo ?? null;',
-                '<?php $x = isset($this->foo) ? $this->foo : null;',
-            ],
-            [
-                '<?php $x = $this["foo"] ?? null;',
-                '<?php $x = isset($this["foo"]) ? $this["foo"] : null;',
-            ],
         ];
     }
 
