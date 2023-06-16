@@ -165,7 +165,7 @@ class SomeClass
                 // If we're NOT in the global namespace, there's no related import,
                 // AND used type is from global namespace, then it can't be shortened.
                 continue;
-            } elseif ($typeNameLower !== $namespaceName && str_starts_with($typeNameLower, $namespaceName)) {
+            } elseif ($typeNameLower !== $namespaceName && str_starts_with($typeNameLower, $namespaceName.'\\')) {
                 // if the type starts with namespace and the type is not the same as the namespace it can be shortened
                 $typeNameShort = substr($typeName, $namespaceNameLength + 1);
 
