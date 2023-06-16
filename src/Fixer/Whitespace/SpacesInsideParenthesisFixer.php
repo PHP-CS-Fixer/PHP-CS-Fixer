@@ -117,7 +117,7 @@ function foo(\$bar, \$baz)
 
                 // if not other content than spaces in block remove spaces
                 $blockContent = $this->getBlockContent($index, $endParenthesisIndex, $tokens);
-                if (1 === \count($blockContent) && !$this->blockHasOtherContentThan($blockContent, ' ')) {
+                if (1 === \count($blockContent) && \in_array(' ', $blockContent, true)) {
                     $this->removeSpaceAroundToken($tokens, $index + 1);
 
                     continue;
@@ -200,21 +200,5 @@ function foo(\$bar, \$baz)
         }
 
         return $contents;
-    }
-
-    private function blockHasOtherContentThan(array $block, $otherThan): bool
-    {
-        if (!\in_array($otherThan, $block, true)) {
-            return true;
-        }
-
-        $isOther = true;
-        for ($i = 0; $i < \count($block); ++$i) {
-            if ($block[$i] === $otherThan) {
-                $isOther = false;
-            }
-        }
-
-        return $isOther;
     }
 }
