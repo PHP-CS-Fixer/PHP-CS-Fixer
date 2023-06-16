@@ -34,8 +34,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SpacesInsideParenthesisFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private $singleLineWhitespaceOptions = " \t\n\r\0\x0B";
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
