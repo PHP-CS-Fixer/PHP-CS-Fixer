@@ -844,6 +844,9 @@ final class FixerFactoryTest extends TestCase
                 'not_operator_with_space',
                 'not_operator_with_successor_space',
             ],
+            'use_arrow_functions' => [
+                'function_declaration',
+            ],
             'visibility_required' => [
                 'class_attributes_separation',
             ],
