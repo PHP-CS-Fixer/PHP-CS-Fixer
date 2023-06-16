@@ -59,7 +59,10 @@ final class SpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases()
+    /**
+     * @return array<array{0: string, 1?: string}>
+     */
+    public static function provideFixCases(): array
     {
         return [
             // default leaves new lines alone
@@ -225,7 +228,10 @@ multiply( (    2 + 3  ) * 4    );
         ];
     }
 
-    public static function provideSpacesFixCases()
+    /**
+     * @return array<array{0: string, 1?: string}>
+     */
+    public static function provideSpacesFixCases(): array
     {
         return [
             // Leaves new lines alone
@@ -400,9 +406,12 @@ multiply((2 + 3) * 4);
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases()
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix80Cases(): iterable
     {
-        yield [
+        yield 'mixed argument' => [
             '<?php function foo(mixed $a){}',
             '<?php function foo( mixed $a ){}',
         ];
@@ -419,9 +428,12 @@ multiply((2 + 3) * 4);
         $this->doTest($expected, $input);
     }
 
-    public static function provideSpacesFix80Cases()
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideSpacesFix80Cases(): iterable
     {
-        yield [
+        yield 'mixed argument' => [
             '<?php function foo( mixed $a ){}',
             '<?php function foo(mixed $a){}',
         ];

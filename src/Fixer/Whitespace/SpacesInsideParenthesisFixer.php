@@ -168,7 +168,7 @@ function foo(\$bar, \$baz)
         }
     }
 
-    private function fixParenthesisInnerEdge(Tokens $tokens, $start, $end): void
+    private function fixParenthesisInnerEdge(Tokens $tokens, int $start, int $end): void
     {
         // fix white space before ')'
         if ($tokens[$end - 1]->isWhitespace()) {
@@ -191,6 +191,9 @@ function foo(\$bar, \$baz)
         }
     }
 
+    /**
+     * @return list<string>
+     */
     private function getBlockContent(int $startIndex, int $endIndex, Tokens $tokens): array
     {
         // + 1 for (
