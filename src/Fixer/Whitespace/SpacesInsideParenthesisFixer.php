@@ -149,7 +149,7 @@ function foo(\$bar, \$baz)
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('space', 'whether to have `spaces` or `none` spaces inside parenthesis.'))
+            (new FixerOptionBuilder('space', 'Whether to have `spaces` or `none` spaces inside parenthesis.'))
                 ->setAllowedValues(['none', 'spaces'])
                 ->setDefault('none')
                 ->getOption(),
