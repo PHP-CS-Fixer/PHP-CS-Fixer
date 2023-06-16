@@ -28,7 +28,7 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideNewLogicCases
      */
-    public function testNewLogic(string $expected, ?string $input): void
+    public function testNewLogic(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -104,8 +104,31 @@ namespace A\B\C\D
             '<?php use \A\Exception; function foo(\A\Exception $e) {}',
         ];
 
-        yield 'common prefix' => [
+        yield 'common prefix 1' => [
             '<?php namespace Foo; function foo(\FooBar $v): \FooBar {}',
+        ];
+
+        yield 'common prefix 2' => [
+            '<?php namespace Foo; function foo(\FooBar\Baz $v): \FooBar {}',
+        ];
+
+        yield 'issue #7025 - non-empty namespace, import and FQCN in argument' => [
+            '<?php namespace foo\bar\baz;
+
+use foo\baz\buzz;
+
+class A {
+    public function b(buzz $buzz): void {
+    }
+}',
+            '<?php namespace foo\bar\baz;
+
+use foo\baz\buzz;
+
+class A {
+    public function b(\foo\baz\buzz $buzz): void {
+    }
+}',
             null,
         ];
     }

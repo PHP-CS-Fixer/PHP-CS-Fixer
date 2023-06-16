@@ -141,15 +141,13 @@ class SomeClass
         $namespaceNameLength = \strlen($namespaceName);
         $types = $this->getTypes($tokens, $typeStartIndex, $type->getEndIndex());
 
-        $prefix = $namespaceName ? '\\'.$namespaceName.'\\' : '\\';
         foreach ($types as $typeName => [$startIndex, $endIndex]) {
-            $typeNameLower = strtolower($typeName);
-            if (!str_starts_with($typeNameLower, $prefix)) {
-                continue; // no shorter type possible
+            if (!str_starts_with($typeName, '\\')) {
+                continue; // Not a FQCN, no shorter type possible
             }
 
             $typeName = substr($typeName, 1);
-            $typeNameLower = substr($typeNameLower, 1);
+            $typeNameLower = strtolower($typeName);
 
             if (isset($uses[$typeNameLower])) {
                 // if the type without leading "\" equals any of the full "uses" long names, it can be replaced with the short one
@@ -163,7 +161,11 @@ class SomeClass
                 }
 
                 $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($typeName));
-            } elseif ($typeNameLower !== $namespaceName && str_starts_with($typeNameLower, $namespaceName)) {
+            } elseif (!str_contains($typeName, '\\')) {
+                // If we're NOT in the global namespace, there's no related import,
+                // AND used type is from global namespace, then it can't be shortened.
+                continue;
+            } elseif ($typeNameLower !== $namespaceName && str_starts_with($typeNameLower, $namespaceName.'\\')) {
                 // if the type starts with namespace and the type is not the same as the namespace it can be shortened
                 $typeNameShort = substr($typeName, $namespaceNameLength + 1);
 
