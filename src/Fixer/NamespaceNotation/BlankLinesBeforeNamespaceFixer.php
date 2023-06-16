@@ -41,7 +41,9 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
             [
                 new CodeSample("<?php  namespace A {}\n"),
                 new CodeSample("<?php  namespace A {}\n", ['min_line_breaks' => 1]),
-                new CodeSample("<?php\n\n\nnamespace A{}\n", ['max_line_breaks' => 2]),
+                new CodeSample("<?php\n\ndeclare(strict_types=1);\n\n\n\nnamespace A{}\n", ['max_line_breaks' => 2]),
+                new CodeSample("<?php\n\n/** Some comment */\nnamespace A{}\n", ['min_line_breaks' => 2]),
+                new CodeSample("<?php\n\nnamespace A{}\n", ['min_line_breaks' => 0, 'max_line_breaks' => 0]),
             ]
         );
     }

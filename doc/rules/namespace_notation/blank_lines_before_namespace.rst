@@ -66,8 +66,40 @@ With configuration: ``['max_line_breaks' => 2]``.
    +++ New
     <?php
 
+    declare(strict_types=1);
+
+   -
    -
     namespace A{}
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['min_line_breaks' => 2]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+
+    /** Some comment */
+   +
+    namespace A{}
+
+Example #5
+~~~~~~~~~~
+
+With configuration: ``['min_line_breaks' => 0, 'max_line_breaks' => 0]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   -<?php
+   -
+   -namespace A{}
+   +<?php namespace A{}
 
 Rule sets
 ---------
