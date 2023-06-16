@@ -254,7 +254,7 @@ echo 1;
      * @param int    $endIndex   expected index of the last token of the block
      * @param bool   $isEmpty    expected value of empty flag returned
      *
-     * @dataProvider provideCommentBlockCases
+     * @dataProvider provideGetCommentBlockCases
      */
     public function testGetCommentBlock(string $source, int $startIndex, int $endIndex, bool $isEmpty): void
     {
@@ -272,7 +272,7 @@ echo 1;
         self::assertSame($isEmpty, $foundIsEmpty, 'Is empty comment block detection failed.');
     }
 
-    public static function provideCommentBlockCases(): array
+    public static function provideGetCommentBlockCases(): array
     {
         $cases = [
             [

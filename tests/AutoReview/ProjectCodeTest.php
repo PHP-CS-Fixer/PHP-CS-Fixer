@@ -80,7 +80,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideSrcConcreteClassCases
+     * @dataProvider provideThatSrcClassHaveTestClassCases
      */
     public function testThatSrcClassHaveTestClass(string $className): void
     {
@@ -96,7 +96,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideSrcClassesNotAbuseInterfacesCases
+     * @dataProvider provideThatSrcClassesNotAbuseInterfacesCases
      */
     public function testThatSrcClassesNotAbuseInterfaces(string $className): void
     {
@@ -374,7 +374,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideClassesWherePregFunctionsAreForbiddenCases
+     * @dataProvider provideThereIsNoPregFunctionUsedDirectlyCases
      */
     public function testThereIsNoPregFunctionUsedDirectly(string $className): void
     {
@@ -591,7 +591,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public static function provideSrcClassesNotAbuseInterfacesCases(): array
+    public static function provideThatSrcClassesNotAbuseInterfacesCases(): array
     {
         return array_map(
             static function (string $item): array {
@@ -637,7 +637,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public static function provideSrcConcreteClassCases(): array
+    public static function provideThatSrcClassHaveTestClassCases(): array
     {
         return array_map(
             static fn (string $item): array => [$item],
@@ -667,7 +667,7 @@ final class ProjectCodeTest extends TestCase
         yield from self::$testClassCases;
     }
 
-    public static function provideClassesWherePregFunctionsAreForbiddenCases(): array
+    public static function provideThereIsNoPregFunctionUsedDirectlyCases(): array
     {
         return array_map(
             static fn (string $item): array => [$item],

@@ -26,14 +26,14 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoUselessElseFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider providePHPCloseTagCases
+     * @dataProvider provideCloseTagCasesCases
      */
     public function testCloseTagCases(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function providePHPCloseTagCases(): array
+    public static function provideCloseTagCasesCases(): array
     {
         return [
             [
@@ -438,14 +438,14 @@ else?><?php echo 5;',
     }
 
     /**
-     * @dataProvider provideNegativeCases
+     * @dataProvider provideNegativeCasesCases
      */
     public function testNegativeCases(string $expected): void
     {
         $this->doTest($expected);
     }
 
-    public static function provideNegativeCases(): iterable
+    public static function provideNegativeCasesCases(): iterable
     {
         yield from [
             [
@@ -608,7 +608,7 @@ else?><?php echo 5;',
     }
 
     /**
-     * @dataProvider provideNegativePhp80Cases
+     * @dataProvider provideNegativePhp80CasesCases
      *
      * @requires PHP 8.0
      */
@@ -617,7 +617,7 @@ else?><?php echo 5;',
         $this->doTest($expected);
     }
 
-    public static function provideNegativePhp80Cases(): iterable
+    public static function provideNegativePhp80CasesCases(): iterable
     {
         $cases = [
             '$bar = $foo1 ?? throw new \Exception($e);',

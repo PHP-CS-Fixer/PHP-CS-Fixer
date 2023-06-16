@@ -26,7 +26,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 final class DiffConsoleFormatterTest extends TestCase
 {
     /**
-     * @dataProvider provideTestCases
+     * @dataProvider provideDiffConsoleFormatterCases
      */
     public function testDiffConsoleFormatter(string $expected, bool $isDecoratedOutput, string $template, string $diff, string $lineTemplate): void
     {
@@ -38,7 +38,7 @@ final class DiffConsoleFormatterTest extends TestCase
         );
     }
 
-    public static function provideTestCases(): array
+    public static function provideDiffConsoleFormatterCases(): array
     {
         return [
             [

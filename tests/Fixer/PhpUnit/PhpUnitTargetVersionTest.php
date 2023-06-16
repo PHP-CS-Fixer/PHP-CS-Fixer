@@ -27,7 +27,7 @@ use PhpCsFixer\Tests\TestCase;
 final class PhpUnitTargetVersionTest extends TestCase
 {
     /**
-     * @dataProvider provideTestFulfillsCases
+     * @dataProvider provideFulfillsCases
      */
     public function testFulfills(bool $expected, string $candidate, string $target, ?string $exception = null): void
     {
@@ -41,7 +41,7 @@ final class PhpUnitTargetVersionTest extends TestCase
         );
     }
 
-    public static function provideTestFulfillsCases(): array
+    public static function provideFulfillsCases(): array
     {
         return [
             [true, PhpUnitTargetVersion::VERSION_NEWEST, PhpUnitTargetVersion::VERSION_5_6],

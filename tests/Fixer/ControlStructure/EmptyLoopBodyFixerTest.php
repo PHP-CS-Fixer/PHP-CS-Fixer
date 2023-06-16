@@ -26,7 +26,7 @@ final class EmptyLoopBodyFixerTest extends AbstractFixerTestCase
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideFixCases
+     * @dataProvider provideFixConfigCases
      */
     public function testFixConfig(string $expected, ?string $input = null, array $config = []): void
     {
@@ -46,7 +46,7 @@ final class EmptyLoopBodyFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public static function provideFixCases(): iterable
+    public static function provideFixConfigCases(): iterable
     {
         yield 'simple "while"' => [
             '<?php while(foo());',

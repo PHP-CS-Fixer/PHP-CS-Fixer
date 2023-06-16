@@ -26,7 +26,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class OrderedTypesFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixCases
+     * @dataProvider provideFixCasesCases
      *
      * @param null|array<string, string> $config
      */
@@ -42,7 +42,7 @@ final class OrderedTypesFixerTest extends AbstractFixerTestCase
     /**
      * @return iterable<string, (null|array<string, string>|string)[]|string[]>
      */
-    public static function provideFixCases(): iterable
+    public static function provideFixCasesCases(): iterable
     {
         yield 'catch with default, no spaces, with both leading slash' => [
             '<?php
@@ -146,7 +146,7 @@ try {
     }
 
     /**
-     * @dataProvider providePhp80Cases
+     * @dataProvider provideFixPhp80Cases
      *
      * @param null|array<string, string> $config
      *
@@ -164,7 +164,7 @@ try {
     /**
      * @return iterable<(null|array<string, string>|string)[]>
      */
-    public static function providePhp80Cases(): iterable
+    public static function provideFixPhp80Cases(): iterable
     {
         yield 'sort alpha, null none' => [
             "<?php\nclass Foo\n{\n    public A|null|Z \$bar;\n}\n",
@@ -204,7 +204,7 @@ try {
     }
 
     /**
-     * @dataProvider provideDefaultCases
+     * @dataProvider provideFixDefaultCasesCases
      *
      * @requires PHP 8.0
      */
@@ -216,7 +216,7 @@ try {
     /**
      * @return iterable<(null|array<string, string>|string)[]|string[]>
      */
-    public static function provideDefaultCases(): iterable
+    public static function provideFixDefaultCasesCases(): iterable
     {
         yield [
             "<?php\nclass Foo\n{\n    public null|int|string \$bar = null;\n}\n",
@@ -315,7 +315,7 @@ try {
     }
 
     /**
-     * @dataProvider provideAlphaAlgorithmAndNullAlwaysLastCases
+     * @dataProvider provideFixWithAlphaAlgorithmAndNullAlwaysLastCases
      *
      * @requires PHP 8.0
      */
@@ -332,7 +332,7 @@ try {
     /**
      * @return iterable<(null|string|string[])[]|string[]>
      */
-    public static function provideAlphaAlgorithmAndNullAlwaysLastCases(): iterable
+    public static function provideFixWithAlphaAlgorithmAndNullAlwaysLastCases(): iterable
     {
         yield [
             "<?php\nclass Foo\n{\n    public int|string|null \$bar = null;\n}\n",
@@ -431,7 +431,7 @@ try {
     }
 
     /**
-     * @dataProvider provideAlphaAlgorithmOnlyCases
+     * @dataProvider provideFixWithAlphaAlgorithmOnlyCases
      *
      * @requires PHP 8.0
      */
@@ -448,7 +448,7 @@ try {
     /**
      * @return iterable<(null|array<string, string>|string)[]|string[]>
      */
-    public static function provideAlphaAlgorithmOnlyCases(): iterable
+    public static function provideFixWithAlphaAlgorithmOnlyCases(): iterable
     {
         yield [
             "<?php\nclass Foo\n{\n    public int|null|string \$bar = null;\n}\n",
@@ -547,7 +547,7 @@ try {
     }
 
     /**
-     * @dataProvider provideSandwichedWhitespaceOrCommentInTypeCases
+     * @dataProvider provideFixWithSandwichedWhitespaceOrCommentInTypeCases
      *
      * @requires PHP 8.0
      */
@@ -563,7 +563,7 @@ try {
     /**
      * @return iterable<(null|array<string, string>|string)[]|string[]>
      */
-    public static function provideSandwichedWhitespaceOrCommentInTypeCases(): iterable
+    public static function provideFixWithSandwichedWhitespaceOrCommentInTypeCases(): iterable
     {
         yield [
             "<?php\nclass Foo\n{\n    public null|int|string \$bar = null;\n}\n",
@@ -587,7 +587,7 @@ try {
     }
 
     /**
-     * @dataProvider providePhp81Cases
+     * @dataProvider provideFixPhp81Cases
      *
      * @param null|array<string, string> $config
      *
@@ -605,7 +605,7 @@ try {
     /**
      * @return iterable<(null|array<string, string>|string)[]|string[]>
      */
-    public static function providePhp81Cases(): iterable
+    public static function provideFixPhp81Cases(): iterable
     {
         yield [
             "<?php\nclass Foo\n{\n    public A&B \$bar;\n}\n",
@@ -644,7 +644,7 @@ try {
     /**
      * Provisional support for PHP 8.2's Disjunctive Normal Form (DNF) Types.
      *
-     * @dataProvider providePhp82Cases
+     * @dataProvider provideFixPhp82Cases
      *
      * @param null|array<string, string> $config
      *
@@ -662,7 +662,7 @@ try {
     /**
      * @return iterable<(null|array<string, string>|string)[]|string[]>
      */
-    public static function providePhp82Cases(): iterable
+    public static function provideFixPhp82Cases(): iterable
     {
         yield [
             "<?php\nclass Foo\n{\n    public null|array|(At&Bz)|string \$bar = null;\n}\n",

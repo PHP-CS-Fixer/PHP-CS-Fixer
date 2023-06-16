@@ -149,7 +149,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @dataProvider provideLinesWithUsefulCases
+     * @dataProvider provideUsefulCases
      */
     public function testUseful(int $pos, bool $useful): void
     {
@@ -159,7 +159,7 @@ final class LineTest extends TestCase
         self::assertSame($useful, $line->containsUsefulContent());
     }
 
-    public static function provideLinesWithUsefulCases(): iterable
+    public static function provideUsefulCases(): iterable
     {
         foreach (self::$useful as $index => $useful) {
             yield [$index, $useful];
@@ -167,7 +167,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @dataProvider provideLinesWithTagCases
+     * @dataProvider provideTagCases
      */
     public function testTag(int $pos, bool $tag): void
     {
@@ -177,7 +177,7 @@ final class LineTest extends TestCase
         self::assertSame($tag, $line->containsATag());
     }
 
-    public static function provideLinesWithTagCases(): iterable
+    public static function provideTagCases(): iterable
     {
         foreach (self::$tag as $index => $tag) {
             yield [$index, $tag];

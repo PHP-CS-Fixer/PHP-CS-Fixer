@@ -1358,14 +1358,14 @@ use /**/A\B/**/;
     /**
      * @requires PHP 8.0
      *
-     * @dataProvider providePhp80Cases
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function providePhp80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php
@@ -1430,14 +1430,14 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
     /**
      * @requires PHP 8.1
      *
-     * @dataProvider providePhp81Cases
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function providePhp81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'final const' => [
             '<?php

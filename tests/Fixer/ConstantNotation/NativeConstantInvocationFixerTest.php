@@ -488,7 +488,7 @@ echo M_PI;
     }
 
     /**
-     * @dataProvider provideFix80Cases
+     * @dataProvider provideFixPhp80Cases
      *
      * @requires PHP 8.0
      */
@@ -498,7 +498,7 @@ echo M_PI;
         $this->doTest($expected);
     }
 
-    public static function provideFix80Cases(): iterable
+    public static function provideFixPhp80Cases(): iterable
     {
         yield [
             '<?php

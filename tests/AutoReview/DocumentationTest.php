@@ -38,7 +38,7 @@ use Symfony\Component\Finder\Finder;
 final class DocumentationTest extends TestCase
 {
     /**
-     * @dataProvider provideFixerCases
+     * @dataProvider provideFixerDocumentationFileIsUpToDateCases
      */
     public function testFixerDocumentationFileIsUpToDate(FixerInterface $fixer): void
     {
@@ -92,7 +92,7 @@ final class DocumentationTest extends TestCase
         self::assertSame($expected, $actual);
     }
 
-    public static function provideFixerCases(): iterable
+    public static function provideFixerDocumentationFileIsUpToDateCases(): iterable
     {
         foreach (self::getFixers() as $fixer) {
             yield $fixer->getName() => [$fixer];

@@ -544,7 +544,7 @@ final class AnnotationTest extends TestCase
     /**
      * @param NamespaceUseAnalysis[] $namespaceUses
      *
-     * @dataProvider provideTypeExpressionCases
+     * @dataProvider provideGetTypeExpressionCases
      */
     public function testGetTypeExpression(string $line, ?NamespaceAnalysis $namespace, array $namespaceUses, ?string $expectedCommonType): void
     {
@@ -554,7 +554,7 @@ final class AnnotationTest extends TestCase
         self::assertSame($expectedCommonType, $result->getCommonType());
     }
 
-    public static function provideTypeExpressionCases(): iterable
+    public static function provideGetTypeExpressionCases(): iterable
     {
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
         $useTraversable = new NamespaceUseAnalysis('Traversable', 'Traversable', false, 0, 999, NamespaceUseAnalysis::TYPE_CLASS);
@@ -567,7 +567,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @dataProvider provideGetVariableCases
+     * @dataProvider provideGetVariableNameCases
      */
     public function testGetVariableName(string $line, ?string $expectedVariableName): void
     {
@@ -575,7 +575,7 @@ final class AnnotationTest extends TestCase
         self::assertSame($expectedVariableName, $annotation->getVariableName());
     }
 
-    public static function provideGetVariableCases(): iterable
+    public static function provideGetVariableNameCases(): iterable
     {
         yield ['* @param int $foo', '$foo'];
 

@@ -50,7 +50,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      * @param string              $input    PHP source code
      * @param array<string, bool> $config
      *
-     * @dataProvider provideAnonymousClassesCases
+     * @dataProvider provideFixingAnonymousClassesCases
      */
     public function testFixingAnonymousClasses(string $expected, string $input, array $config = []): void
     {
@@ -59,7 +59,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideClassesCases
+     * @dataProvider provideFixingClassesCases
      */
     public function testFixingClasses(string $expected, string $input): void
     {
@@ -70,7 +70,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideClassesWithConfigCases
+     * @dataProvider provideFixingClassesWithConfigCases
      */
     public function testFixingClassesWithConfig(string $expected, string $input, array $config): void
     {
@@ -79,7 +79,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideInterfacesCases
+     * @dataProvider provideFixingInterfacesCases
      */
     public function testFixingInterfaces(string $expected, string $input): void
     {
@@ -88,7 +88,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideTraitsCases
+     * @dataProvider provideFixingTraitsCases
      */
     public function testFixingTraits(string $expected, string $input): void
     {
@@ -118,7 +118,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
         $fixer->configure(['single_line' => 'z']);
     }
 
-    public static function provideAnonymousClassesCases(): array
+    public static function provideFixingAnonymousClassesCases(): array
     {
         return [
             [
@@ -315,7 +315,7 @@ A#
         ];
     }
 
-    public static function provideClassesCases(): array
+    public static function provideFixingClassesCases(): array
     {
         return array_merge(
             self::provideClassyCases('class'),
@@ -324,7 +324,7 @@ A#
         );
     }
 
-    public static function provideClassesWithConfigCases(): array
+    public static function provideFixingClassesWithConfigCases(): array
     {
         return [
             [
@@ -374,7 +374,7 @@ A#
         ];
     }
 
-    public static function provideInterfacesCases(): array
+    public static function provideFixingInterfacesCases(): array
     {
         $cases = array_merge(
             self::provideClassyCases('interface'),
@@ -411,7 +411,7 @@ TestInterface3, /**/     TestInterface4   ,
         return $cases;
     }
 
-    public static function provideTraitsCases(): array
+    public static function provideFixingTraitsCases(): array
     {
         return self::provideClassyCases('trait');
     }
@@ -524,14 +524,14 @@ TestInterface3, /**/     TestInterface4   ,
     /**
      * @param array<string, mixed> $expected
      *
-     * @dataProvider provideClassyImplementsInfoCases
+     * @dataProvider provideClassyInheritanceInfoCases
      */
     public function testClassyInheritanceInfo(string $source, string $label, array $expected): void
     {
         $this->doTestClassyInheritanceInfo($source, $label, $expected);
     }
 
-    public static function provideClassyImplementsInfoCases(): iterable
+    public static function provideClassyInheritanceInfoCases(): iterable
     {
         yield from [
             '1' => [

@@ -44,7 +44,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideInvalidConfigurationElementCases
+     * @dataProvider provideConfigureRejectsInvalidConfigurationElementCases
      *
      * @param mixed $element
      */
@@ -63,7 +63,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    public static function provideInvalidConfigurationElementCases(): array
+    public static function provideConfigureRejectsInvalidConfigurationElementCases(): array
     {
         return [
             'null' => [null],

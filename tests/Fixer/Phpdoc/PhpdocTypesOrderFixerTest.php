@@ -32,7 +32,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixCases
+     * @dataProvider provideFixWithNullFirstCases
      */
     public function testFixWithNullFirst(string $expected, ?string $input = null): void
     {
@@ -44,7 +44,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixWithNullFirstCases(): array
     {
         return [
             [

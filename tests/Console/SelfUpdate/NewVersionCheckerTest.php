@@ -33,7 +33,7 @@ final class NewVersionCheckerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideLatestVersionOfMajorCases
+     * @dataProvider provideGetLatestVersionOfMajorCases
      */
     public function testGetLatestVersionOfMajor(int $majorVersion, ?string $expectedVersion): void
     {
@@ -42,7 +42,7 @@ final class NewVersionCheckerTest extends TestCase
         self::assertSame($expectedVersion, $checker->getLatestVersionOfMajor($majorVersion));
     }
 
-    public static function provideLatestVersionOfMajorCases(): array
+    public static function provideGetLatestVersionOfMajorCases(): array
     {
         return [
             [1, 'v1.13.2'],

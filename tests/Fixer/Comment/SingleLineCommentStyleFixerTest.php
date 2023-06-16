@@ -218,7 +218,7 @@ second line*/',
     }
 
     /**
-     * @dataProvider provideHashCases
+     * @dataProvider provideHashCasesCases
      */
     public function testHashCases(string $expected, ?string $input = null): void
     {
@@ -226,7 +226,7 @@ second line*/',
         $this->doTest($expected, $input);
     }
 
-    public static function provideHashCases(): array
+    public static function provideHashCasesCases(): array
     {
         return [
             [
@@ -288,14 +288,14 @@ second line*/',
     }
 
     /**
-     * @dataProvider provideAllCases
+     * @dataProvider provideAllCasesCases
      */
     public function testAllCases(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideAllCases(): array
+    public static function provideAllCasesCases(): array
     {
         return [
             [

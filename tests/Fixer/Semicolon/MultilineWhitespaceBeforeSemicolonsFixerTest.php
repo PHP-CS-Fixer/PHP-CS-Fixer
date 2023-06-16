@@ -31,7 +31,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideMultiLineWhitespaceFixCases
+     * @dataProvider provideFixMultiLineWhitespaceCases
      */
     public function testFixMultiLineWhitespace(string $expected, ?string $input = null): void
     {
@@ -39,7 +39,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTe
         $this->doTest($expected, $input);
     }
 
-    public static function provideMultiLineWhitespaceFixCases(): array
+    public static function provideFixMultiLineWhitespaceCases(): array
     {
         return [
             [
@@ -254,7 +254,7 @@ $seconds = $minutes
     }
 
     /**
-     * @dataProvider provideMessyWhitespacesMultiLineWhitespaceFixCases
+     * @dataProvider provideMessyWhitespacesMultiLineWhitespaceCases
      */
     public function testMessyWhitespacesMultiLineWhitespace(string $expected, ?string $input = null): void
     {
@@ -263,7 +263,7 @@ $seconds = $minutes
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesMultiLineWhitespaceFixCases(): array
+    public static function provideMessyWhitespacesMultiLineWhitespaceCases(): array
     {
         return [
             [
@@ -1076,7 +1076,7 @@ switch ($foo) {
     }
 
     /**
-     * @dataProvider provideMessyWhitespacesSemicolonForChainedCallsFixCases
+     * @dataProvider provideMessyWhitespacesSemicolonForChainedCallsCases
      */
     public function testMessyWhitespacesSemicolonForChainedCalls(string $expected, ?string $input = null): void
     {
@@ -1085,7 +1085,7 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesSemicolonForChainedCallsFixCases(): array
+    public static function provideMessyWhitespacesSemicolonForChainedCallsCases(): array
     {
         return [
             [

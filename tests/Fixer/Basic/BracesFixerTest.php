@@ -4976,7 +4976,7 @@ if (true) {
     }
 
     /**
-     * @dataProvider provideFixWithAllowOnelineLambdaCases
+     * @dataProvider provideFixWithAllowSingleLineClosureCases
      */
     public function testFixWithAllowSingleLineClosure(string $expected, ?string $input = null): void
     {
@@ -4987,7 +4987,7 @@ if (true) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithAllowOnelineLambdaCases(): iterable
+    public static function provideFixWithAllowSingleLineClosureCases(): iterable
     {
         return [
             [

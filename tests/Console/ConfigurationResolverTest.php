@@ -181,7 +181,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider provideResolveConfigFileDefaultCases
+     * @dataProvider provideResolveConfigFileChooseFileCases
      */
     public function testResolveConfigFileChooseFile(string $expectedFile, string $expectedClass, string $path, ?string $cwdPath = null): void
     {
@@ -195,7 +195,7 @@ final class ConfigurationResolverTest extends TestCase
         self::assertInstanceOf($expectedClass, $resolver->getConfig());
     }
 
-    public static function provideResolveConfigFileDefaultCases(): array
+    public static function provideResolveConfigFileChooseFileCases(): array
     {
         $dirBase = self::getFixtureDir();
 
@@ -285,7 +285,7 @@ final class ConfigurationResolverTest extends TestCase
      * @param array<int, string> $paths
      * @param array<int, string> $expectedPaths
      *
-     * @dataProvider providePathCases
+     * @dataProvider provideResolvePathCases
      */
     public function testResolvePath(array $paths, string $cwd, array $expectedPaths): void
     {
@@ -298,7 +298,7 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($expectedPaths, $resolver->getPath());
     }
 
-    public static function providePathCases(): iterable
+    public static function provideResolvePathCases(): iterable
     {
         yield [
             ['Command'],
@@ -328,7 +328,7 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @param array<string> $paths
      *
-     * @dataProvider provideEmptyPathCases
+     * @dataProvider provideRejectInvalidPathCases
      */
     public function testRejectInvalidPath(array $paths, string $expectedMessage): void
     {
@@ -344,7 +344,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getPath();
     }
 
-    public static function provideEmptyPathCases(): iterable
+    public static function provideRejectInvalidPathCases(): iterable
     {
         yield [
             [''],
@@ -961,7 +961,7 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @param string[] $rules
      *
-     * @dataProvider provideRenamedRulesCases
+     * @dataProvider provideResolveRenamedRulesWithUnknownRulesCases
      */
     public function testResolveRenamedRulesWithUnknownRules(string $expectedMessage, array $rules): void
     {
@@ -972,7 +972,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getRules();
     }
 
-    public static function provideRenamedRulesCases(): iterable
+    public static function provideResolveRenamedRulesWithUnknownRulesCases(): iterable
     {
         yield 'with config' => [
             'The rules contain unknown fixers: "blank_line_before_return" is renamed (did you mean "blank_line_before_statement"? (note: use configuration "[\'statements\' => [\'return\']]")).
@@ -1069,7 +1069,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     /**
      * @param null|bool|string $diffConfig
      *
-     * @dataProvider provideDifferCases
+     * @dataProvider provideResolveDifferCases
      */
     public function testResolveDiffer(string $expected, $diffConfig): void
     {
@@ -1080,7 +1080,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         self::assertInstanceOf($expected, $resolver->getDiffer());
     }
 
-    public static function provideDifferCases(): array
+    public static function provideResolveDifferCases(): array
     {
         return [
             [

@@ -29,7 +29,7 @@ use Symfony\Component\Console\Output\StreamOutput;
 final class ErrorOutputTest extends TestCase
 {
     /**
-     * @dataProvider provideTestCases
+     * @dataProvider provideErrorOutputCases
      */
     public function testErrorOutput(Error $error, int $verbosityLevel, int $lineNumber, int $exceptionLineNumber, string $process): void
     {
@@ -70,7 +70,7 @@ Files that were not fixed due to errors reported during %s:
                 '
       PhpCsFixer\Tests\Console\Output\ErrorOutputTest::getErrorAndLineNumber()
         in %s at line %d
-      PhpCsFixer\Tests\Console\Output\ErrorOutputTest::provideTestCases()
+      PhpCsFixer\Tests\Console\Output\ErrorOutputTest::provideErrorOutputCases()
       ReflectionMethod->invoke()
 ',
                 __FILE__,
@@ -81,7 +81,7 @@ Files that were not fixed due to errors reported during %s:
         self::assertStringStartsWith($startWith, $displayed);
     }
 
-    public static function provideTestCases(): array
+    public static function provideErrorOutputCases(): array
     {
         $lineNumber = __LINE__;
         [$exceptionLineNumber, $error] = self::getErrorAndLineNumber(); // note: keep call and __LINE__ separated with one line break
