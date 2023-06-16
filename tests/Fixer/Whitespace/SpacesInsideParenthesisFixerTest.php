@@ -59,7 +59,7 @@ final class SpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases()
     {
         return [
             // default leaves new lines alone
@@ -225,7 +225,7 @@ multiply( (    2 + 3  ) * 4    );
         ];
     }
 
-    public function provideSpacesFixCases()
+    public static function provideSpacesFixCases()
     {
         return [
             // Leaves new lines alone
@@ -392,6 +392,7 @@ multiply((2 + 3) * 4);
 
     /**
      * @dataProvider provideFix80Cases
+     *
      * @requires PHP 8.0
      */
     public function testDefaultFix80(string $expected, string $input): void
@@ -399,7 +400,7 @@ multiply((2 + 3) * 4);
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public static function provideFix80Cases()
     {
         yield [
             '<?php function foo(mixed $a){}',
@@ -409,6 +410,7 @@ multiply((2 + 3) * 4);
 
     /**
      * @dataProvider provideSpacesFix80Cases
+     *
      * @requires PHP 8.0
      */
     public function testSpacesFix80(string $expected, string $input): void
@@ -417,7 +419,7 @@ multiply((2 + 3) * 4);
         $this->doTest($expected, $input);
     }
 
-    public function provideSpacesFix80Cases()
+    public static function provideSpacesFix80Cases()
     {
         yield [
             '<?php function foo( mixed $a ){}',

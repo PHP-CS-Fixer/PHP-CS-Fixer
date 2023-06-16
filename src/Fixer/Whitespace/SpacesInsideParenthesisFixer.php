@@ -36,9 +36,6 @@ final class SpacesInsideParenthesisFixer extends AbstractFixer implements Config
 {
     private $singleLineWhitespaceOptions = " \t\n\r\0\x0B";
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -78,17 +75,11 @@ function foo(\$bar, \$baz)
         return 2;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound('(');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if ('none' === $this->configuration['space']) {
@@ -157,9 +148,6 @@ function foo(\$bar, \$baz)
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -177,7 +165,7 @@ function foo(\$bar, \$baz)
     {
         $token = $tokens[$index];
 
-        if ($token->isWhitespace() && false === strpos($token->getContent(), "\n")) {
+        if ($token->isWhitespace() && !str_contains($token->getContent(), "\n")) {
             $tokens->clearAt($index);
         }
     }
@@ -187,7 +175,7 @@ function foo(\$bar, \$baz)
         // fix white space before ')'
         if ($tokens[$end - 1]->isWhitespace()) {
             $content = $tokens[$end - 1]->getContent();
-            if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($end - 1)]->isComment()) {
+            if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($end - 1)]->isComment()) {
                 $tokens[$end - 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
@@ -197,7 +185,7 @@ function foo(\$bar, \$baz)
         // fix white space after '('
         if ($tokens[$start + 1]->isWhitespace()) {
             $content = $tokens[$start + 1]->getContent();
-            if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($start + 1)]->isComment()) {
+            if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($start + 1)]->isComment()) {
                 $tokens[$start + 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
