@@ -200,6 +200,10 @@ final class FixerFactory
     private function getFixersConflicts(FixerInterface $fixer): array
     {
         static $conflictMap = [
+            'blank_lines_before_namespace' => [
+                'no_blank_lines_before_namespace',
+                'single_blank_line_before_namespace',
+            ],
             'no_blank_lines_before_namespace' => ['single_blank_line_before_namespace'],
             'single_import_per_statement' => ['group_import'],
         ];
