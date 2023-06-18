@@ -12,7 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\RuleSet;
+namespace PhpCsFixer\Tests\Fixtures\ExternalRuleSet;
 
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 
@@ -23,11 +23,7 @@ use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
  */
 class SampleRulesOk implements RuleSetDescriptionInterface
 {
-    public const NAME = '@RulesOk';
-
-    public function __construct()
-    {
-    }
+    private const NAME = '@RulesOk';
 
     public function getName(): string
     {
