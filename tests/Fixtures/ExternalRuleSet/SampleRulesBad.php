@@ -12,7 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\RuleSet;
+namespace PhpCsFixer\Tests\Fixtures\ExternalRuleSet;
 
 /**
  * Sample external RuleSet.
@@ -22,11 +22,7 @@ namespace PhpCsFixer\Tests\RuleSet;
  */
 class SampleRulesBad
 {
-    public const NAME = '@RulesBad';
-
-    public function __construct()
-    {
-    }
+    private const NAME = '@RulesBad';
 
     public function getName(): string
     {
