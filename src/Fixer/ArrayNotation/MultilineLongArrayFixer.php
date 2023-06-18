@@ -49,7 +49,7 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'A single-line array should be broken into multiple lines if it exceeds configured limit.',
+            'A single-line array should be broken into multiple lines if it exceeds configured limit. Arrays that contain comments should be left unchanged.',
             [
                 new CodeSample("<?php\n\$array = ['a very very long element','another very long element'];\n"),
                 new CodeSample("<?php\n\$array = ['a very very long element','another very long element'];\n", ['max_length' => 10]),
@@ -76,7 +76,7 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('max_length', 'Maximum length in characters (whitespaces excluded) for single-line arrays. 0 : multi-line only, -1 : single-line only.'))
+            (new FixerOptionBuilder('max_length', 'Maximum length in characters (excluding whitespaces) for single-line arrays. 0 : multi-line only, -1 : single-line only.'))
                 ->setAllowedTypes(['int'])
                 ->setDefault(0)
                 ->getOption(),
@@ -109,6 +109,11 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
                 $shouldBeMultiline = false;
             }
 
+            // Users should be free to insert comments as they wish.
+            if ($this->arrayContainsComments($tokens, $startIndex, $endIndex)) {
+                continue;
+            }
+
             $token = $this->handleLineEnding($startIndex, $tokens, $shouldBeMultiline);
             if (null !== $token) {
                 $tokensToInsert[$startIndex + 1] = $token;
@@ -127,13 +132,26 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
             }
 
             $prevToken = $tokens->getPrevMeaningfulToken($endIndex);
-            $token = $this->handleLineEnding($prevToken, $tokens, $shouldBeMultiline);
-            if (null !== $token) {
-                $tokensToInsert[$prevToken + 1] = $token;
+            $newToken = $this->handleLineEnding($prevToken, $tokens, $shouldBeMultiline);
+            if (null !== $newToken) {
+                $tokensToInsert[$prevToken + 1] = $newToken;
             }
         }
 
         $tokens->insertSlices($tokensToInsert);
+    }
+
+    private function arrayContainsComments(Tokens $tokens, int $startIndex, int $endIndex): bool
+    {
+        for ($i = $endIndex - 1; $i > $startIndex; --$i) {
+            $i = $this->skipNestedStructures($i, $tokens);
+
+            if ($tokens[$i]->isComment()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
