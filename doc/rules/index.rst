@@ -47,7 +47,7 @@ Array Notation
   PHP arrays should be declared using the configured syntax.
 - `multiline_long_array <./array_notation/multiline_long_array.rst>`_
 
-  A single-line array should be broken into multiple lines if it exceeds configured limit.
+  A single-line array should be broken into multiple lines if it exceeds configured limit. Arrays that contain comments should be left unchanged.
 - `no_multiline_whitespace_around_double_arrow <./array_notation/no_multiline_whitespace_around_double_arrow.rst>`_
 
   Operator ``=>`` should not be surrounded by multi-line whitespaces.
