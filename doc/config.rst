@@ -148,10 +148,9 @@ It's possible to register custom rule sets, which makes it easier to reuse custo
 
     <?php
 
-    $config = new PhpCsFixer\Config();
-    return $config
+    return (new PhpCsFixer\Config())
         ->registerCustomRuleSets([
-            '@MyRuleSet' => \MyNameSpace\MyRuleSetClass::class,
+            '@MyRuleSet' => MyNameSpace\MyRuleSetClass::class,
         ])
         ->setRules([
             '@MyRuleSet' => true,

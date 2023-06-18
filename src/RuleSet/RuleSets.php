@@ -81,7 +81,7 @@ final class RuleSets
         $preg = new Preg();
 
         if (1 !== $preg->match('/^@[a-z0-9_\/\.-]+$/i', $name)) {
-            throw new \InvalidArgumentException('RuleSet name can contain only letters (a-z, A-Z), numbers, underscores, slashes, dots, hyphens, and it must begin with @.');
+            throw new \InvalidArgumentException('RuleSet name must begin with "@", and can contain only letters (a-z, A-Z), numbers, underscores, slashes, dots and hyphens.');
         }
 
         if (!class_exists($class, true)) {

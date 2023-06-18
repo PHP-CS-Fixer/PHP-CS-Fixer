@@ -17,7 +17,7 @@ namespace PhpCsFixer\Tests\RuleSet;
 /**
  * Sample external RuleSet.
  *
- * This class is not extending the required class `\PhpCsFixer\RuleSet\RuleSetDescriptionInterface`,
+ * This class is not implementing the required interface `\PhpCsFixer\RuleSet\RuleSetDescriptionInterface`,
  * so it will not be a valid class to be registered as a RuleSet.
  */
 class SampleRulesBad
