@@ -33,9 +33,6 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
 {
     private int $maxArrayLen = 0;
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -43,9 +40,6 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
         $this->maxArrayLen = $this->configuration['max_length'] ?? 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -70,9 +64,6 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
         return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -83,9 +74,6 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensToInsert = [];
