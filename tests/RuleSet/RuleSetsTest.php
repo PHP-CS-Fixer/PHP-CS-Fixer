@@ -18,6 +18,8 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesBad;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesOk;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 
@@ -219,9 +221,9 @@ Integration of %s.
 
     public function testRegisterRuleSetOverlappingName(): void
     {
-        RuleSets::registerRuleSet('@MyRules', SampleRulesOk::class);
+        RuleSets::registerRuleSet('@MyAnotherRuleSetForTesting', SampleRulesOk::class);
         self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerRuleSet('@MyRules', SampleRulesOk::class);
+        RuleSets::registerRuleSet('@MyAnotherRuleSetForTesting', SampleRulesOk::class);
     }
 
     public function testRegisterRuleSetInvalidName(): void
