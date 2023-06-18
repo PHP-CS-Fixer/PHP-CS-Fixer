@@ -243,8 +243,9 @@ Integration of %s.
 
     public function testRegisterRuleSetOverlappingName(): void
     {
+        RuleSets::registerRuleSet('@MyRules', SampleRulesOk::class);
         self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerRuleSet('@PSR12', SampleRulesOk::class);
+        RuleSets::registerRuleSet('@MyRules', SampleRulesOk::class);
     }
 
     public function testRegisterRuleSetInvalidName(): void

@@ -238,9 +238,9 @@ final class ProjectCodeTest extends TestCase
             'configure', // due to AbstractFixer::configure
             'getConfigurationDefinition', // due to AbstractFixer::getConfigurationDefinition
             'getDefaultConfiguration', // due to AbstractFixer::getDefaultConfiguration
+            'registerCustomRuleSets', // due to waiting to be added in 4.0 to ConfigInterface
             'setWhitespacesConfig', // due to AbstractFixer::setWhitespacesConfig
             'createConfigurationDefinition', // due to AbstractProxyFixer calling `createConfigurationDefinition` of proxied rule
-            'registerCustomRuleSets', // due to waiting to being added in 4.0 to ConfigInterface
         ];
 
         $definedMethods = $this->getPublicMethodNames($rc);

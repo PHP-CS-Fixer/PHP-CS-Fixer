@@ -246,14 +246,14 @@ final class ConfigTest extends TestCase
      */
     public function testRegisterCustomRuleSets(?string $expectedException, array $ruleSets): void
     {
-        if (!empty($expectedException)) {
+        if (null !== $expectedException) {
             $this->expectException($expectedException);
         }
 
         $config = new Config();
         $config->registerCustomRuleSets($ruleSets);
 
-        if (empty($expectedException)) {
+        if (null === $expectedException) {
             self::assertContains(array_keys($ruleSets)[0], RuleSets::getSetDefinitionNames());
         }
     }
