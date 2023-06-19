@@ -35,7 +35,7 @@ final class PhpUnitDataProviderNameFixer extends AbstractPhpUnitFixer implements
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Data provider names used only once must match the name of the test.',
+            'Data provider names must match the name of the test. Only safe scenarios are covered.',
             [
                 new CodeSample(
                     '<?php

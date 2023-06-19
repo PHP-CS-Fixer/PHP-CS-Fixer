@@ -182,7 +182,7 @@ class FooTest extends TestCase {
 }',
         ];
 
-        yield 'data providers with new name as part of namespace' => [
+        yield 'data provider with new name being part of FQCN used in the code' => [
             '<?php
 class FooTest extends TestCase {
     /**
