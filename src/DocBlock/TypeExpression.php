@@ -25,14 +25,14 @@ use PhpCsFixer\Utils;
 final class TypeExpression
 {
     /**
-     * Regex to match any php identifier.
+     * Regex to match any PHP identifier.
      *
      * @internal
      */
     public const REGEX_IDENTIFIER = '(?:(?!(?<!\*)\d)[^\x00-\x2f\x3a-\x40\x5b-\x5e\x60\x7b-\x7f]++)';
 
     /**
-     * Regex to match any phpdoc type.
+     * Regex to match any PHPDoc type.
      *
      * @internal
      */
