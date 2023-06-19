@@ -48,6 +48,8 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Must run after MultilineLongArrayFixer.
      */
     public function getPriority(): int
@@ -143,9 +145,7 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
         if ($tokens[$beforeOpen]->equalsAny([')', ']', [CT::T_DYNAMIC_VAR_BRACE_CLOSE], [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE]])) {
             $block = Tokens::detectBlockType($tokens[$beforeOpen]);
 
-            return
-                (
-                    Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE === $block['type']
+            return (Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE === $block['type']
                     || Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE === $block['type']
                     || Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE === $block['type']
                     || Tokens::BLOCK_TYPE_PARENTHESIS_BRACE === $block['type']

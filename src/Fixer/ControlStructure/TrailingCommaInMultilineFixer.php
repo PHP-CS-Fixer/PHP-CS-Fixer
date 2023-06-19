@@ -88,6 +88,8 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Must run after MultilineLongArrayFixer.
      */
     public function getPriority(): int
