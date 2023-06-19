@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet;
 
-use PhpCsFixer\Preg;
+use PhpCsFixer\RuleSetNameValidator;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -78,9 +78,7 @@ final class RuleSets
      */
     public static function registerRuleSet(string $name, string $class): void
     {
-        $preg = new Preg();
-
-        if (1 !== $preg->match('/^@[a-zA-Z][a-zA-Z0-9_\/\.-]*$/', $name)) {
+        if (!RuleSetNameValidator::isValid($name, false)) {
             throw new \InvalidArgumentException('RuleSet name must begin with "@" and a letter (a-z, A-Z), and can contain only letters (a-z, A-Z), numbers, underscores, slashes, dots and hyphens.');
         }
 

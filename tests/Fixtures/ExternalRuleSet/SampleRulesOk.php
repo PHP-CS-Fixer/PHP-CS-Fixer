@@ -23,7 +23,7 @@ use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
  */
 class SampleRulesOk implements RuleSetDescriptionInterface
 {
-    private const NAME = '@RulesOk';
+    private const NAME = '@Vendor/RulesOk';
 
     public function getName(): string
     {

@@ -196,98 +196,38 @@ Integration of %s.
         }
     }
 
-    /**
-     * @dataProvider provideRegisterRuleSetOkCases
-     */
-    public function testRegisterRuleSetOk(string $goodName): void
-    {
-        RuleSets::registerRuleSet($goodName, SampleRulesOk::class);
-        self::assertContains($goodName, RuleSets::getSetDefinitionNames());
-    }
-
-    public static function provideRegisterRuleSetOkCases(): iterable
-    {
-        yield 'Simple name' => ['@MyRules'];
-
-        yield 'Versioned with dash and X.Y' => ['@MyRules-1.0'];
-
-        yield 'Versioned with underscores' => ['@MyRules_1_0'];
-
-        yield 'Vendor/Ruleset' => ['@Vendor/MyRules'];
-
-        yield 'Short name 1' => ['@X'];
-
-        yield 'Short name 2' => ['@y'];
-    }
-
-    /**
-     * @dataProvider provideRegisterRuleSetBadNameCases
-     */
-    public function testRegisterRuleSetBadName(string $badName): void
-    {
-        self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerRuleSet($badName, SampleRulesOk::class);
-    }
-
-    public static function provideRegisterRuleSetBadNameCases(): iterable
-    {
-        yield 'Does not start with @' => ['MyRules'];
-
-        yield 'Contains comma 1' => ['MyRules,'];
-
-        yield 'Contains comma 2' => ['@MyRules,'];
-
-        yield 'Contains hash' => ['@MyRules#'];
-    }
-
     public function testRegisterRuleSetMissingClass(): void
     {
         self::expectException(\InvalidArgumentException::class);
         // @phpstan-ignore-next-line
-        RuleSets::registerRuleSet('@MyRules', '\This\Class\Does\Not\Exists');
+        RuleSets::registerRuleSet('@Vendor/MyRules', '\This\Class\Does\Not\Exists');
     }
 
     public function testRegisterRuleSetOverlappingName(): void
     {
-        RuleSets::registerRuleSet('@MyAnotherRuleSetForTesting', SampleRulesOk::class);
+        RuleSets::registerRuleSet('@Vendor/MyAnotherRuleSetForTesting', SampleRulesOk::class);
         self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerRuleSet('@MyAnotherRuleSetForTesting', SampleRulesOk::class);
+        RuleSets::registerRuleSet('@Vendor/MyAnotherRuleSetForTesting', SampleRulesOk::class);
     }
 
-    /**
-     * @dataProvider provideRegisterRuleSetInvalidNameCases
-     */
-    public function testRegisterRuleSetInvalidName(string $ruleSetName): void
+    public function testRegisterRuleSetInvalidName(): void
     {
         self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerRuleSet($ruleSetName, SampleRulesOk::class);
-    }
-
-    public static function provideRegisterRuleSetInvalidNameCases(): iterable
-    {
-        yield 'Space in the name' => ['@My Class'];
-
-        yield 'Begins with invalid char 1' => ['@1MyClass'];
-
-        yield 'Begins with invalid char 2' => ['@_MyClass'];
-
-        yield 'Begins with invalid char 3' => ['@.MyClass'];
-
-        yield 'Doesn\'t start with @' => ['MyClass'];
+        RuleSets::registerRuleSet('bad name', SampleRulesOk::class);
     }
 
     public function testRegisterRuleSetInvalidClass(): void
     {
         self::expectException(\InvalidArgumentException::class);
         // @phpstan-ignore-next-line
-        RuleSets::registerRuleSet('@MyClass', SampleRulesBad::class);
+        RuleSets::registerRuleSet('@Vendor/MyClass', SampleRulesBad::class);
     }
 
     public function testCanReadCustomRegisteredRuleSet(): void
     {
-        RuleSets::registerRuleSet('@MySet', SampleRulesOk::class);
-        $set = RuleSets::getSetDefinition('@MySet');
-        self::assertSame('@RulesOk', $set->getName());
+        RuleSets::registerRuleSet('@Vendor/MySet', SampleRulesOk::class);
+        $set = RuleSets::getSetDefinition('@Vendor/MySet');
+        self::assertSame('@Vendor/RulesOk', $set->getName());
     }
 
     /**
