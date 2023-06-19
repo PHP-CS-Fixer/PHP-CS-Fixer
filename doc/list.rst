@@ -2431,6 +2431,25 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitConstructFixer <./../src/Fixer/PhpUnit/PhpUnitConstructFixer.php>`_
+-  `php_unit_data_provider_name <./rules/php_unit/php_unit_data_provider_name.rst>`_
+
+   Data provider names must match the name of the test.
+
+   *warning risky* Fixer could be risky if one is calling data provider by name as function.
+
+   Configuration options:
+
+   - | ``prefix``
+     | Prefix that replaces "test".
+     | Allowed types: ``string``
+     | Default value: ``'provide'``
+   - | ``suffix``
+     | Suffix to be present at the end.
+     | Allowed types: ``string``
+     | Default value: ``'Cases'``
+
+
+   `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderNameFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderNameFixer.php>`_
 -  `php_unit_data_provider_static <./rules/php_unit/php_unit_data_provider_static.rst>`_
 
    Data providers must be static.

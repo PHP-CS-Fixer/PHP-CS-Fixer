@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\DataProviderAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -42,12 +43,12 @@ final class DataProviderAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{array<int>, string}>
+     * @return iterable<array{array<DataProviderAnalysis>, string}>
      */
     public static function provideGettingDataProvidersCases(): iterable
     {
         yield 'single data provider' => [
-            [28],
+            [new DataProviderAnalysis('provider', 28, [11])],
             '<?php class FooTest extends TestCase {
                 /**
                  * @dataProvider provider
@@ -58,7 +59,7 @@ final class DataProviderAnalyzerTest extends TestCase
         ];
 
         yield 'single data provider with different casing' => [
-            [28],
+            [new DataProviderAnalysis('dataProvider', 28, [11])],
             '<?php class FooTest extends TestCase {
                 /**
                  * @dataProvider dataPROVIDER
@@ -69,7 +70,7 @@ final class DataProviderAnalyzerTest extends TestCase
         ];
 
         yield 'single static data provider' => [
-            [30],
+            [new DataProviderAnalysis('provider', 30, [11])],
             '<?php class FooTest extends TestCase {
                 /**
                  * @dataProvider provider
@@ -80,7 +81,11 @@ final class DataProviderAnalyzerTest extends TestCase
         ];
 
         yield 'multiple data provider' => [
-            [28, 39, 50],
+            [
+                new DataProviderAnalysis('provider1', 28, [11]),
+                new DataProviderAnalysis('provider2', 39, [11]),
+                new DataProviderAnalysis('provider3', 50, [11]),
+            ],
             '<?php class FooTest extends TestCase {
                 /**
                  * @dataProvider provider1
@@ -96,7 +101,11 @@ final class DataProviderAnalyzerTest extends TestCase
 
         foreach (['abstract', 'final', 'private', 'protected', 'static', '/* private */'] as $modifier) {
             yield sprintf('test function with %s modifier', $modifier) => [
-                [54, 65, 76],
+                [
+                    new DataProviderAnalysis('provider1', 54, [37]),
+                    new DataProviderAnalysis('provider2', 65, [11]),
+                    new DataProviderAnalysis('provider3', 76, [24]),
+                ],
                 sprintf('<?php class FooTest extends TestCase {
                     /** @dataProvider provider2 */
                     public function testFoo1() {}
@@ -133,7 +142,9 @@ final class DataProviderAnalyzerTest extends TestCase
         ];
 
         yield 'ignore anonymous function' => [
-            [93],
+            [
+                new DataProviderAnalysis('provider2', 93, [65]),
+            ],
             '<?php class FooTest extends TestCase {
                 public function testFoo0() {}
                 /**

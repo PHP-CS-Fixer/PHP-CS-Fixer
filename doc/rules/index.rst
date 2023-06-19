@@ -600,6 +600,9 @@ PHPUnit
 - `php_unit_construct <./php_unit/php_unit_construct.rst>`_ *(risky)*
 
   PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be written with dedicated method like ``->assertTrue($foo)``.
+- `php_unit_data_provider_name <./php_unit/php_unit_data_provider_name.rst>`_ *(risky)*
+
+  Data provider names must match the name of the test.
 - `php_unit_data_provider_static <./php_unit/php_unit_data_provider_static.rst>`_ *(risky)*
 
   Data providers must be static.
