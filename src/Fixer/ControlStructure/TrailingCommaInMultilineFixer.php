@@ -88,6 +88,8 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Must run after MultilineLongArrayFixer.
      */
     public function getPriority(): int
@@ -133,8 +135,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
 
             if (
                 $fixArrays
-                && (
-                    $tokens[$index]->equals('(') && $tokens[$prevIndex]->isGivenKind(T_ARRAY) // long syntax
+                && ($tokens[$index]->equals('(') && $tokens[$prevIndex]->isGivenKind(T_ARRAY) // long syntax
                     || $tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN) // short syntax
                 )
             ) {
@@ -149,7 +150,8 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
 
             $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
 
-            if ($fixArguments
+            if (
+                $fixArguments
                 && $tokens[$prevIndex]->equalsAny([']', [T_CLASS], [T_STRING], [T_VARIABLE], [T_STATIC]])
                 && !$tokens[$prevPrevIndex]->isGivenKind(T_FUNCTION)
             ) {
@@ -160,8 +162,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
 
             if (
                 $fixParameters
-                && (
-                    $tokens[$prevIndex]->isGivenKind(T_STRING) && $tokens[$prevPrevIndex]->isGivenKind(T_FUNCTION)
+                && ($tokens[$prevIndex]->isGivenKind(T_STRING) && $tokens[$prevPrevIndex]->isGivenKind(T_FUNCTION)
                     || $tokens[$prevIndex]->isGivenKind([T_FN, T_FUNCTION])
                 )
             ) {
