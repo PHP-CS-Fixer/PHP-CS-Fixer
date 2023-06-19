@@ -191,6 +191,10 @@ Integration of %s.
         yield 'Versioned with underscores' => ['@MyRules_1_0'];
 
         yield 'Vendor/Ruleset' => ['@Vendor/MyRules'];
+
+        yield 'Short name 1' => ['@X'];
+
+        yield 'Short name 2' => ['@y'];
     }
 
     /**
@@ -199,7 +203,7 @@ Integration of %s.
     public function testRegisterRuleSetBadName(string $badName): void
     {
         self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerRuleSet('MyRules', SampleRulesOk::class);
+        RuleSets::registerRuleSet($badName, SampleRulesOk::class);
     }
 
     public static function provideRegisterRuleSetBadNameCases(): iterable
@@ -227,10 +231,26 @@ Integration of %s.
         RuleSets::registerRuleSet('@MyAnotherRuleSetForTesting', SampleRulesOk::class);
     }
 
-    public function testRegisterRuleSetInvalidName(): void
+    /**
+     * @dataProvider provideRegisterRuleSetInvalidNameCases
+     */
+    public function testRegisterRuleSetInvalidName(string $ruleSetName): void
     {
         self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerRuleSet('@My Class', SampleRulesOk::class);
+        RuleSets::registerRuleSet($ruleSetName, SampleRulesOk::class);
+    }
+
+    public static function provideRegisterRuleSetInvalidNameCases(): iterable
+    {
+        yield 'Space in the name' => ['@My Class'];
+
+        yield 'Begins with invalid char 1' => ['@1MyClass'];
+
+        yield 'Begins with invalid char 2' => ['@_MyClass'];
+
+        yield 'Begins with invalid char 3' => ['@.MyClass'];
+
+        yield 'Doesn\'t start with @' => ['MyClass'];
     }
 
     public function testRegisterRuleSetInvalidClass(): void
