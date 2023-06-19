@@ -16,14 +16,12 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
 final class DataProviderAnalysis
 {
-    /** @var string */
-    private $name;
+    private string $name;
 
-    /** @var int */
-    private $nameIndex;
+    private int $nameIndex;
 
     /** @var array<int> */
-    private $usageIndices;
+    private array $usageIndices;
 
     /**
      * @param array<int> $usageIndices
