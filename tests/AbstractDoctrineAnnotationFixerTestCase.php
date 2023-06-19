@@ -25,7 +25,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
     /**
      * @param array<mixed> $configuration
      *
-     * @dataProvider provideInvalidConfigurationCases
+     * @dataProvider provideConfigureWithInvalidConfigurationCases
      */
     public function testConfigureWithInvalidConfiguration(array $configuration): void
     {
@@ -34,7 +34,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
         $this->fixer->configure($configuration);
     }
 
-    public static function provideInvalidConfigurationCases(): array
+    public static function provideConfigureWithInvalidConfigurationCases(): array
     {
         return [
             [['foo' => 'bar']],

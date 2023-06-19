@@ -1052,7 +1052,7 @@ switch ($foo) {
     }
 
     /**
-     * @dataProvider provideTestFixWithDifferentCommentTextCases
+     * @dataProvider provideFixWithDifferentCommentTextCases
      */
     public function testFixWithDifferentCommentText(string $expected, ?string $input = null): void
     {
@@ -1062,7 +1062,7 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestFixWithDifferentCommentTextCases(): array
+    public static function provideFixWithDifferentCommentTextCases(): array
     {
         $cases = self::provideFixCases();
 
@@ -1112,7 +1112,7 @@ switch ($foo) {
     }
 
     /**
-     * @dataProvider provideTestFixWithDifferentLineEndingCases
+     * @dataProvider provideFixWithDifferentLineEndingCases
      */
     public function testFixWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
@@ -1120,7 +1120,7 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestFixWithDifferentLineEndingCases(): iterable
+    public static function provideFixWithDifferentLineEndingCases(): iterable
     {
         foreach (self::provideFixCases() as $case) {
             $case[0] = str_replace("\n", "\r\n", $case[0]);

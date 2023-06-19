@@ -64,14 +64,14 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideSimpleCases
+     * @dataProvider provideSimpleClassCases
      */
     public function testSimpleClass(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideSimpleCases(): array
+    public static function provideSimpleClassCases(): array
     {
         return [
             [

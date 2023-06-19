@@ -61,6 +61,16 @@ SAMPLE
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before FunctionDeclarationFixer.
+     */
+    public function getPriority(): int
+    {
+        return 32;
+    }
+
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $analyzer = new TokensAnalyzer($tokens);

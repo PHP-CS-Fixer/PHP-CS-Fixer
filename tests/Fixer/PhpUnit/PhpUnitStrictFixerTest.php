@@ -27,7 +27,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null): void
     {
@@ -37,7 +37,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield ['<?php $self->foo();'];
 
@@ -107,7 +107,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     /**
      * Only method calls with 2 or 3 arguments should be fixed.
      *
-     * @dataProvider provideTestNoFixWithWrongNumberOfArgumentsCases
+     * @dataProvider provideNoFixWithWrongNumberOfArgumentsCases
      */
     public function testNoFixWithWrongNumberOfArguments(string $expected): void
     {
@@ -115,7 +115,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public static function provideTestNoFixWithWrongNumberOfArgumentsCases(): array
+    public static function provideNoFixWithWrongNumberOfArgumentsCases(): array
     {
         $cases = [];
 

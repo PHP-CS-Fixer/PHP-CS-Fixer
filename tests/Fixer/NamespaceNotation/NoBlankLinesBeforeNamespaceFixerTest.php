@@ -22,7 +22,6 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @internal
  *
- * @covers \PhpCsFixer\AbstractLinesBeforeNamespaceFixer
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\NoBlankLinesBeforeNamespaceFixer
  */
 final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase

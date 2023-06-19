@@ -35,7 +35,7 @@ final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideTraitsCases
+     * @dataProvider provideFixTraitsCases
      */
     public function testFixTraits(string $expected, ?string $input = null): void
     {
@@ -164,7 +164,7 @@ function bar() {}
         return $cases;
     }
 
-    public static function provideTraitsCases(): array
+    public static function provideFixTraitsCases(): array
     {
         $cases = [];
 

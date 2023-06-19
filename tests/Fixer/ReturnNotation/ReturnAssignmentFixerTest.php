@@ -1290,14 +1290,14 @@ function foo(&$c) {
     /**
      * @requires PHP 8.0
      *
-     * @dataProvider providePhp80Cases
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function providePhp80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield 'match' => [
             '<?php
@@ -1340,14 +1340,14 @@ function foo(&$c) {
     /**
      * @requires PHP 8.3
      *
-     * @dataProvider providePhp83Cases
+     * @dataProvider provideFixPhp83Cases
      */
     public function testFixPhp83(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function providePhp83Cases(): iterable
+    public static function provideFixPhp83Cases(): iterable
     {
         yield 'anonymous readonly class' => [
             '<?php

@@ -29,7 +29,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideInvalidControlStatementCases
+     * @dataProvider provideConfigureRejectsInvalidControlStatementCases
      *
      * @param mixed $controlStatement
      */
@@ -42,7 +42,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    public static function provideInvalidControlStatementCases(): array
+    public static function provideConfigureRejectsInvalidControlStatementCases(): array
     {
         return [
             'null' => [null],
@@ -1497,7 +1497,7 @@ enum UserStatus: string {
     }
 
     /**
-     * @dataProvider provideFixWithDocCommentCases
+     * @dataProvider provideFixWithDocCommentCasesCases
      */
     public function testFixWithDocCommentCases(string $expected, string $input = null): void
     {
@@ -1508,7 +1508,7 @@ enum UserStatus: string {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithDocCommentCases(): iterable
+    public static function provideFixWithDocCommentCasesCases(): iterable
     {
         yield [
             '<?php

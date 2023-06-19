@@ -14,14 +14,14 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\NamespaceNotation;
 
-use PhpCsFixer\AbstractLinesBeforeNamespaceFixer;
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class CleanNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
+final class CleanNamespaceFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {

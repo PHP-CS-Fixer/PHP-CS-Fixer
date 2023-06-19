@@ -32,7 +32,7 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixDeprecatedCases
+     * @dataProvider provideFix74DeprecatedCases
      *
      * @group legacy
      *
@@ -60,7 +60,7 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public static function provideFixDeprecatedCases(): iterable
+    public static function provideFix74DeprecatedCases(): iterable
     {
         return self::createCasesFor('real');
     }

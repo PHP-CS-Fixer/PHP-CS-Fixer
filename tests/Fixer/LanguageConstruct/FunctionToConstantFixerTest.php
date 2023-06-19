@@ -27,7 +27,7 @@ final class FunctionToConstantFixerTest extends AbstractFixerTestCase
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideTestCases
+     * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
@@ -35,7 +35,7 @@ final class FunctionToConstantFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestCases(): array
+    public static function provideFixCases(): array
     {
         return [
             'Minimal case, alternative casing, alternative statement end.' => [

@@ -43,7 +43,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideWithoutSpaceCases
+     * @dataProvider provideFixWithoutSpaceCases
      */
     public function testFixWithoutSpace(string $expected, ?string $input = null): void
     {
@@ -51,7 +51,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideWithoutSpaceCases(): array
+    public static function provideFixWithoutSpaceCases(): array
     {
         return [
             [
@@ -142,7 +142,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideWithSpaceCases
+     * @dataProvider provideFixWithSpaceCases
      */
     public function testFixWithSpace(string $expected, ?string $input = null): void
     {
@@ -150,7 +150,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideWithSpaceCases(): array
+    public static function provideFixWithSpaceCases(): array
     {
         return [
             [

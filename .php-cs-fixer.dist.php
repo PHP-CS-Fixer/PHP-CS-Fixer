@@ -27,10 +27,6 @@ $finder = PhpCsFixer\Finder::create()
     ->ignoreVCSIgnored(true)
     ->exclude(['dev-tools/phpstan', 'tests/Fixtures'])
     ->in(__DIR__)
-    ->append([
-        __DIR__.'/dev-tools/doc.php',
-        // __DIR__.'/php-cs-fixer', disabled, as we want to be able to run bootstrap file even on lower PHP version, to show nice message
-    ])
 ;
 
 $config = new PhpCsFixer\Config();

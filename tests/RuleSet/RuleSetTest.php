@@ -278,7 +278,7 @@ final class RuleSetTest extends TestCase
     /**
      * @param array<string, array<string, mixed>|bool> $set
      *
-     * @dataProvider provideSafeSetCases
+     * @dataProvider provideRiskyRulesInSetCases
      */
     public function testRiskyRulesInSet(array $set, bool $safe): void
     {
@@ -310,7 +310,7 @@ final class RuleSetTest extends TestCase
         );
     }
 
-    public static function provideSafeSetCases(): iterable
+    public static function provideRiskyRulesInSetCases(): iterable
     {
         foreach (RuleSets::getSetDefinitionNames() as $name) {
             yield $name => [
@@ -349,7 +349,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider provideAllSetCases
+     * @dataProvider provideDuplicateRuleConfigurationInSetDefinitionsCases
      */
     public function testDuplicateRuleConfigurationInSetDefinitions(RuleSetDescriptionInterface $set): void
     {
@@ -391,7 +391,7 @@ final class RuleSetTest extends TestCase
         ));
     }
 
-    public static function provideAllSetCases(): iterable
+    public static function provideDuplicateRuleConfigurationInSetDefinitionsCases(): iterable
     {
         foreach (RuleSets::getSetDefinitions() as $name => $set) {
             yield $name => [$set];

@@ -108,7 +108,7 @@ final class CacheTest extends TestCase
     /**
      * @param array<string, mixed> $data
      *
-     * @dataProvider provideMissingDataCases
+     * @dataProvider provideFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKeyCases
      */
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKey(array $data): void
     {
@@ -119,7 +119,7 @@ final class CacheTest extends TestCase
         Cache::fromJson($json);
     }
 
-    public static function provideMissingDataCases(): array
+    public static function provideFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKeyCases(): array
     {
         $data = [
             'php' => '7.1.2',

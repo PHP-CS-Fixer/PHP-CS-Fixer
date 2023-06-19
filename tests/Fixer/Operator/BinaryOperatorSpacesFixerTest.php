@@ -518,14 +518,14 @@ $a = $ae?? $b;
     }
 
     /**
-     * @dataProvider provideFixCases
+     * @dataProvider provideFixDefaultsCases
      */
     public function testFixDefaults(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixDefaultsCases(): array
     {
         return [
             [
@@ -1287,7 +1287,7 @@ $b;
     }
 
     /**
-     * @dataProvider provideAlignEqualsCases
+     * @dataProvider provideFixAlignEqualsCases
      */
     public function testFixAlignEquals(string $expected, ?string $input = null): void
     {
@@ -1295,7 +1295,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public static function provideAlignEqualsCases(): array
+    public static function provideFixAlignEqualsCases(): array
     {
         return [
             [
@@ -1634,7 +1634,7 @@ $start = (
     }
 
     /**
-     * @dataProvider provideAlignDoubleArrowCases
+     * @dataProvider provideFixAlignDoubleArrowCases
      */
     public function testFixAlignDoubleArrow(string $expected, ?string $input = null): void
     {
@@ -1642,7 +1642,7 @@ $start = (
         $this->doTest($expected, $input);
     }
 
-    public static function provideAlignDoubleArrowCases(): array
+    public static function provideFixAlignDoubleArrowCases(): array
     {
         return [
             [
@@ -2331,7 +2331,7 @@ function test()
     }
 
     /**
-     * @dataProvider provideAlignScopedDoubleArrowCases
+     * @dataProvider provideFixAlignScopedDoubleArrowCases
      */
     public function testFixAlignScopedDoubleArrow(string $expected, ?string $input = null): void
     {
@@ -2339,7 +2339,7 @@ function test()
         $this->doTest($expected, $input);
     }
 
-    public static function provideAlignScopedDoubleArrowCases(): array
+    public static function provideFixAlignScopedDoubleArrowCases(): array
     {
         return [
             [

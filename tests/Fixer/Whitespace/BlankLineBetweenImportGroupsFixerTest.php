@@ -24,14 +24,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class BlankLineBetweenImportGroupsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixTypesOrderAndWhitespaceCases
+     * @dataProvider provideFixTypesOrderAndNewlinesCases
      */
     public function testFixTypesOrderAndNewlines(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixTypesOrderAndWhitespaceCases(): iterable
+    public static function provideFixTypesOrderAndNewlinesCases(): iterable
     {
         yield [
             '<?php

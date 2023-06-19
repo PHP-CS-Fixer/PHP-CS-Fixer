@@ -370,7 +370,7 @@ class(){};
     /**
      * @param array<string, ArgumentAnalysis> $expected
      *
-     * @dataProvider provideFunctionsWithArgumentsCases
+     * @dataProvider provideFunctionArgumentInfoCases
      */
     public function testFunctionArgumentInfo(string $code, int $methodIndex, array $expected): void
     {
@@ -392,7 +392,7 @@ class(){};
         self::assertSame(serialize($expected), serialize($actual));
     }
 
-    public static function provideFunctionsWithArgumentsCases(): iterable
+    public static function provideFunctionArgumentInfoCases(): iterable
     {
         yield from [
             ['<?php function(){};', 1, []],
@@ -701,7 +701,7 @@ class(){};
     /**
      * @param array<string, ArgumentAnalysis> $expected
      *
-     * @dataProvider provideFunctionsWithArgumentsPhp80Cases
+     * @dataProvider provideFunctionArgumentInfoPhp80Cases
      *
      * @requires PHP 8.0
      */
@@ -713,7 +713,7 @@ class(){};
         self::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
     }
 
-    public static function provideFunctionsWithArgumentsPhp80Cases(): iterable
+    public static function provideFunctionArgumentInfoPhp80Cases(): iterable
     {
         yield ['<?php function($aa,){};', 1, [
             '$aa' => new ArgumentAnalysis(

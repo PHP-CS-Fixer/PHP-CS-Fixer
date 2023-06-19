@@ -99,7 +99,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideLowerGeneratedCases
+     * @dataProvider provideFixLowerGeneratedCasesCases
      */
     public function testFixLowerGeneratedCases(string $expected, ?string $input = null): void
     {
@@ -107,7 +107,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideLowerGeneratedCases(): iterable
+    public static function provideFixLowerGeneratedCasesCases(): iterable
     {
         foreach (['true', 'false', 'null'] as $case) {
             yield [
@@ -131,7 +131,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideUpperGeneratedCases
+     * @dataProvider provideFixUpperGeneratedCasesCases
      */
     public function testFixUpperGeneratedCases(string $expected, ?string $input = null): void
     {
@@ -139,7 +139,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideUpperGeneratedCases(): iterable
+    public static function provideFixUpperGeneratedCasesCases(): iterable
     {
         foreach (['true', 'false', 'null'] as $case) {
             yield [

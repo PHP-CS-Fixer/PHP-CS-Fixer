@@ -61,7 +61,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIsTypeCases
+     * @dataProvider provideIsTypeReturnsTrueCases
      *
      * @param int|int[] $types
      */
@@ -74,7 +74,7 @@ final class TokenTest extends TestCase
         self::assertTrue($token->isType($types));
     }
 
-    public static function provideIsTypeCases(): array
+    public static function provideIsTypeReturnsTrueCases(): array
     {
         return [
             'same-value' => [
@@ -92,7 +92,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIsNotTypeCases
+     * @dataProvider provideIsTypeReturnsFalseCases
      *
      * @param int|int[] $types
      */
@@ -105,7 +105,7 @@ final class TokenTest extends TestCase
         self::assertFalse($token->isType($types));
     }
 
-    public static function provideIsNotTypeCases(): array
+    public static function provideIsTypeReturnsFalseCases(): array
     {
         return [
             'different-value' => [

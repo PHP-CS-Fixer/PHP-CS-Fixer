@@ -150,7 +150,7 @@ Integration of %s.
     }
 
     /**
-     * @dataProvider providePHPUnitMigrationSetDefinitionNameCases
+     * @dataProvider providePHPUnitMigrationTargetVersionsCases
      */
     public function testPHPUnitMigrationTargetVersions(string $setName): void
     {
@@ -166,7 +166,7 @@ Integration of %s.
     /**
      * @return string[][]
      */
-    public static function providePHPUnitMigrationSetDefinitionNameCases(): array
+    public static function providePHPUnitMigrationTargetVersionsCases(): array
     {
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 

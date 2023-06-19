@@ -43,7 +43,7 @@ final class TransformerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTransformerCases
+     * @dataProvider provideTransformerPriorityIsListedCases
      */
     public function testTransformerPriorityIsListed(TransformerInterface $transformer): void
     {
@@ -74,7 +74,7 @@ final class TransformerTest extends TestCase
     {
         $transformers = [];
 
-        foreach (self::provideTransformerCases() as [$transformer]) {
+        foreach (self::provideTransformerPriorityIsListedCases() as [$transformer]) {
             $transformers[$transformer->getName()] = $transformer;
         }
 
@@ -102,7 +102,7 @@ final class TransformerTest extends TestCase
     /**
      * @return TransformerInterface[]
      */
-    public static function provideTransformerCases(): array
+    public static function provideTransformerPriorityIsListedCases(): array
     {
         static $transformersArray = null;
 

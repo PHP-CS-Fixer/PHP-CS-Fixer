@@ -26,14 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NewWithBracesFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideNamedWithDefaultConfigurationCases
+     * @dataProvider provideFixNamedWithDefaultConfigurationCases
      */
     public function testFixNamedWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideNamedWithDefaultConfigurationCases(): iterable
+    public static function provideFixNamedWithDefaultConfigurationCases(): iterable
     {
         yield from [
             ['<?php $x = new X(foo(/**/));'],
@@ -277,7 +277,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideNamedWithoutBracesCases
+     * @dataProvider provideFixNamedWithoutBracesCases
      */
     public function testFixNamedWithoutBraces(string $expected, ?string $input = null): void
     {
@@ -285,7 +285,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideNamedWithoutBracesCases(): iterable
+    public static function provideFixNamedWithoutBracesCases(): iterable
     {
         yield from [
             ['<?php $x = new X(foo(/**/));'],
@@ -531,14 +531,14 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideAnonymousWithDefaultConfigurationCases
+     * @dataProvider provideFixAnonymousWithDefaultConfigurationCases
      */
     public function testFixAnonymousWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideAnonymousWithDefaultConfigurationCases(): iterable
+    public static function provideFixAnonymousWithDefaultConfigurationCases(): iterable
     {
         yield from [
             ['<?php $a = new class($a) {use SomeTrait;};'],
@@ -593,7 +593,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideAnonymousWithoutBracesCases
+     * @dataProvider provideFixAnonymousWithoutBracesCases
      */
     public function testFixAnonymousWithoutBraces(string $expected, ?string $input = null): void
     {
@@ -601,7 +601,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideAnonymousWithoutBracesCases(): iterable
+    public static function provideFixAnonymousWithoutBracesCases(): iterable
     {
         yield from [
             ['<?php $a = new class($a) {use SomeTrait;};'],

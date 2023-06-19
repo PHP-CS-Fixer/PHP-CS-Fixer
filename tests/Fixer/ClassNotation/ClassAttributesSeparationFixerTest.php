@@ -1165,7 +1165,7 @@ class ezcReflectionMethod extends ReflectionMethod {
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideConfigCases
+     * @dataProvider provideWithConfigCases
      */
     public function testWithConfig(string $expected, ?string $input, array $config): void
     {
@@ -1173,7 +1173,7 @@ class ezcReflectionMethod extends ReflectionMethod {
         $this->doTest($expected, $input);
     }
 
-    public static function provideConfigCases(): array
+    public static function provideWithConfigCases(): array
     {
         return [
             'multi line property' => [

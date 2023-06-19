@@ -87,7 +87,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideFindBlockEndCases
+     * @dataProvider provideItFindsTheEndOfAnAlternativeSyntaxBlockCases
      */
     public function testItFindsTheEndOfAnAlternativeSyntaxBlock(string $code, int $startIndex, int $expectedResult): void
     {
@@ -102,7 +102,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         );
     }
 
-    public static function provideFindBlockEndCases(): iterable
+    public static function provideItFindsTheEndOfAnAlternativeSyntaxBlockCases(): iterable
     {
         yield ['<?php if ($foo): foo(); endif;', 1, 13];
 
@@ -181,7 +181,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideFindInvalidBlockEndCases
+     * @dataProvider provideItThrowsOnInvalidAlternativeSyntaxBlockStartIndexCases
      */
     public function testItThrowsOnInvalidAlternativeSyntaxBlockStartIndex(string $code, int $startIndex, string $expectedMessage): void
     {
@@ -195,7 +195,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         $analyzer->findAlternativeSyntaxBlockEnd($tokens, $startIndex);
     }
 
-    public static function provideFindInvalidBlockEndCases(): iterable
+    public static function provideItThrowsOnInvalidAlternativeSyntaxBlockStartIndexCases(): iterable
     {
         yield ['<?php if ($foo): foo(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
 

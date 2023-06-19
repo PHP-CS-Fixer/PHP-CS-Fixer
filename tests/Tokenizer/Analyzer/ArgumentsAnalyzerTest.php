@@ -138,7 +138,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideArgumentsInfoCases
+     * @dataProvider provideArgumentInfoCases
      */
     public function testArgumentInfo(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
@@ -148,7 +148,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
     }
 
-    public static function provideArgumentsInfoCases(): iterable
+    public static function provideArgumentInfoCases(): iterable
     {
         yield ['<?php function($a){};', 3, 3, new ArgumentAnalysis(
             '$a',
@@ -281,7 +281,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     /**
      * @requires PHP 8.0
      *
-     * @dataProvider provideArgumentsInfo80Cases
+     * @dataProvider provideArgumentInfo80Cases
      */
     public function testArgumentInfo80(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
@@ -291,7 +291,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
     }
 
-    public static function provideArgumentsInfo80Cases(): iterable
+    public static function provideArgumentInfo80Cases(): iterable
     {
         yield [
             '<?php function foo(#[AnAttribute] ?string $param = null) {}',
@@ -331,7 +331,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     /**
      * @requires PHP 8.1
      *
-     * @dataProvider provideArgumentsInfo81Cases
+     * @dataProvider provideArgumentInfo81Cases
      */
     public function testArgumentInfo81(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
@@ -341,7 +341,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
     }
 
-    public static function provideArgumentsInfo81Cases(): iterable
+    public static function provideArgumentInfo81Cases(): iterable
     {
         yield [
             '<?php

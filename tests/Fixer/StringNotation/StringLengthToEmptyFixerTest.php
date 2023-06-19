@@ -24,14 +24,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class StringLengthToEmptyFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php $a = \'\' === $b;',

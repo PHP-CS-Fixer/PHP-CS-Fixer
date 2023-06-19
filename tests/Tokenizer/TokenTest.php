@@ -192,7 +192,7 @@ final class TokenTest extends TestCase
     /**
      * @param ?int $tokenId
      *
-     * @dataProvider provideMagicConstantCases
+     * @dataProvider provideIsMagicConstantCases
      */
     public function testIsMagicConstant(?int $tokenId, string $content, bool $isConstant = true): void
     {
@@ -203,7 +203,7 @@ final class TokenTest extends TestCase
         self::assertSame($isConstant, $token->isMagicConstant());
     }
 
-    public static function provideMagicConstantCases(): iterable
+    public static function provideIsMagicConstantCases(): iterable
     {
         $cases = [
             [T_CLASS_C, '__CLASS__'],
@@ -471,14 +471,14 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTokenGetNameCases
+     * @dataProvider provideTokenGetNameForIdCases
      */
     public function testTokenGetNameForId(?string $expected, int $id): void
     {
         self::assertSame($expected, Token::getNameForId($id));
     }
 
-    public static function provideTokenGetNameCases(): array
+    public static function provideTokenGetNameForIdCases(): array
     {
         return [
             [

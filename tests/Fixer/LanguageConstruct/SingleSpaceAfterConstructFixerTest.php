@@ -27,7 +27,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SingleSpaceAfterConstructFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideInvalidConstructCases
+     * @dataProvider provideConfigureRejectsInvalidControlStatementCases
      *
      * @param mixed $construct
      */
@@ -42,7 +42,7 @@ final class SingleSpaceAfterConstructFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    public static function provideInvalidConstructCases(): array
+    public static function provideConfigureRejectsInvalidControlStatementCases(): array
     {
         return [
             'null' => [null],

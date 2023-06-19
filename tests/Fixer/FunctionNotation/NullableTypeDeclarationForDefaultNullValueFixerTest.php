@@ -141,7 +141,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     }
 
     /**
-     * @dataProvider provideInvertedFixCases
+     * @dataProvider provideFixInverseCases
      * @dataProvider provideInverseOnlyFixCases
      */
     public function testFixInverse(string $expected, string $input): void
@@ -327,7 +327,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         ];
     }
 
-    public static function provideInvertedFixCases(): iterable
+    public static function provideFixInverseCases(): iterable
     {
         return TestCaseUtils::swapExpectedInputTestCases(self::provideFixCases());
     }
@@ -377,7 +377,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     }
 
     /**
-     * @dataProvider provideInvertedFixPhp74Cases
+     * @dataProvider provideFixInversePhp74Cases
      */
     public function testFixInversePhp74(string $expected, string $input): void
     {
@@ -422,7 +422,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         ];
     }
 
-    public static function provideInvertedFixPhp74Cases(): iterable
+    public static function provideFixInversePhp74Cases(): iterable
     {
         return TestCaseUtils::swapExpectedInputTestCases(self::provideFixPhp74Cases());
     }
@@ -438,7 +438,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     }
 
     /**
-     * @dataProvider provideInvertedFix80Cases
+     * @dataProvider provideFixInverse80Cases
      *
      * @requires PHP 8.0
      */
@@ -503,7 +503,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         ];
     }
 
-    public static function provideInvertedFix80Cases(): iterable
+    public static function provideFixInverse80Cases(): iterable
     {
         return TestCaseUtils::swapExpectedInputTestCases(self::provideFix80Cases());
     }

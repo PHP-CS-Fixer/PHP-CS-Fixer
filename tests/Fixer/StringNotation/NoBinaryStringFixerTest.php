@@ -26,14 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoBinaryStringFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [

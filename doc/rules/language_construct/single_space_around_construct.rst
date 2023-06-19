@@ -21,9 +21,9 @@ Default value: ``['yield_from']``
 
 List of constructs which must be preceded by a single space.
 
-Allowed values: a subset of ``['use_lambda']``
+Allowed values: a subset of ``['as', 'use_lambda']``
 
-Default value: ``['use_lambda']``
+Default value: ``['as', 'use_lambda']``
 
 ``constructs_followed_by_a_single_space``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

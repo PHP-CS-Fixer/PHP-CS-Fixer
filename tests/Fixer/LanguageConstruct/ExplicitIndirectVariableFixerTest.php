@@ -26,14 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -73,7 +73,7 @@ $foo
      * @param mixed $expected
      * @param mixed $input
      *
-     * @dataProvider provideTestFix80Cases
+     * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
@@ -82,7 +82,7 @@ $foo
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestFix80Cases(): array
+    public static function provideFix80Cases(): array
     {
         return [
             [

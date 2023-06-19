@@ -30,7 +30,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 final class TextDiffTest extends TestCase
 {
     /**
-     * @dataProvider provideDiffReportingCases
+     * @dataProvider provideDiffReportingDecoratedCases
      */
     public function testDiffReportingDecorated(string $expected, string $format, bool $isDecorated): void
     {
@@ -62,7 +62,7 @@ final class TextDiffTest extends TestCase
         self::assertStringMatchesFormat($expected, $commandTester->getDisplay(false));
     }
 
-    public static function provideDiffReportingCases(): iterable
+    public static function provideDiffReportingDecoratedCases(): iterable
     {
         $expected = <<<'TEST'
 %A$output->writeln('<error>'.(int)$output.'</error>');%A

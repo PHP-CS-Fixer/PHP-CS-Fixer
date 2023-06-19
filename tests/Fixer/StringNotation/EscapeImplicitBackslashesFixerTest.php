@@ -28,7 +28,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
     /**
      * @param array<string, mixed> $configuration
      *
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
@@ -36,7 +36,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [

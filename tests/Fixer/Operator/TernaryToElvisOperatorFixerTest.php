@@ -497,7 +497,7 @@ EOT
      *
      * @requires PHP 8.0
      */
-    public function test80DoNotFix(string $input): void
+    public function testDoNotFix80(string $input): void
     {
         $this->doTest($input);
     }

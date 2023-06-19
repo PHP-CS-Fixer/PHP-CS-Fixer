@@ -24,14 +24,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SingleLineCommentSpacingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideTestCases
+     * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'comment list' => [
             '<?php

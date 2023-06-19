@@ -27,7 +27,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null): void
     {
@@ -48,7 +48,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public static function provideTestFixCases(): array
+    public static function provideFixCases(): array
     {
         $cases = [
             ['$sth->assertSame(true, $foo);'],

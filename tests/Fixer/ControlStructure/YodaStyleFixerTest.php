@@ -791,7 +791,7 @@ switch ($a) {
     /**
      * @param array<mixed> $config
      *
-     * @dataProvider provideInvalidConfigurationCases
+     * @dataProvider provideInvalidConfigCases
      */
     public function testInvalidConfig(array $config, string $expectedMessage): void
     {
@@ -801,7 +801,7 @@ switch ($a) {
         $this->fixer->configure($config);
     }
 
-    public static function provideInvalidConfigurationCases(): array
+    public static function provideInvalidConfigCases(): array
     {
         return [
             [['equal' => 2], 'Invalid configuration: The option "equal" with value 2 is expected to be of type "bool" or "null", but is of type "(int|integer)"\.'],
@@ -886,7 +886,7 @@ switch ($a) {
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideFixWithConfigCases
+     * @dataProvider provideWithConfigCases
      */
     public function testWithConfig(array $config, string $expected): void
     {
@@ -894,7 +894,7 @@ switch ($a) {
         $this->doTest($expected);
     }
 
-    public static function provideFixWithConfigCases(): iterable
+    public static function provideWithConfigCases(): iterable
     {
         yield [
             [
@@ -945,7 +945,7 @@ while (2 !== $b = array_pop($c));
      *
      * @param array<string, mixed> $configuration
      *
-     * @dataProvider providePHP74Cases
+     * @dataProvider providePHP74CasesInverseCases
      */
     public function testPHP74CasesInverse(string $expected, ?string $input = null, array $configuration = []): void
     {
@@ -954,7 +954,7 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public static function providePHP74Cases(): iterable
+    public static function providePHP74CasesInverseCases(): iterable
     {
         yield [
             '<?php fn() => $c === array(1) ? $b : $d;',

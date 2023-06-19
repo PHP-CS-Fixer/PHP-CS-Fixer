@@ -28,7 +28,7 @@ final class GotoLabelAnalyzerTest extends TestCase
     /**
      * @param int[] $expectedTrue
      *
-     * @dataProvider provideIsClassyInvocationCases
+     * @dataProvider provideGotoLabelAnalyzerTestCases
      */
     public function testGotoLabelAnalyzerTest(string $source, array $expectedTrue): void
     {
@@ -43,7 +43,7 @@ final class GotoLabelAnalyzerTest extends TestCase
         }
     }
 
-    public static function provideIsClassyInvocationCases(): iterable
+    public static function provideGotoLabelAnalyzerTestCases(): iterable
     {
         yield from [
             'no candidates' => [

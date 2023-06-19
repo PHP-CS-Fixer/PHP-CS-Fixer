@@ -26,14 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SingleQuoteFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestFixCases(): array
+    public static function provideFixCases(): array
     {
         return [
             [
@@ -122,7 +122,7 @@ EOF
     }
 
     /**
-     * @dataProvider provideTestSingleQuoteFixCases
+     * @dataProvider provideSingleQuoteFixCases
      */
     public function testSingleQuoteFix(string $expected, ?string $input = null): void
     {
@@ -133,7 +133,7 @@ EOF
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestSingleQuoteFixCases(): array
+    public static function provideSingleQuoteFixCases(): array
     {
         return [
             [

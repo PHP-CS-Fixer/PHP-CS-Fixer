@@ -41,6 +41,8 @@ final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
             ['<?php $x = isset($a) and $a ? $a : "";'],
             ['<?php $x = "isset($a) ? $a : null";'],
             ['<?php $x = isset($a) ? $$a : null;'],
+            ['<?php $x = isset($this) ? $this : null;'],
+            ['<?php $x = isset($A) ? $a : null;'], // different case
             ['<?php $x = isset($a) ? "$a" : null;'],
             ['<?php $x = isset($a) ?: false;'],
             ['<?php $x = $y ?? isset($a) ? $a : null;'],
@@ -173,6 +175,10 @@ null
 )
 # c7
 ;',
+            ],
+            [
+                '<?php $x = $THIS ?? null;',
+                '<?php $x = isset($THIS) ? $THIS : null;',
             ],
         ];
     }

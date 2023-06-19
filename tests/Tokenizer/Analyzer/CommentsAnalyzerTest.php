@@ -310,15 +310,15 @@ $bar;',
         self::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public static function providePhpdocCandidatePhp80Cases(): array
+    public static function providePhpdocCandidatePhp80Cases(): iterable
     {
-        return [
-            ['<?php
+        yield 'attribute between class and phpDoc' => [
+            '<?php
 /**
  * @Annotation
  */
 #[CustomAnnotationA]
-Class MyAnnotation3 {}'],
+Class MyAnnotation3 {}',
         ];
     }
 
@@ -368,6 +368,16 @@ Class MyAnnotation3 {}'],
 
         yield 'enum' => [
             '<?php /* Before enum */ enum Foo {}',
+        ];
+
+        yield 'enum with deprecated case' => [
+            '<?php
+enum Foo: int {
+    /**
+     * @deprecated Lorem ipsum
+     */
+    case BAR = 1;
+}',
         ];
     }
 
