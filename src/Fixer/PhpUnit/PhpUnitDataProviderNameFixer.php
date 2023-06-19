@@ -102,6 +102,9 @@ class FooTest extends TestCase {
             }
 
             $usageIndex = $dataProviderAnalysis->getUsageIndices()[0];
+            if (substr_count($tokens[$usageIndex]->getContent(), '@dataProvider') > 1) {
+                continue;
+            }
 
             $testNameIndex = $tokens->getNextTokenOfKind($usageIndex, [[T_STRING]]);
 
