@@ -2,7 +2,8 @@
 Rule ``php_unit_data_provider_name``
 ====================================
 
-Data provider names used only once must match the name of the test.
+Data provider names must match the name of the test. Only safe scenarios are
+covered.
 
 Warning
 -------
