@@ -63,6 +63,34 @@ class FooTest extends TestCase {
                         'suffix' => '',
                     ]
                 ),
+                new CodeSample(
+                    '<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider dataProviderUsedInMultipleTests
+     */
+    public function testA($expected, $actual) {}
+    /**
+     * @dataProvider dataProviderUsedInMultipleTests
+     */
+    public function testB($expected, $actual) {}
+    /**
+     * @dataProvider dataProviderUsedInSingleTest
+     */
+    public function testC($expected, $actual) {}
+    /**
+     * @dataProvider dataProviderUsedAsFirstInTest
+     * @dataProvider dataProviderUsedAsSecondInTest
+     */
+    public function testD($expected, $actual) {}
+
+    public function dataProviderUsedInMultipleTests() {}
+    public function dataProviderUsedInSingleTest() {}
+    public function dataProviderUsedAsFirstInTest() {}
+    public function dataProviderUsedAsSecondInTest() {}
+}
+',
+                ),
             ],
             null,
             'Fixer could be risky if one is calling data provider by name as function.'

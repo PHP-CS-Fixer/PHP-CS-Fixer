@@ -76,3 +76,40 @@ With configuration: ``['prefix' => 'data_', 'suffix' => '']``.
    -    public function dt_prvdr_ftr() {}
    +    public function data_feature() {}
     }
+
+Example #3
+~~~~~~~~~~
+
+*Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class FooTest extends TestCase {
+        /**
+         * @dataProvider dataProviderUsedInMultipleTests
+         */
+        public function testA($expected, $actual) {}
+        /**
+         * @dataProvider dataProviderUsedInMultipleTests
+         */
+        public function testB($expected, $actual) {}
+        /**
+   -     * @dataProvider dataProviderUsedInSingleTest
+   +     * @dataProvider provideCCases
+         */
+        public function testC($expected, $actual) {}
+        /**
+         * @dataProvider dataProviderUsedAsFirstInTest
+         * @dataProvider dataProviderUsedAsSecondInTest
+         */
+        public function testD($expected, $actual) {}
+
+        public function dataProviderUsedInMultipleTests() {}
+   -    public function dataProviderUsedInSingleTest() {}
+   +    public function provideCCases() {}
+        public function dataProviderUsedAsFirstInTest() {}
+        public function dataProviderUsedAsSecondInTest() {}
+    }
