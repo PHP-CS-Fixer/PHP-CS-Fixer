@@ -382,7 +382,7 @@ enum Foo: int {
     }
 
     /**
-     * @dataProvider provideNotPhpdocCandidatePhp811Cases
+     * @dataProvider provideNotPhpdocCandidatePhp81Cases
      *
      * @requires PHP 8.1
      */
@@ -395,7 +395,7 @@ enum Foo: int {
         self::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public static function provideNotPhpdocCandidatePhp811Cases(): iterable
+    public static function provideNotPhpdocCandidatePhp81Cases(): iterable
     {
         yield 'enum and switch' => [
             '<?php
