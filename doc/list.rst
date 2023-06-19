@@ -2412,7 +2412,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitConstructFixer <./../src/Fixer/PhpUnit/PhpUnitConstructFixer.php>`_
 -  `php_unit_data_provider_name <./rules/php_unit/php_unit_data_provider_name.rst>`_
 
-   Data provider names must match the name of the test. Only safe scenarios are covered.
+   Data provider names must match the name of the test.
 
    *warning risky* Fixer could be risky if one is calling data provider by name as function.
 

@@ -2,8 +2,7 @@
 Rule ``php_unit_data_provider_name``
 ====================================
 
-Data provider names must match the name of the test. Only safe scenarios are
-covered.
+Data provider names must match the name of the test.
 
 Warning
 -------
@@ -80,7 +79,7 @@ With configuration: ``['prefix' => 'data_', 'suffix' => '']``.
 Example #3
 ~~~~~~~~~~
 
-*Default* configuration.
+With configuration: ``['prefix' => 'provides', 'suffix' => 'Data']``.
 
 .. code-block:: diff
 
@@ -98,7 +97,7 @@ Example #3
         public function testB($expected, $actual) {}
         /**
    -     * @dataProvider dataProviderUsedInSingleTest
-   +     * @dataProvider provideCCases
+   +     * @dataProvider providesCData
          */
         public function testC($expected, $actual) {}
         /**
@@ -109,7 +108,7 @@ Example #3
 
         public function dataProviderUsedInMultipleTests() {}
    -    public function dataProviderUsedInSingleTest() {}
-   +    public function provideCCases() {}
+   +    public function providesCData() {}
         public function dataProviderUsedAsFirstInTest() {}
         public function dataProviderUsedAsSecondInTest() {}
     }

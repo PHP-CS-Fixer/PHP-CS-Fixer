@@ -35,7 +35,7 @@ final class PhpUnitDataProviderNameFixer extends AbstractPhpUnitFixer implements
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Data provider names must match the name of the test. Only safe scenarios are covered.',
+            'Data provider names must match the name of the test.',
             [
                 new CodeSample(
                     '<?php
@@ -90,6 +90,10 @@ class FooTest extends TestCase {
     public function dataProviderUsedAsSecondInTest() {}
 }
 ',
+                    [
+                        'prefix' => 'provides',
+                        'suffix' => 'Data',
+                    ]
                 ),
             ],
             null,
