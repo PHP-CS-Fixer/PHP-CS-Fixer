@@ -28,14 +28,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class GetClassToClassKeywordFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixCasesCases
+     * @dataProvider provideFixCases
      */
-    public function testFixCases(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCasesCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '

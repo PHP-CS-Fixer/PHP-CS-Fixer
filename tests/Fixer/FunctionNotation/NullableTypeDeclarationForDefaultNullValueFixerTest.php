@@ -141,7 +141,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     }
 
     /**
-     * @dataProvider provideFixInverseCases
+     * @dataProvider provideInvertedFixCases
      * @dataProvider provideInverseOnlyFixCases
      */
     public function testFixInverse(string $expected, string $input): void
@@ -327,7 +327,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         ];
     }
 
-    public static function provideFixInverseCases(): iterable
+    public static function provideInvertedFixCases(): iterable
     {
         return TestCaseUtils::swapExpectedInputTestCases(self::provideFixCases());
     }

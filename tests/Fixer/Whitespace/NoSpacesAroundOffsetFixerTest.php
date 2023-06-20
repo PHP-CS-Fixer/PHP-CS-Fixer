@@ -65,14 +65,14 @@ EOF;
     }
 
     /**
-     * @dataProvider provideCommentsCasesCases
+     * @dataProvider provideCommentsCases
      */
-    public function testCommentsCases(string $expected, ?string $input = null): void
+    public function testComments(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideCommentsCasesCases(): array
+    public static function provideCommentsCases(): array
     {
         return [
             [

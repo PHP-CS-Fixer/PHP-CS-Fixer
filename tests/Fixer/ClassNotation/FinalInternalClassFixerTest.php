@@ -337,9 +337,9 @@ class Foo {}
      * @param string      $expected PHP source code
      * @param null|string $input    PHP source code
      *
-     * @dataProvider provideAnonymousClassesCasesCases
+     * @dataProvider provideAnonymousClassesCases
      */
-    public function testAnonymousClassesCases(string $expected, ?string $input = null): void
+    public function testAnonymousClasses(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -347,7 +347,7 @@ class Foo {}
     /**
      * @return iterable<int|string, array{0: string, 1?: string}>
      */
-    public static function provideAnonymousClassesCasesCases(): iterable
+    public static function provideAnonymousClassesCases(): iterable
     {
         yield [
             '<?php
