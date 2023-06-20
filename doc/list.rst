@@ -2449,6 +2449,8 @@ List of Available Rules
      | Default value: ``'Cases'``
 
 
+   Part of rule set `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_
+
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderNameFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderNameFixer.php>`_
 -  `php_unit_data_provider_static <./rules/php_unit/php_unit_data_provider_static.rst>`_
 

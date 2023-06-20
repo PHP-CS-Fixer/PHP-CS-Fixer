@@ -19,6 +19,7 @@ Rules
   ``['sets' => ['@all']]``
 - `no_unreachable_default_argument_value <./../rules/function_notation/no_unreachable_default_argument_value.rst>`_
 - `no_unset_on_property <./../rules/language_construct/no_unset_on_property.rst>`_
+- `php_unit_data_provider_name <./../rules/php_unit/php_unit_data_provider_name.rst>`_
 - `php_unit_strict <./../rules/php_unit/php_unit_strict.rst>`_
 - `php_unit_test_case_static_method_calls <./../rules/php_unit/php_unit_test_case_static_method_calls.rst>`_
   config:
