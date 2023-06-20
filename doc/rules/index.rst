@@ -606,6 +606,9 @@ PHPUnit
 - `php_unit_data_provider_name <./php_unit/php_unit_data_provider_name.rst>`_ *(risky)*
 
   Data provider names must match the name of the test.
+- `php_unit_data_provider_return_type <./php_unit/php_unit_data_provider_return_type.rst>`_ *(risky)*
+
+  The types returned by data providers must be ``iterable``.
 - `php_unit_data_provider_static <./php_unit/php_unit_data_provider_static.rst>`_ *(risky)*
 
   Data providers must be static.
