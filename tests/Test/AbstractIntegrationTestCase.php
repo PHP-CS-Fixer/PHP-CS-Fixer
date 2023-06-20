@@ -138,7 +138,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
      *
      * @return IntegrationCase[][]
      */
-    public static function provideIntegrationCases(): array
+    public static function provideIntegrationCases(): iterable
     {
         $dir = static::getFixturesDir();
         $fixturesDir = realpath($dir);

@@ -45,7 +45,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         );
     }
 
-    public static function provideUsesFromTokensCases(): array
+    public static function provideUsesFromTokensCases(): iterable
     {
         return [
             ['<?php // no uses', [], []],
@@ -174,7 +174,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         );
     }
 
-    public static function provideGetDeclarationsInNamespaceCases(): array
+    public static function provideGetDeclarationsInNamespaceCases(): iterable
     {
         return [
             [

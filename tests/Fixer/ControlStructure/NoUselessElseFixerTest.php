@@ -33,7 +33,7 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideCloseTagCases(): array
+    public static function provideCloseTagCases(): iterable
     {
         return [
             [
@@ -133,7 +133,7 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixIfElseIfElseCases(): array
+    public static function provideFixIfElseIfElseCases(): iterable
     {
         $expected =
             '<?php
@@ -315,7 +315,7 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixNestedIfCases(): array
+    public static function provideFixNestedIfCases(): iterable
     {
         return [
             [
@@ -353,7 +353,7 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixEmptyElseCases(): array
+    public static function provideFixEmptyElseCases(): iterable
     {
         return [
             [
@@ -663,7 +663,7 @@ else?><?php echo 5;',
         self::assertSame($expected, $result);
     }
 
-    public static function provideBlockDetectionCases(): array
+    public static function provideBlockDetectionCases(): iterable
     {
         $cases = [];
 
@@ -789,7 +789,7 @@ else?><?php echo 5;',
         }
     }
 
-    public static function provideIsInConditionWithoutBracesCases(): array
+    public static function provideIsInConditionWithoutBracesCases(): iterable
     {
         return [
             [

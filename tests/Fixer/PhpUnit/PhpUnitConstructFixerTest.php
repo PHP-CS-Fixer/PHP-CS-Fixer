@@ -48,7 +48,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         $cases = [
             ['$sth->assertSame(true, $foo);'],
@@ -165,7 +165,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix73Cases(): array
+    public static function provideFix73Cases(): iterable
     {
         return [
             [

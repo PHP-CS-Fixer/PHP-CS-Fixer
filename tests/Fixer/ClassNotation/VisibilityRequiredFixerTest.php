@@ -526,7 +526,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixClassConstCases(): array
+    public static function provideFixClassConstCases(): iterable
     {
         return [
             [

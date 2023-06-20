@@ -39,7 +39,7 @@ final class TokenTest extends TestCase
         new Token($input);
     }
 
-    public static function provideConstructorValidationCases(): array
+    public static function provideConstructorValidationCases(): iterable
     {
         return [
             [null],
@@ -75,7 +75,7 @@ final class TokenTest extends TestCase
         self::assertSame($isCast, $token->isCast());
     }
 
-    public static function provideIsCastCases(): array
+    public static function provideIsCastCases(): iterable
     {
         return [
             [self::getBraceToken(), false],
@@ -98,7 +98,7 @@ final class TokenTest extends TestCase
         self::assertSame($isClassy, $token->isClassy());
     }
 
-    public static function provideIsClassyCases(): array
+    public static function provideIsClassyCases(): iterable
     {
         return [
             [self::getBraceToken(), false],
@@ -235,7 +235,7 @@ final class TokenTest extends TestCase
         self::assertSame($isNativeConstant, $token->isNativeConstant());
     }
 
-    public static function provideIsNativeConstantCases(): array
+    public static function provideIsNativeConstantCases(): iterable
     {
         return [
             [self::getBraceToken(), false],
@@ -261,7 +261,7 @@ final class TokenTest extends TestCase
         }
     }
 
-    public static function provideIsWhitespaceCases(): array
+    public static function provideIsWhitespaceCases(): iterable
     {
         return [
             [self::getBraceToken(), false],
@@ -294,7 +294,7 @@ final class TokenTest extends TestCase
         self::assertSame($expectedIsArray, $token->isArray());
     }
 
-    public static function provideCreatingTokenCases(): array
+    public static function provideCreatingTokenCases(): iterable
     {
         return [
             [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true],
@@ -478,7 +478,7 @@ final class TokenTest extends TestCase
         self::assertSame($expected, Token::getNameForId($id));
     }
 
-    public static function provideTokenGetNameForIdCases(): array
+    public static function provideTokenGetNameForIdCases(): iterable
     {
         return [
             [

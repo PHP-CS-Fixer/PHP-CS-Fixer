@@ -81,7 +81,7 @@ Files that were not fixed due to errors reported during %s:
         self::assertStringStartsWith($startWith, $displayed);
     }
 
-    public static function provideErrorOutputCases(): array
+    public static function provideErrorOutputCases(): iterable
     {
         $lineNumber = __LINE__;
         [$exceptionLineNumber, $error] = self::getErrorAndLineNumber(); // note: keep call and __LINE__ separated with one line break

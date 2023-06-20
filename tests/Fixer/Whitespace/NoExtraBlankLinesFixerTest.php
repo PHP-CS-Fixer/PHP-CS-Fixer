@@ -366,7 +366,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithCommentsCases(): array
+    public static function provideFixWithCommentsCases(): iterable
     {
         return [
             [
@@ -565,7 +565,7 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
         $this->doTest($expected, $input);
     }
 
-    public static function provideRemoveLinesBetweenUseStatementsCases(): array
+    public static function provideRemoveLinesBetweenUseStatementsCases(): iterable
     {
         return [
             [
@@ -834,7 +834,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public static function provideBracesCases(): array
+    public static function provideBracesCases(): iterable
     {
         return [
             [
@@ -974,7 +974,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public static function provideInSwitchStatementCases(): array
+    public static function provideInSwitchStatementCases(): iterable
     {
         return [
             [

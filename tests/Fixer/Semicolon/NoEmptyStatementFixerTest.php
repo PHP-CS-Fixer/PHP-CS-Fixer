@@ -433,7 +433,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             [
@@ -528,7 +528,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideCasesWithShortOpenTagCases(): array
+    public static function provideCasesWithShortOpenTagCases(): iterable
     {
         return [
             [
@@ -546,7 +546,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixMultipleSemicolonsCases(): array
+    public static function provideFixMultipleSemicolonsCases(): iterable
     {
         return [
             [

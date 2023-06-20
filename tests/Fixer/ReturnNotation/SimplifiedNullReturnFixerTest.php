@@ -33,7 +33,7 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             // check correct statements aren't changed

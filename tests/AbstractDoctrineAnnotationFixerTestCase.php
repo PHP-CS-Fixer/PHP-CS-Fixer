@@ -34,7 +34,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
         $this->fixer->configure($configuration);
     }
 
-    public static function provideConfigureWithInvalidConfigurationCases(): array
+    public static function provideConfigureWithInvalidConfigurationCases(): iterable
     {
         return [
             [['foo' => 'bar']],

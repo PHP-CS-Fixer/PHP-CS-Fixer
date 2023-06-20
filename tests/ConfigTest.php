@@ -248,7 +248,7 @@ final class ConfigTest extends TestCase
         self::assertFalse($config->getUsingCache());
     }
 
-    public static function provideRegisterCustomFixersCases(): array
+    public static function provideRegisterCustomFixersCases(): iterable
     {
         $fixers = [
             new NoWhitespaceBeforeCommaInArrayFixer(),

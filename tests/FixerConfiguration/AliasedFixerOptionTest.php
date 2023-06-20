@@ -37,7 +37,7 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($name, $option->getName());
     }
 
-    public static function provideGetNameCases(): array
+    public static function provideGetNameCases(): iterable
     {
         return [
             ['foo'],
@@ -55,7 +55,7 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($description, $option->getDescription());
     }
 
-    public static function provideGetDescriptionCases(): array
+    public static function provideGetDescriptionCases(): iterable
     {
         return [
             ['Foo.'],
@@ -71,7 +71,7 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($hasDefault, $input->hasDefault());
     }
 
-    public static function provideHasDefaultCases(): array
+    public static function provideHasDefaultCases(): iterable
     {
         return [
             [
@@ -95,7 +95,7 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($default, $option->getDefault());
     }
 
-    public static function provideGetDefaultCases(): array
+    public static function provideGetDefaultCases(): iterable
     {
         return [
             ['baz'],
@@ -124,7 +124,7 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($allowedTypes, $option->getAllowedTypes());
     }
 
-    public static function provideGetAllowedTypesCases(): array
+    public static function provideGetAllowedTypesCases(): iterable
     {
         return [
             [null],
@@ -145,7 +145,7 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($allowedValues, $option->getAllowedValues());
     }
 
-    public static function provideGetAllowedValuesCases(): array
+    public static function provideGetAllowedValuesCases(): iterable
     {
         return [
             [null],
@@ -183,7 +183,7 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($alias, $options->getAlias());
     }
 
-    public static function provideGetAliasCases(): array
+    public static function provideGetAliasCases(): iterable
     {
         return [
             ['bar'],

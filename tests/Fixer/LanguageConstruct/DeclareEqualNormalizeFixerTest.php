@@ -37,7 +37,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             'minimal case remove whitespace (default config)' => [
@@ -115,7 +115,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
         $this->fixer->configure($config);
     }
 
-    public static function provideInvalidConfigCases(): array
+    public static function provideInvalidConfigCases(): iterable
     {
         return [
             [

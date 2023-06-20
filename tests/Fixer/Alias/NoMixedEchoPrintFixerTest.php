@@ -294,7 +294,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->fixer->configure($wrongConfig);
     }
 
-    public static function provideWrongConfigCases(): array
+    public static function provideWrongConfigCases(): iterable
     {
         return [
             [

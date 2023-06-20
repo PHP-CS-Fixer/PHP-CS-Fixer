@@ -33,7 +33,7 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             ['<?php /** @Entity */ class MyEntity {}'],
@@ -86,7 +86,7 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases(): array
+    public static function provideFix80Cases(): iterable
     {
         return [
             ['<?php #[Entity] class MyEntity {}'],
@@ -164,7 +164,7 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix82Cases(): array
+    public static function provideFix82Cases(): iterable
     {
         return [
             ['<?php #[Entity] readonly class MyEntity {}'],

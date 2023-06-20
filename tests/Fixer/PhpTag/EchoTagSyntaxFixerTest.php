@@ -35,7 +35,7 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideLongToShortFormatCases(): array
+    public static function provideLongToShortFormatCases(): iterable
     {
         return [
             ['<?= \'Foo\';', '<?php echo \'Foo\';'],
@@ -101,7 +101,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public static function provideShortToLongFormatCases(): array
+    public static function provideShortToLongFormatCases(): iterable
     {
         $cases = [
             ['<?php <fn> 1;', '<?= 1;'],

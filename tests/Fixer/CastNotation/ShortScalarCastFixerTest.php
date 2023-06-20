@@ -67,7 +67,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public static function provideNoFixCases(): array
+    public static function provideNoFixCases(): iterable
     {
         $cases = [];
         $types = ['string', 'array', 'object'];

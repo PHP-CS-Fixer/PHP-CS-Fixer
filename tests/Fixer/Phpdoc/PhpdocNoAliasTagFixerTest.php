@@ -99,7 +99,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function providePropertyFixCases(): array
+    public static function providePropertyFixCases(): iterable
     {
         return [
             [
@@ -137,7 +137,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideTypeToVarFixCases(): array
+    public static function provideTypeToVarFixCases(): iterable
     {
         return [
             [
@@ -195,7 +195,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideVarToTypeFixCases(): array
+    public static function provideVarToTypeFixCases(): iterable
     {
         return [
             [
@@ -261,7 +261,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideDefaultConfigCases(): array
+    public static function provideDefaultConfigCases(): iterable
     {
         return [
             [

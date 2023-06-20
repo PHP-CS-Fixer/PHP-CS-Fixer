@@ -63,7 +63,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    public static function provideConfigureRejectsInvalidConfigurationElementCases(): array
+    public static function provideConfigureRejectsInvalidConfigurationElementCases(): iterable
     {
         return [
             'null' => [null],
@@ -99,7 +99,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public static function provideConfigureIncludeSetsCases(): array
+    public static function provideConfigureIncludeSetsCases(): iterable
     {
         return [
             [['foo', 'bar']],
@@ -173,7 +173,7 @@ PHP;
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithDefaultConfigurationCases(): array
+    public static function provideFixWithDefaultConfigurationCases(): iterable
     {
         return [
             [
@@ -273,7 +273,7 @@ strlen($foo);
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithConfiguredExcludeCases(): array
+    public static function provideFixWithConfiguredExcludeCases(): iterable
     {
         return [
             [
@@ -306,7 +306,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithNamespaceConfigurationCases(): array
+    public static function provideFixWithNamespaceConfigurationCases(): iterable
     {
         return [
             [

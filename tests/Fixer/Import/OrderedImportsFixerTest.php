@@ -1129,7 +1129,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
         $this->fixer->configure($configuration);
     }
 
-    public static function provideInvalidSortAlgorithmCases(): array
+    public static function provideInvalidSortAlgorithmCases(): iterable
     {
         return [
             [
@@ -1745,7 +1745,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixByLengthCases(): array
+    public static function provideFixByLengthCases(): iterable
     {
         return [
             [
@@ -1891,7 +1891,7 @@ use const ZZZ;
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixTypesOrderAndLengthCases(): array
+    public static function provideFixTypesOrderAndLengthCases(): iterable
     {
         return [
             [
@@ -2016,7 +2016,7 @@ use function some\a\{fn_a, fn_b};
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixTypesOrderAndNoneCases(): array
+    public static function provideFixTypesOrderAndNoneCases(): iterable
     {
         return [
             [

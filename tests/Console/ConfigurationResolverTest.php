@@ -130,7 +130,7 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($progressType, $resolver->getProgress());
     }
 
-    public static function provideProgressTypeCases(): array
+    public static function provideProgressTypeCases(): iterable
     {
         return [
             ['none'],
@@ -195,7 +195,7 @@ final class ConfigurationResolverTest extends TestCase
         self::assertInstanceOf($expectedClass, $resolver->getConfig());
     }
 
-    public static function provideResolveConfigFileChooseFileCases(): array
+    public static function provideResolveConfigFileChooseFileCases(): iterable
     {
         $dirBase = self::getFixtureDir();
 
@@ -498,7 +498,7 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($expected, $intersectionItems);
     }
 
-    public static function provideResolveIntersectionOfPathsCases(): array
+    public static function provideResolveIntersectionOfPathsCases(): iterable
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
         $cb = static function (array $items) use ($dir): array {
@@ -666,7 +666,7 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($expectedResult, $resolver->configFinderIsOverridden());
     }
 
-    public static function provideConfigFinderIsOverriddenCases(): array
+    public static function provideConfigFinderIsOverriddenCases(): iterable
     {
         $root = __DIR__.'/../..';
 
@@ -1080,7 +1080,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         self::assertInstanceOf($expected, $resolver->getDiffer());
     }
 
-    public static function provideResolveDifferCases(): array
+    public static function provideResolveDifferCases(): iterable
     {
         return [
             [
@@ -1121,7 +1121,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $resolver->getRiskyAllowed();
     }
 
-    public static function provideResolveBooleanOptionCases(): array
+    public static function provideResolveBooleanOptionCases(): iterable
     {
         return [
             [true, true, 'yes'],
@@ -1162,7 +1162,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $resolver->getFixers();
     }
 
-    public static function provideDeprecatedFixerConfiguredCases(): array
+    public static function provideDeprecatedFixerConfiguredCases(): iterable
     {
         return [
             [true],
@@ -1171,7 +1171,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         ];
     }
 
-    public static function provideGetDirectoryCases(): array
+    public static function provideGetDirectoryCases(): iterable
     {
         return [
             [null, '/my/path/my/file', 'my/file'],

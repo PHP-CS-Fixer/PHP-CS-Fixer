@@ -58,7 +58,7 @@ final class TypeAnalysisTest extends TestCase
         self::assertSame($expected, $analysis->isReservedType());
     }
 
-    public static function provideReservedCases(): array
+    public static function provideReservedCases(): iterable
     {
         return [
             ['array', true],

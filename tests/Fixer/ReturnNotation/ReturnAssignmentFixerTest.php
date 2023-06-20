@@ -31,7 +31,7 @@ final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixNestedFunctionsCases(): array
+    public static function provideFixNestedFunctionsCases(): iterable
     {
         return [
             [
@@ -191,7 +191,7 @@ function B($b0, $b1, $b2)
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             [
@@ -803,7 +803,7 @@ var names are case-insensitive */ return $a   ;}
         $this->doTest($expected);
     }
 
-    public static function provideDoNotFixCases(): array
+    public static function provideDoNotFixCases(): iterable
     {
         return [
             'invalid reference stays invalid' => [

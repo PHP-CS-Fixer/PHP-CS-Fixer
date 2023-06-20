@@ -286,7 +286,7 @@ private $d = 123;
         );
     }
 
-    public static function provideCommentBlockStartDetectionCases(): array
+    public static function provideCommentBlockStartDetectionCases(): iterable
     {
         return [
             [
@@ -371,7 +371,7 @@ private $d = 123;
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixClassesCases(): array
+    public static function provideFixClassesCases(): iterable
     {
         $cases = [];
 
@@ -969,7 +969,7 @@ public function B1(); // allowed comment
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixTraitsCases(): array
+    public static function provideFixTraitsCases(): iterable
     {
         $cases = [];
 
@@ -1063,7 +1063,7 @@ trait SomeReturnInfo {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixInterfaceCases(): array
+    public static function provideFixInterfaceCases(): iterable
     {
         $cases = [];
         $cases[] = [
@@ -1148,7 +1148,7 @@ class ezcReflectionMethod extends ReflectionMethod {
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): iterable
     {
         return [
             [
@@ -1173,7 +1173,7 @@ class ezcReflectionMethod extends ReflectionMethod {
         $this->doTest($expected, $input);
     }
 
-    public static function provideWithConfigCases(): array
+    public static function provideWithConfigCases(): iterable
     {
         return [
             'multi line property' => [
@@ -1799,7 +1799,7 @@ abstract class Example
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix71Cases(): array
+    public static function provideFix71Cases(): iterable
     {
         return [
             [

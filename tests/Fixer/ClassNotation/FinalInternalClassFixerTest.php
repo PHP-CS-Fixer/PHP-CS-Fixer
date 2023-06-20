@@ -35,7 +35,7 @@ final class FinalInternalClassFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         $input = $expected = '<?php ';
 
@@ -195,7 +195,7 @@ class Bar {}
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithConfigCases(): array
+    public static function provideFixWithConfigCases(): iterable
     {
         return [
             [

@@ -813,7 +813,7 @@ enum Foo: string
         }
     }
 
-    public static function provideIsLambdaCases(): array
+    public static function provideIsLambdaCases(): iterable
     {
         return [
             [
@@ -942,7 +942,7 @@ preg_replace_callback(
         }
     }
 
-    public static function provideIsLambda80Cases(): array
+    public static function provideIsLambda80Cases(): iterable
     {
         return [
             [
@@ -997,7 +997,7 @@ $a(1,2);',
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
-    public static function provideIsConstantInvocationCases(): array
+    public static function provideIsConstantInvocationCases(): iterable
     {
         return [
             [
@@ -1409,7 +1409,7 @@ abstract class Baz
         }
     }
 
-    public static function provideIsUnarySuccessorOperatorCases(): array
+    public static function provideIsUnarySuccessorOperatorCases(): iterable
     {
         return [
             [
@@ -1470,7 +1470,7 @@ abstract class Baz
         }
     }
 
-    public static function provideIsUnaryPredecessorOperatorCases(): array
+    public static function provideIsUnaryPredecessorOperatorCases(): iterable
     {
         return [
             [
@@ -1722,7 +1722,7 @@ $b;',
         self::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
     }
 
-    public static function provideIsArrayCases(): array
+    public static function provideIsArrayCases(): iterable
     {
         return [
             [
@@ -1805,7 +1805,7 @@ $b;',
         }
     }
 
-    public static function provideIsArray71Cases(): array
+    public static function provideIsArray71Cases(): iterable
     {
         return [
             [
@@ -2001,7 +2001,7 @@ $b;',
         $tokensAnalyzer->isArrayMultiLine($tokenIndex);
     }
 
-    public static function provideArrayExceptionsCases(): array
+    public static function provideArrayExceptionsCases(): iterable
     {
         return [
             ['<?php $a;', 1],
@@ -2079,7 +2079,7 @@ $b;',
         self::assertSame($expected, $attributes);
     }
 
-    public static function provideGetFunctionPropertiesCases(): array
+    public static function provideGetFunctionPropertiesCases(): iterable
     {
         $defaultAttributes = [
             'visibility' => null,
@@ -2226,7 +2226,7 @@ SRC;
         self::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
-    public static function provideGetImportUseIndexesCases(): array
+    public static function provideGetImportUseIndexesCases(): iterable
     {
         return [
             [
@@ -2410,7 +2410,7 @@ class MyTestWithAnonymousClass extends TestCase
         self::assertSame($expected, $tokensAnalyzer->isSuperGlobal($index));
     }
 
-    public static function provideIsSuperGlobalCases(): array
+    public static function provideIsSuperGlobalCases(): iterable
     {
         $superNames = [
             '$_COOKIE',

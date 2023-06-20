@@ -119,7 +119,7 @@ final class CacheTest extends TestCase
         Cache::fromJson($json);
     }
 
-    public static function provideFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKeyCases(): array
+    public static function provideFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKeyCases(): iterable
     {
         $data = [
             'php' => '7.1.2',
@@ -158,7 +158,7 @@ final class CacheTest extends TestCase
         self::assertSame($hash, $cached->get($file));
     }
 
-    public static function provideCanConvertToAndFromJsonCases(): array
+    public static function provideCanConvertToAndFromJsonCases(): iterable
     {
         $toolInfo = new ToolInfo();
         $config = new Config();

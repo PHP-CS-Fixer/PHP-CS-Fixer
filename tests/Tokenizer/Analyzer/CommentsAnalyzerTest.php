@@ -52,7 +52,7 @@ final class CommentsAnalyzerTest extends TestCase
         self::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
-    public static function provideCommentsCases(): array
+    public static function provideCommentsCases(): iterable
     {
         return [
             'discover all 4 comments for the 1st comment with slash' => [
@@ -168,7 +168,7 @@ $bar;',
         self::assertTrue($analyzer->isHeaderComment($tokens, $index));
     }
 
-    public static function provideHeaderCommentCases(): array
+    public static function provideHeaderCommentCases(): iterable
     {
         return [
             ['<?php /* Comment */ namespace Foo;', 1],
@@ -190,7 +190,7 @@ $bar;',
         self::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
-    public static function provideNotHeaderCommentCases(): array
+    public static function provideNotHeaderCommentCases(): iterable
     {
         return [
             ['<?php $foo; /* Comment */ $bar;', 4],
@@ -224,7 +224,7 @@ $bar;',
         self::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public static function providePhpdocCandidateCases(): array
+    public static function providePhpdocCandidateCases(): iterable
     {
         return [
             ['<?php /* @var Foo */ $bar = "baz";'],
@@ -280,7 +280,7 @@ $bar;',
         self::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public static function provideNotPhpdocCandidateCases(): array
+    public static function provideNotPhpdocCandidateCases(): iterable
     {
         return [
             ['<?php class Foo {} /* At the end of file */'],

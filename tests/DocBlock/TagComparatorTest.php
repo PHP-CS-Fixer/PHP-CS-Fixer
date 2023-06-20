@@ -44,7 +44,7 @@ final class TagComparatorTest extends TestCase
         self::assertSame($expected, TagComparator::shouldBeTogether($tag1, $tag2));
     }
 
-    public static function provideComparatorTogetherCases(): array
+    public static function provideComparatorTogetherCases(): iterable
     {
         return [
             ['return', 'return', true],
@@ -79,7 +79,7 @@ final class TagComparatorTest extends TestCase
         );
     }
 
-    public static function provideComparatorTogetherWithDefinedGroupsCases(): array
+    public static function provideComparatorTogetherWithDefinedGroupsCases(): iterable
     {
         return [
             [[['param', 'return']], 'return', 'return', true],

@@ -536,7 +536,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public static function provideInheritDocCases(): array
+    public static function provideInheritDocCases(): iterable
     {
         return [
             [

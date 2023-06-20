@@ -38,7 +38,7 @@ final class DiffConsoleFormatterTest extends TestCase
         );
     }
 
-    public static function provideDiffConsoleFormatterCases(): array
+    public static function provideDiffConsoleFormatterCases(): iterable
     {
         return [
             [

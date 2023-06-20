@@ -140,7 +140,7 @@ Integration of %s.
         self::assertSame($sortedSetDefinition, $setDefinition);
     }
 
-    public static function provideSetDefinitionNameCases(): array
+    public static function provideSetDefinitionNameCases(): iterable
     {
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 
@@ -166,7 +166,7 @@ Integration of %s.
     /**
      * @return string[][]
      */
-    public static function providePHPUnitMigrationTargetVersionsCases(): array
+    public static function providePHPUnitMigrationTargetVersionsCases(): iterable
     {
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 

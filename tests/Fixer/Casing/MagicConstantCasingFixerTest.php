@@ -33,7 +33,7 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             [
@@ -93,7 +93,7 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix74Cases(): array
+    public static function provideFix74Cases(): iterable
     {
         return [
             [

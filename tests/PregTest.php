@@ -212,7 +212,7 @@ final class PregTest extends TestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    public static function provideCommonCases(): array
+    public static function provideCommonCases(): iterable
     {
         return [
             ['/u/u', 'u'],

@@ -581,7 +581,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public static function provideSrcClassCases(): array
+    public static function provideSrcClassCases(): iterable
     {
         return array_map(
             static function (string $item): array {
@@ -591,7 +591,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public static function provideThatSrcClassesNotAbuseInterfacesCases(): array
+    public static function provideThatSrcClassesNotAbuseInterfacesCases(): iterable
     {
         return array_map(
             static function (string $item): array {
@@ -637,7 +637,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public static function provideThatSrcClassHaveTestClassCases(): array
+    public static function provideThatSrcClassHaveTestClassCases(): iterable
     {
         return array_map(
             static fn (string $item): array => [$item],
@@ -667,7 +667,7 @@ final class ProjectCodeTest extends TestCase
         yield from self::$testClassCases;
     }
 
-    public static function provideThereIsNoPregFunctionUsedDirectlyCases(): array
+    public static function provideThereIsNoPregFunctionUsedDirectlyCases(): iterable
     {
         return array_map(
             static fn (string $item): array => [$item],

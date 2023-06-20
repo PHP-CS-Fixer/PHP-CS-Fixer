@@ -193,7 +193,7 @@ final class AnnotationTest extends TestCase
         self::assertSame($expected, $doc->getContent());
     }
 
-    public static function provideRemoveEdgeCasesCases(): array
+    public static function provideRemoveEdgeCasesCases(): iterable
     {
         return [
             // Single line
@@ -242,7 +242,7 @@ final class AnnotationTest extends TestCase
         self::assertSame($expected, $tag->getTypes());
     }
 
-    public static function provideTypeParsingCases(): array
+    public static function provideTypeParsingCases(): iterable
     {
         return [
             [
@@ -468,7 +468,7 @@ final class AnnotationTest extends TestCase
         self::assertSame($output, $line->getContent());
     }
 
-    public static function provideTypesCases(): array
+    public static function provideTypesCases(): iterable
     {
         return [
             [['Foo', 'null'], ['Bar[]'], '     * @param Foo|null $foo', '     * @param Bar[] $foo'],
@@ -494,7 +494,7 @@ final class AnnotationTest extends TestCase
         self::assertSame($expected, $tag->getNormalizedTypes());
     }
 
-    public static function provideNormalizedTypesCases(): array
+    public static function provideNormalizedTypesCases(): iterable
     {
         return [
             [['null', 'string'], '* @param StRiNg|NuLl $foo'],

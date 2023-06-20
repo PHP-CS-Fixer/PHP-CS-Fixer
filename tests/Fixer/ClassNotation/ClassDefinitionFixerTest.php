@@ -118,7 +118,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
         $fixer->configure(['single_line' => 'z']);
     }
 
-    public static function provideFixingAnonymousClassesCases(): array
+    public static function provideFixingAnonymousClassesCases(): iterable
     {
         return [
             [
@@ -315,7 +315,7 @@ A#
         ];
     }
 
-    public static function provideFixingClassesCases(): array
+    public static function provideFixingClassesCases(): iterable
     {
         return array_merge(
             self::provideClassyCases('class'),
@@ -324,7 +324,7 @@ A#
         );
     }
 
-    public static function provideFixingClassesWithConfigCases(): array
+    public static function provideFixingClassesWithConfigCases(): iterable
     {
         return [
             [
@@ -374,7 +374,7 @@ A#
         ];
     }
 
-    public static function provideFixingInterfacesCases(): array
+    public static function provideFixingInterfacesCases(): iterable
     {
         $cases = array_merge(
             self::provideClassyCases('interface'),
@@ -411,7 +411,7 @@ TestInterface3, /**/     TestInterface4   ,
         return $cases;
     }
 
-    public static function provideFixingTraitsCases(): array
+    public static function provideFixingTraitsCases(): iterable
     {
         return self::provideClassyCases('trait');
     }
@@ -437,7 +437,7 @@ TestInterface3, /**/     TestInterface4   ,
         self::assertSame($expected, $result);
     }
 
-    public static function provideClassyDefinitionInfoCases(): array
+    public static function provideClassyDefinitionInfoCases(): iterable
     {
         return [
             [
@@ -646,7 +646,7 @@ namespace {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             [
@@ -704,7 +704,7 @@ $a = new class implements
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): iterable
     {
         return [
             [

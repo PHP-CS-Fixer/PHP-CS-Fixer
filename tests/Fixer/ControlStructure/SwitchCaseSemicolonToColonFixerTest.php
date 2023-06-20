@@ -274,7 +274,7 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases(): array
+    public static function provideFix80Cases(): iterable
     {
         return [
             'Simple match' => [

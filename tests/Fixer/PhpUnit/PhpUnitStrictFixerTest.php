@@ -115,7 +115,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public static function provideNoFixWithWrongNumberOfArgumentsCases(): array
+    public static function provideNoFixWithWrongNumberOfArgumentsCases(): iterable
     {
         $cases = [];
 

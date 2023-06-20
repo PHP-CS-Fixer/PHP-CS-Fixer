@@ -79,7 +79,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
         );
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             [

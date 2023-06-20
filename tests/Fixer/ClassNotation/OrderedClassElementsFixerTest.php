@@ -396,7 +396,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithConfigurationCases(): array
+    public static function provideFixWithConfigurationCases(): iterable
     {
         return [
             [
@@ -1041,7 +1041,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithSortingAlgorithmCases(): array
+    public static function provideFixWithSortingAlgorithmCases(): iterable
     {
         return [
             [

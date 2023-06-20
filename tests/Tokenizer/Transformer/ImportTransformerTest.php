@@ -45,7 +45,7 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public static function provideProcessCases(): array
+    public static function provideProcessCases(): iterable
     {
         return [
             [

@@ -365,7 +365,7 @@ class PsrAutoloadingFixer {}
         ];
     }
 
-    public static function provideIgnoredCases(): array
+    public static function provideIgnoredCases(): iterable
     {
         $cases = ['.php', 'Foo.class.php', '4Foo.php', '$#.php'];
 

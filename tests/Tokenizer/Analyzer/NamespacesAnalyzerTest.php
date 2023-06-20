@@ -44,7 +44,7 @@ final class NamespacesAnalyzerTest extends TestCase
         );
     }
 
-    public static function provideNamespacesCases(): array
+    public static function provideNamespacesCases(): iterable
     {
         return [
             ['<?php // no namespaces', [
