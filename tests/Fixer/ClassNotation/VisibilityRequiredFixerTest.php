@@ -568,7 +568,7 @@ const F=1; }',
         ];
     }
 
-    public function testCommentCases(): void
+    public function testComment(): void
     {
         $expected = '<?php
 class A

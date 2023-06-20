@@ -29,7 +29,6 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixEchoToPrintCases
-     * @dataProvider provideEchoToPrintFixNewCases
      */
     public function testFixEchoToPrint(string $expected, ?string $input = null): void
     {
@@ -37,9 +36,9 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixEchoToPrintCases(): array
+    public static function provideFixEchoToPrintCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                 print "test";
@@ -132,10 +131,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 '<?=$foo?>',
             ],
         ];
-    }
 
-    public static function provideEchoToPrintFixNewCases(): iterable
-    {
         foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
             yield [
                 sprintf($codeSnippet, 'print'),
@@ -146,7 +142,6 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 
     /**
      * @dataProvider provideFixPrintToEchoCases
-     * @dataProvider providePrintToEchoFixNewCases
      */
     public function testFixPrintToEcho(string $expected, ?string $input = null): void
     {
@@ -154,9 +149,9 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPrintToEchoCases(): array
+    public static function provideFixPrintToEchoCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                 echo "test";
@@ -270,10 +265,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 ',
             ],
         ];
-    }
 
-    public static function providePrintToEchoFixNewCases(): iterable
-    {
         foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
             yield [
                 sprintf($codeSnippet, 'echo'),

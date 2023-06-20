@@ -26,11 +26,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class OrderedTypesFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixCasesCases
+     * @dataProvider provideFixCases
      *
      * @param null|array<string, string> $config
      */
-    public function testFixCases(string $expected, ?string $input = null, ?array $config = null): void
+    public function testFix(string $expected, ?string $input = null, ?array $config = null): void
     {
         if (null !== $config) {
             $this->fixer->configure($config);
@@ -42,7 +42,7 @@ final class OrderedTypesFixerTest extends AbstractFixerTestCase
     /**
      * @return iterable<string, (null|array<string, string>|string)[]|string[]>
      */
-    public static function provideFixCasesCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'catch with default, no spaces, with both leading slash' => [
             '<?php
@@ -204,11 +204,11 @@ try {
     }
 
     /**
-     * @dataProvider provideFixDefaultCasesCases
+     * @dataProvider provideFixDefaultCases
      *
      * @requires PHP 8.0
      */
-    public function testFixDefaultCases(string $expected, ?string $input = null): void
+    public function testFixDefault(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -216,7 +216,7 @@ try {
     /**
      * @return iterable<(null|array<string, string>|string)[]|string[]>
      */
-    public static function provideFixDefaultCasesCases(): iterable
+    public static function provideFixDefaultCases(): iterable
     {
         yield [
             "<?php\nclass Foo\n{\n    public null|int|string \$bar = null;\n}\n",

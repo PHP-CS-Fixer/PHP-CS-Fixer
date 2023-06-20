@@ -26,9 +26,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class WhitespacesFixerConfigTest extends TestCase
 {
     /**
-     * @dataProvider provideCasesCases
+     * @dataProvider provideFixCases
      */
-    public function testCases(string $indent, string $lineEnding, ?string $exceptionRegExp = null): void
+    public function testFix(string $indent, string $lineEnding, ?string $exceptionRegExp = null): void
     {
         if (null !== $exceptionRegExp) {
             $this->expectException(\InvalidArgumentException::class);
@@ -41,7 +41,7 @@ final class WhitespacesFixerConfigTest extends TestCase
         self::assertSame($lineEnding, $config->getLineEnding());
     }
 
-    public static function provideCasesCases(): array
+    public static function provideFixCases(): array
     {
         return [
             ['    ', "\n"],
