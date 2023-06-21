@@ -2,7 +2,7 @@
 Rule ``php_unit_data_provider_return_type``
 ===========================================
 
-The types returned by data providers must be ``iterable``.
+The type returned by data provider must be ``iterable``.
 
 Warning
 -------
@@ -10,7 +10,7 @@ Warning
 Using this rule is risky
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Risky when relying on signature of data provider.
+Risky when relying on signature of the data provider.
 
 Examples
 --------

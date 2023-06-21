@@ -2467,9 +2467,9 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderNameFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderNameFixer.php>`_
 -  `php_unit_data_provider_return_type <./rules/php_unit/php_unit_data_provider_return_type.rst>`_
 
-   The types returned by data providers must be ``iterable``.
+   The type returned by data provider must be ``iterable``.
 
-   *warning risky* Risky when relying on signature of data provider.
+   *warning risky* Risky when relying on signature of the data provider.
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderReturnTypeFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixer.php>`_
 -  `php_unit_data_provider_static <./rules/php_unit/php_unit_data_provider_static.rst>`_
