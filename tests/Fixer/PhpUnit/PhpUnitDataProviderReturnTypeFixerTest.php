@@ -23,21 +23,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpUnitDataProviderReturnTypeFixerTest extends AbstractFixerTestCase
 {
-    private const TEMPLATE = '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideFooCases
-     */
-    public function testFoo() {}
-    /**
-     * @dataProvider provider
-     */
-    public function testBar() {}
-    public function provideFooCases()%s {}
-    public function provider()%s {}
-    public function notProvider(): array {}
-}';
-
     /**
      * @dataProvider provideFixCases
      */
@@ -238,9 +223,24 @@ class FooTest extends TestCase {
      */
     private static function mapToTemplate(string $expected, string $actual): array
     {
+        static $template = '<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideFooCases
+     */
+    public function testFoo() {}
+    /**
+     * @dataProvider provider
+     */
+    public function testBar() {}
+    public function provideFooCases()%1$s {}
+    public function provider()%1$s {}
+    public function notProvider(): array {}
+}';
+
         return [
-            sprintf(self::TEMPLATE, $expected, $expected),
-            sprintf(self::TEMPLATE, $actual, $actual),
+            sprintf($template, $expected),
+            sprintf($template, $actual),
         ];
     }
 }
