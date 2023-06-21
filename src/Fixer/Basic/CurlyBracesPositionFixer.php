@@ -261,7 +261,6 @@ $bar = function () { $result = true;
                 $whitespace = $this->whitespacesConfig->getLineEnding().$this->getLineIndentation($tokens, $index);
 
                 $previousTokenIndex = $tokens->getPrevMeaningfulToken($openBraceIndex);
-                $previousToken = $tokens[$previousTokenIndex];
 
                 if ($tokens[$previousTokenIndex]->equals(')')) {
                     if ($tokens[--$previousTokenIndex]->isComment()) {
