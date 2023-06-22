@@ -714,17 +714,6 @@ final class TypeExpressionTest extends TestCase
         return $res;
     }
 
-    private function clearPcreRegexCache(): void
-    {
-        // there is no explicit php function to clear PCRE regex cache, but based
-        // on https://www.php.net/manual/en/intro.pcre.php there are 4096 cache slots
-        // pruned in FIFO fashion, so to clear the cache, replace all existing
-        // cache slots with dummy regexes
-        for ($i = 0; $i < 4096; ++$i) {
-            preg_match('/^'.$i.'/', '');
-        }
-    }
-
     /**
      * Parse type expression with and without PCRE JIT.
      *
@@ -739,7 +728,6 @@ final class TypeExpressionTest extends TestCase
         try {
             foreach ([false, true] as $pcreJit) {
                 ini_set('pcre.jit', $pcreJit ? '1' : '0');
-                $this->clearPcreRegexCache();
 
                 $expression = new TypeExpression($value, null, []);
                 $innerExpressionsData = $this->checkInnerTypeExpressionsStartIndex($expression);
@@ -752,7 +740,6 @@ final class TypeExpressionTest extends TestCase
             }
         } finally {
             ini_set('pcre.jit', $pcreJitBackup);
-            $this->clearPcreRegexCache();
         }
 
         return $expression;
