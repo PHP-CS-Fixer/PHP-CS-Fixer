@@ -42,7 +42,7 @@ final class TransformersTest extends TestCase
         }
     }
 
-    public static function provideTransformCases(): array
+    public static function provideTransformCases(): iterable
     {
         return [
             'use trait after complex string variable' => [

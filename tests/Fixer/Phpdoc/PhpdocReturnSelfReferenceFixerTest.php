@@ -33,7 +33,7 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithDefaultConfigurationCases(): array
+    public static function provideFixWithDefaultConfigurationCases(): iterable
     {
         return [
             [
@@ -88,7 +88,7 @@ trait SomeTrait
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             [
@@ -146,7 +146,7 @@ class F
         $this->doTest($expected, $input);
     }
 
-    public static function provideGeneratedFixCases(): array
+    public static function provideGeneratedFixCases(): iterable
     {
         return [
             ['$this', 'this'],
@@ -171,7 +171,7 @@ class F
         $this->fixer->configure($configuration);
     }
 
-    public static function provideInvalidConfigurationCases(): array
+    public static function provideInvalidConfigurationCases(): iterable
     {
         return [
             [

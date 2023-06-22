@@ -687,7 +687,7 @@ foreach($connections as $key => $sqlite) {
         ];
     }
 
-    public static function provideTraitsCases(): array
+    public static function provideTraitsCases(): iterable
     {
         return [
             [
@@ -705,7 +705,7 @@ trait DocBlocks
         ];
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             [

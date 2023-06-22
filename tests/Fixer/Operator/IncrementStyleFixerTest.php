@@ -46,14 +46,14 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPostIncrementCases(): array
+    public static function provideFixPostIncrementCases(): iterable
     {
         return array_map(static function (array $case): array {
             return array_reverse($case);
         }, self::provideFixPreIncrementCases());
     }
 
-    public static function provideFixPreIncrementCases(): array
+    public static function provideFixPreIncrementCases(): iterable
     {
         $cases = [
             [

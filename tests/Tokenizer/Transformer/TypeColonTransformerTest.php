@@ -42,7 +42,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public static function provideProcessCases(): array
+    public static function provideProcessCases(): iterable
     {
         return [
             [
@@ -121,7 +121,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public static function provideProcess81Cases(): array
+    public static function provideProcess81Cases(): iterable
     {
         return [
             [

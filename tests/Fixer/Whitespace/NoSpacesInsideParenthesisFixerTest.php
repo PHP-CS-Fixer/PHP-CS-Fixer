@@ -56,7 +56,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             [

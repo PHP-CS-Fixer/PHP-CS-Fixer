@@ -273,7 +273,7 @@ final class FixerFactoryTest extends TestCase
         ;
     }
 
-    public static function provideConflictingFixersCases(): array
+    public static function provideConflictingFixersCases(): iterable
     {
         return [
             [new RuleSet(['no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true])],
@@ -371,7 +371,7 @@ final class FixerFactoryTest extends TestCase
         ]));
     }
 
-    public static function provideConfigureFixerWithNonArrayCases(): array
+    public static function provideConfigureFixerWithNonArrayCases(): iterable
     {
         return [
             ['bar'],

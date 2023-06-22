@@ -40,7 +40,7 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideWithTabsCases(): array
+    public static function provideWithTabsCases(): iterable
     {
         return [
             [
@@ -87,7 +87,7 @@ public function myFunction() {
         $this->doTest($expected, $input);
     }
 
-    public static function provideConfiguredCases(): array
+    public static function provideConfiguredCases(): iterable
     {
         return [
             [
@@ -525,7 +525,7 @@ $a = $ae?? $b;
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixDefaultsCases(): array
+    public static function provideFixDefaultsCases(): iterable
     {
         return [
             [
@@ -724,7 +724,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public static function provideUnalignEqualsCases(): array
+    public static function provideUnalignEqualsCases(): iterable
     {
         return [
             [
@@ -900,7 +900,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public static function provideUnalignDoubleArrowCases(): array
+    public static function provideUnalignDoubleArrowCases(): iterable
     {
         return [
             [
@@ -1295,7 +1295,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixAlignEqualsCases(): array
+    public static function provideFixAlignEqualsCases(): iterable
     {
         return [
             [
@@ -1642,7 +1642,7 @@ $start = (
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixAlignDoubleArrowCases(): array
+    public static function provideFixAlignDoubleArrowCases(): iterable
     {
         return [
             [
@@ -2339,7 +2339,7 @@ function test()
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixAlignScopedDoubleArrowCases(): array
+    public static function provideFixAlignScopedDoubleArrowCases(): iterable
     {
         return [
             [
@@ -3068,7 +3068,7 @@ function test()
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPhp74Cases(): array
+    public static function provideFixPhp74Cases(): iterable
     {
         return [
             [

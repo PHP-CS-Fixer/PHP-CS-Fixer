@@ -707,7 +707,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithConfigurationCases(): array
+    public static function provideFixWithConfigurationCases(): iterable
     {
         return [
             [

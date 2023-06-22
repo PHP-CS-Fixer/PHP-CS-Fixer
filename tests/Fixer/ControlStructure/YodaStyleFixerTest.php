@@ -748,7 +748,7 @@ switch ($a) {
         $this->doTest($input, $expected);
     }
 
-    public static function provideLessGreaterCases(): array
+    public static function provideLessGreaterCases(): iterable
     {
         return [
             [
@@ -801,7 +801,7 @@ switch ($a) {
         $this->fixer->configure($config);
     }
 
-    public static function provideInvalidConfigCases(): array
+    public static function provideInvalidConfigCases(): iterable
     {
         return [
             [['equal' => 2], 'Invalid configuration: The option "equal" with value 2 is expected to be of type "bool" or "null", but is of type "(int|integer)"\.'],
@@ -839,7 +839,7 @@ switch ($a) {
         }
     }
 
-    public static function providePHP71Cases(): array
+    public static function providePHP71Cases(): iterable
     {
         return [
             // no fix cases

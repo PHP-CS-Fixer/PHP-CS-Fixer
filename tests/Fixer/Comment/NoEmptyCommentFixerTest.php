@@ -32,7 +32,7 @@ final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             // fix cases
@@ -272,7 +272,7 @@ echo 1;
         self::assertSame($isEmpty, $foundIsEmpty, 'Is empty comment block detection failed.');
     }
 
-    public static function provideGetCommentBlockCases(): array
+    public static function provideGetCommentBlockCases(): iterable
     {
         $cases = [
             [

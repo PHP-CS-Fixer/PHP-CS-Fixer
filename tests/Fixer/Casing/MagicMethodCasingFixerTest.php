@@ -273,7 +273,7 @@ class Foo extends Bar
         $this->doTest($expected, $input);
     }
 
-    public static function provideDoNotFixCases(): array
+    public static function provideDoNotFixCases(): iterable
     {
         return [
             [

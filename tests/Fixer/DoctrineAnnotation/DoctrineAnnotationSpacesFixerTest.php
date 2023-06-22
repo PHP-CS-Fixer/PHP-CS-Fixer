@@ -57,7 +57,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixAll($expected, $input);
     }
 
-    public static function provideFixAllCases(): array
+    public static function provideFixAllCases(): iterable
     {
         $cases = self::createTestCases([
             ['
@@ -372,7 +372,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixAroundParenthesesOnly($expected, $input);
     }
 
-    public static function provideFixAroundParenthesesOnlyCases(): array
+    public static function provideFixAroundParenthesesOnlyCases(): iterable
     {
         return self::createTestCases([
             ['
@@ -626,7 +626,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixAroundCommasOnly($expected, $input);
     }
 
-    public static function provideFixAroundCommasOnlyCases(): array
+    public static function provideFixAroundCommasOnlyCases(): iterable
     {
         return self::createTestCases([
             ['
@@ -892,7 +892,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceBeforeArgumentAssignmentOnly($expected, $input);
     }
 
-    public static function provideFixWithSpaceBeforeArgumentAssignmentOnlyCases(): array
+    public static function provideFixWithSpaceBeforeArgumentAssignmentOnlyCases(): iterable
     {
         return self::createTestCases([
             ['
@@ -940,7 +940,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceBeforeArgumentAssignmentOnly($expected, $input);
     }
 
-    public static function provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases(): array
+    public static function provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases(): iterable
     {
         return self::createTestCases([
             ['
@@ -988,7 +988,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceAfterArgumentAssignmentOnly($expected, $input);
     }
 
-    public static function provideFixWithSpaceAfterArgumentAssignmentOnlyCases(): array
+    public static function provideFixWithSpaceAfterArgumentAssignmentOnlyCases(): iterable
     {
         return self::createTestCases([
             ['
@@ -1036,7 +1036,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceAfterArgumentAssignmentOnly($expected, $input);
     }
 
-    public static function provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases(): array
+    public static function provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases(): iterable
     {
         return self::createTestCases([
             ['
@@ -1084,7 +1084,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceBeforeArrayAssignmentEqualOnly($expected, $input);
     }
 
-    public static function provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases(): array
+    public static function provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases(): iterable
     {
         return self::createTestCases([
             ['
@@ -1132,7 +1132,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceBeforeArrayAssignmentEqualOnly($expected, $input);
     }
 
-    public static function provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases(): array
+    public static function provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases(): iterable
     {
         return self::createTestCases([
             ['
@@ -1180,7 +1180,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceAfterArrayAssignmentEqualOnly($expected, $input);
     }
 
-    public static function provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases(): array
+    public static function provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases(): iterable
     {
         return self::createTestCases([
             ['
@@ -1228,7 +1228,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceAfterArrayAssignmentEqualOnly($expected, $input);
     }
 
-    public static function provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases(): array
+    public static function provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases(): iterable
     {
         return self::createTestCases([
             ['
@@ -1276,7 +1276,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceBeforeArrayAssignmentColonOnly($expected, $input);
     }
 
-    public static function provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases(): array
+    public static function provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases(): iterable
     {
         return self::createTestCases([
             ['
@@ -1324,7 +1324,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceBeforeArrayAssignmentColonOnly($expected, $input);
     }
 
-    public static function provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases(): array
+    public static function provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases(): iterable
     {
         return self::createTestCases([
             ['
@@ -1372,7 +1372,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceAfterArrayAssignmentColonOnly($expected, $input);
     }
 
-    public static function provideFixWithSpaceAfterArrayAssignmentColonOnlyCases(): array
+    public static function provideFixWithSpaceAfterArrayAssignmentColonOnlyCases(): iterable
     {
         return self::createTestCases([
             ['
@@ -1420,7 +1420,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceAfterArrayAssignmentColonOnly($expected, $input);
     }
 
-    public static function provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases(): array
+    public static function provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases(): iterable
     {
         return self::createTestCases([
             ['

@@ -33,7 +33,7 @@ final class PhpUnitSetUpTearDownVisibilityFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             'setUp and tearDown are made protected if they are public' => [

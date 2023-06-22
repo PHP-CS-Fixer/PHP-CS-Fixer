@@ -403,7 +403,7 @@ $a#
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestAssertCountCases(): array
+    public static function provideTestAssertCountCases(): iterable
     {
         return [
             // positive fixing

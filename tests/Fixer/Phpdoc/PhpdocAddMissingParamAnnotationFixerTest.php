@@ -99,7 +99,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             [
@@ -381,7 +381,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): iterable
     {
         return [
             [
@@ -400,7 +400,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
-    public static function provideByReferenceCases(): array
+    public static function provideByReferenceCases(): iterable
     {
         return [
             [
@@ -445,7 +445,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
-    public static function provideVariableNumberOfArgumentsCases(): array
+    public static function provideVariableNumberOfArgumentsCases(): iterable
     {
         return [
             [

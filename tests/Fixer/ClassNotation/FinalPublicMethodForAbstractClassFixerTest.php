@@ -36,7 +36,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         $original = $fixed = self::getClassElementStubs();
         $fixed = str_replace('public function f1', 'final public function f1', $fixed);

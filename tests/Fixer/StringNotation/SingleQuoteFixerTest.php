@@ -33,7 +33,7 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             [
@@ -133,7 +133,7 @@ EOF
         $this->doTest($expected, $input);
     }
 
-    public static function provideSingleQuoteFixCases(): array
+    public static function provideSingleQuoteFixCases(): iterable
     {
         return [
             [

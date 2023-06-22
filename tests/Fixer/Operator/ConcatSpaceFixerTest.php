@@ -51,7 +51,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithoutSpaceCases(): array
+    public static function provideFixWithoutSpaceCases(): iterable
     {
         return [
             [
@@ -150,7 +150,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithSpaceCases(): array
+    public static function provideFixWithSpaceCases(): iterable
     {
         return [
             [

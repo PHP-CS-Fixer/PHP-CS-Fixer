@@ -34,7 +34,7 @@ final class NoWhitespaceInBlankLineFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             [
@@ -152,7 +152,7 @@ $t = true> 9;       '.'
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): iterable
     {
         return [
             [

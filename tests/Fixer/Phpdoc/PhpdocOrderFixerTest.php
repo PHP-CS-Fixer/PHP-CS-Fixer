@@ -387,7 +387,7 @@ EOF;
     /**
      * @return array<string, mixed>[][]
      */
-    public static function provideDifferentOrderCases(): array
+    public static function provideDifferentOrderCases(): iterable
     {
         return [
             [['order' => ['param', 'throw', 'return']]],
@@ -410,7 +410,7 @@ EOF;
     /**
      * @return array<array<null|array<string, mixed>|string>>
      */
-    public static function provideFixBasicCaseWithDifferentOrdersCases(): array
+    public static function provideFixBasicCaseWithDifferentOrdersCases(): iterable
     {
         $input = <<<'EOF'
 <?php
@@ -533,7 +533,7 @@ EOF;
     /**
      * @return array<string, array<int, string|string[][]>>
      */
-    public static function provideFixCompleteCasesWithCustomOrdersCases(): array
+    public static function provideFixCompleteCasesWithCustomOrdersCases(): iterable
     {
         return [
             'intepacuthre' => [

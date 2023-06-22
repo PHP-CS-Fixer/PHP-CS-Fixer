@@ -70,7 +70,7 @@ final class TransformerTest extends TestCase
         self::fail(sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
     }
 
-    public static function provideTransformerPriorityCases(): array
+    public static function provideTransformerPriorityCases(): iterable
     {
         $transformers = [];
 
@@ -102,7 +102,7 @@ final class TransformerTest extends TestCase
     /**
      * @return TransformerInterface[]
      */
-    public static function provideTransformerPriorityIsListedCases(): array
+    public static function provideTransformerPriorityIsListedCases(): iterable
     {
         static $transformersArray = null;
 

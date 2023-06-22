@@ -76,7 +76,7 @@ final class TokensTest extends TestCase
         );
     }
 
-    public static function provideFindSequenceCases(): array
+    public static function provideFindSequenceCases(): iterable
     {
         return [
             [
@@ -294,7 +294,7 @@ final class TokensTest extends TestCase
         $tokens->findSequence($sequence);
     }
 
-    public static function provideFindSequenceExceptionCases(): array
+    public static function provideFindSequenceExceptionCases(): iterable
     {
         $emptyToken = new Token('');
 
@@ -534,7 +534,7 @@ PHP;
         }
     }
 
-    public static function provideClearTokenAndMergeSurroundingWhitespaceCases(): array
+    public static function provideClearTokenAndMergeSurroundingWhitespaceCases(): iterable
     {
         $clearToken = new Token('');
 
@@ -657,7 +657,7 @@ PHP;
         self::assertSame($expectedIndex, $tokens->getTokenOfKindSibling($index, $direction, $findTokens, $caseSensitive));
     }
 
-    public static function provideTokenOfKindSiblingCases(): array
+    public static function provideTokenOfKindSiblingCases(): iterable
     {
         return [
             // find next cases
@@ -696,7 +696,7 @@ PHP;
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
-    public static function provideFindBlockEndCases(): array
+    public static function provideFindBlockEndCases(): iterable
     {
         return [
             [4, '<?php ${$bar};', Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2],
@@ -727,7 +727,7 @@ PHP;
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
-    public static function provideFindBlockEnd80Cases(): array
+    public static function provideFindBlockEnd80Cases(): iterable
     {
         return [
             [
@@ -913,7 +913,7 @@ PHP;
         self::assertSame($isEmpty, $tokens->isEmptyAt(0), $token->toJson());
     }
 
-    public static function provideIsEmptyCases(): array
+    public static function provideIsEmptyCases(): iterable
     {
         return [
             [new Token(''), true],
@@ -952,7 +952,7 @@ PHP;
         self::assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
-    public static function provideEnsureWhitespaceAtIndexCases(): array
+    public static function provideEnsureWhitespaceAtIndexCases(): iterable
     {
         return [
             [
@@ -1116,7 +1116,7 @@ echo $a;',
         self::assertSame($expected, $tokens->generateCode());
     }
 
-    public static function provideRemoveLeadingWhitespaceCases(): array
+    public static function provideRemoveLeadingWhitespaceCases(): iterable
     {
         return [
             [

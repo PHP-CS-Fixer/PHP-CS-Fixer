@@ -263,7 +263,7 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public static function provideNotFixCases(): array
+    public static function provideNotFixCases(): iterable
     {
         return [
             [
@@ -291,7 +291,7 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases(): array
+    public static function provideFix80Cases(): iterable
     {
         return [
             [

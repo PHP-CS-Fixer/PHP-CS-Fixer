@@ -72,7 +72,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     /**
      * @return array[]
      */
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             [

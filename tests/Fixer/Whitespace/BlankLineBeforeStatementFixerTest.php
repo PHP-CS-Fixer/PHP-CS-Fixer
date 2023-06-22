@@ -42,7 +42,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    public static function provideConfigureRejectsInvalidControlStatementCases(): array
+    public static function provideConfigureRejectsInvalidControlStatementCases(): iterable
     {
         return [
             'null' => [null],
@@ -76,7 +76,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithBreakCases(): array
+    public static function provideFixWithBreakCases(): iterable
     {
         return [
             [
@@ -175,7 +175,7 @@ while (true) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithCaseCases(): array
+    public static function provideFixWithCaseCases(): iterable
     {
         return [
             [
@@ -215,7 +215,7 @@ switch ($a) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithContinueCases(): array
+    public static function provideFixWithContinueCases(): iterable
     {
         return [
             [
@@ -307,7 +307,7 @@ while (true) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithDeclareCases(): array
+    public static function provideFixWithDeclareCases(): iterable
     {
         return [
             [
@@ -344,7 +344,7 @@ declare(ticks=1);',
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithDefaultCases(): array
+    public static function provideFixWithDefaultCases(): iterable
     {
         return [
             [
@@ -389,7 +389,7 @@ switch ($a1) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithDoCases(): array
+    public static function provideFixWithDoCases(): iterable
     {
         return [
             [
@@ -423,7 +423,7 @@ do {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithExitCases(): array
+    public static function provideFixWithExitCases(): iterable
     {
         return [
             [
@@ -479,7 +479,7 @@ if ($foo === $bar) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithForCases(): array
+    public static function provideFixWithForCases(): iterable
     {
         return [
             [
@@ -508,7 +508,7 @@ if ($foo === $bar) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithGotoCases(): array
+    public static function provideFixWithGotoCases(): iterable
     {
         return [
             [
@@ -561,7 +561,7 @@ if ($foo === $bar) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithIfCases(): array
+    public static function provideFixWithIfCases(): iterable
     {
         return [
             [
@@ -608,7 +608,7 @@ if ($foo) { }',
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithForEachCases(): array
+    public static function provideFixWithForEachCases(): iterable
     {
         return [
             [
@@ -637,7 +637,7 @@ if ($foo) { }',
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithIncludeCases(): array
+    public static function provideFixWithIncludeCases(): iterable
     {
         return [
             [
@@ -668,7 +668,7 @@ include "foo.php";',
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithIncludeOnceCases(): array
+    public static function provideFixWithIncludeOnceCases(): iterable
     {
         return [
             [
@@ -699,7 +699,7 @@ include_once "foo.php";',
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithRequireCases(): array
+    public static function provideFixWithRequireCases(): iterable
     {
         return [
             [
@@ -730,7 +730,7 @@ require "foo.php";',
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithRequireOnceCases(): array
+    public static function provideFixWithRequireOnceCases(): iterable
     {
         return [
             [
@@ -761,7 +761,7 @@ require_once "foo.php";',
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithReturnCases(): array
+    public static function provideFixWithReturnCases(): iterable
     {
         return [
             [
@@ -903,7 +903,7 @@ function foo()
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithReturnAndMessyWhitespacesCases(): array
+    public static function provideFixWithReturnAndMessyWhitespacesCases(): iterable
     {
         return [
             [
@@ -933,7 +933,7 @@ function foo()
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithSwitchCases(): array
+    public static function provideFixWithSwitchCases(): iterable
     {
         return [
             [
@@ -973,7 +973,7 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithThrowCases(): array
+    public static function provideFixWithThrowCases(): iterable
     {
         return [
             [
@@ -1010,7 +1010,7 @@ if (false) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithTryCases(): array
+    public static function provideFixWithTryCases(): iterable
     {
         return [
             [
@@ -1053,7 +1053,7 @@ try {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithWhileCases(): array
+    public static function provideFixWithWhileCases(): iterable
     {
         return [
             [
@@ -1112,7 +1112,7 @@ do {
     /**
      * @yield array
      */
-    public static function provideFixWithYieldCases(): array
+    public static function provideFixWithYieldCases(): iterable
     {
         return [
             [
@@ -1234,7 +1234,7 @@ function foo() {
     /**
      * @yield array
      */
-    public static function provideFixWithYieldFromCases(): array
+    public static function provideFixWithYieldFromCases(): iterable
     {
         return [
             [
@@ -1294,7 +1294,7 @@ function foo() {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithMultipleConfigStatementsCases(): array
+    public static function provideFixWithMultipleConfigStatementsCases(): iterable
     {
         $statementsWithoutCaseOrDefault = [
             'break',

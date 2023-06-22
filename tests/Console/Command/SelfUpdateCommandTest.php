@@ -81,7 +81,7 @@ final class SelfUpdateCommandTest extends TestCase
         self::assertSame($command, $application->find($name));
     }
 
-    public static function provideCommandNameCases(): array
+    public static function provideCommandNameCases(): iterable
     {
         return [
             ['self-update'],
@@ -135,7 +135,7 @@ final class SelfUpdateCommandTest extends TestCase
         self::assertSame(0, $commandTester->getStatusCode());
     }
 
-    public static function provideExecuteCases(): array
+    public static function provideExecuteCases(): iterable
     {
         $currentVersion = Application::VERSION;
         $minorRelease = self::getNewMinorReleaseVersion();
@@ -276,7 +276,7 @@ OUTPUT;
         self::assertSame(1, $commandTester->getStatusCode());
     }
 
-    public static function provideExecuteWhenNotAbleToGetLatestVersionsCases(): array
+    public static function provideExecuteWhenNotAbleToGetLatestVersionsCases(): iterable
     {
         return [
             [false, false, [], true],
@@ -322,7 +322,7 @@ OUTPUT;
         self::assertSame(1, $commandTester->getStatusCode());
     }
 
-    public static function provideExecuteWhenNotInstalledAsPharCases(): array
+    public static function provideExecuteWhenNotInstalledAsPharCases(): iterable
     {
         return [
             [[], true],

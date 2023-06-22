@@ -59,7 +59,7 @@ abstract class AbstractLinterTestCase extends TestCase
     /**
      * @medium
      */
-    public static function provideLintFileCases(): array
+    public static function provideLintFileCases(): iterable
     {
         return [
             [
@@ -92,7 +92,7 @@ abstract class AbstractLinterTestCase extends TestCase
         $linter->lintSource($source)->check();
     }
 
-    public static function provideLintSourceCases(): array
+    public static function provideLintSourceCases(): iterable
     {
         return [
             [

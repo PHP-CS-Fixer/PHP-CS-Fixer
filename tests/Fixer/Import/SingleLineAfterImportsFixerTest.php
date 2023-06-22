@@ -514,7 +514,7 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): array
+    public static function provideMessyWhitespacesCases(): iterable
     {
         return [
             [

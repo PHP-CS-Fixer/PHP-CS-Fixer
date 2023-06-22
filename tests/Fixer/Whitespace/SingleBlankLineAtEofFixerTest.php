@@ -34,7 +34,7 @@ final class SingleBlankLineAtEofFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             'Not adding an empty line in empty file.' => [

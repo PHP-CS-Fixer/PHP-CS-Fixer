@@ -613,7 +613,7 @@ namespace {
         ];
     }
 
-    public static function provideCodeWithReturnTypesCasesWithNullableCases(): array
+    public static function provideCodeWithReturnTypesCasesWithNullableCases(): iterable
     {
         return [
             'Test namespace fixes with nullable types' => [

@@ -36,7 +36,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             [
@@ -277,7 +277,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    public static function provideConfigureWithInvalidReplacementsCases(): array
+    public static function provideConfigureWithInvalidReplacementsCases(): iterable
     {
         return [
             [

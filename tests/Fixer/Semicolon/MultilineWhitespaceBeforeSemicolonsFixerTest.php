@@ -39,7 +39,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTe
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixMultiLineWhitespaceCases(): array
+    public static function provideFixMultiLineWhitespaceCases(): iterable
     {
         return [
             [
@@ -263,7 +263,7 @@ $seconds = $minutes
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesMultiLineWhitespaceCases(): array
+    public static function provideMessyWhitespacesMultiLineWhitespaceCases(): iterable
     {
         return [
             [
@@ -282,7 +282,7 @@ $seconds = $minutes
         $this->doTest($expected, $input);
     }
 
-    public static function provideSemicolonForChainedCallsFixCases(): array
+    public static function provideSemicolonForChainedCallsFixCases(): iterable
     {
         return [
             [
@@ -1085,7 +1085,7 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesSemicolonForChainedCallsCases(): array
+    public static function provideMessyWhitespacesSemicolonForChainedCallsCases(): iterable
     {
         return [
             [

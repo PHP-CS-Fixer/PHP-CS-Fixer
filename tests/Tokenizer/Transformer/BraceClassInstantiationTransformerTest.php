@@ -41,7 +41,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
-    public static function provideProcessCases(): array
+    public static function provideProcessCases(): iterable
     {
         return [
             [

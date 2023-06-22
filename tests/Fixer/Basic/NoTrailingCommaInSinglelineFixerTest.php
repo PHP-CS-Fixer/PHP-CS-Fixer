@@ -274,7 +274,7 @@ $foo1b = function() use ($bar, ) {};
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixNoTrailingCommaInSinglelineArrayFixerCases(): array
+    public static function provideFixNoTrailingCommaInSinglelineArrayFixerCases(): iterable
     {
         return [
             ['<?php $x = array();'],

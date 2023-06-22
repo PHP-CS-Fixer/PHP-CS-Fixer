@@ -33,7 +33,7 @@ final class StrictComparisonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return [
             ['<?php $a === $b;', '<?php $a == $b;'],

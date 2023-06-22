@@ -32,7 +32,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         return self::withLongArraySyntaxCases([
             [
@@ -863,7 +863,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithTabsCases(): array
+    public static function provideFixWithTabsCases(): iterable
     {
         return self::withLongArraySyntaxCases([
             [

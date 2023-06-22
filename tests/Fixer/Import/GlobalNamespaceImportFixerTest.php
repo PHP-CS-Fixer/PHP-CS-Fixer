@@ -34,7 +34,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixImportConstantsCases(): array
+    public static function provideFixImportConstantsCases(): iterable
     {
         return [
             'non-global names' => [
@@ -235,7 +235,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixImportFunctionsCases(): array
+    public static function provideFixImportFunctionsCases(): iterable
     {
         return [
             'non-global names' => [
@@ -439,7 +439,7 @@ EXPECTED
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixImportClassesCases(): array
+    public static function provideFixImportClassesCases(): iterable
     {
         return [
             'non-global names' => [
@@ -726,7 +726,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixFullyQualifyConstantsCases(): array
+    public static function provideFixFullyQualifyConstantsCases(): iterable
     {
         return [
             'already fqn or sub namespace' => [
@@ -785,7 +785,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixFullyQualifyFunctionsCases(): array
+    public static function provideFixFullyQualifyFunctionsCases(): iterable
     {
         return [
             'already fqn or sub namespace' => [
@@ -851,7 +851,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixFullyQualifyClassesCases(): array
+    public static function provideFixFullyQualifyClassesCases(): iterable
     {
         return [
             'already fqn or sub namespace' => [

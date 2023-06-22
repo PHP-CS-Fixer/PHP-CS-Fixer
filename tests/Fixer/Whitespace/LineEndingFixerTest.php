@@ -34,7 +34,7 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): array
+    public static function provideFixCases(): iterable
     {
         $cases = self::provideCommonCases();
 

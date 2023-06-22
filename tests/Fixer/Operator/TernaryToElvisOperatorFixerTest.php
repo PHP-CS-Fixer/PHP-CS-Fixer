@@ -502,7 +502,7 @@ EOT
         $this->doTest($input);
     }
 
-    public static function provideDoNotFix80Cases(): array
+    public static function provideDoNotFix80Cases(): iterable
     {
         return [
             ['<?php

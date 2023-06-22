@@ -72,7 +72,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public static function provideCommentsCases(): array
+    public static function provideCommentsCases(): iterable
     {
         return [
             [
@@ -206,7 +206,7 @@ $var = $arr[0]{     0
         }
     }
 
-    public static function provideFixSpaceInsideOffsetCases(): array
+    public static function provideFixSpaceInsideOffsetCases(): iterable
     {
         return [
             [

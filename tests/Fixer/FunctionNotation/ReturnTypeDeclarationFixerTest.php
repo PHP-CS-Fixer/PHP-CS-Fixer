@@ -57,7 +57,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithSpaceBeforeNoneCases(): array
+    public static function provideFixWithSpaceBeforeNoneCases(): iterable
     {
         return [
             [
@@ -127,7 +127,7 @@ string {}',
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithSpaceBeforeOneCases(): array
+    public static function provideFixWithSpaceBeforeOneCases(): iterable
     {
         return [
             [

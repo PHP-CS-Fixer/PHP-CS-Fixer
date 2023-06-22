@@ -104,7 +104,7 @@ class Test
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixToShortSyntaxCases(): array
+    public static function provideFixToShortSyntaxCases(): iterable
     {
         return [
             [
