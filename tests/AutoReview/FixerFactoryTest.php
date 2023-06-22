@@ -145,9 +145,9 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider providePriorityIntegrationTestFilesAreListedAsPriorityCasesCases
+     * @dataProvider providePriorityIntegrationTestFilesAreListedInPriorityGraphCases
      */
-    public function testPriorityIntegrationTestFilesAreListedAsPriorityCases(\SplFileInfo $file): void
+    public function testPriorityIntegrationTestFilesAreListedInPriorityGraph(\SplFileInfo $file): void
     {
         $fileName = $file->getFilename();
 
@@ -168,7 +168,7 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
-    public static function providePriorityIntegrationTestFilesAreListedAsPriorityCasesCases(): iterable
+    public static function providePriorityIntegrationTestFilesAreListedInPriorityGraphCases(): iterable
     {
         foreach (new \DirectoryIterator(self::getIntegrationPriorityDirectory()) as $candidate) {
             if (!$candidate->isDot()) {

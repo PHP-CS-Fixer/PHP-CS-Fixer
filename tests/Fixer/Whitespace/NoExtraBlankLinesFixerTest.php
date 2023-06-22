@@ -775,9 +775,9 @@ class Foo
     }
 
     /**
-     * @dataProvider provideOneOrInLineCasesCases
+     * @dataProvider provideOneOrInLineCases
      */
-    public function testOneOrInLineCases(string $expected, ?string $input = null): void
+    public function testOneOrInLine(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['tokens' => [
             'break',
@@ -792,7 +792,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public static function provideOneOrInLineCasesCases(): iterable
+    public static function provideOneOrInLineCases(): iterable
     {
         yield [
             "<?php\n\n\$a = function() use (\$b) { while(3<1)break; \$c = \$b[1]; while(\$b<1)continue; if (true) throw \$e; return 1; };\n\n",

@@ -218,15 +218,15 @@ second line*/',
     }
 
     /**
-     * @dataProvider provideHashCasesCases
+     * @dataProvider provideHashCases
      */
-    public function testHashCases(string $expected, ?string $input = null): void
+    public function testHash(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['comment_types' => ['hash']]);
         $this->doTest($expected, $input);
     }
 
-    public static function provideHashCasesCases(): array
+    public static function provideHashCases(): array
     {
         return [
             [
@@ -288,14 +288,14 @@ second line*/',
     }
 
     /**
-     * @dataProvider provideAllCasesCases
+     * @dataProvider provideAllCases
      */
-    public function testAllCases(string $expected, ?string $input = null): void
+    public function testAll(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideAllCasesCases(): array
+    public static function provideAllCases(): array
     {
         return [
             [

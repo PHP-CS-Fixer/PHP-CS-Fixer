@@ -817,7 +817,7 @@ switch ($a) {
     /**
      * @dataProvider providePHP71Cases
      */
-    public function testPHP71Cases(string $expected, ?string $input = null): void
+    public function testPHP71(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['equal' => true, 'identical' => true]);
         $this->doTest($expected, $input);
@@ -828,7 +828,7 @@ switch ($a) {
      *
      * @dataProvider providePHP71Cases
      */
-    public function testPHP71CasesInverse(string $expected, ?string $input = null): void
+    public function testPHP71Inverse(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['equal' => false, 'identical' => false]);
 

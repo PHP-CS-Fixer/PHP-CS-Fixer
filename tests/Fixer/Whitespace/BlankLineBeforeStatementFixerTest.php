@@ -1497,9 +1497,9 @@ enum UserStatus: string {
     }
 
     /**
-     * @dataProvider provideFixWithDocCommentCasesCases
+     * @dataProvider provideFixWithDocCommentCases
      */
-    public function testFixWithDocCommentCases(string $expected, string $input = null): void
+    public function testFixWithDocComment(string $expected, string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['phpdoc'],
@@ -1508,7 +1508,7 @@ enum UserStatus: string {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithDocCommentCasesCases(): iterable
+    public static function provideFixWithDocCommentCases(): iterable
     {
         yield [
             '<?php
