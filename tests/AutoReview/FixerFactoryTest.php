@@ -399,6 +399,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'curly_braces_position' => [
                 'single_line_empty_body',
+                'statement_indentation',
             ],
             'declare_strict_types' => [
                 'blank_line_after_opening_tag',

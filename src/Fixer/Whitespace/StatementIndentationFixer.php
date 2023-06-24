@@ -64,11 +64,11 @@ else {
      * {@inheritdoc}
      *
      * Must run before HeredocIndentationFixer.
-     * Must run after ClassAttributesSeparationFixer.
+     * Must run after ClassAttributesSeparationFixer, CurlyBracesPositionFixer.
      */
     public function getPriority(): int
     {
-        return parent::getPriority();
+        return -3;
     }
 
     public function isCandidate(Tokens $tokens): bool
