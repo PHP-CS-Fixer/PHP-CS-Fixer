@@ -49,30 +49,30 @@ final class TypeExpression
             (?:
                 (?<array_shape>
                     (?<array_shape_start>(?i)(?:array|list|object)(?-i)\h*\{\h*)
-                        (?<array_shape_inners>
-                            (?<array_shape_inner>
-                                (?<array_shape_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
-                                (?<array_shape_inner_value>(?&types_inner))
-                            )
-                            (?:
-                                \h*,\h*
-                                (?&array_shape_inner)
-                            )*
-                            (?:\h*,\h*)?
-                        )?
+                    (?<array_shape_inners>
+                        (?<array_shape_inner>
+                            (?<array_shape_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
+                            (?<array_shape_inner_value>(?&types_inner))
+                        )
+                        (?:
+                            \h*,\h*
+                            (?&array_shape_inner)
+                        )*
+                        (?:\h*,\h*)?
+                    )?
                     \h*\}
                 )
                 |
                 (?<callable> # callable syntax, e.g. `callable(string): bool`
                     (?<callable_start>(?i)(?:callable|\\\\?Closure)(?-i)\h*\(\h*)
-                        (?<callable_arguments>
+                    (?<callable_arguments>
+                        (?&types_inner)
+                        (?:
+                            \h*,\h*
                             (?&types_inner)
-                            (?:
-                                \h*,\h*
-                                (?&types_inner)
-                            )*
-                            (?:\h*,\h*)?
-                        )?
+                        )*
+                        (?:\h*,\h*)?
+                    )?
                     \h*\)
                     (?:
                         \h*\:\h*
@@ -85,13 +85,13 @@ final class TypeExpression
                         (?&name)+
                         \h*<\h*
                     )
-                        (?<generic_types>
+                    (?<generic_types>
+                        (?&types_inner)
+                        (?:
+                            \h*,\h*
                             (?&types_inner)
-                            (?:
-                                \h*,\h*
-                                (?&types_inner)
-                            )*
-                        )
+                        )*
+                    )
                     \h*>
                 )
                 |
