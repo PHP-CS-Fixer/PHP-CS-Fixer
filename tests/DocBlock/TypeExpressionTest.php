@@ -673,32 +673,32 @@ final class TypeExpressionTest extends TestCase
             'bool|callable(): (float|string)',
         ];
 
-        yield 'simple in closure argument' => [
+        yield 'simple in Closure argument' => [
             'Closure(int|bool)',
             'Closure(bool|int)',
         ];
 
-        yield 'closure with multiple arguments' => [
+        yield 'Closure with multiple arguments' => [
             'Closure(int|bool, null|array)',
             'Closure(bool|int, array|null)',
         ];
 
-        yield 'simple in closure argument with trailing comma' => [
+        yield 'simple in Closure argument with trailing comma' => [
             'Closure(int|bool,)',
             'Closure(bool|int,)',
         ];
 
-        yield 'simple in closure argument multiple arguments with trailing comma' => [
+        yield 'simple in Closure argument multiple arguments with trailing comma' => [
             'Closure(int|bool, null|array,)',
             'Closure(bool|int, array|null,)',
         ];
 
-        yield 'simple in closure return type' => [
+        yield 'simple in Closure return type' => [
             'Closure(): (string|float)',
             'Closure(): (float|string)',
         ];
 
-        yield 'closure with union return type and within union itself' => [
+        yield 'Closure with union return type and within union itself' => [
             'Closure(): (string|float)|bool',
             'bool|Closure(): (float|string)',
         ];
