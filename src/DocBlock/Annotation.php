@@ -163,9 +163,13 @@ final class Annotation
     /**
      * @internal
      */
-    public function getTypeExpression(): TypeExpression
+    public function getTypeExpression(): ?TypeExpression
     {
-        return new TypeExpression($this->getTypesContent(), $this->namespace, $this->namespaceUses);
+        $typesContent = $this->getTypesContent();
+
+        return null === $typesContent
+            ? null
+            : new TypeExpression($typesContent, $this->namespace, $this->namespaceUses);
     }
 
     /**
@@ -175,7 +179,7 @@ final class Annotation
      */
     public function getVariableName()
     {
-        $type = preg_quote($this->getTypesContent(), '/');
+        $type = preg_quote($this->getTypesContent() ?? '', '/');
         $regex = "/@{$this->tag->getName()}\\s+({$type}\\s*)?(&\\s*)?(\\.{3}\\s*)?(?<variable>\\$.+?)(?:[\\s*]|$)/";
 
         if (Preg::match($regex, $this->lines[0]->getContent(), $matches)) {
@@ -193,7 +197,10 @@ final class Annotation
     public function getTypes(): array
     {
         if (null === $this->types) {
-            $this->types = $this->getTypeExpression()->getTypes();
+            $typeExpression = $this->getTypeExpression();
+            $this->types = null === $typeExpression
+                ? []
+                : $typeExpression->getTypes();
         }
 
         return $this->types;
@@ -275,7 +282,7 @@ final class Annotation
      *
      * Be careful modifying the underlying line as that won't flush the cache.
      */
-    private function getTypesContent(): string
+    private function getTypesContent(): ?string
     {
         if (null === $this->typesContent) {
             $name = $this->getTag()->getName();
@@ -285,14 +292,14 @@ final class Annotation
             }
 
             $matchingResult = Preg::match(
-                '{^(?:\s*\*|/\*\*)\s*@'.$name.'\s+'.TypeExpression::REGEX_TYPES.'(?:(?:[*\h\v]|\&?[\.\$]).*)?\r?$}isx',
+                '{^(?:\s*\*|/\*\*)\s*@'.$name.'\s+'.TypeExpression::REGEX_TYPES.'(?:(?:[*\h\v]|\&?[\.\$]).*)?\r?$}is',
                 $this->lines[0]->getContent(),
                 $matches
             );
 
             $this->typesContent = 1 === $matchingResult
                 ? $matches['types']
-                : '';
+                : null;
         }
 
         return $this->typesContent;

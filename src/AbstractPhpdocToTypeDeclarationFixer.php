@@ -16,6 +16,7 @@ namespace PhpCsFixer;
 
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -31,7 +32,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private const CLASS_REGEX = '/^\\\\?[a-zA-Z_\\x7f-\\xff](?:\\\\?[a-zA-Z0-9_\\x7f-\\xff]+)*$/';
+    private const REGEX_CLASS = '(?:\\\\?+'.TypeExpression::REGEX_IDENTIFIER
+        .'(\\\\'.TypeExpression::REGEX_IDENTIFIER.')*+)';
 
     /**
      * @var array<string, int>
@@ -168,6 +170,9 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
     protected function getCommonTypeFromAnnotation(Annotation $annotation, bool $isReturnType): ?array
     {
         $typesExpression = $annotation->getTypeExpression();
+        if (null === $typesExpression) {
+            return null;
+        }
 
         $commonType = $typesExpression->getCommonType();
         $isNullable = $typesExpression->allowsNull();
@@ -196,7 +201,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
             if (false === $this->configuration['scalar_types']) {
                 return null;
             }
-        } elseif (1 !== Preg::match(self::CLASS_REGEX, $commonType)) {
+        } elseif (1 !== Preg::match('/^'.self::REGEX_CLASS.'$/', $commonType)) {
             return null;
         }
 

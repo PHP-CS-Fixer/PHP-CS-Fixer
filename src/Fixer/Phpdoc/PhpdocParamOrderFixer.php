@@ -17,6 +17,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -236,12 +237,7 @@ function m($a, array $b, Foo $c) {}
         $blockMatch = false;
         $blockIndices = [];
 
-        $typeDeclaration = sprintf('[\w\s<>,%s]*', preg_quote('\[]|?'));
-        $paramRegex = sprintf(
-            '/\*\s*@param\s*%s\s*&?\$\b%s\b/',
-            $typeDeclaration,
-            substr($identifier, 1) // Remove starting `$` from variable name
-        );
+        $paramRegex = '/\*\s*@param\s*(?:|'.TypeExpression::REGEX_TYPES.'\s*)&?(?=\$\b)'.preg_quote($identifier).'\b/';
 
         foreach ($paramAnnotations as $i => $param) {
             $blockStart = Preg::match('/\s*{\s*/', $param->getContent());

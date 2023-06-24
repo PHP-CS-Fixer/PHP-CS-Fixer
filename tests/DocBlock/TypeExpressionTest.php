@@ -265,6 +265,101 @@ final class TypeExpressionTest extends TestCase
         }
     }
 
+    /**
+     * @dataProvider provideParseInvalidExceptionCases
+     */
+    public function testParseInvalidException(string $value): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Unable to parse phpdoc type');
+        new TypeExpression($value, null, []);
+    }
+
+    public static function provideParseInvalidExceptionCases(): iterable
+    {
+        yield [''];
+
+        yield ['0_class_cannot_start_with_number'];
+
+        yield ['$0_variable_cannot_start_with_number'];
+
+        yield ['class cannot contain space'];
+
+        yield ['\\\\class_with_double_backslash'];
+
+        yield ['class\\\\with_double_backslash'];
+
+        yield ['class_with_end_backslash\\'];
+
+        yield ['class/with_slash'];
+
+        yield ['class--with_double_dash'];
+
+        yield ['class.with_dot'];
+
+        yield ['class,with_comma'];
+
+        yield ['class@with_at_sign'];
+
+        yield ['class:with_colon'];
+
+        yield ['class#with_hash'];
+
+        yield ['class//with_double_slash'];
+
+        yield ['class$with_dollar'];
+
+        yield ['class:with_colon'];
+
+        yield ['class;with_semicolon'];
+
+        yield ['class=with_equal_sign'];
+
+        yield ['class+with_plus'];
+
+        yield ['class?with_question_mark'];
+
+        yield ['class*with_star'];
+
+        yield ['class%with_percent'];
+
+        yield ['(unclosed_parenthesis'];
+
+        yield [')unclosed_parenthesis'];
+
+        yield ['unclosed_parenthesis('];
+
+        yield ['((unclosed_parenthesis)'];
+
+        yield ['array<'];
+
+        yield ['array<<'];
+
+        yield ['array>'];
+
+        yield ['array<<>'];
+
+        yield ['array<>>'];
+
+        yield ['array{'];
+
+        yield ['array{ $this: 5 }'];
+
+        yield ['g<,>'];
+
+        yield ['g<no_trailing_comma,>'];
+
+        yield ['g<,no_leading_comma>'];
+
+        yield ['10__000'];
+
+        yield ['[ array_syntax_is_invalid ]'];
+
+        yield ['\' unclosed string'];
+
+        yield ['\' unclosed string \\\''];
+    }
+
     public function testHugeType(): void
     {
         $nFlat = 2_000;
@@ -578,32 +673,32 @@ final class TypeExpressionTest extends TestCase
             'bool|callable(): (float|string)',
         ];
 
-        yield 'simple in closure argument' => [
+        yield 'simple in Closure argument' => [
             'Closure(int|bool)',
             'Closure(bool|int)',
         ];
 
-        yield 'closure with multiple arguments' => [
+        yield 'Closure with multiple arguments' => [
             'Closure(int|bool, null|array)',
             'Closure(bool|int, array|null)',
         ];
 
-        yield 'simple in closure argument with trailing comma' => [
+        yield 'simple in Closure argument with trailing comma' => [
             'Closure(int|bool,)',
             'Closure(bool|int,)',
         ];
 
-        yield 'simple in closure argument multiple arguments with trailing comma' => [
+        yield 'simple in Closure argument multiple arguments with trailing comma' => [
             'Closure(int|bool, null|array,)',
             'Closure(bool|int, array|null,)',
         ];
 
-        yield 'simple in closure return type' => [
+        yield 'simple in Closure return type' => [
             'Closure(): (string|float)',
             'Closure(): (float|string)',
         ];
 
-        yield 'closure with union return type and within union itself' => [
+        yield 'Closure with union return type and within union itself' => [
             'Closure(): (string|float)|bool',
             'bool|Closure(): (float|string)',
         ];
@@ -714,6 +809,9 @@ final class TypeExpressionTest extends TestCase
         return $res;
     }
 
+    /**
+     * Should be removed once https://github.com/php/php-src/pull/11396 is merged.
+     */
     private function clearPcreRegexCache(): void
     {
         // there is no explicit php function to clear PCRE regex cache, but based
