@@ -145,8 +145,8 @@ List of Available Rules
 
    *warning deprecated*   Use ``single_space_around_construct``, ``control_structure_braces``,
    ``curly_braces_position``, ``control_structure_continuation_position``,
-   ``declare_parentheses``, ``statement_indentation``,
-   ``no_multiple_statements_per_line`` and ``no_extra_blank_lines`` instead.
+   ``declare_parentheses``, ``no_multiple_statements_per_line``,
+   ``statement_indentation`` and ``no_extra_blank_lines`` instead.
 
    Configuration options:
 
