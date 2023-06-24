@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
 use PhpCsFixer\Console\Report\FixReport\JsonReporter;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
+use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -27,12 +28,15 @@ use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
  */
 final class JsonReporterTest extends AbstractReporterTestCase
 {
+    use AssertJsonSchemaTrait;
+
     protected static function createSimpleReport(): string
     {
         return <<<'JSON'
 {
     "files": [
         {
+            "diff": "--- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }",
             "name": "someFile.php"
         }
     ],
@@ -51,7 +55,7 @@ JSON;
     "files": [
         {
             "name": "someFile.php",
-            "diff": "this text is a diff ;)"
+            "diff": "--- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }"
         }
     ],
     "time": {
@@ -86,6 +90,7 @@ JSON;
 {
     "files": [
         {
+            "diff": "--- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }",
             "name": "someFile.php"
         }
     ],
@@ -147,31 +152,7 @@ JSON;
 
     protected function assertFormat(string $expected, string $input): void
     {
-        self::assertJsonSchema($input);
+        self::assertJsonSchema(__DIR__.'/../../../../doc/schemas/fix/schema.json', $input);
         self::assertJsonStringEqualsJsonString($expected, $input);
-    }
-
-    private static function assertJsonSchema(string $json): void
-    {
-        $jsonPath = __DIR__.'/../../../../doc/schemas/fix/schema.json';
-
-        $data = json_decode($json);
-
-        $validator = new \JsonSchema\Validator();
-        $validator->validate(
-            $data,
-            (object) ['$ref' => 'file://'.realpath($jsonPath)]
-        );
-
-        self::assertTrue(
-            $validator->isValid(),
-            implode(
-                "\n",
-                array_map(
-                    static fn (array $item): string => sprintf('Property `%s`: %s.', $item['property'], $item['message']),
-                    $validator->getErrors(),
-                )
-            )
-        );
     }
 }

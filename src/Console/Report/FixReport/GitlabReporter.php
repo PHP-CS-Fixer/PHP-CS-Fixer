@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Report\FixReport;
 
+use PhpCsFixer\Fixer\FixerInterface;
+use SebastianBergmann\Diff\Chunk;
+use SebastianBergmann\Diff\Parser;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -27,6 +30,17 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  */
 final class GitlabReporter implements ReporterInterface
 {
+    /** @var array<string, FixerInterface> */
+    private array $fixers;
+    private Parser $diffParser;
+
+    /** @param array<string, FixerInterface> $fixers */
+    public function __construct(array $fixers = [])
+    {
+        $this->fixers = $fixers;
+        $this->diffParser = new Parser();
+    }
+
     public function getFormat(): string
     {
         return 'gitlab';
@@ -39,15 +53,22 @@ final class GitlabReporter implements ReporterInterface
     {
         $report = [];
         foreach ($reportSummary->getChanged() as $fileName => $change) {
+            $diffs = $this->diffParser->parse($change['diff']);
+            $firstChunk = isset($diffs[0]) ? $diffs[0]->getChunks() : [];
+            $firstChunk = array_shift($firstChunk);
             foreach ($change['appliedFixers'] as $fixerName) {
                 $report[] = [
-                    'description' => $fixerName,
+                    'check_name' => $fixerName,
+                    'description' => isset($this->fixers[$fixerName]) ?
+                        $this->fixers[$fixerName]->getDefinition()->getSummary() : '',
+                    'categories' => ['Style'],
                     'fingerprint' => md5($fileName.$fixerName),
                     'severity' => 'minor',
                     'location' => [
                         'path' => $fileName,
                         'lines' => [
-                            'begin' => 0, // line numbers are required in the format, but not available to reports
+                            'begin' => $firstChunk instanceof Chunk ? $firstChunk->getStart() : 0,
+                            'end' => $firstChunk instanceof Chunk ? $firstChunk->getStartRange() : 0,
                         ],
                     ],
                 ];

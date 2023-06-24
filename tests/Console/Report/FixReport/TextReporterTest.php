@@ -40,6 +40,20 @@ TEXT;
             PHP_EOL,
             <<<'TEXT'
    1) someFile.php
+      ---------- begin diff ----------
+--- Original
++++ New
+@@ -2,7 +2,7 @@
+
+ class Foo
+ {
+-    public function bar($foo = 1, $bar)
++    public function bar($foo, $bar)
+     {
+     }
+ }
+      ----------- end diff -----------
+
 
 TEXT
         );
@@ -53,7 +67,17 @@ TEXT
             <<<'TEXT'
    1) someFile.php
       ---------- begin diff ----------
-this text is a diff ;)
+--- Original
++++ New
+@@ -2,7 +2,7 @@
+
+ class Foo
+ {
+-    public function bar($foo = 1, $bar)
++    public function bar($foo, $bar)
+     {
+     }
+ }
       ----------- end diff -----------
 
 
@@ -80,6 +104,20 @@ TEXT
             PHP_EOL,
             <<<'TEXT'
    1) someFile.php
+      ---------- begin diff ----------
+--- Original
++++ New
+@@ -2,7 +2,7 @@
+
+ class Foo
+ {
+-    public function bar($foo = 1, $bar)
++    public function bar($foo, $bar)
+     {
+     }
+ }
+      ----------- end diff -----------
+
 
 Fixed 1 of 10 files in 1.234 seconds, 2.500 MB memory used
 

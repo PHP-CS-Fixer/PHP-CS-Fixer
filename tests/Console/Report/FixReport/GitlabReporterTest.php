@@ -16,6 +16,9 @@ namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
 use PhpCsFixer\Console\Report\FixReport\GitlabReporter;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
+use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
 
 /**
  * @author Hans-Christian Otto <c.otto@suora.com>
@@ -26,9 +29,14 @@ use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
  */
 final class GitlabReporterTest extends AbstractReporterTestCase
 {
+    use AssertJsonSchemaTrait;
+
     protected function createReporter(): ReporterInterface
     {
-        return new GitlabReporter();
+        $mock = $this->prophesize(FixerInterface::class);
+        $mock->getDefinition()->willReturn(new FixerDefinition('Some summary', []));
+
+        return new GitlabReporter(['some_fixer_name_here' => $mock->reveal()]);
     }
 
     protected function getFormat(): string
@@ -45,13 +53,16 @@ final class GitlabReporterTest extends AbstractReporterTestCase
     {
         return <<<'JSON'
             [{
-                "description": "some_fixer_name_here",
+                "categories": ["Style"],
+                "check_name": "some_fixer_name_here",
+                "description": "Some summary",
                 "fingerprint": "ad098ea6ea7a28dd85dfcdfc9e2bded0",
                 "severity": "minor",
                 "location": {
                     "path": "someFile.php",
                     "lines": {
-                        "begin": 0
+                        "begin": 2,
+                        "end": 7
                     }
                 }
             }]
@@ -67,23 +78,29 @@ JSON;
     {
         return <<<'JSON'
             [{
-                "description": "some_fixer_name_here_1",
+                "categories": ["Style"],
+                "check_name": "some_fixer_name_here_1",
+                "description": "",
                 "fingerprint": "b74e9385c8ae5b1f575c9c8226c7deff",
                 "severity": "minor",
                 "location": {
                     "path": "someFile.php",
                     "lines": {
-                        "begin": 0
+                        "begin": 0,
+                        "end": 0
                     }
                 }
             },{
-                "description": "some_fixer_name_here_2",
+                "categories": ["Style"],
+                "check_name": "some_fixer_name_here_2",
+                "description": "",
                 "fingerprint": "acad4672140c737a83c18d1474d84074",
                 "severity": "minor",
                 "location": {
                     "path": "someFile.php",
                     "lines": {
-                        "begin": 0
+                        "begin": 0,
+                        "end": 0
                     }
                 }
             }]
@@ -99,33 +116,42 @@ JSON;
     {
         return <<<'JSON'
             [{
-                "description": "some_fixer_name_here_1",
+                "categories": ["Style"],
+                "check_name": "some_fixer_name_here_1",
+                "description": "",
                 "fingerprint": "b74e9385c8ae5b1f575c9c8226c7deff",
                 "severity": "minor",
                 "location": {
                     "path": "someFile.php",
                     "lines": {
-                        "begin": 0
+                        "begin": 0,
+                        "end": 0
                     }
                 }
             },{
-                "description": "some_fixer_name_here_2",
+                "categories": ["Style"],
+                "check_name": "some_fixer_name_here_2",
+                "description": "",
                 "fingerprint": "acad4672140c737a83c18d1474d84074",
                 "severity": "minor",
                 "location": {
                     "path": "someFile.php",
                     "lines": {
-                        "begin": 0
+                        "begin": 0,
+                        "end": 0
                     }
                 }
             },{
-                "description": "another_fixer_name_here",
+                "categories": ["Style"],
+                "check_name": "another_fixer_name_here",
+                "description": "",
                 "fingerprint": "30e86e533dac0f1b93bbc3a55c6908f8",
                 "severity": "minor",
                 "location": {
                     "path": "anotherFile.php",
                     "lines": {
-                        "begin": 0
+                        "begin": 0,
+                        "end": 0
                     }
                 }
             }]
@@ -134,6 +160,7 @@ JSON;
 
     protected function assertFormat(string $expected, string $input): void
     {
+        self::assertJsonSchema(__DIR__.'/../../../../doc/schemas/fix/codeclimate.json', $input);
         self::assertJsonStringEqualsJsonString($expected, $input);
     }
 }

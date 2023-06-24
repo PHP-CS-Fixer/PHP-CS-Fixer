@@ -76,7 +76,22 @@ XML;
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0">
     <testcase name="someFile" file="someFile.php" assertions="1">
-      <failure type="code_style">Wrong code style</failure>
+      <failure type="code_style">Wrong code style
+
+Diff:
+---------------
+
+--- Original
++++ New
+@@ -2,7 +2,7 @@
+
+ class Foo
+ {
+-    public function bar($foo = 1, $bar)
++    public function bar($foo, $bar)
+     {
+     }
+ }</failure>
     </testcase>
   </testsuite>
 </testsuites>
@@ -95,7 +110,17 @@ XML;
 Diff:
 ---------------
 
-this text is a diff ;)]]></failure>
+--- Original
++++ New
+@@ -2,7 +2,7 @@
+
+ class Foo
+ {
+-    public function bar($foo = 1, $bar)
++    public function bar($foo, $bar)
+     {
+     }
+ }]]></failure>
     </testcase>
   </testsuite>
 </testsuites>
@@ -126,7 +151,22 @@ XML;
 <testsuites>
   <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0" time="1.234">
     <testcase name="someFile" file="someFile.php" assertions="1">
-      <failure type="code_style">Wrong code style</failure>
+      <failure type="code_style">Wrong code style
+
+Diff:
+---------------
+
+--- Original
++++ New
+@@ -2,7 +2,7 @@
+
+ class Foo
+ {
+-    public function bar($foo = 1, $bar)
++    public function bar($foo, $bar)
+     {
+     }
+ }</failure>
     </testcase>
   </testsuite>
 </testsuites>
