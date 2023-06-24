@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.19.1
+---------------------
+
+* bug: CurlyBracesPositionFixer must run before StatementIndentationFixer (#7085)
+
 Changelog for v3.19.0
 ---------------------
 
