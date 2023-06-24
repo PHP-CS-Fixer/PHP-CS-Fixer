@@ -41,6 +41,7 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
     /**
      * {@inheritdoc}
      *
+     * Must run before CurlyBracesPositionFixer.
      * Must run after ControlStructureBracesFixer, NoEmptyStatementFixer.
      */
     public function getPriority(): int

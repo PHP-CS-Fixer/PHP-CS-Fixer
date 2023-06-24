@@ -571,6 +571,9 @@ final class FixerFactoryTest extends TestCase
                 'binary_operator_spaces',
                 'method_argument_space',
             ],
+            'no_multiple_statements_per_line' => [
+                'curly_braces_position',
+            ],
             'no_php4_constructor' => [
                 'ordered_class_elements',
             ],
