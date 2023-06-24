@@ -51,7 +51,7 @@ final class TypeExpression
                     (?<array_shape_start>(?i)(?:array|list|object)(?-i)\h*\{\h*)
                     (?<array_shape_inners>
                         (?<array_shape_inner>
-                            (?<array_shape_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*|)
+                            (?<array_shape_inner_key>(?:(?&constant)|(?&identifier))\h*\??\h*:\h*|)
                             (?<array_shape_inner_value>(?&types_inner))
                         )
                         (?:
