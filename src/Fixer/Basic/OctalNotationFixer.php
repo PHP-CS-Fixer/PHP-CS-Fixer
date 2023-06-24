@@ -52,7 +52,7 @@ final class OctalNotationFixer extends AbstractFixer
 
             $content = $token->getContent();
 
-            $newContent = Preg::replace('#^(0)_*+([0-7_]+)$#', '$1o$2', $content);
+            $newContent = Preg::replace('#^0_*+([0-7_]+)$#', '0o$1', $content);
 
             if ($content === $newContent) {
                 continue;
