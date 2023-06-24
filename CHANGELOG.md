@@ -3,6 +3,15 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.19.0
+---------------------
+
+* bug: SelfAccessorFixer - fix for union types (#7080)
+* DX: add `php_unit_data_provider_name` to `@PhpCsFixer:risky` set (#7069)
+* DX: make data providers return type "iterable" (#7072)
+* DX: rename tests and data providers (#7070)
+* feature: Introduce `PhpUnitDataProviderNameFixer` (#7057)
+
 Changelog for v3.18.0
 ---------------------
 
