@@ -713,6 +713,24 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
 }
 ',
         ];
+
+        yield 'function as argument to function call' => [
+            '<?php
+f(function () { if (true) {} });
+',
+        ];
+
+        yield 'function as argument to function calls' => [
+            '<?php
+f1(function () { if (true) {} });
+f2(function () { if (true) {
+} });
+',
+            '<?php
+f1(function () { if (true) {} });
+f2(function () { if (true) {} });
+',
+        ];
     }
 
     /**
