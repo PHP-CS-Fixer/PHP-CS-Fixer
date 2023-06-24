@@ -145,7 +145,7 @@ class Sample
                 || (
                     null !== $insideMethodSignatureUntil
                     && $i < $insideMethodSignatureUntil
-                    && $prevToken->equalsAny(['(', ',', [CT::T_TYPE_COLON], [CT::T_NULLABLE_TYPE]])
+                    && $prevToken->equalsAny(['(', ',', [CT::T_NULLABLE_TYPE], [CT::T_TYPE_ALTERNATION], [CT::T_TYPE_COLON]])
                 )
             ) {
                 for ($j = $classStartIndex; $j < $i; ++$j) {

@@ -170,16 +170,16 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixPhp80Cases
+     * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
-    public function testFixPhp80(string $expected, ?string $input = null): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPhp80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php interface Foo { public function bar(self $foo, self $bar,): self; }',
@@ -192,6 +192,52 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php class Foo { protected $foo; function bar() { return $this?->foo::find(2); } }',
+        ];
+
+        yield [
+            '<?php class Foo { public function f(self|Bar|Baz $b) {} }',
+            '<?php class Foo { public function f(Foo|Bar|Baz $b) {} }',
+        ];
+
+        yield [
+            '<?php class Foo { public function f(Bar|self|Baz $b) {} }',
+            '<?php class Foo { public function f(Bar|Foo|Baz $b) {} }',
+        ];
+
+        yield [
+            '<?php class Foo { public function f(Bar|Baz|self $b) {} }',
+            '<?php class Foo { public function f(Bar|Baz|Foo $b) {} }',
+        ];
+
+        yield [
+            '<?php class Foo { public function f(Bar|Foo\C|Baz $b) {} }',
+        ];
+
+        yield [
+            '<?php class Foo { public function f(Bar|C\Foo|Baz $b) {} }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield [
+            '<?php class Foo { public function f(self|(Bar&Baz)|Qux $b) {} }',
+            '<?php class Foo { public function f(Foo|(Bar&Baz)|Qux $b) {} }',
+        ];
+
+        yield [
+            '<?php class Foo { public function f(Bar|(Baz&Qux)|self $b) {} }',
+            '<?php class Foo { public function f(Bar|(Baz&Qux)|Foo $b) {} }',
         ];
     }
 }
