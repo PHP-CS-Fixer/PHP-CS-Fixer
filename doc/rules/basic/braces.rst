@@ -12,8 +12,8 @@ This rule is deprecated and will be removed on next major version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``single_space_around_construct``, ``control_structure_braces``,
-``curly_braces_position``, ``control_structure_continuation_position``,
-``declare_parentheses``, ``no_multiple_statements_per_line``,
+``control_structure_continuation_position``, ``declare_parentheses``,
+``no_multiple_statements_per_line``, ``curly_braces_position``,
 ``statement_indentation`` and ``no_extra_blank_lines`` instead.
 
 Configuration

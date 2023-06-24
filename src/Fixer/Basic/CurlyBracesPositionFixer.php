@@ -145,11 +145,11 @@ $bar = function () { $result = true;
      * {@inheritdoc}
      *
      * Must run before SingleLineEmptyBodyFixer, StatementIndentationFixer.
-     * Must run after ControlStructureBracesFixer.
+     * Must run after ControlStructureBracesFixer, NoMultipleStatementsPerLineFixer.
      */
     public function getPriority(): int
     {
-        return parent::getPriority();
+        return -2;
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
