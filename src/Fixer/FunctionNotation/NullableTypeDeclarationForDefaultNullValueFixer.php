@@ -39,7 +39,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Adds or removes `?` before single type declarations or `|null` at the end of DNF types when parameters have a default `null` value.',
+            'Adds or removes `?` before single type declarations or `|null` at the end of union types when parameters have a default `null` value.',
             [
                 new CodeSample(
                     "<?php\nfunction sample(string \$str = null)\n{}\n"
@@ -153,7 +153,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
 
             $typeAnalysisName = $argumentTypeInfo->getName();
             if (str_contains($typeAnalysisName, '|') || str_contains($typeAnalysisName, '&')) {
-                $this->fixDNFTypeParameter($tokens, $argumentTypeInfo);
+                $this->fixUnionTypeParameter($tokens, $argumentTypeInfo);
             } else {
                 $this->fixSingleTypeParameter($tokens, $argumentTypeInfo);
             }
@@ -172,7 +172,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
         }
     }
 
-    private function fixDNFTypeParameter(Tokens $tokens, TypeAnalysis $argumentTypeInfo): void
+    private function fixUnionTypeParameter(Tokens $tokens, TypeAnalysis $argumentTypeInfo): void
     {
         if (true === $this->configuration['use_nullable_type_declaration']) {
             if ($argumentTypeInfo->isNullable()) {
