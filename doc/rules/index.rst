@@ -104,6 +104,9 @@ Casing
 - `constant_case <./casing/constant_case.rst>`_
 
   The PHP constants ``true``, ``false``, and ``null`` MUST be written using the correct casing.
+- `float_literal_case <./casing/float_literal_case.rst>`_
+
+  Float literals must be in correct case.
 - `integer_literal_case <./casing/integer_literal_case.rst>`_
 
   Integer literals must be in correct case.

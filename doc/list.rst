@@ -795,6 +795,13 @@ List of Available Rules
    *warning risky* Risky when overriding ``public`` methods of ``abstract`` classes.
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\FinalPublicMethodForAbstractClassFixer <./../src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php>`_
+-  `float_literal_case <./rules/casing/float_literal_case.rst>`_
+
+   Float literals must be in correct case.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Casing\\FloatLiteralCaseFixer <./../src/Fixer/Casing/FloatLiteralCaseFixer.php>`_
 -  `fopen_flags <./rules/function_notation/fopen_flags.rst>`_
 
    The flags in ``fopen`` calls must omit ``t``, and ``b`` must be omitted or included consistently.

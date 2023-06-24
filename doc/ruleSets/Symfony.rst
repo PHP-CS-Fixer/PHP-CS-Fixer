@@ -34,6 +34,7 @@ Rules
   config:
   ``['style' => 'braces']``
 - `empty_loop_condition <./../rules/control_structure/empty_loop_condition.rst>`_
+- `float_literal_case <./../rules/casing/float_literal_case.rst>`_
 - `fully_qualified_strict_types <./../rules/import/fully_qualified_strict_types.rst>`_
 - `function_typehint_space <./../rules/function_notation/function_typehint_space.rst>`_
 - `general_phpdoc_tag_rename <./../rules/phpdoc/general_phpdoc_tag_rename.rst>`_

@@ -54,6 +54,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'echo_tag_syntax' => true,
             'empty_loop_body' => ['style' => 'braces'],
             'empty_loop_condition' => true,
+            'float_literal_case' => true,
             'fully_qualified_strict_types' => true,
             'function_typehint_space' => true,
             'general_phpdoc_tag_rename' => [
