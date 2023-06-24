@@ -51,7 +51,7 @@ final class TypeExpression
                     (?<array_shape_start>(?i)(?:array|list|object)(?-i)\h*\{\h*)
                     (?<array_shape_inners>
                         (?<array_shape_inner>
-                            (?<array_shape_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*)?
+                            (?<array_shape_inner_key>(?:(?&constant)|(?&name))\h*\??\h*:\h*|)
                             (?<array_shape_inner_value>(?&types_inner))
                         )
                         (?:
@@ -59,7 +59,7 @@ final class TypeExpression
                             (?&array_shape_inner)
                         )*
                         (?:\h*,\h*)?
-                    )?
+                    |)
                     \h*\}
                 )
                 |
@@ -72,7 +72,7 @@ final class TypeExpression
                             (?&types_inner)
                         )*
                         (?:\h*,\h*)?
-                    )?
+                    |)
                     \h*\)
                     (?:
                         \h*\:\h*
@@ -358,7 +358,7 @@ final class TypeExpression
         } elseif ('' !== ($matches['callable'][0] ?? '') && $matches['callable'][1] === $nullableLength) {
             $this->parseCommaSeparatedInnerTypes(
                 $index + \strlen($matches['callable_start'][0]),
-                $matches['callable_arguments'][0] ?? ''
+                $matches['callable_arguments'][0]
             );
 
             if ('' !== ($matches['callable_return'][0] ?? '')) {
@@ -370,7 +370,7 @@ final class TypeExpression
         } elseif ('' !== ($matches['array_shape'][0] ?? '') && $matches['array_shape'][1] === $nullableLength) {
             $this->parseArrayShapeInnerTypes(
                 $index + \strlen($matches['array_shape_start'][0]),
-                $matches['array_shape_inners'][0] ?? ''
+                $matches['array_shape_inners'][0]
             );
         } elseif ('' !== ($matches['parenthesized'][0] ?? '') && $matches['parenthesized'][1] === $nullableLength) {
             $index += \strlen($matches['parenthesized_start'][0]);
