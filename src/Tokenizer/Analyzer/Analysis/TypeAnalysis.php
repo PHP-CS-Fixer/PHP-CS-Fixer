@@ -63,6 +63,8 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
         if (str_starts_with($name, '?')) {
             $this->name = substr($name, 1);
             $this->nullable = true;
+        } elseif (\PHP_VERSION_ID >= 8_00_00) {
+            $this->nullable = \in_array('null', array_map('trim', explode('|', strtolower($name))), true);
         }
 
         $this->startIndex = $startIndex;

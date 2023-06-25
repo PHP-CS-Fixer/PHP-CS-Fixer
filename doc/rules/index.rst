@@ -372,7 +372,7 @@ Function Notation
   There must be no ``sprintf`` calls with only the first argument.
 - `nullable_type_declaration_for_default_null_value <./function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 
-  Adds or removes ``?`` before type declarations for parameters with a default ``null`` value.
+  Adds or removes ``?`` before single type declarations or ``|null`` at the end of union types when parameters have a default ``null`` value.
 - `phpdoc_to_param_type <./function_notation/phpdoc_to_param_type.rst>`_ *(risky)*
 
   EXPERIMENTAL: Takes ``@param`` annotations of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.

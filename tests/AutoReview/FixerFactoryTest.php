@@ -652,6 +652,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'nullable_type_declaration_for_default_null_value' => [
                 'no_unreachable_default_argument_value',
+                'ordered_types',
             ],
             'ordered_class_elements' => [
                 'class_attributes_separation',

@@ -1871,14 +1871,14 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Whitespace\\NoWhitespaceInBlankLineFixer <./../src/Fixer/Whitespace/NoWhitespaceInBlankLineFixer.php>`_
 -  `nullable_type_declaration_for_default_null_value <./rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 
-   Adds or removes ``?`` before type declarations for parameters with a default ``null`` value.
+   Adds or removes ``?`` before single type declarations or ``|null`` at the end of union types when parameters have a default ``null`` value.
 
    Rule is applied only in a PHP 7.1+ environment.
 
    Configuration options:
 
    - | ``use_nullable_type_declaration``
-     | Whether to add or remove `?` before type declarations for parameters with a default `null` value.
+     | Whether to add or remove `?` or `|null` to parameters with a default `null` value.
      | Allowed types: ``bool``
      | Default value: ``true``
 

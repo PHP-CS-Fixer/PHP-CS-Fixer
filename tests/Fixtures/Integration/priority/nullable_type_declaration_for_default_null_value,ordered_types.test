@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: nullable_type_declaration_for_default_null_value,ordered_types.
+--RULESET--
+{"nullable_type_declaration_for_default_null_value": true, "ordered_types": true}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+function foo(null|int|string $a = null) {}
+
+--INPUT--
+<?php
+function foo(int|string $a = null) {}

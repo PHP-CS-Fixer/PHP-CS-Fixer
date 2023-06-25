@@ -439,6 +439,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
 
     /**
      * @dataProvider provideFixInverse80Cases
+     * @dataProvider provideInverseOnlyFix80Cases
      *
      * @requires PHP 8.0
      */
@@ -450,6 +451,41 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
 
     public static function provideFix80Cases(): iterable
     {
+        yield [
+            '<?php function foo(string|int|null $param = null) {}',
+            '<?php function foo(string|int $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(string|int|null $param = NULL) {}',
+            '<?php function foo(string|int $param = NULL) {}',
+        ];
+
+        yield [
+            '<?php function foo(string|int|null /*comment*/$param = null) {}',
+            '<?php function foo(string|int /*comment*/$param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(string | int|null &$param = null) {}',
+            '<?php function foo(string | int &$param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(string | int|null & $param = null) {}',
+            '<?php function foo(string | int & $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(string | int|null /*comment*/&$param = null) {}',
+            '<?php function foo(string | int /*comment*/&$param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(string|int|null $param1 = null, string | int|null /*comment*/&$param2 = null) {}',
+            '<?php function foo(string|int $param1 = null, string | int /*comment*/&$param2 = null) {}',
+        ];
+
         yield 'trailing comma' => [
             '<?php function foo(?string $param = null,) {}',
             '<?php function foo(string $param = null,) {}',
@@ -476,14 +512,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
             }',
         ];
 
-        yield 'don\'t change union types' => [
-            '<?php class Foo {
-                public function __construct(private int | null $bar = null, $baz = 1) {}
-                 public function aaa(int | string $bar = null, $baz = 1) {}
-                 public function bbb(int | null $bar = null, $baz = 1) {}
-            }',
-        ];
-
         yield 'attribute' => [
             '<?php function foo(#[AnAttribute] ?string $param = null) {}',
             '<?php function foo(#[AnAttribute] string $param = null) {}',
@@ -506,6 +534,93 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public static function provideFixInverse80Cases(): iterable
     {
         return TestCaseUtils::swapExpectedInputTestCases(self::provideFix80Cases());
+    }
+
+    public static function provideInverseOnlyFix80Cases(): iterable
+    {
+        yield [
+            '<?php function foo(string $param = null) {}',
+            '<?php function foo(string|null $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(string $param= null) {}',
+            '<?php function foo(string | null $param= null) {}',
+        ];
+
+        yield [
+            '<?php function foo(string $param =null) {}',
+            '<?php function foo(string| null $param =null) {}',
+        ];
+
+        yield [
+            '<?php function foo(string $param=null) {}',
+            '<?php function foo(string |null $param=null) {}',
+        ];
+
+        yield [
+            '<?php function foo(string $param1 = null, string $param2 = null) {}',
+            '<?php function foo(null|string $param1 = null, null | string $param2 = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(string &$param = null) {}',
+            '<?php function foo(null| string &$param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(string & $param = null) {}',
+            '<?php function foo(null |string & $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(string|int /*comment*/$param = null) {}',
+            '<?php function foo(string|null|int /*comment*/$param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(string | int /*comment*/&$param = null) {}',
+            '<?php function foo(string | null | int /*comment*/&$param = null) {}',
+        ];
+
+        yield [
+            '<?php $foo = function (string $param = null) {};',
+            '<?php $foo = function (NULL | string $param = null) {};',
+        ];
+
+        yield [
+            '<?php $foo = function (string|int &$param = null) {};',
+            '<?php $foo = function (string|NULL|int &$param = null) {};',
+        ];
+
+        yield [
+            '<?php function foo(Bar\Baz $param = null) {}',
+            '<?php function foo(Bar\Baz|null $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(\Bar\Baz $param = null) {}',
+            '<?php function foo(null | \Bar\Baz $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(Bar\Baz &$param = null) {}',
+            '<?php function foo(Bar\Baz | NULL &$param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(\Bar\Baz &$param = null) {}',
+            '<?php function foo(NULL|\Bar\Baz &$param = null) {}',
+        ];
+
+        yield [
+            '<?php $foo = function(array $a = null,
+                    array $b = null, array     $c = null, array
+                    $d = null) {};',
+            '<?php $foo = function(array|null $a = null,
+                    array | null $b = null, array | NULL     $c = null, NULL|array
+                    $d = null) {};',
+        ];
     }
 
     /**
@@ -578,6 +693,123 @@ class Foo
                 ) {}
             }',
             ['use_nullable_type_declaration' => false],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield 'Skip standalone null types' => [
+            '<?php function foo(null $param = null) {}',
+        ];
+
+        yield 'Skip standalone NULL types' => [
+            '<?php function foo(NULL $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo((\Bar\Baz&\Bar\Qux)|null $param = null) {}',
+            '<?php function foo(\Bar\Baz&\Bar\Qux $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo((\Bar\Baz&\Bar\Qux)|\Bar\Quux|null $param = null) {}',
+            '<?php function foo((\Bar\Baz&\Bar\Qux)|\Bar\Quux $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo((\Bar\Baz&\Bar\Qux)|(\Bar\Quux&\Bar\Corge)|null $param = null) {}',
+            '<?php function foo((\Bar\Baz&\Bar\Qux)|(\Bar\Quux&\Bar\Corge) $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(    (\Bar\Baz&\Bar\Qux)|null    $param = null) {}',
+            '<?php function foo(    \Bar\Baz&\Bar\Qux    $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo((\Bar\Baz&\Bar\Qux)|\Bar\Quux|null &$param = null) {}',
+            '<?php function foo((\Bar\Baz&\Bar\Qux)|\Bar\Quux &$param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(    (\Bar\Baz&\Bar\Qux)|null    &  $param = null) {}',
+            '<?php function foo(    \Bar\Baz&\Bar\Qux    &  $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(    (\Bar\Baz&\Bar\Qux)|null/*comment*/&$param = null) {}',
+            '<?php function foo(    \Bar\Baz&\Bar\Qux/*comment*/&$param = null) {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix82InverseCases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82Inverse(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['use_nullable_type_declaration' => false]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82InverseCases(): iterable
+    {
+        yield from TestCaseUtils::swapExpectedInputTestCases(self::provideFix82Cases());
+
+        yield [
+            '<?php function foo(\Bar\Baz&\Bar\Qux $param = null) {}',
+            '<?php function foo((\Bar\Baz&\Bar\Qux)|NULL $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(\Bar\Baz&\Bar\Qux $param = null) {}',
+            '<?php function foo(null|(\Bar\Baz&\Bar\Qux) $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo((\Bar\Baz&\Bar\Qux)|(\Bar\Quux&\Bar\Corge) $param = null) {}',
+            '<?php function foo((\Bar\Baz&\Bar\Qux)|null|(\Bar\Quux&\Bar\Corge) $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo((\Bar\Baz&\Bar\Qux)|\Bar\Quux $param = null) {}',
+            '<?php function foo(null|(\Bar\Baz&\Bar\Qux)|\Bar\Quux $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(    \Bar\Baz&\Bar\Qux     $param = null) {}',
+            '<?php function foo(    (    \Bar\Baz&\Bar\Qux    )   |   null     $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo(\Bar\Baz&\Bar\Qux    $param = null) {}',
+            '<?php function foo(null    |    (    \Bar\Baz&\Bar\Qux    )    $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo((    \Bar\Baz&\Bar\Qux    )|\Bar\Quux     $param = null) {}',
+            '<?php function foo(null    |    (    \Bar\Baz&\Bar\Qux    )|\Bar\Quux     $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo((    \Bar\Baz  &   \Bar\Qux    )|\Bar\Quux     & $param = null) {}',
+            '<?php function foo(null    |    (    \Bar\Baz  &   \Bar\Qux    )|\Bar\Quux     & $param = null) {}',
+        ];
+
+        yield [
+            '<?php function foo((\Bar\Baz&\Bar\Qux)    |  (\Bar\Quux&\Bar\Corge) $param = null) {}',
+            '<?php function foo((\Bar\Baz&\Bar\Qux)  |   null    |  (\Bar\Quux&\Bar\Corge) $param = null) {}',
         ];
     }
 }
