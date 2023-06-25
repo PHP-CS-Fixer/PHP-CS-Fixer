@@ -27,6 +27,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -128,7 +129,6 @@ function f9(string $foo, $bar, $baz) {}
                 T_PROTECTED,
                 T_PUBLIC,
                 T_STATIC,
-                T_VAR,
             ])) {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
@@ -232,7 +232,16 @@ function f9(string $foo, $bar, $baz) {}
         for ($index = $start; $index <= $end; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isComment() || $token->isWhitespace()) {
+            if (
+                $token->isComment()
+                || $token->isWhitespace()
+                || $token->isGivenKind([
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+                ])
+                || (\defined('T_READONLY') && $token->isGivenKind(T_READONLY))
+            ) {
                 continue;
             }
 
