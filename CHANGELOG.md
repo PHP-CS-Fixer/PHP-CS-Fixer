@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.19.2
+---------------------
+
+* bug: NoMultipleStatementsPerLineFixer must run before CurlyBracesPositionFixer (#7087)
+* bug: PhpdocAddMissingParamAnnotationFixer - fix for promoted properties (#7090)
+* DX: fix priority of SingleBlankLineBeforeNamespaceFixer (#7088)
+* minor: Parse all phpdoc types using full grammar (#7010)
+
 Changelog for v3.19.1
 ---------------------
 
