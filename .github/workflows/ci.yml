@@ -74,6 +74,7 @@ jobs:
           - operating-system: 'macos-latest'
             php-version: '8.2'
             job-description: 'on macOS'
+            FAST_LINT_TEST_CASES: 1
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
 
