@@ -240,7 +240,7 @@ function f9(string $foo, $bar, $baz) {}
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
                 ])
-                || \defined('T_READONLY') && $token->isGivenKind(T_READONLY)
+                || (\defined('T_READONLY') && $token->isGivenKind(T_READONLY))
             ) {
                 continue;
             }
