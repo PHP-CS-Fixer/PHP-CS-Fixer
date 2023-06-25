@@ -493,4 +493,77 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['only_untyped' => false]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): iterable
+    {
+        yield [
+            '<?php class Foo {
+                /**
+                 * @param Bar $x
+                 * @param ?Bar $y
+                 * @param null|Bar $z
+                 */
+                public function __construct(
+                    Bar $x,
+                    ?Bar $y,
+                    null|Bar $z,
+                ) {}
+            }',
+            '<?php class Foo {
+                /**
+                 */
+                public function __construct(
+                    Bar $x,
+                    ?Bar $y,
+                    null|Bar $z,
+                ) {}
+            }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['only_untyped' => false]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield [
+            '<?php class Foo {
+                /**
+                 * @param Bar $bar
+                 * @param Baz $baz
+                 */
+                public function __construct(
+                    Bar $bar,
+                    Baz $baz,
+                ) {}
+            }',
+            '<?php class Foo {
+                /**
+                 */
+                public function __construct(
+                    Bar $bar,
+                    Baz $baz,
+                ) {}
+            }',
+        ];
+    }
 }
