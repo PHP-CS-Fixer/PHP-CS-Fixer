@@ -39,7 +39,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    public const VERSION = '3.19.2';
+    public const VERSION = '3.19.3-DEV';
     public const VERSION_CODENAME = 'Triangle';
 
     private ToolInfo $toolInfo;
