@@ -82,7 +82,7 @@ class Foo
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound(array_merge(Token::getClassyTokenKinds(), [T_FN, T_FUNCTION]));
+        return $tokens->isAnyTokenKindsFound([...Token::getClassyTokenKinds(), T_FN, T_FUNCTION]);
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
