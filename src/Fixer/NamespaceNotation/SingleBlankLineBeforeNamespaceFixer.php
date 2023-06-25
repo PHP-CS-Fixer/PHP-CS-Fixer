@@ -50,11 +50,6 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractProxyFixer imple
         return $tokens->isTokenKindFound(T_NAMESPACE);
     }
 
-    public function getPriority(): int
-    {
-        return -21;
-    }
-
     protected function createProxyFixers(): array
     {
         $blankLineBeforeNamespace = new BlankLinesBeforeNamespaceFixer();

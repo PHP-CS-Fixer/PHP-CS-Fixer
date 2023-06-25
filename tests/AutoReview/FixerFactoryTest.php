@@ -281,7 +281,6 @@ final class FixerFactoryTest extends TestCase
             'no_trailing_comma_in_singleline_function_call' => true, // had prio case but no longer, left prio the same for BC reasons, rule has been deprecated
             'psr_autoloading' => true,
             'simple_to_complex_string_variable' => true, // had prio case but no longer, left prio the same for BC reasons
-            'single_blank_line_before_namespace' => true,
         ];
 
         $factory = new FixerFactory();
