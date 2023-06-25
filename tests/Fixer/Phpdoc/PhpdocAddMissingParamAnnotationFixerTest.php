@@ -515,18 +515,18 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
                  * @param null|Bar $z
                  */
                 public function __construct(
-                    Bar $x,
-                    ?Bar $y,
-                    null|Bar $z,
+                    public Bar $x,
+                    protected ?Bar $y,
+                    private null|Bar $z,
                 ) {}
             }',
             '<?php class Foo {
                 /**
                  */
                 public function __construct(
-                    Bar $x,
-                    ?Bar $y,
-                    null|Bar $z,
+                    public Bar $x,
+                    protected ?Bar $y,
+                    private null|Bar $z,
                 ) {}
             }',
         ];
@@ -552,16 +552,16 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
                  * @param Baz $baz
                  */
                 public function __construct(
-                    Bar $bar,
-                    Baz $baz,
+                    public readonly Bar $bar,
+                    readonly public Baz $baz,
                 ) {}
             }',
             '<?php class Foo {
                 /**
                  */
                 public function __construct(
-                    Bar $bar,
-                    Baz $baz,
+                    public readonly Bar $bar,
+                    readonly public Baz $baz,
                 ) {}
             }',
         ];
