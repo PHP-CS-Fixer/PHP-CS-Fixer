@@ -142,13 +142,9 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                 // fix @method parameters types
                 $line = $doc->getLine($annotation->getStart());
                 $line->setContent(Preg::replaceCallback('/@method\s+'.TypeExpression::REGEX_TYPES.'\s+\K(?&types)/', function (array $matches) {
-                    return Preg::replaceCallback('/^(\w+\()(.*)(\))$/s', function (array $matches) {
-                        $sorted = Preg::replaceCallback('/([^\s,]+)([\s]+\$[^\s,]+)/', function (array $matches): string {
-                            return $this->sortJoinedTypes($matches[1]).$matches[2];
-                        }, $matches[2]);
+                    $typeExpression = new TypeExpression($matches[0], null, []);
 
-                        return $matches[1].$sorted.$matches[3];
-                    }, $matches[0]);
+                    return implode($typeExpression->getTypesGlue(), $this->sortTypes($typeExpression));
                 }, $line->getContent()));
             }
 
@@ -190,12 +186,5 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
         );
 
         return $typeExpression->getTypes();
-    }
-
-    private function sortJoinedTypes(string $types): string
-    {
-        $typeExpression = new TypeExpression($types, null, []);
-
-        return implode('|', $this->sortTypes($typeExpression));
     }
 }

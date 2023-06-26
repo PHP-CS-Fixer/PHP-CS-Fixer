@@ -209,6 +209,16 @@ final class TypeExpressionTest extends TestCase
 
         yield ['\\Closure(float|int): (bool|int)'];
 
+        yield ['Closure(int $a)'];
+
+        yield ['Closure(int $a): bool'];
+
+        yield ['Closure(int $a, array<Closure(int ...$args): Item<X>>): bool'];
+
+        yield ['Closure_can_be_regular_class()'];
+
+        yield ['Closure_can_be_regular_class(): (u|v)'];
+
         yield ['array  <  int   , callable  (  string  )  :   bool  >'];
 
         yield ['(int)'];
@@ -351,8 +361,6 @@ final class TypeExpressionTest extends TestCase
 
         yield ['g<,>'];
 
-        yield ['g<no_trailing_comma,>'];
-
         yield ['g<,no_leading_comma>'];
 
         yield ['10__000'];
@@ -362,6 +370,8 @@ final class TypeExpressionTest extends TestCase
         yield ['\' unclosed string'];
 
         yield ['\' unclosed string \\\''];
+
+        yield 'generic with no arguments' => ['f<>'];
     }
 
     public function testHugeType(): void
@@ -612,6 +622,11 @@ final class TypeExpressionTest extends TestCase
             'array<bool|int, float|string>',
         ];
 
+        yield 'generic with trailing comma' => [
+            'array<int|bool,>',
+            'array<bool|int,>',
+        ];
+
         yield 'simple in array shape with int key' => [
             'array{0: int|bool}',
             'array{0: bool|int}',
@@ -675,6 +690,21 @@ final class TypeExpressionTest extends TestCase
         yield 'callable with union return type and within union itself' => [
             'callable(): (string|float)|bool',
             'bool|callable(): (float|string)',
+        ];
+
+        yield 'callable with multiple named arguments' => [
+            'callable(int|bool $b, null|array $a)',
+            'callable(bool|int $b, array|null $a)',
+        ];
+
+        yield 'callable with complex arguments' => [
+            'callable(B|A&, D|Closure(): void..., array{}$foo=, $this $foo=): array{}',
+            'callable(A|B&, Closure(): void|D..., array{}$foo=, $this $foo=): array{}',
+        ];
+
+        yield 'callable with trailing comma' => [
+            'Closure( Y|X , ): B|A',
+            'A|Closure( X|Y , ): B',
         ];
 
         yield 'simple in Closure argument' => [

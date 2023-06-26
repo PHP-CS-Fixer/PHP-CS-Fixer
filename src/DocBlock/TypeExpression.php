@@ -63,13 +63,19 @@ final class TypeExpression
                     \h*\}
                 )
                 |
-                (?<callable> # callable syntax, e.g. `callable(string): bool`
-                    (?<callable_start>(?i)(?:callable|\\\\?Closure)(?-i)\h*\(\h*)
+                (?<callable> # callable syntax, e.g. `callable(string, int...): bool`
+                    (?<callable_start>(?&name)\h*\(\h*)
                     (?<callable_arguments>
-                        (?&types_inner)
+                        (?<callable_argument>
+                            (?<callable_argument_type>(?&types_inner))
+                            (?<callable_argument_is_reference>\h*&|)
+                            (?<callable_argument_is_variadic>\h*\.\.\.|)
+                            (?<callable_argument_name>\h*\$(?&identifier)|)
+                            (?<callable_argument_is_optional>\h*=|)
+                        )
                         (?:
                             \h*,\h*
-                            (?&types_inner)
+                            (?&callable_argument)
                         )*
                         (?:\h*,\h*)?
                     |)
@@ -81,16 +87,14 @@ final class TypeExpression
                 )
                 |
                 (?<generic> # generic syntax, e.g.: `array<int, \Foo\Bar>`
-                    (?<generic_start>
-                        (?&name)+
-                        \h*<\h*
-                    )
+                    (?<generic_start>(?&name)\h*<\h*)
                     (?<generic_types>
                         (?&types_inner)
                         (?:
                             \h*,\h*
                             (?&types_inner)
                         )*
+                        (?:\h*,\h*)?
                     )
                     \h*>
                 )
@@ -356,7 +360,7 @@ final class TypeExpression
                 $matches['generic_types'][0]
             );
         } elseif ('' !== ($matches['callable'][0] ?? '') && $matches['callable'][1] === $nullableLength) {
-            $this->parseCommaSeparatedInnerTypes(
+            $this->parseCallableArgumentTypes(
                 $index + \strlen($matches['callable_start'][0]),
                 $matches['callable_arguments'][0]
             );
@@ -430,6 +434,38 @@ final class TypeExpression
             ];
 
             $index += \strlen($matches[0]);
+        }
+    }
+
+    private function parseCallableArgumentTypes(int $startIndex, string $value): void
+    {
+        $index = 0;
+        while (\strlen($value) !== $index) {
+            Preg::match(
+                '{\G(?:(?=1)0'.self::REGEX_TYPES.'|(?<_callable_argument>(?&callable_argument))(?:\h*,\h*|$))}',
+                $value,
+                $prematches,
+                0,
+                $index
+            );
+            $consumedValue = $prematches['_callable_argument'];
+            $consumedValueLength = \strlen($consumedValue);
+            $consumedCommaLength = \strlen($prematches[0]) - $consumedValueLength;
+
+            $addedPrefix = 'Closure(';
+            Preg::match(
+                '{^'.self::REGEX_TYPES.'$}',
+                $addedPrefix.$consumedValue.'): void',
+                $matches,
+                PREG_OFFSET_CAPTURE
+            );
+
+            $this->innerTypeExpressions[] = [
+                'start_index' => $startIndex + $index,
+                'expression' => $this->inner($matches['callable_argument_type'][0]),
+            ];
+
+            $index += $consumedValueLength + $consumedCommaLength;
         }
     }
 
