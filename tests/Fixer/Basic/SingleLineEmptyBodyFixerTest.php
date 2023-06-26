@@ -242,6 +242,24 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
                 };
             ',
         ];
+
+        yield 'interface' => [
+            '<?php interface Foo {}
+            ',
+            '<?php interface Foo
+                {
+                }
+            ',
+        ];
+
+        yield 'trait' => [
+            '<?php trait Foo {}
+            ',
+            '<?php trait Foo
+                {
+                }
+            ',
+        ];
     }
 
     /**
@@ -290,6 +308,31 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
                         private int $y,
                     ) {
                     }
+                }
+            ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFix81Cases(): iterable
+    {
+        yield 'enum' => [
+            '<?php enum Foo {}
+            ',
+            '<?php enum Foo
+                {
                 }
             ',
         ];
