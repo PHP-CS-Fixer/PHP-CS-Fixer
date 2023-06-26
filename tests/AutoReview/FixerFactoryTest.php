@@ -277,7 +277,6 @@ final class FixerFactoryTest extends TestCase
     public function testFixerWithNoneDefaultPriorityIsTested(): void
     {
         $knownIssues = [ // should only shrink
-            'final_class' => true,
             'no_trailing_comma_in_singleline_function_call' => true, // had prio case but no longer, left prio the same for BC reasons, rule has been deprecated
             'psr_autoloading' => true,
             'simple_to_complex_string_variable' => true, // had prio case but no longer, left prio the same for BC reasons
@@ -426,6 +425,10 @@ final class FixerFactoryTest extends TestCase
             'escape_implicit_backslashes' => [
                 'heredoc_to_nowdoc',
                 'single_quote',
+            ],
+            'final_class' => [
+                'protected_to_private',
+                'self_static_accessor',
             ],
             'final_internal_class' => [
                 'protected_to_private',
