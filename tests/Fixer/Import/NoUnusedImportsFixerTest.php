@@ -696,6 +696,19 @@ EOF
                 '<?php ?>',
                 '<?php use A\B?>',
             ],
+            'case_mismatch_typo' => [
+                '<?php
+use Foo\exception; // must be kept by non-risky fixer
+
+try {
+    x();
+} catch (Exception $e) {
+    echo \'Foo\Exception caught\';
+} catch (\Exception $e) {
+    echo \'Exception caught\';
+}
+',
+            ],
             'with_matches_in_comments' => [
                 '<?php
 use Foo;
