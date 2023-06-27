@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.20.0
+---------------------
+
+* DX: fix priority of `FinalClassFixer` (#7091)
+* DX: use FAST_LINT_TEST_CASES=1 for CI run on macOS (#7092)
+* feature: SingleLineEmptyBodyFixer - support interfaces, traits and enums (#7096)
+* feature: `NullableTypeDeclarationForDefaultNullValue` - support for nullability in union types (#5819)
+
 Changelog for v3.19.2
 ---------------------
 
