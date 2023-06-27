@@ -2950,7 +2950,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Comment\\SingleLineCommentStyleFixer <./../src/Fixer/Comment/SingleLineCommentStyleFixer.php>`_
 -  `single_line_empty_body <./rules/basic/single_line_empty_body.rst>`_
 
-   Empty body of class or function must be abbreviated as ``{}`` and placed on the same line as the previous symbol, separated by a space.
+   Empty body of class, interface, trait, enum or function must be abbreviated as ``{}`` and placed on the same line as the previous symbol, separated by a single space.
 
    `Source PhpCsFixer\\Fixer\\Basic\\SingleLineEmptyBodyFixer <./../src/Fixer/Basic/SingleLineEmptyBodyFixer.php>`_
 -  `single_line_throw <./rules/function_notation/single_line_throw.rst>`_
