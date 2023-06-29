@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Report\FixReport;
 
-use PhpCsFixer\Fixer\FixerInterface;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
@@ -24,17 +23,8 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  */
 final class ReporterFactory
 {
-    /** @var array<string, FixerInterface> */
-    private array $fixers;
-
     /** @var array<string, ReporterInterface> */
     private array $reporters = [];
-
-    /** @param array<string, FixerInterface> $fixers */
-    public function __construct(array $fixers = [])
-    {
-        $this->fixers = $fixers;
-    }
 
     public function registerBuiltInReporters(): self
     {
@@ -56,7 +46,7 @@ final class ReporterFactory
         }
 
         foreach ($builtInReporters as $reporterClass) {
-            $this->registerReporter(new $reporterClass($this->fixers));
+            $this->registerReporter(new $reporterClass());
         }
 
         return $this;

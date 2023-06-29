@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Report\FixReport;
 
-use PhpCsFixer\Fixer\FixerInterface;
 use SebastianBergmann\Diff\Chunk;
 use SebastianBergmann\Diff\Parser;
 use Symfony\Component\Console\Formatter\OutputFormatter;
@@ -30,14 +29,10 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  */
 final class GitlabReporter implements ReporterInterface
 {
-    /** @var array<string, FixerInterface> */
-    private array $fixers;
     private Parser $diffParser;
 
-    /** @param array<string, FixerInterface> $fixers */
-    public function __construct(array $fixers = [])
+    public function __construct()
     {
-        $this->fixers = $fixers;
         $this->diffParser = new Parser();
     }
 
@@ -59,8 +54,7 @@ final class GitlabReporter implements ReporterInterface
             foreach ($change['appliedFixers'] as $fixerName) {
                 $report[] = [
                     'check_name' => $fixerName,
-                    'description' => isset($this->fixers[$fixerName]) ?
-                        $this->fixers[$fixerName]->getDefinition()->getSummary() : '',
+                    'description' => $fixerName,
                     'categories' => ['Style'],
                     'fingerprint' => md5($fileName.$fixerName),
                     'severity' => 'minor',

@@ -16,8 +16,6 @@ namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
 use PhpCsFixer\Console\Report\FixReport\GitlabReporter;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
-use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
 
 /**
@@ -33,10 +31,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
 
     protected function createReporter(): ReporterInterface
     {
-        $mock = $this->prophesize(FixerInterface::class);
-        $mock->getDefinition()->willReturn(new FixerDefinition('Some summary', []));
-
-        return new GitlabReporter(['some_fixer_name_here' => $mock->reveal()]);
+        return new GitlabReporter();
     }
 
     protected function getFormat(): string
@@ -55,7 +50,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
             [{
                 "categories": ["Style"],
                 "check_name": "some_fixer_name_here",
-                "description": "Some summary",
+                "description": "some_fixer_name_here",
                 "fingerprint": "ad098ea6ea7a28dd85dfcdfc9e2bded0",
                 "severity": "minor",
                 "location": {
@@ -80,7 +75,7 @@ JSON;
             [{
                 "categories": ["Style"],
                 "check_name": "some_fixer_name_here_1",
-                "description": "",
+                "description": "some_fixer_name_here_1",
                 "fingerprint": "b74e9385c8ae5b1f575c9c8226c7deff",
                 "severity": "minor",
                 "location": {
@@ -93,7 +88,7 @@ JSON;
             },{
                 "categories": ["Style"],
                 "check_name": "some_fixer_name_here_2",
-                "description": "",
+                "description": "some_fixer_name_here_2",
                 "fingerprint": "acad4672140c737a83c18d1474d84074",
                 "severity": "minor",
                 "location": {
@@ -118,7 +113,7 @@ JSON;
             [{
                 "categories": ["Style"],
                 "check_name": "some_fixer_name_here_1",
-                "description": "",
+                "description": "some_fixer_name_here_1",
                 "fingerprint": "b74e9385c8ae5b1f575c9c8226c7deff",
                 "severity": "minor",
                 "location": {
@@ -131,7 +126,7 @@ JSON;
             },{
                 "categories": ["Style"],
                 "check_name": "some_fixer_name_here_2",
-                "description": "",
+                "description": "some_fixer_name_here_2",
                 "fingerprint": "acad4672140c737a83c18d1474d84074",
                 "severity": "minor",
                 "location": {
@@ -144,7 +139,7 @@ JSON;
             },{
                 "categories": ["Style"],
                 "check_name": "another_fixer_name_here",
-                "description": "",
+                "description": "another_fixer_name_here",
                 "fingerprint": "30e86e533dac0f1b93bbc3a55c6908f8",
                 "severity": "minor",
                 "location": {

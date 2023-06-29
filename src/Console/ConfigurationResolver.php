@@ -435,7 +435,7 @@ final class ConfigurationResolver
     public function getReporter(): ReporterInterface
     {
         if (null === $this->reporter) {
-            $reporterFactory = new ReporterFactory($this->getFixers());
+            $reporterFactory = new ReporterFactory();
             $reporterFactory->registerBuiltInReporters();
 
             $format = $this->getFormat();
