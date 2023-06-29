@@ -1,5 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
+    "$id": "https://github.com/codeclimate/platform/blob/master/spec/analyzers/SPEC.md#issues",
     "type": "array",
     "items": {
         "type": "object",
