@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Tests\Test\IntegrationCaseFactory;
@@ -276,11 +278,6 @@ final class FixerFactoryTest extends TestCase
 
     public function testFixerWithNoneDefaultPriorityIsTested(): void
     {
-        $knownIssues = [ // should only shrink
-            'no_trailing_comma_in_singleline_function_call' => true, // had prio case but no longer, left prio the same for BC reasons, rule has been deprecated
-            'simple_to_complex_string_variable' => true, // had prio case but no longer, left prio the same for BC reasons
-        ];
-
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
         $fixers = $factory->getFixers();
@@ -307,19 +304,28 @@ final class FixerFactoryTest extends TestCase
         $missing = [];
 
         foreach ($fixers as $fixer) {
+            if ($fixer instanceof DeprecatedFixerInterface) {
+                continue;
+            }
+
             $fixerName = $fixer->getName();
 
-            if (0 !== $fixer->getPriority() && !isset($fixerNamesWithTests[$fixerName])) {
-                $missing[$fixerName] = true;
-            }
-        }
+            $fixerGetPriorityDeclaringClass = (new \ReflectionObject($fixer))
+                ->getMethod('getPriority')
+                ->getDeclaringClass()
+                ->getName()
+            ;
 
-        foreach ($knownIssues as $knownIssue => $true) {
-            if (isset($missing[$knownIssue])) {
-                unset($missing[$knownIssue]);
-            } else {
-                self::fail(sprintf('No longer found known issue "%s", please update the set.', $knownIssue));
+            // if method "getPriority" is defined in AbstractFixer class then it is the "default" value
+            if (AbstractFixer::class === $fixerGetPriorityDeclaringClass) {
+                continue;
             }
+
+            if (isset($fixerNamesWithTests[$fixerName])) {
+                continue;
+            }
+
+            $missing[$fixerName] = true;
         }
 
         self::assertEmpty($missing, 'Fixers without default priority and without priority tests: "'.implode('", "', array_keys($missing)).'."');

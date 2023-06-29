@@ -115,11 +115,6 @@ class FooTest extends TestCase {
         ]);
     }
 
-    public function getPriority(): int
-    {
-        return 0;
-    }
-
     public function isRisky(): bool
     {
         return true;

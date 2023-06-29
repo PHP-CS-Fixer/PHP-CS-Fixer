@@ -55,16 +55,6 @@ EOT
         );
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * Must run after ExplicitStringVariableFixer.
-     */
-    public function getPriority(): int
-    {
-        return -10;
-    }
-
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOLLAR_OPEN_CURLY_BRACES);
