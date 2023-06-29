@@ -19,6 +19,6 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
  *
  * @covers \PhpCsFixer\RuleSet\Sets\PSR1Set
  */
-final class PSR1SetTest extends AbstractSetTest
+final class PSR1SetTest extends AbstractSetTestCase
 {
 }

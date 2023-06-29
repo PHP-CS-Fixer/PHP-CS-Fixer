@@ -29,7 +29,7 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * @large
  */
-final class InstallViaComposerTest extends AbstractSmokeTest
+final class InstallViaComposerTest extends AbstractSmokeTestCase
 {
     /**
      * @var string[]
