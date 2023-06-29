@@ -117,7 +117,7 @@ enum Foo
     /**
      * {@inheritdoc}
      *
-     * Must run after FinalInternalClassFixer, FunctionToConstantFixer, PhpUnitTestCaseStaticMethodCallsFixer.
+     * Must run after FinalClassFixer, FinalInternalClassFixer, FunctionToConstantFixer, PhpUnitTestCaseStaticMethodCallsFixer.
      */
     public function getPriority(): int
     {

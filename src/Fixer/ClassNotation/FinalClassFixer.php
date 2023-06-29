@@ -44,6 +44,16 @@ class MyApp {}
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before ProtectedToPrivateFixer, SelfStaticAccessorFixer.
+     */
+    public function getPriority(): int
+    {
+        return parent::getPriority();
+    }
+
     protected function createProxyFixers(): array
     {
         $fixer = new FinalInternalClassFixer();

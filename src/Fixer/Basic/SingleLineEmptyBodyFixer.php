@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 final class SingleLineEmptyBodyFixer extends AbstractFixer
@@ -25,7 +26,7 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Empty body of class or function must be abbreviated as `{}` and placed on the same line as the previous symbol, separated by a space.',
+            'Empty body of class, interface, trait, enum or function must be abbreviated as `{}` and placed on the same line as the previous symbol, separated by a single space.',
             [new CodeSample('<?php function foo(
     int $x
 )
@@ -47,13 +48,17 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_CLASS, T_FUNCTION]);
+        if (\defined('T_ENUM') && $tokens->isTokenKindFound(T_ENUM)) { // @TODO: drop condition when PHP 8.1+ is required
+            return true;
+        }
+
+        return $tokens->isAnyTokenKindsFound([T_INTERFACE, T_CLASS, T_FUNCTION, T_TRAIT]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind([T_CLASS, T_FUNCTION])) {
+            if (!$tokens[$index]->isGivenKind([...Token::getClassyTokenKinds(), T_FUNCTION])) {
                 continue;
             }
 
