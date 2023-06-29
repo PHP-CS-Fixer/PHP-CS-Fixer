@@ -24,7 +24,7 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  */
-abstract class AbstractSetTest extends TestCase
+abstract class AbstractSetTestCase extends TestCase
 {
     public function testSet(): void
     {

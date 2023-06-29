@@ -31,7 +31,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @large
  */
-final class PharTest extends AbstractSmokeTest
+final class PharTest extends AbstractSmokeTestCase
 {
     /**
      * @var string

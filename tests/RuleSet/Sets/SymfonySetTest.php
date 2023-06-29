@@ -19,6 +19,6 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
  *
  * @covers \PhpCsFixer\RuleSet\Sets\SymfonySet
  */
-final class SymfonySetTest extends AbstractSetTest
+final class SymfonySetTest extends AbstractSetTestCase
 {
 }
