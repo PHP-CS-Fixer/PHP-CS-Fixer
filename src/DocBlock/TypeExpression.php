@@ -229,7 +229,7 @@ final class TypeExpression
      */
     public function sortTypes(callable $compareCallback): void
     {
-        foreach (array_reverse($this->innerTypeExpressions) as [
+        foreach ($this->innerTypeExpressions as [
             'start_index' => $startIndex,
             'expression' => $inner,
         ]) {
