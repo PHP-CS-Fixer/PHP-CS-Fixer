@@ -27,13 +27,17 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 final class TypeExpressionTest extends TestCase
 {
     /**
-     * @param string[] $expectedTypes
+     * @param null|string[] $expectedTypes
      *
      * @dataProvider provideGetConstTypesCases
      * @dataProvider provideGetTypesCases
      */
-    public function testGetTypes(string $typesExpression, array $expectedTypes): void
+    public function testGetTypes(string $typesExpression, array $expectedTypes = null): void
     {
+        if (null === $expectedTypes) {
+            $expectedTypes = [$typesExpression];
+        }
+
         $expression = $this->parseTypeExpression($typesExpression, null, []);
         self::assertSame($expectedTypes, $expression->getTypes());
 
@@ -51,23 +55,23 @@ final class TypeExpressionTest extends TestCase
 
     public static function provideGetTypesCases(): iterable
     {
-        yield ['int', ['int']];
+        yield ['int'];
 
-        yield ['Foo5', ['Foo5']];
+        yield ['Foo5'];
 
-        yield ['🚀_kůň', ['🚀_kůň']];
+        yield ['🚀_kůň'];
 
-        yield ['positive-int', ['positive-int']];
+        yield ['positive-int'];
 
-        yield ['?int', ['?int']];
+        yield ['?int'];
 
-        yield ['? int', ['? int']];
+        yield ['? int'];
 
-        yield ['int[]', ['int[]']];
+        yield ['int[]'];
 
-        yield ['Foo[][]', ['Foo[][]']];
+        yield ['Foo[][]'];
 
-        yield ['Foo [ ]  []', ['Foo [ ]  []']];
+        yield ['Foo [ ]  []'];
 
         yield ['int[]|null', ['int[]', 'null']];
 
@@ -75,53 +79,53 @@ final class TypeExpressionTest extends TestCase
 
         yield ['null|Foo\Bar|\Baz\Bax|int[]', ['null', 'Foo\Bar', '\Baz\Bax', 'int[]']];
 
-        yield ['gen<int>', ['gen<int>']];
+        yield ['gen<int>'];
 
         yield ['int|gen<int>', ['int', 'gen<int>']];
 
         yield ['\int|\gen<\int, \bool>', ['\int', '\gen<\int, \bool>']];
 
-        yield ['gen<int,  int>', ['gen<int,  int>']];
+        yield ['gen<int,  int>'];
 
-        yield ['gen<int,  bool|string>', ['gen<int,  bool|string>']];
+        yield ['gen<int,  bool|string>'];
 
-        yield ['gen<int,  string[]>', ['gen<int,  string[]>']];
+        yield ['gen<int,  string[]>'];
 
-        yield ['gen<int,  gener<string, bool>>', ['gen<int,  gener<string, bool>>']];
+        yield ['gen<int,  gener<string, bool>>'];
 
-        yield ['gen<int,  gener<string, null|bool>>', ['gen<int,  gener<string, null|bool>>']];
+        yield ['gen<int,  gener<string, null|bool>>'];
 
-        yield ['gen<int>[][]', ['gen<int>[][]']];
+        yield ['gen<int>[][]'];
 
-        yield ['non-empty-array<int>', ['non-empty-array<int>']];
+        yield ['non-empty-array<int>'];
 
         yield ['null|gen<int,  gener<string, bool>>|int|string[]', ['null', 'gen<int,  gener<string, bool>>', 'int', 'string[]']];
 
         yield ['null|gen<int,  gener<string, bool>>|int|array<int, string>|string[]', ['null', 'gen<int,  gener<string, bool>>', 'int', 'array<int, string>', 'string[]']];
 
-        yield ['this', ['this']];
+        yield ['this'];
 
-        yield ['@this', ['@this']];
+        yield ['@this'];
 
         yield ['$SELF|int', ['$SELF', 'int']];
 
-        yield ['array<string|int, string>', ['array<string|int, string>']];
+        yield ['array<string|int, string>'];
 
-        yield ['Collection<Foo<Bar>, Foo<Baz>>', ['Collection<Foo<Bar>, Foo<Baz>>']];
+        yield ['Collection<Foo<Bar>, Foo<Baz>>'];
 
         yield ['int | string', ['int', 'string']];
 
-        yield ['Foo::*', ['Foo::*']];
+        yield ['Foo::*'];
 
-        yield ['Foo::A', ['Foo::A']];
+        yield ['Foo::A'];
 
         yield ['Foo::A|Foo::B', ['Foo::A', 'Foo::B']];
 
-        yield ['Foo::A*', ['Foo::A*']];
+        yield ['Foo::A*'];
 
-        yield ['Foo::*0*_Bar', ['Foo::*0*_Bar']];
+        yield ['Foo::*0*_Bar'];
 
-        yield ['?Foo::*[]', ['?Foo::*[]']];
+        yield ['?Foo::*[]'];
 
         yield ['array<Foo::A*>|null', ['array<Foo::A*>', 'null']];
 
@@ -129,91 +133,101 @@ final class TypeExpressionTest extends TestCase
 
         yield ['int | "a" | A<B<C, D>, E<F::*|G[]>>', ['int', '"a"', 'A<B<C, D>, E<F::*|G[]>>']];
 
-        yield ['class-string<Foo>', ['class-string<Foo>']];
+        yield ['class-string<Foo>'];
 
         yield ['A&B', ['A', 'B']];
 
         yield ['A & B', ['A', 'B']];
 
-        yield ['array{}', ['array{}']];
+        yield ['array{}'];
 
-        yield ['object{ }', ['object{ }']];
+        yield ['object{ }'];
 
-        yield ['array{1: bool, 2: bool}', ['array{1: bool, 2: bool}']];
+        yield ['array{1: bool, 2: bool}'];
 
-        yield ['array{a: int|string, b?: bool}', ['array{a: int|string, b?: bool}']];
+        yield ['array{a: int|string, b?: bool}'];
 
-        yield ['array{\'a\': "a", "b"?: \'b\'}', ['array{\'a\': "a", "b"?: \'b\'}']];
+        yield ['array{\'a\': "a", "b"?: \'b\'}'];
 
-        yield ['array { a : int | string , b ? : A<B, C> }', ['array { a : int | string , b ? : A<B, C> }']];
+        yield ['array { a : int | string , b ? : A<B, C> }'];
 
-        yield ['array{bool, int}', ['array{bool, int}']];
+        yield ['array{bool, int}'];
 
-        yield ['array{bool,}', ['array{bool,}']];
+        yield ['array{bool,}'];
 
-        yield ['list{int, bool}', ['list{int, bool}']];
+        yield ['list{int, bool}'];
 
-        yield ['object{ bool, foo2: int }', ['object{ bool, foo2: int }']];
+        yield ['object{ bool, foo2: int }'];
 
-        yield ['ArRAY{ 1 }', ['ArRAY{ 1 }']];
+        yield ['ArRAY{ 1 }'];
 
-        yield ['lIst{ 1 }', ['lIst{ 1 }']];
+        yield ['lIst{ 1 }'];
 
-        yield ['OBJECT { x: 1 }', ['OBJECT { x: 1 }']];
+        yield ['OBJECT { x: 1 }'];
 
-        yield ['callable', ['callable']];
+        yield ['callable'];
 
-        yield ['callable(string)', ['callable(string)']];
+        yield ['callable(string)'];
 
-        yield ['? callable(string): bool', ['? callable(string): bool']];
+        yield ['? callable(string): bool'];
 
-        yield ['CAllable(string): bool', ['CAllable(string): bool']];
+        yield ['CAllable(string): bool'];
 
-        yield ['callable(string,): bool', ['callable(string,): bool']];
+        yield ['callable(string,): bool'];
 
-        yield ['callable(array<int, string>, array<int, Foo>): bool', ['callable(array<int, string>, array<int, Foo>): bool']];
+        yield ['callable(array<int, string>, array<int, Foo>): bool'];
 
-        yield ['array<int, callable(string): bool>', ['array<int, callable(string): bool>']];
+        yield ['array<int, callable(string): bool>'];
 
-        yield ['callable(string): callable(int)', ['callable(string): callable(int)']];
+        yield ['callable(string): callable(int)'];
 
-        yield ['callable(string) : callable(int) : bool', ['callable(string) : callable(int) : bool']];
+        yield ['callable(string) : callable(int) : bool'];
 
         yield ['TheCollection<callable(Foo, Bar,Baz): Foo[]>|string[]|null', ['TheCollection<callable(Foo, Bar,Baz): Foo[]>', 'string[]', 'null']];
 
-        yield ['Closure()', ['Closure()']];
+        yield ['Closure()'];
 
-        yield ['Closure(string)', ['Closure(string)']];
+        yield ['Closure(string)'];
 
-        yield ['\\closure(string): void', ['\\closure(string): void']];
+        yield ['\\closure(string): void'];
 
-        yield ['\\Closure', ['\\Closure']];
+        yield ['\\Closure'];
 
-        yield ['\\Closure()', ['\\Closure()']];
+        yield ['\\Closure()'];
 
-        yield ['\\Closure(string)', ['\\Closure(string)']];
+        yield ['\\Closure(string)'];
 
-        yield ['\\Closure(string, bool)', ['\\Closure(string, bool)']];
+        yield ['\\Closure(string, bool)'];
 
-        yield ['\\Closure(string|int, bool)', ['\\Closure(string|int, bool)']];
+        yield ['\\Closure(string|int, bool)'];
 
-        yield ['\\Closure(string):bool', ['\\Closure(string):bool']];
+        yield ['\\Closure(string):bool'];
 
-        yield ['\\Closure(string): bool', ['\\Closure(string): bool']];
+        yield ['\\Closure(string): bool'];
 
-        yield ['\\Closure(string|int, bool): bool', ['\\Closure(string|int, bool): bool']];
+        yield ['\\Closure(string|int, bool): bool'];
 
-        yield ['\\Closure(float|int): (bool|int)', ['\\Closure(float|int): (bool|int)']];
+        yield ['\\Closure(float|int): (bool|int)'];
 
-        yield ['array  <  int   , callable  (  string  )  :   bool  >', ['array  <  int   , callable  (  string  )  :   bool  >']];
+        yield ['Closure(int $a)'];
 
-        yield ['(int)', ['(int)']];
+        yield ['Closure(int $a): bool'];
 
-        yield ['(int|\\Exception)', ['(int|\\Exception)']];
+        yield ['Closure(int $a, array<Closure(int ...$args): Item<X>>): bool'];
 
-        yield ['($foo is int ? false : true)', ['($foo is int ? false : true)']];
+        yield ['Closure_can_be_regular_class()'];
 
-        yield ['($foo🚀3 is int ? false : true)', ['($foo🚀3 is int ? false : true)']];
+        yield ['Closure_can_be_regular_class(): (u|v)'];
+
+        yield ['array  <  int   , callable  (  string  )  :   bool  >'];
+
+        yield ['(int)'];
+
+        yield ['(int|\\Exception)'];
+
+        yield ['($foo is int ? false : true)'];
+
+        yield ['($foo🚀3 is int ? false : true)'];
 
         yield ['\'a\\\'s"\\\\\n\r\t\'|"b\\"s\'\\\\\n\r\t"', ['\'a\\\'s"\\\\\n\r\t\'', '"b\\"s\'\\\\\n\r\t"']];
     }
@@ -261,7 +275,7 @@ final class TypeExpressionTest extends TestCase
             '\'\\\\\'',
             '\'\\\'\'',
         ] as $type) {
-            yield [$type, [$type]];
+            yield [$type];
         }
     }
 
@@ -347,8 +361,6 @@ final class TypeExpressionTest extends TestCase
 
         yield ['g<,>'];
 
-        yield ['g<no_trailing_comma,>'];
-
         yield ['g<,no_leading_comma>'];
 
         yield ['10__000'];
@@ -358,6 +370,8 @@ final class TypeExpressionTest extends TestCase
         yield ['\' unclosed string'];
 
         yield ['\' unclosed string \\\''];
+
+        yield 'generic with no arguments' => ['f<>'];
     }
 
     public function testHugeType(): void
@@ -608,6 +622,11 @@ final class TypeExpressionTest extends TestCase
             'array<bool|int, float|string>',
         ];
 
+        yield 'generic with trailing comma' => [
+            'array<int|bool,>',
+            'array<bool|int,>',
+        ];
+
         yield 'simple in array shape with int key' => [
             'array{0: int|bool}',
             'array{0: bool|int}',
@@ -671,6 +690,21 @@ final class TypeExpressionTest extends TestCase
         yield 'callable with union return type and within union itself' => [
             'callable(): (string|float)|bool',
             'bool|callable(): (float|string)',
+        ];
+
+        yield 'callable with multiple named arguments' => [
+            'callable(int|bool $b, null|array $a)',
+            'callable(bool|int $b, array|null $a)',
+        ];
+
+        yield 'callable with complex arguments' => [
+            'callable(B|A&, D|Closure(): void..., array{}$foo=, $this $foo=): array{}',
+            'callable(A|B&, Closure(): void|D..., array{}$foo=, $this $foo=): array{}',
+        ];
+
+        yield 'callable with trailing comma' => [
+            'Closure( Y|X , ): B|A',
+            'A|Closure( X|Y , ): B',
         ];
 
         yield 'simple in Closure argument' => [

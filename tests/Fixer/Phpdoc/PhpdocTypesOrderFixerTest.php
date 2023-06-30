@@ -138,8 +138,12 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
             ],
             [
-                '<?php /** @method void bar(null|string $delimiter = \',<br/>\') */',
-                '<?php /** @method void bar(string|null $delimiter = \',<br/>\') */',
+                '<?php /** @method null|Y|X setOrder(array<string, null|array{Y,X,null|Z}> $by) */',
+                '<?php /** @method Y|null|X setOrder(array<string, array{Y,X,Z|null}|null> $by) */',
+            ],
+            '@method with invalid 2nd phpdoc' => [
+                '<?php /** @method null|X setOrder($$by) */',
+                '<?php /** @method X|null setOrder($$by) */',
             ],
             [
                 '<?php /** @var array<array<int, int>, OutputInterface> */',
