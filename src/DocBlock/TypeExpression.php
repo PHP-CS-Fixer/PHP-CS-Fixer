@@ -225,9 +225,9 @@ final class TypeExpression
     }
 
     /**
-     * @param callable(self $a, self $b): int $compareCallback
+     * @param callable(self $a): void $callback
      */
-    public function sortTypes(callable $compareCallback): void
+    public function walkTypes(callable $callback): void
     {
         foreach ($this->innerTypeExpressions as [
             'start_index' => $startIndex,
@@ -235,7 +235,7 @@ final class TypeExpression
         ]) {
             $initialValueLength = \strlen($inner->toString());
 
-            $inner->sortTypes($compareCallback);
+            $inner->walkTypes($callback);
 
             $this->value = substr_replace(
                 $this->value,
@@ -245,15 +245,25 @@ final class TypeExpression
             );
         }
 
-        if ($this->isUnionType) {
-            $this->innerTypeExpressions = Utils::stableSort(
-                $this->innerTypeExpressions,
-                static fn (array $type): self => $type['expression'],
-                $compareCallback,
-            );
+        $callback($this);
+    }
 
-            $this->value = implode($this->getTypesGlue(), $this->getTypes());
-        }
+    /**
+     * @param callable(self $a, self $b): int $compareCallback
+     */
+    public function sortTypes(callable $compareCallback): void
+    {
+        $this->walkTypes(function (self $type) use ($compareCallback): void {
+            if ($type->isUnionType) {
+                $type->innerTypeExpressions = Utils::stableSort(
+                    $type->innerTypeExpressions,
+                    static fn (array $type): self => $type['expression'],
+                    $compareCallback,
+                );
+
+                $type->value = implode($type->getTypesGlue(), $type->getTypes());
+            }
+        });
     }
 
     public function getTypesGlue(): string
