@@ -171,7 +171,7 @@ Integration of %s.
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 
         $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static function (string $setDefinitionName): bool {
-            return 1 === preg_match('/^@PHPUnit\d{2}Migration:risky$/', $setDefinitionName);
+            return 1 === preg_match('/^@PHPUnit\d+Migration:risky$/', $setDefinitionName);
         });
 
         return array_map(static function (string $setDefinitionName): array {
@@ -181,7 +181,7 @@ Integration of %s.
 
     private static function assertPHPUnitVersionIsLargestAllowed(string $setName, string $ruleName, string $actualTargetVersion): void
     {
-        $maximumVersionForRuleset = preg_replace('/^@PHPUnit(\d)(\d)Migration:risky$/', '$1.$2', $setName);
+        $maximumVersionForRuleset = preg_replace('/^@PHPUnit(\d+)(\d)Migration:risky$/', '$1.$2', $setName);
 
         $fixer = self::getFixerByName($ruleName);
 
