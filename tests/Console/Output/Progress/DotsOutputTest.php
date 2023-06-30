@@ -30,7 +30,7 @@ final class DotsOutputTest extends TestCase
     /**
      * @param list<array{0: FixerFileProcessedEvent::STATUS_*, 1?: int}> $statuses
      *
-     * @dataProvider provideProcessProgressOutputCases
+     * @dataProvider provideDotsProgressOutputCases
      */
     public function testDotsProgressOutput(array $statuses, string $expectedOutput, int $width): void
     {
@@ -50,7 +50,7 @@ final class DotsOutputTest extends TestCase
         self::assertSame($expectedOutput, $output->fetch());
     }
 
-    public static function provideProcessProgressOutputCases(): iterable
+    public static function provideDotsProgressOutputCases(): iterable
     {
         return [
             [

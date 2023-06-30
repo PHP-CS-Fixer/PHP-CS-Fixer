@@ -30,7 +30,7 @@ use Symfony\Component\Console\Output\NullOutput as SymfonyNullOutput;
 final class ProgressOutputFactoryTest extends TestCase
 {
     /**
-     * @dataProvider provideValidProcessOutputContextCases
+     * @dataProvider provideValidProcessOutputIsCreatedCases
      */
     public function testValidProcessOutputIsCreated(
         string $outputType,
@@ -40,7 +40,7 @@ final class ProgressOutputFactoryTest extends TestCase
         self::assertInstanceOf($expectedOutputClass, (new ProgressOutputFactory())->create($outputType, $context));
     }
 
-    public static function provideValidProcessOutputContextCases(): iterable
+    public static function provideValidProcessOutputIsCreatedCases(): iterable
     {
         $context = new OutputContext(new SymfonyNullOutput(), 100, 10);
         $nullContext = new OutputContext(null, 100, 10);
