@@ -235,9 +235,9 @@ final class TypeExpression
     }
 
     /**
-     * @param callable(self $a): void $callback
+     * @param \Closure(self): void $callback
      */
-    public function walkTypes(callable $callback): void
+    public function walkTypes(\Closure $callback): void
     {
         foreach ($this->innerTypeExpressions as [
             'start_index' => $startIndex,
@@ -259,9 +259,9 @@ final class TypeExpression
     }
 
     /**
-     * @param callable(self $a, self $b): int $compareCallback
+     * @param \Closure(self, self): (-1|0|1) $compareCallback
      */
-    public function sortTypes(callable $compareCallback): void
+    public function sortTypes(\Closure $compareCallback): void
     {
         $this->walkTypes(function (self $type) use ($compareCallback): void {
             if ($type->isUnionType) {

@@ -267,11 +267,17 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
             '<?php /**
                     * @return \'NULL\'|null|false
                     */',
+            '<?php /**
+                    * @return \'NULL\'|NULL|false
+                    */',
         ];
 
         yield 'union with "NULL"' => [
             '<?php /**
                     * @return null|"NULL"|false
+                    */',
+            '<?php /**
+                    * @return NULL|"NULL"|false
                     */',
         ];
 

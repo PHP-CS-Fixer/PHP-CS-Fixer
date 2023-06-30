@@ -591,19 +591,20 @@ final class TypeExpressionTest extends TestCase
      */
     public function testSortTypes(string $typesExpression, string $expectResult): void
     {
+        $sortCaseFx = static function (TypeExpression $a, TypeExpression $b): int {
+            return strcasecmp($a->toString(), $b->toString());
+        };
+        $sortCrc32Fx = static function (TypeExpression $a, TypeExpression $b): int {
+            return strcasecmp($a->toString(), $b->toString());
+        };
+
         $expression = $this->parseTypeExpression($typesExpression, null, []);
 
-        $expression->sortTypes(static function (TypeExpression $a, TypeExpression $b): int {
-            return strcasecmp($a->toString(), $b->toString());
-        });
+        $expression->sortTypes($sortCaseFx);
         self::assertSame($expectResult, $expression->toString());
 
-        $expression->sortTypes(static function (TypeExpression $a, TypeExpression $b): int {
-            return crc32($a->toString()) <=> crc32($b->toString());
-        });
-        $expression->sortTypes(static function (TypeExpression $a, TypeExpression $b): int {
-            return strcasecmp($a->toString(), $b->toString());
-        });
+        $expression->sortTypes($sortCrc32Fx);
+        $expression->sortTypes($sortCaseFx);
         self::assertSame($expectResult, $expression->toString());
     }
 
@@ -812,8 +813,8 @@ final class TypeExpressionTest extends TestCase
         ];
 
         yield 'parenthesized in closure return type' => [
-            'Closure(): (string|float)',
-            'Closure(): (float|string)',
+            'Closure(Y|X): (string|float)',
+            'Closure(X|Y): (float|string)',
         ];
 
         yield 'conditional with variable' => [
