@@ -612,6 +612,16 @@ final class TypeExpressionTest extends TestCase
             'bool|int',
         ];
 
+        yield 'multiple union' => [
+            'C___|D____|B__|A',
+            'A|B__|C___|D____',
+        ];
+
+        yield 'multiple intersect' => [
+            'C___&D____&B__&A',
+            'A&B__&C___&D____',
+        ];
+
         yield 'simple in generic' => [
             'array<int|bool>',
             'array<bool|int>',
