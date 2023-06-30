@@ -30,7 +30,7 @@ use PhpCsFixer\Preg;
  *
  * @large
  */
-final class StdinTest extends AbstractSmokeTest
+final class StdinTest extends AbstractSmokeTestCase
 {
     public function testFixingStdin(): void
     {

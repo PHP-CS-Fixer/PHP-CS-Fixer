@@ -1,0 +1,98 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$id": "https://github.com/codeclimate/platform/blob/master/spec/analyzers/SPEC.md#issues",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "type": {
+                "type": "string",
+                "enum": ["issue"]
+            },
+            "check_name": {
+                "type": "string"
+            },
+            "description": {
+                "type": "string"
+            },
+            "categories": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                    "type": "string",
+                    "enum": [
+                        "Bug Risk",
+                        "Clarity",
+                        "Compatibility",
+                        "Complexity",
+                        "Duplication",
+                        "Performance",
+                        "Security",
+                        "Style",
+                        "Unused Code"
+                    ]
+                }
+            },
+            "location": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string"
+                    },
+                    "lines": {
+                        "type": "object",
+                        "properties": {
+                            "begin": {
+                                "type": "number"
+                            },
+                            "end": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "begin",
+                            "end"
+                        ]
+                    }
+                },
+                "required": [
+                    "path",
+                    "lines"
+                ]
+            },
+            "remediation_points": {
+                "type": "number"
+            },
+            "content": {
+                "type": "object",
+                "properties": {
+                    "body": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "body"
+                ]
+            },
+            "fingerprint": {
+                "type": "string"
+            },
+            "severity": {
+                "type": "string",
+                "enum": [
+                    "info",
+                    "minor",
+                    "major",
+                    "critical"
+                ]
+            }
+        }
+    },
+    "required": [
+        "type",
+        "check_name",
+        "description",
+        "categories",
+        "location"
+    ]
+}

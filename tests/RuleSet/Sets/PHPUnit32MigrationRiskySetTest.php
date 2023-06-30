@@ -19,6 +19,6 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
  *
  * @covers \PhpCsFixer\RuleSet\Sets\PHPUnit32MigrationRiskySet
  */
-final class PHPUnit32MigrationRiskySetTest extends AbstractSetTest
+final class PHPUnit32MigrationRiskySetTest extends AbstractSetTestCase
 {
 }

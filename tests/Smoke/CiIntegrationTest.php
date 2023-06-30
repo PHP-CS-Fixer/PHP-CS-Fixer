@@ -32,7 +32,7 @@ use PhpCsFixer\Console\Application;
  *
  * @large
  */
-final class CiIntegrationTest extends AbstractSmokeTest
+final class CiIntegrationTest extends AbstractSmokeTestCase
 {
     /**
      * @var string

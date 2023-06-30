@@ -19,6 +19,6 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
  *
  * @covers \PhpCsFixer\RuleSet\Sets\DoctrineAnnotationSet
  */
-final class DoctrineAnnotationSetTest extends AbstractSetTest
+final class DoctrineAnnotationSetTest extends AbstractSetTestCase
 {
 }

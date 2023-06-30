@@ -64,7 +64,19 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <report>
   <files>
-    <file id="1" name="someFile.php"/>
+    <file id="1" name="someFile.php">
+      <diff>--- Original
++++ New
+@@ -2,7 +2,7 @@
+
+ class Foo
+ {
+-    public function bar($foo = 1, $bar)
++    public function bar($foo, $bar)
+     {
+     }
+ }</diff>
+    </file>
   </files>
 </report>
 XML;
@@ -77,7 +89,17 @@ XML;
 <report>
   <files>
     <file id="1" name="someFile.php">
-      <diff><![CDATA[this text is a diff ;)]]></diff>
+      <diff>--- Original
++++ New
+@@ -2,7 +2,7 @@
+
+ class Foo
+ {
+-    public function bar($foo = 1, $bar)
++    public function bar($foo, $bar)
+     {
+     }
+ }</diff>
     </file>
   </files>
 </report>
@@ -107,7 +129,19 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <report>
   <files>
-    <file id="1" name="someFile.php"/>
+    <file id="1" name="someFile.php">
+      <diff>--- Original
++++ New
+@@ -2,7 +2,7 @@
+
+ class Foo
+ {
+-    public function bar($foo = 1, $bar)
++    public function bar($foo, $bar)
+     {
+     }
+ }</diff>
+    </file>
   </files>
   <time unit="s">
     <total value="1.234"/>

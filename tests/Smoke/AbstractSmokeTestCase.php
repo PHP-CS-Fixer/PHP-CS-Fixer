@@ -27,7 +27,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @group covers-nothing
  */
-abstract class AbstractSmokeTest extends TestCase
+abstract class AbstractSmokeTestCase extends TestCase
 {
     protected static function markTestSkippedOrFail(string $message): void
     {
