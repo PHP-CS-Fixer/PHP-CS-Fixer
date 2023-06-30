@@ -263,6 +263,12 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
                     */',
         ];
 
+        yield 'null and \'NULL\' as string' => [
+            '<?php /**
+                    * @return \'NULL\'|null|false|int|(\'FOO\'|\'LaL\')
+                    */',
+        ];
+
         yield 'no space between type and variable' => [
             '<?php /** @param null|string$foo */',
             '<?php /** @param NULL|STRING$foo */',

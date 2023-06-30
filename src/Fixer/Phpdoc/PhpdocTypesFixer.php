@@ -132,7 +132,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
     protected function normalize(string $type): string
     {
         return Preg::replaceCallback(
-            '/(\b|(?=\$|\\\\))(\$|\\\\)?'.TypeExpression::REGEX_IDENTIFIER.'(?!\\\\|\h*:)/',
+            '/(\b|(?=\$|\\\\))(\$|\\\\)?'.TypeExpression::REGEX_IDENTIFIER.'(?!\\\\|\'|\h*:)/',
             function (array $matches): string {
                 $valueLower = strtolower($matches[0]);
                 if (isset($this->typesSetToFix[$valueLower])) {
