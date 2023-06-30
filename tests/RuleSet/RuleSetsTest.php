@@ -157,7 +157,14 @@ Integration of %s.
         $ruleSet = new RuleSet([$setName => true]);
 
         foreach ($ruleSet->getRules() as $ruleName => $ruleConfig) {
-            $targetVersion = true === $ruleConfig ? $this->getDefaultPHPUnitTargetOfRule($ruleName) : $ruleConfig['target'];
+            $targetVersion = $ruleConfig['target'] ?? $this->getDefaultPHPUnitTargetOfRule($ruleName);
+
+            if (null === $targetVersion) {
+                // fixer does not have "target" option
+                $this->addToAssertionCount(1);
+
+                continue;
+            }
 
             self::assertPHPUnitVersionIsLargestAllowed($setName, $ruleName, $targetVersion);
         }
@@ -171,7 +178,7 @@ Integration of %s.
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 
         $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static function (string $setDefinitionName): bool {
-            return 1 === preg_match('/^@PHPUnit\d{2}Migration:risky$/', $setDefinitionName);
+            return 1 === preg_match('/^@PHPUnit\d+Migration:risky$/', $setDefinitionName);
         });
 
         return array_map(static function (string $setDefinitionName): array {
@@ -181,7 +188,7 @@ Integration of %s.
 
     private static function assertPHPUnitVersionIsLargestAllowed(string $setName, string $ruleName, string $actualTargetVersion): void
     {
-        $maximumVersionForRuleset = preg_replace('/^@PHPUnit(\d)(\d)Migration:risky$/', '$1.$2', $setName);
+        $maximumVersionForRuleset = preg_replace('/^@PHPUnit(\d+)(\d)Migration:risky$/', '$1.$2', $setName);
 
         $fixer = self::getFixerByName($ruleName);
 
@@ -201,7 +208,7 @@ Integration of %s.
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
             static function (string $version) use ($maximumVersionForRuleset): bool {
-                return strcmp($maximumVersionForRuleset, $version) >= 0;
+                return version_compare($maximumVersionForRuleset, $version) >= 0;
             }
         );
 
@@ -278,7 +285,7 @@ Integration of %s.
         return true;
     }
 
-    private function getDefaultPHPUnitTargetOfRule(string $ruleName): string
+    private function getDefaultPHPUnitTargetOfRule(string $ruleName): ?string
     {
         $targetVersion = null;
         $fixer = self::getFixerByName($ruleName);
@@ -289,10 +296,6 @@ Integration of %s.
 
                 break;
             }
-        }
-
-        if (null === $targetVersion) {
-            throw new \Exception(sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
         }
 
         return $targetVersion;
