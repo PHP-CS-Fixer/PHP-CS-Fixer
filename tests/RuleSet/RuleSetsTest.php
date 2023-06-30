@@ -208,7 +208,7 @@ Integration of %s.
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
             static function (string $version) use ($maximumVersionForRuleset): bool {
-                return (int) str_replace('.', '', $maximumVersionForRuleset) >= (int) str_replace('.', '', $version);
+                return version_compare($maximumVersionForRuleset, $version) >= 0;
             }
         );
 
