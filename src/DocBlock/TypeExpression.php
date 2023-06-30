@@ -224,6 +224,16 @@ final class TypeExpression
         return [$this->value];
     }
 
+    public function isUnionType(): bool
+    {
+        return $this->isUnionType;
+    }
+
+    public function getTypesGlue(): string
+    {
+        return $this->typesGlue;
+    }
+
     /**
      * @param callable(self $a): void $callback
      */
@@ -264,11 +274,6 @@ final class TypeExpression
                 $type->value = implode($type->getTypesGlue(), $type->getTypes());
             }
         });
-    }
-
-    public function getTypesGlue(): string
-    {
-        return $this->typesGlue;
     }
 
     public function getCommonType(): ?string
