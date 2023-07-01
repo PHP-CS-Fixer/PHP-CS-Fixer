@@ -696,6 +696,19 @@ EOF
                 '<?php ?>',
                 '<?php use A\B?>',
             ],
+            'case_mismatch_typo' => [
+                '<?php
+use Foo\exception; // must be kept by non-risky fixer
+
+try {
+    x();
+} catch (Exception $e) {
+    echo \'Foo\Exception caught\';
+} catch (\Exception $e) {
+    echo \'Exception caught\';
+}
+',
+            ],
             'with_matches_in_comments' => [
                 '<?php
 use Foo;
@@ -707,11 +720,6 @@ use Baz;
 /*Baz*/',
             ],
             'with_case_insensitive_matches_in_comments' => [
-                '<?php
-
-//foo
-#bar
-/*baz*/',
                 '<?php
 use Foo;
 use Bar;
@@ -801,8 +809,6 @@ EOF
 class Foo extends \PHPUnit_Framework_TestCase
 {
     /**
-     * The exception is thrown when foo = bar
-     *
      * @expectedException \Exception
      */
     public function testBar()
@@ -817,8 +823,6 @@ use Some\Exception;
 class Foo extends \PHPUnit_Framework_TestCase
 {
     /**
-     * The exception is thrown when foo = bar
-     *
      * @expectedException \Exception
      */
     public function testBar()
