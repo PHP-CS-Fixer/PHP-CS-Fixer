@@ -19,7 +19,7 @@ use PhpCsFixer\FixerFileProcessedEvent;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Output writer to show the process of a FixCommand using dots and meaningful letters.
+ * Output writer to show the progress of a FixCommand using dots and meaningful letters.
  *
  * @internal
  */
