@@ -27,8 +27,8 @@ final class ProgressOutputFactory
             $outputType = ProgressOutputType::NONE;
         }
 
-        if (!self::isBuiltInType($outputType)) {
-            throw new \RuntimeException(
+        if (!$this->isBuiltInType($outputType)) {
+            throw new \InvalidArgumentException(
                 sprintf(
                     'Something went wrong, "%s" output type is not supported',
                     $outputType

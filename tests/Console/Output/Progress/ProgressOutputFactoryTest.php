@@ -56,7 +56,7 @@ final class ProgressOutputFactoryTest extends TestCase
 
     public function testExceptionIsThrownForUnsupportedProcessOutputType(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         (new ProgressOutputFactory())->create(
             'boom',
