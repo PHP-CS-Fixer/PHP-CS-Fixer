@@ -82,7 +82,7 @@ final class DotsOutput implements ProgressOutputInterface
     public function onFixerFileProcessed(FixerFileProcessedEvent $event): void
     {
         $status = self::$eventStatusMap[$event->getStatus()];
-        $this->output()->write($this->output()->isDecorated() ? sprintf($status['format'], $status['symbol']) : $status['symbol']);
+        $this->getOutput()->write($this->getOutput()->isDecorated() ? sprintf($status['format'], $status['symbol']) : $status['symbol']);
 
         ++$this->processedFiles;
 
@@ -90,7 +90,7 @@ final class DotsOutput implements ProgressOutputInterface
         $isLast = $this->processedFiles === $this->context->getFilesCount();
 
         if (0 === $symbolsOnCurrentLine || $isLast) {
-            $this->output()->write(sprintf(
+            $this->getOutput()->write(sprintf(
                 '%s %'.\strlen((string) $this->context->getFilesCount()).'d / %d (%3d%%)',
                 $isLast && 0 !== $symbolsOnCurrentLine ? str_repeat(' ', $this->symbolsPerLine - $symbolsOnCurrentLine) : '',
                 $this->processedFiles,
@@ -99,7 +99,7 @@ final class DotsOutput implements ProgressOutputInterface
             ));
 
             if (!$isLast) {
-                $this->output()->writeln('');
+                $this->getOutput()->writeln('');
             }
         }
     }
@@ -114,13 +114,13 @@ final class DotsOutput implements ProgressOutputInterface
                 continue;
             }
 
-            $symbols[$symbol] = sprintf('%s-%s', $this->output()->isDecorated() ? sprintf($status['format'], $symbol) : $symbol, $status['description']);
+            $symbols[$symbol] = sprintf('%s-%s', $this->getOutput()->isDecorated() ? sprintf($status['format'], $symbol) : $symbol, $status['description']);
         }
 
-        $this->output()->write(sprintf("\nLegend: %s\n", implode(', ', $symbols)));
+        $this->getOutput()->write(sprintf("\nLegend: %s\n", implode(', ', $symbols)));
     }
 
-    private function output(): OutputInterface
+    private function getOutput(): OutputInterface
     {
         return $this->context->getOutput();
     }
