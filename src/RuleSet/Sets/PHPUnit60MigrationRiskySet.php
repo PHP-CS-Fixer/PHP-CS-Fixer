@@ -26,6 +26,7 @@ final class PHPUnit60MigrationRiskySet extends AbstractMigrationSetDescription
     {
         return [
             '@PHPUnit57Migration:risky' => true,
+            'php_unit_data_provider_return_type' => true,
             'php_unit_namespaced' => [
                 'target' => PhpUnitTargetVersion::VERSION_6_0,
             ],

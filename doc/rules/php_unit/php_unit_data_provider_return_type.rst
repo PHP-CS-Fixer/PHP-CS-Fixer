@@ -48,3 +48,20 @@ Example #2
    -    public function provideSomethingCases() {}
    +    public function provideSomethingCases(): iterable {}
     }
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+@PHPUnit60Migration:risky
+  Using the `@PHPUnit60Migration:risky <./../../ruleSets/PHPUnit60MigrationRisky.rst>`_ rule set will enable the ``php_unit_data_provider_return_type`` rule.
+
+@PHPUnit75Migration:risky
+  Using the `@PHPUnit75Migration:risky <./../../ruleSets/PHPUnit75MigrationRisky.rst>`_ rule set will enable the ``php_unit_data_provider_return_type`` rule.
+
+@PHPUnit84Migration:risky
+  Using the `@PHPUnit84Migration:risky <./../../ruleSets/PHPUnit84MigrationRisky.rst>`_ rule set will enable the ``php_unit_data_provider_return_type`` rule.
+
+@PHPUnit100Migration:risky
+  Using the `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ rule set will enable the ``php_unit_data_provider_return_type`` rule.

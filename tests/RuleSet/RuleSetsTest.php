@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\RuleSet;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
@@ -290,11 +291,13 @@ Integration of %s.
         $targetVersion = null;
         $fixer = self::getFixerByName($ruleName);
 
-        foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
-            if ('target' === $option->getName()) {
-                $targetVersion = $option->getDefault();
+        if ($fixer instanceof ConfigurableFixerInterface) {
+            foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
+                if ('target' === $option->getName()) {
+                    $targetVersion = $option->getDefault();
 
-                break;
+                    break;
+                }
             }
         }
 
