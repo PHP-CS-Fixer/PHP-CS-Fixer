@@ -39,6 +39,7 @@ final class DotsOutput implements ProgressOutputInterface
         FixerFileProcessedEvent::STATUS_LINT => ['symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'],
     ];
 
+    /** @readonly */
     private OutputContext $context;
 
     private int $processedFiles = 0;
