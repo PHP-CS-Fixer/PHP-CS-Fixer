@@ -99,7 +99,7 @@ final class FileHandlerTest extends TestCase
 
     public function testWriteThrowsIOExceptionIfFileCanNotBeWritten(): void
     {
-        $file = __DIR__.str_repeat('/..', 32).'/out/of/range/cache.json'; // impossible path
+        $file = '/../"/out/of/range/cache.json'; // impossible path
 
         $this->expectException(IOException::class);
         $this->expectExceptionMessageMatches(sprintf(
