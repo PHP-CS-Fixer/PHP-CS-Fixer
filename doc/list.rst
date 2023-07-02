@@ -2471,7 +2471,7 @@ List of Available Rules
 
    *warning risky* Risky when relying on signature of the data provider.
 
-   Part of rule sets `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_
+   Part of rule sets `@PHPUnit60Migration:risky <./ruleSets/PHPUnit60MigrationRisky.rst>`_ `@PHPUnit75Migration:risky <./ruleSets/PHPUnit75MigrationRisky.rst>`_ `@PHPUnit84Migration:risky <./ruleSets/PHPUnit84MigrationRisky.rst>`_ `@PHPUnit100Migration:risky <./ruleSets/PHPUnit100MigrationRisky.rst>`_ `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderReturnTypeFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixer.php>`_
 -  `php_unit_data_provider_static <./rules/php_unit/php_unit_data_provider_static.rst>`_
