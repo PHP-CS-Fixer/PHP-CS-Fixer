@@ -97,12 +97,9 @@ final class FileHandlerTest extends TestCase
         self::assertTrue($cached->getSignature()->equals($signature));
     }
 
-    /**
-     * @requires OS Linux|Darwin
-     */
     public function testWriteThrowsIOExceptionIfFileCanNotBeWritten(): void
     {
-        $file = '/../../out/of/range/cache.json'; // impossible path
+        $file = __DIR__.str_repeat('/..', 32).'/out/of/range/cache.json'; // impossible path
 
         $this->expectException(IOException::class);
         $this->expectExceptionMessageMatches(sprintf(
