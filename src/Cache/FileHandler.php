@@ -77,9 +77,15 @@ final class FileHandler implements FileHandlerInterface
         } else {
             $dir = \dirname($this->file);
 
+            // Ensure path is created, but ignore if already exists. FYI: ignore EA suggestion in IDE,
+            // `mkdir()` returns `false` for existing paths, so we can't mix it with `is_dir()` in one condition.
+            if (!is_dir($dir)) {
+                @mkdir($dir, 0777, true);
+            }
+
             if (!is_dir($dir)) {
                 throw new IOException(
-                    sprintf('Directory of cache file "%s" does not exists.', $this->file),
+                    sprintf('Directory of cache file "%s" does not exists and couldn\'t be created.', $this->file),
                     0,
                     null,
                     $this->file
