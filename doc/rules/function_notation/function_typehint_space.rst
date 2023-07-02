@@ -4,6 +4,14 @@ Rule ``function_typehint_space``
 
 Ensure single space between function's argument and its typehint.
 
+Warning
+-------
+
+This rule is deprecated and will be removed on next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``type_declaration_spaces`` instead.
+
 Examples
 --------
 
@@ -30,14 +38,3 @@ Example #2
    -function sample(array  $a)
    +function sample(array $a)
     {}
-
-Rule sets
----------
-
-The rule is part of the following rule sets:
-
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``function_typehint_space`` rule.
-
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``function_typehint_space`` rule.

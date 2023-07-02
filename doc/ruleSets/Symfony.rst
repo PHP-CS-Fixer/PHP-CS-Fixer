@@ -35,7 +35,6 @@ Rules
   ``['style' => 'braces']``
 - `empty_loop_condition <./../rules/control_structure/empty_loop_condition.rst>`_
 - `fully_qualified_strict_types <./../rules/import/fully_qualified_strict_types.rst>`_
-- `function_typehint_space <./../rules/function_notation/function_typehint_space.rst>`_
 - `general_phpdoc_tag_rename <./../rules/phpdoc/general_phpdoc_tag_rename.rst>`_
   config:
   ``['replacements' => ['inheritDocs' => 'inheritDoc']]``
@@ -146,6 +145,7 @@ Rules
 - `switch_continue_to_break <./../rules/control_structure/switch_continue_to_break.rst>`_
 - `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_
 - `trim_array_spaces <./../rules/array_notation/trim_array_spaces.rst>`_
+- `type_declaration_spaces <./../rules/whitespace/type_declaration_spaces.rst>`_
 - `types_spaces <./../rules/whitespace/types_spaces.rst>`_
 - `unary_operator_spaces <./../rules/operator/unary_operator_spaces.rst>`_
 - `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_

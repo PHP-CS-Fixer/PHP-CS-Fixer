@@ -343,7 +343,7 @@ Function Notation
 - `function_declaration <./function_notation/function_declaration.rst>`_
 
   Spaces should be properly placed in a function declaration.
-- `function_typehint_space <./function_notation/function_typehint_space.rst>`_
+- `function_typehint_space <./function_notation/function_typehint_space.rst>`_ *(deprecated)*
 
   Ensure single space between function's argument and its typehint.
 - `implode_call <./function_notation/implode_call.rst>`_ *(risky)*
@@ -885,6 +885,9 @@ Whitespace
 - `statement_indentation <./whitespace/statement_indentation.rst>`_
 
   Each statement must be indented.
+- `type_declaration_spaces <./whitespace/type_declaration_spaces.rst>`_
+
+  Ensure single space between a variable and its type declaration in function arguments and properties.
 - `types_spaces <./whitespace/types_spaces.rst>`_
 
   A single space or none should be around union type and intersection type operators.

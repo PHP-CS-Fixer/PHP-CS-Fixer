@@ -14,18 +14,20 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\Fixer\Whitespace\TypeDeclarationSpacesFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @deprecated
  */
-final class FunctionTypehintSpaceFixer extends AbstractFixer
+final class FunctionTypehintSpaceFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -43,28 +45,16 @@ final class FunctionTypehintSpaceFixer extends AbstractFixer
         return $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN]);
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+    public function getSuccessorsNames(): array
     {
-        $functionsAnalyzer = new FunctionsAnalyzer();
+        return array_keys($this->proxyFixers);
+    }
 
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            $token = $tokens[$index];
+    protected function createProxyFixers(): array
+    {
+        $fixer = new TypeDeclarationSpacesFixer();
+        $fixer->configure(['elements' => ['function']]);
 
-            if (!$token->isGivenKind([T_FUNCTION, T_FN])) {
-                continue;
-            }
-
-            $arguments = $functionsAnalyzer->getFunctionArguments($tokens, $index);
-
-            foreach (array_reverse($arguments) as $argument) {
-                $type = $argument->getTypeAnalysis();
-
-                if (!$type instanceof TypeAnalysis) {
-                    continue;
-                }
-
-                $tokens->ensureWhitespaceAtIndex($type->getEndIndex() + 1, 0, ' ');
-            }
-        }
+        return [$fixer];
     }
 }
