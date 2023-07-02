@@ -188,49 +188,41 @@ use Bar;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $namespacesImports = $tokensAnalyzer->getImportUseIndexes(true);
 
-        if (0 === \count($namespacesImports)) {
-            return;
-        }
+        foreach (array_reverse($namespacesImports) as $usesPerNamespaceIndices) {
+            $count = \count($usesPerNamespaceIndices);
 
-        $usesOrder = [];
-        foreach ($namespacesImports as $uses) {
-            $usesOrder[] = $this->getNewOrder(array_reverse($uses), $tokens);
-        }
-        $usesOrder = array_replace(...$usesOrder);
+            if (0 === $count) {
+                continue; // nothing to sort
+            }
 
-        $usesOrder = array_reverse($usesOrder, true);
-        $mapStartToEnd = [];
+            if (1 === $count) {
+                $this->setNewOrder($tokens, $this->getNewOrder($usesPerNamespaceIndices, $tokens));
 
-        foreach ($usesOrder as $use) {
-            $mapStartToEnd[$use['startIndex']] = $use['endIndex'];
-        }
+                continue;
+            }
 
-        // Now insert the new tokens, starting from the end
-        foreach ($usesOrder as $index => $use) {
-            $declarationTokens = Tokens::fromCode(
-                sprintf(
-                    '<?php use %s%s;',
-                    self::IMPORT_TYPE_CLASS === $use['importType'] ? '' : ' '.$use['importType'].' ',
-                    $use['namespace']
-                )
-            );
+            $groupUsesOffset = 0;
+            $groupUses = [$groupUsesOffset => [$usesPerNamespaceIndices[0]]];
 
-            $declarationTokens->clearRange(0, 2); // clear `<?php use `
-            $declarationTokens->clearAt(\count($declarationTokens) - 1); // clear `;`
-            $declarationTokens->clearEmptyTokens();
+            // if there's some logic between two `use` statements, sort only imports grouped before that logic
+            for ($index = 0; $index < $count - 1; ++$index) {
+                $nextGroupUse = $tokens->getNextTokenOfKind($usesPerNamespaceIndices[$index], [';', [T_CLOSE_TAG]]);
 
-            $tokens->overrideRange($index, $mapStartToEnd[$index], $declarationTokens);
-            if ($use['group']) {
-                // a group import must start with `use` and cannot be part of comma separated import list
-                $prev = $tokens->getPrevMeaningfulToken($index);
-                if ($tokens[$prev]->equals(',')) {
-                    $tokens[$prev] = new Token(';');
-                    $tokens->insertAt($prev + 1, new Token([T_USE, 'use']));
-
-                    if (!$tokens[$prev + 2]->isWhitespace()) {
-                        $tokens->insertAt($prev + 2, new Token([T_WHITESPACE, ' ']));
-                    }
+                if ($tokens[$nextGroupUse]->isGivenKind(T_CLOSE_TAG)) {
+                    $nextGroupUse = $tokens->getNextTokenOfKind($usesPerNamespaceIndices[$index], [[T_OPEN_TAG]]);
                 }
+
+                $nextGroupUse = $tokens->getNextMeaningfulToken($nextGroupUse);
+
+                if ($nextGroupUse !== $usesPerNamespaceIndices[$index + 1]) {
+                    $groupUses[++$groupUsesOffset] = [];
+                }
+
+                $groupUses[$groupUsesOffset][] = $usesPerNamespaceIndices[$index + 1];
+            }
+
+            for ($index = $groupUsesOffset; $index >= 0; --$index) {
+                $this->setNewOrder($tokens, $this->getNewOrder($groupUses[$index], $tokens));
             }
         }
     }
@@ -329,8 +321,9 @@ use Bar;
         $indices = [];
         $originalIndices = [];
         $lineEnding = $this->whitespacesConfig->getLineEnding();
+        $usesCount = \count($uses);
 
-        for ($i = \count($uses) - 1; $i >= 0; --$i) {
+        for ($i = 0; $i < $usesCount; ++$i) {
             $index = $uses[$i];
 
             $startIndex = $tokens->getTokenNotOfKindsSibling($index + 1, 1, [T_WHITESPACE]);
@@ -537,5 +530,52 @@ use Bar;
         }
 
         return $indices;
+    }
+
+    /**
+     * @param array<int, array{
+     *     namespace: string,
+     *     startIndex: int,
+     *     endIndex: int,
+     *     importType: string,
+     *     group: bool,
+     * }> $usesOrder
+     */
+    private function setNewOrder(Tokens $tokens, array $usesOrder): void
+    {
+        $mapStartToEnd = [];
+
+        foreach ($usesOrder as $use) {
+            $mapStartToEnd[$use['startIndex']] = $use['endIndex'];
+        }
+
+        // Now insert the new tokens, starting from the end
+        foreach (array_reverse($usesOrder, true) as $index => $use) {
+            $code = sprintf(
+                '<?php use %s%s;',
+                self::IMPORT_TYPE_CLASS === $use['importType'] ? '' : ' '.$use['importType'].' ',
+                $use['namespace']
+            );
+
+            $declarationTokens = Tokens::fromCode($code);
+            $declarationTokens->clearRange(0, 2); // clear `<?php use `
+            $declarationTokens->clearAt(\count($declarationTokens) - 1); // clear `;`
+            $declarationTokens->clearEmptyTokens();
+
+            $tokens->overrideRange($index, $mapStartToEnd[$index], $declarationTokens);
+
+            if ($use['group']) {
+                // a group import must start with `use` and cannot be part of comma separated import list
+                $prev = $tokens->getPrevMeaningfulToken($index);
+                if ($tokens[$prev]->equals(',')) {
+                    $tokens[$prev] = new Token(';');
+                    $tokens->insertAt($prev + 1, new Token([T_USE, 'use']));
+
+                    if (!$tokens[$prev + 2]->isWhitespace()) {
+                        $tokens->insertAt($prev + 2, new Token([T_WHITESPACE, ' ']));
+                    }
+                }
+            }
+        }
     }
 }
