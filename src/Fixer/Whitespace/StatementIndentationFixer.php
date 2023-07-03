@@ -64,7 +64,7 @@ else {
      * {@inheritdoc}
      *
      * Must run before HeredocIndentationFixer.
-     * Must run after ClassAttributesSeparationFixer, CurlyBracesPositionFixer.
+     * Must run after ClassAttributesSeparationFixer, CurlyBracesPositionFixer, YieldFromArrayToYieldsFixer.
      */
     public function getPriority(): int
     {

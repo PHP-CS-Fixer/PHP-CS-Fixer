@@ -238,7 +238,7 @@ if (true) {
     /**
      * {@inheritdoc}
      *
-     * Must run after NoExtraBlankLinesFixer, NoUselessReturnFixer, ReturnAssignmentFixer.
+     * Must run after NoExtraBlankLinesFixer, NoUselessReturnFixer, ReturnAssignmentFixer, YieldFromArrayToYieldsFixer.
      */
     public function getPriority(): int
     {
