@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -65,7 +66,11 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
     {
         parent::configure($configuration);
 
-        $this->assertConfigHasNoConflicts();
+        $intersect = array_intersect_assoc($this->configuration['include'], $this->configuration['exclude']);
+
+        if (\count($intersect) > 0) {
+            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both "include" and "exclude" list, got duplicates: %s.', Utils::naturalLanguageJoin(array_keys($intersect))));
+        }
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -153,37 +158,13 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         };
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('annotation_include', 'Class level attribute or annotation tags that must be set in order to fix the class (case insensitive).'))
-                ->setAllowedTypes(['array'])
-                ->setAllowedValues($annotationsAsserts)
-                ->setDefault(
-                    array_map(
-                        static fn (string $string) => '@'.$string,
-                        self::DEFAULTS['include'],
-                    ),
-                )
-                ->setNormalizer($annotationsNormalizer)
-                ->setDeprecationMessage('Use `include` to configure PHPDoc annotations tags and attributes.')
-                ->getOption(),
-            (new FixerOptionBuilder('annotation_exclude', 'Class level attribute or annotation tags that must be omitted to fix the class, even if all of the white list ones are used as well (case insensitive).'))
-                ->setAllowedTypes(['array'])
-                ->setAllowedValues($annotationsAsserts)
-                ->setDefault(
-                    array_map(
-                        static fn (string $string) => '@'.$string,
-                        self::DEFAULTS['exclude'],
-                    ),
-                )
-                ->setNormalizer($annotationsNormalizer)
-                ->setDeprecationMessage('Use `exclude` to configure PHPDoc annotations tags and attributes.')
-                ->getOption(),
-            (new FixerOptionBuilder('include', 'Class level attribute or annotation tags that must be set in order to fix the class (case insensitive).'))
+            (new AliasedFixerOptionBuilder(new FixerOptionBuilder('include', 'Class level attribute or annotation tags that must be set in order to fix the class (case insensitive).'), 'annotation_include'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(self::DEFAULTS['include'])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),
-            (new FixerOptionBuilder('exclude', 'Class level attribute or annotation tags that must be omitted to fix the class, even if all of the white list ones are used as well (case insensitive).'))
+            (new AliasedFixerOptionBuilder(new FixerOptionBuilder('exclude', 'Class level attribute or annotation tags that must be omitted to fix the class, even if all of the white list ones are used as well (case insensitive).'), 'annotation_exclude'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(self::DEFAULTS['exclude'])
@@ -317,40 +298,5 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         }
 
         return \count(array_intersect_key($this->configuration['include'], $attributes)) > 0;
-    }
-
-    private function assertConfigHasNoConflicts(): void
-    {
-        foreach (['include', 'exclude'] as $newConfigKey) {
-            $oldConfigKey = 'annotation_'.$newConfigKey;
-            $defaults = [];
-
-            foreach (self::DEFAULTS[$newConfigKey] as $foo) {
-                $defaults[strtolower($foo)] = true;
-            }
-
-            $newConfigIsSet = $this->configuration[$newConfigKey] !== $defaults;
-            $oldConfigIsSet = $this->configuration[$oldConfigKey] !== $defaults;
-
-            if ($newConfigIsSet && $oldConfigIsSet) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configuration cannot contain deprecated option "%s" and new option "%s".', $oldConfigKey, $newConfigKey));
-            }
-
-            if ($oldConfigIsSet) {
-                $this->configuration[$newConfigKey] = $this->configuration[$oldConfigKey];
-                $this->checkAttributes = false; // run in old mode
-            }
-
-            // if ($newConfigIsSet) - only new config is set, all good
-            // if (!$newConfigIsSet && !$oldConfigIsSet) - both are set as to default values, all good
-
-            unset($this->configuration[$oldConfigKey]);
-        }
-
-        $intersect = array_intersect_assoc($this->configuration['include'], $this->configuration['exclude']);
-
-        if (\count($intersect) > 0) {
-            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both "include" and "exclude" list, got duplicates: %s.', Utils::naturalLanguageJoin(array_keys($intersect))));
-        }
     }
 }

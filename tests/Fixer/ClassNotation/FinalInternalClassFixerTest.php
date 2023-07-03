@@ -392,8 +392,7 @@ $a = new class{};',
     public function testConfigureBothNewAndOldIncludeSet(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_include" and new option "include".', '#')));
-        $this->expectDeprecation('Option "annotation_include" for rule "final_internal_class" is deprecated and will be removed in version 4.0. Use "include" to configure PHPDoc annotations tags and attributes.');
+        $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote('[final_internal_class] Invalid configuration: Aliased option "include"/"annotation_include" is passed multiple times.', '#')));
 
         $this->fixer->configure([
             'annotation_include' => ['@internal', 'a'],
@@ -404,15 +403,38 @@ $a = new class{};',
     /**
      * @group legacy
      */
+    public function testConfigureOldIncludeSet(): void
+    {
+        $this->expectDeprecation('Option "annotation_include" is deprecated, use "include" instead.');
+
+        $this->fixer->configure([
+            'annotation_include' => ['@internal', 'a'],
+        ]);
+    }
+
+    /**
+     * @group legacy
+     */
     public function testConfigureBothNewAndOldExcludeSet(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_exclude" and new option "exclude".', '#')));
-        $this->expectDeprecation('Option "annotation_exclude" for rule "final_internal_class" is deprecated and will be removed in version 4.0. Use "exclude" to configure PHPDoc annotations tags and attributes.');
+        $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote('[final_internal_class] Invalid configuration: Aliased option "exclude"/"annotation_exclude" is passed multiple times.', '#')));
 
         $this->fixer->configure([
             'annotation_exclude' => ['@internal', 'a'],
             'exclude' => ['@internal', 'b'],
+        ]);
+    }
+
+    /**
+     * @group legacy
+     */
+    public function testConfigureOldExcludeSet(): void
+    {
+        $this->expectDeprecation('Option "annotation_exclude" is deprecated, use "exclude" instead.');
+
+        $this->fixer->configure([
+            'annotation_exclude' => ['@internals', 'a'],
         ]);
     }
 

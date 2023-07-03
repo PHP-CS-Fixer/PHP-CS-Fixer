@@ -15,30 +15,6 @@ Changing classes to ``final`` might cause code execution to break.
 Configuration
 -------------
 
-``annotation_exclude``
-~~~~~~~~~~~~~~~~~~~~~~
-
-.. warning:: This option is deprecated and will be removed in the next major version. Use ``exclude`` to configure PHPDoc annotations tags and attributes.
-
-Class level attribute or annotation tags that must be omitted to fix the class,
-even if all of the white list ones are used as well (case insensitive).
-
-Allowed types: ``array``
-
-Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity', '@Document', '@ODM\\Document']``
-
-``annotation_include``
-~~~~~~~~~~~~~~~~~~~~~~
-
-.. warning:: This option is deprecated and will be removed in the next major version. Use ``include`` to configure PHPDoc annotations tags and attributes.
-
-Class level attribute or annotation tags that must be set in order to fix the
-class (case insensitive).
-
-Allowed types: ``array``
-
-Default value: ``['@internal']``
-
 ``consider_absent_docblock_as_internal_class``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -54,6 +30,8 @@ Default value: ``false``
 Class level attribute or annotation tags that must be omitted to fix the class,
 even if all of the white list ones are used as well (case insensitive).
 
+.. note:: The previous name of this option was ``annotation_exclude`` but it is now deprecated and will be removed in the next major version.
+
 Allowed types: ``array``
 
 Default value: ``['final', 'Entity', 'ORM\\Entity', 'ORM\\Mapping\\Entity', 'Mapping\\Entity', 'Document', 'ODM\\Document']``
@@ -63,6 +41,8 @@ Default value: ``['final', 'Entity', 'ORM\\Entity', 'ORM\\Mapping\\Entity', 'Map
 
 Class level attribute or annotation tags that must be set in order to fix the
 class (case insensitive).
+
+.. note:: The previous name of this option was ``annotation_include`` but it is now deprecated and will be removed in the next major version.
 
 Allowed types: ``array``
 
