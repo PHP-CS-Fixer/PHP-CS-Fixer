@@ -147,7 +147,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
                     return $matches[1].$this->normalize($matches[2]).$matches[3];
                 }, $value);
 
-                // TODO TypeExpression should be immutable and walkTypes should be converted to mapTypes
+                // TODO TypeExpression should be immutable and walkTypes method should be changed to mapTypes method
                 \Closure::bind(function () use ($type, $value): void {
                     $type->value = $value;
                 }, null, TypeExpression::class)();
