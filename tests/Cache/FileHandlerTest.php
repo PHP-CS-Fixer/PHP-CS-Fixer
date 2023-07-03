@@ -99,11 +99,11 @@ final class FileHandlerTest extends TestCase
 
     public function testWriteThrowsIOExceptionIfFileCanNotBeWritten(): void
     {
-        $file = __DIR__.'/non-existent-directory/.php-cs-fixer.cache';
+        $file = '/../"/out/of/range/cache.json'; // impossible path
 
         $this->expectException(IOException::class);
         $this->expectExceptionMessageMatches(sprintf(
-            '#^Directory of cache file "%s" does not exists.#',
+            '#^Directory of cache file "%s" does not exists and couldn\'t be created\.#',
             preg_quote($file, '#')
         ));
 
@@ -180,6 +180,31 @@ final class FileHandlerTest extends TestCase
         self::assertTrue(@is_readable($file), sprintf('Failed cache "%s" `is_readable`.', $file));
 
         @unlink($file);
+    }
+
+    public function testCachePathIsCreated(): void
+    {
+        $dir = __DIR__.'/../Fixtures/cache-file-handler/one/two/three';
+        $file = $dir.'/cache.json';
+        $cleanPath = static function () use ($dir, $file): void {
+            @unlink($file);
+            for ($i = 0; $i <= 2; ++$i) {
+                @rmdir(0 === $i ? $dir : \dirname($dir, $i));
+            }
+        };
+
+        $cleanPath();
+
+        self::assertDirectoryDoesNotExist($dir);
+        self::assertFileDoesNotExist($file);
+
+        $handler = new FileHandler($file);
+        $handler->write(new Cache($this->createSignature()));
+
+        self::assertDirectoryExists($dir);
+        self::assertFileExists($file);
+
+        $cleanPath();
     }
 
     private function getFile(): string

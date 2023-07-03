@@ -46,35 +46,6 @@ final class FileRemovalTest extends TestCase
         }
     }
 
-    /**
-     * @runInSeparateProcess
-     *
-     * @doesNotPerformAssertions
-     */
-    public function testShutdownRemovesObservedFilesSetup(): void
-    {
-        self::$removeFilesOnTearDown = false;
-
-        $fileToBeDeleted = sys_get_temp_dir().'/cs_fixer_foo.php';
-        $fileNotToBeDeleted = sys_get_temp_dir().'/cs_fixer_bar.php';
-
-        file_put_contents($fileToBeDeleted, '');
-        file_put_contents($fileNotToBeDeleted, '');
-
-        $fileRemoval = new FileRemoval();
-
-        $fileRemoval->observe($fileToBeDeleted);
-    }
-
-    /**
-     * @depends testShutdownRemovesObservedFilesSetup
-     */
-    public function testShutdownRemovesObservedFiles(): void
-    {
-        self::assertFileDoesNotExist(sys_get_temp_dir().'/cs_fixer_foo.php');
-        self::assertFileExists(sys_get_temp_dir().'/cs_fixer_bar.php');
-    }
-
     public function testCleanRemovesObservedFiles(): void
     {
         $fs = $this->getMockFileSystem();
@@ -149,6 +120,37 @@ final class FileRemovalTest extends TestCase
 
         $fileRemoval = new FileRemoval();
         $fileRemoval->__wakeup();
+    }
+
+    /**
+     * Must NOT be run as first test, see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7104.
+     *
+     * @runInSeparateProcess
+     *
+     * @doesNotPerformAssertions
+     */
+    public function testShutdownRemovesObservedFilesSetup(): void
+    {
+        self::$removeFilesOnTearDown = false;
+
+        $fileToBeDeleted = sys_get_temp_dir().'/cs_fixer_foo.php';
+        $fileNotToBeDeleted = sys_get_temp_dir().'/cs_fixer_bar.php';
+
+        file_put_contents($fileToBeDeleted, '');
+        file_put_contents($fileNotToBeDeleted, '');
+
+        $fileRemoval = new FileRemoval();
+
+        $fileRemoval->observe($fileToBeDeleted);
+    }
+
+    /**
+     * @depends testShutdownRemovesObservedFilesSetup
+     */
+    public function testShutdownRemovesObservedFiles(): void
+    {
+        self::assertFileDoesNotExist(sys_get_temp_dir().'/cs_fixer_foo.php');
+        self::assertFileExists(sys_get_temp_dir().'/cs_fixer_bar.php');
     }
 
     private function getMockFileSystem(): vfsStreamDirectory
