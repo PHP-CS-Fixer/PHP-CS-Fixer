@@ -281,6 +281,15 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
                     */',
         ];
 
+        yield 'method with reserved identifier' => [
+            '<?php /**
+                    * @method bool BOOL(): void
+                    */',
+            '<?php /**
+                    * @method BOOL BOOL(): void
+                    */',
+        ];
+
         yield 'no space between type and variable' => [
             '<?php /** @param null|string$foo */',
             '<?php /** @param NULL|STRING$foo */',
