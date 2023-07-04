@@ -583,4 +583,42 @@ class Dnf
             ],
         ];
     }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideProcess83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testProcess83(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    public static function provideProcess83Cases(): iterable
+    {
+        yield 'typed const alternate types' => [
+            '<?php class Foo { const A|B Bar = 1;}',
+            [
+                10 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'typed const mixed types' => [
+            '<?php
+                class Foo {
+                    const A|\B|array/**/|(Z&V)|callable | X /* X*/ |D Bar = 1;
+                }
+            ',
+            [
+                11 => CT::T_TYPE_ALTERNATION,
+                14 => CT::T_TYPE_ALTERNATION,
+                17 => CT::T_TYPE_ALTERNATION,
+                23 => CT::T_TYPE_ALTERNATION,
+                26 => CT::T_TYPE_ALTERNATION,
+                32 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+    }
 }

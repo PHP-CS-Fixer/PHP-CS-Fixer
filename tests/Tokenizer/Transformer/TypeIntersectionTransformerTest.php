@@ -509,4 +509,47 @@ class Dnf
             ],
         ];
     }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideProcess83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testProcess83(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    public static function provideProcess83Cases(): iterable
+    {
+        yield 'typed const DNF types 1' => [
+            '<?php class Foo { const (A&B)|Z Bar = 1;}',
+            [
+                11 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'typed const DNF types 2' => [
+            '<?php class Foo { const Z|(A&B) Bar = 1;}',
+            [
+                13 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'typed const DNF types 3' => [
+            '<?php class Foo { const Z|(A&B)|X Bar = 1;}',
+            [
+                13 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'typed const' => [
+            '<?php class Foo { const A&B Bar = 1;}',
+            [
+                10 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+    }
 }
