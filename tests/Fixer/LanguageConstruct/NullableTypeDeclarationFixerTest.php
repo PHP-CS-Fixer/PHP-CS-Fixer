@@ -101,11 +101,11 @@ class Dto
     }
 
     /**
-     * @dataProvider provideFixWithUseExplicitNullCases
+     * @dataProvider provideFixWithUnionSyntaxCases
      *
      * @requires PHP 8.0
      */
-    public function testFixWithUseExplicitNull(string $expected, ?string $input = null): void
+    public function testFixWithUnionSyntax(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['syntax' => 'union']);
 
@@ -115,7 +115,7 @@ class Dto
     /**
      * @return iterable<string, array<int, null|string>>
      */
-    public static function provideFixWithUseExplicitNullCases(): iterable
+    public static function provideFixWithUnionSyntaxCases(): iterable
     {
         yield 'scalar with null' => [
             "<?php\nfunction foo(null|int \$bar): void {}\n",
@@ -228,7 +228,7 @@ class Qux
 ',
         ];
 
-        yield 'readonly property and use explicit null' => [
+        yield 'readonly property with union syntax expected' => [
             '<?php
 class Qux
 {

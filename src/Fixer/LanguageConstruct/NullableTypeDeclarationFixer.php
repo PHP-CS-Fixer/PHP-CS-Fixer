@@ -118,7 +118,6 @@ class ValueObject
                 continue;
             }
 
-            // fix return before arguments
             $this->normalizeMethodReturnType($functionsAnalyzer, $tokens, $index);
             $this->normalizeMethodArgumentType($functionsAnalyzer, $tokens, $index);
         }
@@ -127,14 +126,16 @@ class ValueObject
     /**
      * @return array<int, string>
      *
-     * @phpstan-return array<int, 'method'|'property'>
+     * @phpstan-return array<int, 'function'|'property'>
      */
     private function getElements(Tokens $tokens): array
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         $elements = array_map(
-            static fn (array $element): string => $element['type'],
+            static function (array $element): string {
+                return 'method' === $element['type'] ? 'function' : $element['type'];
+            },
             array_filter(
                 $tokensAnalyzer->getClassyElements(),
                 static fn (array $element): bool => \in_array($element['type'], ['method', 'property'], true)
@@ -146,7 +147,7 @@ class ValueObject
                 $token->isGivenKind(T_FN)
                 || ($token->isGivenKind(T_FUNCTION) && !isset($elements[$index]))
             ) {
-                $elements[$index] = 'method';
+                $elements[$index] = 'function';
             }
         }
 
@@ -187,9 +188,7 @@ class ValueObject
             return true;
         }
 
-        return str_contains($type, '|')
-            && 1 === substr_count($type, '|')
-            && 1 === Preg::match('/(?:\|null$|^null\|)/i', $type);
+        return 1 === substr_count($type, '|') && 1 === Preg::match('/(?:\|null$|^null\|)/i', $type);
     }
 
     private function normalizePropertyType(Tokens $tokens, int $index): void
