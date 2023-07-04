@@ -12,14 +12,18 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Console\Output;
+namespace PhpCsFixer\Console\Output\Progress;
 
 /**
  * @internal
  */
-final class NullOutput implements ProcessOutputInterface
+final class ProgressOutputType
 {
-    public function printLegend(): void
-    {
-    }
+    public const NONE = 'none';
+    public const DOTS = 'dots';
+
+    public const AVAILABLE = [
+        self::NONE,
+        self::DOTS,
+    ];
 }

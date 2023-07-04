@@ -12,18 +12,18 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Console\Output;
+namespace PhpCsFixer\Console\Output\Progress;
 
+use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\FixerFileProcessedEvent;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Output writer to show the process of a FixCommand.
+ * Output writer to show the progress of a FixCommand using dots and meaningful letters.
  *
  * @internal
  */
-final class ProcessOutput implements ProcessOutputInterface
+final class DotsOutput implements ProgressOutputInterface
 {
     /**
      * File statuses map.
@@ -39,11 +39,8 @@ final class ProcessOutput implements ProcessOutputInterface
         FixerFileProcessedEvent::STATUS_LINT => ['symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'],
     ];
 
-    private OutputInterface $output;
-
-    private EventDispatcherInterface $eventDispatcher;
-
-    private int $files;
+    /** @readonly */
+    private OutputContext $context;
 
     private int $processedFiles = 0;
 
@@ -52,22 +49,14 @@ final class ProcessOutput implements ProcessOutputInterface
      */
     private $symbolsPerLine;
 
-    public function __construct(OutputInterface $output, EventDispatcherInterface $dispatcher, int $width, int $nbFiles)
+    public function __construct(OutputContext $context)
     {
-        $this->output = $output;
-        $this->eventDispatcher = $dispatcher;
-        $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, [$this, 'onFixerFileProcessed']);
-        $this->files = $nbFiles;
+        $this->context = $context;
 
         // max number of characters per line
         // - total length x 2 (e.g. "  1 / 123" => 6 digits and padding spaces)
         // - 11               (extra spaces, parentheses and percentage characters, e.g. " x / x (100%)")
-        $this->symbolsPerLine = max(1, $width - \strlen((string) $this->files) * 2 - 11);
-    }
-
-    public function __destruct()
-    {
-        $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, [$this, 'onFixerFileProcessed']);
+        $this->symbolsPerLine = max(1, $context->getTerminalWidth() - \strlen((string) $context->getFilesCount()) * 2 - 11);
     }
 
     /**
@@ -93,24 +82,24 @@ final class ProcessOutput implements ProcessOutputInterface
     public function onFixerFileProcessed(FixerFileProcessedEvent $event): void
     {
         $status = self::$eventStatusMap[$event->getStatus()];
-        $this->output->write($this->output->isDecorated() ? sprintf($status['format'], $status['symbol']) : $status['symbol']);
+        $this->getOutput()->write($this->getOutput()->isDecorated() ? sprintf($status['format'], $status['symbol']) : $status['symbol']);
 
         ++$this->processedFiles;
 
         $symbolsOnCurrentLine = $this->processedFiles % $this->symbolsPerLine;
-        $isLast = $this->processedFiles === $this->files;
+        $isLast = $this->processedFiles === $this->context->getFilesCount();
 
         if (0 === $symbolsOnCurrentLine || $isLast) {
-            $this->output->write(sprintf(
-                '%s %'.\strlen((string) $this->files).'d / %d (%3d%%)',
+            $this->getOutput()->write(sprintf(
+                '%s %'.\strlen((string) $this->context->getFilesCount()).'d / %d (%3d%%)',
                 $isLast && 0 !== $symbolsOnCurrentLine ? str_repeat(' ', $this->symbolsPerLine - $symbolsOnCurrentLine) : '',
                 $this->processedFiles,
-                $this->files,
-                round($this->processedFiles / $this->files * 100)
+                $this->context->getFilesCount(),
+                round($this->processedFiles / $this->context->getFilesCount() * 100)
             ));
 
             if (!$isLast) {
-                $this->output->writeln('');
+                $this->getOutput()->writeln('');
             }
         }
     }
@@ -125,9 +114,14 @@ final class ProcessOutput implements ProcessOutputInterface
                 continue;
             }
 
-            $symbols[$symbol] = sprintf('%s-%s', $this->output->isDecorated() ? sprintf($status['format'], $symbol) : $symbol, $status['description']);
+            $symbols[$symbol] = sprintf('%s-%s', $this->getOutput()->isDecorated() ? sprintf($status['format'], $symbol) : $symbol, $status['description']);
         }
 
-        $this->output->write(sprintf("\nLegend: %s\n", implode(', ', $symbols)));
+        $this->getOutput()->write(sprintf("\nLegend: %s\n", implode(', ', $symbols)));
+    }
+
+    private function getOutput(): OutputInterface
+    {
+        return $this->context->getOutput();
     }
 }

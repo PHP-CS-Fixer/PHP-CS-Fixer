@@ -19,6 +19,7 @@ use PhpCsFixer\Config;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Tests\Fixtures\DeprecatedFixer;
@@ -54,7 +55,7 @@ final class ConfigurationResolverTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
         ], $config);
 
-        self::assertSame('none', $resolver->getProgress());
+        self::assertSame('none', $resolver->getProgressType());
     }
 
     public function testResolveProgressWithPositiveConfigAndNegativeOption(): void
@@ -67,7 +68,7 @@ final class ConfigurationResolverTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_NORMAL,
         ], $config);
 
-        self::assertSame('none', $resolver->getProgress());
+        self::assertSame('none', $resolver->getProgressType());
     }
 
     public function testResolveProgressWithNegativeConfigAndPositiveOption(): void
@@ -80,7 +81,7 @@ final class ConfigurationResolverTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
         ], $config);
 
-        self::assertSame('dots', $resolver->getProgress());
+        self::assertSame('dots', $resolver->getProgressType());
     }
 
     public function testResolveProgressWithNegativeConfigAndNegativeOption(): void
@@ -93,7 +94,7 @@ final class ConfigurationResolverTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_NORMAL,
         ], $config);
 
-        self::assertSame('none', $resolver->getProgress());
+        self::assertSame('none', $resolver->getProgressType());
     }
 
     /**
@@ -110,7 +111,7 @@ final class ConfigurationResolverTest extends TestCase
             'show-progress' => $progressType,
         ], $config);
 
-        self::assertSame($progressType, $resolver->getProgress());
+        self::assertSame($progressType, $resolver->getProgressType());
     }
 
     /**
@@ -127,15 +128,14 @@ final class ConfigurationResolverTest extends TestCase
             'show-progress' => $progressType,
         ], $config);
 
-        self::assertSame($progressType, $resolver->getProgress());
+        self::assertSame($progressType, $resolver->getProgressType());
     }
 
     public static function provideProgressTypeCases(): iterable
     {
-        return [
-            ['none'],
-            ['dots'],
-        ];
+        foreach (ProgressOutputType::AVAILABLE as $outputType) {
+            yield $outputType => [$outputType];
+        }
     }
 
     public function testResolveProgressWithInvalidExplicitProgress(): void
@@ -149,7 +149,7 @@ final class ConfigurationResolverTest extends TestCase
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none" and "dots".');
 
-        $resolver->getProgress();
+        $resolver->getProgressType();
     }
 
     public function testResolveConfigFileDefault(): void

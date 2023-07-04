@@ -12,27 +12,27 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Console\Output;
+namespace PhpCsFixer\Tests\Console\Output\Progress;
 
-use PhpCsFixer\Console\Output\ProcessOutput;
+use PhpCsFixer\Console\Output\OutputContext;
+use PhpCsFixer\Console\Output\Progress\DotsOutput;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Output\ProcessOutput
+ * @covers \PhpCsFixer\Console\Output\Progress\DotsOutput
  */
-final class ProcessOutputTest extends TestCase
+final class DotsOutputTest extends TestCase
 {
     /**
      * @param list<array{0: FixerFileProcessedEvent::STATUS_*, 1?: int}> $statuses
      *
-     * @dataProvider provideProcessProgressOutputCases
+     * @dataProvider provideDotsProgressOutputCases
      */
-    public function testProcessProgressOutput(array $statuses, string $expectedOutput, int $width): void
+    public function testDotsProgressOutput(array $statuses, string $expectedOutput, int $width): void
     {
         $nbFiles = 0;
         $this->foreachStatus($statuses, static function () use (&$nbFiles): void {
@@ -41,12 +41,7 @@ final class ProcessOutputTest extends TestCase
 
         $output = new BufferedOutput();
 
-        $processOutput = new ProcessOutput(
-            $output,
-            $this->prophesize(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class)->reveal(),
-            $width,
-            $nbFiles
-        );
+        $processOutput = new DotsOutput(new OutputContext($output, $width, $nbFiles));
 
         $this->foreachStatus($statuses, static function (int $status) use ($processOutput): void {
             $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
@@ -55,7 +50,7 @@ final class ProcessOutputTest extends TestCase
         self::assertSame($expectedOutput, $output->fetch());
     }
 
-    public static function provideProcessProgressOutputCases(): iterable
+    public static function provideDotsProgressOutputCases(): iterable
     {
         return [
             [
@@ -184,18 +179,18 @@ final class ProcessOutputTest extends TestCase
     public function testSleep(): void
     {
         $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot serialize PhpCsFixer\Console\Output\ProcessOutput');
+        $this->expectExceptionMessage('Cannot serialize '.DotsOutput::class);
 
-        $processOutput = new ProcessOutput(new BufferedOutput(), new EventDispatcher(), 1, 1);
+        $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
         $processOutput->__sleep();
     }
 
     public function testWakeup(): void
     {
         $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\Console\Output\ProcessOutput');
+        $this->expectExceptionMessage('Cannot unserialize '.DotsOutput::class);
 
-        $processOutput = new ProcessOutput(new BufferedOutput(), new EventDispatcher(), 1, 1);
+        $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
         $processOutput->__wakeup();
     }
 

@@ -19,10 +19,12 @@ use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\ErrorOutput;
-use PhpCsFixer\Console\Output\NullOutput;
-use PhpCsFixer\Console\Output\ProcessOutput;
+use PhpCsFixer\Console\Output\OutputContext;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -61,6 +63,8 @@ final class FixCommand extends Command
 
     private ToolInfoInterface $toolInfo;
 
+    private ProgressOutputFactory $progressOutputFactory;
+
     public function __construct(ToolInfoInterface $toolInfo)
     {
         parent::__construct();
@@ -70,6 +74,7 @@ final class FixCommand extends Command
         $this->stopwatch = new Stopwatch();
         $this->defaultConfig = new Config();
         $this->toolInfo = $toolInfo;
+        $this->progressOutputFactory = new ProgressOutputFactory();
     }
 
     /**
@@ -264,7 +269,6 @@ EOF;
             }
         }
 
-        $progressType = $resolver->getProgress();
         $finder = new \ArrayIterator(iterator_to_array($resolver->getFinder()));
 
         if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
@@ -273,22 +277,21 @@ EOF;
             );
         }
 
-        if ('none' === $progressType || null === $stdErr) {
-            $progressOutput = new NullOutput();
-        } else {
-            $progressOutput = new ProcessOutput(
+        $progressType = $resolver->getProgressType();
+        $progressOutput = $this->progressOutputFactory->create(
+            $progressType,
+            new OutputContext(
                 $stdErr,
-                $this->eventDispatcher,
                 (new Terminal())->getWidth(),
                 \count($finder)
-            );
-        }
+            )
+        );
 
         $runner = new Runner(
             $finder,
             $resolver->getFixers(),
             $resolver->getDiffer(),
-            'none' !== $progressType ? $this->eventDispatcher : null,
+            ProgressOutputType::NONE !== $progressType ? $this->eventDispatcher : null,
             $this->errorsManager,
             $resolver->getLinter(),
             $resolver->isDryRun(),
@@ -297,9 +300,11 @@ EOF;
             $resolver->shouldStopOnViolation()
         );
 
+        $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, [$progressOutput, 'onFixerFileProcessed']);
         $this->stopwatch->start('fixFiles');
         $changed = $runner->fix();
         $this->stopwatch->stop('fixFiles');
+        $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, [$progressOutput, 'onFixerFileProcessed']);
 
         $progressOutput->printLegend();
 

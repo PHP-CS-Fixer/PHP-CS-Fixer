@@ -12,15 +12,15 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Console\Output;
+namespace PhpCsFixer\Tests\Console\Output\Progress;
 
-use PhpCsFixer\Console\Output\NullOutput;
+use PhpCsFixer\Console\Output\Progress\NullOutput;
 use PhpCsFixer\Tests\TestCase;
 
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Output\NullOutput
+ * @covers \PhpCsFixer\Console\Output\Progress\NullOutput
  */
 final class NullOutputTest extends TestCase
 {
