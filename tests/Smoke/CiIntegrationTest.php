@@ -60,7 +60,7 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
         try {
             self::executeScript([
                 'rm -rf .git',
-                'git init -q',
+                'git init --initial-branch=master -q',
                 'git config user.name test',
                 'git config user.email test',
                 'git add .',
