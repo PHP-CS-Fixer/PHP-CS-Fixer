@@ -6,6 +6,7 @@
 /docker/ export-ignore
 /docker-compose.yaml export-ignore
 /docker-compose.override.yaml.dist export-ignore
+/Dockerfile export-ignore
 /phpmd.xml export-ignore
 /phpstan.dist.neon export-ignore
 /phpunit.xml.dist export-ignore
