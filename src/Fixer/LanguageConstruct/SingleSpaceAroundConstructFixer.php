@@ -255,7 +255,7 @@ yield  from  baz();
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer, FunctionDeclarationFixer.
+     * Must run before BracesFixer, FunctionDeclarationFixer, NullableTypeDeclarationFixer.
      * Must run after ModernizeStrposFixer.
      */
     public function getPriority(): int

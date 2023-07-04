@@ -471,6 +471,9 @@ Language Construct
 - `no_unset_on_property <./language_construct/no_unset_on_property.rst>`_ *(risky)*
 
   Properties should be set to ``null`` instead of using ``unset``.
+- `nullable_type_declaration <./language_construct/nullable_type_declaration.rst>`_
+
+  Nullable single type declaration should be standardised using configured syntax.
 - `single_space_after_construct <./language_construct/single_space_after_construct.rst>`_ *(deprecated)*
 
   Ensures a single space after language constructs.

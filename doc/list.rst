@@ -1869,6 +1869,19 @@ List of Available Rules
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\NoWhitespaceInBlankLineFixer <./../src/Fixer/Whitespace/NoWhitespaceInBlankLineFixer.php>`_
+-  `nullable_type_declaration <./rules/language_construct/nullable_type_declaration.rst>`_
+
+   Nullable single type declaration should be standardised using configured syntax.
+
+   Configuration options:
+
+   - | ``syntax``
+     | Whether to use question mark (`?`) or explicit `null` union for nullable type.
+     | Allowed values: ``'question_mark'`` and ``'union'``
+     | Default value: ``'question_mark'``
+
+
+   `Source PhpCsFixer\\Fixer\\LanguageConstruct\\NullableTypeDeclarationFixer <./../src/Fixer/LanguageConstruct/NullableTypeDeclarationFixer.php>`_
 -  `nullable_type_declaration_for_default_null_value <./rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 
    Adds or removes ``?`` before single type declarations or ``|null`` at the end of union types when parameters have a default ``null`` value.
