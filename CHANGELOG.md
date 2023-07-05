@@ -3,7 +3,7 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
-Changelog for v3.20.0
+Changelog for v3.21.0
 ---------------------
 
 * bug: Fix and enhance Gitlab reporter (#7089)
@@ -26,7 +26,7 @@ Changelog for v3.20.0
 * minor: Parse callable using full phpdoc grammar (#7094)
 * minor: PHP8.3 const type tokenizing (#7055)
 
-Changelog for v3.21.0
+Changelog for v3.20.0
 ---------------------
 
 * DX: fix priority of `FinalClassFixer` (#7091)
