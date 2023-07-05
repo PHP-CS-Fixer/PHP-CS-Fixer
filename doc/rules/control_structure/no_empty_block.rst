@@ -2,7 +2,8 @@
 Rule ``no_empty_block``
 =======================
 
-There must not be any empty blocks.
+There must be no empty blocks. Blocks with comment inside are NOT considered as
+empty.
 
 Warning
 -------

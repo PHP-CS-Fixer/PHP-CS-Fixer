@@ -28,7 +28,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'There must not be any empty blocks.',
+            'There must be no empty blocks. Blocks with comment inside are NOT considered as empty.',
             [
                 new CodeSample("<?php if (\$foo) {}\n"),
                 new CodeSample("<?php switch (\$foo) {}\n"),

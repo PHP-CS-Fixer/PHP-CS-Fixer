@@ -302,7 +302,7 @@ Control Structure
   There must be a comment when fall-through is intentional in a non-empty case body.
 - `no_empty_block <./control_structure/no_empty_block.rst>`_ *(risky)*
 
-  There must not be any empty blocks.
+  There must be no empty blocks. Blocks with comment inside are NOT considered as empty.
 - `no_superfluous_elseif <./control_structure/no_superfluous_elseif.rst>`_
 
   Replaces superfluous ``elseif`` with ``if``.
