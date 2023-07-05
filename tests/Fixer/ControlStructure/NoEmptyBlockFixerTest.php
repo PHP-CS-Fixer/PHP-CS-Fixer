@@ -163,242 +163,242 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             '<?php if ($foo) { if ($bar) {} }',
         ];
 
-        yield 'alternate if with side effect in body' => [
+        yield 'alternative if with side effect in body' => [
             '<?php if ($foo): echo 1; endif;',
         ];
 
-        yield 'alternate if with side effect in braces' => [
+        yield 'alternative if with side effect in braces' => [
             '<?php ',
             '<?php if ($foo->bar()): endif;',
         ];
 
-        yield 'alternate if without side effect' => [
+        yield 'alternative if without side effect' => [
             '<?php ',
             '<?php if ($foo): endif;',
         ];
 
-        yield 'alternate if without side effect but comment in body' => [
+        yield 'alternative if without side effect but comment in body' => [
             '<?php if ($foo): /* todo */ endif;',
         ];
 
-        yield 'alternate if without side effect but doc comment in body' => [
+        yield 'alternative if without side effect but doc comment in body' => [
             '<?php if ($foo): /** todo */ endif;',
         ];
 
-        yield 'alternate if without side effect with comments' => [
+        yield 'alternative if without side effect with comments' => [
             '<?php /*1*//*2*//*3*//*4*//*5*/',
             '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): endif;/*5*/',
         ];
 
-        yield 'alternate if without side effect with doc comments' => [
+        yield 'alternative if without side effect with doc comments' => [
             '<?php /**1*//**2*//**3*//**4*//**5*/',
             '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): endif;/**5*/',
         ];
 
-        yield 'alternate if with side effect in elseif body' => [
+        yield 'alternative if with side effect in elseif body' => [
             '<?php if ($foo): elseif ($bar): baz(); endif;',
         ];
 
-        yield 'alternate if with side effect in elseif braces' => [
+        yield 'alternative if with side effect in elseif braces' => [
             '<?php ',
             '<?php if ($foo): elseif ($foo->baz()): endif;',
         ];
 
-        yield 'alternate if without side effect and elseif without side effect' => [
+        yield 'alternative if without side effect and elseif without side effect' => [
             '<?php ',
             '<?php if ($foo): elseif ($bar): endif;',
         ];
 
-        yield 'alternate if without side effect and elseif without side effect with comments' => [
+        yield 'alternative if without side effect and elseif without side effect with comments' => [
             '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*//*8*/',
             '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): elseif/*5*/(/*6*/$bar/*7*/): endif;/*8*/',
         ];
 
-        yield 'alternate if without side effect and elseif without side effect with doc comments' => [
+        yield 'alternative if without side effect and elseif without side effect with doc comments' => [
             '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*//**8*/',
             '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): elseif/**5*/(/**6*/$bar/**7*/): endif;/**8*/',
         ];
 
-        yield 'alternate elseif without side effect but comment in body' => [
+        yield 'alternative elseif without side effect but comment in body' => [
             '<?php if ($foo): elseif ($bar): /* todo */ endif;',
         ];
 
-        yield 'alternate elseif without side effect but doc comment in body' => [
+        yield 'alternative elseif without side effect but doc comment in body' => [
             '<?php if ($foo): elseif ($bar): /** todo */ endif;',
         ];
 
-        yield 'alternate multiple elseif without side effect' => [
+        yield 'alternative multiple elseif without side effect' => [
             '<?php ',
             '<?php if ($foo): elseif ($bar): elseif ($baz): elseif ($boz): endif;',
         ];
 
-        yield 'alternate multiple elseif one with side effect' => [
+        yield 'alternative multiple elseif one with side effect' => [
             '<?php if ($foo): elseif ($bar): foo(); elseif ($baz): elseif ($boz): endif;',
         ];
 
-        yield 'alternate if with side effect in else' => [
+        yield 'alternative if with side effect in else' => [
             '<?php if ($foo): else: bar(); endif;',
         ];
 
-        yield 'alternate if with else without side effect' => [
+        yield 'alternative if with else without side effect' => [
             '<?php ',
             '<?php if ($foo): else: endif;',
         ];
 
-        yield 'alternate if with else without side effect but comment in body' => [
+        yield 'alternative if with else without side effect but comment in body' => [
             '<?php if ($foo): else: /* todo */ endif;',
         ];
 
-        yield 'alternate if with else without side effect but doc comment in body' => [
+        yield 'alternative if with else without side effect but doc comment in body' => [
             '<?php if ($foo): else: /** todo */ endif;',
         ];
 
-        yield 'alternate if with else without side effect with comments' => [
+        yield 'alternative if with else without side effect with comments' => [
             '<?php /*1*//*2*//*3*//*4*//*5*/',
             '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): else: endif;/*5*/',
         ];
 
-        yield 'alternate if with else without side effect with doc comments' => [
+        yield 'alternative if with else without side effect with doc comments' => [
             '<?php /**1*//**2*//**3*//**4*//**5*/',
             '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): else: endif;/**5*/',
         ];
 
-        yield 'alternate if with side effect in braces and else without side effect' => [
+        yield 'alternative if with side effect in braces and else without side effect' => [
             '<?php ',
             '<?php if ($foo->bar()): else: endif;',
         ];
 
-        yield 'alternate if with side effect in body and else without side effect' => [
+        yield 'alternative if with side effect in body and else without side effect' => [
             '<?php if ($foo): bar();  endif;',
             '<?php if ($foo): bar(); else: endif;',
         ];
 
-        yield 'alternate if compact' => [
+        yield 'alternative if compact' => [
             '<?php ',
             '<?php if($foo):elseif($bar):else:endif;',
         ];
 
-        yield 'alternate if spaced' => [
+        yield 'alternative if spaced' => [
             '<?php ',
             '<?php if   (   $foo ):    elseif   (  $bar ):   endif;',
         ];
 
-        yield 'alternate end tag if with side effect in body' => [
+        yield 'alternative end tag if with side effect in body' => [
             '<?php if ($foo): echo 1; endif ?>',
         ];
 
-        yield 'alternate end tag if with side effect in braces' => [
+        yield 'alternative end tag if with side effect in braces' => [
             '<?php ?>',
             '<?php if ($foo->bar()): endif ?>',
         ];
 
-        yield 'alternate end tag if without side effect' => [
+        yield 'alternative end tag if without side effect' => [
             '<?php ?>',
             '<?php if ($foo): endif ?>',
         ];
 
-        yield 'alternate end tag if without side effect but comment in body' => [
+        yield 'alternative end tag if without side effect but comment in body' => [
             '<?php if ($foo): /* todo */ endif ?>',
         ];
 
-        yield 'alternate end tag if without side effect but doc comment in body' => [
+        yield 'alternative end tag if without side effect but doc comment in body' => [
             '<?php if ($foo): /** todo */ endif ?>',
         ];
 
-        yield 'alternate end tag if without side effect with comments' => [
+        yield 'alternative end tag if without side effect with comments' => [
             '<?php /*1*//*2*//*3*//*4*/?>',
             '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): endif ?>',
         ];
 
-        yield 'alternate end tag if without side effect with doc comments' => [
+        yield 'alternative end tag if without side effect with doc comments' => [
             '<?php /**1*//**2*//**3*//**4*/?>',
             '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): endif ?>',
         ];
 
-        yield 'alternate end tag if with side effect in elseif body' => [
+        yield 'alternative end tag if with side effect in elseif body' => [
             '<?php if ($foo): elseif ($bar): baz(); endif ?>',
         ];
 
-        yield 'alternate end tag if with side effect in elseif braces' => [
+        yield 'alternative end tag if with side effect in elseif braces' => [
             '<?php ?>',
             '<?php if ($foo): elseif ($foo->baz()): endif ?>',
         ];
 
-        yield 'alternate end tag if without side effect and elseif without side effect' => [
+        yield 'alternative end tag if without side effect and elseif without side effect' => [
             '<?php ?>',
             '<?php if ($foo): elseif ($bar): endif ?>',
         ];
 
-        yield 'alternate end tag if without side effect and elseif without side effect with comments' => [
+        yield 'alternative end tag if without side effect and elseif without side effect with comments' => [
             '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/?>',
             '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): elseif/*5*/(/*6*/$bar/*7*/): endif ?>',
         ];
 
-        yield 'alternate end tag if without side effect and elseif without side effect with doc comments' => [
+        yield 'alternative end tag if without side effect and elseif without side effect with doc comments' => [
             '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/?>',
             '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): elseif/**5*/(/**6*/$bar/**7*/): endif ?>',
         ];
 
-        yield 'alternate end tag elseif without side effect but comment in body' => [
+        yield 'alternative end tag elseif without side effect but comment in body' => [
             '<?php if ($foo): elseif ($bar): /* todo */ endif ?>',
         ];
 
-        yield 'alternate end tag elseif without side effect but doc comment in body' => [
+        yield 'alternative end tag elseif without side effect but doc comment in body' => [
             '<?php if ($foo): elseif ($bar): /** todo */ endif ?>',
         ];
 
-        yield 'alternate end tag multiple elseif without side effect' => [
+        yield 'alternative end tag multiple elseif without side effect' => [
             '<?php ?>',
             '<?php if ($foo): elseif ($bar): elseif ($baz): elseif ($boz): endif ?>',
         ];
 
-        yield 'alternate end tag multiple elseif one with side effect' => [
+        yield 'alternative end tag multiple elseif one with side effect' => [
             '<?php if ($foo): elseif ($bar): foo(); elseif ($baz): elseif ($boz): endif ?>',
         ];
 
-        yield 'alternate end tag if with side effect in else' => [
+        yield 'alternative end tag if with side effect in else' => [
             '<?php if ($foo): else: bar(); endif ?>',
         ];
 
-        yield 'alternate end tag if with else without side effect' => [
+        yield 'alternative end tag if with else without side effect' => [
             '<?php ?>',
             '<?php if ($foo): else: endif ?>',
         ];
 
-        yield 'alternate end tag if with else without side effect but comment in body' => [
+        yield 'alternative end tag if with else without side effect but comment in body' => [
             '<?php if ($foo): else: /* todo */ endif ?>',
         ];
 
-        yield 'alternate end tag if with else without side effect but doc comment in body' => [
+        yield 'alternative end tag if with else without side effect but doc comment in body' => [
             '<?php if ($foo): else: /** todo */ endif ?>',
         ];
 
-        yield 'alternate end tag if with else without side effect with comments' => [
+        yield 'alternative end tag if with else without side effect with comments' => [
             '<?php /*1*//*2*//*3*//*4*/?>',
             '<?php /*1*/if/*2*/(/*3*/$foo/*4*/): else: endif ?>',
         ];
 
-        yield 'alternate end tag if with else without side effect with doc comments' => [
+        yield 'alternative end tag if with else without side effect with doc comments' => [
             '<?php /**1*//**2*//**3*//**4*/?>',
             '<?php /**1*/if/**2*/(/**3*/$foo/**4*/): else: endif ?>',
         ];
 
-        yield 'alternate end tag if with side effect in braces and else without side effect' => [
+        yield 'alternative end tag if with side effect in braces and else without side effect' => [
             '<?php ?>',
             '<?php if ($foo->bar()): else: endif ?>',
         ];
 
-        yield 'alternate end tag if with side effect in body and else without side effect' => [
+        yield 'alternative end tag if with side effect in body and else without side effect' => [
             '<?php if ($foo): bar();  endif ?>',
             '<?php if ($foo): bar(); else: endif ?>',
         ];
 
-        yield 'alternate end tag if compact' => [
+        yield 'alternative end tag if compact' => [
             '<?php ?>',
             '<?php if($foo):elseif($bar):else:endif ?>',
         ];
 
-        yield 'alternate end tag if spaced' => [
+        yield 'alternative end tag if spaced' => [
             '<?php ?>',
             '<?php if   (   $foo ):    elseif   (  $bar ):   endif ?>',
         ];
@@ -509,66 +509,66 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             '<?php for (;;) { for(;;) {} }',
         ];
 
-        yield 'for alternate with side effect in body' => [
+        yield 'alternative for with side effect in body' => [
             '<?php for (;;): foo(); endfor;',
         ];
 
-        yield 'for alternate with side effect in braces' => [
+        yield 'alternative for with side effect in braces' => [
             '<?php ',
             '<?php for ($i = 0; $i < count($foo); ++$i): endfor;',
         ];
 
-        yield 'for alternate without side effects' => [
+        yield 'alternative for without side effects' => [
             '<?php ',
             '<?php for (;;): endfor;',
         ];
 
-        yield 'for alternate without side effects but comment in body' => [
+        yield 'alternative for without side effects but comment in body' => [
             '<?php for (;;): /* todo */ endfor;',
         ];
 
-        yield 'for alternate without side effects but doc comment in body' => [
+        yield 'alternative for without side effects but doc comment in body' => [
             '<?php for (;;): /** todo */ endfor;',
         ];
 
-        yield 'for alternate without side effect with comments' => [
+        yield 'alternative for without side effect with comments' => [
             '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
             '<?php /*1*/for/*2*/(/*3*/;/*4*/;/*5*/)/*6*/: endfor;/*7*/',
         ];
 
-        yield 'for alternate without side effect with doc comments' => [
+        yield 'alternative for without side effect with doc comments' => [
             '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/',
             '<?php /**1*/for/**2*/(/**3*/;/**4*/;/**5*/)/**6*/: endfor;/**7*/',
         ];
 
-        yield 'for alternate end tag with side effect in body' => [
+        yield 'alternative for end tag with side effect in body' => [
             '<?php for (;;): foo(); endfor ?>',
         ];
 
-        yield 'for alternate end tag with side effect in braces' => [
+        yield 'alternative for end tag with side effect in braces' => [
             '<?php ?>',
             '<?php for ($i = 0; $i < count($foo); ++$i): endfor ?>',
         ];
 
-        yield 'for alternate end tag without side effects' => [
+        yield 'alternative for end tag without side effects' => [
             '<?php ?>',
             '<?php for (;;): endfor ?>',
         ];
 
-        yield 'for alternate end tag without side effects but comment in body' => [
+        yield 'alternative for end tag without side effects but comment in body' => [
             '<?php for (;;): /* todo */ endfor ?>',
         ];
 
-        yield 'for alternate end tag without side effects but doc comment in body' => [
+        yield 'alternative for end tag without side effects but doc comment in body' => [
             '<?php for (;;): /** todo */ endfor ?>',
         ];
 
-        yield 'for alternate end tag without side effect with comments' => [
+        yield 'alternative for end tag without side effect with comments' => [
             '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/ ?>',
             '<?php /*1*/for/*2*/(/*3*/;/*4*/;/*5*/)/*6*/: endfor;/*7*/ ?>',
         ];
 
-        yield 'for alternate end tag without side effect with doc comments' => [
+        yield 'alternative for end tag without side effect with doc comments' => [
             '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/ ?>',
             '<?php /**1*/for/**2*/(/**3*/;/**4*/;/**5*/)/**6*/: endfor;/**7*/ ?>',
         ];
@@ -605,67 +605,67 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             '<?php switch ($foo) { /** todo */ }',
         ];
 
-        yield 'alternate switch with side effect in body' => [
+        yield 'alternative switch with side effect in body' => [
             '<?php switch ($foo): case 1: foo(); endswitch;',
         ];
 
-        yield 'alternate switch with side effect in braces' => [
+        yield 'alternative switch with side effect in braces' => [
             '<?php ',
             '<?php switch ($foo->bar()): endswitch;',
         ];
 
-        yield 'alternate switch without side effects' => [
+        yield 'alternative switch without side effects' => [
             '<?php ',
             '<?php switch ($foo): endswitch;',
         ];
 
-        yield 'alternate switch without side effects with comments' => [
+        yield 'alternative switch without side effects with comments' => [
             '<?php /*1*//*2*//*3*//*4*//*5*//*6*//*7*/',
             '<?php /*1*/switch/*2*/(/*3*/$foo/*4*/)/*5*/: endswitch/*6*/;/*7*/',
         ];
 
-        yield 'alternate switch without side effects with doc comments' => [
+        yield 'alternative switch without side effects with doc comments' => [
             '<?php /**1*//**2*//**3*//**4*//**5*//**6*//**7*/',
             '<?php /**1*/switch/**2*/(/**3*/$foo/**4*/)/**5*/: endswitch/**6*/;/**7*/',
         ];
 
-        yield 'alternate switch without side effects but comment in body' => [
+        yield 'alternative switch without side effects but comment in body' => [
             '<?php switch ($foo): /* todo */ endswitch;',
         ];
 
-        yield 'alternate switch without side effects but doc comment in body' => [
+        yield 'alternative switch without side effects but doc comment in body' => [
             '<?php switch ($foo): /** todo */ endswitch;',
         ];
 
-        yield 'alternate end tag switch with side effect in body' => [
+        yield 'alternative end tag switch with side effect in body' => [
             '<?php switch ($foo): case 1: foo(); endswitch ?>',
         ];
 
-        yield 'alternate end tag switch with side effect in braces' => [
+        yield 'alternative end tag switch with side effect in braces' => [
             '<?php ?>',
             '<?php switch ($foo->bar()): endswitch ?>',
         ];
 
-        yield 'alternate end tag switch without side effects' => [
+        yield 'alternative end tag switch without side effects' => [
             '<?php ?>',
             '<?php switch ($foo): endswitch ?>',
         ];
 
-        yield 'alternate end tag switch without side effects with comments' => [
+        yield 'alternative end tag switch without side effects with comments' => [
             '<?php /*1*//*2*//*3*//*4*//*5*//*6*/ ?>',
             '<?php /*1*/switch/*2*/(/*3*/$foo/*4*/)/*5*/: endswitch/*6*/ ?>',
         ];
 
-        yield 'alternate end tag switch without side effects with doc comments' => [
+        yield 'alternative end tag switch without side effects with doc comments' => [
             '<?php /**1*//**2*//**3*//**4*//**5*//**6*/ ?>',
             '<?php /**1*/switch/**2*/(/**3*/$foo/**4*/)/**5*/: endswitch/**6*/ ?>',
         ];
 
-        yield 'alternate end tag switch without side effects but comment in body' => [
+        yield 'alternative end tag switch without side effects but comment in body' => [
             '<?php switch ($foo): /* todo */ endswitch ?>',
         ];
 
-        yield 'alternate end tag switch without side effects but doc comment in body' => [
+        yield 'alternative end tag switch without side effects but doc comment in body' => [
             '<?php switch ($foo): /** todo */ endswitch ?>',
         ];
 
