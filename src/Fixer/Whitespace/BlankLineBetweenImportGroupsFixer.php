@@ -21,7 +21,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
-use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -157,11 +156,7 @@ use Bar;
         $index = $this->getInsertIndex($tokens, $index);
         $indent = WhitespacesAnalyzer::detectIndent($tokens, $index);
 
-        if ($tokens[$index]->isWhitespace()) {
-            $tokens[$index] = new Token([T_WHITESPACE, $lineEnding.$indent]);
-        } else {
-            $tokens->insertSlices([$index + 1 => [new Token([T_WHITESPACE, $lineEnding.$indent])]]);
-        }
+        $tokens->ensureWhitespaceAtIndex($index, 1, $lineEnding.$indent);
     }
 
     private function getInsertIndex(Tokens $tokens, int $index): int
