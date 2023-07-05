@@ -36,6 +36,9 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         $original = $fixed = self::getClassElementStubs();
@@ -113,6 +116,52 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
                     private const C = 3;
                 }',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFix82Cases(): iterable
+    {
+        yield 'abstract keyword after readonly/public keywords' => [
+            '<?php readonly abstract class Foo {
+                public abstract function bar();
+            }',
+        ];
+
+        yield 'abstract keyword before readonly/public keywords' => [
+            '<?php abstract readonly class Foo {
+                abstract public function bar();
+            }',
+        ];
+
+        yield 'abstract readonly class' => [
+            '<?php abstract readonly class Foo {
+                final public function bar() {}
+            }',
+            '<?php abstract readonly class Foo {
+                public function bar() {}
+            }',
+        ];
+
+        yield 'readonly abstract class' => [
+            '<?php readonly abstract class Foo {
+                final public function bar() {}
+            }',
+            '<?php readonly abstract class Foo {
+                public function bar() {}
+            }',
         ];
     }
 
