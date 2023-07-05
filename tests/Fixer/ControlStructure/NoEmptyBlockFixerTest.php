@@ -29,14 +29,14 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideTestFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'if with side effect in body' => [
             '<?php if ($foo) { echo 1; }',
