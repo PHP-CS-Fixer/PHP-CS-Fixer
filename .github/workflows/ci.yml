@@ -18,17 +18,17 @@ jobs:
       matrix:
         include:
           - operating-system: 'ubuntu-20.04'
-            php-version: '7.4'
+            php-version: '8.0'
             job-description: 'with lowest deps'
             composer-flags: '--prefer-stable --prefer-lowest' # should be checked on the lowest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '7.4'
+            php-version: '8.0'
             job-description: 'with PHPDoc to type rules'
             phpdoc-to-type-rules: 'yes' # should be checked on the lowest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '7.4'
+            php-version: '8.0'
             job-description: 'with Symfony ^5'
             execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
 
