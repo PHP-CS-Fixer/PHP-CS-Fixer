@@ -150,7 +150,7 @@ EOF;
                 new CodeSample($code),
                 new CodeSample($code, ['align' => self::ALIGN_VERTICAL]),
                 new CodeSample($code, ['align' => self::ALIGN_LEFT]),
-            ]
+            ],
         );
     }
 
@@ -195,7 +195,10 @@ EOF;
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $tags = new FixerOptionBuilder('tags', 'The tags that should be aligned.');
+        $tags = new FixerOptionBuilder(
+            'tags',
+            'The tags that should be aligned. Allowed values are tags with name (`\''.implode('\', \'', self::TAGS_WITH_NAME).'\'`), tags with method signature (`\''.implode('\', \'', self::TAGS_WITH_METHOD_SIGNATURE).'\'`) and any custom tag with description (e.g. `@tag <desc>`).'
+        );
         $tags
             ->setAllowedTypes(['array'])
             ->setDefault(self::DEFAULT_TAGS)

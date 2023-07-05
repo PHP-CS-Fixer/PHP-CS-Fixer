@@ -2064,7 +2064,7 @@ List of Available Rules
    Configuration options:
 
    - | ``tags``
-     | The tags that should be aligned.
+     | The tags that should be aligned. Allowed values are tags with name (`'param', 'property', 'property-read', 'property-write', 'phpstan-param', 'phpstan-property', 'phpstan-property-read', 'phpstan-property-write', 'phpstan-assert', 'phpstan-assert-if-true', 'phpstan-assert-if-false', 'psalm-param', 'psalm-param-out', 'psalm-property', 'psalm-property-read', 'psalm-property-write', 'psalm-assert', 'psalm-assert-if-true', 'psalm-assert-if-false'`), tags with method signature (`'method', 'phpstan-method', 'psalm-method'`) and any custom tag with description (e.g. `@tag <desc>`).
      | Allowed types: ``array``
      | Default value: ``['method', 'param', 'property', 'return', 'throws', 'type', 'var']``
    - | ``align``
