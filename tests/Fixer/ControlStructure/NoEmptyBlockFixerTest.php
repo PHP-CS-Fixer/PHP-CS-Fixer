@@ -60,6 +60,18 @@ final class NoEmptyBlockFixerTest extends AbstractFixerTestCase
             '<?php if ($foo) { /** todo */ }',
         ];
 
+        yield 'if without side effect but # comment in body' => [
+            '<?php if ($foo) {
+    # @todo
+}',
+        ];
+
+        yield 'if without side effect but // comment in body' => [
+            '<?php if ($foo) {
+    // @todo
+}',
+        ];
+
         yield 'if without side effect with comments' => [
             '<?php /*1*//*2*//*3*//*4*//*5*//*6*/',
             '<?php /*1*/if/*2*/(/*3*/$foo/*4*/)/*5*/{}/*6*/',
