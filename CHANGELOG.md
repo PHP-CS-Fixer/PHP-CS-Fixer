@@ -6,6 +6,29 @@ This file contains changelogs for stable releases only.
 Changelog for v3.20.0
 ---------------------
 
+* bug: Fix and enhance Gitlab reporter (#7089)
+* bug: Import with different case must not be removed by non-risky fixer (#7095)
+* bug: ordered imports fixer top group only (#7023)
+* bug: `FinalPublicMethodForAbstractClassFixer` - fix for readonly classes (#7123)
+* DX: do not nest ".editorconfig" files (#7112)
+* DX: exclude Dockerfile from dist (#7113)
+* DX: fix checkbashisms installation (#7102)
+* DX: fix Smoke tests for various git default branch name (#7119)
+* DX: Fix `FileRemovalTest` (do not fail when running it standalone) (#7104)
+* DX: Progress output refactor (#6848)
+* DX: Rename abstract test classes to `*TestCase` convention (#7100)
+* DX: test all PHPUnit migration sets (#7107)
+* DX: [Docker] Distinguish Alpine version between PHP versions (#7105)
+* feature: Create cache path if it does not exist (#7109)
+* feature: Introduce `NullableTypeDeclarationFixer` (#7002)
+* feature: Introduce `TypeDeclarationSpacesFixer` (#7001)
+* feature: `BlankLineBetweenImportGroupsFixer` - keep indent (#7122)
+* minor: Parse callable using full phpdoc grammar (#7094)
+* minor: PHP8.3 const type tokenizing (#7055)
+
+Changelog for v3.21.0
+---------------------
+
 * DX: fix priority of `FinalClassFixer` (#7091)
 * DX: use FAST_LINT_TEST_CASES=1 for CI run on macOS (#7092)
 * feature: SingleLineEmptyBodyFixer - support interfaces, traits and enums (#7096)
