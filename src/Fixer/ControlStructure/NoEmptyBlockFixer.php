@@ -155,44 +155,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
 
     private function fixFor(int $forIndex, Tokens $tokens): void
     {
-        $openBraceIndex = $tokens->getNextMeaningfulToken($forIndex);
-        $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
-        $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
-        $openBody = $tokens[$openBodyIndex];
-
-        if ($openBody->isGivenKind(T_CLOSE_TAG)) {
-            $this->clearRangeKeepComments($tokens, $forIndex, $closeBraceIndex);
-
-            return;
-        }
-
-        if ($openBody->equals(';')) {
-            $this->clearRangeKeepComments($tokens, $forIndex, $openBodyIndex);
-
-            return;
-        }
-
-        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
-
-        if ($tokens[$closeBodyIndex]->equals('}')) {
-            $this->clearRangeKeepComments($tokens, $forIndex, $closeBodyIndex);
-
-            return;
-        }
-
-        if (!$tokens[$closeBodyIndex]->isGivenKind(T_ENDFOR)) {
-            return;
-        }
-
-        $semicolonIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
-
-        if ($tokens[$semicolonIndex]->equals(';')) {
-            $this->clearRangeKeepComments($tokens, $forIndex, $semicolonIndex);
-
-            return;
-        }
-
-        $this->clearRangeKeepComments($tokens, $forIndex, $closeBodyIndex);
+        $this->fixBraceBlock($tokens, $forIndex, T_ENDFOR);
     }
 
     private function fixIf(int $ifIndex, Tokens $tokens): void
@@ -223,12 +186,9 @@ final class NoEmptyBlockFixer extends AbstractFixer
 
             if ($tokens[$closeBodyIndex]->isGivenKind(T_ENDIF)) {
                 $semicolonIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
+                $endIndex = $tokens[$semicolonIndex]->equals(';') ? $semicolonIndex : $closeBodyIndex;
 
-                if ($tokens[$semicolonIndex]->equals(';')) {
-                    $this->clearRangeKeepComments($tokens, $ifIndex, $semicolonIndex);
-                } else {
-                    $this->clearRangeKeepComments($tokens, $ifIndex, $closeBodyIndex);
-                }
+                $this->clearRangeKeepComments($tokens, $ifIndex, $endIndex);
 
                 return;
             }
@@ -321,44 +281,7 @@ final class NoEmptyBlockFixer extends AbstractFixer
             }
         }
 
-        $openBraceIndex = $tokens->getNextMeaningfulToken($whileIndex);
-        $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
-        $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
-        $openBody = $tokens[$openBodyIndex];
-
-        if ($openBody->isGivenKind(T_CLOSE_TAG)) {
-            $this->clearRangeKeepComments($tokens, $whileIndex, $closeBraceIndex);
-
-            return;
-        }
-
-        if ($openBody->equals(';')) {
-            $this->clearRangeKeepComments($tokens, $whileIndex, $openBodyIndex);
-
-            return;
-        }
-
-        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
-
-        if ($tokens[$closeBodyIndex]->equals('}')) {
-            $this->clearRangeKeepComments($tokens, $whileIndex, $closeBodyIndex);
-
-            return;
-        }
-
-        if (!$tokens[$closeBodyIndex]->isGivenKind(T_ENDWHILE)) {
-            return;
-        }
-
-        $semicolonIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
-
-        if ($tokens[$semicolonIndex]->equals(';')) {
-            $this->clearRangeKeepComments($tokens, $whileIndex, $semicolonIndex);
-
-            return;
-        }
-
-        $this->clearRangeKeepComments($tokens, $whileIndex, $closeBodyIndex);
+        $this->fixBraceBlock($tokens, $whileIndex, T_ENDWHILE);
     }
 
     private function clearRangeKeepComments(Tokens $tokens, int $startIndex, int $endIndex): void
@@ -368,5 +291,47 @@ final class NoEmptyBlockFixer extends AbstractFixer
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }
         }
+    }
+
+    private function fixBraceBlock(Tokens $tokens, int $index, int $alternativeSyntaxEndType): void
+    {
+        $openBraceIndex = $tokens->getNextMeaningfulToken($index);
+        $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
+        $openBodyIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
+        $openBody = $tokens[$openBodyIndex];
+
+        if ($openBody->isGivenKind(T_CLOSE_TAG)) {
+            $this->clearRangeKeepComments($tokens, $index, $closeBraceIndex);
+
+            return;
+        }
+
+        if ($openBody->equals(';')) {
+            $this->clearRangeKeepComments($tokens, $index, $openBodyIndex);
+
+            return;
+        }
+
+        $closeBodyIndex = $tokens->getNextNonWhitespace($openBodyIndex);
+
+        if ($tokens[$closeBodyIndex]->equals('}')) {
+            $this->clearRangeKeepComments($tokens, $index, $closeBodyIndex);
+
+            return;
+        }
+
+        if (!$tokens[$closeBodyIndex]->isGivenKind($alternativeSyntaxEndType)) {
+            return;
+        }
+
+        $semicolonIndex = $tokens->getNextMeaningfulToken($closeBodyIndex);
+
+        if ($tokens[$semicolonIndex]->equals(';')) {
+            $this->clearRangeKeepComments($tokens, $index, $semicolonIndex);
+
+            return;
+        }
+
+        $this->clearRangeKeepComments($tokens, $index, $closeBodyIndex);
     }
 }
