@@ -66,6 +66,7 @@ class FooTest extends TestCase {
      * {@inheritdoc}
      *
      * Must run before ReturnTypeDeclarationFixer.
+     * Must run after CleanNamespaceFixer.
      */
     public function getPriority(): int
     {
@@ -101,11 +102,18 @@ class FooTest extends TestCase {
                 continue;
             }
 
-            if ('iterable' !== $typeAnalysis->getName()) {
-                $startIndex = $tokens->getNextMeaningfulToken($typeAnalysis->getStartIndex() - 1);
-
-                $tokens->overrideRange($startIndex, $typeAnalysis->getEndIndex(), [new Token([T_STRING, 'iterable'])]);
+            if ('iterable' === $typeAnalysis->getName()) {
+                continue;
             }
+
+            $typeStartIndex = $tokens->getNextMeaningfulToken($typeAnalysis->getStartIndex() - 1);
+            $typeEndIndex = $typeAnalysis->getEndIndex();
+
+            if ($tokens->generatePartialCode($typeStartIndex, $typeEndIndex) !== $typeAnalysis->getName()) {
+                continue;
+            }
+
+            $tokens->overrideRange($typeStartIndex, $typeEndIndex, [new Token([T_STRING, 'iterable'])]);
         }
     }
 }

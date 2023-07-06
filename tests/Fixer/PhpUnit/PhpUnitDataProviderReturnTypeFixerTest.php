@@ -208,20 +208,18 @@ class FooTest extends TestCase {
     public static function provideFix7Cases(): iterable
     {
         yield 'data provider with return type namespaced class starting with iterable' => self::mapToTemplate(
-            ': iterable',
             ': iterable \ Foo',
         );
 
         yield 'data provider with return type namespaced class and comments' => self::mapToTemplate(
-            ': iterable',
-            ': Foo/* Some info */\/* More info */Bar',
+            ': iterable/* Some info */\/* More info */Bar',
         );
     }
 
     /**
-     * @return array{string, string}
+     * @return array<string>
      */
-    private static function mapToTemplate(string $expected, string $actual): array
+    private static function mapToTemplate(string ...$types): array
     {
         static $template = '<?php
 class FooTest extends TestCase {
@@ -238,9 +236,9 @@ class FooTest extends TestCase {
     public function notProvider(): array {}
 }';
 
-        return [
-            sprintf($template, $expected),
-            sprintf($template, $actual),
-        ];
+        return array_map(
+            fn (string $type): string => sprintf($template, $type),
+            $types
+        );
     }
 }

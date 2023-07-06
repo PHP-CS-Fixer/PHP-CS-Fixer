@@ -373,6 +373,9 @@ final class FixerFactoryTest extends TestCase
             'class_keyword_remove' => [
                 'no_unused_imports',
             ],
+            'clean_namespace' => [
+                'php_unit_data_provider_return_type',
+            ],
             'combine_consecutive_issets' => [
                 'multiline_whitespace_before_semicolons',
                 'no_singleline_whitespace_before_semicolons',
