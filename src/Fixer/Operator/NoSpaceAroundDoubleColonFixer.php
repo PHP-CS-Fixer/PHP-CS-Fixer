@@ -26,7 +26,7 @@ final class NoSpaceAroundDoubleColonFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There must be no space around double colons (also called Scope Resolution Operator or Paamayim Nekudotayim).',
-            [new CodeSample("\n<?php echo Foo\\Bar :: class;\n")]
+            [new CodeSample("<?php\n\necho Foo\\Bar :: class;\n")]
         );
     }
 

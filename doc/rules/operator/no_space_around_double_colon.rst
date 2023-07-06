@@ -15,9 +15,10 @@ Example #1
 
    --- Original
    +++ New
+    <?php
 
-   -<?php echo Foo\Bar :: class;
-   +<?php echo Foo\Bar::class;
+   -echo Foo\Bar :: class;
+   +echo Foo\Bar::class;
 
 Rule sets
 ---------
