@@ -354,15 +354,11 @@ abstract class AbstractFixerTestCase extends TestCase
         return new $fixerClassName();
     }
 
-    protected static function getTestFile(string $filename = __FILE__): \SplFileInfo
+    final protected static function getTestFile(string $filename = __FILE__): \SplFileInfo
     {
         static $files = [];
 
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
+        return $files[$filename] ?? $files[$filename] = new \SplFileInfo($filename);
     }
 
     /**
