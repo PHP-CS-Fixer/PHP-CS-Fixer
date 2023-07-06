@@ -3,7 +3,7 @@ Integration of fixers: clean_namespace,php_unit_data_provider_return_type.
 --RULESET--
 {"clean_namespace": true, "php_unit_data_provider_return_type": true}
 --REQUIREMENTS--
-{"php": 70400}
+{"php<": 80000}
 --EXPECT--
 <?php
 class FooTest extends TestCase {
