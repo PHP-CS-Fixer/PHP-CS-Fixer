@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\FixerDefinition;
 
+use PhpCsFixer\Console\Application;
+use PhpCsFixer\Utils;
+
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
@@ -50,6 +53,15 @@ final class FixerDefinition implements FixerDefinitionInterface
         $this->codeSamples = $codeSamples;
         $this->description = $description;
         $this->riskyDescription = $riskyDescription;
+
+        if (null === $this->description) {
+            Utils::triggerDeprecation(new \InvalidArgumentException(sprintf(
+                'Not passing "description" parameter for "%s" (costructed in "%s") is deprecated and will not be allowed in version %d.0.',
+                __CLASS__,
+                debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['class'],
+                Application::getMajorVersion() + 1
+            )));
+        }
     }
 
     public function getSummary(): string
