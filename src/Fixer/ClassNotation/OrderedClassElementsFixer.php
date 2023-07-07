@@ -228,7 +228,7 @@ Special element types: `[\''.implode('\', \'', array_keys(self::$specialTypes)).
 
 Custom values:
 
-- `method:*`: specify a single method name (e.g. `method:__invoke`) to set the order of that specific method'
+- `method:*`: specify a single method name (e.g. `method:__invoke`) to set the order of that specific method.'
         );
     }
 

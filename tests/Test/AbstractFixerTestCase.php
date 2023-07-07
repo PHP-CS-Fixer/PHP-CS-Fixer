@@ -117,6 +117,9 @@ abstract class AbstractFixerTestCase extends TestCase
         $fixerIsConfigurable = $this->fixer instanceof ConfigurableFixerInterface;
 
         self::assertValidDescription($fixerName, 'summary', $definition->getSummary());
+        if (null !== $definition->getDescription()) {
+            self::assertValidDescription($fixerName, 'description', $definition->getDescription());
+        }
 
         $samples = $definition->getCodeSamples();
         self::assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixerName));
@@ -468,7 +471,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
     private static function assertValidDescription(string $fixerName, string $descriptionType, string $description): void
     {
-        self::assertMatchesRegularExpression('/^[A-Z`][^"]+\.$/', $description, sprintf('[%s] The %s must start with capital letter or a ` and end with dot.', $fixerName, $descriptionType));
+        self::assertMatchesRegularExpression('/^[A-Z`].+\.$/s', $description, sprintf('[%s] The %s must start with capital letter or a ` and end with dot.', $fixerName, $descriptionType));
         self::assertStringNotContainsString('phpdocs', $description, sprintf('[%s] `PHPDoc` must not be in the plural in %s.', $fixerName, $descriptionType));
         self::assertCorrectCasing($description, 'PHPDoc', sprintf('[%s] `PHPDoc` must be in correct casing in %s.', $fixerName, $descriptionType));
         self::assertCorrectCasing($description, 'PHPUnit', sprintf('[%s] `PHPUnit` must be in correct casing in %s.', $fixerName, $descriptionType));
