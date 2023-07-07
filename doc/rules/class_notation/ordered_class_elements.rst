@@ -27,7 +27,7 @@ Special element types: ``['construct', 'destruct', 'magic', 'phpunit']``
 Custom values:
 
 - ``method:*``: specify a single method name (e.g. ``method:__invoke``) to set
-the order of that specific method
+the order of that specific method.
 
 Configuration
 -------------
