@@ -44,7 +44,7 @@ in a dedicated `composer.json` file in your project, for example in the
 
 ```console
 mkdir -p tools/php-cs-fixer
-composer require --working-dir=tools/php-cs-fixer friendsofphp/php-cs-fixer
+composer require --working-dir=tools/php-cs-fixer --dev friendsofphp/php-cs-fixer
 ```
 
 For more details and other installation methods, see
