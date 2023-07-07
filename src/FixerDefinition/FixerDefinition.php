@@ -56,7 +56,7 @@ final class FixerDefinition implements FixerDefinitionInterface
 
         if (null === $this->description) {
             Utils::triggerDeprecation(new \InvalidArgumentException(sprintf(
-                'Not passing "description" parameter for "%s" (costructed in "%s") is deprecated and will not be allowed in version %d.0.',
+                'Not passing "description" parameter for "%s" (constructed in "%s") is deprecated and will not be allowed in version %d.0.',
                 __CLASS__,
                 debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['class'],
                 Application::getMajorVersion() + 1
