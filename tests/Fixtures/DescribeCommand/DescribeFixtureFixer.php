@@ -42,6 +42,7 @@ final class DescribeFixtureFixer extends AbstractFixer
                     "<?php\necho 'describe fixture';\n"
                 ),
             ],
+            'Description.',
         );
     }
 
