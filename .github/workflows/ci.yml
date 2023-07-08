@@ -54,7 +54,6 @@ jobs:
             php-version: '8.2'
             job-description: 'with calculating code coverage'
             calculate-code-coverage: 'yes'
-            phpunit-flags: '--testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml'
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
@@ -143,10 +142,15 @@ jobs:
         run: sed 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' phpunit.xml.dist > phpunit.xml
 
       - name: Run tests
+        if: matrix.calculate-code-coverage != 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/phpunit ${{ matrix.phpunit-flags || '--exclude-group auto-review' }}
+        run: vendor/bin/paraunit run ${{ matrix.phpunit-flags || '--exclude-group auto-review' }}
+
+      - name: Collect code coverage
+        if: matrix.calculate-code-coverage == 'yes'
+        run: vendor/bin/paraunit coverage --testsuite coverage --exclude-group covers-nothing --clover build/logs/clover.xml
 
       - name: Upload coverage results to Coveralls
         if: matrix.calculate-code-coverage == 'yes'
