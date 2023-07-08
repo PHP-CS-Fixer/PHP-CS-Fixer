@@ -41,21 +41,50 @@ final class FileHandler implements FileHandlerInterface
             return null;
         }
 
-        $content = file_get_contents($this->file);
-
-        try {
-            $cache = Cache::fromJson($content);
-        } catch (\InvalidArgumentException $exception) {
+        $handle = fopen($this->file, 'r');
+        if (false === $handle) {
             return null;
         }
+
+        $cache = $this->readFromHandle($handle);
+
+        fclose($handle);
 
         return $cache;
     }
 
     public function write(CacheInterface $cache): void
     {
-        $content = $cache->toJson();
+        $this->ensureFileIsWriteable();
 
+        $handle = fopen($this->file, 'r+');
+        if (false === $handle) {
+            return;
+        }
+        ftruncate($handle, 0);
+        fwrite($handle, $cache->toJson());
+        fflush($handle);
+        fclose($handle);
+    }
+
+    private function readFromHandle($handle): ?CacheInterface
+    {
+        try {
+            $size = filesize($this->file);
+            if (!$size) {
+                return null;
+            }
+
+            $content = fread($handle, $size);
+
+            return Cache::fromJson($content);
+        } catch (\InvalidArgumentException $exception) {
+            return null;
+        }
+    }
+
+    private function ensureFileIsWriteable(): void
+    {
         if (file_exists($this->file)) {
             if (is_dir($this->file)) {
                 throw new IOException(
@@ -94,19 +123,6 @@ final class FileHandler implements FileHandlerInterface
 
             @touch($this->file);
             @chmod($this->file, 0666);
-        }
-
-        $bytesWritten = @file_put_contents($this->file, $content);
-
-        if (false === $bytesWritten) {
-            $error = error_get_last();
-
-            throw new IOException(
-                sprintf('Failed to write file "%s", "%s".', $this->file, $error['message'] ?? 'no reason available'),
-                0,
-                null,
-                $this->file
-            );
         }
     }
 }
