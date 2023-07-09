@@ -40,6 +40,11 @@ final class FileCacheManager implements CacheManagerInterface
 
     private DirectoryInterface $cacheDirectory;
 
+    /** @readonly */
+    private $writeFrequency = 10;
+
+    private $writeCounter = 0;
+
     /**
      * @var CacheInterface
      */
@@ -99,11 +104,14 @@ final class FileCacheManager implements CacheManagerInterface
 
         if ($this->isDryRun && $this->cache->has($file) && $this->cache->get($file) !== $hash) {
             $this->cache->clear($file);
-
-            return;
+        } else {
+            $this->cache->set($file, $hash);
         }
 
-        $this->cache->set($file, $hash);
+        if (++$this->writeCounter === $this->writeFrequency) {
+            $this->writeCounter = 0;
+            $this->writeCache();
+        }
     }
 
     private function readCache(): void
