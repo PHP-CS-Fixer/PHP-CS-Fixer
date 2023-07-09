@@ -61,6 +61,18 @@ final class FileHandler implements FileHandlerInterface
         if (false === $handle) {
             return;
         }
+
+        if (getenv('PHP_CS_FIXER_EXPERIMENTAL_PARALLEL_CACHE')) {
+            flock($handle, LOCK_EX);
+
+            $oldCache = $this->readFromHandle($handle);
+            rewind($handle);
+
+            if ($oldCache && method_exists($cache, 'backfillHashes')) {
+                $cache->backfillHashes($oldCache);
+            }
+        }
+
         ftruncate($handle, 0);
         fwrite($handle, $cache->toJson());
         fflush($handle);
