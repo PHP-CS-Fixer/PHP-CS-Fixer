@@ -79,6 +79,9 @@ final class FileHandler implements FileHandlerInterface
         fclose($handle);
     }
 
+    /**
+     * @param resource $handle
+     */
     private function readFromHandle($handle): ?CacheInterface
     {
         try {
