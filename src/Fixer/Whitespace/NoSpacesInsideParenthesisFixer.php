@@ -60,9 +60,7 @@ function foo( \$bar, \$baz )
 
     public function getSuccessorsNames(): array
     {
-        return [
-            'SpacesInsideParenthesisFixer',
-        ];
+        return array_keys($this->proxyFixers);
     }
 
     /**

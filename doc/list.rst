@@ -1612,7 +1612,7 @@ List of Available Rules
 
    There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.
 
-   *warning deprecated*   Use ``SpacesInsideParenthesisFixer`` instead.
+   *warning deprecated*   Use ``spaces_inside_parentheses`` instead.
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\NoSpacesInsideParenthesisFixer <./../src/Fixer/Whitespace/NoSpacesInsideParenthesisFixer.php>`_
 -  `no_space_around_double_colon <./rules/operator/no_space_around_double_colon.rst>`_
