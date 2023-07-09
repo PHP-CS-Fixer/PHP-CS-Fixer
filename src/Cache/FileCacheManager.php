@@ -42,7 +42,7 @@ final class FileCacheManager implements CacheManagerInterface
 
     private DirectoryInterface $cacheDirectory;
 
-    private $writeCounter = 0;
+    private int $writeCounter = 0;
 
     /**
      * @var CacheInterface
