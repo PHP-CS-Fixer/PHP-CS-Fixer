@@ -91,6 +91,7 @@ final class FixerFactoryTest extends TestCase
                 'native_function_casing' => true,
                 'no_spaces_after_function_name' => true,
                 'no_spaces_inside_parenthesis' => true,
+                'spaces_inside_parentheses' => true,
             ],
         ];
 
@@ -381,6 +382,7 @@ final class FixerFactoryTest extends TestCase
                 'no_spaces_inside_parenthesis',
                 'no_trailing_whitespace',
                 'no_whitespace_in_blank_line',
+                'spaces_inside_parentheses',
             ],
             'combine_consecutive_unsets' => [
                 'no_extra_blank_lines',
@@ -391,6 +393,7 @@ final class FixerFactoryTest extends TestCase
             'combine_nested_dirname' => [
                 'method_argument_space',
                 'no_spaces_inside_parenthesis',
+                'spaces_inside_parentheses',
             ],
             'control_structure_braces' => [
                 'control_structure_continuation_position',
@@ -474,6 +477,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'increment_style' => [
                 'no_spaces_inside_parenthesis',
+                'spaces_inside_parentheses',
             ],
             'indentation_type' => [
                 'phpdoc_indent',
@@ -484,6 +488,7 @@ final class FixerFactoryTest extends TestCase
             'lambda_not_used_import' => [
                 'method_argument_space',
                 'no_spaces_inside_parenthesis',
+                'spaces_inside_parentheses',
             ],
             'list_syntax' => [
                 'binary_operator_spaces',
@@ -502,6 +507,7 @@ final class FixerFactoryTest extends TestCase
                 'php_unit_dedicate_assert',
                 'single_space_after_construct',
                 'single_space_around_construct',
+                'spaces_inside_parentheses',
             ],
             'modernize_types_casting' => [
                 'no_unneeded_control_parentheses',
@@ -654,6 +660,7 @@ final class FixerFactoryTest extends TestCase
                 'no_empty_statement',
                 'no_extra_blank_lines',
                 'no_spaces_inside_parenthesis',
+                'spaces_inside_parentheses',
             ],
             'nullable_type_declaration' => [
                 'ordered_types',
@@ -782,6 +789,7 @@ final class FixerFactoryTest extends TestCase
                 'native_function_casing',
                 'no_spaces_after_function_name',
                 'no_spaces_inside_parenthesis',
+                'spaces_inside_parentheses',
             ],
             'protected_to_private' => [
                 'ordered_class_elements',
@@ -838,6 +846,11 @@ final class FixerFactoryTest extends TestCase
             'single_trait_insert_per_statement' => [
                 'braces',
                 'space_after_semicolon',
+            ],
+            'spaces_inside_parentheses' => [
+                'function_to_constant',
+                'get_class_to_class_keyword',
+                'string_length_to_empty',
             ],
             'standardize_increment' => [
                 'increment_style',
