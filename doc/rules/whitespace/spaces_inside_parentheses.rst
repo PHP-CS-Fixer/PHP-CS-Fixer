@@ -2,7 +2,7 @@
 Rule ``spaces_inside_parentheses``
 ==================================
 
-Parenthesis must be declared using the configured syntax.
+Parentheses must be declared using the configured whitespace.
 
 Configuration
 -------------
@@ -10,9 +10,9 @@ Configuration
 ``space``
 ~~~~~~~~~
 
-Whether to have ``spaces`` or ``none`` spaces inside parenthesis.
+Whether to have ``single`` or ``none`` space inside parentheses.
 
-Allowed values: ``'none'`` and ``'spaces'``
+Allowed values: ``'none'`` and ``'single'``
 
 Default value: ``'none'``
 
@@ -53,7 +53,7 @@ With configuration: ``['space' => 'none']``.
 Example #3
 ~~~~~~~~~~
 
-With configuration: ``['space' => 'spaces']``.
+With configuration: ``['space' => 'single']``.
 
 .. code-block:: diff
 
@@ -69,7 +69,7 @@ With configuration: ``['space' => 'spaces']``.
 Example #4
 ~~~~~~~~~~
 
-With configuration: ``['space' => 'spaces']``.
+With configuration: ``['space' => 'single']``.
 
 .. code-block:: diff
 

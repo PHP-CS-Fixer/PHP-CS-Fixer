@@ -37,7 +37,7 @@ final class SpacesInsideParenthesesFixerTest extends AbstractFixerTestCase
     public function testInvalidConfigValue(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('#^\[spaces_inside_parentheses\] Invalid configuration: The option "space" with value "double" is invalid\. Accepted values are: "none", "spaces"\.$#');
+        $this->expectExceptionMessageMatches('#^\[spaces_inside_parentheses\] Invalid configuration: The option "space" with value "double" is invalid\. Accepted values are: "none", "single"\.$#');
 
         $this->fixer->configure(['space' => 'double']);
     }
@@ -55,7 +55,7 @@ final class SpacesInsideParenthesesFixerTest extends AbstractFixerTestCase
      */
     public function testSpacesFix(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure(['space' => 'spaces']);
+        $this->fixer->configure(['space' => 'single']);
         $this->doTest($expected, $input);
     }
 
@@ -424,7 +424,7 @@ multiply((2 + 3) * 4);
      */
     public function testSpacesFix80(string $expected, string $input): void
     {
-        $this->fixer->configure(['space' => 'spaces']);
+        $this->fixer->configure(['space' => 'single']);
         $this->doTest($expected, $input);
     }
 

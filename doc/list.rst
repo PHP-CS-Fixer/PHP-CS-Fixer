@@ -3054,13 +3054,13 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\ClassNotation\\SingleTraitInsertPerStatementFixer <./../src/Fixer/ClassNotation/SingleTraitInsertPerStatementFixer.php>`_
 -  `spaces_inside_parentheses <./rules/whitespace/spaces_inside_parentheses.rst>`_
 
-   Parenthesis must be declared using the configured syntax.
+   Parentheses must be declared using the configured whitespace.
 
    Configuration options:
 
    - | ``space``
-     | Whether to have ``spaces`` or ``none`` spaces inside parenthesis.
-     | Allowed values: ``'none'`` and ``'spaces'``
+     | Whether to have ``single`` or ``none`` space inside parentheses.
+     | Allowed values: ``'none'`` and ``'single'``
      | Default value: ``'none'``
 
 

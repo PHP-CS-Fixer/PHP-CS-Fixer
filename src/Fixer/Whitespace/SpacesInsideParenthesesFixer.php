@@ -37,7 +37,7 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Parenthesis must be declared using the configured syntax.',
+            'Parentheses must be declared using the configured whitespace.',
             [
                 new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}\n"),
                 new CodeSample(
@@ -49,14 +49,14 @@ function foo( \$bar, \$baz )
                 ),
                 new CodeSample(
                     "<?php\nif (\$a) {\n    foo( );\n}\n",
-                    ['space' => 'spaces']
+                    ['space' => 'single']
                 ),
                 new CodeSample(
                     "<?php
 function foo(\$bar, \$baz)
 {
 }\n",
-                    ['space' => 'spaces']
+                    ['space' => 'single']
                 ),
             ]
         );
@@ -107,7 +107,7 @@ function foo(\$bar, \$baz)
             }
         }
 
-        if ('spaces' === $this->configuration['space']) {
+        if ('single' === $this->configuration['space']) {
             foreach ($tokens as $index => $token) {
                 if (!$token->equals('(')) {
                     continue;
@@ -149,8 +149,8 @@ function foo(\$bar, \$baz)
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('space', 'Whether to have `spaces` or `none` spaces inside parenthesis.'))
-                ->setAllowedValues(['none', 'spaces'])
+            (new FixerOptionBuilder('space', 'Whether to have `single` or `none` space inside parentheses.'))
+                ->setAllowedValues(['none', 'single'])
                 ->setDefault('none')
                 ->getOption(),
         ]);
