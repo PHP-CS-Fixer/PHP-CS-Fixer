@@ -63,9 +63,6 @@ function foo( \$bar, \$baz )
         return array_keys($this->proxyFixers);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound('(');

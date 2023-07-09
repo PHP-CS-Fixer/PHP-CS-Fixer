@@ -43,7 +43,7 @@ final class SpacesInsideParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixCases
+     * @dataProvider provideDefaultFixCases
      */
     public function testDefaultFix(string $expected, ?string $input = null): void
     {
@@ -62,7 +62,7 @@ final class SpacesInsideParenthesesFixerTest extends AbstractFixerTestCase
     /**
      * @return array<array{0: string, 1?: string}>
      */
-    public static function provideFixCases(): array
+    public static function provideDefaultFixCases(): array
     {
         return [
             // default leaves new lines alone
@@ -397,7 +397,7 @@ multiply((2 + 3) * 4);
     }
 
     /**
-     * @dataProvider provideFix80Cases
+     * @dataProvider provideDefaultFix80Cases
      *
      * @requires PHP 8.0
      */
@@ -409,7 +409,7 @@ multiply((2 + 3) * 4);
     /**
      * @return iterable<string, array{0: string, 1?: string}>
      */
-    public static function provideFix80Cases(): iterable
+    public static function provideDefaultFix80Cases(): iterable
     {
         yield 'mixed argument' => [
             '<?php function foo(mixed $a){}',
