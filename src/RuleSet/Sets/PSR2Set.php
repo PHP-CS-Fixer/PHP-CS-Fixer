@@ -54,7 +54,7 @@ final class PSR2Set extends AbstractRuleSetDescription
             ],
             'single_import_per_statement' => true,
             'single_line_after_imports' => true,
-            'spaces_inside_parenthesis' => true,
+            'spaces_inside_parentheses' => true,
             'statement_indentation' => true,
             'switch_case_semicolon_to_colon' => true,
             'switch_case_space' => true,

@@ -32,7 +32,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Marc Aubé
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class SpacesInsideParenthesisFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class SpacesInsideParenthesesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {

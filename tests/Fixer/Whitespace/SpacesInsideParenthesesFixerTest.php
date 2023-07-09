@@ -22,14 +22,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\SpacesInsideParenthesisFixer
+ * @covers \PhpCsFixer\Fixer\Whitespace\SpacesInsideParenthesesFixer
  */
-final class SpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
+final class SpacesInsideParenthesesFixerTest extends AbstractFixerTestCase
 {
     public function testInvalidConfigMissingKey(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('#^\[spaces_inside_parenthesis\] Invalid configuration: The option "a" does not exist\. Defined options are: "space"\.$#');
+        $this->expectExceptionMessageMatches('#^\[spaces_inside_parentheses\] Invalid configuration: The option "a" does not exist\. Defined options are: "space"\.$#');
 
         $this->fixer->configure(['a' => 1]);
     }
@@ -37,7 +37,7 @@ final class SpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
     public function testInvalidConfigValue(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('#^\[spaces_inside_parenthesis\] Invalid configuration: The option "space" with value "double" is invalid\. Accepted values are: "none", "spaces"\.$#');
+        $this->expectExceptionMessageMatches('#^\[spaces_inside_parentheses\] Invalid configuration: The option "space" with value "double" is invalid\. Accepted values are: "none", "spaces"\.$#');
 
         $this->fixer->configure(['space' => 'double']);
     }

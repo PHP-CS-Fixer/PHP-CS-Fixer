@@ -894,7 +894,7 @@ Whitespace
 - `single_blank_line_at_eof <./whitespace/single_blank_line_at_eof.rst>`_
 
   A PHP file without end tag must always end with a single empty line feed.
-- `spaces_inside_parenthesis <./whitespace/spaces_inside_parenthesis.rst>`_
+- `spaces_inside_parentheses <./whitespace/spaces_inside_parentheses.rst>`_
 
   Parenthesis must be declared using the configured syntax.
 - `statement_indentation <./whitespace/statement_indentation.rst>`_

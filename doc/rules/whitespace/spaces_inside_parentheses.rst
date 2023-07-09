@@ -1,5 +1,5 @@
 ==================================
-Rule ``spaces_inside_parenthesis``
+Rule ``spaces_inside_parentheses``
 ==================================
 
 Parenthesis must be declared using the configured syntax.
@@ -10,7 +10,7 @@ Configuration
 ``space``
 ~~~~~~~~~
 
-whether to have ``spaces`` or ``none`` spaces inside parenthesis.
+Whether to have ``spaces`` or ``none`` spaces inside parenthesis.
 
 Allowed values: ``'none'`` and ``'spaces'``
 
@@ -80,3 +80,16 @@ With configuration: ``['space' => 'spaces']``.
    +function foo( $bar, $baz )
     {
     }
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+- `@PER <./../../ruleSets/PER.rst>`_
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
+- `@PSR2 <./../../ruleSets/PSR2.rst>`_
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
+

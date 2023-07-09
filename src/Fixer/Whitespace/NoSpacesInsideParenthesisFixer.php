@@ -75,6 +75,6 @@ function foo( \$bar, \$baz )
 
     protected function createProxyFixers(): array
     {
-        return [new SpacesInsideParenthesisFixer()];
+        return [new SpacesInsideParenthesesFixer()];
     }
 }
