@@ -1,7 +1,5 @@
 includes:
-    - dev-tools/vendor/jangregor/phpstan-prophecy/extension.neon
     - dev-tools/vendor/phpstan/phpstan/conf/bleedingEdge.neon
-    - dev-tools/vendor/phpstan/phpstan-phpunit/extension.neon
 
     # Baseline, should only shrink! To regenerate it, just execute:
     # dev-tools/vendor/bin/phpstan analyse --generate-baseline=dev-tools/phpstan/baseline.php
@@ -27,5 +25,16 @@ parameters:
             message: '#Call to static method .+ with .+ will always evaluate to true.$#'
             path: tests
             count: 18
+        - '#^Call to function array_search#'
+        - '#^Construct empty\(\) is not allowed\.#'
+        - '#^Dynamic call to static method #'
+        - '#^For loop initial assignment #'
+        - '#^Foreach overwrites #'
+        - '#^Only booleans are allowed in #'
+        - '#^Short ternary operator is not allowed\.#'
+        - '#^Variable \$[a-zA-Z\d]+ might not be defined\.$#'
+        - '#^Variable method call #'
+        - '#^You should use assertCount#'
+        - '# should be contravariant with #'
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache
