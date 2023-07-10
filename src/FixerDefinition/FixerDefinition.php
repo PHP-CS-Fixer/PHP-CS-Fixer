@@ -275,6 +275,7 @@ final class FixerDefinition implements FixerDefinitionInterface
         \PhpCsFixer\Fixer\Whitespace\TypeDeclarationSpacesFixer::class => true,
         \PhpCsFixer\Fixer\Whitespace\TypesSpacesFixer::class => true,
     ];
+
     private string $summary;
 
     /**
