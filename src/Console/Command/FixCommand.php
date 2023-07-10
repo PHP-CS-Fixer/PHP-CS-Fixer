@@ -48,9 +48,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
 #[AsCommand(name: 'fix')]
 final class FixCommand extends Command
 {
-    /**
-     * @var string
-     */
     protected static $defaultName = 'fix';
 
     private EventDispatcherInterface $eventDispatcher;
