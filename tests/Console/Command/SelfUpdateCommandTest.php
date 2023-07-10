@@ -47,8 +47,8 @@ final class SelfUpdateCommandTest extends TestCase
 
         file_put_contents($this->getToolPath(), 'Current PHP CS Fixer.');
 
-        file_put_contents($this->root->url().'/'.$this->getNewMinorReleaseVersion().'.phar', 'New minor version of PHP CS Fixer.');
-        file_put_contents($this->root->url().'/'.$this->getNewMajorReleaseVersion().'.phar', 'New major version of PHP CS Fixer.');
+        file_put_contents($this->root->url().'/'.self::getNewMinorReleaseVersion().'.phar', 'New minor version of PHP CS Fixer.');
+        file_put_contents($this->root->url().'/'.self::getNewMajorReleaseVersion().'.phar', 'New major version of PHP CS Fixer.');
     }
 
     protected function tearDown(): void
