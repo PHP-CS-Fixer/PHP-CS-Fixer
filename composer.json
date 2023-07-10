@@ -106,14 +106,14 @@
         "test": "@test:all",
         "test:all": [
             "Composer\\Config::disableProcessTimeout",
-            "phpunit --testsuite all"
+            "paraunit run --testsuite all"
         ],
-        "test:branch": "git diff master... --name-only --diff-filter=ACMR -- '*Test.php' | xargs -r phpunit",
+        "test:branch": "git diff master... --name-only --diff-filter=ACMR -- '*Test.php' | xargs -r paraunit run",
         "test:coverage": [
             "Composer\\Config::disableProcessTimeout",
-            "phpunit --testsuite coverage"
+            "paraunit run --testsuite coverage"
         ],
-        "test:diff": "git diff HEAD --name-only --diff-filter=ACMR -- '*Test.php' | xargs -r phpunit"
+        "test:diff": "git diff HEAD --name-only --diff-filter=ACMR -- '*Test.php' | xargs -r paraunit run"
     },
     "scripts-descriptions": {
         "cs:check": "Check coding standards",
