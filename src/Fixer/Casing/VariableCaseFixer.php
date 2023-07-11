@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,11 +15,13 @@
 namespace PhpCsFixer\Fixer\Casing;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -27,54 +31,38 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Jennifer Konikowski <jennifer@testdouble.com>
  */
-final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class VariableCaseFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @internal
-     */
-    const CAMEL_CASE = 'camel_case';
+    /** @internal */
+    public const SNAKE_CASE = 'snake_case';
 
-    /**
-     * @internal
-     */
-    const SNAKE_CASE = 'snake_case';
+    /** @internal */
+    public const CAMEL_CASE = 'camel_case';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Enforce camel (or snake) case for variable names, following configuration.',
+            'Enforce camel or snake case for variables, following configuration.',
             [
                 new CodeSample("<?php \$my_variable = 2;\n"),
                 new CodeSample("<?php \$myVariable = 2;\n", ['case' => self::SNAKE_CASE]),
             ],
-            null,
-            'Risky because it cannot detect a change that will have an impact in other files.'
+            'Keeps variables\' names consistent across the project.',
+            'Fixer could be risky if renamed variables are defined outside of the modified file.'
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_VARIABLE, T_STRING_VARNAME]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
+    public function getConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('case', 'Apply `camel_case` or `snake_case` to variables.'))
@@ -84,10 +72,7 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if ((T_VARIABLE === $token->getId()) || (T_STRING_VARNAME === $token->getId())) {
@@ -96,7 +81,7 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
         }
     }
 
-    private function updateVariableCasing($variableName)
+    private function updateVariableCasing(string $variableName): string
     {
         if (self::CAMEL_CASE === $this->configuration['case']) {
             return $this->camelCase($variableName);
@@ -105,7 +90,7 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
         return $this->snakeCase($variableName);
     }
 
-    private function camelCase($string)
+    private function camelCase(string $string): string
     {
         $string = Preg::replace('/_/i', ' ', $string);
         $string = trim($string);
@@ -116,7 +101,7 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
         return lcfirst($string);
     }
 
-    private function snakeCase($string, $separator = '_')
+    private function snakeCase(string $string, string $separator = '_'): string
     {
         // insert separator between any letter and the beginning of a numeric chain
         $string = Preg::replace('/([a-z]+)([0-9]+)/i', '$1'.$separator.'$2', $string);

@@ -150,6 +150,9 @@ Casing
 - `native_type_declaration_casing <./casing/native_type_declaration_casing.rst>`_
 
   Native type declarations should be used in the correct case.
+- `variable_case <./casing/variable_case.rst>`_ *(risky)*
+
+  Enforce camel or snake case for variables, following configuration.
 
 Cast Notation
 -------------
