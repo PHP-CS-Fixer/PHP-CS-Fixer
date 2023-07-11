@@ -146,7 +146,7 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/paraunit run ${{ matrix.phpunit-flags || '--exclude-group auto-review' }}
+        run: vendor/bin/paraunit run ${{ matrix.phpunit-flags || '--exclude-group auto-review' }} tests/Tokenizer/TokensTest.php
 
       - name: Collect code coverage
         if: matrix.calculate-code-coverage == 'yes'

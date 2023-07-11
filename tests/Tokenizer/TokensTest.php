@@ -1743,6 +1743,20 @@ EOF
         );
     }
 
+    public function testFindingToken(): void
+    {
+        $tokens = Tokens::fromCode('<?php $x;');
+
+        self::assertTrue($tokens->isTokenKindFound(T_VARIABLE));
+
+        $tokens->offsetUnset(1);
+        $tokens->offsetUnset(1); // 2nd unset of the same index should not crash anything
+        self::assertFalse($tokens->isTokenKindFound(T_VARIABLE));
+
+        $tokens[1] = new Token([T_VARIABLE, '$x']);
+        self::assertTrue($tokens->isTokenKindFound(T_VARIABLE));
+    }
+
     private function getBlockEdgeCachingTestTokens(): Tokens
     {
         Tokens::clearCache();
