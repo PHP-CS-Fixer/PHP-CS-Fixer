@@ -27,6 +27,35 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class VariableCaseFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @dataProvider provideIgnoreCases
+     */
+    public function testIgnore(string $input, array $config = []): void
+    {
+        $this->fixer->configure($config);
+        $this->doTest($input);
+    }
+
+    public static function provideIgnoreCases(): iterable
+    {
+        foreach (['public', 'protected', 'private'] as $visibility) {
+            $modifiers = ['', 'static'];
+
+            if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
+                $modifiers[] = 'readonly';
+            }
+
+            foreach ($modifiers as $modifier) {
+                yield "{$visibility} {$modifier} property snake_case" => ["<?php class Foo { {$visibility} {$modifier} \$bar_baz; }"];
+
+                yield "{$visibility} {$modifier} property camelCase" => [
+                    "<?php class Foo { {$visibility} {$modifier} \$barBaz; }",
+                    ['case' => VariableCaseFixer::SNAKE_CASE],
+                ];
+            }
+        }
+    }
+
+    /**
      * @dataProvider provideCamelCaseFixCases
      */
     public function testCamelCaseFix(string $expected, ?string $input = null): void
@@ -63,6 +92,9 @@ final class VariableCaseFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php function f($barBaz, $file) { require $file;}',
+                '<?php function f($bar_baz, $file) { require $file;}',
+            ],
+            [
                 '<?php function f($bar_baz, $file) { require $file;}',
             ],
         ];
