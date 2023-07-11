@@ -2,7 +2,12 @@
 Rule ``alphabetical_array_key_sort``
 ====================================
 
-Sorts keyed arrays by alphabetical order.
+Sorts keyed arrays alphabetically.
+
+Description
+-----------
+
+Alphabetically sorts any keyed array on its key values.
 
 Warning
 -------
@@ -44,6 +49,19 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
+With configuration: ``[]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -$sample = ['b' => '2', 'a' => '1', 'd' => '5'];
+   +$sample = ['a' => '1', 'b' => '2', 'd' => '5'];
+
+Example #3
+~~~~~~~~~~
+
 With configuration: ``['sort_special_key_mode' => 'special_case_on_bottom']``.
 
 .. code-block:: diff
@@ -51,10 +69,10 @@ With configuration: ``['sort_special_key_mode' => 'special_case_on_bottom']``.
    --- Original
    +++ New
     <?php
-   -$sample = array('b' => '2', 'a' => '1', foo() => 'bar', 'd' => '5');
-   +$sample = array('a' => '1', 'b' => '2', 'd' => '5', foo() => 'bar');
+   -$sample = ['b' => '2', 'a' => '1', foo() => 'bar', 'd' => '5'];
+   +$sample = ['a' => '1', 'b' => '2', 'd' => '5', foo() => 'bar'];
 
-Example #3
+Example #4
 ~~~~~~~~~~
 
 With configuration: ``['sort_special_key_mode' => 'special_case_on_top']``.
@@ -64,8 +82,8 @@ With configuration: ``['sort_special_key_mode' => 'special_case_on_top']``.
    --- Original
    +++ New
     <?php
-   -$sample = array('b' => '2', 'a' => '1', foo() => 'bar', 'd' => '5');
-   +$sample = array(foo() => 'bar', 'a' => '1', 'b' => '2', 'd' => '5');
+   -$sample = ['b' => '2', 'a' => '1', foo() => 'bar', 'd' => '5'];
+   +$sample = [foo() => 'bar', 'a' => '1', 'b' => '2', 'd' => '5'];
 Source class
 ------------
 

@@ -35,23 +35,26 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
 {
     public function getDefinition(): FixerDefinitionInterface
     {
-        // Return a definition of the fixer, it will be used in the documentation.
         return new FixerDefinition(
-            'Sorts keyed arrays by alphabetical order.',
+            'Sorts keyed arrays alphabetically.',
             [
                 new CodeSample(
                     "<?php\n\$sample = array('b' => '2', 'a' => '1', 'd' => '5');\n"
                 ),
                 new CodeSample(
-                    "<?php\n\$sample = array('b' => '2', 'a' => '1', foo() => 'bar', 'd' => '5');\n",
+                    "<?php\n\$sample = ['b' => '2', 'a' => '1', 'd' => '5'];\n",
+                    []
+                ),
+                new CodeSample(
+                    "<?php\n\$sample = ['b' => '2', 'a' => '1', foo() => 'bar', 'd' => '5'];\n",
                     ['sort_special_key_mode' => 'special_case_on_bottom']
                 ),
                 new CodeSample(
-                    "<?php\n\$sample = array('b' => '2', 'a' => '1', foo() => 'bar', 'd' => '5');\n",
+                    "<?php\n\$sample = ['b' => '2', 'a' => '1', foo() => 'bar', 'd' => '5'];\n",
                     ['sort_special_key_mode' => 'special_case_on_top']
                 ),
             ],
-            null,
+            'Alphabetically sorts any keyed array on its key values.',
             'Risky when the order of the array has an impact on the code execution.'
         );
     }
@@ -63,7 +66,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_ARRAY) || $tokens->isTokenKindFound(CT::T_ARRAY_SQUARE_BRACE_OPEN);
+        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -81,9 +84,6 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
         ]);
     }
 
-    /**
-     * Sort the tokens in the correct order.
-     */
     protected function sortTokens(Tokens $tokens): void
     {
         $lastProcessedIndex = null;
@@ -115,11 +115,11 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
 
                         $valueRange = $startIndex;
                         while ($valueRange = $tokens->getNextTokenOfKind($valueRange, [',', '('])) {
-                            if ($tokens[$valueRange]->equals('(')) {
-                                $valueRange = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $valueRange);
-                            } else {
+                            if (!$tokens[$valueRange]->equals('(')) {
                                 break;
                             }
+
+                            $valueRange = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $valueRange);
                         }
 
                         if (!$valueRange || $valueRange > $endIndex) {
@@ -164,7 +164,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
      *
      * @return string[]
      */
-    protected function sortContentKeys(array $contentKeys): array
+    private function sortContentKeys(array $contentKeys): array
     {
         $sortMode = $this->configuration['sort_special_key_mode'];
         $specialSortDirection = ('special_case_on_top' === $sortMode) ? -1 : 1;

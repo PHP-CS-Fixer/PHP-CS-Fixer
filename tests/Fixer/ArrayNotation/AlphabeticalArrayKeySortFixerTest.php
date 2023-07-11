@@ -229,22 +229,6 @@ final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
                     "a" => $date->copy()->addDays(60)->setTime(12, 0, 0)->toDateTimeString(),
                 ];',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixPhp70Cases
-     *
-     * @requires PHP 7.0
-     */
-    public function testFixPhp70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixPhp70Cases(): array
-    {
-        return [
             [
                 '<?php [
                     "b" => 2,
