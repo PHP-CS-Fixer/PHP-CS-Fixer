@@ -204,9 +204,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $parts = explode($delimiter, $string);
         $tokensArray = [];
 
-        while (!empty($parts)) {
+        while ([] !== $parts) {
             $tokensArray[] = new Token([T_STRING, array_shift($parts)]);
-            if (!empty($parts)) {
+            if ([] !== $parts) {
                 $tokensArray[] = new Token([T_NS_SEPARATOR, '\\']);
             }
         }

@@ -152,7 +152,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     private function makeDocBlockMultiLineIfNeeded(DocBlock $doc, Tokens $tokens, int $docBlockIndex, string $annotation): DocBlock
     {
         $lines = $doc->getLines();
-        if (1 === \count($lines) && empty($doc->getAnnotationsOfType($annotation))) {
+        if (1 === \count($lines) && [] === $doc->getAnnotationsOfType($annotation)) {
             $indent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
             $doc->makeMultiLine($indent, $this->whitespacesConfig->getLineEnding());
 

@@ -1048,7 +1048,7 @@ class Tokens extends \SplFixedArray
     public function isAllTokenKindsFound(array $tokenKinds): bool
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (empty($this->foundTokenKinds[$tokenKind])) {
+            if (!$this->isTokenKindFound($tokenKind)) {
                 return false;
             }
         }
@@ -1064,7 +1064,7 @@ class Tokens extends \SplFixedArray
     public function isAnyTokenKindsFound(array $tokenKinds): bool
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (!empty($this->foundTokenKinds[$tokenKind])) {
+            if ($this->isTokenKindFound($tokenKind)) {
                 return true;
             }
         }

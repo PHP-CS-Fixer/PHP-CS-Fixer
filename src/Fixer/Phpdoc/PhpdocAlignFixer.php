@@ -317,16 +317,16 @@ EOF;
                     )
                     .$item['hint'];
 
-                if (!empty($item['var'])) {
+                if ('' !== $item['var']) {
                     $line .=
                         $this->getIndent(($hintMax ?: -1) - \strlen($item['hint']) + 1)
                         .$item['var']
                         .(
-                            !empty($item['desc'])
+                            '' !== $item['desc']
                             ? $this->getIndent($varMax - \strlen($item['var']) + 1).$item['desc']
                             : ''
                         );
-                } elseif (!empty($item['desc'])) {
+                } elseif ('' !== $item['desc']) {
                     $line .= $this->getIndent($hintMax - \strlen($item['hint']) + 1).$item['desc'];
                 }
 
@@ -343,13 +343,13 @@ EOF;
     private function getMatches(string $line, bool $matchCommentOnly = false): ?array
     {
         if (Preg::match($this->regex, $line, $matches)) {
-            if (!empty($matches['tag2'])) {
+            if (isset($matches['tag2']) && '' !== $matches['tag2']) {
                 $matches['tag'] = $matches['tag2'];
                 $matches['hint'] = $matches['hint2'];
                 $matches['var'] = '';
             }
 
-            if (!empty($matches['tag3'])) {
+            if (isset($matches['tag3']) && '' !== $matches['tag3']) {
                 $matches['tag'] = $matches['tag3'];
                 $matches['hint'] = $matches['hint3'];
                 $matches['var'] = $matches['signature'];
