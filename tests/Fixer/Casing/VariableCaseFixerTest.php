@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,17 +27,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class VariableCaseFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideCamelCaseFixCases
      */
-    public function testCamelCaseFix($expected, $input = null)
+    public function testCamelCaseFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCamelCaseFixCases()
+    public static function provideCamelCaseFixCases(): iterable
     {
         return [
             [
@@ -70,18 +69,15 @@ final class VariableCaseFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideSnakeCaseFixCases
      */
-    public function testSnakeCaseFix($expected, $input = null)
+    public function testSnakeCaseFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['case' => VariableCaseFixer::SNAKE_CASE]);
         $this->doTest($expected, $input);
     }
 
-    public function provideSnakeCaseFixCases()
+    public static function provideSnakeCaseFixCases(): iterable
     {
         return [
             [
