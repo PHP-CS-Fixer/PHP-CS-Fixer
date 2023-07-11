@@ -57,7 +57,7 @@ final class TransformerTest extends TestCase
 
         $name = $transformer->getName();
 
-        foreach ($this->provideTransformerPriorityCases() as $pair) {
+        foreach (self::provideTransformerPriorityCases() as $pair) {
             [$first, $second] = $pair;
 
             if ($name === $first->getName() || $name === $second->getName()) {

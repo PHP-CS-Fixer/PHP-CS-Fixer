@@ -105,7 +105,7 @@ final class DocumentationTest extends TestCase
         $generator = new FixerDocumentGenerator($locator);
 
         self::assertFileEqualsString(
-            $generator->generateFixersDocumentationIndex($this->getFixers()),
+            $generator->generateFixersDocumentationIndex(self::getFixers()),
             $locator->getFixersDocumentationIndexFilePath()
         );
     }
@@ -115,7 +115,7 @@ final class DocumentationTest extends TestCase
         $generator = new DocumentationLocator();
 
         self::assertCount(
-            \count($this->getFixers()) + 1,
+            \count(self::getFixers()) + 1,
             (new Finder())->files()->in($generator->getFixersDocumentationDirectoryPath())
         );
     }
@@ -125,7 +125,7 @@ final class DocumentationTest extends TestCase
         $locator = new DocumentationLocator();
         $generator = new RuleSetDocumentationGenerator($locator);
 
-        $fixers = $this->getFixers();
+        $fixers = self::getFixers();
         $paths = [];
 
         foreach (RuleSets::getSetDefinitions() as $name => $definition) {
@@ -179,7 +179,7 @@ final class DocumentationTest extends TestCase
         $locator = new DocumentationLocator();
         $generator = new ListDocumentGenerator($locator);
 
-        $fixers = $this->getFixers();
+        $fixers = self::getFixers();
         $listingFilePath = $locator->getListingFilePath();
 
         self::assertFileEqualsString(

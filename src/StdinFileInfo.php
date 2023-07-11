@@ -23,6 +23,7 @@ final class StdinFileInfo extends \SplFileInfo
 {
     public function __construct()
     {
+        parent::__construct(__FILE__);
     }
 
     public function __toString(): string

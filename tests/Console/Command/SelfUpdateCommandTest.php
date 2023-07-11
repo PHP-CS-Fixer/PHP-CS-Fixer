@@ -47,8 +47,8 @@ final class SelfUpdateCommandTest extends TestCase
 
         file_put_contents($this->getToolPath(), 'Current PHP CS Fixer.');
 
-        file_put_contents("{$this->root->url()}/{$this->getNewMinorReleaseVersion()}.phar", 'New minor version of PHP CS Fixer.');
-        file_put_contents("{$this->root->url()}/{$this->getNewMajorReleaseVersion()}.phar", 'New major version of PHP CS Fixer.');
+        file_put_contents($this->root->url().'/'.self::getNewMinorReleaseVersion().'.phar', 'New minor version of PHP CS Fixer.');
+        file_put_contents($this->root->url().'/'.self::getNewMajorReleaseVersion().'.phar', 'New major version of PHP CS Fixer.');
     }
 
     protected function tearDown(): void
@@ -240,7 +240,7 @@ OUTPUT;
     ): void {
         $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
 
-        $newMajorVersion = $this->getNewMajorReleaseVersion();
+        $newMajorVersion = self::getNewMajorReleaseVersion();
         $versionChecker->getLatestVersion()->will(function () use ($latestVersionSuccess, $newMajorVersion): string {
             if ($latestVersionSuccess) {
                 return $newMajorVersion;
@@ -249,7 +249,7 @@ OUTPUT;
             throw new \RuntimeException('Foo.');
         });
 
-        $newMinorVersion = $this->getNewMinorReleaseVersion();
+        $newMinorVersion = self::getNewMinorReleaseVersion();
         $versionChecker
             ->getLatestVersionOfMajor(self::getCurrentMajorVersion())
             ->will(function () use ($latestMinorVersionSuccess, $newMinorVersion): string {

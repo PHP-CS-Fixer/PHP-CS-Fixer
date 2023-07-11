@@ -33,7 +33,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     {
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(['assertions' => array_keys($this->getMethodsMap())]);
+        $this->fixer->configure(['assertions' => array_keys(self::getMethodsMap())]);
         $this->doTest($expected, $input);
     }
 
@@ -111,7 +111,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
      */
     public function testNoFixWithWrongNumberOfArguments(string $expected): void
     {
-        $this->fixer->configure(['assertions' => array_keys($this->getMethodsMap())]);
+        $this->fixer->configure(['assertions' => array_keys(self::getMethodsMap())]);
         $this->doTest($expected);
     }
 
