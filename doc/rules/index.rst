@@ -44,7 +44,7 @@ Array Notation
 
 - `alphabetical_array_key_sort <./array_notation/alphabetical_array_key_sort.rst>`_ *(risky)*
 
-  Sorts keyed arrays by alphabetical order.
+  Sorts keyed arrays alphabetically.
 - `array_syntax <./array_notation/array_syntax.rst>`_
 
   PHP arrays should be declared using the configured syntax.
