@@ -1392,10 +1392,6 @@ class Tokens extends \SplFixedArray
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token);
 
-        if (!isset($this->foundTokenKinds[$tokenKind])) {
-            return;
-        }
-
         --$this->foundTokenKinds[$tokenKind];
     }
 
