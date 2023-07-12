@@ -101,7 +101,7 @@ final class ErrorOutput
                 $this->output->writeln(sprintf('      Applied fixers: <comment>%s</comment>', implode(', ', $error->getAppliedFixers())));
 
                 $diff = $error->getDiff();
-                if (!empty($diff)) {
+                if (null !== $diff) {
                     $diffFormatter = new DiffConsoleFormatter(
                         $this->isDecorated,
                         sprintf(

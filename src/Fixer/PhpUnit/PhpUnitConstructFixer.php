@@ -96,7 +96,7 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         // no assertions to be fixed - fast return
-        if (empty($this->configuration['assertions'])) {
+        if ([] === $this->configuration['assertions']) {
             return;
         }
 
