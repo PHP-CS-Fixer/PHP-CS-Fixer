@@ -92,7 +92,7 @@ switch ($foo) {
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues([
                     static function (string $value): bool {
-                        if (Preg::match('/\R/', $value)) {
+                        if (1 === Preg::match('/\R/', $value)) {
                             throw new InvalidOptionsException('The comment text must not contain new lines.');
                         }
 
@@ -220,7 +220,7 @@ switch ($foo) {
         } elseif ($tokens[$newlinePosition - 1]->isGivenKind(T_OPEN_TAG) && Preg::match('/\R/', $tokens[$newlinePosition - 1]->getContent())) {
             ++$nbNewlines;
 
-            if (!Preg::match('/\R/', $newlineToken->getContent())) {
+            if (0 === Preg::match('/\R/', $newlineToken->getContent())) {
                 $tokens[$newlinePosition] = new Token([$newlineToken->getId(), $lineEnding.$newlineToken->getContent()]);
             }
         }
@@ -250,7 +250,7 @@ switch ($foo) {
             if ($whitespaceToken->isGivenKind(T_OPEN_TAG)) {
                 $content = Preg::replace('/\R/', '', $content);
 
-                if (!Preg::match('/\R/', $whitespaceToken->getContent())) {
+                if (0 === Preg::match('/\R/', $whitespaceToken->getContent())) {
                     $tokens[$position - 1] = new Token([T_OPEN_TAG, Preg::replace('/\s+$/', $lineEnding, $whitespaceToken->getContent())]);
                 }
             }
@@ -268,7 +268,7 @@ switch ($foo) {
             $content = Preg::replace('/^\R/', '', $content);
         }
 
-        if (!Preg::match('/\R/', $whitespaceToken->getContent())) {
+        if (0 === Preg::match('/\R/', $whitespaceToken->getContent())) {
             $tokens[$position - 1] = new Token([T_WHITESPACE, $content]);
         }
 

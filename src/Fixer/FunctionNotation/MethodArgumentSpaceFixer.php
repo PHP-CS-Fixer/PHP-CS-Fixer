@@ -193,7 +193,7 @@ SAMPLE
         $lastWhitespaceIndex = $this->findWhitespaceIndexAfterParenthesis($tokens, $endFunctionIndex, $startFunctionIndex);
 
         foreach ([$firstWhitespaceIndex, $lastWhitespaceIndex] as $index) {
-            if (null === $index || !Preg::match('/\R/', $tokens[$index]->getContent())) {
+            if (null === $index || 0 === Preg::match('/\R/', $tokens[$index]->getContent())) {
                 continue;
             }
 

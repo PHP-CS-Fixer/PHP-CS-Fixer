@@ -315,7 +315,7 @@ else {
 
                 $content = $previousOpenTagContent.($token->isWhitespace() ? $token->getContent() : '');
 
-                if (!Preg::match('/\R/', $content)) {
+                if (0 === Preg::match('/\R/', $content)) {
                     continue;
                 }
 
@@ -347,7 +347,7 @@ else {
                                 continue;
                             }
 
-                            if (Preg::match('/\R/', $searchToken->getContent())) {
+                            if (1 === Preg::match('/\R/', $searchToken->getContent())) {
                                 $nextNewlineIndex = $searchIndex;
 
                                 break;

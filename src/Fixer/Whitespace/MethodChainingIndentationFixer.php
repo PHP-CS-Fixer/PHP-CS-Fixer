@@ -91,7 +91,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
                 $content = $searchToken->getContent();
 
-                if (!Preg::match('/\R/', $content)) {
+                if (0 === Preg::match('/\R/', $content)) {
                     continue;
                 }
 
@@ -181,7 +181,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
             $content = $tokens[$index - 1]->getContent().$content;
         }
 
-        if (Preg::match('/\R/', $content)) {
+        if (1 === Preg::match('/\R/', $content)) {
             return $content;
         }
 

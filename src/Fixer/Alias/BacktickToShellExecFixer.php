@@ -125,7 +125,7 @@ EOT
 
             $content = $token->getContent();
             // Escaping special chars depends on the context: too tricky
-            if (Preg::match('/[`"\']/u', $content)) {
+            if (1 === Preg::match('/[`"\']/u', $content)) {
                 return;
             }
 

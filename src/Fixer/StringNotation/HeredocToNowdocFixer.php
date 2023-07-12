@@ -81,7 +81,7 @@ EOF
 
             $content = $tokens[$index + 1]->getContent();
             // regex: odd number of backslashes, not followed by dollar
-            if (Preg::match('/(?<!\\\\)(?:\\\\{2})*\\\\(?![$\\\\])/', $content)) {
+            if (1 === Preg::match('/(?<!\\\\)(?:\\\\{2})*\\\\(?![$\\\\])/', $content)) {
                 continue;
             }
 

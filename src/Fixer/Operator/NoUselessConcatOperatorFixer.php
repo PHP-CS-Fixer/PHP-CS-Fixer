@@ -329,7 +329,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
     private function containsLinebreak(Tokens $tokens, int $startIndex, int $endIndex): bool
     {
         for ($i = $endIndex; $i > $startIndex; --$i) {
-            if (Preg::match('/\R/', $tokens[$i]->getContent())) {
+            if (1 === Preg::match('/\R/', $tokens[$i]->getContent())) {
                 return true;
             }
         }

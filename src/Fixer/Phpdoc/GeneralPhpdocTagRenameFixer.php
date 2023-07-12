@@ -107,7 +107,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
                             ));
                         }
 
-                        if (1 !== Preg::match('#^\S+$#', $to) || str_contains($to, '*/')) {
+                        if (0 === Preg::match('#^\S+$#', $to) || str_contains($to, '*/')) {
                             throw new InvalidOptionsException(sprintf(
                                 'Tag "%s" cannot be replaced by invalid tag "%s".',
                                 $from,

@@ -451,7 +451,7 @@ switch($a) {
     private function containsLinebreak(int $startIndex, int $endIndex): bool
     {
         for ($i = $endIndex; $i > $startIndex; --$i) {
-            if (Preg::match('/\R/', $this->tokens[$i]->getContent())) {
+            if (1 === Preg::match('/\R/', $this->tokens[$i]->getContent())) {
                 return true;
             }
         }

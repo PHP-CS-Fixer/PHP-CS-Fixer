@@ -59,7 +59,7 @@ final class Line
      */
     public function containsUsefulContent(): bool
     {
-        return 0 !== Preg::match('/\\*\s*\S+/', $this->content) && '' !== trim(str_replace(['/', '*'], ' ', $this->content));
+        return 1 === Preg::match('/\\*\s*\S+/', $this->content) && '' !== trim(str_replace(['/', '*'], ' ', $this->content));
     }
 
     /**
@@ -69,7 +69,7 @@ final class Line
      */
     public function containsATag(): bool
     {
-        return 0 !== Preg::match('/\\*\s*@/', $this->content);
+        return 1 === Preg::match('/\\*\s*@/', $this->content);
     }
 
     /**

@@ -182,7 +182,7 @@ final class Annotation
         $type = preg_quote($this->getTypesContent() ?? '', '/');
         $regex = "/@{$this->tag->getName()}\\s+({$type}\\s*)?(&\\s*)?(\\.{3}\\s*)?(?<variable>\\$.+?)(?:[\\s*]|$)/";
 
-        if (Preg::match($regex, $this->lines[0]->getContent(), $matches)) {
+        if (1 === Preg::match($regex, $this->lines[0]->getContent(), $matches)) {
             return $matches['variable'];
         }
 

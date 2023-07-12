@@ -216,13 +216,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         $tag = $annotation->getTag()->getName();
 
-        if (1 !== Preg::match('/@'.$tag.'\s+(.+)$/s', $annotation->getContent(), $matches)) {
+        if (0 === Preg::match('/@'.$tag.'\s+(.+)$/s', $annotation->getContent(), $matches)) {
             return '';
         }
 
         $content = Preg::replace('/\*+\/$/', '', $matches[1]);
 
-        if (Preg::match('/\R/u', $content)) {
+        if (1 === Preg::match('/\R/u', $content)) {
             $content = Preg::replace('/\s*\R+\s*\*\s*/u', ' ', $content);
         }
 

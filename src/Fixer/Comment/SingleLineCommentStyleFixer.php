@@ -143,7 +143,7 @@ $c = 3;
             $nextTokenIndex = $index + 1;
             if (isset($tokens[$nextTokenIndex])) {
                 $nextToken = $tokens[$nextTokenIndex];
-                if (!$nextToken->isWhitespace() || 1 !== Preg::match('/\R/', $nextToken->getContent())) {
+                if (!$nextToken->isWhitespace() || 0 === Preg::match('/\R/', $nextToken->getContent())) {
                     continue;
                 }
 

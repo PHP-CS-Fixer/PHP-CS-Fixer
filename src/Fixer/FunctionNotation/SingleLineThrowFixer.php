@@ -95,7 +95,7 @@ final class SingleLineThrowFixer extends AbstractFixer
                 } elseif (str_starts_with($content, '#')) {
                     $content = '/*'.substr($content, 1).' */';
                     $tokens->clearAt($index + 1);
-                } elseif (0 !== Preg::match('/\R/', $content)) {
+                } elseif (1 === Preg::match('/\R/', $content)) {
                     $content = Preg::replace('/\R/', ' ', $content);
                 }
 

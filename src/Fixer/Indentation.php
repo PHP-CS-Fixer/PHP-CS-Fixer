@@ -35,7 +35,7 @@ trait Indentation
 
     private function extractIndent(string $content): string
     {
-        if (Preg::match('/\R(\h*)[^\r\n]*$/D', $content, $matches)) {
+        if (1 === Preg::match('/\R(\h*)[^\r\n]*$/D', $content, $matches)) {
             return $matches[1];
         }
 

@@ -46,7 +46,7 @@ final class Tokens extends \SplFixedArray
         $currentPosition = 0;
         $token = null;
         while (false !== $nextAtPosition = strpos($content, '@', $currentPosition)) {
-            if (0 !== $nextAtPosition && !Preg::match('/\s/', $content[$nextAtPosition - 1])) {
+            if (0 !== $nextAtPosition && 0 === Preg::match('/\s/', $content[$nextAtPosition - 1])) {
                 $currentPosition = $nextAtPosition + 1;
 
                 continue;

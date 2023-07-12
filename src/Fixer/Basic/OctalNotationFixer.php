@@ -52,7 +52,7 @@ final class OctalNotationFixer extends AbstractFixer
 
             $content = $token->getContent();
 
-            if (1 !== Preg::match('#^0[\d_]+$#', $content)) {
+            if (0 === Preg::match('#^0[\d_]+$#', $content)) {
                 continue;
             }
 

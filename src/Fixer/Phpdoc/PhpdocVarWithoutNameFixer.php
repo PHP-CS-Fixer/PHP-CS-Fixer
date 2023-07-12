@@ -134,7 +134,7 @@ final class Foo
         foreach ($lines as $index => $line) {
             $content = $line->getContent();
 
-            if (Preg::match('/\s*\*\s*}$/', $content)) {
+            if (1 === Preg::match('/\s*\*\s*}$/', $content)) {
                 --$nested;
             }
 
@@ -142,7 +142,7 @@ final class Foo
                 unset($lines[$index]);
             }
 
-            if (Preg::match('/\s\{$/', $content)) {
+            if (1 === Preg::match('/\s\{$/', $content)) {
                 ++$nested;
             }
         }

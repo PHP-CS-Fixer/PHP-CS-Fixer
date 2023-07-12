@@ -278,7 +278,7 @@ $bar = function () { $result = true;
                         $moveBraceToIndex = $previousMeaningfulIndex + 1;
                     }
                 }
-            } elseif (!$tokens[$openBraceIndex - 1]->isWhitespace() || !Preg::match('/\R/', $tokens[$openBraceIndex - 1]->getContent())) {
+            } elseif (!$tokens[$openBraceIndex - 1]->isWhitespace() || 0 === Preg::match('/\R/', $tokens[$openBraceIndex - 1]->getContent())) {
                 for ($indexAfterOpenBrace = $openBraceIndex + 1; $indexAfterOpenBrace < $closeBraceIndex; ++$indexAfterOpenBrace) {
                     if ($tokens[$indexAfterOpenBrace]->isWhitespace() && Preg::match('/\R/', $tokens[$indexAfterOpenBrace]->getContent())) {
                         break;
@@ -409,7 +409,7 @@ $bar = function () { $result = true;
     {
         $token = $tokens[$index + 1];
 
-        if ($token->isWhitespace() && 1 !== Preg::match('/\R/', $token->getContent())) {
+        if ($token->isWhitespace() && 0 === Preg::match('/\R/', $token->getContent())) {
             $token = $tokens[$index + 2];
         }
 

@@ -342,7 +342,7 @@ EOF;
      */
     private function getMatches(string $line, bool $matchCommentOnly = false): ?array
     {
-        if (Preg::match($this->regex, $line, $matches)) {
+        if (1 === Preg::match($this->regex, $line, $matches)) {
             if (isset($matches['tag2']) && '' !== $matches['tag2']) {
                 $matches['tag'] = $matches['tag2'];
                 $matches['hint'] = $matches['hint2'];

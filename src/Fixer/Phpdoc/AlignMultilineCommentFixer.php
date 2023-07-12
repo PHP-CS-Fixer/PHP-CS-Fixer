@@ -120,7 +120,7 @@ with a line not prefixed with asterisk
                 $whitespace = Preg::replace('/\S/', '', $tokens[$previousIndex]->getContent()).$whitespace;
             }
 
-            if (1 !== Preg::match('/\R(\h*)$/', $whitespace, $matches)) {
+            if (0 === Preg::match('/\R(\h*)$/', $whitespace, $matches)) {
                 continue;
             }
 
