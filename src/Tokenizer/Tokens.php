@@ -1382,7 +1382,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Unregister token as found.
+     * Unregister token as not found.
      *
      * @param array{int}|string|Token $token token prototype
      */
