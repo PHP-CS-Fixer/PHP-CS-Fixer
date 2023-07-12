@@ -297,7 +297,9 @@ class Tokens extends \SplFixedArray
     {
         $this->changed = true;
         $this->namespaceDeclarations = null;
-        $this->unregisterFoundToken($this[$index]);
+        if (isset($this[$index])) {
+            $this->unregisterFoundToken($this[$index]);
+        }
 
         parent::offsetUnset($index);
     }
@@ -319,7 +321,9 @@ class Tokens extends \SplFixedArray
             $this->changed = true;
             $this->namespaceDeclarations = null;
 
-            $this->unregisterFoundToken($this[$index]);
+            if (isset($this[$index])) {
+                $this->unregisterFoundToken($this[$index]);
+            }
             $this->registerFoundToken($newval);
         }
 
@@ -1378,16 +1382,12 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Register token as found.
+     * Unregister token as found.
      *
      * @param array{int}|string|Token $token token prototype
      */
     private function unregisterFoundToken($token): void
     {
-        if (null === $token) {
-            return;
-        }
-
         // inlined extractTokenKind() call on the hot path
         $tokenKind = $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
