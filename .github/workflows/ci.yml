@@ -91,7 +91,7 @@ jobs:
           result-encoding: string
 
         # added in https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7141 (revert when https://github.com/shivammathur/setup-php/issues/749 is resolved)
-      - name: Setup PHP
+      - name: Setup PHP (macOS only)
         if: matrix.operating-system == 'macos-latest'
         uses: shivammathur/setup-php@v2
         with:
