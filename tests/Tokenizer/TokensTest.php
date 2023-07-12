@@ -45,7 +45,7 @@ final class TokensTest extends TestCase
 
         $tokens = Tokens::fromCode($code);
 
-        self::assertSame($countBefore, $tokens->count());
+        self::assertCount($countBefore, $tokens);
     }
 
     /**
@@ -1229,7 +1229,7 @@ echo $a;',
 
         $tokens->removeLeadingWhitespace(4);
 
-        self::assertSame($originalCount, $tokens->count());
+        self::assertCount($originalCount, $tokens);
         self::assertSame(
             '<?php
                                     // Foo
@@ -1250,7 +1250,7 @@ $bar;',
 
         $tokens->removeTrailingWhitespace(2);
 
-        self::assertSame($originalCount, $tokens->count());
+        self::assertCount($originalCount, $tokens);
         self::assertSame(
             '<?php
                                     // Foo
@@ -1841,7 +1841,7 @@ EOF
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
         }
 
-        self::assertSame(\count($expected), $tokens->count());
+        self::assertSameSize($expected, $tokens);
         foreach ($expected as $index => $expectedToken) {
             $token = $tokens[$index];
             $expectedPrototype = $expectedToken->getPrototype();
