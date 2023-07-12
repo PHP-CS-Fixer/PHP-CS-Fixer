@@ -4,6 +4,13 @@ Rule ``spaces_inside_parentheses``
 
 Parentheses must be declared using the configured whitespace.
 
+Description
+-----------
+
+By default there are not any additional spaces inside parentheses, however with
+``space=single`` configuration option whitespace inside parentheses will be
+unified to single space.
+
 Configuration
 -------------
 

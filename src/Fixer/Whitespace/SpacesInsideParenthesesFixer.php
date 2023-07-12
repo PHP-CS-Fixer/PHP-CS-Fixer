@@ -58,7 +58,8 @@ function foo(\$bar, \$baz)
 }\n",
                     ['space' => 'single']
                 ),
-            ]
+            ],
+            'By default there are not any additional spaces inside parentheses, however with `space=single` configuration option whitespace inside parentheses will be unified to single space.'
         );
     }
 

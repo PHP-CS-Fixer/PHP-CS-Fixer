@@ -3056,6 +3056,10 @@ List of Available Rules
 
    Parentheses must be declared using the configured whitespace.
 
+   By default there are not any additional spaces inside parentheses, however
+   with ``space=single`` configuration option whitespace inside parentheses will
+   be unified to single space.
+
    Configuration options:
 
    - | ``space``
