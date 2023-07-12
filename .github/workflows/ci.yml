@@ -90,13 +90,25 @@ jobs:
           script: 'return "${{ matrix.calculate-code-coverage }}" == "yes" ? "pcov" : "none"'
           result-encoding: string
 
+        # added in https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7141 (revert when https://github.com/shivammathur/setup-php/issues/749 is resolved)
       - name: Setup PHP
+        if: matrix.operating-system == 'macos-latest'
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          # @todo: restore "none" at the start of the extension's list after https://github.com/shivammathur/setup-php/issues/749 is resolved
-          # added in https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7141
-          extensions: dom, json, opcache, pcntl, simplexml, tokenizer, xml, xmlwriter, zip
+          extensions: dom, json, opcache, simplexml, tokenizer, xml, xmlwriter, zip
+          coverage: ${{ steps.code-coverage-driver.outputs.result }}
+          tools: flex
+        env:
+          fail-fast: false # disabled as old PHP version cannot run flex
+          update: ${{ matrix.php-version == '8.0' }} # force update to 8.0.1+, ref https://github.com/shivammathur/setup-php/issues/394#issuecomment-760461251
+
+      - name: Setup PHP
+        if: matrix.operating-system != 'macos-latest'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: none, dom, json, opcache, simplexml, tokenizer, xml, xmlwriter, zip
           coverage: ${{ steps.code-coverage-driver.outputs.result }}
           tools: flex
         env:
