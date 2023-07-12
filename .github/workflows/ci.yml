@@ -96,7 +96,7 @@ jobs:
           php-version: ${{ matrix.php-version }}
           # @todo: restore "none" at the start of the extension's list after https://github.com/shivammathur/setup-php/issues/749 is resolved
           # added in https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7141
-          extensions: dom, json, opcache, simplexml, tokenizer, xml, xmlwriter, zip
+          extensions: dom, json, opcache, pcntl, simplexml, tokenizer, xml, xmlwriter, zip
           coverage: ${{ steps.code-coverage-driver.outputs.result }}
           tools: flex
         env:
