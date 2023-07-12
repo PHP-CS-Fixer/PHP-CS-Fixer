@@ -410,11 +410,11 @@ abstract class AbstractFixerTestCase extends TestCase
 
             $tokens->clearEmptyTokens();
 
-            self::assertSame(
-                \count($tokens),
-                \count(array_unique(array_map(static function (Token $token): string {
+            self::assertSameSize(
+                $tokens,
+                array_unique(array_map(static function (Token $token): string {
                     return spl_object_hash($token);
-                }, $tokens->toArray()))),
+                }, $tokens->toArray())),
                 'Token items inside Tokens collection must be unique.'
             );
 
