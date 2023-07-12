@@ -1,7 +1,5 @@
 includes:
-    - dev-tools/vendor/jangregor/phpstan-prophecy/extension.neon
     - dev-tools/vendor/phpstan/phpstan/conf/bleedingEdge.neon
-    - dev-tools/vendor/phpstan/phpstan-phpunit/extension.neon
 
     # Baseline, should only shrink! To regenerate it, just execute:
     # dev-tools/vendor/bin/phpstan analyse --generate-baseline=dev-tools/phpstan/baseline.php
