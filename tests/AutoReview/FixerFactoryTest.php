@@ -254,9 +254,9 @@ final class FixerFactoryTest extends TestCase
             $phpDoc = $method->getDocComment();
 
             if (false === $phpDoc) {
-                $fixersPhpDocIssues[$fixerName] = sprintf("PHPDoc for %s::getPriority is missing.\nExpected:\n%s", $fixerName, $expectedMessage);
+                $fixersPhpDocIssues[$fixerName] = sprintf("PHPDoc for %s::getPriority is missing.\nExpected:\n%s", $fixers[$fixerName]['short_classname'], $expectedMessage);
             } elseif ($expectedMessage !== $phpDoc) {
-                $fixersPhpDocIssues[$fixerName] = sprintf("PHPDoc for %s::getPriority is not as expected.\nExpected:\n%s", $fixerName, $expectedMessage);
+                $fixersPhpDocIssues[$fixerName] = sprintf("PHPDoc for %s::getPriority is not as expected.\nExpected:\n%s", $fixers[$fixerName]['short_classname'], $expectedMessage);
             }
         }
 
@@ -267,7 +267,7 @@ final class FixerFactoryTest extends TestCase
             ksort($fixersPhpDocIssues);
 
             foreach ($fixersPhpDocIssues as $fixerName => $issue) {
-                $message .= sprintf("\n--------------------------------------------------\n%s\n%s", $fixers[$fixerName]['short_classname'], $issue);
+                $message .= sprintf("\n--------------------------------------------------\n[%s] %s", $fixerName, $issue);
             }
 
             self::fail($message);
