@@ -796,7 +796,7 @@ final class ProjectCodeTest extends TestCase
                     '%s\\%s%s%s',
                     'PhpCsFixer',
                     strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
-                    $file->getRelativePath() ? '\\' : '',
+                    '' !== $file->getRelativePath() ? '\\' : '',
                     $file->getBasename('.'.$file->getExtension())
                 );
             },
@@ -833,7 +833,7 @@ final class ProjectCodeTest extends TestCase
                 return sprintf(
                     'PhpCsFixer\\Tests\\%s%s%s',
                     strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
-                    $file->getRelativePath() ? '\\' : '',
+                    '' !== $file->getRelativePath() ? '\\' : '',
                     $file->getBasename('.'.$file->getExtension())
                 );
             },

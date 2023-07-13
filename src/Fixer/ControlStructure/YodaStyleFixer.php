@@ -363,7 +363,7 @@ return $foo === count($bar);
         $leftSideIsVariable = $this->isVariable($tokens, $left['start'], $left['end'], $strict);
         $rightSideIsVariable = $this->isVariable($tokens, $right['start'], $right['end'], $strict);
 
-        if (!($leftSideIsVariable ^ $rightSideIsVariable)) {
+        if (!($leftSideIsVariable xor $rightSideIsVariable)) {
             return null; // both are (not) variables, do not touch
         }
 

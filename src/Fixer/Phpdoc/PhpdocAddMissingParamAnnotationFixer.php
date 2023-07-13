@@ -197,7 +197,7 @@ function f9(string $foo, $bar, $baz) {}
 
             array_splice(
                 $lines,
-                $lastParamLine ? $lastParamLine + 1 : $linesCount - 1,
+                $lastParamLine > 0 ? $lastParamLine + 1 : $linesCount - 1,
                 0,
                 $newLines
             );

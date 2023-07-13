@@ -17,16 +17,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, string given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Report/FixReport/ReporterFactory.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, string given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Report/ListSetsReport/ReporterFactory.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Foreach overwrites \\$token with its value variable\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Doctrine/Annotation/Tokens.php',
@@ -35,31 +25,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$array \\(array\\<PhpCsFixer\\\\Doctrine\\\\Annotation\\\\Token\\>\\) of method PhpCsFixer\\\\Doctrine\\\\Annotation\\\\Tokens\\:\\:fromArray\\(\\) should be contravariant with parameter \\$array \\(array\\<int, mixed\\>\\) of method SplFixedArray\\<PhpCsFixer\\\\Doctrine\\\\Annotation\\\\Token\\>\\:\\:fromArray\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Doctrine/Annotation/Tokens.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, string given on the left side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Documentation/FixerDocumentGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, string given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Documentation/FixerDocumentGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in \\|\\|, string given on the left side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Documentation/FixerDocumentGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in \\|\\|, string given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Documentation/FixerDocumentGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, array\\<string, int\\|string\\>\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/FileReader.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Alias\\\\NoAliasFunctionsFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
@@ -207,22 +172,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, int\\<0, max\\> given\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in &&, int\\|null given on the right side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/FinalInternalClassFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in &&, mixed given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/FinalInternalClassFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, string given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/FinalInternalClassFixer.php',
 ];
@@ -282,11 +237,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Comment/CommentToPhpdocFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/HeaderCommentFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Comment\\\\NoEmptyCommentFixer\\:\\:getCommentBlock\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Comment/NoEmptyCommentFixer.php',
@@ -312,27 +262,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ConstantNotation/NativeConstantInvocationFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, PhpCsFixer\\\\Tokenizer\\\\Token\\|null given on the left side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/ControlStructureBracesFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, PhpCsFixer\\\\Tokenizer\\\\Token given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/ControlStructureBracesFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int given on the left side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/IncludeFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ControlStructure\\\\YodaStyleFixer\\:\\:getCompareFixableInfo\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
 ];
@@ -607,24 +537,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, int\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAddMissingParamAnnotationFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAddMissingParamAnnotationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, string\\|null given\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in \\|\\|, string\\|null given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocAlignFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
@@ -640,11 +555,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocNoAliasTagFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocNoAliasTagFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int\\<0, max\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^For loop initial assignment overwrites variable \\$pos\\.$#',
@@ -727,24 +637,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/TypesSpacesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, string given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/FixerFactory.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Linter/ProcessLintingResult.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, array\\<string, array\\<int, string\\>\\|string\\>\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Runner/Runner.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, array\\<string, int\\|string\\>\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Runner/Runner.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
@@ -765,11 +660,6 @@ $ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/Analysis/ArgumentAnalysis.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, string\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/ArgumentsAnalyzer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^For loop initial assignment overwrites variable \\$index\\.$#',
@@ -822,39 +712,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Transformer/ConstructorPromotionTransformer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, string given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Transformers.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, string given\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/DocBlock/TypeExpressionTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, int\\<0, 1\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/DocBlock/TypeExpressionTest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable \\$expression might not be defined\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/DocBlock/TypeExpressionTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, SplFileInfo\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Fixer/Basic/EncodingFixerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, string\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Fixer/Basic/EncodingFixerTest.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a negated boolean, string\\|null given\\.$#',

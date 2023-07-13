@@ -103,10 +103,10 @@ Using this rule is risky
 RST;
         }
 
-        if ($deprecationDescription || $riskyDescription) {
+        if ('' !== $deprecationDescription || '' !== $riskyDescription) {
             $warningsHeader = 'Warning';
 
-            if ($deprecationDescription && $riskyDescription) {
+            if ('' !== $deprecationDescription && '' !== $riskyDescription) {
                 $warningsHeader = 'Warnings';
             }
 
