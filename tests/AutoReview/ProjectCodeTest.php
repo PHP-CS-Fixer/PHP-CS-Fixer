@@ -352,7 +352,7 @@ final class ProjectCodeTest extends TestCase
         $doc = $reflectionClass->getDocComment();
         self::assertNotFalse($doc);
 
-        if (1 === Preg::match('/@coversNothing/', $doc, $matches)) {
+        if (Preg::match('/@coversNothing/', $doc, $matches)) {
             return;
         }
 

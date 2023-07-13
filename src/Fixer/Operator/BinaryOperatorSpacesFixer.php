@@ -879,7 +879,7 @@ $array = [
                             self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy
                             || self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE === $alignStrategy
                         ) {
-                            if (1 !== Preg::match('/^\h+$/', $before)) { // if indent; do not move, leave to other fixer
+                            if (!Preg::match('/^\h+$/', $before)) { // if indent; do not move, leave to other fixer
                                 $before = rtrim($before).' ';
                             }
                         }

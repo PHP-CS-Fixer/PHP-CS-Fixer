@@ -27,22 +27,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Report/ListSetsReport/ReporterFactory.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/DocBlock/Annotation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Foreach overwrites \\$token with its value variable\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Doctrine/Annotation/Tokens.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Doctrine/Annotation/Tokens.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Doctrine/Annotation/Tokens.php',
 ];
@@ -75,11 +60,6 @@ $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a ternary operator condition, array\\<string, int\\|string\\>\\|null given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/FileReader.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Alias/BacktickToShellExecFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Alias\\\\NoAliasFunctionsFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
@@ -122,22 +102,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Basic/BracesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int given on the right side\\.$#',
-	'count' => 3,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
 ];
@@ -157,29 +122,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/NoMultipleStatementsPerLineFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/NoMultipleStatementsPerLineFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Basic/NonPrintableCharacterFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/NonPrintableCharacterFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/PsrAutoloadingFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Basic\\\\PsrAutoloadingFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
@@ -332,28 +277,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/SingleClassElementPerStatementFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Comment\\\\CommentToPhpdocFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Comment/CommentToPhpdocFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/HeaderCommentFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/HeaderCommentFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 2,
+	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Comment/HeaderCommentFixer.php',
 ];
 $ignoreErrors[] = [
@@ -397,31 +327,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/IncludeFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int given on the right side\\.$#',
-	'count' => 3,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/NoBreakCommentFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 3,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/NoBreakCommentFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/NoBreakCommentFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/NoSuperfluousElseifFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/NoSuperfluousElseifFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ControlStructure\\\\YodaStyleFixer\\:\\:getCompareFixableInfo\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
@@ -435,11 +340,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\ControlStructure\\\\YodaStyleFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationSpacesFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\LambdaNotUsedImportFixer\\:\\:countImportsUsedAsArgument\\(\\) has parameter \\$arguments with no value type specified in iterable type array\\.$#',
@@ -472,17 +372,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/LambdaNotUsedImportFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in \\|\\|, int given on the right side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php',
 ];
@@ -525,11 +415,6 @@ $ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Import/GroupImportFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Import/NoUnusedImportsFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\OrderedImportsFixer\\:\\:getNewOrder\\(\\) return type has no value type specified in iterable type array\\.$#',
@@ -642,11 +527,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Operator/NoUselessConcatOperatorFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/NoUselessConcatOperatorFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Operator\\\\OperatorLinebreakFixer\\:\\:getNonBooleanOperators\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Operator/OperatorLinebreakFixer.php',
@@ -692,11 +572,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitNamespacedFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitNoExpectationAnnotationFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
@@ -715,11 +590,6 @@ $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in an if condition, mixed given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/NoEmptyPhpdocFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\NoSuperfluousPhpdocTagsFixer\\:\\:annotationIsSuperfluous\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#',
@@ -747,18 +617,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAddMissingParamAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a ternary operator condition, string\\|null given\\.$#',
 	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
 ];
 $ignoreErrors[] = [
@@ -780,16 +640,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocNoAliasTagFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocNoAliasTagFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 3,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in an if condition, int\\<0, max\\> given\\.$#',
@@ -817,21 +667,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTagCasingFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in \\|\\|, int given on the left side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in \\|\\|, int given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\|null\\) of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocToCommentFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocToCommentFixer.php',
@@ -847,49 +682,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTypesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocVarWithoutNameFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Semicolon/SpaceAfterSemicolonFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Strict\\\\StrictParamFixer\\:\\:fixFunction\\(\\) has parameter \\$functionParams with no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Strict/StrictParamFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/StringNotation/HeredocToNowdocFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/StringNotation/SingleQuoteFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int given on the right side\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Whitespace\\\\BlankLineBeforeStatementFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
@@ -900,21 +695,6 @@ $ignoreErrors[] = [
 	'message' => '#^Variable \\$index might not be defined\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/HeredocIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/MethodChainingIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/MethodChainingIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Whitespace\\\\NoExtraBlankLinesFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
@@ -938,26 +718,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^For loop initial assignment overwrites variable \\$i\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/StatementIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int given on the right side\\.$#',
-	'count' => 4,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/StatementIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/StatementIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int given\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/StatementIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in \\|\\|, int given on the right side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/StatementIndentationFixer.php',
 ];

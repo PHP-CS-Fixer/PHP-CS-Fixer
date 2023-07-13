@@ -255,7 +255,7 @@ function m($a, array $b, Foo $c) {}
                 ++$blockLevel;
             }
 
-            if ($blockEndMatches) {
+            if (0 !== $blockEndMatches) {
                 $blockLevel -= $blockEndMatches;
             }
 

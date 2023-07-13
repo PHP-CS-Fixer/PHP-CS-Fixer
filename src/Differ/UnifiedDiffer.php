@@ -30,7 +30,7 @@ final class UnifiedDiffer implements DifferInterface
         } else {
             $filePath = $file->getRealPath();
 
-            if (1 === Preg::match('/\s/', $filePath)) {
+            if (Preg::match('/\s/', $filePath)) {
                 $filePath = '"'.$filePath.'"';
             }
 

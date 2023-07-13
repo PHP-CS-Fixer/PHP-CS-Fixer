@@ -297,7 +297,7 @@ final class Annotation
                 $matches
             );
 
-            $this->typesContent = 1 === $matchingResult
+            $this->typesContent = $matchingResult
                 ? $matches['types']
                 : null;
         }

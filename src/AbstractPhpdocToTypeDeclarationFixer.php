@@ -201,7 +201,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
             if (false === $this->configuration['scalar_types']) {
                 return null;
             }
-        } elseif (1 !== Preg::match('/^'.self::REGEX_CLASS.'$/', $commonType)) {
+        } elseif (!Preg::match('/^'.self::REGEX_CLASS.'$/', $commonType)) {
             return null;
         }
 

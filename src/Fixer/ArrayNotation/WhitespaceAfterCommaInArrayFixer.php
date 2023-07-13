@@ -85,8 +85,8 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements Co
                 } elseif (
                     $this->configuration['ensure_single_space']
                     && ' ' !== $tokens[$i + 1]->getContent()
-                    && 1 === Preg::match('/^\h+$/', $tokens[$i + 1]->getContent())
-                    && (!$tokens[$i + 2]->isComment() || 1 === Preg::match('/^\h+$/', $tokens[$i + 3]->getContent()))
+                    && Preg::match('/^\h+$/', $tokens[$i + 1]->getContent())
+                    && (!$tokens[$i + 2]->isComment() || Preg::match('/^\h+$/', $tokens[$i + 3]->getContent()))
                 ) {
                     $tokens[$i + 1] = new Token([T_WHITESPACE, ' ']);
                 }

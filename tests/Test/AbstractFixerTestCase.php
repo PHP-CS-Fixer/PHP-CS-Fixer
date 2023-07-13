@@ -265,7 +265,7 @@ abstract class AbstractFixerTestCase extends TestCase
         }
 
         $usedMethods = array_filter($usedMethods, static function (string $method): bool {
-            return 0 === Preg::match('/^(count|find|generate|get|is|rewind)/', $method);
+            return !Preg::match('/^(count|find|generate|get|is|rewind)/', $method);
         });
 
         $allowedMethods = ['insertAt'];

@@ -1118,7 +1118,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (1 === $this->countTokenKind(T_INLINE_HTML)) {
-            return 1 === Preg::match('/^#!.+$/', $this[0]->getContent());
+            return Preg::match('/^#!.+$/', $this[0]->getContent());
         }
 
         return 1 === ($this->countTokenKind(T_OPEN_TAG) + $this->countTokenKind(T_OPEN_TAG_WITH_ECHO));

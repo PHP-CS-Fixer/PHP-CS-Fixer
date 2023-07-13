@@ -514,7 +514,7 @@ class Foo {
             $regex = '{@return(?:\s+'.TypeExpression::REGEX_TYPES.')?(?:\s+(?<description>(?!\*\/)\S+))?}s';
         }
 
-        if (1 !== Preg::match($regex, $annotation->getContent(), $matches)) {
+        if (!Preg::match($regex, $annotation->getContent(), $matches)) {
             // Unable to match the annotation, it must be malformed or has unsupported format.
             // Either way we don't want to tinker with it.
             return false;
