@@ -249,7 +249,7 @@ EOF;
                     continue;
                 }
 
-                $hasStatic = $hasStatic || $item['static'];
+                $hasStatic |= '' !== $item['static'];
                 $tagMax = max($tagMax, \strlen($item['tag']));
                 $hintMax = max($hintMax, \strlen($item['hint']));
                 $varMax = max($varMax, \strlen($item['var']));
@@ -302,7 +302,7 @@ EOF;
                     $line .=
                         $this->getIndent(
                             $tagMax - \strlen($item['tag']) + 1,
-                            $item['static'] ? 1 : 0
+                            '' !== $item['static'] ? 1 : 0
                         )
                         .($item['static'] ?: $this->getIndent(6 /* \strlen('static') */, 0));
                     $hintVerticalAlignIndent = 1;
@@ -313,7 +313,7 @@ EOF;
                 $line .=
                     $this->getIndent(
                         $hintVerticalAlignIndent,
-                        $item['hint'] ? 1 : 0
+                        '' !== $item['hint'] ? 1 : 0
                     )
                     .$item['hint'];
 
@@ -338,7 +338,7 @@ EOF;
     /**
      * @TODO Introduce proper DTO instead of an array
      *
-     * @return null|array{indent: null|string, tag: null|string, hint: null|string, var: null|string, static: null|string, desc?: null|string}
+     * @return null|array{indent: null|string, tag: null|string, hint: string, var: null|string, static: string, desc?: null|string}
      */
     private function getMatches(string $line, bool $matchCommentOnly = false): ?array
     {
@@ -393,7 +393,7 @@ EOF;
     }
 
     /**
-     * @param non-empty-list<array{indent: null|string, tag: null|string, hint: null|string, var: null|string, static: null|string, desc?: null|string}> $items
+     * @param non-empty-list<array{indent: null|string, tag: null|string, hint: string, var: null|string, static: string, desc?: null|string}> $items
      */
     private function getLeftAlignedDescriptionIndent(array $items, int $index): int
     {
