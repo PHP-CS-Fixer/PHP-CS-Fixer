@@ -156,7 +156,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 continue;
             }
 
-            $tests[substr($file->getPathname(), \strlen(static::getFixturesDir()) + 1)] = [
+            $tests[substr($file->getPathname(), \strlen(realpath(__DIR__.'/../../')) + 1)] = [
                 $factory->create($file),
             ];
         }
