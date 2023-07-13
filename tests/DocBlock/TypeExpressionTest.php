@@ -595,7 +595,7 @@ final class TypeExpressionTest extends TestCase
             return strcasecmp($a->toString(), $b->toString());
         };
         $sortCrc32Fx = static function (TypeExpression $a, TypeExpression $b): int {
-            return strcasecmp($a->toString(), $b->toString());
+            return crc32($a->toString()) <=> crc32($b->toString());
         };
 
         $expression = $this->parseTypeExpression($typesExpression, null, []);
