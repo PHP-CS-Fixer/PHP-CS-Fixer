@@ -101,7 +101,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
             );
 
             for ($i = 1, $max = \count($parts) - 1; $i < $max; $i += 2) {
-                if (0 === Preg::match(self::TAG_REGEX, $parts[$i], $matches)) {
+                if (!Preg::match(self::TAG_REGEX, $parts[$i], $matches)) {
                     continue;
                 }
 

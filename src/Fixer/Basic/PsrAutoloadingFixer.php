@@ -104,7 +104,7 @@ class InvalidName {}
             // ignore file with extension other than php
             ('php' !== $file->getExtension())
             // ignore file with name that cannot be a class name
-            || 0 === Preg::match('/^'.TypeExpression::REGEX_IDENTIFIER.'$/', $file->getBasename('.php'))
+            || !Preg::match('/^'.TypeExpression::REGEX_IDENTIFIER.'$/', $file->getBasename('.php'))
         ) {
             return false;
         }
@@ -122,7 +122,7 @@ class InvalidName {}
         }
 
         // ignore stubs/fixtures, since they typically contain invalid files for various reasons
-        return 0 === Preg::match('{[/\\\\](stub|fixture)s?[/\\\\]}i', $file->getRealPath());
+        return !Preg::match('{[/\\\\](stub|fixture)s?[/\\\\]}i', $file->getRealPath());
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface

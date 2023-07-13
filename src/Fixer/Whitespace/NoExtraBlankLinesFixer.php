@@ -330,7 +330,7 @@ switch($a) {
 
     private function removeMultipleBlankLines(int $index): void
     {
-        $expected = $this->tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && 1 === Preg::match('/\R$/', $this->tokens[$index - 1]->getContent()) ? 1 : 2;
+        $expected = $this->tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && Preg::match('/\R$/', $this->tokens[$index - 1]->getContent()) ? 1 : 2;
 
         $parts = Preg::split('/(.*\R)/', $this->tokens[$index]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         $count = \count($parts);
@@ -451,7 +451,7 @@ switch($a) {
     private function containsLinebreak(int $startIndex, int $endIndex): bool
     {
         for ($i = $endIndex; $i > $startIndex; --$i) {
-            if (1 === Preg::match('/\R/', $this->tokens[$i]->getContent())) {
+            if (Preg::match('/\R/', $this->tokens[$i]->getContent())) {
                 return true;
             }
         }

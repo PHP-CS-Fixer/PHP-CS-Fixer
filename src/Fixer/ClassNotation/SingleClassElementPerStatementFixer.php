@@ -153,7 +153,7 @@ final class Example
         if ($tokens[$startIndex - 1]->isWhitespace()) {
             $divisionContent = $tokens[$startIndex - 1]->getContent();
 
-            if (1 === Preg::match('#(\n|\r\n)#', $divisionContent, $matches)) {
+            if (Preg::match('#(\n|\r\n)#', $divisionContent, $matches)) {
                 $divisionContent = $matches[0].trim($divisionContent, "\r\n");
             }
         }

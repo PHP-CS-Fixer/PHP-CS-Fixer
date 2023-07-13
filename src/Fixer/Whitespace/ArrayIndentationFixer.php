@@ -96,7 +96,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
             }
 
             if ($token->isWhitespace()) {
-                if (0 === Preg::match('/\R/', $token->getContent())) {
+                if (!Preg::match('/\R/', $token->getContent())) {
                     continue;
                 }
 

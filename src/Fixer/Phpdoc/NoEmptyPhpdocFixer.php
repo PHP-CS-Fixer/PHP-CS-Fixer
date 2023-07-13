@@ -54,7 +54,7 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
                 continue;
             }
 
-            if (1 === Preg::match('#^/\*\*[\s\*]*\*/$#', $token->getContent())) {
+            if (Preg::match('#^/\*\*[\s\*]*\*/$#', $token->getContent())) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }
         }

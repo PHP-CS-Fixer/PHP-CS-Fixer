@@ -188,7 +188,7 @@ class ValueObject
             return true;
         }
 
-        return 1 === substr_count($type, '|') && 1 === Preg::match('/(?:\|null$|^null\|)/i', $type);
+        return 1 === substr_count($type, '|') && Preg::match('/(?:\|null$|^null\|)/i', $type);
     }
 
     private function normalizePropertyType(Tokens $tokens, int $index): void

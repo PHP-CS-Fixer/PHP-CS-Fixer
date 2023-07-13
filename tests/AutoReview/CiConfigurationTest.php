@@ -174,7 +174,7 @@ final class CiConfigurationTest extends TestCase
     private function convertPhpVerIdToNiceVer(string $verId): string
     {
         $matchResult = Preg::match('/^(?<major>\d{1,2})(?<minor>\d{2})(?<patch>\d{2})$/', $verId, $capture);
-        if (1 !== $matchResult) {
+        if (!$matchResult) {
             throw new \LogicException(sprintf('Can\'t parse version "%s" id.', $verId));
         }
 

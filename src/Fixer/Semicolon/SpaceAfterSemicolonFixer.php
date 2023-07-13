@@ -113,7 +113,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurab
             if (
                 null !== $insideForParenthesesUntil
                 && ($tokens[$index + 2]->equals(';') || $index + 2 === $insideForParenthesesUntil)
-                && 0 === Preg::match('/\R/', $tokens[$index + 1]->getContent())
+                && !Preg::match('/\R/', $tokens[$index + 1]->getContent())
             ) {
                 $tokens->clearAt($index + 1);
 

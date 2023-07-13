@@ -93,7 +93,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
 
         if (!$previousToken->isWhitespace()) {
             $tokens->insertAt($index, new Token([T_WHITESPACE, $whitespace]));
-        } elseif (0 === Preg::match('/\R/', $previousToken->getContent())) {
+        } elseif (!Preg::match('/\R/', $previousToken->getContent())) {
             $tokens[$index - 1] = new Token([T_WHITESPACE, $whitespace]);
         }
     }

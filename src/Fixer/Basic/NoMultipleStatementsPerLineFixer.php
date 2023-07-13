@@ -74,7 +74,7 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
                 $token = $tokens[$nextIndex];
 
                 if ($token->isWhitespace() || $token->isComment()) {
-                    if (1 === Preg::match('/\R/', $token->getContent())) {
+                    if (Preg::match('/\R/', $token->getContent())) {
                         break;
                     }
 

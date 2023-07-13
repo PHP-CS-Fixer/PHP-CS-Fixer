@@ -247,7 +247,7 @@ echo 1;
         }
 
         if ($tokens[$next]->isWhitespace()) {
-            if (0 === Preg::match('/^\h*\R\h*$/D', $tokens[$next]->getContent())) {
+            if (!Preg::match('/^\h*\R\h*$/D', $tokens[$next]->getContent())) {
                 return $index;
             }
 
@@ -413,7 +413,7 @@ echo 1;
         if ($prevToken->isWhitespace()) {
             $content = $prevToken->getContent();
 
-            if (1 === Preg::match('/\R/', $content)) {
+            if (Preg::match('/\R/', $content)) {
                 $newlineRemoved = true;
             }
 

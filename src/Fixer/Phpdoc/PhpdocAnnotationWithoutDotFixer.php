@@ -95,8 +95,8 @@ function foo ($bar) {}
                 $content = $annotation->getContent();
 
                 if (
-                    0 === Preg::match('/[.。]\h*$/u', $content)
-                    || 1 === Preg::match('/[.。](?!\h*$)/u', $content, $matches)
+                    !Preg::match('/[.。]\h*$/u', $content)
+                    || Preg::match('/[.。](?!\h*$)/u', $content, $matches)
                 ) {
                     continue;
                 }

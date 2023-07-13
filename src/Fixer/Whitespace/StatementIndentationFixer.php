@@ -315,7 +315,7 @@ else {
 
                 $content = $previousOpenTagContent.($token->isWhitespace() ? $token->getContent() : '');
 
-                if (0 === Preg::match('/\R/', $content)) {
+                if (!Preg::match('/\R/', $content)) {
                     continue;
                 }
 
@@ -347,7 +347,7 @@ else {
                                 continue;
                             }
 
-                            if (1 === Preg::match('/\R/', $searchToken->getContent())) {
+                            if (Preg::match('/\R/', $searchToken->getContent())) {
                                 $nextNewlineIndex = $searchIndex;
 
                                 break;
@@ -564,7 +564,7 @@ else {
 
         $indent = preg_quote($this->whitespacesConfig->getIndent(), '~');
 
-        if (1 === Preg::match("~^(//|#)({$indent}.*)?$~", $tokens[$index]->getContent())) {
+        if (Preg::match("~^(//|#)({$indent}.*)?$~", $tokens[$index]->getContent())) {
             return false;
         }
 

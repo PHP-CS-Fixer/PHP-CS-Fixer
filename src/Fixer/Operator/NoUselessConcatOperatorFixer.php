@@ -323,13 +323,13 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
 
     private function isSimpleQuotedStringContent(string $candidate): bool
     {
-        return 0 === Preg::match('#[\$"\'\\\]#', substr($candidate, 1, -1));
+        return !Preg::match('#[\$"\'\\\]#', substr($candidate, 1, -1));
     }
 
     private function containsLinebreak(Tokens $tokens, int $startIndex, int $endIndex): bool
     {
         for ($i = $endIndex; $i > $startIndex; --$i) {
-            if (1 === Preg::match('/\R/', $tokens[$i]->getContent())) {
+            if (Preg::match('/\R/', $tokens[$i]->getContent())) {
                 return true;
             }
         }

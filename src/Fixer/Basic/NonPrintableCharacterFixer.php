@@ -119,7 +119,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 $this->configuration['use_escape_sequences_in_strings']
                 && $token->isGivenKind([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE])
             ) {
-                if (0 === Preg::match('/'.implode('|', array_keys($escapeSequences)).'/', $content)) {
+                if (!Preg::match('/'.implode('|', array_keys($escapeSequences)).'/', $content)) {
                     continue;
                 }
 
