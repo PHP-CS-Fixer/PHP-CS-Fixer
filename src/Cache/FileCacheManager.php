@@ -32,6 +32,8 @@ namespace PhpCsFixer\Cache;
  */
 final class FileCacheManager implements CacheManagerInterface
 {
+    public const WRITE_FREQUENCY = 10;
+
     private FileHandlerInterface $handler;
 
     private SignatureInterface $signature;
@@ -39,6 +41,8 @@ final class FileCacheManager implements CacheManagerInterface
     private bool $isDryRun;
 
     private DirectoryInterface $cacheDirectory;
+
+    private int $writeCounter = 0;
 
     /**
      * @var CacheInterface
@@ -99,11 +103,14 @@ final class FileCacheManager implements CacheManagerInterface
 
         if ($this->isDryRun && $this->cache->has($file) && $this->cache->get($file) !== $hash) {
             $this->cache->clear($file);
-
-            return;
+        } else {
+            $this->cache->set($file, $hash);
         }
 
-        $this->cache->set($file, $hash);
+        if (self::WRITE_FREQUENCY === ++$this->writeCounter) {
+            $this->writeCounter = 0;
+            $this->writeCache();
+        }
     }
 
     private function readCache(): void
