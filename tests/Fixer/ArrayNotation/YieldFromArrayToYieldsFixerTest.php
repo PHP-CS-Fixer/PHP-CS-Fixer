@@ -165,5 +165,32 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
                 function f5() { yield from array(8, 9); }
             ',
         ];
+
+        yield [
+            '<?php
+                function foo() {
+                     '.'
+                        yield "this element is regular string";
+                        yield yield from ["here", "are", "nested", "strings"];
+                        yield "next elements will be an arrow function reference";
+                        yield fn() => [yield 1, yield from [2, 3]];
+                        yield fn() => [yield from [1, 2], yield 3];
+                        yield fn() => [yield from array(1, 2), yield 3]
+                    ;
+                }
+            ',
+            '<?php
+                function foo() {
+                    yield from [
+                        "this element is regular string",
+                        yield from ["here", "are", "nested", "strings"],
+                        "next elements will be an arrow function reference",
+                        fn() => [yield 1, yield from [2, 3]],
+                        fn() => [yield from [1, 2], yield 3],
+                        fn() => [yield from array(1, 2), yield 3]
+                    ];
+                }
+            ',
+        ];
     }
 }

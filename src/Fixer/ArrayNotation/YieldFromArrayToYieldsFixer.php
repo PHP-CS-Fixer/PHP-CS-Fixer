@@ -65,8 +65,13 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
          */
         $inserts = [];
 
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = $tokens->count() - 1; $index > 0; --$index) {
             if (!$tokens[$index]->isGivenKind(T_YIELD_FROM)) {
+                continue;
+            }
+
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+            if (!$tokens[$prevIndex]->equalsAny([';', '{'])) {
                 continue;
             }
 
@@ -101,15 +106,13 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
             ) as $commaIndex) {
                 $nextItemIndex = $tokens->getNextMeaningfulToken($commaIndex);
 
-                if (null !== $nextItemIndex) {
-                    if ($nextItemIndex < $endIndex) {
-                        $inserts[$nextItemIndex] = [new Token([T_YIELD, 'yield']), new Token([T_WHITESPACE, ' '])];
-                        $tokens[$commaIndex] = new Token(';');
-                    } else {
-                        $arrayHasTrailingComma = true;
-                        // array has trailing comma - we replace it with `;` (as it's best fit to put it)
-                        $tokens[$commaIndex] = new Token(';');
-                    }
+                if ($nextItemIndex < $endIndex) {
+                    $inserts[$nextItemIndex] = [new Token([T_YIELD, 'yield']), new Token([T_WHITESPACE, ' '])];
+                    $tokens[$commaIndex] = new Token(';');
+                } else {
+                    $arrayHasTrailingComma = true;
+                    // array has trailing comma - we replace it with `;` (as it's best fit to put it)
+                    $tokens[$commaIndex] = new Token(';');
                 }
             }
 
