@@ -25,6 +25,8 @@ final class FileHandler implements FileHandlerInterface
 {
     private string $file;
 
+    private int $fileLastModification = 0;
+
     public function __construct(string $file)
     {
         $this->file = $file;
@@ -47,7 +49,8 @@ final class FileHandler implements FileHandlerInterface
         }
 
         $cache = $this->readFromHandle($handle);
-
+        $this->fileLastModification = $this->getFileLastUpdate($handle);
+        var_dump("\n".getmypid().' !!! FRS !!! READ '.$this->fileLastModification);
         fclose($handle);
 
         return $cache;
@@ -62,21 +65,41 @@ final class FileHandler implements FileHandlerInterface
             return;
         }
 
-        if (getenv('PHP_CS_FIXER_EXPERIMENTAL_PARALLEL_CACHE')) {
+        $actualLastModification = $this->getFileLastUpdate($handle);
+
+        var_dump("\n".getmypid().' !!! FRS !!! DECISION ???');
+        var_dump([
+            'property' => $this->fileLastModification,
+            'os' => $actualLastModification,
+            'should backfill' => $this->fileLastModification < $actualLastModification,
+        ]);
+
+        if ($this->fileLastModification < $actualLastModification) {
             flock($handle, LOCK_EX);
 
             $oldCache = $this->readFromHandle($handle);
             rewind($handle);
 
             if ($oldCache && method_exists($cache, 'backfillHashes')) {
+                var_dump("\n".getmypid().' !!! FRS !!! BACKFILL');
                 $cache->backfillHashes($oldCache);
             }
         }
-
+        var_dump("\n".getmypid().' !!! FRS !!! SAVE FILE');
         ftruncate($handle, 0);
         fwrite($handle, $cache->toJson());
         fflush($handle);
+        fsync($handle);
+
+        var_dump("\n".getmypid().' !!! FRS !!! AFTER SAVE '.$this->getFileLastUpdate($handle));
         fclose($handle);
+    }
+
+    private function getFileLastUpdate($handle): int
+    {
+        clearstatcache(true, $this->file);
+
+        return fstat($handle)['mtime'] ?: 0;
     }
 
     /**
