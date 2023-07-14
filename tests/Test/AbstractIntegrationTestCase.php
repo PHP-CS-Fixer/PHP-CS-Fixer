@@ -136,7 +136,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
     /**
      * Creates test data by parsing '.test' files.
      *
-     * @return IntegrationCase[][]
+     * @return iterable<string, array{IntegrationCase}>
      */
     public static function provideIntegrationCases(): iterable
     {
@@ -148,7 +148,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         $factory = static::createIntegrationCaseFactory();
-        $tests = [];
 
         /** @var SplFileInfo $file */
         foreach (Finder::create()->files()->in($fixturesDir) as $file) {
@@ -156,12 +155,10 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 continue;
             }
 
-            $tests[substr($file->getPathname(), \strlen(realpath(__DIR__.'/../../')) + 1)] = [
-                $factory->create($file),
-            ];
-        }
+            $relativePath = substr($file->getPathname(), \strlen(realpath(__DIR__.'/../../')) + 1);
 
-        return $tests;
+            yield $relativePath => [$factory->create($file)];
+        }
     }
 
     protected static function createIntegrationCaseFactory(): IntegrationCaseFactoryInterface
