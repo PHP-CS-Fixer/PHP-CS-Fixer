@@ -176,7 +176,7 @@ abstract class AbstractFixerTestCase extends TestCase
             $duplicatedCodeSample = array_search(
                 $sample,
                 \array_slice($samples, 0, $sampleCounter),
-                false
+                true
             );
 
             self::assertFalse(
@@ -265,7 +265,7 @@ abstract class AbstractFixerTestCase extends TestCase
         }
 
         $usedMethods = array_filter($usedMethods, static function (string $method): bool {
-            return 0 === Preg::match('/^(count|find|generate|get|is|rewind)/', $method);
+            return !Preg::match('/^(count|find|generate|get|is|rewind)/', $method);
         });
 
         $allowedMethods = ['insertAt'];
@@ -410,11 +410,11 @@ abstract class AbstractFixerTestCase extends TestCase
 
             $tokens->clearEmptyTokens();
 
-            self::assertSame(
-                \count($tokens),
-                \count(array_unique(array_map(static function (Token $token): string {
+            self::assertSameSize(
+                $tokens,
+                array_unique(array_map(static function (Token $token): string {
                     return spl_object_hash($token);
-                }, $tokens->toArray()))),
+                }, $tokens->toArray())),
                 'Token items inside Tokens collection must be unique.'
             );
 

@@ -193,7 +193,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
         $doc = $tokens[$docBlockIndex]->getContent();
 
-        return 1 === Preg::match('/\*\s+@test\b/', $doc);
+        return Preg::match('/\*\s+@test\b/', $doc);
     }
 
     private function removeTestPrefix(string $functionName): string

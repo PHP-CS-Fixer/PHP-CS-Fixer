@@ -135,7 +135,7 @@ $c = 3;
                 !$this->asteriskEnabled
                 || str_contains($commentContent, '?>')
                 || !str_starts_with($content, '/*')
-                || 1 === Preg::match('/[^\s\*].*\R.*[^\s\*]/s', $commentContent)
+                || Preg::match('/[^\s\*].*\R.*[^\s\*]/s', $commentContent)
             ) {
                 continue;
             }
@@ -143,7 +143,7 @@ $c = 3;
             $nextTokenIndex = $index + 1;
             if (isset($tokens[$nextTokenIndex])) {
                 $nextToken = $tokens[$nextTokenIndex];
-                if (!$nextToken->isWhitespace() || 1 !== Preg::match('/\R/', $nextToken->getContent())) {
+                if (!$nextToken->isWhitespace() || !Preg::match('/\R/', $nextToken->getContent())) {
                     continue;
                 }
 
@@ -151,7 +151,7 @@ $c = 3;
             }
 
             $content = '//';
-            if (1 === Preg::match('/[^\s\*]/', $commentContent)) {
+            if (Preg::match('/[^\s\*]/', $commentContent)) {
                 $content = '// '.Preg::replace('/[\s\*]*([^\s\*](?:.+[^\s\*])?)[\s\*]*/', '\1', $commentContent);
             }
             $tokens[$index] = new Token([$token->getId(), $content]);

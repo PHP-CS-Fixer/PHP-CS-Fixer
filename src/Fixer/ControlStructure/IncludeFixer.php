@@ -64,7 +64,7 @@ include_once("sample4.php");
         $blocksAnalyzer = new BlocksAnalyzer();
 
         foreach ($includies as $includy) {
-            if ($includy['end'] && !$tokens[$includy['end']]->isGivenKind(T_CLOSE_TAG)) {
+            if (!$tokens[$includy['end']]->isGivenKind(T_CLOSE_TAG)) {
                 $afterEndIndex = $tokens->getNextNonWhitespace($includy['end']);
 
                 if (null === $afterEndIndex || !$tokens[$afterEndIndex]->isComment()) {

@@ -136,7 +136,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
                 if ($carry) {
                     return true;
                 }
-                if (1 !== Preg::match('~(?:#|//|/\*+|\R(?:\s*\*)?)\s*\@([a-zA-Z0-9_\\\\-]+)(?=\s|\(|$)~', $tokens[$index]->getContent(), $matches)) {
+                if (!Preg::match('~(?:#|//|/\*+|\R(?:\s*\*)?)\s*\@([a-zA-Z0-9_\\\\-]+)(?=\s|\(|$)~', $tokens[$index]->getContent(), $matches)) {
                     return false;
                 }
 

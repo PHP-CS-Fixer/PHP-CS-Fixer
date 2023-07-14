@@ -277,7 +277,7 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
         Tokens::clearCache();
         $tokens = Tokens::fromCode(sprintf('<?php new %s();', $class));
 
-        $this->fixer->fix($this->getTestFile(), $tokens);
+        $this->fixer->fix(self::getTestFile(), $tokens);
 
         self::assertTrue($tokens->isChanged());
         self::assertStringNotContainsString('_', $tokens->generateCode());

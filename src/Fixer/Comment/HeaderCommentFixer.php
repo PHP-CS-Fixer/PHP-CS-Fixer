@@ -163,7 +163,7 @@ echo 1;
             $expectedLocation = $possibleLocation === $location;
 
             if (!$sameComment || !$expectedLocation) {
-                if ($expectedLocation ^ $sameComment) {
+                if ($expectedLocation xor $sameComment) {
                     $this->removeHeader($tokens, $headerCurrentIndex);
                 }
 

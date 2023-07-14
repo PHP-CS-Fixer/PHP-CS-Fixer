@@ -249,7 +249,7 @@ EOF;
                     continue;
                 }
 
-                $hasStatic = $hasStatic || $item['static'];
+                $hasStatic |= '' !== $item['static'];
                 $tagMax = max($tagMax, \strlen($item['tag']));
                 $hintMax = max($hintMax, \strlen($item['hint']));
                 $varMax = max($varMax, \strlen($item['var']));
@@ -302,7 +302,7 @@ EOF;
                     $line .=
                         $this->getIndent(
                             $tagMax - \strlen($item['tag']) + 1,
-                            $item['static'] ? 1 : 0
+                            '' !== $item['static'] ? 1 : 0
                         )
                         .($item['static'] ?: $this->getIndent(6 /* \strlen('static') */, 0));
                     $hintVerticalAlignIndent = 1;
@@ -313,20 +313,20 @@ EOF;
                 $line .=
                     $this->getIndent(
                         $hintVerticalAlignIndent,
-                        $item['hint'] ? 1 : 0
+                        '' !== $item['hint'] ? 1 : 0
                     )
                     .$item['hint'];
 
-                if (!empty($item['var'])) {
+                if ('' !== $item['var']) {
                     $line .=
                         $this->getIndent(($hintMax ?: -1) - \strlen($item['hint']) + 1)
                         .$item['var']
                         .(
-                            !empty($item['desc'])
+                            '' !== $item['desc']
                             ? $this->getIndent($varMax - \strlen($item['var']) + 1).$item['desc']
                             : ''
                         );
-                } elseif (!empty($item['desc'])) {
+                } elseif ('' !== $item['desc']) {
                     $line .= $this->getIndent($hintMax - \strlen($item['hint']) + 1).$item['desc'];
                 }
 
@@ -338,18 +338,18 @@ EOF;
     /**
      * @TODO Introduce proper DTO instead of an array
      *
-     * @return null|array{indent: null|string, tag: null|string, hint: null|string, var: null|string, static: null|string, desc?: null|string}
+     * @return null|array{indent: null|string, tag: null|string, hint: string, var: null|string, static: string, desc?: null|string}
      */
     private function getMatches(string $line, bool $matchCommentOnly = false): ?array
     {
         if (Preg::match($this->regex, $line, $matches)) {
-            if (!empty($matches['tag2'])) {
+            if (isset($matches['tag2']) && '' !== $matches['tag2']) {
                 $matches['tag'] = $matches['tag2'];
                 $matches['hint'] = $matches['hint2'];
                 $matches['var'] = '';
             }
 
-            if (!empty($matches['tag3'])) {
+            if (isset($matches['tag3']) && '' !== $matches['tag3']) {
                 $matches['tag'] = $matches['tag3'];
                 $matches['hint'] = $matches['hint3'];
                 $matches['var'] = $matches['signature'];
@@ -393,7 +393,7 @@ EOF;
     }
 
     /**
-     * @param non-empty-list<array{indent: null|string, tag: null|string, hint: null|string, var: null|string, static: null|string, desc?: null|string}> $items
+     * @param non-empty-list<array{indent: null|string, tag: null|string, hint: string, var: null|string, static: string, desc?: null|string}> $items
      */
     private function getLeftAlignedDescriptionIndent(array $items, int $index): int
     {

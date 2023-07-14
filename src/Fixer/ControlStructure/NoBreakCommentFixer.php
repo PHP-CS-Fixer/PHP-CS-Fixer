@@ -205,7 +205,7 @@ switch ($foo) {
 
         $text = preg_quote($this->configuration['comment_text'], '~');
 
-        return 1 === Preg::match("~^((//|#)\\s*{$text}\\s*)|(/\\*\\*?\\s*{$text}(\\s+.*)*\\*/)$~i", $token->getContent());
+        return Preg::match("~^((//|#)\\s*{$text}\\s*)|(/\\*\\*?\\s*{$text}(\\s+.*)*\\*/)$~i", $token->getContent());
     }
 
     private function insertCommentAt(Tokens $tokens, int $casePosition): void

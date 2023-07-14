@@ -133,7 +133,7 @@ function m($a, array $b, Foo $c) {}
         $otherAnnotations = $this->getOtherAnnotationsBetweenParams($doc, $paramAnnotations);
 
         // Append annotations found between param ones
-        if (\count($otherAnnotations)) {
+        if ([] !== $otherAnnotations) {
             array_push($orderedAnnotations, ...$otherAnnotations);
         }
 
@@ -255,7 +255,7 @@ function m($a, array $b, Foo $c) {}
                 ++$blockLevel;
             }
 
-            if ($blockEndMatches) {
+            if (0 !== $blockEndMatches) {
                 $blockLevel -= $blockEndMatches;
             }
 

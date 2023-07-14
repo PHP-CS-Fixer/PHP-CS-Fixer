@@ -387,7 +387,7 @@ final class TypeExpressionTest extends TestCase
 
         $nRecursive = 100;
         for ($i = 0; $i < $nRecursive; ++$i) {
-            $str = 'array'.($i % 2 ? '{' : '<').$str.($i % 2 ? '}' : '>');
+            $str = 'array'.(1 === $i % 2 ? '{' : '<').$str.(1 === $i % 2 ? '}' : '>');
         }
 
         $typeLeft = '\Closure(A|B): void';

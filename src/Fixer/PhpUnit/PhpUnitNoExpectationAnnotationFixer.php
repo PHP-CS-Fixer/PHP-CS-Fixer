@@ -216,7 +216,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         $tag = $annotation->getTag()->getName();
 
-        if (1 !== Preg::match('/@'.$tag.'\s+(.+)$/s', $annotation->getContent(), $matches)) {
+        if (!Preg::match('/@'.$tag.'\s+(.+)$/s', $annotation->getContent(), $matches)) {
             return '';
         }
 

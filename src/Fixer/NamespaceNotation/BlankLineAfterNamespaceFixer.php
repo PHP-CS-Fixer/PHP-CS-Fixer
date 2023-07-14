@@ -94,7 +94,7 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
             $token = $tokens[$nextIndex];
 
             if ($token->isWhitespace()) {
-                if (1 === Preg::match('/\R/', $token->getContent())) {
+                if (Preg::match('/\R/', $token->getContent())) {
                     break;
                 }
                 $nextNextIndex = $tokens->getNonEmptySibling($nextIndex, 1);
@@ -120,7 +120,7 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
         $ending = $this->whitespacesConfig->getLineEnding();
 
         $emptyLines = $isLastIndex ? $ending : $ending.$ending;
-        $indent = 1 === Preg::match('/^.*\R( *)$/s', $currentContent, $matches) ? $matches[1] : '';
+        $indent = Preg::match('/^.*\R( *)$/s', $currentContent, $matches) ? $matches[1] : '';
 
         return new Token([T_WHITESPACE, $emptyLines.$indent]);
     }

@@ -303,7 +303,7 @@ EOF;
             $tagInGroup = preg_quote($tagInGroup, '/');
             $tagInGroup = str_replace('\\\\\*', '.*?', $tagInGroup);
 
-            if (1 === Preg::match("/^{$tagInGroup}$/", $tag)) {
+            if (Preg::match("/^{$tagInGroup}$/", $tag)) {
                 return true;
             }
         }

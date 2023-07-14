@@ -215,7 +215,7 @@ $bar = function () { $result = true;
 
                     if (
                         ($allowSingleLineIfEmpty && !$tokenInsideBraces->isWhitespace() && !$tokenInsideBraces->isComment())
-                        || ($tokenInsideBraces->isWhitespace() && 1 === Preg::match('/\R/', $tokenInsideBraces->getContent()))
+                        || ($tokenInsideBraces->isWhitespace() && Preg::match('/\R/', $tokenInsideBraces->getContent()))
                     ) {
                         $addNewlinesInsideBraces = true;
 
@@ -255,7 +255,7 @@ $bar = function () { $result = true;
                     }
                     if (
                         $tokens[$previousTokenIndex]->isWhitespace()
-                        && 1 === Preg::match('/\R/', $tokens[$previousTokenIndex]->getContent())
+                        && Preg::match('/\R/', $tokens[$previousTokenIndex]->getContent())
                     ) {
                         $whitespace = ' ';
                     }
@@ -337,7 +337,7 @@ $bar = function () { $result = true;
             for ($prevIndex = $closeBraceIndex - 1; $tokens->isEmptyAt($prevIndex); --$prevIndex);
 
             $prevToken = $tokens[$prevIndex];
-            if ($prevToken->isWhitespace() && 1 === Preg::match('/\R/', $prevToken->getContent())) {
+            if ($prevToken->isWhitespace() && Preg::match('/\R/', $prevToken->getContent())) {
                 continue;
             }
 
@@ -398,7 +398,7 @@ $bar = function () { $result = true;
         for (++$index, $max = \count($tokens) - 1; $index < $max; ++$index) {
             $token = $tokens[$index];
             if (!$token->isComment()) {
-                return $token->isWhitespace() && 1 === Preg::match('/\R/', $token->getContent());
+                return $token->isWhitespace() && Preg::match('/\R/', $token->getContent());
             }
         }
 
@@ -409,7 +409,7 @@ $bar = function () { $result = true;
     {
         $token = $tokens[$index + 1];
 
-        if ($token->isWhitespace() && 1 !== Preg::match('/\R/', $token->getContent())) {
+        if ($token->isWhitespace() && !Preg::match('/\R/', $token->getContent())) {
             $token = $tokens[$index + 2];
         }
 

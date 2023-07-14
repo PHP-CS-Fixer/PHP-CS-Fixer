@@ -39,7 +39,7 @@ final class PregTest extends TestCase
      */
     public function testMatch(string $pattern, string $subject): void
     {
-        $expectedResult = preg_match($pattern, $subject, $expectedMatches);
+        $expectedResult = 1 === preg_match($pattern, $subject, $expectedMatches);
         $actualResult = Preg::match($pattern, $subject, $actualMatches);
 
         self::assertSame($expectedResult, $actualResult);
@@ -51,13 +51,13 @@ final class PregTest extends TestCase
         yield from [
             'invalid_blank' => ['', null, PregException::class],
             'invalid_open' => ["\1", null, PregException::class, "'\1' found"],
-            'valid_control_character_delimiter' => ["\1\1", 1],
+            'valid_control_character_delimiter' => ["\1\1", true],
             'invalid_control_character_modifier' => ["\1\1\1", null, PregException::class, ' Unknown modifier '],
-            'valid_slate' => ['//', 1],
-            'valid_paired' => ['()', 1],
+            'valid_slate' => ['//', true],
+            'valid_paired' => ['()', true],
             'paired_non_utf8_only' => ["((*UTF8)\xFF)", null, PregException::class, 'UTF-8'],
-            'valid_paired_non_utf8_only' => ["(\xFF)", 1],
-            'php_version_dependent' => ['([\\R])', 0, PregException::class, 'Compilation failed: escape sequence is invalid '],
+            'valid_paired_non_utf8_only' => ["(\xFF)", true],
+            'php_version_dependent' => ['([\\R])', false, PregException::class, 'Compilation failed: escape sequence is invalid '],
         ];
 
         $nullByteMessage = \PHP_VERSION_ID >= 8_02_00 ? 'NUL is not a valid modifier' : 'Null byte in regex';
@@ -68,7 +68,7 @@ final class PregTest extends TestCase
     /**
      * @dataProvider providePatternValidationCases
      */
-    public function testPatternValidation(string $pattern, ?int $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
+    public function testPatternValidation(string $pattern, ?bool $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
         $setup = function () use ($expectedException, $expectedMessage): bool {
             $i = 0;
@@ -108,7 +108,7 @@ final class PregTest extends TestCase
     /**
      * @dataProvider providePatternValidationCases
      */
-    public function testPatternsValidation(string $pattern, ?int $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
+    public function testPatternsValidation(string $pattern, ?bool $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
         $setup = function () use ($expectedException, $expectedMessage): bool {
             $i = 0;
@@ -136,7 +136,7 @@ final class PregTest extends TestCase
         }
 
         if (null !== $expected) {
-            self::assertSame((bool) $expected, $actual);
+            self::assertSame($expected, $actual);
 
             return;
         }
