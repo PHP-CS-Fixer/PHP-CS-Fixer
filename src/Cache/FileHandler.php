@@ -70,11 +70,10 @@ final class FileHandler implements FileHandlerInterface
             $oldCache = $this->readFromHandle($handle);
             rewind($handle);
 
-            if ($oldCache) {
+            if (null !== $oldCache) {
                 $cache->backfillHashes($oldCache);
             }
         }
-
         ftruncate($handle, 0);
         fwrite($handle, $cache->toJson());
         fflush($handle);
@@ -87,7 +86,14 @@ final class FileHandler implements FileHandlerInterface
     {
         clearstatcache(true, $this->file);
 
-        return filemtime($this->file) ?: 0;
+        $mtime = filemtime($this->file);
+
+        if (false === $mtime) {
+            // cannot check mtime? OK, let's pretend file is old
+            $mtime = 0;
+        }
+
+        return $mtime;
     }
 
     /**
