@@ -81,8 +81,9 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
 
             if ($tokens[$arrayStartIndex]->isGivenKind(T_ARRAY)) {
                 $startIndex = $tokens->getNextTokenOfKind($arrayStartIndex, ['(']);
-                $tokens->clearAt($arrayStartIndex);
                 $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+
+                $tokens->clearTokenAndMergeSurroundingWhitespace($arrayStartIndex); // clear `array` from `array(`
             } else {
                 $startIndex = $arrayStartIndex;
                 $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
@@ -107,20 +108,13 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
         $this->inserts[$startIndex] = [new Token([T_YIELD, 'yield']), new Token([T_WHITESPACE, ' '])];
 
         for ($index = $startIndex; $index <= $endIndex; ++$index) {
-            if ($tokens[$index]->equals('{')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+            $token = $tokens[$index];
 
-                continue;
-            }
+            // skip nested (), [], {} constructs
+            $blockDefinitionProbe = Tokens::detectBlockType($token);
 
-            if ($tokens[$index]->equals('(')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-
-                continue;
-            }
-
-            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+            if (null !== $blockDefinitionProbe && true === $blockDefinitionProbe['isStart']) {
+                $index = $tokens->findBlockEnd($blockDefinitionProbe['type'], $index);
 
                 continue;
             }

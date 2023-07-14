@@ -46,8 +46,28 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php function f() {  yield 1; yield 2; yield 3; }',
-            '<?php function f() { yield from [1, 2, 3,]; }',
+            '<?php function f() {  yield 11; yield 22; yield 33; }',
+            '<?php function f() { yield from array(11, 22, 33); }',
+        ];
+
+        yield [
+            '<?php function f() {    yield 11; yield 22; yield 33; }',
+            '<?php function f() { yield from array  (11, 22, 33); }',
+        ];
+
+        yield [
+            '<?php function f() {  /* ugly comment */yield 11; yield 22; yield 33; }',
+            '<?php function f() { yield from array/* ugly comment */(11, 22, 33); }',
+        ];
+
+        yield [
+            '<?php function f() {  /** ugly doc */yield 11; yield 22; yield 33; }',
+            '<?php function f() { yield from array/** ugly doc */(11, 22, 33); }',
+        ];
+
+        yield [
+            '<?php function f() {  yield 111; yield 222; yield 333; }',
+            '<?php function f() { yield from [111, 222, 333,]; }',
         ];
 
         yield [
