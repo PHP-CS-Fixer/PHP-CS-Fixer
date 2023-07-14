@@ -65,17 +65,13 @@ final class FileHandler implements FileHandlerInterface
             return;
         }
 
-        if (method_exists($cache, 'backfillHashes')) {
-            $actualLastModification = $this->getFileCurrentMTime();
+        if (method_exists($cache, 'backfillHashes') && $this->fileMTime < $this->getFileCurrentMTime()) {
+            flock($handle, LOCK_EX);
+            $oldCache = $this->readFromHandle($handle);
+            rewind($handle);
 
-            if ($this->fileMTime < $actualLastModification) {
-                flock($handle, LOCK_EX);
-                $oldCache = $this->readFromHandle($handle);
-                rewind($handle);
-
-                if ($oldCache) {
-                    $cache->backfillHashes($oldCache);
-                }
+            if ($oldCache) {
+                $cache->backfillHashes($oldCache);
             }
         }
 
