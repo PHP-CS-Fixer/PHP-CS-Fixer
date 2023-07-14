@@ -27,11 +27,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class YieldFromArrayToYieldsFixer extends AbstractFixer
 {
-    /**
-     * @var array<int, Token>
-     */
-    private array $inserts;
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -64,7 +59,10 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $this->inserts = [];
+        /**
+         * @var array<int, Token>
+         */
+        $inserts = [];
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if (!$tokens[$index]->isGivenKind(T_YIELD_FROM)) {
@@ -91,22 +89,40 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
 
             $tokens->clearTokenAndMergeSurroundingWhitespace($startIndex);
             $tokens->clearTokenAndMergeSurroundingWhitespace($endIndex);
-            $tokens->clearTokenAndMergeSurroundingWhitespace($tokens->getNextMeaningfulToken($endIndex));
 
-            $this->unpackYieldFrom(
+            $arrayHasTrailingComma = false;
+
+            $inserts[$startIndex] = [new Token([T_YIELD, 'yield']), new Token([T_WHITESPACE, ' '])];
+            foreach ($this->findArrayItemCommaIndex(
                 $tokens,
                 $tokens->getNextMeaningfulToken($startIndex),
                 $tokens->getPrevMeaningfulToken($endIndex),
-            );
+            ) as $commaIndex) {
+                $nextItemIndex = $tokens->getNextMeaningfulToken($commaIndex);
+
+                if (null !== $nextItemIndex) {
+                    if ($nextItemIndex < $endIndex) {
+                        $inserts[$nextItemIndex] = [new Token([T_YIELD, 'yield']), new Token([T_WHITESPACE, ' '])];
+                        $tokens[$commaIndex] = new Token(';');
+                    } else {
+                        $arrayHasTrailingComma = true;
+                        // array has trailing comma - we replace it with `;` (as it's best fit to put it)
+                        $tokens[$commaIndex] = new Token(';');
+                    }
+                }
+            }
+
+            // there was a trailing comma, so we do not need original `;` after initial array structure
+            if (true === $arrayHasTrailingComma) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($tokens->getNextMeaningfulToken($endIndex));
+            }
         }
 
-        $tokens->insertSlices($this->inserts);
+        $tokens->insertSlices($inserts);
     }
 
-    private function unpackYieldFrom(Tokens $tokens, int $startIndex, int $endIndex): void
+    private function findArrayItemCommaIndex(Tokens $tokens, int $startIndex, int $endIndex): iterable
     {
-        $this->inserts[$startIndex] = [new Token([T_YIELD, 'yield']), new Token([T_WHITESPACE, ' '])];
-
         for ($index = $startIndex; $index <= $endIndex; ++$index) {
             $token = $tokens[$index];
 
@@ -123,17 +139,7 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
                 continue;
             }
 
-            $yieldInsertIndex = $tokens->getNextMeaningfulToken($index);
-
-            $tokens[$index] = new Token(';');
-
-            if (null === $yieldInsertIndex || $yieldInsertIndex > $endIndex) {
-                return;
-            }
-
-            $this->inserts[$yieldInsertIndex] = [new Token([T_YIELD, 'yield']), new Token([T_WHITESPACE, ' '])];
+            yield $index;
         }
-
-        $this->inserts[$endIndex + 1] = new Token(';');
     }
 }
