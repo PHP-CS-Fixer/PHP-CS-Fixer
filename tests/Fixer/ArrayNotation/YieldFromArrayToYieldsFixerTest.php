@@ -123,6 +123,7 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
                     yield random_key() => true;
                     yield "foo" => foo(1, 2);
                     yield "bar" => function ($x, $y) { return max($x, $y); };
+                    yield "baz" => function () { yield [1, 2]; };
                 '.'
             }',
             '<?php function f() {
@@ -130,6 +131,7 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
                     random_key() => true,
                     "foo" => foo(1, 2),
                     "bar" => function ($x, $y) { return max($x, $y); },
+                    "baz" => function () { yield [1, 2]; },
                 ];
             }',
         ];
