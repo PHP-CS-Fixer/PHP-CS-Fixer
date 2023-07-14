@@ -98,8 +98,8 @@ final class FileHandler implements FileHandlerInterface
     private function readFromHandle($handle): ?CacheInterface
     {
         try {
-            $size = filesize($this->file);
-            if (!$size) {
+            $size = @filesize($this->file);
+            if (false === $size || 0 === $size) {
                 return null;
             }
 
