@@ -65,7 +65,7 @@ Array Notation
   In array declaration, there MUST be a whitespace after each comma.
 - `yield_from_array_to_yields <./array_notation/yield_from_array_to_yields.rst>`_
 
-  Yield from array should be unpacked to series of yields.
+  Yield from array must be unpacked to series of yields.
 
 Basic
 -----

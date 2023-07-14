@@ -3280,7 +3280,10 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\WhitespaceAfterCommaInArrayFixer <./../src/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixer.php>`_
 -  `yield_from_array_to_yields <./rules/array_notation/yield_from_array_to_yields.rst>`_
 
-   Yield from array should be unpacked to series of yields.
+   Yield from array must be unpacked to series of yields.
+
+   The conversion will make the array in ``yield from`` changed in arrays of 1
+   less dimension.
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\YieldFromArrayToYieldsFixer <./../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php>`_
 -  `yoda_style <./rules/control_structure/yoda_style.rst>`_

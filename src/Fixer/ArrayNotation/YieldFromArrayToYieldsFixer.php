@@ -30,7 +30,7 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Yield from array should be unpacked to series of yields.',
+            'Yield from array must be unpacked to series of yields.',
             [new CodeSample('<?php function generate() {
     yield from [
         1,
@@ -38,7 +38,8 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
         3,
     ];
 }
-')]
+')],
+            'The conversion will make the array in `yield from` changed in arrays of 1 less dimension.'
         );
     }
 
