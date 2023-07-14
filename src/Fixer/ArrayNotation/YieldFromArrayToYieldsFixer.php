@@ -122,6 +122,9 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
         $tokens->insertSlices($inserts);
     }
 
+    /**
+     * @return iterable<int>
+     */
     private function findArrayItemCommaIndex(Tokens $tokens, int $startIndex, int $endIndex): iterable
     {
         for ($index = $startIndex; $index <= $endIndex; ++$index) {
