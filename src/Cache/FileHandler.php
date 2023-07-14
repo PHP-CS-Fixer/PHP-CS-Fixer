@@ -49,7 +49,7 @@ final class FileHandler implements FileHandlerInterface
         }
 
         $cache = $this->readFromHandle($handle);
-        $this->fileLastModification = $this->getFileLastUpdate($handle);
+        $this->fileLastModification = $this->getFileLastUpdate();
 
         fclose($handle);
 
@@ -65,7 +65,7 @@ final class FileHandler implements FileHandlerInterface
             return;
         }
 
-        $actualLastModification = $this->getFileLastUpdate($handle);
+        $actualLastModification = $this->getFileLastUpdate();
 
         if ($this->fileLastModification < $actualLastModification) {
             flock($handle, LOCK_EX);
@@ -85,11 +85,11 @@ final class FileHandler implements FileHandlerInterface
         fclose($handle);
     }
 
-    private function getFileLastUpdate($handle): int
+    private function getFileLastUpdate(): int
     {
         clearstatcache(true, $this->file);
 
-        return fstat($handle)['mtime'] ?: 0;
+        return filemtime($this->file) ?: 0;
     }
 
     /**
