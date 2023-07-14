@@ -65,18 +65,20 @@ final class FileHandler implements FileHandlerInterface
             return;
         }
 
-        $actualLastModification = $this->getFileLastUpdate();
+        if (method_exists($cache, 'backfillHashes')) {
+            $actualLastModification = $this->getFileLastUpdate();
 
-        if ($this->fileLastModification < $actualLastModification) {
-            flock($handle, LOCK_EX);
+            if ($this->fileLastModification < $actualLastModification) {
+                flock($handle, LOCK_EX);
+                $oldCache = $this->readFromHandle($handle);
+                rewind($handle);
 
-            $oldCache = $this->readFromHandle($handle);
-            rewind($handle);
-
-            if ($oldCache && method_exists($cache, 'backfillHashes')) {
-                $cache->backfillHashes($oldCache);
+                if ($oldCache) {
+                    $cache->backfillHashes($oldCache);
+                }
             }
         }
+
         ftruncate($handle, 0);
         fwrite($handle, $cache->toJson());
         fflush($handle);
