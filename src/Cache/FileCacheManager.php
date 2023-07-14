@@ -65,7 +65,9 @@ final class FileCacheManager implements CacheManagerInterface
 
     public function __destruct()
     {
-        $this->writeCache();
+        if (0 !== $this->writeCounter) {
+            $this->writeCache();
+        }
     }
 
     /**
