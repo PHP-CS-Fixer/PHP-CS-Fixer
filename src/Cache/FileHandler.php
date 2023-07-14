@@ -81,7 +81,7 @@ final class FileHandler implements FileHandlerInterface
         fwrite($handle, $cache->toJson());
         fflush($handle);
         fsync($handle);
-
+        $this->fileLastModification = $this->getFileLastUpdate();
         fclose($handle);
     }
 
