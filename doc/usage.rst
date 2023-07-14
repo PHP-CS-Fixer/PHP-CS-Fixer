@@ -142,7 +142,6 @@ Note: You need to pass the config to the ``fix`` command, in order to make it wo
 
 .. code-block:: console
 
-    export PHP_CS_FIXER_EXPERIMENTAL_PARALLEL_CACHE=1
     php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php | xargs -n 10 -P 8 php php-cs-fixer.phar fix --config=.php-cs-fixer.dist.php --path-mode intersection -v
 
 * ``-n`` defines how many files a single subprocess process
