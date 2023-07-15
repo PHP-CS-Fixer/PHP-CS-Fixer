@@ -44,6 +44,8 @@ final class FileCacheManager implements CacheManagerInterface
 
     private int $writeCounter = 0;
 
+    private bool $signatureWasUpdated = false;
+
     /**
      * @var CacheInterface
      */
@@ -65,7 +67,9 @@ final class FileCacheManager implements CacheManagerInterface
 
     public function __destruct()
     {
-        $this->writeCache();
+        if (true === $this->signatureWasUpdated || 0 !== $this->writeCounter) {
+            $this->writeCache();
+        }
     }
 
     /**
@@ -119,6 +123,7 @@ final class FileCacheManager implements CacheManagerInterface
 
         if (null === $cache || !$this->signature->equals($cache->getSignature())) {
             $cache = new Cache($this->signature);
+            $this->signatureWasUpdated = true;
         }
 
         $this->cache = $cache;
