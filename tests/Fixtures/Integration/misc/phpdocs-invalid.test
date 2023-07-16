@@ -13,7 +13,7 @@ Invalid phpdocs must be kept unfixed.
  * @method X   testB(int $$x)
  * @method X|Y testC(int $x)
  */
-class Foo
+class MyClass
 {
     /** @var (Y || X) */
     public $v1;

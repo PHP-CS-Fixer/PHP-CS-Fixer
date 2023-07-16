@@ -59,6 +59,16 @@ class Sample
         return $tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after PsrAutoloadingFixer.
+     */
+    public function getPriority(): int
+    {
+        return -11;
+    }
+
     public function isRisky(): bool
     {
         return true;
