@@ -50,6 +50,7 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDescription
             'no_unreachable_default_argument_value' => true,
             'no_unset_on_property' => true,
             'php_unit_data_provider_name' => true,
+            'php_unit_data_provider_return_type' => true,
             'php_unit_strict' => true,
             'php_unit_test_case_static_method_calls' => ['call_type' => 'self'],
             'strict_comparison' => true,

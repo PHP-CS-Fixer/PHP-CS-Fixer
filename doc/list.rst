@@ -2465,6 +2465,18 @@ List of Available Rules
    Part of rule set `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderNameFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderNameFixer.php>`_
+-  `php_unit_data_provider_return_type <./rules/php_unit/php_unit_data_provider_return_type.rst>`_
+
+   The return type of PHPUnit data provider must be ``iterable``.
+
+   Data provider must return ``iterable``, either an array of arrays or an
+   object that implements the ``Traversable`` interface.
+
+   *warning risky* Risky when relying on signature of the data provider.
+
+   Part of rule set `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderReturnTypeFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixer.php>`_
 -  `php_unit_data_provider_static <./rules/php_unit/php_unit_data_provider_static.rst>`_
 
    Data providers must be static.

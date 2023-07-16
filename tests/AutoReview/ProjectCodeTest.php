@@ -282,29 +282,6 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideDataProviderMethodCases
      */
-    public function testThatTestDataProvidersReturnIterableOrArray(string $testClassName, \ReflectionMethod $dataProvider): void
-    {
-        $dataProviderName = $dataProvider->getName();
-
-        $returnType = $dataProvider->getReturnType();
-
-        self::assertInstanceOf(
-            \ReflectionNamedType::class,
-            $returnType,
-            sprintf('Data provider in "%s" with name "%s" has no return type.', $dataProvider->getDeclaringClass()->getName(), $dataProviderName)
-        );
-
-        $returnTypeName = $returnType->getName();
-
-        self::assertTrue(
-            'array' === $returnTypeName || 'iterable' === $returnTypeName,
-            sprintf('Data provider in "%s" with name "%s" has return type "%s", expected "array" or "iterable".', $dataProvider->getDeclaringClass()->getName(), $dataProviderName, $returnTypeName)
-        );
-    }
-
-    /**
-     * @dataProvider provideDataProviderMethodCases
-     */
     public function testThatTestDataProvidersAreCorrectlyNamed(string $testClassName, \ReflectionMethod $dataProvider): void
     {
         $dataProviderName = $dataProvider->getShortName();
