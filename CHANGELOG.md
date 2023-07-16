@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.21.3
+---------------------
+
+* Revert "DX: encourage to provide wider description" (#7155)
+
 Changelog for v3.21.2
 ---------------------
 
