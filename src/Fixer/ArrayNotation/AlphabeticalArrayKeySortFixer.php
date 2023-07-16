@@ -54,7 +54,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                     ['sort_special_key_mode' => 'special_case_on_top']
                 ),
             ],
-            'Alphabetically sorts any keyed array on its key values.',
+            'Use this fixer when you want a standardised representation of your keyed arrays; it will sort the numeric and string keys of your arrays alphabetically. Special keys, like concatenated ones, are kept in the same order but are either moved to the top or bottom (default) according to the configuration option.',
             'Risky when the order of the array has an impact on the code execution.'
         );
     }

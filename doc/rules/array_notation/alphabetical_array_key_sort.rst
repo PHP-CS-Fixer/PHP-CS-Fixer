@@ -7,7 +7,10 @@ Sorts keyed arrays alphabetically.
 Description
 -----------
 
-Alphabetically sorts any keyed array on its key values.
+Use this fixer when you want a standardised representation of your keyed arrays;
+it will sort the numeric and string keys of your arrays alphabetically. Special
+keys, like concatenated ones, are kept in the same order but are either moved to
+the top or bottom (default) according to the configuration option.
 
 Warning
 -------
