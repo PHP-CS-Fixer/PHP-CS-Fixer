@@ -31,8 +31,6 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Fixer for rules defined in PSR2 ¶4.4, ¶4.6.
- *
  * @author Kuanhung Chen <ericj.tw@gmail.com>
  */
 final class MethodArgumentSpaceFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
@@ -92,7 +90,8 @@ SAMPLE
                     new VersionSpecification(7_03_00),
                     ['after_heredoc' => true]
                 ),
-            ]
+            ],
+            'This fixer covers rules defined in PSR2 ¶4.4, ¶4.6.'
         );
     }
 
