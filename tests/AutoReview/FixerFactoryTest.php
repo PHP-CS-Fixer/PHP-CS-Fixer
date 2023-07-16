@@ -372,6 +372,9 @@ final class FixerFactoryTest extends TestCase
             'class_keyword_remove' => [
                 'no_unused_imports',
             ],
+            'clean_namespace' => [
+                'php_unit_data_provider_return_type',
+            ],
             'combine_consecutive_issets' => [
                 'multiline_whitespace_before_semicolons',
                 'no_singleline_whitespace_before_semicolons',
@@ -674,6 +677,9 @@ final class FixerFactoryTest extends TestCase
             ],
             'php_unit_construct' => [
                 'php_unit_dedicate_assert',
+            ],
+            'php_unit_data_provider_return_type' => [
+                'return_type_declaration',
             ],
             'php_unit_dedicate_assert' => [
                 'no_unused_imports',

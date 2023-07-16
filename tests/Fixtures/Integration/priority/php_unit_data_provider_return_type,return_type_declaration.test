@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: php_unit_data_provider_return_type,return_type_declaration.
+--RULESET--
+{"php_unit_data_provider_return_type": true, "return_type_declaration": {"space_before": "one"}}
+--EXPECT--
+<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideFooCases
+     */
+    function testFoo() {}
+    function provideFooCases() : iterable {}
+}
+
+--INPUT--
+<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideFooCases
+     */
+    function testFoo() {}
+    function provideFooCases() {}
+}
