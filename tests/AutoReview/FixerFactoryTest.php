@@ -869,6 +869,13 @@ final class FixerFactoryTest extends TestCase
                 'phpdoc_no_empty_return',
                 'return_type_declaration',
             ],
+            'yield_from_array_to_yields' => [
+                'blank_line_before_statement',
+                'no_extra_blank_lines',
+                'no_multiple_statements_per_line',
+                'no_whitespace_in_blank_line',
+                'statement_indentation',
+            ],
         ];
     }
 

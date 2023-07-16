@@ -63,6 +63,9 @@ Array Notation
 - `whitespace_after_comma_in_array <./array_notation/whitespace_after_comma_in_array.rst>`_
 
   In array declaration, there MUST be a whitespace after each comma.
+- `yield_from_array_to_yields <./array_notation/yield_from_array_to_yields.rst>`_
+
+  Yield from array must be unpacked to series of yields.
 
 Basic
 -----

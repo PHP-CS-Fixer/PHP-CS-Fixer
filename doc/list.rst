@@ -3278,6 +3278,14 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\WhitespaceAfterCommaInArrayFixer <./../src/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixer.php>`_
+-  `yield_from_array_to_yields <./rules/array_notation/yield_from_array_to_yields.rst>`_
+
+   Yield from array must be unpacked to series of yields.
+
+   The conversion will make the array in ``yield from`` changed in arrays of 1
+   less dimension.
+
+   `Source PhpCsFixer\\Fixer\\ArrayNotation\\YieldFromArrayToYieldsFixer <./../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php>`_
 -  `yoda_style <./rules/control_structure/yoda_style.rst>`_
 
    Write conditions in Yoda style (``true``), non-Yoda style (``['equal' => false, 'identical' => false, 'less_and_greater' => false]``) or ignore those conditions (``null``) based on configuration.
