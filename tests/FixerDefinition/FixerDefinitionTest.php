@@ -27,7 +27,7 @@ final class FixerDefinitionTest extends TestCase
 {
     public function testGetSummary(): void
     {
-        $definition = new FixerDefinition('Foo', [], 'Bar');
+        $definition = new FixerDefinition('Foo', []);
 
         self::assertSame('Foo', $definition->getSummary());
     }
@@ -39,13 +39,17 @@ final class FixerDefinitionTest extends TestCase
             $this->prophesize(CodeSampleInterface::class)->reveal(),
         ];
 
-        $definition = new FixerDefinition('', $samples, '');
+        $definition = new FixerDefinition('', $samples);
 
         self::assertSame($samples, $definition->getCodeSamples());
     }
 
     public function testGetDescription(): void
     {
+        $definition = new FixerDefinition('', []);
+
+        self::assertNull($definition->getDescription());
+
         $definition = new FixerDefinition('', [], 'Foo');
 
         self::assertSame('Foo', $definition->getDescription());
@@ -53,12 +57,12 @@ final class FixerDefinitionTest extends TestCase
 
     public function testGetRiskyDescription(): void
     {
-        $definition = new FixerDefinition('', [], 'Foo');
+        $definition = new FixerDefinition('', []);
 
         self::assertNull($definition->getRiskyDescription());
 
-        $definition = new FixerDefinition('', [], 'Foo', 'Bar');
+        $definition = new FixerDefinition('', [], null, 'Foo');
 
-        self::assertSame('Bar', $definition->getRiskyDescription());
+        self::assertSame('Foo', $definition->getRiskyDescription());
     }
 }
