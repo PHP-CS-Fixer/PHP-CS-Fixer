@@ -13,7 +13,7 @@ namespace Acme;
 
 declare(ticks=1);
 
-final class FinalClass
+final class MyClass
 {
     function finalMethod(){}
 }
