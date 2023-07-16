@@ -3,6 +3,19 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.22.0
+---------------------
+
+* DX: add proper test for `SelfAccessorFixer` must run before `SelfAccessorFixer` (#7153)
+* DX: FixerFactoryTest - apply CS (#7154)
+* feature: Introduce `PhpUnitDataProviderReturnTypeFixer` (#7156)
+* feature: Introduce `YieldFromArrayToYieldsFixer` (#7114)
+
+Changelog for v3.21.3
+---------------------
+
+* Revert "DX: encourage to provide wider description" (#7155)
+
 Changelog for v3.21.2
 ---------------------
 
