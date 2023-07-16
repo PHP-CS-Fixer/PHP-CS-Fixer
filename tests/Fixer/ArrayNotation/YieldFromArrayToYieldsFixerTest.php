@@ -168,7 +168,7 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                function foo(): array {
+                function foo() {
                     return [
                         1,
                         yield from [2, 3],
