@@ -2,7 +2,13 @@
 Rule ``php_unit_data_provider_return_type``
 ===========================================
 
-The type returned by data provider must be ``iterable``.
+The return type of PHPUnit data provider must be ``iterable``.
+
+Description
+-----------
+
+Data provider must return ``iterable``, either an array of arrays or an object
+that implements the ``Traversable`` interface.
 
 Warning
 -------

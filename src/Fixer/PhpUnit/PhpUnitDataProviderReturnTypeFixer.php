@@ -32,7 +32,7 @@ final class PhpUnitDataProviderReturnTypeFixer extends AbstractPhpUnitFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'The type returned by data provider must be `iterable`.',
+            'The return type of PHPUnit data provider must be `iterable`.',
             [
                 new CodeSample(
                     '<?php
@@ -57,7 +57,7 @@ class FooTest extends TestCase {
 ',
                 ),
             ],
-            null,
+            'Data provider must return `iterable`, either an array of arrays or an object that implements the `Traversable` interface.',
             'Risky when relying on signature of the data provider.',
         );
     }

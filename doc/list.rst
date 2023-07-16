@@ -2467,7 +2467,10 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderNameFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderNameFixer.php>`_
 -  `php_unit_data_provider_return_type <./rules/php_unit/php_unit_data_provider_return_type.rst>`_
 
-   The type returned by data provider must be ``iterable``.
+   The return type of PHPUnit data provider must be ``iterable``.
+
+   Data provider must return ``iterable``, either an array of arrays or an
+   object that implements the ``Traversable`` interface.
 
    *warning risky* Risky when relying on signature of the data provider.
 
