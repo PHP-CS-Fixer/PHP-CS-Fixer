@@ -168,17 +168,17 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                function foo() {
-                     '.'
-                        yield "this element is regular string";
-                        yield yield from ["here", "are", "nested", "strings"];
-                        yield "next elements will be an arrow function reference";
-                        yield fn() => [yield 1, yield from [2, 3]];
-                        yield fn() => [yield from [1, 2], yield 3];
-                        yield fn() => [yield from array(1, 2), yield 3]
-                    ;
+                function foo(): array {
+                    return [
+                        1,
+                        yield from [2, 3],
+                        4,
+                    ];
                 }
             ',
+        ];
+
+        yield [
             '<?php
                 function foo() {
                     yield from [
@@ -190,6 +190,21 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
                         fn() => [yield from array(1, 2), yield 3]
                     ];
                 }
+            ',
+        ];
+
+        yield [
+            '<?php
+                 yield 0; yield 1;
+                 yield 2; yield 3;
+                yield from [4, yield from [5, 6], 7];
+                 yield 8; yield 9;
+            ',
+            '<?php
+                yield from [0, 1];
+                yield from [2, 3];
+                yield from [4, yield from [5, 6], 7];
+                yield from [8, 9];
             ',
         ];
     }

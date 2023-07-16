@@ -61,36 +61,16 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         /**
-         * @var array<int, Token>
+         * @var array<int, Token> $inserts
          */
         $inserts = [];
 
-        for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_YIELD_FROM)) {
-                continue;
-            }
-
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if (!$tokens[$prevIndex]->equalsAny([';', '{'])) {
-                continue;
-            }
-
-            $arrayStartIndex = $tokens->getNextMeaningfulToken($index);
-
-            if (!$tokens[$arrayStartIndex]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
-                continue;
-            }
-
+        foreach ($this->getYieldsFromToUnpack($tokens) as $index => [$startIndex, $endIndex]) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
 
-            if ($tokens[$arrayStartIndex]->isGivenKind(T_ARRAY)) {
-                $startIndex = $tokens->getNextTokenOfKind($arrayStartIndex, ['(']);
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
-
-                $tokens->clearTokenAndMergeSurroundingWhitespace($arrayStartIndex); // clear `array` from `array(`
-            } else {
-                $startIndex = $arrayStartIndex;
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
+            if ($tokens[$startIndex]->equals('(')) {
+                $prevStartIndex = $tokens->getPrevMeaningfulToken($startIndex);
+                $tokens->clearTokenAndMergeSurroundingWhitespace($prevStartIndex); // clear `array` from `array(`
             }
 
             $tokens->clearTokenAndMergeSurroundingWhitespace($startIndex);
@@ -123,6 +103,49 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
         }
 
         $tokens->insertSlices($inserts);
+    }
+
+    /**
+     * @return array<int, array<int>>
+     */
+    private function getYieldsFromToUnpack(Tokens $tokens): array
+    {
+        $yieldsFromToUnpack = [];
+        $tokensCount = $tokens->count();
+        $index = 0;
+        while (++$index < $tokensCount) {
+            if (!$tokens[$index]->isGivenKind(T_YIELD_FROM)) {
+                continue;
+            }
+
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+            if (!$tokens[$prevIndex]->equalsAny([';', '{', [T_OPEN_TAG]])) {
+                continue;
+            }
+
+            $arrayStartIndex = $tokens->getNextMeaningfulToken($index);
+
+            if (!$tokens[$arrayStartIndex]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+                continue;
+            }
+
+            if ($tokens[$arrayStartIndex]->isGivenKind(T_ARRAY)) {
+                $startIndex = $tokens->getNextTokenOfKind($arrayStartIndex, ['(']);
+                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+            } else {
+                $startIndex = $arrayStartIndex;
+                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
+            }
+
+            // is there any nested "yield from"?
+            if ([] !== $tokens->findGivenKind(T_YIELD_FROM, $startIndex, $endIndex)) {
+                continue;
+            }
+
+            $yieldsFromToUnpack[$index] = [$startIndex, $endIndex];
+        }
+
+        return $yieldsFromToUnpack;
     }
 
     /**
