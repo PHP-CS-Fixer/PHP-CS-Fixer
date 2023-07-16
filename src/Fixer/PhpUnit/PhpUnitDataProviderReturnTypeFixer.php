@@ -109,6 +109,7 @@ class FooTest extends TestCase {
             $typeStartIndex = $tokens->getNextMeaningfulToken($typeAnalysis->getStartIndex() - 1);
             $typeEndIndex = $typeAnalysis->getEndIndex();
 
+            // @TODO: drop condition and it's body when PHP 8+ is required
             if ($tokens->generatePartialCode($typeStartIndex, $typeEndIndex) !== $typeAnalysis->getName()) {
                 continue;
             }
