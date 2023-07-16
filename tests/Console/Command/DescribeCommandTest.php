@@ -187,7 +187,7 @@ Fixing examples:
         $fixer->getName()->willReturn($fixerName);
         $fixer->getPriority()->willReturn(0);
         $fixer->isRisky()->willReturn(true);
-        $fixer->getDefinition()->willReturn(new FixerDefinition('Fixes stuff.', [], 'desc'));
+        $fixer->getDefinition()->willReturn(new FixerDefinition('Fixes stuff.', []));
         $mock = $fixer->reveal();
 
         $fixerFactory = new FixerFactory();
@@ -229,7 +229,6 @@ Fixing examples:
         $expected =
 "Description of Vendor/describe_fixture rule.
 Fixture for describe command.
-Description.
 
 Fixing examples:
  * Example #1.
