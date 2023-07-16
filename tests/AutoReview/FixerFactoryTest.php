@@ -777,7 +777,8 @@ final class FixerFactoryTest extends TestCase
             ],
             'protected_to_private' => [
                 'ordered_class_elements',
-            ], 'psr_autoloading' => [
+            ],
+            'psr_autoloading' => [
                 'self_accessor',
             ],
             'regular_callable_call' => [
