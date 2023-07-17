@@ -38,6 +38,7 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
         return [
             ['<?php /** @Entity */ class MyEntity {}'],
             ['<?php use Doctrine\ORM\Mapping as ORM; /** @ORM\Entity */ class MyEntity {}'],
+            ['<?php use Doctrine\ORM\Mapping as ORM; /** @ORM\Entity(repositoryClass="MyRepository") */ class MyEntity {}'],
             ['<?php use Doctrine\ORM\Mapping; /** @Mapping\Entity */ class MyEntity {}'],
             ['<?php use Doctrine\ORM; /** @ORM\Mapping\Entity */ class MyEntity {}'],
             ['<?php /** @Document */ class MyDocument {}'],
@@ -91,6 +92,7 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
         return [
             ['<?php #[Entity] class MyEntity {}'],
             ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] class MyEntity {}'],
+            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity(repositoryClass:"MyRepository")] class MyEntity {}'],
             ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] class MyEntity {}'],
             ['<?php #[Document] class MyDocument {}'],
             ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] class MyEntity {}'],
