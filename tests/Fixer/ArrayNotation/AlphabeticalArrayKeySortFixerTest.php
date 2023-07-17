@@ -101,6 +101,10 @@ final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
                 '<?php ["c" => "c", "a" => "a", "b" => "b"];',
             ],
             [
+                '<?php ["a" => "a", "b" => "b", "c" => "c", 0 => 0, 1 => 1, 2 => 2];',
+                '<?php [2 => 2, "c" => "c", 0 => 0, "a" => "a", "b" => "b", 1 => 1];',
+            ],
+            [
                 '<?php [1 => "one", 2 => "two", 3 => "three"];',
                 '<?php [3 => "three", 1 => "one", 2 => "two"];',
             ],

@@ -122,7 +122,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                             $valueRange = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $valueRange);
                         }
 
-                        if (!$valueRange || $valueRange > $endIndex) {
+                        if ($valueRange === null || $valueRange === 0 || $valueRange > $endIndex) {
                             $valueRange = $endIndex;
                         }
 
