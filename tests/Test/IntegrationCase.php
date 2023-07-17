@@ -106,7 +106,8 @@ final class IntegrationCase
     }
 
     /**
-     * @return int|array<string>
+     * @return array<string>|int
+     *
      * @phpstan-return ($name is 'php' ? int : array<string>)
      */
     public function getRequirement(string $name)
