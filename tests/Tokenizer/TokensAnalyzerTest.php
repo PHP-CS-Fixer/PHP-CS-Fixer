@@ -1557,134 +1557,161 @@ abstract class Baz
 
     public static function provideIsBinaryOperatorCases(): iterable
     {
-        yield from [
-            [
-                [8 => true],
-                '<?php echo $a[1] + 1;',
-            ],
-            [
-                [8 => true],
-                '<?php echo $a{1} + 1;',
-            ],
-            [
-                [3 => true],
-                '<?php $a .= $b; ?>',
-            ],
-            [
-                [3 => true],
-                '<?php $a . \'a\' ?>',
-            ],
-            [
-                [3 => true],
-                '<?php $a &+ $b;',
-            ],
-            [
-                [3 => true],
-                '<?php $a && $b;',
-            ],
-            [
-                [3 => true],
-                '<?php $a & $b;',
-            ],
-            [
-                [4 => true],
-                '<?php [] + [];',
-            ],
-            [
-                [3 => true],
-                '<?php $a + $b;',
-            ],
-            [
-                [3 => true],
-                '<?php 1 + $b;',
-            ],
-            [
-                [3 => true],
-                '<?php 0.2 + $b;',
-            ],
-            [
-                [6 => true],
-                '<?php $a[1] + $b;',
-            ],
-            [
-                [3 => true],
-                '<?php FOO + $b;',
-            ],
-            [
-                [5 => true],
-                '<?php foo() + $b;',
-            ],
-            [
-                [6 => true],
-                '<?php ${"foo"} + $b;',
-            ],
-            [
-                [2 => true],
-                '<?php $a+$b;',
-            ],
-            [
-                [5 => true],
-                '<?php $a /* foo */  +  /* bar */  $b;',
-            ],
-            [
-                [3 => true],
-                '<?php $a =
-$b;',
-            ],
+        yield [
+            [8 => true],
+            '<?php echo $a[1] + 1;',
+        ];
 
-            [
-                [3 => true],
-                '<?php $a
+        yield [
+            [8 => true],
+            '<?php echo $a{1} + 1;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php $a .= $b; ?>',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php $a . \'a\' ?>',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php $a &+ $b;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php $a && $b;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php $a & $b;',
+        ];
+
+        yield [
+            [4 => true],
+            '<?php [] + [];',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php $a + $b;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php 1 + $b;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php 0.2 + $b;',
+        ];
+
+        yield [
+            [6 => true],
+            '<?php $a[1] + $b;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php FOO + $b;',
+        ];
+
+        yield [
+            [5 => true],
+            '<?php foo() + $b;',
+        ];
+
+        yield [
+            [6 => true],
+            '<?php ${"foo"} + $b;',
+        ];
+
+        yield [
+            [2 => true],
+            '<?php $a+$b;',
+        ];
+
+        yield [
+            [5 => true],
+            '<?php $a /* foo */  +  /* bar */  $b;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php $a =
+$b;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php $a
 = $b;',
-            ],
-            [
-                [3 => true, 9 => true, 12 => false],
-                '<?php $a = array("b" => "c", );',
-            ],
-            [
-                [3 => true, 5 => false],
-                '<?php $a * -$b;',
-            ],
-            [
-                [3 => true, 5 => false, 8 => true, 10 => false],
-                '<?php $a = -2 / +5;',
-            ],
-            [
-                [3 => true, 5 => false],
-                '<?php $a = &$b;',
-            ],
-            [
-                [2 => false, 4 => true],
-                '<?php $a++ + $b;',
-            ],
-            [
-                [7 => true],
-                '<?php $a = FOO & $bar;',
-            ],
-            [
-                [3 => true],
-                '<?php __LINE__ - 1;',
-            ],
-            [
-                [5 => true],
-                '<?php `echo 1` + 1;',
-            ],
-            [
-                [3 => true],
-                '<?php $a ** $b;',
-            ],
-            [
-                [3 => true],
-                '<?php $a **= $b;',
-            ],
-            [
-                [9 => false],
-                '<?php $a = "{$value}-{$theSwitch}";',
-            ],
-            [
-                [3 => false],
-                '<?=$path?>-<?=$id?>',
-            ],
+        ];
+
+        yield [
+            [3 => true, 9 => true, 12 => false],
+            '<?php $a = array("b" => "c", );',
+        ];
+
+        yield [
+            [3 => true, 5 => false],
+            '<?php $a * -$b;',
+        ];
+
+        yield [
+            [3 => true, 5 => false, 8 => true, 10 => false],
+            '<?php $a = -2 / +5;',
+        ];
+
+        yield [
+            [3 => true, 5 => false],
+            '<?php $a = &$b;',
+        ];
+
+        yield [
+            [2 => false, 4 => true],
+            '<?php $a++ + $b;',
+        ];
+
+        yield [
+            [7 => true],
+            '<?php $a = FOO & $bar;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php __LINE__ - 1;',
+        ];
+
+        yield [
+            [5 => true],
+            '<?php `echo 1` + 1;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php $a ** $b;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php $a **= $b;',
+        ];
+
+        yield [
+            [9 => false],
+            '<?php $a = "{$value}-{$theSwitch}";',
+        ];
+
+        yield [
+            [3 => false],
+            '<?=$path?>-<?=$id?>',
         ];
 
         $operators = [

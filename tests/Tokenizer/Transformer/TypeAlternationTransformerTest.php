@@ -45,36 +45,39 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        yield from [
-            'no namespace' => [
-                '<?php try {} catch (ExceptionType1 | ExceptionType2 | ExceptionType3 $e) {}',
-                [
-                    11 => CT::T_TYPE_ALTERNATION,
-                    15 => CT::T_TYPE_ALTERNATION,
-                ],
+        yield 'no namespace' => [
+            '<?php try {} catch (ExceptionType1 | ExceptionType2 | ExceptionType3 $e) {}',
+            [
+                11 => CT::T_TYPE_ALTERNATION,
+                15 => CT::T_TYPE_ALTERNATION,
             ],
-            'comments & spacing' => [
-                "<?php try {/* 1 */} catch (/* 2 */ExceptionType1/* 3 */\t\n|  \n\t/* 4 */\n\tExceptionType2 \$e) {}",
-                [
-                    14 => CT::T_TYPE_ALTERNATION,
-                ],
+        ];
+
+        yield 'comments & spacing' => [
+            "<?php try {/* 1 */} catch (/* 2 */ExceptionType1/* 3 */\t\n|  \n\t/* 4 */\n\tExceptionType2 \$e) {}",
+            [
+                14 => CT::T_TYPE_ALTERNATION,
             ],
-            'native namespace only' => [
-                '<?php try {} catch (\ExceptionType1 | \ExceptionType2 | \ExceptionType3 $e) {}',
-                [
-                    12 => CT::T_TYPE_ALTERNATION,
-                    17 => CT::T_TYPE_ALTERNATION,
-                ],
+        ];
+
+        yield 'native namespace only' => [
+            '<?php try {} catch (\ExceptionType1 | \ExceptionType2 | \ExceptionType3 $e) {}',
+            [
+                12 => CT::T_TYPE_ALTERNATION,
+                17 => CT::T_TYPE_ALTERNATION,
             ],
-            'namespaces' => [
-                '<?php try {} catch (A\ExceptionType1 | \A\ExceptionType2 | \A\B\C\ExceptionType3 $e) {}',
-                [
-                    13 => CT::T_TYPE_ALTERNATION,
-                    20 => CT::T_TYPE_ALTERNATION,
-                ],
+        ];
+
+        yield 'namespaces' => [
+            '<?php try {} catch (A\ExceptionType1 | \A\ExceptionType2 | \A\B\C\ExceptionType3 $e) {}',
+            [
+                13 => CT::T_TYPE_ALTERNATION,
+                20 => CT::T_TYPE_ALTERNATION,
             ],
-            'do not fix cases' => [
-                '<?php
+        ];
+
+        yield 'do not fix cases' => [
+            '<?php
                     echo 2 | 4;
                     echo "aaa" | "bbb";
                     echo F_OK | F_ERR;
@@ -89,31 +92,32 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
                     const A = B|C;
                     const B = D::X|C ?>
                 ',
-                [
-                    6 => '|',
-                    15 => '|',
-                    24 => '|',
-                    35 => '|',
-                    52 => '|',
-                    76 => '|',
-                    94 => '|',
-                    105 => '|',
-                    118 => '|',
-                ],
+            [
+                6 => '|',
+                15 => '|',
+                24 => '|',
+                35 => '|',
+                52 => '|',
+                76 => '|',
+                94 => '|',
+                105 => '|',
+                118 => '|',
             ],
-            'do not fix, close/open' => [
-                '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
-                [
-                    16 => '|',
-                    18 => '|',
-                ],
+        ];
+
+        yield 'do not fix, close/open' => [
+            '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
+            [
+                16 => '|',
+                18 => '|',
             ],
-            'do not fix, foreach' => [
-                '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
-                [
-                    15 => '|',
-                    17 => '|',
-                ],
+        ];
+
+        yield 'do not fix, foreach' => [
+            '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
+            [
+                15 => '|',
+                17 => '|',
             ],
         ];
     }

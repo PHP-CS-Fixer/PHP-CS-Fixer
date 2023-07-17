@@ -247,64 +247,73 @@ final class UtilsTest extends TestCase
      */
     public static function provideNaturalLanguageJoinCases(): iterable
     {
-        yield from [
-            [
-                '"a"',
-                ['a'],
-            ],
-            [
-                '"a" and "b"',
-                ['a', 'b'],
-            ],
-            [
-                '"a", "b" and "c"',
-                ['a', 'b', 'c'],
-            ],
-            [
-                '\'a\'',
-                ['a'],
-                '\'',
-            ],
-            [
-                '\'a\' and \'b\'',
-                ['a', 'b'],
-                '\'',
-            ],
-            [
-                '\'a\', \'b\' and \'c\'',
-                ['a', 'b', 'c'],
-                '\'',
-            ],
-            [
-                '?a?',
-                ['a'],
-                '?',
-            ],
-            [
-                '?a? and ?b?',
-                ['a', 'b'],
-                '?',
-            ],
-            [
-                '?a?, ?b? and ?c?',
-                ['a', 'b', 'c'],
-                '?',
-            ],
-            [
-                'a',
-                ['a'],
-                '',
-            ],
-            [
-                'a and b',
-                ['a', 'b'],
-                '',
-            ],
-            [
-                'a, b and c',
-                ['a', 'b', 'c'],
-                '',
-            ],
+        yield [
+            '"a"',
+            ['a'],
+        ];
+
+        yield [
+            '"a" and "b"',
+            ['a', 'b'],
+        ];
+
+        yield [
+            '"a", "b" and "c"',
+            ['a', 'b', 'c'],
+        ];
+
+        yield [
+            '\'a\'',
+            ['a'],
+            '\'',
+        ];
+
+        yield [
+            '\'a\' and \'b\'',
+            ['a', 'b'],
+            '\'',
+        ];
+
+        yield [
+            '\'a\', \'b\' and \'c\'',
+            ['a', 'b', 'c'],
+            '\'',
+        ];
+
+        yield [
+            '?a?',
+            ['a'],
+            '?',
+        ];
+
+        yield [
+            '?a? and ?b?',
+            ['a', 'b'],
+            '?',
+        ];
+
+        yield [
+            '?a?, ?b? and ?c?',
+            ['a', 'b', 'c'],
+            '?',
+        ];
+
+        yield [
+            'a',
+            ['a'],
+            '',
+        ];
+
+        yield [
+            'a and b',
+            ['a', 'b'],
+            '',
+        ];
+
+        yield [
+            'a, b and c',
+            ['a', 'b', 'c'],
+            '',
         ];
     }
 

@@ -34,206 +34,245 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield from [
-            [
-                '<?php 1**2;',
-                '<?php pow(1,2);',
-            ],
-            [
-                '<?php 1**2?>',
-                '<?php pow(1,2)?>',
-            ],
-            [
-                '<?php 1.2**2.3;',
-                '<?php pow(1.2,2.3);',
-            ],
-            [
-                '<?php echo (-2)** 3;',
-                '<?php echo pow(-2, 3);',
-            ],
-            [
-                '<?php echo (-2)**( -3);',
-                '<?php echo pow(-2, -3);',
-            ],
-            [
-                '<?php echo (-2)**( 1-3);',
-                '<?php echo pow(-2, 1-3);',
-            ],
-            [
-                '<?php echo (-2)**( -1-3);',
-                '<?php echo pow(-2, -1-3);',
-            ],
-            [
-                '<?php $a = 3** +2;',
-                '<?php $a = pow(3, +2);',
-            ],
-            [
-                '<?php $a--**++$b;',
-                '<?php pow($a--,++$b);',
-            ],
-            [
-                '<?php 1//
+        yield [
+            '<?php 1**2;',
+            '<?php pow(1,2);',
+        ];
+
+        yield [
+            '<?php 1**2?>',
+            '<?php pow(1,2)?>',
+        ];
+
+        yield [
+            '<?php 1.2**2.3;',
+            '<?php pow(1.2,2.3);',
+        ];
+
+        yield [
+            '<?php echo (-2)** 3;',
+            '<?php echo pow(-2, 3);',
+        ];
+
+        yield [
+            '<?php echo (-2)**( -3);',
+            '<?php echo pow(-2, -3);',
+        ];
+
+        yield [
+            '<?php echo (-2)**( 1-3);',
+            '<?php echo pow(-2, 1-3);',
+        ];
+
+        yield [
+            '<?php echo (-2)**( -1-3);',
+            '<?php echo pow(-2, -1-3);',
+        ];
+
+        yield [
+            '<?php $a = 3** +2;',
+            '<?php $a = pow(3, +2);',
+        ];
+
+        yield [
+            '<?php $a--**++$b;',
+            '<?php pow($a--,++$b);',
+        ];
+
+        yield [
+            '<?php 1//
                 #
                 **2/**/ /**  */;',
-                '<?php pow(1//
+            '<?php pow(1//
                 #
                 ,2/**/ /**  */);',
-            ],
-            [
-                '<?php /**/a(3/**/,4)**$pow;//pow(1,2);',
-                '<?php pow/**/(a(3/**/,4),$pow);//pow(1,2);',
-            ],
-            [
-                '<?php \a\pow(5,6);7**8?>',
-                '<?php \a\pow(5,6);pow(7,8)?>',
-            ],
-            [
-                '<?php (9**10)**(11**12);',
-                '<?php pow(pow(9,10),pow(11,12));',
-            ],
-            [
-                '<?php (1 + 2)**( 3 * 4);',
-                '<?php pow(1 + 2, 3 * 4);',
-            ],
-            [
-                '<?php ($b = 4)** 3;',
-                '<?php pow($b = 4, 3);',
-            ],
-            [
-                '<?php 13**14;',
-                '<?php \pow(13,14);',
-            ],
-            [
-                '<?php $a = 15 + (16** 17)** 18;',
-                '<?php $a = 15 + \pow(\pow(16, 17), 18);',
-            ],
-            [
-                '<?php $a = $b** $c($d + 1);',
-                '<?php $a = pow($b, $c($d + 1));',
-            ],
-            [
-                '<?php $a = ($a+$b)** ($c-$d);',
-                '<?php $a = pow(($a+$b), ($c-$d));',
-            ],
-            [
-                "<?php \$a = 2**( '1'.'2'). 2;",
-                "<?php \$a = pow(2, '1'.'2'). 2;",
-            ],
-            [
-                '<?php A::B** 2;\A\B\C::B** 2;',
-                '<?php pow(A::B, 2);pow(\A\B\C::B, 2);',
-            ],
-            [
-                '<?php $obj->{$bar}** $obj->{$foo};',
-                '<?php pow($obj->{$bar}, $obj->{$foo});',
-            ],
-            [
-                '<?php echo ${$bar}** ${$foo};',
-                '<?php echo pow(${$bar}, ${$foo});',
-            ],
-            [
-                '<?php echo $a[2^3+1]->test(1,2)** $b[2+$c];',
-                '<?php echo pow($a[2^3+1]->test(1,2), $b[2+$c]);',
-            ],
-            [
-                '<?php (int)"2"**(float)"3.0";',
-                '<?php pow((int)"2",(float)"3.0");',
-            ],
-            [
-                '<?php namespace\Foo::BAR** 2;',
-                '<?php pow(namespace\Foo::BAR, 2);',
-            ],
-            [
-                '<?php (-1)**( (-2)**( (-3)**( (-4)**( (-5)**( (-6)**( (-7)**( (-8)**( (-9)** 3))))))));',
-                '<?php pow(-1, pow(-2, pow(-3, pow(-4, pow(-5, pow(-6, pow(-7, pow(-8, pow(-9, 3)))))))));',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php /**/a(3/**/,4)**$pow;//pow(1,2);',
+            '<?php pow/**/(a(3/**/,4),$pow);//pow(1,2);',
+        ];
+
+        yield [
+            '<?php \a\pow(5,6);7**8?>',
+            '<?php \a\pow(5,6);pow(7,8)?>',
+        ];
+
+        yield [
+            '<?php (9**10)**(11**12);',
+            '<?php pow(pow(9,10),pow(11,12));',
+        ];
+
+        yield [
+            '<?php (1 + 2)**( 3 * 4);',
+            '<?php pow(1 + 2, 3 * 4);',
+        ];
+
+        yield [
+            '<?php ($b = 4)** 3;',
+            '<?php pow($b = 4, 3);',
+        ];
+
+        yield [
+            '<?php 13**14;',
+            '<?php \pow(13,14);',
+        ];
+
+        yield [
+            '<?php $a = 15 + (16** 17)** 18;',
+            '<?php $a = 15 + \pow(\pow(16, 17), 18);',
+        ];
+
+        yield [
+            '<?php $a = $b** $c($d + 1);',
+            '<?php $a = pow($b, $c($d + 1));',
+        ];
+
+        yield [
+            '<?php $a = ($a+$b)** ($c-$d);',
+            '<?php $a = pow(($a+$b), ($c-$d));',
+        ];
+
+        yield [
+            "<?php \$a = 2**( '1'.'2'). 2;",
+            "<?php \$a = pow(2, '1'.'2'). 2;",
+        ];
+
+        yield [
+            '<?php A::B** 2;\A\B\C::B** 2;',
+            '<?php pow(A::B, 2);pow(\A\B\C::B, 2);',
+        ];
+
+        yield [
+            '<?php $obj->{$bar}** $obj->{$foo};',
+            '<?php pow($obj->{$bar}, $obj->{$foo});',
+        ];
+
+        yield [
+            '<?php echo ${$bar}** ${$foo};',
+            '<?php echo pow(${$bar}, ${$foo});',
+        ];
+
+        yield [
+            '<?php echo $a[2^3+1]->test(1,2)** $b[2+$c];',
+            '<?php echo pow($a[2^3+1]->test(1,2), $b[2+$c]);',
+        ];
+
+        yield [
+            '<?php (int)"2"**(float)"3.0";',
+            '<?php pow((int)"2",(float)"3.0");',
+        ];
+
+        yield [
+            '<?php namespace\Foo::BAR** 2;',
+            '<?php pow(namespace\Foo::BAR, 2);',
+        ];
+
+        yield [
+            '<?php (-1)**( (-2)**( (-3)**( (-4)**( (-5)**( (-6)**( (-7)**( (-8)**( (-9)** 3))))))));',
+            '<?php pow(-1, pow(-2, pow(-3, pow(-4, pow(-5, pow(-6, pow(-7, pow(-8, pow(-9, 3)))))))));',
+        ];
+
+        yield [
+            '<?php
                     $z = 1**2;
                     $a = 1**( 2**( 3**( 4**( 5**( 6**( 7**( 8**( 9** 3))))))));
                     $b = 1**( 2**( 3**( 4**( 5**( 6**( 7**( 8**( 9** 3))))))));
                     $d = 1**2;
                 ',
-                '<?php
+            '<?php
                     $z = pow(1,2);
                     $a = \pow(1, \poW(2, \pOw(3, \pOW(4, \Pow(5, \PoW(6, \POw(7, \POW(8, \pow(9, 3)))))))));
                     $b = \pow(1, \pow(2, \pow(3, \pow(4, \pow(5, \pow(6, \pow(7, \pow(8, \pow(9, 3)))))))));
                     $d = pow(1,2);
                 ',
-            ],
-            [
-                '<?php $b = 3** __LINE__;',
-                '<?php $b = pow(3, __LINE__);',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php $b = 3** __LINE__;',
+            '<?php $b = pow(3, __LINE__);',
+        ];
+
+        yield [
+            '<?php
                     ($a-$b)**(
                     ($a-$b)**(
                     ($a-$b)**(
                     ($a-$b)**(
                     ($a-$b)**($a-$b)
                 ))));',
-                '<?php
+            '<?php
                     pow($a-$b,
                     pow($a-$b,
                     pow($a-$b,
                     pow($a-$b,
                     pow($a-$b,$a-$b)
                 ))));',
-            ],
-            [
-                '<?php (-1)**( $a** pow(1,2,3, ($a-3)** 4));',
-                '<?php pow(-1, pow($a, pow(1,2,3, pow($a-3, 4))));',
-            ],
-            [
-                '<?php 1**2    /**/ ?>',
-                '<?php pow(1,2)    /**/ ?>',
-            ],
-            [
-                '<?php ($$a)**( $$b);',
-                '<?php pow($$a, $$b);',
-            ],
-            [
-                '<?php [1, 2, 3, 4][$x]** 2;',
-                '<?php pow([1, 2, 3, 4][$x], 2);',
-            ],
-            [
-                '<?php echo +$a** 2;',
-                '<?php echo pow(+$a, 2);',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php (-1)**( $a** pow(1,2,3, ($a-3)** 4));',
+            '<?php pow(-1, pow($a, pow(1,2,3, pow($a-3, 4))));',
+        ];
+
+        yield [
+            '<?php 1**2    /**/ ?>',
+            '<?php pow(1,2)    /**/ ?>',
+        ];
+
+        yield [
+            '<?php ($$a)**( $$b);',
+            '<?php pow($$a, $$b);',
+        ];
+
+        yield [
+            '<?php [1, 2, 3, 4][$x]** 2;',
+            '<?php pow([1, 2, 3, 4][$x], 2);',
+        ];
+
+        yield [
+            '<?php echo +$a** 2;',
+            '<?php echo pow(+$a, 2);',
+        ];
+
+        yield [
+            '<?php
                 interface Test
                 {
                     public function pow($a, $b);
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 interface Test
                 {
                     public function &pow($a, $b);
                 }',
-            ],
-            [
-                '<?php echo $a[1]** $b[2+5];',
-                '<?php echo pow($a[1], $b[2+5]);',
-            ],
-            [
-                '<?php pow($b, ...$a);',
-            ],
-            [
-                '<?php echo +$a** 2;',
-                '<?php echo pow(+$a, 2,);',
-            ],
-            [
-                '<?php echo +$a** 2/*1*//*2*/;',
-                '<?php echo pow(+$a, 2/*1*/,/*2*/);',
-            ],
-            [
-                '<?php echo 10_0** 2;',
-                '<?php echo pow(10_0, 2);',
-            ],
+        ];
+
+        yield [
+            '<?php echo $a[1]** $b[2+5];',
+            '<?php echo pow($a[1], $b[2+5]);',
+        ];
+
+        yield [
+            '<?php pow($b, ...$a);',
+        ];
+
+        yield [
+            '<?php echo +$a** 2;',
+            '<?php echo pow(+$a, 2,);',
+        ];
+
+        yield [
+            '<?php echo +$a** 2/*1*//*2*/;',
+            '<?php echo pow(+$a, 2/*1*/,/*2*/);',
+        ];
+
+        yield [
+            '<?php echo 10_0** 2;',
+            '<?php echo pow(10_0, 2);',
         ];
     }
 

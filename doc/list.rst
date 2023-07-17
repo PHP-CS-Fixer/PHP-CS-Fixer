@@ -3299,6 +3299,8 @@ List of Available Rules
    The conversion will make the array in ``yield from`` changed in arrays of 1
    less dimension.
 
+   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\YieldFromArrayToYieldsFixer <./../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php>`_
 -  `yoda_style <./rules/control_structure/yoda_style.rst>`_
 

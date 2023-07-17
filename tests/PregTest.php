@@ -48,17 +48,23 @@ final class PregTest extends TestCase
 
     public static function providePatternValidationCases(): iterable
     {
-        yield from [
-            'invalid_blank' => ['', null, PregException::class],
-            'invalid_open' => ["\1", null, PregException::class, "'\1' found"],
-            'valid_control_character_delimiter' => ["\1\1", true],
-            'invalid_control_character_modifier' => ["\1\1\1", null, PregException::class, ' Unknown modifier '],
-            'valid_slate' => ['//', true],
-            'valid_paired' => ['()', true],
-            'paired_non_utf8_only' => ["((*UTF8)\xFF)", null, PregException::class, 'UTF-8'],
-            'valid_paired_non_utf8_only' => ["(\xFF)", true],
-            'php_version_dependent' => ['([\\R])', false, PregException::class, 'Compilation failed: escape sequence is invalid '],
-        ];
+        yield 'invalid_blank' => ['', null, PregException::class];
+
+        yield 'invalid_open' => ["\1", null, PregException::class, "'\1' found"];
+
+        yield 'valid_control_character_delimiter' => ["\1\1", true];
+
+        yield 'invalid_control_character_modifier' => ["\1\1\1", null, PregException::class, ' Unknown modifier '];
+
+        yield 'valid_slate' => ['//', true];
+
+        yield 'valid_paired' => ['()', true];
+
+        yield 'paired_non_utf8_only' => ["((*UTF8)\xFF)", null, PregException::class, 'UTF-8'];
+
+        yield 'valid_paired_non_utf8_only' => ["(\xFF)", true];
+
+        yield 'php_version_dependent' => ['([\\R])', false, PregException::class, 'Compilation failed: escape sequence is invalid '];
 
         $nullByteMessage = \PHP_VERSION_ID >= 8_02_00 ? 'NUL is not a valid modifier' : 'Null byte in regex';
 

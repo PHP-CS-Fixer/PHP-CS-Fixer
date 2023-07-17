@@ -57,294 +57,378 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield from [
-            [
-                '<?php $a = 1 + ($b + $c) === true ? 1 : 2;',
-                null,
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php $a = true === ($b + $c) ? 1 : 2;',
-                '<?php $a = ($b + $c) === true ? 1 : 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php
+        yield [
+            '<?php $a = 1 + ($b + $c) === true ? 1 : 2;',
+            null,
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php $a = true === ($b + $c) ? 1 : 2;',
+            '<?php $a = ($b + $c) === true ? 1 : 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php
 if ((1 === $a) === 1) {
     return;
 }',
-                '<?php
+            '<?php
 if (($a === 1) === 1) {
     return;
 }',
-                ['always_move_variable' => false],
-            ],
-            [
-                '<?php
+            ['always_move_variable' => false],
+        ];
+
+        yield [
+            '<?php
 if (true === (1 !== $foo[0])) {
     return;
 }',
-                '<?php
+            '<?php
 if (($foo[0] !== 1) === true) {
     return;
 }',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return 1 !== $a [$b];',
-                '<?php return $a [$b] !== 1;',
-            ],
-            [
-                '<?= 1 === $a ? 5 : 7;',
-                '<?= $a === 1 ? 5 : 7;',
-            ],
-            [
-                '<?php print 1 === 1343;',
-            ],
-            [
-                '<?php
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return 1 !== $a [$b];',
+            '<?php return $a [$b] !== 1;',
+        ];
+
+        yield [
+            '<?= 1 === $a ? 5 : 7;',
+            '<?= $a === 1 ? 5 : 7;',
+        ];
+
+        yield [
+            '<?php print 1 === 1343;',
+        ];
+
+        yield [
+            '<?php
                 echo 3 === $a ? 2 : 4;
                 ',
-                '<?php
+            '<?php
                 echo $a === 3 ? 2 : 4;
                 ',
-            ],
-            [
-                '<?php 1 === foo($a) ? 1 : 2;',
-                '<?php foo($a) === 1 ? 1 : 2;',
-            ],
-            [
-                '<?php 1 === $a::$a ? 1 : 2;',
-                '<?php $a::$a === 1 ? 1 : 2;',
-            ],
-            [
-                '<?php 1 === (bool) $a ? 8 : 7;',
-                '<?php (bool) $a === 1 ? 8 : 7;',
-            ],
-            [
-                '<?php 1 === new $a ? 1 : 2;',
-                '<?php new $a === 1 ? 1 : 2;',
-            ],
-            [
-                '<?php 1 === "a".$a ? 5 : 6;',
-                '<?php "a".$a === 1 ? 5 : 6;',
-            ],
-            [
-                '<?php 1 === __DIR__.$a ? 5 : 6;',
-                '<?php __DIR__.$a === 1 ? 5 : 6;',
-            ],
-            [
-                '<?php 1 === $a.$b ? 5 : 6;',
-                '<?php $a.$b === 1 ? 5 : 6;',
-            ],
-            [
-                '<?php echo 1 === (object) $a ? 8 : 7;',
-                '<?php echo (object) $a === 1 ? 8 : 7;',
-            ],
-            [
-                '<?php echo 1 === (int) $a ? 8 : 7;',
-                '<?php echo (int) $a === 1 ? 8 : 7;',
-            ],
-            [
-                '<?php echo 1 === (float) $a ? 8 : 7;',
-                '<?php echo (float) $a === 1 ? 8 : 7;',
-            ],
-            [
-                '<?php echo 1 === (string) $a ? 8 : 7;',
-                '<?php echo (string) $a === 1 ? 8 : 7;',
-            ],
-            [
-                '<?php echo 1 === (array) $a ? 8 : 7;',
-                '<?php echo (array) $a === 1 ? 8 : 7;',
-            ],
-            [
-                '<?php echo 1 === (bool) $a ? 8 : 7;',
-                '<?php echo (bool) $a === 1 ? 8 : 7;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php 1 === foo($a) ? 1 : 2;',
+            '<?php foo($a) === 1 ? 1 : 2;',
+        ];
+
+        yield [
+            '<?php 1 === $a::$a ? 1 : 2;',
+            '<?php $a::$a === 1 ? 1 : 2;',
+        ];
+
+        yield [
+            '<?php 1 === (bool) $a ? 8 : 7;',
+            '<?php (bool) $a === 1 ? 8 : 7;',
+        ];
+
+        yield [
+            '<?php 1 === new $a ? 1 : 2;',
+            '<?php new $a === 1 ? 1 : 2;',
+        ];
+
+        yield [
+            '<?php 1 === "a".$a ? 5 : 6;',
+            '<?php "a".$a === 1 ? 5 : 6;',
+        ];
+
+        yield [
+            '<?php 1 === __DIR__.$a ? 5 : 6;',
+            '<?php __DIR__.$a === 1 ? 5 : 6;',
+        ];
+
+        yield [
+            '<?php 1 === $a.$b ? 5 : 6;',
+            '<?php $a.$b === 1 ? 5 : 6;',
+        ];
+
+        yield [
+            '<?php echo 1 === (object) $a ? 8 : 7;',
+            '<?php echo (object) $a === 1 ? 8 : 7;',
+        ];
+
+        yield [
+            '<?php echo 1 === (int) $a ? 8 : 7;',
+            '<?php echo (int) $a === 1 ? 8 : 7;',
+        ];
+
+        yield [
+            '<?php echo 1 === (float) $a ? 8 : 7;',
+            '<?php echo (float) $a === 1 ? 8 : 7;',
+        ];
+
+        yield [
+            '<?php echo 1 === (string) $a ? 8 : 7;',
+            '<?php echo (string) $a === 1 ? 8 : 7;',
+        ];
+
+        yield [
+            '<?php echo 1 === (array) $a ? 8 : 7;',
+            '<?php echo (array) $a === 1 ? 8 : 7;',
+        ];
+
+        yield [
+            '<?php echo 1 === (bool) $a ? 8 : 7;',
+            '<?php echo (bool) $a === 1 ? 8 : 7;',
+        ];
+
+        yield [
+            '<?php
 if ($a = true === $obj instanceof A) {
     echo \'A\';
 }',
-                '<?php
+            '<?php
 if ($a = $obj instanceof A === true) {
     echo \'A\';
 }',
-            ],
-            [
-                '<?php echo 1 === !!$a ? 8 : 7;',
-                '<?php echo !!$a === 1 ? 8 : 7;',
-            ],
-            [
-                '<?php 1 === new $a ? 1 : 2;',
-                '<?php new $a === 1 ? 1 : 2;',
-            ],
-            [
-                '<?php $a = 1 === new b ? 1 : 2;',
-                '<?php $a = new b === 1 ? 1 : 2;',
-            ],
-            [
-                '<?php $a = 1 === empty($a) ? 1 : 2;',
-                '<?php $a = empty($a) === 1 ? 1 : 2;',
-            ],
-            [
-                '<?php $b = 1 === clone $a ? 5 : 9;',
-                '<?php $b = clone $a === 1 ? 5 : 9;',
-            ],
-            [
-                '<?php while(1 === $a ? 1 : 2){};',
-                '<?php while($a === 1 ? 1 : 2){};',
-            ],
-            [
-                '<?php $a = 1 === include_once $a ? 1 : 2;',
-                '<?php $a = include_once $a === 1 ? 1 : 2;',
-            ],
-            [
-                '<?php echo 1 === include $a ? 1 : 2;',
-                '<?php echo include $a === 1 ? 1 : 2;',
-            ],
-            [
-                '<?php echo 1 === require_once $a ? 1 : 2;',
-                '<?php echo require_once $a === 1 ? 1 : 2;',
-            ],
-            [
-                '<?php echo 1 === require $a ? 1 : 2;',
-                '<?php echo require $a === 1 ? 1 : 2;',
-            ],
-            [
-                '<?php switch(1 === $a){
+        ];
+
+        yield [
+            '<?php echo 1 === !!$a ? 8 : 7;',
+            '<?php echo !!$a === 1 ? 8 : 7;',
+        ];
+
+        yield [
+            '<?php 1 === new $a ? 1 : 2;',
+            '<?php new $a === 1 ? 1 : 2;',
+        ];
+
+        yield [
+            '<?php $a = 1 === new b ? 1 : 2;',
+            '<?php $a = new b === 1 ? 1 : 2;',
+        ];
+
+        yield [
+            '<?php $a = 1 === empty($a) ? 1 : 2;',
+            '<?php $a = empty($a) === 1 ? 1 : 2;',
+        ];
+
+        yield [
+            '<?php $b = 1 === clone $a ? 5 : 9;',
+            '<?php $b = clone $a === 1 ? 5 : 9;',
+        ];
+
+        yield [
+            '<?php while(1 === $a ? 1 : 2){};',
+            '<?php while($a === 1 ? 1 : 2){};',
+        ];
+
+        yield [
+            '<?php $a = 1 === include_once $a ? 1 : 2;',
+            '<?php $a = include_once $a === 1 ? 1 : 2;',
+        ];
+
+        yield [
+            '<?php echo 1 === include $a ? 1 : 2;',
+            '<?php echo include $a === 1 ? 1 : 2;',
+        ];
+
+        yield [
+            '<?php echo 1 === require_once $a ? 1 : 2;',
+            '<?php echo require_once $a === 1 ? 1 : 2;',
+        ];
+
+        yield [
+            '<?php echo 1 === require $a ? 1 : 2;',
+            '<?php echo require $a === 1 ? 1 : 2;',
+        ];
+
+        yield [
+            '<?php switch(1 === $a){
                     case true: echo 1;
                 };',
-                '<?php switch($a === 1){
+            '<?php switch($a === 1){
                     case true: echo 1;
                 };',
-            ],
-            [
-                '<?php echo 1 === $a ? 1 : 2;',
-                '<?php echo $a === 1 ? 1 : 2;',
-            ],
-            // Don't fix cases.
-            ['<?php $a = 1 === 1;'],
-            ['<?php $b = $b === $c;'],
-            ['<?php $c = $$b === $$c;'],
-            ['<?php $d = count($this->array[$var]) === $a;'],
-            ['<?php $e = $a === count($this->array[$var]);'],
-            ['<?php $f = ($a123 & self::MY_BITMASK) === $a;'],
-            ['<?php $g = $a === ($a456 & self::MY_BITMASK);'],
-            ['<?php $h = $this->getStuff() === $myVariable;'],
-            ['<?php $i = $myVariable === $this->getStuff();'],
-            ['<?php $j = 2 * $myVar % 3 === $a;'],
-            ['<?php return $k === 2 * $myVar % 3;'],
-            ['<?php $l = $c > 2;'],
-            ['<?php return $this->myObject1->{$index}+$b === "";'],
-            ['<?php return $m[2]+1 == 2;'],
-            ['<?php return $foo === $bar[$baz][1];'],
-            ['<?php $a = $b[$key]["1"] === $c["2"];'],
-            ['<?php return $foo->$a === $foo->$b->$c;'],
-            ['<?php return $x === 2 - 1;'],
-            ['<?php return $x === 2-1;'],
-            // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/693
-            ['<?php return array(2) == $o;'],
-            ['<?php return $p == array(2);'],
-            ['<?php return $p == array("2");'],
-            ['<?php return $p == array(TWO);'],
-            ['<?php return $p == array(array());'],
-            ['<?php return $p == [[]];'],
-            ['<?php return array($q) == $a;'],
-            ['<?php return $r == array($a);'],
-            ['<?php $s = ((array(2))) == $a;'],
-            ['<?php $t = $a == ((array(2)));'],
-            ['<?php list($a) = $c === array(1) ? $b : $d;'],
-            ['<?php $b = 7 === list($a) = [7];'],
-            ['<?php $a = function(){} === array(0);'],
-            ['<?php $z = $n == list($a) = $b;'],
-            ['<?php return $n == list($a) = $b;'],
-            // Fix cases.
-            'Array destruct by ternary.' => [
-                '<?php list($a) = 11 === $c ? $b : $d;',
-                '<?php list($a) = $c === 11 ? $b : $d;',
-            ],
-            'Less spacing.' => [
-                '<?php $z=2==$a;$b=$c>1&&$c<=10;',
-                '<?php $z=$a==2;$b=$c>1&&$c<=10;',
-            ],
-            'Comments.' => [
-                '<?php $z = /**/ /**/2/**/ /**/
+        ];
+
+        yield [
+            '<?php echo 1 === $a ? 1 : 2;',
+            '<?php echo $a === 1 ? 1 : 2;',
+        ];
+        // Don't fix cases.
+        yield ['<?php $a = 1 === 1;'];
+
+        yield ['<?php $b = $b === $c;'];
+
+        yield ['<?php $c = $$b === $$c;'];
+
+        yield ['<?php $d = count($this->array[$var]) === $a;'];
+
+        yield ['<?php $e = $a === count($this->array[$var]);'];
+
+        yield ['<?php $f = ($a123 & self::MY_BITMASK) === $a;'];
+
+        yield ['<?php $g = $a === ($a456 & self::MY_BITMASK);'];
+
+        yield ['<?php $h = $this->getStuff() === $myVariable;'];
+
+        yield ['<?php $i = $myVariable === $this->getStuff();'];
+
+        yield ['<?php $j = 2 * $myVar % 3 === $a;'];
+
+        yield ['<?php return $k === 2 * $myVar % 3;'];
+
+        yield ['<?php $l = $c > 2;'];
+
+        yield ['<?php return $this->myObject1->{$index}+$b === "";'];
+
+        yield ['<?php return $m[2]+1 == 2;'];
+
+        yield ['<?php return $foo === $bar[$baz][1];'];
+
+        yield ['<?php $a = $b[$key]["1"] === $c["2"];'];
+
+        yield ['<?php return $foo->$a === $foo->$b->$c;'];
+
+        yield ['<?php return $x === 2 - 1;'];
+
+        yield ['<?php return $x === 2-1;'];
+        // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/693
+        yield ['<?php return array(2) == $o;'];
+
+        yield ['<?php return $p == array(2);'];
+
+        yield ['<?php return $p == array("2");'];
+
+        yield ['<?php return $p == array(TWO);'];
+
+        yield ['<?php return $p == array(array());'];
+
+        yield ['<?php return $p == [[]];'];
+
+        yield ['<?php return array($q) == $a;'];
+
+        yield ['<?php return $r == array($a);'];
+
+        yield ['<?php $s = ((array(2))) == $a;'];
+
+        yield ['<?php $t = $a == ((array(2)));'];
+
+        yield ['<?php list($a) = $c === array(1) ? $b : $d;'];
+
+        yield ['<?php $b = 7 === list($a) = [7];'];
+
+        yield ['<?php $a = function(){} === array(0);'];
+
+        yield ['<?php $z = $n == list($a) = $b;'];
+
+        yield ['<?php return $n == list($a) = $b;'];
+        // Fix cases.
+        yield 'Array destruct by ternary.' => [
+            '<?php list($a) = 11 === $c ? $b : $d;',
+            '<?php list($a) = $c === 11 ? $b : $d;',
+        ];
+
+        yield 'Less spacing.' => [
+            '<?php $z=2==$a;$b=$c>1&&$c<=10;',
+            '<?php $z=$a==2;$b=$c>1&&$c<=10;',
+        ];
+
+        yield 'Comments.' => [
+            '<?php $z = /**/ /**/2/**/ /**/
                  # aa
                  /**/==/**/$a/***/;',
-                '<?php $z = /**/ /**/$a/**/ /**/
+            '<?php $z = /**/ /**/$a/**/ /**/
                  # aa
                  /**/==/**/2/***/;',
-            ],
-            [
-                '<?php return 2 == ($a)?>',
-            ],
-            [
-                '<?php return ($a) == 2?>',
-            ],
-            [
-                '<?php return 2 == ($a)?>',
-                '<?php return ($a) == 2?>',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php $a = ($c === ((null === $b)));',
-                '<?php $a = ($c === (($b === null)));',
-            ],
-            [
-                '<?php return null == $a[2];',
-                '<?php return $a[2] == null;',
-            ],
-            [
-                '<?php return "" === $this->myArray[$index];',
-                '<?php return $this->myArray[$index] === "";',
-            ],
-            [
-                '<?php return "" === $this->myArray[$index]->/*1*//*2*//*3*/a;',
-                '<?php return $this->myArray[$index]->/*1*//*2*//*3*/a === "";',
-            ],
-            [
-                '<?php return "" === $this->myArray[$index]->a;',
-                '<?php return $this->myArray[$index]->a === "";',
-            ],
-            [
-                '<?php return "" === $this->myObject2->  {$index};',
-                '<?php return $this->myObject2->  {$index} === "";',
-            ],
-            [
-                '<?php return "" === $this->myObject3->{$index}->a;',
-                '<?php return $this->myObject3->{$index}->a === "";',
-            ],
-            [
-                '<?php return "" === $this->myObject4->{$index}->{$index}->a;',
-                '<?php return $this->myObject4->{$index}->{$index}->a === "";',
-            ],
-            [
-                '<?php return "" === $this->myObject4->$index->a;',
-                '<?php return $this->myObject4->$index->a === "";',
-            ],
-            [
-                '<?php return self::MY_CONST === self::$myVariable;',
-                '<?php return self::$myVariable === self::MY_CONST;',
-            ],
-            [
-                '<?php return \A\B\C::MY_CONST === \A\B\C::$myVariable;',
-                '<?php return \A\B\C::$myVariable === \A\B\C::MY_CONST;',
-            ],
-            [
-                '<?php $a = 1 == $$a?>',
-                '<?php $a = $$a == 1?>',
-            ],
-            'Nested case' => [
-                '<?php return null === $a[0 === $b ? $c : $d];',
-                '<?php return $a[$b === 0 ? $c : $d] === null;',
-            ],
-            [
-                '<?php return null === $this->{null === $a ? "a" : "b"};',
-                '<?php return $this->{$a === null ? "a" : "b"} === null;',
-            ],
-            'Complex code sample.' => [
-                '<?php
+        ];
+
+        yield [
+            '<?php return 2 == ($a)?>',
+        ];
+
+        yield [
+            '<?php return ($a) == 2?>',
+        ];
+
+        yield [
+            '<?php return 2 == ($a)?>',
+            '<?php return ($a) == 2?>',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php $a = ($c === ((null === $b)));',
+            '<?php $a = ($c === (($b === null)));',
+        ];
+
+        yield [
+            '<?php return null == $a[2];',
+            '<?php return $a[2] == null;',
+        ];
+
+        yield [
+            '<?php return "" === $this->myArray[$index];',
+            '<?php return $this->myArray[$index] === "";',
+        ];
+
+        yield [
+            '<?php return "" === $this->myArray[$index]->/*1*//*2*//*3*/a;',
+            '<?php return $this->myArray[$index]->/*1*//*2*//*3*/a === "";',
+        ];
+
+        yield [
+            '<?php return "" === $this->myArray[$index]->a;',
+            '<?php return $this->myArray[$index]->a === "";',
+        ];
+
+        yield [
+            '<?php return "" === $this->myObject2->  {$index};',
+            '<?php return $this->myObject2->  {$index} === "";',
+        ];
+
+        yield [
+            '<?php return "" === $this->myObject3->{$index}->a;',
+            '<?php return $this->myObject3->{$index}->a === "";',
+        ];
+
+        yield [
+            '<?php return "" === $this->myObject4->{$index}->{$index}->a;',
+            '<?php return $this->myObject4->{$index}->{$index}->a === "";',
+        ];
+
+        yield [
+            '<?php return "" === $this->myObject4->$index->a;',
+            '<?php return $this->myObject4->$index->a === "";',
+        ];
+
+        yield [
+            '<?php return self::MY_CONST === self::$myVariable;',
+            '<?php return self::$myVariable === self::MY_CONST;',
+        ];
+
+        yield [
+            '<?php return \A\B\C::MY_CONST === \A\B\C::$myVariable;',
+            '<?php return \A\B\C::$myVariable === \A\B\C::MY_CONST;',
+        ];
+
+        yield [
+            '<?php $a = 1 == $$a?>',
+            '<?php $a = $$a == 1?>',
+        ];
+
+        yield 'Nested case' => [
+            '<?php return null === $a[0 === $b ? $c : $d];',
+            '<?php return $a[$b === 0 ? $c : $d] === null;',
+        ];
+
+        yield [
+            '<?php return null === $this->{null === $a ? "a" : "b"};',
+            '<?php return $this->{$a === null ? "a" : "b"} === null;',
+        ];
+
+        yield 'Complex code sample.' => [
+            '<?php
 if ($a == $b) {
     return null === $b ? (null === $a ? 0 : 0 === $a->b) : 0 === $b->a;
 } else {
@@ -352,7 +436,7 @@ if ($a == $b) {
         return false === $d;
     }
 }',
-                '<?php
+            '<?php
 if ($a == $b) {
     return $b === null ? ($a === null ? 0 : $a->b === 0) : $b->a === 0;
 } else {
@@ -360,17 +444,20 @@ if ($a == $b) {
         return $d === false;
     }
 }',
-            ],
-            [
-                '<?php $b = list($a) = 7 === [7];', // makes no sense, but valid PHP syntax
-                '<?php $b = list($a) = [7] === 7;',
-            ],
-            [
-                '<?php $a = 1 === function(){};',
-                '<?php $a = function(){} === 1;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php $b = list($a) = 7 === [7];', // makes no sense, but valid PHP syntax
+            '<?php $b = list($a) = [7] === 7;',
+        ];
+
+        yield [
+            '<?php $a = 1 === function(){};',
+            '<?php $a = function(){} === 1;',
+        ];
+
+        yield [
+            '<?php
 $z#1
 #2
 =
@@ -382,7 +469,7 @@ $z#1
 $a#8
 #9
 ;#10',
-                '<?php
+            '<?php
 $z#1
 #2
 =
@@ -394,252 +481,299 @@ $a#4
 1#8
 #9
 ;#10',
-            ],
-            [
-                '<?php $i = 2 === $this/*a*//*b*//*c*//*d*//*e*//*f*/->getStuff();',
-                '<?php $i = $this/*a*//*b*//*c*//*d*//*e*//*f*/->getStuff() === 2;',
-            ],
-            [
-                '<?php return "" === $this->myObject5->{$index}->/*1*//*2*/b;',
-                '<?php return $this->myObject5->{$index}->/*1*//*2*/b === "";',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php $i = 2 === $this/*a*//*b*//*c*//*d*//*e*//*f*/->getStuff();',
+            '<?php $i = $this/*a*//*b*//*c*//*d*//*e*//*f*/->getStuff() === 2;',
+        ];
+
+        yield [
+            '<?php return "" === $this->myObject5->{$index}->/*1*//*2*/b;',
+            '<?php return $this->myObject5->{$index}->/*1*//*2*/b === "";',
+        ];
+
+        yield [
+            '<?php
                 function hello() {}
                 1 === $a ? b() : c();
                 ',
-                '<?php
+            '<?php
                 function hello() {}
                 $a === 1 ? b() : c();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class A{}
                 1 === $a ? b() : c();
                 ',
-                '<?php
+            '<?php
                 class A{}
                 $a === 1 ? b() : c();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function foo() {
                     foreach ($arr as $key => $value) {
                         false !== uniqid() ? 1 : 2;
                     }
                     false !== uniqid() ? 1 : 2;
                 }',
-                '<?php
+            '<?php
                 function foo() {
                     foreach ($arr as $key => $value) {
                         uniqid() !== false ? 1 : 2;
                     }
                     uniqid() !== false ? 1 : 2;
                 }',
-            ],
-            [
-                '<?php false === $a = array();',
-            ],
-            [
-                '<?php $e = count($this->array[$var]) === $a;',
-                '<?php $e = $a === count($this->array[$var]);',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php $i = $this->getStuff() === $myVariable;',
-                '<?php $i = $myVariable === $this->getStuff();',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php $e = count($this->array[$var]) === $a;',
-                '<?php $e = $a === count($this->array[$var]);',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php $g = ($a789 & self::MY_BITMASK) === $a;',
-                null,
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar + 2 === $k;',
-                '<?php return $k === $myVar + 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar . $b === $k;',
-                '<?php return $k === $myVar . $b;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar - 2 === $k;',
-                '<?php return $k === $myVar - 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar * 2 === $k;',
-                '<?php return $k === $myVar * 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar / 2 === $k;',
-                '<?php return $k === $myVar / 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar % 2 === $k;',
-                '<?php return $k === $myVar % 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar ** 2 === $k;',
-                '<?php return $k === $myVar ** 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar < 2 === $k;',
-                '<?php return $k === $myVar < 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar > 2 === $k;',
-                '<?php return $k === $myVar > 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar <= 2 === $k;',
-                '<?php return $k === $myVar <= 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar >= 2 === $k;',
-                '<?php return $k === $myVar >= 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar . 2 === $k;',
-                '<?php return $k === $myVar . 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar << 2 === $k;',
-                '<?php return $k === $myVar << 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar >> 2 === $k;',
-                '<?php return $k === $myVar >> 2;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return !$myVar === $k;',
-                '<?php return $k === !$myVar;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return $myVar instanceof Foo === $k;',
-                '<?php return $k === $myVar instanceof Foo;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return (bool) $myVar === $k;',
-                '<?php return $k === (bool) $myVar;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return (int) $myVar === $k;',
-                '<?php return $k === (int) $myVar;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return (float) $myVar === $k;',
-                '<?php return $k === (float) $myVar;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return (string) $myVar === $k;',
-                '<?php return $k === (string) $myVar;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return (array) $myVar === $k;',
-                '<?php return $k === (array) $myVar;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php return (object) $myVar === $k;',
-                '<?php return $k === (object) $myVar;',
-                ['always_move_variable' => true],
-            ],
-            [
-                '<?php $a = null === foo();',
-                '<?php $a = foo() === null;',
-            ],
-            [
-                '<?php $a = \'foo\' === foo();',
-                '<?php $a = foo() === \'foo\';',
-            ],
-            [
-                '<?php $a = "foo" === foo();',
-                '<?php $a = foo() === "foo";',
-            ],
-            [
-                '<?php $a = 1 === foo();',
-                '<?php $a = foo() === 1;',
-            ],
-            [
-                '<?php $a = 1.2 === foo();',
-                '<?php $a = foo() === 1.2;',
-            ],
-            [
-                '<?php $a = true === foo();',
-                '<?php $a = foo() === true;',
-            ],
-            [
-                '<?php $a = false === foo();',
-                '<?php $a = foo() === false;',
-            ],
-            [
-                '<?php $a = -1 === reset($foo);',
-                '<?php $a = reset($foo) === -1;',
-            ],
-            [
-                '<?php $a = - 1 === reset($foo);',
-                '<?php $a = reset($foo) === - 1;',
-            ],
-            [
-                '<?php $a = -/* bar */1 === reset($foo);',
-                '<?php $a = reset($foo) === -/* bar */1;',
-            ],
-            [
-                '<?php $a %= 4 === $b ? 2 : 3;',
-                '<?php $a %= $b === 4 ? 2 : 3;',
-            ],
-            [
-                '<?php return array() === $array;',
-                '<?php return $array === array();',
-            ],
-            [
-                '<?php return [] === $array;',
-                '<?php return $array === [];',
-            ],
-            [
-                '<?php return array(/* foo */) === $array;',
-                '<?php return $array === array(/* foo */);',
-            ],
-            [
-                '<?php return [
+        ];
+
+        yield [
+            '<?php false === $a = array();',
+        ];
+
+        yield [
+            '<?php $e = count($this->array[$var]) === $a;',
+            '<?php $e = $a === count($this->array[$var]);',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php $i = $this->getStuff() === $myVariable;',
+            '<?php $i = $myVariable === $this->getStuff();',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php $e = count($this->array[$var]) === $a;',
+            '<?php $e = $a === count($this->array[$var]);',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php $g = ($a789 & self::MY_BITMASK) === $a;',
+            null,
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar + 2 === $k;',
+            '<?php return $k === $myVar + 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar . $b === $k;',
+            '<?php return $k === $myVar . $b;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar - 2 === $k;',
+            '<?php return $k === $myVar - 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar * 2 === $k;',
+            '<?php return $k === $myVar * 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar / 2 === $k;',
+            '<?php return $k === $myVar / 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar % 2 === $k;',
+            '<?php return $k === $myVar % 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar ** 2 === $k;',
+            '<?php return $k === $myVar ** 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar < 2 === $k;',
+            '<?php return $k === $myVar < 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar > 2 === $k;',
+            '<?php return $k === $myVar > 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar <= 2 === $k;',
+            '<?php return $k === $myVar <= 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar >= 2 === $k;',
+            '<?php return $k === $myVar >= 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar . 2 === $k;',
+            '<?php return $k === $myVar . 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar << 2 === $k;',
+            '<?php return $k === $myVar << 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar >> 2 === $k;',
+            '<?php return $k === $myVar >> 2;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return !$myVar === $k;',
+            '<?php return $k === !$myVar;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return $myVar instanceof Foo === $k;',
+            '<?php return $k === $myVar instanceof Foo;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return (bool) $myVar === $k;',
+            '<?php return $k === (bool) $myVar;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return (int) $myVar === $k;',
+            '<?php return $k === (int) $myVar;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return (float) $myVar === $k;',
+            '<?php return $k === (float) $myVar;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return (string) $myVar === $k;',
+            '<?php return $k === (string) $myVar;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return (array) $myVar === $k;',
+            '<?php return $k === (array) $myVar;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php return (object) $myVar === $k;',
+            '<?php return $k === (object) $myVar;',
+            ['always_move_variable' => true],
+        ];
+
+        yield [
+            '<?php $a = null === foo();',
+            '<?php $a = foo() === null;',
+        ];
+
+        yield [
+            '<?php $a = \'foo\' === foo();',
+            '<?php $a = foo() === \'foo\';',
+        ];
+
+        yield [
+            '<?php $a = "foo" === foo();',
+            '<?php $a = foo() === "foo";',
+        ];
+
+        yield [
+            '<?php $a = 1 === foo();',
+            '<?php $a = foo() === 1;',
+        ];
+
+        yield [
+            '<?php $a = 1.2 === foo();',
+            '<?php $a = foo() === 1.2;',
+        ];
+
+        yield [
+            '<?php $a = true === foo();',
+            '<?php $a = foo() === true;',
+        ];
+
+        yield [
+            '<?php $a = false === foo();',
+            '<?php $a = foo() === false;',
+        ];
+
+        yield [
+            '<?php $a = -1 === reset($foo);',
+            '<?php $a = reset($foo) === -1;',
+        ];
+
+        yield [
+            '<?php $a = - 1 === reset($foo);',
+            '<?php $a = reset($foo) === - 1;',
+        ];
+
+        yield [
+            '<?php $a = -/* bar */1 === reset($foo);',
+            '<?php $a = reset($foo) === -/* bar */1;',
+        ];
+
+        yield [
+            '<?php $a %= 4 === $b ? 2 : 3;',
+            '<?php $a %= $b === 4 ? 2 : 3;',
+        ];
+
+        yield [
+            '<?php return array() === $array;',
+            '<?php return $array === array();',
+        ];
+
+        yield [
+            '<?php return [] === $array;',
+            '<?php return $array === [];',
+        ];
+
+        yield [
+            '<?php return array(/* foo */) === $array;',
+            '<?php return $array === array(/* foo */);',
+        ];
+
+        yield [
+            '<?php return [
                     // 1
                 ] === $array;',
-                '<?php return $array === [
+            '<?php return $array === [
                     // 1
                 ];',
-            ],
-            [
-                '<?php $a = $b = null === $c;',
-                '<?php $a = $b = $c === null;',
-            ],
+        ];
+
+        yield [
+            '<?php $a = $b = null === $c;',
+            '<?php $a = $b = $c === null;',
         ];
 
         $template = '<?php $a = ($b + $c) %s 1 === true ? 1 : 2;';

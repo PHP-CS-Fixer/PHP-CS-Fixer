@@ -33,17 +33,17 @@ final class SwitchContinueToBreakFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield from [
-            'alternative syntax |' => [
-                '<?php
+        yield 'alternative syntax |' => [
+            '<?php
                     switch($foo):
                         case 3:
                             continue;
                     endswitch?>
                 ',
-            ],
-            'alternative syntax ||' => [
-                '<?php
+        ];
+
+        yield 'alternative syntax ||' => [
+            '<?php
 
 foreach ([] as $v) {
     continue;
@@ -54,9 +54,10 @@ if ($foo != 0) {
 
 switch ($foo):
 endswitch;',
-            ],
-            'nested switches' => [
-                '<?php
+        ];
+
+        yield 'nested switches' => [
+            '<?php
 switch($z) {
     case 1:
         switch($x) {
@@ -74,7 +75,7 @@ switch($z) {
         break; // x
 }
 ',
-                '<?php
+            '<?php
 switch($z) {
     case 1:
         switch($x) {
@@ -92,9 +93,10 @@ switch($z) {
         continue; // x
 }
 ',
-            ],
-            'nested 2' => [
-                '<?php
+        ];
+
+        yield 'nested 2' => [
+            '<?php
 while ($foo) {
     switch ($bar) {
         case "baz":
@@ -147,7 +149,7 @@ while ($foo) {
     }
 }
 ',
-                '<?php
+            '<?php
 while ($foo) {
     switch ($bar) {
         case "baz":
@@ -200,9 +202,10 @@ while ($foo) {
     }
 }
 ',
-            ],
-            'nested do while' => [
-                '<?php
+        ];
+
+        yield 'nested do while' => [
+            '<?php
 switch ($a) {
     case 1:
         do {
@@ -229,7 +232,7 @@ switch ($a) {
     break;
 }
 ',
-                '<?php
+            '<?php
 switch ($a) {
     case 1:
         do {
@@ -256,23 +259,25 @@ switch ($a) {
     continue;
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch(foo()) {
     case 1: while(bar($i))continue;break;
     default: echo 7;
 }
 ',
-                '<?php
+            '<?php
 switch(foo()) {
     case 1: while(bar($i))continue;continue;
     default: echo 7;
 }
 ',
-            ],
-            'do not fix cases' => [
-                '<?php
+        ];
+
+        yield 'do not fix cases' => [
+            '<?php
 switch($a) {
     case 1:
         while (false) {
@@ -304,16 +309,18 @@ switch($a) {
         }
 }
 ',
-            ],
-            'nested while, do not fix' => [
-                '<?php
+        ];
+
+        yield 'nested while, do not fix' => [
+            '<?php
 switch(foo()) {
     case 1: while(bar($i)){ --$i; echo 1; continue;}break;
     default: echo 8;
 }',
-            ],
-            'not int cases' => [
-                '<?php
+        ];
+
+        yield 'not int cases' => [
+            '<?php
 while($b) {
 switch($a) {
 case 1:
@@ -337,7 +344,7 @@ case 3:
     continue 0b10;
 }
 }',
-                '<?php
+            '<?php
 while($b) {
 switch($a) {
 case 1:
@@ -361,9 +368,10 @@ case 3:
     continue 0b10;
 }
 }',
-            ],
-            'deep nested case' => [
-                '<?php
+        ];
+
+        yield 'deep nested case' => [
+            '<?php
 switch ($a) {
 case $b:
     while (false) {
@@ -380,7 +388,7 @@ case $b:
 
             break 10;
 }}}}}}}}}}',
-                '<?php
+            '<?php
 switch ($a) {
 case $b:
     while (false) {
@@ -397,7 +405,6 @@ case $b:
 
             continue 10;
 }}}}}}}}}}',
-            ],
         ];
 
         yield [

@@ -478,44 +478,45 @@ namespace {
 
     public static function provideFixWithConfiguredIncludeCases(): iterable
     {
-        yield from [
-            'include set + 1, exclude 1' => [
-                '<?php
+        yield 'include set + 1, exclude 1' => [
+            '<?php
                     echo \count([1]);
                     \some_other($a, 3);
                     echo strlen($a);
                     not_me();
                 ',
-                '<?php
+            '<?php
                     echo count([1]);
                     some_other($a, 3);
                     echo strlen($a);
                     not_me();
                 ',
-                [
-                    'include' => [NativeFunctionInvocationFixer::SET_INTERNAL, 'some_other'],
-                    'exclude' => ['strlen'],
-                ],
+            [
+                'include' => [NativeFunctionInvocationFixer::SET_INTERNAL, 'some_other'],
+                'exclude' => ['strlen'],
             ],
-            'include @all' => [
-                '<?php
+        ];
+
+        yield 'include @all' => [
+            '<?php
                     echo \count([1]);
                     \some_other($a, 3);
                     echo \strlen($a);
                     \me_as_well();
                 ',
-                '<?php
+            '<?php
                     echo count([1]);
                     some_other($a, 3);
                     echo strlen($a);
                     me_as_well();
                 ',
-                [
-                    'include' => [NativeFunctionInvocationFixer::SET_ALL],
-                ],
+            [
+                'include' => [NativeFunctionInvocationFixer::SET_ALL],
             ],
-            'include @compiler_optimized' => [
-                '<?php
+        ];
+
+        yield 'include @compiler_optimized' => [
+            '<?php
                     // do not fix
                     $a = strrev($a);
                     $a .= str_repeat($a, 4);
@@ -524,7 +525,7 @@ namespace {
                     $c = \get_class($d);
                     $e = \intval($f);
                 ',
-                '<?php
+            '<?php
                     // do not fix
                     $a = strrev($a);
                     $a .= str_repeat($a, 4);
@@ -533,40 +534,42 @@ namespace {
                     $c = get_class($d);
                     $e = intval($f);
                 ',
-                [
-                    'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
-                ],
-            ],
             [
-                '<?php class Foo {
+                'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
+            ],
+        ];
+
+        yield [
+            '<?php class Foo {
                         public function & strlen($name) {
                         }
                     }
                 ',
-            ],
-            'scope namespaced and strict enabled' => [
-                '<?php
+        ];
+
+        yield 'scope namespaced and strict enabled' => [
+            '<?php
                     $a = not_compiler_optimized_function();
                     $b = intval($c);
                 ',
-                '<?php
+            '<?php
                     $a = \not_compiler_optimized_function();
                     $b = \intval($c);
                 ',
-                [
-                    'scope' => 'namespaced',
-                    'strict' => true,
-                ],
-            ],
             [
-                '<?php
+                'scope' => 'namespaced',
+                'strict' => true,
+            ],
+        ];
+
+        yield [
+            '<?php
                     use function foo\json_decode;
                     json_decode($base);
                 ',
-                null,
-                [
-                    'include' => [NativeFunctionInvocationFixer::SET_ALL],
-                ],
+            null,
+            [
+                'include' => [NativeFunctionInvocationFixer::SET_ALL],
             ],
         ];
 

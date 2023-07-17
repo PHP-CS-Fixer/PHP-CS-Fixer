@@ -37,87 +37,104 @@ final class ClassyAnalyzerTest extends TestCase
 
     public static function provideIsClassyInvocationCases(): iterable
     {
-        yield from [
-            [
-                '<?php new Foo;',
-                [3 => true],
-            ],
-            [
-                '<?php new \Foo;',
-                [4 => true],
-            ],
-            [
-                '<?php new Bar\Foo;',
-                [3 => false, 5 => true],
-            ],
-            [
-                '<?php new namespace\Foo;',
-                [5 => true],
-            ],
-            [
-                '<?php Foo::bar();',
-                [1 => true, 3 => false],
-            ],
-            [
-                '<?php \Foo::bar();',
-                [2 => true, 4 => false],
-            ],
-            [
-                '<?php Bar\Foo::bar();',
-                [1 => false, 3 => true, 5 => false],
-            ],
-            [
-                '<?php $foo instanceof Foo;',
-                [5 => true],
-            ],
-            [
-                '<?php class Foo extends \A {}',
-                [3 => false, 8 => true],
-            ],
-            [
-                '<?php class Foo implements A, B\C, \D, E {}',
-                [3 => false, 7 => true, 10 => false, 12 => true, 16 => true, 19 => true],
-            ],
-            [
-                '<?php class Foo { use A, B\C, \D, E { A::bar insteadof \E; } }',
-                [3 => false, 9 => true, 12 => false, 14 => true, 18 => true, 21 => true, 25 => true, 32 => true],
-            ],
-            'with reference' => [
-                '<?php function foo(Foo $foo, Bar &$bar, \Baz ...$baz, Foo\Bar $fooBar) {}',
-                [3 => false, 5 => true, 10 => true, 17 => true, 23 => false, 25 => true],
-            ],
-            [
-                '<?php class Foo { function bar() { parent::bar(); self::baz(); $a instanceof self; } }',
-                [3 => false, 9 => false, 15 => false, 17 => false, 22 => false, 24 => false, 33 => false],
-            ],
-            [
-                '<?php echo FOO, \BAR;',
-                [3 => false, 7 => false],
-            ],
-            [
-                '<?php FOO & $bar;',
-                [1 => false],
-            ],
-            [
-                '<?php foo(); \bar();',
-                [1 => false, 7 => false],
-            ],
-            [
-                '<?php function foo(): \Foo {}',
-                [3 => false, 9 => true],
-            ],
-            [
-                '<?php function foo(?Foo $foo, ?Foo\Bar $fooBar): ?\Foo {}',
-                [3 => false, 6 => true, 12 => false, 14 => true, 22 => true],
-            ],
-            [
-                '<?php function foo(iterable $foo): string {}',
-                [3 => false, 5 => false, 11 => false],
-            ],
-            [
-                '<?php function foo(?int $foo): ?string {}',
-                [3 => false, 6 => false, 13 => false],
-            ],
+        yield [
+            '<?php new Foo;',
+            [3 => true],
+        ];
+
+        yield [
+            '<?php new \Foo;',
+            [4 => true],
+        ];
+
+        yield [
+            '<?php new Bar\Foo;',
+            [3 => false, 5 => true],
+        ];
+
+        yield [
+            '<?php new namespace\Foo;',
+            [5 => true],
+        ];
+
+        yield [
+            '<?php Foo::bar();',
+            [1 => true, 3 => false],
+        ];
+
+        yield [
+            '<?php \Foo::bar();',
+            [2 => true, 4 => false],
+        ];
+
+        yield [
+            '<?php Bar\Foo::bar();',
+            [1 => false, 3 => true, 5 => false],
+        ];
+
+        yield [
+            '<?php $foo instanceof Foo;',
+            [5 => true],
+        ];
+
+        yield [
+            '<?php class Foo extends \A {}',
+            [3 => false, 8 => true],
+        ];
+
+        yield [
+            '<?php class Foo implements A, B\C, \D, E {}',
+            [3 => false, 7 => true, 10 => false, 12 => true, 16 => true, 19 => true],
+        ];
+
+        yield [
+            '<?php class Foo { use A, B\C, \D, E { A::bar insteadof \E; } }',
+            [3 => false, 9 => true, 12 => false, 14 => true, 18 => true, 21 => true, 25 => true, 32 => true],
+        ];
+
+        yield 'with reference' => [
+            '<?php function foo(Foo $foo, Bar &$bar, \Baz ...$baz, Foo\Bar $fooBar) {}',
+            [3 => false, 5 => true, 10 => true, 17 => true, 23 => false, 25 => true],
+        ];
+
+        yield [
+            '<?php class Foo { function bar() { parent::bar(); self::baz(); $a instanceof self; } }',
+            [3 => false, 9 => false, 15 => false, 17 => false, 22 => false, 24 => false, 33 => false],
+        ];
+
+        yield [
+            '<?php echo FOO, \BAR;',
+            [3 => false, 7 => false],
+        ];
+
+        yield [
+            '<?php FOO & $bar;',
+            [1 => false],
+        ];
+
+        yield [
+            '<?php foo(); \bar();',
+            [1 => false, 7 => false],
+        ];
+
+        yield [
+            '<?php function foo(): \Foo {}',
+            [3 => false, 9 => true],
+        ];
+
+        yield [
+            '<?php function foo(?Foo $foo, ?Foo\Bar $fooBar): ?\Foo {}',
+            [3 => false, 6 => true, 12 => false, 14 => true, 22 => true],
+        ];
+
+        yield [
+            '<?php function foo(iterable $foo): string {}',
+            [3 => false, 5 => false, 11 => false],
+        ];
+
+        yield [
+            '<?php function foo(?int $foo): ?string {}',
+            [3 => false, 6 => false, 13 => false],
         ];
 
         yield [

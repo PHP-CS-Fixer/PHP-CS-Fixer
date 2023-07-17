@@ -481,47 +481,53 @@ $b = 1;
 
     public static function provideBetweenUseCases(): iterable
     {
-        yield from [
-            ['<?php use A\B;'],
-            ['<?php use A\B?>'],
-            ['<?php use A\B;use A\D; return 1;'],
-            ["<?php use A\\B?>\n\n<?php use D\\E\\F?>"],
-            ['<?php use Y\B;use A\D; return 1;'],
-            [
-                '<?php
+        yield ['<?php use A\B;'];
+
+        yield ['<?php use A\B?>'];
+
+        yield ['<?php use A\B;use A\D; return 1;'];
+
+        yield ["<?php use A\\B?>\n\n<?php use D\\E\\F?>"];
+
+        yield ['<?php use Y\B;use A\D; return 1;'];
+
+        yield [
+            '<?php
                     use A\B;
                     use A\C;',
-                '<?php
+            '<?php
                     use A\B;
 
                     use A\C;',
-            ],
-            [
-                '<?php use A\E;use A\Z;
+        ];
+
+        yield [
+            '<?php use A\E;use A\Z;
                     use C;
                 return 1;
                 ',
-                '<?php use A\E;use A\Z;
+            '<?php use A\E;use A\Z;
 
                     use C;
                 return 1;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class Test {
                     use A;
 
                     use B;
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $example = function () use ($message) { var_dump($message); };
 
                     $example = function () use ($message) { var_dump($message); };
                 ',
-            ],
         ];
 
         yield [

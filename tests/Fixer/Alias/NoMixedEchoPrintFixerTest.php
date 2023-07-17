@@ -38,98 +38,107 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 
     public static function provideFixEchoToPrintCases(): iterable
     {
-        yield from [
-            [
-                '<?php
+        yield [
+            '<?php
                 print "test";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print ("test");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print("test");
                 ',
-            ],
-            // `echo` can take multiple parameters (although such usage is rare) while `print` can take only one argument,
-            // @see https://php.net/manual/en/function.echo.php and @see https://php.net/manual/en/function.print.php
-            [
-                '<?php
+        ];
+        // `echo` can take multiple parameters (although such usage is rare) while `print` can take only one argument,
+        // @see https://php.net/manual/en/function.echo.php and @see https://php.net/manual/en/function.print.php
+        yield [
+            '<?php
                 echo "This ", "string ", "was ", "made ", "with multiple parameters.";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print "test";
                 ',
-                '<?php
+            '<?php
                 echo "test";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print ("test");
                 ',
-                '<?php
+            '<?php
                 echo ("test");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print("test");
                 ',
-                '<?php
+            '<?php
                 echo("test");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print foo(1, 2);
                 ',
-                '<?php
+            '<?php
                 echo foo(1, 2);
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print ["foo", "bar", "baz"][$x];
                 ',
-                '<?php
+            '<?php
                 echo ["foo", "bar", "baz"][$x];
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print $foo ? "foo" : "bar";
                 ',
-                '<?php
+            '<?php
                 echo $foo ? "foo" : "bar";
                 ',
-            ],
-            [
-                "<?php print 'foo' ?>...<?php echo 'bar', 'baz' ?>",
-                "<?php echo 'foo' ?>...<?php echo 'bar', 'baz' ?>",
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            "<?php print 'foo' ?>...<?php echo 'bar', 'baz' ?>",
+            "<?php echo 'foo' ?>...<?php echo 'bar', 'baz' ?>",
+        ];
+
+        yield [
+            '<?php
                 if ($foo) {
                     print "foo";
                 }
                 print "bar";
                 ',
-                '<?php
+            '<?php
                 if ($foo) {
                     echo "foo";
                 }
                 echo "bar";
                 ',
-            ],
-            [
-                '<?=$foo?>',
-            ],
+        ];
+
+        yield [
+            '<?=$foo?>',
         ];
 
         foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
@@ -151,42 +160,45 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 
     public static function provideFixPrintToEchoCases(): iterable
     {
-        yield from [
-            [
-                '<?php
+        yield [
+            '<?php
                 echo "test";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo ("test");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo("test");
                 ',
-            ],
-            // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/1502#issuecomment-156436229
-            [
-                '<?php
+        ];
+        // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/1502#issuecomment-156436229
+        yield [
+            '<?php
                 ($some_var) ? print "true" : print "false";
                 ',
-            ],
-            // echo has no return value while print has a return value of 1 so it can be used in expressions.
-            // https://www.w3schools.com/php/php_echo_print.asp
-            [
-                '<?php
+        ];
+        // echo has no return value while print has a return value of 1 so it can be used in expressions.
+        // https://www.w3schools.com/php/php_echo_print.asp
+        yield [
+            '<?php
                 $ret = print "test";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 @print foo();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function testFunction() {
                     return print("test");
                 }
@@ -199,71 +211,77 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 switch(print(\'a\')) {}
                 if (1 === print($a)) {}
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 some_function_call();
                 echo "test";
                 ',
-                '<?php
+            '<?php
                 some_function_call();
                 print "test";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo "test";
                 ',
-                '<?php
+            '<?php
                 print "test";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo ("test");
                 ',
-                '<?php
+            '<?php
                 print ("test");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo("test");
                 ',
-                '<?php
+            '<?php
                 print("test");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo foo(1, 2);
                 ',
-                '<?php
+            '<?php
                 print foo(1, 2);
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo $foo ? "foo" : "bar";
                 ',
-                '<?php
+            '<?php
                 print $foo ? "foo" : "bar";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 if ($foo) {
                     echo "foo";
                 }
                 echo "bar";
                 ',
-                '<?php
+            '<?php
                 if ($foo) {
                     print "foo";
                 }
                 print "bar";
                 ',
-            ],
         ];
 
         foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {

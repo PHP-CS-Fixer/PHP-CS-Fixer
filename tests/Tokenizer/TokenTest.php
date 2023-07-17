@@ -129,12 +129,13 @@ final class TokenTest extends TestCase
 
     public static function provideIsCommentCases(): iterable
     {
-        yield from [
-            [self::getBraceToken(), false],
-            [self::getForeachToken(), false],
-            [new Token([T_COMMENT, '/* comment */', 1]), true],
-            [new Token([T_DOC_COMMENT, '/** docs */', 1]), true],
-        ];
+        yield [self::getBraceToken(), false];
+
+        yield [self::getForeachToken(), false];
+
+        yield [new Token([T_COMMENT, '/* comment */', 1]), true];
+
+        yield [new Token([T_DOC_COMMENT, '/** docs */', 1]), true];
 
         // @TODO: drop condition when PHP 8.0+ is required
         if (\defined('T_ATTRIBUTE')) {
@@ -152,13 +153,15 @@ final class TokenTest extends TestCase
 
     public static function provideIsObjectOperatorCases(): iterable
     {
-        yield from [
-            [self::getBraceToken(), false],
-            [self::getForeachToken(), false],
-            [new Token([T_COMMENT, '/* comment */']), false],
-            [new Token([T_DOUBLE_COLON, '::']), false],
-            [new Token([T_OBJECT_OPERATOR, '->']), true],
-        ];
+        yield [self::getBraceToken(), false];
+
+        yield [self::getForeachToken(), false];
+
+        yield [new Token([T_COMMENT, '/* comment */']), false];
+
+        yield [new Token([T_DOUBLE_COLON, '::']), false];
+
+        yield [new Token([T_OBJECT_OPERATOR, '->']), true];
 
         if (\defined('T_NULLSAFE_OBJECT_OPERATOR')) {
             yield [new Token([T_NULLSAFE_OBJECT_OPERATOR, '?->']), true];

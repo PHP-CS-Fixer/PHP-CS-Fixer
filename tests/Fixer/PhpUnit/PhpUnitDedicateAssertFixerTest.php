@@ -38,127 +38,134 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield from [
-            [
-                self::generateTest('
+        yield [
+            self::generateTest('
                     $this->assertNan($a);
                     $this->assertNan($a);
                     $this->assertTrue(test\is_nan($a));
                     $this->assertTrue(test\a\is_nan($a));
                 '),
-                self::generateTest('
+            self::generateTest('
                     $this->assertTrue(is_nan($a));
                     $this->assertTrue(\is_nan($a));
                     $this->assertTrue(test\is_nan($a));
                     $this->assertTrue(test\a\is_nan($a));
                 '),
-            ],
-            [
-                self::generateTest('
+        ];
+
+        yield [
+            self::generateTest('
                     $this->assertFileExists($a);
                     $this->assertFileNotExists($a);
                     $this->assertFileExists($a);
                     $this->assertFileNotExists($a);
                 '),
-                self::generateTest('
+            self::generateTest('
                     $this->assertTrue(file_exists($a));
                     $this->assertFalse(file_exists($a));
                     $this->assertTrue(\file_exists($a));
                     $this->assertFalse(\file_exists($a));
                 '),
-            ],
-            [
-                self::generateTest('
+        ];
+
+        yield [
+            self::generateTest('
                     $this->assertNull($a);
                     $this->assertNotNull($a);
                     $this->assertNull($a);
                     $this->assertNotNull($a, "my message");
                 '),
-                self::generateTest('
+            self::generateTest('
                     $this->assertTrue(is_null($a));
                     $this->assertFalse(is_null($a));
                     $this->assertTrue(\is_null($a));
                     $this->assertFalse(\is_null($a), "my message");
                 '),
-            ],
-            [
-                self::generateTest('
+        ];
+
+        yield [
+            self::generateTest('
                     $this->assertEmpty($a);
                     $this->assertNotEmpty($a);
                 '),
-                self::generateTest('
+            self::generateTest('
                     $this->assertTrue(empty($a));
                     $this->ASSERTFALSE(empty($a));
                 '),
-            ],
-            [
-                self::generateTest('
+        ];
+
+        yield [
+            self::generateTest('
                     $this->assertInfinite($a);
                     $this->assertFinite($a, "my message");
                     $this->assertInfinite($a);
                     $this->assertFinite($a, b"my message");
                 '),
-                self::generateTest('
+            self::generateTest('
                     $this->assertTrue(is_infinite($a));
                     $this->assertFalse(is_infinite($a), "my message");
                     $this->assertTrue(\is_infinite($a));
                     $this->assertFalse(\is_infinite($a), b"my message");
                 '),
-            ],
-            [
-                self::generateTest('
+        ];
+
+        yield [
+            self::generateTest('
                     $this->assertArrayHasKey("test", $a);
                     $this->assertArrayNotHasKey($b, $a, $c);
                 '),
-                self::generateTest('
+            self::generateTest('
                     $this->assertTrue(\array_key_exists("test", $a));
                     $this->ASSERTFALSE(array_key_exists($b, $a), $c);
                 '),
-            ],
-            [
-                self::generateTest('
+        ];
+
+        yield [
+            self::generateTest('
 $this->assertTrue(is_dir($a));
 $this->assertTrue(is_writable($a));
 $this->assertTrue(is_readable($a));
 '),
-                null,
-                ['target' => PhpUnitTargetVersion::VERSION_5_0],
-            ],
-            [
-                self::generateTest('
+            null,
+            ['target' => PhpUnitTargetVersion::VERSION_5_0],
+        ];
+
+        yield [
+            self::generateTest('
 $this->assertTrue(is_dir($a));
 $this->assertTrue(is_writable($a));
 $this->assertTrue(is_readable($a));
 '),
-                null,
-                ['target' => PhpUnitTargetVersion::VERSION_3_0],
-            ],
-            [
-                self::generateTest('
+            null,
+            ['target' => PhpUnitTargetVersion::VERSION_3_0],
+        ];
+
+        yield [
+            self::generateTest('
 $this->assertDirectoryNotExists($a);
 $this->assertNotIsWritable($a);
 $this->assertNotIsReadable($a);
 '),
-                self::generateTest('
+            self::generateTest('
 $this->assertFalse(is_dir($a));
 $this->assertFalse(is_writable($a));
 $this->assertFalse(is_readable($a));
 '),
-                ['target' => PhpUnitTargetVersion::VERSION_5_6],
-            ],
-            [
-                self::generateTest('
+            ['target' => PhpUnitTargetVersion::VERSION_5_6],
+        ];
+
+        yield [
+            self::generateTest('
 $this->assertDirectoryExists($a);
 $this->assertIsWritable($a);
 $this->assertIsReadable($a);
 '),
-                self::generateTest('
+            self::generateTest('
 $this->assertTrue(is_dir($a));
 $this->assertTrue(is_writable($a));
 $this->assertTrue(is_readable($a));
 '),
-                ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
-            ],
+            ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
         ];
 
         foreach (['array', 'bool', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'real', 'scalar', 'string'] as $type) {
