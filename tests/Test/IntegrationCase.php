@@ -105,7 +105,11 @@ final class IntegrationCase
         return $this->inputCode;
     }
 
-    public function getRequirement(string $name): int
+    /**
+     * @return int|array<string>
+     * @phpstan-return ($name is 'php' ? int : array<string>)
+     */
+    public function getRequirement(string $name)
     {
         if (!\array_key_exists($name, $this->requirements)) {
             throw new \InvalidArgumentException(sprintf(
