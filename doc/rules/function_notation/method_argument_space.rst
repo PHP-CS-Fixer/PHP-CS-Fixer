@@ -8,6 +8,11 @@ multiple lines, where each subsequent line is indented once. When doing so, the
 first item in the list MUST be on the next line, and there MUST be only one
 argument per line.
 
+Description
+-----------
+
+This fixer covers rules defined in PSR2 ¶4.4, ¶4.6.
+
 Configuration
 -------------
 
