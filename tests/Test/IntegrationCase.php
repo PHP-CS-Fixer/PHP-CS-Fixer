@@ -35,9 +35,7 @@ final class IntegrationCase
     private ?string $inputCode;
 
     /**
-     * Env requirements (possible keys: 'php' or 'php<').
-     *
-     * @var array<string, int>|array{php: int}
+     * @var array{php: int, "php<"?: int, os: list<string>}
      */
     private array $requirements;
 
@@ -54,7 +52,7 @@ final class IntegrationCase
 
     /**
      * @param array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck?: bool} $settings
-     * @param array<string, int>|array{php: int}                                                     $requirements
+     * @param array{php: int, "php<"?: int, os: list<string>}                                        $requirements
      * @param array{indent: string, lineEnding: string}                                              $config
      */
     public function __construct(
@@ -106,9 +104,7 @@ final class IntegrationCase
     }
 
     /**
-     * @return array<string>|int
-     *
-     * @phpstan-return ($name is 'php' ? int : array<string>)
+     * @return mixed
      */
     public function getRequirement(string $name)
     {
@@ -124,7 +120,7 @@ final class IntegrationCase
     }
 
     /**
-     * @return array<string, int>|array{php: int}
+     * @return array{php: int, "php<"?: int, os: list<string>}
      */
     public function getRequirements(): array
     {

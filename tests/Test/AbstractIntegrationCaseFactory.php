@@ -105,7 +105,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--REQUIREMENTS--' block of a '.test' file and determines requirements.
      *
-     * @return array<string, int>|array{php: int}
+     * @return array{php: int, "php<"?: int, os: list<string>}
      */
     protected function determineRequirements(SplFileInfo $file, ?string $config): array
     {
