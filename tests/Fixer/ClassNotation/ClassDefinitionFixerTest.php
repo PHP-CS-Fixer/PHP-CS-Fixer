@@ -533,38 +533,40 @@ TestInterface3, /**/     TestInterface4   ,
 
     public static function provideClassyInheritanceInfoCases(): iterable
     {
-        yield from [
-            '1' => [
-                '<?php
+        yield '1' => [
+            '<?php
 class X11 implements    Z   , T,R
 {
 }',
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
-            ],
-            '2' => [
-                '<?php
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+        ];
+
+        yield '2' => [
+            '<?php
 class X10 implements    Z   , T,R    //
 {
 }',
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
-            ],
-            '3' => [
-                '<?php class A implements B {}',
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 1, 'multiLine' => false],
-            ],
-            '4' => [
-                "<?php class A implements B,\n I{}",
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 2, 'multiLine' => true],
-            ],
-            '5' => [
-                "<?php class A implements Z\\C\\B,C,D  {\n\n\n}",
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
-            ],
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+        ];
+
+        yield '3' => [
+            '<?php class A implements B {}',
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 1, 'multiLine' => false],
+        ];
+
+        yield '4' => [
+            "<?php class A implements B,\n I{}",
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 2, 'multiLine' => true],
+        ];
+
+        yield '5' => [
+            "<?php class A implements Z\\C\\B,C,D  {\n\n\n}",
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
         ];
 
         if (\PHP_VERSION_ID < 8_00_00) {
@@ -618,22 +620,22 @@ namespace {
             ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => $multiLine],
         ];
 
-        yield from [
-            [
-                "<?php \$a = new    class(3)     extends\nSomeClass\timplements    SomeInterface, D {};",
-                'numberOfExtends',
-                ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
-            ],
-            [
-                "<?php \$a = new class(4) extends\nSomeClass\timplements SomeInterface, D\n\n{};",
-                'numberOfImplements',
-                ['start' => 16, 'numberOfImplements' => 2, 'multiLine' => false],
-            ],
-            [
-                "<?php \$a = new class(5) extends SomeClass\nimplements    SomeInterface, D {};",
-                'numberOfExtends',
-                ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
-            ],
+        yield [
+            "<?php \$a = new    class(3)     extends\nSomeClass\timplements    SomeInterface, D {};",
+            'numberOfExtends',
+            ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
+        ];
+
+        yield [
+            "<?php \$a = new class(4) extends\nSomeClass\timplements SomeInterface, D\n\n{};",
+            'numberOfImplements',
+            ['start' => 16, 'numberOfImplements' => 2, 'multiLine' => false],
+        ];
+
+        yield [
+            "<?php \$a = new class(5) extends SomeClass\nimplements    SomeInterface, D {};",
+            'numberOfExtends',
+            ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
         ];
     }
 

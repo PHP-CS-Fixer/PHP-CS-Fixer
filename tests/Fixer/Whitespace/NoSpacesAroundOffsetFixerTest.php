@@ -117,67 +117,73 @@ EOF;
 
     public static function provideFixSpaceOutsideOffsetCases(): iterable
     {
-        yield from [
-            [
-                '<?php
+        yield [
+            '<?php
 $a = $b[0]    ;',
-                '<?php
+            '<?php
 $a = $b   [0]    ;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = array($b[0]     ,   $b[0]  );',
-                '<?php
+            '<?php
 $a = array($b      [0]     ,   $b [0]  );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $withComments[0] // here is a comment
     [1] // and here is another
     [2][3] = 4;',
-                '<?php
+            '<?php
 $withComments [0] // here is a comment
     [1] // and here is another
     [2] [3] = 4;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $c = SOME_CONST[0][1][2];',
-                '<?php
+            '<?php
 $c = SOME_CONST [0] [1]   [2];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $f = someFunc()[0][1][2];',
-                '<?php
+            '<?php
 $f = someFunc() [0] [1]   [2];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo[][0][1][2] = 3;',
-                '<?php
+            '<?php
 $foo [] [0] [1]   [2] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo[0][1][2] = 3;',
-                '<?php
+            '<?php
 $foo [0] [1]   [2] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $bar = $foo[0][1][2];',
-                '<?php
+            '<?php
 $bar = $foo [0] [1]   [2];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $baz[0][1][2] = 3;',
-                '<?php
+            '<?php
 $baz [0]
      [1]
      [2] = 3;',
-            ],
         ];
 
         if (\PHP_VERSION_ID < 8_00_00) {

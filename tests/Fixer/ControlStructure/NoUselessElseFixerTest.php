@@ -447,66 +447,74 @@ else?><?php echo 5;',
 
     public static function provideNegativeCases(): iterable
     {
-        yield from [
-            [
-                '<?php
+        yield [
+            '<?php
                     if ($a0) {
                         //
                     } else {
                         echo 0;
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     if (false)
                         echo "a";
                     else
 
                     echo "a";
                 ',
-            ],
-            [
-                '<?php if($a2){;} else {echo 27;}',
-            ],
-            [
-                '<?php if ($a3) {test();} else {echo 3;}',
-            ],
-            [
-                '<?php if ($a4) {$b = function () {};} else {echo 4;}',
-            ],
-            [
-                '<?php if ($a5) {$b = function () use ($a){};} else {echo 5;}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php if($a2){;} else {echo 27;}',
+        ];
+
+        yield [
+            '<?php if ($a3) {test();} else {echo 3;}',
+        ];
+
+        yield [
+            '<?php if ($a4) {$b = function () {};} else {echo 4;}',
+        ];
+
+        yield [
+            '<?php if ($a5) {$b = function () use ($a){};} else {echo 5;}',
+        ];
+
+        yield [
+            '<?php
                     if ($a) {
                         if ($b) return;
                     } else {
                         echo 1;
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     if ($a) {
                         if ($b) throw new \Exception();
                     } else {
                         echo 1;
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     if ($a) {
                         if ($b) { throw new \Exception(); }
                     } else {
                         echo 1;
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a = true; // 6
                     if (true === $a)
                         $b = true === $a ? 1 : die;
@@ -515,9 +523,10 @@ else?><?php echo 5;',
 
                     echo "end";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a = true; // 6
                     if (true === $a)
                         $b = true === $a ? 1 : exit(1);
@@ -526,9 +535,10 @@ else?><?php echo 5;',
 
                     echo "end";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a = true; // 6
                     if (true === $a)
                         $b = true === $a ? 1 : exit(1);
@@ -537,9 +547,10 @@ else?><?php echo 5;',
 
                     echo "end";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     if (false)
                         die;
                     elseif (true)
@@ -551,9 +562,10 @@ else?><?php echo 5;',
                     else
                         echo 7;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $tmp = function($b){$b();};
                     $a =1;
                     return $tmp(function () use ($a) {
@@ -564,9 +576,10 @@ else?><?php echo 5;',
                         }
                     });
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $tmp = function($b){$b();};
                     $a =1;
                     return $tmp(function () use ($a) {
@@ -579,9 +592,10 @@ else?><?php echo 5;',
                         }
                     });
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     return function() {
                         if (false) {
 
@@ -591,9 +605,10 @@ else?><?php echo 5;',
                             echo 1;
                         }
                     };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     return function() {
                         if (false) {
                             return 1;
@@ -603,7 +618,6 @@ else?><?php echo 5;',
                             echo 1;
                         }
                     };',
-            ],
         ];
     }
 

@@ -132,48 +132,60 @@ $a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; /
 
     public static function provideDoNotFixCases(): iterable
     {
-        yield from [
-            'reference' => [
-                '<?php $fn = function() use(&$b) {} ?>',
-            ],
-            'compact 1' => [
-                '<?php $foo = function() use ($b) { return compact(\'b\'); };',
-            ],
-            'compact 2' => [
-                '<?php $foo = function() use ($b) { return \compact(\'b\'); };',
-            ],
-            'eval' => [
-                '<?php $foo = function($c) use ($b) { eval($c); };',
-            ],
-            'include' => [
-                '<?php $foo = function($c) use ($b) { include __DIR__."/test3.php"; };',
-            ],
-            'include_once' => [
-                '<?php $foo = function($c) use ($b) { include_once __DIR__."/test3.php"; };',
-            ],
-            'require' => [
-                '<?php $foo = function($c) use ($b) { require __DIR__."/test3.php"; };',
-            ],
-            'require_once' => [
-                '<?php $foo = function($c) use ($b) { require_once __DIR__."/test3.php"; };',
-            ],
-            '${X}' => [
-                '<?php $foo = function($g) use ($b) { $h = ${$g}; };',
-            ],
-            '$$c' => [
-                '<?php $foo = function($g) use ($b) { $h = $$g; };',
-            ],
-            'interpolation 1' => [
-                '<?php $foo = function() use ($world) { echo "hello $world"; };',
-            ],
-            'interpolation 2' => [
-                '<?php $foo = function() use ($world) { echo "hello {$world}"; };',
-            ],
-            'interpolation 3' => [
-                '<?php $foo = function() use ($world) { echo "hello ${world}"; };',
-            ],
-            'heredoc' => [
-                '<?php
+        yield 'reference' => [
+            '<?php $fn = function() use(&$b) {} ?>',
+        ];
+
+        yield 'compact 1' => [
+            '<?php $foo = function() use ($b) { return compact(\'b\'); };',
+        ];
+
+        yield 'compact 2' => [
+            '<?php $foo = function() use ($b) { return \compact(\'b\'); };',
+        ];
+
+        yield 'eval' => [
+            '<?php $foo = function($c) use ($b) { eval($c); };',
+        ];
+
+        yield 'include' => [
+            '<?php $foo = function($c) use ($b) { include __DIR__."/test3.php"; };',
+        ];
+
+        yield 'include_once' => [
+            '<?php $foo = function($c) use ($b) { include_once __DIR__."/test3.php"; };',
+        ];
+
+        yield 'require' => [
+            '<?php $foo = function($c) use ($b) { require __DIR__."/test3.php"; };',
+        ];
+
+        yield 'require_once' => [
+            '<?php $foo = function($c) use ($b) { require_once __DIR__."/test3.php"; };',
+        ];
+
+        yield '${X}' => [
+            '<?php $foo = function($g) use ($b) { $h = ${$g}; };',
+        ];
+
+        yield '$$c' => [
+            '<?php $foo = function($g) use ($b) { $h = $$g; };',
+        ];
+
+        yield 'interpolation 1' => [
+            '<?php $foo = function() use ($world) { echo "hello $world"; };',
+        ];
+
+        yield 'interpolation 2' => [
+            '<?php $foo = function() use ($world) { echo "hello {$world}"; };',
+        ];
+
+        yield 'interpolation 3' => [
+            '<?php $foo = function() use ($world) { echo "hello ${world}"; };',
+        ];
+
+        yield 'heredoc' => [
+            '<?php
 $b = 123;
 $foo = function() use ($b) {
     echo
@@ -184,7 +196,6 @@ TEST;
 
 $foo();
 ',
-            ],
         ];
     }
 

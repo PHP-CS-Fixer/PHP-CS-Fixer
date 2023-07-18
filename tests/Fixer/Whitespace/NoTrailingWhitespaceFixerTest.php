@@ -35,52 +35,61 @@ final class NoTrailingWhitespaceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield from [
-            [
-                '<?php
+        yield [
+            '<?php
 $a = 1;',
-                '<?php
+            '<?php
 $a = 1;   ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = 1  ;',
-                '<?php
+            '<?php
 $a = 1  ;   ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $b = 1;',
-                '<?php
+            '<?php
 $b = 1;		',
-            ],
-            [
-                "<?php \$b = 1;\n  ",
-                "<?php \$b = 1;		\n  ",
-            ],
-            [
-                "<?php \$b = 1;\n\$c = 1;",
-                "<?php \$b = 1;   	   \n\$c = 1;",
-            ],
-            [
-                "<?php\necho 1;\n   \necho2;",
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            "<?php \$b = 1;\n  ",
+            "<?php \$b = 1;		\n  ",
+        ];
+
+        yield [
+            "<?php \$b = 1;\n\$c = 1;",
+            "<?php \$b = 1;   	   \n\$c = 1;",
+        ];
+
+        yield [
+            "<?php\necho 1;\n   \necho2;",
+        ];
+
+        yield [
+            '<?php
 	$b = 1;
 	',
-            ],
-            [
-                "<?php\n\$a=1;\n      \n\t\n\$b = 1;",
-            ],
-            [
-                "<?php\necho 1;\n?>\n\n\n\n",
-            ],
-            [
-                "<?php\n\techo 1;\n?>\n\n\t  a \r\n	b   \r\n",
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php\n\$a=1;\n      \n\t\n\$b = 1;",
+        ];
+
+        yield [
+            "<?php\necho 1;\n?>\n\n\n\n",
+        ];
+
+        yield [
+            "<?php\n\techo 1;\n?>\n\n\t  a \r\n	b   \r\n",
+        ];
+
+        yield [
+            "<?php
 <<<'EOT'
 Il y eut un rire éclatant des écoliers qui décontenança le pauvre
 garçon, si bien qu'il ne savait s'il fallait garder sa casquette à
@@ -88,51 +97,62 @@ la main, la laisser par terre ou la mettre sur sa tête. Il se
 rassit et la posa sur ses genoux.
 EOT;
 ",
-            ],
-            [
-                "<?php\n\$string = 'x  \ny';\necho (strlen(\$string) === 5);",
-            ],
-            [
-                "<?php\necho <<<'EOT'\nInline Il y eut un   \r\nrire éclatant    \n     \n   \r\nEOT;\n\n",
-            ],
-            [
-                "<?php\necho 'Hello World';",
-                "<?php \necho 'Hello World';",
-            ],
-            [
-                "<?php\n\necho 'Hello World';",
-                "<?php \n\necho 'Hello World';",
-            ],
-            [
-                "<?php\r\necho 'Hello World';",
-                "<?php \r\necho 'Hello World';",
-            ],
-            [
-                "<?php\necho 'Hello World';",
-                "<?php  \necho 'Hello World';",
-            ],
-            [
-                "<?php\necho 'Hello World';",
-                "<?php	\necho 'Hello World';",
-            ],
-            [
-                '<?php ',
-                '<?php  ',
-            ],
-            [
-                "<?php\t",
-                "<?php\t\t",
-            ],
-            [
-                '<?php ', // do not trim this as "<?php" is not valid PHP
-            ],
-            [
-                "<?php\n      \n   \n    ",
-            ],
-            [
-                "<?php\n   \n    ",
-                "<?php      \n   \n    ",
-            ],
+        ];
+
+        yield [
+            "<?php\n\$string = 'x  \ny';\necho (strlen(\$string) === 5);",
+        ];
+
+        yield [
+            "<?php\necho <<<'EOT'\nInline Il y eut un   \r\nrire éclatant    \n     \n   \r\nEOT;\n\n",
+        ];
+
+        yield [
+            "<?php\necho 'Hello World';",
+            "<?php \necho 'Hello World';",
+        ];
+
+        yield [
+            "<?php\n\necho 'Hello World';",
+            "<?php \n\necho 'Hello World';",
+        ];
+
+        yield [
+            "<?php\r\necho 'Hello World';",
+            "<?php \r\necho 'Hello World';",
+        ];
+
+        yield [
+            "<?php\necho 'Hello World';",
+            "<?php  \necho 'Hello World';",
+        ];
+
+        yield [
+            "<?php\necho 'Hello World';",
+            "<?php	\necho 'Hello World';",
+        ];
+
+        yield [
+            '<?php ',
+            '<?php  ',
+        ];
+
+        yield [
+            "<?php\t",
+            "<?php\t\t",
+        ];
+
+        yield [
+            '<?php ', // do not trim this as "<?php" is not valid PHP
+        ];
+
+        yield [
+            "<?php\n      \n   \n    ",
+        ];
+
+        yield [
+            "<?php\n   \n    ",
+            "<?php      \n   \n    ",
         ];
     }
 

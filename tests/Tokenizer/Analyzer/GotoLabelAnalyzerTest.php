@@ -45,46 +45,50 @@ final class GotoLabelAnalyzerTest extends TestCase
 
     public static function provideGotoLabelAnalyzerTestCases(): iterable
     {
-        yield from [
-            'no candidates' => [
-                '<?php
+        yield 'no candidates' => [
+            '<?php
                     $a = \InvalidArgumentException::class;
                     $this->fixer->configure($legacy ? [$statement] : [1]);
                 ',
-                [],
-            ],
-            'after php tag' => [
-                '<?php
+            [],
+        ];
+
+        yield 'after php tag' => [
+            '<?php
                     beginning:
                     echo $guard?1:2;',
-                [3],
-            ],
-            'after closing brace' => [
-                '<?php
+            [3],
+        ];
+
+        yield 'after closing brace' => [
+            '<?php
                     function A(){}
                     beginning:
                     echo $guard?1:2;',
-                [11],
-            ],
-            'after statement' => [
-                '<?php
+            [11],
+        ];
+
+        yield 'after statement' => [
+            '<?php
                     echo 1;
                     beginning:
                     echo $guard?1:2;',
-                [8],
-            ],
-            'after opening brace' => [
-                '<?php
+            [8],
+        ];
+
+        yield 'after opening brace' => [
+            '<?php
                     echo 1;
                     {
                         beginning:
                         echo $guard?1:2;
                     }
                 ',
-                [10],
-            ],
-            'after use statements' => [
-                '<?php
+            [10],
+        ];
+
+        yield 'after use statements' => [
+            '<?php
 use Bar1;
 use const Bar2;
 use function Bar3;
@@ -92,8 +96,7 @@ Bar1:
 Bar2:
 Bar3:
 ',
-                [21, 24, 27],
-            ],
+            [21, 24, 27],
         ];
 
         if (\PHP_VERSION_ID >= 8_00_00) {
