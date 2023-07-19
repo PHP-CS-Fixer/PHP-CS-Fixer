@@ -34,7 +34,7 @@ interface ConfigurableFixerInterface extends FixerInterface
      * eg `php_unit_strict` fixer allows to configure which methods should be fixed.
      * Finally, some fixers need configuration to work, eg `header_comment`.
      *
-     * @param array $configuration configuration depends on Fixer
+     * @param array<string, mixed> $configuration configuration depends on Fixer
      *
      * @throws InvalidFixerConfigurationException
      */

@@ -35,9 +35,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
     private $candidateTokenKind;
 
     /**
-     * Use 'syntax' => 'long'|'short'.
-     *
-     * @param array<string, string> $configuration
+     * @param array{syntax: 'long'|'short'} $configuration
      *
      * @throws InvalidFixerConfigurationException
      */
