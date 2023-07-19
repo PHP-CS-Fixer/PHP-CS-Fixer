@@ -452,6 +452,11 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/StdinFileInfo.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$className \\(string\\) of method PhpCsFixer\\\\StdinFileInfo\\:\\:getPathInfo\\(\\) should be contravariant with parameter \\$class \\(string\\|null\\) of method SplFileInfo\\:\\:getPathInfo\\(\\)$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/StdinFileInfo.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/Analysis/ArgumentAnalysis.php',
