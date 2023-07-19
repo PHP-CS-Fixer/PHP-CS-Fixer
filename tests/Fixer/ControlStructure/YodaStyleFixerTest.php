@@ -255,6 +255,7 @@ if ($a = $obj instanceof A === true) {
             '<?php echo 1 === $a ? 1 : 2;',
             '<?php echo $a === 1 ? 1 : 2;',
         ];
+
         // Don't fix cases.
         yield ['<?php $a = 1 === 1;'];
 
@@ -293,6 +294,7 @@ if ($a = $obj instanceof A === true) {
         yield ['<?php return $x === 2 - 1;'];
 
         yield ['<?php return $x === 2-1;'];
+
         // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/693
         yield ['<?php return array(2) == $o;'];
 
@@ -323,6 +325,7 @@ if ($a = $obj instanceof A === true) {
         yield ['<?php $z = $n == list($a) = $b;'];
 
         yield ['<?php return $n == list($a) = $b;'];
+
         // Fix cases.
         yield 'Array destruct by ternary.' => [
             '<?php list($a) = 11 === $c ? $b : $d;',

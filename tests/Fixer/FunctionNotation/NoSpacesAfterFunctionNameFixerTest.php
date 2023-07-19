@@ -96,6 +96,7 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
             '<?php include (isHtml())? "1.html": "1.php";',
             '<?php include (isHtml ())? "1.html": "1.php";',
         ];
+
         // skip other language constructs
         yield [
             '<?php $a = 2 * (1 + 1);',

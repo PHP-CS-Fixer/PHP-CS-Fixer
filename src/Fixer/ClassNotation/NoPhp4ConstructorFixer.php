@@ -106,6 +106,7 @@ class Foo
                                 ++$i;
                             }
                         }
+
                         // and continue checking the classes that might follow
                         continue;
                     }
