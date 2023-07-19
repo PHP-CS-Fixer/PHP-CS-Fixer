@@ -65,12 +65,12 @@ class FooTest extends TestCase {
     /**
      * {@inheritdoc}
      *
-     * Must run before ReturnTypeDeclarationFixer.
+     * Must run before ReturnToYieldFromFixer, ReturnTypeDeclarationFixer.
      * Must run after CleanNamespaceFixer.
      */
     public function getPriority(): int
     {
-        return 0;
+        return 2;
     }
 
     public function isRisky(): bool

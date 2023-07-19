@@ -679,6 +679,7 @@ final class FixerFactoryTest extends TestCase
                 'php_unit_dedicate_assert',
             ],
             'php_unit_data_provider_return_type' => [
+                'return_to_yield_from',
                 'return_type_declaration',
             ],
             'php_unit_dedicate_assert' => [
@@ -769,6 +770,7 @@ final class FixerFactoryTest extends TestCase
             'phpdoc_to_return_type' => [
                 'fully_qualified_strict_types',
                 'no_superfluous_phpdoc_tags',
+                'return_to_yield_from',
                 'return_type_declaration',
             ],
             'phpdoc_types' => [
@@ -792,6 +794,9 @@ final class FixerFactoryTest extends TestCase
             ],
             'return_assignment' => [
                 'blank_line_before_statement',
+            ],
+            'return_to_yield_from' => [
+                'yield_from_array_to_yields',
             ],
             'semicolon_after_instruction' => [
                 'simplified_if_return',
