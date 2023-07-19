@@ -27,29 +27,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Doctrine/Annotation/Tokens.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Alias\\\\NoAliasFunctionsFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Alias/NoAliasFunctionsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Alias\\\\NoMixedEchoPrintFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Alias/NoMixedEchoPrintFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable method call on \\$this\\(PhpCsFixer\\\\Fixer\\\\Alias\\\\NoMixedEchoPrintFixer\\)\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Alias/NoMixedEchoPrintFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Alias\\\\RandomApiMigrationFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Alias/RandomApiMigrationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\ArrayNotation\\\\ArraySyntaxFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ArrayNotation/ArraySyntaxFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable method call on \\$this\\(PhpCsFixer\\\\Fixer\\\\ArrayNotation\\\\ArraySyntaxFixer\\)\\.$#',
@@ -60,11 +40,6 @@ $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\|null\\) of method PhpCsFixer\\\\Fixer\\\\Basic\\\\BracesFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/BracesFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
@@ -90,16 +65,6 @@ $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Basic/NonPrintableCharacterFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Basic\\\\PsrAutoloadingFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/PsrAutoloadingFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Casing\\\\ConstantCaseFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Casing/ConstantCaseFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable \\$i might not be defined\\.$#',
@@ -128,11 +93,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassAttributesSeparationFixer\\:\\:getLastTokenIndexOfClassElement\\(\\) has parameter \\$element with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassAttributesSeparationFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
 ];
@@ -182,11 +142,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/FinalInternalClassFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\FinalInternalClassFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/FinalInternalClassFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\NoPhp4ConstructorFixer\\:\\:getWrapperMethodSequence\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php',
@@ -227,24 +182,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\OrderedClassElementsFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Comment\\\\CommentToPhpdocFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/CommentToPhpdocFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Comment\\\\NoEmptyCommentFixer\\:\\:getCommentBlock\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Comment/NoEmptyCommentFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Comment\\\\SingleLineCommentStyleFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/SingleLineCommentStyleFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
@@ -252,22 +192,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Comment/SingleLineCommentStyleFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ConfigurableFixerInterface.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\ConstantNotation\\\\NativeConstantInvocationFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ConstantNotation/NativeConstantInvocationFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ControlStructure\\\\YodaStyleFixer\\:\\:getCompareFixableInfo\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\ControlStructure\\\\YodaStyleFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
 ];
@@ -305,16 +230,6 @@ $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\MethodArgumentSpaceFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\NativeFunctionInvocationFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/NativeFunctionInvocationFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\PhpdocToPropertyTypeFixer\\:\\:resolveApplicableType\\(\\) return type has no value type specified in iterable type array\\.$#',
@@ -372,11 +287,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Import/SingleImportPerStatementFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\DeclareEqualNormalizeFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/DeclareEqualNormalizeFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable method call on \\$this\\(PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\DeclareEqualNormalizeFixer\\)\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/DeclareEqualNormalizeFixer.php',
@@ -397,44 +307,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\FunctionToConstantFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\NullableTypeDeclarationFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/NullableTypeDeclarationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\SingleSpaceAfterConstructFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\SingleSpaceAroundConstructFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, string\\>\\) of method PhpCsFixer\\\\Fixer\\\\ListNotation\\\\ListSyntaxFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
+	'message' => '#^Parameter \\#1 \\$configuration \\(array\\{syntax\\: \'long\'\\|\'short\'\\}\\) of method PhpCsFixer\\\\Fixer\\\\ListNotation\\\\ListSyntaxFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\AbstractFixer\\:\\:configure\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ListNotation/ListSyntaxFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, string\\>\\) of method PhpCsFixer\\\\Fixer\\\\ListNotation\\\\ListSyntaxFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\AbstractFixer\\:\\:configure\\(\\)$#',
+	'message' => '#^Parameter \\#1 \\$configuration \\(array\\{syntax\\: \'long\'\\|\'short\'\\}\\) of method PhpCsFixer\\\\Fixer\\\\ListNotation\\\\ListSyntaxFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ListNotation/ListSyntaxFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Operator\\\\BinaryOperatorSpacesFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Operator\\\\ConcatSpaceFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/ConcatSpaceFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
@@ -462,11 +342,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Operator/OperatorLinebreakFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Operator\\\\OperatorLinebreakFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/OperatorLinebreakFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Operator\\\\TernaryToElvisOperatorFixer\\:\\:getBeforeOperator\\(\\) has parameter \\$blockEdgeDefinitions with no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Operator/TernaryToElvisOperatorFixer.php',
@@ -480,36 +355,6 @@ $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitDedicateAssertFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitExpectationFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitMockFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitMockFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitNamespacedFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitNamespacedFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitNoExpectationAnnotationFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\AlignMultilineCommentFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/AlignMultilineCommentFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',
@@ -542,19 +387,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAddMissingParamAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocAlignFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocNoAliasTagFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocNoAliasTagFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^For loop initial assignment overwrites variable \\$pos\\.$#',
@@ -567,29 +402,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocSeparationFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocSeparationFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocSeparationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocTagCasingFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTagCasingFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\|null\\) of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocToCommentFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocToCommentFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Foreach overwrites \\$index with its key variable\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTrimConsecutiveBlankLineSeparationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocTypesFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTypesFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Strict\\\\StrictParamFixer\\:\\:fixFunction\\(\\) has parameter \\$functionParams with no value type specified in iterable type array\\.$#',
@@ -597,19 +412,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Strict/StrictParamFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Whitespace\\\\BlankLineBeforeStatementFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable \\$index might not be defined\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/HeredocIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Whitespace\\\\NoExtraBlankLinesFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable \\$end might not be defined\\.$#',
@@ -630,11 +435,6 @@ $ignoreErrors[] = [
 	'message' => '#^For loop initial assignment overwrites variable \\$i\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/StatementIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\Whitespace\\\\TypesSpacesFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/TypesSpacesFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
