@@ -171,7 +171,7 @@ else?><?php echo 5;',
                 }
             ';
 
-        $cases = self::generateCases($expected, $input);
+        yield from self::generateCases($expected, $input);
 
         $expected =
             '<?php
@@ -188,7 +188,7 @@ else?><?php echo 5;',
                 }
             ';
 
-        $cases = array_merge($cases, self::generateCases($expected));
+        yield from self::generateCases($expected);
 
         $expected =
             '<?php
@@ -209,9 +209,9 @@ else?><?php echo 5;',
                 }
             ';
 
-        $cases = array_merge($cases, self::generateCases($expected));
+        yield from self::generateCases($expected);
 
-        $cases[] = [
+        yield [
             '<?php
                 if ($a)
                     echo 1789;
@@ -229,7 +229,7 @@ else?><?php echo 5;',
             ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
                 if ($a)
                     echo 1789;
@@ -245,8 +245,6 @@ else?><?php echo 5;',
                     echo 4;
             ',
         ];
-
-        return $cases;
     }
 
     /**
@@ -679,8 +677,6 @@ else?><?php echo 5;',
 
     public static function provideBlockDetectionCases(): iterable
     {
-        $cases = [];
-
         $source = '<?php
                     if ($a)
                         echo 1;
@@ -690,10 +686,14 @@ else?><?php echo 5;',
                     else
                         echo 4;
                     ';
-        $cases[] = [[2, 11], $source, 13];
-        $cases[] = [[13, 24], $source, 26];
-        $cases[] = [[13, 24], $source, 26];
-        $cases[] = [[26, 39], $source, 41];
+
+        yield [[2, 11], $source, 13];
+
+        yield [[13, 24], $source, 26];
+
+        yield [[13, 24], $source, 26];
+
+        yield [[26, 39], $source, 41];
 
         $source = '<?php
                     if ($a) {
@@ -710,11 +710,12 @@ else?><?php echo 5;',
                     } else
                         echo 1;
                     ';
-        $cases[] = [[2, 25], $source, 27];
-        $cases[] = [[27, 40], $source, 42];
-        $cases[] = [[59, 72], $source, 74];
 
-        return $cases;
+        yield [[2, 25], $source, 27];
+
+        yield [[27, 40], $source, 42];
+
+        yield [[59, 72], $source, 74];
     }
 
     /**

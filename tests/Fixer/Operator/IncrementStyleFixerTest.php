@@ -48,14 +48,14 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
 
     public static function provideFixPostIncrementCases(): iterable
     {
-        return array_map(static function (array $case): array {
-            return array_reverse($case);
-        }, self::provideFixPreIncrementCases());
+        foreach (self::provideFixPreIncrementCases() as $case) {
+            yield array_reverse($case);
+        }
     }
 
     public static function provideFixPreIncrementCases(): iterable
     {
-        $cases = [
+        yield from [
             [
                 '<?php ++$a;',
                 '<?php $a++;',
@@ -170,22 +170,20 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
         ];
 
         if (\PHP_VERSION_ID < 8_00_00) {
-            $cases[] = [
+            yield [
                 '<?php ++$a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h;',
                 '<?php $a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h++;',
             ];
 
-            $cases[] = [
+            yield [
                 '<?php ++$a{0};',
                 '<?php $a{0}++;',
             ];
 
-            $cases[] = [
+            yield [
                 '<?php ++${$a}->{$b."foo"}->bar[$c]->$baz;',
                 '<?php ${$a}->{$b."foo"}->bar[$c]->$baz++;',
             ];
         }
-
-        return $cases;
     }
 }

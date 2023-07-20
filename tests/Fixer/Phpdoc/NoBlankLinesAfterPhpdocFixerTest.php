@@ -326,9 +326,7 @@ EOF;
 
     public static function provideInlineTypehintingDocsBeforeFlowBreakCases(): iterable
     {
-        $cases = [];
-
-        $cases[] = [<<<'EOF'
+        yield [<<<'EOF'
 <?php
 function parseTag($tag)
 {
@@ -343,7 +341,7 @@ function parseTag($tag)
 EOF
         ];
 
-        $cases[] = [<<<'EOF'
+        yield [<<<'EOF'
 <?php
 function parseTag($tag)
 {
@@ -358,7 +356,7 @@ function parseTag($tag)
 EOF
         ];
 
-        $cases[] = [<<<'EOF'
+        yield [<<<'EOF'
 <?php
 function parseTag($tag)
 {
@@ -375,7 +373,7 @@ FOO:
 EOF
         ];
 
-        $cases[] = [<<<'EOF'
+        yield [<<<'EOF'
 <?php
 function parseTag($tag)
 {
@@ -392,7 +390,7 @@ function parseTag($tag)
 EOF
         ];
 
-        $cases[] = [<<<'EOF'
+        yield [<<<'EOF'
 <?php
 function parseTag($tag)
 {
@@ -408,7 +406,5 @@ function parseTag($tag)
 }
 EOF
         ];
-
-        return $cases;
     }
 }

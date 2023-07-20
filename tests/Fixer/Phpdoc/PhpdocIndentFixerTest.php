@@ -35,13 +35,11 @@ final class PhpdocIndentFixerTest extends AbstractFixerTestCase
 
     public static function provideFixIndentCases(): iterable
     {
-        $cases = [];
+        yield ['<?php /** @var Foo $foo */ ?>'];
 
-        $cases[] = ['<?php /** @var Foo $foo */ ?>'];
+        yield ['<?php /** foo */'];
 
-        $cases[] = ['<?php /** foo */'];
-
-        $cases[] = [
+        yield [
             '<?php
 /**
  * Do not indent
@@ -84,7 +82,7 @@ class DocBlocks
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 class DocBlocks
 {
@@ -153,7 +151,7 @@ class DocBlocks
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 /**
  * Final class should also not be indented
@@ -178,7 +176,7 @@ final class DocBlocks
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
     if (1) {
         class Foo {
@@ -209,7 +207,7 @@ final class DocBlocks
     }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 /**
  * Variable
@@ -296,19 +294,19 @@ $partialFix = true;
     }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
     $user = $event->getForm()->getData();  /** @var User $user */
     echo "Success";',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
     $user = $event->getForm()->getData();/** @var User $user */
     echo "Success";',
         ];
 
-        $cases[] = [
+        yield [
             "<?php
 class DocBlocks
 {
@@ -337,7 +335,7 @@ class DocBlocks
 }",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 /**
  * Used to write a value to a session key.
@@ -356,7 +354,7 @@ function write(\$name) {}
 ",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
     class Foo
     {
@@ -369,7 +367,7 @@ function write(\$name) {}
     }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 /**
  * docs
@@ -380,7 +378,7 @@ $foo = $bar;
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 function foo()
 {
@@ -389,7 +387,7 @@ function foo()
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 
 /**
@@ -401,7 +399,7 @@ class Foo
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 class Application
 {
@@ -412,7 +410,5 @@ class Dispatcher
 }
 ',
         ];
-
-        return $cases;
     }
 }

@@ -274,7 +274,7 @@ echo 1;
 
     public static function provideGetCommentBlockCases(): iterable
     {
-        $cases = [
+        yield from [
             [
                 '<?php // a',
                 1,
@@ -383,13 +383,13 @@ echo 1;
           #                        c12';
 
         foreach ([2, 4, 6] as $i) {
-            $cases[] = [$src, $i, 7, false];
+            yield [$src, $i, 7, false];
         }
 
-        $cases[] = [$src, 8, 8, false];
-        $cases[] = [$src, 10, 11, false];
-        $cases[] = [$src, 12, 12, false];
+        yield [$src, 8, 8, false];
 
-        return $cases;
+        yield [$src, 10, 11, false];
+
+        yield [$src, 12, 12, false];
     }
 }
