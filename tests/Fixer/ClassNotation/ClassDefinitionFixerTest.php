@@ -376,12 +376,12 @@ A#
 
     public static function provideFixingInterfacesCases(): iterable
     {
-        $cases = array_merge(
+        yield from array_merge(
             self::provideClassyCases('interface'),
             self::provideClassyExtendingCases('interface')
         );
 
-        $cases[] = [
+        yield [
             '<?php
 interface Test extends
   /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
@@ -407,8 +407,6 @@ TestInterface3, /**/     TestInterface4   ,
         /**/TestInterface65    {}
             ',
         ];
-
-        return $cases;
     }
 
     public static function provideFixingTraitsCases(): iterable

@@ -45,7 +45,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
 
     public static function provideFixCases(): iterable
     {
-        $cases = self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * Foo.
@@ -339,7 +339,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
 '],
         ]);
 
-        $cases[] = [
+        yield [
             '<?php
 
 /**
@@ -347,8 +347,6 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  */
 ',
         ];
-
-        return $cases;
     }
 
     /**

@@ -1073,17 +1073,18 @@ switch ($foo) {
             ]);
         };
 
-        foreach ($cases as &$case) {
+        foreach ($cases as $case) {
             $case[0] = $replaceCommentText($case[0]);
 
             if (isset($case[1])) {
                 $case[1] = $replaceCommentText($case[1]);
             }
+
+            yield $case;
         }
 
-        return array_merge($cases, [
-            [
-                '<?php
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -1096,7 +1097,7 @@ switch ($foo) {
     default:
         baz();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -1107,8 +1108,7 @@ switch ($foo) {
     default:
         baz();
 }',
-            ],
-        ]);
+        ];
     }
 
     /**

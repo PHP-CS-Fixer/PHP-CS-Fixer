@@ -274,105 +274,113 @@ echo 1;
 
     public static function provideGetCommentBlockCases(): iterable
     {
-        $cases = [
-            [
-                '<?php // a',
-                1,
-                1,
-                false,
-            ],
-            [
-                '<?php
+        yield [
+            '<?php // a',
+            1,
+            1,
+            false,
+        ];
+
+        yield [
+            '<?php
                     // This comment could be nicely formatted.
                     //
                     //
                     // For that, it could have some empty comment lines inside.
                     //           ',
-                2,
-                11,
-                false,
-            ],
-            [
-                '<?php
+            2,
+            11,
+            false,
+        ];
+
+        yield [
+            '<?php
 /**///',
-                1,
-                1,
-                true,
-            ],
-            [
-                '<?php
+            1,
+            1,
+            true,
+        ];
+
+        yield [
+            '<?php
 //
 //
 
 #
 #
 ',
-                5,
-                8,
-                true,
-            ],
-            [
-                '<?php
+            5,
+            8,
+            true,
+        ];
+
+        yield [
+            '<?php
 //
 //
 
 //
 //
 ',
-                5,
-                8,
-                true,
-            ],
-            [
-                '<?php
+            5,
+            8,
+            true,
+        ];
+
+        yield [
+            '<?php
 //
 //
 
 //
 //
 ',
-                1,
-                3,
-                true,
-            ],
-            [
-                str_replace("\n", "\r", "<?php\n//\n//\n\n//\n//\n"),
-                1,
-                3,
-                true,
-            ],
-            [
-                str_replace("\n", "\r\n", "<?php\n//\n//\n\n//\n//\n"),
-                1,
-                3,
-                true,
-            ],
-            [
-                '<?php
+            1,
+            3,
+            true,
+        ];
+
+        yield [
+            str_replace("\n", "\r", "<?php\n//\n//\n\n//\n//\n"),
+            1,
+            3,
+            true,
+        ];
+
+        yield [
+            str_replace("\n", "\r\n", "<?php\n//\n//\n\n//\n//\n"),
+            1,
+            3,
+            true,
+        ];
+
+        yield [
+            '<?php
 //
 
 //
 ',
-                1,
-                1,
-                true,
-            ],
-            [
-                '<?php
+            1,
+            1,
+            true,
+        ];
+
+        yield [
+            '<?php
 //
 //
               $a;  ',
-                1,
-                4,
-                true,
-            ],
-            [
-                '<?php
+            1,
+            4,
+            true,
+        ];
+
+        yield [
+            '<?php
 //',
-                1,
-                1,
-                true,
-            ],
+            1,
+            1,
+            true,
         ];
 
         $src = '<?php
@@ -383,13 +391,13 @@ echo 1;
           #                        c12';
 
         foreach ([2, 4, 6] as $i) {
-            $cases[] = [$src, $i, 7, false];
+            yield [$src, $i, 7, false];
         }
 
-        $cases[] = [$src, 8, 8, false];
-        $cases[] = [$src, 10, 11, false];
-        $cases[] = [$src, 12, 12, false];
+        yield [$src, 8, 8, false];
 
-        return $cases;
+        yield [$src, 10, 11, false];
+
+        yield [$src, 12, 12, false];
     }
 }

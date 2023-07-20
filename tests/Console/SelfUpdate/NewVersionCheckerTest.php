@@ -70,8 +70,6 @@ final class NewVersionCheckerTest extends TestCase
 
     public static function provideCompareVersionsCases(): iterable
     {
-        $cases = [];
-
         foreach ([
             ['1.0.0-alpha', '1.0.0', -1],
             ['1.0.0-beta', '1.0.0', -1],
@@ -82,22 +80,23 @@ final class NewVersionCheckerTest extends TestCase
             ['1.0.0', '2.0.0', -1],
         ] as $case) {
             // X.Y.Z vs. X.Y.Z
-            $cases[] = $case;
+            yield $case;
 
             // vX.Y.Z vs. X.Y.Z
             $case[0] = 'v'.$case[0];
-            $cases[] = $case;
+
+            yield $case;
 
             // vX.Y.Z vs. vX.Y.Z
             $case[1] = 'v'.$case[1];
-            $cases[] = $case;
+
+            yield $case;
 
             // X.Y.Z vs. vX.Y.Z
             $case[0] = substr($case[0], 1);
-            $cases[] = $case;
-        }
 
-        return $cases;
+            yield $case;
+        }
     }
 
     private function createGithubClientStub(): GithubClientInterface

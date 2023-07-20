@@ -373,9 +373,7 @@ private $d = 123;
 
     public static function provideFixClassesCases(): iterable
     {
-        $cases = [];
-
-        $cases[] = ['<?php
+        yield ['<?php
 class SomeClass1
 {
     // This comment
@@ -387,7 +385,7 @@ class SomeClass1
 }
 '];
 
-        $cases[] = [
+        yield [
             '<?php
 class SomeClass2
 {
@@ -411,7 +409,7 @@ class SomeClass2
             ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 class SomeClass3
 {
@@ -425,7 +423,7 @@ class SomeClass3
 }
 ', ];
 
-        $cases[] = [
+        yield [
             '<?php
 class SomeClass1
 {
@@ -502,7 +500,7 @@ class SomeClass1
 }
 ', ];
 
-        $cases[] = ['<?php
+        yield ['<?php
 class SomeClass
 {
     // comment
@@ -513,7 +511,7 @@ class SomeClass
 }
 '];
 
-        $cases[] = ['<?php
+        yield ['<?php
 class SomeClass
 {
     // This comment
@@ -525,7 +523,7 @@ class SomeClass
 }
 '];
 
-        $cases[] = [
+        yield [
             '<?php
 class SomeClass
 {
@@ -551,7 +549,7 @@ class SomeClass
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 class SomeClass
 {
@@ -573,7 +571,7 @@ class SomeClass
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 class SomeClass
 {
@@ -595,7 +593,7 @@ class SomeClass
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 abstract class MethodTest2
 {
@@ -656,7 +654,7 @@ function some1(){ echo 1;}
 function some2(){ echo 2;}',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 
 /*
@@ -701,7 +699,7 @@ final class NullLinter implements LinterInterface
         // do not touch anonymous functions (since PHP doesn't allow
         // for class attributes being functions :(, we only have to test
         // those used within methods)
-        $cases[] = [
+        yield [
             '<?php
 class MethodTestAnonymous
 {
@@ -722,7 +720,7 @@ class MethodTestAnonymous
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 class MethodTest1
 {
@@ -821,7 +819,7 @@ class MethodTest1
         ];
 
         // spaces between methods
-        $cases[] = [
+        yield [
             '<?php
 abstract class MethodTest3
 {
@@ -865,7 +863,7 @@ abstract class MethodTest3
     }
 }', ];
         // don't change correct code
-        $cases[] = [
+        yield [
             '<?php
 class SmallHelperException extends \Exception
 {
@@ -889,7 +887,7 @@ class MethodTest123124124
         ];
 
         // do not touch function out of class scope
-        $cases[] = [
+        yield [
             '<?php
 function some0() {
 
@@ -913,7 +911,7 @@ function some2() {
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php interface A {
 public function B1(); // allowed comment
 
@@ -923,7 +921,8 @@ public function B1(); // allowed comment
                 public function C(); // allowed comment
             }',
         ];
-        $cases[] = [
+
+        yield [
             '<?php class Foo {
                 var $a;
 
@@ -935,7 +934,7 @@ public function B1(); // allowed comment
             }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
                 class A
                 {
@@ -957,8 +956,6 @@ public function B1(); // allowed comment
                 }
             ',
         ];
-
-        return $cases;
     }
 
     /**
@@ -971,10 +968,8 @@ public function B1(); // allowed comment
 
     public static function provideFixTraitsCases(): iterable
     {
-        $cases = [];
-
         // do not touch well formatted traits
-        $cases[] = [
+        yield [
             '<?php
 trait OkTrait
 {
@@ -991,7 +986,7 @@ trait OkTrait
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 trait ezcReflectionReturnInfo {
     public $x = 1;
@@ -1020,7 +1015,7 @@ trait ezcReflectionReturnInfo {
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 trait SomeReturnInfo {
     function getReturnType()
@@ -1051,8 +1046,6 @@ trait SomeReturnInfo {
     abstract public function getWorld();
 }',
         ];
-
-        return $cases;
     }
 
     /**
@@ -1065,8 +1058,7 @@ trait SomeReturnInfo {
 
     public static function provideFixInterfaceCases(): iterable
     {
-        $cases = [];
-        $cases[] = [
+        yield [
             '<?php
 interface TestInterface
 {
@@ -1100,7 +1092,7 @@ interface TestInterface
         ];
 
         // do not touch well formatted interfaces
-        $cases[] = [
+        yield [
             '<?php
 interface TestInterfaceOK
 {
@@ -1111,7 +1103,7 @@ interface TestInterfaceOK
         ];
 
         // method after trait use
-        $cases[] = [
+        yield [
             '<?php
 trait ezcReflectionReturnInfo {
     function getReturnDescription() {}
@@ -1134,8 +1126,6 @@ class ezcReflectionMethod extends ReflectionMethod {
 
 }',
         ];
-
-        return $cases;
     }
 
     /**

@@ -44,9 +44,7 @@ final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        $cases = [];
-
-        $cases[] = [
+        yield [
             '<?php
 class Good
 {
@@ -66,7 +64,7 @@ class Good
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 class Good
 {
@@ -92,7 +90,7 @@ class Good
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 interface Good
 {
@@ -113,7 +111,7 @@ interface Good
         ];
 
         // check if some fancy whitespaces aren't modified
-        $cases[] = [
+        yield [
             '<?php
 class Good
 {public
@@ -128,7 +126,7 @@ class Good
         ];
 
         // check if line with spaces is removed when next token is indented
-        $cases[] = [
+        yield [
             '<?php
 class Foo
 {
@@ -145,7 +143,7 @@ class Foo
         ];
 
         // check if line with spaces is removed when next token is not indented
-        $cases[] = [
+        yield [
             '<?php
 class Foo
 {
@@ -160,15 +158,11 @@ function bar() {}
 }
 ',
         ];
-
-        return $cases;
     }
 
     public static function provideFixTraitsCases(): iterable
     {
-        $cases = [];
-
-        $cases[] = [
+        yield [
             '<?php
 trait Good
 {
@@ -187,8 +181,6 @@ trait Good
     public function firstMethod() {}
 }',
         ];
-
-        return $cases;
     }
 
     /**
