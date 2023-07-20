@@ -207,5 +207,18 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
                 yield from [8, 9];
             }',
         ];
+
+        yield [
+            '<?php function foo()
+            {
+                foreach ([] as $x) {}
+                 yield 1; yield 2; yield 3;
+            }',
+            '<?php function foo()
+            {
+                foreach ([] as $x) {}
+                yield from [1, 2, 3];
+            }',
+        ];
     }
 }
