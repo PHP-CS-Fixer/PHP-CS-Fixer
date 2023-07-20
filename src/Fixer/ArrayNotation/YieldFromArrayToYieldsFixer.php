@@ -106,11 +106,10 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
     }
 
     /**
-     * @return array<int, array<int>>
+     * @return iterable<int, array<int>>
      */
-    private function getYieldsFromToUnpack(Tokens $tokens): array
+    private function getYieldsFromToUnpack(Tokens $tokens): iterable
     {
-        $yieldsFromToUnpack = [];
         $tokensCount = $tokens->count();
         $index = 0;
         while (++$index < $tokensCount) {
@@ -142,10 +141,8 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
                 continue;
             }
 
-            $yieldsFromToUnpack[$index] = [$startIndex, $endIndex];
+            yield $index => [$startIndex, $endIndex];
         }
-
-        return $yieldsFromToUnpack;
     }
 
     /**
