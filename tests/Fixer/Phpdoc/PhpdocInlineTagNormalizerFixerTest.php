@@ -37,9 +37,8 @@ final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield from [
-            [
-                '<?php
+        yield [
+            '<?php
     /**
      * {link} { LINK }
      * { test }
@@ -54,7 +53,7 @@ final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
      * end comment {@inheritdoc here we are done} @foo {1}
      */
 ',
-                '<?php
+            '<?php
     /**
      * {link} { LINK }
      * { test }
@@ -69,34 +68,35 @@ final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
      * end comment {@inheritdoc here we are done} @foo {1}
      */
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * {@foo}
      * @{ bar }
      */',
-                '<?php
+            '<?php
     /**
      * @{ foo }
      * @{ bar }
      */',
-                [
-                    'tags' => ['foo'],
-                ],
-            ],
             [
-                '<?php
+                'tags' => ['foo'],
+            ],
+        ];
+
+        yield [
+            '<?php
     /**
      * @inheritDoc
      * {@inheritDoc}
      */',
-                '<?php
+            '<?php
     /**
      * @inheritDoc
      * @{ inheritDoc }
      */',
-            ],
         ];
 
         foreach (['example', 'id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial'] as $tag) {

@@ -274,105 +274,113 @@ echo 1;
 
     public static function provideGetCommentBlockCases(): iterable
     {
-        yield from [
-            [
-                '<?php // a',
-                1,
-                1,
-                false,
-            ],
-            [
-                '<?php
+        yield [
+            '<?php // a',
+            1,
+            1,
+            false,
+        ];
+
+        yield [
+            '<?php
                     // This comment could be nicely formatted.
                     //
                     //
                     // For that, it could have some empty comment lines inside.
                     //           ',
-                2,
-                11,
-                false,
-            ],
-            [
-                '<?php
+            2,
+            11,
+            false,
+        ];
+
+        yield [
+            '<?php
 /**///',
-                1,
-                1,
-                true,
-            ],
-            [
-                '<?php
+            1,
+            1,
+            true,
+        ];
+
+        yield [
+            '<?php
 //
 //
 
 #
 #
 ',
-                5,
-                8,
-                true,
-            ],
-            [
-                '<?php
+            5,
+            8,
+            true,
+        ];
+
+        yield [
+            '<?php
 //
 //
 
 //
 //
 ',
-                5,
-                8,
-                true,
-            ],
-            [
-                '<?php
+            5,
+            8,
+            true,
+        ];
+
+        yield [
+            '<?php
 //
 //
 
 //
 //
 ',
-                1,
-                3,
-                true,
-            ],
-            [
-                str_replace("\n", "\r", "<?php\n//\n//\n\n//\n//\n"),
-                1,
-                3,
-                true,
-            ],
-            [
-                str_replace("\n", "\r\n", "<?php\n//\n//\n\n//\n//\n"),
-                1,
-                3,
-                true,
-            ],
-            [
-                '<?php
+            1,
+            3,
+            true,
+        ];
+
+        yield [
+            str_replace("\n", "\r", "<?php\n//\n//\n\n//\n//\n"),
+            1,
+            3,
+            true,
+        ];
+
+        yield [
+            str_replace("\n", "\r\n", "<?php\n//\n//\n\n//\n//\n"),
+            1,
+            3,
+            true,
+        ];
+
+        yield [
+            '<?php
 //
 
 //
 ',
-                1,
-                1,
-                true,
-            ],
-            [
-                '<?php
+            1,
+            1,
+            true,
+        ];
+
+        yield [
+            '<?php
 //
 //
               $a;  ',
-                1,
-                4,
-                true,
-            ],
-            [
-                '<?php
+            1,
+            4,
+            true,
+        ];
+
+        yield [
+            '<?php
 //',
-                1,
-                1,
-                true,
-            ],
+            1,
+            1,
+            true,
         ];
 
         $src = '<?php

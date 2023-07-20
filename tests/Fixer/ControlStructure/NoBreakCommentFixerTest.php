@@ -1083,9 +1083,8 @@ switch ($foo) {
             yield $case;
         }
 
-        yield from [
-            [
-                '<?php
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -1098,7 +1097,7 @@ switch ($foo) {
     default:
         baz();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -1109,7 +1108,6 @@ switch ($foo) {
     default:
         baz();
 }',
-            ],
         ];
     }
 
