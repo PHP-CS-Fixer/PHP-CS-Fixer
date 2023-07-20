@@ -197,24 +197,25 @@ public function A(){}
             $to .= sprintf("class A%d{\npublic function GA%d(){return new class {\npublic function B6B%d(){}\n};}\n\npublic function otherFunction%d(){}\n}", $i, $i, $i, $i);
         }
 
-        yield from [
-            [$to, $from],
-            [
-                '<?php $a = new class {
+        yield [$to, $from];
+
+        yield [
+            '<?php $a = new class {
                 public function H(){}
 
                 public function B7(){}
 
                 private function C(){}
                 };',
-                '<?php $a = new class {
+            '<?php $a = new class {
                 public function H(){}
                 public function B7(){}
                 private function C(){}
                 };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class A
                     {
 public function getFilter()
@@ -230,7 +231,7 @@ private $d = 123;
 };}
                     }
                 ',
-                '<?php
+            '<?php
                     class A
                     {public function getFilter()
                         {
@@ -244,7 +245,6 @@ private $d = 123;
 
                     }
                 ',
-            ],
         ];
     }
 

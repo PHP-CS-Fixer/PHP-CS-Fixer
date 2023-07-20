@@ -119,7 +119,7 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if (!$tokens[$prevIndex]->equalsAny([';', '{', [T_OPEN_TAG]])) {
+            if (!$tokens[$prevIndex]->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
                 continue;
             }
 

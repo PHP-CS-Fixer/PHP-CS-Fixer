@@ -803,43 +803,47 @@ $a#4
             ];
         }
 
-        yield from [
-            ['<?php $a = $b + 1 <=> $d;'],
-            [
-                '<?php $a = new class(10) extends SomeClass implements SomeInterface {} === $a;/**/',
-            ],
-            [
-                '<?php $a = $b ?? 1 ?? 2 == $d;',
-                '<?php $a = $b ?? 1 ?? $d == 2;',
-            ],
-            [
-                '<?php $a = 1 === new class(10) extends SomeClass implements SomeInterface {};/**/',
-                '<?php $a = new class(10) extends SomeClass implements SomeInterface {} === 1;/**/',
-            ],
-            [
-                '<?php
+        yield ['<?php $a = $b + 1 <=> $d;'];
+
+        yield [
+            '<?php $a = new class(10) extends SomeClass implements SomeInterface {} === $a;/**/',
+        ];
+
+        yield [
+            '<?php $a = $b ?? 1 ?? 2 == $d;',
+            '<?php $a = $b ?? 1 ?? $d == 2;',
+        ];
+
+        yield [
+            '<?php $a = 1 === new class(10) extends SomeClass implements SomeInterface {};/**/',
+            '<?php $a = new class(10) extends SomeClass implements SomeInterface {} === 1;/**/',
+        ];
+
+        yield [
+            '<?php
 function a() {
     for ($i = 1; $i <= 3; $i++) {
         echo yield 1 === $i ? 1 : 2;
     }
 }
 ',
-                '<?php
+            '<?php
 function a() {
     for ($i = 1; $i <= 3; $i++) {
         echo yield $i === 1 ? 1 : 2;
     }
 }
 ',
-            ],
-            [
-                '<?php function test() {return yield 1 !== $a [$b];};',
-                '<?php function test() {return yield $a [$b] !== 1;};',
-            ],
-            [
-                '<?php function test() {return yield 1 === $a;};',
-                '<?php function test() {return yield $a === 1;};',
-            ],
+        ];
+
+        yield [
+            '<?php function test() {return yield 1 !== $a [$b];};',
+            '<?php function test() {return yield $a [$b] !== 1;};',
+        ];
+
+        yield [
+            '<?php function test() {return yield 1 === $a;};',
+            '<?php function test() {return yield $a === 1;};',
         ];
 
         yield [
