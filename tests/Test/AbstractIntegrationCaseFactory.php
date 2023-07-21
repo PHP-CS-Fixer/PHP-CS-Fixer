@@ -105,18 +105,26 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--REQUIREMENTS--' block of a '.test' file and determines requirements.
      *
-     * @return array<string, int>|array{php: int}
+     * @return array{php: int, "php<"?: int, os: list<string>}
      */
     protected function determineRequirements(SplFileInfo $file, ?string $config): array
     {
         $parsed = $this->parseJson($config, [
             'php' => \PHP_VERSION_ID,
+            'os' => ['Linux', 'Darwin', 'Windows'],
         ]);
 
         if (!\is_int($parsed['php'])) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected int value like 50509 for "php", got "%s".',
                 get_debug_type($parsed['php']).'#'.$parsed['php'],
+            ));
+        }
+
+        if (!\is_array($parsed['os'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected array of OS names for "os", got "%s".',
+                get_debug_type($parsed['os']).' ('.$parsed['os'].')',
             ));
         }
 
