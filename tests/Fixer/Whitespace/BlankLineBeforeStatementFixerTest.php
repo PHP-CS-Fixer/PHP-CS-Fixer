@@ -1142,8 +1142,10 @@ function foo() {
 yield $e;#
 
 yield $f;
+
     /* @var int $g */
     yield $g;
+
 /* @var int $h */
 yield $i;
 
@@ -1215,6 +1217,38 @@ function foo() {
     $a = $a;
     yield $a;
 }',
+            ],
+            [
+                '<?php function foo() {
+                    // yield 1
+                    yield 1;
+
+                    // yield 2
+                    yield 2;
+                }',
+                '<?php function foo() {
+                    // yield 1
+                    yield 1;
+                    // yield 2
+                    yield 2;
+                }',
+            ],
+            [
+                '<?php function foo() {
+                    yield 1;
+
+                    // yield 2
+                    // or maybe yield 3
+                    // better compromise
+                    yield 2.5;
+                }',
+                '<?php function foo() {
+                    yield 1;
+                    // yield 2
+                    // or maybe yield 3
+                    // better compromise
+                    yield 2.5;
+                }',
             ],
         ];
     }

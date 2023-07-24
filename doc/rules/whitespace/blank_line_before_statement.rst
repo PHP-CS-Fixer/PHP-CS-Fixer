@@ -220,11 +220,13 @@ With configuration: ``['statements' => ['yield']]``.
    --- Original
    +++ New
     <?php
-
-    if (true) {
-        $foo = $bar;
+    function getValues() {
+        yield 1;
    +
-        yield $foo;
+        yield 2;
+   +
+        // comment
+        yield 3;
     }
 
 Rule sets

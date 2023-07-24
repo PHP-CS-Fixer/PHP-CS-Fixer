@@ -221,10 +221,11 @@ try {
                 ),
                 new CodeSample(
                     '<?php
-
-if (true) {
-    $foo = $bar;
-    yield $foo;
+function getValues() {
+    yield 1;
+    yield 2;
+    // comment
+    yield 3;
 }
 ',
                     [
@@ -265,10 +266,11 @@ if (true) {
                 continue;
             }
 
-            $prevNonWhitespace = $tokens->getPrevNonWhitespace($index);
+            $insertBlankLineIndex = $this->getInsertBlankLineIndex($tokens, $index);
+            $prevNonWhitespace = $tokens->getPrevNonWhitespace($insertBlankLineIndex);
 
             if ($this->shouldAddBlankLine($tokens, $prevNonWhitespace)) {
-                $this->insertBlankLine($tokens, $index);
+                $this->insertBlankLine($tokens, $insertBlankLineIndex);
             }
 
             $index = $prevNonWhitespace;
@@ -291,6 +293,29 @@ if (true) {
                 ])
                 ->getOption(),
         ]);
+    }
+
+    private function getInsertBlankLineIndex(Tokens $tokens, int $index): int
+    {
+        while ($index > 0) {
+            $prevIndex = $tokens->getPrevNonWhitespace($index);
+
+            if (!$tokens[$prevIndex]->isComment()) {
+                break;
+            }
+
+            if (!$tokens[$prevIndex - 1]->isWhitespace()) {
+                break;
+            }
+
+            if (1 !== substr_count($tokens[$prevIndex - 1]->getContent(), "\n")) {
+                break;
+            }
+
+            $index = $prevIndex;
+        }
+
+        return $index;
     }
 
     private function shouldAddBlankLine(Tokens $tokens, int $prevNonWhitespace): bool
