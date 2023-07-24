@@ -160,6 +160,20 @@ EOF;
         $this->doTest($expected);
     }
 
+    public function testLineBeforeRequireIsNotBeRemoved(): void
+    {
+        $expected = <<<'EOF'
+<?php
+/**
+ * This describes what my script does.
+ */
+
+require 'vendor/autoload.php';
+EOF;
+
+        $this->doTest($expected);
+    }
+
     public function testLineWithSpacesIsRemovedWhenNextTokenIsIndented(): void
     {
         $this->doTest(
