@@ -160,19 +160,57 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLineBeforeRequireIsNotBeRemoved(): void
+    /**
+     * @dataProvider provideLineBeforeRequireCases
+     */
+    public function testLineBeforeRequireIsNotBeRemoved(string $expected, ?string $input = null): void
     {
-        $expected = <<<'EOF'
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideLineBeforeRequireCases(): iterable
+    {
+        yield [<<<'EOF'
+<?php
+/**
+ * This describes what my script does.
+ */
+
+include 'vendor/autoload.php';
+EOF
+        ];
+
+        yield [<<<'EOF'
+<?php
+/**
+ * This describes what my script does.
+ */
+
+include_once 'vendor/autoload.php';
+EOF
+        ];
+
+        yield [<<<'EOF'
 <?php
 /**
  * This describes what my script does.
  */
 
 require 'vendor/autoload.php';
-EOF;
+EOF
+        ];
 
-        $this->doTest($expected);
+        yield [<<<'EOF'
+<?php
+/**
+ * This describes what my script does.
+ */
+
+require_once 'vendor/autoload.php';
+EOF
+        ];
     }
+
 
     public function testLineWithSpacesIsRemovedWhenNextTokenIsIndented(): void
     {
