@@ -408,7 +408,7 @@ $array = [
         }
 
         if (self::AT_LEAST_SINGLE_SPACE === $this->operators[$tokenContent]) {
-            $this->fixWhiteSpaceAroundOperatorToSingleSpace($tokens, $index);
+            $this->fixWhiteSpaceAroundOperatorToAtLeastSingleSpace($tokens, $index);
 
             return;
         }
