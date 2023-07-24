@@ -132,7 +132,7 @@ EOF;
         $this->doTest($input);
     }
 
-    public function testLineBeforeDeclareIsNotBeRemoved(): void
+    public function testLineBeforeDeclareIsNotRemoved(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -161,14 +161,14 @@ EOF;
     }
 
     /**
-     * @dataProvider provideLineBeforeRequireCases
+     * @dataProvider provideLineBeforeIncludeOrRequireIsNotRemovedCases
      */
-    public function testLineBeforeRequireIsNotBeRemoved(string $expected, ?string $input = null): void
+    public function testLineBeforeIncludeOrRequireIsNotRemoved(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideLineBeforeRequireCases(): iterable
+    public static function provideLineBeforeIncludeOrRequireIsNotRemovedCases(): iterable
     {
         yield [<<<'EOF'
 <?php
