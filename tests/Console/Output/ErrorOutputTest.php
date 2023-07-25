@@ -151,6 +151,7 @@ EOT;
     {
         rewind($output->getStream());
         $displayed = stream_get_contents($output->getStream());
+
         // normalize line breaks,
         // as we output using SF `writeln` we are not sure what line ending has been used as it is
         // based on the platform/console/terminal used
