@@ -94,7 +94,7 @@ class Bar
         foreach ($this->getMethods($tokens) as $element) {
             $index = $element['method_final_index'];
 
-            if (true === $element['method_of_enum'] || $element['class_is_final']) {
+            if ($element['method_of_enum'] || $element['class_is_final']) {
                 $this->clearFinal($tokens, $index);
 
                 continue;
