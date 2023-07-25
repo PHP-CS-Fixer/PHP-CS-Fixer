@@ -7,11 +7,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Command/SelfUpdateCommand.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, mixed given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
@@ -37,34 +32,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ArrayNotation/ArraySyntaxFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in \\|\\|, mixed given on the left side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in \\|\\|, mixed given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable \\$prevIndex might not be defined\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/NonPrintableCharacterFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable \\$i might not be defined\\.$#',
@@ -127,39 +97,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int\\|null given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/FinalInternalClassFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, mixed given on the right side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/FinalInternalClassFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\NoPhp4ConstructorFixer\\:\\:getWrapperMethodSequence\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in \\|\\|, mixed given on the left side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in \\|\\|, mixed given on the right side\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Foreach overwrites \\$pos with its value variable\\.$#',
@@ -168,16 +108,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\OrderedClassElementsFixer\\:\\:sortElements\\(\\) has parameter \\$elements with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, array\\<int, string\\>\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
@@ -225,11 +155,6 @@ $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\LambdaNotUsedImportFixer\\:\\:findNotUsedLambdaImports\\(\\) has parameter \\$imports with no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/LambdaNotUsedImportFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\PhpdocToPropertyTypeFixer\\:\\:resolveApplicableType\\(\\) return type has no value type specified in iterable type array\\.$#',
@@ -282,11 +207,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Import/SingleImportPerStatementFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, mixed given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Import/SingleImportPerStatementFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable method call on \\$this\\(PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\DeclareEqualNormalizeFixer\\)\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/DeclareEqualNormalizeFixer.php',
@@ -327,16 +247,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Operator/ConcatSpaceFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, mixed given\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/NewWithBracesFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/NoUselessConcatOperatorFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Operator\\\\OperatorLinebreakFixer\\:\\:getNonBooleanOperators\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Operator/OperatorLinebreakFixer.php',
@@ -350,21 +260,6 @@ $ignoreErrors[] = [
 	'message' => '#^Variable method call on \\$this\\(PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitConstructFixer\\)\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitConstructFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, mixed given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\NoSuperfluousPhpdocTagsFixer\\:\\:annotationIsSuperfluous\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#',
@@ -397,11 +292,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocSeparationFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocSeparationFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Foreach overwrites \\$index with its key variable\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTrimConsecutiveBlankLineSeparationFixer.php',
@@ -428,7 +318,7 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^For loop initial assignment overwrites variable \\$endIndex\\.$#',
-	'count' => 2,
+	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/StatementIndentationFixer.php',
 ];
 $ignoreErrors[] = [
@@ -460,11 +350,6 @@ $ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/Analysis/ArgumentAnalysis.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^For loop initial assignment overwrites variable \\$index\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/CommentsAnalyzer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Foreach overwrites \\$key with its key variable\\.$#',
@@ -507,19 +392,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^For loop initial assignment overwrites variable \\$index\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Transformer/ConstructorPromotionTransformer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable \\$expression might not be defined\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/DocBlock/TypeExpressionTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, string\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Test/AbstractIntegrationCaseFactory.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$index \\(int\\) of method PhpCsFixer\\\\Tests\\\\Test\\\\TokensWithObservedTransformers\\:\\:offsetSet\\(\\) should be contravariant with parameter \\$offset \\(int\\|null\\) of method ArrayAccess\\<int,PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\>\\:\\:offsetSet\\(\\)$#',
