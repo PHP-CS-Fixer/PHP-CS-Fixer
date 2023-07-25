@@ -228,23 +228,22 @@ else {
             }
 
             if ($token->isGivenKind($blockSignatureFirstTokens)) {
-                for ($currentIndex = $index + 1, $max = \count($tokens); $currentIndex < $max; ++$currentIndex) {
-                    if ($tokens[$currentIndex]->equals('(')) {
-                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $currentIndex);
+                for ($endIndex = $index + 1, $max = \count($tokens); $endIndex < $max; ++$endIndex) {
+                    if ($tokens[$endIndex]->equals('(')) {
+                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex);
 
                         continue;
                     }
-                    $endIndex = $currentIndex;
 
-                    if ($tokens[$currentIndex]->equalsAny(['{', ';', [T_DOUBLE_ARROW], [T_IMPLEMENTS]])) {
+                    if ($tokens[$endIndex]->equalsAny(['{', ';', [T_DOUBLE_ARROW], [T_IMPLEMENTS]])) {
                         break;
                     }
 
-                    if ($tokens[$currentIndex]->equals(':')) {
+                    if ($tokens[$endIndex]->equals(':')) {
                         if ($token->isGivenKind([T_CASE, T_DEFAULT])) {
-                            $caseBlockStarts[$currentIndex] = $index;
+                            $caseBlockStarts[$endIndex] = $index;
                         } else {
-                            $alternativeBlockStarts[$currentIndex] = $index;
+                            $alternativeBlockStarts[$endIndex] = $index;
                         }
 
                         break;
@@ -281,8 +280,9 @@ else {
                 }
 
                 $methodModifierIndents = [];
+                $endIndex = $index + 1;
 
-                for ($endIndex = $index + 1, $max = \count($tokens); $endIndex < $max; ++$endIndex) {
+                for ($max = \count($tokens); $endIndex < $max; ++$endIndex) {
                     if ($tokens[$endIndex]->equals('(')) {
                         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex);
 
