@@ -75,7 +75,6 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php function foo(): IteratorAggregate { yield from getGenerator(); }',
             '<?php function foo(): IteratorAggregate { return getGenerator(); }',
         ];
 
@@ -104,7 +103,7 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php namespace N; use BetterStuff\Traversable; function foo(): Traversable { yield from getGenerator(); }',
+            '<?php namespace N; use BetterStuff\Traversable; function foo(): Traversable { return getGenerator(); }',
         ];
 
         yield [

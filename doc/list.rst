@@ -2826,7 +2826,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\ReturnNotation\\ReturnAssignmentFixer <./../src/Fixer/ReturnNotation/ReturnAssignmentFixer.php>`_
 -  `return_to_yield_from <./rules/array_notation/return_to_yield_from.rst>`_
 
-   When function return type is iterable (``iterable``, ``Traversable``, ``Iterator`` and ``IteratorAggregate``) and it starts with ``return`` then it must be changed to ``yield from``.
+   When function return type is iterable (``iterable``, ``Iterator`` and ``Traversable``) and it starts with ``return`` then it must be changed to ``yield from``.
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\ReturnToYieldFromFixer <./../src/Fixer/ArrayNotation/ReturnToYieldFromFixer.php>`_
 -  `return_type_declaration <./rules/function_notation/return_type_declaration.rst>`_

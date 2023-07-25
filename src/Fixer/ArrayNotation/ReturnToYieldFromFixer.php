@@ -31,9 +31,8 @@ final class ReturnToYieldFromFixer extends AbstractFixer
 {
     private const SUPPORTED_TYPES = [
         'iterable' => 'iterable',
-        'traversable' => 'Traversable',
         'iterator' => 'Iterator',
-        'iteratoraggregate' => 'IteratorAggregate',
+        'traversable' => 'Traversable',
     ];
 
     public function getDefinition(): FixerDefinitionInterface
