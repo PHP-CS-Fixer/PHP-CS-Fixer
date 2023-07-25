@@ -27,8 +27,3 @@ parameters:
             count: 18
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache
-
-    strictRules:
-        # False positives related to `AbstractFixer::$configuration` and accessing bool config options
-        # see: https://github.com/phpstan/phpstan/discussions/9686
-        booleansInConditions: false

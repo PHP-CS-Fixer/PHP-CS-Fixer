@@ -32,9 +32,34 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ArrayNotation/ArraySyntaxFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in \\|\\|, mixed given on the left side\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in \\|\\|, mixed given on the right side\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Variable \\$prevIndex might not be defined\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Basic/NonPrintableCharacterFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable \\$i might not be defined\\.$#',
@@ -97,6 +122,16 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in &&, mixed given on the right side\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/FinalInternalClassFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\NoPhp4ConstructorFixer\\:\\:getWrapperMethodSequence\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php',
@@ -108,6 +143,11 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\OrderedClassElementsFixer\\:\\:sortElements\\(\\) has parameter \\$elements with no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
@@ -207,6 +247,11 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Import/SingleImportPerStatementFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in an if condition, mixed given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Import/SingleImportPerStatementFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Variable method call on \\$this\\(PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\DeclareEqualNormalizeFixer\\)\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/DeclareEqualNormalizeFixer.php',
@@ -247,6 +292,16 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Operator/ConcatSpaceFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in an if condition, mixed given\\.$#',
+	'count' => 2,
+	'path' => __DIR__ . '/../../src/Fixer/Operator/NewWithBracesFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Operator/NoUselessConcatOperatorFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Operator\\\\OperatorLinebreakFixer\\:\\:getNonBooleanOperators\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Operator/OperatorLinebreakFixer.php',
@@ -260,6 +315,21 @@ $ignoreErrors[] = [
 	'message' => '#^Variable method call on \\$this\\(PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitConstructFixer\\)\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitConstructFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\NoSuperfluousPhpdocTagsFixer\\:\\:annotationIsSuperfluous\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#',
@@ -289,6 +359,11 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^For loop initial assignment overwrites variable \\$pos\\.$#',
 	'count' => 2,
+	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocSeparationFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',
+	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocSeparationFixer.php',
 ];
 $ignoreErrors[] = [
