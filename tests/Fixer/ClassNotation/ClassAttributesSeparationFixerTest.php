@@ -862,6 +862,7 @@ abstract class MethodTest3
     {
     }
 }', ];
+
         // don't change correct code
         yield [
             '<?php
