@@ -211,7 +211,6 @@ EOF
         ];
     }
 
-
     public function testLineWithSpacesIsRemovedWhenNextTokenIsIndented(): void
     {
         $this->doTest(
