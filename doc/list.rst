@@ -1092,7 +1092,7 @@ List of Available Rules
    Configuration options:
 
    - | ``syntax``
-     | Whether to use the ``long`` or ``short`` ``list`` syntax.
+     | Whether to use the ``long`` or ``short`` syntax for array destructuring.
      | Allowed values: ``'long'`` and ``'short'``
      | Default value: ``'short'``
 
@@ -1828,7 +1828,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\ControlStructure\\NoUselessElseFixer <./../src/Fixer/ControlStructure/NoUselessElseFixer.php>`_
 -  `no_useless_nullsafe_operator <./rules/operator/no_useless_nullsafe_operator.rst>`_
 
-   There should not be useless ``null-safe-operators`` ``?->`` used.
+   There should not be useless Null-safe operator ``?->`` used.
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 

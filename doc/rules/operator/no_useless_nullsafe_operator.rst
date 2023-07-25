@@ -2,7 +2,7 @@
 Rule ``no_useless_nullsafe_operator``
 =====================================
 
-There should not be useless ``null-safe-operators`` ``?->`` used.
+There should not be useless Null-safe operator ``?->`` used.
 
 Examples
 --------
