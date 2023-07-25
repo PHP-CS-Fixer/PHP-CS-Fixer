@@ -143,7 +143,7 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
                     function f4(): Traversable { yield from getGenerator(); }
                 }
                 namespace Namespace5 {
-                    use \For\Bar\Baz\Traversable;
+                    use \Foo\Bar\Baz\Traversable;
                     function f5(): Traversable { return getGenerator(); }
                 }
             ',
@@ -165,7 +165,7 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
                     function f4(): Traversable { return getGenerator(); }
                 }
                 namespace Namespace5 {
-                    use \For\Bar\Baz\Traversable;
+                    use \Foo\Bar\Baz\Traversable;
                     function f5(): Traversable { return getGenerator(); }
                 }
             ',
