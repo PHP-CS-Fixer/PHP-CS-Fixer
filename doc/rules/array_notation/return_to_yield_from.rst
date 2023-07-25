@@ -2,8 +2,9 @@
 Rule ``return_to_yield_from``
 =============================
 
-When function return type is iterable and it starts with ``return`` then it must
-be changed to ``yield from``.
+When function return type is iterable (``iterable``, ``Traversable``,
+``Iterator`` and ``IteratorAggregate``) and it starts with ``return`` then it
+must be changed to ``yield from``.
 
 Examples
 --------
