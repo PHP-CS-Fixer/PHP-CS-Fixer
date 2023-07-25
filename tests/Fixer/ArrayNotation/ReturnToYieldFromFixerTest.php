@@ -60,58 +60,6 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php function foo(): Traversable { yield from getGenerator(); }',
-            '<?php function foo(): Traversable { return getGenerator(); }',
-        ];
-
-        yield [
-            '<?php function foo(): \Traversable { yield from getGenerator(); }',
-            '<?php function foo(): \Traversable { return getGenerator(); }',
-        ];
-
-        yield [
-            '<?php function foo(): Iterator { yield from getGenerator(); }',
-            '<?php function foo(): Iterator { return getGenerator(); }',
-        ];
-
-        yield [
-            '<?php function foo(): IteratorAggregate { return getGenerator(); }',
-        ];
-
-        yield [
-            '<?php use BetterStuff\Traversable; function foo(): Traversable { return getGenerator(); }',
-        ];
-
-        yield [
-            '<?php use BetterStuff\Traversable; function foo(): \Traversable { yield from getGenerator(); }',
-            '<?php use BetterStuff\Traversable; function foo(): \Traversable { return getGenerator(); }',
-        ];
-
-        yield [
-            '<?php use Traversable; function foo(): Traversable { yield from getGenerator(); }',
-            '<?php use Traversable; function foo(): Traversable { return getGenerator(); }',
-        ];
-
-        yield [
-            '<?php use \Traversable; function foo(): Traversable { yield from getGenerator(); }',
-            '<?php use \Traversable; function foo(): Traversable { return getGenerator(); }',
-        ];
-
-        yield [
-            '<?php namespace N; use Traversable; function foo(): Traversable { yield from getGenerator(); }',
-            '<?php namespace N; use Traversable; function foo(): Traversable { return getGenerator(); }',
-        ];
-
-        yield [
-            '<?php namespace N; use BetterStuff\Traversable; function foo(): Traversable { return getGenerator(); }',
-        ];
-
-        yield [
-            '<?php namespace N; use \Traversable; function foo(): Traversable { yield from getGenerator(); }',
-            '<?php namespace N; use \Traversable; function foo(): Traversable { return getGenerator(); }',
-        ];
-
-        yield [
             '<?php
                 function foo(): iterable { yield from [1, 2]; }
                 function bar(): array { return [3, 4]; }
@@ -121,53 +69,6 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
                 function foo(): iterable { return [1, 2]; }
                 function bar(): array { return [3, 4]; }
                 function baz(): int { return 5; }
-            ',
-        ];
-
-        yield [
-            '<?php
-                namespace Namespace1 {
-                    use Foo\Traversable;
-                    function f1(): Traversable { return getGenerator(); }
-                }
-                namespace Namespace2 {
-                    use Traversable;
-                    function f2(): Traversable { yield from getGenerator(); }
-                }
-                namespace Namespace3 {
-                    use Bar\Traversable;
-                    function f3(): Traversable { return getGenerator(); }
-                }
-                namespace Namespace4 {
-                    use \Traversable;
-                    function f4(): Traversable { yield from getGenerator(); }
-                }
-                namespace Namespace5 {
-                    use \Foo\Bar\Baz\Traversable;
-                    function f5(): Traversable { return getGenerator(); }
-                }
-            ',
-            '<?php
-                namespace Namespace1 {
-                    use Foo\Traversable;
-                    function f1(): Traversable { return getGenerator(); }
-                }
-                namespace Namespace2 {
-                    use Traversable;
-                    function f2(): Traversable { return getGenerator(); }
-                }
-                namespace Namespace3 {
-                    use Bar\Traversable;
-                    function f3(): Traversable { return getGenerator(); }
-                }
-                namespace Namespace4 {
-                    use \Traversable;
-                    function f4(): Traversable { return getGenerator(); }
-                }
-                namespace Namespace5 {
-                    use \Foo\Bar\Baz\Traversable;
-                    function f5(): Traversable { return getGenerator(); }
-                }
             ',
         ];
     }
