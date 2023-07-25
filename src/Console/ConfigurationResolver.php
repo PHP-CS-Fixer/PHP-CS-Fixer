@@ -287,7 +287,7 @@ final class ConfigurationResolver
     public function getDiffer(): DifferInterface
     {
         if (null === $this->differ) {
-            $this->differ = (null !== $this->options['diff']) ? new UnifiedDiffer() : new NullDiffer();
+            $this->differ = (true === $this->options['diff']) ? new UnifiedDiffer() : new NullDiffer();
         }
 
         return $this->differ;
