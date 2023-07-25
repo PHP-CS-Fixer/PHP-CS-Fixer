@@ -228,22 +228,23 @@ else {
             }
 
             if ($token->isGivenKind($blockSignatureFirstTokens)) {
-                for ($endIndex = $index + 1, $max = \count($tokens); $endIndex < $max; ++$endIndex) {
-                    if ($tokens[$endIndex]->equals('(')) {
-                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex);
+                for ($currentIndex = $index + 1, $max = \count($tokens); $currentIndex < $max; ++$currentIndex) {
+                    if ($tokens[$currentIndex]->equals('(')) {
+                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $currentIndex);
 
                         continue;
                     }
+                    $endIndex = $currentIndex;
 
-                    if ($tokens[$endIndex]->equalsAny(['{', ';', [T_DOUBLE_ARROW], [T_IMPLEMENTS]])) {
+                    if ($tokens[$currentIndex]->equalsAny(['{', ';', [T_DOUBLE_ARROW], [T_IMPLEMENTS]])) {
                         break;
                     }
 
-                    if ($tokens[$endIndex]->equals(':')) {
+                    if ($tokens[$currentIndex]->equals(':')) {
                         if ($token->isGivenKind([T_CASE, T_DEFAULT])) {
-                            $caseBlockStarts[$endIndex] = $index;
+                            $caseBlockStarts[$currentIndex] = $index;
                         } else {
-                            $alternativeBlockStarts[$endIndex] = $index;
+                            $alternativeBlockStarts[$currentIndex] = $index;
                         }
 
                         break;

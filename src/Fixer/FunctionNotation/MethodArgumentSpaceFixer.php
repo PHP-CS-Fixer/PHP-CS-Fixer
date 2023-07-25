@@ -100,17 +100,6 @@ SAMPLE
         return $tokens->isTokenKindFound('(');
     }
 
-    public function configure(array $configuration): void
-    {
-        parent::configure($configuration);
-
-        if (isset($configuration['ensure_fully_multiline'])) {
-            $this->configuration['on_multiline'] = $this->configuration['ensure_fully_multiline']
-                ? 'ensure_fully_multiline'
-                : 'ignore';
-        }
-    }
-
     /**
      * {@inheritdoc}
      *

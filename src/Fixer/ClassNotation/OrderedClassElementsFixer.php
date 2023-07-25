@@ -114,7 +114,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if (!$parents) {
+            if (null === $parents) {
                 $this->typePosition[$type] = null;
 
                 continue;
@@ -583,9 +583,7 @@ Custom values:
      */
     private function sortGroupElements(array $a, array $b): int
     {
-        $selectedSortAlgorithm = $this->configuration['sort_algorithm'];
-
-        if (self::SORT_ALPHA === $selectedSortAlgorithm) {
+        if (self::SORT_ALPHA === $this->configuration['sort_algorithm']) {
             return $this->configuration['case_sensitive']
                 ? strcmp($a['name'], $b['name'])
                 : strcasecmp($a['name'], $b['name']);

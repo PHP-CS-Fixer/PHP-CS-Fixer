@@ -3,7 +3,7 @@ includes:
 
     # Baseline, should only shrink! To regenerate it, just execute:
     # dev-tools/vendor/bin/phpstan analyse --generate-baseline=dev-tools/phpstan/baseline.php
-    - dev-tools/phpstan/baseline.php
+#    - dev-tools/phpstan/baseline.php
 
 parameters:
     level: 6
