@@ -197,12 +197,8 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with the config:
-
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
   ``['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]``
-
-- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ with the config:
-
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ with config:
   ``['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]``
-
 

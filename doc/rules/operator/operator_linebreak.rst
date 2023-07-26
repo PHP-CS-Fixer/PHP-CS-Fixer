@@ -68,12 +68,8 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with the config:
-
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
   ``['only_booleans' => true]``
-
-- `@Symfony <./../../ruleSets/Symfony.rst>`_ with the config:
-
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
   ``['only_booleans' => true]``
-
 

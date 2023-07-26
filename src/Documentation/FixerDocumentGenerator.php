@@ -231,7 +231,7 @@ RST;
                 $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 
                 $configInfo = (null !== $config)
-                    ? " with the config:\n\n  ``".Utils::toString($config)."``\n"
+                    ? " with config:\n  ``".Utils::toString($config).'``'
                     : '';
 
                 $doc .= <<<RST

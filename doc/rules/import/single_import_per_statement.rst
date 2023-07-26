@@ -58,19 +58,13 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ with the config:
-
+- `@PER <./../../ruleSets/PER.rst>`_ with config:
   ``['group_to_single_imports' => false]``
-
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with the config:
-
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
   ``['group_to_single_imports' => false]``
-
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_
-- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with the config:
-
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
   ``['group_to_single_imports' => false]``
-
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 

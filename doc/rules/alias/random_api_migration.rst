@@ -78,20 +78,12 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PHP70Migration:risky <./../../ruleSets/PHP70MigrationRisky.rst>`_ with the config:
-
+- `@PHP70Migration:risky <./../../ruleSets/PHP70MigrationRisky.rst>`_ with config:
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
-
-- `@PHP71Migration:risky <./../../ruleSets/PHP71MigrationRisky.rst>`_ with the config:
-
+- `@PHP71Migration:risky <./../../ruleSets/PHP71MigrationRisky.rst>`_ with config:
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
-
-- `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ with the config:
-
+- `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ with config:
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
-
-- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ with the config:
-
+- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ with config:
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
-
 

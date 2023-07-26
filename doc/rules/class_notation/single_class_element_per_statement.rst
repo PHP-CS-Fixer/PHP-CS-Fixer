@@ -62,22 +62,14 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ with the config:
-
+- `@PER <./../../ruleSets/PER.rst>`_ with config:
   ``['elements' => ['property']]``
-
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with the config:
-
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
   ``['elements' => ['property']]``
-
-- `@PSR2 <./../../ruleSets/PSR2.rst>`_ with the config:
-
+- `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
   ``['elements' => ['property']]``
-
-- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with the config:
-
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
   ``['elements' => ['property']]``
-
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 

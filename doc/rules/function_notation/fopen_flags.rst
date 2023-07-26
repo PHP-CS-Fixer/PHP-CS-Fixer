@@ -59,12 +59,8 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with the config:
-
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
   ``['b_mode' => false]``
-
-- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ with the config:
-
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ with config:
   ``['b_mode' => false]``
-
 

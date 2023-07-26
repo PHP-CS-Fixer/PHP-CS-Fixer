@@ -234,12 +234,8 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with the config:
-
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
   ``['statements' => ['break', 'case', 'continue', 'declare', 'default', 'exit', 'goto', 'include', 'include_once', 'phpdoc', 'require', 'require_once', 'return', 'switch', 'throw', 'try', 'yield', 'yield_from']]``
-
-- `@Symfony <./../../ruleSets/Symfony.rst>`_ with the config:
-
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
   ``['statements' => ['return']]``
-
 
