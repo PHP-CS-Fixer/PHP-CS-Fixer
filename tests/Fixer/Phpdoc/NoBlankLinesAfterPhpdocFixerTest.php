@@ -132,7 +132,7 @@ EOF;
         $this->doTest($input);
     }
 
-    public function testLineBeforeDeclareIsNotBeRemoved(): void
+    public function testLineBeforeDeclareIsNotRemoved(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -158,6 +158,57 @@ use Foo\Bar;
 EOF;
 
         $this->doTest($expected);
+    }
+
+    /**
+     * @dataProvider provideLineBeforeIncludeOrRequireIsNotRemovedCases
+     */
+    public function testLineBeforeIncludeOrRequireIsNotRemoved(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideLineBeforeIncludeOrRequireIsNotRemovedCases(): iterable
+    {
+        yield [<<<'EOF'
+<?php
+/**
+ * This describes what my script does.
+ */
+
+include 'vendor/autoload.php';
+EOF
+        ];
+
+        yield [<<<'EOF'
+<?php
+/**
+ * This describes what my script does.
+ */
+
+include_once 'vendor/autoload.php';
+EOF
+        ];
+
+        yield [<<<'EOF'
+<?php
+/**
+ * This describes what my script does.
+ */
+
+require 'vendor/autoload.php';
+EOF
+        ];
+
+        yield [<<<'EOF'
+<?php
+/**
+ * This describes what my script does.
+ */
+
+require_once 'vendor/autoload.php';
+EOF
+        ];
     }
 
     public function testLineWithSpacesIsRemovedWhenNextTokenIsIndented(): void
