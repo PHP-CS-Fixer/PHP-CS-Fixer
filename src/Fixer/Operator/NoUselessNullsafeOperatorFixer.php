@@ -27,7 +27,7 @@ final class NoUselessNullsafeOperatorFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'There should not be useless `null-safe-operators` `?->` used.',
+            'There should not be useless Null-safe operator `?->` used.',
             [
                 new VersionSpecificCodeSample(
                     '<?php

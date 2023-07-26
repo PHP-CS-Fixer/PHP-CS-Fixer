@@ -9,7 +9,7 @@ List of Available Rules
    Configuration options:
 
    - | ``comment_type``
-     | Whether to fix PHPDoc comments only (`phpdocs_only`), any multi-line comment whose lines all start with an asterisk (`phpdocs_like`) or any multi-line comment (`all_multiline`).
+     | Whether to fix PHPDoc comments only (``phpdocs_only``), any multi-line comment whose lines all start with an asterisk (``phpdocs_like``) or any multi-line comment (``all_multiline``).
      | Allowed values: ``'all_multiline'``, ``'phpdocs_like'`` and ``'phpdocs_only'``
      | Default value: ``'phpdocs_only'``
 
@@ -40,7 +40,7 @@ List of Available Rules
    Configuration options:
 
    - | ``syntax``
-     | Whether to use the `long` or `short` array syntax.
+     | Whether to use the ``long`` or ``short`` array syntax.
      | Allowed values: ``'long'`` and ``'short'``
      | Default value: ``'short'``
 
@@ -76,7 +76,7 @@ List of Available Rules
      | Allowed values: ``'align'``, ``'align_by_scope'``, ``'align_single_space'``, ``'align_single_space_by_scope'``, ``'align_single_space_minimal'``, ``'align_single_space_minimal_by_scope'``, ``'no_space'``, ``'single_space'`` and ``null``
      | Default value: ``'single_space'``
    - | ``operators``
-     | Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: `=`, `*`, `/`, `%`, `<`, `>`, `|`, `^`, `+`, `-`, `&`, `&=`, `&&`, `||`, `.=`, `/=`, `=>`, `==`, `>=`, `===`, `!=`, `<>`, `!==`, `<=`, `and`, `or`, `xor`, `-=`, `%=`, `*=`, `|=`, `+=`, `<<`, `<<=`, `>>`, `>>=`, `^=`, `**`, `**=`, `<=>`, `??` and `??=`.
+     | Dictionary of ``binary operator`` => ``fix strategy`` values that differ from the default strategy. Supported are: ``=``, ``*``, ``/``, ``%``, ``<``, ``>``, ``|``, ``^``, ``+``, ``-``, ``&``, ``&=``, ``&&``, ``||``, ``.=``, ``/=``, ``=>``, ``==``, ``>=``, ``===``, ``!=``, ``<>``, ``!==``, ``<=``, ``and``, ``or``, ``xor``, ``-=``, ``%=``, ``*=``, ``|=``, ``+=``, ``<<``, ``<<=``, ``>>``, ``>>=``, ``^=``, ``**``, ``**=``, ``<=>``, ``??`` and ``??=``.
      | Allowed types: ``array``
      | Default value: ``[]``
 
@@ -195,7 +195,7 @@ List of Available Rules
    Configuration options:
 
    - | ``elements``
-     | Dictionary of `const|method|property|trait_import|case` => `none|one|only_if_meta` values.
+     | Dictionary of ``const|method|property|trait_import|case`` => ``none|one|only_if_meta`` values.
      | Allowed types: ``array``
      | Default value: ``['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none', 'case' => 'none']``
 
@@ -327,7 +327,7 @@ List of Available Rules
    Configuration options:
 
    - | ``case``
-     | Whether to use the `upper` or `lower` case syntax.
+     | Whether to use the ``upper`` or ``lower`` case syntax.
      | Allowed values: ``'lower'`` and ``'upper'``
      | Default value: ``'lower'``
 
@@ -548,19 +548,19 @@ List of Available Rules
      | Allowed types: ``null`` and ``bool``
      | Default value: ``false``
    - | ``before_array_assignments_equals``
-     | Whether to add, remove or ignore spaces before array `=` assignment operator.
+     | Whether to add, remove or ignore spaces before array ``=`` assignment operator.
      | Allowed types: ``null`` and ``bool``
      | Default value: ``true``
    - | ``after_array_assignments_equals``
-     | Whether to add, remove or ignore spaces after array assignment `=` operator.
+     | Whether to add, remove or ignore spaces after array assignment ``=`` operator.
      | Allowed types: ``null`` and ``bool``
      | Default value: ``true``
    - | ``before_array_assignments_colon``
-     | Whether to add, remove or ignore spaces before array `:` assignment operator.
+     | Whether to add, remove or ignore spaces before array ``:`` assignment operator.
      | Allowed types: ``null`` and ``bool``
      | Default value: ``true``
    - | ``after_array_assignments_colon``
-     | Whether to add, remove or ignore spaces after array assignment `:` operator.
+     | Whether to add, remove or ignore spaces after array assignment ``:`` operator.
      | Allowed types: ``null`` and ``bool``
      | Default value: ``true``
 
@@ -654,15 +654,15 @@ List of Available Rules
    Configuration options:
 
    - | ``mute_deprecation_error``
-     | Whether to add `@` in deprecation notices.
+     | Whether to add ``@`` in deprecation notices.
      | Allowed types: ``bool``
      | Default value: ``true``
    - | ``noise_remaining_usages``
-     | Whether to remove `@` in remaining usages.
+     | Whether to remove ``@`` in remaining usages.
      | Allowed types: ``bool``
      | Default value: ``false``
    - | ``noise_remaining_usages_exclude``
-     | List of global functions to exclude from removing `@`.
+     | List of global functions to exclude from removing ``@``.
      | Allowed types: ``array``
      | Default value: ``[]``
 
@@ -804,7 +804,7 @@ List of Available Rules
    Configuration options:
 
    - | ``b_mode``
-     | The `b` flag must be used (`true`) or omitted (`false`).
+     | The ``b`` flag must be used (``true``) or omitted (``false``).
      | Allowed types: ``bool``
      | Default value: ``true``
 
@@ -889,7 +889,7 @@ List of Available Rules
    Configuration options:
 
    - | ``annotations``
-     | List of annotations to remove, e.g. `["author"]`.
+     | List of annotations to remove, e.g. ``["author"]``.
      | Allowed types: ``array``
      | Default value: ``[]``
    - | ``case_sensitive``
@@ -1092,7 +1092,7 @@ List of Available Rules
    Configuration options:
 
    - | ``syntax``
-     | Whether to use the `long` or `short` `list` syntax.
+     | Whether to use the ``long`` or ``short`` syntax for array destructuring.
      | Allowed values: ``'long'`` and ``'short'``
      | Default value: ``'short'``
 
@@ -1236,7 +1236,7 @@ List of Available Rules
    Configuration options:
 
    - | ``fix_built_in``
-     | Whether to fix constants returned by `get_defined_constants`. User constants are not accounted in this list and must be specified in the include one.
+     | Whether to fix constants returned by ``get_defined_constants``. User constants are not accounted in this list and must be specified in the include one.
      | Allowed types: ``bool``
      | Default value: ``true``
    - | ``include``
@@ -1252,7 +1252,7 @@ List of Available Rules
      | Allowed values: ``'all'`` and ``'namespaced'``
      | Default value: ``'all'``
    - | ``strict``
-     | Whether leading `\` of constant invocation not meant to have it should be removed.
+     | Whether leading ``\`` of constant invocation not meant to have it should be removed.
      | Allowed types: ``bool``
      | Default value: ``true``
 
@@ -1280,7 +1280,7 @@ List of Available Rules
      | Allowed types: ``array``
      | Default value: ``[]``
    - | ``include``
-     | List of function names or sets to fix. Defined sets are `@internal` (all native functions), `@all` (all global functions) and `@compiler_optimized` (functions that are specially optimized by Zend).
+     | List of function names or sets to fix. Defined sets are ``@internal`` (all native functions), ``@all`` (all global functions) and ``@compiler_optimized`` (functions that are specially optimized by Zend).
      | Allowed types: ``array``
      | Default value: ``['@compiler_optimized']``
    - | ``scope``
@@ -1288,7 +1288,7 @@ List of Available Rules
      | Allowed values: ``'all'`` and ``'namespaced'``
      | Default value: ``'all'``
    - | ``strict``
-     | Whether leading `\` of function call not meant to have it should be removed.
+     | Whether leading ``\`` of function call not meant to have it should be removed.
      | Allowed types: ``bool``
      | Default value: ``true``
 
@@ -1367,23 +1367,23 @@ List of Available Rules
    - | ``sets``
      | List of sets to fix. Defined sets are:
 
-* `@all` (all listed sets);
-* `@internal` (native functions);
-* `@exif` (EXIF functions);
-* `@ftp` (FTP functions);
-* `@IMAP` (IMAP functions);
-* `@ldap` (LDAP functions);
-* `@mbreg` (from `ext-mbstring`);
-* `@mysqli` (mysqli functions);
-* `@oci` (oci functions);
-* `@odbc` (odbc functions);
-* `@openssl` (openssl functions);
-* `@pcntl` (PCNTL functions);
-* `@pg` (pg functions);
-* `@posix` (POSIX functions);
-* `@snmp` (SNMP functions);
-* `@sodium` (libsodium functions);
-* `@time` (time functions).
+* ``@all`` (all listed sets);
+* ``@internal`` (native functions);
+* ``@exif`` (EXIF functions);
+* ``@ftp`` (FTP functions);
+* ``@IMAP`` (IMAP functions);
+* ``@ldap`` (LDAP functions);
+* ``@mbreg`` (from ``ext-mbstring``);
+* ``@mysqli`` (mysqli functions);
+* ``@oci`` (oci functions);
+* ``@odbc`` (odbc functions);
+* ``@openssl`` (openssl functions);
+* ``@pcntl`` (PCNTL functions);
+* ``@pg`` (pg functions);
+* ``@posix`` (POSIX functions);
+* ``@snmp`` (SNMP functions);
+* ``@sodium`` (libsodium functions);
+* ``@time`` (time functions).
      | Allowed values: a subset of ``['@all', '@exif', '@ftp', '@IMAP', '@internal', '@ldap', '@mbreg', '@mysqli', '@oci', '@odbc', '@openssl', '@pcntl', '@pg', '@posix', '@snmp', '@sodium', '@time']``
      | Default value: ``['@internal', '@IMAP', '@pg']``
 
@@ -1636,15 +1636,15 @@ List of Available Rules
    Configuration options:
 
    - | ``allow_mixed``
-     | Whether type `mixed` without description is allowed (`true`) or considered superfluous (`false`).
+     | Whether type ``mixed`` without description is allowed (``true``) or considered superfluous (``false``).
      | Allowed types: ``bool``
      | Default value: ``false``
    - | ``remove_inheritdoc``
-     | Remove `@inheritDoc` tags.
+     | Remove ``@inheritDoc`` tags.
      | Allowed types: ``bool``
      | Default value: ``false``
    - | ``allow_unused_params``
-     | Whether `param` annotation without actual signature is allowed (`true`) or considered superfluous (`false`).
+     | Whether ``param`` annotation without actual signature is allowed (``true``) or considered superfluous (``false``).
      | Allowed types: ``bool``
      | Default value: ``false``
 
@@ -1751,7 +1751,7 @@ List of Available Rules
    Configuration options:
 
    - | ``private_methods``
-     | Private methods of non-`final` classes must not be declared `final`.
+     | Private methods of non-``final`` classes must not be declared ``final``.
      | Allowed types: ``bool``
      | Default value: ``true``
 
@@ -1828,7 +1828,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\ControlStructure\\NoUselessElseFixer <./../src/Fixer/ControlStructure/NoUselessElseFixer.php>`_
 -  `no_useless_nullsafe_operator <./rules/operator/no_useless_nullsafe_operator.rst>`_
 
-   There should not be useless ``null-safe-operators`` ``?->`` used.
+   There should not be useless Null-safe operator ``?->`` used.
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
@@ -1878,7 +1878,7 @@ List of Available Rules
    Configuration options:
 
    - | ``syntax``
-     | Whether to use question mark (`?`) or explicit `null` union for nullable type.
+     | Whether to use question mark (``?``) or explicit ``null`` union for nullable type.
      | Allowed values: ``'question_mark'`` and ``'union'``
      | Default value: ``'question_mark'``
 
@@ -1893,7 +1893,7 @@ List of Available Rules
    Configuration options:
 
    - | ``use_nullable_type_declaration``
-     | Whether to add or remove `?` or `|null` to parameters with a default `null` value.
+     | Whether to add or remove ``?`` or ``|null`` to parameters with a default ``null`` value.
      | Allowed types: ``bool``
      | Default value: ``true``
 
@@ -2036,7 +2036,7 @@ List of Available Rules
      | Allowed values: ``'alpha'`` and ``'none'``
      | Default value: ``'alpha'``
    - | ``null_adjustment``
-     | Forces the position of `null` (overrides `sort_algorithm`).
+     | Forces the position of ``null`` (overrides ``sort_algorithm``).
      | Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
      | Default value: ``'always_first'``
 
@@ -2049,7 +2049,7 @@ List of Available Rules
    Configuration options:
 
    - | ``only_untyped``
-     | Whether to add missing `@param` annotations for untyped parameters only.
+     | Whether to add missing ``@param`` annotations for untyped parameters only.
      | Allowed types: ``bool``
      | Default value: ``true``
 
@@ -2064,7 +2064,7 @@ List of Available Rules
    Configuration options:
 
    - | ``tags``
-     | The tags that should be aligned. Allowed values are tags with name (`'param', 'property', 'property-read', 'property-write', 'phpstan-param', 'phpstan-property', 'phpstan-property-read', 'phpstan-property-write', 'phpstan-assert', 'phpstan-assert-if-true', 'phpstan-assert-if-false', 'psalm-param', 'psalm-param-out', 'psalm-property', 'psalm-property-read', 'psalm-property-write', 'psalm-assert', 'psalm-assert-if-true', 'psalm-assert-if-false'`), tags with method signature (`'method', 'phpstan-method', 'psalm-method'`) and any custom tag with description (e.g. `@tag <desc>`).
+     | The tags that should be aligned. Allowed values are tags with name (``'param', 'property', 'property-read', 'property-write', 'phpstan-param', 'phpstan-property', 'phpstan-property-read', 'phpstan-property-write', 'phpstan-assert', 'phpstan-assert-if-true', 'phpstan-assert-if-false', 'psalm-param', 'psalm-param-out', 'psalm-property', 'psalm-property-read', 'psalm-property-write', 'psalm-assert', 'psalm-assert-if-true', 'psalm-assert-if-false'``), tags with method signature (``'method', 'phpstan-method', 'psalm-method'``) and any custom tag with description (e.g. ``@tag <desc>``).
      | Allowed types: ``array``
      | Default value: ``['method', 'param', 'property', 'return', 'throws', 'type', 'var']``
    - | ``align``
@@ -2191,7 +2191,7 @@ List of Available Rules
    Configuration options:
 
    - | ``annotations``
-     | List of annotations to order, e.g. `["covers"]`.
+     | List of annotations to order, e.g. ``["covers"]``.
      | Allowed values: a subset of ``['author', 'covers', 'coversNothing', 'dataProvider', 'depends', 'group', 'internal', 'method', 'mixin', 'property', 'property-read', 'property-write', 'requires', 'throws', 'uses']``
      | Default value: ``['covers']``
 
@@ -2241,7 +2241,7 @@ List of Available Rules
    Configuration options:
 
    - | ``groups``
-     | Sets of annotation types to be grouped together. Use `*` to match any tag character.
+     | Sets of annotation types to be grouped together. Use ``*`` to match any tag character.
      | Allowed types: ``string[][]``
      | Default value: ``[['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write']]``
    - | ``skip_unlisted_annotations``
@@ -2407,7 +2407,7 @@ List of Available Rules
      | Allowed values: ``'alpha'`` and ``'none'``
      | Default value: ``'alpha'``
    - | ``null_adjustment``
-     | Forces the position of `null` (overrides `sort_algorithm`).
+     | Forces the position of ``null`` (overrides ``sort_algorithm``).
      | Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
      | Default value: ``'always_first'``
 
@@ -2740,7 +2740,7 @@ List of Available Rules
      | Allowed values: ``'self'``, ``'static'`` and ``'this'``
      | Default value: ``'static'``
    - | ``methods``
-     | Dictionary of `method` => `call_type` values that differ from the default strategy.
+     | Dictionary of ``method`` => ``call_type`` values that differ from the default strategy.
      | Allowed types: ``array``
      | Default value: ``[]``
 
@@ -3054,7 +3054,7 @@ List of Available Rules
    Configuration options:
 
    - | ``remove_in_empty_for_expressions``
-     | Whether spaces should be removed for empty `for` expressions.
+     | Whether spaces should be removed for empty ``for`` expressions.
      | Allowed types: ``bool``
      | Default value: ``false``
 
@@ -3187,7 +3187,7 @@ List of Available Rules
      | Allowed types: ``bool``
      | Default value: ``false``
    - | ``elements``
-     | Where to fix multiline trailing comma (PHP >= 8.0 for `parameters` and `match`).
+     | Where to fix multiline trailing comma (PHP >= 8.0 for ``parameters`` and ``match``).
      | Allowed values: a subset of ``['arguments', 'arrays', 'match', 'parameters']``
      | Default value: ``['arrays']``
 
@@ -3213,7 +3213,7 @@ List of Available Rules
      | Allowed values: ``'none'`` and ``'single'``
      | Default value: ``'none'``
    - | ``space_multiple_catch``
-     | Spacing to apply around type operator when catching exceptions of multiple types, use `null` to follow the value configured for `space`.
+     | Spacing to apply around type operator when catching exceptions of multiple types, use ``null`` to follow the value configured for ``space``.
      | Allowed values: ``'none'``, ``'single'`` and ``null``
      | Default value: ``null``
 
@@ -3260,7 +3260,7 @@ List of Available Rules
    Configuration options:
 
    - | ``elements``
-     | The structural elements to fix (PHP >= 7.1 required for `const`).
+     | The structural elements to fix (PHP >= 7.1 required for ``const``).
      | Allowed values: a subset of ``['const', 'method', 'property']``
      | Default value: ``['property', 'method', 'const']``
 
@@ -3309,15 +3309,15 @@ List of Available Rules
    Configuration options:
 
    - | ``equal``
-     | Style for equal (`==`, `!=`) statements.
+     | Style for equal (``==``, ``!=``) statements.
      | Allowed types: ``bool`` and ``null``
      | Default value: ``true``
    - | ``identical``
-     | Style for identical (`===`, `!==`) statements.
+     | Style for identical (``===``, ``!==``) statements.
      | Allowed types: ``bool`` and ``null``
      | Default value: ``true``
    - | ``less_and_greater``
-     | Style for less and greater than (`<`, `<=`, `>`, `>=`) statements.
+     | Style for less and greater than (``<``, ``<=``, ``>``, ``>=``) statements.
      | Allowed types: ``bool`` and ``null``
      | Default value: ``null``
    - | ``always_move_variable``

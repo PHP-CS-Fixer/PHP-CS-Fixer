@@ -93,7 +93,7 @@ RST;
 
                 foreach ($configurationDefinition->getOptions() as $option) {
                     $documentation .= "\n   - | ``{$option->getName()}``";
-                    $documentation .= "\n     | {$option->getDescription()}";
+                    $documentation .= "\n     | ".RstUtils::ensureProperInlineCode($option->getDescription());
 
                     if ($option instanceof DeprecatedFixerOptionInterface) {
                         $deprecationMessage = RstUtils::toRst($option->getDeprecationMessage(), 3);

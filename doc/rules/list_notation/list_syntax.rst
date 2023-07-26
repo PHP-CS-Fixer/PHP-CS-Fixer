@@ -11,7 +11,7 @@ Configuration
 ``syntax``
 ~~~~~~~~~~
 
-Whether to use the ``long`` or ``short`` ``list`` syntax.
+Whether to use the ``long`` or ``short`` syntax for array destructuring.
 
 Allowed values: ``'long'`` and ``'short'``
 

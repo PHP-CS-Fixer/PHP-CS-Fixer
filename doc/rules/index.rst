@@ -549,7 +549,7 @@ Operator
   There should not be useless concat operations.
 - `no_useless_nullsafe_operator <./operator/no_useless_nullsafe_operator.rst>`_
 
-  There should not be useless ``null-safe-operators`` ``?->`` used.
+  There should not be useless Null-safe operator ``?->`` used.
 - `not_operator_with_space <./operator/not_operator_with_space.rst>`_
 
   Logical NOT operators (``!``) should have leading and trailing whitespaces.
