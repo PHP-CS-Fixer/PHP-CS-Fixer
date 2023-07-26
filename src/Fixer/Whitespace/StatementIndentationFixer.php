@@ -280,8 +280,9 @@ else {
                 }
 
                 $methodModifierIndents = [];
+                $endIndex = $index + 1;
 
-                for ($endIndex = $index + 1, $max = \count($tokens); $endIndex < $max; ++$endIndex) {
+                for ($max = \count($tokens); $endIndex < $max; ++$endIndex) {
                     if ($tokens[$endIndex]->equals('(')) {
                         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex);
 

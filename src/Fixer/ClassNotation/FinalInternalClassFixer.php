@@ -287,7 +287,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $attributeString = '';
         $currentIndex = $startIndex;
 
-        while ($currentIndex < $endIndex && $currentIndex = $tokens->getNextMeaningfulToken($currentIndex)) {
+        while ($currentIndex < $endIndex && null !== ($currentIndex = $tokens->getNextMeaningfulToken($currentIndex))) {
             if (!$tokens[$currentIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
                 if ('' !== $attributeString) {
                     $attributeCandidates[$attributeString] = true;

@@ -224,7 +224,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     private function parseJson(?string $encoded, array $template = null): array
     {
         // content is optional if template is provided
-        if (!$encoded && null !== $template) {
+        if ((null === $encoded || '' === $encoded) && null !== $template) {
             $decoded = [];
         } else {
             $decoded = json_decode($encoded, true);

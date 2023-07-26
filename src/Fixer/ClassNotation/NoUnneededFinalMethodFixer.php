@@ -22,6 +22,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -117,6 +118,18 @@ class Bar
         ]);
     }
 
+    /**
+     * @return \Generator<array{
+     *     classIndex: int,
+     *     token: Token,
+     *     type: string,
+     *     class_is_final?: bool,
+     *     method_final_index: int|null,
+     *     method_is_constructor?: bool,
+     *     method_is_private: bool,
+     *     method_of_enum: bool
+     * }>
+     */
     private function getMethods(Tokens $tokens): \Generator
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
