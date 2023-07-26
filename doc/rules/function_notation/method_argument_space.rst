@@ -215,25 +215,47 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PER <./../../ruleSets/PER.rst>`_ with config:
+
   ``['on_multiline' => 'ensure_fully_multiline']``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+
   ``['on_multiline' => 'ensure_fully_multiline']``
+
 - `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ with config:
+
   ``['after_heredoc' => true]``
+
 - `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_ with config:
+
   ``['after_heredoc' => true]``
+
 - `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ with config:
+
   ``['after_heredoc' => true]``
+
 - `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ with config:
+
   ``['after_heredoc' => true]``
+
 - `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_ with config:
+
   ``['after_heredoc' => true]``
+
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
+
   ``['on_multiline' => 'ensure_fully_multiline']``
+
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
+
   ``['on_multiline' => 'ensure_fully_multiline']``
+
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
   ``['on_multiline' => 'ensure_fully_multiline']``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
   ``['on_multiline' => 'ignore']``
+
 

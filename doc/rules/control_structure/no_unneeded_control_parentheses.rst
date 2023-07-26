@@ -70,7 +70,11 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
   ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'negative_instanceof', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
   ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``
+
 

@@ -138,13 +138,23 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PER <./../../ruleSets/PER.rst>`_ with config:
+
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
+
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
+
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
+
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``
+
 

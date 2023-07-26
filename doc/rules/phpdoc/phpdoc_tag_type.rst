@@ -55,7 +55,11 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
   ``['tags' => ['inheritDoc' => 'inline']]``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
   ``['tags' => ['inheritDoc' => 'inline']]``
+
 

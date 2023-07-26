@@ -57,7 +57,11 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
   ``['remove_in_empty_for_expressions' => true]``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
   ``['remove_in_empty_for_expressions' => true]``
+
 

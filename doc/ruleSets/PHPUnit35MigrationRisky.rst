@@ -9,4 +9,6 @@ Rules
 
 - `@PHPUnit32Migration:risky <./PHPUnit32MigrationRisky.rst>`_
 - `php_unit_dedicate_assert <./../rules/php_unit/php_unit_dedicate_assert.rst>`_ with config:
+
   ``['target' => '3.5']``
+

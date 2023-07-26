@@ -76,7 +76,7 @@ final class RuleSetDocumentationGenerator
                     }
 
                     if (!\is_bool($config)) {
-                        $doc .= " with config:\n  ``".Utils::toString($config).'``';
+                        $doc .= " with config:\n\n  ``".Utils::toString($config)."``\n";
                     }
                 }
             };

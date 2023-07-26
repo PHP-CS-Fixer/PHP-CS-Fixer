@@ -89,5 +89,7 @@ The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
   ``['comment_types' => ['hash']]``
+
 

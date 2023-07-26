@@ -9,4 +9,6 @@ Rules
 
 - `@PHPUnit57Migration:risky <./PHPUnit57MigrationRisky.rst>`_
 - `php_unit_namespaced <./../rules/php_unit/php_unit_namespaced.rst>`_ with config:
+
   ``['target' => '6.0']``
+

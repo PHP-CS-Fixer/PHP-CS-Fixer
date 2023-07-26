@@ -113,7 +113,11 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
   ``['import_classes' => false, 'import_constants' => false, 'import_functions' => false]``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
   ``['import_classes' => false, 'import_constants' => false, 'import_functions' => false]``
+
 

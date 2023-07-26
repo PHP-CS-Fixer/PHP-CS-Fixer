@@ -65,7 +65,11 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
   ``['namespaces' => true]``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
   ``['namespaces' => true]``
+
 

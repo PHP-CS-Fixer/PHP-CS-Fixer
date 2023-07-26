@@ -9,4 +9,6 @@ Rules
 
 - `@PHPUnit54Migration:risky <./PHPUnit54MigrationRisky.rst>`_
 - `php_unit_mock <./../rules/php_unit/php_unit_mock.rst>`_ with config:
+
   ``['target' => '5.5']``
+

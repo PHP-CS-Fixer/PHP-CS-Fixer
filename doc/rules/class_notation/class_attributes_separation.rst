@@ -137,7 +137,11 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
   ``['elements' => ['method' => 'one']]``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
   ``['elements' => ['method' => 'one']]``
+
 

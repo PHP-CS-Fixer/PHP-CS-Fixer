@@ -118,8 +118,12 @@ The rule is part of the following rule sets:
 
 - `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ with config:
+
   ``['sets' => ['@all']]``
+
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
+
   ``['sets' => ['@all']]``
+
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 

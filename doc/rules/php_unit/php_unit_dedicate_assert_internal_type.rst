@@ -77,9 +77,15 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PHPUnit75Migration:risky <./../../ruleSets/PHPUnit75MigrationRisky.rst>`_ with config:
+
   ``['target' => '7.5']``
+
 - `@PHPUnit84Migration:risky <./../../ruleSets/PHPUnit84MigrationRisky.rst>`_ with config:
+
   ``['target' => '7.5']``
+
 - `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ with config:
+
   ``['target' => '7.5']``
+
 

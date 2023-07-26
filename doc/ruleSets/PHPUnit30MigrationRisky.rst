@@ -8,4 +8,6 @@ Rules
 -----
 
 - `php_unit_dedicate_assert <./../rules/php_unit/php_unit_dedicate_assert.rst>`_ with config:
+
   ``['target' => '3.0']``
+

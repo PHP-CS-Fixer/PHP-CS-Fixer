@@ -9,4 +9,6 @@ Rules
 
 - `@PHPUnit84Migration:risky <./PHPUnit84MigrationRisky.rst>`_
 - `php_unit_data_provider_static <./../rules/php_unit/php_unit_data_provider_static.rst>`_ with config:
+
   ``['force' => true]``
+

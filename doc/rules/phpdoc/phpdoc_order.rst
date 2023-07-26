@@ -114,7 +114,11 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
   ``['order' => ['param', 'return', 'throws']]``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
   ``['order' => ['param', 'return', 'throws']]``
+
 

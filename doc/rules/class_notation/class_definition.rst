@@ -173,14 +173,24 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PER <./../../ruleSets/PER.rst>`_ with config:
+
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
+
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
+
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
+
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
   ``['single_line' => true]``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
   ``['single_line' => true]``
+
 
