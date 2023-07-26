@@ -71,5 +71,5 @@ Rule sets
 
 The rule is part of the following rule set:
 
-* `@DoctrineAnnotation <./../../ruleSets/DoctrineAnnotation.rst>`_
+- `@DoctrineAnnotation <./../../ruleSets/DoctrineAnnotation.rst>`_
 

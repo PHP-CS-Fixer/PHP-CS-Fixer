@@ -22,6 +22,6 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-* `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_
-* `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
+- `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_
+- `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
 

@@ -116,14 +116,14 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-* `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_
-* `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ with the config:
+- `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_
+- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ with the config:
 
   ``['sets' => ['@all']]``
 
-* `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with the config:
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with the config:
 
   ``['sets' => ['@all']]``
 
-* `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 

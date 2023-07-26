@@ -34,9 +34,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-* `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_
-* `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_
-* `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
-* `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-* `@Symfony <./../../ruleSets/Symfony.rst>`_
+- `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_
+- `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_
+- `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
 

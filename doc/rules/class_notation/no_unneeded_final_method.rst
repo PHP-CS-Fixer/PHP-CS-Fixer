@@ -79,7 +79,7 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-* `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
-* `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
-* `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
+- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 

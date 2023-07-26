@@ -45,5 +45,5 @@ Rule sets
 
 The rule is part of the following rule set:
 
-* `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 

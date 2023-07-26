@@ -31,11 +31,11 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-* `@PHP56Migration:risky <./../../ruleSets/PHP56MigrationRisky.rst>`_
-* `@PHP70Migration:risky <./../../ruleSets/PHP70MigrationRisky.rst>`_
-* `@PHP71Migration:risky <./../../ruleSets/PHP71MigrationRisky.rst>`_
-* `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_
-* `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
-* `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
-* `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
+- `@PHP56Migration:risky <./../../ruleSets/PHP56MigrationRisky.rst>`_
+- `@PHP70Migration:risky <./../../ruleSets/PHP70MigrationRisky.rst>`_
+- `@PHP71Migration:risky <./../../ruleSets/PHP71MigrationRisky.rst>`_
+- `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_
+- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 

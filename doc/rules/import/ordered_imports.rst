@@ -137,23 +137,23 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-* `@PER <./../../ruleSets/PER.rst>`_ with the config:
+- `@PER <./../../ruleSets/PER.rst>`_ with the config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
-* `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with the config:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with the config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
-* `@PSR12 <./../../ruleSets/PSR12.rst>`_ with the config:
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with the config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
-* `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with the config:
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with the config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``
 
-* `@Symfony <./../../ruleSets/Symfony.rst>`_ with the config:
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with the config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``
 

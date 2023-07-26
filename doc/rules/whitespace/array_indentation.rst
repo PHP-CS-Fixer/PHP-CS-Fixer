@@ -29,5 +29,5 @@ Rule sets
 
 The rule is part of the following rule set:
 
-* `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 

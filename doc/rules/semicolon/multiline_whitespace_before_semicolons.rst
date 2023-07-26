@@ -58,7 +58,7 @@ Rule sets
 
 The rule is part of the following rule set:
 
-* `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with the config:
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with the config:
 
   ``['strategy' => 'new_line_for_chained_calls']``
 

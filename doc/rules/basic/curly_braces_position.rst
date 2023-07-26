@@ -234,24 +234,24 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-* `@PER <./../../ruleSets/PER.rst>`_ with the config:
+- `@PER <./../../ruleSets/PER.rst>`_ with the config:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
-* `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with the config:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with the config:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
-* `@PSR2 <./../../ruleSets/PSR2.rst>`_
-* `@PSR12 <./../../ruleSets/PSR12.rst>`_ with the config:
+- `@PSR2 <./../../ruleSets/PSR2.rst>`_
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with the config:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
-* `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with the config:
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with the config:
 
   ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
 
-* `@Symfony <./../../ruleSets/Symfony.rst>`_ with the config:
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with the config:
 
   ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
 

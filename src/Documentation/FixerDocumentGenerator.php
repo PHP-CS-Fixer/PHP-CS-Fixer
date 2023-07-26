@@ -235,7 +235,7 @@ RST;
                     : '';
 
                 $doc .= <<<RST
-* `{$set} <./../../ruleSets{$ruleSetPath}>`_{$configInfo}\n
+- `{$set} <./../../ruleSets{$ruleSetPath}>`_{$configInfo}\n
 RST;
             }
         }
