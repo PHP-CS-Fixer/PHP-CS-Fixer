@@ -57,20 +57,10 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PHP70Migration:risky
-  Using the `@PHP70Migration:risky <./../../ruleSets/PHP70MigrationRisky.rst>`_ rule set will enable the ``non_printable_character`` rule with the default config.
+- `@PHP70Migration:risky <./../../ruleSets/PHP70MigrationRisky.rst>`_
+- `@PHP71Migration:risky <./../../ruleSets/PHP71MigrationRisky.rst>`_
+- `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_
+- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
-@PHP71Migration:risky
-  Using the `@PHP71Migration:risky <./../../ruleSets/PHP71MigrationRisky.rst>`_ rule set will enable the ``non_printable_character`` rule with the default config.
-
-@PHP74Migration:risky
-  Using the `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ rule set will enable the ``non_printable_character`` rule with the default config.
-
-@PHP80Migration:risky
-  Using the `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ rule set will enable the ``non_printable_character`` rule with the default config.
-
-@PhpCsFixer:risky
-  Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``non_printable_character`` rule with the default config.
-
-@Symfony:risky
-  Using the `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ rule set will enable the ``non_printable_character`` rule with the default config.

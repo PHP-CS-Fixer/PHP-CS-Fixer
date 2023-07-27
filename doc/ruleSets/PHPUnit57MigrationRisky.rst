@@ -8,6 +8,7 @@ Rules
 -----
 
 - `@PHPUnit56Migration:risky <./PHPUnit56MigrationRisky.rst>`_
-- `php_unit_namespaced <./../rules/php_unit/php_unit_namespaced.rst>`_
-  config:
+- `php_unit_namespaced <./../rules/php_unit/php_unit_namespaced.rst>`_ with config:
+
   ``['target' => '5.7']``
+

@@ -223,27 +223,20 @@ RST;
 Rule sets
 ---------
 
-The rule is part of the following rule set{$plural}:
+The rule is part of the following rule set{$plural}:\n\n
 RST;
 
             foreach ($ruleSetConfigs as $set => $config) {
                 $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($set);
                 $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 
+                $configInfo = (null !== $config)
+                    ? " with config:\n\n  ``".Utils::toString($config)."``\n"
+                    : '';
+
                 $doc .= <<<RST
-
-
-{$set}
-  Using the `{$set} <./../../ruleSets{$ruleSetPath}>`_ rule set will enable the ``{$name}`` rule
+- `{$set} <./../../ruleSets{$ruleSetPath}>`_{$configInfo}\n
 RST;
-
-                if (null !== $config) {
-                    $doc .= " with the config below:\n\n  ``".Utils::toString($config).'``';
-                } elseif ($fixer instanceof ConfigurableFixerInterface) {
-                    $doc .= ' with the default config.';
-                } else {
-                    $doc .= '.';
-                }
             }
         }
 

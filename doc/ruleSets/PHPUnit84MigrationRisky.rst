@@ -9,6 +9,7 @@ Rules
 
 - `@PHPUnit60Migration:risky <./PHPUnit60MigrationRisky.rst>`_
 - `@PHPUnit75Migration:risky <./PHPUnit75MigrationRisky.rst>`_
-- `php_unit_expectation <./../rules/php_unit/php_unit_expectation.rst>`_
-  config:
+- `php_unit_expectation <./../rules/php_unit/php_unit_expectation.rst>`_ with config:
+
   ``['target' => '8.4']``
+

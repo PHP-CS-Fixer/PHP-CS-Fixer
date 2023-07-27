@@ -136,12 +136,12 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``class_attributes_separation`` rule with the config below:
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
   ``['elements' => ['method' => 'one']]``
 
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``class_attributes_separation`` rule with the config below:
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['elements' => ['method' => 'one']]``
+
+

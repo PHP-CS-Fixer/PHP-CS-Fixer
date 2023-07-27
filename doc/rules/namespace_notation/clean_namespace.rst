@@ -34,17 +34,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PHP80Migration
-  Using the `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ rule set will enable the ``clean_namespace`` rule.
+- `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_
+- `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_
+- `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-@PHP81Migration
-  Using the `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ rule set will enable the ``clean_namespace`` rule.
-
-@PHP82Migration
-  Using the `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_ rule set will enable the ``clean_namespace`` rule.
-
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``clean_namespace`` rule.
-
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``clean_namespace`` rule.

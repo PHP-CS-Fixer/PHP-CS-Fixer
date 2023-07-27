@@ -38,5 +38,5 @@ Rule sets
 
 The rule is part of the following rule set:
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``yield_from_array_to_yields`` rule.
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+
