@@ -42,6 +42,8 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
 
         yield ['<?php function foo(): iterable { if (true) { return [1]; } else { return [2]; } }'];
 
+        yield ['<?php function foo(): ?iterable { return [1, 2, 3]; }'];
+
         yield ['<?php
             abstract class Foo {
                 abstract public function bar(): iterable;
@@ -50,8 +52,32 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
         '];
 
         yield [
-            '<?php function foo(): iterable { yield from [1, 2, 3]; }',
-            '<?php function foo(): iterable { return [1, 2, 3]; }',
+            '<?php class Foo {
+                function bar(): iterable { yield from [1, 2, 3]; }
+            }',
+            '<?php class Foo {
+                function bar(): iterable { return [1, 2, 3]; }
+            }',
+        ];
+
+        yield [
+            '<?php function foo(): iterable { yield from [1, 2, 3];;;;;;;; }',
+            '<?php function foo(): iterable { return [1, 2, 3];;;;;;;; }',
+        ];
+
+        yield [
+            '<?php function foo(): iterable { yield from array(1, 2, 3); }',
+            '<?php function foo(): iterable { return array(1, 2, 3); }',
+        ];
+
+        yield [
+            '<?php function foo(): iterable { $x = 0; yield from [1, 2, 3]; }',
+            '<?php function foo(): iterable { $x = 0; return [1, 2, 3]; }',
+        ];
+
+        yield [
+            '<?php function foo(): iterable { $x = 0; yield from array(1, 2, 3); }',
+            '<?php function foo(): iterable { $x = 0; return array(1, 2, 3); }',
         ];
 
         yield [
@@ -60,16 +86,53 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
+            '<?php $f = function(): iterable { yield from [1, 2, 3]; };',
+            '<?php $f = function(): iterable { return [1, 2, 3]; };',
+        ];
+
+        yield [
             '<?php
-                function foo(): iterable { yield from [1, 2]; }
-                function bar(): array { return [3, 4]; }
+                function foo(): array { return [3, 4]; }
+                function bar(): iterable { yield from [1, 2]; }
                 function baz(): int { return 5; }
             ',
             '<?php
-                function foo(): iterable { return [1, 2]; }
-                function bar(): array { return [3, 4]; }
+                function foo(): array { return [3, 4]; }
+                function bar(): iterable { return [1, 2]; }
                 function baz(): int { return 5; }
             ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield [
+            '<?php function foo(): null|iterable { return [1, 2, 3]; }',
+        ];
+
+        yield [
+            '<?php function foo(): iterable|null { return [1, 2, 3]; }',
+        ];
+
+        yield [
+            '<?php function foo(): ITERABLE|null { return [1, 2, 3]; }',
+        ];
+
+        yield [
+            '<?php function foo(): array|iterable { return [1, 2, 3]; }',
         ];
     }
 }

@@ -2,8 +2,8 @@
 Rule ``return_to_yield_from``
 =============================
 
-When function return type is ``iterable``, and it returns an array explicitly,
-then it must be changed to ``yield from``.
+If the function explicitly returns an array, and has the return type
+``iterable``, then ``yield from`` must be used instead of ``return``.
 
 Examples
 --------

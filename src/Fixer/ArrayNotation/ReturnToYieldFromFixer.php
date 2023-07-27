@@ -30,7 +30,7 @@ final class ReturnToYieldFromFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'When function return type is `iterable`, and it returns an array explicitly, then it must be changed to `yield from`.',
+            'If the function explicitly returns an array, and has the return type `iterable`, then `yield from` must be used instead of `return`.',
             [new CodeSample('<?php function giveMeData(): iterable {
     return [1, 2, 3];
 }
@@ -40,7 +40,7 @@ final class ReturnToYieldFromFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return $tokens->isAllTokenKindsFound([T_FUNCTION, T_RETURN]) && $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
 
     /**
@@ -67,21 +67,39 @@ final class ReturnToYieldFromFixer extends AbstractFixer
 
     private function shouldBeFixed(Tokens $tokens, int $returnIndex): bool
     {
-        $nextIndex = $tokens->getNextMeaningfulToken($returnIndex);
-        if (!$tokens[$nextIndex]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+        $arrayStartIndex = $tokens->getNextMeaningfulToken($returnIndex);
+        if (!$tokens[$arrayStartIndex]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
             return false;
         }
 
-        $beforeReturnIndex = $tokens->getPrevMeaningfulToken($returnIndex);
-        if (!$tokens[$beforeReturnIndex]->equals('{')) {
+        if ($tokens[$arrayStartIndex]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+            $arrayEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $arrayStartIndex);
+        } else {
+            $arrayOpenParenthesisIndex = $tokens->getNextTokenOfKind($arrayStartIndex, ['(']);
+            $arrayEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $arrayOpenParenthesisIndex);
+        }
+
+        $functionEndIndex = $arrayEndIndex;
+        do {
+            $functionEndIndex = $tokens->getNextMeaningfulToken($functionEndIndex);
+        } while ($tokens[$functionEndIndex]->equals(';'));
+        if (!$tokens[$functionEndIndex]->equals('}')) {
             return false;
         }
 
-        $returnTypeIndex = $tokens->getPrevMeaningfulToken($beforeReturnIndex);
+        $functionStartIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $functionEndIndex);
+
+        $returnTypeIndex = $tokens->getPrevMeaningfulToken($functionStartIndex);
         if (!$tokens[$returnTypeIndex]->isGivenKind(T_STRING)) {
             return false;
         }
 
-        return 'iterable' === strtolower($tokens[$returnTypeIndex]->getContent());
+        if ('iterable' !== strtolower($tokens[$returnTypeIndex]->getContent())) {
+            return false;
+        }
+
+        $beforeReturnTypeIndex = $tokens->getPrevMeaningfulToken($returnTypeIndex);
+
+        return $tokens[$beforeReturnTypeIndex]->isGivenKind(CT::T_TYPE_COLON);
     }
 }
