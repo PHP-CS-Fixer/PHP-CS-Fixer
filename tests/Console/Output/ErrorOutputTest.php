@@ -71,7 +71,6 @@ Files that were not fixed due to errors reported during %s:
       PhpCsFixer\Tests\Console\Output\ErrorOutputTest::getErrorAndLineNumber()
         in %s at line %d
       PhpCsFixer\Tests\Console\Output\ErrorOutputTest::provideErrorOutputCases()
-      ReflectionMethod->invoke()
 ',
                 __FILE__,
                 $lineNumber
