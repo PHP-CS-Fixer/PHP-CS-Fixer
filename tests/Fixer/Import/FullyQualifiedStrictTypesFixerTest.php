@@ -718,14 +718,6 @@ class Two
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php function foo(int&float $x) {}',
-        ];
-
-        yield [
-            '<?php function foo(int&A $x) {}',
-        ];
-
-        yield [
             '<?php function f(): Foo&Bar & A\B\C {}',
             '<?php function f(): Foo&\Bar & \A\B\C {}',
         ];
@@ -767,8 +759,8 @@ class SomeClass
     public static function provideFix82Cases(): iterable
     {
         yield [
-            '<?php function foo((A&B)|(x&y&Ze)|null $x) {}',
-            '<?php function foo((\A&\B)|(\x&\y&\Ze)|null $x) {}',
+            '<?php function foo((A&B)|(x&y&Ze)|int|null $x) {}',
+            '<?php function foo((\A&\B)|(\x&\y&\Ze)|int|null $x) {}',
         ];
     }
 }
