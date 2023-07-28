@@ -189,22 +189,23 @@ class SomeClass
      */
     private function getTypes(Tokens $tokens, int $index, int $endIndex): iterable
     {
-        $index = $typeStartIndex = $typeEndIndex = $tokens->getNextMeaningfulToken($index - 1);
-        $type = $tokens[$index]->getContent();
-
         $skipNextYield = false;
+        $typeStartIndex = $typeEndIndex = null;
+        $type = null;
         while (true) {
             if ($tokens[$index]->isGivenKind(CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN)) {
-                $index = $typeStartIndex = $typeEndIndex = $tokens->getNextMeaningfulToken($index);
-                $type = $tokens[$index]->getContent();
+                $index = $tokens->getNextMeaningfulToken($index);
+                $typeStartIndex = $typeEndIndex = null;
+                $type = null;
 
                 continue;
             }
 
-            $index = $tokens->getNextMeaningfulToken($index);
-
-            if ($tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE])) {
-                if (!$skipNextYield) {
+            if (
+                $tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE])
+                || $index > $endIndex
+            ) {
+                if (!$skipNextYield && null !== $typeStartIndex) {
                     $origCount = \count($tokens);
 
                     yield $type => [$typeStartIndex, $typeEndIndex];
@@ -214,26 +215,30 @@ class SomeClass
                     // type tokens were possibly updated, restart type match
                     $skipNextYield = true;
                     $index = $typeEndIndex = $typeStartIndex;
-                    $type = $tokens[$index]->getContent();
+                    $type = null;
                 } else {
                     $skipNextYield = false;
-                    $index = $typeStartIndex = $typeEndIndex = $tokens->getNextMeaningfulToken($index);
-                    $type = $tokens[$index]->getContent();
+                    $index = $tokens->getNextMeaningfulToken($index);
+                    $typeStartIndex = $typeEndIndex = null;
+                    $type = null;
+                }
+
+                if ($index > $endIndex) {
+                    break;
                 }
 
                 continue;
             }
 
-            if ($index > $endIndex) {
-                if (!$skipNextYield) {
-                    yield $type => [$typeStartIndex, $typeEndIndex];
-                }
-
-                break;
+            if (null === $typeStartIndex) {
+                $typeStartIndex = $index;
+                $type = '';
             }
 
             $typeEndIndex = $index;
             $type .= $tokens[$index]->getContent();
+
+            $index = $tokens->getNextMeaningfulToken($index);
         }
     }
 
