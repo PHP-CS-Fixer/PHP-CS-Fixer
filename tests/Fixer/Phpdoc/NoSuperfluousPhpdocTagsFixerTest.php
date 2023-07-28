@@ -206,6 +206,38 @@ class Foo {
 }',
         ];
 
+        yield 'same typehint with leading backslash' => [
+            '<?php
+class Foo {
+    /**
+     */
+    public function doFoo(Bar $bar) {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @param \Bar $bar
+     */
+    public function doFoo(Bar $bar) {}
+}',
+        ];
+
+        yield 'same typehint without leading backslash' => [
+            '<?php
+class Foo {
+    /**
+     */
+    public function doFoo(\Bar $bar) {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @param Bar $bar
+     */
+    public function doFoo(\Bar $bar) {}
+}',
+        ];
+
         yield 'multiple arguments' => [
             '<?php
 class Foo {

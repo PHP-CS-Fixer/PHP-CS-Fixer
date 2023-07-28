@@ -112,7 +112,7 @@ class Foo {
         $currentSymbolEndIndex = null;
 
         foreach ($namespaceUseAnalyzer->getDeclarationsFromTokens($tokens) as $namespaceUseAnalysis) {
-            $shortNames[strtolower($namespaceUseAnalysis->getShortName())] = '\\'.strtolower($namespaceUseAnalysis->getFullName());
+            $shortNames[strtolower($namespaceUseAnalysis->getShortName())] = strtolower($namespaceUseAnalysis->getFullName());
         }
 
         $symbolKinds = [T_CLASS, T_INTERFACE];
@@ -562,18 +562,23 @@ class Foo {
     private function toComparableNames(array $types, ?string $currentSymbol, array $symbolShortNames): array
     {
         $normalized = array_map(
-            static function (string $type) use ($currentSymbol, $symbolShortNames): string {
+            function (string $type) use ($currentSymbol, $symbolShortNames): string {
+                if (str_contains($type, '&')) {
+                    $intersects = explode('&', $type);
+
+                    $intersects = $this->toComparableNames($intersects, $currentSymbol, $symbolShortNames);
+
+                    return implode('&', $intersects);
+                }
+
                 if ('self' === $type && null !== $currentSymbol) {
                     $type = $currentSymbol;
                 }
 
                 $type = strtolower($type);
 
-                if (str_contains($type, '&')) {
-                    $intersects = explode('&', $type);
-                    sort($intersects);
-
-                    return implode('&', $intersects);
+                if (str_starts_with($type, '\\')) {
+                    $type = substr($type, 1);
                 }
 
                 return $symbolShortNames[$type] ?? $type;
