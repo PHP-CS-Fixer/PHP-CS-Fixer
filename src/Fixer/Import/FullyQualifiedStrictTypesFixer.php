@@ -128,10 +128,6 @@ class SomeClass
      */
     private function replaceByShortType(Tokens $tokens, TypeAnalysis $type, array $uses, string $namespaceName): void
     {
-        if ($type->isReservedType()) {
-            return;
-        }
-
         $typeStartIndex = $type->getStartIndex();
 
         if ($tokens[$typeStartIndex]->isGivenKind(CT::T_NULLABLE_TYPE)) {
@@ -142,6 +138,10 @@ class SomeClass
         $types = $this->getTypes($tokens, $typeStartIndex, $type->getEndIndex());
 
         foreach ($types as $typeName => [$startIndex, $endIndex]) {
+            if ((new TypeAnalysis($typeName))->isReservedType()) {
+                return;
+            }
+
             if (!str_starts_with($typeName, '\\')) {
                 continue; // Not a FQCN, no shorter type possible
             }

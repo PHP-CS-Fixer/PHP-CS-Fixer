@@ -39,7 +39,6 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
             '<?php
 namespace Foo\Bar;
 function test(\Foo\Bar $x) {}',
-            null,
         ];
 
         yield 'namespace cases' => [
@@ -129,7 +128,6 @@ class A {
     public function b(\foo\baz\buzz $buzz): void {
     }
 }',
-            null,
         ];
     }
 
@@ -671,13 +669,21 @@ class Two
      *
      * @dataProvider provideFix80Cases
      */
-    public function testFix80(string $expected, string $input): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     public static function provideFix80Cases(): iterable
     {
+        yield [
+            '<?php function foo(int|float $x) {}',
+        ];
+
+        yield [
+            '<?php function foo(int|A $x) {}',
+        ];
+
         yield [
             '<?php function foo(A|B|C $x) {}',
             '<?php function foo(\A|\B|\C $x) {}',
@@ -704,13 +710,21 @@ class Two
      *
      * @dataProvider provideFix81Cases
      */
-    public function testFix81(string $expected, string $input): void
+    public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     public static function provideFix81Cases(): iterable
     {
+        yield [
+            '<?php function foo(int&float $x) {}',
+        ];
+
+        yield [
+            '<?php function foo(int&A $x) {}',
+        ];
+
         yield [
             '<?php function f(): Foo&Bar & A\B\C {}',
             '<?php function f(): Foo&\Bar & \A\B\C {}',
