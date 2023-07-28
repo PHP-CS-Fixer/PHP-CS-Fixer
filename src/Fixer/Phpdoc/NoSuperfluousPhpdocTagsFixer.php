@@ -531,7 +531,7 @@ class Foo {
 
         $annotationTypes = $this->toComparableNames($annotation->getTypes(), $currentSymbol, $symbolShortNames);
 
-        if (['null'] === $annotationTypes) {
+        if ([] === $annotationTypes || ['null'] === $annotationTypes) {
             return false;
         }
 
@@ -545,7 +545,18 @@ class Foo {
             $actualTypes[] = 'null';
         }
 
-        return $annotationTypes === $this->toComparableNames($actualTypes, $currentSymbol, $symbolShortNames);
+        $actualTypes = $this->toComparableNames($actualTypes, $currentSymbol, $symbolShortNames);
+
+        if ($annotationTypes === $actualTypes) {
+            return true;
+        }
+
+        // retry comparison with annotation type unioned with null
+        // phpstan implies the null presence from the native type
+        $annotationTypes[] = 'null';
+        $annotationTypes = $this->toComparableNames($annotationTypes, null, []);
+
+        return $annotationTypes === $actualTypes;
     }
 
     /**

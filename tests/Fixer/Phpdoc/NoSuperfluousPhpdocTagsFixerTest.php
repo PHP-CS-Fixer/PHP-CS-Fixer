@@ -238,6 +238,26 @@ class Foo {
 }',
         ];
 
+        yield 'same typehint with null implied from native type' => [
+            '<?php
+class Foo {
+    /**
+     */
+    public function setAttribute(string $value = null): void
+    {
+    }
+}',
+            '<?php
+class Foo {
+    /**
+     * @param string $value
+     */
+    public function setAttribute(string $value = null): void
+    {
+    }
+}',
+        ];
+
         yield 'multiple arguments' => [
             '<?php
 class Foo {
