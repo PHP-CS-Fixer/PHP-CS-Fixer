@@ -206,7 +206,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint with leading backslash' => [
+        yield 'same typehint with leading backslash - global' => [
             '<?php
 class Foo {
     /**
@@ -222,7 +222,27 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint without leading backslash' => [
+        yield 'same typehint with leading backslash - namespaced' => [
+            '<?php
+namespace Xxx;
+
+class Foo {
+    /**
+     */
+    public function doFoo(Model\Invoice $bar) {}
+}',
+            '<?php
+namespace Xxx;
+
+class Foo {
+    /**
+     * @param \Xxx\Model\Invoice $bar
+     */
+    public function doFoo(Model\Invoice $bar) {}
+}',
+        ];
+
+        yield 'same typehint without leading backslash - global' => [
             '<?php
 class Foo {
     /**
@@ -235,6 +255,26 @@ class Foo {
      * @param Bar $bar
      */
     public function doFoo(\Bar $bar) {}
+}',
+        ];
+
+        yield 'same typehint without leading backslash - namespaced' => [
+            '<?php
+namespace Xxx;
+
+class Foo {
+    /**
+     */
+    public function doFoo(\Xxx\Bar $bar) {}
+}',
+            '<?php
+namespace Xxx;
+
+class Foo {
+    /**
+     * @param Bar $bar
+     */
+    public function doFoo(\Xxx\Bar $bar) {}
 }',
         ];
 

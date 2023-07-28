@@ -26,6 +26,8 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -158,10 +160,13 @@ class Foo {
                 $content = $this->removeSuperfluousInheritDoc($content);
             }
 
+            $namespaceAnalyser = new NamespacesAnalyzer();
+            $namespaceAnalysis = $namespaceAnalyser->getNamespaceAt($tokens, $index);
+
             if ('function' === $documentedElement['type']) {
-                $content = $this->fixFunctionDocComment($content, $tokens, $documentedElement, $currentSymbol, $shortNames);
+                $content = $this->fixFunctionDocComment($content, $tokens, $documentedElement, $namespaceAnalysis, $currentSymbol, $shortNames);
             } elseif ('property' === $documentedElement['type']) {
-                $content = $this->fixPropertyDocComment($content, $tokens, $documentedElement, $currentSymbol, $shortNames);
+                $content = $this->fixPropertyDocComment($content, $tokens, $documentedElement, $namespaceAnalysis, $currentSymbol, $shortNames);
             } elseif ('classy' === $documentedElement['type']) {
                 $content = $this->fixClassDocComment($content, $documentedElement);
             } else {
@@ -296,6 +301,7 @@ class Foo {
         string $content,
         Tokens $tokens,
         array $element,
+        NamespaceAnalysis $namespace,
         ?string $currentSymbol,
         array $shortNames
     ): string {
@@ -314,7 +320,7 @@ class Foo {
             $argumentName = $annotation->getVariableName();
 
             if (null === $argumentName) {
-                if ($this->annotationIsSuperfluous($annotation, self::NO_TYPE_INFO, $currentSymbol, $shortNames)) {
+                if ($this->annotationIsSuperfluous($annotation, self::NO_TYPE_INFO, $namespace, $currentSymbol, $shortNames)) {
                     $annotation->remove();
                 }
 
@@ -325,7 +331,7 @@ class Foo {
                 continue;
             }
 
-            if (!isset($argumentsInfo[$argumentName]) || $this->annotationIsSuperfluous($annotation, $argumentsInfo[$argumentName], $currentSymbol, $shortNames)) {
+            if (!isset($argumentsInfo[$argumentName]) || $this->annotationIsSuperfluous($annotation, $argumentsInfo[$argumentName], $namespace, $currentSymbol, $shortNames)) {
                 $annotation->remove();
             }
         }
@@ -333,7 +339,7 @@ class Foo {
         $returnTypeInfo = $this->getReturnTypeInfo($tokens, $closingParenthesisIndex);
 
         foreach ($docBlock->getAnnotationsOfType('return') as $annotation) {
-            if ($this->annotationIsSuperfluous($annotation, $returnTypeInfo, $currentSymbol, $shortNames)) {
+            if ($this->annotationIsSuperfluous($annotation, $returnTypeInfo, $namespace, $currentSymbol, $shortNames)) {
                 $annotation->remove();
             }
         }
@@ -356,6 +362,7 @@ class Foo {
         string $content,
         Tokens $tokens,
         array $element,
+        NamespaceAnalysis $namespace,
         ?string $currentSymbol,
         array $shortNames
     ): string {
@@ -368,7 +375,7 @@ class Foo {
         $docBlock = new DocBlock($content);
 
         foreach ($docBlock->getAnnotationsOfType('var') as $annotation) {
-            if ($this->annotationIsSuperfluous($annotation, $propertyTypeInfo, $currentSymbol, $shortNames)) {
+            if ($this->annotationIsSuperfluous($annotation, $propertyTypeInfo, $namespace, $currentSymbol, $shortNames)) {
                 $annotation->remove();
             }
         }
@@ -503,6 +510,7 @@ class Foo {
     private function annotationIsSuperfluous(
         Annotation $annotation,
         array $info,
+        NamespaceAnalysis $namespace,
         ?string $currentSymbol,
         array $symbolShortNames
     ): bool {
@@ -529,7 +537,7 @@ class Foo {
             return true;
         }
 
-        $annotationTypes = $this->toComparableNames($annotation->getTypes(), $currentSymbol, $symbolShortNames);
+        $annotationTypes = $this->toComparableNames($annotation->getTypes(), $namespace, $currentSymbol, $symbolShortNames);
 
         if ([] === $annotationTypes || ['null'] === $annotationTypes) {
             return false;
@@ -545,7 +553,7 @@ class Foo {
             $actualTypes[] = 'null';
         }
 
-        $actualTypes = $this->toComparableNames($actualTypes, $currentSymbol, $symbolShortNames);
+        $actualTypes = $this->toComparableNames($actualTypes, $namespace, $currentSymbol, $symbolShortNames);
 
         if ($annotationTypes === $actualTypes) {
             return true;
@@ -554,7 +562,7 @@ class Foo {
         // retry comparison with annotation type unioned with null
         // phpstan implies the null presence from the native type
         $annotationTypes[] = 'null';
-        $annotationTypes = $this->toComparableNames($annotationTypes, null, []);
+        $annotationTypes = $this->toComparableNames($annotationTypes, null, null, []);
 
         return $annotationTypes === $actualTypes;
     }
@@ -570,14 +578,14 @@ class Foo {
      *
      * @return array The normalized types
      */
-    private function toComparableNames(array $types, ?string $currentSymbol, array $symbolShortNames): array
+    private function toComparableNames(array $types, ?NamespaceAnalysis $namespace, ?string $currentSymbol, array $symbolShortNames): array
     {
         $normalized = array_map(
-            function (string $type) use ($currentSymbol, $symbolShortNames): string {
+            function (string $type) use ($namespace, $currentSymbol, $symbolShortNames): string {
                 if (str_contains($type, '&')) {
                     $intersects = explode('&', $type);
 
-                    $intersects = $this->toComparableNames($intersects, $currentSymbol, $symbolShortNames);
+                    $intersects = $this->toComparableNames($intersects, $namespace, $currentSymbol, $symbolShortNames);
 
                     return implode('&', $intersects);
                 }
@@ -588,11 +596,19 @@ class Foo {
 
                 $type = strtolower($type);
 
-                if (str_starts_with($type, '\\')) {
-                    $type = substr($type, 1);
+                if (isset($symbolShortNames[$type])) {
+                    return $symbolShortNames[$type]; // always FQCN /wo leading backslash and in lower-case
                 }
 
-                return $symbolShortNames[$type] ?? $type;
+                if (str_starts_with($type, '\\')) {
+                    return substr($type, 1);
+                }
+
+                if (null !== $namespace && '' !== $namespace->getFullName()) {
+                    $type = strtolower($namespace->getFullName()).'\\'.$type;
+                }
+
+                return $type;
             },
             $types
         );
