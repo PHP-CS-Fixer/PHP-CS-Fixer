@@ -278,12 +278,12 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint with null implied from native type' => [
+        yield 'same typehint with null implied from native type - param type' => [
             '<?php
 class Foo {
     /**
      */
-    public function setAttribute(string $value = null): void
+    public function setAttribute(?string $value, string $value2 = null): void
     {
     }
 }',
@@ -291,10 +291,52 @@ class Foo {
 class Foo {
     /**
      * @param string $value
+     * @param string $value2
      */
-    public function setAttribute(string $value = null): void
+    public function setAttribute(?string $value, string $value2 = null): void
     {
     }
+}',
+        ];
+
+        yield 'same typehint with null implied from native type - return type' => [
+            '<?php
+class Foo {
+    /**
+     */
+    public function getX(): ?X
+    {
+    }
+}',
+            '<?php
+class Foo {
+    /**
+     * @return X
+     */
+    public function getX(): ?X
+    {
+    }
+}',
+        ];
+
+        yield 'same typehint with null implied from native type - property' => [
+            '<?php
+class Foo {
+    /**  */
+    public ?bool $enabled;
+}',
+            '<?php
+class Foo {
+    /** @var bool */
+    public ?bool $enabled;
+}',
+        ];
+
+        yield 'same typehint with null but native type without null - invalid phpdoc must be kept unfixed' => [
+            '<?php
+class Foo {
+    /** @var bool|null */
+    public bool $enabled;
 }',
         ];
 
