@@ -52,6 +52,7 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
      * {@inheritdoc}
      *
      * Must run before BlankLineBeforeStatementFixer, NoExtraBlankLinesFixer, NoMultipleStatementsPerLineFixer, NoWhitespaceInBlankLineFixer, StatementIndentationFixer.
+     * Must run after ReturnToYieldFromFixer.
      */
     public function getPriority(): int
     {

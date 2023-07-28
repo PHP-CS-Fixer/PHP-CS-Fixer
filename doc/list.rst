@@ -2824,6 +2824,11 @@ List of Available Rules
    Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ReturnNotation\\ReturnAssignmentFixer <./../src/Fixer/ReturnNotation/ReturnAssignmentFixer.php>`_
+-  `return_to_yield_from <./rules/array_notation/return_to_yield_from.rst>`_
+
+   If the function explicitly returns an array, and has the return type ``iterable``, then ``yield from`` must be used instead of ``return``.
+
+   `Source PhpCsFixer\\Fixer\\ArrayNotation\\ReturnToYieldFromFixer <./../src/Fixer/ArrayNotation/ReturnToYieldFromFixer.php>`_
 -  `return_type_declaration <./rules/function_notation/return_type_declaration.rst>`_
 
    Adjust spacing around colon in return type declarations and backed enum types.

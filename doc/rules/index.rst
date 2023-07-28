@@ -57,6 +57,9 @@ Array Notation
 - `normalize_index_brace <./array_notation/normalize_index_brace.rst>`_
 
   Array index should always be written by using square braces.
+- `return_to_yield_from <./array_notation/return_to_yield_from.rst>`_
+
+  If the function explicitly returns an array, and has the return type ``iterable``, then ``yield from`` must be used instead of ``return``.
 - `trim_array_spaces <./array_notation/trim_array_spaces.rst>`_
 
   Arrays should be formatted like function/method arguments, without leading or trailing single line space.
