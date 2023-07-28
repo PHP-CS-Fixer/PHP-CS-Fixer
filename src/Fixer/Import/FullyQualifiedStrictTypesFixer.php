@@ -192,20 +192,35 @@ class SomeClass
         $index = $typeStartIndex = $typeEndIndex = $tokens->getNextMeaningfulToken($index - 1);
         $type = $tokens[$index]->getContent();
 
+        $skipNextYield = false;
         while (true) {
             $index = $tokens->getNextMeaningfulToken($index);
 
             if ($tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION])) {
-                yield $type => [$typeStartIndex, $typeEndIndex];
+                if (!$skipNextYield) {
+                    $origCount = \count($tokens);
 
-                $index = $typeStartIndex = $typeEndIndex = $tokens->getNextMeaningfulToken($index);
-                $type = $tokens[$index]->getContent();
+                    yield $type => [$typeStartIndex, $typeEndIndex];
+
+                    $endIndex += \count($tokens) - $origCount;
+
+                    // type tokens were possibly updated, restart type match
+                    $skipNextYield = true;
+                    $index = $typeEndIndex = $typeStartIndex;
+                    $type = $tokens[$index]->getContent();
+                } else {
+                    $skipNextYield = false;
+                    $index = $typeStartIndex = $typeEndIndex = $tokens->getNextMeaningfulToken($index);
+                    $type = $tokens[$index]->getContent();
+                }
 
                 continue;
             }
 
-            if ($index > $endIndex || !$tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
-                yield $type => [$typeStartIndex, $typeEndIndex];
+            if ($index > $endIndex) {
+                if (!$skipNextYield) {
+                    yield $type => [$typeStartIndex, $typeEndIndex];
+                }
 
                 break;
             }
