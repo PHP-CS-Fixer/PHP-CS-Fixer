@@ -753,4 +753,22 @@ class SomeClass
 }',
         ];
     }
+
+    /**
+     * @requires PHP 8.2
+     *
+     * @dataProvider provideFix82Cases
+     */
+    public function testFix82(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield [
+            '<?php function foo((A&B)|(x&y&Ze)|null $x) {}',
+            '<?php function foo((\A&\B)|(\x&\y&\Ze)|null $x) {}',
+        ];
+    }
 }

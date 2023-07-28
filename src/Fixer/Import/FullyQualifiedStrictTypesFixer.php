@@ -194,9 +194,16 @@ class SomeClass
 
         $skipNextYield = false;
         while (true) {
+            if ($tokens[$index]->isGivenKind(CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN)) {
+                $index = $typeStartIndex = $typeEndIndex = $tokens->getNextMeaningfulToken($index);
+                $type = $tokens[$index]->getContent();
+
+                continue;
+            }
+
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if ($tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION])) {
+            if ($tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE])) {
                 if (!$skipNextYield) {
                     $origCount = \count($tokens);
 
