@@ -26,7 +26,6 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
@@ -160,13 +159,16 @@ class Foo {
                 $content = $this->removeSuperfluousInheritDoc($content);
             }
 
-            $namespaceAnalyser = new NamespacesAnalyzer();
-            $namespaceAnalysis = $namespaceAnalyser->getNamespaceAt($tokens, $index);
+            $namespaceAnalysis = (new NamespacesAnalyzer())->getNamespaceAt($tokens, $index);
+            $namespace = $namespaceAnalysis->getFullName();
+            if ('' === $namespace) {
+                $namespace = null;
+            }
 
             if ('function' === $documentedElement['type']) {
-                $content = $this->fixFunctionDocComment($content, $tokens, $documentedElement, $namespaceAnalysis, $currentSymbol, $shortNames);
+                $content = $this->fixFunctionDocComment($content, $tokens, $documentedElement, $namespace, $currentSymbol, $shortNames);
             } elseif ('property' === $documentedElement['type']) {
-                $content = $this->fixPropertyDocComment($content, $tokens, $documentedElement, $namespaceAnalysis, $currentSymbol, $shortNames);
+                $content = $this->fixPropertyDocComment($content, $tokens, $documentedElement, $namespace, $currentSymbol, $shortNames);
             } elseif ('classy' === $documentedElement['type']) {
                 $content = $this->fixClassDocComment($content, $documentedElement);
             } else {
@@ -295,13 +297,14 @@ class Foo {
      *       modifiers: array<int, Token>,
      *       types: array<int, Token>,
      * } $element
+     * @param null|non-empty-string $namespace
      * @param array<string, string> $shortNames
      */
     private function fixFunctionDocComment(
         string $content,
         Tokens $tokens,
         array $element,
-        NamespaceAnalysis $namespace,
+        ?string $namespace,
         ?string $currentSymbol,
         array $shortNames
     ): string {
@@ -356,13 +359,14 @@ class Foo {
      *       modifiers: array<int, Token>,
      *       types: array<int, Token>,
      * } $element
+     * @param null|non-empty-string $namespace
      * @param array<string, string> $shortNames
      */
     private function fixPropertyDocComment(
         string $content,
         Tokens $tokens,
         array $element,
-        NamespaceAnalysis $namespace,
+        ?string $namespace,
         ?string $currentSymbol,
         array $shortNames
     ): string {
@@ -505,12 +509,13 @@ class Foo {
     }
 
     /**
+     * @param null|non-empty-string $namespace
      * @param array<string, string> $symbolShortNames
      */
     private function annotationIsSuperfluous(
         Annotation $annotation,
         array $info,
-        NamespaceAnalysis $namespace,
+        ?string $namespace,
         ?string $currentSymbol,
         array $symbolShortNames
     ): bool {
@@ -574,11 +579,12 @@ class Foo {
      * their matching FQCN, and finally sorts the result.
      *
      * @param string[]              $types            The types to normalize
+     * @param null|non-empty-string $namespace
      * @param array<string, string> $symbolShortNames The imports aliases
      *
      * @return array The normalized types
      */
-    private function toComparableNames(array $types, ?NamespaceAnalysis $namespace, ?string $currentSymbol, array $symbolShortNames): array
+    private function toComparableNames(array $types, ?string $namespace, ?string $currentSymbol, array $symbolShortNames): array
     {
         $normalized = array_map(
             function (string $type) use ($namespace, $currentSymbol, $symbolShortNames): string {
@@ -604,8 +610,8 @@ class Foo {
                     return substr($type, 1);
                 }
 
-                if (null !== $namespace && '' !== $namespace->getFullName()) {
-                    $type = strtolower($namespace->getFullName()).'\\'.$type;
+                if (null !== $namespace) {
+                    $type = strtolower($namespace).'\\'.$type;
                 }
 
                 return $type;
