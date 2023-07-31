@@ -298,6 +298,10 @@ function getValues() {
     private function getInsertBlankLineIndex(Tokens $tokens, int $index): int
     {
         while ($index > 0) {
+            if ($tokens[$index - 1]->isWhitespace() && substr_count($tokens[$index - 1]->getContent(), "\n") > 1) {
+                break;
+            }
+
             $prevIndex = $tokens->getPrevNonWhitespace($index);
 
             if (!$tokens[$prevIndex]->isComment()) {
