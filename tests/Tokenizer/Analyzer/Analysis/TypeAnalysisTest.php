@@ -69,7 +69,6 @@ final class TypeAnalysisTest extends TestCase
             ['iterable', true],
             ['mixed', true],
             ['never', true],
-            ['numeric', true],
             ['object', true],
             ['resource', true],
             ['self', true],
@@ -82,6 +81,7 @@ final class TypeAnalysisTest extends TestCase
 
             ['other', false],
             ['OTHER', false],
+            ['numeric', false],
         ];
     }
 
