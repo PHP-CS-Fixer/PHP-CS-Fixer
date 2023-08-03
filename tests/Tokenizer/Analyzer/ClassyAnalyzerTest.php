@@ -158,6 +158,26 @@ final class ClassyAnalyzerTest extends TestCase
                 [3 => false, 8 => false],
             ];
         }
+
+        yield [
+            '<?php try {} catch (Foo $e) {}',
+            [9 => true],
+        ];
+
+        yield [
+            '<?php try {} catch (\Foo $e) {}',
+            [10 => true],
+        ];
+
+        yield [
+            '<?php try {} catch (/* ... */ Foo $e /* ... */) {}',
+            [11 => true],
+        ];
+
+        yield [
+            '<?php try {} catch (/* ... */ \Foo $e /* ... */) {}',
+            [12 => true],
+        ];
     }
 
     /**
@@ -197,6 +217,26 @@ final class ClassyAnalyzerTest extends TestCase
         yield [
             '<?php #[AnAttribute] class Foo {}',
             [2 => true],
+        ];
+
+        yield [
+            '<?php try {} catch (Foo) {}',
+            [9 => true],
+        ];
+
+        yield [
+            '<?php try {} catch (\Foo) {}',
+            [10 => true],
+        ];
+
+        yield [
+            '<?php try {} catch (/* non-capturing catch */ Foo /* just because! */) {}',
+            [11 => true],
+        ];
+
+        yield [
+            '<?php try {} catch (/* non-capturing catch */ \Foo /* just because! */) {}',
+            [12 => true],
         ];
     }
 
