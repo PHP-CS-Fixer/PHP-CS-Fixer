@@ -71,11 +71,17 @@ final class TypeAnalysisTest extends TestCase
             ['never', true],
             ['numeric', true],
             ['object', true],
-            ['other', false],
             ['resource', true],
             ['self', true],
             ['string', true],
             ['void', true],
+
+            ['VOID', true],
+            ['Void', true],
+            ['voId', true],
+
+            ['other', false],
+            ['OTHER', false],
         ];
     }
 
@@ -93,6 +99,10 @@ final class TypeAnalysisTest extends TestCase
         yield [false, 'string'];
 
         yield [true, '?string'];
+
+        yield [false, 'String'];
+
+        yield [true, '?String'];
 
         yield [false, '\foo\bar'];
 
