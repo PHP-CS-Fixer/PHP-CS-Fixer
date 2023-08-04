@@ -537,6 +537,7 @@ final class TypeExpression
             'array',
             'bool',
             'callable',
+            'false',
             'float',
             'int',
             'iterable',
@@ -546,6 +547,7 @@ final class TypeExpression
             'object',
             'resource',
             'string',
+            'true',
             'void',
         ], true)) {
             return $type;

@@ -34,16 +34,20 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
         'array',
         'bool',
         'callable',
+        'false',
         'float',
         'int',
         'iterable',
         'mixed',
         'never',
-        'numeric',
+        'null',
         'object',
+        'parent',
         'resource',
         'self',
+        'static',
         'string',
+        'true',
         'void',
     ];
 
@@ -55,7 +59,10 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
 
     private bool $nullable;
 
-    public function __construct(string $name, int $startIndex, int $endIndex)
+    /**
+     * @param ($startIndex is null ? null : int) $endIndex
+     */
+    public function __construct(string $name, int $startIndex = null, int $endIndex = null)
     {
         $this->name = $name;
         $this->nullable = false;
@@ -67,8 +74,10 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
             $this->nullable = \in_array('null', array_map('trim', explode('|', strtolower($name))), true);
         }
 
-        $this->startIndex = $startIndex;
-        $this->endIndex = $endIndex;
+        if (null !== $startIndex) {
+            $this->startIndex = $startIndex;
+            $this->endIndex = $endIndex;
+        }
     }
 
     public function getName(): string
@@ -88,7 +97,7 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
 
     public function isReservedType(): bool
     {
-        return \in_array($this->name, self::$reservedTypes, true);
+        return \in_array(strtolower($this->name), self::$reservedTypes, true);
     }
 
     public function isNullable(): bool

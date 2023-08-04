@@ -30,7 +30,7 @@ final class ClassyAnalyzer
             throw new \LogicException(sprintf('No T_STRING at given index %d, got "%s".', $index, $tokens[$index]->getName()));
         }
 
-        if (\in_array(strtolower($token->getContent()), ['bool', 'float', 'int', 'iterable', 'object', 'parent', 'self', 'string', 'void', 'null', 'false', 'never'], true)) {
+        if ((new Analysis\TypeAnalysis($token->getContent()))->isReservedType()) {
             return false;
         }
 

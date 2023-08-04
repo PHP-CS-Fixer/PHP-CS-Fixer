@@ -128,10 +128,6 @@ class SomeClass
      */
     private function replaceByShortType(Tokens $tokens, TypeAnalysis $type, array $uses, string $namespaceName): void
     {
-        if ($type->isReservedType()) {
-            return;
-        }
-
         $typeStartIndex = $type->getStartIndex();
 
         if ($tokens[$typeStartIndex]->isGivenKind(CT::T_NULLABLE_TYPE)) {
@@ -142,6 +138,10 @@ class SomeClass
         $types = $this->getTypes($tokens, $typeStartIndex, $type->getEndIndex());
 
         foreach ($types as $typeName => [$startIndex, $endIndex]) {
+            if ((new TypeAnalysis($typeName))->isReservedType()) {
+                return;
+            }
+
             if (!str_starts_with($typeName, '\\')) {
                 continue; // Not a FQCN, no shorter type possible
             }
@@ -189,29 +189,56 @@ class SomeClass
      */
     private function getTypes(Tokens $tokens, int $index, int $endIndex): iterable
     {
-        $index = $typeStartIndex = $typeEndIndex = $tokens->getNextMeaningfulToken($index - 1);
-        $type = $tokens[$index]->getContent();
-
+        $skipNextYield = false;
+        $typeStartIndex = $typeEndIndex = null;
+        $type = null;
         while (true) {
-            $index = $tokens->getNextMeaningfulToken($index);
-
-            if ($tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION])) {
-                yield $type => [$typeStartIndex, $typeEndIndex];
-
-                $index = $typeStartIndex = $typeEndIndex = $tokens->getNextMeaningfulToken($index);
-                $type = $tokens[$index]->getContent();
+            if ($tokens[$index]->isGivenKind(CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN)) {
+                $index = $tokens->getNextMeaningfulToken($index);
+                $typeStartIndex = $typeEndIndex = null;
+                $type = null;
 
                 continue;
             }
 
-            if ($index > $endIndex || !$tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
-                yield $type => [$typeStartIndex, $typeEndIndex];
+            if (
+                $tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE])
+                || $index > $endIndex
+            ) {
+                if (!$skipNextYield && null !== $typeStartIndex) {
+                    $origCount = \count($tokens);
 
-                break;
+                    yield $type => [$typeStartIndex, $typeEndIndex];
+
+                    $endIndex += \count($tokens) - $origCount;
+
+                    // type tokens were possibly updated, restart type match
+                    $skipNextYield = true;
+                    $index = $typeEndIndex = $typeStartIndex;
+                    $type = null;
+                } else {
+                    $skipNextYield = false;
+                    $index = $tokens->getNextMeaningfulToken($index);
+                    $typeStartIndex = $typeEndIndex = null;
+                    $type = null;
+                }
+
+                if ($index > $endIndex) {
+                    break;
+                }
+
+                continue;
+            }
+
+            if (null === $typeStartIndex) {
+                $typeStartIndex = $index;
+                $type = '';
             }
 
             $typeEndIndex = $index;
             $type .= $tokens[$index]->getContent();
+
+            $index = $tokens->getNextMeaningfulToken($index);
         }
     }
 
