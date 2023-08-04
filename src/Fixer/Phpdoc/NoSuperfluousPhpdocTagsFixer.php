@@ -159,8 +159,7 @@ class Foo {
                 $content = $this->removeSuperfluousInheritDoc($content);
             }
 
-            $namespaceAnalysis = (new NamespacesAnalyzer())->getNamespaceAt($tokens, $index);
-            $namespace = $namespaceAnalysis->getFullName();
+            $namespace = (new NamespacesAnalyzer())->getNamespaceAt($tokens, $index)->getFullName();
             if ('' === $namespace) {
                 $namespace = null;
             }
@@ -566,10 +565,7 @@ class Foo {
 
         // retry comparison with annotation type unioned with null
         // phpstan implies the null presence from the native type
-        $annotationTypes[] = 'null';
-        $annotationTypes = $this->toComparableNames($annotationTypes, null, null, []);
-
-        return $annotationTypes === $actualTypes;
+        return $actualTypes === $this->toComparableNames(array_merge($annotationTypes, ['null']), null, null, []);
     }
 
     /**
