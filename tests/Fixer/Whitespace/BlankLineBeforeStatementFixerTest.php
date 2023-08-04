@@ -890,6 +890,26 @@ function foo()
     }
 }',
             ],
+            'do not fix when there is empty line between statement and preceding comment' => [
+                '<?php function foo()
+                {
+                    bar();
+                    // comment
+
+                    return 42;
+                }',
+            ],
+            'do not fix when there is empty line between preceding comments' => [
+                '<?php function foo()
+                {
+                    bar();
+                    // comment1
+                    // comment2
+
+                    // comment3
+                    return 42;
+                }',
+            ],
         ];
     }
 
