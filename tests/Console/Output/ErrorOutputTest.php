@@ -71,7 +71,6 @@ Files that were not fixed due to errors reported during %s:
       PhpCsFixer\Tests\Console\Output\ErrorOutputTest::getErrorAndLineNumber()
         in %s at line %d
       PhpCsFixer\Tests\Console\Output\ErrorOutputTest::provideErrorOutputCases()
-      ReflectionMethod->invoke()
 ',
                 __FILE__,
                 $lineNumber
@@ -87,12 +86,13 @@ Files that were not fixed due to errors reported during %s:
         [$exceptionLineNumber, $error] = self::getErrorAndLineNumber(); // note: keep call and __LINE__ separated with one line break
         ++$lineNumber;
 
-        return [
-            [$error, OutputInterface::VERBOSITY_NORMAL, $lineNumber, $exceptionLineNumber, 'VN'],
-            [$error, OutputInterface::VERBOSITY_VERBOSE, $lineNumber, $exceptionLineNumber, 'VV'],
-            [$error, OutputInterface::VERBOSITY_VERY_VERBOSE, $lineNumber, $exceptionLineNumber, 'VVV'],
-            [$error, OutputInterface::VERBOSITY_DEBUG, $lineNumber, $exceptionLineNumber, 'DEBUG'],
-        ];
+        yield [$error, OutputInterface::VERBOSITY_NORMAL, $lineNumber, $exceptionLineNumber, 'VN'];
+
+        yield [$error, OutputInterface::VERBOSITY_VERBOSE, $lineNumber, $exceptionLineNumber, 'VV'];
+
+        yield [$error, OutputInterface::VERBOSITY_VERY_VERBOSE, $lineNumber, $exceptionLineNumber, 'VVV'];
+
+        yield [$error, OutputInterface::VERBOSITY_DEBUG, $lineNumber, $exceptionLineNumber, 'DEBUG'];
     }
 
     public function testLintingExceptionOutputsAppliedFixersAndDiff(): void
