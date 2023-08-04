@@ -57,6 +57,10 @@ final class ClassyAnalyzer
             return true;
         }
 
+        if (\PHP_VERSION_ID >= 8_00_00 && $nextToken->equals(')') && $prevToken->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($prev)]->isGivenKind(T_CATCH)) {
+            return true;
+        }
+
         if (AttributeAnalyzer::isAttribute($tokens, $index)) {
             return true;
         }

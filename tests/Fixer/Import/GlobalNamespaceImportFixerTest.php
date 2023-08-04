@@ -714,6 +714,95 @@ class Abc {
 }
 INPUT
             ],
+            'try catch' => [
+                <<<'EXPECTED'
+<?php
+namespace Test;
+use Exception;
+try {
+} catch (Exception $e) {
+}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+namespace Test;
+try {
+} catch (\Exception $e) {
+}
+INPUT
+            ],
+            'try catch with comments' => [
+                <<<'EXPECTED'
+<?php
+namespace Test;
+use Exception;
+try {
+} catch (/* ... */ Exception $e /* ... */) {
+}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+namespace Test;
+try {
+} catch (/* ... */ \Exception $e /* ... */) {
+}
+INPUT
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixImportClasses80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFixImportClasses80(string $expected, string $input): void
+    {
+        $this->fixer->configure(['import_classes' => true]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixImportClasses80Cases(): iterable
+    {
+        return [
+            'try catch without variable' => [
+                <<<'EXPECTED'
+<?php
+namespace Test;
+use Exception;
+try {
+} catch (Exception) {
+}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+namespace Test;
+try {
+} catch (\Exception) {
+}
+INPUT
+            ],
+            'try catch without variable and comments' => [
+                <<<'EXPECTED'
+<?php
+namespace Test;
+use Exception;
+try {
+} catch (/* non-capturing catch */ Exception /* just because! */) {
+}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+namespace Test;
+try {
+} catch (/* non-capturing catch */ \Exception /* just because! */) {
+}
+INPUT
+            ],
         ];
     }
 
@@ -926,6 +1015,99 @@ use Bar;
 new Foo();
 new Bar();
 new Baz();
+INPUT
+            ],
+            'try catch' => [
+                <<<'EXPECTED'
+<?php
+namespace Test;
+use Exception;
+try {
+} catch (\Exception $e) {
+}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+namespace Test;
+use Exception;
+try {
+} catch (Exception $e) {
+}
+INPUT
+            ],
+            'try catch with comments' => [
+                <<<'EXPECTED'
+<?php
+namespace Test;
+use Exception;
+try {
+} catch (/* ... */ \Exception $e /* ... */) {
+}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+namespace Test;
+use Exception;
+try {
+} catch (/* ... */ Exception $e /* ... */) {
+}
+INPUT
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixFullyQualifyClasses80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFixFullyQualifyClasses80(string $expected, string $input): void
+    {
+        $this->fixer->configure(['import_classes' => false]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixFullyQualifyClasses80Cases(): iterable
+    {
+        return [
+            'try catch without variable' => [
+                <<<'EXPECTED'
+<?php
+namespace Test;
+use Exception;
+try {
+} catch (\Exception) {
+}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+namespace Test;
+use Exception;
+try {
+} catch (Exception) {
+}
+INPUT
+            ],
+            'try catch without variable and comments' => [
+                <<<'EXPECTED'
+<?php
+namespace Test;
+use Exception;
+try {
+} catch (/* non-capturing catch */ \Exception /* just because! */) {
+}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+namespace Test;
+use Exception;
+try {
+} catch (/* non-capturing catch */ Exception /* just because! */) {
+}
 INPUT
             ],
         ];
