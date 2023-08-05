@@ -20,10 +20,9 @@ use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -37,9 +36,9 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.',
+            'Heredoc/nowdoc content must be properly indented.',
             [
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     <<<'SAMPLE'
                         <?php
                             $a = <<<EOD
@@ -48,10 +47,18 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
                         EOD;
 
                         SAMPLE
-                    ,
-                    new VersionSpecification(7_03_00)
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
+                    <<<'SAMPLE'
+                        <?php
+                            $a = <<<'EOD'
+                        abc
+                            def
+                        EOD;
+
+                        SAMPLE
+                ),
+                new CodeSample(
                     <<<'SAMPLE'
                         <?php
                             $a = <<<'EOD'
@@ -61,19 +68,6 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
 
                         SAMPLE
                     ,
-                    new VersionSpecification(7_03_00)
-                ),
-                new VersionSpecificCodeSample(
-                    <<<'SAMPLE'
-                        <?php
-                            $a = <<<'EOD'
-                        abc
-                            def
-                        EOD;
-
-                        SAMPLE
-                    ,
-                    new VersionSpecification(7_03_00),
                     ['indentation' => 'same_as_start']
                 ),
             ]
