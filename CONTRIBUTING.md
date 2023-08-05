@@ -26,13 +26,12 @@ Symfony projects for instance).
 * Create a new branch, e.g. `feature-foo` or `bugfix-bar`.
 * Make changes.
 * If you are adding functionality or fixing a bug - add a test! Prefer adding new test cases over modifying existing ones.
-* Make sure there is no wrong file permissions in the repository: `./dev-tools/check_file_permissions.sh`.
-* Make sure there is no trailing spaces in the code: `./dev-tools/check_trailing_spaces.sh`.
-* Update documentation: `php dev-tools/doc.php`. This requires the highest version of PHP supported by PHP CS Fixer. If it is not installed on your system, you can run it in a Docker container instead: `docker-compose run php-8.2 php dev-tools/doc.php`.
-* Install dev tools: `dev-tools/install.sh`
-* Run static analysis using PHPStan: `php -d memory_limit=256M dev-tools/vendor/bin/phpstan analyse`
-* Check if tests pass: `vendor/bin/phpunit`.
-* Fix project itself: `php php-cs-fixer fix`.
+* Make sure there is dev environment is correct: `composer dev-tools:check`.
+* Update documentation: `composer docs`. This requires the highest version of PHP supported by PHP CS Fixer. If it is not installed on your system, you can run it in a Docker container instead: `docker-compose run php-8.2 php dev-tools/doc.php`.
+* Install dev tools: `composer dev-tools:install`.
+* Run [PHPStan](https://phpstan.org/user-guide/getting-started): `composer phpstan`.
+* Check if tests pass: `composer test`.
+* Fix project itself: `composer cs:fix`.
 
 ## Working With Docker
 

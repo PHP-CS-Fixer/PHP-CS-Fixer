@@ -78,5 +78,59 @@
             "ergebnis/composer-normalize": true
         },
         "sort-packages": true
+    },
+    "scripts": {
+        "cs:check": "@php php-cs-fixer fix --dry-run --diff",
+        "cs:fix": "@php php-cs-fixer fix",
+        "dev-tools:check": [
+            "./dev-tools/check_file_permissions.sh",
+            "./dev-tools/check_trailing_spaces.sh"
+        ],
+        "dev-tools:docs": "@php dev-tools/doc.php",
+        "dev-tools:install": "@composer -d dev-tools install",
+        "docs": "@dev-tools:docs",
+        "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi phpmd.xml",
+        "phpstan": "@php -d memory_limit=256M dev-tools/vendor/bin/phpstan analyse",
+        "phpstan:baseline": "@php -d memory_limit=256M dev-tools/vendor/bin/phpstan analyse --generate-baseline=./dev-tools/phpstan/baseline.php",
+        "qa": "@quality-assurance",
+        "quality-assurance": [
+            "Composer\\Config::disableProcessTimeout",
+            "@sa",
+            "@test"
+        ],
+        "sa": "@static-analysis",
+        "static-analysis": [
+            "@phpstan",
+            "@cs:check"
+        ],
+        "test": "@test:all",
+        "test:all": [
+            "Composer\\Config::disableProcessTimeout",
+            "paraunit run --testsuite all"
+        ],
+        "test:coverage": [
+            "Composer\\Config::disableProcessTimeout",
+            "paraunit run --testsuite coverage"
+        ]
+    },
+    "scripts-descriptions": {
+        "cs:check": "Check coding standards",
+        "cs:diff": "Check coding standards in modified files",
+        "cs:diff-fix": "Fix coding standards in modified files",
+        "cs:fix": "Fix coding standards",
+        "dev-tools:check": "Check DEV environment's requirements",
+        "dev-tools:docs": "Regenerate docs",
+        "dev-tools:install": "Install DEV tools",
+        "docs": "Regenerate docs",
+        "mess-detector": "Analyse code with Mess Detector",
+        "phpstan": "Run PHPStan analysis",
+        "phpstan:baseline": "Dump PHPStan baseline file - use only for updating, do not add new errors when possible",
+        "qa": "Run QA suite",
+        "quality-assurance": "Run QA suite",
+        "sa": "Run static analysis",
+        "static-analysis": "Run static analysis",
+        "test": "Run tests",
+        "test:all": "Run all tests",
+        "test:coverage": "Run tool-related tests"
     }
 }
