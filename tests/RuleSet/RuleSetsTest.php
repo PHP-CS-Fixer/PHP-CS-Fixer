@@ -145,9 +145,7 @@ Integration of %s.
     {
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 
-        return array_map(static function (string $setDefinitionName): array {
-            return [$setDefinitionName];
-        }, $setDefinitionNames);
+        return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionNames);
     }
 
     /**
@@ -178,13 +176,9 @@ Integration of %s.
     {
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 
-        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static function (string $setDefinitionName): bool {
-            return 1 === preg_match('/^@PHPUnit\d+Migration:risky$/', $setDefinitionName);
-        });
+        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static fn (string $setDefinitionName): bool => 1 === preg_match('/^@PHPUnit\d+Migration:risky$/', $setDefinitionName));
 
-        return array_map(static function (string $setDefinitionName): array {
-            return [$setDefinitionName];
-        }, $setDefinitionPHPUnitMigrationNames);
+        return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionPHPUnitMigrationNames);
     }
 
     private static function assertPHPUnitVersionIsLargestAllowed(string $setName, string $ruleName, string $actualTargetVersion): void
@@ -208,9 +202,7 @@ Integration of %s.
         /** @var string[] $allowedVersionsForRuleset */
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
-            static function (string $version) use ($maximumVersionForRuleset): bool {
-                return version_compare($maximumVersionForRuleset, $version) >= 0;
-            }
+            static fn (string $version): bool => version_compare($maximumVersionForRuleset, $version) >= 0
         );
 
         self::assertTrue(\in_array($actualTargetVersion, $allowedVersionsForRuleset, true), sprintf(

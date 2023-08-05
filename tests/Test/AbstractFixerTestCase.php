@@ -264,9 +264,7 @@ abstract class AbstractFixerTestCase extends TestCase
             return;
         }
 
-        $usedMethods = array_filter($usedMethods, static function (string $method): bool {
-            return !Preg::match('/^(count|find|generate|get|is|rewind)/', $method);
-        });
+        $usedMethods = array_filter($usedMethods, static fn (string $method): bool => !Preg::match('/^(count|find|generate|get|is|rewind)/', $method));
 
         $allowedMethods = ['insertAt'];
         $nonAllowedMethods = array_diff($usedMethods, $allowedMethods);
@@ -412,9 +410,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
             self::assertSameSize(
                 $tokens,
-                array_unique(array_map(static function (Token $token): string {
-                    return spl_object_hash($token);
-                }, $tokens->toArray())),
+                array_unique(array_map(static fn (Token $token): string => spl_object_hash($token), $tokens->toArray())),
                 'Token items inside Tokens collection must be unique.'
             );
 

@@ -608,9 +608,7 @@ class Tokens extends \SplFixedArray
      */
     public function getTokenOfKindSibling(int $index, int $direction, array $tokens = [], bool $caseSensitive = true): ?int
     {
-        $tokens = array_filter($tokens, function ($token): bool {
-            return $this->isTokenKindFound($this->extractTokenKind($token));
-        });
+        $tokens = array_filter($tokens, fn ($token): bool => $this->isTokenKindFound($this->extractTokenKind($token)));
 
         if (0 === \count($tokens)) {
             return null;

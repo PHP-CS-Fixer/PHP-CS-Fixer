@@ -593,9 +593,7 @@ final class TypeExpressionTest extends TestCase
     {
         $expression = $this->parseTypeExpression($typesExpression, null, []);
 
-        $expression->sortTypes(static function (TypeExpression $a, TypeExpression $b): int {
-            return strcasecmp($a->toString(), $b->toString());
-        });
+        $expression->sortTypes(static fn (TypeExpression $a, TypeExpression $b): int => strcasecmp($a->toString(), $b->toString()));
 
         self::assertSame($expectResult, $expression->toString());
     }

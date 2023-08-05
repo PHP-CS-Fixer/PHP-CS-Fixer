@@ -122,9 +122,7 @@ abstract class AbstractTransformerTestCase extends TestCase
             $this->countTokenPrototypes(
                 $tokens,
                 array_map(
-                    static function ($kindOrPrototype) {
-                        return \is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype;
-                    },
+                    static fn ($kindOrPrototype) => \is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype,
                     array_unique(array_merge($observedKindsOrPrototypes, $expectedTokens))
                 )
             ),

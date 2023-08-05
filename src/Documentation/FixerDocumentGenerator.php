@@ -254,9 +254,7 @@ RST;
             'Phpdoc' => 'PHPDoc',
         ];
 
-        usort($fixers, static function (FixerInterface $a, FixerInterface $b): int {
-            return strcmp(\get_class($a), \get_class($b));
-        });
+        usort($fixers, static fn (FixerInterface $a, FixerInterface $b): int => strcmp(\get_class($a), \get_class($b)));
 
         $documentation = <<<'RST'
 =======================

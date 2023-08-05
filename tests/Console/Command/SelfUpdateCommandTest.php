@@ -116,9 +116,7 @@ final class SelfUpdateCommandTest extends TestCase
 
         $versionChecker
             ->compareVersions(Argument::type('string'), Argument::type('string'))
-            ->will(function (array $arguments) use ($actualVersionCheck): int {
-                return $actualVersionCheck->compareVersions($arguments[0], $arguments[1]);
-            })
+            ->will(fn (array $arguments): int => $actualVersionCheck->compareVersions($arguments[0], $arguments[1]))
         ;
 
         $command = new SelfUpdateCommand(
@@ -434,9 +432,7 @@ OUTPUT;
         $toolInfo->isInstalledAsPhar()->willReturn($isInstalledAsPhar);
         $toolInfo
             ->getPharDownloadUri(Argument::type('string'))
-            ->will(function (array $arguments) use ($root): string {
-                return "{$root->url()}/{$arguments[0]}.phar";
-            })
+            ->will(fn (array $arguments): string => "{$root->url()}/{$arguments[0]}.phar")
         ;
 
         return $toolInfo->reveal();

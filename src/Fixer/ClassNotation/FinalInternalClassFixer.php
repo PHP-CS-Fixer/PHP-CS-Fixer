@@ -158,9 +158,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(
                     array_map(
-                        static function (string $string) {
-                            return '@'.$string;
-                        },
+                        static fn (string $string) => '@'.$string,
                         self::DEFAULTS['include'],
                     ),
                 )
@@ -172,9 +170,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(
                     array_map(
-                        static function (string $string) {
-                            return '@'.$string;
-                        },
+                        static fn (string $string) => '@'.$string,
                         self::DEFAULTS['exclude'],
                     ),
                 )
