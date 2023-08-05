@@ -104,22 +104,12 @@ Example #1
         bar();
     }
 
-Example #2
-~~~~~~~~~~
-
-*Default* configuration.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
    -$foo = new class
    -{
    +$foo = new class {
     };
 
-Example #3
+Example #2
 ~~~~~~~~~~
 
 With configuration: ``['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end']``.
@@ -135,7 +125,7 @@ With configuration: ``['control_structures_opening_brace' => 'next_line_unless_n
         bar();
     }
 
-Example #4
+Example #3
 ~~~~~~~~~~
 
 With configuration: ``['functions_opening_brace' => 'same_line']``.
@@ -150,7 +140,7 @@ With configuration: ``['functions_opening_brace' => 'same_line']``.
    +function foo() {
     }
 
-Example #5
+Example #4
 ~~~~~~~~~~
 
 With configuration: ``['anonymous_functions_opening_brace' => 'next_line_unless_newline_at_signature_end']``.
@@ -165,7 +155,7 @@ With configuration: ``['anonymous_functions_opening_brace' => 'next_line_unless_
    +{
     };
 
-Example #6
+Example #5
 ~~~~~~~~~~
 
 With configuration: ``['classes_opening_brace' => 'same_line']``.
@@ -180,7 +170,7 @@ With configuration: ``['classes_opening_brace' => 'same_line']``.
    +class Foo {
     }
 
-Example #7
+Example #6
 ~~~~~~~~~~
 
 With configuration: ``['anonymous_classes_opening_brace' => 'next_line_unless_newline_at_signature_end']``.
@@ -195,7 +185,7 @@ With configuration: ``['anonymous_classes_opening_brace' => 'next_line_unless_ne
    +{
     };
 
-Example #8
+Example #7
 ~~~~~~~~~~
 
 With configuration: ``['allow_single_line_empty_anonymous_classes' => true]``.
@@ -211,7 +201,7 @@ With configuration: ``['allow_single_line_empty_anonymous_classes' => true]``.
    +private $baz;
    +};
 
-Example #9
+Example #8
 ~~~~~~~~~~
 
 With configuration: ``['allow_single_line_anonymous_functions' => true]``.

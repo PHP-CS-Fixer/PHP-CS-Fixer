@@ -24,8 +24,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -67,15 +65,11 @@ if (foo())
 {
     bar();
 }
-'
-                ),
-                new VersionSpecificCodeSample(
-                    '<?php
+
 $foo = new class
 {
 };
-',
-                    new VersionSpecification(7_00_00)
+'
                 ),
                 new CodeSample(
                     '<?php
@@ -108,20 +102,18 @@ class Foo
 ',
                     ['classes_opening_brace' => self::SAME_LINE]
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 $foo = new class {
 };
 ',
-                    new VersionSpecification(7_00_00),
                     ['anonymous_classes_opening_brace' => self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END]
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 $foo = new class { };
 $bar = new class { private $baz; };
 ',
-                    new VersionSpecification(7_00_00),
                     ['allow_single_line_empty_anonymous_classes' => true]
                 ),
                 new CodeSample(
