@@ -64,14 +64,13 @@ function f2()
 {}
 '
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 
 /** @return object */
 function my_foo()
 {}
 ',
-                    new VersionSpecification(7_02_00)
                 ),
                 new CodeSample(
                     '<?php
