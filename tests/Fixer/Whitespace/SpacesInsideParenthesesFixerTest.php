@@ -62,12 +62,11 @@ final class SpacesInsideParenthesesFixerTest extends AbstractFixerTestCase
     /**
      * @return array<array{0: string, 1?: string}>
      */
-    public static function provideDefaultFixCases(): array
+    public static function provideDefaultFixCases(): iterable
     {
-        return [
-            // default leaves new lines alone
-            [
-                "<?php
+        // default leaves new lines alone
+        yield [
+            "<?php
 
 class Foo
 {
@@ -84,159 +83,174 @@ class Foo
     }
 }
 ",
-            ],
-            [
-                '<?php foo();',
-                '<?php foo( );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php foo();',
+            '<?php foo( );',
+        ];
+
+        yield [
+            '<?php
 if (true) {
     // if body
 }',
-                '<?php
+            '<?php
 if ( true ) {
     // if body
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     // if body
 }',
-                '<?php
+            '<?php
 if (     true   ) {
     // if body
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo($bar, $baz)
 {
     // function body
 }',
-                '<?php
+            '<?php
 function foo( $bar, $baz )
 {
     // function body
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo->bar($arg1, $arg2);',
-                '<?php
+            '<?php
 $foo->bar(  $arg1, $arg2   );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = array( 1, 2, 3 );
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = [ 1, 2, 3 ];
 ',
-            ],
-            // list call with trailing comma - need to leave alone
-            [
-                '<?php list($path, $mode, ) = foo();',
-            ],
-            [
-                '<?php list($path, $mode,) = foo();',
-            ],
-            [
-                '<?php
+        ];
+
+        // list call with trailing comma - need to leave alone
+        yield [
+            '<?php list($path, $mode, ) = foo();',
+        ];
+
+        yield [
+            '<?php list($path, $mode,) = foo();',
+        ];
+
+        yield [
+            '<?php
 $a = $b->test(  // do not remove space
     $e          // between `(` and `)`
                 // and this comment
 );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo($bar, $baz)
 {
     // function body
 }',
-                '<?php
+            '<?php
 function foo( $bar, $baz )
 {
     // function body
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function hello($value) {
     // code...
 }',
-                '<?php
+            '<?php
 function hello( $value ) {
     // code...
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $code = function ($hello, $there) use ($ami, $tumi) {
     // code
 };
 ',
-                '<?php
+            '<?php
 $code = function ( $hello, $there   ) use ( $ami, $tumi ) {
     // code
 };
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 for ($i = 0; $i < 42; $i++) {
     // code...
 }
 ',
-                '<?php
+            '<?php
 for (   $i = 0; $i < 42; $i++ ) {
     // code...
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 explode($a, $b);
 ',
-                '<?php
+            '<?php
 explode( $a, $b );
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($something) {
     // code
 }
 ',
-                '<?php
+            '<?php
 if (  $something      ) {
     // code
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 multiply((2 + 3) * 4);
 ',
-                '<?php
+            '<?php
 multiply( (    2 + 3  ) * 4    );
 ',
-            ],
         ];
     }
 
     /**
      * @return array<array{0: string, 1?: string}>
      */
-    public static function provideSpacesFixCases(): array
+    public static function provideSpacesFixCases(): iterable
     {
-        return [
-            // Leaves new lines alone
-            [
-                "<?php
+        // Leaves new lines alone
+        yield [
+            "<?php
 
 class Foo
 {
@@ -252,147 +266,162 @@ class Foo
         };
     }
 }",
-            ],
-            [
-                '<?php foo();',
-                '<?php foo( );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php foo();',
+            '<?php foo( );',
+        ];
+
+        yield [
+            '<?php
 if ( true ) {
     // if body
 }',
-                '<?php
+            '<?php
 if (true) {
     // if body
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ( true ) {
     // if body
 }',
-                '<?php
+            '<?php
 if (     true   ) {
     // if body
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo( $bar, $baz )
 {
     // function body
 }',
-                '<?php
+            '<?php
 function foo($bar, $baz)
 {
     // function body
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo->bar( $arg1, $arg2 );',
-                '<?php
+            '<?php
 $foo->bar(  $arg1, $arg2   );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = array( 1, 2, 3 );
 ',
-                '<?php
+            '<?php
 $var = array(1, 2, 3);
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = [ 1, 2, 3 ];
 ',
-            ],
-            [
-                '<?php list( $path, $mode, ) = foo();',
-                '<?php list($path, $mode,) = foo();',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php list( $path, $mode, ) = foo();',
+            '<?php list($path, $mode,) = foo();',
+        ];
+
+        yield [
+            '<?php
 $a = $b->test(  // do not remove space
     $e          // between `(` and `)`
                 // and this comment
  );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo( $bar, $baz )
 {
     // function body
 }',
-                '<?php
+            '<?php
 function foo($bar, $baz)
 {
     // function body
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function hello( $value ) {
     // code...
 }',
-                '<?php
+            '<?php
 function hello($value) {
     // code...
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $code = function ( $hello, $there ) use ( $ami, $tumi ) {
     // code
 };
 ',
-                '<?php
+            '<?php
 $code = function ($hello, $there) use ($ami, $tumi) {
     // code
 };
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 for ( $i = 0; $i < 42; $i++ ) {
     // code...
 }
 ',
-                '<?php
+            '<?php
 for ($i = 0; $i < 42; $i++) {
     // code...
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 explode( $a, $b );
 ',
-                '<?php
+            '<?php
 explode($a, $b);
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ( $something ) {
     // code
 }
 ',
-                '<?php
+            '<?php
 if (    $something    ) {
     // code
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 multiply( ( 2 + 3 ) * 4 );
 ',
-                '<?php
+            '<?php
 multiply((2 + 3) * 4);
 ',
-            ],
         ];
     }
 
