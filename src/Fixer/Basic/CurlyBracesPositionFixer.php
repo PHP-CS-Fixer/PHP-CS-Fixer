@@ -65,10 +65,7 @@ if (foo())
 {
     bar();
 }
-'
-                ),
-                new CodeSample(
-                    '<?php
+
 $foo = new class
 {
 };
