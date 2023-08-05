@@ -591,12 +591,8 @@ final class TypeExpressionTest extends TestCase
      */
     public function testSortTypes(string $typesExpression, string $expectResult): void
     {
-        $sortCaseFx = static function (TypeExpression $a, TypeExpression $b): int {
-            return strcasecmp($a->toString(), $b->toString());
-        };
-        $sortCrc32Fx = static function (TypeExpression $a, TypeExpression $b): int {
-            return crc32($a->toString()) <=> crc32($b->toString());
-        };
+        $sortCaseFx = static fn (TypeExpression $a, TypeExpression $b): int => strcasecmp($a->toString(), $b->toString());
+        $sortCrc32Fx = static fn (TypeExpression $a, TypeExpression $b): int => crc32($a->toString()) <=> crc32($b->toString());
 
         $expression = $this->parseTypeExpression($typesExpression, null, []);
 

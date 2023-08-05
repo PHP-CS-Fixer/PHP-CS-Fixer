@@ -141,9 +141,11 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
 
                 // normalize shape/callable/generic identifiers too
                 // TODO parse them as inner types and this will be not needed then
-                $value = Preg::replaceCallback('/^(\??\s*)([^()[\]{}<>\'"]++)([()[\]{}<>])/', function ($matches) {
-                    return $matches[1].$this->normalize($matches[2]).$matches[3];
-                }, $value);
+                $value = Preg::replaceCallback(
+                    '/^(\??\s*)([^()[\]{}<>\'"]++)([()[\]{}<>])/',
+                    fn ($matches) => $matches[1].$this->normalize($matches[2]).$matches[3],
+                    $value
+                );
 
                 // TODO TypeExpression should be immutable and walkTypes method should be changed to mapTypes method
                 \Closure::bind(function () use ($type, $value): void {
