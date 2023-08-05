@@ -45,22 +45,22 @@ final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
     public function testLeaveNewLinesAlone(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    private function bar()
-    {
-        if ([1, 2, 3] && [
-            'foo',
-            'bar' ,
-            'baz'// a comment just to mix things up
-        ]) {
-            return 1;
-        };
-    }
-}
-EOF;
+            class Foo
+            {
+                private function bar()
+                {
+                    if ([1, 2, 3] && [
+                        'foo',
+                        'bar' ,
+                        'baz'// a comment just to mix things up
+                    ]) {
+                        return 1;
+                    };
+                }
+            }
+            EOF;
         $this->doTest($expected);
     }
 
@@ -97,20 +97,20 @@ $a = $b[ # z
     public function testLeaveComplexString(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-echo "I am printing some spaces here    {$foo->bar[1]}     {$foo->bar[1]}.";
-EOF;
+            echo "I am printing some spaces here    {$foo->bar[1]}     {$foo->bar[1]}.";
+            EOF;
         $this->doTest($expected);
     }
 
     public function testLeaveFunctions(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-function someFunc()    {   $someVar = [];   }
-EOF;
+            function someFunc()    {   $someVar = [];   }
+            EOF;
         $this->doTest($expected);
     }
 
@@ -323,40 +323,40 @@ $var = $arr[0][     0
             [
                 ['inside', 'outside'],
                 <<<'EOT'
-<?php
-$arr1[]["some_offset"][]{"foo"} = 3;
-EOT
+                    <?php
+                    $arr1[]["some_offset"][]{"foo"} = 3;
+                    EOT
                 ,
                 <<<'EOT'
-<?php
-$arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-EOT
+                    <?php
+                    $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
+                    EOT
                 ,
             ],
             [
                 ['inside'],
                 <<<'EOT'
-<?php
-$arr1[]  ["some_offset"] [] {"foo"} = 3;
-EOT
+                    <?php
+                    $arr1[]  ["some_offset"] [] {"foo"} = 3;
+                    EOT
                 ,
                 <<<'EOT'
-<?php
-$arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-EOT
+                    <?php
+                    $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
+                    EOT
                 ,
             ],
             [
                 ['outside'],
                 <<<'EOT'
-<?php
-$arr1[  ][ "some_offset"   ][     ]{ "foo" } = 3;
-EOT
+                    <?php
+                    $arr1[  ][ "some_offset"   ][     ]{ "foo" } = 3;
+                    EOT
                 ,
                 <<<'EOT'
-<?php
-$arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-EOT
+                    <?php
+                    $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
+                    EOT
                 ,
             ],
         ];

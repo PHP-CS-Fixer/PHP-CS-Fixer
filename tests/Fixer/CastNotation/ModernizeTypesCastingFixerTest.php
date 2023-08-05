@@ -37,67 +37,67 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         $multiLinePatternToFix = <<<'FIX'
-<?php $x =
-intval
+            <?php $x =
+            intval
 
-(
-    mt_rand
-    (
-        0, 100
-    )
+            (
+                mt_rand
+                (
+                    0, 100
+                )
 
-)
+            )
 
-;
-FIX;
+            ;
+            FIX;
         $multiLinePatternFixed = <<<'FIXED'
-<?php $x =
-(int) (
-    mt_rand
-    (
-        0, 100
-    )
+            <?php $x =
+            (int) (
+                mt_rand
+                (
+                    0, 100
+                )
 
-)
+            )
 
-;
-FIXED;
+            ;
+            FIXED;
 
         $overriddenFunction = <<<'OVERRIDDEN'
-<?php
+            <?php
 
-class overridesIntval
-{
-    public function intval($x)
-    {
-        return \intval($x);
-    }
+            class overridesIntval
+            {
+                public function intval($x)
+                {
+                    return \intval($x);
+                }
 
-    public function usesInval()
-    {
-        // that's why it is risky
-        return intval(mt_rand(0, 100));
-    }
-}
-OVERRIDDEN;
+                public function usesInval()
+                {
+                    // that's why it is risky
+                    return intval(mt_rand(0, 100));
+                }
+            }
+            OVERRIDDEN;
 
         $overriddenFunctionFixed = <<<'OVERRIDDEN'
-<?php
+            <?php
 
-class overridesIntval
-{
-    public function intval($x)
-    {
-        return (int) $x;
-    }
+            class overridesIntval
+            {
+                public function intval($x)
+                {
+                    return (int) $x;
+                }
 
-    public function usesInval()
-    {
-        // that's why it is risky
-        return (int) (mt_rand(0, 100));
-    }
-}
-OVERRIDDEN;
+                public function usesInval()
+                {
+                    // that's why it is risky
+                    return (int) (mt_rand(0, 100));
+                }
+            }
+            OVERRIDDEN;
 
         yield ['<?php $x = "intval";'];
 

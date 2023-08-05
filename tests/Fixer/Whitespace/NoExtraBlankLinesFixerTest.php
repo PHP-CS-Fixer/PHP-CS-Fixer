@@ -26,71 +26,71 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class NoExtraBlankLinesFixerTest extends AbstractFixerTestCase
 {
     private string $template = <<<'EOF'
-<?php
-use \DateTime;
+        <?php
+        use \DateTime;
 
-use \stdClass;
+        use \stdClass;
 
-use \InvalidArgumentException;
+        use \InvalidArgumentException;
 
-class Test {
+        class Test {
 
-    public function testThrow($a)
-    {
-        if ($a) {
-            throw new InvalidArgumentException('test.'); // test
+            public function testThrow($a)
+            {
+                if ($a) {
+                    throw new InvalidArgumentException('test.'); // test
 
-        }
-        $date = new DateTime();
-        $class = new stdClass();
-        $class = (string) $class;
-        $e = new InvalidArgumentException($class.$date->format('Y'));
-        throw $e;
-
-    }
-
-
-
-    public function testBreak($a)
-    {
-        switch($a) {
-            case 1:
-                echo $a;
-                break;
-
-            case 2:
-                echo 'test';
-                break;
-        }
-    }
-
-    protected static function testContinueAndReturn($a, $b)
-    {
-        while($a < 100) {
-            if ($b < time()) {
-
-                continue;
+                }
+                $date = new DateTime();
+                $class = new stdClass();
+                $class = (string) $class;
+                $e = new InvalidArgumentException($class.$date->format('Y'));
+                throw $e;
 
             }
 
-            return $b;
 
+
+            public function testBreak($a)
+            {
+                switch($a) {
+                    case 1:
+                        echo $a;
+                        break;
+
+                    case 2:
+                        echo 'test';
+                        break;
+                }
+            }
+
+            protected static function testContinueAndReturn($a, $b)
+            {
+                while($a < 100) {
+                    if ($b < time()) {
+
+                        continue;
+
+                    }
+
+                    return $b;
+
+                }
+
+                return $a;
+
+            }
+
+            private function test(){
+
+                // comment
+            }
+
+            private function test123(){
+                // comment
+            }
         }
-
-        return $a;
-
-    }
-
-    private function test(){
-
-        // comment
-    }
-
-    private function test123(){
-        // comment
-    }
-}
-EOF;
+        EOF;
 
     /**
      * @param list<int>    $lineNumberRemoved Line numbers expected to be removed after fixing
@@ -153,19 +153,19 @@ EOF;
     public function testFix(): void
     {
         $expected = <<<'EOF'
-<?php
-$a = new Bar();
+            <?php
+            $a = new Bar();
 
-$a = new FooBaz();
-EOF;
+            $a = new FooBaz();
+            EOF;
 
         $input = <<<'EOF'
-<?php
-$a = new Bar();
+            <?php
+            $a = new Bar();
 
 
-$a = new FooBaz();
-EOF;
+            $a = new FooBaz();
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -173,23 +173,23 @@ EOF;
     public function testFixWithManyEmptyLines(): void
     {
         $expected = <<<'EOF'
-<?php
-$a = new Bar();
+            <?php
+            $a = new Bar();
 
-$a = new FooBaz();
-EOF;
+            $a = new FooBaz();
+            EOF;
 
         $input = <<<'EOF'
-<?php
-$a = new Bar();
+            <?php
+            $a = new Bar();
 
 
 
 
 
 
-$a = new FooBaz();
-EOF;
+            $a = new FooBaz();
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -251,12 +251,12 @@ TEXT;
     public function testFixWithMultilineString(): void
     {
         $expected = <<<'EOF'
-<?php
-$a = 'Foo
+            <?php
+            $a = 'Foo
 
 
-Bar';
-EOF;
+            Bar';
+            EOF;
 
         $this->doTest($expected);
     }
@@ -264,41 +264,41 @@ EOF;
     public function testFixWithTrickyMultilineStrings(): void
     {
         $expected = <<<'EOF'
-<?php
-$a = 'Foo';
+            <?php
+            $a = 'Foo';
 
-$b = 'Bar
-
-
-Here\'s an escaped quote '
-
-.
-
-'
+            $b = 'Bar
 
 
-FooFoo';
-EOF;
+            Here\'s an escaped quote '
+
+            .
+
+            '
+
+
+            FooFoo';
+            EOF;
 
         $input = <<<'EOF'
-<?php
-$a = 'Foo';
+            <?php
+            $a = 'Foo';
 
 
-$b = 'Bar
+            $b = 'Bar
 
 
-Here\'s an escaped quote '
+            Here\'s an escaped quote '
 
 
-.
+            .
 
 
-'
+            '
 
 
-FooFoo';
-EOF;
+            FooFoo';
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -306,26 +306,26 @@ EOF;
     public function testFixWithCommentWithQuote(): void
     {
         $expected = <<<'EOF'
-<?php
-$a = 'foo';
+            <?php
+            $a = 'foo';
 
-// my comment's must have a quote
-$b = 'foobar';
+            // my comment's must have a quote
+            $b = 'foobar';
 
-$c = 'bar';
-EOF;
+            $c = 'bar';
+            EOF;
 
         $input = <<<'EOF'
-<?php
-$a = 'foo';
+            <?php
+            $a = 'foo';
 
 
-// my comment's must have a quote
-$b = 'foobar';
+            // my comment's must have a quote
+            $b = 'foobar';
 
 
-$c = 'bar';
-EOF;
+            $c = 'bar';
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -370,39 +370,39 @@ EOF;
     {
         yield [
             <<<'EOF'
-<?php
-//class Test
-$a; //
+                <?php
+                //class Test
+                $a; //
 
-$b;
-/***/
+                $b;
+                /***/
 
-$c;
-//
+                $c;
+                //
 
-$d;
-EOF
+                $d;
+                EOF
             ,
             <<<'EOF'
-<?php
-//class Test
-$a; //
+                <?php
+                //class Test
+                $a; //
 
 
 
 
-$b;
-/***/
+                $b;
+                /***/
 
 
 
-$c;
-//
+                $c;
+                //
 
 
 
-$d;
-EOF
+                $d;
+                EOF
         ];
 
         yield [
@@ -574,46 +574,46 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
     {
         yield [
             <<<'EOF'
-<?php
+                <?php
 
-use Zxy\Qux;
-use Zoo\Bar as Bar2;
-use Foo\Bar as Bar1;
-use Foo\Zar\Baz;
+                use Zxy\Qux;
+                use Zoo\Bar as Bar2;
+                use Foo\Bar as Bar1;
+                use Foo\Zar\Baz;
 
-$c = 1;
+                $c = 1;
 
-use Foo\Quxx as Quxx1;
-use Foo\Zar\Quxx;
+                use Foo\Quxx as Quxx1;
+                use Foo\Zar\Quxx;
 
-$a = new Bar1();
-$a = new Bar2();
-$a = new Baz();
-$a = new Qux();
-EOF
+                $a = new Bar1();
+                $a = new Bar2();
+                $a = new Baz();
+                $a = new Qux();
+                EOF
             ,
 
             <<<'EOF'
-<?php
+                <?php
 
-use Zxy\Qux;
+                use Zxy\Qux;
 
-use Zoo\Bar as Bar2;
+                use Zoo\Bar as Bar2;
 
-use Foo\Bar as Bar1;
-use Foo\Zar\Baz;
+                use Foo\Bar as Bar1;
+                use Foo\Zar\Baz;
 
-$c = 1;
+                $c = 1;
 
-use Foo\Quxx as Quxx1;
+                use Foo\Quxx as Quxx1;
 
-use Foo\Zar\Quxx;
+                use Foo\Zar\Quxx;
 
-$a = new Bar1();
-$a = new Bar2();
-$a = new Baz();
-$a = new Qux();
-EOF
+                $a = new Bar1();
+                $a = new Bar2();
+                $a = new Baz();
+                $a = new Qux();
+                EOF
             ,
         ];
 

@@ -65,121 +65,121 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(1, fn (int $a, Foo $b) => bar($a, $c), 2);
-EXPECTED
+                <?php
+                    foo(1, fn (int $a, Foo $b) => bar($a, $c), 2);
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-    foo(1, function (int $a, Foo $b) use ($c, $d) {
-        return bar($a, $c);
-    }, 2);
-INPUT
+                <?php
+                    foo(1, function (int $a, Foo $b) use ($c, $d) {
+                        return bar($a, $c);
+                    }, 2);
+                INPUT
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(fn () => 1);
-EXPECTED
+                <?php
+                    foo(fn () => 1);
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-    foo(function () {
+                <?php
+                    foo(function () {
 
 
-        return 1;
+                        return 1;
 
 
-    });
-INPUT
+                    });
+                INPUT
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(fn ($a) => fn () => $a + 1);
-EXPECTED
+                <?php
+                    foo(fn ($a) => fn () => $a + 1);
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-    foo(function ($a) {
-        return function () use ($a) {
-            return $a + 1;
-        };
-    });
-INPUT
+                <?php
+                    foo(function ($a) {
+                        return function () use ($a) {
+                            return $a + 1;
+                        };
+                    });
+                INPUT
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(function () {// comment
-        return 1;
-    });
-EXPECTED
+                <?php
+                    foo(function () {// comment
+                        return 1;
+                    });
+                EXPECTED
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(function () {
-        // comment
-        return 1;
-    });
-EXPECTED
+                <?php
+                    foo(function () {
+                        // comment
+                        return 1;
+                    });
+                EXPECTED
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(function () {
-        return 1; // comment
-    });
-EXPECTED
+                <?php
+                    foo(function () {
+                        return 1; // comment
+                    });
+                EXPECTED
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(function () {
-        return 1;
-        // comment
-    });
-EXPECTED
+                <?php
+                    foo(function () {
+                        return 1;
+                        // comment
+                    });
+                EXPECTED
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(function () {
-        return
-            1;
-    });
-EXPECTED
+                <?php
+                    foo(function () {
+                        return
+                            1;
+                    });
+                EXPECTED
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    $func = function (
-        $a,
-        $b
-    ) {
-        return 1;
-    };
-EXPECTED
+                <?php
+                    $func = function (
+                        $a,
+                        $b
+                    ) {
+                        return 1;
+                    };
+                EXPECTED
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    $func = function () {
-        return function () {
-            foo();
-        };
-    };
-EXPECTED
+                <?php
+                    $func = function () {
+                        return function () {
+                            foo();
+                        };
+                    };
+                EXPECTED
         ];
 
         yield [

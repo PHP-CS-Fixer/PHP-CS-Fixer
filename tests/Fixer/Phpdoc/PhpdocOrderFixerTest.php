@@ -46,19 +46,19 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
     public function testNoChanges(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * Do some cool stuff.
-     *
-     * @param EngineInterface $templating
-     * @param string          $name
-     *
-     * @throws Exception
-     *
-     * @return void|bar
-     */
+            <?php
+                /**
+                 * Do some cool stuff.
+                 *
+                 * @param EngineInterface $templating
+                 * @param string          $name
+                 *
+                 * @throws Exception
+                 *
+                 * @return void|bar
+                 */
 
-EOF;
+            EOF;
         $this->doTest($expected);
     }
 
@@ -72,13 +72,13 @@ EOF;
         $this->fixer->configure($config);
 
         $expected = <<<'EOF'
-<?php
-    /**
-     * @param EngineInterface $templating
-     * @param string          $name
-     */
+            <?php
+                /**
+                 * @param EngineInterface $templating
+                 * @param string          $name
+                 */
 
-EOF;
+            EOF;
         $this->doTest($expected);
     }
 
@@ -92,14 +92,14 @@ EOF;
         $this->fixer->configure($config);
 
         $expected = <<<'EOF'
-<?php
-    /**
-     *
-     * @return void|bar
-     *
-     */
+            <?php
+                /**
+                 *
+                 * @return void|bar
+                 *
+                 */
 
-EOF;
+            EOF;
         $this->doTest($expected);
     }
 
@@ -124,38 +124,38 @@ EOF;
         $this->fixer->configure($config);
 
         $expected = <<<'EOF'
-<?php
-    /**
-     *
-     *
-     *
-     */
+            <?php
+                /**
+                 *
+                 *
+                 *
+                 */
 
-EOF;
+            EOF;
         $this->doTest($expected);
     }
 
     public function testFixBasicCase(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * @param string $foo
-     * @throws Exception
-     * @return bool
-     */
+            <?php
+                /**
+                 * @param string $foo
+                 * @throws Exception
+                 * @return bool
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * @throws Exception
-     * @return bool
-     * @param string $foo
-     */
+            <?php
+                /**
+                 * @throws Exception
+                 * @return bool
+                 * @param string $foo
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -163,56 +163,56 @@ EOF;
     public function testFixCompleteCase(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * Hello there!
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     *
-     *
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     *
-     *
-     *
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     * @return bool Return false on failure.
-     * @return int  Return the number of changes.
-     */
+            <?php
+                /**
+                 * Hello there!
+                 *
+                 * Long description
+                 * goes here.
+                 *
+                 * @internal
+                 *
+                 *
+                 * @custom Test!
+                 *         asldnaksdkjasdasd
+                 *
+                 *
+                 *
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 * @throws Exception|RuntimeException dfsdf
+                 *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                 * @return bool Return false on failure.
+                 * @return int  Return the number of changes.
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Hello there!
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     *
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     *
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     *
-     *
-     * @return bool Return false on failure.
-     * @return int  Return the number of changes.
-     *
-     * @param string $foo
-     * @param bool   $bar Bar
-     */
+            <?php
+                /**
+                 * Hello there!
+                 *
+                 * Long description
+                 * goes here.
+                 *
+                 * @internal
+                 *
+                 * @throws Exception|RuntimeException dfsdf
+                 *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                 *
+                 * @custom Test!
+                 *         asldnaksdkjasdasd
+                 *
+                 *
+                 * @return bool Return false on failure.
+                 * @return int  Return the number of changes.
+                 *
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -220,36 +220,36 @@ EOF;
     public function testExampleFromSymfony(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * Renders a template.
-     *
-     * @param mixed $name       A template name
-     * @param array $parameters An array of parameters to pass to the template
-     *
-     * @throws \InvalidArgumentException if the template does not exist
-     * @throws \RuntimeException         if the template cannot be rendered
-     * @return string The evaluated template as a string
-     *
-     */
+            <?php
+                /**
+                 * Renders a template.
+                 *
+                 * @param mixed $name       A template name
+                 * @param array $parameters An array of parameters to pass to the template
+                 *
+                 * @throws \InvalidArgumentException if the template does not exist
+                 * @throws \RuntimeException         if the template cannot be rendered
+                 * @return string The evaluated template as a string
+                 *
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Renders a template.
-     *
-     * @param mixed $name       A template name
-     * @param array $parameters An array of parameters to pass to the template
-     *
-     * @return string The evaluated template as a string
-     *
-     * @throws \InvalidArgumentException if the template does not exist
-     * @throws \RuntimeException         if the template cannot be rendered
-     */
+            <?php
+                /**
+                 * Renders a template.
+                 *
+                 * @param mixed $name       A template name
+                 * @param array $parameters An array of parameters to pass to the template
+                 *
+                 * @return string The evaluated template as a string
+                 *
+                 * @throws \InvalidArgumentException if the template does not exist
+                 * @throws \RuntimeException         if the template cannot be rendered
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -259,19 +259,19 @@ EOF;
         $this->fixer->configure(['order' => ['param', 'return', 'throws']]);
 
         $expected = <<<'EOF'
-<?php
-    /**
-     * Do some cool stuff.
-     *
-     * @param EngineInterface $templating
-     * @param string          $name
-     *
-     * @return void|bar
-     *
-     * @throws Exception
-     */
+            <?php
+                /**
+                 * Do some cool stuff.
+                 *
+                 * @param EngineInterface $templating
+                 * @param string          $name
+                 *
+                 * @return void|bar
+                 *
+                 * @throws Exception
+                 */
 
-EOF;
+            EOF;
         $this->doTest($expected);
     }
 
@@ -280,24 +280,24 @@ EOF;
         $this->fixer->configure(['order' => ['param', 'return', 'throws']]);
 
         $expected = <<<'EOF'
-<?php
-    /**
-     * @param string $foo
-     * @return bool
-     * @throws Exception
-     */
+            <?php
+                /**
+                 * @param string $foo
+                 * @return bool
+                 * @throws Exception
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * @throws Exception
-     * @return bool
-     * @param string $foo
-     */
+            <?php
+                /**
+                 * @throws Exception
+                 * @return bool
+                 * @param string $foo
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -307,56 +307,56 @@ EOF;
         $this->fixer->configure(['order' => ['param', 'return', 'throws']]);
 
         $expected = <<<'EOF'
-<?php
-    /**
-     * Hello there!
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     *
-     *
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     *
-     *
-     *
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @return bool Return false on failure.
-     * @return int  Return the number of changes.
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     */
+            <?php
+                /**
+                 * Hello there!
+                 *
+                 * Long description
+                 * goes here.
+                 *
+                 * @internal
+                 *
+                 *
+                 * @custom Test!
+                 *         asldnaksdkjasdasd
+                 *
+                 *
+                 *
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 * @return bool Return false on failure.
+                 * @return int  Return the number of changes.
+                 * @throws Exception|RuntimeException dfsdf
+                 *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Hello there!
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     *
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     *
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     *
-     *
-     * @return bool Return false on failure.
-     * @return int  Return the number of changes.
-     *
-     * @param string $foo
-     * @param bool   $bar Bar
-     */
+            <?php
+                /**
+                 * Hello there!
+                 *
+                 * Long description
+                 * goes here.
+                 *
+                 * @internal
+                 *
+                 * @throws Exception|RuntimeException dfsdf
+                 *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                 *
+                 * @custom Test!
+                 *         asldnaksdkjasdasd
+                 *
+                 *
+                 * @return bool Return false on failure.
+                 * @return int  Return the number of changes.
+                 *
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -366,20 +366,20 @@ EOF;
         $this->fixer->configure(['order' => ['param', 'return', 'throws']]);
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Renders a template.
-     *
-     * @param mixed $name       A template name
-     * @param array $parameters An array of parameters to pass to the template
-     *
-     * @return string The evaluated template as a string
-     *
-     * @throws \InvalidArgumentException if the template does not exist
-     * @throws \RuntimeException         if the template cannot be rendered
-     */
+            <?php
+                /**
+                 * Renders a template.
+                 *
+                 * @param mixed $name       A template name
+                 * @param array $parameters An array of parameters to pass to the template
+                 *
+                 * @return string The evaluated template as a string
+                 *
+                 * @throws \InvalidArgumentException if the template does not exist
+                 * @throws \RuntimeException         if the template cannot be rendered
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($input);
     }
@@ -412,40 +412,40 @@ EOF;
     public static function provideFixBasicCaseWithDifferentOrdersCases(): iterable
     {
         $input = <<<'EOF'
-<?php
-    /**
-     * @throws Exception
-     * @return bool
-     * @param string $foo
-     */
+            <?php
+                /**
+                 * @throws Exception
+                 * @return bool
+                 * @param string $foo
+                 */
 
-EOF;
+            EOF;
 
         yield [
             ['order' => ['return', 'throws', 'param']],
             <<<'EOF'
-<?php
-    /**
-     * @return bool
-     * @throws Exception
-     * @param string $foo
-     */
+                <?php
+                    /**
+                     * @return bool
+                     * @throws Exception
+                     * @param string $foo
+                     */
 
-EOF,
+                EOF,
             $input,
         ];
 
         yield [
             ['order' => ['throws', 'return', 'param']],
             <<<'EOF'
-<?php
-    /**
-     * @throws Exception
-     * @return bool
-     * @param string $foo
-     */
+                <?php
+                    /**
+                     * @throws Exception
+                     * @return bool
+                     * @param string $foo
+                     */
 
-EOF,
+                EOF,
             null,
         ];
     }
@@ -461,56 +461,56 @@ EOF,
         ]]);
 
         $expected = <<<'EOF'
-<?php
-    /**
-     * Hello there!
-     *
-     * Long description
-     * goes here.
-     *
-     *
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     *
-     *
-     *
-     * @return bool Return false on failure.
-     * @return int  Return the number of changes.
-     *
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     * @internal
-     */
+            <?php
+                /**
+                 * Hello there!
+                 *
+                 * Long description
+                 * goes here.
+                 *
+                 *
+                 * @throws Exception|RuntimeException dfsdf
+                 *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                 *
+                 *
+                 *
+                 * @return bool Return false on failure.
+                 * @return int  Return the number of changes.
+                 *
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 * @custom Test!
+                 *         asldnaksdkjasdasd
+                 * @internal
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Hello there!
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     *
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     *
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     *
-     *
-     * @return bool Return false on failure.
-     * @return int  Return the number of changes.
-     *
-     * @param string $foo
-     * @param bool   $bar Bar
-     */
+            <?php
+                /**
+                 * Hello there!
+                 *
+                 * Long description
+                 * goes here.
+                 *
+                 * @internal
+                 *
+                 * @throws Exception|RuntimeException dfsdf
+                 *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                 *
+                 * @custom Test!
+                 *         asldnaksdkjasdasd
+                 *
+                 *
+                 * @return bool Return false on failure.
+                 * @return int  Return the number of changes.
+                 *
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -535,289 +535,289 @@ EOF;
         yield 'intepacuthre' => [
             ['order' => ['internal', 'template', 'param', 'custom', 'throws', 'return']],
             <<<'EOF'
-<?php
-    /**
-     * Hello there
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     * @template T of Extension\Extension
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @param class-string<T> $id
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     * @return bool Return false on failure
-     * @return int  Return the number of changes.
-     **/
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @template T of Extension\Extension
+                     * @param string $foo
+                     * @param bool   $bar Bar
+                     * @param class-string<T> $id
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     * @return bool Return false on failure
+                     * @return int  Return the number of changes.
+                     **/
 
-EOF,
+                EOF,
             <<<'EOF'
-<?php
-    /**
-     * Hello there
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @param class-string<T> $id
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     * @template T of Extension\Extension
-     * @return bool Return false on failure
-     * @return int  Return the number of changes.
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     **/
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @param string $foo
+                     * @param bool   $bar Bar
+                     * @param class-string<T> $id
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     * @template T of Extension\Extension
+                     * @return bool Return false on failure
+                     * @return int  Return the number of changes.
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     **/
 
-EOF,
+                EOF,
         ];
 
         yield 'pare' => [
             ['order' => ['param', 'return']],
             <<<'EOF'
-<?php
-    /**
-     * Hello there
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @param class-string<T> $id
-     * @return bool Return false on failure
-     * @return int  Return the number of changes.
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     * @template T of Extension\Extension
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     **/
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @param string $foo
+                     * @param bool   $bar Bar
+                     * @param class-string<T> $id
+                     * @return bool Return false on failure
+                     * @return int  Return the number of changes.
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     * @template T of Extension\Extension
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     **/
 
-EOF,
+                EOF,
             <<<'EOF'
-<?php
-    /**
-     * Hello there
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     * @return bool Return false on failure
-     * @return int  Return the number of changes.
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     * @template T of Extension\Extension
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @param class-string<T> $id
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     **/
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @return bool Return false on failure
+                     * @return int  Return the number of changes.
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     * @template T of Extension\Extension
+                     * @param string $foo
+                     * @param bool   $bar Bar
+                     * @param class-string<T> $id
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     **/
 
-EOF,
+                EOF,
         ];
 
         yield 'pareth' => [
             ['order' => ['param', 'return', 'throws']],
             <<<'EOF'
-<?php
-    /**
-     * Hello there
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     * @template T of Extension\Extension
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @param class-string<T> $id
-     * @return bool Return false on failure
-     * @return int  Return the number of changes.
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     **/
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     * @template T of Extension\Extension
+                     * @param string $foo
+                     * @param bool   $bar Bar
+                     * @param class-string<T> $id
+                     * @return bool Return false on failure
+                     * @return int  Return the number of changes.
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     **/
 
-EOF,
+                EOF,
             <<<'EOF'
-<?php
-    /**
-     * Hello there
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     * @return bool Return false on failure
-     * @return int  Return the number of changes.
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     * @template T of Extension\Extension
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @param class-string<T> $id
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     **/
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @return bool Return false on failure
+                     * @return int  Return the number of changes.
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     * @template T of Extension\Extension
+                     * @param string $foo
+                     * @param bool   $bar Bar
+                     * @param class-string<T> $id
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     **/
 
-EOF,
+                EOF,
         ];
 
         yield 'pathre' => [
             ['order' => ['param', 'throws', 'return']],
             <<<'EOF'
-<?php
-    /**
-     * Hello there
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     * @template T of Extension\Extension
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @param class-string<T> $id
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     * @return bool Return false on failure
-     * @return int  Return the number of changes.
-     **/
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     * @template T of Extension\Extension
+                     * @param string $foo
+                     * @param bool   $bar Bar
+                     * @param class-string<T> $id
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     * @return bool Return false on failure
+                     * @return int  Return the number of changes.
+                     **/
 
-EOF,
+                EOF,
             <<<'EOF'
-<?php
-    /**
-     * Hello there
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     * @return bool Return false on failure
-     * @return int  Return the number of changes.
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     * @template T of Extension\Extension
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @param class-string<T> $id
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     **/
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @return bool Return false on failure
+                     * @return int  Return the number of changes.
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     * @template T of Extension\Extension
+                     * @param string $foo
+                     * @param bool   $bar Bar
+                     * @param class-string<T> $id
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     **/
 
-EOF,
+                EOF,
         ];
 
         yield 'tepathre' => [
             ['order' => ['template', 'param', 'throws', 'return']],
             <<<'EOF'
-<?php
-    /**
-     * Hello there
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     * @template T of Extension\Extension
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @param class-string<T> $id
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     * @return bool Return false on failure
-     * @return int  Return the number of changes.
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     **/
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @template T of Extension\Extension
+                     * @param string $foo
+                     * @param bool   $bar Bar
+                     * @param class-string<T> $id
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     * @return bool Return false on failure
+                     * @return int  Return the number of changes.
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     **/
 
-EOF,
+                EOF,
             <<<'EOF'
-<?php
-    /**
-     * Hello there
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     * @return bool Return false on failure
-     * @return int  Return the number of changes.
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @param class-string<T> $id
-     * @template T of Extension\Extension
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     **/
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @return bool Return false on failure
+                     * @return int  Return the number of changes.
+                     * @param string $foo
+                     * @param bool   $bar Bar
+                     * @param class-string<T> $id
+                     * @template T of Extension\Extension
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     **/
 
-EOF,
+                EOF,
         ];
 
         yield 'tepathre2' => [
             ['order' => ['template', 'param', 'throws', 'return']],
             <<<'EOF'
-<?php
-    /**
-     * Hello there
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     * @template T of Extension\Extension
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @param class-string<T> $id
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     * @return bool Return false on failure
-     * @return int  Return the number of changes.
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     **/
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @template T of Extension\Extension
+                     * @param string $foo
+                     * @param bool   $bar Bar
+                     * @param class-string<T> $id
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     * @return bool Return false on failure
+                     * @return int  Return the number of changes.
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     **/
 
-EOF,
+                EOF,
             <<<'EOF'
-<?php
-    /**
-     * Hello there
-     *
-     * Long description
-     * goes here.
-     *
-     * @internal
-     * @param string $foo
-     * @param bool   $bar Bar
-     * @param class-string<T> $id
-     * @return bool Return false on failure
-     * @return int  Return the number of changes.
-     * @template T of Extension\Extension
-     * @custom Test!
-     *         asldnaksdkjasdasd
-     * @throws Exception|RuntimeException dfsdf
-     *         jkaskdnaksdnkasndansdnansdajsdnkasd
-     **/
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @param string $foo
+                     * @param bool   $bar Bar
+                     * @param class-string<T> $id
+                     * @return bool Return false on failure
+                     * @return int  Return the number of changes.
+                     * @template T of Extension\Extension
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     **/
 
-EOF,
+                EOF,
         ];
     }
 }

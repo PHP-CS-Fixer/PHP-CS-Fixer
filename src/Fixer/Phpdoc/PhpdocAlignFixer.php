@@ -133,16 +133,16 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     public function getDefinition(): FixerDefinitionInterface
     {
         $code = <<<'EOF'
-<?php
-/**
- * @param  EngineInterface $templating
- * @param string      $format
- * @param  int  $code       an HTTP response status code
- * @param    bool         $debug
- * @param  mixed    &$reference     a parameter passed by reference
- */
+            <?php
+            /**
+             * @param  EngineInterface $templating
+             * @param string      $format
+             * @param  int  $code       an HTTP response status code
+             * @param    bool         $debug
+             * @param  mixed    &$reference     a parameter passed by reference
+             */
 
-EOF;
+            EOF;
 
         return new FixerDefinition(
             'All items of the given phpdoc tags must be either left-aligned or (by default) aligned vertically.',

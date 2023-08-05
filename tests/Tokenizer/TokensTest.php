@@ -333,20 +333,20 @@ final class TokensTest extends TestCase
     public function testClearRange(): void
     {
         $source = <<<'PHP'
-<?php
-class FooBar
-{
-    public function foo()
-    {
-        return 'bar';
-    }
+            <?php
+            class FooBar
+            {
+                public function foo()
+                {
+                    return 'bar';
+                }
 
-    public function bar()
-    {
-        return 'foo';
-    }
-}
-PHP;
+                public function bar()
+                {
+                    return 'foo';
+                }
+            }
+            PHP;
 
         $tokens = Tokens::fromCode($source);
         [$fooIndex, $barIndex] = array_keys($tokens->findGivenKind(T_PUBLIC));
@@ -454,20 +454,20 @@ PHP;
     public function testTokenKindsFound(): void
     {
         $code = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    public $foo;
-}
+            class Foo
+            {
+                public $foo;
+            }
 
-if (!function_exists('bar')) {
-    function bar()
-    {
-        return 'bar';
-    }
-}
-EOF;
+            if (!function_exists('bar')) {
+                function bar()
+                {
+                    return 'bar';
+                }
+            }
+            EOF;
 
         $tokens = Tokens::fromCode($code);
 
@@ -487,20 +487,20 @@ EOF;
     public function testFindGivenKind(): void
     {
         $source = <<<'PHP'
-<?php
-class FooBar
-{
-    public function foo()
-    {
-        return 'bar';
-    }
+            <?php
+            class FooBar
+            {
+                public function foo()
+                {
+                    return 'bar';
+                }
 
-    public function bar()
-    {
-        return 'foo';
-    }
-}
-PHP;
+                public function bar()
+                {
+                    return 'foo';
+                }
+            }
+            PHP;
         $tokens = Tokens::fromCode($source);
 
         /** @var Token[] $found */
@@ -1533,11 +1533,11 @@ $bar;',
     public function testInsertSlicesAtMultiplePlaces(string $expected, array $slices): void
     {
         $input = <<<'EOF'
-<?php
+            <?php
 
-$after = get_class($after);
-$before = get_class($before);
-EOF;
+            $after = get_class($after);
+            $before = get_class($before);
+            EOF;
 
         $tokens = Tokens::fromCode($input);
         $tokens->insertSlices([
@@ -1551,33 +1551,33 @@ EOF;
     {
         yield 'one slice count' => [
             <<<'EOF'
-<?php
+                <?php
 
-$after = /*foo*/get_class($after);
-$before = /*foo*/get_class($before);
-EOF
+                $after = /*foo*/get_class($after);
+                $before = /*foo*/get_class($before);
+                EOF
             ,
             [new Token([T_COMMENT, '/*foo*/'])],
         ];
 
         yield 'two slice count' => [
             <<<'EOF'
-<?php
+                <?php
 
-$after = (string) get_class($after);
-$before = (string) get_class($before);
-EOF
+                $after = (string) get_class($after);
+                $before = (string) get_class($before);
+                EOF
             ,
             [new Token([T_STRING_CAST, '(string)']), new Token([T_WHITESPACE, ' '])],
         ];
 
         yield 'three slice count' => [
             <<<'EOF'
-<?php
+                <?php
 
-$after = !(bool) get_class($after);
-$before = !(bool) get_class($before);
-EOF
+                $after = !(bool) get_class($after);
+                $before = !(bool) get_class($before);
+                EOF
             ,
             [new Token('!'), new Token([T_BOOL_CAST, '(bool)']), new Token([T_WHITESPACE, ' '])],
         ];

@@ -47,28 +47,28 @@ final class BacktickToShellExecFixerTest extends AbstractFixerTestCase
 
         yield 'with single quote' => [
             <<<'EOT'
-<?php
-`echo a\'b`;
-`echo 'ab'`;
-EOT
+                <?php
+                `echo a\'b`;
+                `echo 'ab'`;
+                EOT
             ,
         ];
 
         yield 'with double quote' => [
             <<<'EOT'
-<?php
-`echo a\"b`;
-`echo 'a"b'`;
-EOT
+                <?php
+                `echo a\"b`;
+                `echo 'a"b'`;
+                EOT
             ,
         ];
 
         yield 'with backtick' => [
             <<<'EOT'
-<?php
-`echo 'a\`b'`;
-`echo a\\\`b`;
-EOT
+                <?php
+                `echo 'a\`b'`;
+                `echo a\\\`b`;
+                EOT
             ,
         ];
     }

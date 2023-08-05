@@ -29,39 +29,39 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
     public function testFixProperties(): void
     {
         $expected = <<<'EOF'
-<?php
-class Foo {
-    public $var;
-    protected $var_foo;
-    private $FooBar;
-    public static $var1;
-    protected static $var_foo2;
-    private static $FooBar1;
-    public static $var2;
-    protected static $var_foo3;
-    private static $FooBar2;
-    private static $FooBar3;
-    public $old = 'foo';
-}
-EOF;
+            <?php
+            class Foo {
+                public $var;
+                protected $var_foo;
+                private $FooBar;
+                public static $var1;
+                protected static $var_foo2;
+                private static $FooBar1;
+                public static $var2;
+                protected static $var_foo3;
+                private static $FooBar2;
+                private static $FooBar3;
+                public $old = 'foo';
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
-class Foo {
-    public $var;
-    protected $var_foo;
-    private $FooBar;
-    static public $var1;
-    static protected $var_foo2;
-    static private $FooBar1;
-    public static $var2;
-    protected static $var_foo3;
-    private static $FooBar2;
-    private static
-    $FooBar3;
-    var $old = 'foo';
-}
-EOF;
+            <?php
+            class Foo {
+                public $var;
+                protected $var_foo;
+                private $FooBar;
+                static public $var1;
+                static protected $var_foo2;
+                static private $FooBar1;
+                public static $var2;
+                protected static $var_foo3;
+                private static $FooBar2;
+                private static
+                $FooBar3;
+                var $old = 'foo';
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -69,19 +69,19 @@ EOF;
     public function testFixPropertiesAfterMethod(): void
     {
         $input = <<<'EOF'
-<?php
-class Foo {
-    public function aaa() {}
-    var $bbb;
-}
-EOF;
+            <?php
+            class Foo {
+                public function aaa() {}
+                var $bbb;
+            }
+            EOF;
         $expected = <<<'EOF'
-<?php
-class Foo {
-    public function aaa() {}
-    public $bbb;
-}
-EOF;
+            <?php
+            class Foo {
+                public function aaa() {}
+                public $bbb;
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -98,108 +98,108 @@ EOF;
     {
         yield [
             <<<'EOF'
-<?php
-class MyTestWithAnonymousClass extends TestCase
-{
-    public function setUp()
-    {
-        $provider = new class(function () {}) {};
-    }
+                <?php
+                class MyTestWithAnonymousClass extends TestCase
+                {
+                    public function setUp()
+                    {
+                        $provider = new class(function () {}) {};
+                    }
 
-    public function testSomethingWithMoney(
-        Money $amount
-    ) {
-    }
-}
-EOF
+                    public function testSomethingWithMoney(
+                        Money $amount
+                    ) {
+                    }
+                }
+                EOF
             ,
             <<<'EOF'
-<?php
-class MyTestWithAnonymousClass extends TestCase
-{
-    function setUp()
-    {
-        $provider = new class(function () {}) {};
-    }
+                <?php
+                class MyTestWithAnonymousClass extends TestCase
+                {
+                    function setUp()
+                    {
+                        $provider = new class(function () {}) {};
+                    }
 
-    public function testSomethingWithMoney(
-        Money $amount
-    ) {
-    }
-}
-EOF
+                    public function testSomethingWithMoney(
+                        Money $amount
+                    ) {
+                    }
+                }
+                EOF
             ,
         ];
 
         yield [
             <<<'EOF'
-<?php
-abstract class Foo {
-    public function& foo0() {}
-    public function & foo1() {}
-    public function &foo2() {}
-    protected function foo3($b) {}
-    abstract protected function foo4();
-    private function foo5() {}
-    final public function foo6() {}
-    abstract public function foo7();
-    final public function foo8() {}
-    abstract public function foo9();
-    public static function fooA() {}
-    public static function fooD() {}
-    final public static function fooE() {}
-    abstract public function fooF();
-        public function fooG ($foo) {}
-        public function fooH() {
-            static $foo;
-            $bar = function($baz) {};
-        }
-}
-EOF
+                <?php
+                abstract class Foo {
+                    public function& foo0() {}
+                    public function & foo1() {}
+                    public function &foo2() {}
+                    protected function foo3($b) {}
+                    abstract protected function foo4();
+                    private function foo5() {}
+                    final public function foo6() {}
+                    abstract public function foo7();
+                    final public function foo8() {}
+                    abstract public function foo9();
+                    public static function fooA() {}
+                    public static function fooD() {}
+                    final public static function fooE() {}
+                    abstract public function fooF();
+                        public function fooG ($foo) {}
+                        public function fooH() {
+                            static $foo;
+                            $bar = function($baz) {};
+                        }
+                }
+                EOF
             ,
             <<<'EOF'
-<?php
-abstract class Foo {
-    public function& foo0() {}
-    public function & foo1() {}
-    function &foo2() {}
-    protected function foo3($b) {}
-    protected
-    abstract function foo4();
-    private function foo5() {}
-    final public function foo6() {}
-    abstract public function foo7();
-    public final function foo8() {}
-    public abstract function foo9();
-    public static function fooA() {}
-    public static
-    function fooD() {}
-    final static function fooE() {}
-    abstract function fooF();
-        function fooG ($foo) {}
-        function fooH() {
-            static $foo;
-            $bar = function($baz) {};
-        }
-}
-EOF
+                <?php
+                abstract class Foo {
+                    public function& foo0() {}
+                    public function & foo1() {}
+                    function &foo2() {}
+                    protected function foo3($b) {}
+                    protected
+                    abstract function foo4();
+                    private function foo5() {}
+                    final public function foo6() {}
+                    abstract public function foo7();
+                    public final function foo8() {}
+                    public abstract function foo9();
+                    public static function fooA() {}
+                    public static
+                    function fooD() {}
+                    final static function fooE() {}
+                    abstract function fooF();
+                        function fooG ($foo) {}
+                        function fooH() {
+                            static $foo;
+                            $bar = function($baz) {};
+                        }
+                }
+                EOF
             ,
         ];
 
         yield [
             <<<'EOF'
-<?php
-abstract class Foo1 {
-    public function& foo0($a) {}
-}
-EOF
+                <?php
+                abstract class Foo1 {
+                    public function& foo0($a) {}
+                }
+                EOF
             ,
             <<<'EOF'
-<?php
-abstract class Foo1 {
-    function& foo0($a) {}
-}
-EOF
+                <?php
+                abstract class Foo1 {
+                    function& foo0($a) {}
+                }
+                EOF
             ,
         ];
     }
@@ -207,11 +207,11 @@ EOF
     public function testLeaveFunctionsAlone(): void
     {
         $expected = <<<'EOF'
-<?php
-function foo() {
-    static $foo;
-}
-EOF;
+            <?php
+            function foo() {
+                static $foo;
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -219,13 +219,13 @@ EOF;
     public function testLeaveFunctionsAloneWithVariablesMatchingOopWords(): void
     {
         $expected = <<<'EOF'
-<?php
-function foo() {
-    static $class;
-    $interface = 'foo';
-    $trait = 'bar';
-}
-EOF;
+            <?php
+            function foo() {
+                static $class;
+                $interface = 'foo';
+                $trait = 'bar';
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -233,29 +233,29 @@ EOF;
     public function testLeaveFunctionsAloneInsideConditionals(): void
     {
         $expected = <<<'EOF'
-<?php
-if (!function_exists('foo')) {
-    function foo($arg)
-    {
-        return $arg;
-    }
-}
-EOF;
+            <?php
+            if (!function_exists('foo')) {
+                function foo($arg)
+                {
+                    return $arg;
+                }
+            }
+            EOF;
         $this->doTest($expected);
     }
 
     public function testLeaveFunctionsAloneInsideConditionalsWithOopWordInComment(): void
     {
         $expected = <<<'EOF'
-<?php
-/* class <= this is just a stop-word */
-if (!function_exists('foo')) {
-    function foo($arg)
-    {
-        return $arg;
-    }
-}
-EOF;
+            <?php
+            /* class <= this is just a stop-word */
+            if (!function_exists('foo')) {
+                function foo($arg)
+                {
+                    return $arg;
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -263,81 +263,81 @@ EOF;
     public function testLeaveFunctionsAloneWithOopWordInComment(): void
     {
         $expected = <<<'EOF'
-<?php
-/* class */
-function foo($arg)
-{
-    return $arg;
-}
-EOF;
+            <?php
+            /* class */
+            function foo($arg)
+            {
+                return $arg;
+            }
+            EOF;
         $this->doTest($expected);
     }
 
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInInlineHtml(): void
     {
         $expected = <<<'EOF'
-<?php
-if (!function_exists('foo')) {
-    function foo($arg)
-    {
-    ?>
-        <div class="test"></div>
-    <?php
-        return $arg;
-    }
-}
-EOF;
+            <?php
+            if (!function_exists('foo')) {
+                function foo($arg)
+                {
+                ?>
+                    <div class="test"></div>
+                <?php
+                    return $arg;
+                }
+            }
+            EOF;
         $this->doTest($expected);
     }
 
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInStringValue(): void
     {
         $expected = <<<'EOF'
-<?php
-if (!function_exists('foo')) {
-    function foo($arg)
-    {
-        return 'she has class right?';
-    }
-}
-EOF;
+            <?php
+            if (!function_exists('foo')) {
+                function foo($arg)
+                {
+                    return 'she has class right?';
+                }
+            }
+            EOF;
         $this->doTest($expected);
     }
 
     public function testLeaveFunctionsAloneOutsideClassesWithOopWordInFunctionName(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-comment_class();
+            comment_class();
 
-if (!function_exists('foo')) {
-    function foo($arg)
-    {
-        return $arg;
-    }
-}
-EOF;
+            if (!function_exists('foo')) {
+                function foo($arg)
+                {
+                    return $arg;
+                }
+            }
+            EOF;
         $this->doTest($expected);
     }
 
     public function testLeaveFunctionsAloneAfterClass(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    public $foo;
-}
+            class Foo
+            {
+                public $foo;
+            }
 
-if (!function_exists('bar')) {
-    function bar()
-    {
-        return 'bar';
-    }
-}
-EOF;
+            if (!function_exists('bar')) {
+                function bar()
+                {
+                    return 'bar';
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -345,19 +345,19 @@ EOF;
     public function testCurlyOpenSyntax(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    private $bar;
-    public function foo()
-    {
-        $foo = "foo";
-        $fooA = "ab{$foo}cd";
-        $bar = "bar"; // test if variable after T_CURLY_OPEN is intact
-    }
-}
-EOF;
+            class Foo
+            {
+                private $bar;
+                public function foo()
+                {
+                    $foo = "foo";
+                    $fooA = "ab{$foo}cd";
+                    $bar = "bar"; // test if variable after T_CURLY_OPEN is intact
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -365,16 +365,16 @@ EOF;
     public function testDollarOpenCurlyBracesSyntax(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo {
-    public function bar()
-    {
-        $foo = "foo${width}foo";
-        $bar = "bar"; // test if variable after T_DOLLAR_OPEN_CURLY_BRACES is intact
-    }
-}
-EOF;
+            class Foo {
+                public function bar()
+                {
+                    $foo = "foo${width}foo";
+                    $bar = "bar"; // test if variable after T_DOLLAR_OPEN_CURLY_BRACES is intact
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -382,18 +382,18 @@ EOF;
     public function testLeaveJavascriptOutsidePhpAlone(): void
     {
         $expected = <<<'EOF'
-<?php
-function foo()
-{
-    return "foo";
-}
-?>
-<script type="text/javascript">
-function foo(bar) {
-    alert(bar);
-}
-</script>
-EOF;
+            <?php
+            function foo()
+            {
+                return "foo";
+            }
+            ?>
+            <script type="text/javascript">
+            function foo(bar) {
+                alert(bar);
+            }
+            </script>
+            EOF;
 
         $this->doTest($expected);
     }
@@ -401,16 +401,16 @@ EOF;
     public function testLeaveJavascriptInStringAlone(): void
     {
         $expected = <<<'EOF'
-<?php
-function registerJS()
-{
-echo '<script type="text/javascript">
-function foo(bar) {
-    alert(bar);
-}
-</script>';
-}
-EOF;
+            <?php
+            function registerJS()
+            {
+            echo '<script type="text/javascript">
+            function foo(bar) {
+                alert(bar);
+            }
+            </script>';
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -418,23 +418,23 @@ EOF;
     public function testLeaveJavascriptInVariableAlone(): void
     {
         $expected = <<<'EOF'
-<?php
-class Foo
-{
-    public function bar()
-    {
-        $script = <<<JAVASCRIPT
-<script type="text/javascript">
-function foo(bar) {
-    alert(bar);
-}
-</script>
-JAVASCRIPT;
+            <?php
+            class Foo
+            {
+                public function bar()
+                {
+                    $script = <<<JAVASCRIPT
+            <script type="text/javascript">
+            function foo(bar) {
+                alert(bar);
+            }
+            </script>
+            JAVASCRIPT;
 
-        return $script;
-    }
-}
-EOF;
+                    return $script;
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -442,28 +442,28 @@ EOF;
     public function testFixCommaSeparatedProperty(): void
     {
         $expected = <<<'EOF'
-<?php
-class Foo
-{
-    public $foo1;
-    private $foo2;
-    protected $bar1, $bar2;
-    public $baz1 = null, $baz2, $baz3 = false;
-    public $foo, $bar;
-}
-EOF;
+            <?php
+            class Foo
+            {
+                public $foo1;
+                private $foo2;
+                protected $bar1, $bar2;
+                public $baz1 = null, $baz2, $baz3 = false;
+                public $foo, $bar;
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
-class Foo
-{
-    var $foo1;
-    private $foo2;
-    protected $bar1, $bar2;
-    public $baz1 = null, $baz2, $baz3 = false;
-    var $foo, $bar;
-}
-EOF;
+            <?php
+            class Foo
+            {
+                var $foo1;
+                private $foo2;
+                protected $bar1, $bar2;
+                public $baz1 = null, $baz2, $baz3 = false;
+                var $foo, $bar;
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -471,32 +471,32 @@ EOF;
     public function testFixesVarDeclarationsWithArrayValue(): void
     {
         $expected = <<<'EOF'
-<?php
-class Foo
-{
-    public $foo1 = 1;
-    public $foo2a = array('foo');
-    public $foo2b = ['foo'];
-    public $foo3a = array('foo', 'bar');
-    public $foo3b = ['foo', 'bar'];
-    public $foo4a = '1a', $foo5a = array(1, 2, 3), $foo6a = 10;
-    public $foo4b = '1b', $foo5b = array(1, 2, 3), $foo6b = 10;
-}
-EOF;
+            <?php
+            class Foo
+            {
+                public $foo1 = 1;
+                public $foo2a = array('foo');
+                public $foo2b = ['foo'];
+                public $foo3a = array('foo', 'bar');
+                public $foo3b = ['foo', 'bar'];
+                public $foo4a = '1a', $foo5a = array(1, 2, 3), $foo6a = 10;
+                public $foo4b = '1b', $foo5b = array(1, 2, 3), $foo6b = 10;
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
-class Foo
-{
-    var $foo1 = 1;
-    var $foo2a = array('foo');
-    var $foo2b = ['foo'];
-    var $foo3a = array('foo', 'bar');
-    var $foo3b = ['foo', 'bar'];
-    public $foo4a = '1a', $foo5a = array(1, 2, 3), $foo6a = 10;
-    public $foo4b = '1b', $foo5b = array(1, 2, 3), $foo6b = 10;
-}
-EOF;
+            <?php
+            class Foo
+            {
+                var $foo1 = 1;
+                var $foo2a = array('foo');
+                var $foo2b = ['foo'];
+                var $foo3a = array('foo', 'bar');
+                var $foo3b = ['foo', 'bar'];
+                public $foo4a = '1a', $foo5a = array(1, 2, 3), $foo6a = 10;
+                public $foo4b = '1b', $foo5b = array(1, 2, 3), $foo6b = 10;
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }

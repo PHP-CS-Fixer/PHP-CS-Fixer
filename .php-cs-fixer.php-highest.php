@@ -24,7 +24,6 @@ $config = require __DIR__.'/.php-cs-fixer.dist.php';
 $config->setRules(array_merge($config->getRules(), [
     '@PHP82Migration' => true,
     '@PHP80Migration:risky' => true,
-    'heredoc_indentation' => false,
 ]));
 
 return $config;

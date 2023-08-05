@@ -89,12 +89,12 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
 
         yield [
             <<<'EOF'
-<?php $a = '\\foo\\bar\\\\';
-EOF
+                <?php $a = '\\foo\\bar\\\\';
+                EOF
             ,
             <<<'EOF'
-<?php $a = "\\foo\\bar\\\\";
-EOF
+                <?php $a = "\\foo\\bar\\\\";
+                EOF
         ];
 
         yield [
@@ -143,8 +143,8 @@ EOF
         yield ['<?php $a = B"foo\n bar";'];
 
         yield [<<<'EOF'
-<?php $a = "\\\n";
-EOF
+            <?php $a = "\\\n";
+            EOF
         ];
     }
 
@@ -169,35 +169,35 @@ EOF
 
         yield [
             <<<'EOT'
-<?php
-// none
-$a = 'start \' end';
-// one escaped baskslash
-$b = 'start \\\' end';
-// two escaped baskslash
-$c = 'start \\\\\' end';
-EOT
+                <?php
+                // none
+                $a = 'start \' end';
+                // one escaped baskslash
+                $b = 'start \\\' end';
+                // two escaped baskslash
+                $c = 'start \\\\\' end';
+                EOT
             ,
             <<<'EOT'
-<?php
-// none
-$a = "start ' end";
-// one escaped baskslash
-$b = "start \\' end";
-// two escaped baskslash
-$c = "start \\\\' end";
-EOT
+                <?php
+                // none
+                $a = "start ' end";
+                // one escaped baskslash
+                $b = "start \\' end";
+                // two escaped baskslash
+                $c = "start \\\\' end";
+                EOT
             ,
         ];
 
         yield [
             <<<'EOT'
-<?php
-// one unescaped backslash
-$a = "start \' end";
-// one escaped + one unescaped baskslash
-$b = "start \\\' end";
-EOT
+                <?php
+                // one unescaped backslash
+                $a = "start \' end";
+                // one escaped + one unescaped baskslash
+                $b = "start \\\' end";
+                EOT
             ,
         ];
     }

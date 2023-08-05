@@ -455,136 +455,136 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
 
         yield 'special \\ handling' => [
             <<<'EOT'
-    <?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        public function testElementNonExistentOne()
-        {
-            $this->setExpectedException(\Cake\View\Exception\MissingElementException::class, 'A backslash at the end \\');
+                    <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        public function testElementNonExistentOne()
+                        {
+                            $this->setExpectedException(\Cake\View\Exception\MissingElementException::class, 'A backslash at the end \\');
 
-            $this->View->element('non_existent_element');
-        }
+                            $this->View->element('non_existent_element');
+                        }
 
-        /**
-         */
-        public function testElementNonExistentTwo()
-        {
-            $this->setExpectedExceptionRegExp(\Cake\View\Exception\MissingElementException::class, '#^Element file "Element[\\\\/]non_existent_element\\.ctp" is missing\\.$#');
+                        /**
+                         */
+                        public function testElementNonExistentTwo()
+                        {
+                            $this->setExpectedExceptionRegExp(\Cake\View\Exception\MissingElementException::class, '#^Element file "Element[\\\\/]non_existent_element\\.ctp" is missing\\.$#');
 
-            $this->View->element('non_existent_element');
-        }
-    }
-EOT
+                            $this->View->element('non_existent_element');
+                        }
+                    }
+                EOT
             ,
             <<<'EOT'
-    <?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException \Cake\View\Exception\MissingElementException
-         * @expectedExceptionMessage A backslash at the end \
-         */
-        public function testElementNonExistentOne()
-        {
-            $this->View->element('non_existent_element');
-        }
+                    <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException \Cake\View\Exception\MissingElementException
+                         * @expectedExceptionMessage A backslash at the end \
+                         */
+                        public function testElementNonExistentOne()
+                        {
+                            $this->View->element('non_existent_element');
+                        }
 
-        /**
-         * @expectedException \Cake\View\Exception\MissingElementException
-         * @expectedExceptionMessageRegExp #^Element file "Element[\\/]non_existent_element\.ctp" is missing\.$#
-         */
-        public function testElementNonExistentTwo()
-        {
-            $this->View->element('non_existent_element');
-        }
-    }
-EOT
+                        /**
+                         * @expectedException \Cake\View\Exception\MissingElementException
+                         * @expectedExceptionMessageRegExp #^Element file "Element[\\/]non_existent_element\.ctp" is missing\.$#
+                         */
+                        public function testElementNonExistentTwo()
+                        {
+                            $this->View->element('non_existent_element');
+                        }
+                    }
+                EOT
             ,
         ];
 
         yield 'message on newline' => [
             <<<'EOT'
-    <?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        public function testMessageOnMultilines()
-        {
-            $this->setExpectedException(\RuntimeException::class, 'Message on multilines AAA €');
+                    <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        public function testMessageOnMultilines()
+                        {
+                            $this->setExpectedException(\RuntimeException::class, 'Message on multilines AAA €');
 
-            aaa();
-        }
+                            aaa();
+                        }
 
-        /**
-         * @foo
-         */
-        public function testMessageOnMultilinesWithAnotherTag()
-        {
-            $this->setExpectedException(\RuntimeException::class, 'Message on multilines BBB è');
+                        /**
+                         * @foo
+                         */
+                        public function testMessageOnMultilinesWithAnotherTag()
+                        {
+                            $this->setExpectedException(\RuntimeException::class, 'Message on multilines BBB è');
 
-            bbb();
-        }
+                            bbb();
+                        }
 
-        /**
-         *
-         * @foo
-         */
-        public function testMessageOnMultilinesWithAnotherSpaceAndTag()
-        {
-            $this->setExpectedException(\RuntimeException::class, 'Message on multilines CCC ✔');
+                        /**
+                         *
+                         * @foo
+                         */
+                        public function testMessageOnMultilinesWithAnotherSpaceAndTag()
+                        {
+                            $this->setExpectedException(\RuntimeException::class, 'Message on multilines CCC ✔');
 
-            ccc();
-        }
-    }
-EOT
+                            ccc();
+                        }
+                    }
+                EOT
             ,
             <<<'EOT'
-    <?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException \RuntimeException
-         * @expectedExceptionMessage Message
-         *                           on
-         *                           multilines AAA
-         *                           €
-         */
-        public function testMessageOnMultilines()
-        {
-            aaa();
-        }
+                    <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException \RuntimeException
+                         * @expectedExceptionMessage Message
+                         *                           on
+                         *                           multilines AAA
+                         *                           €
+                         */
+                        public function testMessageOnMultilines()
+                        {
+                            aaa();
+                        }
 
-        /**
-         * @expectedException \RuntimeException
-         * @expectedExceptionMessage Message
-         *                           on
-         *                           multilines BBB
-         *                           è
-         * @foo
-         */
-        public function testMessageOnMultilinesWithAnotherTag()
-        {
-            bbb();
-        }
+                        /**
+                         * @expectedException \RuntimeException
+                         * @expectedExceptionMessage Message
+                         *                           on
+                         *                           multilines BBB
+                         *                           è
+                         * @foo
+                         */
+                        public function testMessageOnMultilinesWithAnotherTag()
+                        {
+                            bbb();
+                        }
 
-        /**
-         * @expectedException \RuntimeException
-         * @expectedExceptionMessage Message
-         *                           on
-         *                           multilines CCC
-         *                           ✔
-         *
-         * @foo
-         */
-        public function testMessageOnMultilinesWithAnotherSpaceAndTag()
-        {
-            ccc();
-        }
-    }
-EOT
+                        /**
+                         * @expectedException \RuntimeException
+                         * @expectedExceptionMessage Message
+                         *                           on
+                         *                           multilines CCC
+                         *                           ✔
+                         *
+                         * @foo
+                         */
+                        public function testMessageOnMultilinesWithAnotherSpaceAndTag()
+                        {
+                            ccc();
+                        }
+                    }
+                EOT
             ,
         ];
 

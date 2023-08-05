@@ -75,83 +75,83 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
     {
         yield [
             <<<'EOF'
-<?php
+                <?php
 
-class Foo
-{
-    public function __construct($bar)
-    {
-        var_dump(1);
-    }
-}
-EOF
+                class Foo
+                {
+                    public function __construct($bar)
+                    {
+                        var_dump(1);
+                    }
+                }
+                EOF
             ,
             <<<'EOF'
-<?php
+                <?php
 
-class Foo
-{
-    public function Foo($bar)
-    {
-        var_dump(1);
-    }
-}
-EOF
+                class Foo
+                {
+                    public function Foo($bar)
+                    {
+                        var_dump(1);
+                    }
+                }
+                EOF
         ];
 
         yield [
             <<<'EOF'
-<?php
+                <?php
 
-class Foo
-{
-    public#
-    function#
-__construct#
-    (#
-    $bar#
-    )#
-    {}
-}
-EOF
+                class Foo
+                {
+                    public#
+                    function#
+                __construct#
+                    (#
+                    $bar#
+                    )#
+                    {}
+                }
+                EOF
             ,
             <<<'EOF'
-<?php
+                <?php
 
-class Foo
-{
-    public#
-    function#
-Foo#
-    (#
-    $bar#
-    )#
-    {}
-}
-EOF
+                class Foo
+                {
+                    public#
+                    function#
+                Foo#
+                    (#
+                    $bar#
+                    )#
+                    {}
+                }
+                EOF
         ];
     }
 
     public function testNamespaces(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-namespace Baz\Qux;
+            namespace Baz\Qux;
 
-class Foo
-{
-    public function __construct($bar)
-    {
-        var_dump(1);
-    }
+            class Foo
+            {
+                public function __construct($bar)
+                {
+                    var_dump(1);
+                }
 
-    public function Foo($bar)
-    {
-        var_dump(2);
-    }
-}
-EOF;
+                public function Foo($bar)
+                {
+                    var_dump(2);
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -159,32 +159,32 @@ EOF;
     public function testNamespaces2(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-namespace Baz\Qux
-{
-    class Foo
-    {
-        public function __construct($bar)
-        {
-            var_dump(1);
-        }
+            namespace Baz\Qux
+            {
+                class Foo
+                {
+                    public function __construct($bar)
+                    {
+                        var_dump(1);
+                    }
 
-        public function Foo($bar)
-        {
-            var_dump(2);
-        }
-    }
+                    public function Foo($bar)
+                    {
+                        var_dump(2);
+                    }
+                }
 
-    class Bar
-    {
-        public function Bar()
-        {
-            var_dump(3);
-        }
-    }
-}
-EOF;
+                class Bar
+                {
+                    public function Bar()
+                    {
+                        var_dump(3);
+                    }
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -192,32 +192,32 @@ EOF;
     public function testNamespaceGlobal(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-namespace {
-    class Foo
-    {
-        function __construct($bar)
-        {
-            var_dump(1);
-        }
-    }
-}
-EOF;
+            namespace {
+                class Foo
+                {
+                    function __construct($bar)
+                    {
+                        var_dump(1);
+                    }
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-namespace {
-    class Foo
-    {
-        function Foo($bar)
-        {
-            var_dump(1);
-        }
-    }
-}
-EOF;
+            namespace {
+                class Foo
+                {
+                    function Foo($bar)
+                    {
+                        var_dump(1);
+                    }
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -225,21 +225,21 @@ EOF;
     public function testPhp5Only(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    function __construct($bar)
-    {
-        var_dump(1);
-    }
+            class Foo
+            {
+                function __construct($bar)
+                {
+                    var_dump(1);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -247,44 +247,44 @@ EOF;
     public function testPhp4Only(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    /**
-     * Constructor
-     */
-    function __construct($bar)
-    {
-        var_dump(1);
-    }
+            class Foo
+            {
+                /**
+                 * Constructor
+                 */
+                function __construct($bar)
+                {
+                    var_dump(1);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    /**
-     * Constructor
-     */
-    function foO($bar)
-    {
-        var_dump(1);
-    }
+            class Foo
+            {
+                /**
+                 * Constructor
+                 */
+                function foO($bar)
+                {
+                    var_dump(1);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -292,53 +292,53 @@ EOF;
     public function testBothTheRightWay1(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        var_dump(1);
-    }
+            class Foo
+            {
+                /**
+                 * Constructor
+                 */
+                public function __construct()
+                {
+                    var_dump(1);
+                }
 
-    public function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                public function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        var_dump(1);
-    }
+            class Foo
+            {
+                /**
+                 * Constructor
+                 */
+                public function __construct()
+                {
+                    var_dump(1);
+                }
 
-    /**
-     * PHP-4 Constructor
-     */
-    function Foo()
-    {
-        // Call PHP5!
-        $this->__construct();
-    }
+                /**
+                 * PHP-4 Constructor
+                 */
+                function Foo()
+                {
+                    // Call PHP5!
+                    $this->__construct();
+                }
 
-    public function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                public function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -346,53 +346,53 @@ EOF;
     public function testBothTheRightWay2(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    /**
-     * Constructor
-     */
-    public function __construct($bar)
-    {
-        var_dump(1);
-    }
+            class Foo
+            {
+                /**
+                 * Constructor
+                 */
+                public function __construct($bar)
+                {
+                    var_dump(1);
+                }
 
-    public function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                public function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    /**
-     * Constructor
-     */
-    public function __construct($bar)
-    {
-        var_dump(1);
-    }
+            class Foo
+            {
+                /**
+                 * Constructor
+                 */
+                public function __construct($bar)
+                {
+                    var_dump(1);
+                }
 
-    /**
-     * PHP-4 Constructor
-     */
-    function Foo($bar)
-    {
-        // Call PHP5!
-        $this->__construct($bar);
-    }
+                /**
+                 * PHP-4 Constructor
+                 */
+                function Foo($bar)
+                {
+                    // Call PHP5!
+                    $this->__construct($bar);
+                }
 
-    public function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                public function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -400,53 +400,53 @@ EOF;
     public function testBothTheRightWay3(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    /**
-     * Constructor
-     */
-    public function __construct($bar = 1, $baz = null)
-    {
-        var_dump(1);
-    }
+            class Foo
+            {
+                /**
+                 * Constructor
+                 */
+                public function __construct($bar = 1, $baz = null)
+                {
+                    var_dump(1);
+                }
 
-    public function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                public function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    /**
-     * Constructor
-     */
-    public function __construct($bar = 1, $baz = null)
-    {
-        var_dump(1);
-    }
+            class Foo
+            {
+                /**
+                 * Constructor
+                 */
+                public function __construct($bar = 1, $baz = null)
+                {
+                    var_dump(1);
+                }
 
-    /**
-     * PHP-4 Constructor
-     */
-    function Foo($bar = 1, $baz = null)
-    {
-        // Call PHP5!
-        $this->__construct($bar, $baz);
-    }
+                /**
+                 * PHP-4 Constructor
+                 */
+                function Foo($bar = 1, $baz = null)
+                {
+                    // Call PHP5!
+                    $this->__construct($bar, $baz);
+                }
 
-    public function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                public function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -454,60 +454,60 @@ EOF;
     public function testBothTheOtherWayAround(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
+            class Foo
+            {
 
-    /**
-     * PHP-4 Constructor.
-     *
-     * This is the real constructor. It's the one that most likely contains any meaningful info in the docblock.
-     */
-    private function __construct($bar)
-    {
-        var_dump(1);
-    }
+                /**
+                 * PHP-4 Constructor.
+                 *
+                 * This is the real constructor. It's the one that most likely contains any meaningful info in the docblock.
+                 */
+                private function __construct($bar)
+                {
+                    var_dump(1);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    /**
-     * PHP-5 Constructor.
-     *
-     * This docblock is removed, along with the entire wrapper method.
-     */
-    protected function __construct($bar)
-    {
-        // Call The Real Constructor, not the hippy fake one!
-        $this->Foo($bar);
-    }
+            class Foo
+            {
+                /**
+                 * PHP-5 Constructor.
+                 *
+                 * This docblock is removed, along with the entire wrapper method.
+                 */
+                protected function __construct($bar)
+                {
+                    // Call The Real Constructor, not the hippy fake one!
+                    $this->Foo($bar);
+                }
 
-    /**
-     * PHP-4 Constructor.
-     *
-     * This is the real constructor. It's the one that most likely contains any meaningful info in the docblock.
-     */
-    private function Foo($bar)
-    {
-        var_dump(1);
-    }
+                /**
+                 * PHP-4 Constructor.
+                 *
+                 * This is the real constructor. It's the one that most likely contains any meaningful info in the docblock.
+                 */
+                private function Foo($bar)
+                {
+                    var_dump(1);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -515,46 +515,46 @@ EOF;
     public function testPhp4Parent(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo extends FooParEnt
-{
-    /**
-     * Constructor
-     */
-    function __construct($bar)
-    {
-        parent::__construct(1);
-        var_dump(9);
-    }
+            class Foo extends FooParEnt
+            {
+                /**
+                 * Constructor
+                 */
+                function __construct($bar)
+                {
+                    parent::__construct(1);
+                    var_dump(9);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-class Foo extends FooParEnt
-{
-    /**
-     * Constructor
-     */
-    function Foo($bar)
-    {
-        parent::FooPaRent(1);
-        var_dump(9);
-    }
+            class Foo extends FooParEnt
+            {
+                /**
+                 * Constructor
+                 */
+                function Foo($bar)
+                {
+                    parent::FooPaRent(1);
+                    var_dump(9);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -562,46 +562,46 @@ EOF;
     public function testPhp4ParentInit(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo extends FooParent
-{
-    /**
-     * Constructor
-     */
-    function __construct($bar)
-    {
-        parent::init(1);
-        var_dump(9);
-    }
+            class Foo extends FooParent
+            {
+                /**
+                 * Constructor
+                 */
+                function __construct($bar)
+                {
+                    parent::init(1);
+                    var_dump(9);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-class Foo extends FooParent
-{
-    /**
-     * Constructor
-     */
-    function Foo($bar)
-    {
-        parent::init(1);
-        var_dump(9);
-    }
+            class Foo extends FooParent
+            {
+                /**
+                 * Constructor
+                 */
+                function Foo($bar)
+                {
+                    parent::init(1);
+                    var_dump(9);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -609,46 +609,46 @@ EOF;
     public function testMixedParent(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo extends FooParent
-{
-    /**
-     * Constructor
-     */
-    function __construcT($bar)
-    {
-        parent::__construct(1);
-        var_dump(9);
-    }
+            class Foo extends FooParent
+            {
+                /**
+                 * Constructor
+                 */
+                function __construcT($bar)
+                {
+                    parent::__construct(1);
+                    var_dump(9);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-class Foo extends FooParent
-{
-    /**
-     * Constructor
-     */
-    function __construcT($bar)
-    {
-        parent::FooParenT(1);
-        var_dump(9);
-    }
+            class Foo extends FooParent
+            {
+                /**
+                 * Constructor
+                 */
+                function __construcT($bar)
+                {
+                    parent::FooParenT(1);
+                    var_dump(9);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -656,46 +656,46 @@ EOF;
     public function testMixedParent2(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo extends FooParent
-{
-    /**
-     * Constructor
-     */
-    function __construcT($bar)
-    {
-        parent::__construct(1);
-        var_dump(9);
-    }
+            class Foo extends FooParent
+            {
+                /**
+                 * Constructor
+                 */
+                function __construcT($bar)
+                {
+                    parent::__construct(1);
+                    var_dump(9);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-class Foo extends FooParent
-{
-    /**
-     * Constructor
-     */
-    function __construcT($bar)
-    {
-        $this->FooParenT(1);
-        var_dump(9);
-    }
+            class Foo extends FooParent
+            {
+                /**
+                 * Constructor
+                 */
+                function __construcT($bar)
+                {
+                    $this->FooParenT(1);
+                    var_dump(9);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -703,46 +703,46 @@ EOF;
     public function testParentOther(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo extends FooParent
-{
-    /**
-     * Constructor
-     */
-    function __construct($bar)
-    {
-        parent::__construct(1);
-        var_dump(9);
-    }
+            class Foo extends FooParent
+            {
+                /**
+                 * Constructor
+                 */
+                function __construct($bar)
+                {
+                    parent::__construct(1);
+                    var_dump(9);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-class Foo extends FooParent
-{
-    /**
-     * Constructor
-     */
-    function Foo($bar)
-    {
-        $this->FooParent(1);
-        var_dump(9);
-    }
+            class Foo extends FooParent
+            {
+                /**
+                 * Constructor
+                 */
+                function Foo($bar)
+                {
+                    $this->FooParent(1);
+                    var_dump(9);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -750,46 +750,46 @@ EOF;
     public function testParentOther2(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo extends FooParent
-{
-    /**
-     * Constructor
-     */
-    function __construct($bar)
-    {
-        parent::__construct(1);
-        var_dump(9);
-    }
+            class Foo extends FooParent
+            {
+                /**
+                 * Constructor
+                 */
+                function __construct($bar)
+                {
+                    parent::__construct(1);
+                    var_dump(9);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-class Foo extends FooParent
-{
-    /**
-     * Constructor
-     */
-    function Foo($bar)
-    {
-        FooParent::FooParent(1);
-        var_dump(9);
-    }
+            class Foo extends FooParent
+            {
+                /**
+                 * Constructor
+                 */
+                function Foo($bar)
+                {
+                    FooParent::FooParent(1);
+                    var_dump(9);
+                }
 
-    function bar()
-    {
-        var_dump(3);
-    }
-}
-EOF;
+                function bar()
+                {
+                    var_dump(3);
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -797,56 +797,56 @@ EOF;
     public function testClassWithAnonymous(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo {
-    private $bar;
+            class Foo {
+                private $bar;
 
-    public function __construct()
-    {
-        $this->bar = function () {};
-    }
-}
-EOF;
+                public function __construct()
+                {
+                    $this->bar = function () {};
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-class Foo {
-    private $bar;
+            class Foo {
+                private $bar;
 
-    public function Foo()
-    {
-        $this->bar = function () {};
-    }
-}
-EOF;
+                public function Foo()
+                {
+                    $this->bar = function () {};
+                }
+            }
+            EOF;
         $this->doTest($expected, $input);
     }
 
     public function testClassWithComments(): void
     {
         $expected = <<<'EOF'
-<?php
-class  /* test */
-// another
+            <?php
+            class  /* test */
+            // another
 
-Foo {
-public function /* test */ __construct($param) {
-}
-}
-EOF;
+            Foo {
+            public function /* test */ __construct($param) {
+            }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
-class  /* test */
-// another
+            <?php
+            class  /* test */
+            // another
 
-Foo {
-public function /* test */ Foo($param) {
-}
-}
-EOF;
+            Foo {
+            public function /* test */ Foo($param) {
+            }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -854,20 +854,20 @@ EOF;
     public function testAlphaBeta(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    public function Foo()
-    {
-        echo 'alpha';
-    }
-    public function __construct()
-    {
-        echo 'beta';
-    }
-}
-EOF;
+            class Foo
+            {
+                public function Foo()
+                {
+                    echo 'alpha';
+                }
+                public function __construct()
+                {
+                    echo 'beta';
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -875,21 +875,21 @@ EOF;
     public function testAlphaBetaTrick1(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    public function Foo()
-    {
-        // This is not $this->__construct()
-        echo 'alpha';
-    }
-    public function __construct()
-    {
-        echo 'beta';
-    }
-}
-EOF;
+            class Foo
+            {
+                public function Foo()
+                {
+                    // This is not $this->__construct()
+                    echo 'alpha';
+                }
+                public function __construct()
+                {
+                    echo 'beta';
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -897,21 +897,21 @@ EOF;
     public function testAlphaBetaTrick2(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    public function Foo()
-    {
-        echo 'alpha';
-    }
-    public function __construct()
-    {
-        // This is not $this->Foo()
-        echo 'beta';
-    }
-}
-EOF;
+            class Foo
+            {
+                public function Foo()
+                {
+                    echo 'alpha';
+                }
+                public function __construct()
+                {
+                    // This is not $this->Foo()
+                    echo 'beta';
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -919,22 +919,22 @@ EOF;
     public function testAlphaBetaTrick3(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    public function Foo()
-    {
-        echo 'alpha';
-        /* yeah, ok let's construct it anyway */
-        $this->__construct();
-    }
-    public function __construct()
-    {
-        echo 'beta';
-    }
-}
-EOF;
+            class Foo
+            {
+                public function Foo()
+                {
+                    echo 'alpha';
+                    /* yeah, ok let's construct it anyway */
+                    $this->__construct();
+                }
+                public function __construct()
+                {
+                    echo 'beta';
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -942,56 +942,56 @@ EOF;
     public function testAlphaBetaTrick4WithAnotherClass(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    public function Foo()
-    {
-        echo 'alpha';
-    }
-    public function __construct()
-    {
-        $this->Foo();
-        // Do something more!
-        echo 'beta';
-    }
-}
+            class Foo
+            {
+                public function Foo()
+                {
+                    echo 'alpha';
+                }
+                public function __construct()
+                {
+                    $this->Foo();
+                    // Do something more!
+                    echo 'beta';
+                }
+            }
 
-Class Bar
-{
-    function __construct()
-    {
-        $this->foo = 1;
-    }
-}
-EOF;
+            Class Bar
+            {
+                function __construct()
+                {
+                    $this->foo = 1;
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    public function Foo()
-    {
-        echo 'alpha';
-    }
-    public function __construct()
-    {
-        $this->Foo();
-        // Do something more!
-        echo 'beta';
-    }
-}
+            class Foo
+            {
+                public function Foo()
+                {
+                    echo 'alpha';
+                }
+                public function __construct()
+                {
+                    $this->Foo();
+                    // Do something more!
+                    echo 'beta';
+                }
+            }
 
-Class Bar
-{
-    function bar()
-    {
-        $this->foo = 1;
-    }
-}
-EOF;
+            Class Bar
+            {
+                function bar()
+                {
+                    $this->foo = 1;
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -999,13 +999,13 @@ EOF;
     public function testAbstract(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-abstract class Foo
-{
-    abstract function Foo();
-}
-EOF;
+            abstract class Foo
+            {
+                abstract function Foo();
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -1013,24 +1013,24 @@ EOF;
     public function testAbstractTrick(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-abstract class Foo
-{
-    abstract public function Foo();
+            abstract class Foo
+            {
+                abstract public function Foo();
 
-    public function bar()
-    {
-        // This is messed up, I know
-        $this->__construct();
-    }
+                public function bar()
+                {
+                    // This is messed up, I know
+                    $this->__construct();
+                }
 
-    public function __construct()
-    {
-        $this->baz = 1;
-    }
-}
-EOF;
+                public function __construct()
+                {
+                    $this->baz = 1;
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
     }
@@ -1038,46 +1038,46 @@ EOF;
     public function testParentMultipleClasses(): void
     {
         $expected = <<<'EOF'
-<?php
-    class Class1 extends Parent1
-    {
-        function __construct($foo)
-        {
-            parent::__construct();
-            echo "something";
-        }
-    }
+            <?php
+                class Class1 extends Parent1
+                {
+                    function __construct($foo)
+                    {
+                        parent::__construct();
+                        echo "something";
+                    }
+                }
 
-    class Class2 extends Parent2
-    {
-        function __construct($foo)
-        {
-            echo "something";
-        }
-    }
-?>
-EOF;
+                class Class2 extends Parent2
+                {
+                    function __construct($foo)
+                    {
+                        echo "something";
+                    }
+                }
+            ?>
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    class Class1 extends Parent1
-    {
-        function __construct($foo)
-        {
-            $this->Parent1();
-            echo "something";
-        }
-    }
+            <?php
+                class Class1 extends Parent1
+                {
+                    function __construct($foo)
+                    {
+                        $this->Parent1();
+                        echo "something";
+                    }
+                }
 
-    class Class2 extends Parent2
-    {
-        function __construct($foo)
-        {
-            echo "something";
-        }
-    }
-?>
-EOF;
+                class Class2 extends Parent2
+                {
+                    function __construct($foo)
+                    {
+                        echo "something";
+                    }
+                }
+            ?>
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -1085,46 +1085,46 @@ EOF;
     public function testInfiniteRecursion(): void
     {
         $expected = <<<'EOF'
-<?php
-    class Parent1
-    {
-        function __construct()
-        {
-            echo "foobar";
-        }
-    }
+            <?php
+                class Parent1
+                {
+                    function __construct()
+                    {
+                        echo "foobar";
+                    }
+                }
 
-    class Class1 extends Parent1
-    {
-        function __construct($foo)
-        {
-            parent::__construct();
-            echo "something";
-        }
-    }
-?>
-EOF;
+                class Class1 extends Parent1
+                {
+                    function __construct($foo)
+                    {
+                        parent::__construct();
+                        echo "something";
+                    }
+                }
+            ?>
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    class Parent1
-    {
-        function __construct()
-        {
-            echo "foobar";
-        }
-    }
+            <?php
+                class Parent1
+                {
+                    function __construct()
+                    {
+                        echo "foobar";
+                    }
+                }
 
-    class Class1 extends Parent1
-    {
-        function Class1($foo)
-        {
-            $this->__construct();
-            echo "something";
-        }
-    }
-?>
-EOF;
+                class Class1 extends Parent1
+                {
+                    function Class1($foo)
+                    {
+                        $this->__construct();
+                        echo "something";
+                    }
+                }
+            ?>
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -1143,28 +1143,28 @@ EOF;
     {
         yield [
             <<<'EOF'
-<?php
+                <?php
 
-class Foo
-{
-    public function __construct($bar,)
-    {
-        var_dump(1);
-    }
-}
-EOF
+                class Foo
+                {
+                    public function __construct($bar,)
+                    {
+                        var_dump(1);
+                    }
+                }
+                EOF
             ,
             <<<'EOF'
-<?php
+                <?php
 
-class Foo
-{
-    public function Foo($bar,)
-    {
-        var_dump(1);
-    }
-}
-EOF
+                class Foo
+                {
+                    public function Foo($bar,)
+                    {
+                        var_dump(1);
+                    }
+                }
+                EOF
         ];
 
         yield [

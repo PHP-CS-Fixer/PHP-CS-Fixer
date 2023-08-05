@@ -33,97 +33,97 @@ final class JsonReporterTest extends AbstractReporterTestCase
     protected static function createSimpleReport(): string
     {
         return <<<'JSON'
-{
-    "files": [
-        {
-            "diff": "--- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }",
-            "name": "someFile.php"
-        }
-    ],
-    "time": {
-        "total": 0
-    },
-    "memory": 0
-}
-JSON;
+            {
+                "files": [
+                    {
+                        "diff": "--- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }",
+                        "name": "someFile.php"
+                    }
+                ],
+                "time": {
+                    "total": 0
+                },
+                "memory": 0
+            }
+            JSON;
     }
 
     protected static function createWithDiffReport(): string
     {
         return <<<'JSON'
-{
-    "files": [
-        {
-            "name": "someFile.php",
-            "diff": "--- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }"
-        }
-    ],
-    "time": {
-        "total": 0
-    },
-    "memory": 0
-}
-JSON;
+            {
+                "files": [
+                    {
+                        "name": "someFile.php",
+                        "diff": "--- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }"
+                    }
+                ],
+                "time": {
+                    "total": 0
+                },
+                "memory": 0
+            }
+            JSON;
     }
 
     protected static function createWithAppliedFixersReport(): string
     {
         return <<<'JSON'
-{
-    "files": [
-        {
-            "name": "someFile.php",
-            "appliedFixers":["some_fixer_name_here_1", "some_fixer_name_here_2"]
-        }
-    ],
-    "time": {
-        "total": 0
-    },
-    "memory": 0
-}
-JSON;
+            {
+                "files": [
+                    {
+                        "name": "someFile.php",
+                        "appliedFixers":["some_fixer_name_here_1", "some_fixer_name_here_2"]
+                    }
+                ],
+                "time": {
+                    "total": 0
+                },
+                "memory": 0
+            }
+            JSON;
     }
 
     protected static function createWithTimeAndMemoryReport(): string
     {
         return <<<'JSON'
-{
-    "files": [
-        {
-            "diff": "--- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }",
-            "name": "someFile.php"
-        }
-    ],
-    "memory": 2.5,
-    "time": {
-        "total": 1.234
-    }
-}
-JSON;
+            {
+                "files": [
+                    {
+                        "diff": "--- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }",
+                        "name": "someFile.php"
+                    }
+                ],
+                "memory": 2.5,
+                "time": {
+                    "total": 1.234
+                }
+            }
+            JSON;
     }
 
     protected static function createComplexReport(): string
     {
         return <<<'JSON'
-{
-    "files": [
-        {
-            "name": "someFile.php",
-            "appliedFixers":["some_fixer_name_here_1", "some_fixer_name_here_2"],
-            "diff": "this text is a diff ;)"
-        },
-        {
-            "name": "anotherFile.php",
-            "appliedFixers":["another_fixer_name_here"],
-            "diff": "another diff here ;)"
-        }
-    ],
-    "memory": 2.5,
-    "time": {
-        "total": 1.234
-    }
-}
-JSON;
+            {
+                "files": [
+                    {
+                        "name": "someFile.php",
+                        "appliedFixers":["some_fixer_name_here_1", "some_fixer_name_here_2"],
+                        "diff": "this text is a diff ;)"
+                    },
+                    {
+                        "name": "anotherFile.php",
+                        "appliedFixers":["another_fixer_name_here"],
+                        "diff": "another diff here ;)"
+                    }
+                ],
+                "memory": 2.5,
+                "time": {
+                    "total": 1.234
+                }
+            }
+            JSON;
     }
 
     protected function createReporter(): ReporterInterface
@@ -139,15 +139,15 @@ JSON;
     protected static function createNoErrorReport(): string
     {
         return <<<'JSON'
-{
-    "files": [
-    ],
-    "time": {
-        "total": 0
-    },
-    "memory": 0
-}
-JSON;
+            {
+                "files": [
+                ],
+                "time": {
+                    "total": 0
+                },
+                "memory": 0
+            }
+            JSON;
     }
 
     protected function assertFormat(string $expected, string $input): void

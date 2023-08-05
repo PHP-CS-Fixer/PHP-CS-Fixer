@@ -61,45 +61,45 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
 
         yield [
             <<<'EOT'
-<?=/*comment*/
-  1
-?>
-EOT
+                <?=/*comment*/
+                  1
+                ?>
+                EOT
             ,
             <<<'EOT'
-<?php /*comment*/ echo
-  1
-?>
-EOT
+                <?php /*comment*/ echo
+                  1
+                ?>
+                EOT
         ];
 
         yield [
             <<<'EOT'
-<?=/*comment*/ 1
-?>
-EOT
+                <?=/*comment*/ 1
+                ?>
+                EOT
             ,
             <<<'EOT'
-<?php
-  /*comment*/ echo 1
-?>
-EOT
+                <?php
+                  /*comment*/ echo 1
+                ?>
+                EOT
         ];
 
         yield [
             <<<'EOT'
-<?=/*comment*/
-  1
-?>
-EOT
+                <?=/*comment*/
+                  1
+                ?>
+                EOT
             ,
             <<<'EOT'
-<?php
-  /*comment*/
-  echo
-  1
-?>
-EOT
+                <?php
+                  /*comment*/
+                  echo
+                  1
+                ?>
+                EOT
         ];
     }
 

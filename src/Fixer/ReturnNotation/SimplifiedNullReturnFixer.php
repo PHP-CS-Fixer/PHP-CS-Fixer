@@ -34,13 +34,13 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
                 new CodeSample("<?php return null;\n"),
                 new CodeSample(
                     <<<'EOT'
-<?php
-function foo() { return null; }
-function bar(): int { return null; }
-function baz(): ?int { return null; }
-function xyz(): void { return null; }
+                        <?php
+                        function foo() { return null; }
+                        function bar(): int { return null; }
+                        function baz(): ?int { return null; }
+                        function xyz(): void { return null; }
 
-EOT
+                        EOT
                 ),
             ]
         );

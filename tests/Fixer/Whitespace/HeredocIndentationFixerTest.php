@@ -41,152 +41,152 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
     {
         yield [
             <<<'EXPECTED'
-<?php
-    foo(<<<EOD
-        EOD
-    );
-EXPECTED
+                <?php
+                    foo(<<<EOD
+                        EOD
+                    );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-    foo(<<<EOD
-EOD
-    );
-INPUT
+                <?php
+                    foo(<<<EOD
+                EOD
+                    );
+                INPUT
             ,
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(<<<EOD
+                <?php
+                    foo(<<<EOD
 
-        EOD
-    );
-EXPECTED
+                        EOD
+                    );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-    foo(<<<EOD
+                <?php
+                    foo(<<<EOD
 
-EOD
-    );
-INPUT
+                EOD
+                    );
+                INPUT
             ,
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(<<<EOD
-        abc
+                <?php
+                    foo(<<<EOD
+                        abc
 
-            def
-        EOD
-    );
-EXPECTED
+                            def
+                        EOD
+                    );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-    foo(<<<EOD
-abc
+                <?php
+                    foo(<<<EOD
+                abc
 
-    def
-EOD
-    );
-INPUT
+                    def
+                EOD
+                    );
+                INPUT
             ,
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(<<<'EOD'
+                <?php
+                    foo(<<<'EOD'
 
-        abc
-            def
+                        abc
+                            def
 
-        EOD
-    );
-EXPECTED
+                        EOD
+                    );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-    foo(<<<'EOD'
+                <?php
+                    foo(<<<'EOD'
 
-abc
-    def
+                abc
+                    def
 
-EOD
-    );
-INPUT
+                EOD
+                    );
+                INPUT
             ,
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(<<<'EOD'
-        abc
-            def
-        EOD
-    );
-EXPECTED
+                <?php
+                    foo(<<<'EOD'
+                        abc
+                            def
+                        EOD
+                    );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-    foo(<<<'EOD'
-            abc
-                def
-            EOD
-    );
-INPUT
+                <?php
+                    foo(<<<'EOD'
+                            abc
+                                def
+                            EOD
+                    );
+                INPUT
             ,
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(<<<EOD
-        $abc
-            $def
-        {$ghi}
-        EOD
-    );
-EXPECTED
+                <?php
+                    foo(<<<EOD
+                        $abc
+                            $def
+                        {$ghi}
+                        EOD
+                    );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-    foo(<<<EOD
-$abc
-    $def
-{$ghi}
-EOD
-    );
-INPUT
+                <?php
+                    foo(<<<EOD
+                $abc
+                    $def
+                {$ghi}
+                EOD
+                    );
+                INPUT
             ,
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    $a = <<<'EOD'
-        <?php
-            $b = <<<FOO
-        abc
-        FOO;
-        EOD;
-EXPECTED
+                <?php
+                    $a = <<<'EOD'
+                        <?php
+                            $b = <<<FOO
+                        abc
+                        FOO;
+                        EOD;
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-    $a = <<<'EOD'
-<?php
-    $b = <<<FOO
-abc
-FOO;
-EOD;
-INPUT
+                <?php
+                    $a = <<<'EOD'
+                <?php
+                    $b = <<<FOO
+                abc
+                FOO;
+                EOD;
+                INPUT
             ,
         ];
 
@@ -238,63 +238,63 @@ INPUT
 
         yield [
             <<<'EXPECTED'
-<?php foo(<<<EOD
-    EOD
-);
-EXPECTED
+                <?php foo(<<<EOD
+                    EOD
+                );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php foo(<<<EOD
-EOD
-);
-INPUT
+                <?php foo(<<<EOD
+                EOD
+                );
+                INPUT
             ,
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(<<<EOD
-    abc
+                <?php
+                    foo(<<<EOD
+                    abc
 
-        def
-    EOD
-    );
-EXPECTED
+                        def
+                    EOD
+                    );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-    foo(<<<EOD
-abc
+                <?php
+                    foo(<<<EOD
+                abc
 
-    def
-EOD
-    );
-INPUT
+                    def
+                EOD
+                    );
+                INPUT
             ,
             ['indentation' => 'same_as_start'],
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-    foo(<<<EOD
-    abc
+                <?php
+                    foo(<<<EOD
+                    abc
 
-        def
-    EOD
-    );
-EXPECTED
+                        def
+                    EOD
+                    );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-    foo(<<<EOD
-        abc
+                <?php
+                    foo(<<<EOD
+                        abc
 
-            def
-        EOD
-    );
-INPUT
+                            def
+                        EOD
+                    );
+                INPUT
             ,
             ['indentation' => 'same_as_start'],
         ];
@@ -305,22 +305,22 @@ INPUT
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));
 
         $expected = <<<EXPECTED
-<?php
-\t\$a = <<<'EOD'
-\t\tabc
-\t\t    def
-\t\t\tghi
-\t\tEOD;
-EXPECTED;
+            <?php
+            \t\$a = <<<'EOD'
+            \t\tabc
+            \t\t    def
+            \t\t\tghi
+            \t\tEOD;
+            EXPECTED;
 
         $input = <<<INPUT
-<?php
-\t\$a = <<<'EOD'
-abc
-    def
-\tghi
-EOD;
-INPUT;
+            <?php
+            \t\$a = <<<'EOD'
+            abc
+                def
+            \tghi
+            EOD;
+            INPUT;
 
         $this->doTest($expected, $input);
     }

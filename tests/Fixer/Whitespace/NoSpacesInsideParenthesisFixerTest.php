@@ -36,23 +36,23 @@ final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
     public function testLeaveNewLinesAlone(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    private function bar()
-    {
-        if (foo(
-            'foo' ,
-            'bar'    ,
-            [1, 2, 3],
-            'baz' // a comment just to mix things up
-        )) {
-            return 1;
-        };
-    }
-}
-EOF;
+            class Foo
+            {
+                private function bar()
+                {
+                    if (foo(
+                        'foo' ,
+                        'bar'    ,
+                        [1, 2, 3],
+                        'baz' // a comment just to mix things up
+                    )) {
+                        return 1;
+                    };
+                }
+            }
+            EOF;
         $this->doTest($expected);
     }
 

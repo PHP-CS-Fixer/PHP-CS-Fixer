@@ -36,12 +36,12 @@ final class UseArrowFunctionsFixer extends AbstractFixer
             [
                 new VersionSpecificCodeSample(
                     <<<'SAMPLE'
-<?php
-foo(function ($a) use ($b) {
-    return $a + $b;
-});
+                        <?php
+                        foo(function ($a) use ($b) {
+                            return $a + $b;
+                        });
 
-SAMPLE
+                        SAMPLE
                     ,
                     new VersionSpecification(7_04_00)
                 ),

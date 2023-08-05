@@ -64,18 +64,18 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
 
         yield [
             <<<'EOT'
-                    <?php
-                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
+                                    <?php
+                                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
-                        function fFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
-EOT
+                                        function fFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
+                EOT
             ,
             <<<'EOT'
-                    <?php
-                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
+                                    <?php
+                                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
-                        function fFunction($foo, $bar = 'removedValue', \SplFileInfo $baz, $x = 'default') {};
-EOT
+                                        function fFunction($foo, $bar = 'removedValue', \SplFileInfo $baz, $x = 'default') {};
+                EOT
         ];
 
         yield [
@@ -100,24 +100,24 @@ EOT
 
         yield [
             <<<'EOT'
-                    <?php
-                        function foo(
-                            $a, // test
-                            $b, /* test */
-                            $c, // abc
-                            $d
-                        ) {}
-EOT
+                                    <?php
+                                        function foo(
+                                            $a, // test
+                                            $b, /* test */
+                                            $c, // abc
+                                            $d
+                                        ) {}
+                EOT
             ,
             <<<'EOT'
-                    <?php
-                        function foo(
-                            $a = 1, // test
-                            $b = 2, /* test */
-                            $c = null, // abc
-                            $d
-                        ) {}
-EOT
+                                    <?php
+                                        function foo(
+                                            $a = 1, // test
+                                            $b = 2, /* test */
+                                            $c = null, // abc
+                                            $d
+                                        ) {}
+                EOT
         ];
 
         yield [

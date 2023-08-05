@@ -134,36 +134,36 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         ]);
 
         $before = <<<'PHP'
-<?php
+            <?php
 
-namespace WithClassNotPrefixed;
+            namespace WithClassNotPrefixed;
 
-class Bar
-{
-    public function baz($foo)
-    {
-        if (isset($foo)) {
-            is_string($foo);
-        }
-    }
-}
-PHP;
+            class Bar
+            {
+                public function baz($foo)
+                {
+                    if (isset($foo)) {
+                        is_string($foo);
+                    }
+                }
+            }
+            PHP;
 
         $after = <<<'PHP'
-<?php
+            <?php
 
-namespace WithClassNotPrefixed;
+            namespace WithClassNotPrefixed;
 
-class Bar
-{
-    public function baz($foo)
-    {
-        if (isset($foo)) {
-            \is_string($foo);
-        }
-    }
-}
-PHP;
+            class Bar
+            {
+                public function baz($foo)
+                {
+                    if (isset($foo)) {
+                        \is_string($foo);
+                    }
+                }
+            }
+            PHP;
 
         $this->doTest($before);
 
