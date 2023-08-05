@@ -35,7 +35,7 @@ final class NoTrailingCommaInListCallFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     list($a, $b) = foo();

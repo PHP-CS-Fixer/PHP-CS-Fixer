@@ -35,7 +35,7 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 <<<'EOF'
                 <?php

@@ -33,7 +33,7 @@ final class SetTypeToCastFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'null cast' => [
                 '<?php $foo = null;',
                 '<?php settype($foo, "null");',

@@ -101,7 +101,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
 
     public static function providePropertyFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     /**
@@ -139,7 +139,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
 
     public static function provideTypeToVarFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     /**
@@ -197,7 +197,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
 
     public static function provideVarToTypeFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     /**
@@ -263,7 +263,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
 
     public static function provideDefaultConfigCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php /** @see  https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md#710-link-deprecated */',
                 '<?php /** @link  https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md#710-link-deprecated */',

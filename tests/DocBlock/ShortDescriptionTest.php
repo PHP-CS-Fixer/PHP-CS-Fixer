@@ -38,7 +38,7 @@ final class ShortDescriptionTest extends TestCase
 
     public static function provideGetEndCases(): iterable
     {
-        return [
+        yield from [
             [1, '/**
      * Test docblock.
      *

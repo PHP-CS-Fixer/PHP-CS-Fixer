@@ -40,7 +40,7 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase

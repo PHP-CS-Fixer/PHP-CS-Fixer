@@ -47,7 +47,7 @@ final class NoBreakCommentFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 switch ($foo) {
@@ -1204,7 +1204,7 @@ switch ($foo) {
 
     public static function provideFixWithCommentTextContainingNewLinesCases(): iterable
     {
-        return [
+        yield from [
             ["No\nbreak"],
             ["No\r\nbreak"],
             ["No\rbreak"],

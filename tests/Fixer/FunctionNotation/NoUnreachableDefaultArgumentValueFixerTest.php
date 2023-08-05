@@ -33,7 +33,7 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php function bFunction($foo, $bar) {}',
                 '<?php function bFunction($foo = null, $bar) {}',

@@ -43,7 +43,7 @@ final class WhitespacesFixerConfigTest extends TestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             ['    ', "\n"],
             ["\t", "\n"],
             ['    ', "\r\n"],

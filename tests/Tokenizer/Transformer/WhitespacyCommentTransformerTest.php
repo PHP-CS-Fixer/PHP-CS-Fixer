@@ -45,7 +45,7 @@ final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php // foo\n    \$a = 1;",
                 [

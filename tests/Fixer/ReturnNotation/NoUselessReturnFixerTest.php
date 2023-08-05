@@ -33,7 +33,7 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     function bar($baz)

@@ -42,7 +42,7 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 
     public static function provideWithTabsCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php function myFunction() {
 \t\$foo         = 1;
@@ -89,7 +89,7 @@ public function myFunction() {
 
     public static function provideConfiguredCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 $this->a
@@ -527,7 +527,7 @@ $a = $ae?? $b;
 
     public static function provideFixDefaultsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $a +      /** */
                 $b;',
@@ -726,7 +726,7 @@ $b;
 
     public static function provideUnalignEqualsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $a = "c"?>',
                 '<?php $a="c"?>',
@@ -902,7 +902,7 @@ $b;
 
     public static function provideUnalignDoubleArrowCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     $data = [
@@ -1297,7 +1297,7 @@ $b;
 
     public static function provideFixAlignEqualsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     $a    = 1;
@@ -1644,7 +1644,7 @@ $start = (
 
     public static function provideFixAlignDoubleArrowCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                 switch ($a) {
@@ -2341,7 +2341,7 @@ function test()
 
     public static function provideFixAlignScopedDoubleArrowCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                 switch ($a) {
@@ -3070,7 +3070,7 @@ function test()
 
     public static function provideFixPhp74Cases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     $a = fn() => null;

@@ -73,7 +73,7 @@ final class DeprecatedFixerOptionTest extends TestCase
 
     public static function provideHasDefaultCases(): iterable
     {
-        return [
+        yield from [
             [true],
             [false],
         ];
@@ -96,7 +96,7 @@ final class DeprecatedFixerOptionTest extends TestCase
 
     public static function provideGetDefaultCases(): iterable
     {
-        return [
+        yield from [
             ['foo'],
             [true],
         ];

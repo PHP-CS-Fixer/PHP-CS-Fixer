@@ -46,7 +46,7 @@ final class NamespacesAnalyzerTest extends TestCase
 
     public static function provideNamespacesCases(): iterable
     {
-        return [
+        yield from [
             ['<?php // no namespaces', [
                 new NamespaceAnalysis(
                     '',

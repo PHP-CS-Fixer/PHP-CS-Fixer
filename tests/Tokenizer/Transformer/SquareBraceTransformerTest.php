@@ -65,7 +65,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 
     public static function provideIsShortArrayCases(): iterable
     {
-        return [
+        yield from [
             ['<?php $a=[];', [3], false],
             ['<?php [$a] = [$b];', [7], false],
             ['<?php [$a] = $b;', [1], false],
@@ -99,7 +99,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        return [
+        yield from [
             'Array offset only.' => [
                 '<?php $a = array(); $a[] = 0; $a[1] = 2;',
             ],
@@ -381,7 +381,7 @@ class Test
 
     public static function provideProcess72Cases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php [&$a, $b] = $a;',
                 [

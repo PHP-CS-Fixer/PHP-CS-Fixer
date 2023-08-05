@@ -613,7 +613,7 @@ namespace {
 
     public static function provideCodeWithReturnTypesCasesWithNullableCases(): iterable
     {
-        return [
+        yield from [
             'Test namespace fixes with nullable types' => [
                 '<?php
 

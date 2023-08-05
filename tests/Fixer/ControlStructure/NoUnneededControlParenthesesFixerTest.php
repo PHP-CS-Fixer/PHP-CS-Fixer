@@ -52,7 +52,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php while ($x) { while ($y) { break 2; } }',
                 '<?php while ($x) { while ($y) { break (2); } }',

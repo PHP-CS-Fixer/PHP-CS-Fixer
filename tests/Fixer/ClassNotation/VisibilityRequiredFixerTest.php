@@ -96,7 +96,7 @@ EOF;
 
     public static function provideFixMethodsCases(): iterable
     {
-        return [
+        yield from [
             [
                 <<<'EOF'
 <?php
@@ -528,7 +528,7 @@ EOF;
 
     public static function provideFixClassConstCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php class A { public const B=1; }',
                 '<?php class A { const B=1; }',

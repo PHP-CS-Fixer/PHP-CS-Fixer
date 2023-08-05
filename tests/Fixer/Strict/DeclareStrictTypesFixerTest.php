@@ -34,7 +34,7 @@ final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 declare(ticks=1);
@@ -131,7 +131,7 @@ $a = 456;
 
     public static function provideDoNotFixCases(): iterable
     {
-        return [
+        yield from [
             ['  <?php echo 123;'], // first statement must be an open tag
             ['<?= 123;'], // first token open with echo is not fixed
         ];
@@ -149,7 +149,7 @@ $a = 456;
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php declare(strict_types=1);\r\nphpinfo();",
                 "<?php\r\n\tphpinfo();",

@@ -45,7 +45,7 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
 
     public static function provideWithFullOpenTagCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo \'Foo\';',
                 '<?php echo \'Foo\'; ?>',
@@ -143,7 +143,7 @@ if (true) {
 
     public static function provideWithShortOpenTagCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<? echo \'Foo\';',
                 '<? echo \'Foo\'; ?>',

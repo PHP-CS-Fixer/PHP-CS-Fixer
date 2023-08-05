@@ -35,7 +35,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $a = new class {};',
             ],
@@ -73,7 +73,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
 
     public static function provideSimpleClassCases(): iterable
     {
-        return [
+        yield from [
             [
                 <<<'EOF'
 <?php

@@ -220,7 +220,7 @@ final class PregTest extends TestCase
 
     public static function provideCommonCases(): iterable
     {
-        return [
+        yield from [
             ['/u/u', 'u'],
             ['/u/u', 'u/u'],
             ['/./', \chr(224).'bc'],

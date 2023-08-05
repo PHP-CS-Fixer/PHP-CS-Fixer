@@ -101,7 +101,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     /**
@@ -383,7 +383,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t * @param null|string \$foo\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
                 "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
@@ -402,7 +402,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
 
     public static function provideByReferenceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     /**
@@ -447,7 +447,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
 
     public static function provideVariableNumberOfArgumentsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     /**

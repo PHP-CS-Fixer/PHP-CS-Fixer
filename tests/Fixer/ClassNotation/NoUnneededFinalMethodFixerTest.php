@@ -35,7 +35,7 @@ final class NoUnneededFinalMethodFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'default' => [
                 '<?php
 final class Foo {

@@ -815,7 +815,7 @@ enum Foo: string
 
     public static function provideIsLambdaCases(): iterable
     {
-        return [
+        yield from [
             [
                 [1 => false],
                 '<?php function foo () {};',
@@ -944,7 +944,7 @@ preg_replace_callback(
 
     public static function provideIsLambda80Cases(): iterable
     {
-        return [
+        yield from [
             [
                 [6 => true],
                 '<?php
@@ -999,7 +999,7 @@ $a(1,2);',
 
     public static function provideIsConstantInvocationCases(): iterable
     {
-        return [
+        yield from [
             [
                 [3 => true],
                 '<?php echo FOO;',
@@ -1411,7 +1411,7 @@ abstract class Baz
 
     public static function provideIsUnarySuccessorOperatorCases(): iterable
     {
-        return [
+        yield from [
             [
                 [2 => true],
                 '<?php $a++;',
@@ -1472,7 +1472,7 @@ abstract class Baz
 
     public static function provideIsUnaryPredecessorOperatorCases(): iterable
     {
-        return [
+        yield from [
             [
                 [1 => true],
                 '<?php ++$a;',
@@ -1751,7 +1751,7 @@ $b;',
 
     public static function provideIsArrayCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     array("a" => 1);
@@ -1834,7 +1834,7 @@ $b;',
 
     public static function provideIsArray71Cases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     [$a] = $z;
@@ -2030,7 +2030,7 @@ $b;',
 
     public static function provideArrayExceptionsCases(): iterable
     {
-        return [
+        yield from [
             ['<?php $a;', 1],
             ["<?php\n \$a = (0+1); // [0,1]", 4],
             ['<?php $text = "foo $bbb[0] bar";', 8],
@@ -2255,7 +2255,7 @@ SRC;
 
     public static function provideGetImportUseIndexesCases(): iterable
     {
-        return [
+        yield from [
             [
                 [1, 8],
                 '<?php use E\F?><?php use A\B;',

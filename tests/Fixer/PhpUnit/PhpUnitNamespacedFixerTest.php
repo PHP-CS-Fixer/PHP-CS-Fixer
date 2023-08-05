@@ -40,7 +40,7 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'class_mapping' => [
                 '<?php new PHPUnit\Framework\Error\Error();',
                 '<?php new PHPUnit_Framework_Error();',

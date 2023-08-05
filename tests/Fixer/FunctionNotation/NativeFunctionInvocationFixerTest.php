@@ -65,7 +65,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
 
     public static function provideConfigureRejectsInvalidConfigurationElementCases(): iterable
     {
-        return [
+        yield from [
             'null' => [null],
             'false' => [false],
             'true' => [false],
@@ -101,7 +101,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
 
     public static function provideConfigureIncludeSetsCases(): iterable
     {
-        return [
+        yield from [
             [['foo', 'bar']],
             [[NativeFunctionInvocationFixer::SET_ALL]],
             [[NativeFunctionInvocationFixer::SET_ALL, 'bar']],
@@ -175,7 +175,7 @@ PHP;
 
     public static function provideFixWithDefaultConfigurationCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 
@@ -275,7 +275,7 @@ strlen($foo);
 
     public static function provideFixWithConfiguredExcludeCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 
@@ -308,7 +308,7 @@ class Foo
 
     public static function provideFixWithNamespaceConfigurationCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo count([1]);',
             ],

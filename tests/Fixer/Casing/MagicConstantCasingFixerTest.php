@@ -35,7 +35,7 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo __LINE__;',
                 '<?php echo __line__;',
@@ -95,7 +95,7 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 
     public static function provideFix74Cases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                 class Bar

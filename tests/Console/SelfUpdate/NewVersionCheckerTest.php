@@ -44,7 +44,7 @@ final class NewVersionCheckerTest extends TestCase
 
     public static function provideGetLatestVersionOfMajorCases(): iterable
     {
-        return [
+        yield from [
             [1, 'v1.13.2'],
             [2, 'v2.4.1'],
             [4, null],

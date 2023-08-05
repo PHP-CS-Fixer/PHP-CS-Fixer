@@ -35,7 +35,7 @@ final class NoBinaryStringFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo \'hello world\';',
                 '<?php echo b\'hello world\';',

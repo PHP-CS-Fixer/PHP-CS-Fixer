@@ -195,7 +195,7 @@ trait Good
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
                 "<?php\nclass Foo\n{\n\n    public function bar() {}\n}",

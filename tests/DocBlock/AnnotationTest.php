@@ -195,7 +195,7 @@ final class AnnotationTest extends TestCase
 
     public static function provideRemoveEdgeCasesCases(): iterable
     {
-        return [
+        yield from [
             // Single line
             ['', '/** @return null*/'],
             ['', '/** @return null */'],
@@ -244,7 +244,7 @@ final class AnnotationTest extends TestCase
 
     public static function provideTypeParsingCases(): iterable
     {
-        return [
+        yield from [
             [
                 ['int'],
                 ' * @method int method()',
@@ -470,7 +470,7 @@ final class AnnotationTest extends TestCase
 
     public static function provideTypesCases(): iterable
     {
-        return [
+        yield from [
             [['Foo', 'null'], ['Bar[]'], '     * @param Foo|null $foo', '     * @param Bar[] $foo'],
             [['false'], ['bool'], '*   @return            false', '*   @return            bool'],
             [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "* \t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "* \t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
@@ -496,7 +496,7 @@ final class AnnotationTest extends TestCase
 
     public static function provideNormalizedTypesCases(): iterable
     {
-        return [
+        yield from [
             [['null', 'string'], '* @param StRiNg|NuLl $foo'],
             [['void'], '* @return Void'],
             [['bar', 'baz', 'foo', 'null', 'qux'], '* @return Foo|Bar|Baz|Qux|null'],

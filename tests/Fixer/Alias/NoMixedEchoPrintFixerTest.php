@@ -317,7 +317,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 
     public static function provideWrongConfigCases(): iterable
     {
-        return [
+        yield from [
             [
                 ['a' => 'b'],
                 '#^\[no_mixed_echo_print\] Invalid configuration: The option "a" does not exist\. (Known|Defined) options are: "use"\.$#',

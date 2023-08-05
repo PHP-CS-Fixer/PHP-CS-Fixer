@@ -461,7 +461,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     use function Functional\map;
@@ -556,7 +556,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     public static function provideCasesWithShortOpenTagCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<? ',
                 '<? ;',
@@ -574,7 +574,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     public static function provideFixMultipleSemicolonsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $foo = 2 ; //
                     '.'

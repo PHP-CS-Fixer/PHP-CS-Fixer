@@ -33,7 +33,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'sample' => [
                 "<?php\n\$a = static function () use (\$b)\n{   echo \$b;\n};",
                 "<?php\n\$a = function () use (\$b)\n{   echo \$b;\n};",
@@ -134,7 +134,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
 
     public static function provideDoNotFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     class A

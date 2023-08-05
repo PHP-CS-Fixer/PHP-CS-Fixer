@@ -71,7 +71,7 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 // non-PHP test
                 'function foo () {}',

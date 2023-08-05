@@ -38,7 +38,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 <<<'EOF'
 <?php $var = 'String (\\\'\r\n\x0) for My\Prefix\\';

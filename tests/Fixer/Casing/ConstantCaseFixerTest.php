@@ -35,7 +35,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php if (true) if (false) if (null) {}',
                 '<?php if (TRUE) if (FALSE) if (NULL) {}',

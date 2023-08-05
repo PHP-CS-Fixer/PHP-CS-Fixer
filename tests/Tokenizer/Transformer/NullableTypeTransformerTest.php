@@ -44,7 +44,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php function foo(?Barable $barA, ?Barable $barB): ?Fooable {}',
                 [

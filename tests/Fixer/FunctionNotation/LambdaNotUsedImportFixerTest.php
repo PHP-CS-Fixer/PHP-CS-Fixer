@@ -33,7 +33,7 @@ final class LambdaNotUsedImportFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'simple' => [
                 '<?php $foo = function() {};',
                 '<?php $foo = function() use ($bar) {};',

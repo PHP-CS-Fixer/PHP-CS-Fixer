@@ -44,7 +44,7 @@ final class AlignMultilineCommentFixerTest extends AbstractFixerTestCase
 
     public static function provideDefaultCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 $a = 1;
@@ -182,7 +182,7 @@ class A
 
     public static function provideDocLikeMultilineCommentsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     /*
@@ -230,7 +230,7 @@ class A
 
     public static function provideMixedContentMultilineCommentsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     /*

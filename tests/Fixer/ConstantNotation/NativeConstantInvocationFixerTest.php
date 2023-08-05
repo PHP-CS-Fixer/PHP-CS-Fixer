@@ -80,7 +80,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
 
     public static function provideInvalidConfigurationElementCases(): iterable
     {
-        return [
+        yield from [
             'null' => [null],
             'false' => [false],
             'true' => [true],
@@ -120,7 +120,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithDefaultConfigurationCases(): iterable
     {
-        return [
+        yield from [
             ['<?php var_dump(NULL, FALSE, TRUE, 1);'],
             ['<?php echo CUSTOM_DEFINED_CONSTANT_123;'],
             ['<?php echo m_pi; // Constant are case sensitive'],
@@ -199,7 +199,7 @@ try {
 
     public static function provideFixWithConfiguredCustomIncludeCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo \\FOO_BAR_BAZ . \\M_PI;',
                 '<?php echo FOO_BAR_BAZ . M_PI;',
@@ -228,7 +228,7 @@ try {
 
     public static function provideFixWithConfiguredOnlyIncludeCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo PHP_SAPI . FOO_BAR_BAZ . \\M_PI;',
                 '<?php echo PHP_SAPI . FOO_BAR_BAZ . M_PI;',
@@ -256,7 +256,7 @@ try {
 
     public static function provideFixWithConfiguredExcludeCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo \\PHP_SAPI . M_PI;',
                 '<?php echo PHP_SAPI . M_PI;',

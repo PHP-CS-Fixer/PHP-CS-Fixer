@@ -36,7 +36,7 @@ final class BlankLineAfterNamespaceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php namespace A\B?>
                 <?php
@@ -228,7 +228,7 @@ class X extends Y {}',
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php namespace A\\B;\r\n\r\nclass C {}",
                 '<?php namespace A\\B;  class C {}',

@@ -44,7 +44,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
 
     public static function provideConfigureRejectsInvalidControlStatementCases(): iterable
     {
-        return [
+        yield from [
             'null' => [null],
             'false' => [false],
             'true' => [true],
@@ -78,7 +78,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithBreakCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 switch ($a) {
@@ -177,7 +177,7 @@ while (true) {
 
     public static function provideFixWithCaseCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 switch ($a) {
@@ -217,7 +217,7 @@ switch ($a) {
 
     public static function provideFixWithContinueCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 while (true) {
@@ -309,7 +309,7 @@ while (true) {
 
     public static function provideFixWithDeclareCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 declare(ticks=1);',
@@ -346,7 +346,7 @@ declare(ticks=1);',
 
     public static function provideFixWithDefaultCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 switch ($a) {
@@ -391,7 +391,7 @@ switch ($a1) {
 
     public static function provideFixWithDoCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 do {
@@ -425,7 +425,7 @@ do {
 
     public static function provideFixWithExitCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 if ($foo === $bar) {
@@ -481,7 +481,7 @@ if ($foo === $bar) {
 
     public static function provideFixWithForCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     echo 1;
@@ -510,7 +510,7 @@ if ($foo === $bar) {
 
     public static function provideFixWithGotoCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 a:
@@ -563,7 +563,7 @@ if ($foo === $bar) {
 
     public static function provideFixWithIfCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php if (true) {
     echo $bar;
@@ -610,7 +610,7 @@ if ($foo) { }',
 
     public static function provideFixWithForEachCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     echo 1;
@@ -639,7 +639,7 @@ if ($foo) { }',
 
     public static function provideFixWithIncludeCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 include "foo.php";',
@@ -670,7 +670,7 @@ include "foo.php";',
 
     public static function provideFixWithIncludeOnceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 include_once "foo.php";',
@@ -701,7 +701,7 @@ include_once "foo.php";',
 
     public static function provideFixWithRequireCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 require "foo.php";',
@@ -732,7 +732,7 @@ require "foo.php";',
 
     public static function provideFixWithRequireOnceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 require_once "foo.php";',
@@ -763,7 +763,7 @@ require_once "foo.php";',
 
     public static function provideFixWithReturnCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 if ($a) { /* 1 */ /* 2 */ /* 3 */ // something about $a
@@ -925,7 +925,7 @@ function foo()
 
     public static function provideFixWithReturnAndMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php\r\n\$a = \$a;\r\n\r\nreturn \$a;",
                 "<?php\r\n\$a = \$a; return \$a;",
@@ -955,7 +955,7 @@ function foo()
 
     public static function provideFixWithSwitchCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 switch ($a) {
@@ -995,7 +995,7 @@ switch ($foo) {
 
     public static function provideFixWithThrowCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 if (false) {
@@ -1032,7 +1032,7 @@ if (false) {
 
     public static function provideFixWithTryCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 try {
@@ -1075,7 +1075,7 @@ try {
 
     public static function provideFixWithWhileCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 while (true) {
@@ -1134,7 +1134,7 @@ do {
      */
     public static function provideFixWithYieldCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 function foo() {
@@ -1290,7 +1290,7 @@ function foo() {
      */
     public static function provideFixWithYieldFromCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 function foo() {
@@ -1371,7 +1371,7 @@ function foo() {
 
         $allStatements = array_merge($statementsWithoutCaseOrDefault, ['case', 'default']);
 
-        return [
+        yield from [
             [
                 $statementsWithoutCaseOrDefault,
                 '<?php

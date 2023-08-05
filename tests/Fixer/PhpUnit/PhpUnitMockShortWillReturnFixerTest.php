@@ -35,7 +35,7 @@ final class PhpUnitMockShortWillReturnFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'do not fix' => [
                 '<?php
 class FooTest extends TestCase {

@@ -39,7 +39,7 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             ["<?php\n\nnamespace X;"],
             ["<?php\n\nnamespace X;", "<?php\n\n\n\nnamespace X;"],
             ["<?php\r\n\r\nnamespace X;"],

@@ -35,7 +35,7 @@ final class BacktickToShellExecFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'plain' => [
                 '<?php shell_exec("ls -lah");',
                 '<?php `ls -lah`;',

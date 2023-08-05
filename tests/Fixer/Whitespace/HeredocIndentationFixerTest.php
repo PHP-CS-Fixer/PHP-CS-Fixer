@@ -39,7 +39,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 <<<'EXPECTED'
 <?php

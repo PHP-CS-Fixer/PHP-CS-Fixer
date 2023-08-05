@@ -33,7 +33,7 @@ final class NativeFunctionTypeDeclarationCasingFixerTest extends AbstractFixerTe
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 class Foo

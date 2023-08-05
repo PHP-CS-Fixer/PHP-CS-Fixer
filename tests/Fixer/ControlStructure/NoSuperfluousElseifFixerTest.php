@@ -34,7 +34,7 @@ final class NoSuperfluousElseifFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 if ($some) { return 1; } if ($a == 6){ $test = false; } //',

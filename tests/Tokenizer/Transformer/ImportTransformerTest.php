@@ -47,7 +47,7 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php const FOO = 1;',
                 [

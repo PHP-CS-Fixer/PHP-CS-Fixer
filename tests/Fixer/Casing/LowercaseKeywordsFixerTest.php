@@ -35,7 +35,7 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             ['<?php $x = (1 and 2);', '<?php $x = (1 AND 2);'],
             ['<?php foreach(array(1, 2, 3) as $val) {}', '<?php FOREACH(array(1, 2, 3) AS $val) {}'],
             ['<?php echo "GOOD AS NEW";'],

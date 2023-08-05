@@ -61,7 +61,7 @@ abstract class AbstractLinterTestCase extends TestCase
      */
     public static function provideLintFileCases(): iterable
     {
-        return [
+        yield from [
             [
                 __DIR__.'/../Fixtures/Linter/valid.php',
             ],
@@ -94,7 +94,7 @@ abstract class AbstractLinterTestCase extends TestCase
 
     public static function provideLintSourceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo 123;',
             ],

@@ -33,7 +33,7 @@ final class NoAliasLanguageConstructCallFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php exit;',
                 '<?php die;',

@@ -78,7 +78,7 @@ final class TransformerTest extends TestCase
             $transformers[$transformer->getName()] = $transformer;
         }
 
-        return [
+        yield from [
             [$transformers['attribute'], $transformers['curly_brace']],
             [$transformers['attribute'], $transformers['square_brace']],
             [$transformers['curly_brace'], $transformers['brace_class_instantiation']],

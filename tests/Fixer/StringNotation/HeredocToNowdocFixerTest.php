@@ -35,7 +35,7 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [<<<'EOF'
 <?php $a = <<<'TEST'
 Foo $bar \n

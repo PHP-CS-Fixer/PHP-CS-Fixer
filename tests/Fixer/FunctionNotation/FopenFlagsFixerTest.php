@@ -37,7 +37,7 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'missing "b"' => [
                 '<?php
                     $a = fopen($foo, \'rw+b\');
@@ -113,7 +113,7 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
 
     public static function provideDoNotFixCases(): iterable
     {
-        return [
+        yield from [
             'not simple flags' => [
                 '<?php $a = fopen($foo, "t".$a);',
             ],

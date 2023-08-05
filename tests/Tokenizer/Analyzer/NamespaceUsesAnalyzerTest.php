@@ -47,7 +47,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
 
     public static function provideUsesFromTokensCases(): iterable
     {
-        return [
+        yield from [
             ['<?php // no uses', [], []],
             ['<?php use Foo\Bar;', [
                 new NamespaceUseAnalysis(
@@ -176,7 +176,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
 
     public static function provideGetDeclarationsInNamespaceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                 namespace Foo;

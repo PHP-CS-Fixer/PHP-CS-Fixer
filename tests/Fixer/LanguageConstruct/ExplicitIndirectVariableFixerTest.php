@@ -35,7 +35,7 @@ final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo ${$foo}($bar);',
                 '<?php echo $$foo($bar);',
@@ -84,7 +84,7 @@ $foo
 
     public static function provideFix80Cases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo $foo?->{$bar}["baz"];',
                 '<?php echo $foo?->$bar["baz"];',

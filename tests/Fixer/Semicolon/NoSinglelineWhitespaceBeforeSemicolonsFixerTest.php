@@ -37,7 +37,7 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixe
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php for ($uu = 0; ; ++$uu) {}',
                 '<?php for ($uu = 0    ;    ; ++$uu) {}',

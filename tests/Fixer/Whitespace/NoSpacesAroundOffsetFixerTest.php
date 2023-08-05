@@ -74,7 +74,7 @@ EOF;
 
     public static function provideCommentsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 
@@ -214,7 +214,7 @@ $var = $arr[0]{     0
 
     public static function provideFixSpaceInsideOffsetCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 $foo = array(1, 2, 3);

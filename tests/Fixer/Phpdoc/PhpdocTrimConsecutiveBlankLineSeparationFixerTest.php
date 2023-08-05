@@ -36,7 +36,7 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'no changes' => ['<?php /** Summary. */'],
             'only Summary and Description' => [
                 '<?php

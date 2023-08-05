@@ -34,7 +34,7 @@ final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             // fix cases
             [
                 '<?php

@@ -304,7 +304,7 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
 
     public static function provideNotFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php pow(); ++$a;++$a;++$a;++$a;++$a;++$a;// pow(1,2);',
             ],
@@ -332,7 +332,7 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
 
     public static function provideFix80Cases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo $a[2^3+1]?->test(1,2)** $b[2+$c];',
                 '<?php echo pow($a[2^3+1]?->test(1,2), $b[2+$c]);',

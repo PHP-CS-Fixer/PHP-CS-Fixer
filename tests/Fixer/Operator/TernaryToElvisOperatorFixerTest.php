@@ -504,7 +504,7 @@ EOT
 
     public static function provideDoNotFix80Cases(): iterable
     {
-        return [
+        yield from [
             ['<?php
 
 function test(#[TestAttribute] ?User $user) {}

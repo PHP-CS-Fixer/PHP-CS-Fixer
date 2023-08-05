@@ -51,7 +51,7 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo "Hello World !";',
                 '<?php echo "'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0').'!";',
@@ -136,7 +136,7 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
 
     public static function provideFixWithEscapeSequencesInStringsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 

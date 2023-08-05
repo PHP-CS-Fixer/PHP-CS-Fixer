@@ -45,7 +45,7 @@ final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 $a = array(1, 2, 3);

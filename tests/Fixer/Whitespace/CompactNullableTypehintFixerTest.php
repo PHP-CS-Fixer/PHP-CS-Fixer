@@ -35,7 +35,7 @@ final class CompactNullableTypehintFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php function foo(?int $param): ?int {}',
             ],

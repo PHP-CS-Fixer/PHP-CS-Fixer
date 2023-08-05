@@ -40,7 +40,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'empty exception message' => [
                 '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
@@ -692,7 +692,7 @@ EOT
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase

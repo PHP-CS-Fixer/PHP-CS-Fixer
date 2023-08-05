@@ -36,7 +36,7 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             ['<?php $x = "strlen";'],
             ['<?php $x = Foo::strlen("bar");'],
             ['<?php $x = new strlen("bar");'],

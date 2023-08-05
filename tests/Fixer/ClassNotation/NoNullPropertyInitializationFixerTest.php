@@ -35,7 +35,7 @@ final class NoNullPropertyInitializationFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php class Foo { public $bar; }',
                 '<?php class Foo { public $bar = null; }',

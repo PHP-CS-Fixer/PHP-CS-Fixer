@@ -1196,7 +1196,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
 
     public static function provideInvalidSortAlgorithmCases(): iterable
     {
-        return [
+        yield from [
             [
                 [
                     'sort_algorithm' => 'dope',
@@ -1812,7 +1812,7 @@ EOF;
 
     public static function provideFixByLengthCases(): iterable
     {
-        return [
+        yield from [
             [
                 <<<'EOF'
 The normal
@@ -1958,7 +1958,7 @@ use const ZZZ;
 
     public static function provideFixTypesOrderAndLengthCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 use A\B;
@@ -2015,7 +2015,7 @@ use function some\f\{fn_c, fn_d, fn_e};
 
     public static function provideFixTypesOrderAndAlphabetCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 use Aaa\Bbb;
@@ -2083,7 +2083,7 @@ use function some\a\{fn_a, fn_b};
 
     public static function provideFixTypesOrderAndNoneCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 use Aaa\Ccc;

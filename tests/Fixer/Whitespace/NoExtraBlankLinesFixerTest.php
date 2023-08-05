@@ -368,7 +368,7 @@ EOF;
 
     public static function provideFixWithCommentsCases(): iterable
     {
-        return [
+        yield from [
             [
                 <<<'EOF'
 <?php
@@ -573,7 +573,7 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
 
     public static function provideRemoveLinesBetweenUseStatementsCases(): iterable
     {
-        return [
+        yield from [
             [
                 <<<'EOF'
 <?php
@@ -842,7 +842,7 @@ class Foo
 
     public static function provideBracesCases(): iterable
     {
-        return [
+        yield from [
             [
                 ['tokens' => ['curly_brace_block']],
                 "<?php function test()\n\n{}\n\necho 789;",
@@ -982,7 +982,7 @@ class Foo
 
     public static function provideInSwitchStatementCases(): iterable
     {
-        return [
+        yield from [
             [
                 [
                     'break',

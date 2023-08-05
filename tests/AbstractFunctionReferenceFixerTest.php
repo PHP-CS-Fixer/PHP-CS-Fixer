@@ -57,7 +57,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
 
     public static function provideAbstractFunctionReferenceFixerCases(): iterable
     {
-        return [
+        yield from [
             'simple case I' => [
                 [1, 2, 3],
                 '<?php foo();',

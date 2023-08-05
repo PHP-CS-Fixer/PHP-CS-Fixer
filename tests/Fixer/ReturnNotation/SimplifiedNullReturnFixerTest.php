@@ -35,7 +35,7 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             // check correct statements aren't changed
             ['<?php return  ;'],
             ['<?php return \'null\';'],

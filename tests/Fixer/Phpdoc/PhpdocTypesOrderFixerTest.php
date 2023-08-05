@@ -46,7 +46,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithNullFirstCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php /** @var null|string */',
                 '<?php /** @var string|null */',
@@ -204,7 +204,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithNullLastCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php /** @var string|null */',
                 '<?php /** @var null|string */',
@@ -323,7 +323,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithAlphaAlgorithmCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php /** @var int|null|string */',
                 '<?php /** @var string|int|null */',
@@ -453,7 +453,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithAlphaAlgorithmAndNullAlwaysFirstCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php /** @var null|int|string */',
                 '<?php /** @var string|int|null */',
@@ -568,7 +568,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithAlphaAlgorithmAndNullAlwaysLastCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php /** @var int|string|null */',
                 '<?php /** @var string|int|null */',

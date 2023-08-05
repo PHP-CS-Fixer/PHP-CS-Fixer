@@ -35,7 +35,7 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $a = \'\';',
                 '<?php $a = "";',
@@ -135,7 +135,7 @@ EOF
 
     public static function provideSingleQuoteFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $a = \'foo \\\'bar\\\'\';',
                 '<?php $a = "foo \'bar\'";',

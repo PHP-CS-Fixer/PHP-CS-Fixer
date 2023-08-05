@@ -35,7 +35,7 @@ final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             ['<?php $øøøøa = 1;'],
             ['<?php $name = "This should not be changed";'],
             ['<?php $name = "Это не меняется";'],

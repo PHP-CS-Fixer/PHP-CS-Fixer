@@ -41,7 +41,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTe
 
     public static function provideFixMultiLineWhitespaceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     $foo->bar(); // test',
@@ -265,7 +265,7 @@ $seconds = $minutes
 
     public static function provideMessyWhitespacesMultiLineWhitespaceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo(1); // test',
                 "<?php echo(1) // test\r\n;",
@@ -284,7 +284,7 @@ $seconds = $minutes
 
     public static function provideSemicolonForChainedCallsFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 
@@ -1087,7 +1087,7 @@ switch ($foo) {
 
     public static function provideMessyWhitespacesSemicolonForChainedCallsCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php\r\n\r\n   \$this\r\n\t->method1()\r\n\t\t->method2()\r\n   ;",
                 "<?php\r\n\r\n   \$this\r\n\t->method1()\r\n\t\t->method2();",

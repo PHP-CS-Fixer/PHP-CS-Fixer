@@ -255,7 +255,7 @@ final class ConfigTest extends TestCase
             new IncludeFixer(),
         ];
 
-        return [
+        yield from [
             [$fixers, $fixers],
             [$fixers, new \ArrayIterator($fixers)],
         ];

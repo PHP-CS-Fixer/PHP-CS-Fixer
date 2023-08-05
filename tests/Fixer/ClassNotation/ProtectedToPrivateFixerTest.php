@@ -38,7 +38,7 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
         $attributesAndMethodsOriginal = self::getAttributesAndMethods(true);
         $attributesAndMethodsFixed = self::getAttributesAndMethods(false);
 
-        return [
+        yield from [
             'final-extends' => [
                 "<?php final class MyClass extends MyAbstractClass { {$attributesAndMethodsOriginal} }",
             ],

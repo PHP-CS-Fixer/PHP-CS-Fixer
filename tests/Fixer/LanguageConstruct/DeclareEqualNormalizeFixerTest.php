@@ -39,7 +39,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'minimal case remove whitespace (default config)' => [
                 '<?php declare(ticks=1);',
                 '<?php declare(ticks= 1);',
@@ -117,7 +117,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 
     public static function provideInvalidConfigCases(): iterable
     {
-        return [
+        yield from [
             [
                 [1, 2],
                 'The options "0", "1" do not exist.',

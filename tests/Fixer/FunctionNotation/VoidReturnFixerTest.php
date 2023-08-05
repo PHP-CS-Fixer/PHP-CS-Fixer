@@ -36,7 +36,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             ['<?php class Test { public function __construct() {} }'],
             ['<?php class Test { public function __destruct() {} }'],
             ['<?php class Test { public function __clone() {} }'],

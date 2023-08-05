@@ -42,7 +42,7 @@ final class CachingLinterTest extends TestCase
 
     public static function provideIsAsyncCases(): iterable
     {
-        return [
+        yield from [
             [true],
             [false],
         ];

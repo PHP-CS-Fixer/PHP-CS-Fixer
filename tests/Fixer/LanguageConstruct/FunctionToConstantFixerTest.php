@@ -37,7 +37,7 @@ final class FunctionToConstantFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'Minimal case, alternative casing, alternative statement end.' => [
                 '<?php echo PHP_VERSION?>',
                 '<?php echo PHPversion()?>',
@@ -258,7 +258,7 @@ get_called_class#1
 
     public static function provideInvalidConfigurationKeysCases(): iterable
     {
-        return [
+        yield from [
             [['functions' => ['a']]],
             [['functions' => [false => 1]]],
             [['functions' => ['abc' => true]]],

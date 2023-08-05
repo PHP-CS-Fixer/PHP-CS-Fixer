@@ -78,7 +78,7 @@ final class TokensTest extends TestCase
 
     public static function provideFindSequenceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $x = 1;',
                 null,
@@ -298,7 +298,7 @@ final class TokensTest extends TestCase
     {
         $emptyToken = new Token('');
 
-        return [
+        yield from [
             ['Invalid sequence.', []],
             [
                 'Non-meaningful token at position: "0".',
@@ -540,7 +540,7 @@ PHP;
     {
         $clearToken = new Token('');
 
-        return [
+        yield from [
             [
                 '<?php if($a){}else{}',
                 [7, 8, 9],
@@ -661,7 +661,7 @@ PHP;
 
     public static function provideTokenOfKindSiblingCases(): iterable
     {
-        return [
+        yield from [
             // find next cases
             [
                 35, 1, 34, [';'],
@@ -700,7 +700,7 @@ PHP;
 
     public static function provideFindBlockEndCases(): iterable
     {
-        return [
+        yield from [
             [4, '<?php ${$bar};', Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2],
             [4, '<?php test(1);', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2],
             [4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2],
@@ -731,7 +731,7 @@ PHP;
 
     public static function provideFindBlockEnd80Cases(): iterable
     {
-        return [
+        yield from [
             [
                 9,
                 '<?php class Foo {
@@ -917,7 +917,7 @@ PHP;
 
     public static function provideIsEmptyCases(): iterable
     {
-        return [
+        yield from [
             [new Token(''), true],
             [new Token('('), false],
             [new Token([T_WHITESPACE, ' ']), false],
@@ -956,7 +956,7 @@ PHP;
 
     public static function provideEnsureWhitespaceAtIndexCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo 1;',
                 '<?php  echo 1;',
@@ -1120,7 +1120,7 @@ echo $a;',
 
     public static function provideRemoveLeadingWhitespaceCases(): iterable
     {
-        return [
+        yield from [
             [
                 7,
                 null,

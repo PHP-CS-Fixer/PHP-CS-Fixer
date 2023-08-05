@@ -35,7 +35,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php foo(function () use ($a, &$b) { return 1; });',
             ],

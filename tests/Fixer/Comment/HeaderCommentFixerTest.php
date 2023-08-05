@@ -40,7 +40,7 @@ final class HeaderCommentFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 ['header' => ''],
                 '<?php
@@ -632,7 +632,7 @@ echo 1;'
 
     public static function provideMisconfigurationCases(): iterable
     {
-        return [
+        yield from [
             [[], 'Missing required configuration: The required option "header" is missing.'],
             [
                 ['header' => 1],
@@ -691,7 +691,7 @@ echo 1;'
 
     public static function provideHeaderGenerationCases(): iterable
     {
-        return [
+        yield from [
             [
                 '/*
  * a
@@ -723,7 +723,7 @@ echo 1;'
 
     public static function provideDoNotTouchCases(): iterable
     {
-        return [
+        yield from [
             ["<?php\nphpinfo();\n?>\n<?"],
             [" <?php\nphpinfo();\n"],
             ["<?php\nphpinfo();\n?><hr/>"],
@@ -756,7 +756,7 @@ echo 1;'
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 [
                     'header' => 'whitemess',

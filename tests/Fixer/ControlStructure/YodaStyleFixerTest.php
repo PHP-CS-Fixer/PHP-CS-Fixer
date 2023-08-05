@@ -891,7 +891,7 @@ switch ($a) {
 
     public static function provideLessGreaterCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $a = 3 <= $b;',
                 '<?php $a = $b >= 3;',
@@ -944,7 +944,7 @@ switch ($a) {
 
     public static function provideInvalidConfigCases(): iterable
     {
-        return [
+        yield from [
             [['equal' => 2], 'Invalid configuration: The option "equal" with value 2 is expected to be of type "bool" or "null", but is of type "(int|integer)"\.'],
             [['_invalid_' => true], 'Invalid configuration: The option "_invalid_" does not exist\. Defined options are: "always_move_variable", "equal", "identical", "less_and_greater"\.'],
         ];
@@ -982,7 +982,7 @@ switch ($a) {
 
     public static function providePHP71Cases(): iterable
     {
-        return [
+        yield from [
             // no fix cases
             ['<?php list("a" => $a, "b" => $b, "c" => $c) = $c === array(1) ? $b : $d;'],
             ['<?php list(list("x" => $x1, "y" => $y1), list("x" => $x2, "y" => $y2)) = $points;'],

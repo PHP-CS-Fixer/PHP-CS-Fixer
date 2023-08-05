@@ -45,7 +45,7 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
 
     public static function provideAsteriskCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 // lonely line
@@ -228,7 +228,7 @@ second line*/',
 
     public static function provideHashCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<h1>This is an <?php //echo 123;?> example</h1>',
                 '<h1>This is an <?php #echo 123;?> example</h1>',
@@ -297,7 +297,7 @@ second line*/',
 
     public static function provideAllCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     // 1

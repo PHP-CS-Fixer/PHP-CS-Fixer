@@ -35,7 +35,7 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     in_array(1, $a, true);

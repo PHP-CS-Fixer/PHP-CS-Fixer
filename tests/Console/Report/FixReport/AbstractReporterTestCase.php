@@ -64,7 +64,7 @@ abstract class AbstractReporterTestCase extends TestCase
 
     final public static function provideGenerateCases(): iterable
     {
-        return [
+        yield from [
             'no errors' => [
                 static::createNoErrorReport(),
                 new ReportSummary(

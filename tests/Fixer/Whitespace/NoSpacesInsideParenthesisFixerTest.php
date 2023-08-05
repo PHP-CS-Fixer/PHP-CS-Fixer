@@ -58,7 +58,7 @@ EOF;
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php foo();',
                 '<?php foo( );',

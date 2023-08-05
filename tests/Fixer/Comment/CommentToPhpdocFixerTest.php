@@ -38,7 +38,7 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php /* header comment */ $foo = true; /* string $bar */ $bar = "baz";',
             ],

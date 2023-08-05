@@ -37,7 +37,7 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
 
     public static function provideLongToShortFormatCases(): iterable
     {
-        return [
+        yield from [
             ['<?= \'Foo\';', '<?php echo \'Foo\';'],
             ['<?= \'Foo\';', '<?php print \'Foo\';'],
             ['<?= \'Foo\'; ?> PLAIN TEXT', '<?php echo \'Foo\'; ?> PLAIN TEXT'],

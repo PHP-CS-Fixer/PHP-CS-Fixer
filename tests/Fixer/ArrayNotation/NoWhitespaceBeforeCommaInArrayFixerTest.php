@@ -39,7 +39,7 @@ final class NoWhitespaceBeforeCommaInArrayFixerTest extends AbstractFixerTestCas
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             // old style array
             [
                 '<?php $x = array(1, "2",3);',

@@ -38,7 +38,7 @@ final class GeneralPhpdocAnnotationRemoveFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'An Annotation gets removed' => [
                 '<?php
 /**

@@ -689,7 +689,7 @@ foreach($connections as $key => $sqlite) {
 
     public static function provideTraitsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 $first = true;// needed because by default first docblock is never fixed.
@@ -707,7 +707,7 @@ trait DocBlocks
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 /** header */

@@ -276,7 +276,7 @@ $foo1b = function() use ($bar, ) {};
 
     public static function provideFixNoTrailingCommaInSinglelineArrayFixerCases(): iterable
     {
-        return [
+        yield from [
             ['<?php $x = array();'],
             ['<?php $x = array("foo");'],
             [

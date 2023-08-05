@@ -43,7 +43,7 @@ final class PhpUnitTargetVersionTest extends TestCase
 
     public static function provideFulfillsCases(): iterable
     {
-        return [
+        yield from [
             [true, PhpUnitTargetVersion::VERSION_NEWEST, PhpUnitTargetVersion::VERSION_5_6],
             [true, PhpUnitTargetVersion::VERSION_NEWEST, PhpUnitTargetVersion::VERSION_5_2],
             [true, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_5_6],

@@ -288,7 +288,7 @@ private $d = 123;
 
     public static function provideCommentBlockStartDetectionCases(): iterable
     {
-        return [
+        yield from [
             [
                 4,
                 '<?php
@@ -1141,7 +1141,7 @@ class ezcReflectionMethod extends ReflectionMethod {
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php\r\nclass SomeClass\r\n{\r\n    // comment\n\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
                 "<?php\r\nclass SomeClass\r\n{\r\n    // comment\n\n\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
@@ -1166,7 +1166,7 @@ class ezcReflectionMethod extends ReflectionMethod {
 
     public static function provideWithConfigCases(): iterable
     {
-        return [
+        yield from [
             'multi line property' => [
                 '<?php class Foo
 {
@@ -1792,7 +1792,7 @@ abstract class Example
 
     public static function provideFix71Cases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                 class Foo {

@@ -34,7 +34,7 @@ final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'most simple fix case' => [
                 '<?php
                     $a = fopen($foo, \'rw+b\');

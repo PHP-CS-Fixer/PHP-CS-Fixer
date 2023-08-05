@@ -35,7 +35,7 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'basic fix' => [
                 <<<'EXPECTED'
 <?php

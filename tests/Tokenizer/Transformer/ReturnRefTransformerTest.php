@@ -44,7 +44,7 @@ final class ReturnRefTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php function & foo(): array { return []; }',
                 [

@@ -43,7 +43,7 @@ final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
             $manySpaces[] = 'namespace Test'.$i.';';
         }
 
-        return [
+        yield from [
             // with newline
             ["<?php\nnamespace Test1;"],
             ["<?php\n\nnamespace Test2;"],
@@ -152,7 +152,7 @@ namespace TestComment;',
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php\r\nnamespace TestW1a{}\r\nnamespace TestW1b{}",
                 "<?php\r\n     namespace TestW1a{}\r\nnamespace TestW1b{}",

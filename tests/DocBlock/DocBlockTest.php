@@ -172,7 +172,7 @@ final class DocBlockTest extends TestCase
 
     public static function provideMakeMultiLIneCases(): iterable
     {
-        return [
+        yield from [
             'It keeps a multi line doc block as is' => [
                 "/**\n * Hello\n */",
             ],
@@ -217,7 +217,7 @@ final class DocBlockTest extends TestCase
 
     public static function provideMakeSingleLineCases(): iterable
     {
-        return [
+        yield from [
             'It keeps a single line doc block as is' => [
                 '/** Hello */',
             ],

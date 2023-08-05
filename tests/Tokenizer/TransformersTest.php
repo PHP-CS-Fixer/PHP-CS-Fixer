@@ -44,7 +44,7 @@ final class TransformersTest extends TestCase
 
     public static function provideTransformCases(): iterable
     {
-        return [
+        yield from [
             'use trait after complex string variable' => [
                 <<<'SOURCE'
 <?php

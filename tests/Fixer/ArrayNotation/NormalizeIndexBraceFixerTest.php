@@ -37,7 +37,7 @@ final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo $arr[$index];',
                 '<?php echo $arr{$index};',

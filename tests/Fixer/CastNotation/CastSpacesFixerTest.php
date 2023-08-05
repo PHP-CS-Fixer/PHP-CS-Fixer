@@ -59,7 +59,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCastsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo "( int ) $foo";',
             ],
@@ -123,7 +123,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCastsNoneSpaceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo "( int ) $foo";',
             ],

@@ -35,7 +35,7 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php class Foo extends Bar { public function baz() { self::qux(); } }',
                 '<?php class Foo extends Bar { public function baz() { SELF::qux(); } }',

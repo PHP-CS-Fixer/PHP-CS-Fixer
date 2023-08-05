@@ -39,7 +39,7 @@ final class PhpUnitTestAnnotationFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'Annotation is used, and it should not be' => [
                 '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
@@ -1005,7 +1005,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 

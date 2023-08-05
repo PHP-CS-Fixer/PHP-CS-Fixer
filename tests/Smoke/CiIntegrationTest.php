@@ -201,7 +201,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 
     public static function provideIntegrationCases(): iterable
     {
-        return [
+        yield from [
             'random-changes' => [
                 'random-changes',
                 [

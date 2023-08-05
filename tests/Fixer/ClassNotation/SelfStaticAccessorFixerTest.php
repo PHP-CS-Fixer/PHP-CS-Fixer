@@ -33,7 +33,7 @@ final class SelfStaticAccessorFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'simple' => [
                 '<?php
 final class Sample

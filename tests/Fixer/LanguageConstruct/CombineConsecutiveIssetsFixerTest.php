@@ -33,7 +33,7 @@ final class CombineConsecutiveIssetsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $a = isset($a, $b)  ;',
                 '<?php $a = isset($a) && isset($b);',

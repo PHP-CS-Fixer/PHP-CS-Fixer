@@ -44,7 +44,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     test1();
@@ -292,7 +292,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithoutSpacesInEmptyForExpressionsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     test1();

@@ -54,7 +54,7 @@ final class CommentsAnalyzerTest extends TestCase
 
     public static function provideCommentsCases(): iterable
     {
-        return [
+        yield from [
             'discover all 4 comments for the 1st comment with slash' => [
                 '<?php
 $foo;
@@ -170,7 +170,7 @@ $bar;',
 
     public static function provideHeaderCommentCases(): iterable
     {
-        return [
+        yield from [
             ['<?php /* Comment */ namespace Foo;', 1],
             ['<?php /** Comment */ namespace Foo;', 1],
             ['<?php declare(strict_types=1); /* Comment */ namespace Foo;', 9],
@@ -192,7 +192,7 @@ $bar;',
 
     public static function provideNotHeaderCommentCases(): iterable
     {
-        return [
+        yield from [
             ['<?php $foo; /* Comment */ $bar;', 4],
             ['<?php foo(); /* Comment */ $bar;', 6],
             ['<?php namespace Foo; /* Comment */ class Bar {};', 6],
@@ -226,7 +226,7 @@ $bar;',
 
     public static function providePhpdocCandidateCases(): iterable
     {
-        return [
+        yield from [
             ['<?php /* @var Foo */ $bar = "baz";'],
             ['<?php /* Before namespace */ namespace Foo;'],
             ['<?php /* Before class */ class Foo {}'],
@@ -282,7 +282,7 @@ $bar;',
 
     public static function provideNotPhpdocCandidateCases(): iterable
     {
-        return [
+        yield from [
             ['<?php class Foo {} /* At the end of file */'],
             ['<?php class Foo { public $baz; public function baz(); /* At the end of class */ }'],
             ['<?php /* Before increment */ $i++;'],

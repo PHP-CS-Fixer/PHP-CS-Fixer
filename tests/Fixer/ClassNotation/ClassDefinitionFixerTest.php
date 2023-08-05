@@ -120,7 +120,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 
     public static function provideFixingAnonymousClassesCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $a = new class(0) extends SomeClass implements SomeInterface, D {};',
                 "<?php \$a = new    class(0)     extends\nSomeClass\timplements    SomeInterface, D {};",
@@ -326,7 +326,7 @@ A#
 
     public static function provideFixingClassesWithConfigCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php class configA implements B, C\n{}",
                 "<?php class configA implements\nB, C{}",
@@ -437,7 +437,7 @@ TestInterface3, /**/     TestInterface4   ,
 
     public static function provideClassyDefinitionInfoCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php class A{}',
                 [
@@ -648,7 +648,7 @@ namespace {
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 $a = new class implements
@@ -706,7 +706,7 @@ $a = new class implements
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php\r\nclass Aaa implements\r\n\tBbb,\r\n\tCcc,\r\n\tDdd\r\n\t{\r\n\t}",
                 "<?php\r\nclass Aaa implements\r\n\tBbb, Ccc,\r\n\tDdd\r\n\t{\r\n\t}",

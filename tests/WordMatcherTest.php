@@ -38,7 +38,7 @@ final class WordMatcherTest extends TestCase
 
     public static function provideMatchCases(): iterable
     {
-        return [
+        yield from [
             [
                 null,
                 'foo',

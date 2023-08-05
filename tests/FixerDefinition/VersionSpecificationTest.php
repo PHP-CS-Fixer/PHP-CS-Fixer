@@ -58,7 +58,7 @@ final class VersionSpecificationTest extends TestCase
 
     public static function provideInvalidVersionCases(): iterable
     {
-        return [
+        yield from [
             'negative' => [-1],
             'zero' => [0],
         ];
@@ -89,7 +89,7 @@ final class VersionSpecificationTest extends TestCase
 
     public static function provideIsSatisfiedByReturnsTrueCases(): iterable
     {
-        return [
+        yield from [
             'version-same-as-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID],
             'version-same-as-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID],
             'version-between-minimum-and-maximum' => [\PHP_VERSION_ID - 1, \PHP_VERSION_ID + 1, \PHP_VERSION_ID],
@@ -112,7 +112,7 @@ final class VersionSpecificationTest extends TestCase
 
     public static function provideIsSatisfiedByReturnsFalseCases(): iterable
     {
-        return [
+        yield from [
             'version-greater-than-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID + 1],
             'version-less-than-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID - 1],
         ];

@@ -75,7 +75,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 // space '.'

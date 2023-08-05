@@ -35,7 +35,7 @@ final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCas
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             ['<?php /** Opening DocBlock */'],
             [
                 '<?php /* Opening comment */',

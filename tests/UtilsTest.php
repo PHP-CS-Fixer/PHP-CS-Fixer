@@ -63,7 +63,7 @@ final class UtilsTest extends TestCase
 
     public static function provideCamelCaseToUnderscoreCases(): iterable
     {
-        return [
+        yield from [
             [
                 'dollar_close_curly_braces',
                 'DollarCloseCurlyBraces',
@@ -128,7 +128,7 @@ final class UtilsTest extends TestCase
 
     public static function provideCalculateTrailingWhitespaceIndentCases(): iterable
     {
-        return [
+        yield from [
             ['    ', [T_WHITESPACE, "\n\n    "]],
             [' ', [T_WHITESPACE, "\r\n\r\r\r "]],
             ["\t", [T_WHITESPACE, "\r\n\t"]],
@@ -168,7 +168,7 @@ final class UtilsTest extends TestCase
 
     public static function provideStableSortCases(): iterable
     {
-        return [
+        yield from [
             [
                 ['a', 'b', 'c', 'd', 'e'],
                 ['b', 'd', 'e', 'a', 'c'],
@@ -336,7 +336,7 @@ final class UtilsTest extends TestCase
 
     public static function provideNaturalLanguageJoinWithBackticksCases(): iterable
     {
-        return [
+        yield from [
             [
                 '`a`',
                 ['a'],

@@ -53,7 +53,7 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'skip non phpunit methods' => [
                 '<?php class MyClass {
                     public function testMyApp() {}

@@ -42,7 +42,7 @@ final class FixCommandExitStatusCalculatorTest extends TestCase
 
     public static function provideCalculateCases(): iterable
     {
-        return [
+        yield from [
             [0, true, false, false, false, false],
             [0, false, false, false, false, false],
             [8, true, true, false, false, false],

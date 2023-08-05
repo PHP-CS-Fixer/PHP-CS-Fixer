@@ -36,7 +36,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
     public static function provideFixImportConstantsCases(): iterable
     {
-        return [
+        yield from [
             'non-global names' => [
                 <<<'EXPECTED'
 <?php
@@ -237,7 +237,7 @@ INPUT
 
     public static function provideFixImportFunctionsCases(): iterable
     {
-        return [
+        yield from [
             'non-global names' => [
                 <<<'EXPECTED'
 <?php
@@ -441,7 +441,7 @@ EXPECTED
 
     public static function provideFixImportClassesCases(): iterable
     {
-        return [
+        yield from [
             'non-global names' => [
                 <<<'EXPECTED'
 <?php
@@ -766,7 +766,7 @@ INPUT
 
     public static function provideFixImportClasses80Cases(): iterable
     {
-        return [
+        yield from [
             'try catch without variable' => [
                 <<<'EXPECTED'
 <?php
@@ -817,7 +817,7 @@ INPUT
 
     public static function provideFixFullyQualifyConstantsCases(): iterable
     {
-        return [
+        yield from [
             'already fqn or sub namespace' => [
                 <<<'EXPECTED'
 <?php
@@ -876,7 +876,7 @@ INPUT
 
     public static function provideFixFullyQualifyFunctionsCases(): iterable
     {
-        return [
+        yield from [
             'already fqn or sub namespace' => [
                 <<<'EXPECTED'
 <?php
@@ -942,7 +942,7 @@ INPUT
 
     public static function provideFixFullyQualifyClassesCases(): iterable
     {
-        return [
+        yield from [
             'already fqn or sub namespace' => [
                 <<<'EXPECTED'
 <?php
@@ -1071,7 +1071,7 @@ INPUT
 
     public static function provideFixFullyQualifyClasses80Cases(): iterable
     {
-        return [
+        yield from [
             'try catch without variable' => [
                 <<<'EXPECTED'
 <?php

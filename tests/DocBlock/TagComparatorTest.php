@@ -46,7 +46,7 @@ final class TagComparatorTest extends TestCase
 
     public static function provideComparatorTogetherCases(): iterable
     {
-        return [
+        yield from [
             ['return', 'return', true],
             ['param', 'param', true],
             ['return', 'param', false],
@@ -81,7 +81,7 @@ final class TagComparatorTest extends TestCase
 
     public static function provideComparatorTogetherWithDefinedGroupsCases(): iterable
     {
-        return [
+        yield from [
             [[['param', 'return']], 'return', 'return', true],
             [[], 'param', 'return', false],
             [[['param', 'return']], 'return', 'param', true],

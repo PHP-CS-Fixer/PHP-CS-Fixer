@@ -33,7 +33,7 @@ final class FullOpeningTagFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             ['<?php echo \'Foo\';', '<? echo \'Foo\';'],
             ['<?php echo \'Foo\';', '<?pHp echo \'Foo\';'],
             ['<?= \'Foo\';'],

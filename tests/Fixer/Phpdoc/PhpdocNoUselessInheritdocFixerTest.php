@@ -33,7 +33,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php\n/** */class min1{}",
                 "<?php\n/** @inheritdoc */class min1{}",

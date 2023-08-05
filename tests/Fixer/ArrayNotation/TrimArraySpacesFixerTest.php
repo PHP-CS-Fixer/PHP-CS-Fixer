@@ -35,7 +35,7 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $foo = array("foo");',
                 '<?php $foo = array( "foo" );',

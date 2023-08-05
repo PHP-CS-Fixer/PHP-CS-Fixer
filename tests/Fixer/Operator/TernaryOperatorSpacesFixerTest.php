@@ -35,7 +35,7 @@ final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'handle goto labels 1' => [
                 '<?php
 beginning:
@@ -209,7 +209,7 @@ $a = ($b
 
     public static function provideFix80Cases(): iterable
     {
-        return [
+        yield from [
             'nullable types in constructor property promotion' => [
                 '<?php
 

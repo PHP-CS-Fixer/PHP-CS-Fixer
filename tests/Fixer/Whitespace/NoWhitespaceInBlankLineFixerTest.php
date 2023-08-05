@@ -36,7 +36,7 @@ final class NoWhitespaceInBlankLineFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php\n",
             ],
@@ -154,7 +154,7 @@ $t = true> 9;       '.'
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php\r\n\r\n    \$a = 1;\r\n\r\n    \$b = 2;",
                 "<?php\r\n\r\n    \$a = 1;\r\n    \r\n    \$b = 2;",

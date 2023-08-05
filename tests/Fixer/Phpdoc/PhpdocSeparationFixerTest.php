@@ -538,7 +538,7 @@ EOF;
 
     public static function provideInheritDocCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     /**

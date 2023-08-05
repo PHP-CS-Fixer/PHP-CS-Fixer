@@ -37,7 +37,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     $arr = array(

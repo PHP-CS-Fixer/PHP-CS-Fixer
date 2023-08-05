@@ -40,7 +40,7 @@ final class DiffConsoleFormatterTest extends TestCase
 
     public static function provideDiffConsoleFormatterCases(): iterable
     {
-        return [
+        yield from [
             [
                 sprintf(
                     '<comment>   ---------- begin diff ----------</comment>

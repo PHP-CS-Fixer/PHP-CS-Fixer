@@ -35,7 +35,7 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
 
     public static function provideCloseTagCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     if (true) {
@@ -315,7 +315,7 @@ else?><?php echo 5;',
 
     public static function provideFixNestedIfCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     if ($x) {
@@ -353,7 +353,7 @@ else?><?php echo 5;',
 
     public static function provideFixEmptyElseCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     if (false)
@@ -806,7 +806,7 @@ else?><?php echo 5;',
 
     public static function provideIsInConditionWithoutBracesCases(): iterable
     {
-        return [
+        yield from [
             [
                 [
                     18 => false, // return

@@ -35,7 +35,7 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             ['<?php /** @Entity */ class MyEntity {}'],
             ['<?php use Doctrine\ORM\Mapping as ORM; /** @ORM\Entity */ class MyEntity {}'],
             ['<?php use Doctrine\ORM\Mapping as ORM; /** @ORM\Entity(repositoryClass="MyRepository") */ class MyEntity {}'],
@@ -89,7 +89,7 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
 
     public static function provideFix80Cases(): iterable
     {
-        return [
+        yield from [
             ['<?php #[Entity] class MyEntity {}'],
             ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] class MyEntity {}'],
             ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity(repositoryClass:"MyRepository")] class MyEntity {}'],
@@ -168,7 +168,7 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
 
     public static function provideFix82Cases(): iterable
     {
-        return [
+        yield from [
             ['<?php #[Entity] readonly class MyEntity {}'],
             ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] readonly class MyEntity {}'],
             ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] readonly class MyEntity {}'],

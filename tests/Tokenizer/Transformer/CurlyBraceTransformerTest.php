@@ -56,7 +56,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        return [
+        yield from [
             'curly open/close I' => [
                 '<?php echo "This is {$great}";',
                 [
@@ -237,7 +237,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcess80Cases(): iterable
     {
-        return [
+        yield from [
             'dynamic nullable property brace open/close' => [
                 '<?php $foo?->{$bar};',
                 [

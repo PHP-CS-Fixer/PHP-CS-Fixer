@@ -83,7 +83,7 @@ final class SelfUpdateCommandTest extends TestCase
 
     public static function provideCommandNameCases(): iterable
     {
-        return [
+        yield from [
             ['self-update'],
             ['selfupdate'],
         ];
@@ -166,7 +166,7 @@ OUTPUT;
 
 OUTPUT;
 
-        return [
+        yield from [
             // no new version available
             [Application::VERSION, Application::VERSION, [], true, $currentContents, $upToDateDisplay],
             [Application::VERSION, Application::VERSION, [], false, $currentContents, $upToDateDisplay],
@@ -278,7 +278,7 @@ OUTPUT;
 
     public static function provideExecuteWhenNotAbleToGetLatestVersionsCases(): iterable
     {
-        return [
+        yield from [
             [false, false, [], true],
             [false, false, ['--force' => true], true],
             [false, false, ['-f' => true], true],
@@ -324,7 +324,7 @@ OUTPUT;
 
     public static function provideExecuteWhenNotInstalledAsPharCases(): iterable
     {
-        return [
+        yield from [
             [[], true],
             [['--force' => true], true],
             [['-f' => true], true],

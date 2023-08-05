@@ -389,7 +389,7 @@ EOF;
      */
     public static function provideDifferentOrderCases(): iterable
     {
-        return [
+        yield from [
             [['order' => ['param', 'throw', 'return']]],
             [['order' => ['param', 'return', 'throw']]],
         ];
@@ -422,7 +422,7 @@ EOF;
 
 EOF;
 
-        return [
+        yield from [
             [
                 ['order' => ['return', 'throws', 'param']],
                 <<<'EOF'
@@ -535,7 +535,7 @@ EOF;
      */
     public static function provideFixCompleteCasesWithCustomOrdersCases(): iterable
     {
-        return [
+        yield from [
             'intepacuthre' => [
                 ['order' => ['internal', 'template', 'param', 'custom', 'throws', 'return']],
                 <<<'EOF'

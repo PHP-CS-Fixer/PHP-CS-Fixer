@@ -44,7 +44,7 @@ final class SingleSpaceAfterConstructFixerTest extends AbstractFixerTestCase
 
     public static function provideConfigureRejectsInvalidControlStatementCases(): iterable
     {
-        return [
+        yield from [
             'null' => [null],
             'false' => [false],
             'true' => [true],
@@ -72,7 +72,7 @@ final class SingleSpaceAfterConstructFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithAbstractCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php abstract class Foo {}; if($a){}',
                 '<?php abstract  class Foo {}; if($a){}',
@@ -168,7 +168,7 @@ abstract class Foo
 
     public static function provideFixWithBreakCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php while (true) { break; }',
             ],
@@ -217,7 +217,7 @@ abstract class Foo
 
     public static function provideFixWithAsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php foreach ($foo as $bar) {}',
                 '<?php foreach ($foo as$bar) {}',
@@ -333,7 +333,7 @@ class Foo
 
     public static function provideFixWithCaseCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 switch ($i) {
@@ -403,7 +403,7 @@ switch ($i) {
 
     public static function provideFixWithCatchCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php try {} catch (\Exception $exception) {}',
                 '<?php try {} catch(\Exception $exception) {}',
@@ -445,7 +445,7 @@ switch ($i) {
 
     public static function provideFixWithClassCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php class Foo {}',
                 '<?php class  Foo {}',
@@ -519,7 +519,7 @@ Foo {}',
 
     public static function provideFixWithContinueCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php while (true) { continue; }',
             ],
@@ -564,7 +564,7 @@ Foo {}',
 
     public static function provideFixWithConstCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php class Foo { const FOO = 9000; }',
                 '<?php class Foo { const  FOO = 9000; }',
@@ -646,7 +646,7 @@ const     A = 3 ?>
 
     public static function provideFixWithConstImportCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php use const FOO\BAR;',
                 '<?php use const  FOO\BAR;',
@@ -684,7 +684,7 @@ FOO\BAR;',
 
     public static function provideFixWithCloneCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php clone $foo;',
                 '<?php clone$foo;',
@@ -722,7 +722,7 @@ $foo;',
 
     public static function provideFixWithDoCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php do {} while (true);',
                 '<?php do{} while (true);',
@@ -768,7 +768,7 @@ $foo;',
 
     public static function provideFixWithEchoCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo $foo;',
                 '<?php echo$foo;',
@@ -806,7 +806,7 @@ $foo;',
 
     public static function provideFixWithElseCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php if (true) {} else {}',
                 '<?php if (true) {} else{}',
@@ -844,7 +844,7 @@ $foo;',
 
     public static function provideFixWithElseIfCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php if (true) {} elseif (false) {}',
                 '<?php if (true) {} elseif(false) {}',
@@ -882,7 +882,7 @@ $foo;',
 
     public static function provideFixWithExtendsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php class Foo extends \InvalidArgumentException {}',
                 '<?php class Foo extends  \InvalidArgumentException {}',
@@ -981,7 +981,7 @@ Bar6, Baz, Qux {}',
 
     public static function provideFixWithFinalCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php final class Foo {}',
                 '<?php final  class Foo {}',
@@ -1077,7 +1077,7 @@ class Foo
 
     public static function provideFixWithFinallyCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php try {} finally {}',
                 '<?php try {} finally{}',
@@ -1119,7 +1119,7 @@ class Foo
 
     public static function provideFixWithForCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php for ($i = 0; $i < 3; ++$i) {}',
                 '<?php for($i = 0; $i < 3; ++$i) {}',
@@ -1161,7 +1161,7 @@ class Foo
 
     public static function provideFixWithForeachCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php foreach ($foo as $bar) {}',
                 '<?php foreach($foo as $bar) {}',
@@ -1203,7 +1203,7 @@ class Foo
 
     public static function provideFixWithFunctionCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php function foo() {}',
                 '<?php function  foo() {}',
@@ -1299,7 +1299,7 @@ class Foo
 
     public static function provideFixWithFunctionImportCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php use function Foo\bar;',
                 '<?php use function  Foo\bar;',
@@ -1337,7 +1337,7 @@ Foo\bar;',
 
     public static function provideFixWithGlobalCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php function foo() { global $bar; }',
                 '<?php function foo() { global$bar; }',
@@ -1379,7 +1379,7 @@ $bar; }',
 
     public static function provideFixWithGotoCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php goto foo; foo: echo "Bar";',
                 '<?php goto  foo; foo: echo "Bar";',
@@ -1413,7 +1413,7 @@ foo; foo: echo "Bar";',
 
     public static function provideFixWithIfCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php if ($foo === $bar) {}',
                 '<?php if($foo === $bar) {}',
@@ -1451,7 +1451,7 @@ foo; foo: echo "Bar";',
 
     public static function provideFixWithImplementsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php class Foo implements \Countable {}',
                 '<?php class Foo implements  \Countable {}',
@@ -1514,7 +1514,7 @@ foo; foo: echo "Bar";',
 
     public static function provideFixWithIncludeCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php include "vendor/autoload.php";',
                 '<?php include"vendor/autoload.php";',
@@ -1552,7 +1552,7 @@ foo; foo: echo "Bar";',
 
     public static function provideFixWithIncludeOnceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php include_once "vendor/autoload.php";',
                 '<?php include_once"vendor/autoload.php";',
@@ -1590,7 +1590,7 @@ foo; foo: echo "Bar";',
 
     public static function provideFixWithInstanceofCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $foo instanceof \stdClass;',
                 '<?php $foo instanceof  \stdClass;',
@@ -1632,7 +1632,7 @@ foo; foo: echo "Bar";',
 
     public static function provideFixWithInsteadofCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 
@@ -1726,7 +1726,7 @@ class Talker {
 
     public static function provideFixWithInterfaceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php interface Foo {}',
                 '<?php interface  Foo {}',
@@ -1764,7 +1764,7 @@ Foo {}',
 
     public static function provideFixWithNewCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php new $foo();',
                 '<?php new$foo();',
@@ -1802,7 +1802,7 @@ Bar();',
 
     public static function provideFixWithOpenTagWithEchoCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?= $foo ?>',
                 '<?=$foo ?>',
@@ -1844,7 +1844,7 @@ $foo ?>',
 
     public static function provideFixWithPrintCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php print $foo;',
                 '<?php print$foo;',
@@ -1882,7 +1882,7 @@ $foo ?>',
 
     public static function provideFixWithPrivateCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php class Foo { private $bar; }',
                 '<?php class Foo { private$bar; }',
@@ -1960,7 +1960,7 @@ CONST BAR = 9000; }',
 
     public static function provideFixWithProtectedCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php class Foo { protected $bar; }',
                 '<?php class Foo { protected$bar; }',
@@ -2038,7 +2038,7 @@ CONST BAR = 9000; }',
 
     public static function provideFixWithPublicCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php class Foo { public $bar; }',
                 '<?php class Foo { public$bar; }',
@@ -2116,7 +2116,7 @@ CONST BAR = 9000; }',
 
     public static function provideFixWithRequireCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php require "vendor/autoload.php";',
                 '<?php require"vendor/autoload.php";',
@@ -2154,7 +2154,7 @@ CONST BAR = 9000; }',
 
     public static function provideFixWithRequireOnceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php require_once "vendor/autoload.php";',
                 '<?php require_once"vendor/autoload.php";',
@@ -2192,7 +2192,7 @@ CONST BAR = 9000; }',
 
     public static function provideFixWithReturnCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php return;',
             ],
@@ -2326,7 +2326,7 @@ return
 
     public static function provideFixWithStaticCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php function foo() { static $bar; }',
                 '<?php function foo() { static$bar; }',
@@ -2392,7 +2392,7 @@ function bar() {} }',
 
     public static function provideFixWithThrowCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php throw $foo;',
                 '<?php throw$foo;',
@@ -2430,7 +2430,7 @@ new Exception();',
 
     public static function provideFixWithTraitCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php trait Foo {}',
                 '<?php trait  Foo {}',
@@ -2468,7 +2468,7 @@ Foo {}',
 
     public static function provideFixWithTryCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php try {} catch (\Exception $exception) {}',
                 '<?php try{} catch (\Exception $exception) {}',
@@ -2510,7 +2510,7 @@ Foo {}',
 
     public static function provideFixWithUseCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php use Foo\Bar;',
                 '<?php use  Foo\Bar;',
@@ -2584,7 +2584,7 @@ function Foo\bar;',
 
     public static function provideFixWithUseLambdaCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $foo = function () use ($bar) {};',
                 '<?php $foo = function () use($bar) {};',
@@ -2626,7 +2626,7 @@ function Foo\bar;',
 
     public static function provideFixWithUseTraitCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php class Foo { use Bar; }',
                 '<?php class Foo { use  Bar; }',
@@ -2664,7 +2664,7 @@ Bar; }',
 
     public static function provideFixWithVarCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php class Foo { var $bar; }',
                 '<?php class Foo { var$bar; }',
@@ -2706,7 +2706,7 @@ $bar; }',
 
     public static function provideFixWithWhileCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php do {} while (true);',
                 '<?php do {} while(true);',
@@ -2748,7 +2748,7 @@ $bar; }',
 
     public static function provideFixWithYieldCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php function foo() { yield $foo; }',
                 '<?php function foo() { yield$foo; }',
@@ -2786,7 +2786,7 @@ $bar; }',
 
     public static function provideFixWithYieldFromCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php function foo() { yield from baz(); }',
                 '<?php function foo() { yield  from baz(); }',
@@ -2860,7 +2860,7 @@ baz(); }',
 
     public static function provideFixWithPhpOpenCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo 1;',
                 '<?php    echo 1;',

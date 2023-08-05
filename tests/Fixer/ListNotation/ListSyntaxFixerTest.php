@@ -106,7 +106,7 @@ class Test
 
     public static function provideFixToShortSyntaxCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php [$x] = $a;',
                 '<?php list($x) = $a;',

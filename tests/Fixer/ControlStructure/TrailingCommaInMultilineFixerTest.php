@@ -66,7 +66,7 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             // long syntax tests
             ['<?php $x = array();'],
             ['<?php $x = array("foo");'],

@@ -74,7 +74,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php random_int(0, getrandmax());',
                 '<?php rand();',

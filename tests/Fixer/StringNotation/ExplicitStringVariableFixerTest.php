@@ -42,7 +42,7 @@ final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
             $input .= " \$var{$inc} = \"My name is \$name!\";";
         }
 
-        return [
+        yield from [
             [
                 $expected,
                 $input,

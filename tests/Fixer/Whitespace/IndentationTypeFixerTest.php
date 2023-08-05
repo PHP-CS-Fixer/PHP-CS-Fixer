@@ -322,7 +322,7 @@ function myFunction() {
 
     public static function provideDoubleSpaceIndentCases(): iterable
     {
-        return [
+        yield from [
             ['<?php
 if (true) {
   if (true) {

@@ -37,7 +37,7 @@ final class FixerNameValidatorTest extends TestCase
 
     public static function provideIsValidCases(): iterable
     {
-        return [
+        yield from [
             ['', true, false],
             ['', false, false],
             ['foo', true, false],

@@ -280,7 +280,7 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
 
     public static function provideFix80Cases(): iterable
     {
-        return [
+        yield from [
             'Simple match' => [
                 '<?php
                     echo match ($a) {

@@ -54,7 +54,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixControlContinuationBracesCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     $a = function() {
@@ -849,7 +849,7 @@ if (true) {
 
     public static function provideFixMissingBracesAndIndentCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 if (true):
@@ -2669,7 +2669,7 @@ class Foo
 
     public static function provideFixClassyBracesCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     class FooA
@@ -2852,7 +2852,7 @@ function foo()
 
     public static function provideFixAnonFunctionInShortArraySyntaxCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     function myFunction()
@@ -2968,7 +2968,7 @@ function foo()
 
     public static function provideFixCommentBeforeBraceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php ',
             ],
@@ -3093,7 +3093,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
 
     public static function provideFixWhitespaceBeforeBraceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     if (true) {
@@ -3310,7 +3310,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
 
     public static function provideFixFunctionsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     function download()
@@ -3670,7 +3670,7 @@ class Foo
 
     public static function provideFixMultiLineStructuresCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     if (true === true
@@ -3790,7 +3790,7 @@ class Foo
 
     public static function provideFixSpaceAroundTokenCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     try {
@@ -3987,7 +3987,7 @@ declare   (   ticks   =   1   )   {
 
     public static function provideFinallyCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     try {
@@ -4086,7 +4086,7 @@ declare   (   ticks   =   1   )   {
 
     public static function provideFunctionImportCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     use function Foo\bar;
@@ -4136,7 +4136,7 @@ declare   (   ticks   =   1   )   {
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     function foo($a)
@@ -4850,7 +4850,7 @@ $foo = new class () extends \Exception { protected $message = "Surprise"; };
 
     public static function providePreserveLineAfterControlBraceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 if (1==1) { // test
@@ -4989,7 +4989,7 @@ if (true) {
 
     public static function provideFixWithAllowSingleLineClosureCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     $callback = function () { return true; };',
@@ -5031,7 +5031,7 @@ if (true) {
 
     public static function provideDoWhileLoopInsideAnIfWithoutBracketsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 if (true) {
@@ -5064,7 +5064,7 @@ if (true)
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 if (true) {'."\r\n"
@@ -5127,7 +5127,7 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
 
     public static function provideNowdocInTemplatesCases(): iterable
     {
-        return [
+        yield from [
             [
                 <<<'EOT'
 <?php
@@ -5190,7 +5190,7 @@ EOT
 
     public static function provideFixCommentsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 function test()

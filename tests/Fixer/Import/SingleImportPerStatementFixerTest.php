@@ -36,7 +36,7 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     /**/use Foo;

@@ -35,7 +35,7 @@ final class PhpUnitSetUpTearDownVisibilityFixerTest extends AbstractFixerTestCas
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'setUp and tearDown are made protected if they are public' => [
                 '<?php
 class FixerTest extends \PhpUnit\FrameWork\TestCase

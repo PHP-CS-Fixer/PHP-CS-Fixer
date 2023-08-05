@@ -35,7 +35,7 @@ final class LogicalOperatorsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php if ($a == "foo" && $b == "bar") {}',
                 '<?php if ($a == "foo" and $b == "bar") {}',

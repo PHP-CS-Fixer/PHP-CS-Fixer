@@ -43,7 +43,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
 
     public static function provideProcessCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php echo (new Process())->getOutput();',
                 [

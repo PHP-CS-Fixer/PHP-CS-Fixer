@@ -69,7 +69,7 @@ final class AllowedValueSubsetTest extends TestCase
 
     public static function provideInvokeCases(): iterable
     {
-        return [
+        yield from [
             [
                 ['foo', 'bar'],
                 true,

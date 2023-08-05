@@ -163,7 +163,7 @@ final class CacheTest extends TestCase
         $toolInfo = new ToolInfo();
         $config = new Config();
 
-        return [
+        yield from [
             [new Signature(
                 PHP_VERSION,
                 '2.0',

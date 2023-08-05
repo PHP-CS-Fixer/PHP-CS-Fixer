@@ -76,7 +76,7 @@ final class TokenTest extends TestCase
 
     public static function provideIsTypeReturnsTrueCases(): iterable
     {
-        return [
+        yield from [
             'same-value' => [
                 42,
                 42,
@@ -107,7 +107,7 @@ final class TokenTest extends TestCase
 
     public static function provideIsTypeReturnsFalseCases(): iterable
     {
-        return [
+        yield from [
             'different-value' => [
                 42,
                 9001,

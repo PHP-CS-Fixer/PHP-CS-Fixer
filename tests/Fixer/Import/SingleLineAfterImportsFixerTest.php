@@ -516,7 +516,7 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php namespace A\\B;\r\n    use D;\r\n\r\n    class C {}",
                 "<?php namespace A\\B;\r\n    use D;\r\n\r\n\r\n    class C {}",

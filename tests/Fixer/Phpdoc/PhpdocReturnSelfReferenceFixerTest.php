@@ -35,7 +35,7 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithDefaultConfigurationCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php interface A{/** @return    $this */public function test();}',
                 '<?php interface A{/** @return    this */public function test();}',
@@ -90,7 +90,7 @@ trait SomeTrait
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php interface C{/** @return $self|int */function test();}',
                 null,
@@ -148,7 +148,7 @@ class F
 
     public static function provideGeneratedFixCases(): iterable
     {
-        return [
+        yield from [
             ['$this', 'this'],
             ['$this', '@this'],
             ['self', '$self'],
@@ -173,7 +173,7 @@ class F
 
     public static function provideInvalidConfigurationCases(): iterable
     {
-        return [
+        yield from [
             [
                 ['replacements' => [1 => 'a']],
                 'Invalid configuration: Unknown key "integer#1", expected any of "this", "@this", "$self", "@self", "$static" and "@static".',

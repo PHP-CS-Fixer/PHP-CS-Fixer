@@ -275,7 +275,7 @@ class Foo extends Bar
 
     public static function provideDoNotFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 __Tostring();',

@@ -35,7 +35,7 @@ final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCa
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $object->method();',
                 '<?php $object   ->method();',

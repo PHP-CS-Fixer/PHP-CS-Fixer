@@ -59,7 +59,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithSpaceBeforeNoneCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php function foo1(int $a) {}',
             ],
@@ -129,7 +129,7 @@ string {}',
 
     public static function provideFixWithSpaceBeforeOneCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php function fooA(int $a) {}',
             ],

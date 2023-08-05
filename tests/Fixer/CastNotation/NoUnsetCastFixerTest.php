@@ -35,7 +35,7 @@ final class NoUnsetCastFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'simple form I' => [
                 "<?php\n\$a = null;",
                 "<?php\n\$a =(unset)\$z;",

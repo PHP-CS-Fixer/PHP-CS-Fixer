@@ -55,7 +55,7 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
 
     public static function provideFixLongSyntaxCases(): iterable
     {
-        return [
+        yield from [
             ['<?php $x = array();', '<?php $x = [];'],
             ['<?php $x = array(); $y = array();', '<?php $x = []; $y = [];'],
             ['<?php $x = array( );', '<?php $x = [ ];'],
@@ -93,7 +93,7 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
 
     public static function provideFixShortSyntaxCases(): iterable
     {
-        return [
+        yield from [
             ['<?php $x = [];', '<?php $x = array();'],
             ['<?php $x = []; $y = [];', '<?php $x = array(); $y = array();'],
             ['<?php $x = [ ];', '<?php $x = array( );'],

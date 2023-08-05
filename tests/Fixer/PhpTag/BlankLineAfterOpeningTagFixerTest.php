@@ -37,7 +37,7 @@ final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 
@@ -143,7 +143,7 @@ $foo = $bar;
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php\r\n\r\n\$foo = true;\r\n",
                 "<?php \$foo = true;\r\n",

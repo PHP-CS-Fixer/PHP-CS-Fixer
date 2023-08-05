@@ -46,7 +46,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         $fixed = str_replace('public static function f4', 'final public static function f4', $fixed);
         $fixed = str_replace('static public function f7', 'final static public function f7', $fixed);
 
-        return [
+        yield from [
             'regular-class' => ["<?php class MyClass { {$original} }"],
             'final-class' => ["<?php final class MyClass { {$original} }"],
             'trait' => ["<?php trait MyClass { {$original} }"],

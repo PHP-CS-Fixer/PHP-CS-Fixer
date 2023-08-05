@@ -48,7 +48,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
 
     public static function provideFixVarCases(): iterable
     {
-        return [
+        yield from [
             'testFixVar' => [
                 <<<'EOF'
 <?php

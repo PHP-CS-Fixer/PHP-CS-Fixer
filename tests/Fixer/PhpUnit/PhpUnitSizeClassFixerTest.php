@@ -39,7 +39,7 @@ final class PhpUnitSizeClassFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'It does not change normal classes' => [
                 '<?php
 

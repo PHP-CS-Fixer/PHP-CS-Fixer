@@ -39,7 +39,7 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideGetNameCases(): iterable
     {
-        return [
+        yield from [
             ['foo'],
             ['bar'],
         ];
@@ -57,7 +57,7 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideGetDescriptionCases(): iterable
     {
-        return [
+        yield from [
             ['Foo.'],
             ['Bar.'],
         ];
@@ -73,7 +73,7 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideHasDefaultCases(): iterable
     {
-        return [
+        yield from [
             [
                 false,
                 new AliasedFixerOption(new FixerOption('foo', 'Bar.'), 'baz'),
@@ -97,7 +97,7 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideGetDefaultCases(): iterable
     {
-        return [
+        yield from [
             ['baz'],
             ['foo'],
         ];
@@ -126,7 +126,7 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideGetAllowedTypesCases(): iterable
     {
-        return [
+        yield from [
             [null],
             [['bool']],
             [['bool', 'string']],
@@ -147,7 +147,7 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideGetAllowedValuesCases(): iterable
     {
-        return [
+        yield from [
             [null],
             [['baz']],
             [['baz', 'qux']],
@@ -185,7 +185,7 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideGetAliasCases(): iterable
     {
-        return [
+        yield from [
             ['bar'],
             ['baz'],
         ];

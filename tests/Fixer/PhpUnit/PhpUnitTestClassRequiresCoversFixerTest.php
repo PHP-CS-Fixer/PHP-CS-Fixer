@@ -37,7 +37,7 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'already with annotation: @covers' => [
                 '<?php
                     /**
@@ -258,7 +258,7 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 

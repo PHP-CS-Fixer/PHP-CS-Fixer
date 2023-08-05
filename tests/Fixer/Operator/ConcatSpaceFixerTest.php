@@ -53,7 +53,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithoutSpaceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $foo = "a".\'b\'."c"."d".$e.($f + 1);',
                 '<?php $foo = "a" . \'b\' ."c". "d" . $e.($f + 1);',
@@ -152,7 +152,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithSpaceCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     $a =   //

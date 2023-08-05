@@ -55,7 +55,7 @@ __DIR__
 ;
 FIXED;
 
-        return [
+        yield from [
             ['<?php $x = "dirname";'],
 
             ['<?php $x = dirname(__FILE__.".dist");'],

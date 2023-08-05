@@ -398,7 +398,7 @@ EOT
 
     public static function provideFixWithConfigurationCases(): iterable
     {
-        return [
+        yield from [
             [
                 ['use_trait', 'constant', 'property', 'construct', 'method', 'destruct'],
                 <<<'EOT'
@@ -1043,7 +1043,7 @@ EOT
 
     public static function provideFixWithSortingAlgorithmCases(): iterable
     {
-        return [
+        yield from [
             [
                 [
                     'order' => [

@@ -48,7 +48,7 @@ final class TagTest extends TestCase
 
     public static function provideNameCases(): iterable
     {
-        return [
+        yield from [
             ['param', 'var', '     * @param Foo $foo'],
             ['return', 'type', '*   @return            false'],
             ['thRoWs', 'throws', '*@thRoWs \Exception'],
@@ -74,7 +74,7 @@ final class TagTest extends TestCase
 
     public static function provideValidCases(): iterable
     {
-        return [
+        yield from [
             [true, '     * @param Foo $foo'],
             [true, '*   @return            false'],
             [true, '*@throws \Exception'],

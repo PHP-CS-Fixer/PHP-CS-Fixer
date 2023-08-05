@@ -45,7 +45,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideConfigureRejectsInvalidControlStatementCases(): iterable
     {
-        return [
+        yield from [
             'null' => [null],
             'false' => [false],
             'true' => [true],
@@ -81,7 +81,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithAuthorCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
@@ -201,7 +201,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithCoversCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
@@ -321,7 +321,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithCoversNothingCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
@@ -441,7 +441,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithDataProviderCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
@@ -561,7 +561,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithDependsCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
@@ -681,7 +681,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithGroupCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
@@ -801,7 +801,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithInternalCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
@@ -921,7 +921,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithMethodCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                 /**
@@ -1045,7 +1045,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithMixinCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                     /**
@@ -1167,7 +1167,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithPropertyCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                 /**
@@ -1275,7 +1275,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithPropertyReadCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                 /**
@@ -1383,7 +1383,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithPropertyWriteCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                 /**
@@ -1491,7 +1491,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithRequiresCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
@@ -1611,7 +1611,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithThrowsCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                     class Foo {
@@ -1747,7 +1747,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithUsesCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
@@ -1868,7 +1868,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithMultipleConfiguredAnnotationsCases(): iterable
     {
-        return [
+        yield from [
             'skip on 1 or 0 occurrences' => [
                 '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {

@@ -36,7 +36,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'no phpdoc return' => [
                 '<?php class Foo { private $foo; }',
             ],

@@ -60,7 +60,7 @@ final class TypeAnalysisTest extends TestCase
 
     public static function provideReservedCases(): iterable
     {
-        return [
+        yield from [
             ['array', true],
             ['bool', true],
             ['callable', true],

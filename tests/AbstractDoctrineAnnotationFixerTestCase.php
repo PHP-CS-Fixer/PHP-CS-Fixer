@@ -36,7 +36,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
 
     public static function provideConfigureWithInvalidConfigurationCases(): iterable
     {
-        return [
+        yield from [
             [['foo' => 'bar']],
             [['ignored_tags' => 'foo']],
         ];

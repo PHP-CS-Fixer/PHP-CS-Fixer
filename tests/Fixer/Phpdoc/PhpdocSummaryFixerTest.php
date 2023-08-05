@@ -369,7 +369,7 @@ EOF;
 
     public static function provideWithInheritDocCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     /**
@@ -412,7 +412,7 @@ EOF;
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php\r\n\t/**\r\n\t * Hello there.\r\n\t */",
                 "<?php\r\n\t/**\r\n\t * Hello there\r\n\t */",

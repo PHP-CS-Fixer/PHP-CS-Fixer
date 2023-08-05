@@ -412,7 +412,7 @@ $a#
 
     public static function provideTestAssertCountCases(): iterable
     {
-        return [
+        yield from [
             // positive fixing
             'assert same' => [
                 self::generateTest('$this->assertCount(1, $a);'),

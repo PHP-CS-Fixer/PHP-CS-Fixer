@@ -40,7 +40,7 @@ final class BlocksAnalyzerTest extends TestCase
 
     public static function provideBlocksCases(): iterable
     {
-        return [
+        yield from [
             ['<?php foo(1);', 2, 4],
             ['<?php foo((1));', 3, 5],
             ['<?php foo((1));', 2, 6],
@@ -69,7 +69,7 @@ final class BlocksAnalyzerTest extends TestCase
 
     public static function provideNonBlocksCases(): iterable
     {
-        return [
+        yield from [
             ['<?php foo(1);', null, 4],
             ['<?php foo(1);', 2, null],
             ['<?php foo(1);', 1000, 4],

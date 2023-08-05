@@ -41,7 +41,7 @@ final class TokenTest extends TestCase
 
     public static function provideConstructorValidationCases(): iterable
     {
-        return [
+        yield from [
             [null],
             [123],
             [new \stdClass()],
@@ -77,7 +77,7 @@ final class TokenTest extends TestCase
 
     public static function provideIsCastCases(): iterable
     {
-        return [
+        yield from [
             [self::getBraceToken(), false],
             [self::getForeachToken(), false],
             [new Token([T_ARRAY_CAST, '(array)', 1]), true],
@@ -100,7 +100,7 @@ final class TokenTest extends TestCase
 
     public static function provideIsClassyCases(): iterable
     {
-        return [
+        yield from [
             [self::getBraceToken(), false],
             [self::getForeachToken(), false],
             [new Token([T_CLASS, 'class', 1]), true],
@@ -240,7 +240,7 @@ final class TokenTest extends TestCase
 
     public static function provideIsNativeConstantCases(): iterable
     {
-        return [
+        yield from [
             [self::getBraceToken(), false],
             [self::getForeachToken(), false],
             [new Token([T_STRING, 'null', 1]), true],
@@ -266,7 +266,7 @@ final class TokenTest extends TestCase
 
     public static function provideIsWhitespaceCases(): iterable
     {
-        return [
+        yield from [
             [self::getBraceToken(), false],
             [self::getForeachToken(), false],
             [new Token(' '), true],
@@ -299,7 +299,7 @@ final class TokenTest extends TestCase
 
     public static function provideCreatingTokenCases(): iterable
     {
-        return [
+        yield from [
             [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true],
             ['(', null, '(', false],
             [123, null, null, null, \InvalidArgumentException::class],
@@ -483,7 +483,7 @@ final class TokenTest extends TestCase
 
     public static function provideTokenGetNameForIdCases(): iterable
     {
-        return [
+        yield from [
             [
                 null,
                 -1,

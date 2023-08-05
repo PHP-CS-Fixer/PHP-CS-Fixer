@@ -36,7 +36,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixAlphaCases(): iterable
     {
-        return [
+        yield from [
             'single' => [
                 '<?php class T implements A {}',
             ],
@@ -130,7 +130,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixAlphaDescendCases(): iterable
     {
-        return [
+        yield from [
             'single' => [
                 '<?php class T implements A {}',
             ],
@@ -156,7 +156,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixLengthCases(): iterable
     {
-        return [
+        yield from [
             'single' => [
                 '<?php class A implements A {}',
             ],
@@ -199,7 +199,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixLengthDescendCases(): iterable
     {
-        return [
+        yield from [
             'single' => [
                 '<?php class A implements A {}',
             ],

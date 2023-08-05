@@ -44,7 +44,7 @@ final class FinalInternalClassFixerTest extends AbstractFixerTestCase
             $expected .= sprintf("/** @internal */\nfinal class class%d\n{\n}\n", $i);
         }
 
-        return [
+        yield from [
             'fix multiple classes' => [
                 $expected,
                 $input,
@@ -197,7 +197,7 @@ class Bar {}
 
     public static function provideFixWithConfigCases(): iterable
     {
-        return [
+        yield from [
             [
                 "<?php\n/** @CUSTOM */final class A{}",
                 "<?php\n/** @CUSTOM */class A{}",

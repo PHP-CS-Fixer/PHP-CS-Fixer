@@ -41,7 +41,7 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
@@ -447,7 +447,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $expected .= "\n}";
         $input .= "\n}";
 
-        return [[$expected, $input]];
+        yield from [[$expected, $input]];
     }
 
     /**

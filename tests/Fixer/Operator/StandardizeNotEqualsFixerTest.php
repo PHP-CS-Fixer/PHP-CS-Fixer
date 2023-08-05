@@ -35,7 +35,7 @@ final class StandardizeNotEqualsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             ['<?php $a = ($b != $c);'],
             ['<?php $a = ($b != $c);', '<?php $a = ($b <> $c);'],
         ];

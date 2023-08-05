@@ -35,7 +35,7 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php new DateTimeImmutable();',
                 '<?php new DateTime();',

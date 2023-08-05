@@ -36,7 +36,7 @@ final class SingleBlankLineAtEofFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'Not adding an empty line in empty file.' => [
                 '',
             ],

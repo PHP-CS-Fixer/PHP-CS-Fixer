@@ -52,7 +52,7 @@ final class DotsOutputTest extends TestCase
 
     public static function provideDotsProgressOutputCases(): iterable
     {
-        return [
+        yield from [
             [
                 [
                     [FixerFileProcessedEvent::STATUS_NO_CHANGES, 4],

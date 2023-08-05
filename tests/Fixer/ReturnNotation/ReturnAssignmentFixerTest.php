@@ -33,7 +33,7 @@ final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
 
     public static function provideFixNestedFunctionsCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 function A($a0,$a1,$a2,$d)
@@ -193,7 +193,7 @@ function B($b0, $b1, $b2)
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
                     function A()
@@ -805,7 +805,7 @@ var names are case-insensitive */ return $a   ;}
 
     public static function provideDoNotFixCases(): iterable
     {
-        return [
+        yield from [
             'invalid reference stays invalid' => [
                 '<?php
                     function bar() {

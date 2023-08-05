@@ -736,7 +736,7 @@ EOT;
 
     public static function provideFixWithConfigurationCases(): iterable
     {
-        return [
+        yield from [
             [
                 ['const', 'property'],
                 <<<'EOT'

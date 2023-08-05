@@ -77,7 +77,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
 
     public static function provideIsSuitableForUsesVersionSpecificationCases(): iterable
     {
-        return [
+        yield from [
             'is-satisfied' => [\PHP_VERSION_ID, true],
             'is-not-satisfied' => [\PHP_VERSION_ID, false],
         ];

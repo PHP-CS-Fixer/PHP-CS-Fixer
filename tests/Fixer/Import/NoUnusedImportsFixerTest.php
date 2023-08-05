@@ -33,7 +33,7 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             'simple' => [
                 <<<'EOF'
 <?php

@@ -59,7 +59,7 @@ null === json_decode
 ;
 FIXED;
 
-        return [
+        yield from [
             ['<?php $x = "is_null";'],
 
             ['<?php $x = ClassA::is_null(json_decode($x));'],

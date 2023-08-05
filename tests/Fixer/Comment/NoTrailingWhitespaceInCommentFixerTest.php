@@ -35,7 +35,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
         /*

@@ -35,7 +35,7 @@ final class ElseifFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             ['<?php if ($some) { $test = true; } else { $test = false; }'],
             [
                 '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; }',

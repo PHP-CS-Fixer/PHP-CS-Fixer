@@ -199,7 +199,7 @@ final class ConfigurationResolverTest extends TestCase
     {
         $dirBase = self::getFixtureDir();
 
-        return [
+        yield from [
             [
                 $dirBase.'case_1'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
                 'Test1Config',
@@ -510,7 +510,7 @@ final class ConfigurationResolverTest extends TestCase
             );
         };
 
-        return [
+        yield from [
             'no path at all' => [
                 new \LogicException(),
                 Finder::create(),
@@ -670,7 +670,7 @@ final class ConfigurationResolverTest extends TestCase
     {
         $root = __DIR__.'/../..';
 
-        return [
+        yield from [
             [
                 [
                     'config' => $root.'/.php-cs-fixer.dist.php',
@@ -1082,7 +1082,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     public static function provideResolveDifferCases(): iterable
     {
-        return [
+        yield from [
             [
                 \PhpCsFixer\Differ\NullDiffer::class,
                 false,
@@ -1123,7 +1123,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     public static function provideResolveBooleanOptionCases(): iterable
     {
-        return [
+        yield from [
             [true, true, 'yes'],
             [true, false, 'yes'],
             [false, true, 'no'],
@@ -1164,7 +1164,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     public static function provideDeprecatedFixerConfiguredCases(): iterable
     {
-        return [
+        yield from [
             [true],
             [['foo' => true]],
             [false],
@@ -1173,7 +1173,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     public static function provideGetDirectoryCases(): iterable
     {
-        return [
+        yield from [
             [null, '/my/path/my/file', 'my/file'],
             ['/my/path/.php-cs-fixer.cache', '/my/path/my/file', 'my/file'],
             ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', 'dir2/file'],

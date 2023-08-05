@@ -76,7 +76,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 <<<'EOF'
 <?php

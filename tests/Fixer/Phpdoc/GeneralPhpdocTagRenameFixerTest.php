@@ -38,7 +38,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
     /**
@@ -279,7 +279,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
 
     public static function provideConfigureWithInvalidReplacementsCases(): iterable
     {
-        return [
+        yield from [
             [
                 [1 => 'abc'],
                 true,

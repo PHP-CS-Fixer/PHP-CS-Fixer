@@ -35,7 +35,7 @@ final class NotOperatorWithSuccessorSpaceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php $i = 0; $i++; $foo = ! false || (! true || ! ! false && (2 === (7 -5)));',
                 '<?php $i = 0; $i++; $foo = !false || (!true || !!false && (2 === (7 -5)));',
