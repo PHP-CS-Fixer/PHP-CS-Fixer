@@ -866,7 +866,7 @@ Whitespace
   Remove extra spaces in a nullable typehint.
 - `heredoc_indentation <./whitespace/heredoc_indentation.rst>`_
 
-  Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.
+  Heredoc/nowdoc content must be properly indented.
 - `indentation_type <./whitespace/indentation_type.rst>`_
 
   Code MUST use configured indentation type.
