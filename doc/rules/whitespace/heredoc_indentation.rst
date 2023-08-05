@@ -30,7 +30,15 @@ Example #1
    --- Original
    +++ New
     <?php
-        $a = <<<EOD
+        $heredoc = <<<EOD
+   -abc
+   -    def
+   -EOD;
+   +        abc
+   +            def
+   +        EOD;
+
+        $nowdoc = <<<'EOD'
    -abc
    -    def
    -EOD;
@@ -41,24 +49,6 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-*Default* configuration.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-        $a = <<<'EOD'
-   -abc
-   -    def
-   -EOD;
-   +        abc
-   +            def
-   +        EOD;
-
-Example #3
-~~~~~~~~~~
-
 With configuration: ``['indentation' => 'same_as_start']``.
 
 .. code-block:: diff
@@ -66,7 +56,7 @@ With configuration: ``['indentation' => 'same_as_start']``.
    --- Original
    +++ New
     <?php
-        $a = <<<'EOD'
+        $nowdoc = <<<'EOD'
    -abc
    -    def
    -EOD;

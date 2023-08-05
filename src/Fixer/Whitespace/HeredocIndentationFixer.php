@@ -41,7 +41,12 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
                 new CodeSample(
                     <<<'SAMPLE'
                         <?php
-                            $a = <<<EOD
+                            $heredoc = <<<EOD
+                        abc
+                            def
+                        EOD;
+
+                            $nowdoc = <<<'EOD'
                         abc
                             def
                         EOD;
@@ -51,17 +56,7 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
                 new CodeSample(
                     <<<'SAMPLE'
                         <?php
-                            $a = <<<'EOD'
-                        abc
-                            def
-                        EOD;
-
-                        SAMPLE
-                ),
-                new CodeSample(
-                    <<<'SAMPLE'
-                        <?php
-                            $a = <<<'EOD'
+                            $nowdoc = <<<'EOD'
                         abc
                             def
                         EOD;
