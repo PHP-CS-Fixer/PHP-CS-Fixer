@@ -882,7 +882,7 @@ Whitespace
 - `no_spaces_around_offset <./whitespace/no_spaces_around_offset.rst>`_
 
   There MUST NOT be spaces around offset braces.
-- `no_spaces_inside_parenthesis <./whitespace/no_spaces_inside_parenthesis.rst>`_
+- `no_spaces_inside_parenthesis <./whitespace/no_spaces_inside_parenthesis.rst>`_ *(deprecated)*
 
   There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.
 - `no_trailing_whitespace <./whitespace/no_trailing_whitespace.rst>`_
@@ -894,6 +894,9 @@ Whitespace
 - `single_blank_line_at_eof <./whitespace/single_blank_line_at_eof.rst>`_
 
   A PHP file without end tag must always end with a single empty line feed.
+- `spaces_inside_parentheses <./whitespace/spaces_inside_parentheses.rst>`_
+
+  Parentheses must be declared using the configured whitespace.
 - `statement_indentation <./whitespace/statement_indentation.rst>`_
 
   Each statement must be indented.

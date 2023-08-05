@@ -59,7 +59,7 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
     /**
      * {@inheritdoc}
      *
-     * Must run before NoSpacesInsideParenthesisFixer.
+     * Must run before NoSpacesInsideParenthesisFixer, SpacesInsideParenthesesFixer.
      * Must run after StandardizeIncrementFixer.
      */
     public function getPriority(): int

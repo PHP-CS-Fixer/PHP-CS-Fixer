@@ -97,7 +97,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
      * {@inheritdoc}
      *
      * Must run before NativeFunctionCasingFixer, NoExtraBlankLinesFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer, SelfStaticAccessorFixer.
-     * Must run after NoSpacesAfterFunctionNameFixer, NoSpacesInsideParenthesisFixer.
+     * Must run after NoSpacesAfterFunctionNameFixer, NoSpacesInsideParenthesisFixer, SpacesInsideParenthesesFixer.
      */
     public function getPriority(): int
     {

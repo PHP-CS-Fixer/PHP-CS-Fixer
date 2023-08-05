@@ -1,0 +1,9 @@
+--TEST--
+Integration of fixers: lambda_not_used_import,spaces_inside_parentheses.
+--RULESET--
+{"lambda_not_used_import": true, "spaces_inside_parentheses": true}
+--EXPECT--
+<?php $foo = function() use ($bar, &$foo) { echo $bar; };
+
+--INPUT--
+<?php $foo = function() use ($bar, &$foo, $not1, $not2) { echo $bar; };

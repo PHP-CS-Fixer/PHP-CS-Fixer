@@ -1612,7 +1612,7 @@ List of Available Rules
 
    There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   *warning deprecated*   Use ``spaces_inside_parentheses`` instead.
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\NoSpacesInsideParenthesisFixer <./../src/Fixer/Whitespace/NoSpacesInsideParenthesisFixer.php>`_
 -  `no_space_around_double_colon <./rules/operator/no_space_around_double_colon.rst>`_
@@ -3052,6 +3052,25 @@ List of Available Rules
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\SingleTraitInsertPerStatementFixer <./../src/Fixer/ClassNotation/SingleTraitInsertPerStatementFixer.php>`_
+-  `spaces_inside_parentheses <./rules/whitespace/spaces_inside_parentheses.rst>`_
+
+   Parentheses must be declared using the configured whitespace.
+
+   By default there are not any additional spaces inside parentheses, however
+   with ``space=single`` configuration option whitespace inside parentheses will
+   be unified to single space.
+
+   Configuration options:
+
+   - | ``space``
+     | Whether to have ``single`` or ``none`` space inside parentheses.
+     | Allowed values: ``'none'`` and ``'single'``
+     | Default value: ``'none'``
+
+
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Whitespace\\SpacesInsideParenthesesFixer <./../src/Fixer/Whitespace/SpacesInsideParenthesesFixer.php>`_
 -  `space_after_semicolon <./rules/semicolon/space_after_semicolon.rst>`_
 
    Fix whitespace after a semicolon.

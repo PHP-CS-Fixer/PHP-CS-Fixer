@@ -52,7 +52,7 @@ final class GetClassToClassKeywordFixer extends AbstractFixer
      * {@inheritdoc}
      *
      * Must run before MultilineWhitespaceBeforeSemicolonsFixer.
-     * Must run after NoSpacesAfterFunctionNameFixer, NoSpacesInsideParenthesisFixer.
+     * Must run after NoSpacesAfterFunctionNameFixer, NoSpacesInsideParenthesisFixer, SpacesInsideParenthesesFixer.
      */
     public function getPriority(): int
     {
