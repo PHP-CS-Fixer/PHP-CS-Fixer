@@ -79,10 +79,13 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
 
             $arrayHasTrailingComma = false;
 
+            $startIndex = $tokens->getNextMeaningfulToken($startIndex);
+
             $inserts[$startIndex] = [new Token([T_YIELD, 'yield']), new Token([T_WHITESPACE, ' '])];
+
             foreach ($this->findArrayItemCommaIndex(
                 $tokens,
-                $tokens->getNextMeaningfulToken($startIndex),
+                $startIndex,
                 $tokens->getPrevMeaningfulToken($endIndex),
             ) as $commaIndex) {
                 $nextItemIndex = $tokens->getNextMeaningfulToken($commaIndex);
