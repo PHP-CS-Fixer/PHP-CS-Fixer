@@ -37,109 +37,109 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
     {
         yield 'basic fix' => [
             <<<'EXPECTED'
-<?php
-$name = "World";
-echo "Hello {$name}!";
-EXPECTED
+                <?php
+                $name = "World";
+                echo "Hello {$name}!";
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-$name = "World";
-echo "Hello ${name}!";
-INPUT
+                <?php
+                $name = "World";
+                echo "Hello ${name}!";
+                INPUT
             ,
         ];
 
         yield 'heredoc' => [
             <<<'EXPECTED'
-<?php
-$name = 'World';
-echo <<<TEST
-Hello {$name}!
-TEST;
+                <?php
+                $name = 'World';
+                echo <<<TEST
+                Hello {$name}!
+                TEST;
 
-EXPECTED
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-$name = 'World';
-echo <<<TEST
-Hello ${name}!
-TEST;
+                <?php
+                $name = 'World';
+                echo <<<TEST
+                Hello ${name}!
+                TEST;
 
-INPUT
+                INPUT
             ,
         ];
 
         yield 'implicit' => [
             <<<'EXPECTED'
-<?php
-$name = 'World';
-echo "Hello $name!";
-EXPECTED
+                <?php
+                $name = 'World';
+                echo "Hello $name!";
+                EXPECTED
             ,
         ];
 
         yield 'implicit again' => [
             <<<'EXPECTED'
-<?php
-$name = 'World';
-echo "Hello { $name }!";
-EXPECTED
+                <?php
+                $name = 'World';
+                echo "Hello { $name }!";
+                EXPECTED
             ,
         ];
 
         yield 'escaped' => [
             <<<'EXPECTED'
-<?php
-$name = 'World';
-echo "Hello \${name}";
-EXPECTED
+                <?php
+                $name = 'World';
+                echo "Hello \${name}";
+                EXPECTED
             ,
         ];
 
         yield 'double dollar' => [
             <<<'EXPECTED'
-<?php
-$name = 'World';
-echo "Hello \${$name}";
-EXPECTED
+                <?php
+                $name = 'World';
+                echo "Hello \${$name}";
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-$name = 'World';
-echo "Hello $${name}";
-INPUT
+                <?php
+                $name = 'World';
+                echo "Hello $${name}";
+                INPUT
             ,
         ];
 
         yield 'double dollar heredoc' => [
             <<<'EXPECTED'
-<?php
-$name = 'World';
-echo <<<TEST
-Hello \${$name}!
-TEST;
+                <?php
+                $name = 'World';
+                echo <<<TEST
+                Hello \${$name}!
+                TEST;
 
-EXPECTED
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-$name = 'World';
-echo <<<TEST
-Hello $${name}!
-TEST;
+                <?php
+                $name = 'World';
+                echo <<<TEST
+                Hello $${name}!
+                TEST;
 
-INPUT
+                INPUT
             ,
         ];
 
         yield 'double dollar single quote' => [
             <<<'EXPECTED'
-<?php
-$name = 'World';
-echo 'Hello $${name}';
-EXPECTED
+                <?php
+                $name = 'World';
+                echo 'Hello $${name}';
+                EXPECTED
             ,
         ];
     }

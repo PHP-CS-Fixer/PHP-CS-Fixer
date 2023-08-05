@@ -313,40 +313,40 @@ try {
         ]);
 
         $expected = <<<'EOT'
-<?php
-var_dump(
-    \null,
-    \NULL,
-    \Null,
-    \nUlL,
-    \false,
-    \FALSE,
-    true,
-    TRUE,
-    \M_PI,
-    \M_pi,
-    m_pi,
-    m_PI
-);
-EOT;
+            <?php
+            var_dump(
+                \null,
+                \NULL,
+                \Null,
+                \nUlL,
+                \false,
+                \FALSE,
+                true,
+                TRUE,
+                \M_PI,
+                \M_pi,
+                m_pi,
+                m_PI
+            );
+            EOT;
 
         $input = <<<'EOT'
-<?php
-var_dump(
-    null,
-    NULL,
-    Null,
-    nUlL,
-    false,
-    FALSE,
-    true,
-    TRUE,
-    M_PI,
-    M_pi,
-    m_pi,
-    m_PI
-);
-EOT;
+            <?php
+            var_dump(
+                null,
+                NULL,
+                Null,
+                nUlL,
+                false,
+                FALSE,
+                true,
+                TRUE,
+                M_PI,
+                M_pi,
+                m_pi,
+                m_PI
+            );
+            EOT;
 
         $this->doTest($expected, $input);
     }
@@ -372,22 +372,22 @@ EOT;
         ]);
 
         $expected = <<<EOT
-<?php
-var_dump(
-    \\null,
-    {$dontFixMe},
-    \\{$fixMe}
-);
-EOT;
+            <?php
+            var_dump(
+                \\null,
+                {$dontFixMe},
+                \\{$fixMe}
+            );
+            EOT;
 
         $input = <<<EOT
-<?php
-var_dump(
-    null,
-    {$dontFixMe},
-    {$fixMe}
-);
-EOT;
+            <?php
+            var_dump(
+                null,
+                {$dontFixMe},
+                {$fixMe}
+            );
+            EOT;
 
         $this->doTest($expected, $input);
     }
@@ -404,32 +404,32 @@ EOT;
         ]);
 
         $expected = <<<'EOT'
-<?php
+            <?php
 
-namespace Foo;
+            namespace Foo;
 
-use const M_EULER;
+            use const M_EULER;
 
-var_dump(
-    null,
-    \M_PI,
-    M_EULER
-);
-EOT;
+            var_dump(
+                null,
+                \M_PI,
+                M_EULER
+            );
+            EOT;
 
         $input = <<<'EOT'
-<?php
+            <?php
 
-namespace Foo;
+            namespace Foo;
 
-use const M_EULER;
+            use const M_EULER;
 
-var_dump(
-    null,
-    M_PI,
-    M_EULER
-);
-EOT;
+            var_dump(
+                null,
+                M_PI,
+                M_EULER
+            );
+            EOT;
 
         $this->doTest($expected, $input);
     }
@@ -439,26 +439,26 @@ EOT;
         $this->fixer->configure(['scope' => 'namespaced']);
 
         $expected = <<<'EOT'
-<?php
+            <?php
 
-namespace space1 {
-    echo \PHP_VERSION;
-}
-namespace {
-    echo PHP_VERSION;
-}
-EOT;
+            namespace space1 {
+                echo \PHP_VERSION;
+            }
+            namespace {
+                echo PHP_VERSION;
+            }
+            EOT;
 
         $input = <<<'EOT'
-<?php
+            <?php
 
-namespace space1 {
-    echo PHP_VERSION;
-}
-namespace {
-    echo PHP_VERSION;
-}
-EOT;
+            namespace space1 {
+                echo PHP_VERSION;
+            }
+            namespace {
+                echo PHP_VERSION;
+            }
+            EOT;
 
         $this->doTest($expected, $input);
     }
@@ -468,10 +468,10 @@ EOT;
         $this->fixer->configure(['scope' => 'namespaced']);
 
         $expected = <<<'EOT'
-<?php
+            <?php
 
-echo PHP_VERSION . PHP_EOL;
-EOT;
+            echo PHP_VERSION . PHP_EOL;
+            EOT;
 
         $this->doTest($expected);
     }

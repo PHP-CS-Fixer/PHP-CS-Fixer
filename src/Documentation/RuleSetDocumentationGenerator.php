@@ -101,10 +101,10 @@ final class RuleSetDocumentationGenerator
     public function generateRuleSetsDocumentationIndex(array $setDefinitions): string
     {
         $documentation = <<<'RST'
-===========================
-List of Available Rule sets
-===========================
-RST;
+            ===========================
+            List of Available Rule sets
+            ===========================
+            RST;
         foreach ($setDefinitions as $name => $path) {
             $path = substr($path, strrpos($path, '/'));
             $documentation .= "\n- `{$name} <.{$path}>`_";

@@ -65,12 +65,12 @@ final class TextDiffTest extends TestCase
     public static function provideDiffReportingDecoratedCases(): iterable
     {
         $expected = <<<'TEST'
-%A$output->writeln('<error>'.(int)$output.'</error>');%A
-%A$output->writeln('<error>'.(int) $output.'</error>');%A
-%A$output->writeln('<error> TEST </error>');%A
-%A$output->writeln('<error>'.(int)$output.'</error>');%A
-%A$output->writeln('<error>'.(int) $output.'</error>');%A
-TEST;
+            %A$output->writeln('<error>'.(int)$output.'</error>');%A
+            %A$output->writeln('<error>'.(int) $output.'</error>');%A
+            %A$output->writeln('<error> TEST </error>');%A
+            %A$output->writeln('<error>'.(int)$output.'</error>');%A
+            %A$output->writeln('<error>'.(int) $output.'</error>');%A
+            TEST;
 
         foreach (['txt', 'xml', 'junit'] as $format) {
             yield [$expected, $format, true];

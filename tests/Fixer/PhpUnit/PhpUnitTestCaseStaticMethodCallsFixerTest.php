@@ -78,231 +78,231 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
     {
         yield [
             <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testBaseCase()
-    {
-        static::assertSame(1, 2);
-        static::markTestIncomplete('foo');
-        static::fail('foo');
-    }
-}
-EOF
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testBaseCase()
+                    {
+                        static::assertSame(1, 2);
+                        static::markTestIncomplete('foo');
+                        static::fail('foo');
+                    }
+                }
+                EOF
             ,
             <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testBaseCase()
-    {
-        $this->assertSame(1, 2);
-        $this->markTestIncomplete('foo');
-        $this->fail('foo');
-    }
-}
-EOF
-            ,
-        ];
-
-        yield [
-            <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testMocks()
-    {
-        $mock = $this->createMock(MyInterface::class);
-        $mock
-            ->expects(static::once())
-            ->method('run')
-            ->with(
-                static::identicalTo(1),
-                static::stringContains('foo')
-            )
-            ->will(static::onConsecutiveCalls(
-                static::returnSelf(),
-                static::throwException(new \Exception())
-            ))
-        ;
-    }
-}
-EOF
-            ,
-            <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testMocks()
-    {
-        $mock = $this->createMock(MyInterface::class);
-        $mock
-            ->expects($this->once())
-            ->method('run')
-            ->with(
-                $this->identicalTo(1),
-                $this->stringContains('foo')
-            )
-            ->will($this->onConsecutiveCalls(
-                $this->returnSelf(),
-                $this->throwException(new \Exception())
-            ))
-        ;
-    }
-}
-EOF
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testBaseCase()
+                    {
+                        $this->assertSame(1, 2);
+                        $this->markTestIncomplete('foo');
+                        $this->fail('foo');
+                    }
+                }
+                EOF
             ,
         ];
 
         yield [
             <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testWeirdIndentation()
-    {
-        static
-        // @TODO
-            ::
-        assertSame
-        (1, 2);
-        // $this->markTestIncomplete('foo');
-        /*
-        $this->fail('foo');
-        */
-    }
-}
-EOF
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testMocks()
+                    {
+                        $mock = $this->createMock(MyInterface::class);
+                        $mock
+                            ->expects(static::once())
+                            ->method('run')
+                            ->with(
+                                static::identicalTo(1),
+                                static::stringContains('foo')
+                            )
+                            ->will(static::onConsecutiveCalls(
+                                static::returnSelf(),
+                                static::throwException(new \Exception())
+                            ))
+                        ;
+                    }
+                }
+                EOF
             ,
             <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testWeirdIndentation()
-    {
-        $this
-        // @TODO
-            ->
-        assertSame
-        (1, 2);
-        // $this->markTestIncomplete('foo');
-        /*
-        $this->fail('foo');
-        */
-    }
-}
-EOF
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testMocks()
+                    {
+                        $mock = $this->createMock(MyInterface::class);
+                        $mock
+                            ->expects($this->once())
+                            ->method('run')
+                            ->with(
+                                $this->identicalTo(1),
+                                $this->stringContains('foo')
+                            )
+                            ->will($this->onConsecutiveCalls(
+                                $this->returnSelf(),
+                                $this->throwException(new \Exception())
+                            ))
+                        ;
+                    }
+                }
+                EOF
             ,
         ];
 
         yield [
             <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testBaseCase()
-    {
-        $this->assertSame(1, 2);
-        $this->markTestIncomplete('foo');
-        $this->fail('foo');
-
-        $lambda = function () {
-            $this->assertSame(1, 23);
-            self::assertSame(1, 23);
-            static::assertSame(1, 23);
-        };
-    }
-}
-EOF
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testWeirdIndentation()
+                    {
+                        static
+                        // @TODO
+                            ::
+                        assertSame
+                        (1, 2);
+                        // $this->markTestIncomplete('foo');
+                        /*
+                        $this->fail('foo');
+                        */
+                    }
+                }
+                EOF
             ,
             <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testBaseCase()
-    {
-        $this->assertSame(1, 2);
-        self::markTestIncomplete('foo');
-        static::fail('foo');
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testWeirdIndentation()
+                    {
+                        $this
+                        // @TODO
+                            ->
+                        assertSame
+                        (1, 2);
+                        // $this->markTestIncomplete('foo');
+                        /*
+                        $this->fail('foo');
+                        */
+                    }
+                }
+                EOF
+            ,
+        ];
 
-        $lambda = function () {
-            $this->assertSame(1, 23);
-            self::assertSame(1, 23);
-            static::assertSame(1, 23);
-        };
-    }
-}
-EOF
+        yield [
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testBaseCase()
+                    {
+                        $this->assertSame(1, 2);
+                        $this->markTestIncomplete('foo');
+                        $this->fail('foo');
+
+                        $lambda = function () {
+                            $this->assertSame(1, 23);
+                            self::assertSame(1, 23);
+                            static::assertSame(1, 23);
+                        };
+                    }
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testBaseCase()
+                    {
+                        $this->assertSame(1, 2);
+                        self::markTestIncomplete('foo');
+                        static::fail('foo');
+
+                        $lambda = function () {
+                            $this->assertSame(1, 23);
+                            self::assertSame(1, 23);
+                            static::assertSame(1, 23);
+                        };
+                    }
+                }
+                EOF
             ,
             ['call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS],
         ];
 
         yield [
             <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testBaseCase()
-    {
-        self::assertSame(1, 2);
-        self::markTestIncomplete('foo');
-        self::fail('foo');
-    }
-}
-EOF
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testBaseCase()
+                    {
+                        self::assertSame(1, 2);
+                        self::markTestIncomplete('foo');
+                        self::fail('foo');
+                    }
+                }
+                EOF
             ,
             <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testBaseCase()
-    {
-        $this->assertSame(1, 2);
-        self::markTestIncomplete('foo');
-        static::fail('foo');
-    }
-}
-EOF
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testBaseCase()
+                    {
+                        $this->assertSame(1, 2);
+                        self::markTestIncomplete('foo');
+                        static::fail('foo');
+                    }
+                }
+                EOF
             ,
             ['call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_SELF],
         ];
 
         yield [
             <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testBaseCase()
-    {
-        $this->assertSame(1, 2);
-        $this->assertSame(1, 2);
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testBaseCase()
+                    {
+                        $this->assertSame(1, 2);
+                        $this->assertSame(1, 2);
 
-        static::setUpBeforeClass();
-        static::setUpBeforeClass();
+                        static::setUpBeforeClass();
+                        static::setUpBeforeClass();
 
-        $otherTest->setUpBeforeClass();
-        OtherTest::setUpBeforeClass();
-    }
-}
-EOF
+                        $otherTest->setUpBeforeClass();
+                        OtherTest::setUpBeforeClass();
+                    }
+                }
+                EOF
             ,
             <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testBaseCase()
-    {
-        static::assertSame(1, 2);
-        $this->assertSame(1, 2);
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testBaseCase()
+                    {
+                        static::assertSame(1, 2);
+                        $this->assertSame(1, 2);
 
-        static::setUpBeforeClass();
-        $this->setUpBeforeClass();
+                        static::setUpBeforeClass();
+                        $this->setUpBeforeClass();
 
-        $otherTest->setUpBeforeClass();
-        OtherTest::setUpBeforeClass();
-    }
-}
-EOF
+                        $otherTest->setUpBeforeClass();
+                        OtherTest::setUpBeforeClass();
+                    }
+                }
+                EOF
             ,
             [
                 'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
@@ -312,54 +312,54 @@ EOF
 
         yield [
             <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public static function foo()
-    {
-        $this->assertSame(1, 2);
-        self::assertSame(1, 2);
-        static::assertSame(1, 2);
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public static function foo()
+                    {
+                        $this->assertSame(1, 2);
+                        self::assertSame(1, 2);
+                        static::assertSame(1, 2);
 
-        $lambda = function () {
-            $this->assertSame(1, 2);
-            self::assertSame(1, 2);
-            static::assertSame(1, 2);
-        };
-    }
+                        $lambda = function () {
+                            $this->assertSame(1, 2);
+                            self::assertSame(1, 2);
+                            static::assertSame(1, 2);
+                        };
+                    }
 
-    public function bar()
-    {
-        $lambda = static function () {
-            $this->assertSame(1, 2);
-            self::assertSame(1, 2);
-            static::assertSame(1, 2);
-        };
+                    public function bar()
+                    {
+                        $lambda = static function () {
+                            $this->assertSame(1, 2);
+                            self::assertSame(1, 2);
+                            static::assertSame(1, 2);
+                        };
 
-        $myProphecy->setCount(0)->will(function () {
-            $this->getCount()->willReturn(0);
-        });
-    }
+                        $myProphecy->setCount(0)->will(function () {
+                            $this->getCount()->willReturn(0);
+                        });
+                    }
 
-    static public function baz()
-    {
-        $this->assertSame(1, 2);
-        self::assertSame(1, 2);
-        static::assertSame(1, 2);
+                    static public function baz()
+                    {
+                        $this->assertSame(1, 2);
+                        self::assertSame(1, 2);
+                        static::assertSame(1, 2);
 
-        $lambda = function () {
-            $this->assertSame(1, 2);
-            self::assertSame(1, 2);
-            static::assertSame(1, 2);
-        };
-    }
+                        $lambda = function () {
+                            $this->assertSame(1, 2);
+                            self::assertSame(1, 2);
+                            static::assertSame(1, 2);
+                        };
+                    }
 
-    static final protected function xyz()
-    {
-        static::assertSame(1, 2);
-    }
-}
-EOF
+                    static final protected function xyz()
+                    {
+                        static::assertSame(1, 2);
+                    }
+                }
+                EOF
             ,
             null,
             [
@@ -369,78 +369,78 @@ EOF
 
         yield [
             <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function foo()
-    {
-        $this->assertSame(1, 2);
-        $this->assertSame(1, 2);
-        $this->assertSame(1, 2);
-    }
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function foo()
+                    {
+                        $this->assertSame(1, 2);
+                        $this->assertSame(1, 2);
+                        $this->assertSame(1, 2);
+                    }
 
-    public function bar()
-    {
-        $lambdaOne = static function () {
-            $this->assertSame(1, 21);
-            self::assertSame(1, 21);
-            static::assertSame(1, 21);
-        };
+                    public function bar()
+                    {
+                        $lambdaOne = static function () {
+                            $this->assertSame(1, 21);
+                            self::assertSame(1, 21);
+                            static::assertSame(1, 21);
+                        };
 
-        $lambdaTwo = function () {
-            $this->assertSame(1, 21);
-            self::assertSame(1, 21);
-            static::assertSame(1, 21);
-        };
-    }
+                        $lambdaTwo = function () {
+                            $this->assertSame(1, 21);
+                            self::assertSame(1, 21);
+                            static::assertSame(1, 21);
+                        };
+                    }
 
-    public function baz2()
-    {
-        $this->assertSame(1, 22);
-        $this->assertSame(1, 22);
-        $this->assertSame(1, 22);
-        $this->assertSame(1, 23);
-    }
+                    public function baz2()
+                    {
+                        $this->assertSame(1, 22);
+                        $this->assertSame(1, 22);
+                        $this->assertSame(1, 22);
+                        $this->assertSame(1, 23);
+                    }
 
-}
-EOF
+                }
+                EOF
             ,
             <<<'EOF'
-<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function foo()
-    {
-        $this->assertSame(1, 2);
-        self::assertSame(1, 2);
-        static::assertSame(1, 2);
-    }
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function foo()
+                    {
+                        $this->assertSame(1, 2);
+                        self::assertSame(1, 2);
+                        static::assertSame(1, 2);
+                    }
 
-    public function bar()
-    {
-        $lambdaOne = static function () {
-            $this->assertSame(1, 21);
-            self::assertSame(1, 21);
-            static::assertSame(1, 21);
-        };
+                    public function bar()
+                    {
+                        $lambdaOne = static function () {
+                            $this->assertSame(1, 21);
+                            self::assertSame(1, 21);
+                            static::assertSame(1, 21);
+                        };
 
-        $lambdaTwo = function () {
-            $this->assertSame(1, 21);
-            self::assertSame(1, 21);
-            static::assertSame(1, 21);
-        };
-    }
+                        $lambdaTwo = function () {
+                            $this->assertSame(1, 21);
+                            self::assertSame(1, 21);
+                            static::assertSame(1, 21);
+                        };
+                    }
 
-    public function baz2()
-    {
-        $this->assertSame(1, 22);
-        self::assertSame(1, 22);
-        static::assertSame(1, 22);
-        STATIC::assertSame(1, 23);
-    }
+                    public function baz2()
+                    {
+                        $this->assertSame(1, 22);
+                        self::assertSame(1, 22);
+                        static::assertSame(1, 22);
+                        STATIC::assertSame(1, 23);
+                    }
 
-}
-EOF
+                }
+                EOF
             ,
             [
                 'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
@@ -449,42 +449,42 @@ EOF
 
         yield 'do not change class property and method signature' => [
             <<<'EOF'
-<?php
-class FooTest extends TestCase
-{
-    public function foo()
-    {
-        $this->assertSame = 42;
-    }
+                <?php
+                class FooTest extends TestCase
+                {
+                    public function foo()
+                    {
+                        $this->assertSame = 42;
+                    }
 
-    public function assertSame($foo, $bar){}
-}
-EOF
+                    public function assertSame($foo, $bar){}
+                }
+                EOF
             ,
         ];
 
         yield 'do not change when only case is different' => [
             <<<'EOF'
-<?php
-class FooTest extends TestCase
-{
-    public function foo()
-    {
-        STATIC::assertSame(1, 1);
-    }
-}
-EOF
+                <?php
+                class FooTest extends TestCase
+                {
+                    public function foo()
+                    {
+                        STATIC::assertSame(1, 1);
+                    }
+                }
+                EOF
             ,
         ];
 
         yield 'do not crash on abstract static function' => [
             <<<'EOF'
-<?php
-abstract class FooTest extends TestCase
-{
-    abstract public static function dataProvider();
-}
-EOF
+                <?php
+                abstract class FooTest extends TestCase
+                {
+                    abstract public static function dataProvider();
+                }
+                EOF
             ,
             null,
             [

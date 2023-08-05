@@ -381,21 +381,21 @@ $a#
 
         yield 'test half-multiline function becomes fully-multiline' => [
             <<<'EXPECTED'
-<?php
-functionCall(
-    'a',
-    'b',
-    'c'
-);
-EXPECTED
+                <?php
+                functionCall(
+                    'a',
+                    'b',
+                    'c'
+                );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-functionCall(
-    'a', 'b',
-    'c'
-);
-INPUT
+                <?php
+                functionCall(
+                    'a', 'b',
+                    'c'
+                );
+                INPUT
             ,
         ];
 
@@ -413,405 +413,405 @@ f(1,2,
 
         yield 'function calls with here doc cannot be anything but multiline' => [
             <<<'EXPECTED'
-<?php
-str_replace(
-    "\n",
-    PHP_EOL,
-    <<<'TEXT'
-   1) someFile.php
+                <?php
+                str_replace(
+                    "\n",
+                    PHP_EOL,
+                    <<<'TEXT'
+                   1) someFile.php
 
-TEXT
-);
-EXPECTED
+                TEXT
+                );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-str_replace("\n", PHP_EOL, <<<'TEXT'
-   1) someFile.php
+                <?php
+                str_replace("\n", PHP_EOL, <<<'TEXT'
+                   1) someFile.php
 
-TEXT
-);
-INPUT
+                TEXT
+                );
+                INPUT
             ,
         ];
 
         yield 'test barely multiline function with blank lines becomes fully-multiline' => [
             <<<'EXPECTED'
-<?php
-functionCall(
-    'a',
-    'b',
-    'c'
-);
-EXPECTED
+                <?php
+                functionCall(
+                    'a',
+                    'b',
+                    'c'
+                );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-functionCall('a', 'b',
+                <?php
+                functionCall('a', 'b',
 
-    'c');
-INPUT
+                    'c');
+                INPUT
             ,
         ];
 
         yield 'test indentation is preserved' => [
             <<<'EXPECTED'
-<?php
-if (true) {
-    functionCall(
-        'a',
-        'b',
-        'c'
-    );
-}
-EXPECTED
+                <?php
+                if (true) {
+                    functionCall(
+                        'a',
+                        'b',
+                        'c'
+                    );
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-if (true) {
-    functionCall(
-        'a', 'b',
-        'c'
-    );
-}
-INPUT
+                <?php
+                if (true) {
+                    functionCall(
+                        'a', 'b',
+                        'c'
+                    );
+                }
+                INPUT
             ,
         ];
 
         yield 'test multiline array arguments do not trigger multiline' => [
             <<<'EXPECTED'
-<?php
-defraculate(1, array(
-    'a',
-    'b',
-    'c',
-), 42);
-EXPECTED
+                <?php
+                defraculate(1, array(
+                    'a',
+                    'b',
+                    'c',
+                ), 42);
+                EXPECTED
             ,
         ];
 
         yield 'test multiline function arguments do not trigger multiline' => [
             <<<'EXPECTED'
-<?php
-defraculate(1, function () {
-    $a = 42;
-}, 42);
-EXPECTED
+                <?php
+                defraculate(1, function () {
+                    $a = 42;
+                }, 42);
+                EXPECTED
             ,
         ];
 
         yield 'test violation after opening parenthesis' => [
             <<<'EXPECTED'
-<?php
-defraculate(
-    1,
-    2,
-    3
-);
-EXPECTED
+                <?php
+                defraculate(
+                    1,
+                    2,
+                    3
+                );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-defraculate(
-    1, 2, 3);
-INPUT
+                <?php
+                defraculate(
+                    1, 2, 3);
+                INPUT
             ,
         ];
 
         yield 'test violation after opening parenthesis, indented with two spaces' => [
             <<<'EXPECTED'
-<?php
-defraculate(
-  1,
-  2,
-  3
-);
-EXPECTED
+                <?php
+                defraculate(
+                  1,
+                  2,
+                  3
+                );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-defraculate(
-  1, 2, 3);
-INPUT
+                <?php
+                defraculate(
+                  1, 2, 3);
+                INPUT
             ,
         ];
 
         yield 'test violation after opening parenthesis, indented with tabs' => [
             <<<'EXPECTED'
-<?php
-defraculate(
-	1,
-	2,
-	3
-);
-EXPECTED
+                <?php
+                defraculate(
+                	1,
+                	2,
+                	3
+                );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-defraculate(
-	1, 2, 3);
-INPUT
+                <?php
+                defraculate(
+                	1, 2, 3);
+                INPUT
             ,
         ];
 
         yield 'test violation before closing parenthesis' => [
             <<<'EXPECTED'
-<?php
-defraculate(
-    1,
-    2,
-    3
-);
-EXPECTED
+                <?php
+                defraculate(
+                    1,
+                    2,
+                    3
+                );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-defraculate(1, 2, 3
-);
-INPUT
+                <?php
+                defraculate(1, 2, 3
+                );
+                INPUT
             ,
         ];
 
         yield 'test violation before closing parenthesis in nested call' => [
             <<<'EXPECTED'
-<?php
-getSchwifty('rick', defraculate(
-    1,
-    2,
-    3
-), 'morty');
-EXPECTED
+                <?php
+                getSchwifty('rick', defraculate(
+                    1,
+                    2,
+                    3
+                ), 'morty');
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-getSchwifty('rick', defraculate(1, 2, 3
-), 'morty');
-INPUT
+                <?php
+                getSchwifty('rick', defraculate(1, 2, 3
+                ), 'morty');
+                INPUT
             ,
         ];
 
         yield 'test with comment between arguments' => [
             <<<'EXPECTED'
-<?php
-functionCall(
-    'a', /* comment */
-    'b',
-    'c'
-);
-EXPECTED
+                <?php
+                functionCall(
+                    'a', /* comment */
+                    'b',
+                    'c'
+                );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-functionCall(
-    'a',/* comment */'b',
-    'c'
-);
-INPUT
+                <?php
+                functionCall(
+                    'a',/* comment */'b',
+                    'c'
+                );
+                INPUT
             ,
         ];
 
         yield 'test with deeply nested arguments' => [
             <<<'EXPECTED'
-<?php
-foo(
-    'a',
-    'b',
-    [
-        'c',
-        'd', bar('e', 'f'),
-        baz(
-            'g',
-            ['h',
-                'i',
-            ]
-        ),
-    ]
-);
-EXPECTED
+                <?php
+                foo(
+                    'a',
+                    'b',
+                    [
+                        'c',
+                        'd', bar('e', 'f'),
+                        baz(
+                            'g',
+                            ['h',
+                                'i',
+                            ]
+                        ),
+                    ]
+                );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-foo('a',
-    'b',
-    [
-        'c',
-        'd', bar('e', 'f'),
-        baz('g',
-            ['h',
-                'i',
-            ]),
-    ]);
-INPUT
+                <?php
+                foo('a',
+                    'b',
+                    [
+                        'c',
+                        'd', bar('e', 'f'),
+                        baz('g',
+                            ['h',
+                                'i',
+                            ]),
+                    ]);
+                INPUT
             ,
         ];
 
         yield 'multiline string argument' => [
             <<<'UNAFFECTED'
-<?php
-$this->with('<?php
-%s
-class FooClass
-{
-}', $comment, false);
-UNAFFECTED
+                <?php
+                $this->with('<?php
+                %s
+                class FooClass
+                {
+                }', $comment, false);
+                UNAFFECTED
             ,
         ];
 
         yield 'arrays with whitespace inside' => [
             <<<'UNAFFECTED'
-<?php
-$a = array/**/(  1);
-$a = array/**/( 12,
-7);
-$a = array/***/(123,  7);
-$a = array (        1,
-2);
-UNAFFECTED
+                <?php
+                $a = array/**/(  1);
+                $a = array/**/( 12,
+                7);
+                $a = array/***/(123,  7);
+                $a = array (        1,
+                2);
+                UNAFFECTED
             ,
         ];
 
         yield 'test code that should not be affected (because not a function nor a method)' => [
             <<<'UNAFFECTED'
-<?php
-if (true &&
-    true
-    ) {
-    // do whatever
-}
-UNAFFECTED
+                <?php
+                if (true &&
+                    true
+                    ) {
+                    // do whatever
+                }
+                UNAFFECTED
             ,
         ];
 
         yield 'test ungodly code' => [
             <<<'EXPECTED'
-<?php
-$a = function#
-(#
-#
-$a#
-#
-,#
-#
-$b,
-    $c#
-#
-)#
-use (
-    $b1,
-    $c1,
-    $d1
-) {
-};
-EXPECTED
+                <?php
+                $a = function#
+                (#
+                #
+                $a#
+                #
+                ,#
+                #
+                $b,
+                    $c#
+                #
+                )#
+                use (
+                    $b1,
+                    $c1,
+                    $d1
+                ) {
+                };
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-$a = function#
-(#
-#
-$a#
-#
-,#
-#
-$b,$c#
-#
-)#
-use ($b1,
-$c1,$d1) {
-};
-INPUT
+                <?php
+                $a = function#
+                (#
+                #
+                $a#
+                #
+                ,#
+                #
+                $b,$c#
+                #
+                )#
+                use ($b1,
+                $c1,$d1) {
+                };
+                INPUT
             ,
         ];
 
         yield 'test list' => [
             <<<'UNAFFECTED'
-<?php
-// no fix
-list($a,
-    $b, $c) = $a;
-isset($a,
-$b, $c);
-unset($a,
-$b, $c);
-array(1,
-    2,3
-);
-UNAFFECTED
+                <?php
+                // no fix
+                list($a,
+                    $b, $c) = $a;
+                isset($a,
+                $b, $c);
+                unset($a,
+                $b, $c);
+                array(1,
+                    2,3
+                );
+                UNAFFECTED
             ,
         ];
 
         yield 'test function argument with multiline echo in it' => [
             <<<'UNAFFECTED'
-<?php
-call_user_func(function ($arguments) {
-    echo 'a',
-      'b';
-}, $argv);
-UNAFFECTED
+                <?php
+                call_user_func(function ($arguments) {
+                    echo 'a',
+                      'b';
+                }, $argv);
+                UNAFFECTED
             ,
         ];
 
         yield 'test function argument with oneline echo in it' => [
             <<<'EXPECTED'
-<?php
-call_user_func(
-    function ($arguments) {
-    echo 'a', 'b';
-},
-    $argv
-);
-EXPECTED
+                <?php
+                call_user_func(
+                    function ($arguments) {
+                    echo 'a', 'b';
+                },
+                    $argv
+                );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-call_user_func(function ($arguments) {
-    echo 'a', 'b';
-},
-$argv);
-INPUT
+                <?php
+                call_user_func(function ($arguments) {
+                    echo 'a', 'b';
+                },
+                $argv);
+                INPUT
             ,
         ];
 
         yield 'ensure_single_line' => [
             <<<'EXPECTED'
-<?php
-function foo($a, $b) {
-    // foo
-}
-foo($a, $b);
-EXPECTED
+                <?php
+                function foo($a, $b) {
+                    // foo
+                }
+                foo($a, $b);
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-function foo(
-    $a,
-    $b
-) {
-    // foo
-}
-foo(
-    $a,
-    $b
-);
-INPUT
+                <?php
+                function foo(
+                    $a,
+                    $b
+                ) {
+                    // foo
+                }
+                foo(
+                    $a,
+                    $b
+                );
+                INPUT
             ,
             ['on_multiline' => 'ensure_single_line'],
         ];
 
         yield 'ensure_single_line_with_random_comments' => [
             <<<'EXPECTED'
-<?php
-function foo(/* foo */// bar
-    $a, /* foo */// bar
-    $b#foo
-) {
-    // foo
-}
-foo(/* foo */// bar
-    $a, /* foo */// bar
-    $b#foo
-);
-EXPECTED
+                <?php
+                function foo(/* foo */// bar
+                    $a, /* foo */// bar
+                    $b#foo
+                ) {
+                    // foo
+                }
+                foo(/* foo */// bar
+                    $a, /* foo */// bar
+                    $b#foo
+                );
+                EXPECTED
             ,
             null,
             ['on_multiline' => 'ensure_single_line'],
@@ -819,120 +819,120 @@ EXPECTED
 
         yield 'ensure_single_line_with_consecutive_newlines' => [
             <<<'EXPECTED'
-<?php
-function foo($a, $b) {
-    // foo
-}
-foo($a, $b);
-EXPECTED
+                <?php
+                function foo($a, $b) {
+                    // foo
+                }
+                foo($a, $b);
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-function foo(
+                <?php
+                function foo(
 
 
-    $a,
+                    $a,
 
 
-    $b
+                    $b
 
 
-) {
-    // foo
-}
-foo(
+                ) {
+                    // foo
+                }
+                foo(
 
 
-    $a,
+                    $a,
 
 
-    $b
+                    $b
 
 
-);
-INPUT
+                );
+                INPUT
             ,
             ['on_multiline' => 'ensure_single_line'],
         ];
 
         yield 'ensure_single_line_methods' => [
             <<<'EXPECTED'
-<?php
-class Foo {
-    public static function foo1($a, $b, $c) {}
-    private function foo2($a, $b, $c) {}
-}
-EXPECTED
+                <?php
+                class Foo {
+                    public static function foo1($a, $b, $c) {}
+                    private function foo2($a, $b, $c) {}
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-class Foo {
-    public static function foo1(
-        $a,
-        $b,
-        $c
-    ) {}
-    private function foo2(
-        $a,
-        $b,
-        $c
-    ) {}
-}
-INPUT
+                <?php
+                class Foo {
+                    public static function foo1(
+                        $a,
+                        $b,
+                        $c
+                    ) {}
+                    private function foo2(
+                        $a,
+                        $b,
+                        $c
+                    ) {}
+                }
+                INPUT
             ,
             ['on_multiline' => 'ensure_single_line'],
         ];
 
         yield 'ensure_single_line_methods_in_anonymous_class' => [
             <<<'EXPECTED'
-<?php
-new class {
-    public static function foo1($a, $b, $c) {}
-    private function foo2($a, $b, $c) {}
-};
-EXPECTED
+                <?php
+                new class {
+                    public static function foo1($a, $b, $c) {}
+                    private function foo2($a, $b, $c) {}
+                };
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-new class {
-    public static function foo1(
-        $a,
-        $b,
-        $c
-    ) {}
-    private function foo2(
-        $a,
-        $b,
-        $c
-    ) {}
-};
-INPUT
+                <?php
+                new class {
+                    public static function foo1(
+                        $a,
+                        $b,
+                        $c
+                    ) {}
+                    private function foo2(
+                        $a,
+                        $b,
+                        $c
+                    ) {}
+                };
+                INPUT
             ,
             ['on_multiline' => 'ensure_single_line'],
         ];
 
         yield 'ensure_single_line_keep_spaces_after_comma' => [
             <<<'EXPECTED'
-<?php
-function foo($a,    $b) {
-    // foo
-}
-foo($a,    $b);
-EXPECTED
+                <?php
+                function foo($a,    $b) {
+                    // foo
+                }
+                foo($a,    $b);
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-function foo(
-    $a,
-    $b
-) {
-    // foo
-}
-foo(
-    $a,
-    $b
-);
-INPUT
+                <?php
+                function foo(
+                    $a,
+                    $b
+                ) {
+                    // foo
+                }
+                foo(
+                    $a,
+                    $b
+                );
+                INPUT
             ,
             [
                 'on_multiline' => 'ensure_single_line',
@@ -1026,37 +1026,37 @@ $example = function () use ($message1,$message2) {
 
         yield [
             <<<'EXPECTED'
-<?php
-foo(
-    <<<'EOD'
-        bar
-        EOD,
-    'baz'
-);
-EXPECTED
+                <?php
+                foo(
+                    <<<'EOD'
+                        bar
+                        EOD,
+                    'baz'
+                );
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-foo(
-    <<<'EOD'
-        bar
-        EOD
-    ,
-    'baz'
-);
-INPUT
+                <?php
+                foo(
+                    <<<'EOD'
+                        bar
+                        EOD
+                    ,
+                    'baz'
+                );
+                INPUT
             ,
             ['after_heredoc' => true],
         ];
 
         yield [
             <<<'EXPECTED'
-<?php
-foo(
-    $bar,
-    $baz,
-);
-EXPECTED
+                <?php
+                foo(
+                    $bar,
+                    $baz,
+                );
+                EXPECTED
             ,
             null,
             ['on_multiline' => 'ensure_fully_multiline'],

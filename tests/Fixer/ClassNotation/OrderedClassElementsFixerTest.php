@@ -39,349 +39,349 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
     {
         yield [
             <<<'EOT'
-<?php
+                <?php
 
-class Foo {}
+                class Foo {}
 
-class Bar
-{
-}
-EOT
+                class Bar
+                {
+                }
+                EOT
         ];
 
         yield [
             <<<'EOT'
-<?php
+                <?php
 
-class Foo { const C1 = 1; protected $abc = 'abc'; public function baz($y, $z) {} private function bar1($x) { return 1; } }
-EOT
+                class Foo { const C1 = 1; protected $abc = 'abc'; public function baz($y, $z) {} private function bar1($x) { return 1; } }
+                EOT
             , <<<'EOT'
-<?php
+                <?php
 
-class Foo { private function bar1($x) { return 1; } protected $abc = 'abc'; const C1 = 1; public function baz($y, $z) {} }
-EOT
+                class Foo { private function bar1($x) { return 1; } protected $abc = 'abc'; const C1 = 1; public function baz($y, $z) {} }
+                EOT
         ];
 
         yield [
             <<<'EOT'
-<?php
+                <?php
 
-interface FooInterface
-{
+                interface FooInterface
+                {
 
-    /** const 1 */
-    const CONST1 = 'const1';
+                    /** const 1 */
+                    const CONST1 = 'const1';
 
-    // foo
+                    // foo
 
-    // const 2
-    const CONST2 = 'const2';
-    public function xyz($x, $y, $z); // comment
+                    // const 2
+                    const CONST2 = 'const2';
+                    public function xyz($x, $y, $z); // comment
 
-    /**
-     * @param array $a
-     *
-     * @return string
-     */
-    function abc(array &$a = null);
+                    /**
+                     * @param array $a
+                     *
+                     * @return string
+                     */
+                    function abc(array &$a = null);
 
-    public function def();
-}
-EOT
+                    public function def();
+                }
+                EOT
             , <<<'EOT'
-<?php
+                <?php
 
-interface FooInterface
-{
-    public function xyz($x, $y, $z); // comment
+                interface FooInterface
+                {
+                    public function xyz($x, $y, $z); // comment
 
-    /** const 1 */
-    const CONST1 = 'const1';
+                    /** const 1 */
+                    const CONST1 = 'const1';
 
-    /**
-     * @param array $a
-     *
-     * @return string
-     */
-    function abc(array &$a = null);
+                    /**
+                     * @param array $a
+                     *
+                     * @return string
+                     */
+                    function abc(array &$a = null);
 
-    // foo
+                    // foo
 
-    // const 2
-    const CONST2 = 'const2';
+                    // const 2
+                    const CONST2 = 'const2';
 
-    public function def();
-}
-EOT
+                    public function def();
+                }
+                EOT
         ];
 
         yield [
             <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo extends FooParent implements FooInterface1, FooInterface2
-{
+                abstract class Foo extends FooParent implements FooInterface1, FooInterface2
+                {
 
-    use Bar;
+                    use Bar;
 
-    use Baz {
-        abc as private;
-    }
+                    use Baz {
+                        abc as private;
+                    }
 
-    const C1 = 1;
-    /* comment for C2 */
+                    const C1 = 1;
+                    /* comment for C2 */
 
-    const C2 = 2;
+                    const C2 = 2;
 
-    public $fooPublic;
+                    public $fooPublic;
 
-    // comment 3
+                    // comment 3
 
-    protected $fooProtected = array(1, 2);
-    // comment 1
+                    protected $fooProtected = array(1, 2);
+                    // comment 1
 
-    private $fooPrivate;
+                    private $fooPrivate;
 
-    protected function __construct()
-    {
-    }
+                    protected function __construct()
+                    {
+                    }
 
-    public function __destruct() {}
+                    public function __destruct() {}
 
-    public function __clone() {}
+                    public function __clone() {}
 
-    public static function setUpBeforeClass() {}
+                    public static function setUpBeforeClass() {}
 
-    public static function tearDownAfterclass() {
-    } /* multiline
-    comment */
+                    public static function tearDownAfterclass() {
+                    } /* multiline
+                    comment */
 
-    protected function setUp() {}
+                    protected function setUp() {}
 
-    protected function assertPreConditions() {}
+                    protected function assertPreConditions() {}
 
-    protected function assertPostConditions() {}
+                    protected function assertPostConditions() {}
 
-    protected function tearDown() {}
+                    protected function tearDown() {}
 
-    abstract public function foo1($a, $b = 1);
+                    abstract public function foo1($a, $b = 1);
 
-    // foo2
-    function foo2()
-    {
-        return $this->foo1(1);
-    }
+                    // foo2
+                    function foo2()
+                    {
+                        return $this->foo1(1);
+                    }
 
-    public static function foo3(self $foo)
-    {
-        return $foo->foo2();
-    } /* comment 1 */ /* comment 2 */
+                    public static function foo3(self $foo)
+                    {
+                        return $foo->foo2();
+                    } /* comment 1 */ /* comment 2 */
 
-    // comment
+                    // comment
 
-    /**
-     * Docblock
-     */
-    protected function foo4(\ArrayObject $object, array $array, $a = null)
-    {
-        bar();
+                    /**
+                     * Docblock
+                     */
+                    protected function foo4(\ArrayObject $object, array $array, $a = null)
+                    {
+                        bar();
 
-        if (!$a) {
-            $a = function ($x) {
-                var_dump($x);
-            };
-        }
-    }
+                        if (!$a) {
+                            $a = function ($x) {
+                                var_dump($x);
+                            };
+                        }
+                    }
 
-    private function foo5()
-    {
-    } // end foo5
-}
-EOT
+                    private function foo5()
+                    {
+                    } // end foo5
+                }
+                EOT
             , <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo extends FooParent implements FooInterface1, FooInterface2
-{
-    // comment 1
+                abstract class Foo extends FooParent implements FooInterface1, FooInterface2
+                {
+                    // comment 1
 
-    private $fooPrivate;
+                    private $fooPrivate;
 
-    abstract public function foo1($a, $b = 1);
+                    abstract public function foo1($a, $b = 1);
 
-    protected function setUp() {}
+                    protected function setUp() {}
 
-    protected function tearDown() {}
+                    protected function tearDown() {}
 
-    public function __clone() {}
+                    public function __clone() {}
 
-    const C1 = 1;
+                    const C1 = 1;
 
-    // foo2
-    function foo2()
-    {
-        return $this->foo1(1);
-    }
+                    // foo2
+                    function foo2()
+                    {
+                        return $this->foo1(1);
+                    }
 
-    public static function setUpBeforeClass() {}
+                    public static function setUpBeforeClass() {}
 
-    public function __destruct() {}
+                    public function __destruct() {}
 
-    use Bar;
+                    use Bar;
 
-    public static function foo3(self $foo)
-    {
-        return $foo->foo2();
-    } /* comment 1 */ /* comment 2 */
+                    public static function foo3(self $foo)
+                    {
+                        return $foo->foo2();
+                    } /* comment 1 */ /* comment 2 */
 
-    // comment 3
+                    // comment 3
 
-    protected $fooProtected = array(1, 2);
+                    protected $fooProtected = array(1, 2);
 
-    public $fooPublic;
-    /* comment for C2 */
+                    public $fooPublic;
+                    /* comment for C2 */
 
-    const C2 = 2;
+                    const C2 = 2;
 
-    public static function tearDownAfterclass() {
-    } /* multiline
-    comment */
+                    public static function tearDownAfterclass() {
+                    } /* multiline
+                    comment */
 
-    protected function assertPostConditions() {}
+                    protected function assertPostConditions() {}
 
-    use Baz {
-        abc as private;
-    }
+                    use Baz {
+                        abc as private;
+                    }
 
-    protected function assertPreConditions() {}
+                    protected function assertPreConditions() {}
 
-    private function foo5()
-    {
-    } // end foo5
+                    private function foo5()
+                    {
+                    } // end foo5
 
-    protected function __construct()
-    {
-    }
+                    protected function __construct()
+                    {
+                    }
 
-    // comment
+                    // comment
 
-    /**
-     * Docblock
-     */
-    protected function foo4(\ArrayObject $object, array $array, $a = null)
-    {
-        bar();
+                    /**
+                     * Docblock
+                     */
+                    protected function foo4(\ArrayObject $object, array $array, $a = null)
+                    {
+                        bar();
 
-        if (!$a) {
-            $a = function ($x) {
-                var_dump($x);
-            };
-        }
-    }
-}
-EOT
+                        if (!$a) {
+                            $a = function ($x) {
+                                var_dump($x);
+                            };
+                        }
+                    }
+                }
+                EOT
         ];
 
         yield [
             <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    const C = 'C';
-    public function abc() {}
-    protected function xyz() {}
-}
+                class Foo
+                {
+                    const C = 'C';
+                    public function abc() {}
+                    protected function xyz() {}
+                }
 
-class Bar
-{
-    const C = 1;
-    public function foo($a) { return 1; }
-    public function baz() {}
-}
-EOT
+                class Bar
+                {
+                    const C = 1;
+                    public function foo($a) { return 1; }
+                    public function baz() {}
+                }
+                EOT
             , <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    protected function xyz() {}
-    const C = 'C';
-    public function abc() {}
-}
+                class Foo
+                {
+                    protected function xyz() {}
+                    const C = 'C';
+                    public function abc() {}
+                }
 
-class Bar
-{
-    public function foo($a) { return 1; }
-    const C = 1;
-    public function baz() {}
-}
-EOT
+                class Bar
+                {
+                    public function foo($a) { return 1; }
+                    const C = 1;
+                    public function baz() {}
+                }
+                EOT
         ];
 
         yield [
             <<<'EOT'
-<?php
+                <?php
 
-trait FooTrait
-{
+                trait FooTrait
+                {
 
-    use BarTrait;
+                    use BarTrait;
 
-    use BazTrait;
-    protected function abc() {
-    }
-}
-EOT
+                    use BazTrait;
+                    protected function abc() {
+                    }
+                }
+                EOT
             , <<<'EOT'
-<?php
+                <?php
 
-trait FooTrait
-{
-    protected function abc() {
-    }
+                trait FooTrait
+                {
+                    protected function abc() {
+                    }
 
-    use BarTrait;
+                    use BarTrait;
 
-    use BazTrait;
-}
-EOT
+                    use BazTrait;
+                }
+                EOT
         ];
 
         yield [
             <<<'EOT'
-<?php
+                <?php
 
-/**
- * @see #4086
- */
-class ComplexStringVariableAndUseTrait
-{
-    use FooTrait;
-    public function sayHello($name)
-    {
-        echo "Hello, {$name}!";
-    }
-}
+                /**
+                 * @see #4086
+                 */
+                class ComplexStringVariableAndUseTrait
+                {
+                    use FooTrait;
+                    public function sayHello($name)
+                    {
+                        echo "Hello, {$name}!";
+                    }
+                }
 
-EOT
+                EOT
             ,
             <<<'EOT'
-<?php
+                <?php
 
-/**
- * @see #4086
- */
-class ComplexStringVariableAndUseTrait
-{
-    public function sayHello($name)
-    {
-        echo "Hello, {$name}!";
-    }
-    use FooTrait;
-}
+                /**
+                 * @see #4086
+                 */
+                class ComplexStringVariableAndUseTrait
+                {
+                    public function sayHello($name)
+                    {
+                        echo "Hello, {$name}!";
+                    }
+                    use FooTrait;
+                }
 
-EOT
+                EOT
         ];
     }
 
@@ -401,144 +401,144 @@ EOT
         yield [
             ['use_trait', 'constant', 'property', 'construct', 'method', 'destruct'],
             <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    use BarTrait;
-    use BazTrait;
-    const C1 = 1;
-    const C2 = 2;
-    protected static $protStatProp;
-    public static $pubStatProp1;
-    public $pubProp1;
-    protected $protProp;
-    var $pubProp2;
-    private static $privStatProp;
-    private $privProp;
-    public static $pubStatProp2;
-    public $pubProp3;
-    protected function __construct() {}
-    private static function privStatFunc() {}
-    public function pubFunc1() {}
-    public function __toString() {}
-    protected function protFunc() {}
-    function pubFunc2() {}
-    public static function pubStatFunc1() {}
-    public function pubFunc3() {}
-    static function pubStatFunc2() {}
-    private function privFunc() {}
-    public static function pubStatFunc3() {}
-    protected static function protStatFunc() {}
-    public function __destruct() {}
-}
-EOT
+                class Foo
+                {
+                    use BarTrait;
+                    use BazTrait;
+                    const C1 = 1;
+                    const C2 = 2;
+                    protected static $protStatProp;
+                    public static $pubStatProp1;
+                    public $pubProp1;
+                    protected $protProp;
+                    var $pubProp2;
+                    private static $privStatProp;
+                    private $privProp;
+                    public static $pubStatProp2;
+                    public $pubProp3;
+                    protected function __construct() {}
+                    private static function privStatFunc() {}
+                    public function pubFunc1() {}
+                    public function __toString() {}
+                    protected function protFunc() {}
+                    function pubFunc2() {}
+                    public static function pubStatFunc1() {}
+                    public function pubFunc3() {}
+                    static function pubStatFunc2() {}
+                    private function privFunc() {}
+                    public static function pubStatFunc3() {}
+                    protected static function protStatFunc() {}
+                    public function __destruct() {}
+                }
+                EOT
             ,
             <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    private static function privStatFunc() {}
-    protected static $protStatProp;
-    public static $pubStatProp1;
-    public function pubFunc1() {}
-    use BarTrait;
-    public $pubProp1;
-    public function __toString() {}
-    protected function protFunc() {}
-    protected $protProp;
-    function pubFunc2() {}
-    public function __destruct() {}
-    var $pubProp2;
-    private static $privStatProp;
-    use BazTrait;
-    public static function pubStatFunc1() {}
-    public function pubFunc3() {}
-    private $privProp;
-    const C1 = 1;
-    static function pubStatFunc2() {}
-    private function privFunc() {}
-    public static $pubStatProp2;
-    protected function __construct() {}
-    const C2 = 2;
-    public static function pubStatFunc3() {}
-    public $pubProp3;
-    protected static function protStatFunc() {}
-}
-EOT
+                class Foo
+                {
+                    private static function privStatFunc() {}
+                    protected static $protStatProp;
+                    public static $pubStatProp1;
+                    public function pubFunc1() {}
+                    use BarTrait;
+                    public $pubProp1;
+                    public function __toString() {}
+                    protected function protFunc() {}
+                    protected $protProp;
+                    function pubFunc2() {}
+                    public function __destruct() {}
+                    var $pubProp2;
+                    private static $privStatProp;
+                    use BazTrait;
+                    public static function pubStatFunc1() {}
+                    public function pubFunc3() {}
+                    private $privProp;
+                    const C1 = 1;
+                    static function pubStatFunc2() {}
+                    private function privFunc() {}
+                    public static $pubStatProp2;
+                    protected function __construct() {}
+                    const C2 = 2;
+                    public static function pubStatFunc3() {}
+                    public $pubProp3;
+                    protected static function protStatFunc() {}
+                }
+                EOT
             ,
         ];
 
         yield [
             ['public', 'protected', 'private'],
             <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    public static $pubStatProp1;
-    public function pubFunc1() {}
-    public $pubProp1;
-    public function __toString() {}
-    function pubFunc2() {}
-    public function __destruct() {}
-    var $pubProp2;
-    public static function pubStatFunc1() {}
-    public function pubFunc3() {}
-    const C1 = 1;
-    static function pubStatFunc2() {}
-    public static $pubStatProp2;
-    const C2 = 2;
-    public static function pubStatFunc3() {}
-    public $pubProp3;
-    protected static $protStatProp;
-    protected function protFunc() {}
-    protected $protProp;
-    protected function __construct() {}
-    protected static function protStatFunc() {}
-    private static function privStatFunc() {}
-    private static $privStatProp;
-    private $privProp;
-    private function privFunc() {}
-    use BarTrait;
-    use BazTrait;
-}
-EOT
+                class Foo
+                {
+                    public static $pubStatProp1;
+                    public function pubFunc1() {}
+                    public $pubProp1;
+                    public function __toString() {}
+                    function pubFunc2() {}
+                    public function __destruct() {}
+                    var $pubProp2;
+                    public static function pubStatFunc1() {}
+                    public function pubFunc3() {}
+                    const C1 = 1;
+                    static function pubStatFunc2() {}
+                    public static $pubStatProp2;
+                    const C2 = 2;
+                    public static function pubStatFunc3() {}
+                    public $pubProp3;
+                    protected static $protStatProp;
+                    protected function protFunc() {}
+                    protected $protProp;
+                    protected function __construct() {}
+                    protected static function protStatFunc() {}
+                    private static function privStatFunc() {}
+                    private static $privStatProp;
+                    private $privProp;
+                    private function privFunc() {}
+                    use BarTrait;
+                    use BazTrait;
+                }
+                EOT
             ,
             <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    private static function privStatFunc() {}
-    protected static $protStatProp;
-    public static $pubStatProp1;
-    public function pubFunc1() {}
-    use BarTrait;
-    public $pubProp1;
-    public function __toString() {}
-    protected function protFunc() {}
-    protected $protProp;
-    function pubFunc2() {}
-    public function __destruct() {}
-    var $pubProp2;
-    private static $privStatProp;
-    use BazTrait;
-    public static function pubStatFunc1() {}
-    public function pubFunc3() {}
-    private $privProp;
-    const C1 = 1;
-    static function pubStatFunc2() {}
-    private function privFunc() {}
-    public static $pubStatProp2;
-    protected function __construct() {}
-    const C2 = 2;
-    public static function pubStatFunc3() {}
-    public $pubProp3;
-    protected static function protStatFunc() {}
-}
-EOT
+                class Foo
+                {
+                    private static function privStatFunc() {}
+                    protected static $protStatProp;
+                    public static $pubStatProp1;
+                    public function pubFunc1() {}
+                    use BarTrait;
+                    public $pubProp1;
+                    public function __toString() {}
+                    protected function protFunc() {}
+                    protected $protProp;
+                    function pubFunc2() {}
+                    public function __destruct() {}
+                    var $pubProp2;
+                    private static $privStatProp;
+                    use BazTrait;
+                    public static function pubStatFunc1() {}
+                    public function pubFunc3() {}
+                    private $privProp;
+                    const C1 = 1;
+                    static function pubStatFunc2() {}
+                    private function privFunc() {}
+                    public static $pubStatProp2;
+                    protected function __construct() {}
+                    const C2 = 2;
+                    public static function pubStatFunc3() {}
+                    public $pubProp3;
+                    protected static function protStatFunc() {}
+                }
+                EOT
             ,
         ];
 
@@ -563,232 +563,232 @@ EOT
                 'method_private',
             ],
             <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    use BarTrait;
-    use BazTrait;
-    const C1 = 1;
-    const C2 = 2;
-    public static $pubStatProp1;
-    public static $pubStatProp2;
-    protected static $protStatProp;
-    private static $privStatProp;
-    public $pubProp1;
-    var $pubProp2;
-    public $pubProp3;
-    protected $protProp;
-    private $privProp;
-    protected function __construct() {}
-    public function __destruct() {}
-    public function __toString() {}
-    public static function pubStatFunc1() {}
-    static function pubStatFunc2() {}
-    public static function pubStatFunc3() {}
-    protected static function protStatFunc() {}
-    private static function privStatFunc() {}
-    public function pubFunc1() {}
-    function pubFunc2() {}
-    public function pubFunc3() {}
-    protected function protFunc() {}
-    private function privFunc() {}
-}
-EOT
+                class Foo
+                {
+                    use BarTrait;
+                    use BazTrait;
+                    const C1 = 1;
+                    const C2 = 2;
+                    public static $pubStatProp1;
+                    public static $pubStatProp2;
+                    protected static $protStatProp;
+                    private static $privStatProp;
+                    public $pubProp1;
+                    var $pubProp2;
+                    public $pubProp3;
+                    protected $protProp;
+                    private $privProp;
+                    protected function __construct() {}
+                    public function __destruct() {}
+                    public function __toString() {}
+                    public static function pubStatFunc1() {}
+                    static function pubStatFunc2() {}
+                    public static function pubStatFunc3() {}
+                    protected static function protStatFunc() {}
+                    private static function privStatFunc() {}
+                    public function pubFunc1() {}
+                    function pubFunc2() {}
+                    public function pubFunc3() {}
+                    protected function protFunc() {}
+                    private function privFunc() {}
+                }
+                EOT
             ,
             <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    private static function privStatFunc() {}
-    protected static $protStatProp;
-    public static $pubStatProp1;
-    public function pubFunc1() {}
-    use BarTrait;
-    public $pubProp1;
-    public function __toString() {}
-    protected function protFunc() {}
-    protected $protProp;
-    function pubFunc2() {}
-    public function __destruct() {}
-    var $pubProp2;
-    private static $privStatProp;
-    use BazTrait;
-    public static function pubStatFunc1() {}
-    public function pubFunc3() {}
-    private $privProp;
-    const C1 = 1;
-    static function pubStatFunc2() {}
-    private function privFunc() {}
-    public static $pubStatProp2;
-    protected function __construct() {}
-    const C2 = 2;
-    public static function pubStatFunc3() {}
-    public $pubProp3;
-    protected static function protStatFunc() {}
-}
-EOT
+                class Foo
+                {
+                    private static function privStatFunc() {}
+                    protected static $protStatProp;
+                    public static $pubStatProp1;
+                    public function pubFunc1() {}
+                    use BarTrait;
+                    public $pubProp1;
+                    public function __toString() {}
+                    protected function protFunc() {}
+                    protected $protProp;
+                    function pubFunc2() {}
+                    public function __destruct() {}
+                    var $pubProp2;
+                    private static $privStatProp;
+                    use BazTrait;
+                    public static function pubStatFunc1() {}
+                    public function pubFunc3() {}
+                    private $privProp;
+                    const C1 = 1;
+                    static function pubStatFunc2() {}
+                    private function privFunc() {}
+                    public static $pubStatProp2;
+                    protected function __construct() {}
+                    const C2 = 2;
+                    public static function pubStatFunc3() {}
+                    public $pubProp3;
+                    protected static function protStatFunc() {}
+                }
+                EOT
             ,
         ];
 
         yield [
             ['use_trait', 'constant', 'property', 'construct', 'method', 'destruct'],
             <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo
-{
-    use BarTrait;
-    use BazTrait;
-    const C1 = 1;
-    const C2 = 2;
-    protected static $protStatProp;
-    public static $pubStatProp1;
-    public $pubProp1;
-    protected $protProp;
-    var $pubProp2;
-    private static $privStatProp;
-    private $privProp;
-    public static $pubStatProp2;
-    public $pubProp3;
-    protected function __construct() {}
-    abstract public function absPubFunc();
-    private static function privStatFunc() {}
-    public function pubFunc1() {}
-    abstract protected function absProtFunc();
-    public function __toString() {}
-    protected function protFunc() {}
-    function pubFunc2() {}
-    abstract protected static function absProtStatFunc();
-    public static function pubStatFunc1() {}
-    public function pubFunc3() {}
-    static function pubStatFunc2() {}
-    private function privFunc() {}
-    abstract public static function absPubStatFunc();
-    public static function pubStatFunc3() {}
-    protected static function protStatFunc() {}
-    public function __destruct() {}
-}
-EOT
+                abstract class Foo
+                {
+                    use BarTrait;
+                    use BazTrait;
+                    const C1 = 1;
+                    const C2 = 2;
+                    protected static $protStatProp;
+                    public static $pubStatProp1;
+                    public $pubProp1;
+                    protected $protProp;
+                    var $pubProp2;
+                    private static $privStatProp;
+                    private $privProp;
+                    public static $pubStatProp2;
+                    public $pubProp3;
+                    protected function __construct() {}
+                    abstract public function absPubFunc();
+                    private static function privStatFunc() {}
+                    public function pubFunc1() {}
+                    abstract protected function absProtFunc();
+                    public function __toString() {}
+                    protected function protFunc() {}
+                    function pubFunc2() {}
+                    abstract protected static function absProtStatFunc();
+                    public static function pubStatFunc1() {}
+                    public function pubFunc3() {}
+                    static function pubStatFunc2() {}
+                    private function privFunc() {}
+                    abstract public static function absPubStatFunc();
+                    public static function pubStatFunc3() {}
+                    protected static function protStatFunc() {}
+                    public function __destruct() {}
+                }
+                EOT
             ,
             <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo
-{
-    abstract public function absPubFunc();
-    private static function privStatFunc() {}
-    protected static $protStatProp;
-    public static $pubStatProp1;
-    public function pubFunc1() {}
-    abstract protected function absProtFunc();
-    use BarTrait;
-    public $pubProp1;
-    public function __toString() {}
-    protected function protFunc() {}
-    protected $protProp;
-    function pubFunc2() {}
-    abstract protected static function absProtStatFunc();
-    public function __destruct() {}
-    var $pubProp2;
-    private static $privStatProp;
-    use BazTrait;
-    public static function pubStatFunc1() {}
-    public function pubFunc3() {}
-    private $privProp;
-    const C1 = 1;
-    static function pubStatFunc2() {}
-    private function privFunc() {}
-    public static $pubStatProp2;
-    abstract public static function absPubStatFunc();
-    protected function __construct() {}
-    const C2 = 2;
-    public static function pubStatFunc3() {}
-    public $pubProp3;
-    protected static function protStatFunc() {}
-}
-EOT
+                abstract class Foo
+                {
+                    abstract public function absPubFunc();
+                    private static function privStatFunc() {}
+                    protected static $protStatProp;
+                    public static $pubStatProp1;
+                    public function pubFunc1() {}
+                    abstract protected function absProtFunc();
+                    use BarTrait;
+                    public $pubProp1;
+                    public function __toString() {}
+                    protected function protFunc() {}
+                    protected $protProp;
+                    function pubFunc2() {}
+                    abstract protected static function absProtStatFunc();
+                    public function __destruct() {}
+                    var $pubProp2;
+                    private static $privStatProp;
+                    use BazTrait;
+                    public static function pubStatFunc1() {}
+                    public function pubFunc3() {}
+                    private $privProp;
+                    const C1 = 1;
+                    static function pubStatFunc2() {}
+                    private function privFunc() {}
+                    public static $pubStatProp2;
+                    abstract public static function absPubStatFunc();
+                    protected function __construct() {}
+                    const C2 = 2;
+                    public static function pubStatFunc3() {}
+                    public $pubProp3;
+                    protected static function protStatFunc() {}
+                }
+                EOT
             ,
         ];
 
         yield [
             ['public', 'protected', 'private'],
             <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo
-{
-    abstract public function absPubFunc();
-    public static $pubStatProp1;
-    public function pubFunc1() {}
-    public $pubProp1;
-    public function __toString() {}
-    function pubFunc2() {}
-    public function __destruct() {}
-    var $pubProp2;
-    public static function pubStatFunc1() {}
-    public function pubFunc3() {}
-    const C1 = 1;
-    static function pubStatFunc2() {}
-    public static $pubStatProp2;
-    abstract public static function absPubStatFunc();
-    const C2 = 2;
-    public static function pubStatFunc3() {}
-    public $pubProp3;
-    protected static $protStatProp;
-    abstract protected function absProtFunc();
-    protected function protFunc() {}
-    protected $protProp;
-    abstract protected static function absProtStatFunc();
-    protected function __construct() {}
-    protected static function protStatFunc() {}
-    private static function privStatFunc() {}
-    private static $privStatProp;
-    private $privProp;
-    private function privFunc() {}
-    use BarTrait;
-    use BazTrait;
-}
-EOT
+                abstract class Foo
+                {
+                    abstract public function absPubFunc();
+                    public static $pubStatProp1;
+                    public function pubFunc1() {}
+                    public $pubProp1;
+                    public function __toString() {}
+                    function pubFunc2() {}
+                    public function __destruct() {}
+                    var $pubProp2;
+                    public static function pubStatFunc1() {}
+                    public function pubFunc3() {}
+                    const C1 = 1;
+                    static function pubStatFunc2() {}
+                    public static $pubStatProp2;
+                    abstract public static function absPubStatFunc();
+                    const C2 = 2;
+                    public static function pubStatFunc3() {}
+                    public $pubProp3;
+                    protected static $protStatProp;
+                    abstract protected function absProtFunc();
+                    protected function protFunc() {}
+                    protected $protProp;
+                    abstract protected static function absProtStatFunc();
+                    protected function __construct() {}
+                    protected static function protStatFunc() {}
+                    private static function privStatFunc() {}
+                    private static $privStatProp;
+                    private $privProp;
+                    private function privFunc() {}
+                    use BarTrait;
+                    use BazTrait;
+                }
+                EOT
             ,
             <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo
-{
-    abstract public function absPubFunc();
-    private static function privStatFunc() {}
-    protected static $protStatProp;
-    public static $pubStatProp1;
-    public function pubFunc1() {}
-    abstract protected function absProtFunc();
-    use BarTrait;
-    public $pubProp1;
-    public function __toString() {}
-    protected function protFunc() {}
-    protected $protProp;
-    function pubFunc2() {}
-    abstract protected static function absProtStatFunc();
-    public function __destruct() {}
-    var $pubProp2;
-    private static $privStatProp;
-    use BazTrait;
-    public static function pubStatFunc1() {}
-    public function pubFunc3() {}
-    private $privProp;
-    const C1 = 1;
-    static function pubStatFunc2() {}
-    private function privFunc() {}
-    public static $pubStatProp2;
-    abstract public static function absPubStatFunc();
-    protected function __construct() {}
-    const C2 = 2;
-    public static function pubStatFunc3() {}
-    public $pubProp3;
-    protected static function protStatFunc() {}
-}
-EOT
+                abstract class Foo
+                {
+                    abstract public function absPubFunc();
+                    private static function privStatFunc() {}
+                    protected static $protStatProp;
+                    public static $pubStatProp1;
+                    public function pubFunc1() {}
+                    abstract protected function absProtFunc();
+                    use BarTrait;
+                    public $pubProp1;
+                    public function __toString() {}
+                    protected function protFunc() {}
+                    protected $protProp;
+                    function pubFunc2() {}
+                    abstract protected static function absProtStatFunc();
+                    public function __destruct() {}
+                    var $pubProp2;
+                    private static $privStatProp;
+                    use BazTrait;
+                    public static function pubStatFunc1() {}
+                    public function pubFunc3() {}
+                    private $privProp;
+                    const C1 = 1;
+                    static function pubStatFunc2() {}
+                    private function privFunc() {}
+                    public static $pubStatProp2;
+                    abstract public static function absPubStatFunc();
+                    protected function __construct() {}
+                    const C2 = 2;
+                    public static function pubStatFunc3() {}
+                    public $pubProp3;
+                    protected static function protStatFunc() {}
+                }
+                EOT
             ,
         ];
 
@@ -817,80 +817,80 @@ EOT
                 'method_private',
             ],
             <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo
-{
-    use BarTrait;
-    use BazTrait;
-    const C1 = 1;
-    const C2 = 2;
-    public static $pubStatProp1;
-    public static $pubStatProp2;
-    protected static $protStatProp;
-    private static $privStatProp;
-    public $pubProp1;
-    var $pubProp2;
-    public $pubProp3;
-    protected $protProp;
-    private $privProp;
-    protected function __construct() {}
-    public function __destruct() {}
-    public function __toString() {}
-    public static function pubStatFunc1() {}
-    static function pubStatFunc2() {}
-    public static function pubStatFunc3() {}
-    abstract public static function absPubStatFunc();
-    protected static function protStatFunc() {}
-    abstract protected static function absProtStatFunc();
-    private static function privStatFunc() {}
-    public function pubFunc1() {}
-    function pubFunc2() {}
-    public function pubFunc3() {}
-    abstract public function absPubFunc();
-    protected function protFunc() {}
-    abstract protected function absProtFunc();
-    private function privFunc() {}
-}
-EOT
+                abstract class Foo
+                {
+                    use BarTrait;
+                    use BazTrait;
+                    const C1 = 1;
+                    const C2 = 2;
+                    public static $pubStatProp1;
+                    public static $pubStatProp2;
+                    protected static $protStatProp;
+                    private static $privStatProp;
+                    public $pubProp1;
+                    var $pubProp2;
+                    public $pubProp3;
+                    protected $protProp;
+                    private $privProp;
+                    protected function __construct() {}
+                    public function __destruct() {}
+                    public function __toString() {}
+                    public static function pubStatFunc1() {}
+                    static function pubStatFunc2() {}
+                    public static function pubStatFunc3() {}
+                    abstract public static function absPubStatFunc();
+                    protected static function protStatFunc() {}
+                    abstract protected static function absProtStatFunc();
+                    private static function privStatFunc() {}
+                    public function pubFunc1() {}
+                    function pubFunc2() {}
+                    public function pubFunc3() {}
+                    abstract public function absPubFunc();
+                    protected function protFunc() {}
+                    abstract protected function absProtFunc();
+                    private function privFunc() {}
+                }
+                EOT
             ,
             <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo
-{
-    abstract public function absPubFunc();
-    private static function privStatFunc() {}
-    protected static $protStatProp;
-    public static $pubStatProp1;
-    public function pubFunc1() {}
-    abstract protected function absProtFunc();
-    use BarTrait;
-    public $pubProp1;
-    public function __toString() {}
-    protected function protFunc() {}
-    protected $protProp;
-    function pubFunc2() {}
-    abstract protected static function absProtStatFunc();
-    public function __destruct() {}
-    var $pubProp2;
-    private static $privStatProp;
-    use BazTrait;
-    public static function pubStatFunc1() {}
-    public function pubFunc3() {}
-    private $privProp;
-    const C1 = 1;
-    static function pubStatFunc2() {}
-    private function privFunc() {}
-    public static $pubStatProp2;
-    abstract public static function absPubStatFunc();
-    protected function __construct() {}
-    const C2 = 2;
-    public static function pubStatFunc3() {}
-    public $pubProp3;
-    protected static function protStatFunc() {}
-}
-EOT
+                abstract class Foo
+                {
+                    abstract public function absPubFunc();
+                    private static function privStatFunc() {}
+                    protected static $protStatProp;
+                    public static $pubStatProp1;
+                    public function pubFunc1() {}
+                    abstract protected function absProtFunc();
+                    use BarTrait;
+                    public $pubProp1;
+                    public function __toString() {}
+                    protected function protFunc() {}
+                    protected $protProp;
+                    function pubFunc2() {}
+                    abstract protected static function absProtStatFunc();
+                    public function __destruct() {}
+                    var $pubProp2;
+                    private static $privStatProp;
+                    use BazTrait;
+                    public static function pubStatFunc1() {}
+                    public function pubFunc3() {}
+                    private $privProp;
+                    const C1 = 1;
+                    static function pubStatFunc2() {}
+                    private function privFunc() {}
+                    public static $pubStatProp2;
+                    abstract public static function absPubStatFunc();
+                    protected function __construct() {}
+                    const C2 = 2;
+                    public static function pubStatFunc3() {}
+                    public $pubProp3;
+                    protected static function protStatFunc() {}
+                }
+                EOT
             ,
         ];
 
@@ -900,24 +900,24 @@ EOT
                 'method_abstract',
             ],
             <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo
-{
-    public function test2(){}
-    public abstract function test1();
-}
-EOT
+                abstract class Foo
+                {
+                    public function test2(){}
+                    public abstract function test1();
+                }
+                EOT
             ,
             <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo
-{
-    public abstract function test1();
-    public function test2(){}
-}
-EOT
+                abstract class Foo
+                {
+                    public abstract function test1();
+                    public function test2(){}
+                }
+                EOT
             ,
         ];
 
@@ -942,64 +942,64 @@ EOT
                 'magic',
             ],
             <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo
-{
-    protected function __construct() {}
-    public function __invoke() {}
-    public function __destruct() {}
-    public static function pubStatFunc1() {}
-    static function pubStatFunc2() {}
-    public static function pubStatFunc3() {}
-    private function custom1() {}
-    abstract public static function absPubStatFunc();
-    protected static function protStatFunc() {}
-    abstract protected static function absProtStatFunc();
-    private static function privStatFunc() {}
-    public function pubFunc1() {}
-    function pubFunc2() {}
-    public function pubFunc3() {}
-    abstract public function custom3();
-    abstract public function absPubFunc();
-    protected function protFunc() {}
-    abstract protected function absProtFunc();
-    private function privFunc() {}
-    protected static function custom2() {}
-    public function __get($prop) {}
-    public function __toString() {}
-}
-EOT
+                abstract class Foo
+                {
+                    protected function __construct() {}
+                    public function __invoke() {}
+                    public function __destruct() {}
+                    public static function pubStatFunc1() {}
+                    static function pubStatFunc2() {}
+                    public static function pubStatFunc3() {}
+                    private function custom1() {}
+                    abstract public static function absPubStatFunc();
+                    protected static function protStatFunc() {}
+                    abstract protected static function absProtStatFunc();
+                    private static function privStatFunc() {}
+                    public function pubFunc1() {}
+                    function pubFunc2() {}
+                    public function pubFunc3() {}
+                    abstract public function custom3();
+                    abstract public function absPubFunc();
+                    protected function protFunc() {}
+                    abstract protected function absProtFunc();
+                    private function privFunc() {}
+                    protected static function custom2() {}
+                    public function __get($prop) {}
+                    public function __toString() {}
+                }
+                EOT
             ,
             <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo
-{
-    public function __get($prop) {}
-    private function custom1() {}
-    abstract public function absPubFunc();
-    private static function privStatFunc() {}
-    public function pubFunc1() {}
-    abstract protected function absProtFunc();
-    public function __toString() {}
-    protected function protFunc() {}
-    function pubFunc2() {}
-    abstract protected static function absProtStatFunc();
-    public function __destruct() {}
-    public static function pubStatFunc1() {}
-    public function __invoke() {}
-    public function pubFunc3() {}
-    static function pubStatFunc2() {}
-    private function privFunc() {}
-    abstract public static function absPubStatFunc();
-    protected function __construct() {}
-    public static function pubStatFunc3() {}
-    protected static function protStatFunc() {}
-    abstract public function custom3();
-    protected static function custom2() {}
-}
-EOT
+                abstract class Foo
+                {
+                    public function __get($prop) {}
+                    private function custom1() {}
+                    abstract public function absPubFunc();
+                    private static function privStatFunc() {}
+                    public function pubFunc1() {}
+                    abstract protected function absProtFunc();
+                    public function __toString() {}
+                    protected function protFunc() {}
+                    function pubFunc2() {}
+                    abstract protected static function absProtStatFunc();
+                    public function __destruct() {}
+                    public static function pubStatFunc1() {}
+                    public function __invoke() {}
+                    public function pubFunc3() {}
+                    static function pubStatFunc2() {}
+                    private function privFunc() {}
+                    abstract public static function absPubStatFunc();
+                    protected function __construct() {}
+                    public static function pubStatFunc3() {}
+                    protected static function protStatFunc() {}
+                    abstract public function custom3();
+                    protected static function custom2() {}
+                }
+                EOT
             ,
         ];
 
@@ -1012,26 +1012,26 @@ EOT
                 'magic',
             ],
             <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo
-{
-    public function pub() {}
-    public function bar() {}
-    public function __toString() {}
-}
-EOT
+                abstract class Foo
+                {
+                    public function pub() {}
+                    public function bar() {}
+                    public function __toString() {}
+                }
+                EOT
             ,
             <<<'EOT'
-<?php
+                <?php
 
-abstract class Foo
-{
-    public function __toString() {}
-    public function pub() {}
-    public function bar() {}
-}
-EOT
+                abstract class Foo
+                {
+                    public function __toString() {}
+                    public function pub() {}
+                    public function bar() {}
+                }
+                EOT
             ,
         ];
     }
@@ -1059,36 +1059,36 @@ EOT
                 'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
             ],
             <<<'EOT'
-<?php
-class Example
-{
-    public static $pubStatProp1;
-    public static $pubStatProp2;
-    public function A(){}
-    public function B1(){}
-    public function B2(){}
-    public function C(){}
-    public function C1(){}
-    public function D(){}
-    private function E(){}
-}
-EOT
+                <?php
+                class Example
+                {
+                    public static $pubStatProp1;
+                    public static $pubStatProp2;
+                    public function A(){}
+                    public function B1(){}
+                    public function B2(){}
+                    public function C(){}
+                    public function C1(){}
+                    public function D(){}
+                    private function E(){}
+                }
+                EOT
             ,
             <<<'EOT'
-<?php
-class Example
-{
-    public function D(){}
-    public static $pubStatProp2;
-    public function B1(){}
-    public function B2(){}
-    private function E(){}
-    public static $pubStatProp1;
-    public function A(){}
-    public function C(){}
-    public function C1(){}
-}
-EOT
+                <?php
+                class Example
+                {
+                    public function D(){}
+                    public static $pubStatProp2;
+                    public function B1(){}
+                    public function B2(){}
+                    private function E(){}
+                    public static $pubStatProp1;
+                    public function A(){}
+                    public function C(){}
+                    public function C1(){}
+                }
+                EOT
             ,
         ];
 
@@ -1116,86 +1116,86 @@ EOT
                 'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
             ],
             <<<'EOT'
-<?php
-class Foo
-{
-    use BarTrait;
-    use BazTrait;
-    const C1 = 1;
-    const C2 = 2;
-    public static $pubStatProp1;
-    public static $pubStatProp2;
-    protected static $protStatProp;
-    private static $privStatProp;
-    public $pubProp1;
-    var $pubProp2;
-    public $pubProp3;
-    protected $protProp;
-    private $privProp;
-    protected function __construct() {}
-    public function __destruct() {}
-    public function __magicA() {}
-    public function __magicB() {}
-    public function __toString() {}
-    public static function pubStatFunc1() {}
-    static function pubStatFunc2() {}
-    public static function pubStatFunc3() {
-        return $this->privFunc();
-    }
-    protected static function protStatFunc() {}
-    private static function privStatFunc() {}
-    public function pubFunc1() {}
-    function pubFunc2() {}
-    public function pubFunc3(int $b, int $c) {
-        $a = $b*$c;
+                <?php
+                class Foo
+                {
+                    use BarTrait;
+                    use BazTrait;
+                    const C1 = 1;
+                    const C2 = 2;
+                    public static $pubStatProp1;
+                    public static $pubStatProp2;
+                    protected static $protStatProp;
+                    private static $privStatProp;
+                    public $pubProp1;
+                    var $pubProp2;
+                    public $pubProp3;
+                    protected $protProp;
+                    private $privProp;
+                    protected function __construct() {}
+                    public function __destruct() {}
+                    public function __magicA() {}
+                    public function __magicB() {}
+                    public function __toString() {}
+                    public static function pubStatFunc1() {}
+                    static function pubStatFunc2() {}
+                    public static function pubStatFunc3() {
+                        return $this->privFunc();
+                    }
+                    protected static function protStatFunc() {}
+                    private static function privStatFunc() {}
+                    public function pubFunc1() {}
+                    function pubFunc2() {}
+                    public function pubFunc3(int $b, int $c) {
+                        $a = $b*$c;
 
-        return $a % 4;
-    }
-    protected function protFunc() {}
-    private function privFunc() {}
-}
-EOT
+                        return $a % 4;
+                    }
+                    protected function protFunc() {}
+                    private function privFunc() {}
+                }
+                EOT
             ,
             <<<'EOT'
-<?php
-class Foo
-{
-    private static function privStatFunc() {}
-    protected static $protStatProp;
-    use BazTrait;
-    public static $pubStatProp2;
-    public $pubProp3;
-    use BarTrait;
-    public function __toString() {}
-    protected function protFunc() {}
-    protected $protProp;
-    function pubFunc2() {}
-    public $pubProp1;
-    public function __destruct() {}
-    var $pubProp2;
-    public function __magicB() {}
-    const C2 = 2;
-    public static $pubStatProp1;
-    public function __magicA() {}
-    private static $privStatProp;
-    static function pubStatFunc2() {}
-    public function pubFunc3(int $b, int $c) {
-        $a = $b*$c;
+                <?php
+                class Foo
+                {
+                    private static function privStatFunc() {}
+                    protected static $protStatProp;
+                    use BazTrait;
+                    public static $pubStatProp2;
+                    public $pubProp3;
+                    use BarTrait;
+                    public function __toString() {}
+                    protected function protFunc() {}
+                    protected $protProp;
+                    function pubFunc2() {}
+                    public $pubProp1;
+                    public function __destruct() {}
+                    var $pubProp2;
+                    public function __magicB() {}
+                    const C2 = 2;
+                    public static $pubStatProp1;
+                    public function __magicA() {}
+                    private static $privStatProp;
+                    static function pubStatFunc2() {}
+                    public function pubFunc3(int $b, int $c) {
+                        $a = $b*$c;
 
-        return $a % 4;
-    }
-    private $privProp;
-    const C1 = 1;
-    public static function pubStatFunc3() {
-        return $this->privFunc();
-    }
-    public function pubFunc1() {}
-    public static function pubStatFunc1() {}
-    private function privFunc() {}
-    protected function __construct() {}
-    protected static function protStatFunc() {}
-}
-EOT
+                        return $a % 4;
+                    }
+                    private $privProp;
+                    const C1 = 1;
+                    public static function pubStatFunc3() {
+                        return $this->privFunc();
+                    }
+                    public function pubFunc1() {}
+                    public static function pubStatFunc1() {}
+                    private function privFunc() {}
+                    protected function __construct() {}
+                    protected static function protStatFunc() {}
+                }
+                EOT
             ,
         ];
 
@@ -1227,199 +1227,199 @@ EOT
                 'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
             ],
             <<<'EOT'
-<?php
-abstract class Foo
-{
-    use BarTrait;
-    use BazTrait;
-    const C1 = 1;
-    const C2 = 2;
-    public static $pubStatProp1;
-    public static $pubStatProp2;
-    protected static $protStatProp;
-    private static $privStatProp;
-    public $pubProp1;
-    var $pubProp2;
-    public $pubProp3;
-    protected $protProp;
-    private $privProp;
-    protected function __construct() {}
-    public function __destruct() {}
-    public function __magicA() {}
-    public function __magicB() {}
-    public function __toString() {}
-    public static function pubStatFunc1() {}
-    static function pubStatFunc2() {}
-    public static function pubStatFunc3() {
-        return $this->privFunc();
-    }
-    abstract public static function absPubStatFunc1();
-    protected static function protStatFunc() {}
-    abstract protected static function absProtStatFunc();
-    private static function privStatFunc() {}
-    public function pubFunc1() {}
-    function pubFunc2() {}
-    public function pubFunc3(int $b, int $c) {
-        $a = $b*$c;
+                <?php
+                abstract class Foo
+                {
+                    use BarTrait;
+                    use BazTrait;
+                    const C1 = 1;
+                    const C2 = 2;
+                    public static $pubStatProp1;
+                    public static $pubStatProp2;
+                    protected static $protStatProp;
+                    private static $privStatProp;
+                    public $pubProp1;
+                    var $pubProp2;
+                    public $pubProp3;
+                    protected $protProp;
+                    private $privProp;
+                    protected function __construct() {}
+                    public function __destruct() {}
+                    public function __magicA() {}
+                    public function __magicB() {}
+                    public function __toString() {}
+                    public static function pubStatFunc1() {}
+                    static function pubStatFunc2() {}
+                    public static function pubStatFunc3() {
+                        return $this->privFunc();
+                    }
+                    abstract public static function absPubStatFunc1();
+                    protected static function protStatFunc() {}
+                    abstract protected static function absProtStatFunc();
+                    private static function privStatFunc() {}
+                    public function pubFunc1() {}
+                    function pubFunc2() {}
+                    public function pubFunc3(int $b, int $c) {
+                        $a = $b*$c;
 
-        return $a % 4;
-    }
-    abstract public function absPubFunc();
-    protected function protFunc() {}
-    abstract protected function absProtFunc();
-    private function privFunc() {}
-}
-EOT
+                        return $a % 4;
+                    }
+                    abstract public function absPubFunc();
+                    protected function protFunc() {}
+                    abstract protected function absProtFunc();
+                    private function privFunc() {}
+                }
+                EOT
             ,
             <<<'EOT'
-<?php
-abstract class Foo
-{
-    private static function privStatFunc() {}
-    protected static $protStatProp;
-    use BazTrait;
-    abstract public function absPubFunc();
-    public static $pubStatProp2;
-    public $pubProp3;
-    use BarTrait;
-    public function __toString() {}
-    protected function protFunc() {}
-    protected $protProp;
-    function pubFunc2() {}
-    public $pubProp1;
-    abstract protected static function absProtStatFunc();
-    public function __destruct() {}
-    var $pubProp2;
-    public function __magicB() {}
-    const C2 = 2;
-    public static $pubStatProp1;
-    public function __magicA() {}
-    private static $privStatProp;
-    static function pubStatFunc2() {}
-    public function pubFunc3(int $b, int $c) {
-        $a = $b*$c;
+                <?php
+                abstract class Foo
+                {
+                    private static function privStatFunc() {}
+                    protected static $protStatProp;
+                    use BazTrait;
+                    abstract public function absPubFunc();
+                    public static $pubStatProp2;
+                    public $pubProp3;
+                    use BarTrait;
+                    public function __toString() {}
+                    protected function protFunc() {}
+                    protected $protProp;
+                    function pubFunc2() {}
+                    public $pubProp1;
+                    abstract protected static function absProtStatFunc();
+                    public function __destruct() {}
+                    var $pubProp2;
+                    public function __magicB() {}
+                    const C2 = 2;
+                    public static $pubStatProp1;
+                    public function __magicA() {}
+                    private static $privStatProp;
+                    static function pubStatFunc2() {}
+                    public function pubFunc3(int $b, int $c) {
+                        $a = $b*$c;
 
-        return $a % 4;
-    }
-    private $privProp;
-    const C1 = 1;
-    abstract protected function absProtFunc();
-    public static function pubStatFunc3() {
-        return $this->privFunc();
-    }
-    public function pubFunc1() {}
-    public static function pubStatFunc1() {}
-    private function privFunc() {}
-    protected function __construct() {}
-    protected static function protStatFunc() {}
-    abstract public static function absPubStatFunc1();
-}
-EOT
+                        return $a % 4;
+                    }
+                    private $privProp;
+                    const C1 = 1;
+                    abstract protected function absProtFunc();
+                    public static function pubStatFunc3() {
+                        return $this->privFunc();
+                    }
+                    public function pubFunc1() {}
+                    public static function pubStatFunc1() {}
+                    private function privFunc() {}
+                    protected function __construct() {}
+                    protected static function protStatFunc() {}
+                    abstract public static function absPubStatFunc1();
+                }
+                EOT
             ,
         ];
 
         yield [
             [],
             <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    const C2 = 2;
-    public const C1 = 1;
-    public const C3 = 3;
-    protected const C4 = 4;
-    private const C5 = 5;
-}
-EOT
+                class Foo
+                {
+                    const C2 = 2;
+                    public const C1 = 1;
+                    public const C3 = 3;
+                    protected const C4 = 4;
+                    private const C5 = 5;
+                }
+                EOT
             , <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    private const C5 = 5;
-    const C2 = 2;
-    public const C1 = 1;
-    protected const C4 = 4;
-    public const C3 = 3;
-}
-EOT
+                class Foo
+                {
+                    private const C5 = 5;
+                    const C2 = 2;
+                    public const C1 = 1;
+                    protected const C4 = 4;
+                    public const C3 = 3;
+                }
+                EOT
         ];
 
         yield [
             ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA],
             <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    public const C1 = 1;
-    const C2 = 2;
-    public const C3b = 3;
-    protected const C4a = 4;
-    private const C5 = 5;
-}
-EOT
+                class Foo
+                {
+                    public const C1 = 1;
+                    const C2 = 2;
+                    public const C3b = 3;
+                    protected const C4a = 4;
+                    private const C5 = 5;
+                }
+                EOT
             , <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    private const C5 = 5;
-    const C2 = 2;
-    public const C1 = 1;
-    protected const C4a = 4;
-    public const C3b = 3;
-}
-EOT
+                class Foo
+                {
+                    private const C5 = 5;
+                    const C2 = 2;
+                    public const C1 = 1;
+                    protected const C4a = 4;
+                    public const C3b = 3;
+                }
+                EOT
         ];
 
         yield [
             ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA],
             <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    const A_ = 1;
-    const AA = 2;
-    const Ab = 3;
-}
-EOT
+                class Foo
+                {
+                    const A_ = 1;
+                    const AA = 2;
+                    const Ab = 3;
+                }
+                EOT
             , <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    const AA = 2;
-    const Ab = 3;
-    const A_ = 1;
-}
-EOT
+                class Foo
+                {
+                    const AA = 2;
+                    const Ab = 3;
+                    const A_ = 1;
+                }
+                EOT
         ];
 
         yield [
             ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA, 'case_sensitive' => true],
             <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    const AA = 2;
-    const A_ = 1;
-    const Ab = 3;
-}
-EOT
+                class Foo
+                {
+                    const AA = 2;
+                    const A_ = 1;
+                    const Ab = 3;
+                }
+                EOT
             , <<<'EOT'
-<?php
+                <?php
 
-class Foo
-{
-    const AA = 2;
-    const Ab = 3;
-    const A_ = 1;
-}
-EOT
+                class Foo
+                {
+                    const AA = 2;
+                    const Ab = 3;
+                    const A_ = 1;
+                }
+                EOT
         ];
     }
 

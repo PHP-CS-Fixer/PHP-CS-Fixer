@@ -154,41 +154,41 @@ final class TokensAnalyzerTest extends TestCase
                 ],
             ],
             <<<'PHP'
-<?php
-class Foo
-{
-    public $prop0;
-    protected $prop1;
-    private $prop2 = 1;
-    var $prop3 = array(1,2,3);
-    const CONSTANT = 'constant value';
+                <?php
+                class Foo
+                {
+                    public $prop0;
+                    protected $prop1;
+                    private $prop2 = 1;
+                    var $prop3 = array(1,2,3);
+                    const CONSTANT = 'constant value';
 
-    public function bar4()
-    {
-        $a = 5;
+                    public function bar4()
+                    {
+                        $a = 5;
 
-        return " ({$a})";
-    }
-    public function bar5($data)
-    {
-        $message = $data;
-        $example = function ($arg) use ($message) {
-            echo $arg . ' ' . $message;
-        };
-        $example('hello');
-    }function A(){}
-}
+                        return " ({$a})";
+                    }
+                    public function bar5($data)
+                    {
+                        $message = $data;
+                        $example = function ($arg) use ($message) {
+                            echo $arg . ' ' . $message;
+                        };
+                        $example('hello');
+                    }function A(){}
+                }
 
-function test(){}
+                function test(){}
 
-class Foo2
-{
-    const CONSTANT = 'constant value';
+                class Foo2
+                {
+                    const CONSTANT = 'constant value';
 
-    use Foo\Bar; // expected in the return value
-}
+                    use Foo\Bar; // expected in the return value
+                }
 
-PHP
+                PHP
             ,
         ];
     }
@@ -196,16 +196,16 @@ PHP
     public function testGetClassyElementsWithNullableProperties(): void
     {
         $source = <<<'PHP'
-<?php
-class Foo
-{
-    public int $prop0;
-    protected ?array $prop1;
-    private string $prop2 = 1;
-    var ? Foo\Bar $prop3 = array(1,2,3);
-}
+            <?php
+            class Foo
+            {
+                public int $prop0;
+                protected ?array $prop1;
+                private string $prop2 = 1;
+                var ? Foo\Bar $prop3 = array(1,2,3);
+            }
 
-PHP;
+            PHP;
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
@@ -240,26 +240,26 @@ PHP;
     public function testGetClassyElementsWithAnonymousClass(): void
     {
         $source = <<<'PHP'
-<?php
-class A {
-    public $A;
+            <?php
+            class A {
+                public $A;
 
-    private function B()
-    {
-        return new class(){
-            protected $level1;
-            private function XYZ() {
-                return new class(){private $level2 = 1;};
+                private function B()
+                {
+                    return new class(){
+                        protected $level1;
+                        private function XYZ() {
+                            return new class(){private $level2 = 1;};
+                        }
+                    };
+                }
+
+                private function C() {
+                }
             }
-        };
-    }
 
-    private function C() {
-    }
-}
-
-function B() {} // do not count this
-PHP;
+            function B() {} // do not count this
+            PHP;
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
@@ -304,75 +304,75 @@ PHP;
     public function testGetClassyElementsWithMultipleAnonymousClass(): void
     {
         $source = <<<'PHP'
-<?php class A0
-{
-    public function AA0()
-    {
-        return new class
-        {
-            public function BB0()
+            <?php class A0
             {
-            }
-        };
-    }
-
-    public function otherFunction0()
-    {
-    }
-}
-
-class A1
-{
-    public function AA1()
-    {
-        return new class
-        {
-            public function BB1()
-            {
-                return new class
+                public function AA0()
                 {
-                    public function CC1()
+                    return new class
                     {
-                        return new class
+                        public function BB0()
                         {
-                            public function DD1()
-                            {
-                                return new class{};
-                            }
+                        }
+                    };
+                }
 
-                            public function DD2()
-                            {
-                                return new class{};
-                            }
-                        };
-                    }
-                };
-            }
-
-            public function BB2()
-            {
-                return new class
+                public function otherFunction0()
                 {
-                    public function CC2()
-                    {
-                        return new class
-                        {
-                            public function DD2()
-                            {
-                                return new class{};
-                            }
-                        };
-                    }
-                };
+                }
             }
-        };
-    }
 
-    public function otherFunction1()
-    {
-    }
-}
-PHP;
+            class A1
+            {
+                public function AA1()
+                {
+                    return new class
+                    {
+                        public function BB1()
+                        {
+                            return new class
+                            {
+                                public function CC1()
+                                {
+                                    return new class
+                                    {
+                                        public function DD1()
+                                        {
+                                            return new class{};
+                                        }
+
+                                        public function DD2()
+                                        {
+                                            return new class{};
+                                        }
+                                    };
+                                }
+                            };
+                        }
+
+                        public function BB2()
+                        {
+                            return new class
+                            {
+                                public function CC2()
+                                {
+                                    return new class
+                                    {
+                                        public function DD2()
+                                        {
+                                            return new class{};
+                                        }
+                                    };
+                                }
+                            };
+                        }
+                    };
+                }
+
+                public function otherFunction1()
+                {
+                }
+            }
+            PHP;
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
@@ -447,25 +447,25 @@ PHP;
     public function testGetClassyElements74(): void
     {
         $source = <<<'PHP'
-<?php
-class Foo
-{
-    public int $bar = 3;
+            <?php
+            class Foo
+            {
+                public int $bar = 3;
 
-    protected ?string $baz;
+                protected ?string $baz;
 
-    private ?string $bazNull = null;
+                private ?string $bazNull = null;
 
-    public static iterable $staticProp;
+                public static iterable $staticProp;
 
-    public float $x, $y;
+                public float $x, $y;
 
-    var bool $flag1;
+                var bool $flag1;
 
-    var ?bool $flag2;
-}
+                var ?bool $flag2;
+            }
 
-PHP;
+            PHP;
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
@@ -2245,44 +2245,44 @@ class TestClass {
     {
         $source =
 <<<'SRC'
-<?php
-// `not do`
-while(false) {
-}
-while (false);
-while (false)?>
-<?php
+    <?php
+    // `not do`
+    while(false) {
+    }
+    while (false);
+    while (false)?>
+    <?php
 
-if(false){
-}while(false);
+    if(false){
+    }while(false);
 
-if(false){
-}while(false)?><?php
-while(false){}while(false){}
+    if(false){
+    }while(false)?><?php
+    while(false){}while(false){}
 
-while ($i <= 10):
-    echo $i;
-    $i++;
-endwhile;
+    while ($i <= 10):
+        echo $i;
+        $i++;
+    endwhile;
 
-?>
-<?php while(false): ?>
+    ?>
+    <?php while(false): ?>
 
-<?php endwhile ?>
+    <?php endwhile ?>
 
-<?php
-// `do`
-do{
-} while(false);
+    <?php
+    // `do`
+    do{
+    } while(false);
 
-do{
-} while(false)?>
-<?php
-if (false){}do{}while(false);
+    do{
+    } while(false)?>
+    <?php
+    if (false){}do{}while(false);
 
-// `not do`, `do`
-if(false){}while(false){}do{}while(false);
-SRC;
+    // `not do`, `do`
+    if(false){}while(false){}do{}while(false);
+    SRC;
 
         $expected = [
             3 => false,
@@ -2369,28 +2369,28 @@ namespace b { use D\C; }
         yield [
             [3, 10, 34, 45, 54, 59, 77, 95],
             <<<'EOF'
-use Zoo\Bar;
-use Foo\Bar;
-use Foo\Zar\Baz;
+                use Zoo\Bar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
 
-<?php
+                <?php
 
-use Foo\Bar;
-use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
- use Foo\Bir as FBB;
-use Foo\Zar\Baz;
-use SomeClass;
-   use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar;
+                use Foo\Bar;
+                use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
+                 use Foo\Bir as FBB;
+                use Foo\Zar\Baz;
+                use SomeClass;
+                   use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
+                use Zoo\Bar;
 
-$a = new someclass();
+                $a = new someclass();
 
-use Zoo\Tar;
+                use Zoo\Tar;
 
-class AnnotatedClass
-{
-}
-EOF
+                class AnnotatedClass
+                {
+                }
+                EOF
             ,
         ];
 

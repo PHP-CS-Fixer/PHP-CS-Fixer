@@ -43,18 +43,18 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
     public function getDefinition(): FixerDefinitionInterface
     {
         $code = <<<'EOF'
-<?php
-/**
- * Hello there!
- *
- * @throws Exception|RuntimeException foo
- * @custom Test!
- * @return int  Return the number of changes.
- * @param string $foo
- * @param bool   $bar Bar
- */
+            <?php
+            /**
+             * Hello there!
+             *
+             * @throws Exception|RuntimeException foo
+             * @custom Test!
+             * @return int  Return the number of changes.
+             * @param string $foo
+             * @param bool   $bar Bar
+             */
 
-EOF;
+            EOF;
 
         return new FixerDefinition(
             'Annotations in PHPDoc should be ordered in defined sequence.',

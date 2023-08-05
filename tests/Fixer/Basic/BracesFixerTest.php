@@ -5430,51 +5430,51 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
     {
         yield [
             <<<'EOT'
-<?php
-if (true) {
-    $var = <<<'NOWDOC'
-NOWDOC;
-    ?>
-<?php
-}
+                <?php
+                if (true) {
+                    $var = <<<'NOWDOC'
+                NOWDOC;
+                    ?>
+                <?php
+                }
 
-EOT
+                EOT
             ,
             <<<'EOT'
-<?php
-if (true) {
-$var = <<<'NOWDOC'
-NOWDOC;
-?>
-<?php
-}
+                <?php
+                if (true) {
+                $var = <<<'NOWDOC'
+                NOWDOC;
+                ?>
+                <?php
+                }
 
-EOT
+                EOT
             ,
         ];
 
         yield [
             <<<'EOT'
-<?php
-if (true) {
-    $var = <<<HEREDOC
-HEREDOC;
-    ?>
-<?php
-}
+                <?php
+                if (true) {
+                    $var = <<<HEREDOC
+                HEREDOC;
+                    ?>
+                <?php
+                }
 
-EOT
+                EOT
             ,
             <<<'EOT'
-<?php
-if (true) {
-$var = <<<HEREDOC
-HEREDOC;
-?>
-<?php
-}
+                <?php
+                if (true) {
+                $var = <<<HEREDOC
+                HEREDOC;
+                ?>
+                <?php
+                }
 
-EOT
+                EOT
             ,
         ];
     }

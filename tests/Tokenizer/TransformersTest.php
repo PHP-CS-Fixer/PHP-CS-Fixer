@@ -46,25 +46,25 @@ final class TransformersTest extends TestCase
     {
         yield 'use trait after complex string variable' => [
             <<<'SOURCE'
-<?php
+                <?php
 
-class TransformTest extends TestCase
-{
-    public function testSomething()
-    {
-        $a = 1;
-        $this->assertSame('1', "{$a}");
-    }
+                class TransformTest extends TestCase
+                {
+                    public function testSomething()
+                    {
+                        $a = 1;
+                        $this->assertSame('1', "{$a}");
+                    }
 
-    use TestTrait;
+                    use TestTrait;
 
-    public function testUsingTrait()
-    {
-        $this->testTraitFunction();
-    }
-}
+                    public function testUsingTrait()
+                    {
+                        $this->testTraitFunction();
+                    }
+                }
 
-SOURCE
+                SOURCE
             ,
             [46 => CT::T_USE_TRAIT],
         ];

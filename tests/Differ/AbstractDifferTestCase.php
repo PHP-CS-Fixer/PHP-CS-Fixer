@@ -43,34 +43,34 @@ abstract class AbstractDifferTestCase extends TestCase
     final protected function oldCode(): string
     {
         return <<<'PHP'
-<?php
+            <?php
 
-function baz($options)
-{
-    if (!array_key_exists("foo", $options)) {
-        throw new \InvalidArgumentException();
-    }
+            function baz($options)
+            {
+                if (!array_key_exists("foo", $options)) {
+                    throw new \InvalidArgumentException();
+                }
 
-    return json_encode($options);
-}
+                return json_encode($options);
+            }
 
-PHP;
+            PHP;
     }
 
     final protected function newCode(): string
     {
         return <<<'PHP'
-<?php
+            <?php
 
-function baz($options)
-{
-    if (!\array_key_exists("foo", $options)) {
-        throw new \InvalidArgumentException();
-    }
+            function baz($options)
+            {
+                if (!\array_key_exists("foo", $options)) {
+                    throw new \InvalidArgumentException();
+                }
 
-    return json_encode($options);
-}
+                return json_encode($options);
+            }
 
-PHP;
+            PHP;
     }
 }

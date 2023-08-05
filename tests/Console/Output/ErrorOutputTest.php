@@ -100,13 +100,13 @@ Files that were not fixed due to errors reported during %s:
         $fixerName = uniqid('braces_');
         $diffSpecificContext = uniqid('added_');
         $diff = <<<EOT
---- Original
-+++ New
-@@ @@
- same line
--deleted
-+{$diffSpecificContext}
-EOT;
+            --- Original
+            +++ New
+            @@ @@
+             same line
+            -deleted
+            +{$diffSpecificContext}
+            EOT;
 
         $lintError = new Error(Error::TYPE_LINT, __FILE__, new LintingException(), [$fixerName], $diff);
 

@@ -82,148 +82,148 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
 
         yield [
             <<<'EOT'
-<?php
-function f1() { return (bool) ($f1)      ; }
-function f2() { return true; } return false;
-function f3() { return (bool) ($f3)      ; }
-function f4() { return true; } return false;
-function f5() { return (bool) ($f5)      ; }
-function f6() { return false; } return true;
-function f7() { return ! ($f7)      ; }
-function f8() { return false; } return true;
-function f9() { return ! ($f9)      ; }
-EOT
+                <?php
+                function f1() { return (bool) ($f1)      ; }
+                function f2() { return true; } return false;
+                function f3() { return (bool) ($f3)      ; }
+                function f4() { return true; } return false;
+                function f5() { return (bool) ($f5)      ; }
+                function f6() { return false; } return true;
+                function f7() { return ! ($f7)      ; }
+                function f8() { return false; } return true;
+                function f9() { return ! ($f9)      ; }
+                EOT
             ,
             <<<'EOT'
-<?php
-function f1() { if ($f1) { return true; } return false; }
-function f2() { return true; } return false;
-function f3() { if ($f3) { return true; } return false; }
-function f4() { return true; } return false;
-function f5() { if ($f5) { return true; } return false; }
-function f6() { return false; } return true;
-function f7() { if ($f7) { return false; } return true; }
-function f8() { return false; } return true;
-function f9() { if ($f9) { return false; } return true; }
-EOT
+                <?php
+                function f1() { if ($f1) { return true; } return false; }
+                function f2() { return true; } return false;
+                function f3() { if ($f3) { return true; } return false; }
+                function f4() { return true; } return false;
+                function f5() { if ($f5) { return true; } return false; }
+                function f6() { return false; } return true;
+                function f7() { if ($f7) { return false; } return true; }
+                function f8() { return false; } return true;
+                function f9() { if ($f9) { return false; } return true; }
+                EOT
             ,
         ];
 
         yield 'preserve-comments' => [
             <<<'EOT'
-<?php
-// C1
-return (bool)
-# C2
-(
-/* C3 */
-$foo
-/** C4 */
-)
-// C5
+                <?php
+                // C1
+                return (bool)
+                # C2
+                (
+                /* C3 */
+                $foo
+                /** C4 */
+                )
+                // C5
 
-# C6
+                # C6
 
-// C7
+                // C7
 
-# C8
+                # C8
 
-/* C9 */
+                /* C9 */
 
-/** C10 */
+                /** C10 */
 
-// C11
+                // C11
 
-# C12
-;
-/* C13 */
-EOT
+                # C12
+                ;
+                /* C13 */
+                EOT
             ,
             <<<'EOT'
-<?php
-// C1
-if
-# C2
-(
-/* C3 */
-$foo
-/** C4 */
-)
-// C5
-{
-# C6
-return
-// C7
-true
-# C8
-;
-/* C9 */
-}
-/** C10 */
-return
-// C11
-false
-# C12
-;
-/* C13 */
-EOT
+                <?php
+                // C1
+                if
+                # C2
+                (
+                /* C3 */
+                $foo
+                /** C4 */
+                )
+                // C5
+                {
+                # C6
+                return
+                // C7
+                true
+                # C8
+                ;
+                /* C9 */
+                }
+                /** C10 */
+                return
+                // C11
+                false
+                # C12
+                ;
+                /* C13 */
+                EOT
             ,
         ];
 
         yield 'preserve-comments-braceless' => [
             <<<'EOT'
-<?php
-// C1
-return (bool)
-# C2
-(
-/* C3 */
-$foo
-/** C4 */
-)
-// C5
-# C6
+                <?php
+                // C1
+                return (bool)
+                # C2
+                (
+                /* C3 */
+                $foo
+                /** C4 */
+                )
+                // C5
+                # C6
 
-// C7
+                // C7
 
-# C8
+                # C8
 
-/* C9 */
-/** C10 */
+                /* C9 */
+                /** C10 */
 
-// C11
+                // C11
 
-# C12
-;
-/* C13 */
-EOT
+                # C12
+                ;
+                /* C13 */
+                EOT
             ,
             <<<'EOT'
-<?php
-// C1
-if
-# C2
-(
-/* C3 */
-$foo
-/** C4 */
-)
-// C5
-# C6
-return
-// C7
-true
-# C8
-;
-/* C9 */
-/** C10 */
-return
-// C11
-false
-# C12
-;
-/* C13 */
-EOT
+                <?php
+                // C1
+                if
+                # C2
+                (
+                /* C3 */
+                $foo
+                /** C4 */
+                )
+                // C5
+                # C6
+                return
+                // C7
+                true
+                # C8
+                ;
+                /* C9 */
+                /** C10 */
+                return
+                // C11
+                false
+                # C12
+                ;
+                /* C13 */
+                EOT
             ,
         ];
 

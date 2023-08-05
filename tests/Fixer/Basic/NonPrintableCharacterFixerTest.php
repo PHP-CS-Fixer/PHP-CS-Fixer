@@ -230,13 +230,13 @@ TXT;
 
         yield [
             <<<'EXPECTED'
-<?php echo "Double \" quote \u{200b} inside";
-EXPECTED
+                <?php echo "Double \" quote \u{200b} inside";
+                EXPECTED
             ,
             sprintf(
                 <<<'INPUT'
-<?php echo 'Double " quote %s inside';
-INPUT
+                    <?php echo 'Double " quote %s inside';
+                    INPUT
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -244,13 +244,13 @@ INPUT
 
         yield [
             <<<'EXPECTED'
-<?php echo "Single ' quote \u{200b} inside";
-EXPECTED
+                <?php echo "Single ' quote \u{200b} inside";
+                EXPECTED
             ,
             sprintf(
                 <<<'INPUT'
-<?php echo 'Single \' quote %s inside';
-INPUT
+                    <?php echo 'Single \' quote %s inside';
+                    INPUT
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -258,19 +258,19 @@ INPUT
 
         yield [
             <<<'EXPECTED'
-<?php echo <<<STRING
-    Quotes ' and " to be handled \u{200b} properly \\' and \\"
-STRING
-;
-EXPECTED
+                <?php echo <<<STRING
+                    Quotes ' and " to be handled \u{200b} properly \\' and \\"
+                STRING
+                ;
+                EXPECTED
             ,
             sprintf(
                 <<<'INPUT'
-<?php echo <<<'STRING'
-    Quotes ' and " to be handled %s properly \' and \"
-STRING
-;
-INPUT
+                    <?php echo <<<'STRING'
+                        Quotes ' and " to be handled %s properly \' and \"
+                    STRING
+                    ;
+                    INPUT
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -278,13 +278,13 @@ INPUT
 
         yield [
             <<<'EXPECTED'
-<?php echo "\\\u{200b}\"";
-EXPECTED
+                <?php echo "\\\u{200b}\"";
+                EXPECTED
             ,
             sprintf(
                 <<<'INPUT'
-<?php echo '\\%s"';
-INPUT
+                    <?php echo '\\%s"';
+                    INPUT
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -292,13 +292,13 @@ INPUT
 
         yield [
             <<<'EXPECTED'
-<?php echo "\\\u{200b}'";
-EXPECTED
+                <?php echo "\\\u{200b}'";
+                EXPECTED
             ,
             sprintf(
                 <<<'INPUT'
-<?php echo '\\%s\'';
-INPUT
+                    <?php echo '\\%s\'';
+                    INPUT
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -306,13 +306,13 @@ INPUT
 
         yield [
             <<<'EXPECTED'
-<?php echo "Backslash 1 \\ \u{200b}";
-EXPECTED
+                <?php echo "Backslash 1 \\ \u{200b}";
+                EXPECTED
             ,
             sprintf(
                 <<<'INPUT'
-<?php echo 'Backslash 1 \ %s';
-INPUT
+                    <?php echo 'Backslash 1 \ %s';
+                    INPUT
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -320,13 +320,13 @@ INPUT
 
         yield [
             <<<'EXPECTED'
-<?php echo "Backslash 2 \\ \u{200b}";
-EXPECTED
+                <?php echo "Backslash 2 \\ \u{200b}";
+                EXPECTED
             ,
             sprintf(
                 <<<'INPUT'
-<?php echo 'Backslash 2 \\ %s';
-INPUT
+                    <?php echo 'Backslash 2 \\ %s';
+                    INPUT
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -334,13 +334,13 @@ INPUT
 
         yield [
             <<<'EXPECTED'
-<?php echo "Backslash 3 \\\\ \u{200b}";
-EXPECTED
+                <?php echo "Backslash 3 \\\\ \u{200b}";
+                EXPECTED
             ,
             sprintf(
                 <<<'INPUT'
-<?php echo 'Backslash 3 \\\ %s';
-INPUT
+                    <?php echo 'Backslash 3 \\\ %s';
+                    INPUT
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -348,13 +348,13 @@ INPUT
 
         yield [
             <<<'EXPECTED'
-<?php echo "Backslash 4 \\\\ \u{200b}";
-EXPECTED
+                <?php echo "Backslash 4 \\\\ \u{200b}";
+                EXPECTED
             ,
             sprintf(
                 <<<'INPUT'
-<?php echo 'Backslash 4 \\\\ %s';
-INPUT
+                    <?php echo 'Backslash 4 \\\\ %s';
+                    INPUT
                 ,
                 pack('H*', 'e2808b')
             ),

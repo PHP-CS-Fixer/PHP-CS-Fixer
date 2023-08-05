@@ -38,203 +38,203 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
     {
         yield 'non-global names' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-echo FOO, \Bar\BAZ, namespace\FOO2;
-EXPECTED
+                <?php
+                namespace Test;
+                echo FOO, \Bar\BAZ, namespace\FOO2;
+                EXPECTED
         ];
 
         yield 'name already used [1]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-echo \FOO, FOO, \FOO;
-EXPECTED
+                <?php
+                namespace Test;
+                echo \FOO, FOO, \FOO;
+                EXPECTED
         ];
 
         yield 'name already used [2]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use const Bar\FOO;
-echo \FOO;
-EXPECTED
+                <?php
+                namespace Test;
+                use const Bar\FOO;
+                echo \FOO;
+                EXPECTED
         ];
 
         yield 'name already used [3]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-const FOO = 1;
-echo \FOO;
-EXPECTED
+                <?php
+                namespace Test;
+                const FOO = 1;
+                echo \FOO;
+                EXPECTED
         ];
 
         yield 'without namespace / do not import' => [
             <<<'INPUT'
-<?php
-echo \FOO, \BAR, \FOO;
-INPUT
+                <?php
+                echo \FOO, \BAR, \FOO;
+                INPUT
         ];
 
         yield 'with namespace' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use const FOO;
-use const BAR;
-echo FOO, BAR;
-EXPECTED
+                <?php
+                namespace Test;
+                use const FOO;
+                use const BAR;
+                echo FOO, BAR;
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-echo \FOO, \BAR;
-INPUT
+                <?php
+                namespace Test;
+                echo \FOO, \BAR;
+                INPUT
         ];
 
         yield 'with namespace with {} syntax' => [
             <<<'EXPECTED'
-<?php
-namespace Test {
-use const FOO;
-use const BAR;
-    echo FOO, BAR;
-}
-EXPECTED
+                <?php
+                namespace Test {
+                use const FOO;
+                use const BAR;
+                    echo FOO, BAR;
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test {
-    echo \FOO, \BAR;
-}
-INPUT
+                <?php
+                namespace Test {
+                    echo \FOO, \BAR;
+                }
+                INPUT
         ];
 
         yield 'ignore other imported types' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use BAR;
-use const FOO;
-use const BAR;
-echo FOO, BAR;
-EXPECTED
+                <?php
+                namespace Test;
+                use BAR;
+                use const FOO;
+                use const BAR;
+                echo FOO, BAR;
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use BAR;
-echo \FOO, \BAR;
-INPUT
+                <?php
+                namespace Test;
+                use BAR;
+                echo \FOO, \BAR;
+                INPUT
         ];
 
         yield 'respect already imported names [1]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use const BAR;
-use const FOO;
-echo FOO, BAR;
-EXPECTED
+                <?php
+                namespace Test;
+                use const BAR;
+                use const FOO;
+                echo FOO, BAR;
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use const BAR;
-echo \FOO, \BAR;
-INPUT
+                <?php
+                namespace Test;
+                use const BAR;
+                echo \FOO, \BAR;
+                INPUT
         ];
 
         yield 'respect already imported names [2]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use const \BAR;
-use const FOO;
-echo FOO, BAR, BAR;
-EXPECTED
+                <?php
+                namespace Test;
+                use const \BAR;
+                use const FOO;
+                echo FOO, BAR, BAR;
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use const \BAR;
-echo \FOO, \BAR, BAR;
-INPUT
+                <?php
+                namespace Test;
+                use const \BAR;
+                echo \FOO, \BAR, BAR;
+                INPUT
         ];
 
         yield 'handle case sensitivity' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use const fOO;
-use const FOO;
-use const Foo;
-const foO = 1;
-echo FOO, Foo;
-EXPECTED
+                <?php
+                namespace Test;
+                use const fOO;
+                use const FOO;
+                use const Foo;
+                const foO = 1;
+                echo FOO, Foo;
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use const fOO;
-const foO = 1;
-echo \FOO, \Foo;
-INPUT
+                <?php
+                namespace Test;
+                use const fOO;
+                const foO = 1;
+                echo \FOO, \Foo;
+                INPUT
         ];
 
         yield 'handle aliased imports' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use const BAR as BAZ;
-use const FOO;
-echo FOO, BAZ;
-EXPECTED
+                <?php
+                namespace Test;
+                use const BAR as BAZ;
+                use const FOO;
+                echo FOO, BAZ;
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use const BAR as BAZ;
-echo \FOO, \BAR;
-INPUT
+                <?php
+                namespace Test;
+                use const BAR as BAZ;
+                echo \FOO, \BAR;
+                INPUT
         ];
 
         yield 'ignore class constants' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use const FOO;
-class Bar {
-    const FOO = 1;
-}
-echo FOO;
-EXPECTED
+                <?php
+                namespace Test;
+                use const FOO;
+                class Bar {
+                    const FOO = 1;
+                }
+                echo FOO;
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-class Bar {
-    const FOO = 1;
-}
-echo \FOO;
-INPUT
+                <?php
+                namespace Test;
+                class Bar {
+                    const FOO = 1;
+                }
+                echo \FOO;
+                INPUT
         ];
 
         yield 'global namespace' => [
             <<<'INPUT'
-<?php
-echo \FOO, \BAR;
-INPUT
+                <?php
+                echo \FOO, \BAR;
+                INPUT
         ];
 
         yield [
             <<<'INPUT'
-<?php
-namespace {
-    echo \FOO, \BAR;
-}
-INPUT
+                <?php
+                namespace {
+                    echo \FOO, \BAR;
+                }
+                INPUT
         ];
     }
 
@@ -251,204 +251,204 @@ INPUT
     {
         yield 'non-global names' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-foo();
-Bar\baz();
-namespace\foo2();
-EXPECTED
+                <?php
+                namespace Test;
+                foo();
+                Bar\baz();
+                namespace\foo2();
+                EXPECTED
         ];
 
         yield 'name already used [1]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-\foo();
-Foo();
-\foo();
-EXPECTED
+                <?php
+                namespace Test;
+                \foo();
+                Foo();
+                \foo();
+                EXPECTED
         ];
 
         yield 'name already used [2]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use function Bar\foo;
-\Foo();
-EXPECTED
+                <?php
+                namespace Test;
+                use function Bar\foo;
+                \Foo();
+                EXPECTED
         ];
 
         yield 'name already used [3]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-function foo() {}
-\Foo();
-EXPECTED
+                <?php
+                namespace Test;
+                function foo() {}
+                \Foo();
+                EXPECTED
         ];
 
         yield 'without namespace / do not import' => [
             <<<'INPUT'
-<?php
-\foo();
-\bar();
-\Foo();
-INPUT
+                <?php
+                \foo();
+                \bar();
+                \Foo();
+                INPUT
         ];
 
         yield 'with namespace' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use function foo;
-use function bar;
-foo();
-bar();
-EXPECTED
+                <?php
+                namespace Test;
+                use function foo;
+                use function bar;
+                foo();
+                bar();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-\foo();
-\bar();
-INPUT
+                <?php
+                namespace Test;
+                \foo();
+                \bar();
+                INPUT
         ];
 
         yield 'with namespace with {} syntax' => [
             <<<'EXPECTED'
-<?php
-namespace Test {
-use function foo;
-use function bar;
-    foo();
-    bar();
-}
-EXPECTED
+                <?php
+                namespace Test {
+                use function foo;
+                use function bar;
+                    foo();
+                    bar();
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test {
-    \foo();
-    \bar();
-}
-INPUT
+                <?php
+                namespace Test {
+                    \foo();
+                    \bar();
+                }
+                INPUT
         ];
 
         yield 'ignore other imported types' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use bar;
-use function foo;
-use function bar;
-foo();
-bar();
-EXPECTED
+                <?php
+                namespace Test;
+                use bar;
+                use function foo;
+                use function bar;
+                foo();
+                bar();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use bar;
-\foo();
-\bar();
-INPUT
+                <?php
+                namespace Test;
+                use bar;
+                \foo();
+                \bar();
+                INPUT
         ];
 
         yield 'respect already imported names [1]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use function bar;
-use function foo;
-foo();
-Bar();
-EXPECTED
+                <?php
+                namespace Test;
+                use function bar;
+                use function foo;
+                foo();
+                Bar();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use function bar;
-\foo();
-\Bar();
-INPUT
+                <?php
+                namespace Test;
+                use function bar;
+                \foo();
+                \Bar();
+                INPUT
         ];
 
         yield 'respect already imported names [2]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use function \bar;
-use function foo;
-foo();
-Bar();
-bar();
-EXPECTED
+                <?php
+                namespace Test;
+                use function \bar;
+                use function foo;
+                foo();
+                Bar();
+                bar();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use function \bar;
-\foo();
-\Bar();
-bar();
-INPUT
+                <?php
+                namespace Test;
+                use function \bar;
+                \foo();
+                \Bar();
+                bar();
+                INPUT
         ];
 
         yield 'handle aliased imports' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use function bar as baz;
-use function foo;
-foo();
-baz();
-EXPECTED
+                <?php
+                namespace Test;
+                use function bar as baz;
+                use function foo;
+                foo();
+                baz();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use function bar as baz;
-\foo();
-\Bar();
-INPUT
+                <?php
+                namespace Test;
+                use function bar as baz;
+                \foo();
+                \Bar();
+                INPUT
         ];
 
         yield 'ignore class methods' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use function foo;
-class Bar {
-    function foo() {}
-}
-foo();
-EXPECTED
+                <?php
+                namespace Test;
+                use function foo;
+                class Bar {
+                    function foo() {}
+                }
+                foo();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-class Bar {
-    function foo() {}
-}
-\foo();
-INPUT
+                <?php
+                namespace Test;
+                class Bar {
+                    function foo() {}
+                }
+                \foo();
+                INPUT
         ];
 
         yield 'name already used' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-class Bar {
-    function baz() {
-        new class() {
-            function baz() {
-                function foo() {}
-            }
-        };
-    }
-}
-\foo();
-EXPECTED
+                <?php
+                namespace Test;
+                class Bar {
+                    function baz() {
+                        new class() {
+                            function baz() {
+                                function foo() {}
+                            }
+                        };
+                    }
+                }
+                \foo();
+                EXPECTED
         ];
     }
 
@@ -465,328 +465,328 @@ EXPECTED
     {
         yield 'non-global names' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-new Foo();
-new Bar\Baz();
-new namespace\Foo2();
+                <?php
+                namespace Test;
+                new Foo();
+                new Bar\Baz();
+                new namespace\Foo2();
 
-/** @var Foo|Bar\Baz $x */
-$x = x();
-EXPECTED
+                /** @var Foo|Bar\Baz $x */
+                $x = x();
+                EXPECTED
         ];
 
         yield 'name already used [1]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-new \Foo();
-new foo();
+                <?php
+                namespace Test;
+                new \Foo();
+                new foo();
 
-/** @var \Foo $foo */
-$foo = new \Foo();
-EXPECTED
+                /** @var \Foo $foo */
+                $foo = new \Foo();
+                EXPECTED
         ];
 
         yield 'name already used [2]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Bar\foo;
+                <?php
+                namespace Test;
+                use Bar\foo;
 
-/** @var \Foo $foo */
-$foo = new \Foo();
-EXPECTED
+                /** @var \Foo $foo */
+                $foo = new \Foo();
+                EXPECTED
         ];
 
         yield 'name already used [3]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-class foo {}
+                <?php
+                namespace Test;
+                class foo {}
 
-/** @var \Foo $foo */
-$foo = new \Foo();
-EXPECTED
+                /** @var \Foo $foo */
+                $foo = new \Foo();
+                EXPECTED
         ];
 
         yield 'name already used [4]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
+                <?php
+                namespace Test;
 
-/** @return array<string, foo> */
-function x() {}
+                /** @return array<string, foo> */
+                function x() {}
 
-/** @var \Foo $foo */
-$foo = new \Foo();
-EXPECTED
+                /** @var \Foo $foo */
+                $foo = new \Foo();
+                EXPECTED
         ];
 
         yield 'without namespace / do not import' => [
             <<<'INPUT'
-<?php
-/** @var \Foo $foo */
-$foo = new \foo();
-new \Bar();
-\FOO::baz();
-INPUT
+                <?php
+                /** @var \Foo $foo */
+                $foo = new \foo();
+                new \Bar();
+                \FOO::baz();
+                INPUT
         ];
 
         yield 'with namespace' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Bar;
-use Baz;
-use foo;
+                <?php
+                namespace Test;
+                use Bar;
+                use Baz;
+                use foo;
 
-new Foo();
-Bar::baz();
+                new Foo();
+                Bar::baz();
 
-/** @return Baz<string, foo> */
-function x() {}
-EXPECTED
+                /** @return Baz<string, foo> */
+                function x() {}
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
+                <?php
+                namespace Test;
 
-new \Foo();
-\Bar::baz();
+                new \Foo();
+                \Bar::baz();
 
-/** @return \Baz<string, \foo> */
-function x() {}
-INPUT
+                /** @return \Baz<string, \foo> */
+                function x() {}
+                INPUT
         ];
 
         yield 'with namespace with {} syntax' => [
             <<<'EXPECTED'
-<?php
-namespace Test {
-use Foo;
-use Bar;
-    new Foo();
-    Bar::baz();
-}
-EXPECTED
+                <?php
+                namespace Test {
+                use Foo;
+                use Bar;
+                    new Foo();
+                    Bar::baz();
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test {
-    new \Foo();
-    \Bar::baz();
-}
-INPUT
+                <?php
+                namespace Test {
+                    new \Foo();
+                    \Bar::baz();
+                }
+                INPUT
         ];
 
         yield 'phpdoc only' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Throwable;
+                <?php
+                namespace Test;
+                use Throwable;
 
-/** @throws Throwable */
-function x() {}
-EXPECTED
+                /** @throws Throwable */
+                function x() {}
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
+                <?php
+                namespace Test;
 
-/** @throws \Throwable */
-function x() {}
-INPUT
+                /** @throws \Throwable */
+                function x() {}
+                INPUT
         ];
 
         yield 'ignore other imported types' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use function Bar;
-use Foo;
-use Bar;
-new Foo();
-Bar::baz();
-EXPECTED
+                <?php
+                namespace Test;
+                use function Bar;
+                use Foo;
+                use Bar;
+                new Foo();
+                Bar::baz();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use function Bar;
-new \Foo();
-\Bar::baz();
-INPUT
+                <?php
+                namespace Test;
+                use function Bar;
+                new \Foo();
+                \Bar::baz();
+                INPUT
         ];
 
         yield 'respect already imported names [1]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Bar;
-use Foo;
-new Foo();
-bar::baz();
-EXPECTED
+                <?php
+                namespace Test;
+                use Bar;
+                use Foo;
+                new Foo();
+                bar::baz();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use Bar;
-new \Foo();
-\bar::baz();
-INPUT
+                <?php
+                namespace Test;
+                use Bar;
+                new \Foo();
+                \bar::baz();
+                INPUT
         ];
 
         yield 'respect already imported names [2]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use \Bar;
-use Foo;
-new Foo();
-new bar();
-new Bar();
-EXPECTED
+                <?php
+                namespace Test;
+                use \Bar;
+                use Foo;
+                new Foo();
+                new bar();
+                new Bar();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use \Bar;
-new \Foo();
-new \bar();
-new Bar();
-INPUT
+                <?php
+                namespace Test;
+                use \Bar;
+                new \Foo();
+                new \bar();
+                new Bar();
+                INPUT
         ];
 
         yield 'respect already imported names [3]' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Throwable;
+                <?php
+                namespace Test;
+                use Throwable;
 
-/** @throws Throwable */
-function x() {}
+                /** @throws Throwable */
+                function x() {}
 
-/** @throws Throwable */
-function y() {}
-EXPECTED
+                /** @throws Throwable */
+                function y() {}
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use Throwable;
+                <?php
+                namespace Test;
+                use Throwable;
 
-/** @throws Throwable */
-function x() {}
+                /** @throws Throwable */
+                function x() {}
 
-/** @throws \Throwable */
-function y() {}
-INPUT
+                /** @throws \Throwable */
+                function y() {}
+                INPUT
         ];
 
         yield 'handle aliased imports' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Bar as Baz;
-use Foo;
+                <?php
+                namespace Test;
+                use Bar as Baz;
+                use Foo;
 
-new Foo();
+                new Foo();
 
-/** @var Baz $bar */
-$bar = new Baz();
-EXPECTED
+                /** @var Baz $bar */
+                $bar = new Baz();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use Bar as Baz;
+                <?php
+                namespace Test;
+                use Bar as Baz;
 
-new \Foo();
+                new \Foo();
 
-/** @var \bar $bar */
-$bar = new \bar();
-INPUT
+                /** @var \bar $bar */
+                $bar = new \bar();
+                INPUT
         ];
 
         yield 'handle typehints' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Bar;
-use Foo;
-use Baz;
-class Abc {
-    function bar(Foo $a, Bar $b, foo &$c, Baz ...$d) {}
-}
-EXPECTED
+                <?php
+                namespace Test;
+                use Bar;
+                use Foo;
+                use Baz;
+                class Abc {
+                    function bar(Foo $a, Bar $b, foo &$c, Baz ...$d) {}
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-class Abc {
-    function bar(\Foo $a, \Bar $b, \foo &$c, \Baz ...$d) {}
-}
-INPUT
+                <?php
+                namespace Test;
+                class Abc {
+                    function bar(\Foo $a, \Bar $b, \foo &$c, \Baz ...$d) {}
+                }
+                INPUT
         ];
 
         yield 'handle typehints 2' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Foo;
-use Bar;
-class Abc {
-    function bar(?Foo $a): ?Bar {}
-}
-EXPECTED
+                <?php
+                namespace Test;
+                use Foo;
+                use Bar;
+                class Abc {
+                    function bar(?Foo $a): ?Bar {}
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-class Abc {
-    function bar(?\Foo $a): ?\Bar {}
-}
-INPUT
+                <?php
+                namespace Test;
+                class Abc {
+                    function bar(?\Foo $a): ?\Bar {}
+                }
+                INPUT
         ];
 
         yield 'try catch' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Exception;
-try {
-} catch (Exception $e) {
-}
-EXPECTED
+                <?php
+                namespace Test;
+                use Exception;
+                try {
+                } catch (Exception $e) {
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-try {
-} catch (\Exception $e) {
-}
-INPUT
+                <?php
+                namespace Test;
+                try {
+                } catch (\Exception $e) {
+                }
+                INPUT
         ];
 
         yield 'try catch with comments' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Exception;
-try {
-} catch (/* ... */ Exception $e /* ... */) {
-}
-EXPECTED
+                <?php
+                namespace Test;
+                use Exception;
+                try {
+                } catch (/* ... */ Exception $e /* ... */) {
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-try {
-} catch (/* ... */ \Exception $e /* ... */) {
-}
-INPUT
+                <?php
+                namespace Test;
+                try {
+                } catch (/* ... */ \Exception $e /* ... */) {
+                }
+                INPUT
         ];
     }
 
@@ -805,40 +805,40 @@ INPUT
     {
         yield 'try catch without variable' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Exception;
-try {
-} catch (Exception) {
-}
-EXPECTED
+                <?php
+                namespace Test;
+                use Exception;
+                try {
+                } catch (Exception) {
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-try {
-} catch (\Exception) {
-}
-INPUT
+                <?php
+                namespace Test;
+                try {
+                } catch (\Exception) {
+                }
+                INPUT
         ];
 
         yield 'try catch without variable and comments' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Exception;
-try {
-} catch (/* non-capturing catch */ Exception /* just because! */) {
-}
-EXPECTED
+                <?php
+                namespace Test;
+                use Exception;
+                try {
+                } catch (/* non-capturing catch */ Exception /* just because! */) {
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-try {
-} catch (/* non-capturing catch */ \Exception /* just because! */) {
-}
-INPUT
+                <?php
+                namespace Test;
+                try {
+                } catch (/* non-capturing catch */ \Exception /* just because! */) {
+                }
+                INPUT
         ];
     }
 
@@ -855,49 +855,49 @@ INPUT
     {
         yield 'already fqn or sub namespace' => [
             <<<'EXPECTED'
-<?php
-use const FOO;
-use const BAR;
-echo \FOO, Baz\BAR;
-EXPECTED
+                <?php
+                use const FOO;
+                use const BAR;
+                echo \FOO, Baz\BAR;
+                EXPECTED
         ];
 
         yield 'handle all occurrences' => [
             <<<'EXPECTED'
-<?php
-namespace X;
-use const FOO;
-use const BAR;
-echo \FOO, \BAR, \FOO;
-EXPECTED
+                <?php
+                namespace X;
+                use const FOO;
+                use const BAR;
+                echo \FOO, \BAR, \FOO;
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace X;
-use const FOO;
-use const BAR;
-echo FOO, BAR, FOO;
-INPUT
+                <?php
+                namespace X;
+                use const FOO;
+                use const BAR;
+                echo FOO, BAR, FOO;
+                INPUT
         ];
 
         yield 'ignore other imports and non-imported names' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use FOO;
-use const BAR;
-use const Baz;
-echo FOO, \BAR, BAZ, QUX;
-EXPECTED
+                <?php
+                namespace Test;
+                use FOO;
+                use const BAR;
+                use const Baz;
+                echo FOO, \BAR, BAZ, QUX;
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use FOO;
-use const BAR;
-use const Baz;
-echo FOO, BAR, BAZ, QUX;
-INPUT
+                <?php
+                namespace Test;
+                use FOO;
+                use const BAR;
+                use const Baz;
+                echo FOO, BAR, BAZ, QUX;
+                INPUT
         ];
     }
 
@@ -914,56 +914,56 @@ INPUT
     {
         yield 'already fqn or sub namespace' => [
             <<<'EXPECTED'
-<?php
-use function foo;
-use function bar;
-\foo();
-Baz\bar();
-EXPECTED
+                <?php
+                use function foo;
+                use function bar;
+                \foo();
+                Baz\bar();
+                EXPECTED
         ];
 
         yield 'handle all occurrences' => [
             <<<'EXPECTED'
-<?php
-namespace X;
-use function foo;
-use function bar;
-\foo();
-\bar();
-\Foo();
-EXPECTED
+                <?php
+                namespace X;
+                use function foo;
+                use function bar;
+                \foo();
+                \bar();
+                \Foo();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace X;
-use function foo;
-use function bar;
-foo();
-bar();
-Foo();
-INPUT
+                <?php
+                namespace X;
+                use function foo;
+                use function bar;
+                foo();
+                bar();
+                Foo();
+                INPUT
         ];
 
         yield 'ignore other imports and non-imported names' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use foo;
-use function bar;
-foo();
-\bar();
-baz();
-EXPECTED
+                <?php
+                namespace Test;
+                use foo;
+                use function bar;
+                foo();
+                \bar();
+                baz();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use foo;
-use function bar;
-foo();
-bar();
-baz();
-INPUT
+                <?php
+                namespace Test;
+                use foo;
+                use function bar;
+                foo();
+                bar();
+                baz();
+                INPUT
         ];
     }
 
@@ -980,119 +980,119 @@ INPUT
     {
         yield 'already fqn or sub namespace' => [
             <<<'EXPECTED'
-<?php
-use Foo;
-use Bar;
+                <?php
+                use Foo;
+                use Bar;
 
-new \Foo();
-Baz\Bar::baz();
+                new \Foo();
+                Baz\Bar::baz();
 
-/**
- * @param \Foo $foo
- * @param Baz\Bar $bar
- */
-function abc(\Foo $foo, Baz\Bar $bar = null) {}
-EXPECTED
+                /**
+                 * @param \Foo $foo
+                 * @param Baz\Bar $bar
+                 */
+                function abc(\Foo $foo, Baz\Bar $bar = null) {}
+                EXPECTED
         ];
 
         yield 'handle all occurrences' => [
             <<<'EXPECTED'
-<?php
-namespace X;
-use Foo;
-use Bar;
+                <?php
+                namespace X;
+                use Foo;
+                use Bar;
 
-new \Foo();
-new \Bar();
-\foo::baz();
+                new \Foo();
+                new \Bar();
+                \foo::baz();
 
-/**
- * @param \Foo|string $foo
- * @param null|\Bar[] $bar
- * @return array<string, ?\Bar<int, \foo>>|null
- */
-function abc($foo, \Bar $bar = null) {}
-EXPECTED
+                /**
+                 * @param \Foo|string $foo
+                 * @param null|\Bar[] $bar
+                 * @return array<string, ?\Bar<int, \foo>>|null
+                 */
+                function abc($foo, \Bar $bar = null) {}
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace X;
-use Foo;
-use Bar;
+                <?php
+                namespace X;
+                use Foo;
+                use Bar;
 
-new Foo();
-new Bar();
-foo::baz();
+                new Foo();
+                new Bar();
+                foo::baz();
 
-/**
- * @param Foo|string $foo
- * @param null|Bar[] $bar
- * @return array<string, ?Bar<int, foo>>|null
- */
-function abc($foo, Bar $bar = null) {}
-INPUT
+                /**
+                 * @param Foo|string $foo
+                 * @param null|Bar[] $bar
+                 * @return array<string, ?Bar<int, foo>>|null
+                 */
+                function abc($foo, Bar $bar = null) {}
+                INPUT
         ];
 
         yield 'ignore other imports and non-imported names' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use function Foo;
-use Bar;
-new Foo();
-new \Bar();
-new Baz();
-EXPECTED
+                <?php
+                namespace Test;
+                use function Foo;
+                use Bar;
+                new Foo();
+                new \Bar();
+                new Baz();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use function Foo;
-use Bar;
-new Foo();
-new Bar();
-new Baz();
-INPUT
+                <?php
+                namespace Test;
+                use function Foo;
+                use Bar;
+                new Foo();
+                new Bar();
+                new Baz();
+                INPUT
         ];
 
         yield 'try catch' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Exception;
-try {
-} catch (\Exception $e) {
-}
-EXPECTED
+                <?php
+                namespace Test;
+                use Exception;
+                try {
+                } catch (\Exception $e) {
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use Exception;
-try {
-} catch (Exception $e) {
-}
-INPUT
+                <?php
+                namespace Test;
+                use Exception;
+                try {
+                } catch (Exception $e) {
+                }
+                INPUT
         ];
 
         yield 'try catch with comments' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Exception;
-try {
-} catch (/* ... */ \Exception $e /* ... */) {
-}
-EXPECTED
+                <?php
+                namespace Test;
+                use Exception;
+                try {
+                } catch (/* ... */ \Exception $e /* ... */) {
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use Exception;
-try {
-} catch (/* ... */ Exception $e /* ... */) {
-}
-INPUT
+                <?php
+                namespace Test;
+                use Exception;
+                try {
+                } catch (/* ... */ Exception $e /* ... */) {
+                }
+                INPUT
         ];
     }
 
@@ -1111,42 +1111,42 @@ INPUT
     {
         yield 'try catch without variable' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Exception;
-try {
-} catch (\Exception) {
-}
-EXPECTED
+                <?php
+                namespace Test;
+                use Exception;
+                try {
+                } catch (\Exception) {
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use Exception;
-try {
-} catch (Exception) {
-}
-INPUT
+                <?php
+                namespace Test;
+                use Exception;
+                try {
+                } catch (Exception) {
+                }
+                INPUT
         ];
 
         yield 'try catch without variable and comments' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use Exception;
-try {
-} catch (/* non-capturing catch */ \Exception /* just because! */) {
-}
-EXPECTED
+                <?php
+                namespace Test;
+                use Exception;
+                try {
+                } catch (/* non-capturing catch */ \Exception /* just because! */) {
+                }
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-use Exception;
-try {
-} catch (/* non-capturing catch */ Exception /* just because! */) {
-}
-INPUT
+                <?php
+                namespace Test;
+                use Exception;
+                try {
+                } catch (/* non-capturing catch */ Exception /* just because! */) {
+                }
+                INPUT
         ];
     }
 
@@ -1163,55 +1163,55 @@ INPUT
     {
         yield [
             <<<'INPUT'
-<?php
-namespace Test;
-echo \FOO, \BAR;
+                <?php
+                namespace Test;
+                echo \FOO, \BAR;
 
-namespace OtherTest;
-echo \FOO, \BAR;
-INPUT
+                namespace OtherTest;
+                echo \FOO, \BAR;
+                INPUT
         ];
 
         yield [
             <<<'INPUT'
-<?php
-namespace Test {
-    echo \FOO, \BAR;
+                <?php
+                namespace Test {
+                    echo \FOO, \BAR;
 
-}
+                }
 
-namespace OtherTest {
-    echo \FOO, \BAR;
-}
-INPUT
+                namespace OtherTest {
+                    echo \FOO, \BAR;
+                }
+                INPUT
         ];
 
         yield [
             <<<'INPUT'
-<?php
-namespace {
-    echo \FOO, \BAR;
+                <?php
+                namespace {
+                    echo \FOO, \BAR;
 
-}
+                }
 
-namespace OtherTest {
-    echo \FOO, \BAR;
-}
-INPUT
+                namespace OtherTest {
+                    echo \FOO, \BAR;
+                }
+                INPUT
         ];
 
         yield [
             <<<'INPUT'
-<?php
-namespace Test {
-    echo \FOO, \BAR;
+                <?php
+                namespace Test {
+                    echo \FOO, \BAR;
 
-}
+                }
 
-namespace {
-    echo \FOO, \BAR;
-}
-INPUT
+                namespace {
+                    echo \FOO, \BAR;
+                }
+                INPUT
         ];
     }
 
@@ -1269,44 +1269,44 @@ class Bar
     {
         yield 'ignore enum methods' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use function foo;
-enum Bar {
-    function foo() {}
-}
-foo();
-EXPECTED
+                <?php
+                namespace Test;
+                use function foo;
+                enum Bar {
+                    function foo() {}
+                }
+                foo();
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-enum Bar {
-    function foo() {}
-}
-\foo();
-INPUT
+                <?php
+                namespace Test;
+                enum Bar {
+                    function foo() {}
+                }
+                \foo();
+                INPUT
         ];
 
         yield 'ignore enum constants' => [
             <<<'EXPECTED'
-<?php
-namespace Test;
-use const FOO;
-enum Bar {
-    const FOO = 1;
-}
-echo FOO;
-EXPECTED
+                <?php
+                namespace Test;
+                use const FOO;
+                enum Bar {
+                    const FOO = 1;
+                }
+                echo FOO;
+                EXPECTED
             ,
             <<<'INPUT'
-<?php
-namespace Test;
-enum Bar {
-    const FOO = 1;
-}
-echo \FOO;
-INPUT
+                <?php
+                namespace Test;
+                enum Bar {
+                    const FOO = 1;
+                }
+                echo \FOO;
+                INPUT
         ];
     }
 }

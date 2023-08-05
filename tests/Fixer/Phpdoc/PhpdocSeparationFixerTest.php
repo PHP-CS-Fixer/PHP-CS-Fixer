@@ -35,23 +35,23 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
 */');
 
         $expected = <<<'EOF'
-<?php
-    /**
-     * @param EngineInterface $templating
-     *
-     * @return void
-     */
+            <?php
+                /**
+                 * @param EngineInterface $templating
+                 *
+                 * @return void
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * @param EngineInterface $templating
-     * @return void
-     */
+            <?php
+                /**
+                 * @param EngineInterface $templating
+                 * @return void
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -59,35 +59,35 @@ EOF;
     public function testFixMoreTags(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * Hello there!
-     *
-     * @internal
-     *
-     * @param string $foo
-     *
-     * @throws Exception
-     *
-     * @return bool
-     */
+            <?php
+                /**
+                 * Hello there!
+                 *
+                 * @internal
+                 *
+                 * @param string $foo
+                 *
+                 * @throws Exception
+                 *
+                 * @return bool
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Hello there!
-     * @internal
-     * @param string $foo
-     * @throws Exception
-     *
-     *
-     *
-     * @return bool
-     */
+            <?php
+                /**
+                 * Hello there!
+                 * @internal
+                 * @param string $foo
+                 * @throws Exception
+                 *
+                 *
+                 *
+                 * @return bool
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -95,46 +95,46 @@ EOF;
     public function testFixSpreadOut(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * Hello there!
-     *
-     * Long description
-     * goes here.
-     *
-     * @param string $foo
-     * @param bool   $bar Bar
-     *
-     * @throws Exception|RuntimeException
-     *
-     * @return bool
-     */
+            <?php
+                /**
+                 * Hello there!
+                 *
+                 * Long description
+                 * goes here.
+                 *
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 *
+                 * @throws Exception|RuntimeException
+                 *
+                 * @return bool
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Hello there!
-     *
-     * Long description
-     * goes here.
-     * @param string $foo
-     *
-     *
-     * @param bool   $bar Bar
-     *
-     *
-     *
-     * @throws Exception|RuntimeException
-     *
-     *
-     *
-     *
-     * @return bool
-     */
+            <?php
+                /**
+                 * Hello there!
+                 *
+                 * Long description
+                 * goes here.
+                 * @param string $foo
+                 *
+                 *
+                 * @param bool   $bar Bar
+                 *
+                 *
+                 *
+                 * @throws Exception|RuntimeException
+                 *
+                 *
+                 *
+                 *
+                 * @return bool
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -142,39 +142,39 @@ EOF;
     public function testMultiLineComments(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * Hello there!
-     *
-     * Long description
-     * goes here.
-     *
-     * @param string $foo test 123
-     *                    asdasdasd
-     * @param bool  $bar qwerty
-     *
-     * @throws Exception|RuntimeException
-     *
-     * @return bool
-     */
+            <?php
+                /**
+                 * Hello there!
+                 *
+                 * Long description
+                 * goes here.
+                 *
+                 * @param string $foo test 123
+                 *                    asdasdasd
+                 * @param bool  $bar qwerty
+                 *
+                 * @throws Exception|RuntimeException
+                 *
+                 * @return bool
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Hello there!
-     *
-     * Long description
-     * goes here.
-     * @param string $foo test 123
-     *                    asdasdasd
-     * @param bool  $bar qwerty
-     * @throws Exception|RuntimeException
-     * @return bool
-     */
+            <?php
+                /**
+                 * Hello there!
+                 *
+                 * Long description
+                 * goes here.
+                 * @param string $foo test 123
+                 *                    asdasdasd
+                 * @param bool  $bar qwerty
+                 * @throws Exception|RuntimeException
+                 * @return bool
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -182,43 +182,43 @@ EOF;
     public function testCrazyMultiLineComments(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * Clients accept an array of constructor parameters.
-     *
-     * Here's an example of creating a client using a URI template for the
-     * client's base_url and an array of default request options to apply
-     * to each request:
-     *
-     *     $client = new Client([
-     *         'base_url' => [
-     *              'https://www.foo.com/{version}/',
-     *              ['version' => '123']
-     *          ],
-     *         'defaults' => [
-     *             'timeout'         => 10,
-     *             'allow_redirects' => false,
-     *             'proxy'           => '192.168.16.1:10'
-     *         ]
-     *     ]);
-     *
-     * @param array $config Client configuration settings
-     *     - base_url: Base URL of the client that is merged into relative URLs.
-     *       Can be a string or an array that contains a URI template followed
-     *       by an associative array of expansion variables to inject into the
-     *       URI template.
-     *     - handler: callable RingPHP handler used to transfer requests
-     *     - message_factory: Factory used to create request and response object
-     *     - defaults: Default request options to apply to each request
-     *     - emitter: Event emitter used for request events
-     *     - fsm: (internal use only) The request finite state machine. A
-     *       function that accepts a transaction and optional final state. The
-     *       function is responsible for transitioning a request through its
-     *       lifecycle events.
-     * @param string $foo
-     */
+            <?php
+                /**
+                 * Clients accept an array of constructor parameters.
+                 *
+                 * Here's an example of creating a client using a URI template for the
+                 * client's base_url and an array of default request options to apply
+                 * to each request:
+                 *
+                 *     $client = new Client([
+                 *         'base_url' => [
+                 *              'https://www.foo.com/{version}/',
+                 *              ['version' => '123']
+                 *          ],
+                 *         'defaults' => [
+                 *             'timeout'         => 10,
+                 *             'allow_redirects' => false,
+                 *             'proxy'           => '192.168.16.1:10'
+                 *         ]
+                 *     ]);
+                 *
+                 * @param array $config Client configuration settings
+                 *     - base_url: Base URL of the client that is merged into relative URLs.
+                 *       Can be a string or an array that contains a URI template followed
+                 *       by an associative array of expansion variables to inject into the
+                 *       URI template.
+                 *     - handler: callable RingPHP handler used to transfer requests
+                 *     - message_factory: Factory used to create request and response object
+                 *     - defaults: Default request options to apply to each request
+                 *     - emitter: Event emitter used for request events
+                 *     - fsm: (internal use only) The request finite state machine. A
+                 *       function that accepts a transaction and optional final state. The
+                 *       function is responsible for transitioning a request through its
+                 *       lifecycle events.
+                 * @param string $foo
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }
@@ -226,40 +226,40 @@ EOF;
     public function testDoctrineExample(): void
     {
         $expected = <<<'EOF'
-<?php
-/**
- * PersistentObject base class that implements getter/setter methods for all mapped fields and associations
- * by overriding __call.
- *
- * This class is a forward compatible implementation of the PersistentObject trait.
- *
- * Limitations:
- *
- * 1. All persistent objects have to be associated with a single ObjectManager, multiple
- *    ObjectManagers are not supported. You can set the ObjectManager with `PersistentObject#setObjectManager()`.
- * 2. Setters and getters only work if a ClassMetadata instance was injected into the PersistentObject.
- *    This is either done on `postLoad` of an object or by accessing the global object manager.
- * 3. There are no hooks for setters/getters. Just implement the method yourself instead of relying on __call().
- * 4. Slower than handcoded implementations: An average of 7 method calls per access to a field and 11 for an association.
- * 5. Only the inverse side associations get autoset on the owning side as well. Setting objects on the owning side
- *    will not set the inverse side associations.
- *
- * @example
- *
- *  PersistentObject::setObjectManager($em);
- *
- *  class Foo extends PersistentObject
- *  {
- *      private $id;
- *  }
- *
- *  $foo = new Foo();
- *  $foo->getId(); // method exists through __call
- *
- * @author Benjamin Eberlei <kontakt@beberlei.de>
- */
+            <?php
+            /**
+             * PersistentObject base class that implements getter/setter methods for all mapped fields and associations
+             * by overriding __call.
+             *
+             * This class is a forward compatible implementation of the PersistentObject trait.
+             *
+             * Limitations:
+             *
+             * 1. All persistent objects have to be associated with a single ObjectManager, multiple
+             *    ObjectManagers are not supported. You can set the ObjectManager with `PersistentObject#setObjectManager()`.
+             * 2. Setters and getters only work if a ClassMetadata instance was injected into the PersistentObject.
+             *    This is either done on `postLoad` of an object or by accessing the global object manager.
+             * 3. There are no hooks for setters/getters. Just implement the method yourself instead of relying on __call().
+             * 4. Slower than handcoded implementations: An average of 7 method calls per access to a field and 11 for an association.
+             * 5. Only the inverse side associations get autoset on the owning side as well. Setting objects on the owning side
+             *    will not set the inverse side associations.
+             *
+             * @example
+             *
+             *  PersistentObject::setObjectManager($em);
+             *
+             *  class Foo extends PersistentObject
+             *  {
+             *      private $id;
+             *  }
+             *
+             *  $foo = new Foo();
+             *  $foo->getId(); // method exists through __call
+             *
+             * @author Benjamin Eberlei <kontakt@beberlei.de>
+             */
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }
@@ -267,55 +267,55 @@ EOF;
     public function testSymfonyExample(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * Constructor.
-     *
-     * Depending on how you want the storage driver to behave you probably
-     * want to override this constructor entirely.
-     *
-     * List of options for $options array with their defaults.
-     *
-     * @see https://php.net/session.configuration for options
-     *
-     * but we omit 'session.' from the beginning of the keys for convenience.
-     *
-     * ("auto_start", is not supported as it tells PHP to start a session before
-     * PHP starts to execute user-land code. Setting during runtime has no effect).
-     *
-     * cache_limiter, "nocache" (use "0" to prevent headers from being sent entirely).
-     * cookie_domain, ""
-     * cookie_httponly, ""
-     * cookie_lifetime, "0"
-     * cookie_path, "/"
-     * cookie_secure, ""
-     * entropy_file, ""
-     * entropy_length, "0"
-     * gc_divisor, "100"
-     * gc_maxlifetime, "1440"
-     * gc_probability, "1"
-     * hash_bits_per_character, "4"
-     * hash_function, "0"
-     * name, "PHPSESSID"
-     * referer_check, ""
-     * serialize_handler, "php"
-     * use_cookies, "1"
-     * use_only_cookies, "1"
-     * use_trans_sid, "0"
-     * upload_progress.enabled, "1"
-     * upload_progress.cleanup, "1"
-     * upload_progress.prefix, "upload_progress_"
-     * upload_progress.name, "PHP_SESSION_UPLOAD_PROGRESS"
-     * upload_progress.freq, "1%"
-     * upload_progress.min-freq, "1"
-     * url_rewriter.tags, "a=href,area=href,frame=src,form=,fieldset="
-     *
-     * @param array                                                            $options Session configuration options.
-     * @param AbstractProxy|NativeSessionHandler|\SessionHandlerInterface|null $handler
-     * @param MetadataBag                                                      $metaBag MetadataBag.
-     */
+            <?php
+                /**
+                 * Constructor.
+                 *
+                 * Depending on how you want the storage driver to behave you probably
+                 * want to override this constructor entirely.
+                 *
+                 * List of options for $options array with their defaults.
+                 *
+                 * @see https://php.net/session.configuration for options
+                 *
+                 * but we omit 'session.' from the beginning of the keys for convenience.
+                 *
+                 * ("auto_start", is not supported as it tells PHP to start a session before
+                 * PHP starts to execute user-land code. Setting during runtime has no effect).
+                 *
+                 * cache_limiter, "nocache" (use "0" to prevent headers from being sent entirely).
+                 * cookie_domain, ""
+                 * cookie_httponly, ""
+                 * cookie_lifetime, "0"
+                 * cookie_path, "/"
+                 * cookie_secure, ""
+                 * entropy_file, ""
+                 * entropy_length, "0"
+                 * gc_divisor, "100"
+                 * gc_maxlifetime, "1440"
+                 * gc_probability, "1"
+                 * hash_bits_per_character, "4"
+                 * hash_function, "0"
+                 * name, "PHPSESSID"
+                 * referer_check, ""
+                 * serialize_handler, "php"
+                 * use_cookies, "1"
+                 * use_only_cookies, "1"
+                 * use_trans_sid, "0"
+                 * upload_progress.enabled, "1"
+                 * upload_progress.cleanup, "1"
+                 * upload_progress.prefix, "upload_progress_"
+                 * upload_progress.name, "PHP_SESSION_UPLOAD_PROGRESS"
+                 * upload_progress.freq, "1%"
+                 * upload_progress.min-freq, "1"
+                 * url_rewriter.tags, "a=href,area=href,frame=src,form=,fieldset="
+                 *
+                 * @param array                                                            $options Session configuration options.
+                 * @param AbstractProxy|NativeSessionHandler|\SessionHandlerInterface|null $handler
+                 * @param MetadataBag                                                      $metaBag MetadataBag.
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }
@@ -323,41 +323,41 @@ EOF;
     public function testDeprecatedAndSeeTags(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * Hi!
-     *
-     * @author Bar Baz <foo@example.com>
-     *
-     * @deprecated As of some version.
-     * @see Replacement
-     *      described here.
-     *
-     * @param string $foo test 123
-     * @param bool  $bar qwerty
-     *
-     * @return void
-     */
+            <?php
+                /**
+                 * Hi!
+                 *
+                 * @author Bar Baz <foo@example.com>
+                 *
+                 * @deprecated As of some version.
+                 * @see Replacement
+                 *      described here.
+                 *
+                 * @param string $foo test 123
+                 * @param bool  $bar qwerty
+                 *
+                 * @return void
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Hi!
-     *
-     * @author Bar Baz <foo@example.com>
-     * @deprecated As of some version.
-     *
-     * @see Replacement
-     *      described here.
-     * @param string $foo test 123
-     * @param bool  $bar qwerty
-     *
-     * @return void
-     */
+            <?php
+                /**
+                 * Hi!
+                 *
+                 * @author Bar Baz <foo@example.com>
+                 * @deprecated As of some version.
+                 *
+                 * @see Replacement
+                 *      described here.
+                 * @param string $foo test 123
+                 * @param bool  $bar qwerty
+                 *
+                 * @return void
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -365,29 +365,29 @@ EOF;
     public function testPropertyTags(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * @author Bar Baz <foo@example.com>
-     *
-     * @property int $foo
-     * @property-read int $foo
-     * @property-write int $bar
-     */
+            <?php
+                /**
+                 * @author Bar Baz <foo@example.com>
+                 *
+                 * @property int $foo
+                 * @property-read int $foo
+                 * @property-write int $bar
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * @author Bar Baz <foo@example.com>
-     * @property int $foo
-     *
-     * @property-read int $foo
-     *
-     * @property-write int $bar
-     */
+            <?php
+                /**
+                 * @author Bar Baz <foo@example.com>
+                 * @property int $foo
+                 *
+                 * @property-read int $foo
+                 *
+                 * @property-write int $bar
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -395,51 +395,51 @@ EOF;
     public function testClassDocBlock(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-namespace Foo;
+            namespace Foo;
 
-/**
- * This is a class that does classy things.
- *
- * @internal
- *
- * @package Foo
- * @subpackage Foo\Bar
- *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- * @copyright Foo Bar
- * @license MIT
- */
-class Bar {}
+            /**
+             * This is a class that does classy things.
+             *
+             * @internal
+             *
+             * @package Foo
+             * @subpackage Foo\Bar
+             *
+             * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+             * @author Graham Campbell <hello@gjcampbell.co.uk>
+             * @copyright Foo Bar
+             * @license MIT
+             */
+            class Bar {}
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-namespace Foo;
+            namespace Foo;
 
-/**
- * This is a class that does classy things.
- * @internal
- * @package Foo
- *
- *
- * @subpackage Foo\Bar
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
- * @copyright Foo Bar
- *
- *
- * @license MIT
- */
-class Bar {}
+            /**
+             * This is a class that does classy things.
+             * @internal
+             * @package Foo
+             *
+             *
+             * @subpackage Foo\Bar
+             * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+             *
+             * @author Graham Campbell <hello@gjcampbell.co.uk>
+             *
+             * @copyright Foo Bar
+             *
+             *
+             * @license MIT
+             */
+            class Bar {}
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -447,42 +447,42 @@ EOF;
     public function testPoorAlignment(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-namespace Foo;
+            namespace Foo;
 
-/**
-*      This is a class that does classy things.
-    *
-*    @internal
-*
- *          @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
-    *@author Graham Campbell <hello@gjcampbell.co.uk>
- */
-class Bar {}
+            /**
+            *      This is a class that does classy things.
+                *
+            *    @internal
+            *
+             *          @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+                *@author Graham Campbell <hello@gjcampbell.co.uk>
+             */
+            class Bar {}
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-namespace Foo;
+            namespace Foo;
 
-/**
-*      This is a class that does classy things.
-    *
-*    @internal
-   *
-*
-*
- *          @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
-     *
-                             *
-    *@author Graham Campbell <hello@gjcampbell.co.uk>
- */
-class Bar {}
+            /**
+            *      This is a class that does classy things.
+                *
+            *    @internal
+               *
+            *
+            *
+             *          @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+                 *
+                                         *
+                *@author Graham Campbell <hello@gjcampbell.co.uk>
+             */
+            class Bar {}
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -490,40 +490,40 @@ EOF;
     public function testMoveUnknownAnnotations(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * @expectedException Exception
-     *
-     * @expectedExceptionMessage Oh Noes!
-     * Something when wrong!
-     *
-     * @Hello\Test\Foo(asd)
-     *
-     * @Method("GET")
-     *
-     * @param string $expected
-     * @param string $input
-     */
+            <?php
+                /**
+                 * @expectedException Exception
+                 *
+                 * @expectedExceptionMessage Oh Noes!
+                 * Something when wrong!
+                 *
+                 * @Hello\Test\Foo(asd)
+                 *
+                 * @Method("GET")
+                 *
+                 * @param string $expected
+                 * @param string $input
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * @expectedException Exception
-     * @expectedExceptionMessage Oh Noes!
-     * Something when wrong!
-     *
-     *
-     * @Hello\Test\Foo(asd)
-     * @Method("GET")
-     *
-     * @param string $expected
-     *
-     * @param string $input
-     */
+            <?php
+                /**
+                 * @expectedException Exception
+                 * @expectedExceptionMessage Oh Noes!
+                 * Something when wrong!
+                 *
+                 *
+                 * @Hello\Test\Foo(asd)
+                 * @Method("GET")
+                 *
+                 * @param string $expected
+                 *
+                 * @param string $input
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -578,12 +578,12 @@ EOF;
     public function testEmptyDocBlock(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     *
-     */
+            <?php
+                /**
+                 *
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }
@@ -591,15 +591,15 @@ EOF;
     public function testLargerEmptyDocBlock(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     *
-     *
-     *
-     *
-     */
+            <?php
+                /**
+                 *
+                 *
+                 *
+                 *
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }
@@ -607,11 +607,11 @@ EOF;
     public function testOneLineDocBlock(): void
     {
         $expected = <<<'EOF'
-<?php
-    /** Foo */
-    const Foo = 1;
+            <?php
+                /** Foo */
+                const Foo = 1;
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }
@@ -685,31 +685,31 @@ EOF;
         ]]);
 
         $expected = <<<'EOF'
-<?php
-    /**
-     * Attempt to authenticate using HTTP Basic Auth.
-     *
-     * @param  string  $field
-     * @param  array  $extraConditions
-     * @return \Symfony\Component\HttpFoundation\Response|null
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
-     */
+            <?php
+                /**
+                 * Attempt to authenticate using HTTP Basic Auth.
+                 *
+                 * @param  string  $field
+                 * @param  array  $extraConditions
+                 * @return \Symfony\Component\HttpFoundation\Response|null
+                 *
+                 * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Attempt to authenticate using HTTP Basic Auth.
-     *
-     * @param  string  $field
-     * @param  array  $extraConditions
-     * @return \Symfony\Component\HttpFoundation\Response|null
-     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
-     */
+            <?php
+                /**
+                 * Attempt to authenticate using HTTP Basic Auth.
+                 *
+                 * @param  string  $field
+                 * @param  array  $extraConditions
+                 * @return \Symfony\Component\HttpFoundation\Response|null
+                 * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -726,46 +726,46 @@ EOF;
         ]);
 
         $expected = <<<'EOF'
-<?php
-    /**
-     * Attempt to authenticate using HTTP Basic Auth.
-     *
-     * @link https://example.com/link
-     * @see https://doc.example.com/link
-     * @copyright by John Doe 2001
-     * @author John Doe
-     *
-     * @property-custom string $prop
-     *
-     * @param  string  $field
-     * @param  array  $extraConditions
-     * @return \Symfony\Component\HttpFoundation\Response|null
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
-     */
+            <?php
+                /**
+                 * Attempt to authenticate using HTTP Basic Auth.
+                 *
+                 * @link https://example.com/link
+                 * @see https://doc.example.com/link
+                 * @copyright by John Doe 2001
+                 * @author John Doe
+                 *
+                 * @property-custom string $prop
+                 *
+                 * @param  string  $field
+                 * @param  array  $extraConditions
+                 * @return \Symfony\Component\HttpFoundation\Response|null
+                 *
+                 * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Attempt to authenticate using HTTP Basic Auth.
-     *
-     * @link https://example.com/link
-     *
-     *
-     * @see https://doc.example.com/link
-     * @copyright by John Doe 2001
-     * @author John Doe
-     * @property-custom string $prop
-     * @param  string  $field
-     * @param  array  $extraConditions
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|null
-     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
-     */
+            <?php
+                /**
+                 * Attempt to authenticate using HTTP Basic Auth.
+                 *
+                 * @link https://example.com/link
+                 *
+                 *
+                 * @see https://doc.example.com/link
+                 * @copyright by John Doe 2001
+                 * @author John Doe
+                 * @property-custom string $prop
+                 * @param  string  $field
+                 * @param  array  $extraConditions
+                 *
+                 * @return \Symfony\Component\HttpFoundation\Response|null
+                 * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -782,43 +782,43 @@ EOF;
         ]);
 
         $expected = <<<'EOF'
-<?php
-    /**
-     * Attempt to authenticate using HTTP Basic Auth.
-     *
-     * @link https://example.com/link
-     * @see https://doc.example.com/link
-     * @copyright by John Doe 2001
-     * @author John Doe
-     *
-     * @param  string  $field
-     * @param  array  $extraConditions
-     * @return \Symfony\Component\HttpFoundation\Response|null
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
-     */
+            <?php
+                /**
+                 * Attempt to authenticate using HTTP Basic Auth.
+                 *
+                 * @link https://example.com/link
+                 * @see https://doc.example.com/link
+                 * @copyright by John Doe 2001
+                 * @author John Doe
+                 *
+                 * @param  string  $field
+                 * @param  array  $extraConditions
+                 * @return \Symfony\Component\HttpFoundation\Response|null
+                 *
+                 * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Attempt to authenticate using HTTP Basic Auth.
-     *
-     * @link https://example.com/link
-     *
-     *
-     * @see https://doc.example.com/link
-     * @copyright by John Doe 2001
-     * @author John Doe
-     * @param  string  $field
-     * @param  array  $extraConditions
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|null
-     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
-     */
+            <?php
+                /**
+                 * Attempt to authenticate using HTTP Basic Auth.
+                 *
+                 * @link https://example.com/link
+                 *
+                 *
+                 * @see https://doc.example.com/link
+                 * @copyright by John Doe 2001
+                 * @author John Doe
+                 * @param  string  $field
+                 * @param  array  $extraConditions
+                 *
+                 * @return \Symfony\Component\HttpFoundation\Response|null
+                 * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -843,39 +843,39 @@ EOF;
     public static function provideDocCodeCases(): iterable
     {
         $input = <<<'EOF'
-<?php
-/**
- * Hello there!
- *
- * @author John Doe
- * @custom Test!
- * @throws Exception|RuntimeException foo
- * @param string $foo
- * @param bool   $bar Bar
- *
- * @return int  Return the number of changes.
- */
+            <?php
+            /**
+             * Hello there!
+             *
+             * @author John Doe
+             * @custom Test!
+             * @throws Exception|RuntimeException foo
+             * @param string $foo
+             * @param bool   $bar Bar
+             *
+             * @return int  Return the number of changes.
+             */
 
-EOF;
+            EOF;
 
         yield 'laravel' => [
             <<<'EOF'
-<?php
-/**
- * Hello there!
- *
- * @author John Doe
- *
- * @custom Test!
- *
- * @throws Exception|RuntimeException foo
- *
- * @param string $foo
- * @param bool   $bar Bar
- * @return int  Return the number of changes.
- */
+                <?php
+                /**
+                 * Hello there!
+                 *
+                 * @author John Doe
+                 *
+                 * @custom Test!
+                 *
+                 * @throws Exception|RuntimeException foo
+                 *
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 * @return int  Return the number of changes.
+                 */
 
-EOF,
+                EOF,
             $input,
             ['groups' => [
                 ['param', 'return'],
@@ -889,142 +889,142 @@ EOF,
 
         yield 'all_tags' => [
             <<<'EOF'
-<?php
-/**
- * Hello there!
- *
- * @author John Doe
- * @custom Test!
- * @throws Exception|RuntimeException foo
- *
- * @param string $foo
- * @param bool   $bar Bar
- * @return int  Return the number of changes.
- */
+                <?php
+                /**
+                 * Hello there!
+                 *
+                 * @author John Doe
+                 * @custom Test!
+                 * @throws Exception|RuntimeException foo
+                 *
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 * @return int  Return the number of changes.
+                 */
 
-EOF,
+                EOF,
             $input,
             ['groups' => [['author', 'throws', 'custom'], ['return', 'param']]],
         ];
 
         yield 'default_groups_standard_tags' => [
             <<<'EOF'
-<?php
-/**
- * Hello there!
- *
- * @author John Doe
- *
- * @throws Exception|RuntimeException foo
- *
- * @custom Test!
- *
- * @param string $foo
- * @param bool   $bar Bar
- *
- * @return int  Return the number of changes.
- */
+                <?php
+                /**
+                 * Hello there!
+                 *
+                 * @author John Doe
+                 *
+                 * @throws Exception|RuntimeException foo
+                 *
+                 * @custom Test!
+                 *
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 *
+                 * @return int  Return the number of changes.
+                 */
 
-EOF,
+                EOF,
             <<<'EOF'
-<?php
-/**
- * Hello there!
- * @author John Doe
- * @throws Exception|RuntimeException foo
- * @custom Test!
- * @param string $foo
- * @param bool   $bar Bar
- * @return int  Return the number of changes.
- */
+                <?php
+                /**
+                 * Hello there!
+                 * @author John Doe
+                 * @throws Exception|RuntimeException foo
+                 * @custom Test!
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 * @return int  Return the number of changes.
+                 */
 
-EOF,
+                EOF,
         ];
 
         yield 'default_groups_all_tags' => [
             <<<'EOF'
-<?php
-/**
- * Hello there!
- *
- * @author John Doe
- *
- * @throws Exception|RuntimeException foo
- *
- * @custom Test!
- *
- * @param string $foo
- * @param bool   $bar Bar
- *
- * @return int  Return the number of changes.
- */
+                <?php
+                /**
+                 * Hello there!
+                 *
+                 * @author John Doe
+                 *
+                 * @throws Exception|RuntimeException foo
+                 *
+                 * @custom Test!
+                 *
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 *
+                 * @return int  Return the number of changes.
+                 */
 
-EOF,
+                EOF,
             <<<'EOF'
-<?php
-/**
- * Hello there!
- * @author John Doe
- * @throws Exception|RuntimeException foo
- * @custom Test!
- * @param string $foo
- * @param bool   $bar Bar
- * @return int  Return the number of changes.
- */
+                <?php
+                /**
+                 * Hello there!
+                 * @author John Doe
+                 * @throws Exception|RuntimeException foo
+                 * @custom Test!
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 * @return int  Return the number of changes.
+                 */
 
-EOF,
+                EOF,
         ];
 
         yield 'Separated unlisted tags with default config' => [
             <<<'EOF'
-<?php
-/**
- * @not-in-any-group1
- *
- * @not-in-any-group2
- *
- * @not-in-any-group3
- */
+                <?php
+                /**
+                 * @not-in-any-group1
+                 *
+                 * @not-in-any-group2
+                 *
+                 * @not-in-any-group3
+                 */
 
-EOF,
+                EOF,
             <<<'EOF'
-<?php
-/**
- * @not-in-any-group1
- * @not-in-any-group2
- * @not-in-any-group3
- */
+                <?php
+                /**
+                 * @not-in-any-group1
+                 * @not-in-any-group2
+                 * @not-in-any-group3
+                 */
 
-EOF,
+                EOF,
         ];
 
         yield 'Skip unlisted tags' => [
             <<<'EOF'
-<?php
-/**
- * @in-group-1
- * @in-group-1-too
- *
- * @not-in-any-group1
- *
- * @not-in-any-group2
- * @not-in-any-group3
- */
+                <?php
+                /**
+                 * @in-group-1
+                 * @in-group-1-too
+                 *
+                 * @not-in-any-group1
+                 *
+                 * @not-in-any-group2
+                 * @not-in-any-group3
+                 */
 
-EOF,
+                EOF,
             <<<'EOF'
-<?php
-/**
- * @in-group-1
- *
- * @in-group-1-too
- * @not-in-any-group1
- *
- * @not-in-any-group2
- * @not-in-any-group3
- */
+                <?php
+                /**
+                 * @in-group-1
+                 *
+                 * @in-group-1-too
+                 * @not-in-any-group1
+                 *
+                 * @not-in-any-group2
+                 * @not-in-any-group3
+                 */
 
-EOF,
+                EOF,
             [
                 'groups' => [['in-group-1', 'in-group-1-too']],
                 'skip_unlisted_annotations' => true,
@@ -1033,25 +1033,25 @@ EOF,
 
         yield 'Doctrine annotations' => [
             <<<'EOF'
-<?php
-/**
- * @ORM\Id
- * @ORM\Column(type="integer")
- * @ORM\GeneratedValue
- */
+                <?php
+                /**
+                 * @ORM\Id
+                 * @ORM\Column(type="integer")
+                 * @ORM\GeneratedValue
+                 */
 
-EOF,
+                EOF,
             <<<'EOF'
-<?php
-/**
- * @ORM\Id
- *
- * @ORM\Column(type="integer")
- *
- * @ORM\GeneratedValue
- */
+                <?php
+                /**
+                 * @ORM\Id
+                 *
+                 * @ORM\Column(type="integer")
+                 *
+                 * @ORM\GeneratedValue
+                 */
 
-EOF,
+                EOF,
             ['groups' => [
                 ['ORM\Id', 'ORM\Column', 'ORM\GeneratedValue'],
             ]],
@@ -1059,31 +1059,31 @@ EOF,
 
         yield 'With wildcard' => [
             <<<'EOF'
-<?php
-/**
- * @ORM\Id
- * @ORM\Column(type="integer")
- * @ORM\GeneratedValue
- *
- * @Assert\NotNull
- * @Assert\Type("string")
- */
+                <?php
+                /**
+                 * @ORM\Id
+                 * @ORM\Column(type="integer")
+                 * @ORM\GeneratedValue
+                 *
+                 * @Assert\NotNull
+                 * @Assert\Type("string")
+                 */
 
-EOF,
+                EOF,
             <<<'EOF'
-<?php
-/**
- * @ORM\Id
- *
- * @ORM\Column(type="integer")
- *
- * @ORM\GeneratedValue
- * @Assert\NotNull
- *
- * @Assert\Type("string")
- */
+                <?php
+                /**
+                 * @ORM\Id
+                 *
+                 * @ORM\Column(type="integer")
+                 *
+                 * @ORM\GeneratedValue
+                 * @Assert\NotNull
+                 *
+                 * @Assert\Type("string")
+                 */
 
-EOF,
+                EOF,
             ['groups' => [
                 ['ORM\*'],
                 ['Assert\*'],

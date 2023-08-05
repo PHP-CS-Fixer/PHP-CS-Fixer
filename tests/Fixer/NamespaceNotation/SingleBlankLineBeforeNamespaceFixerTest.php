@@ -69,37 +69,37 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
     public function testFixExampleWithCommentTooMuch(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-/*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+            /*
+             * This file is part of the PHP CS utility.
+             *
+             * (c) Fabien Potencier <fabien@symfony.com>
+             *
+             * This source file is subject to the MIT license that is bundled
+             * with this source code in the file LICENSE.
+             */
 
-namespace PhpCsFixer\Fixer\Contrib;
+            namespace PhpCsFixer\Fixer\Contrib;
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-/*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+            /*
+             * This file is part of the PHP CS utility.
+             *
+             * (c) Fabien Potencier <fabien@symfony.com>
+             *
+             * This source file is subject to the MIT license that is bundled
+             * with this source code in the file LICENSE.
+             */
 
 
-namespace PhpCsFixer\Fixer\Contrib;
+            namespace PhpCsFixer\Fixer\Contrib;
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -107,35 +107,35 @@ EOF;
     public function testFixExampleWithCommentTooLittle(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-/*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+            /*
+             * This file is part of the PHP CS utility.
+             *
+             * (c) Fabien Potencier <fabien@symfony.com>
+             *
+             * This source file is subject to the MIT license that is bundled
+             * with this source code in the file LICENSE.
+             */
 
-namespace PhpCsFixer\Fixer\Contrib;
+            namespace PhpCsFixer\Fixer\Contrib;
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-/*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-namespace PhpCsFixer\Fixer\Contrib;
+            /*
+             * This file is part of the PHP CS utility.
+             *
+             * (c) Fabien Potencier <fabien@symfony.com>
+             *
+             * This source file is subject to the MIT license that is bundled
+             * with this source code in the file LICENSE.
+             */
+            namespace PhpCsFixer\Fixer\Contrib;
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }

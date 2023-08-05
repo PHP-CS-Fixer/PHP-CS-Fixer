@@ -39,11 +39,11 @@ final class BacktickToShellExecFixer extends AbstractFixer
             [
                 new CodeSample(
                     <<<'EOT'
-<?php
-$plain = `ls -lah`;
-$withVar = `ls -lah $var1 ${var2} {$var3} {$var4[0]} {$var5->call()}`;
+                        <?php
+                        $plain = `ls -lah`;
+                        $withVar = `ls -lah $var1 ${var2} {$var3} {$var4[0]} {$var5->call()}`;
 
-EOT
+                        EOT
                 ),
             ],
             'Conversion is done only when it is non risky, so when special chars like single-quotes, double-quotes and backticks are not used inside the command.'

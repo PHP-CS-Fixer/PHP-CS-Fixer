@@ -28,23 +28,23 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
     public function testSimpleExampleIsNotChanged(): void
     {
         $input = <<<'EOF'
-<?php
+            <?php
 
-/**
- * This is the bar class.
- */
-class Bar
-{
-    /**
-     * @return void
-     */
-    public function foo()
-    {
-        //
-    }
-}
+            /**
+             * This is the bar class.
+             */
+            class Bar
+            {
+                /**
+                 * @return void
+                 */
+                public function foo()
+                {
+                    //
+                }
+            }
 
-EOF;
+            EOF;
 
         $this->doTest($input);
     }
@@ -52,64 +52,64 @@ EOF;
     public function testComplexExampleIsNotChanged(): void
     {
         $input = <<<'EOF'
-<?php
-/**
- * This is the hello function.
- * Yeh, this layout should be allowed.
- * We're fixing lines following a docblock.
- */
-function hello($foo) {}
-/**
- * This is the bar class.
- */
-final class Bar
-{
-    /**
-     * @return void
-     */
-    public static function foo()
-    {
-        //
-    }
+            <?php
+            /**
+             * This is the hello function.
+             * Yeh, this layout should be allowed.
+             * We're fixing lines following a docblock.
+             */
+            function hello($foo) {}
+            /**
+             * This is the bar class.
+             */
+            final class Bar
+            {
+                /**
+                 * @return void
+                 */
+                public static function foo()
+                {
+                    //
+                }
 
-    /**
-     * @return void
-     */
-    static private function bar123() {}
+                /**
+                 * @return void
+                 */
+                static private function bar123() {}
 
-    /*
-     * This T_COMMENT should not be moved
-     *
-     * Only T_DOC_COMMENT should be moved
-     */
-    final protected
-    // mixin' it up a bit
-    function baz() {
-    }
+                /*
+                 * This T_COMMENT should not be moved
+                 *
+                 * Only T_DOC_COMMENT should be moved
+                 */
+                final protected
+                // mixin' it up a bit
+                function baz() {
+                }
 
 
-    /*
-     * This T_COMMENT should not be moved
-     *
-     * Only T_DOC_COMMENT should be moved
-     */
+                /*
+                 * This T_COMMENT should not be moved
+                 *
+                 * Only T_DOC_COMMENT should be moved
+                 */
 
-    public function cool() {}
+                public function cool() {}
 
-    /**
-     * This is the first docblock
-     *
-     * Not removing blank line here.
-     * No element is being documented
-     */
+                /**
+                 * This is the first docblock
+                 *
+                 * Not removing blank line here.
+                 * No element is being documented
+                 */
 
-    /**
-     * Another docblock
-     */
-    public function silly() {}
-}
+                /**
+                 * Another docblock
+                 */
+                public function silly() {}
+            }
 
-EOF;
+            EOF;
 
         $this->doTest($input);
     }
@@ -117,17 +117,17 @@ EOF;
     public function testCommentsAreNotChanged(): void
     {
         $input = <<<'EOF'
-<?php
+            <?php
 
-/*
- * This file is part of xyz.
- *
- * License etc...
- */
+            /*
+             * This file is part of xyz.
+             *
+             * License etc...
+             */
 
-namespace Foo\Bar;
+            namespace Foo\Bar;
 
-EOF;
+            EOF;
 
         $this->doTest($input);
     }
@@ -135,13 +135,13 @@ EOF;
     public function testLineBeforeDeclareIsNotRemoved(): void
     {
         $expected = <<<'EOF'
-<?php
-/**
- * This is some license header.
- */
+            <?php
+            /**
+             * This is some license header.
+             */
 
-declare(strict_types=1);
-EOF;
+            declare(strict_types=1);
+            EOF;
 
         $this->doTest($expected);
     }
@@ -149,13 +149,13 @@ EOF;
     public function testLineBeforeUseStatementIsNotRemoved(): void
     {
         $expected = <<<'EOF'
-<?php
-/**
- * This is some license header.
- */
+            <?php
+            /**
+             * This is some license header.
+             */
 
-use Foo\Bar;
-EOF;
+            use Foo\Bar;
+            EOF;
 
         $this->doTest($expected);
     }
@@ -171,43 +171,43 @@ EOF;
     public static function provideLineBeforeIncludeOrRequireIsNotRemovedCases(): iterable
     {
         yield [<<<'EOF'
-<?php
-/**
- * This describes what my script does.
- */
+            <?php
+            /**
+             * This describes what my script does.
+             */
 
-include 'vendor/autoload.php';
-EOF
+            include 'vendor/autoload.php';
+            EOF
         ];
 
         yield [<<<'EOF'
-<?php
-/**
- * This describes what my script does.
- */
+            <?php
+            /**
+             * This describes what my script does.
+             */
 
-include_once 'vendor/autoload.php';
-EOF
+            include_once 'vendor/autoload.php';
+            EOF
         ];
 
         yield [<<<'EOF'
-<?php
-/**
- * This describes what my script does.
- */
+            <?php
+            /**
+             * This describes what my script does.
+             */
 
-require 'vendor/autoload.php';
-EOF
+            require 'vendor/autoload.php';
+            EOF
         ];
 
         yield [<<<'EOF'
-<?php
-/**
- * This describes what my script does.
- */
+            <?php
+            /**
+             * This describes what my script does.
+             */
 
-require_once 'vendor/autoload.php';
-EOF
+            require_once 'vendor/autoload.php';
+            EOF
         ];
     }
 
@@ -248,26 +248,26 @@ class Foo {}'
     public function testFixesSimpleClass(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-/**
- * This is the bar class.
- */
-class Bar {}
+            /**
+             * This is the bar class.
+             */
+            class Bar {}
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-/**
- * This is the bar class.
- */
+            /**
+             * This is the bar class.
+             */
 
 
-class Bar {}
+            class Bar {}
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -275,29 +275,29 @@ EOF;
     public function testFixesIndentedClass(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-    /**
-     *
-     */
-    class Foo {
-        private $a;
-    }
+                /**
+                 *
+                 */
+                class Foo {
+                    private $a;
+                }
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-    /**
-     *
-     */
+                /**
+                 *
+                 */
 
-    class Foo {
-        private $a;
-    }
+                class Foo {
+                    private $a;
+                }
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -305,37 +305,37 @@ EOF;
     public function testFixesOthers(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-    /**
-     * Constant!
-     */
-    const test = 'constant';
+                /**
+                 * Constant!
+                 */
+                const test = 'constant';
 
-    /**
-     * Foo!
-     */
-    $foo = 123;
+                /**
+                 * Foo!
+                 */
+                $foo = 123;
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-    /**
-     * Constant!
-     */
+                /**
+                 * Constant!
+                 */
 
 
-    const test = 'constant';
+                const test = 'constant';
 
-    /**
-     * Foo!
-     */
+                /**
+                 * Foo!
+                 */
 
-    $foo = 123;
+                $foo = 123;
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -343,15 +343,15 @@ EOF;
     public function testWhitespaceInDocBlockAboveNamespaceIsNotTouched(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-/**
- * This is a file-level docblock.
- */
+            /**
+             * This is a file-level docblock.
+             */
 
-namespace Foo\Bar\Baz;
+            namespace Foo\Bar\Baz;
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }
@@ -378,84 +378,84 @@ EOF;
     public static function provideInlineTypehintingDocsBeforeFlowBreakCases(): iterable
     {
         yield [<<<'EOF'
-<?php
-function parseTag($tag)
-{
-    $tagClass = get_class($tag);
+            <?php
+            function parseTag($tag)
+            {
+                $tagClass = get_class($tag);
 
-    if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
-        /** @var DocBlock\Tag\VarTag $tag */
+                if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
+                    /** @var DocBlock\Tag\VarTag $tag */
 
-        return $tag->getDescription();
-    }
-}
-EOF
+                    return $tag->getDescription();
+                }
+            }
+            EOF
         ];
 
         yield [<<<'EOF'
-<?php
-function parseTag($tag)
-{
-    $tagClass = get_class($tag);
+            <?php
+            function parseTag($tag)
+            {
+                $tagClass = get_class($tag);
 
-    if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
-        /** @var DocBlock\Tag\VarTag $tag */
+                if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
+                    /** @var DocBlock\Tag\VarTag $tag */
 
-        throw new Exception($tag->getDescription());
-    }
-}
-EOF
+                    throw new Exception($tag->getDescription());
+                }
+            }
+            EOF
         ];
 
         yield [<<<'EOF'
-<?php
-function parseTag($tag)
-{
-    $tagClass = get_class($tag);
+            <?php
+            function parseTag($tag)
+            {
+                $tagClass = get_class($tag);
 
-    if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
-        /** @var DocBlock\Tag\VarTag $tag */
+                if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
+                    /** @var DocBlock\Tag\VarTag $tag */
 
-        goto FOO;
-    }
+                    goto FOO;
+                }
 
-FOO:
-}
-EOF
+            FOO:
+            }
+            EOF
         ];
 
         yield [<<<'EOF'
-<?php
-function parseTag($tag)
-{
-    while (true) {
-        $tagClass = get_class($tag);
+            <?php
+            function parseTag($tag)
+            {
+                while (true) {
+                    $tagClass = get_class($tag);
 
-        if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
-            /** @var DocBlock\Tag\VarTag $tag */
+                    if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
+                        /** @var DocBlock\Tag\VarTag $tag */
 
-            continue;
-        }
-    }
-}
-EOF
+                        continue;
+                    }
+                }
+            }
+            EOF
         ];
 
         yield [<<<'EOF'
-<?php
-function parseTag($tag)
-{
-    while (true) {
-        $tagClass = get_class($tag);
+            <?php
+            function parseTag($tag)
+            {
+                while (true) {
+                    $tagClass = get_class($tag);
 
-        if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
-            /** @var DocBlock\Tag\VarTag $tag */
+                    if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
+                        /** @var DocBlock\Tag\VarTag $tag */
 
-            break;
-        }
-    }
-}
-EOF
+                        break;
+                    }
+                }
+            }
+            EOF
         ];
     }
 }

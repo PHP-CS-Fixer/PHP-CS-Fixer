@@ -76,16 +76,16 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 ),
                 new VersionSpecificCodeSample(
                     <<<'SAMPLE'
-<?php
-sample(
-    <<<EOD
-        foo
-        EOD
-    ,
-    'bar'
-);
+                        <?php
+                        sample(
+                            <<<EOD
+                                foo
+                                EOD
+                            ,
+                            'bar'
+                        );
 
-SAMPLE
+                        SAMPLE
                     ,
                     new VersionSpecification(7_03_00),
                     ['after_heredoc' => true]

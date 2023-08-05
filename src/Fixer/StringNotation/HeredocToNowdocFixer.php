@@ -34,11 +34,11 @@ final class HeredocToNowdocFixer extends AbstractFixer
             [
                 new CodeSample(
                     <<<'EOF'
-<?php $a = <<<"TEST"
-Foo
-TEST;
+                        <?php $a = <<<"TEST"
+                        Foo
+                        TEST;
 
-EOF
+                        EOF
                 ),
             ]
         );
