@@ -21,7 +21,7 @@ Default value: ``'same_line'``
 
 The position of the opening brace of functions‘ body.
 
-Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+Allowed values: ``'next_line_if_return_typehint'``, ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
 Default value: ``'next_line_unless_newline_at_signature_end'``
 
@@ -153,6 +153,24 @@ With configuration: ``['functions_opening_brace' => 'same_line']``.
 Example #5
 ~~~~~~~~~~
 
+With configuration: ``['functions_opening_brace' => 'next_line_if_return_typehint']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    function foo(
+        $bar,
+        $baz
+   -): string {
+   +): string
+   +{
+    }
+
+Example #6
+~~~~~~~~~~
+
 With configuration: ``['anonymous_functions_opening_brace' => 'next_line_unless_newline_at_signature_end']``.
 
 .. code-block:: diff
@@ -165,7 +183,7 @@ With configuration: ``['anonymous_functions_opening_brace' => 'next_line_unless_
    +{
     };
 
-Example #6
+Example #7
 ~~~~~~~~~~
 
 With configuration: ``['classes_opening_brace' => 'same_line']``.
@@ -180,7 +198,7 @@ With configuration: ``['classes_opening_brace' => 'same_line']``.
    +class Foo {
     }
 
-Example #7
+Example #8
 ~~~~~~~~~~
 
 With configuration: ``['anonymous_classes_opening_brace' => 'next_line_unless_newline_at_signature_end']``.
@@ -195,7 +213,7 @@ With configuration: ``['anonymous_classes_opening_brace' => 'next_line_unless_ne
    +{
     };
 
-Example #8
+Example #9
 ~~~~~~~~~~
 
 With configuration: ``['allow_single_line_empty_anonymous_classes' => true]``.
@@ -211,8 +229,8 @@ With configuration: ``['allow_single_line_empty_anonymous_classes' => true]``.
    +private $baz;
    +};
 
-Example #9
-~~~~~~~~~~
+Example #10
+~~~~~~~~~~~
 
 With configuration: ``['allow_single_line_anonymous_functions' => true]``.
 
