@@ -35,11 +35,12 @@ final class StrictComparisonFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield from [
-            ['<?php $a === $b;', '<?php $a == $b;'],
-            ['<?php $a !== $b;', '<?php $a != $b;'],
-            ['<?php $a !== $b;', '<?php $a <> $b;'],
-            ['<?php echo "$a === $b";'],
-        ];
+        yield ['<?php $a === $b;', '<?php $a == $b;'];
+
+        yield ['<?php $a !== $b;', '<?php $a != $b;'];
+
+        yield ['<?php $a !== $b;', '<?php $a <> $b;'];
+
+        yield ['<?php echo "$a === $b";'];
     }
 }
