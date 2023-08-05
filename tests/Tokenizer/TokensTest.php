@@ -78,204 +78,218 @@ final class TokensTest extends TestCase
 
     public static function provideFindSequenceCases(): iterable
     {
-        return [
+        yield [
+            '<?php $x = 1;',
+            null,
             [
-                '<?php $x = 1;',
-                null,
-                [
-                    new Token(';'),
-                ],
-                7,
+                new Token(';'),
+            ],
+            7,
+        ];
+
+        yield [
+            '<?php $x = 2;',
+            null,
+            [
+                [T_OPEN_TAG],
+                [T_VARIABLE, '$y'],
+            ],
+        ];
+
+        yield [
+            '<?php $x = 3;',
+            [
+                0 => new Token([T_OPEN_TAG, '<?php ']),
+                1 => new Token([T_VARIABLE, '$x']),
             ],
             [
-                '<?php $x = 2;',
-                null,
-                [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$y'],
-                ],
+                [T_OPEN_TAG],
+                [T_VARIABLE, '$x'],
+            ],
+        ];
+
+        yield [
+            '<?php $x = 4;',
+            [
+                3 => new Token('='),
+                5 => new Token([T_LNUMBER, '4']),
+                6 => new Token(';'),
             ],
             [
-                '<?php $x = 3;',
-                [
-                    0 => new Token([T_OPEN_TAG, '<?php ']),
-                    1 => new Token([T_VARIABLE, '$x']),
-                ],
-                [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$x'],
-                ],
+                '=',
+                [T_LNUMBER, '4'],
+                ';',
+            ],
+        ];
+
+        yield [
+            '<?php $x = 5;',
+            [
+                0 => new Token([T_OPEN_TAG, '<?php ']),
+                1 => new Token([T_VARIABLE, '$x']),
             ],
             [
-                '<?php $x = 4;',
-                [
-                    3 => new Token('='),
-                    5 => new Token([T_LNUMBER, '4']),
-                    6 => new Token(';'),
-                ],
-                [
-                    '=',
-                    [T_LNUMBER, '4'],
-                    ';',
-                ],
+                [T_OPEN_TAG],
+                [T_VARIABLE, '$x'],
+            ],
+            0,
+        ];
+
+        yield [
+            '<?php $x = 6;',
+            null,
+            [
+                [T_OPEN_TAG],
+                [T_VARIABLE, '$x'],
+            ],
+            1,
+        ];
+
+        yield [
+            '<?php $x = 7;',
+            [
+                3 => new Token('='),
+                5 => new Token([T_LNUMBER, '7']),
+                6 => new Token(';'),
             ],
             [
-                '<?php $x = 5;',
-                [
-                    0 => new Token([T_OPEN_TAG, '<?php ']),
-                    1 => new Token([T_VARIABLE, '$x']),
-                ],
-                [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$x'],
-                ],
-                0,
+                '=',
+                [T_LNUMBER, '7'],
+                ';',
+            ],
+            3,
+            6,
+        ];
+
+        yield [
+            '<?php $x = 8;',
+            null,
+            [
+                '=',
+                [T_LNUMBER, '8'],
+                ';',
+            ],
+            4,
+            6,
+        ];
+
+        yield [
+            '<?php $x = 9;',
+            null,
+            [
+                '=',
+                [T_LNUMBER, '9'],
+                ';',
+            ],
+            3,
+            5,
+        ];
+
+        yield [
+            '<?php $x = 10;',
+            [
+                0 => new Token([T_OPEN_TAG, '<?php ']),
+                1 => new Token([T_VARIABLE, '$x']),
             ],
             [
-                '<?php $x = 6;',
-                null,
-                [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$x'],
-                ],
-                1,
+                [T_OPEN_TAG],
+                [T_VARIABLE, '$x'],
+            ],
+            0,
+            1,
+            true,
+        ];
+
+        yield [
+            '<?php $x = 11;',
+            null,
+            [
+                [T_OPEN_TAG],
+                [T_VARIABLE, '$X'],
+            ],
+            0,
+            1,
+            true,
+        ];
+
+        yield [
+            '<?php $x = 12;',
+            null,
+            [
+                [T_OPEN_TAG],
+                [T_VARIABLE, '$X'],
+            ],
+            0,
+            1,
+            [1 => true],
+        ];
+
+        yield [
+            '<?php $x = 13;',
+            [
+                0 => new Token([T_OPEN_TAG, '<?php ']),
+                1 => new Token([T_VARIABLE, '$x']),
             ],
             [
-                '<?php $x = 7;',
-                [
-                    3 => new Token('='),
-                    5 => new Token([T_LNUMBER, '7']),
-                    6 => new Token(';'),
-                ],
-                [
-                    '=',
-                    [T_LNUMBER, '7'],
-                    ';',
-                ],
-                3,
-                6,
+                [T_OPEN_TAG],
+                [T_VARIABLE, '$X'],
+            ],
+            0,
+            1,
+            false,
+        ];
+
+        yield [
+            '<?php $x = 14;',
+            [
+                0 => new Token([T_OPEN_TAG, '<?php ']),
+                1 => new Token([T_VARIABLE, '$x']),
             ],
             [
-                '<?php $x = 8;',
-                null,
-                [
-                    '=',
-                    [T_LNUMBER, '8'],
-                    ';',
-                ],
-                4,
-                6,
+                [T_OPEN_TAG],
+                [T_VARIABLE, '$X'],
+            ],
+            0,
+            1,
+            [1 => false],
+        ];
+
+        yield [
+            '<?php $x = 15;',
+            [
+                0 => new Token([T_OPEN_TAG, '<?php ']),
+                1 => new Token([T_VARIABLE, '$x']),
             ],
             [
-                '<?php $x = 9;',
-                null,
-                [
-                    '=',
-                    [T_LNUMBER, '9'],
-                    ';',
-                ],
-                3,
-                5,
+                [T_OPEN_TAG],
+                [T_VARIABLE, '$X'],
             ],
+            0,
+            1,
+            [1 => false],
+        ];
+
+        yield [
+            '<?php $x = 16;',
+            null,
             [
-                '<?php $x = 10;',
-                [
-                    0 => new Token([T_OPEN_TAG, '<?php ']),
-                    1 => new Token([T_VARIABLE, '$x']),
-                ],
-                [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$x'],
-                ],
-                0,
-                1,
-                true,
+                [T_OPEN_TAG],
+                [T_VARIABLE, '$X'],
             ],
+            0,
+            1,
+            [2 => false],
+        ];
+
+        yield [
+            '<?php $x = 17;',
+            null,
             [
-                '<?php $x = 11;',
-                null,
-                [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$X'],
-                ],
-                0,
-                1,
-                true,
+                [T_VARIABLE, '$X'],
+                '=',
             ],
-            [
-                '<?php $x = 12;',
-                null,
-                [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$X'],
-                ],
-                0,
-                1,
-                [1 => true],
-            ],
-            [
-                '<?php $x = 13;',
-                [
-                    0 => new Token([T_OPEN_TAG, '<?php ']),
-                    1 => new Token([T_VARIABLE, '$x']),
-                ],
-                [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$X'],
-                ],
-                0,
-                1,
-                false,
-            ],
-            [
-                '<?php $x = 14;',
-                [
-                    0 => new Token([T_OPEN_TAG, '<?php ']),
-                    1 => new Token([T_VARIABLE, '$x']),
-                ],
-                [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$X'],
-                ],
-                0,
-                1,
-                [1 => false],
-            ],
-            [
-                '<?php $x = 15;',
-                [
-                    0 => new Token([T_OPEN_TAG, '<?php ']),
-                    1 => new Token([T_VARIABLE, '$x']),
-                ],
-                [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$X'],
-                ],
-                0,
-                1,
-                [1 => false],
-            ],
-            [
-                '<?php $x = 16;',
-                null,
-                [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$X'],
-                ],
-                0,
-                1,
-                [2 => false],
-            ],
-            [
-                '<?php $x = 17;',
-                null,
-                [
-                    [T_VARIABLE, '$X'],
-                    '=',
-                ],
-                0,
-                10,
-            ],
+            0,
+            10,
         ];
     }
 
@@ -298,20 +312,21 @@ final class TokensTest extends TestCase
     {
         $emptyToken = new Token('');
 
-        return [
-            ['Invalid sequence.', []],
-            [
-                'Non-meaningful token at position: "0".',
-                [[T_WHITESPACE, '   ']],
-            ],
-            [
-                'Non-meaningful token at position: "1".',
-                ['{', [T_COMMENT, '// Foo'], '}'],
-            ],
-            [
-                'Non-meaningful (empty) token at position: "2".',
-                ['{', '!', $emptyToken, '}'],
-            ],
+        yield ['Invalid sequence.', []];
+
+        yield [
+            'Non-meaningful token at position: "0".',
+            [[T_WHITESPACE, '   ']],
+        ];
+
+        yield [
+            'Non-meaningful token at position: "1".',
+            ['{', [T_COMMENT, '// Foo'], '}'],
+        ];
+
+        yield [
+            'Non-meaningful (empty) token at position: "2".',
+            ['{', '!', $emptyToken, '}'],
         ];
     }
 
@@ -540,86 +555,89 @@ PHP;
     {
         $clearToken = new Token('');
 
-        return [
+        yield [
+            '<?php if($a){}else{}',
+            [7, 8, 9],
             [
-                '<?php if($a){}else{}',
-                [7, 8, 9],
-                [
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_IF, 'if']),
-                    new Token('('),
-                    new Token([T_VARIABLE, '$a']),
-                    new Token(')'),
-                    new Token('{'),
-                    new Token('}'),
-                    $clearToken,
-                    $clearToken,
-                    $clearToken,
-                ],
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([T_IF, 'if']),
+                new Token('('),
+                new Token([T_VARIABLE, '$a']),
+                new Token(')'),
+                new Token('{'),
+                new Token('}'),
+                $clearToken,
+                $clearToken,
+                $clearToken,
             ],
+        ];
+
+        yield [
+            '<?php $a;/**/;',
+            [2],
             [
-                '<?php $a;/**/;',
-                [2],
-                [
-                    // <?php $a /**/;
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_VARIABLE, '$a']),
-                    $clearToken,
-                    new Token([T_COMMENT, '/**/']),
-                    new Token(';'),
-                ],
+                // <?php $a /**/;
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([T_VARIABLE, '$a']),
+                $clearToken,
+                new Token([T_COMMENT, '/**/']),
+                new Token(';'),
             ],
+        ];
+
+        yield [
+            '<?php ; ; ;',
+            [3],
             [
-                '<?php ; ; ;',
-                [3],
-                [
-                    // <?php ;  ;
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token(';'),
-                    new Token([T_WHITESPACE, '  ']),
-                    $clearToken,
-                    $clearToken,
-                    new Token(';'),
-                ],
+                // <?php ;  ;
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token(';'),
+                new Token([T_WHITESPACE, '  ']),
+                $clearToken,
+                $clearToken,
+                new Token(';'),
             ],
+        ];
+
+        yield [
+            '<?php ; ; ;',
+            [1, 5],
             [
-                '<?php ; ; ;',
-                [1, 5],
-                [
-                    // <?php  ;
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_WHITESPACE, ' ']),
-                    $clearToken,
-                    new Token(';'),
-                    new Token([T_WHITESPACE, ' ']),
-                    $clearToken,
-                ],
+                // <?php  ;
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([T_WHITESPACE, ' ']),
+                $clearToken,
+                new Token(';'),
+                new Token([T_WHITESPACE, ' ']),
+                $clearToken,
             ],
+        ];
+
+        yield [
+            '<?php ; ; ;',
+            [1, 3],
             [
-                '<?php ; ; ;',
-                [1, 3],
-                [
-                    // <?php   ;
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_WHITESPACE, '  ']),
-                    $clearToken,
-                    $clearToken,
-                    $clearToken,
-                    new Token(';'),
-                ],
+                // <?php   ;
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([T_WHITESPACE, '  ']),
+                $clearToken,
+                $clearToken,
+                $clearToken,
+                new Token(';'),
             ],
+        ];
+
+        yield [
+            '<?php ; ; ;',
+            [1],
             [
-                '<?php ; ; ;',
-                [1],
-                [
-                    // <?php  ; ;
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_WHITESPACE, ' ']),
-                    $clearToken,
-                    new Token(';'),
-                    new Token([T_WHITESPACE, ' ']),
-                    new Token(';'),
-                ],
+                // <?php  ; ;
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([T_WHITESPACE, ' ']),
+                $clearToken,
+                new Token(';'),
+                new Token([T_WHITESPACE, ' ']),
+                new Token(';'),
             ],
         ];
     }
@@ -661,30 +679,34 @@ PHP;
 
     public static function provideTokenOfKindSiblingCases(): iterable
     {
-        return [
-            // find next cases
-            [
-                35, 1, 34, [';'],
-            ],
-            [
-                14, 1, 0, [[T_RETURN]],
-            ],
-            [
-                32, 1, 14, [[T_RETURN]],
-            ],
-            [
-                6, 1, 0, [[T_RETURN], [T_FUNCTION]],
-            ],
-            // find previous cases
-            [
-                14, -1, 32, [[T_RETURN], [T_FUNCTION]],
-            ],
-            [
-                6, -1, 7, [[T_FUNCTION]],
-            ],
-            [
-                null, -1, 6, [[T_FUNCTION]],
-            ],
+        // find next cases
+        yield [
+            35, 1, 34, [';'],
+        ];
+
+        yield [
+            14, 1, 0, [[T_RETURN]],
+        ];
+
+        yield [
+            32, 1, 14, [[T_RETURN]],
+        ];
+
+        yield [
+            6, 1, 0, [[T_RETURN], [T_FUNCTION]],
+        ];
+
+        // find previous cases
+        yield [
+            14, -1, 32, [[T_RETURN], [T_FUNCTION]],
+        ];
+
+        yield [
+            6, -1, 7, [[T_FUNCTION]],
+        ];
+
+        yield [
+            null, -1, 6, [[T_FUNCTION]],
         ];
     }
 
@@ -700,21 +722,31 @@ PHP;
 
     public static function provideFindBlockEndCases(): iterable
     {
-        return [
-            [4, '<?php ${$bar};', Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2],
-            [4, '<?php test(1);', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2],
-            [4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2],
-            [4, '<?php $a[1];', Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, 2],
-            [6, '<?php [1, "foo"];', Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 1],
-            [5, '<?php $foo->{$bar};', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3],
-            [4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2],
-            [6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_CURLY_BRACE, 5],
-            [11, '<?php $foo = (new Foo());', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
-            [10, '<?php $object->{"set_{$name}"}(42);', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3],
-            [19, '<?php $foo = (new class () implements Foo {});', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
-            [10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5],
-            [3, '<?php [$a] = $array;', Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, 1],
-        ];
+        yield [4, '<?php ${$bar};', Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2];
+
+        yield [4, '<?php test(1);', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2];
+
+        yield [4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2];
+
+        yield [4, '<?php $a[1];', Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, 2];
+
+        yield [6, '<?php [1, "foo"];', Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 1];
+
+        yield [5, '<?php $foo->{$bar};', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3];
+
+        yield [4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2];
+
+        yield [6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_CURLY_BRACE, 5];
+
+        yield [11, '<?php $foo = (new Foo());', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5];
+
+        yield [10, '<?php $object->{"set_{$name}"}(42);', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3];
+
+        yield [19, '<?php $foo = (new class () implements Foo {});', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5];
+
+        yield [10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5];
+
+        yield [3, '<?php [$a] = $array;', Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, 1];
     }
 
     /**
@@ -731,16 +763,14 @@ PHP;
 
     public static function provideFindBlockEnd80Cases(): iterable
     {
-        return [
-            [
-                9,
-                '<?php class Foo {
+        yield [
+            9,
+            '<?php class Foo {
                     #[Required]
                     public $bar;
                 }',
-                Tokens::BLOCK_TYPE_ATTRIBUTE,
-                7,
-            ],
+            Tokens::BLOCK_TYPE_ATTRIBUTE,
+            7,
         ];
     }
 
@@ -917,11 +947,11 @@ PHP;
 
     public static function provideIsEmptyCases(): iterable
     {
-        return [
-            [new Token(''), true],
-            [new Token('('), false],
-            [new Token([T_WHITESPACE, ' ']), false],
-        ];
+        yield [new Token(''), true];
+
+        yield [new Token('('), false];
+
+        yield [new Token([T_WHITESPACE, ' ']), false];
     }
 
     public function testClone(): void
@@ -956,119 +986,131 @@ PHP;
 
     public static function provideEnsureWhitespaceAtIndexCases(): iterable
     {
-        return [
-            [
-                '<?php echo 1;',
-                '<?php  echo 1;',
-                1,
-                1,
-                ' ',
-            ],
-            [
-                '<?php echo 7;',
-                '<?php   echo 7;',
-                1,
-                1,
-                ' ',
-            ],
-            [
-                '<?php  ',
-                '<?php  ',
-                1,
-                1,
-                '  ',
-            ],
-            [
-                '<?php $a. $b;',
-                '<?php $a.$b;',
-                2,
-                1,
-                ' ',
-            ],
-            [
-                '<?php $a .$b;',
-                '<?php $a.$b;',
-                2,
-                0,
-                ' ',
-            ],
-            [
-                "<?php\r\n",
-                '<?php ',
-                0,
-                1,
-                "\r\n",
-            ],
-            [
-                '<?php  $a.$b;',
-                '<?php $a.$b;',
-                2,
-                -1,
-                ' ',
-            ],
-            [
-                "<?php\t   ",
-                "<?php\n",
-                0,
-                1,
-                "\t   ",
-            ],
-            [
-                '<?php ',
-                '<?php ',
-                0,
-                1,
-                ' ',
-            ],
-            [
-                "<?php\n",
-                '<?php ',
-                0,
-                1,
-                "\n",
-            ],
-            [
-                "<?php\t",
-                '<?php ',
-                0,
-                1,
-                "\t",
-            ],
-            [
-                '<?php
+        yield [
+            '<?php echo 1;',
+            '<?php  echo 1;',
+            1,
+            1,
+            ' ',
+        ];
+
+        yield [
+            '<?php echo 7;',
+            '<?php   echo 7;',
+            1,
+            1,
+            ' ',
+        ];
+
+        yield [
+            '<?php  ',
+            '<?php  ',
+            1,
+            1,
+            '  ',
+        ];
+
+        yield [
+            '<?php $a. $b;',
+            '<?php $a.$b;',
+            2,
+            1,
+            ' ',
+        ];
+
+        yield [
+            '<?php $a .$b;',
+            '<?php $a.$b;',
+            2,
+            0,
+            ' ',
+        ];
+
+        yield [
+            "<?php\r\n",
+            '<?php ',
+            0,
+            1,
+            "\r\n",
+        ];
+
+        yield [
+            '<?php  $a.$b;',
+            '<?php $a.$b;',
+            2,
+            -1,
+            ' ',
+        ];
+
+        yield [
+            "<?php\t   ",
+            "<?php\n",
+            0,
+            1,
+            "\t   ",
+        ];
+
+        yield [
+            '<?php ',
+            '<?php ',
+            0,
+            1,
+            ' ',
+        ];
+
+        yield [
+            "<?php\n",
+            '<?php ',
+            0,
+            1,
+            "\n",
+        ];
+
+        yield [
+            "<?php\t",
+            '<?php ',
+            0,
+            1,
+            "\t",
+        ];
+
+        yield [
+            '<?php
 //
  echo $a;',
-                '<?php
+            '<?php
 //
 echo $a;',
-                2,
-                1,
-                "\n ",
-            ],
-            [
-                '<?php
+            2,
+            1,
+            "\n ",
+        ];
+
+        yield [
+            '<?php
  echo $a;',
-                '<?php
+            '<?php
 echo $a;',
-                0,
-                1,
-                "\n ",
-            ],
-            [
-                '<?php
+            0,
+            1,
+            "\n ",
+        ];
+
+        yield [
+            '<?php
 echo $a;',
-                '<?php echo $a;',
-                0,
-                1,
-                "\n",
-            ],
-            [
-                "<?php\techo \$a;",
-                '<?php echo $a;',
-                0,
-                1,
-                "\t",
-            ],
+            '<?php echo $a;',
+            0,
+            1,
+            "\n",
+        ];
+
+        yield [
+            "<?php\techo \$a;",
+            '<?php echo $a;',
+            0,
+            1,
+            "\t",
         ];
     }
 
@@ -1120,54 +1162,59 @@ echo $a;',
 
     public static function provideRemoveLeadingWhitespaceCases(): iterable
     {
-        return [
-            [
-                7,
-                null,
-                "<?php echo 1;//\necho 2;",
-            ],
-            [
-                7,
-                null,
-                "<?php echo 1;//\necho 2;",
-                "<?php echo 1;//\n       echo 2;",
-            ],
-            [
-                7,
-                null,
-                "<?php echo 1;//\r\necho 2;",
-                "<?php echo 1;//\r\n       echo 2;",
-            ],
-            [
-                7,
-                " \t",
-                "<?php echo 1;//\n//",
-                "<?php echo 1;//\n       //",
-            ],
-            [
-                6,
-                "\t ",
-                '<?php echo 1;//',
-                "<?php echo 1;\t \t \t //",
-            ],
-            [
-                8,
-                null,
-                '<?php $a = 1;//',
-                '<?php $a = 1;           //',
-            ],
-            [
-                6,
-                null,
-                '<?php echo 1;echo 2;',
-                "<?php echo 1;  \n          \n \n     \necho 2;",
-            ],
-            [
-                8,
-                null,
-                "<?php echo 1;  // 1\necho 2;",
-                "<?php echo 1;  // 1\n          \n \n     \necho 2;",
-            ],
+        yield [
+            7,
+            null,
+            "<?php echo 1;//\necho 2;",
+        ];
+
+        yield [
+            7,
+            null,
+            "<?php echo 1;//\necho 2;",
+            "<?php echo 1;//\n       echo 2;",
+        ];
+
+        yield [
+            7,
+            null,
+            "<?php echo 1;//\r\necho 2;",
+            "<?php echo 1;//\r\n       echo 2;",
+        ];
+
+        yield [
+            7,
+            " \t",
+            "<?php echo 1;//\n//",
+            "<?php echo 1;//\n       //",
+        ];
+
+        yield [
+            6,
+            "\t ",
+            '<?php echo 1;//',
+            "<?php echo 1;\t \t \t //",
+        ];
+
+        yield [
+            8,
+            null,
+            '<?php $a = 1;//',
+            '<?php $a = 1;           //',
+        ];
+
+        yield [
+            6,
+            null,
+            '<?php echo 1;echo 2;',
+            "<?php echo 1;  \n          \n \n     \necho 2;",
+        ];
+
+        yield [
+            8,
+            null,
+            "<?php echo 1;  // 1\necho 2;",
+            "<?php echo 1;  // 1\n          \n \n     \necho 2;",
         ];
     }
 

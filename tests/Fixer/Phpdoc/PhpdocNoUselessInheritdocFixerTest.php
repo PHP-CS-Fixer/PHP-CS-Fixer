@@ -33,25 +33,28 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                "<?php\n/** */class min1{}",
-                "<?php\n/** @inheritdoc */class min1{}",
-            ],
-            [
-                "<?php\n/** */class min1{}",
-                "<?php\n/** @inheritDoc */class min1{}",
-            ],
-            [
-                "<?php\nclass min2{/** */}",
-                "<?php\nclass min2{/** @inheritdoc */}",
-            ],
-            [
-                "<?php\nclass min2{/** */}",
-                "<?php\nclass min2{/** @inheritDoc */}",
-            ],
-            [
-                '<?php
+        yield [
+            "<?php\n/** */class min1{}",
+            "<?php\n/** @inheritdoc */class min1{}",
+        ];
+
+        yield [
+            "<?php\n/** */class min1{}",
+            "<?php\n/** @inheritDoc */class min1{}",
+        ];
+
+        yield [
+            "<?php\nclass min2{/** */}",
+            "<?php\nclass min2{/** @inheritdoc */}",
+        ];
+
+        yield [
+            "<?php\nclass min2{/** */}",
+            "<?php\nclass min2{/** @inheritDoc */}",
+        ];
+
+        yield [
+            '<?php
                 class A
                 {
                     /** */
@@ -71,7 +74,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function C($c){}
                 }
                 ',
-                '<?php
+            '<?php
                 class A
                 {
                     /** @inheritdoc */
@@ -91,108 +94,117 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function C($c){}
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class B
                 {
                     /** */
                     public function B(){}
                 }
                 ',
-                '<?php
+            '<?php
                 class B
                 {
                     /** {@INHERITDOC} */
                     public function B(){}
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 /** D C */
                 class C
                 {
                 }
                 ',
-                '<?php
+            '<?php
                 /** D {    @INHERITDOC   } C */
                 class C
                 {
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 /** E */
                 class E
                 {
                 }
                 ',
-                '<?php
+            '<?php
                 /**     {{@Inheritdoc}}   E */
                 class E
                 {
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 /** F */
                 class F
                 {
                 }
                 ',
-                '<?php
+            '<?php
                 /** F    @inheritdoc      */
                 class F
                 {
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     /** */
                     class G1{}
                     /** */
                     class G2{}
                 ',
-                '<?php
+            '<?php
                     /** @inheritdoc */
                     class G1{}
                     /** @inheritdoc */
                     class G2{}
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class H
                 {
                     /* @inheritdoc comment, not PHPDoc */
                     public function H(){}
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class J extends Z
                 {
                     /** @inheritdoc */
                     public function H(){}
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 interface K extends Z
                 {
                     /** @inheritdoc */
                     public function H();
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 /** */
                 interface K
                 {
@@ -200,7 +212,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function H();
                 }
                 ',
-                '<?php
+            '<?php
                 /** @{inheritdoc} */
                 interface K
                 {
@@ -208,9 +220,10 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function H();
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 trait T
                 {
                     /** @inheritdoc */
@@ -218,9 +231,10 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     {
                     }
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class B
                 {
                     /** */
@@ -240,7 +254,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     }
                 }
                 ',
-                '<?php
+            '<?php
                 class B
                 {
                     /** @inheritdoc */
@@ -260,7 +274,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     }
                 }
                 ',
-                '<?php
+            '<?php
                 class B
                 {
                     /** @inheritDoc */
@@ -280,9 +294,10 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     }
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 /** delete 1 */
 class A
@@ -326,7 +341,7 @@ class A
     }
 }
 ',
-                '<?php
+            '<?php
 
 /** @inheritdoc delete 1 */
 class A
@@ -370,7 +385,6 @@ class A
     }
 }
 ',
-            ],
         ];
     }
 }

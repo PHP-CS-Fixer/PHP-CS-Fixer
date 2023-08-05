@@ -36,10 +36,10 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'no changes' => ['<?php /** Summary. */'],
-            'only Summary and Description' => [
-                '<?php
+        yield 'no changes' => ['<?php /** Summary. */'];
+
+        yield 'only Summary and Description' => [
+            '<?php
                     /**
                      * Summary.
                      *
@@ -48,7 +48,7 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
                      *
                      *
                      */',
-                '<?php
+            '<?php
                     /**
                      * Summary.
                      *
@@ -58,9 +58,10 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
                      *
                      *
                      */',
-            ],
-            'basic phpdoc' => [
-                '<?php
+        ];
+
+        yield 'basic phpdoc' => [
+            '<?php
                     /**
                      * Summary.
                      *
@@ -76,7 +77,7 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
                      *
                      *
                      */',
-                '<?php
+            '<?php
                     /**
                      * Summary.
                      *
@@ -99,9 +100,10 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
                      *
                      *
                      */',
-            ],
-            'extra blank lines in description' => [
-                '<?php
+        ];
+
+        yield 'extra blank lines in description' => [
+            '<?php
                     /**
                      * Summary.
                      *
@@ -113,9 +115,10 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
                      *
                      * @var int
                      */',
-            ],
-            'extra blank lines after annotation' => [
-                '<?php
+        ];
+
+        yield 'extra blank lines after annotation' => [
+            '<?php
                     /**
                      * Summary without description.
                      *
@@ -127,7 +130,7 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
                      *
                      * @internal
                      */',
-                '<?php
+            '<?php
                     /**
                      * Summary without description.
                      *
@@ -147,16 +150,17 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
                      *
                      * @internal
                      */',
-            ],
-            'extra blank lines between annotations when no Summary no Description' => [
-                '<?php
+        ];
+
+        yield 'extra blank lines between annotations when no Summary no Description' => [
+            '<?php
                     /**
                      * @param string $expected
                      * @param string $input
                      *
                      * @dataProvider provideFix56Cases
                      */',
-                '<?php
+            '<?php
                     /**
                      * @param string $expected
                      * @param string $input
@@ -164,7 +168,6 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
                      *
                      * @dataProvider provideFix56Cases
                      */',
-            ],
         ];
     }
 }

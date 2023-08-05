@@ -538,9 +538,8 @@ EOF;
 
     public static function provideInheritDocCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     /**
      * {@inheritdoc}
      *
@@ -548,16 +547,17 @@ EOF;
      * @param string $input
      */
 ',
-                '<?php
+            '<?php
     /**
      * {@inheritdoc}
      * @param string $expected
      * @param string $input
      */
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * {@inheritDoc}
      *
@@ -565,14 +565,13 @@ EOF;
      * @param string $input
      */
 ',
-                '<?php
+            '<?php
     /**
      * {@inheritDoc}
      * @param string $expected
      * @param string $input
      */
 ',
-            ],
         ];
     }
 

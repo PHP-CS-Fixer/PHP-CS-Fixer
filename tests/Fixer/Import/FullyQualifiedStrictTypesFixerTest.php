@@ -613,9 +613,8 @@ namespace {
 
     public static function provideCodeWithReturnTypesCasesWithNullableCases(): iterable
     {
-        return [
-            'Test namespace fixes with nullable types' => [
-                '<?php
+        yield 'Test namespace fixes with nullable types' => [
+            '<?php
 
 namespace Foo\Bar;
 
@@ -627,7 +626,7 @@ class SomeClass
     {
     }
 }',
-                '<?php
+            '<?php
 
 namespace Foo\Bar;
 
@@ -639,9 +638,10 @@ class SomeClass
     {
     }
 }',
-            ],
-            'Partial class name looks like FQCN' => [
-                '<?php
+        ];
+
+        yield 'Partial class name looks like FQCN' => [
+            '<?php
 
 namespace One;
 
@@ -660,7 +660,6 @@ class Two
     {
     }
 }',
-            ],
         ];
     }
 

@@ -63,54 +63,63 @@ final class UtilsTest extends TestCase
 
     public static function provideCamelCaseToUnderscoreCases(): iterable
     {
-        return [
-            [
-                'dollar_close_curly_braces',
-                'DollarCloseCurlyBraces',
-            ],
-            [
-                'utf8_encoder_fixer',
-                'utf8EncoderFixer',
-            ],
-            [
-                'terminated_with_number10',
-                'TerminatedWithNumber10',
-            ],
-            [
-                'utf8_encoder_fixer',
-            ],
-            [
-                'a',
-                'A',
-            ],
-            [
-                'aa',
-                'AA',
-            ],
-            [
-                'foo',
-                'FOO',
-            ],
-            [
-                'foo_bar_baz',
-                'FooBarBAZ',
-            ],
-            [
-                'foo_bar_baz',
-                'FooBARBaz',
-            ],
-            [
-                'foo_bar_baz',
-                'FOOBarBaz',
-            ],
-            [
-                'mr_t',
-                'MrT',
-            ],
-            [
-                'voyage_éclair',
-                'VoyageÉclair',
-            ],
+        yield [
+            'dollar_close_curly_braces',
+            'DollarCloseCurlyBraces',
+        ];
+
+        yield [
+            'utf8_encoder_fixer',
+            'utf8EncoderFixer',
+        ];
+
+        yield [
+            'terminated_with_number10',
+            'TerminatedWithNumber10',
+        ];
+
+        yield [
+            'utf8_encoder_fixer',
+        ];
+
+        yield [
+            'a',
+            'A',
+        ];
+
+        yield [
+            'aa',
+            'AA',
+        ];
+
+        yield [
+            'foo',
+            'FOO',
+        ];
+
+        yield [
+            'foo_bar_baz',
+            'FooBarBAZ',
+        ];
+
+        yield [
+            'foo_bar_baz',
+            'FooBARBaz',
+        ];
+
+        yield [
+            'foo_bar_baz',
+            'FOOBarBaz',
+        ];
+
+        yield [
+            'mr_t',
+            'MrT',
+        ];
+
+        yield [
+            'voyage_éclair',
+            'VoyageÉclair',
         ];
     }
 
@@ -128,14 +137,17 @@ final class UtilsTest extends TestCase
 
     public static function provideCalculateTrailingWhitespaceIndentCases(): iterable
     {
-        return [
-            ['    ', [T_WHITESPACE, "\n\n    "]],
-            [' ', [T_WHITESPACE, "\r\n\r\r\r "]],
-            ["\t", [T_WHITESPACE, "\r\n\t"]],
-            ['', [T_WHITESPACE, "\t\n\r"]],
-            ['', [T_WHITESPACE, "\n"]],
-            ['', ''],
-        ];
+        yield ['    ', [T_WHITESPACE, "\n\n    "]];
+
+        yield [' ', [T_WHITESPACE, "\r\n\r\r\r "]];
+
+        yield ["\t", [T_WHITESPACE, "\r\n\t"]];
+
+        yield ['', [T_WHITESPACE, "\t\n\r"]];
+
+        yield ['', [T_WHITESPACE, "\n"]];
+
+        yield ['', ''];
     }
 
     public function testCalculateTrailingWhitespaceIndentFail(): void
@@ -168,31 +180,32 @@ final class UtilsTest extends TestCase
 
     public static function provideStableSortCases(): iterable
     {
-        return [
-            [
-                ['a', 'b', 'c', 'd', 'e'],
-                ['b', 'd', 'e', 'a', 'c'],
-                static fn ($element) => $element,
-                'strcmp',
-            ],
-            [
-                ['b', 'd', 'e', 'a', 'c'],
-                ['b', 'd', 'e', 'a', 'c'],
-                static fn (): string => 'foo',
-                'strcmp',
-            ],
-            [
-                ['b', 'd', 'e', 'a', 'c'],
-                ['b', 'd', 'e', 'a', 'c'],
-                static fn ($element) => $element,
-                static fn (): int => 0,
-            ],
-            [
-                ['bar1', 'baz1', 'foo1', 'bar2', 'baz2', 'foo2'],
-                ['foo1', 'foo2', 'bar1', 'bar2', 'baz1', 'baz2'],
-                static fn ($element) => preg_replace('/([a-z]+)(\d+)/', '$2$1', $element),
-                'strcmp',
-            ],
+        yield [
+            ['a', 'b', 'c', 'd', 'e'],
+            ['b', 'd', 'e', 'a', 'c'],
+            static fn ($element) => $element,
+            'strcmp',
+        ];
+
+        yield [
+            ['b', 'd', 'e', 'a', 'c'],
+            ['b', 'd', 'e', 'a', 'c'],
+            static fn (): string => 'foo',
+            'strcmp',
+        ];
+
+        yield [
+            ['b', 'd', 'e', 'a', 'c'],
+            ['b', 'd', 'e', 'a', 'c'],
+            static fn ($element) => $element,
+            static fn (): int => 0,
+        ];
+
+        yield [
+            ['bar1', 'baz1', 'foo1', 'bar2', 'baz2', 'foo2'],
+            ['foo1', 'foo2', 'bar1', 'bar2', 'baz1', 'baz2'],
+            static fn ($element) => preg_replace('/([a-z]+)(\d+)/', '$2$1', $element),
+            'strcmp',
         ];
     }
 
@@ -336,19 +349,19 @@ final class UtilsTest extends TestCase
 
     public static function provideNaturalLanguageJoinWithBackticksCases(): iterable
     {
-        return [
-            [
-                '`a`',
-                ['a'],
-            ],
-            [
-                '`a` and `b`',
-                ['a', 'b'],
-            ],
-            [
-                '`a`, `b` and `c`',
-                ['a', 'b', 'c'],
-            ],
+        yield [
+            '`a`',
+            ['a'],
+        ];
+
+        yield [
+            '`a` and `b`',
+            ['a', 'b'],
+        ];
+
+        yield [
+            '`a`, `b` and `c`',
+            ['a', 'b', 'c'],
         ];
     }
 

@@ -412,36 +412,41 @@ $a#
 
     public static function provideTestAssertCountCases(): iterable
     {
-        return [
-            // positive fixing
-            'assert same' => [
-                self::generateTest('$this->assertCount(1, $a);'),
-                self::generateTest('$this->assertSame(1, %s($a));'),
-            ],
-            'assert equals' => [
-                self::generateTest('$this->assertCount(2, $b);'),
-                self::generateTest('$this->assertEquals(2, %s($b));'),
-            ],
-            // negative fixing
-            'assert not same' => [
-                self::generateTest('$this->assertNotCount(11, $c);'),
-                self::generateTest('$this->assertNotSame(11, %s($c));'),
-            ],
-            'assert not equals' => [
-                self::generateTest('$this->assertNotCount(122, $d);'),
-                self::generateTest('$this->assertNotEquals(122, %s($d));'),
-            ],
-            // other cases
-            'assert same with namespace' => [
-                self::generateTest('$this->assertCount(1, $a);'),
-                self::generateTest('$this->assertSame(1, \%s($a));'),
-            ],
-            'no spacing' => [
-                self::generateTest('$this->assertCount(1,$a);'),
-                self::generateTest('$this->assertSame(1,%s($a));'),
-            ],
-            'lot of spacing' => [
-                self::generateTest('$this->assertCount(
+        // positive fixing
+        yield 'assert same' => [
+            self::generateTest('$this->assertCount(1, $a);'),
+            self::generateTest('$this->assertSame(1, %s($a));'),
+        ];
+
+        yield 'assert equals' => [
+            self::generateTest('$this->assertCount(2, $b);'),
+            self::generateTest('$this->assertEquals(2, %s($b));'),
+        ];
+
+        // negative fixing
+        yield 'assert not same' => [
+            self::generateTest('$this->assertNotCount(11, $c);'),
+            self::generateTest('$this->assertNotSame(11, %s($c));'),
+        ];
+
+        yield 'assert not equals' => [
+            self::generateTest('$this->assertNotCount(122, $d);'),
+            self::generateTest('$this->assertNotEquals(122, %s($d));'),
+        ];
+
+        // other cases
+        yield 'assert same with namespace' => [
+            self::generateTest('$this->assertCount(1, $a);'),
+            self::generateTest('$this->assertSame(1, \%s($a));'),
+        ];
+
+        yield 'no spacing' => [
+            self::generateTest('$this->assertCount(1,$a);'),
+            self::generateTest('$this->assertSame(1,%s($a));'),
+        ];
+
+        yield 'lot of spacing' => [
+            self::generateTest('$this->assertCount(
                 1
                 ,
                 '.'
@@ -450,7 +455,7 @@ $a#
                 '.'
                 )
                 ;'),
-                self::generateTest('$this->assertSame(
+            self::generateTest('$this->assertSame(
                 1
                 ,
                 %s
@@ -459,9 +464,10 @@ $a#
                 )
                 )
                 ;'),
-            ],
-            'lot of fix cases' => [
-                self::generateTest('
+        ];
+
+        yield 'lot of fix cases' => [
+            self::generateTest('
                     $this->assertCount(1, $a);
                     $this->assertCount(2, $a);
                     $this->assertCount(3, $a);
@@ -469,7 +475,7 @@ $a#
                     $this->assertCount(5, $a, "abc");
                     $this->assertCount(6, $a, "def");
                 '),
-                self::generateTest('
+            self::generateTest('
                     $this->assertSame(1, %1$s($a));
                     $this->assertSame(2, %1$s($a));
                     $this->assertEquals(3, %1$s($a));
@@ -477,9 +483,10 @@ $a#
                     $this->assertEquals(5, %1$s($a), "abc");
                     $this->assertSame(6, \%1$s($a), "def");
                 '),
-            ],
-            'comment handling' => [
-                self::generateTest('$this->assertCount(# 0
+        ];
+
+        yield 'comment handling' => [
+            self::generateTest('$this->assertCount(# 0
 1# 1
 ,# 2
 # 3
@@ -488,7 +495,7 @@ $a# 5
 # 6
 )# 7
 ;# 8'),
-                self::generateTest('$this->assertSame(# 0
+            self::generateTest('$this->assertSame(# 0
 1# 1
 ,# 2
 %s# 3
@@ -497,39 +504,47 @@ $a# 5
 )# 6
 )# 7
 ;# 8'),
-            ],
-            [
-                self::generateTest('$this->assertCount($b, $a);'),
-                self::generateTest('$this->assertSame($b, %s($a));'),
-            ],
-            'do not fix 1' => [
-                self::generateTest('$this->assertSame($b[1], %s($a));'),
-            ],
-            'do not fix 2' => [
-                self::generateTest('$this->assertSame(b(), %s($a));'),
-            ],
-            'do not fix 3' => [
-                self::generateTest('$this->assertSame(1.0, %s($a));'),
-            ],
-            'do not fix 4' => [
-                self::generateTest('$this->assertSame(1);'),
-            ],
-            'do not fix 5' => [
-                self::generateTest('$this->assertSame(1, "%s");'),
-            ],
-            'do not fix 6' => [
-                self::generateTest('$this->test(); // $this->assertSame($b, %s($a));'),
-            ],
-            'do not fix 7' => [
-                self::generateTest('$this->assertSame(2, count($array) - 1);'),
-            ],
-            'do not fix 8' => [
-                self::generateTest('
+        ];
+
+        yield [
+            self::generateTest('$this->assertCount($b, $a);'),
+            self::generateTest('$this->assertSame($b, %s($a));'),
+        ];
+
+        yield 'do not fix 1' => [
+            self::generateTest('$this->assertSame($b[1], %s($a));'),
+        ];
+
+        yield 'do not fix 2' => [
+            self::generateTest('$this->assertSame(b(), %s($a));'),
+        ];
+
+        yield 'do not fix 3' => [
+            self::generateTest('$this->assertSame(1.0, %s($a));'),
+        ];
+
+        yield 'do not fix 4' => [
+            self::generateTest('$this->assertSame(1);'),
+        ];
+
+        yield 'do not fix 5' => [
+            self::generateTest('$this->assertSame(1, "%s");'),
+        ];
+
+        yield 'do not fix 6' => [
+            self::generateTest('$this->test(); // $this->assertSame($b, %s($a));'),
+        ];
+
+        yield 'do not fix 7' => [
+            self::generateTest('$this->assertSame(2, count($array) - 1);'),
+        ];
+
+        yield 'do not fix 8' => [
+            self::generateTest('
                     Foo::assertSame(1, sizeof($a));
                     $this->assertSame(1, sizeof2(2));
                     $this->assertSame(1, sizeof::foo);
                 '),
-            ],
         ];
     }
 

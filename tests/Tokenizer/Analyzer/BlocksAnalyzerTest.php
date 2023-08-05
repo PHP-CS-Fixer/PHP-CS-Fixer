@@ -40,20 +40,29 @@ final class BlocksAnalyzerTest extends TestCase
 
     public static function provideBlocksCases(): iterable
     {
-        return [
-            ['<?php foo(1);', 2, 4],
-            ['<?php foo((1));', 3, 5],
-            ['<?php foo((1));', 2, 6],
-            ['<?php foo(1, 2, 3);', 2, 10],
-            ['<?php foo(1, bar(2, 3), 4);', 2, 16],
-            ['<?php $foo["bar"];', 2, 4],
-            ['<?php [1, 2, 3];', 1, 9],
-            ['<?php $foo = function ($x) { return $x + 10; };', 7, 9],
-            ['<?php $foo = function ($x) { return $x + 10; };', 11, 22],
-            ['<?php list($a, $b, $c) = [1, 2, 3];', 2, 10],
-            ['<?php list($a, $b, $c) = [1, 2, 3];', 14, 22],
-            ['<?php list($a, $b, $c) = array(1, 2, 3);', 15, 23],
-        ];
+        yield ['<?php foo(1);', 2, 4];
+
+        yield ['<?php foo((1));', 3, 5];
+
+        yield ['<?php foo((1));', 2, 6];
+
+        yield ['<?php foo(1, 2, 3);', 2, 10];
+
+        yield ['<?php foo(1, bar(2, 3), 4);', 2, 16];
+
+        yield ['<?php $foo["bar"];', 2, 4];
+
+        yield ['<?php [1, 2, 3];', 1, 9];
+
+        yield ['<?php $foo = function ($x) { return $x + 10; };', 7, 9];
+
+        yield ['<?php $foo = function ($x) { return $x + 10; };', 11, 22];
+
+        yield ['<?php list($a, $b, $c) = [1, 2, 3];', 2, 10];
+
+        yield ['<?php list($a, $b, $c) = [1, 2, 3];', 14, 22];
+
+        yield ['<?php list($a, $b, $c) = array(1, 2, 3);', 15, 23];
     }
 
     /**
@@ -69,17 +78,24 @@ final class BlocksAnalyzerTest extends TestCase
 
     public static function provideNonBlocksCases(): iterable
     {
-        return [
-            ['<?php foo(1);', null, 4],
-            ['<?php foo(1);', 2, null],
-            ['<?php foo(1);', 1000, 4],
-            ['<?php foo(1);', 2, 1000],
-            ['<?php foo(1);', 1, 4],
-            ['<?php foo(1);', 3, 4],
-            ['<?php foo(1);', 2, 3],
-            ['<?php foo((1));', 2, 5],
-            ['<?php foo((1));', 3, 6],
-            ['<?php $fn = fn($x) => $x + 10;', 6, 8, true],
-        ];
+        yield ['<?php foo(1);', null, 4];
+
+        yield ['<?php foo(1);', 2, null];
+
+        yield ['<?php foo(1);', 1000, 4];
+
+        yield ['<?php foo(1);', 2, 1000];
+
+        yield ['<?php foo(1);', 1, 4];
+
+        yield ['<?php foo(1);', 3, 4];
+
+        yield ['<?php foo(1);', 2, 3];
+
+        yield ['<?php foo((1));', 2, 5];
+
+        yield ['<?php foo((1));', 3, 6];
+
+        yield ['<?php $fn = fn($x) => $x + 10;', 6, 8, true];
     }
 }

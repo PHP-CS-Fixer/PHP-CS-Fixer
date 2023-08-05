@@ -275,10 +275,9 @@ final class FixerFactoryTest extends TestCase
 
     public static function provideConflictingFixersCases(): iterable
     {
-        return [
-            [new RuleSet(['no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true])],
-            [new RuleSet(['single_blank_line_before_namespace' => true, 'no_blank_lines_before_namespace' => true])],
-        ];
+        yield [new RuleSet(['no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true])];
+
+        yield [new RuleSet(['single_blank_line_before_namespace' => true, 'no_blank_lines_before_namespace' => true])];
     }
 
     public function testNoDoubleConflictReporting(): void
@@ -373,12 +372,13 @@ final class FixerFactoryTest extends TestCase
 
     public static function provideConfigureFixerWithNonArrayCases(): iterable
     {
-        return [
-            ['bar'],
-            [new \stdClass()],
-            [5],
-            [5.5],
-        ];
+        yield ['bar'];
+
+        yield [new \stdClass()];
+
+        yield [5];
+
+        yield [5.5];
     }
 
     public function testConfigurableFixerIsConfigured(): void

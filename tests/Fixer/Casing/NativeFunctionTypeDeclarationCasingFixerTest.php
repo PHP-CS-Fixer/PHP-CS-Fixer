@@ -33,9 +33,8 @@ final class NativeFunctionTypeDeclarationCasingFixerTest extends AbstractFixerTe
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 class Foo
 {
     private function Bar(array $bar) {
@@ -43,7 +42,7 @@ class Foo
     }
 }
 ',
-                '<?php
+            '<?php
 class Foo
 {
     private function Bar(ARRAY $bar) {
@@ -51,91 +50,105 @@ class Foo
     }
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 interface Foo
 {
     public function Bar(array $bar);
 }
 ',
-                '<?php
+            '<?php
 interface Foo
 {
     public function Bar(ArrAY $bar);
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function Foo(/**/array/**/$bar) {
     return false;
 }
 ',
-                '<?php
+            '<?php
 function Foo(/**/ARRAY/**/$bar) {
     return false;
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class Bar { function Foo(array $a, callable $b, self $c) {} }
                 ',
-                '<?php
+            '<?php
 class Bar { function Foo(ARRAY $a, CALLABLE $b, Self $c) {} }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function Foo(INTEGER $a) {}
                 ',
-            ],
-            [
-                '<?php function Foo(
+        ];
+
+        yield [
+            '<?php function Foo(
                     String\A $x,
                     B\String\C $y
                 ) {}',
-            ],
-            [
-                '<?php final class Foo1 { final public function Foo(bool $A, float $B, int $C, string $D): int {} }',
-                '<?php final class Foo1 { final public function Foo(BOOL $A, FLOAT $B, INT $C, STRING $D): INT {} }',
-            ],
-            [
-                '<?php function Foo(bool $A, float $B, int $C, string $D): int {}',
-                '<?php function Foo(BOOL $A, FLOAT $B, INT $C, STRING $D): INT {}',
-            ],
-            [
-                '<?php function Foo(): Foo\A { return new Foo(); }',
-            ],
-            [
-                '<?php trait XYZ { function Foo(iterable $A): void {} }',
-                '<?php trait XYZ { function Foo(ITERABLE $A): VOID {} }',
-            ],
-            [
-                '<?php function Foo(iterable $A): void {}',
-                '<?php function Foo(ITERABLE $A): VOID {}',
-            ],
-            [
-                '<?php function Foo(?int $A): void {}',
-                '<?php function Foo(?INT $A): VOID {}',
-            ],
-            [
-                '<?php function Foo(string $A): ?/* */int {}',
-                '<?php function Foo(STRING $A): ?/* */INT {}',
-            ],
-            [
-                '<?php function Foo(object $A): void {}',
-                '<?php function Foo(OBJECT $A): VOID {}',
-            ],
-            [
-                '<?php return function (callable $c) {};',
-                '<?php return function (CALLABLE $c) {};',
-            ],
-            [
-                '<?php return fn (callable $c): int => 1;',
-                '<?php return fn (CALLABLE $c): INT => 1;',
-            ],
+        ];
+
+        yield [
+            '<?php final class Foo1 { final public function Foo(bool $A, float $B, int $C, string $D): int {} }',
+            '<?php final class Foo1 { final public function Foo(BOOL $A, FLOAT $B, INT $C, STRING $D): INT {} }',
+        ];
+
+        yield [
+            '<?php function Foo(bool $A, float $B, int $C, string $D): int {}',
+            '<?php function Foo(BOOL $A, FLOAT $B, INT $C, STRING $D): INT {}',
+        ];
+
+        yield [
+            '<?php function Foo(): Foo\A { return new Foo(); }',
+        ];
+
+        yield [
+            '<?php trait XYZ { function Foo(iterable $A): void {} }',
+            '<?php trait XYZ { function Foo(ITERABLE $A): VOID {} }',
+        ];
+
+        yield [
+            '<?php function Foo(iterable $A): void {}',
+            '<?php function Foo(ITERABLE $A): VOID {}',
+        ];
+
+        yield [
+            '<?php function Foo(?int $A): void {}',
+            '<?php function Foo(?INT $A): VOID {}',
+        ];
+
+        yield [
+            '<?php function Foo(string $A): ?/* */int {}',
+            '<?php function Foo(STRING $A): ?/* */INT {}',
+        ];
+
+        yield [
+            '<?php function Foo(object $A): void {}',
+            '<?php function Foo(OBJECT $A): VOID {}',
+        ];
+
+        yield [
+            '<?php return function (callable $c) {};',
+            '<?php return function (CALLABLE $c) {};',
+        ];
+
+        yield [
+            '<?php return fn (callable $c): int => 1;',
+            '<?php return fn (CALLABLE $c): INT => 1;',
         ];
     }
 

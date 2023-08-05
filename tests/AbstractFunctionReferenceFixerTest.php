@@ -57,62 +57,68 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
 
     public static function provideAbstractFunctionReferenceFixerCases(): iterable
     {
-        return [
-            'simple case I' => [
-                [1, 2, 3],
-                '<?php foo();',
-                'foo',
-            ],
-            'simple case II' => [
-                [2, 3, 4],
-                '<?php \foo();',
-                'foo',
-            ],
-            'test start offset' => [
-                null,
-                '<?php
+        yield 'simple case I' => [
+            [1, 2, 3],
+            '<?php foo();',
+            'foo',
+        ];
+
+        yield 'simple case II' => [
+            [2, 3, 4],
+            '<?php \foo();',
+            'foo',
+        ];
+
+        yield 'test start offset' => [
+            null,
+            '<?php
                     foo();
                     bar();
                 ',
-                'foo',
-                5,
-            ],
-            'test returns only the first candidate' => [
-                [2, 3, 4],
-                '<?php
+            'foo',
+            5,
+        ];
+
+        yield 'test returns only the first candidate' => [
+            [2, 3, 4],
+            '<?php
                     foo();
                     foo();
                     foo();
                     foo();
                     foo();
                 ',
-                'foo',
-            ],
-            'not found I' => [
-                null,
-                '<?php foo();',
-                'bar',
-            ],
-            'not found II' => [
-                null,
-                '<?php $foo();',
-                'foo',
-            ],
-            'not found III' => [
-                null,
-                '<?php function foo(){}',
-                'foo',
-            ],
-            'not found IIIb' => [
-                null,
-                '<?php function foo($a){}',
-                'foo',
-            ],
-            'not found IV' => [
-                null,
-                '<?php \A\foo();',
-                'foo',
-            ],
+            'foo',
+        ];
+
+        yield 'not found I' => [
+            null,
+            '<?php foo();',
+            'bar',
+        ];
+
+        yield 'not found II' => [
+            null,
+            '<?php $foo();',
+            'foo',
+        ];
+
+        yield 'not found III' => [
+            null,
+            '<?php function foo(){}',
+            'foo',
+        ];
+
+        yield 'not found IIIb' => [
+            null,
+            '<?php function foo($a){}',
+            'foo',
+        ];
+
+        yield 'not found IV' => [
+            null,
+            '<?php \A\foo();',
+            'foo',
         ];
     }
 }

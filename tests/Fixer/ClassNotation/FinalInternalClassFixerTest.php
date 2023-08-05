@@ -44,13 +44,13 @@ final class FinalInternalClassFixerTest extends AbstractFixerTestCase
             $expected .= sprintf("/** @internal */\nfinal class class%d\n{\n}\n", $i);
         }
 
-        return [
-            'fix multiple classes' => [
-                $expected,
-                $input,
-            ],
-            [
-                '<?php
+        yield 'fix multiple classes' => [
+            $expected,
+            $input,
+        ];
+
+        yield [
+            '<?php
 
 /** @internal */
 final class class1
@@ -65,7 +65,7 @@ final class class2
 {
 }
 ',
-                '<?php
+            '<?php
 
 /** @internal */
 class class1
@@ -80,9 +80,10 @@ class class2
 {
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /** @internal */
 final class class1
 {
@@ -106,7 +107,7 @@ class class3
  */
 abstract class class4 {}
 ',
-                '<?php
+            '<?php
 /** @internal */
 final class class1
 {
@@ -130,57 +131,60 @@ class class3
  */
 abstract class class4 {}
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     /**
                      * @ annotation_with_space_after_at_sign
                      */
                     class A {}
 ',
-            ],
-            'indent before `class`' => [
-                '<?php /** @internal */
+        ];
+
+        yield 'indent before `class`' => [
+            '<?php /** @internal */
                     final class class1
                     {
                     }',
-                '<?php /** @internal */
+            '<?php /** @internal */
                     class class1
                     {
                     }',
-            ],
-            'multiple classes, first with internal annotation and second without internal annotation' => [
-                '<?php
+        ];
+
+        yield 'multiple classes, first with internal annotation and second without internal annotation' => [
+            '<?php
 
 /** @internal */
 final class Foo {}
 
 class Bar {}
 ',
-                '<?php
+            '<?php
 
 /** @internal */
 class Foo {}
 
 class Bar {}
 ',
-            ],
-            'multiple classes, first without internal annotation and second with internal annotation' => [
-                '<?php
+        ];
+
+        yield 'multiple classes, first without internal annotation and second with internal annotation' => [
+            '<?php
 
 class Foo {}
 
 /** @internal */
 final class Bar {}
 ',
-                '<?php
+            '<?php
 
 class Foo {}
 
 /** @internal */
 class Bar {}
 ',
-            ],
         ];
     }
 
@@ -197,16 +201,16 @@ class Bar {}
 
     public static function provideFixWithConfigCases(): iterable
     {
-        return [
+        yield [
+            "<?php\n/** @CUSTOM */final class A{}",
+            "<?php\n/** @CUSTOM */class A{}",
             [
-                "<?php\n/** @CUSTOM */final class A{}",
-                "<?php\n/** @CUSTOM */class A{}",
-                [
-                    'include' => ['@Custom'],
-                ],
+                'include' => ['@Custom'],
             ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  * @CUSTOM
  * @abc
@@ -218,7 +222,7 @@ final class A{}
  */
 final class B{}
 ',
-                '<?php
+            '<?php
 /**
  * @CUSTOM
  * @abc
@@ -230,12 +234,13 @@ class A{}
  */
 class B{}
 ',
-                [
-                    'include' => ['@Custom', '@abc'],
-                ],
-            ],
             [
-                '<?php
+                'include' => ['@Custom', '@abc'],
+            ],
+        ];
+
+        yield [
+            '<?php
 /**
  * @CUSTOM
  * @internal
@@ -256,7 +261,7 @@ class B{}
  */
  class C{}
 ',
-                '<?php
+            '<?php
 /**
  * @CUSTOM
  * @internal
@@ -277,13 +282,14 @@ class B{}
  */
  class C{}
 ',
-                [
-                    'include' => ['@Custom', '@internal'],
-                    'exclude' => ['@not-fix'],
-                ],
-            ],
             [
-                '<?php
+                'include' => ['@Custom', '@internal'],
+                'exclude' => ['@not-fix'],
+            ],
+        ];
+
+        yield [
+            '<?php
 /**
  * @internal
  */
@@ -294,7 +300,7 @@ final class A{}
  */
 class B{}
 ',
-                '<?php
+            '<?php
 /**
  * @internal
  */
@@ -305,30 +311,31 @@ class A{}
  */
 class B{}
 ',
-                [
-                    'exclude' => ['abc'],
-                ],
-            ],
             [
-                '<?php final class A{}',
-                '<?php class A{}',
-                ['consider_absent_docblock_as_internal_class' => true],
+                'exclude' => ['abc'],
             ],
-            'class with annotation with matching include and partial matching exclude' => [
-                '<?php
+        ];
+
+        yield [
+            '<?php final class A{}',
+            '<?php class A{}',
+            ['consider_absent_docblock_as_internal_class' => true],
+        ];
+
+        yield 'class with annotation with matching include and partial matching exclude' => [
+            '<?php
 
 /** @HelloWorld */
 final class Foo {}
 ',
-                '<?php
+            '<?php
 
 /** @HelloWorld */
 class Foo {}
 ',
-                [
-                    'include' => ['HelloWorld'],
-                    'exclude' => ['Hello'],
-                ],
+            [
+                'include' => ['HelloWorld'],
+                'exclude' => ['Hello'],
             ],
         ];
     }

@@ -195,15 +195,14 @@ trait Good
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
-                "<?php\nclass Foo\n{\n\n    public function bar() {}\n}",
-            ],
-            [
-                "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
-                "<?php\nclass Foo\n{\r\n\r\n    public function bar() {}\n}",
-            ],
+        yield [
+            "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
+            "<?php\nclass Foo\n{\n\n    public function bar() {}\n}",
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
+            "<?php\nclass Foo\n{\r\n\r\n    public function bar() {}\n}",
         ];
     }
 

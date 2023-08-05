@@ -35,23 +35,23 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'basic fix' => [
-                <<<'EXPECTED'
+        yield 'basic fix' => [
+            <<<'EXPECTED'
 <?php
 $name = "World";
 echo "Hello {$name}!";
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 $name = "World";
 echo "Hello ${name}!";
 INPUT
-                ,
-            ],
-            'heredoc' => [
-                <<<'EXPECTED'
+            ,
+        ];
+
+        yield 'heredoc' => [
+            <<<'EXPECTED'
 <?php
 $name = 'World';
 echo <<<TEST
@@ -59,8 +59,8 @@ Hello {$name}!
 TEST;
 
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 $name = 'World';
 echo <<<TEST
@@ -68,48 +68,53 @@ Hello ${name}!
 TEST;
 
 INPUT
-                ,
-            ],
-            'implicit' => [
-                <<<'EXPECTED'
+            ,
+        ];
+
+        yield 'implicit' => [
+            <<<'EXPECTED'
 <?php
 $name = 'World';
 echo "Hello $name!";
 EXPECTED
-                ,
-            ],
-            'implicit again' => [
-                <<<'EXPECTED'
+            ,
+        ];
+
+        yield 'implicit again' => [
+            <<<'EXPECTED'
 <?php
 $name = 'World';
 echo "Hello { $name }!";
 EXPECTED
-                ,
-            ],
-            'escaped' => [
-                <<<'EXPECTED'
+            ,
+        ];
+
+        yield 'escaped' => [
+            <<<'EXPECTED'
 <?php
 $name = 'World';
 echo "Hello \${name}";
 EXPECTED
-                ,
-            ],
-            'double dollar' => [
-                <<<'EXPECTED'
+            ,
+        ];
+
+        yield 'double dollar' => [
+            <<<'EXPECTED'
 <?php
 $name = 'World';
 echo "Hello \${$name}";
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 $name = 'World';
 echo "Hello $${name}";
 INPUT
-                ,
-            ],
-            'double dollar heredoc' => [
-                <<<'EXPECTED'
+            ,
+        ];
+
+        yield 'double dollar heredoc' => [
+            <<<'EXPECTED'
 <?php
 $name = 'World';
 echo <<<TEST
@@ -117,8 +122,8 @@ Hello \${$name}!
 TEST;
 
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 $name = 'World';
 echo <<<TEST
@@ -126,16 +131,16 @@ Hello $${name}!
 TEST;
 
 INPUT
-                ,
-            ],
-            'double dollar single quote' => [
-                <<<'EXPECTED'
+            ,
+        ];
+
+        yield 'double dollar single quote' => [
+            <<<'EXPECTED'
 <?php
 $name = 'World';
 echo 'Hello $${name}';
 EXPECTED
-                ,
-            ],
+            ,
         ];
     }
 }

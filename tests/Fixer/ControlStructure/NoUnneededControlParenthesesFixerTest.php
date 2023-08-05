@@ -52,83 +52,98 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php while ($x) { while ($y) { break 2; } }',
-                '<?php while ($x) { while ($y) { break (2); } }',
-            ],
-            [
-                '<?php while ($x) { while ($y) { break 2; } }',
-                '<?php while ($x) { while ($y) { break(2); } }',
-            ],
-            [
-                '<?php while ($x) { while ($y) { continue 2; } }',
-                '<?php while ($x) { while ($y) { continue (2); } }',
-            ],
-            [
-                '<?php while ($x) { while ($y) { continue 2; } }',
-                '<?php while ($x) { while ($y) { continue(2); } }',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php while ($x) { while ($y) { break 2; } }',
+            '<?php while ($x) { while ($y) { break (2); } }',
+        ];
+
+        yield [
+            '<?php while ($x) { while ($y) { break 2; } }',
+            '<?php while ($x) { while ($y) { break(2); } }',
+        ];
+
+        yield [
+            '<?php while ($x) { while ($y) { continue 2; } }',
+            '<?php while ($x) { while ($y) { continue (2); } }',
+        ];
+
+        yield [
+            '<?php while ($x) { while ($y) { continue 2; } }',
+            '<?php while ($x) { while ($y) { continue(2); } }',
+        ];
+
+        yield [
+            '<?php
                 $var = clone ($obj1 ?: $obj2);
                 $var = clone ($obj1 ? $obj1->getSubject() : $obj2);
                 ',
-            ],
-            [
-                '<?php clone $object;',
-                '<?php clone ($object);',
-            ],
-            [
-                '<?php clone new Foo();',
-                '<?php clone (new Foo());',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php clone $object;',
+            '<?php clone ($object);',
+        ];
+
+        yield [
+            '<?php clone new Foo();',
+            '<?php clone (new Foo());',
+        ];
+
+        yield [
+            '<?php
                 foo(clone $a);
                 foo(clone $a, 1);
                 $a = $b ? clone $b : $c;
                 ',
-                '<?php
+            '<?php
                 foo(clone($a));
                 foo(clone($a), 1);
                 $a = $b ? clone($b) : $c;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo (1 + 2) . $foo;
                 print (1 + 2) . $foo;
                 ',
-            ],
-            [
-                '<?php echo (1 + 2) * 10, "\n";',
-            ],
-            [
-                '<?php echo (1 + 2) * 10, "\n" ?>',
-            ],
-            [
-                '<?php echo "foo" ?>',
-                '<?php echo ("foo") ?>',
-            ],
-            [
-                '<?php print "foo" ?>',
-                '<?php print ("foo") ?>',
-            ],
-            [
-                '<?php echo "foo2"; print "foo";',
-                '<?php echo ("foo2"); print ("foo");',
-            ],
-            [
-                '<?php echo "foo"; print "foo1";',
-                '<?php echo("foo"); print("foo1");',
-            ],
-            [
-                '<?php echo 2; print 2;',
-                '<?php echo(2); print(2);',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php echo (1 + 2) * 10, "\n";',
+        ];
+
+        yield [
+            '<?php echo (1 + 2) * 10, "\n" ?>',
+        ];
+
+        yield [
+            '<?php echo "foo" ?>',
+            '<?php echo ("foo") ?>',
+        ];
+
+        yield [
+            '<?php print "foo" ?>',
+            '<?php print ("foo") ?>',
+        ];
+
+        yield [
+            '<?php echo "foo2"; print "foo";',
+            '<?php echo ("foo2"); print ("foo");',
+        ];
+
+        yield [
+            '<?php echo "foo"; print "foo1";',
+            '<?php echo("foo"); print("foo1");',
+        ];
+
+        yield [
+            '<?php echo 2; print 2;',
+            '<?php echo(2); print(2);',
+        ];
+
+        yield [
+            '<?php
                 echo $a ? $b : $c;
                 echo ($a ? $b : $c) ? $d : $e;
                 echo 10 * (2 + 3);
@@ -136,7 +151,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 echo my_awesome_function("foo");
                 echo $this->getOutput(1);
                 ',
-                '<?php
+            '<?php
                 echo ($a ? $b : $c);
                 echo ($a ? $b : $c) ? $d : $e;
                 echo 10 * (2 + 3);
@@ -144,76 +159,86 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 echo my_awesome_function("foo");
                 echo $this->getOutput(1);
                 ',
-            ],
-            [
-                '<?php return (1 + 2) * 10;',
-                '<?php return ((1 + 2) * 10);',
-            ],
-            [
-                '<?php return "prod";',
-                '<?php return ("prod");',
-            ],
-            [
-                '<?php return $x;',
-                '<?php return($x);',
-            ],
-            [
-                '<?php return 2;',
-                '<?php return(2);',
-            ],
-            [
-                '<?php return 2?>',
-                '<?php return(2)?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php return (1 + 2) * 10;',
+            '<?php return ((1 + 2) * 10);',
+        ];
+
+        yield [
+            '<?php return "prod";',
+            '<?php return ("prod");',
+        ];
+
+        yield [
+            '<?php return $x;',
+            '<?php return($x);',
+        ];
+
+        yield [
+            '<?php return 2;',
+            '<?php return(2);',
+        ];
+
+        yield [
+            '<?php return 2?>',
+            '<?php return(2)?>',
+        ];
+
+        yield [
+            '<?php
                 switch ($a) {
                     case "prod":
                         break;
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 switch ($a) {
                     case "prod":
                         break;
                 }
                 ',
-                '<?php
+            '<?php
                 switch ($a) {
                     case ("prod"):
                         break;
                 }
                 ',
-                'switch_case',
-            ],
-            [
-                '<?php
+            'switch_case',
+        ];
+
+        yield [
+            '<?php
                 switch ($a) {
                     case $x;
                 }
                 ',
-                '<?php
+            '<?php
                 switch ($a) {
                     case($x);
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 switch ($a) {
                     case 2;
                 }
                 ',
-                '<?php
+            '<?php
                 switch ($a) {
                     case(2);
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 $a = 5.1;
                 $b = 1.0;
                 switch($a) {
@@ -246,7 +271,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                     }
                 }
                 ',
-                '<?php
+            '<?php
                 $a = 5.1;
                 $b = 1.0;
                 switch($a) {
@@ -279,67 +304,74 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                     }
                 }
                 ',
-                'switch_case',
-            ],
-            [
-                '<?php while ($x) { while ($y) { break#
+            'switch_case',
+        ];
+
+        yield [
+            '<?php while ($x) { while ($y) { break#
 #
 2#
 #
 ; } }',
-                '<?php while ($x) { while ($y) { break#
+            '<?php while ($x) { while ($y) { break#
 (#
 2#
 )#
 ; } }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function foo() { yield "prod"; }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function foo() { yield (1 + 2) * 10; }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function foo() { yield (1 + 2) * 10; }
                 ',
-                '<?php
+            '<?php
                 function foo() { yield ((1 + 2) * 10); }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function foo() { yield "prod"; }
                 ',
-                '<?php
+            '<?php
                 function foo() { yield ("prod"); }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function foo() { yield 2; }
                 ',
-                '<?php
+            '<?php
                 function foo() { yield(2); }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function foo() { $a = (yield $x); }
                 ',
-                '<?php
+            '<?php
                 function foo() { $a = (yield($x)); }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 $var = clone ($obj1->getSubject() ?? $obj2);
                 ',
-            ],
         ];
     }
 

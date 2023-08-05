@@ -37,100 +37,117 @@ final class FunctionToConstantFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'Minimal case, alternative casing, alternative statement end.' => [
-                '<?php echo PHP_VERSION?>',
-                '<?php echo PHPversion()?>',
-            ],
-            'With embedded comment.' => [
-                '<?php echo PHP_VERSION/**/?>',
-                '<?php echo phpversion(/**/)?>',
-            ],
-            'With white space.' => [
-                '<?php echo PHP_VERSION      ;',
-                '<?php echo phpversion  (  )  ;',
-            ],
-            'With multi line whitespace.' => [
-                '<?php echo
+        yield 'Minimal case, alternative casing, alternative statement end.' => [
+            '<?php echo PHP_VERSION?>',
+            '<?php echo PHPversion()?>',
+        ];
+
+        yield 'With embedded comment.' => [
+            '<?php echo PHP_VERSION/**/?>',
+            '<?php echo phpversion(/**/)?>',
+        ];
+
+        yield 'With white space.' => [
+            '<?php echo PHP_VERSION      ;',
+            '<?php echo phpversion  (  )  ;',
+        ];
+
+        yield 'With multi line whitespace.' => [
+            '<?php echo
                 PHP_VERSION
                 '.'
                 '.'
                 ;',
-                '<?php echo
+            '<?php echo
                 phpversion
                 (
                 )
                 ;',
-            ],
-            'Global namespaced.' => [
-                '<?php echo \PHP_VERSION;',
-                '<?php echo \phpversion();',
-            ],
-            'Wrong number of arguments.' => [
-                '<?php phpversion($a);',
-            ],
-            'Wrong namespace.' => [
-                '<?php A\B\phpversion();',
-            ],
-            'Class creating.' => [
-                '<?php new phpversion();',
-            ],
-            'Class static method call.' => [
-                '<?php A::phpversion();',
-            ],
-            'Class method call.' => [
-                '<?php $a->phpversion();',
-            ],
-            'Overridden function.' => [
-                '<?php if (!function_exists("phpversion")){function phpversion(){}}?>',
-            ],
-            'phpversion only' => [
-                '<?php echo PHP_VERSION; echo php_sapi_name(); echo pi();',
-                '<?php echo phpversion(); echo php_sapi_name(); echo pi();',
-                ['functions' => ['phpversion']],
-            ],
-            'php_sapi_name only' => [
-                '<?php echo phpversion(); echo PHP_SAPI; echo pi();',
-                '<?php echo phpversion(); echo php_sapi_name(); echo pi();',
-                ['functions' => ['php_sapi_name']],
-            ],
-            'php_sapi_name in conditional' => [
-                '<?php if ("cli" === PHP_SAPI && $a){ echo 123;}',
-                '<?php if ("cli" === php_sapi_name() && $a){ echo 123;}',
-                ['functions' => ['php_sapi_name']],
-            ],
-            'pi only' => [
-                '<?php echo phpversion(); echo php_sapi_name(); echo M_PI;',
-                '<?php echo phpversion(); echo php_sapi_name(); echo pi();',
-                ['functions' => ['pi']],
-            ],
-            'multi line pi' => [
-                '<?php
+        ];
+
+        yield 'Global namespaced.' => [
+            '<?php echo \PHP_VERSION;',
+            '<?php echo \phpversion();',
+        ];
+
+        yield 'Wrong number of arguments.' => [
+            '<?php phpversion($a);',
+        ];
+
+        yield 'Wrong namespace.' => [
+            '<?php A\B\phpversion();',
+        ];
+
+        yield 'Class creating.' => [
+            '<?php new phpversion();',
+        ];
+
+        yield 'Class static method call.' => [
+            '<?php A::phpversion();',
+        ];
+
+        yield 'Class method call.' => [
+            '<?php $a->phpversion();',
+        ];
+
+        yield 'Overridden function.' => [
+            '<?php if (!function_exists("phpversion")){function phpversion(){}}?>',
+        ];
+
+        yield 'phpversion only' => [
+            '<?php echo PHP_VERSION; echo php_sapi_name(); echo pi();',
+            '<?php echo phpversion(); echo php_sapi_name(); echo pi();',
+            ['functions' => ['phpversion']],
+        ];
+
+        yield 'php_sapi_name only' => [
+            '<?php echo phpversion(); echo PHP_SAPI; echo pi();',
+            '<?php echo phpversion(); echo php_sapi_name(); echo pi();',
+            ['functions' => ['php_sapi_name']],
+        ];
+
+        yield 'php_sapi_name in conditional' => [
+            '<?php if ("cli" === PHP_SAPI && $a){ echo 123;}',
+            '<?php if ("cli" === php_sapi_name() && $a){ echo 123;}',
+            ['functions' => ['php_sapi_name']],
+        ];
+
+        yield 'pi only' => [
+            '<?php echo phpversion(); echo php_sapi_name(); echo M_PI;',
+            '<?php echo phpversion(); echo php_sapi_name(); echo pi();',
+            ['functions' => ['pi']],
+        ];
+
+        yield 'multi line pi' => [
+            '<?php
 $a =
     $b
     || $c < M_PI
 ;',
-                '<?php
+            '<?php
 $a =
     $b
     || $c < pi()
 ;',
-                ['functions' => ['pi']],
-            ],
-            'phpversion and pi' => [
-                '<?php echo PHP_VERSION; echo php_sapi_name(); echo M_PI;',
-                '<?php echo phpversion(); echo php_sapi_name(); echo M_PI;',
-                ['functions' => ['pi', 'phpversion']],
-            ],
-            'diff argument count than native allows' => [
-                '<?php
+            ['functions' => ['pi']],
+        ];
+
+        yield 'phpversion and pi' => [
+            '<?php echo PHP_VERSION; echo php_sapi_name(); echo M_PI;',
+            '<?php echo phpversion(); echo php_sapi_name(); echo M_PI;',
+            ['functions' => ['pi', 'phpversion']],
+        ];
+
+        yield 'diff argument count than native allows' => [
+            '<?php
                     echo phpversion(1);
                     echo php_sapi_name(1,2);
                     echo pi(1);
                 ',
-            ],
-            'get_class => T_CLASS' => [
-                '<?php
+        ];
+
+        yield 'get_class => T_CLASS' => [
+            '<?php
                     class A
                     {
                         public function echoClassName($notMe)
@@ -146,7 +163,7 @@ $a =
                         use A;
                     }
                 ',
-                '<?php
+            '<?php
                     class A
                     {
                         public function echoClassName($notMe)
@@ -162,18 +179,21 @@ $a =
                         use A;
                     }
                 ',
-            ],
-            'get_class with leading backslash' => [
-                '<?php __CLASS__;',
-                '<?php \get_class();',
-            ],
-            [
-                '<?php class A { function B(){ echo static::class; }}',
-                '<?php class A { function B(){ echo get_called_class(); }}',
-                ['functions' => ['get_called_class']],
-            ],
-            [
-                '<?php class A { function B(){
+        ];
+
+        yield 'get_class with leading backslash' => [
+            '<?php __CLASS__;',
+            '<?php \get_class();',
+        ];
+
+        yield [
+            '<?php class A { function B(){ echo static::class; }}',
+            '<?php class A { function B(){ echo get_called_class(); }}',
+            ['functions' => ['get_called_class']],
+        ];
+
+        yield [
+            '<?php class A { function B(){
 echo#.
 #0
 static::class#1
@@ -185,7 +205,7 @@ static::class#1
 ;#7
 }}
                 ',
-                '<?php class A { function B(){
+            '<?php class A { function B(){
 echo#.
 #0
 get_called_class#1
@@ -197,49 +217,56 @@ get_called_class#1
 ;#7
 }}
                 ',
-                ['functions' => ['get_called_class']],
-            ],
-            'get_called_class with leading backslash' => [
-                '<?php class A { function B(){echo static::class; }}',
-                '<?php class A { function B(){echo \get_called_class(); }}',
-                ['functions' => ['get_called_class']],
-            ],
-            'get_called_class overridden' => [
-                '<?php echo get_called_class(1);',
-                null,
-                ['functions' => ['get_called_class']],
-            ],
-            [
-                '<?php class Foo{ public function Bar(){ echo static::class  ; }}',
-                '<?php class Foo{ public function Bar(){ echo get_class( $This ); }}',
-                ['functions' => ['get_class_this']],
-            ],
-            [
-                '<?php class Foo{ public function Bar(){ echo static::class; get_class(1, 2); get_class($a); get_class($a, $b);}}',
-                '<?php class Foo{ public function Bar(){ echo get_class($this); get_class(1, 2); get_class($a); get_class($a, $b);}}',
-                ['functions' => ['get_class_this']],
-            ],
-            [
-                '<?php class Foo{ public function Bar(){ echo static::class /* 0 */  /* 1 */ ;}}',
-                '<?php class Foo{ public function Bar(){ echo \get_class( /* 0 */ $this /* 1 */ );}}',
-                ['functions' => ['get_class_this']],
-            ],
-            [
-                '<?php class Foo{ public function Bar(){ echo static::class; echo __CLASS__; }}',
-                '<?php class Foo{ public function Bar(){ echo \get_class((($this))); echo get_class(); }}',
-                ['functions' => ['get_class_this', 'get_class']],
-            ],
-            [
-                '<?php
+            ['functions' => ['get_called_class']],
+        ];
+
+        yield 'get_called_class with leading backslash' => [
+            '<?php class A { function B(){echo static::class; }}',
+            '<?php class A { function B(){echo \get_called_class(); }}',
+            ['functions' => ['get_called_class']],
+        ];
+
+        yield 'get_called_class overridden' => [
+            '<?php echo get_called_class(1);',
+            null,
+            ['functions' => ['get_called_class']],
+        ];
+
+        yield [
+            '<?php class Foo{ public function Bar(){ echo static::class  ; }}',
+            '<?php class Foo{ public function Bar(){ echo get_class( $This ); }}',
+            ['functions' => ['get_class_this']],
+        ];
+
+        yield [
+            '<?php class Foo{ public function Bar(){ echo static::class; get_class(1, 2); get_class($a); get_class($a, $b);}}',
+            '<?php class Foo{ public function Bar(){ echo get_class($this); get_class(1, 2); get_class($a); get_class($a, $b);}}',
+            ['functions' => ['get_class_this']],
+        ];
+
+        yield [
+            '<?php class Foo{ public function Bar(){ echo static::class /* 0 */  /* 1 */ ;}}',
+            '<?php class Foo{ public function Bar(){ echo \get_class( /* 0 */ $this /* 1 */ );}}',
+            ['functions' => ['get_class_this']],
+        ];
+
+        yield [
+            '<?php class Foo{ public function Bar(){ echo static::class; echo __CLASS__; }}',
+            '<?php class Foo{ public function Bar(){ echo \get_class((($this))); echo get_class(); }}',
+            ['functions' => ['get_class_this', 'get_class']],
+        ];
+
+        yield [
+            '<?php
                     class Foo{ public function Bar(){ echo $reflection = new \ReflectionClass(get_class($this->extension)); }}
                     class Foo{ public function Bar(){ echo $reflection = new \ReflectionClass(get_class($this() )); }}
                 ',
-                null,
-                ['functions' => ['get_class_this']],
-            ],
-            [
-                "<?php namespace Foo;\nfunction &PHPversion(){}",
-            ],
+            null,
+            ['functions' => ['get_class_this']],
+        ];
+
+        yield [
+            "<?php namespace Foo;\nfunction &PHPversion(){}",
         ];
     }
 
@@ -258,11 +285,11 @@ get_called_class#1
 
     public static function provideInvalidConfigurationKeysCases(): iterable
     {
-        return [
-            [['functions' => ['a']]],
-            [['functions' => [false => 1]]],
-            [['functions' => ['abc' => true]]],
-        ];
+        yield [['functions' => ['a']]];
+
+        yield [['functions' => [false => 1]]];
+
+        yield [['functions' => ['abc' => true]]];
     }
 
     public function testInvalidConfigurationValue(): void

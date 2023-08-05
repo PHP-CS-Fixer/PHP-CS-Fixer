@@ -35,51 +35,59 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php echo __LINE__;',
-                '<?php echo __line__;',
-            ],
-            [
-                '<?php echo __FILE__;',
-                '<?php echo __FILe__;',
-            ],
-            [
-                '<?php echo __DIR__;',
-                '<?php echo __dIr__;',
-            ],
-            [
-                '<?php echo __FUNCTION__;',
-                '<?php echo __fUncTiOn__;',
-            ],
-            [
-                '<?php echo __CLASS__;',
-                '<?php echo __clasS__;',
-            ],
-            [
-                '<?php echo __METHOD__;',
-                '<?php echo __mEthoD__;',
-            ],
-            [
-                '<?php echo __NAMESPACE__;',
-                '<?php echo __namespace__;',
-            ],
-            [
-                '<?php echo __TRAIT__;',
-                '<?php echo __trait__;',
-            ],
-            [
-                '<?php echo __TRAIT__;',
-                '<?php echo __trAIt__;',
-            ],
-            [
-                '<?php echo Exception::class;',
-                '<?php echo Exception::CLASS;',
-            ],
-            [
-                '<?php echo Exception::class;',
-                '<?php echo Exception::ClAss;',
-            ],
+        yield [
+            '<?php echo __LINE__;',
+            '<?php echo __line__;',
+        ];
+
+        yield [
+            '<?php echo __FILE__;',
+            '<?php echo __FILe__;',
+        ];
+
+        yield [
+            '<?php echo __DIR__;',
+            '<?php echo __dIr__;',
+        ];
+
+        yield [
+            '<?php echo __FUNCTION__;',
+            '<?php echo __fUncTiOn__;',
+        ];
+
+        yield [
+            '<?php echo __CLASS__;',
+            '<?php echo __clasS__;',
+        ];
+
+        yield [
+            '<?php echo __METHOD__;',
+            '<?php echo __mEthoD__;',
+        ];
+
+        yield [
+            '<?php echo __NAMESPACE__;',
+            '<?php echo __namespace__;',
+        ];
+
+        yield [
+            '<?php echo __TRAIT__;',
+            '<?php echo __trait__;',
+        ];
+
+        yield [
+            '<?php echo __TRAIT__;',
+            '<?php echo __trAIt__;',
+        ];
+
+        yield [
+            '<?php echo Exception::class;',
+            '<?php echo Exception::CLASS;',
+        ];
+
+        yield [
+            '<?php echo Exception::class;',
+            '<?php echo Exception::ClAss;',
         ];
     }
 
@@ -95,9 +103,8 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 
     public static function provideFix74Cases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                 class Bar
                 {
                     const __line__ = "foo";
@@ -106,7 +113,6 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
                 namespace {
                     echo \Bar::__line__;
                 }',
-            ],
         ];
     }
 }

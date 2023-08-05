@@ -45,175 +45,197 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
 
     public static function provideAsteriskCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 // lonely line
 ',
-                '<?php
+            '<?php
 /* lonely line */
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
    // indented line
 ',
-                '<?php
+            '<?php
    /* indented line */
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
    // weird-spaced line
 ',
-                '<?php
+            '<?php
    /*   weird-spaced line*/
 ',
-            ],
-            [
-                '<?php // start-end',
-                '<?php /* start-end */',
-            ],
-            [
-                "<?php\n \t \n \t // weird indent\n",
-                "<?php\n \t \n \t /* weird indent */\n",
-            ],
-            [
-                "<?php\n// with spaces after\n \t ",
-                "<?php\n/* with spaces after */ \t \n \t ",
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php // start-end',
+            '<?php /* start-end */',
+        ];
+
+        yield [
+            "<?php\n \t \n \t // weird indent\n",
+            "<?php\n \t \n \t /* weird indent */\n",
+        ];
+
+        yield [
+            "<?php\n// with spaces after\n \t ",
+            "<?php\n/* with spaces after */ \t \n \t ",
+        ];
+
+        yield [
+            '<?php
 $a = 1; // after code
 ',
-                '<?php
+            '<?php
 $a = 1; /* after code */
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
    /* first */ // second
 ',
-                '<?php
+            '<?php
    /* first */ /* second */
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
    /* first */// second',
-                '<?php
+            '<?php
    /* first *//*
    second
    */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     // one line',
-                '<?php
+            '<?php
     /*one line
 
      */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     // one line',
-                '<?php
+            '<?php
     /*
 
     one line*/',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     // one line',
-                "<?php
+            "<?php
     /* \t "."
  \t   * one line ".'
      *
      */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 //',
-                '<?php
+            '<?php
 /***
  *
  */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
     // s',
-                '<?php
+            '<?php
 
     /***
 s    *
      */',
-            ],
-            'empty comment' => [
-                '<?php
+        ];
+
+        yield 'empty comment' => [
+            '<?php
 //
 ',
-                '<?php
+            '<?php
 /**/
 ',
-            ],
-            // Untouched cases
-            [
-                '<?php
+        ];
+
+        // Untouched cases
+        yield [
+            '<?php
 $a = 1; /* in code */ $b = 2;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /*
      * in code 2
      */ $a = 1;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /***
  *
  */ $a = 1;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /***
 s    *
      */ $a = 1;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /*
      * first line
      * second line
      */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /*
      * first line
      *
      * second line
      */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /*first line
 second line*/',
-            ],
-            [
-                '<?php /** inline doc comment */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php /** inline doc comment */',
+        ];
+
+        yield [
+            '<?php
     /**
      * Doc comment
      */',
-            ],
-            [
-                '<?php # test',
-            ],
+        ];
+
+        yield [
+            '<?php # test',
         ];
     }
 
@@ -228,62 +250,68 @@ second line*/',
 
     public static function provideHashCases(): iterable
     {
-        return [
-            [
-                '<h1>This is an <?php //echo 123;?> example</h1>',
-                '<h1>This is an <?php #echo 123;?> example</h1>',
-            ],
-            [
-                '<?php
+        yield [
+            '<h1>This is an <?php //echo 123;?> example</h1>',
+            '<h1>This is an <?php #echo 123;?> example</h1>',
+        ];
+
+        yield [
+            '<?php
                     // test
                 ',
-                '<?php
+            '<?php
                     # test
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     // test1
                     //test2
                     // test3
                     // test 4
                 ',
-                '<?php
+            '<?php
                     # test1
                     #test2
                     # test3
                     # test 4
                 ',
-            ],
-            [
-                '<?php //',
-                '<?php #',
-            ],
-            // Untouched cases
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php //',
+            '<?php #',
+        ];
+
+        // Untouched cases
+        yield [
+            '<?php
                     //#test
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     /*
                         #test
                     */
                 ',
-            ],
-            [
-                '<?php // a',
-                '<?php # a',
-            ],
-            [
-                '<?php /* start-end */',
-            ],
-            [
-                '<?php function foo(
+        ];
+
+        yield [
+            '<?php // a',
+            '<?php # a',
+        ];
+
+        yield [
+            '<?php /* start-end */',
+        ];
+
+        yield [
+            '<?php function foo(
     #[MyAttr([1, 2])] Type $myParam,
 ) {} // foo',
-            ],
         ];
     }
 
@@ -297,9 +325,8 @@ second line*/',
 
     public static function provideAllCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     // 1
     // 2
     /*
@@ -311,7 +338,7 @@ second line*/',
      */
     // 5
 ',
-                '<?php
+            '<?php
     /* 1 */
     /*
      * 2
@@ -325,14 +352,14 @@ second line*/',
      */
     # 5
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function foo() {
                     /* ?> */
                     return "bar";
                 }',
-            ],
         ];
     }
 }

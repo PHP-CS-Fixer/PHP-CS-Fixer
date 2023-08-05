@@ -35,49 +35,55 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php foo(function () use ($a, &$b) { return 1; });',
-            ],
-            [
-                '<?php foo(function () { bar(); return 1; });',
-            ],
-            [
-                '<?php foo(fn()=> 1);',
-                '<?php foo(function(){return 1;});',
-            ],
-            [
-                '<?php foo(fn()=>$a);',
-                '<?php foo(function()use($a){return$a;});',
-            ],
-            [
-                '<?php foo( fn () => 1 );',
-                '<?php foo( function () { return 1; } );',
-            ],
-            [
-                '<?php $func = static fn &(array &$a, string ...$b): ?int => 1;',
-                '<?php $func = static function &(array &$a, string ...$b): ?int { return 1; };',
-            ],
-            [
-                <<<'EXPECTED'
+        yield [
+            '<?php foo(function () use ($a, &$b) { return 1; });',
+        ];
+
+        yield [
+            '<?php foo(function () { bar(); return 1; });',
+        ];
+
+        yield [
+            '<?php foo(fn()=> 1);',
+            '<?php foo(function(){return 1;});',
+        ];
+
+        yield [
+            '<?php foo(fn()=>$a);',
+            '<?php foo(function()use($a){return$a;});',
+        ];
+
+        yield [
+            '<?php foo( fn () => 1 );',
+            '<?php foo( function () { return 1; } );',
+        ];
+
+        yield [
+            '<?php $func = static fn &(array &$a, string ...$b): ?int => 1;',
+            '<?php $func = static function &(array &$a, string ...$b): ?int { return 1; };',
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php
     foo(1, fn (int $a, Foo $b) => bar($a, $c), 2);
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
     foo(1, function (int $a, Foo $b) use ($c, $d) {
         return bar($a, $c);
     }, 2);
 INPUT
-            ],
-            [
-                <<<'EXPECTED'
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php
     foo(fn () => 1);
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
     foo(function () {
 
@@ -87,14 +93,15 @@ EXPECTED
 
     });
 INPUT
-            ],
-            [
-                <<<'EXPECTED'
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php
     foo(fn ($a) => fn () => $a + 1);
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
     foo(function ($a) {
         return function () use ($a) {
@@ -102,52 +109,58 @@ EXPECTED
         };
     });
 INPUT
-            ],
-            [
-                <<<'EXPECTED'
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php
     foo(function () {// comment
         return 1;
     });
 EXPECTED
-            ],
-            [
-                <<<'EXPECTED'
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php
     foo(function () {
         // comment
         return 1;
     });
 EXPECTED
-            ],
-            [
-                <<<'EXPECTED'
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php
     foo(function () {
         return 1; // comment
     });
 EXPECTED
-            ],
-            [
-                <<<'EXPECTED'
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php
     foo(function () {
         return 1;
         // comment
     });
 EXPECTED
-            ],
-            [
-                <<<'EXPECTED'
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php
     foo(function () {
         return
             1;
     });
 EXPECTED
-            ],
-            [
-                <<<'EXPECTED'
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php
     $func = function (
         $a,
@@ -156,9 +169,10 @@ EXPECTED
         return 1;
     };
 EXPECTED
-            ],
-            [
-                <<<'EXPECTED'
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php
     $func = function () {
         return function () {
@@ -166,19 +180,21 @@ EXPECTED
         };
     };
 EXPECTED
-            ],
-            [
-                '<?php $testDummy = fn () => null;',
-                '<?php $testDummy = function () { return; };',
-            ],
-            [
-                '<?php $testDummy = fn () => null ;',
-                '<?php $testDummy = function () { return ; };',
-            ],
-            [
-                '<?php $testDummy = fn () => null/* foo */;',
-                '<?php $testDummy = function () { return/* foo */; };',
-            ],
+        ];
+
+        yield [
+            '<?php $testDummy = fn () => null;',
+            '<?php $testDummy = function () { return; };',
+        ];
+
+        yield [
+            '<?php $testDummy = fn () => null ;',
+            '<?php $testDummy = function () { return ; };',
+        ];
+
+        yield [
+            '<?php $testDummy = fn () => null/* foo */;',
+            '<?php $testDummy = function () { return/* foo */; };',
         ];
     }
 }

@@ -38,37 +38,38 @@ final class WordMatcherTest extends TestCase
 
     public static function provideMatchCases(): iterable
     {
-        return [
+        yield [
+            null,
+            'foo',
             [
-                null,
-                'foo',
-                [
-                    'no_blank_lines_after_class_opening',
-                    'no_blank_lines_after_phpdoc',
-                ],
-            ],
-            [
+                'no_blank_lines_after_class_opening',
                 'no_blank_lines_after_phpdoc',
-                'no_blank_lines_after_phpdocs',
-                [
-                    'no_blank_lines_after_class_opening',
-                    'no_blank_lines_after_phpdoc',
-                ],
             ],
+        ];
+
+        yield [
+            'no_blank_lines_after_phpdoc',
+            'no_blank_lines_after_phpdocs',
+            [
+                'no_blank_lines_after_class_opening',
+                'no_blank_lines_after_phpdoc',
+            ],
+        ];
+
+        yield [
+            'no_blank_lines_after_foo',
+            'no_blank_lines_foo',
             [
                 'no_blank_lines_after_foo',
-                'no_blank_lines_foo',
-                [
-                    'no_blank_lines_after_foo',
-                    'no_blank_lines_before_foo',
-                ],
+                'no_blank_lines_before_foo',
             ],
+        ];
+
+        yield [
+            null,
+            'braces',
             [
-                null,
-                'braces',
-                [
-                    'elseif',
-                ],
+                'elseif',
             ],
         ];
     }

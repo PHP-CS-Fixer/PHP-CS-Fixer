@@ -163,28 +163,27 @@ final class CacheTest extends TestCase
         $toolInfo = new ToolInfo();
         $config = new Config();
 
-        return [
-            [new Signature(
-                PHP_VERSION,
-                '2.0',
-                '  ',
-                "\r\n",
-                [
-                    'foo' => true,
-                    'bar' => true,
-                ]
-            )],
-            [new Signature(
-                PHP_VERSION,
-                $toolInfo->getVersion(),
-                $config->getIndent(),
-                $config->getLineEnding(),
-                [
-                    // value encoded in ANSI, not UTF
-                    'header_comment' => ['header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)],
-                ]
-            )],
-        ];
+        yield [new Signature(
+            PHP_VERSION,
+            '2.0',
+            '  ',
+            "\r\n",
+            [
+                'foo' => true,
+                'bar' => true,
+            ]
+        )];
+
+        yield [new Signature(
+            PHP_VERSION,
+            $toolInfo->getVersion(),
+            $config->getIndent(),
+            $config->getLineEnding(),
+            [
+                // value encoded in ANSI, not UTF
+                'header_comment' => ['header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)],
+            ]
+        )];
     }
 
     public function testToJsonThrowsExceptionOnInvalid(): void

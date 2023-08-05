@@ -76,9 +76,8 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                <<<'EOF'
+        yield [
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -90,8 +89,8 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -103,10 +102,11 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-                ,
-            ],
-            [
-                <<<'EOF'
+            ,
+        ];
+
+        yield [
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -128,8 +128,8 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -151,10 +151,11 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-                ,
-            ],
-            [
-                <<<'EOF'
+            ,
+        ];
+
+        yield [
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -172,8 +173,8 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -191,10 +192,11 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-                ,
-            ],
-            [
-                <<<'EOF'
+            ,
+        ];
+
+        yield [
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -212,8 +214,8 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -231,11 +233,12 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-                ,
-                ['call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS],
-            ],
-            [
-                <<<'EOF'
+            ,
+            ['call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS],
+        ];
+
+        yield [
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -247,8 +250,8 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -260,11 +263,12 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-                ,
-                ['call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_SELF],
-            ],
-            [
-                <<<'EOF'
+            ,
+            ['call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_SELF],
+        ];
+
+        yield [
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -281,8 +285,8 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -299,14 +303,15 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-                ,
-                [
-                    'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
-                    'methods' => ['setUpBeforeClass' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_STATIC],
-                ],
-            ],
+            ,
             [
-                <<<'EOF'
+                'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
+                'methods' => ['setUpBeforeClass' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_STATIC],
+            ],
+        ];
+
+        yield [
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -355,14 +360,15 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-                ,
-                null,
-                [
-                    'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
-                ],
-            ],
+            ,
+            null,
             [
-                <<<'EOF'
+                'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
+            ],
+        ];
+
+        yield [
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -398,8 +404,8 @@ class MyTest extends \PHPUnit_Framework_TestCase
 
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -435,13 +441,14 @@ class MyTest extends \PHPUnit_Framework_TestCase
 
 }
 EOF
-                ,
-                [
-                    'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
-                ],
+            ,
+            [
+                'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
             ],
-            'do not change class property and method signature' => [
-                <<<'EOF'
+        ];
+
+        yield 'do not change class property and method signature' => [
+            <<<'EOF'
 <?php
 class FooTest extends TestCase
 {
@@ -453,10 +460,11 @@ class FooTest extends TestCase
     public function assertSame($foo, $bar){}
 }
 EOF
-                ,
-            ],
-            'do not change when only case is different' => [
-                <<<'EOF'
+            ,
+        ];
+
+        yield 'do not change when only case is different' => [
+            <<<'EOF'
 <?php
 class FooTest extends TestCase
 {
@@ -466,24 +474,26 @@ class FooTest extends TestCase
     }
 }
 EOF
-                ,
-            ],
-            'do not crash on abstract static function' => [
-                <<<'EOF'
+            ,
+        ];
+
+        yield 'do not crash on abstract static function' => [
+            <<<'EOF'
 <?php
 abstract class FooTest extends TestCase
 {
     abstract public static function dataProvider();
 }
 EOF
-                ,
-                null,
-                [
-                    'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
-                ],
+            ,
+            null,
+            [
+                'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
             ],
-            'handle $this with double colon following' => [
-                '<?php
+        ];
+
+        yield 'handle $this with double colon following' => [
+            '<?php
                 class FooTest extends TestCase
                 {
                     public function testFoo()
@@ -491,7 +501,7 @@ EOF
                         static::assertTrue(true);
                     }
                 }',
-                '<?php
+            '<?php
                 class FooTest extends TestCase
                 {
                     public function testFoo()
@@ -499,7 +509,6 @@ EOF
                         $this::assertTrue(true);
                     }
                 }',
-            ],
         ];
     }
 

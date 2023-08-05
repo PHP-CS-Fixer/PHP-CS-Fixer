@@ -71,370 +71,440 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                // non-PHP test
-                'function foo () {}',
-            ],
-            [
-                '<?php function foo() {}',
-                '<?php function	foo() {}',
-            ],
-            [
-                '<?php function foo() {}',
-                '<?php function foo	() {}',
-            ],
-            [
-                '<?php function foo() {}',
-                '<?php function foo () {}',
-            ],
-            [
-                '<?php function foo() {}',
-                '<?php function
+        yield [
+            // non-PHP test
+            'function foo () {}',
+        ];
+
+        yield [
+            '<?php function foo() {}',
+            '<?php function	foo() {}',
+        ];
+
+        yield [
+            '<?php function foo() {}',
+            '<?php function foo	() {}',
+        ];
+
+        yield [
+            '<?php function foo() {}',
+            '<?php function foo () {}',
+        ];
+
+        yield [
+            '<?php function foo() {}',
+            '<?php function
 foo () {}',
-            ],
-            [
-                '<?php function ($i) {};',
-                '<?php function($i) {};',
-            ],
-            [
-                '<?php function _function() {}',
-                '<?php function _function () {}',
-            ],
-            [
-                '<?php function foo($a, $b = true) {}',
-                '<?php function foo($a, $b = true){}',
-            ],
-            [
-                '<?php function foo($a, $b = true) {}',
-                '<?php function foo($a, $b = true)    {}',
-            ],
-            [
-                '<?php function foo($a)
+        ];
+
+        yield [
+            '<?php function ($i) {};',
+            '<?php function($i) {};',
+        ];
+
+        yield [
+            '<?php function _function() {}',
+            '<?php function _function () {}',
+        ];
+
+        yield [
+            '<?php function foo($a, $b = true) {}',
+            '<?php function foo($a, $b = true){}',
+        ];
+
+        yield [
+            '<?php function foo($a, $b = true) {}',
+            '<?php function foo($a, $b = true)    {}',
+        ];
+
+        yield [
+            '<?php function foo($a)
 {}',
-            ],
-            [
-                '<?php function ($a) use ($b) {};',
-                '<?php function ($a) use ($b)     {};',
-            ],
-            [
-                '<?php $foo = function ($foo) use ($bar, $baz) {};',
-                '<?php $foo = function ($foo) use($bar, $baz) {};',
-            ],
-            [
-                '<?php $foo = function ($foo) use ($bar, $baz) {};',
-                '<?php $foo = function ($foo)use ($bar, $baz) {};',
-            ],
-            [
-                '<?php $foo = function ($foo) use ($bar, $baz) {};',
-                '<?php $foo = function ($foo)use($bar, $baz) {};',
-            ],
-            [
-                '<?php function &foo($a) {}',
-                '<?php function &foo( $a ) {}',
-            ],
-            [
-                '<?php function foo($a)
+        ];
+
+        yield [
+            '<?php function ($a) use ($b) {};',
+            '<?php function ($a) use ($b)     {};',
+        ];
+
+        yield [
+            '<?php $foo = function ($foo) use ($bar, $baz) {};',
+            '<?php $foo = function ($foo) use($bar, $baz) {};',
+        ];
+
+        yield [
+            '<?php $foo = function ($foo) use ($bar, $baz) {};',
+            '<?php $foo = function ($foo)use ($bar, $baz) {};',
+        ];
+
+        yield [
+            '<?php $foo = function ($foo) use ($bar, $baz) {};',
+            '<?php $foo = function ($foo)use($bar, $baz) {};',
+        ];
+
+        yield [
+            '<?php function &foo($a) {}',
+            '<?php function &foo( $a ) {}',
+        ];
+
+        yield [
+            '<?php function foo($a)
 	{}',
-                '<?php function foo( $a)
+            '<?php function foo( $a)
 	{}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     function foo(
         $a,
         $b,
         $c
     ) {}',
-            ],
-            [
-                '<?php $function = function () {};',
-                '<?php $function = function(){};',
-            ],
-            [
-                '<?php $function("");',
-            ],
-            [
-                '<?php function ($a) use ($b) {};',
-                '<?php function($a)use($b) {};',
-            ],
-            [
-                '<?php function ($a) use ($b) {};',
-                '<?php function($a)         use      ($b) {};',
-            ],
-            [
-                '<?php function ($a) use ($b) {};',
-                '<?php function ($a) use ( $b ) {};',
-            ],
-            [
-                '<?php function &($a) use ($b) {};',
-                '<?php function &(  $a   ) use (   $b      ) {};',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php $function = function () {};',
+            '<?php $function = function(){};',
+        ];
+
+        yield [
+            '<?php $function("");',
+        ];
+
+        yield [
+            '<?php function ($a) use ($b) {};',
+            '<?php function($a)use($b) {};',
+        ];
+
+        yield [
+            '<?php function ($a) use ($b) {};',
+            '<?php function($a)         use      ($b) {};',
+        ];
+
+        yield [
+            '<?php function ($a) use ($b) {};',
+            '<?php function ($a) use ( $b ) {};',
+        ];
+
+        yield [
+            '<?php function &($a) use ($b) {};',
+            '<?php function &(  $a   ) use (   $b      ) {};',
+        ];
+
+        yield [
+            '<?php
     interface Foo
     {
         public function setConfig(ConfigInterface $config);
     }',
-            ],
-            // do not remove multiline space before { when end of previous line is a comment
-            [
-                '<?php
+        ];
+
+        // do not remove multiline space before { when end of previous line is a comment
+        yield [
+            '<?php
 function foo() // bar
 {              // baz
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo() /* bar */
 {              /* baz */
 }',
-            ],
-            [
-                // non-PHP test
-                'function foo () {}',
-                null,
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function foo() {}',
-                '<?php function	foo() {}',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function foo() {}',
-                '<?php function foo () {}',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function foo() {}',
-                '<?php function foo	() {}',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function foo() {}',
-                '<?php function
+        ];
+
+        yield [
+            // non-PHP test
+            'function foo () {}',
+            null,
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function foo() {}',
+            '<?php function	foo() {}',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function foo() {}',
+            '<?php function foo () {}',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function foo() {}',
+            '<?php function foo	() {}',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function foo() {}',
+            '<?php function
 foo () {}',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function($i) {};',
-                null,
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function _function() {}',
-                '<?php function _function () {}',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function foo($a, $b = true) {}',
-                '<?php function foo($a, $b = true){}',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function foo($a, $b = true) {}',
-                '<?php function foo($a, $b = true)    {}',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function foo($a)
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function($i) {};',
+            null,
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function _function() {}',
+            '<?php function _function () {}',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function foo($a, $b = true) {}',
+            '<?php function foo($a, $b = true){}',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function foo($a, $b = true) {}',
+            '<?php function foo($a, $b = true)    {}',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function foo($a)
 {}',
-                null,
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function($a) use ($b) {};',
-                '<?php function ($a) use ($b)     {};',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php $foo = function($foo) use ($bar, $baz) {};',
-                '<?php $foo = function ($foo) use($bar, $baz) {};',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php $foo = function($foo) use ($bar, $baz) {};',
-                '<?php $foo = function ($foo)use ($bar, $baz) {};',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php $foo = function($foo) use ($bar, $baz) {};',
-                '<?php $foo = function ($foo)use($bar, $baz) {};',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function &foo($a) {}',
-                '<?php function &foo( $a ) {}',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function foo($a)
+            null,
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function($a) use ($b) {};',
+            '<?php function ($a) use ($b)     {};',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php $foo = function($foo) use ($bar, $baz) {};',
+            '<?php $foo = function ($foo) use($bar, $baz) {};',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php $foo = function($foo) use ($bar, $baz) {};',
+            '<?php $foo = function ($foo)use ($bar, $baz) {};',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php $foo = function($foo) use ($bar, $baz) {};',
+            '<?php $foo = function ($foo)use($bar, $baz) {};',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function &foo($a) {}',
+            '<?php function &foo( $a ) {}',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function foo($a)
 	{}',
-                '<?php function foo( $a)
+            '<?php function foo( $a)
 	{}',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php
     function foo(
         $a,
         $b,
         $c
     ) {}',
-                null,
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php $function = function() {};',
-                '<?php $function = function (){};',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php $function("");',
-                null,
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function($a) use ($b) {};',
-                '<?php function ($a)use($b) {};',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function($a) use ($b) {};',
-                '<?php function ($a)         use      ($b) {};',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function($a) use ($b) {};',
-                '<?php function ($a) use ( $b ) {};',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function&($a) use ($b) {};',
-                '<?php function &(  $a   ) use (   $b      ) {};',
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php
+            null,
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php $function = function() {};',
+            '<?php $function = function (){};',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php $function("");',
+            null,
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function($a) use ($b) {};',
+            '<?php function ($a)use($b) {};',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function($a) use ($b) {};',
+            '<?php function ($a)         use      ($b) {};',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function($a) use ($b) {};',
+            '<?php function ($a) use ( $b ) {};',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function&($a) use ($b) {};',
+            '<?php function &(  $a   ) use (   $b      ) {};',
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php
     interface Foo
     {
         public function setConfig(ConfigInterface $config);
     }',
-                null,
-                self::$configurationClosureSpacingNone,
-            ],
-            // do not remove multiline space before { when end of previous line is a comment
-            [
-                '<?php
+            null,
+            self::$configurationClosureSpacingNone,
+        ];
+
+        // do not remove multiline space before { when end of previous line is a comment
+        yield [
+            '<?php
 function foo() // bar
 {              // baz
 }',
-                null,
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php
+            null,
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php
 function foo() /* bar */
 {              /* baz */
 }',
-                null,
-                self::$configurationClosureSpacingNone,
-            ],
-            [
-                '<?php function #
+            null,
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php function #
 foo#
  (#
  ) #
 {#
 }#',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $b = static function ($a) {
                         echo $a;
                     };
                 ',
-                '<?php
+            '<?php
                     $b = static     function( $a )   {
                         echo $a;
                     };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $b = static function($a) {
                         echo $a;
                     };
                 ',
-                '<?php
+            '<?php
                     $b = static     function ( $a )   {
                         echo $a;
                     };
                 ',
-                self::$configurationClosureSpacingNone,
-            ],
-            ['<?php use function Foo\bar; bar ( 1 );'],
-            ['<?php use function some\test\{fn_a, fn_b, fn_c};'],
-            ['<?php use function some\test\{fn_a, fn_b, fn_c} ?>'],
-            ['<?php use function Foo\bar; bar ( 1 );', null, self::$configurationClosureSpacingNone],
-            ['<?php use function some\test\{fn_a, fn_b, fn_c};', null, self::$configurationClosureSpacingNone],
-            ['<?php use function some\test\{fn_a, fn_b, fn_c} ?>', null, self::$configurationClosureSpacingNone],
-            [
-                '<?php fn ($i) => null;',
-                '<?php fn($i) => null;',
-            ],
-            [
-                '<?php fn ($a) => null;',
-                '<?php fn ($a)     => null;',
-            ],
-            [
-                '<?php $fn = fn () => null;',
-                '<?php $fn = fn()=> null;',
-            ],
-            [
-                '<?php fn &($a) => null;',
-                '<?php fn &(  $a   ) => null;',
-            ],
-            [
-                '<?php fn($i) => null;',
-                null,
-                self::$configurationArrowSpacingNone,
-            ],
-            [
-                '<?php fn($a) => null;',
-                '<?php fn ($a)      => null;',
-                self::$configurationArrowSpacingNone,
-            ],
-            [
-                '<?php $fn = fn() => null;',
-                '<?php $fn = fn ()=> null;',
-                self::$configurationArrowSpacingNone,
-            ],
-            [
-                '<?php $fn("");',
-                null,
-                self::$configurationArrowSpacingNone,
-            ],
-            [
-                '<?php fn&($a) => null;',
-                '<?php fn &(  $a   ) => null;',
-                self::$configurationArrowSpacingNone,
-            ],
-            [
-                '<?php fn&($a,$b) => null;',
-                '<?php fn &(  $a,$b  ) => null;',
-                self::$configurationArrowSpacingNone,
-            ],
-            [
-                '<?php $b = static fn ($a) => $a;',
-                '<?php $b = static     fn( $a )   => $a;',
-            ],
-            [
-                '<?php $b = static fn($a) => $a;',
-                '<?php $b = static     fn ( $a )   => $a;',
-                self::$configurationArrowSpacingNone,
-            ],
+            self::$configurationClosureSpacingNone,
+        ];
+
+        yield ['<?php use function Foo\bar; bar ( 1 );'];
+
+        yield ['<?php use function some\test\{fn_a, fn_b, fn_c};'];
+
+        yield ['<?php use function some\test\{fn_a, fn_b, fn_c} ?>'];
+
+        yield ['<?php use function Foo\bar; bar ( 1 );', null, self::$configurationClosureSpacingNone];
+
+        yield ['<?php use function some\test\{fn_a, fn_b, fn_c};', null, self::$configurationClosureSpacingNone];
+
+        yield ['<?php use function some\test\{fn_a, fn_b, fn_c} ?>', null, self::$configurationClosureSpacingNone];
+
+        yield [
+            '<?php fn ($i) => null;',
+            '<?php fn($i) => null;',
+        ];
+
+        yield [
+            '<?php fn ($a) => null;',
+            '<?php fn ($a)     => null;',
+        ];
+
+        yield [
+            '<?php $fn = fn () => null;',
+            '<?php $fn = fn()=> null;',
+        ];
+
+        yield [
+            '<?php fn &($a) => null;',
+            '<?php fn &(  $a   ) => null;',
+        ];
+
+        yield [
+            '<?php fn($i) => null;',
+            null,
+            self::$configurationArrowSpacingNone,
+        ];
+
+        yield [
+            '<?php fn($a) => null;',
+            '<?php fn ($a)      => null;',
+            self::$configurationArrowSpacingNone,
+        ];
+
+        yield [
+            '<?php $fn = fn() => null;',
+            '<?php $fn = fn ()=> null;',
+            self::$configurationArrowSpacingNone,
+        ];
+
+        yield [
+            '<?php $fn("");',
+            null,
+            self::$configurationArrowSpacingNone,
+        ];
+
+        yield [
+            '<?php fn&($a) => null;',
+            '<?php fn &(  $a   ) => null;',
+            self::$configurationArrowSpacingNone,
+        ];
+
+        yield [
+            '<?php fn&($a,$b) => null;',
+            '<?php fn &(  $a,$b  ) => null;',
+            self::$configurationArrowSpacingNone,
+        ];
+
+        yield [
+            '<?php $b = static fn ($a) => $a;',
+            '<?php $b = static     fn( $a )   => $a;',
+        ];
+
+        yield [
+            '<?php $b = static fn($a) => $a;',
+            '<?php $b = static     fn ( $a )   => $a;',
+            self::$configurationArrowSpacingNone,
         ];
     }
 

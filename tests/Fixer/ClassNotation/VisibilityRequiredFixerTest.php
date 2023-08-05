@@ -96,9 +96,8 @@ EOF;
 
     public static function provideFixMethodsCases(): iterable
     {
-        return [
-            [
-                <<<'EOF'
+        yield [
+            <<<'EOF'
 <?php
 class MyTestWithAnonymousClass extends TestCase
 {
@@ -113,8 +112,8 @@ class MyTestWithAnonymousClass extends TestCase
     }
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 class MyTestWithAnonymousClass extends TestCase
 {
@@ -129,10 +128,11 @@ class MyTestWithAnonymousClass extends TestCase
     }
 }
 EOF
-                ,
-            ],
-            [
-                <<<'EOF'
+            ,
+        ];
+
+        yield [
+            <<<'EOF'
 <?php
 abstract class Foo {
     public function& foo0() {}
@@ -156,8 +156,8 @@ abstract class Foo {
         }
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 abstract class Foo {
     public function& foo0() {}
@@ -183,24 +183,24 @@ abstract class Foo {
         }
 }
 EOF
-                ,
-            ],
-            [
-                <<<'EOF'
+            ,
+        ];
+
+        yield [
+            <<<'EOF'
 <?php
 abstract class Foo1 {
     public function& foo0($a) {}
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 abstract class Foo1 {
     function& foo0($a) {}
 }
 EOF
-                ,
-            ],
+            ,
         ];
     }
 
@@ -528,25 +528,27 @@ EOF;
 
     public static function provideFixClassConstCases(): iterable
     {
-        return [
-            [
-                '<?php class A { public const B=1; }',
-                '<?php class A { const B=1; }',
-            ],
-            [
-                '<?php class A { public const B=1;public const C=1;/**/public const#a
+        yield [
+            '<?php class A { public const B=1; }',
+            '<?php class A { const B=1; }',
+        ];
+
+        yield [
+            '<?php class A { public const B=1;public const C=1;/**/public const#a
                 D=1;public const E=1;//
 public const F=1; }',
-                '<?php class A { const B=1;const C=1;/**/const#a
+            '<?php class A { const B=1;const C=1;/**/const#a
                 D=1;const E=1;//
 const F=1; }',
-            ],
-            [
-                '<?php class A { private const B=1; protected const C=2; public const D=4; public $a; function A(){} }',
-                '<?php class A { private const B=1; protected const C=2; const D=4; public $a; function A(){} }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php class A { private const B=1; protected const C=2; public const D=4; public $a; function A(){} }',
+            '<?php class A { private const B=1; protected const C=2; const D=4; public $a; function A(){} }',
+        ];
+
+        yield [
+            '<?php
                     class foo
                     {
                         public const A = 1, B =2, C =3;
@@ -555,7 +557,7 @@ const F=1; }',
                         public const SENTENCE = "The value of THREE is ".self::THREE;
                     }
                 ',
-                '<?php
+            '<?php
                     class foo
                     {
                         const A = 1, B =2, C =3;
@@ -564,7 +566,6 @@ const F=1; }',
                         const SENTENCE = "The value of THREE is ".self::THREE;
                     }
                 ',
-            ],
         ];
     }
 

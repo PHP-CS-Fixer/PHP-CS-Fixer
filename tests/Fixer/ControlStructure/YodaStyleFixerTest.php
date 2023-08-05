@@ -891,19 +891,19 @@ switch ($a) {
 
     public static function provideLessGreaterCases(): iterable
     {
-        return [
-            [
-                '<?php $a = 3 <= $b;',
-                '<?php $a = $b >= 3;',
-            ],
-            [
-                '<?php $a = 3 > $b;',
-                '<?php $a = $b < 3;',
-            ],
-            [
-                '<?php $a = (3 > $b) || $d;',
-                '<?php $a = ($b < 3) || $d;',
-            ],
+        yield [
+            '<?php $a = 3 <= $b;',
+            '<?php $a = $b >= 3;',
+        ];
+
+        yield [
+            '<?php $a = 3 > $b;',
+            '<?php $a = $b < 3;',
+        ];
+
+        yield [
+            '<?php $a = (3 > $b) || $d;',
+            '<?php $a = ($b < 3) || $d;',
         ];
     }
 
@@ -944,10 +944,9 @@ switch ($a) {
 
     public static function provideInvalidConfigCases(): iterable
     {
-        return [
-            [['equal' => 2], 'Invalid configuration: The option "equal" with value 2 is expected to be of type "bool" or "null", but is of type "(int|integer)"\.'],
-            [['_invalid_' => true], 'Invalid configuration: The option "_invalid_" does not exist\. Defined options are: "always_move_variable", "equal", "identical", "less_and_greater"\.'],
-        ];
+        yield [['equal' => 2], 'Invalid configuration: The option "equal" with value 2 is expected to be of type "bool" or "null", but is of type "(int|integer)"\.'];
+
+        yield [['_invalid_' => true], 'Invalid configuration: The option "_invalid_" does not exist\. Defined options are: "always_move_variable", "equal", "identical", "less_and_greater"\.'];
     }
 
     public function testDefinition(): void
@@ -982,45 +981,60 @@ switch ($a) {
 
     public static function providePHP71Cases(): iterable
     {
-        return [
-            // no fix cases
-            ['<?php list("a" => $a, "b" => $b, "c" => $c) = $c === array(1) ? $b : $d;'],
-            ['<?php list(list("x" => $x1, "y" => $y1), list("x" => $x2, "y" => $y2)) = $points;'],
-            ['<?php list("first" => list($x1, $y1), "second" => list($x2, $y2)) = $points;'],
-            ['<?php [$a, $b, $c] = [1, 2, 3];'],
-            ['<?php ["a" => $a, "b" => $b, "c" => $c] = $a[0];'],
-            ['<?php list("a" => $a, "b" => $b, "c" => $c) = $c === array(1) ? $b : $d;'],
-            ['<?php $b = 7 === [$a] = [7];'], // makes no sense, but valid PHP syntax
-            ['<?php $b = 7 === [$a] = [7];'],
-            ['<?php [$a] = $c === array(1) ? $b : $d;'],
-            ['<?php $b = 7 === [$a] = [7];'],
-            ['<?php $z = $n == [$a] = $b;'],
-            ['<?php return $n == [$a] = $b;'],
-            // fix cases
-            [
-                '<?php list("a" => $a, "b" => $b, "c" => $c) = 1 === $c ? $b : $d;',
-                '<?php list("a" => $a, "b" => $b, "c" => $c) = $c === 1 ? $b : $d;',
-            ],
-            [
-                '<?php list("a" => $a, "b" => $b, "c" => $c) = A::B === $c ? $b : $d;',
-                '<?php list("a" => $a, "b" => $b, "c" => $c) = $c === A::B ? $b : $d;',
-            ],
-            [
-                '<?php list( (2 === $c ? "a" : "b") => $b) = ["a" => 7 === $c ? 5 : 1, "b" => 7];',
-                '<?php list( ($c === 2 ? "a" : "b") => $b) = ["a" => $c === 7 ? 5 : 1, "b" => 7];',
-            ],
-            [
-                '<?php [ (ABC::A === $c ? "a" : "b") => $b] = ["a" => 7 === $c ? 5 : 1, "b" => 7];',
-                '<?php [ ($c === ABC::A ? "a" : "b") => $b] = ["a" => $c === 7 ? 5 : 1, "b" => 7];',
-            ],
-            'Array destruct by ternary.' => [
-                '<?php [$a] = 11 === $c ? $b : $d;',
-                '<?php [$a] = $c === 11 ? $b : $d;',
-            ],
-            [
-                '<?php $b = [$a] = 7 === [7];', // makes no sense, but valid PHP syntax
-                '<?php $b = [$a] = [7] === 7;',
-            ],
+        // no fix cases
+        yield ['<?php list("a" => $a, "b" => $b, "c" => $c) = $c === array(1) ? $b : $d;'];
+
+        yield ['<?php list(list("x" => $x1, "y" => $y1), list("x" => $x2, "y" => $y2)) = $points;'];
+
+        yield ['<?php list("first" => list($x1, $y1), "second" => list($x2, $y2)) = $points;'];
+
+        yield ['<?php [$a, $b, $c] = [1, 2, 3];'];
+
+        yield ['<?php ["a" => $a, "b" => $b, "c" => $c] = $a[0];'];
+
+        yield ['<?php list("a" => $a, "b" => $b, "c" => $c) = $c === array(1) ? $b : $d;'];
+
+        yield ['<?php $b = 7 === [$a] = [7];']; // makes no sense, but valid PHP syntax
+
+        yield ['<?php $b = 7 === [$a] = [7];'];
+
+        yield ['<?php [$a] = $c === array(1) ? $b : $d;'];
+
+        yield ['<?php $b = 7 === [$a] = [7];'];
+
+        yield ['<?php $z = $n == [$a] = $b;'];
+
+        yield ['<?php return $n == [$a] = $b;'];
+
+        // fix cases
+        yield [
+            '<?php list("a" => $a, "b" => $b, "c" => $c) = 1 === $c ? $b : $d;',
+            '<?php list("a" => $a, "b" => $b, "c" => $c) = $c === 1 ? $b : $d;',
+        ];
+
+        yield [
+            '<?php list("a" => $a, "b" => $b, "c" => $c) = A::B === $c ? $b : $d;',
+            '<?php list("a" => $a, "b" => $b, "c" => $c) = $c === A::B ? $b : $d;',
+        ];
+
+        yield [
+            '<?php list( (2 === $c ? "a" : "b") => $b) = ["a" => 7 === $c ? 5 : 1, "b" => 7];',
+            '<?php list( ($c === 2 ? "a" : "b") => $b) = ["a" => $c === 7 ? 5 : 1, "b" => 7];',
+        ];
+
+        yield [
+            '<?php [ (ABC::A === $c ? "a" : "b") => $b] = ["a" => 7 === $c ? 5 : 1, "b" => 7];',
+            '<?php [ ($c === ABC::A ? "a" : "b") => $b] = ["a" => $c === 7 ? 5 : 1, "b" => 7];',
+        ];
+
+        yield 'Array destruct by ternary.' => [
+            '<?php [$a] = 11 === $c ? $b : $d;',
+            '<?php [$a] = $c === 11 ? $b : $d;',
+        ];
+
+        yield [
+            '<?php $b = [$a] = 7 === [7];', // makes no sense, but valid PHP syntax
+            '<?php $b = [$a] = [7] === 7;',
         ];
     }
 

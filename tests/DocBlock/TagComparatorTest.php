@@ -46,17 +46,23 @@ final class TagComparatorTest extends TestCase
 
     public static function provideComparatorTogetherCases(): iterable
     {
-        return [
-            ['return', 'return', true],
-            ['param', 'param', true],
-            ['return', 'param', false],
-            ['var', 'foo', false],
-            ['api', 'deprecated', false],
-            ['author', 'copyright', true],
-            ['author', 'since', false],
-            ['link', 'see', true],
-            ['category', 'package', true],
-        ];
+        yield ['return', 'return', true];
+
+        yield ['param', 'param', true];
+
+        yield ['return', 'param', false];
+
+        yield ['var', 'foo', false];
+
+        yield ['api', 'deprecated', false];
+
+        yield ['author', 'copyright', true];
+
+        yield ['author', 'since', false];
+
+        yield ['link', 'see', true];
+
+        yield ['category', 'package', true];
     }
 
     /**
@@ -81,16 +87,22 @@ final class TagComparatorTest extends TestCase
 
     public static function provideComparatorTogetherWithDefinedGroupsCases(): iterable
     {
-        return [
-            [[['param', 'return']], 'return', 'return', true],
-            [[], 'param', 'return', false],
-            [[['param', 'return']], 'return', 'param', true],
-            [[['param', 'return']], 'var', 'foo', false],
-            [[['param', 'return']], 'api', 'deprecated', false],
-            [[['param', 'return']], 'author', 'copyright', false],
-            [[['param', 'return'], ['author', 'since']], 'author', 'since', true],
-            [array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']]), 'link', 'see', true],
-            [[['param', 'return']], 'category', 'package', false],
-        ];
+        yield [[['param', 'return']], 'return', 'return', true];
+
+        yield [[], 'param', 'return', false];
+
+        yield [[['param', 'return']], 'return', 'param', true];
+
+        yield [[['param', 'return']], 'var', 'foo', false];
+
+        yield [[['param', 'return']], 'api', 'deprecated', false];
+
+        yield [[['param', 'return']], 'author', 'copyright', false];
+
+        yield [[['param', 'return'], ['author', 'since']], 'author', 'since', true];
+
+        yield [array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']]), 'link', 'see', true];
+
+        yield [[['param', 'return']], 'category', 'package', false];
     }
 }

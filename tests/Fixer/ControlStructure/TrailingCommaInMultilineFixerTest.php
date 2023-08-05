@@ -66,56 +66,74 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            // long syntax tests
-            ['<?php $x = array();'],
-            ['<?php $x = array("foo");'],
-            ['<?php $x = array("foo", );'],
-            ["<?php \$x = array(\n'foo',\n);", "<?php \$x = array(\n'foo'\n);"],
-            ["<?php \$x = array('foo',\n);"],
-            ["<?php \$x = array('foo',\n);", "<?php \$x = array('foo'\n);"],
-            ["<?php \$x = array('foo', /* boo */\n);", "<?php \$x = array('foo' /* boo */\n);"],
-            ["<?php \$x = array('foo',\n/* boo */\n);", "<?php \$x = array('foo'\n/* boo */\n);"],
-            ["<?php \$x = array(\narray('foo',\n),\n);", "<?php \$x = array(\narray('foo'\n)\n);"],
-            ["<?php \$x = array(\narray('foo'),\n);", "<?php \$x = array(\narray('foo')\n);"],
-            ["<?php \$x = array(\n /* He */ \n);"],
-            [
-                "<?php \$x = array('a', 'b', 'c',\n  'd', 'q', 'z');",
-            ],
-            [
-                "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z');",
-            ],
-            [
-                "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z' );",
-            ],
-            [
-                "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z'\t);",
-            ],
-            ["<?php \$x = array(\n<<<EOT\noet\nEOT\n);"],
-            ["<?php \$x = array(\n<<<'EOT'\noet\nEOT\n);"],
-            [
-                '<?php
+        // long syntax tests
+        yield ['<?php $x = array();'];
+
+        yield ['<?php $x = array("foo");'];
+
+        yield ['<?php $x = array("foo", );'];
+
+        yield ["<?php \$x = array(\n'foo',\n);", "<?php \$x = array(\n'foo'\n);"];
+
+        yield ["<?php \$x = array('foo',\n);"];
+
+        yield ["<?php \$x = array('foo',\n);", "<?php \$x = array('foo'\n);"];
+
+        yield ["<?php \$x = array('foo', /* boo */\n);", "<?php \$x = array('foo' /* boo */\n);"];
+
+        yield ["<?php \$x = array('foo',\n/* boo */\n);", "<?php \$x = array('foo'\n/* boo */\n);"];
+
+        yield ["<?php \$x = array(\narray('foo',\n),\n);", "<?php \$x = array(\narray('foo'\n)\n);"];
+
+        yield ["<?php \$x = array(\narray('foo'),\n);", "<?php \$x = array(\narray('foo')\n);"];
+
+        yield ["<?php \$x = array(\n /* He */ \n);"];
+
+        yield [
+            "<?php \$x = array('a', 'b', 'c',\n  'd', 'q', 'z');",
+        ];
+
+        yield [
+            "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z');",
+        ];
+
+        yield [
+            "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z' );",
+        ];
+
+        yield [
+            "<?php \$x = array('a', 'b', 'c',\n'd', 'q', 'z'\t);",
+        ];
+
+        yield ["<?php \$x = array(\n<<<EOT\noet\nEOT\n);"];
+
+        yield ["<?php \$x = array(\n<<<'EOT'\noet\nEOT\n);"];
+
+        yield [
+            '<?php
     $foo = array(
         array(
         ),
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $a = array(
         1 => array(
             2 => 3,
         ),
     );',
-                '<?php
+            '<?php
     $a = array(
         1 => array(
             2 => 3
         )
     );',
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php
     \$x = array(
         'foo',
         'bar',
@@ -141,7 +159,7 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
             ),
         ),
     );",
-                "<?php
+            "<?php
     \$x = array(
         'foo',
         'bar',
@@ -167,120 +185,140 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
             )
         )
     );",
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 $a = array("foo" => function ($b) {
                     return "bar".$b;
                 });',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return array(
         "a" => 1,
         "b" => 2,
     );',
-                '<?php
+            '<?php
     return array(
         "a" => 1,
         "b" => 2
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $test = array("foo", <<<TWIG
         foo
         bar
         baz
 TWIG
         , $twig);',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $test = array("foo", <<<\'TWIG\'
         foo
         bar
         baz
 TWIG
         , $twig);',
-            ],
+        ];
 
-            // short syntax tests
-            ['<?php $x = array([]);'],
-            ['<?php $x = [[]];'],
-            ['<?php $x = ["foo",];'],
-            ['<?php $x = bar(["foo",]);'],
-            ["<?php \$x = bar(['foo',\n]);", "<?php \$x = bar(['foo'\n]);"],
-            ["<?php \$x = ['foo', \n];"],
-            ['<?php $x = array([],);'],
-            ['<?php $x = [[],];'],
-            ['<?php $x = [$y,];'],
-            ["<?php \$x = [\n /* He */ \n];"],
-            [
-                '<?php
+        // short syntax tests
+        yield ['<?php $x = array([]);'];
+
+        yield ['<?php $x = [[]];'];
+
+        yield ['<?php $x = ["foo",];'];
+
+        yield ['<?php $x = bar(["foo",]);'];
+
+        yield ["<?php \$x = bar(['foo',\n]);", "<?php \$x = bar(['foo'\n]);"];
+
+        yield ["<?php \$x = ['foo', \n];"];
+
+        yield ['<?php $x = array([],);'];
+
+        yield ['<?php $x = [[],];'];
+
+        yield ['<?php $x = [$y,];'];
+
+        yield ["<?php \$x = [\n /* He */ \n];"];
+
+        yield [
+            '<?php
     $foo = [
         [
         ],
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 $a = ["foo" => function ($b) {
                     return "bar".$b;
                 }];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return [
         "a" => 1,
         "b" => 2,
     ];',
-                '<?php
+            '<?php
     return [
         "a" => 1,
         "b" => 2
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $test = ["foo", <<<TWIG
         foo
         bar
         baz
 TWIG
         , $twig];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $test = ["foo", <<<\'TWIG\'
         foo
         bar
         baz
 TWIG
         , $twig];',
-            ],
+        ];
 
-            // no array tests
-            [
-                "<?php
+        // no array tests
+        yield [
+            "<?php
     throw new BadMethodCallException(
         sprintf(
             'Method \"%s\" not implemented',
             __METHOD__
         )
     );",
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php
     throw new BadMethodCallException(sprintf(
         'Method \"%s\" not implemented',
         __METHOD__
     ));",
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php
 
     namespace FOS\\RestBundle\\Controller;
 
@@ -298,9 +336,10 @@ TWIG
             }
         }
     }",
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     function foo(array $a)
     {
         bar(
@@ -309,41 +348,45 @@ TWIG
             )
         );
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $var = array(
         "string",
         //comment
     );',
-                '<?php
+            '<?php
     $var = array(
         "string"
         //comment
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $var = array(
         "string",
         /* foo */);',
-                '<?php
+            '<?php
     $var = array(
         "string"
         /* foo */);',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $var = [
         "string",
         /* foo */];',
-                '<?php
+            '<?php
     $var = [
         "string"
         /* foo */];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function a()
 {
     yield array(
@@ -351,7 +394,7 @@ function a()
         "b" => 2,
     );
 }',
-                '<?php
+            '<?php
 function a()
 {
     yield array(
@@ -359,9 +402,10 @@ function a()
         "b" => 2
     );
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function a()
 {
     yield [
@@ -369,7 +413,7 @@ function a()
         "b" => 2,
     ];
 }',
-                '<?php
+            '<?php
 function a()
 {
     yield [
@@ -377,8 +421,9 @@ function a()
         "b" => 2
     ];
 }',
-            ],
-            ['<?php
+        ];
+
+        yield ['<?php
 while(
 (
 (
@@ -386,92 +431,107 @@ $a
 )
 )
 ) {}',
-            ],
-            [
-                "<?php foo('a', 'b', 'c', 'd', 'q', 'z');",
-                null,
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                "<?php function foo(\$a,\n\$b\n) {};",
-                null,
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                '<?php foo(1, 2, [
+        ];
+
+        yield [
+            "<?php foo('a', 'b', 'c', 'd', 'q', 'z');",
+            null,
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            "<?php function foo(\$a,\n\$b\n) {};",
+            null,
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            '<?php foo(1, 2, [
                     ARRAY_ELEMENT_1,
                     ARRAY_ELEMENT_2
                     ], 3, 4);',
-                null,
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                "<?php \$var = array('a', 'b',\n  'c', 'd');",
-                null,
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                "<?php \$var = list(\$a, \$b,\n \$c, \$d) = [1, 2, 3, 4];",
-                null,
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                "<?php if (true || \n false) {}",
-                null,
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                "<?php \$var = foo('a', 'b', 'c',\n  'd', 'q', 'z');",
-                null, // do not fix if not configured
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS]],
-            ],
-            [
-                "<?php \$var = foo('a', 'b', 'c',\n  'd', 'q', 'z');",
-                null,
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                "<?php \$var = foo('a', 'b', 'c',\n  'd', 'q', 'z',\n);",
-                "<?php \$var = foo('a', 'b', 'c',\n  'd', 'q', 'z'\n);",
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                "<?php \$var = \$foonction('a', 'b', 'c',\n  'd', 'q', 'z');",
-                null,
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                "<?php \$var = \$fMap[100]('a', 'b', 'c',\n  'd', 'q', 'z');",
-                null,
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                "<?php \$var = new Foo('a', 'b', 'c',\n  'd', 'q', 'z',\n);",
-                "<?php \$var = new Foo('a', 'b', 'c',\n  'd', 'q', 'z'\n);",
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                "<?php \$var = new class('a', 'b', 'c',\n  'd', 'q', 'z',\n) extends Foo {};",
-                "<?php \$var = new class('a', 'b', 'c',\n  'd', 'q', 'z'\n) extends Foo {};",
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                '<?php
+            null,
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            "<?php \$var = array('a', 'b',\n  'c', 'd');",
+            null,
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            "<?php \$var = list(\$a, \$b,\n \$c, \$d) = [1, 2, 3, 4];",
+            null,
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            "<?php if (true || \n false) {}",
+            null,
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            "<?php \$var = foo('a', 'b', 'c',\n  'd', 'q', 'z');",
+            null, // do not fix if not configured
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS]],
+        ];
+
+        yield [
+            "<?php \$var = foo('a', 'b', 'c',\n  'd', 'q', 'z');",
+            null,
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            "<?php \$var = foo('a', 'b', 'c',\n  'd', 'q', 'z',\n);",
+            "<?php \$var = foo('a', 'b', 'c',\n  'd', 'q', 'z'\n);",
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            "<?php \$var = \$foonction('a', 'b', 'c',\n  'd', 'q', 'z');",
+            null,
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            "<?php \$var = \$fMap[100]('a', 'b', 'c',\n  'd', 'q', 'z');",
+            null,
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            "<?php \$var = new Foo('a', 'b', 'c',\n  'd', 'q', 'z',\n);",
+            "<?php \$var = new Foo('a', 'b', 'c',\n  'd', 'q', 'z'\n);",
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            "<?php \$var = new class('a', 'b', 'c',\n  'd', 'q', 'z',\n) extends Foo {};",
+            "<?php \$var = new class('a', 'b', 'c',\n  'd', 'q', 'z'\n) extends Foo {};",
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            '<?php
                     $obj->method(
                         1,
                         2,
                     );
                 ',
-                '<?php
+            '<?php
                     $obj->method(
                         1,
                         2
                     );
                 ',
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                '<?php
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            '<?php
                     array(
                         1,
                         2,
@@ -485,7 +545,7 @@ $a
                         6,
                     );
                 ',
-                '<?php
+            '<?php
                     array(
                         1,
                         2
@@ -499,10 +559,11 @@ $a
                         6
                     );
                 ',
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                '<?php
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            '<?php
 while(
 (
 (
@@ -510,11 +571,12 @@ $a
 )
 )
 ) {}',
-                null,
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
-            [
-                <<<'EXPECTED'
+            null,
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php
 $a = [
     <<<'EOD'
@@ -522,8 +584,8 @@ $a = [
         EOD,
 ];
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 $a = [
     <<<'EOD'
@@ -531,20 +593,20 @@ $a = [
         EOD
 ];
 INPUT
-                ,
-                ['after_heredoc' => true],
-            ],
-            [
-                '<?php $a = new class() {function A() { return new static(
+            ,
+            ['after_heredoc' => true],
+        ];
+
+        yield [
+            '<?php $a = new class() {function A() { return new static(
 1,
 2,
 ); }};',
-                '<?php $a = new class() {function A() { return new static(
+            '<?php $a = new class() {function A() { return new static(
 1,
 2
 ); }};',
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ],
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
         ];
     }
 

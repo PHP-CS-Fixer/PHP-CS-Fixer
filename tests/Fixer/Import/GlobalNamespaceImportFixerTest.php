@@ -36,60 +36,65 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
     public static function provideFixImportConstantsCases(): iterable
     {
-        return [
-            'non-global names' => [
-                <<<'EXPECTED'
+        yield 'non-global names' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 echo FOO, \Bar\BAZ, namespace\FOO2;
 EXPECTED
-            ],
-            'name already used [1]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'name already used [1]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 echo \FOO, FOO, \FOO;
 EXPECTED
-            ],
-            'name already used [2]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'name already used [2]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use const Bar\FOO;
 echo \FOO;
 EXPECTED
-            ],
-            'name already used [3]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'name already used [3]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 const FOO = 1;
 echo \FOO;
 EXPECTED
-            ],
-            'without namespace / do not import' => [
-                <<<'INPUT'
+        ];
+
+        yield 'without namespace / do not import' => [
+            <<<'INPUT'
 <?php
 echo \FOO, \BAR, \FOO;
 INPUT
-            ],
-            'with namespace' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'with namespace' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use const FOO;
 use const BAR;
 echo FOO, BAR;
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 echo \FOO, \BAR;
 INPUT
-            ],
-            'with namespace with {} syntax' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'with namespace with {} syntax' => [
+            <<<'EXPECTED'
 <?php
 namespace Test {
 use const FOO;
@@ -97,16 +102,17 @@ use const BAR;
     echo FOO, BAR;
 }
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test {
     echo \FOO, \BAR;
 }
 INPUT
-            ],
-            'ignore other imported types' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'ignore other imported types' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use BAR;
@@ -114,48 +120,51 @@ use const FOO;
 use const BAR;
 echo FOO, BAR;
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use BAR;
 echo \FOO, \BAR;
 INPUT
-            ],
-            'respect already imported names [1]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'respect already imported names [1]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use const BAR;
 use const FOO;
 echo FOO, BAR;
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use const BAR;
 echo \FOO, \BAR;
 INPUT
-            ],
-            'respect already imported names [2]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'respect already imported names [2]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use const \BAR;
 use const FOO;
 echo FOO, BAR, BAR;
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use const \BAR;
 echo \FOO, \BAR, BAR;
 INPUT
-            ],
-            'handle case sensitivity' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'handle case sensitivity' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use const fOO;
@@ -164,33 +173,35 @@ use const Foo;
 const foO = 1;
 echo FOO, Foo;
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use const fOO;
 const foO = 1;
 echo \FOO, \Foo;
 INPUT
-            ],
-            'handle aliased imports' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'handle aliased imports' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use const BAR as BAZ;
 use const FOO;
 echo FOO, BAZ;
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use const BAR as BAZ;
 echo \FOO, \BAR;
 INPUT
-            ],
-            'ignore class constants' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'ignore class constants' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use const FOO;
@@ -199,8 +210,8 @@ class Bar {
 }
 echo FOO;
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 class Bar {
@@ -208,21 +219,22 @@ class Bar {
 }
 echo \FOO;
 INPUT
-            ],
-            'global namespace' => [
-                <<<'INPUT'
+        ];
+
+        yield 'global namespace' => [
+            <<<'INPUT'
 <?php
 echo \FOO, \BAR;
 INPUT
-            ],
-            [
-                <<<'INPUT'
+        ];
+
+        yield [
+            <<<'INPUT'
 <?php
 namespace {
     echo \FOO, \BAR;
 }
 INPUT
-            ],
         ];
     }
 
@@ -237,51 +249,55 @@ INPUT
 
     public static function provideFixImportFunctionsCases(): iterable
     {
-        return [
-            'non-global names' => [
-                <<<'EXPECTED'
+        yield 'non-global names' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 foo();
 Bar\baz();
 namespace\foo2();
 EXPECTED
-            ],
-            'name already used [1]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'name already used [1]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 \foo();
 Foo();
 \foo();
 EXPECTED
-            ],
-            'name already used [2]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'name already used [2]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use function Bar\foo;
 \Foo();
 EXPECTED
-            ],
-            'name already used [3]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'name already used [3]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 function foo() {}
 \Foo();
 EXPECTED
-            ],
-            'without namespace / do not import' => [
-                <<<'INPUT'
+        ];
+
+        yield 'without namespace / do not import' => [
+            <<<'INPUT'
 <?php
 \foo();
 \bar();
 \Foo();
 INPUT
-            ],
-            'with namespace' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'with namespace' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use function foo;
@@ -289,16 +305,17 @@ use function bar;
 foo();
 bar();
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 \foo();
 \bar();
 INPUT
-            ],
-            'with namespace with {} syntax' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'with namespace with {} syntax' => [
+            <<<'EXPECTED'
 <?php
 namespace Test {
 use function foo;
@@ -307,17 +324,18 @@ use function bar;
     bar();
 }
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test {
     \foo();
     \bar();
 }
 INPUT
-            ],
-            'ignore other imported types' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'ignore other imported types' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use bar;
@@ -326,17 +344,18 @@ use function bar;
 foo();
 bar();
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use bar;
 \foo();
 \bar();
 INPUT
-            ],
-            'respect already imported names [1]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'respect already imported names [1]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use function bar;
@@ -344,17 +363,18 @@ use function foo;
 foo();
 Bar();
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use function bar;
 \foo();
 \Bar();
 INPUT
-            ],
-            'respect already imported names [2]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'respect already imported names [2]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use function \bar;
@@ -363,8 +383,8 @@ foo();
 Bar();
 bar();
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use function \bar;
@@ -372,9 +392,10 @@ use function \bar;
 \Bar();
 bar();
 INPUT
-            ],
-            'handle aliased imports' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'handle aliased imports' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use function bar as baz;
@@ -382,17 +403,18 @@ use function foo;
 foo();
 baz();
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use function bar as baz;
 \foo();
 \Bar();
 INPUT
-            ],
-            'ignore class methods' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'ignore class methods' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use function foo;
@@ -401,8 +423,8 @@ class Bar {
 }
 foo();
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 class Bar {
@@ -410,9 +432,10 @@ class Bar {
 }
 \foo();
 INPUT
-            ],
-            'name already used' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'name already used' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 class Bar {
@@ -426,7 +449,6 @@ class Bar {
 }
 \foo();
 EXPECTED
-            ],
         ];
     }
 
@@ -441,9 +463,8 @@ EXPECTED
 
     public static function provideFixImportClassesCases(): iterable
     {
-        return [
-            'non-global names' => [
-                <<<'EXPECTED'
+        yield 'non-global names' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 new Foo();
@@ -453,9 +474,10 @@ new namespace\Foo2();
 /** @var Foo|Bar\Baz $x */
 $x = x();
 EXPECTED
-            ],
-            'name already used [1]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'name already used [1]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 new \Foo();
@@ -464,9 +486,10 @@ new foo();
 /** @var \Foo $foo */
 $foo = new \Foo();
 EXPECTED
-            ],
-            'name already used [2]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'name already used [2]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Bar\foo;
@@ -474,9 +497,10 @@ use Bar\foo;
 /** @var \Foo $foo */
 $foo = new \Foo();
 EXPECTED
-            ],
-            'name already used [3]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'name already used [3]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 class foo {}
@@ -484,9 +508,10 @@ class foo {}
 /** @var \Foo $foo */
 $foo = new \Foo();
 EXPECTED
-            ],
-            'name already used [4]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'name already used [4]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 
@@ -496,18 +521,20 @@ function x() {}
 /** @var \Foo $foo */
 $foo = new \Foo();
 EXPECTED
-            ],
-            'without namespace / do not import' => [
-                <<<'INPUT'
+        ];
+
+        yield 'without namespace / do not import' => [
+            <<<'INPUT'
 <?php
 /** @var \Foo $foo */
 $foo = new \foo();
 new \Bar();
 \FOO::baz();
 INPUT
-            ],
-            'with namespace' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'with namespace' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Bar;
@@ -520,8 +547,8 @@ Bar::baz();
 /** @return Baz<string, foo> */
 function x() {}
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 
@@ -531,9 +558,10 @@ new \Foo();
 /** @return \Baz<string, \foo> */
 function x() {}
 INPUT
-            ],
-            'with namespace with {} syntax' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'with namespace with {} syntax' => [
+            <<<'EXPECTED'
 <?php
 namespace Test {
 use Foo;
@@ -542,17 +570,18 @@ use Bar;
     Bar::baz();
 }
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test {
     new \Foo();
     \Bar::baz();
 }
 INPUT
-            ],
-            'phpdoc only' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'phpdoc only' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Throwable;
@@ -560,17 +589,18 @@ use Throwable;
 /** @throws Throwable */
 function x() {}
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 
 /** @throws \Throwable */
 function x() {}
 INPUT
-            ],
-            'ignore other imported types' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'ignore other imported types' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use function Bar;
@@ -579,17 +609,18 @@ use Bar;
 new Foo();
 Bar::baz();
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use function Bar;
 new \Foo();
 \Bar::baz();
 INPUT
-            ],
-            'respect already imported names [1]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'respect already imported names [1]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Bar;
@@ -597,17 +628,18 @@ use Foo;
 new Foo();
 bar::baz();
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use Bar;
 new \Foo();
 \bar::baz();
 INPUT
-            ],
-            'respect already imported names [2]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'respect already imported names [2]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use \Bar;
@@ -616,8 +648,8 @@ new Foo();
 new bar();
 new Bar();
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use \Bar;
@@ -625,9 +657,10 @@ new \Foo();
 new \bar();
 new Bar();
 INPUT
-            ],
-            'respect already imported names [3]' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'respect already imported names [3]' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Throwable;
@@ -638,8 +671,8 @@ function x() {}
 /** @throws Throwable */
 function y() {}
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use Throwable;
@@ -650,9 +683,10 @@ function x() {}
 /** @throws \Throwable */
 function y() {}
 INPUT
-            ],
-            'handle aliased imports' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'handle aliased imports' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Bar as Baz;
@@ -663,8 +697,8 @@ new Foo();
 /** @var Baz $bar */
 $bar = new Baz();
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use Bar as Baz;
@@ -674,9 +708,10 @@ new \Foo();
 /** @var \bar $bar */
 $bar = new \bar();
 INPUT
-            ],
-            'handle typehints' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'handle typehints' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Bar;
@@ -686,17 +721,18 @@ class Abc {
     function bar(Foo $a, Bar $b, foo &$c, Baz ...$d) {}
 }
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 class Abc {
     function bar(\Foo $a, \Bar $b, \foo &$c, \Baz ...$d) {}
 }
 INPUT
-            ],
-            'handle typehints 2' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'handle typehints 2' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Foo;
@@ -705,17 +741,18 @@ class Abc {
     function bar(?Foo $a): ?Bar {}
 }
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 class Abc {
     function bar(?\Foo $a): ?\Bar {}
 }
 INPUT
-            ],
-            'try catch' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'try catch' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Exception;
@@ -723,17 +760,18 @@ try {
 } catch (Exception $e) {
 }
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 try {
 } catch (\Exception $e) {
 }
 INPUT
-            ],
-            'try catch with comments' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'try catch with comments' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Exception;
@@ -741,15 +779,14 @@ try {
 } catch (/* ... */ Exception $e /* ... */) {
 }
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 try {
 } catch (/* ... */ \Exception $e /* ... */) {
 }
 INPUT
-            ],
         ];
     }
 
@@ -766,9 +803,8 @@ INPUT
 
     public static function provideFixImportClasses80Cases(): iterable
     {
-        return [
-            'try catch without variable' => [
-                <<<'EXPECTED'
+        yield 'try catch without variable' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Exception;
@@ -776,17 +812,18 @@ try {
 } catch (Exception) {
 }
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 try {
 } catch (\Exception) {
 }
 INPUT
-            ],
-            'try catch without variable and comments' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'try catch without variable and comments' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Exception;
@@ -794,15 +831,14 @@ try {
 } catch (/* non-capturing catch */ Exception /* just because! */) {
 }
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 try {
 } catch (/* non-capturing catch */ \Exception /* just because! */) {
 }
 INPUT
-            ],
         ];
     }
 
@@ -817,34 +853,35 @@ INPUT
 
     public static function provideFixFullyQualifyConstantsCases(): iterable
     {
-        return [
-            'already fqn or sub namespace' => [
-                <<<'EXPECTED'
+        yield 'already fqn or sub namespace' => [
+            <<<'EXPECTED'
 <?php
 use const FOO;
 use const BAR;
 echo \FOO, Baz\BAR;
 EXPECTED
-            ],
-            'handle all occurrences' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'handle all occurrences' => [
+            <<<'EXPECTED'
 <?php
 namespace X;
 use const FOO;
 use const BAR;
 echo \FOO, \BAR, \FOO;
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace X;
 use const FOO;
 use const BAR;
 echo FOO, BAR, FOO;
 INPUT
-            ],
-            'ignore other imports and non-imported names' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'ignore other imports and non-imported names' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use FOO;
@@ -852,8 +889,8 @@ use const BAR;
 use const Baz;
 echo FOO, \BAR, BAZ, QUX;
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use FOO;
@@ -861,7 +898,6 @@ use const BAR;
 use const Baz;
 echo FOO, BAR, BAZ, QUX;
 INPUT
-            ],
         ];
     }
 
@@ -876,18 +912,18 @@ INPUT
 
     public static function provideFixFullyQualifyFunctionsCases(): iterable
     {
-        return [
-            'already fqn or sub namespace' => [
-                <<<'EXPECTED'
+        yield 'already fqn or sub namespace' => [
+            <<<'EXPECTED'
 <?php
 use function foo;
 use function bar;
 \foo();
 Baz\bar();
 EXPECTED
-            ],
-            'handle all occurrences' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'handle all occurrences' => [
+            <<<'EXPECTED'
 <?php
 namespace X;
 use function foo;
@@ -896,8 +932,8 @@ use function bar;
 \bar();
 \Foo();
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace X;
 use function foo;
@@ -906,9 +942,10 @@ foo();
 bar();
 Foo();
 INPUT
-            ],
-            'ignore other imports and non-imported names' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'ignore other imports and non-imported names' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use foo;
@@ -917,8 +954,8 @@ foo();
 \bar();
 baz();
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use foo;
@@ -927,7 +964,6 @@ foo();
 bar();
 baz();
 INPUT
-            ],
         ];
     }
 
@@ -942,9 +978,8 @@ INPUT
 
     public static function provideFixFullyQualifyClassesCases(): iterable
     {
-        return [
-            'already fqn or sub namespace' => [
-                <<<'EXPECTED'
+        yield 'already fqn or sub namespace' => [
+            <<<'EXPECTED'
 <?php
 use Foo;
 use Bar;
@@ -958,9 +993,10 @@ Baz\Bar::baz();
  */
 function abc(\Foo $foo, Baz\Bar $bar = null) {}
 EXPECTED
-            ],
-            'handle all occurrences' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'handle all occurrences' => [
+            <<<'EXPECTED'
 <?php
 namespace X;
 use Foo;
@@ -977,8 +1013,8 @@ new \Bar();
  */
 function abc($foo, \Bar $bar = null) {}
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace X;
 use Foo;
@@ -995,9 +1031,10 @@ foo::baz();
  */
 function abc($foo, Bar $bar = null) {}
 INPUT
-            ],
-            'ignore other imports and non-imported names' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'ignore other imports and non-imported names' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use function Foo;
@@ -1006,8 +1043,8 @@ new Foo();
 new \Bar();
 new Baz();
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use function Foo;
@@ -1016,9 +1053,10 @@ new Foo();
 new Bar();
 new Baz();
 INPUT
-            ],
-            'try catch' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'try catch' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Exception;
@@ -1026,8 +1064,8 @@ try {
 } catch (\Exception $e) {
 }
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use Exception;
@@ -1035,9 +1073,10 @@ try {
 } catch (Exception $e) {
 }
 INPUT
-            ],
-            'try catch with comments' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'try catch with comments' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Exception;
@@ -1045,8 +1084,8 @@ try {
 } catch (/* ... */ \Exception $e /* ... */) {
 }
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use Exception;
@@ -1054,7 +1093,6 @@ try {
 } catch (/* ... */ Exception $e /* ... */) {
 }
 INPUT
-            ],
         ];
     }
 
@@ -1071,9 +1109,8 @@ INPUT
 
     public static function provideFixFullyQualifyClasses80Cases(): iterable
     {
-        return [
-            'try catch without variable' => [
-                <<<'EXPECTED'
+        yield 'try catch without variable' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Exception;
@@ -1081,8 +1118,8 @@ try {
 } catch (\Exception) {
 }
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use Exception;
@@ -1090,9 +1127,10 @@ try {
 } catch (Exception) {
 }
 INPUT
-            ],
-            'try catch without variable and comments' => [
-                <<<'EXPECTED'
+        ];
+
+        yield 'try catch without variable and comments' => [
+            <<<'EXPECTED'
 <?php
 namespace Test;
 use Exception;
@@ -1100,8 +1138,8 @@ try {
 } catch (/* non-capturing catch */ \Exception /* just because! */) {
 }
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 namespace Test;
 use Exception;
@@ -1109,7 +1147,6 @@ try {
 } catch (/* non-capturing catch */ Exception /* just because! */) {
 }
 INPUT
-            ],
         ];
     }
 

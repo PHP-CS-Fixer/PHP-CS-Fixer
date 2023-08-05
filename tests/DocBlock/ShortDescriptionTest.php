@@ -38,8 +38,7 @@ final class ShortDescriptionTest extends TestCase
 
     public static function provideGetEndCases(): iterable
     {
-        return [
-            [1, '/**
+        yield [1, '/**
      * Test docblock.
      *
      * @param string $hello
@@ -53,21 +52,24 @@ final class ShortDescriptionTest extends TestCase
      * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
      *
      * @return void
-     */'],
-            [2, '/**
+     */'];
+
+        yield [2, '/**
                   * This is a multi-line
                   * short description.
-                  */'],
-            [3, '/**
+                  */'];
+
+        yield [3, '/**
                   *
                   *
                   * There might be extra blank lines.
                   *
                   *
                   * And here is description...
-                  */'],
-            [null, '/** */'],
-            [null, "/**\n * @test\n*/"],
-        ];
+                  */'];
+
+        yield [null, '/** */'];
+
+        yield [null, "/**\n * @test\n*/"];
     }
 }

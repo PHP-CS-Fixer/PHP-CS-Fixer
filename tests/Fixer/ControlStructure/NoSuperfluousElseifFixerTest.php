@@ -34,15 +34,15 @@ final class NoSuperfluousElseifFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 if ($some) { return 1; } if ($a == 6){ $test = false; } //',
-                '<?php
+            '<?php
 if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 if ($foo) {
                     return 1;
@@ -55,7 +55,7 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 } else {
                     return 4;
                 }',
-                '<?php
+            '<?php
 
                 if ($foo) {
                     return 1;
@@ -66,9 +66,10 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 } else {
                     return 4;
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 if ($foo)
                     return 1;
@@ -77,7 +78,7 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 else {
                     return 3;
                 }',
-                '<?php
+            '<?php
 
                 if ($foo)
                     return 1;
@@ -86,9 +87,10 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 else {
                     return 3;
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 if ($foo)
                     ?><?php
@@ -97,9 +99,10 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 else {
                     ?><?php
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 if ($foo) {
                     ?><?php
@@ -110,7 +113,7 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 else {
                     ?><?php
                 }',
-                '<?php
+            '<?php
 
                 if ($foo) {
                     ?><?php
@@ -120,9 +123,10 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 else {
                     ?><?php
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 while (1) {
                     if (2) {
@@ -155,7 +159,7 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                         die(\'foo\');
                     }
                 }',
-                '<?php
+            '<?php
 
                 while (1) {
                     if (2) {
@@ -185,9 +189,10 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                         die(\'foo\');
                     }
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 if ($a === false)
                 {
@@ -199,9 +204,10 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                     $ret .= $value;
 
                 return $ret;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 if ($a)
                     echo 1;
@@ -210,9 +216,10 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 else {
                     echo 2;
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 if ($a) {
                     echo 1;
@@ -221,9 +228,10 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 else {
                     echo 2;
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 if ($a) {
                     echo 1;
@@ -232,9 +240,10 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 } else {
                     echo 2;
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 if ($foo) {
                     return 1;
@@ -247,7 +256,7 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 } else {
                     return 4;
                 }',
-                '<?php
+            '<?php
 
                 if ($foo) {
                     return 1;
@@ -258,7 +267,6 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 } else {
                     return 4;
                 }',
-            ],
         ];
     }
 

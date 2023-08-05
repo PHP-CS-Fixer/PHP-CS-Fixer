@@ -37,67 +37,70 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'missing "b"' => [
-                '<?php
+        yield 'missing "b"' => [
+            '<?php
                     $a = fopen($foo, \'rw+b\');
                 ',
-                '<?php
+            '<?php
                     $a = fopen($foo, \'rw+\');
                 ',
-            ],
-            'has "t" and "b"' => [
-                '<?php
+        ];
+
+        yield 'has "t" and "b"' => [
+            '<?php
                     $a = \fopen($foo, "rw+b");
                 ',
-                '<?php
+            '<?php
                     $a = \fopen($foo, "rw+bt");
                 ',
-            ],
-            'has "t" and no "b" and binary string mod' => [
-                '<?php
+        ];
+
+        yield 'has "t" and no "b" and binary string mod' => [
+            '<?php
                     $a = fopen($foo, b\'rw+b\');
                 ',
-                '<?php
+            '<?php
                     $a = fopen($foo, b\'trw+\');
                 ',
-            ],
-            // configure remove b
-            'missing "b" but not configured' => [
-                '<?php
+        ];
+
+        // configure remove b
+        yield 'missing "b" but not configured' => [
+            '<?php
                     $a = fopen($foo, \'rw+\');
                 ',
-                '<?php
+            '<?php
                     $a = fopen($foo, \'rw+t\');
                 ',
-                ['b_mode' => false],
-            ],
-            '"t" and superfluous "b"' => [
-                '<?php
+            ['b_mode' => false],
+        ];
+
+        yield '"t" and superfluous "b"' => [
+            '<?php
                     $a = fopen($foo, \'r+\');
                     $a = fopen($foo, \'w+r\');
                     $a = fopen($foo, \'r+\');
                     $a = fopen($foo, \'w+r\');
                 ',
-                '<?php
+            '<?php
                     $a = fopen($foo, \'r+bt\');
                     $a = fopen($foo, \'btw+r\');
                     $a = fopen($foo, \'r+tb\');
                     $a = fopen($foo, \'tbw+r\');
                 ',
-                ['b_mode' => false],
-            ],
-            'superfluous "b"' => [
-                '<?php
+            ['b_mode' => false],
+        ];
+
+        yield 'superfluous "b"' => [
+            '<?php
                     $a = fopen($foo, \'r+\');
                     $a = fopen($foo, \'w+r\');
                 ',
-                '<?php
+            '<?php
                     $a = fopen($foo, \'r+b\');
                     $a = fopen($foo, \'bw+r\');
                 ',
-                ['b_mode' => false],
-            ],
+            ['b_mode' => false],
         ];
     }
 
@@ -113,37 +116,43 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
 
     public static function provideDoNotFixCases(): iterable
     {
-        return [
-            'not simple flags' => [
-                '<?php $a = fopen($foo, "t".$a);',
-            ],
-            'wrong # of arguments' => [
-                '<?php
+        yield 'not simple flags' => [
+            '<?php $a = fopen($foo, "t".$a);',
+        ];
+
+        yield 'wrong # of arguments' => [
+            '<?php
                     $b = fopen("br+");
                     $c = fopen($foo, "w+", 1, 2 , 3);
                 ',
-            ],
-            '"flags" is too long (must be overridden)' => [
-                '<?php $d = fopen($foo, "r+w+a+x+c+etXY");',
-            ],
-            '"flags" is too short (must be overridden)' => [
-                '<?php $d = fopen($foo, "");',
-            ],
-            'static method call' => [
-                '<?php $e = A::fopen($foo, "w+");',
-            ],
-            'method call' => [
-                '<?php $f = $b->fopen($foo, "r+");',
-            ],
-            'comments, PHPDoc and literal' => [
-                '<?php
+        ];
+
+        yield '"flags" is too long (must be overridden)' => [
+            '<?php $d = fopen($foo, "r+w+a+x+c+etXY");',
+        ];
+
+        yield '"flags" is too short (must be overridden)' => [
+            '<?php $d = fopen($foo, "");',
+        ];
+
+        yield 'static method call' => [
+            '<?php $e = A::fopen($foo, "w+");',
+        ];
+
+        yield 'method call' => [
+            '<?php $f = $b->fopen($foo, "r+");',
+        ];
+
+        yield 'comments, PHPDoc and literal' => [
+            '<?php
                     // fopen($foo, "rw");
                     /* fopen($foo, "rw"); */
                     echo("fopen($foo, \"rw\")");
                 ',
-            ],
-            'invalid flag values' => [
-                '<?php
+        ];
+
+        yield 'invalid flag values' => [
+            '<?php
                 $a = fopen($foo, \'\');
                 $a = fopen($foo, \'k\');
                 $a = fopen($foo, \'kz\');
@@ -163,15 +172,15 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
                 $a = fopen($foo, \'rロ\');
                 $a = \fopen($foo, \'w+ロ\');
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo "abc"; // to pass the candidate check
                     $a = fopen($foo, 1);
                     $a = fopen($foo, $a);
                     $a = fopen($foo, null);
                 ',
-            ],
         ];
     }
 }

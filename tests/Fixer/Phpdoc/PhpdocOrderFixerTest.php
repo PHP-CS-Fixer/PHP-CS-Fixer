@@ -389,10 +389,9 @@ EOF;
      */
     public static function provideDifferentOrderCases(): iterable
     {
-        return [
-            [['order' => ['param', 'throw', 'return']]],
-            [['order' => ['param', 'return', 'throw']]],
-        ];
+        yield [['order' => ['param', 'throw', 'return']]];
+
+        yield [['order' => ['param', 'return', 'throw']]];
     }
 
     /**
@@ -422,10 +421,9 @@ EOF;
 
 EOF;
 
-        return [
-            [
-                ['order' => ['return', 'throws', 'param']],
-                <<<'EOF'
+        yield [
+            ['order' => ['return', 'throws', 'param']],
+            <<<'EOF'
 <?php
     /**
      * @return bool
@@ -434,12 +432,12 @@ EOF;
      */
 
 EOF,
-                $input,
-            ],
+            $input,
+        ];
 
-            [
-                ['order' => ['throws', 'return', 'param']],
-                <<<'EOF'
+        yield [
+            ['order' => ['throws', 'return', 'param']],
+            <<<'EOF'
 <?php
     /**
      * @throws Exception
@@ -448,8 +446,7 @@ EOF,
      */
 
 EOF,
-                null,
-            ],
+            null,
         ];
     }
 
@@ -535,10 +532,9 @@ EOF;
      */
     public static function provideFixCompleteCasesWithCustomOrdersCases(): iterable
     {
-        return [
-            'intepacuthre' => [
-                ['order' => ['internal', 'template', 'param', 'custom', 'throws', 'return']],
-                <<<'EOF'
+        yield 'intepacuthre' => [
+            ['order' => ['internal', 'template', 'param', 'custom', 'throws', 'return']],
+            <<<'EOF'
 <?php
     /**
      * Hello there
@@ -560,7 +556,7 @@ EOF;
      **/
 
 EOF,
-                <<<'EOF'
+            <<<'EOF'
 <?php
     /**
      * Hello there
@@ -582,10 +578,11 @@ EOF,
      **/
 
 EOF,
-            ],
-            'pare' => [
-                ['order' => ['param', 'return']],
-                <<<'EOF'
+        ];
+
+        yield 'pare' => [
+            ['order' => ['param', 'return']],
+            <<<'EOF'
 <?php
     /**
      * Hello there
@@ -607,7 +604,7 @@ EOF,
      **/
 
 EOF,
-                <<<'EOF'
+            <<<'EOF'
 <?php
     /**
      * Hello there
@@ -629,10 +626,11 @@ EOF,
      **/
 
 EOF,
-            ],
-            'pareth' => [
-                ['order' => ['param', 'return', 'throws']],
-                <<<'EOF'
+        ];
+
+        yield 'pareth' => [
+            ['order' => ['param', 'return', 'throws']],
+            <<<'EOF'
 <?php
     /**
      * Hello there
@@ -654,7 +652,7 @@ EOF,
      **/
 
 EOF,
-                <<<'EOF'
+            <<<'EOF'
 <?php
     /**
      * Hello there
@@ -676,10 +674,11 @@ EOF,
      **/
 
 EOF,
-            ],
-            'pathre' => [
-                ['order' => ['param', 'throws', 'return']],
-                <<<'EOF'
+        ];
+
+        yield 'pathre' => [
+            ['order' => ['param', 'throws', 'return']],
+            <<<'EOF'
 <?php
     /**
      * Hello there
@@ -701,7 +700,7 @@ EOF,
      **/
 
 EOF,
-                <<<'EOF'
+            <<<'EOF'
 <?php
     /**
      * Hello there
@@ -723,10 +722,11 @@ EOF,
      **/
 
 EOF,
-            ],
-            'tepathre' => [
-                ['order' => ['template', 'param', 'throws', 'return']],
-                <<<'EOF'
+        ];
+
+        yield 'tepathre' => [
+            ['order' => ['template', 'param', 'throws', 'return']],
+            <<<'EOF'
 <?php
     /**
      * Hello there
@@ -748,7 +748,7 @@ EOF,
      **/
 
 EOF,
-                <<<'EOF'
+            <<<'EOF'
 <?php
     /**
      * Hello there
@@ -770,10 +770,11 @@ EOF,
      **/
 
 EOF,
-            ],
-            'tepathre2' => [
-                ['order' => ['template', 'param', 'throws', 'return']],
-                <<<'EOF'
+        ];
+
+        yield 'tepathre2' => [
+            ['order' => ['template', 'param', 'throws', 'return']],
+            <<<'EOF'
 <?php
     /**
      * Hello there
@@ -795,7 +796,7 @@ EOF,
      **/
 
 EOF,
-                <<<'EOF'
+            <<<'EOF'
 <?php
     /**
      * Hello there
@@ -817,7 +818,6 @@ EOF,
      **/
 
 EOF,
-            ],
         ];
     }
 }

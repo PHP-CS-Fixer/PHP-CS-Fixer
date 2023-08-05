@@ -322,8 +322,7 @@ function myFunction() {
 
     public static function provideDoubleSpaceIndentCases(): iterable
     {
-        return [
-            ['<?php
+        yield ['<?php
 if (true) {
   if (true) {
     (new stdClass())->foo(
@@ -331,9 +330,10 @@ if (true) {
       "text2"
     );
   }
-}'],
-            [
-                "<?php
+}'];
+
+        yield [
+            "<?php
 if (true) {
   if (true) {
     (new stdClass())->foo(
@@ -342,7 +342,7 @@ if (true) {
     );
   }
 }",
-                "<?php
+            "<?php
 if (true) {
   if (true) {
 \t(new stdClass())->foo(
@@ -351,19 +351,19 @@ if (true) {
 \t);
   }
 }",
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /*
      * Foo
      */
 ',
 
-                "<?php
+            "<?php
 \t/*
 \t * Foo
 \t */
-", ],
-        ];
+", ];
     }
 }

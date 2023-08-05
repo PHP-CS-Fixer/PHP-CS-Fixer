@@ -51,32 +51,34 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php echo "Hello World !";',
-                '<?php echo "'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0').'!";',
-            ],
-            [
-                '<?php echo "Hello World !";',
-                '<?php echo "'.
-                    pack('H*', 'e2808b').
-                    pack('H*', 'e2808b').
-                    pack('H*', 'e2808b').
-                    pack('H*', 'e2808b').
-                    pack('H*', 'e2808b').
-                    pack('H*', 'e2808b').
-                'Hello World !";',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php echo "Hello World !";',
+            '<?php echo "'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0').'!";',
+        ];
+
+        yield [
+            '<?php echo "Hello World !";',
+            '<?php echo "'.
+                pack('H*', 'e2808b').
+                pack('H*', 'e2808b').
+                pack('H*', 'e2808b').
+                pack('H*', 'e2808b').
+                pack('H*', 'e2808b').
+                pack('H*', 'e2808b').
+            'Hello World !";',
+        ];
+
+        yield [
+            '<?php
 // echo
 echo "Hello World !";',
-                '<?php
+            '<?php
 // ec'.pack('H*', 'e2808b').'ho
 echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 /**
                  * @param string $p Param
@@ -85,7 +87,7 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
                 {
                     echo $p;
                 }',
-                '<?php
+            '<?php
 
                 /**
                  * @param '.pack('H*', 'e2808b').'string $p Param
@@ -94,31 +96,37 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
                 {
                     echo $p;
                 }',
-            ],
-            [
-                '<?php echo "$a[0] ${a}";',
-                '<?php echo "$a'.pack('H*', 'e2808b').'[0]'.pack('H*', 'e2808b').' ${a'.pack('H*', 'e2808b').'}";',
-            ],
-            [
-                '<?php echo \'12345\';?>abc<?php ?>',
-                '<?php echo \'123'.pack('H*', 'e2808b').'45\';?>a'.pack('H*', 'e2808b').'bc<?php ?>',
-            ],
-            [
-                '<?php echo "${foo'.pack('H*', 'c2a0').'bar} is great!";',
-            ],
-            [
-                '<?php echo $foo'.pack('H*', 'c2a0').'bar;',
-            ],
-            [
-                '<?php /* foo *'.pack('H*', 'e2808b').'/ bar */',
-            ],
-            [
-                '<?php /** foo *'.pack('H*', 'e2808b').'/ bar */',
-            ],
-            [
-                '<?php echo b"Hello World !";',
-                '<?php echo b"'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0').'!";',
-            ],
+        ];
+
+        yield [
+            '<?php echo "$a[0] ${a}";',
+            '<?php echo "$a'.pack('H*', 'e2808b').'[0]'.pack('H*', 'e2808b').' ${a'.pack('H*', 'e2808b').'}";',
+        ];
+
+        yield [
+            '<?php echo \'12345\';?>abc<?php ?>',
+            '<?php echo \'123'.pack('H*', 'e2808b').'45\';?>a'.pack('H*', 'e2808b').'bc<?php ?>',
+        ];
+
+        yield [
+            '<?php echo "${foo'.pack('H*', 'c2a0').'bar} is great!";',
+        ];
+
+        yield [
+            '<?php echo $foo'.pack('H*', 'c2a0').'bar;',
+        ];
+
+        yield [
+            '<?php /* foo *'.pack('H*', 'e2808b').'/ bar */',
+        ];
+
+        yield [
+            '<?php /** foo *'.pack('H*', 'e2808b').'/ bar */',
+        ];
+
+        yield [
+            '<?php echo b"Hello World !";',
+            '<?php echo b"'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0').'!";',
         ];
     }
 
@@ -136,9 +144,8 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
 
     public static function provideFixWithEscapeSequencesInStringsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 
                 /**
                  * @param string $p Param
@@ -147,7 +154,7 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
                 {
                     echo $p;
                 }',
-                '<?php
+            '<?php
 
                 /**
                  * @param '.pack('H*', 'e2808b').'string $p Param
@@ -156,188 +163,206 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
                 {
                     echo $p;
                 }',
-            ],
-            [
-                '<?php echo \'FooBar\\\\\';',
-            ],
-            [
-                '<?php echo "Foo\u{200b}Bar";',
-                '<?php echo "Foo'.pack('H*', 'e2808b').'Bar";',
-            ],
-            [
-                '<?php echo "Foo\u{200b}Bar";',
-                '<?php echo \'Foo'.pack('H*', 'e2808b').'Bar\';',
-            ],
-            [
-                '<?php echo "Foo\u{200b} Bar \\\\n \\\\ \$variableToEscape";',
-                '<?php echo \'Foo'.pack('H*', 'e2808b').' Bar \n \ $variableToEscape\';',
-            ],
-            [
-                '<?php echo <<<\'TXT\'
+        ];
+
+        yield [
+            '<?php echo \'FooBar\\\\\';',
+        ];
+
+        yield [
+            '<?php echo "Foo\u{200b}Bar";',
+            '<?php echo "Foo'.pack('H*', 'e2808b').'Bar";',
+        ];
+
+        yield [
+            '<?php echo "Foo\u{200b}Bar";',
+            '<?php echo \'Foo'.pack('H*', 'e2808b').'Bar\';',
+        ];
+
+        yield [
+            '<?php echo "Foo\u{200b} Bar \\\\n \\\\ \$variableToEscape";',
+            '<?php echo \'Foo'.pack('H*', 'e2808b').' Bar \n \ $variableToEscape\';',
+        ];
+
+        yield [
+            '<?php echo <<<\'TXT\'
 FooBar\
 TXT;
 ',
-            ],
-            [
-                '<?php echo <<<TXT
+        ];
+
+        yield [
+            '<?php echo <<<TXT
 Foo\u{200b}Bar
 TXT;
 ',
-                '<?php echo <<<TXT
+            '<?php echo <<<TXT
 Foo'.pack('H*', 'e2808b').'Bar
 TXT;
 ',
-            ],
-            [
-                '<?php echo <<<TXT
+        ];
+
+        yield [
+            '<?php echo <<<TXT
 Foo\u{200b}Bar
 TXT;
 ',
-                '<?php echo <<<\'TXT\'
+            '<?php echo <<<\'TXT\'
 Foo'.pack('H*', 'e2808b').'Bar
 TXT;
 ',
-            ],
-            [
-                '<?php echo <<<TXT
+        ];
+
+        yield [
+            '<?php echo <<<TXT
 Foo\u{200b} Bar \\\\n \\\\ \$variableToEscape
 TXT;
 ',
-                '<?php echo <<<\'TXT\'
+            '<?php echo <<<\'TXT\'
 Foo'.pack('H*', 'e2808b').' Bar \n \ $variableToEscape
 TXT;
 ',
-            ],
-            [
-                '<?php echo \'。\';',
-            ],
-            [
-                <<<'EXPECTED'
+        ];
+
+        yield [
+            '<?php echo \'。\';',
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php echo "Double \" quote \u{200b} inside";
 EXPECTED
-                ,
-                sprintf(
-                    <<<'INPUT'
+            ,
+            sprintf(
+                <<<'INPUT'
 <?php echo 'Double " quote %s inside';
 INPUT
-                    ,
-                    pack('H*', 'e2808b')
-                ),
-            ],
-            [
-                <<<'EXPECTED'
+                ,
+                pack('H*', 'e2808b')
+            ),
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php echo "Single ' quote \u{200b} inside";
 EXPECTED
-                ,
-                sprintf(
-                    <<<'INPUT'
+            ,
+            sprintf(
+                <<<'INPUT'
 <?php echo 'Single \' quote %s inside';
 INPUT
-                    ,
-                    pack('H*', 'e2808b')
-                ),
-            ],
-            [
-                <<<'EXPECTED'
+                ,
+                pack('H*', 'e2808b')
+            ),
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php echo <<<STRING
     Quotes ' and " to be handled \u{200b} properly \\' and \\"
 STRING
 ;
 EXPECTED
-                ,
-                sprintf(
-                    <<<'INPUT'
+            ,
+            sprintf(
+                <<<'INPUT'
 <?php echo <<<'STRING'
     Quotes ' and " to be handled %s properly \' and \"
 STRING
 ;
 INPUT
-                    ,
-                    pack('H*', 'e2808b')
-                ),
-            ],
-            [
-                <<<'EXPECTED'
+                ,
+                pack('H*', 'e2808b')
+            ),
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php echo "\\\u{200b}\"";
 EXPECTED
-                ,
-                sprintf(
-                    <<<'INPUT'
+            ,
+            sprintf(
+                <<<'INPUT'
 <?php echo '\\%s"';
 INPUT
-                    ,
-                    pack('H*', 'e2808b')
-                ),
-            ],
-            [
-                <<<'EXPECTED'
+                ,
+                pack('H*', 'e2808b')
+            ),
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php echo "\\\u{200b}'";
 EXPECTED
-                ,
-                sprintf(
-                    <<<'INPUT'
+            ,
+            sprintf(
+                <<<'INPUT'
 <?php echo '\\%s\'';
 INPUT
-                    ,
-                    pack('H*', 'e2808b')
-                ),
-            ],
-            [
-                <<<'EXPECTED'
+                ,
+                pack('H*', 'e2808b')
+            ),
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php echo "Backslash 1 \\ \u{200b}";
 EXPECTED
-                ,
-                sprintf(
-                    <<<'INPUT'
+            ,
+            sprintf(
+                <<<'INPUT'
 <?php echo 'Backslash 1 \ %s';
 INPUT
-                    ,
-                    pack('H*', 'e2808b')
-                ),
-            ],
-            [
-                <<<'EXPECTED'
+                ,
+                pack('H*', 'e2808b')
+            ),
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php echo "Backslash 2 \\ \u{200b}";
 EXPECTED
-                ,
-                sprintf(
-                    <<<'INPUT'
+            ,
+            sprintf(
+                <<<'INPUT'
 <?php echo 'Backslash 2 \\ %s';
 INPUT
-                    ,
-                    pack('H*', 'e2808b')
-                ),
-            ],
-            [
-                <<<'EXPECTED'
+                ,
+                pack('H*', 'e2808b')
+            ),
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php echo "Backslash 3 \\\\ \u{200b}";
 EXPECTED
-                ,
-                sprintf(
-                    <<<'INPUT'
+            ,
+            sprintf(
+                <<<'INPUT'
 <?php echo 'Backslash 3 \\\ %s';
 INPUT
-                    ,
-                    pack('H*', 'e2808b')
-                ),
-            ],
-            [
-                <<<'EXPECTED'
+                ,
+                pack('H*', 'e2808b')
+            ),
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php echo "Backslash 4 \\\\ \u{200b}";
 EXPECTED
-                ,
-                sprintf(
-                    <<<'INPUT'
+            ,
+            sprintf(
+                <<<'INPUT'
 <?php echo 'Backslash 4 \\\\ %s';
 INPUT
-                    ,
-                    pack('H*', 'e2808b')
-                ),
-            ],
-            [
-                "<?php \"String in single quotes, having non-breaking space: \\u{a0}, linebreak: \n, and single quote inside: ' is a dangerous mix.\";",
-                "<?php 'String in single quotes, having non-breaking space: ".pack('H*', 'c2a0').", linebreak: \n, and single quote inside: \\' is a dangerous mix.';",
-            ],
+                ,
+                pack('H*', 'e2808b')
+            ),
+        ];
+
+        yield [
+            "<?php \"String in single quotes, having non-breaking space: \\u{a0}, linebreak: \n, and single quote inside: ' is a dangerous mix.\";",
+            "<?php 'String in single quotes, having non-breaking space: ".pack('H*', 'c2a0').", linebreak: \n, and single quote inside: \\' is a dangerous mix.';",
         ];
     }
 }

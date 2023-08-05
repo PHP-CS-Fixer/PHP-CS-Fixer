@@ -47,9 +47,8 @@ final class NoBreakCommentFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -60,7 +59,7 @@ switch ($foo) {
     default:
         baz();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -69,9 +68,10 @@ switch ($foo) {
     default:
         baz();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
 
@@ -87,7 +87,7 @@ switch ($foo) {
 
         baz();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
 
@@ -101,9 +101,10 @@ switch ($foo) {
 
         baz();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -114,7 +115,7 @@ switch ($foo) {
     default:
         baz();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         foo(); // no break
@@ -123,9 +124,10 @@ switch ($foo) {
     default:
         baz();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1;
         foo();
@@ -136,7 +138,7 @@ switch ($foo) {
     default;
         baz();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1;
         foo();
@@ -145,9 +147,10 @@ switch ($foo) {
     default;
         baz();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -156,7 +159,7 @@ switch ($foo) {
     case 2:
         bar();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -164,25 +167,28 @@ switch ($foo) {
     case 2:
         bar();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) { case 1: foo();
 // no break
 case 2: bar(); }',
-                '<?php
+            '<?php
 switch ($foo) { case 1: foo(); case 2: bar(); }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) { case 1: foo();
 // no break
 case 2: bar(); }',
-                '<?php
+            '<?php
 switch ($foo) { case 1: foo();case 2: bar(); }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1;
         foreach ($bar as $baz) {
@@ -192,7 +198,7 @@ switch ($foo) {
     case 2;
         bar();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1;
         foreach ($bar as $baz) {
@@ -201,9 +207,10 @@ switch ($foo) {
     case 2;
         bar();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1;
         for ($i = 0; $i < 1; ++$i) {
@@ -213,7 +220,7 @@ switch ($foo) {
     case 2;
         bar();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1;
         for ($i = 0; $i < 1; ++$i) {
@@ -222,9 +229,10 @@ switch ($foo) {
     case 2;
         bar();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1;
         foreach ($bar as $baz) {
@@ -234,7 +242,7 @@ switch ($foo) {
     case 2;
         bar();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1;
         foreach ($bar as $baz) {
@@ -243,9 +251,10 @@ switch ($foo) {
     case 2;
         bar();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1;
         if ($foo) {
@@ -255,7 +264,7 @@ switch ($foo) {
     case 2;
         bar();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1;
         if ($foo) {
@@ -264,9 +273,10 @@ switch ($foo) {
     case 2;
         bar();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1;
         do {
@@ -276,7 +286,7 @@ switch ($foo) {
     case 2;
         bar();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1;
         do {
@@ -285,9 +295,10 @@ switch ($foo) {
     case 2;
         bar();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1;
         $foo = function ($bar) {
@@ -299,7 +310,7 @@ switch ($foo) {
     case 2;
         bar();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1;
         $foo = function ($bar) {
@@ -310,9 +321,10 @@ switch ($foo) {
     case 2;
         bar();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         switch ($bar) {
@@ -332,7 +344,7 @@ switch ($foo) {
                 foo();
         }
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         switch ($bar) {
@@ -350,9 +362,10 @@ switch ($foo) {
                 foo();
         }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         switch ($bar):
@@ -372,7 +385,7 @@ switch ($foo) {
                 foo();
         endswitch;
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         switch ($bar):
@@ -390,9 +403,10 @@ switch ($foo) {
                 foo();
         endswitch;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -403,7 +417,7 @@ switch ($foo) {
     default:
         baz();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -416,9 +430,10 @@ switch ($foo) {
     default:
         baz();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
 
@@ -434,7 +449,7 @@ switch ($foo) {
 
         return baz();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
 
@@ -452,9 +467,10 @@ switch ($foo) {
 
         return baz();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         return foo();
@@ -463,7 +479,7 @@ switch ($foo) {
     default:
         return baz();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         // no break
@@ -474,9 +490,10 @@ switch ($foo) {
     default:
         return baz();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -487,7 +504,7 @@ switch ($foo) {
     default:
         baz();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -500,9 +517,10 @@ switch ($foo) {
     default:
         baz();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -528,7 +546,7 @@ switch ($foo) {
     default:
         qux();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -561,9 +579,10 @@ switch ($foo) {
     default:
         qux();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
     case 2:
@@ -572,7 +591,7 @@ switch ($foo) {
     default:
         baz();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         // no break
@@ -583,35 +602,38 @@ switch ($foo) {
     default:
         baz();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         foo();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         foo();
         // no break
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     default:
         foo();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     default:
         foo();
         // no break
 }',
-            ],
-            [
-                '<?php switch ($foo) { case 1: switch ($bar) { case 1: switch ($baz) { case 1: $foo = 1;
+        ];
+
+        yield [
+            '<?php switch ($foo) { case 1: switch ($bar) { case 1: switch ($baz) { case 1: $foo = 1;
 // no break
 case 2: $foo = 2; }
 // no break
@@ -626,10 +648,11 @@ case 2: $foo = 6; }
 case 2: switch ($baz) { case 1: $foo = 7;
 // no break
 case 2: $foo = 8; } } }',
-                '<?php switch ($foo) { case 1: switch ($bar) { case 1: switch ($baz) { case 1: $foo = 1; case 2: $foo = 2; } case 2: switch ($baz) { case 1: $foo = 3; case 2: $foo = 4; } } case 2: switch ($bar) { case 1: switch ($baz) { case 1: $foo = 5; case 2: $foo = 6; } case 2: switch ($baz) { case 1: $foo = 7; case 2: $foo = 8; } } }',
-            ],
-            [
-                '<?php
+            '<?php switch ($foo) { case 1: switch ($bar) { case 1: switch ($baz) { case 1: $foo = 1; case 2: $foo = 2; } case 2: switch ($baz) { case 1: $foo = 3; case 2: $foo = 4; } } case 2: switch ($bar) { case 1: switch ($baz) { case 1: $foo = 5; case 2: $foo = 6; } case 2: switch ($baz) { case 1: $foo = 7; case 2: $foo = 8; } } }',
+        ];
+
+        yield [
+            '<?php
 switch ($foo):
     case 1:
         foo();
@@ -637,7 +660,7 @@ switch ($foo):
     case 2:
         bar();
 endswitch;',
-                '<?php
+            '<?php
 switch ($foo):
     case 1:
         foo();
@@ -645,9 +668,10 @@ switch ($foo):
         bar();
         // no break
 endswitch;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         ?>foo<?php
@@ -656,7 +680,7 @@ switch ($foo) {
         ?>bar<?php
         break;
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         ?>foo<?php
@@ -665,9 +689,10 @@ switch ($foo) {
         // no break
         break;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         ?>foo<?php
@@ -678,7 +703,7 @@ switch ($foo) {
 
         break;
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         ?>foo<?php
@@ -689,9 +714,10 @@ switch ($foo) {
         // no break
         break;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         ?>foo<?php // foo
@@ -700,7 +726,7 @@ switch ($foo) {
         ?>bar<?php // bar
         break;
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         ?>foo<?php // foo
@@ -709,9 +735,10 @@ switch ($foo) {
         // no break
         break;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -722,7 +749,7 @@ switch ($foo) {
     default:
         baz();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         // no break
@@ -733,9 +760,10 @@ switch ($foo) {
     default:
         baz();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         die;
@@ -744,7 +772,7 @@ switch ($foo) {
     default:
         die;
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         // no break
@@ -755,9 +783,10 @@ switch ($foo) {
     default:
         die;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1: {
         throw new \Exception();
@@ -769,7 +798,7 @@ switch ($foo) {
     default:
         throw new \Exception();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1: {
         // no break
@@ -783,9 +812,10 @@ switch ($foo) {
     default:
         throw new \Exception();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         goto a;
@@ -797,7 +827,7 @@ switch ($foo) {
 
 a:
 echo \'foo\';',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         // no break
@@ -811,9 +841,10 @@ switch ($foo) {
 
 a:
 echo \'foo\';',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case "bar":
         if (1) {
@@ -825,9 +856,10 @@ switch ($foo) {
     default:
         $aaa = new Baz();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
 ?>
@@ -837,7 +869,7 @@ switch ($foo) {
 ?>
 <?php
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
 ?>
@@ -846,9 +878,10 @@ switch ($foo) {
 ?>
 <?php
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
 ?>
@@ -857,16 +890,17 @@ switch ($foo) {
 default:
 ?>
 <?php }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
 ?>
 <?php default:
 ?>
 <?php }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -874,7 +908,7 @@ switch ($foo) {
     case 2:
         bar();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1:
         foo();
@@ -882,9 +916,10 @@ switch ($foo) {
     case 2:
         bar();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($a) {
     case 1:
         throw new \Exception("");
@@ -900,9 +935,10 @@ switch ($a) {
         throw new \Exception("");
 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($f) {
     case 1:
         if ($a) {
@@ -913,9 +949,10 @@ switch ($f) {
     case Z:
         break;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1;
         $foo = new class {
@@ -930,7 +967,7 @@ switch ($foo) {
     case 2;
         bar();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1;
         $foo = new class {
@@ -944,9 +981,10 @@ switch ($foo) {
     case 2;
         bar();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 1;
         $foo = new class(1) {
@@ -961,7 +999,7 @@ switch ($foo) {
     case 2;
         bar();
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 1;
         $foo = new class(1) {
@@ -975,9 +1013,10 @@ switch ($foo) {
     case 2;
         bar();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch($a) {
     case 1:
         $a = function () { throw new \Exception(""); };
@@ -994,7 +1033,7 @@ switch($a) {
         echo 1;
 }
                 ',
-                '<?php
+            '<?php
 switch($a) {
     case 1:
         $a = function () { throw new \Exception(""); };
@@ -1008,9 +1047,10 @@ switch($a) {
         echo 1;
 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 10:
         echo 1;
@@ -1018,9 +1058,10 @@ switch ($foo) {
     case 22:
         break;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 10:
         echo 1;
@@ -1028,9 +1069,10 @@ switch ($foo) {
     case 22:
         break;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($foo) {
     case 100:
         echo 10;
@@ -1039,7 +1081,7 @@ switch ($foo) {
     case 220:
         break;
 }',
-                '<?php
+            '<?php
 switch ($foo) {
     case 100:
         echo 10;
@@ -1047,7 +1089,6 @@ switch ($foo) {
     case 220:
         break;
 }',
-            ],
         ];
     }
 
@@ -1204,11 +1245,11 @@ switch ($foo) {
 
     public static function provideFixWithCommentTextContainingNewLinesCases(): iterable
     {
-        return [
-            ["No\nbreak"],
-            ["No\r\nbreak"],
-            ["No\rbreak"],
-        ];
+        yield ["No\nbreak"];
+
+        yield ["No\r\nbreak"];
+
+        yield ["No\rbreak"];
     }
 
     public function testConfigureWithInvalidOptions(): void

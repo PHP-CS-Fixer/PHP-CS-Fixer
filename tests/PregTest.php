@@ -220,13 +220,15 @@ final class PregTest extends TestCase
 
     public static function provideCommonCases(): iterable
     {
-        return [
-            ['/u/u', 'u'],
-            ['/u/u', 'u/u'],
-            ['/./', \chr(224).'bc'],
-            ['/à/', 'àbc'],
-            ['/'.\chr(224).'|í/', 'àbc'],
-        ];
+        yield ['/u/u', 'u'];
+
+        yield ['/u/u', 'u/u'];
+
+        yield ['/./', \chr(224).'bc'];
+
+        yield ['/à/', 'àbc'];
+
+        yield ['/'.\chr(224).'|í/', 'àbc'];
     }
 
     public function testSplitFailing(): void

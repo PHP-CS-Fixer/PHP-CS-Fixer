@@ -36,151 +36,182 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            ['<?php class Test { public function __construct() {} }'],
-            ['<?php class Test { public function __destruct() {} }'],
-            ['<?php class Test { public function __clone() {} }'],
-            ['<?php function foo($param) { return $param; }'],
-            ['<?php function foo($param) { return null; }'],
-            ['<?php function foo($param) { yield; }'],
-            ['<?php function foo($param) { yield $param; }'],
-            ['<?php function foo($param) { yield from test(); }'],
-            ['<?php function foo($param): Void {}'],
-            ['<?php interface Test { public function foo($param); }'],
-            ['<?php function foo($param) { return function($a) use ($param): string {}; }'],
-            ['<?php abstract class Test { abstract public function foo($param); }'],
-            ['<?php use Foo\ { function Bar }; function test() { return Bar(); }'],
-            ['<?php
+        yield ['<?php class Test { public function __construct() {} }'];
+
+        yield ['<?php class Test { public function __destruct() {} }'];
+
+        yield ['<?php class Test { public function __clone() {} }'];
+
+        yield ['<?php function foo($param) { return $param; }'];
+
+        yield ['<?php function foo($param) { return null; }'];
+
+        yield ['<?php function foo($param) { yield; }'];
+
+        yield ['<?php function foo($param) { yield $param; }'];
+
+        yield ['<?php function foo($param) { yield from test(); }'];
+
+        yield ['<?php function foo($param): Void {}'];
+
+        yield ['<?php interface Test { public function foo($param); }'];
+
+        yield ['<?php function foo($param) { return function($a) use ($param): string {}; }'];
+
+        yield ['<?php abstract class Test { abstract public function foo($param); }'];
+
+        yield ['<?php use Foo\ { function Bar }; function test() { return Bar(); }'];
+
+        yield ['<?php
                 /**
                  * @return array
                  */
                 function foo($param) {}
-            '],
-            ['<?php
+            '];
+
+        yield ['<?php
                 interface Test {
                     /**
                      * @return array
                      */
                     public function foo($param);
                 }
-            '],
-            [
-                '<?php function foo($param): void { return; }',
-                '<?php function foo($param) { return; }',
-            ],
-            [
-                '<?php function foo($param): void {}',
-                '<?php function foo($param) {}',
-            ],
-            [
-                '<?php class Test { public function foo($param): void { return; } }',
-                '<?php class Test { public function foo($param) { return; } }',
-            ],
-            [
-                '<?php class Test { public function foo($param): void {} }',
-                '<?php class Test { public function foo($param) {} }',
-            ],
-            [
-                '<?php trait Test { public function foo($param): void { return; } }',
-                '<?php trait Test { public function foo($param) { return; } }',
-            ],
-            [
-                '<?php trait Test { public function foo($param): void {} }',
-                '<?php trait Test { public function foo($param) {} }',
-            ],
-            [
-                '<?php $arr = []; usort($arr, function ($a, $b): void {});',
-                '<?php $arr = []; usort($arr, function ($a, $b) {});',
-            ],
-            [
-                '<?php $arr = []; $param = 1; usort($arr, function ($a, $b) use ($param): void {});',
-                '<?php $arr = []; $param = 1; usort($arr, function ($a, $b) use ($param) {});',
-            ],
-            [
-                '<?php function foo($param) { return function($a) use ($param): void {}; }',
-                '<?php function foo($param) { return function($a) use ($param) {}; }',
-            ],
-            [
-                '<?php function foo($param): void { $arr = []; usort($arr, function ($a, $b) use ($param): void {}); }',
-                '<?php function foo($param) { $arr = []; usort($arr, function ($a, $b) use ($param) {}); }',
-            ],
-            [
-                '<?php function foo() { $arr = []; return usort($arr, new class { public function __invoke($a, $b): void {} }); }',
-                '<?php function foo() { $arr = []; return usort($arr, new class { public function __invoke($a, $b) {} }); }',
-            ],
-            [
-                '<?php function foo(): void { $arr = []; usort($arr, new class { public function __invoke($a, $b): void {} }); }',
-                '<?php function foo() { $arr = []; usort($arr, new class { public function __invoke($a, $b) {} }); }',
-            ],
-            [
-                '<?php
+            '];
+
+        yield [
+            '<?php function foo($param): void { return; }',
+            '<?php function foo($param) { return; }',
+        ];
+
+        yield [
+            '<?php function foo($param): void {}',
+            '<?php function foo($param) {}',
+        ];
+
+        yield [
+            '<?php class Test { public function foo($param): void { return; } }',
+            '<?php class Test { public function foo($param) { return; } }',
+        ];
+
+        yield [
+            '<?php class Test { public function foo($param): void {} }',
+            '<?php class Test { public function foo($param) {} }',
+        ];
+
+        yield [
+            '<?php trait Test { public function foo($param): void { return; } }',
+            '<?php trait Test { public function foo($param) { return; } }',
+        ];
+
+        yield [
+            '<?php trait Test { public function foo($param): void {} }',
+            '<?php trait Test { public function foo($param) {} }',
+        ];
+
+        yield [
+            '<?php $arr = []; usort($arr, function ($a, $b): void {});',
+            '<?php $arr = []; usort($arr, function ($a, $b) {});',
+        ];
+
+        yield [
+            '<?php $arr = []; $param = 1; usort($arr, function ($a, $b) use ($param): void {});',
+            '<?php $arr = []; $param = 1; usort($arr, function ($a, $b) use ($param) {});',
+        ];
+
+        yield [
+            '<?php function foo($param) { return function($a) use ($param): void {}; }',
+            '<?php function foo($param) { return function($a) use ($param) {}; }',
+        ];
+
+        yield [
+            '<?php function foo($param): void { $arr = []; usort($arr, function ($a, $b) use ($param): void {}); }',
+            '<?php function foo($param) { $arr = []; usort($arr, function ($a, $b) use ($param) {}); }',
+        ];
+
+        yield [
+            '<?php function foo() { $arr = []; return usort($arr, new class { public function __invoke($a, $b): void {} }); }',
+            '<?php function foo() { $arr = []; return usort($arr, new class { public function __invoke($a, $b) {} }); }',
+        ];
+
+        yield [
+            '<?php function foo(): void { $arr = []; usort($arr, new class { public function __invoke($a, $b): void {} }); }',
+            '<?php function foo() { $arr = []; usort($arr, new class { public function __invoke($a, $b) {} }); }',
+        ];
+
+        yield [
+            '<?php
                 function foo(): void {
                     $a = function (): void {};
                 }',
-                '<?php
+            '<?php
                 function foo() {
                     $a = function () {};
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function foo(): void {
                     (function (): void {
                         return;
                     })();
                 }',
-                '<?php
+            '<?php
                 function foo() {
                     (function () {
                         return;
                     })();
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function foo(): void {
                     (function () {
                         return 1;
                     })();
                 }',
-                '<?php
+            '<?php
                 function foo() {
                     (function () {
                         return 1;
                     })();
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function foo(): void {
                     $b = new class {
                         public function b1(): void {}
                         public function b2() { return 2; }
                     };
                 }',
-                '<?php
+            '<?php
                 function foo() {
                     $b = new class {
                         public function b1() {}
                         public function b2() { return 2; }
                     };
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 /**
                  * @return void
                  */
                 function foo($param): void {}',
 
-                '<?php
+            '<?php
                 /**
                  * @return void
                  */
                 function foo($param) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 interface Test {
                     /**
                      * @return void
@@ -188,16 +219,17 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                     public function foo($param): void;
                 }',
 
-                '<?php
+            '<?php
                 interface Test {
                     /**
                      * @return void
                      */
                     public function foo($param);
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 abstract class Test {
                     /**
                      * @return void
@@ -205,23 +237,25 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                     abstract protected function foo($param): void;
                 }',
 
-                '<?php
+            '<?php
                 abstract class Test {
                     /**
                      * @return void
                      */
                     abstract protected function foo($param);
                 }',
-            ],
-            [
-                '<?php fn($a) => null;',
-            ],
-            [
-                '<?php fn($a) => 1;',
-            ],
-            [
-                '<?php fn($a) => var_dump($a);',
-            ],
+        ];
+
+        yield [
+            '<?php fn($a) => null;',
+        ];
+
+        yield [
+            '<?php fn($a) => 1;',
+        ];
+
+        yield [
+            '<?php fn($a) => var_dump($a);',
         ];
     }
 

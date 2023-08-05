@@ -60,29 +60,43 @@ final class TypeAnalysisTest extends TestCase
 
     public static function provideReservedCases(): iterable
     {
-        return [
-            ['array', true],
-            ['bool', true],
-            ['callable', true],
-            ['float', true],
-            ['int', true],
-            ['iterable', true],
-            ['mixed', true],
-            ['never', true],
-            ['object', true],
-            ['resource', true],
-            ['self', true],
-            ['string', true],
-            ['void', true],
+        yield ['array', true];
 
-            ['VOID', true],
-            ['Void', true],
-            ['voId', true],
+        yield ['bool', true];
 
-            ['other', false],
-            ['OTHER', false],
-            ['numeric', false],
-        ];
+        yield ['callable', true];
+
+        yield ['float', true];
+
+        yield ['int', true];
+
+        yield ['iterable', true];
+
+        yield ['mixed', true];
+
+        yield ['never', true];
+
+        yield ['object', true];
+
+        yield ['resource', true];
+
+        yield ['self', true];
+
+        yield ['string', true];
+
+        yield ['void', true];
+
+        yield ['VOID', true];
+
+        yield ['Void', true];
+
+        yield ['voId', true];
+
+        yield ['other', false];
+
+        yield ['OTHER', false];
+
+        yield ['numeric', false];
     }
 
     /**

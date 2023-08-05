@@ -368,9 +368,8 @@ EOF;
 
     public static function provideFixWithCommentsCases(): iterable
     {
-        return [
-            [
-                <<<'EOF'
+        yield [
+            <<<'EOF'
 <?php
 //class Test
 $a; //
@@ -383,8 +382,8 @@ $c;
 
 $d;
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 //class Test
 $a; //
@@ -404,11 +403,11 @@ $c;
 
 $d;
 EOF
-            ],
-            [
-                "<?php\n//a\n\n\$a =1;",
-                "<?php\n//a\n\n\n\n\$a =1;",
-            ],
+        ];
+
+        yield [
+            "<?php\n//a\n\n\$a =1;",
+            "<?php\n//a\n\n\n\n\$a =1;",
         ];
     }
 
@@ -573,9 +572,8 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
 
     public static function provideRemoveLinesBetweenUseStatementsCases(): iterable
     {
-        return [
-            [
-                <<<'EOF'
+        yield [
+            <<<'EOF'
 <?php
 
 use Zxy\Qux;
@@ -593,9 +591,9 @@ $a = new Bar2();
 $a = new Baz();
 $a = new Qux();
 EOF
-                ,
+            ,
 
-                <<<'EOF'
+            <<<'EOF'
 <?php
 
 use Zxy\Qux;
@@ -616,22 +614,22 @@ $a = new Bar2();
 $a = new Baz();
 $a = new Qux();
 EOF
-                ,
-            ],
-            [
-                '<?php
+            ,
+        ];
+
+        yield [
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
 ',
-                '<?php
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 
 use function some\a\{fn_a, fn_b, fn_c};
 
 use const some\a\{ConstA, ConstB, ConstC};
 ',
-            ],
         ];
     }
 
@@ -842,19 +840,20 @@ class Foo
 
     public static function provideBracesCases(): iterable
     {
-        return [
-            [
-                ['tokens' => ['curly_brace_block']],
-                "<?php function test()\n\n{}\n\necho 789;",
-            ],
-            [
-                ['tokens' => ['curly_brace_block']],
-                "<?php switch(\$a){\ncase 1:echo 789;}",
-                "<?php switch(\$a){\n   \ncase 1:echo 789;}",
-            ],
-            [
-                ['tokens' => ['parenthesis_brace_block']],
-                '<?php
+        yield [
+            ['tokens' => ['curly_brace_block']],
+            "<?php function test()\n\n{}\n\necho 789;",
+        ];
+
+        yield [
+            ['tokens' => ['curly_brace_block']],
+            "<?php switch(\$a){\ncase 1:echo 789;}",
+            "<?php switch(\$a){\n   \ncase 1:echo 789;}",
+        ];
+
+        yield [
+            ['tokens' => ['parenthesis_brace_block']],
+            '<?php
 is_int(
 1);
 function test(
@@ -866,7 +865,7 @@ $c
 
 
 }',
-                '<?php
+            '<?php
 is_int(
 
 1);
@@ -882,15 +881,17 @@ $c
 
 
 }',
-            ],
-            [
-                ['tokens' => ['parenthesis_brace_block']],
-                "<?php array(\n1,\n2,\n3,\n);",
-                "<?php array(\n  \n1,\n2,\n3,\n\n\n);",
-            ],
-            [
-                ['tokens' => ['parenthesis_brace_block']],
-                '<?php
+        ];
+
+        yield [
+            ['tokens' => ['parenthesis_brace_block']],
+            "<?php array(\n1,\n2,\n3,\n);",
+            "<?php array(\n  \n1,\n2,\n3,\n\n\n);",
+        ];
+
+        yield [
+            ['tokens' => ['parenthesis_brace_block']],
+            '<?php
     function a()
     {
         $b->d(e(
@@ -899,10 +900,11 @@ $c
         foreach ($a as $x) {
         }
     }',
-            ],
-            [
-                ['tokens' => ['return']],
-                '<?php
+        ];
+
+        yield [
+            ['tokens' => ['return']],
+            '<?php
 class Foo
 {
     public function bar() {return 1;}
@@ -910,7 +912,7 @@ class Foo
     public function baz() {return 2;
     }
 }',
-                '<?php
+            '<?php
 class Foo
 {
     public function bar() {return 1;}
@@ -919,12 +921,12 @@ class Foo
 
     }
 }',
-            ],
-            [
-                ['tokens' => ['square_brace_block']],
-                "<?php \$c = \$b[0];\n\n\n\$a = [\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
-                "<?php \$c = \$b[0];\n\n\n\$a = [\n\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
-            ],
+        ];
+
+        yield [
+            ['tokens' => ['square_brace_block']],
+            "<?php \$c = \$b[0];\n\n\n\$a = [\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
+            "<?php \$c = \$b[0];\n\n\n\$a = [\n\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
         ];
     }
 
@@ -982,16 +984,15 @@ class Foo
 
     public static function provideInSwitchStatementCases(): iterable
     {
-        return [
+        yield [
             [
-                [
-                    'break',
-                    'continue',
-                    'extra',
-                    'return',
-                    'throw',
-                ],
-                '<?php
+                'break',
+                'continue',
+                'extra',
+                'return',
+                'throw',
+            ],
+            '<?php
                     /** a  */
                     switch ($a) {
                         case 1:
@@ -1015,7 +1016,7 @@ class Foo
                         default:
                             echo 1;
                     }',
-                '<?php
+            '<?php
                     /** a  */
                     switch ($a) {
                         case 1:
@@ -1047,21 +1048,22 @@ class Foo
                         default:
                             echo 1;
                     }',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'switch',
-                    'case',
-                    'default',
-                ],
-                '<?php
+                'switch',
+                'case',
+                'default',
+            ],
+            '<?php
                     switch($a) {
                         case 0:
                         case 1:
                         default:
                             return 1;
                     }',
-                '<?php
+            '<?php
                     switch($a) {
 
                         case 0:
@@ -1072,27 +1074,27 @@ class Foo
 
                             return 1;
                     }',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'switch',
-                    'case',
-                    'default',
-                ],
-                '<?php
-                    switch($a) { case 2: echo 3;
-                    default: return 1;}
-
-
-                    // above stays empty',
-                '<?php
-                    switch($a) { case 2: echo 3;
-
-                    default: return 1;}
-
-
-                    // above stays empty',
+                'switch',
+                'case',
+                'default',
             ],
+            '<?php
+                    switch($a) { case 2: echo 3;
+                    default: return 1;}
+
+
+                    // above stays empty',
+            '<?php
+                    switch($a) { case 2: echo 3;
+
+                    default: return 1;}
+
+
+                    // above stays empty',
         ];
     }
 

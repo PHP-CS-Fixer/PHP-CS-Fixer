@@ -44,11 +44,11 @@ final class NewVersionCheckerTest extends TestCase
 
     public static function provideGetLatestVersionOfMajorCases(): iterable
     {
-        return [
-            [1, 'v1.13.2'],
-            [2, 'v2.4.1'],
-            [4, null],
-        ];
+        yield [1, 'v1.13.2'];
+
+        yield [2, 'v2.4.1'];
+
+        yield [4, null];
     }
 
     /**

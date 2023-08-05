@@ -35,70 +35,78 @@ final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCas
 
     public static function provideFixCases(): iterable
     {
-        return [
-            ['<?php /** Opening DocBlock */'],
-            [
-                '<?php /* Opening comment */',
-                '<?php /*** Opening comment */',
-            ],
-            [
-                '<?php /*\ Opening false-DocBlock */',
-                '<?php /**\ Opening false-DocBlock */',
-            ],
-            [
-                '<?php /** Closing DocBlock */',
-                '<?php /** Closing DocBlock ***/',
-            ],
-            [
-                '<?php /* Closing comment */',
-                '<?php /* Closing comment ***/',
-            ],
-            [
-                '<?php /**/',
-                '<?php /***/',
-            ],
-            [
-                '<?php /**/',
-                '<?php /********/',
-            ],
-            [
-                <<<'EOT'
+        yield ['<?php /** Opening DocBlock */'];
+
+        yield [
+            '<?php /* Opening comment */',
+            '<?php /*** Opening comment */',
+        ];
+
+        yield [
+            '<?php /*\ Opening false-DocBlock */',
+            '<?php /**\ Opening false-DocBlock */',
+        ];
+
+        yield [
+            '<?php /** Closing DocBlock */',
+            '<?php /** Closing DocBlock ***/',
+        ];
+
+        yield [
+            '<?php /* Closing comment */',
+            '<?php /* Closing comment ***/',
+        ];
+
+        yield [
+            '<?php /**/',
+            '<?php /***/',
+        ];
+
+        yield [
+            '<?php /**/',
+            '<?php /********/',
+        ];
+
+        yield [
+            <<<'EOT'
 <?php
 
 /*
  * WUT
  */
 EOT
-                ,
-                <<<'EOT'
+            ,
+            <<<'EOT'
 <?php
 
 /********
  * WUT
  ********/
 EOT
-                ,
-            ],
-            [
-                <<<'EOT'
+            ,
+        ];
+
+        yield [
+            <<<'EOT'
 <?php
 
 /*\
  * False DocBlock
  */
 EOT
-                ,
-                <<<'EOT'
+            ,
+            <<<'EOT'
 <?php
 
 /**\
  * False DocBlock
  */
 EOT
-                ,
-            ],
-            [
-                <<<'EOT'
+            ,
+        ];
+
+        yield [
+            <<<'EOT'
 <?php
 # Hash
 #*** Hash asterisk
@@ -112,8 +120,7 @@ Weird multiline comment
 */
 
 EOT
-                ,
-            ],
+            ,
         ];
     }
 }

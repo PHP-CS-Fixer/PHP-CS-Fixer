@@ -48,18 +48,25 @@ final class TagTest extends TestCase
 
     public static function provideNameCases(): iterable
     {
-        return [
-            ['param', 'var', '     * @param Foo $foo'],
-            ['return', 'type', '*   @return            false'],
-            ['thRoWs', 'throws', '*@thRoWs \Exception'],
-            ['THROWSSS', 'throws', "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"],
-            ['other', 'foobar', ' *   @\Foo\Bar(baz = 123)'],
-            ['expectedException', 'baz', '     * @expectedException Exception'],
-            ['property-read', 'property-write', ' * @property-read integer $daysInMonth number of days in the given month'],
-            ['method', 'foo', ' * @method'],
-            ['method', 'hi', ' * @method string getString()'],
-            ['other', 'hello', ' * @method("GET")'],
-        ];
+        yield ['param', 'var', '     * @param Foo $foo'];
+
+        yield ['return', 'type', '*   @return            false'];
+
+        yield ['thRoWs', 'throws', '*@thRoWs \Exception'];
+
+        yield ['THROWSSS', 'throws', "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"];
+
+        yield ['other', 'foobar', ' *   @\Foo\Bar(baz = 123)'];
+
+        yield ['expectedException', 'baz', '     * @expectedException Exception'];
+
+        yield ['property-read', 'property-write', ' * @property-read integer $daysInMonth number of days in the given month'];
+
+        yield ['method', 'foo', ' * @method'];
+
+        yield ['method', 'hi', ' * @method string getString()'];
+
+        yield ['other', 'hello', ' * @method("GET")'];
     }
 
     /**
@@ -74,18 +81,26 @@ final class TagTest extends TestCase
 
     public static function provideValidCases(): iterable
     {
-        return [
-            [true, '     * @param Foo $foo'],
-            [true, '*   @return            false'],
-            [true, '*@throws \Exception'],
-            [true, ' * @method'],
-            [true, ' * @method string getString()'],
-            [true, ' * @property-read integer $daysInMonth number of days in the given month'],
-            [false, ' * @method("GET")'],
-            [false, '*@thRoWs \InvalidArgumentException'],
-            [false, "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"],
-            [false, ' *   @\Foo\Bar(baz = 123)'],
-            [false, '     * @expectedException Exception'],
-        ];
+        yield [true, '     * @param Foo $foo'];
+
+        yield [true, '*   @return            false'];
+
+        yield [true, '*@throws \Exception'];
+
+        yield [true, ' * @method'];
+
+        yield [true, ' * @method string getString()'];
+
+        yield [true, ' * @property-read integer $daysInMonth number of days in the given month'];
+
+        yield [false, ' * @method("GET")'];
+
+        yield [false, '*@thRoWs \InvalidArgumentException'];
+
+        yield [false, "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"];
+
+        yield [false, ' *   @\Foo\Bar(baz = 123)'];
+
+        yield [false, '     * @expectedException Exception'];
     }
 }

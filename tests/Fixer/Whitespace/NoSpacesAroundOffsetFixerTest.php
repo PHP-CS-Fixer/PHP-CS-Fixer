@@ -74,24 +74,23 @@ EOF;
 
     public static function provideCommentsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 
 $withComments[0] // here is a comment
     [1] // and here is another
     [2] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = $b[# z
  1#z
  ];',
-                '<?php
+            '<?php
 $a = $b[ # z
  1#z
  ];',
-            ],
         ];
     }
 
@@ -214,87 +213,96 @@ $var = $arr[0]{     0
 
     public static function provideFixSpaceInsideOffsetCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 $foo = array(1, 2, 3);
 $var = $foo[1];',
-                '<?php
+            '<?php
 $foo = array(1, 2, 3);
 $var = $foo[ 1 ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $arr = [2,   2 , ];
 $var = $arr[0];',
-                '<?php
+            '<?php
 $arr = [2,   2 , ];
 $var = $arr[ 0 ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $arr[2] = 3;',
-                '<?php
+            '<?php
 $arr[ 2    ] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $arr[] = 3;',
-                '<?php
+            '<?php
 $arr[  ] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $arr[]["some_offset"][] = 3;',
-                '<?php
+            '<?php
 $arr[  ][ "some_offset"   ][     ] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $arr[]["some  offset with  spaces"][] = 3;',
-                '<?php
+            '<?php
 $arr[  ][ "some  offset with  spaces"   ][     ] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = $arr[0];',
-                '<?php
+            '<?php
 $var = $arr[     0   ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = $arr[0][0];',
-                '<?php
+            '<?php
 $var = $arr[    0        ][ 0  ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = $arr[$a[$b]];',
-                '<?php
+            '<?php
 $var = $arr[    $a    [ $b    ]  ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = $arr[$a[$b]];',
-                '<?php
+            '<?php
 $var = $arr[	$a	[	$b	]	];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = $arr[0][
      0];',
-                '<?php
+            '<?php
 $var = $arr[0][
      0 ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = $arr[0][0
          ];',
-                '<?php
+            '<?php
 $var = $arr[0][     0
          ];',
-            ],
         ];
     }
 

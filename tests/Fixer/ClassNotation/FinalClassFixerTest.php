@@ -35,46 +35,63 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            ['<?php /** @Entity */ class MyEntity {}'],
-            ['<?php use Doctrine\ORM\Mapping as ORM; /** @ORM\Entity */ class MyEntity {}'],
-            ['<?php use Doctrine\ORM\Mapping as ORM; /** @ORM\Entity(repositoryClass="MyRepository") */ class MyEntity {}'],
-            ['<?php use Doctrine\ORM\Mapping; /** @Mapping\Entity */ class MyEntity {}'],
-            ['<?php use Doctrine\ORM; /** @ORM\Mapping\Entity */ class MyEntity {}'],
-            ['<?php /** @Document */ class MyDocument {}'],
-            ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; /** @ODM\Document */ class MyEntity {}'],
-            ['<?php /** @entity */ class MyEntity {}'],
-            ['<?php use Doctrine\ORM\Mapping as ORM; /** @orm\entity */ class MyEntity {}'],
-            ['<?php abstract class MyAbstract {}'],
-            ['<?php trait MyTrait {}'],
-            ['<?php interface MyInterface {}'],
-            ['<?php echo Exception::class;'],
-            [
-                '<?php final class MyClass {}',
-                '<?php class MyClass {}',
-            ],
-            [
-                '<?php final class MyClass extends MyAbstract {}',
-                '<?php class MyClass extends MyAbstract {}',
-            ],
-            [
-                '<?php final class MyClass implements MyInterface {}',
-                '<?php class MyClass implements MyInterface {}',
-            ],
-            [
-                '<?php /** @codeCoverageIgnore */ final class MyEntity {}',
-                '<?php /** @codeCoverageIgnore */ class MyEntity {}',
-            ],
-            [
-                '<?php final class A {} abstract class B {} final class C {}',
-                '<?php class A {} abstract class B {} class C {}',
-            ],
-            [
-                '<?php /** @internal Map my app to an @Entity */ final class MyMapper {}',
-                '<?php /** @internal Map my app to an @Entity */ class MyMapper {}',
-            ],
-            ['<?php $anonymClass = new class {};'],
+        yield ['<?php /** @Entity */ class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM\Mapping as ORM; /** @ORM\Entity */ class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM\Mapping as ORM; /** @ORM\Entity(repositoryClass="MyRepository") */ class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM\Mapping; /** @Mapping\Entity */ class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM; /** @ORM\Mapping\Entity */ class MyEntity {}'];
+
+        yield ['<?php /** @Document */ class MyDocument {}'];
+
+        yield ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; /** @ODM\Document */ class MyEntity {}'];
+
+        yield ['<?php /** @entity */ class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM\Mapping as ORM; /** @orm\entity */ class MyEntity {}'];
+
+        yield ['<?php abstract class MyAbstract {}'];
+
+        yield ['<?php trait MyTrait {}'];
+
+        yield ['<?php interface MyInterface {}'];
+
+        yield ['<?php echo Exception::class;'];
+
+        yield [
+            '<?php final class MyClass {}',
+            '<?php class MyClass {}',
         ];
+
+        yield [
+            '<?php final class MyClass extends MyAbstract {}',
+            '<?php class MyClass extends MyAbstract {}',
+        ];
+
+        yield [
+            '<?php final class MyClass implements MyInterface {}',
+            '<?php class MyClass implements MyInterface {}',
+        ];
+
+        yield [
+            '<?php /** @codeCoverageIgnore */ final class MyEntity {}',
+            '<?php /** @codeCoverageIgnore */ class MyEntity {}',
+        ];
+
+        yield [
+            '<?php final class A {} abstract class B {} final class C {}',
+            '<?php class A {} abstract class B {} class C {}',
+        ];
+
+        yield [
+            '<?php /** @internal Map my app to an @Entity */ final class MyMapper {}',
+            '<?php /** @internal Map my app to an @Entity */ class MyMapper {}',
+        ];
+
+        yield ['<?php $anonymClass = new class {};'];
     }
 
     /**
@@ -89,43 +106,67 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
 
     public static function provideFix80Cases(): iterable
     {
-        return [
-            ['<?php #[Entity] class MyEntity {}'],
-            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] class MyEntity {}'],
-            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity(repositoryClass:"MyRepository")] class MyEntity {}'],
-            ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] class MyEntity {}'],
-            ['<?php #[Document] class MyDocument {}'],
-            ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] class MyEntity {}'],
-            ['<?php #[Entity] class MyEntity {}'],
-            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\entity] class MyEntity {}'],
-            ['<?php #[IgnoredAttribute] #[Entity] class MyEntity {}'],
-            ['<?php #[IgnoredAttribute("Some-Value"), Entity] class MyEntity {}'],
+        yield ['<?php #[Entity] class MyEntity {}'];
 
-            // Test with comments in between attributes and class
-            ['<?php #[Entity] /* some comment */ class MyEntity {}'],
-            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] /* some comment */ class MyEntity {}'],
-            ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] /* some comment */ class MyEntity {}'],
-            ['<?php #[Document] /* some comment */ class MyDocument {}'],
-            ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] /* some comment */ class MyEntity {}'],
-            ['<?php #[Entity] /* some comment */ class MyEntity {}'],
-            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\entity] /* some comment */ class MyEntity {}'],
-            ['<?php use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute] #[Entity] /* some comment */ class MyEntity {}'],
-            ['<?php use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute("Some-Value"), Entity] /* some comment */ class MyEntity {}'],
+        yield ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] class MyEntity {}'];
 
-            // Test with comments before the class
-            ['<?php /* some comment */ #[Entity] class MyEntity {}'],
-            ['<?php /* some comment */ use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] class MyEntity {}'],
-            ['<?php /* some comment */ use Doctrine\ORM; #[ORM\Mapping\Entity] class MyEntity {}'],
-            ['<?php /* some comment */ #[Document] class MyDocument {}'],
-            ['<?php /* some comment */ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] class MyEntity {}'],
-            ['<?php /* some comment */ #[Entity] class MyEntity {}'],
-            ['<?php /* some comment */ use Doctrine\ORM\Mapping as ORM; #[ORM\entity] class MyEntity {}'],
-            ['<?php /* some comment */ use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute] #[Entity] class MyEntity {}'],
-            ['<?php /* some comment */ use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute, Entity] class MyEntity {}'],
+        yield ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity(repositoryClass:"MyRepository")] class MyEntity {}'];
 
-            // Multiline tests
-            [
-                <<<'EOF'
+        yield ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] class MyEntity {}'];
+
+        yield ['<?php #[Document] class MyDocument {}'];
+
+        yield ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] class MyEntity {}'];
+
+        yield ['<?php #[Entity] class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\entity] class MyEntity {}'];
+
+        yield ['<?php #[IgnoredAttribute] #[Entity] class MyEntity {}'];
+
+        yield ['<?php #[IgnoredAttribute("Some-Value"), Entity] class MyEntity {}'];
+
+        // Test with comments in between attributes and class
+        yield ['<?php #[Entity] /* some comment */ class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] /* some comment */ class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] /* some comment */ class MyEntity {}'];
+
+        yield ['<?php #[Document] /* some comment */ class MyDocument {}'];
+
+        yield ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] /* some comment */ class MyEntity {}'];
+
+        yield ['<?php #[Entity] /* some comment */ class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\entity] /* some comment */ class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute] #[Entity] /* some comment */ class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute("Some-Value"), Entity] /* some comment */ class MyEntity {}'];
+
+        // Test with comments before the class
+        yield ['<?php /* some comment */ #[Entity] class MyEntity {}'];
+
+        yield ['<?php /* some comment */ use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] class MyEntity {}'];
+
+        yield ['<?php /* some comment */ use Doctrine\ORM; #[ORM\Mapping\Entity] class MyEntity {}'];
+
+        yield ['<?php /* some comment */ #[Document] class MyDocument {}'];
+
+        yield ['<?php /* some comment */ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] class MyEntity {}'];
+
+        yield ['<?php /* some comment */ #[Entity] class MyEntity {}'];
+
+        yield ['<?php /* some comment */ use Doctrine\ORM\Mapping as ORM; #[ORM\entity] class MyEntity {}'];
+
+        yield ['<?php /* some comment */ use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute] #[Entity] class MyEntity {}'];
+
+        yield ['<?php /* some comment */ use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute, Entity] class MyEntity {}'];
+
+        // Multiline tests
+        yield [
+            <<<'EOF'
                 <?php
                 use Doctrine\ORM;
                 #[IgnoredAttribute("Some-Value"), IgnoredAttribute("Another-Value")]
@@ -136,9 +177,10 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
                  */
                 class MyEntity {}
                 EOF,
-            ],
-            [
-                <<<'EOF'
+        ];
+
+        yield [
+            <<<'EOF'
                 <?php
                 use Doctrine\ORM;
                 #[
@@ -152,7 +194,6 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
                  */
                 class MyEntity {}
                 EOF,
-            ],
         ];
     }
 
@@ -168,18 +209,26 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
 
     public static function provideFix82Cases(): iterable
     {
-        return [
-            ['<?php #[Entity] readonly class MyEntity {}'],
-            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] readonly class MyEntity {}'],
-            ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] readonly class MyEntity {}'],
-            ['<?php #[Document] readonly class MyDocument {}'],
-            ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] readonly class MyEntity {}'],
-            ['<?php #[Entity] readonly class MyEntity {}'],
-            ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\entity] readonly class MyEntity {}'],
-            ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] readonly class MyEntity {}'],
-            ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] readonly /* ... */ class MyEntity {}'],
-            [
-                <<<'EOF'
+        yield ['<?php #[Entity] readonly class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\Entity] readonly class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] readonly class MyEntity {}'];
+
+        yield ['<?php #[Document] readonly class MyDocument {}'];
+
+        yield ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] readonly class MyEntity {}'];
+
+        yield ['<?php #[Entity] readonly class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\entity] readonly class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] readonly class MyEntity {}'];
+
+        yield ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] readonly /* ... */ class MyEntity {}'];
+
+        yield [
+            <<<'EOF'
                 <?php
                 use Doctrine\ORM;
                 #[ORM\Mapping\Entity]
@@ -190,7 +239,6 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
                  */
                 class MyEntity {}
                 EOF,
-            ],
         ];
     }
 }

@@ -167,15 +167,14 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 
     public static function provideFix73Cases(): iterable
     {
-        return [
-            [
-                self::generateTest('$this->assertTrue($a, );'),
-                self::generateTest('$this->assertSame(true, $a, );'),
-            ],
-            [
-                self::generateTest('$this->assertTrue($a, $message , );'),
-                self::generateTest('$this->assertSame(true, $a, $message , );'),
-            ],
+        yield [
+            self::generateTest('$this->assertTrue($a, );'),
+            self::generateTest('$this->assertSame(true, $a, );'),
+        ];
+
+        yield [
+            self::generateTest('$this->assertTrue($a, $message , );'),
+            self::generateTest('$this->assertSame(true, $a, $message , );'),
         ];
     }
 

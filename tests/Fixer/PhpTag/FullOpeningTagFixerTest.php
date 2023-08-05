@@ -33,60 +33,74 @@ final class FullOpeningTagFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            ['<?php echo \'Foo\';', '<? echo \'Foo\';'],
-            ['<?php echo \'Foo\';', '<?pHp echo \'Foo\';'],
-            ['<?= \'Foo\';'],
-            ['<?php echo \'Foo\'; ?> PLAIN TEXT'],
-            ['PLAIN TEXT<?php echo \'Foo\'; ?>'],
-            ['<?php $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";', '<? $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";'],
-            ['<?php
+        yield ['<?php echo \'Foo\';', '<? echo \'Foo\';'];
+
+        yield ['<?php echo \'Foo\';', '<?pHp echo \'Foo\';'];
+
+        yield ['<?= \'Foo\';'];
+
+        yield ['<?php echo \'Foo\'; ?> PLAIN TEXT'];
+
+        yield ['PLAIN TEXT<?php echo \'Foo\'; ?>'];
+
+        yield ['<?php $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";', '<? $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";'];
+
+        yield ['<?php
 
 echo \'Foo\';
 
 ',
-                '<?
+            '<?
 
 echo \'Foo\';
 
 ',
-            ],
-            [
-                "<?php if ('<?php' === '<?') { }",
-                "<? if ('<?php' === '<?') { }",
-            ],
-            [
-                '<?php // <?php',
-                '<?pHP // <?php',
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php if ('<?php' === '<?') { }",
+            "<? if ('<?php' === '<?') { }",
+        ];
+
+        yield [
+            '<?php // <?php',
+            '<?pHP // <?php',
+        ];
+
+        yield [
+            "<?php
 '<?
 ';",
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 // Replace all <? with <?php !',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 // Replace all <? with <?pHp !',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  * Convert <?= ?> to long-form <?php echo ?> and <?php ?> to <?php ?>
  *
  */',
-            ],
-            [
-                "<?php \$this->data = preg_replace('/<\\?(?!xml|php)/s', '<?php ',       \$this->data);",
-            ],
-            [
-                'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            "<?php \$this->data = preg_replace('/<\\?(?!xml|php)/s', '<?php ',       \$this->data);",
+        ];
+
+        yield [
+            'foo <?php  echo "-"; echo "aaa <?php bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
+        ];
+
+        yield [
+            '<?php
 $a = <<<           "TEST"
 <?Php <?
 TEST;?>
@@ -100,19 +114,24 @@ TEST;
 
 ?>
 ',
-            ],
-            'binary string' => [
-                '<?php echo b\'Foo\';',
-                '<? echo b\'Foo\';',
-            ],
-            ['<?php', '<?'],
-            ["<?php\n", "<?\n"],
-            ["<?php    \n", "<?    \n"],
-            ["<?php    \n?><?= 1?>", "<?    \n?><?= 1?>"],
-            [
-                'foo <?php  echo "-"; echo "aaa <? bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
-                'foo <?  echo "-"; echo "aaa <? bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
-            ],
+        ];
+
+        yield 'binary string' => [
+            '<?php echo b\'Foo\';',
+            '<? echo b\'Foo\';',
+        ];
+
+        yield ['<?php', '<?'];
+
+        yield ["<?php\n", "<?\n"];
+
+        yield ["<?php    \n", "<?    \n"];
+
+        yield ["<?php    \n?><?= 1?>", "<?    \n?><?= 1?>"];
+
+        yield [
+            'foo <?php  echo "-"; echo "aaa <? bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <?php echo "<? ";',
+            'foo <?  echo "-"; echo "aaa <? bbb <? ccc"; echo \'<? \'; /* <? */ /** <? */ ?> bar <? echo "<? ";',
         ];
     }
 }

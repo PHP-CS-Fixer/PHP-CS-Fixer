@@ -83,10 +83,9 @@ final class SelfUpdateCommandTest extends TestCase
 
     public static function provideCommandNameCases(): iterable
     {
-        return [
-            ['self-update'],
-            ['selfupdate'],
-        ];
+        yield ['self-update'];
+
+        yield ['selfupdate'];
     }
 
     /**
@@ -166,65 +165,106 @@ OUTPUT;
 
 OUTPUT;
 
-        return [
-            // no new version available
-            [Application::VERSION, Application::VERSION, [], true, $currentContents, $upToDateDisplay],
-            [Application::VERSION, Application::VERSION, [], false, $currentContents, $upToDateDisplay],
-            [Application::VERSION, Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay],
-            [Application::VERSION, Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay],
-            [Application::VERSION, Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay],
-            [Application::VERSION, Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay],
+        // no new version available
+        yield [Application::VERSION, Application::VERSION, [], true, $currentContents, $upToDateDisplay];
 
-            // new minor version available
-            [$minorRelease, $minorRelease, [], true, $minorContents, $newMinorDisplay],
-            [$minorRelease, $minorRelease, ['--force' => true], true, $minorContents, $newMinorDisplay],
-            [$minorRelease, $minorRelease, ['-f' => true], true, $minorContents, $newMinorDisplay],
-            [$minorRelease, $minorRelease, [], false, $minorContents, $newMinorDisplay],
-            [$minorRelease, $minorRelease, ['--force' => true], false, $minorContents, $newMinorDisplay],
-            [$minorRelease, $minorRelease, ['-f' => true], false, $minorContents, $newMinorDisplay],
+        yield [Application::VERSION, Application::VERSION, [], false, $currentContents, $upToDateDisplay];
 
-            // new major version available
-            [$majorRelease, Application::VERSION, [], true, $currentContents, $majorInfoNoMinorDisplay],
-            [$majorRelease, Application::VERSION, [], false, $currentContents, $majorInfoNoMinorDisplay],
-            [$majorRelease, Application::VERSION, ['--force' => true], true, $majorContents, $newMajorDisplay],
-            [$majorRelease, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay],
-            [$majorRelease, Application::VERSION, ['--force' => true], true, $majorContents, $newMajorDisplay],
-            [$majorRelease, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay],
+        yield [Application::VERSION, Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay];
 
-            // new minor version and new major version available
-            [$majorRelease, $minorRelease, [], true, $minorContents, $majorInfoNewMinorDisplay],
-            [$majorRelease, $minorRelease, [], false, $minorContents, $majorInfoNewMinorDisplay],
-            [$majorRelease, $minorRelease, ['--force' => true], true, $majorContents, $newMajorDisplay],
-            [$majorRelease, $minorRelease, ['-f' => true], false, $majorContents, $newMajorDisplay],
-            [$majorRelease, $minorRelease, ['--force' => true], true, $majorContents, $newMajorDisplay],
-            [$majorRelease, $minorRelease, ['-f' => true], false, $majorContents, $newMajorDisplay],
+        yield [Application::VERSION, Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay];
 
-            // weird/unexpected versions
-            ['v0.1.0', 'v0.1.0', [], true, $currentContents, $upToDateDisplay],
-            ['v0.1.0', 'v0.1.0', [], false, $currentContents, $upToDateDisplay],
-            ['v0.1.0', 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay],
-            ['v0.1.0', 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay],
-            ['v0.1.0', 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay],
-            ['v0.1.0', 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay],
-            ['v0.1.0', null, [], true, $currentContents, $upToDateDisplay],
-            ['v0.1.0', null, [], false, $currentContents, $upToDateDisplay],
-            ['v0.1.0', null, ['--force' => true], true, $currentContents, $upToDateDisplay],
-            ['v0.1.0', null, ['-f' => true], false, $currentContents, $upToDateDisplay],
-            ['v0.1.0', null, ['--force' => true], true, $currentContents, $upToDateDisplay],
-            ['v0.1.0', null, ['-f' => true], false, $currentContents, $upToDateDisplay],
-            ['v0.1.0', Application::VERSION, [], true, $currentContents, $upToDateDisplay],
-            ['v0.1.0', Application::VERSION, [], false, $currentContents, $upToDateDisplay],
-            ['v0.1.0', Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay],
-            ['v0.1.0', Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay],
-            ['v0.1.0', Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay],
-            ['v0.1.0', Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay],
-            [Application::VERSION, 'v0.1.0', [], true, $currentContents, $upToDateDisplay],
-            [Application::VERSION, 'v0.1.0', [], false, $currentContents, $upToDateDisplay],
-            [Application::VERSION, 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay],
-            [Application::VERSION, 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay],
-            [Application::VERSION, 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay],
-            [Application::VERSION, 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay],
-        ];
+        yield [Application::VERSION, Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay];
+
+        yield [Application::VERSION, Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay];
+
+        // new minor version available
+        yield [$minorRelease, $minorRelease, [], true, $minorContents, $newMinorDisplay];
+
+        yield [$minorRelease, $minorRelease, ['--force' => true], true, $minorContents, $newMinorDisplay];
+
+        yield [$minorRelease, $minorRelease, ['-f' => true], true, $minorContents, $newMinorDisplay];
+
+        yield [$minorRelease, $minorRelease, [], false, $minorContents, $newMinorDisplay];
+
+        yield [$minorRelease, $minorRelease, ['--force' => true], false, $minorContents, $newMinorDisplay];
+
+        yield [$minorRelease, $minorRelease, ['-f' => true], false, $minorContents, $newMinorDisplay];
+
+        // new major version available
+        yield [$majorRelease, Application::VERSION, [], true, $currentContents, $majorInfoNoMinorDisplay];
+
+        yield [$majorRelease, Application::VERSION, [], false, $currentContents, $majorInfoNoMinorDisplay];
+
+        yield [$majorRelease, Application::VERSION, ['--force' => true], true, $majorContents, $newMajorDisplay];
+
+        yield [$majorRelease, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay];
+
+        yield [$majorRelease, Application::VERSION, ['--force' => true], true, $majorContents, $newMajorDisplay];
+
+        yield [$majorRelease, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay];
+
+        // new minor version and new major version available
+        yield [$majorRelease, $minorRelease, [], true, $minorContents, $majorInfoNewMinorDisplay];
+
+        yield [$majorRelease, $minorRelease, [], false, $minorContents, $majorInfoNewMinorDisplay];
+
+        yield [$majorRelease, $minorRelease, ['--force' => true], true, $majorContents, $newMajorDisplay];
+
+        yield [$majorRelease, $minorRelease, ['-f' => true], false, $majorContents, $newMajorDisplay];
+
+        yield [$majorRelease, $minorRelease, ['--force' => true], true, $majorContents, $newMajorDisplay];
+
+        yield [$majorRelease, $minorRelease, ['-f' => true], false, $majorContents, $newMajorDisplay];
+
+        // weird/unexpected versions
+        yield ['v0.1.0', 'v0.1.0', [], true, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', 'v0.1.0', [], false, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', null, [], true, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', null, [], false, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', null, ['--force' => true], true, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', null, ['-f' => true], false, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', null, ['--force' => true], true, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', null, ['-f' => true], false, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', Application::VERSION, [], true, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', Application::VERSION, [], false, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay];
+
+        yield ['v0.1.0', Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay];
+
+        yield [Application::VERSION, 'v0.1.0', [], true, $currentContents, $upToDateDisplay];
+
+        yield [Application::VERSION, 'v0.1.0', [], false, $currentContents, $upToDateDisplay];
+
+        yield [Application::VERSION, 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay];
+
+        yield [Application::VERSION, 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay];
+
+        yield [Application::VERSION, 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay];
+
+        yield [Application::VERSION, 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay];
     }
 
     /**
@@ -278,26 +318,41 @@ OUTPUT;
 
     public static function provideExecuteWhenNotAbleToGetLatestVersionsCases(): iterable
     {
-        return [
-            [false, false, [], true],
-            [false, false, ['--force' => true], true],
-            [false, false, ['-f' => true], true],
-            [false, false, [], false],
-            [false, false, ['--force' => true], false],
-            [false, false, ['-f' => true], false],
-            [true, false, [], true],
-            [true, false, ['--force' => true], true],
-            [true, false, ['-f' => true], true],
-            [true, false, [], false],
-            [true, false, ['--force' => true], false],
-            [true, false, ['-f' => true], false],
-            [false, true, [], true],
-            [false, true, ['--force' => true], true],
-            [false, true, ['-f' => true], true],
-            [false, true, [], false],
-            [false, true, ['--force' => true], false],
-            [false, true, ['-f' => true], false],
-        ];
+        yield [false, false, [], true];
+
+        yield [false, false, ['--force' => true], true];
+
+        yield [false, false, ['-f' => true], true];
+
+        yield [false, false, [], false];
+
+        yield [false, false, ['--force' => true], false];
+
+        yield [false, false, ['-f' => true], false];
+
+        yield [true, false, [], true];
+
+        yield [true, false, ['--force' => true], true];
+
+        yield [true, false, ['-f' => true], true];
+
+        yield [true, false, [], false];
+
+        yield [true, false, ['--force' => true], false];
+
+        yield [true, false, ['-f' => true], false];
+
+        yield [false, true, [], true];
+
+        yield [false, true, ['--force' => true], true];
+
+        yield [false, true, ['-f' => true], true];
+
+        yield [false, true, [], false];
+
+        yield [false, true, ['--force' => true], false];
+
+        yield [false, true, ['-f' => true], false];
     }
 
     /**
@@ -324,14 +379,17 @@ OUTPUT;
 
     public static function provideExecuteWhenNotInstalledAsPharCases(): iterable
     {
-        return [
-            [[], true],
-            [['--force' => true], true],
-            [['-f' => true], true],
-            [[], false],
-            [['--force' => true], false],
-            [['-f' => true], false],
-        ];
+        yield [[], true];
+
+        yield [['--force' => true], true];
+
+        yield [['-f' => true], true];
+
+        yield [[], false];
+
+        yield [['--force' => true], false];
+
+        yield [['-f' => true], false];
     }
 
     /**

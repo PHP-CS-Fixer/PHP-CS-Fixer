@@ -736,10 +736,9 @@ EOT;
 
     public static function provideFixWithConfigurationCases(): iterable
     {
-        return [
-            [
-                ['const', 'property'],
-                <<<'EOT'
+        yield [
+            ['const', 'property'],
+            <<<'EOT'
 <?php
 
 class Foo
@@ -750,10 +749,11 @@ class Foo
     protected static $bar = 2;
 }
 EOT
-            ],
-            [
-                ['const'],
-                <<<'EOT'
+        ];
+
+        yield [
+            ['const'],
+            <<<'EOT'
 <?php
 
 class Foo
@@ -763,10 +763,11 @@ class Foo
     protected static $foo = 1, $bar = 2;
 }
 EOT
-            ],
-            [
-                ['property'],
-                <<<'EOT'
+        ];
+
+        yield [
+            ['property'],
+            <<<'EOT'
 <?php
 
 class Foo
@@ -776,7 +777,6 @@ class Foo
     protected static $bar = 2;
 }
 EOT
-            ],
         ];
     }
 

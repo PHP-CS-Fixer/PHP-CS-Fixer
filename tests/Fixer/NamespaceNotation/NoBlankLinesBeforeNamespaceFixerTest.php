@@ -39,36 +39,42 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            ['<?php namespace Some\Name\Space;'],
-            ["<?php\nnamespace X;"],
-            ["<?php\nnamespace X;", "<?php\n\n\n\nnamespace X;"],
-            ["<?php\r\nnamespace X;"],
-            ["<?php\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"],
-            ["<?php\r\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")],
-            ["<?php\n\nnamespace\\Sub\\Foo::bar();"],
-            [
-                '<?php
+        yield ['<?php namespace Some\Name\Space;'];
+
+        yield ["<?php\nnamespace X;"];
+
+        yield ["<?php\nnamespace X;", "<?php\n\n\n\nnamespace X;"];
+
+        yield ["<?php\r\nnamespace X;"];
+
+        yield ["<?php\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"];
+
+        yield ["<?php\r\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")];
+
+        yield ["<?php\n\nnamespace\\Sub\\Foo::bar();"];
+
+        yield [
+            '<?php
     // Foo
     namespace Foo;
 ',
-                '<?php
+            '<?php
     // Foo
     '.'
     namespace Foo;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 // Foo
 namespace Foo;
 ',
-                '<?php
+            '<?php
 // Foo
     '.'
 namespace Foo;
 ',
-            ],
         ];
     }
 

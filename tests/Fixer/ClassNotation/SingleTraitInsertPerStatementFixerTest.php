@@ -33,37 +33,38 @@ final class SingleTraitInsertPerStatementFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'simple' => [
-                '<?php
+        yield 'simple' => [
+            '<?php
 final class Example
 {
     use Foo;use Bar;
 }
 ',
-                '<?php
+            '<?php
 final class Example
 {
     use Foo, Bar;
 }
 ',
-            ],
-            'simple I' => [
-                '<?php
+        ];
+
+        yield 'simple I' => [
+            '<?php
 final class Example
 {
     use Foo;use Bar;
 }
 ',
-                '<?php
+            '<?php
 final class Example
 {
     use Foo,Bar;
 }
 ',
-            ],
-            'simple II' => [
-                '<?php
+        ];
+
+        yield 'simple II' => [
+            '<?php
 use Foo\Bar, Foo\Bar2; // do not touch
 
 final class Example
@@ -71,7 +72,7 @@ final class Example
     use Foo;use Bar ;
 }
 ',
-                '<?php
+            '<?php
 use Foo\Bar, Foo\Bar2; // do not touch
 
 final class Example
@@ -79,9 +80,10 @@ final class Example
     use Foo, Bar ;
 }
 ',
-            ],
-            'simple III' => [
-                '<?php
+        ];
+
+        yield 'simple III' => [
+            '<?php
 class Example
 {
     use Foo;use Bar;
@@ -89,7 +91,7 @@ class Example
     public function baz() {}
 }
 ',
-                '<?php
+            '<?php
 class Example
 {
     use Foo, Bar;
@@ -97,9 +99,10 @@ class Example
     public function baz() {}
 }
 ',
-            ],
-            'multiple' => [
-                '<?php
+        ];
+
+        yield 'multiple' => [
+            '<?php
 final class Example
 {
     use Foo;
@@ -108,7 +111,7 @@ final class Example
     use Foo20;use Bar20;use Bar200;use Bar201;
 }
 ',
-                '<?php
+            '<?php
 final class Example
 {
     use Foo;
@@ -117,9 +120,10 @@ final class Example
     use Foo20, Bar20, Bar200, Bar201;
 }
 ',
-            ],
-            'multiple_multiline' => [
-                '<?php
+        ];
+
+        yield 'multiple_multiline' => [
+            '<?php
 final class Example
 {
     use Foo;
@@ -127,7 +131,7 @@ final class Example
     use Baz;
 }
 ',
-                '<?php
+            '<?php
 final class Example
 {
     use Foo,
@@ -135,9 +139,10 @@ final class Example
         Baz;
 }
 ',
-            ],
-            'multiple_multiline_with_comment' => [
-                '<?php
+        ];
+
+        yield 'multiple_multiline_with_comment' => [
+            '<?php
 final class Example
 {
     use Foo;
@@ -146,7 +151,7 @@ final class Example
     use Baz;
 }
 ',
-                '<?php
+            '<?php
 final class Example
 {
     use Foo,
@@ -155,25 +160,27 @@ final class Example
         Baz;
 }
 ',
-            ],
-            'namespaces' => [
-                '<?php
+        ];
+
+        yield 'namespaces' => [
+            '<?php
 class Z
 {
     use X\Y\Z0;use X\Y\Z0;use M;
     use X\Y\Z1;use X\Y\Z1;
 }
                 ',
-                '<?php
+            '<?php
 class Z
 {
     use X\Y\Z0, X\Y\Z0, M;
     use X\Y\Z1, X\Y\Z1;
 }
                 ',
-            ],
-            'comments' => [
-                '<?php
+        ];
+
+        yield 'comments' => [
+            '<?php
 class ZZ
 {#1
 use#2
@@ -187,7 +194,7 @@ use T#7
 #10
 }
 ',
-                '<?php
+            '<?php
 class ZZ
 {#1
 use#2
@@ -201,9 +208,10 @@ T#7
 #10
 }
 ',
-            ],
-            'two classes. same file' => [
-                '<?php
+        ];
+
+        yield 'two classes. same file' => [
+            '<?php
 namespace Foo;
 
 class Test1
@@ -219,7 +227,7 @@ class Test2
     use A1;use B1; # use A2, B2;
 }
 ',
-                '<?php
+            '<?php
 namespace Foo;
 
 class Test1
@@ -235,16 +243,16 @@ class Test2
     use A1, B1; # use A2, B2;
 }
 ',
-            ],
-            'do not fix group' => [
-                '<?php
+        ];
+
+        yield 'do not fix group' => [
+            '<?php
                 class Talker {
     use A, B {
         B::smallTalk insteadof A;
         A::bigTalk insteadof B;
     }
 }',
-            ],
         ];
     }
 

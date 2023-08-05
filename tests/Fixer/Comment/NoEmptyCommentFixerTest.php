@@ -34,152 +34,169 @@ final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            // fix cases
-            [
-                '<?php
+        // fix cases
+        yield [
+            '<?php
                     echo 0;
 echo 1;
                 ',
-                '<?php
+            '<?php
                     echo 0;//
 echo 1;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo 0;
     echo 1;
                 ',
-                '<?php
+            '<?php
                     echo 0;//
     echo 1;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo 1;
                 ',
-                '<?php
+            '<?php
                     echo 1;//
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo 2;
                     '.'
 echo 1;
                 ',
-                '<?php
+            '<?php
                 echo 2;
                     //
 echo 1;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 ?>',
-                '<?php
+            '<?php
 
                 //?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     '.'
                 ',
-                '<?php
+            '<?php
                     //
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     '.'
                 ',
-                '<?php
+            '<?php
                     #
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     '.'
                 ',
-                '<?php
+            '<?php
                     /**/
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo 0;echo 1;
                 ',
-                '<?php
+            '<?php
                     echo 0;/**/echo 1;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo 0;echo 1;
                 ',
-                '<?php
+            '<?php
                     echo 0;/**//**//**/echo 1/**/;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 ',
-                '<?php
+            '<?php
                 //',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 ',
-                '<?php
+            '<?php
                 /*
 
 
                 */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     '.'
                     '.'
                     '.'
                     '.'
                 ',
-                '<?php
+            '<?php
                     //
                     //
                     //
                     /**///
                 ',
-            ],
-            [
-                "<?php\n                    \n                    \n                    \n                    \n                ",
-                "<?php\n                    //\n                    //\n                    //\n                    /**///\n                ",
-            ],
-            [
-                "<?php\r                    \r                    \r                    \r                    \r                ",
-                "<?php\r                    //\r                    //\r                    //\r                    /**///\r                ",
-            ],
-            [
-                "<?php\r\n                    \r\n                    \r\n                    \r\n                    \r\n                ",
-                "<?php\r\n                    //\r\n                    //\r\n                    //\r\n                    /**///\r\n                ",
-            ],
-            [
-                "<?php\necho 1;\r\recho 2;",
-                "<?php\necho 1;\r//\recho 2;",
-            ],
-            // do not fix cases
-            [
-                '<?php
+        ];
+
+        yield [
+            "<?php\n                    \n                    \n                    \n                    \n                ",
+            "<?php\n                    //\n                    //\n                    //\n                    /**///\n                ",
+        ];
+
+        yield [
+            "<?php\r                    \r                    \r                    \r                    \r                ",
+            "<?php\r                    //\r                    //\r                    //\r                    /**///\r                ",
+        ];
+
+        yield [
+            "<?php\r\n                    \r\n                    \r\n                    \r\n                    \r\n                ",
+            "<?php\r\n                    //\r\n                    //\r\n                    //\r\n                    /**///\r\n                ",
+        ];
+
+        yield [
+            "<?php\necho 1;\r\recho 2;",
+            "<?php\necho 1;\r//\recho 2;",
+        ];
+
+        // do not fix cases
+        yield [
+            '<?php
                 // a
             // /**/
               // #
 /* b */ // s
           #                        c',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     // This comment could be nicely formatted.
                     //
                     //
@@ -208,43 +225,46 @@ echo 1;
 
                     $bar = 2;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     '.'
                 ',
-                '<?php
+            '<?php
                     /*
                      *
                      */
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     '.'
                 ',
-                '<?php
+            '<?php
                     /********
                      *
                      ********/
                 ',
-            ],
-            [
-                '<?php /* a */',
-                '<?php /* *//* a *//* */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php /* a */',
+            '<?php /* *//* a *//* */',
+        ];
+
+        yield [
+            '<?php
                     '.'
                     /* a */
                     '.'
                 ',
-                '<?php
+            '<?php
                     //
                     /* a */
                     //
                 ',
-            ],
         ];
     }
 

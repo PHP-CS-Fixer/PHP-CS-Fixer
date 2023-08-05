@@ -73,10 +73,9 @@ final class DeprecatedFixerOptionTest extends TestCase
 
     public static function provideHasDefaultCases(): iterable
     {
-        return [
-            [true],
-            [false],
-        ];
+        yield [true];
+
+        yield [false];
     }
 
     /**
@@ -96,10 +95,9 @@ final class DeprecatedFixerOptionTest extends TestCase
 
     public static function provideGetDefaultCases(): iterable
     {
-        return [
-            ['foo'],
-            [true],
-        ];
+        yield ['foo'];
+
+        yield [true];
     }
 
     public function testGetAllowedTypes(): void

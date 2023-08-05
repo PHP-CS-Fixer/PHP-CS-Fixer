@@ -45,16 +45,14 @@ final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 namespace Foo;
 namespace\Bar\baz();
 ',
-                [
-                    1 => T_NAMESPACE,
-                    6 => CT::T_NAMESPACE_OPERATOR,
-                ],
+            [
+                1 => T_NAMESPACE,
+                6 => CT::T_NAMESPACE_OPERATOR,
             ],
         ];
     }

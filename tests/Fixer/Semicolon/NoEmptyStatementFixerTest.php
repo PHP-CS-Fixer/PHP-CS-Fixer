@@ -461,9 +461,8 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     use function Functional\map;
                     $a = new class {
                         public function log($msg)
@@ -471,74 +470,81 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                         }
                     };
                     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     use function Functional\map;
                     $a = new class extends A {
                     };
                     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     use function Functional\map;
                     $a = new class implements B {
                     };
                     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     use function Functional\map;
                     $a = new class extends A implements B {
                     };
                     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a = new class extends \A implements B\C {
                     };
                     ',
-            ],
-            [
-                '<?php {{}}',
-                '<?php {{}};',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php {{}}',
+            '<?php {{}};',
+        ];
+
+        yield [
+            '<?php
                     namespace A\B\C {
 
                     }
                 ',
-                '<?php
+            '<?php
                     namespace A\B\C {
 
                     };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     namespace A{
 
                     }
                 ',
-                '<?php
+            '<?php
                     namespace A{
 
                     };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     namespace{
 
                     }
                 ',
-                '<?php
+            '<?php
                     namespace{
 
                     };
                 ',
-            ],
         ];
     }
 
@@ -556,11 +562,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     public static function provideCasesWithShortOpenTagCases(): iterable
     {
-        return [
-            [
-                '<? ',
-                '<? ;',
-            ],
+        yield [
+            '<? ',
+            '<? ;',
         ];
     }
 
@@ -574,58 +578,63 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     public static function provideFixMultipleSemicolonsCases(): iterable
     {
-        return [
-            [
-                '<?php $foo = 2 ; //
+        yield [
+            '<?php $foo = 2 ; //
                     '.'
 
                 ',
-                '<?php $foo = 2 ; //
+            '<?php $foo = 2 ; //
                     ;
 
                 ',
-            ],
-            [
-                '<?php $foo = 3; /**/ ',
-                '<?php $foo = 3; /**/; ;',
-            ],
-            [
-                '<?php $foo = 1;',
-                '<?php $foo = 1;;;',
-            ],
-            [
-                '<?php $foo = 4; ',
-                '<?php $foo = 4;; ;;',
-            ],
-            [
-                '<?php $foo = 5;
+        ];
+
+        yield [
+            '<?php $foo = 3; /**/ ',
+            '<?php $foo = 3; /**/; ;',
+        ];
+
+        yield [
+            '<?php $foo = 1;',
+            '<?php $foo = 1;;;',
+        ];
+
+        yield [
+            '<?php $foo = 4; ',
+            '<?php $foo = 4;; ;;',
+        ];
+
+        yield [
+            '<?php $foo = 5;
 
     ',
-                '<?php $foo = 5;;
+            '<?php $foo = 5;;
 ;
     ;',
-            ],
-            [
-                '<?php $foo = 6; ',
-                '<?php $foo = 6;; ',
-            ],
-            [
-                '<?php for ($i = 7; ; ++$i) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php $foo = 6; ',
+            '<?php $foo = 6;; ',
+        ];
+
+        yield [
+            '<?php for ($i = 7; ; ++$i) {}',
+        ];
+
+        yield [
+            '<?php
                     switch($a){
                         case 8;
                             echo 9;
                     }
                 ',
-                '<?php
+            '<?php
                     switch($a){
                         case 8;;
                             echo 9;
                     }
                 ',
-            ],
         ];
     }
 

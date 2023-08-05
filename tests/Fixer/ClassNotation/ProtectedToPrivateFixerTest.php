@@ -38,57 +38,70 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
         $attributesAndMethodsOriginal = self::getAttributesAndMethods(true);
         $attributesAndMethodsFixed = self::getAttributesAndMethods(false);
 
-        return [
-            'final-extends' => [
-                "<?php final class MyClass extends MyAbstractClass { {$attributesAndMethodsOriginal} }",
-            ],
-            'normal-extends' => [
-                "<?php class MyClass extends MyAbstractClass { {$attributesAndMethodsOriginal} }",
-            ],
-            'abstract' => [
-                "<?php abstract class MyAbstractClass { {$attributesAndMethodsOriginal} }",
-            ],
-            'normal' => [
-                "<?php class MyClass { {$attributesAndMethodsOriginal} }",
-            ],
-            'trait' => [
-                "<?php trait MyTrait { {$attributesAndMethodsOriginal} }",
-            ],
-            'final-with-trait' => [
-                "<?php final class MyClass { use MyTrait; {$attributesAndMethodsOriginal} }",
-            ],
-            'multiline-comment' => [
-                '<?php final class MyClass { /* public protected private */ }',
-            ],
-            'inline-comment' => [
-                "<?php final class MyClass { \n // public protected private \n }",
-            ],
-            'final' => [
-                "<?php final class MyClass { {$attributesAndMethodsFixed} } class B {use C;}",
-                "<?php final class MyClass { {$attributesAndMethodsOriginal} } class B {use C;}",
-            ],
-            'final-implements' => [
-                "<?php final class MyClass implements MyInterface { {$attributesAndMethodsFixed} }",
-                "<?php final class MyClass implements MyInterface { {$attributesAndMethodsOriginal} }",
-            ],
-            'final-with-use-before' => [
-                "<?php use stdClass; final class MyClass { {$attributesAndMethodsFixed} }",
-                "<?php use stdClass; final class MyClass { {$attributesAndMethodsOriginal} }",
-            ],
-            'final-with-use-after' => [
-                "<?php final class MyClass { {$attributesAndMethodsFixed} } use stdClass;",
-                "<?php final class MyClass { {$attributesAndMethodsOriginal} } use stdClass;",
-            ],
-            'multiple-classes' => [
-                "<?php final class MyFirstClass { {$attributesAndMethodsFixed} } class MySecondClass { {$attributesAndMethodsOriginal} } final class MyThirdClass { {$attributesAndMethodsFixed} } ",
-                "<?php final class MyFirstClass { {$attributesAndMethodsOriginal} } class MySecondClass { {$attributesAndMethodsOriginal} } final class MyThirdClass { {$attributesAndMethodsOriginal} } ",
-            ],
-            'minimal-set' => [
-                '<?php final class MyClass { private $v1; }',
-                '<?php final class MyClass { protected $v1; }',
-            ],
-            'anonymous-class-inside' => [
-                "<?php
+        yield 'final-extends' => [
+            "<?php final class MyClass extends MyAbstractClass { {$attributesAndMethodsOriginal} }",
+        ];
+
+        yield 'normal-extends' => [
+            "<?php class MyClass extends MyAbstractClass { {$attributesAndMethodsOriginal} }",
+        ];
+
+        yield 'abstract' => [
+            "<?php abstract class MyAbstractClass { {$attributesAndMethodsOriginal} }",
+        ];
+
+        yield 'normal' => [
+            "<?php class MyClass { {$attributesAndMethodsOriginal} }",
+        ];
+
+        yield 'trait' => [
+            "<?php trait MyTrait { {$attributesAndMethodsOriginal} }",
+        ];
+
+        yield 'final-with-trait' => [
+            "<?php final class MyClass { use MyTrait; {$attributesAndMethodsOriginal} }",
+        ];
+
+        yield 'multiline-comment' => [
+            '<?php final class MyClass { /* public protected private */ }',
+        ];
+
+        yield 'inline-comment' => [
+            "<?php final class MyClass { \n // public protected private \n }",
+        ];
+
+        yield 'final' => [
+            "<?php final class MyClass { {$attributesAndMethodsFixed} } class B {use C;}",
+            "<?php final class MyClass { {$attributesAndMethodsOriginal} } class B {use C;}",
+        ];
+
+        yield 'final-implements' => [
+            "<?php final class MyClass implements MyInterface { {$attributesAndMethodsFixed} }",
+            "<?php final class MyClass implements MyInterface { {$attributesAndMethodsOriginal} }",
+        ];
+
+        yield 'final-with-use-before' => [
+            "<?php use stdClass; final class MyClass { {$attributesAndMethodsFixed} }",
+            "<?php use stdClass; final class MyClass { {$attributesAndMethodsOriginal} }",
+        ];
+
+        yield 'final-with-use-after' => [
+            "<?php final class MyClass { {$attributesAndMethodsFixed} } use stdClass;",
+            "<?php final class MyClass { {$attributesAndMethodsOriginal} } use stdClass;",
+        ];
+
+        yield 'multiple-classes' => [
+            "<?php final class MyFirstClass { {$attributesAndMethodsFixed} } class MySecondClass { {$attributesAndMethodsOriginal} } final class MyThirdClass { {$attributesAndMethodsFixed} } ",
+            "<?php final class MyFirstClass { {$attributesAndMethodsOriginal} } class MySecondClass { {$attributesAndMethodsOriginal} } final class MyThirdClass { {$attributesAndMethodsOriginal} } ",
+        ];
+
+        yield 'minimal-set' => [
+            '<?php final class MyClass { private $v1; }',
+            '<?php final class MyClass { protected $v1; }',
+        ];
+
+        yield 'anonymous-class-inside' => [
+            "<?php
 final class Foo
 {
     {$attributesAndMethodsFixed}
@@ -101,7 +114,7 @@ final class Foo
     }
 }
 ",
-                "<?php
+            "<?php
 final class Foo
 {
     {$attributesAndMethodsOriginal}
@@ -114,22 +127,25 @@ final class Foo
     }
 }
 ",
-            ],
-            [
-                '<?php $a = new class{protected function A(){ echo 123; }};',
-            ],
-            [
-                '<?php final class Foo { private int $foo; }',
-                '<?php final class Foo { protected int $foo; }',
-            ],
-            [
-                '<?php final class Foo { private ?string $foo; }',
-                '<?php final class Foo { protected ?string $foo; }',
-            ],
-            [
-                '<?php final class Foo { private array $foo; }',
-                '<?php final class Foo { protected array $foo; }',
-            ],
+        ];
+
+        yield [
+            '<?php $a = new class{protected function A(){ echo 123; }};',
+        ];
+
+        yield [
+            '<?php final class Foo { private int $foo; }',
+            '<?php final class Foo { protected int $foo; }',
+        ];
+
+        yield [
+            '<?php final class Foo { private ?string $foo; }',
+            '<?php final class Foo { protected ?string $foo; }',
+        ];
+
+        yield [
+            '<?php final class Foo { private array $foo; }',
+            '<?php final class Foo { protected array $foo; }',
         ];
     }
 

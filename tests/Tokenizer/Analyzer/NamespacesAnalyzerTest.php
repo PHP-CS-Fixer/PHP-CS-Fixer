@@ -46,46 +46,46 @@ final class NamespacesAnalyzerTest extends TestCase
 
     public static function provideNamespacesCases(): iterable
     {
-        return [
-            ['<?php // no namespaces', [
-                new NamespaceAnalysis(
-                    '',
-                    '',
-                    0,
-                    0,
-                    0,
-                    1
-                ),
-            ]],
-            ['<?php namespace Foo\Bar;', [
-                new NamespaceAnalysis(
-                    'Foo\Bar',
-                    'Bar',
-                    1,
-                    6,
-                    1,
-                    6
-                ),
-            ]],
-            ['<?php namespace Foo\Bar{}; namespace Foo\Baz {};', [
-                new NamespaceAnalysis(
-                    'Foo\Bar',
-                    'Bar',
-                    1,
-                    6,
-                    1,
-                    7
-                ),
-                new NamespaceAnalysis(
-                    'Foo\Baz',
-                    'Baz',
-                    10,
-                    16,
-                    10,
-                    17
-                ),
-            ]],
-        ];
+        yield ['<?php // no namespaces', [
+            new NamespaceAnalysis(
+                '',
+                '',
+                0,
+                0,
+                0,
+                1
+            ),
+        ]];
+
+        yield ['<?php namespace Foo\Bar;', [
+            new NamespaceAnalysis(
+                'Foo\Bar',
+                'Bar',
+                1,
+                6,
+                1,
+                6
+            ),
+        ]];
+
+        yield ['<?php namespace Foo\Bar{}; namespace Foo\Baz {};', [
+            new NamespaceAnalysis(
+                'Foo\Bar',
+                'Bar',
+                1,
+                6,
+                1,
+                7
+            ),
+            new NamespaceAnalysis(
+                'Foo\Baz',
+                'Baz',
+                10,
+                16,
+                10,
+                17
+            ),
+        ]];
     }
 
     /**

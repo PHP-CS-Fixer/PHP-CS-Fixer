@@ -36,18 +36,18 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     /**/use Foo;
                     use FooB;
                 ',
-                '<?php
+            '<?php
                     /**/use Foo,FooB;
                 ',
-            ],
-            [
-                <<<'EOF'
+        ];
+
+        yield [
+            <<<'EOF'
 use Some, Not, PHP, Like, Use, Statement;
 <?php
 
@@ -65,8 +65,8 @@ use FooJ;
 use FooZ;
 
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 use Some, Not, PHP, Like, Use, Statement;
 <?php
 
@@ -80,9 +80,10 @@ use FooF,
 use FooZ;
 
 EOF
-            ],
-            [
-                <<<'EOF'
+        ];
+
+        yield [
+            <<<'EOF'
 <?php
 
 namespace {
@@ -116,8 +117,8 @@ namespace Boo {
 }
 
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 namespace {
@@ -143,23 +144,26 @@ namespace Boo {
 }
 
 EOF
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     use FooA;
                     use FooB;
                 ',
-                '<?php
+            '<?php
                     use FooA, FooB;
                 ',
-            ],
-            [
-                '<?php use FooA;
+        ];
+
+        yield [
+            '<?php use FooA;
 use FooB?>',
-                '<?php use FooA, FooB?>',
-            ],
-            [
-                '<?php
+            '<?php use FooA, FooB?>',
+        ];
+
+        yield [
+            '<?php
 use B;
 use C;
     use E;
@@ -167,83 +171,91 @@ use C;
         use G;
         use H;
 ',
-                '<?php
+            '<?php
 use B,C;
     use E,F;
         use G,H;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use B;
 /*
 */use C;
 ',
-                '<?php
+            '<?php
 use B,
 /*
 */C;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use A;
 use B;
 //,{} use ; :
 #,{} use ; :
 /*,{} use ; :*/
 use C  ; ',
-                '<?php
+            '<?php
 use A,B,
 //,{} use ; :
 #,{} use ; :
 /*,{} use ; :*/
 C  ; ',
-            ],
-            [
-                '<?php use Z ;
+        ];
+
+        yield [
+            '<?php use Z ;
 use X ?><?php new X(); // run before white space around semicolon',
-                '<?php use Z , X ?><?php new X(); // run before white space around semicolon',
-            ],
-            [
-                '<?php use FooA#
+            '<?php use Z , X ?><?php new X(); // run before white space around semicolon',
+        ];
+
+        yield [
+            '<?php use FooA#
 ;#
 #
 use FooB;',
-                '<?php use FooA#
+            '<?php use FooA#
 ,#
 #
 FooB;',
-            ],
-            [
-                '<?php use some\b\ClassB;
+        ];
+
+        yield [
+            '<?php use some\b\ClassB;
 use function some\b\CC as C;
 use function some\b\D;
 use const some\b\E;
 use function some\b\A\B;',
-                '<?php use some\b\{ClassB, function CC as C, function D, const E, function A\B};',
-            ],
-            [
-                '<?php
+            '<?php use some\b\{ClassB, function CC as C, function D, const E, function A\B};',
+        ];
+
+        yield [
+            '<?php
 use Foo\Bar;
 use Foo\Baz;',
-                '<?php
+            '<?php
 use Foo\ {
     Bar, Baz
 };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use Foo\Bar;
 use Foo\Baz;',
-                '<?php
+            '<?php
 use Foo\
 {
     Bar, Baz
 };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use function md5;
 use function str_repeat;
 use const true;
@@ -251,24 +263,24 @@ use const false;
 use A;
 use B;
 ',
-                '<?php
+            '<?php
 use function md5, str_repeat;
 use const true, false;
 use A,B;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use D\E;
 use D\F;
 use G\H;
 use G\I/*1*//*2*/;
 ',
-                '<?php
+            '<?php
 use D\{E,F,};
 use G\{H,I/*1*/,/*2*/};
 ',
-            ],
         ];
     }
 

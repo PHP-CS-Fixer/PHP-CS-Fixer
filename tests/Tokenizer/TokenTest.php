@@ -41,18 +41,25 @@ final class TokenTest extends TestCase
 
     public static function provideConstructorValidationCases(): iterable
     {
-        return [
-            [null],
-            [123],
-            [new \stdClass()],
-            [['asd', 'asd']],
-            [[null, 'asd']],
-            [[new \stdClass(), 'asd']],
-            [[T_WHITESPACE, null]],
-            [[T_WHITESPACE, 123]],
-            [[T_WHITESPACE, '']],
-            [[T_WHITESPACE, new \stdClass()]],
-        ];
+        yield [null];
+
+        yield [123];
+
+        yield [new \stdClass()];
+
+        yield [['asd', 'asd']];
+
+        yield [[null, 'asd']];
+
+        yield [[new \stdClass(), 'asd']];
+
+        yield [[T_WHITESPACE, null]];
+
+        yield [[T_WHITESPACE, 123]];
+
+        yield [[T_WHITESPACE, '']];
+
+        yield [[T_WHITESPACE, new \stdClass()]];
     }
 
     public function testGetPrototype(): void
@@ -77,17 +84,23 @@ final class TokenTest extends TestCase
 
     public static function provideIsCastCases(): iterable
     {
-        return [
-            [self::getBraceToken(), false],
-            [self::getForeachToken(), false],
-            [new Token([T_ARRAY_CAST, '(array)', 1]), true],
-            [new Token([T_BOOL_CAST, '(bool)', 1]), true],
-            [new Token([T_DOUBLE_CAST, '(double)', 1]), true],
-            [new Token([T_INT_CAST, '(int)', 1]), true],
-            [new Token([T_OBJECT_CAST, '(object)', 1]), true],
-            [new Token([T_STRING_CAST, '(string)', 1]), true],
-            [new Token([T_UNSET_CAST, '(unset)', 1]), true],
-        ];
+        yield [self::getBraceToken(), false];
+
+        yield [self::getForeachToken(), false];
+
+        yield [new Token([T_ARRAY_CAST, '(array)', 1]), true];
+
+        yield [new Token([T_BOOL_CAST, '(bool)', 1]), true];
+
+        yield [new Token([T_DOUBLE_CAST, '(double)', 1]), true];
+
+        yield [new Token([T_INT_CAST, '(int)', 1]), true];
+
+        yield [new Token([T_OBJECT_CAST, '(object)', 1]), true];
+
+        yield [new Token([T_STRING_CAST, '(string)', 1]), true];
+
+        yield [new Token([T_UNSET_CAST, '(unset)', 1]), true];
     }
 
     /**
@@ -100,13 +113,15 @@ final class TokenTest extends TestCase
 
     public static function provideIsClassyCases(): iterable
     {
-        return [
-            [self::getBraceToken(), false],
-            [self::getForeachToken(), false],
-            [new Token([T_CLASS, 'class', 1]), true],
-            [new Token([T_INTERFACE, 'interface', 1]), true],
-            [new Token([T_TRAIT, 'trait', 1]), true],
-        ];
+        yield [self::getBraceToken(), false];
+
+        yield [self::getForeachToken(), false];
+
+        yield [new Token([T_CLASS, 'class', 1]), true];
+
+        yield [new Token([T_INTERFACE, 'interface', 1]), true];
+
+        yield [new Token([T_TRAIT, 'trait', 1]), true];
     }
 
     /**
@@ -240,15 +255,19 @@ final class TokenTest extends TestCase
 
     public static function provideIsNativeConstantCases(): iterable
     {
-        return [
-            [self::getBraceToken(), false],
-            [self::getForeachToken(), false],
-            [new Token([T_STRING, 'null', 1]), true],
-            [new Token([T_STRING, 'false', 1]), true],
-            [new Token([T_STRING, 'true', 1]), true],
-            [new Token([T_STRING, 'tRuE', 1]), true],
-            [new Token([T_STRING, 'TRUE', 1]), true],
-        ];
+        yield [self::getBraceToken(), false];
+
+        yield [self::getForeachToken(), false];
+
+        yield [new Token([T_STRING, 'null', 1]), true];
+
+        yield [new Token([T_STRING, 'false', 1]), true];
+
+        yield [new Token([T_STRING, 'true', 1]), true];
+
+        yield [new Token([T_STRING, 'tRuE', 1]), true];
+
+        yield [new Token([T_STRING, 'TRUE', 1]), true];
     }
 
     /**
@@ -266,18 +285,25 @@ final class TokenTest extends TestCase
 
     public static function provideIsWhitespaceCases(): iterable
     {
-        return [
-            [self::getBraceToken(), false],
-            [self::getForeachToken(), false],
-            [new Token(' '), true],
-            [new Token("\t "), true],
-            [new Token("\t "), false, ' '],
-            [new Token([T_WHITESPACE, "\r", 1]), true],
-            [new Token([T_WHITESPACE, "\0", 1]), true],
-            [new Token([T_WHITESPACE, "\x0B", 1]), true],
-            [new Token([T_WHITESPACE, "\n", 1]), true],
-            [new Token([T_WHITESPACE, "\n", 1]), false, " \t"],
-        ];
+        yield [self::getBraceToken(), false];
+
+        yield [self::getForeachToken(), false];
+
+        yield [new Token(' '), true];
+
+        yield [new Token("\t "), true];
+
+        yield [new Token("\t "), false, ' '];
+
+        yield [new Token([T_WHITESPACE, "\r", 1]), true];
+
+        yield [new Token([T_WHITESPACE, "\0", 1]), true];
+
+        yield [new Token([T_WHITESPACE, "\x0B", 1]), true];
+
+        yield [new Token([T_WHITESPACE, "\n", 1]), true];
+
+        yield [new Token([T_WHITESPACE, "\n", 1]), false, " \t"];
     }
 
     /**
@@ -299,13 +325,15 @@ final class TokenTest extends TestCase
 
     public static function provideCreatingTokenCases(): iterable
     {
-        return [
-            [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true],
-            ['(', null, '(', false],
-            [123, null, null, null, \InvalidArgumentException::class],
-            [false, null, null, null, \InvalidArgumentException::class],
-            [null, null, null, null, \InvalidArgumentException::class],
-        ];
+        yield [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true];
+
+        yield ['(', null, '(', false];
+
+        yield [123, null, null, null, \InvalidArgumentException::class];
+
+        yield [false, null, null, null, \InvalidArgumentException::class];
+
+        yield [null, null, null, null, \InvalidArgumentException::class];
     }
 
     public function testEqualsDefaultIsCaseSensitive(): void
@@ -483,19 +511,19 @@ final class TokenTest extends TestCase
 
     public static function provideTokenGetNameForIdCases(): iterable
     {
-        return [
-            [
-                null,
-                -1,
-            ],
-            [
-                'T_CLASS',
-                T_CLASS,
-            ],
-            [
-                'CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE',
-                CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-            ],
+        yield [
+            null,
+            -1,
+        ];
+
+        yield [
+            'T_CLASS',
+            T_CLASS,
+        ];
+
+        yield [
+            'CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE',
+            CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
         ];
     }
 

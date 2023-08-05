@@ -304,19 +304,20 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
 
     public static function provideNotFixCases(): iterable
     {
-        return [
-            [
-                '<?php pow(); ++$a;++$a;++$a;++$a;++$a;++$a;// pow(1,2);',
-            ],
-            [
-                '<?php pow(5); ++$a;++$a;++$a;++$a;++$a;++$a;# pow(1,2);',
-            ],
-            [
-                '<?php pow(5,1,1); ++$a;++$a;++$a;++$a;++$a;++$a;/* pow(1,2); */',
-            ],
-            [
-                '<?php \a\pow(4,3); ++$a;++$a;++$a;++$a;++$a;++$a;/** pow(1,2); */',
-            ],
+        yield [
+            '<?php pow(); ++$a;++$a;++$a;++$a;++$a;++$a;// pow(1,2);',
+        ];
+
+        yield [
+            '<?php pow(5); ++$a;++$a;++$a;++$a;++$a;++$a;# pow(1,2);',
+        ];
+
+        yield [
+            '<?php pow(5,1,1); ++$a;++$a;++$a;++$a;++$a;++$a;/* pow(1,2); */',
+        ];
+
+        yield [
+            '<?php \a\pow(4,3); ++$a;++$a;++$a;++$a;++$a;++$a;/** pow(1,2); */',
         ];
     }
 
@@ -332,11 +333,9 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
 
     public static function provideFix80Cases(): iterable
     {
-        return [
-            [
-                '<?php echo $a[2^3+1]?->test(1,2)** $b[2+$c];',
-                '<?php echo pow($a[2^3+1]?->test(1,2), $b[2+$c]);',
-            ],
+        yield [
+            '<?php echo $a[2^3+1]?->test(1,2)** $b[2+$c];',
+            '<?php echo pow($a[2^3+1]?->test(1,2), $b[2+$c]);',
         ];
     }
 }

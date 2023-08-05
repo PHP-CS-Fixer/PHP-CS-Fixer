@@ -48,9 +48,8 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
 
     public static function provideFixVarCases(): iterable
     {
-        return [
-            'testFixVar' => [
-                <<<'EOF'
+        yield 'testFixVar' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -61,8 +60,8 @@ class Foo
     public $foo;
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -73,10 +72,11 @@ class Foo
     public $foo;
 }
 EOF
-                ,
-            ],
-            'testFixType' => [
-                <<<'EOF'
+            ,
+        ];
+
+        yield 'testFixType' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -87,8 +87,8 @@ class Foo
     public $bar;
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -99,10 +99,11 @@ class Foo
     public $bar;
 }
 EOF
-                ,
-            ],
-            'testDoNothing' => [
-                <<<'EOF'
+            ,
+        ];
+
+        yield 'testDoNothing' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -113,9 +114,10 @@ class Foo
     public $bar;
 }
 EOF
-            ],
-            'testFixVarWithNestedKeys' => [
-                <<<'EOF'
+        ];
+
+        yield 'testFixVarWithNestedKeys' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -129,8 +131,8 @@ class Foo
      public $options;
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -144,9 +146,10 @@ class Foo
      public $options;
 }
 EOF
-            ],
-            'testSingleLine' => [
-                <<<'EOF'
+        ];
+
+        yield 'testSingleLine' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -155,8 +158,8 @@ class Foo
     public $bar;
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -165,10 +168,11 @@ class Foo
     public $bar;
 }
 EOF
-                ,
-            ],
-            'testSingleLineProtected' => [
-                <<<'EOF'
+            ,
+        ];
+
+        yield 'testSingleLineProtected' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -177,8 +181,8 @@ class Foo
     protected $bar;
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -187,10 +191,11 @@ class Foo
     protected $bar;
 }
 EOF
-                ,
-            ],
-            'testSingleLinePrivate' => [
-                <<<'EOF'
+            ,
+        ];
+
+        yield 'testSingleLinePrivate' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -199,8 +204,8 @@ class Foo
     private $bar;
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -209,10 +214,11 @@ class Foo
     private $bar;
 }
 EOF
-                ,
-            ],
-            'testSingleLineVar' => [
-                <<<'EOF'
+            ,
+        ];
+
+        yield 'testSingleLineVar' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -221,8 +227,8 @@ class Foo
     var $bar;
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -231,10 +237,11 @@ class Foo
     var $bar;
 }
 EOF
-                ,
-            ],
-            'testSingleLineStatic' => [
-                <<<'EOF'
+            ,
+        ];
+
+        yield 'testSingleLineStatic' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -243,8 +250,8 @@ class Foo
     static public $bar;
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -253,10 +260,11 @@ class Foo
     static public $bar;
 }
 EOF
-                ,
-            ],
-            'testSingleLineNoSpace' => [
-                <<<'EOF'
+            ,
+        ];
+
+        yield 'testSingleLineNoSpace' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -265,8 +273,8 @@ class Foo
     public $bar;
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -275,10 +283,11 @@ class Foo
     public $bar;
 }
 EOF
-                ,
-            ],
-            'testInlineDoc' => [
-                <<<'EOF'
+            ,
+        ];
+
+        yield 'testInlineDoc' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -297,18 +306,20 @@ class Foo
     }
 }
 EOF
-                ,
-            ],
-            'testSingleLineNoProperty' => [
-                <<<'EOF'
+            ,
+        ];
+
+        yield 'testSingleLineNoProperty' => [
+            <<<'EOF'
 <?php
 
 /** @var Foo\Bar $bar */
 $bar;
 EOF
-            ],
-            'testMultiLineNoProperty' => [
-                <<<'EOF'
+        ];
+
+        yield 'testMultiLineNoProperty' => [
+            <<<'EOF'
 <?php
 
 /**
@@ -316,9 +327,10 @@ EOF
  */
 $bar;
 EOF
-            ],
-            'testVeryNestedInlineDoc' => [
-                <<<'EOF'
+        ];
+
+        yield 'testVeryNestedInlineDoc' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -341,8 +353,8 @@ class Foo
     public $nestedFoo;
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -365,9 +377,10 @@ class Foo
     public $nestedFoo;
 }
 EOF
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class Foo
 {
     /**
@@ -376,14 +389,16 @@ class Foo
     public $foo;
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class Foo{}
 /**  */',
-            ],
-            'anonymousClass' => [
-                <<<'EOF'
+        ];
+
+        yield 'anonymousClass' => [
+            <<<'EOF'
 <?php
 
 class Anon
@@ -411,8 +426,8 @@ class Anon
     }
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 class Anon
@@ -440,10 +455,11 @@ class Anon
     }
 }
 EOF
-                ,
-            ],
-            [
-                '<?php
+            ,
+        ];
+
+        yield [
+            '<?php
 /**
  * Header
  */
@@ -475,9 +491,10 @@ $bar->doSomething(2);
  */
 list($bar) = a();
                 ',
-            ],
-            'const are not handled by this fixer' => [
-                '<?php
+        ];
+
+        yield 'const are not handled by this fixer' => [
+            '<?php
 class A
 {
     /**
@@ -486,25 +503,27 @@ class A
     private const SKIPPED_TYPES = ["a" => true];
 }
 ',
-            ],
-            'trait' => [
-                '<?php
+        ];
+
+        yield 'trait' => [
+            '<?php
  trait StaticExample {
     /**
      * @var string Hello!
      */
     public static $static = "foo";
 }',
-                '<?php
+            '<?php
  trait StaticExample {
     /**
      * @var string $static Hello!
      */
     public static $static = "foo";
 }',
-            ],
-            'complex type with union containing callable that has `$this` in signature' => [
-                <<<'EOF'
+        ];
+
+        yield 'complex type with union containing callable that has `$this` in signature' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -524,8 +543,8 @@ class Foo
     public $foo4;
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -545,10 +564,11 @@ class Foo
     public $foo4;
 }
 EOF
-                ,
-            ],
-            'testFixMultibyteVariableName' => [
-                <<<'EOF'
+            ,
+        ];
+
+        yield 'testFixMultibyteVariableName' => [
+            <<<'EOF'
 <?php
 
 class Foo
@@ -560,8 +580,8 @@ class Foo
     public $foo2;
 }
 EOF
-                ,
-                <<<'EOF'
+            ,
+            <<<'EOF'
 <?php
 
 class Foo
@@ -573,8 +593,7 @@ class Foo
     public $foo2;
 }
 EOF
-                ,
-            ],
+            ,
         ];
     }
 

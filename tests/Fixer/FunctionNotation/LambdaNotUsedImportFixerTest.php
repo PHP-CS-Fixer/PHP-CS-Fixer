@@ -33,21 +33,23 @@ final class LambdaNotUsedImportFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'simple' => [
-                '<?php $foo = function() {};',
-                '<?php $foo = function() use ($bar) {};',
-            ],
-            'simple, one of two' => [
-                '<?php $foo = function & () use ( $foo) { echo $foo; };',
-                '<?php $foo = function & () use ($bar, $foo) { echo $foo; };',
-            ],
-            'simple, one used, one reference, two not used' => [
-                '<?php $foo = function() use ($bar, &$foo  ) { echo $bar; };',
-                '<?php $foo = function() use ($bar, &$foo, $not1, $not2) { echo $bar; };',
-            ],
-            'simple, but witch comments' => [
-                '<?php $foo = function()
+        yield 'simple' => [
+            '<?php $foo = function() {};',
+            '<?php $foo = function() use ($bar) {};',
+        ];
+
+        yield 'simple, one of two' => [
+            '<?php $foo = function & () use ( $foo) { echo $foo; };',
+            '<?php $foo = function & () use ($bar, $foo) { echo $foo; };',
+        ];
+
+        yield 'simple, one used, one reference, two not used' => [
+            '<?php $foo = function() use ($bar, &$foo  ) { echo $bar; };',
+            '<?php $foo = function() use ($bar, &$foo, $not1, $not2) { echo $bar; };',
+        ];
+
+        yield 'simple, but witch comments' => [
+            '<?php $foo = function()
 # 1
 #2
 # 3
@@ -55,7 +57,7 @@ final class LambdaNotUsedImportFixerTest extends AbstractFixerTestCase
 # 5
  #6
 {};',
-                '<?php $foo = function()
+            '<?php $foo = function()
 use
 # 1
 ( #2
@@ -64,9 +66,10 @@ $bar #4
 # 5
 ) #6
 {};',
-            ],
-            'nested lambda I' => [
-                '<?php
+        ];
+
+        yield 'nested lambda I' => [
+            '<?php
 
 $f = function() {
     return function ($d) use ($c) {
@@ -74,7 +77,7 @@ $f = function() {
     };
 };
 ',
-                '<?php
+            '<?php
 
 $f = function() use ($b) {
     return function ($d) use ($c) {
@@ -82,9 +85,10 @@ $f = function() use ($b) {
     };
 };
 ',
-            ],
-            'nested lambda II' => [
-                '<?php
+        ];
+
+        yield 'nested lambda II' => [
+            '<?php
 // do not fix
 $f = function() use ($a) { return function() use ($a) { return function() use ($a) { return function() use ($a) { echo $a; }; }; }; };
 $f = function() use ($b) { return function($b) { return function($b) { return function($b) { echo $b; }; }; }; };
@@ -92,7 +96,7 @@ $f = function() use ($b) { return function($b) { return function($b) { return fu
 // do fix
 $f = function() { return function() { return function() { return function() { }; }; }; };
                 ',
-                '<?php
+            '<?php
 // do not fix
 $f = function() use ($a) { return function() use ($a) { return function() use ($a) { return function() use ($a) { echo $a; }; }; }; };
 $f = function() use ($b) { return function($b) { return function($b) { return function($b) { echo $b; }; }; }; };
@@ -100,25 +104,26 @@ $f = function() use ($b) { return function($b) { return function($b) { return fu
 // do fix
 $f = function() use ($a) { return function() use ($a) { return function() use ($a) { return function() use ($a) { }; }; }; };
                 ',
-            ],
-            'anonymous class' => [
-                '<?php
+        ];
+
+        yield 'anonymous class' => [
+            '<?php
 $a = function() use ($b) { new class($b){}; }; // do not fix
 $a = function() { new class(){ public function foo($b){echo $b;}}; }; // do fix
 ',
-                '<?php
+            '<?php
 $a = function() use ($b) { new class($b){}; }; // do not fix
 $a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; // do fix
 ',
-            ],
-            'anonymous class with a string argument' => [
-                '<?php $function = function () {
+        ];
+
+        yield 'anonymous class with a string argument' => [
+            '<?php $function = function () {
                     new class("bar") {};
                 };',
-                '<?php $function = function () use ($foo) {
+            '<?php $function = function () use ($foo) {
                     new class("bar") {};
                 };',
-            ],
         ];
     }
 

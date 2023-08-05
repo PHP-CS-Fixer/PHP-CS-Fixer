@@ -199,34 +199,36 @@ final class ConfigurationResolverTest extends TestCase
     {
         $dirBase = self::getFixtureDir();
 
-        return [
-            [
-                $dirBase.'case_1'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
-                'Test1Config',
-                $dirBase.'case_1',
-            ],
-            [
-                $dirBase.'case_2'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
-                'Test2Config',
-                $dirBase.'case_2',
-            ],
-            [
-                $dirBase.'case_3'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
-                'Test3Config',
-                $dirBase.'case_3',
-            ],
-            [
-                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
-                'Test6Config',
-                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir',
-                $dirBase.'case_6',
-            ],
-            [
-                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
-                'Test6Config',
-                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir/empty_file.php',
-                $dirBase.'case_6',
-            ],
+        yield [
+            $dirBase.'case_1'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
+            'Test1Config',
+            $dirBase.'case_1',
+        ];
+
+        yield [
+            $dirBase.'case_2'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
+            'Test2Config',
+            $dirBase.'case_2',
+        ];
+
+        yield [
+            $dirBase.'case_3'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
+            'Test3Config',
+            $dirBase.'case_3',
+        ];
+
+        yield [
+            $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
+            'Test6Config',
+            $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir',
+            $dirBase.'case_6',
+        ];
+
+        yield [
+            $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
+            'Test6Config',
+            $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir/empty_file.php',
+            $dirBase.'case_6',
         ];
     }
 
@@ -510,142 +512,158 @@ final class ConfigurationResolverTest extends TestCase
             );
         };
 
-        return [
-            'no path at all' => [
-                new \LogicException(),
-                Finder::create(),
-                [],
-                'override',
-            ],
-            'configured only by finder' => [
-                // don't override if the argument is empty
-                $cb(['a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php']),
-                Finder::create()
-                    ->in($dir),
-                [],
-                'override',
-            ],
-            'configured only by argument' => [
-                $cb(['a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php']),
-                Finder::create(),
-                [$dir],
-                'override',
-            ],
-            'configured by finder, intersected with empty argument' => [
-                [],
-                Finder::create()
-                    ->in($dir),
-                [],
-                'intersection',
-            ],
-            'configured by finder, intersected with dir' => [
-                $cb(['c/c1.php', 'c/d/cd1.php']),
-                Finder::create()
-                    ->in($dir),
-                [$dir.'/c'],
-                'intersection',
-            ],
-            'configured by finder, intersected with file' => [
-                $cb(['c/c1.php']),
-                Finder::create()
-                    ->in($dir),
-                [$dir.'/c/c1.php'],
-                'intersection',
-            ],
-            'finder points to one dir while argument to another, not connected' => [
-                [],
-                Finder::create()
-                    ->in($dir.'/b'),
-                [$dir.'/c'],
-                'intersection',
-            ],
-            'finder with excluded dir, intersected with excluded file' => [
-                [],
-                Finder::create()
-                    ->in($dir)
-                    ->exclude('c'),
-                [$dir.'/c/d/cd1.php'],
-                'intersection',
-            ],
-            'finder with excluded dir, intersected with dir containing excluded one' => [
-                $cb(['c/c1.php']),
-                Finder::create()
-                    ->in($dir)
-                    ->exclude('c/d'),
-                [$dir.'/c'],
-                'intersection',
-            ],
-            'finder with excluded file, intersected with dir containing excluded one' => [
-                $cb(['c/d/cd1.php']),
-                Finder::create()
-                    ->in($dir)
-                    ->notPath('c/c1.php'),
-                [$dir.'/c'],
-                'intersection',
-            ],
-            'configured by finder, intersected with non-existing path' => [
-                new \LogicException(),
-                Finder::create()
-                    ->in($dir),
-                ['non_existing_dir'],
-                'intersection',
-            ],
-            'configured by config file, overridden by multiple files' => [
-                $cb(['d/d1.php', 'd/d2.php']),
-                null,
-                [$dir.'/d/d1.php', $dir.'/d/d2.php'],
-                'override',
-                $dir.'/d/.php-cs-fixer.php',
-            ],
-            'configured by config file, intersected with multiple files' => [
-                $cb(['d/d1.php', 'd/d2.php']),
-                null,
-                [$dir.'/d/d1.php', $dir.'/d/d2.php'],
-                'intersection',
-                $dir.'/d/.php-cs-fixer.php',
-            ],
-            'configured by config file, overridden by non-existing dir' => [
-                new \LogicException(),
-                null,
-                [$dir.'/d/fff'],
-                'override',
-                $dir.'/d/.php-cs-fixer.php',
-            ],
-            'configured by config file, intersected with non-existing dir' => [
-                new \LogicException(),
-                null,
-                [$dir.'/d/fff'],
-                'intersection',
-                $dir.'/d/.php-cs-fixer.php',
-            ],
-            'configured by config file, overridden by non-existing file' => [
-                new \LogicException(),
-                null,
-                [$dir.'/d/fff.php'],
-                'override',
-                $dir.'/d/.php-cs-fixer.php',
-            ],
-            'configured by config file, intersected with non-existing file' => [
-                new \LogicException(),
-                null,
-                [$dir.'/d/fff.php'],
-                'intersection',
-                $dir.'/d/.php-cs-fixer.php',
-            ],
-            'configured by config file, overridden by multiple files and dirs' => [
-                $cb(['d/d1.php', 'd/e/de1.php', 'd/f/df1.php']),
-                null,
-                [$dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'],
-                'override',
-                $dir.'/d/.php-cs-fixer.php',
-            ],
-            'configured by config file, intersected with multiple files and dirs' => [
-                $cb(['d/d1.php', 'd/e/de1.php', 'd/f/df1.php']),
-                null,
-                [$dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'],
-                'intersection',
-                $dir.'/d/.php-cs-fixer.php',
-            ],
+        yield 'no path at all' => [
+            new \LogicException(),
+            Finder::create(),
+            [],
+            'override',
+        ];
+
+        yield 'configured only by finder' => [
+            // don't override if the argument is empty
+            $cb(['a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php']),
+            Finder::create()
+                ->in($dir),
+            [],
+            'override',
+        ];
+
+        yield 'configured only by argument' => [
+            $cb(['a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php']),
+            Finder::create(),
+            [$dir],
+            'override',
+        ];
+
+        yield 'configured by finder, intersected with empty argument' => [
+            [],
+            Finder::create()
+                ->in($dir),
+            [],
+            'intersection',
+        ];
+
+        yield 'configured by finder, intersected with dir' => [
+            $cb(['c/c1.php', 'c/d/cd1.php']),
+            Finder::create()
+                ->in($dir),
+            [$dir.'/c'],
+            'intersection',
+        ];
+
+        yield 'configured by finder, intersected with file' => [
+            $cb(['c/c1.php']),
+            Finder::create()
+                ->in($dir),
+            [$dir.'/c/c1.php'],
+            'intersection',
+        ];
+
+        yield 'finder points to one dir while argument to another, not connected' => [
+            [],
+            Finder::create()
+                ->in($dir.'/b'),
+            [$dir.'/c'],
+            'intersection',
+        ];
+
+        yield 'finder with excluded dir, intersected with excluded file' => [
+            [],
+            Finder::create()
+                ->in($dir)
+                ->exclude('c'),
+            [$dir.'/c/d/cd1.php'],
+            'intersection',
+        ];
+
+        yield 'finder with excluded dir, intersected with dir containing excluded one' => [
+            $cb(['c/c1.php']),
+            Finder::create()
+                ->in($dir)
+                ->exclude('c/d'),
+            [$dir.'/c'],
+            'intersection',
+        ];
+
+        yield 'finder with excluded file, intersected with dir containing excluded one' => [
+            $cb(['c/d/cd1.php']),
+            Finder::create()
+                ->in($dir)
+                ->notPath('c/c1.php'),
+            [$dir.'/c'],
+            'intersection',
+        ];
+
+        yield 'configured by finder, intersected with non-existing path' => [
+            new \LogicException(),
+            Finder::create()
+                ->in($dir),
+            ['non_existing_dir'],
+            'intersection',
+        ];
+
+        yield 'configured by config file, overridden by multiple files' => [
+            $cb(['d/d1.php', 'd/d2.php']),
+            null,
+            [$dir.'/d/d1.php', $dir.'/d/d2.php'],
+            'override',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, intersected with multiple files' => [
+            $cb(['d/d1.php', 'd/d2.php']),
+            null,
+            [$dir.'/d/d1.php', $dir.'/d/d2.php'],
+            'intersection',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, overridden by non-existing dir' => [
+            new \LogicException(),
+            null,
+            [$dir.'/d/fff'],
+            'override',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, intersected with non-existing dir' => [
+            new \LogicException(),
+            null,
+            [$dir.'/d/fff'],
+            'intersection',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, overridden by non-existing file' => [
+            new \LogicException(),
+            null,
+            [$dir.'/d/fff.php'],
+            'override',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, intersected with non-existing file' => [
+            new \LogicException(),
+            null,
+            [$dir.'/d/fff.php'],
+            'intersection',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, overridden by multiple files and dirs' => [
+            $cb(['d/d1.php', 'd/e/de1.php', 'd/f/df1.php']),
+            null,
+            [$dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'],
+            'override',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, intersected with multiple files and dirs' => [
+            $cb(['d/d1.php', 'd/e/de1.php', 'd/f/df1.php']),
+            null,
+            [$dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'],
+            'intersection',
+            $dir.'/d/.php-cs-fixer.php',
         ];
     }
 
@@ -670,54 +688,58 @@ final class ConfigurationResolverTest extends TestCase
     {
         $root = __DIR__.'/../..';
 
-        return [
+        yield [
             [
-                [
-                    'config' => $root.'/.php-cs-fixer.dist.php',
-                ],
-                false,
+                'config' => $root.'/.php-cs-fixer.dist.php',
             ],
+            false,
+        ];
+
+        yield [
             [
-                [
-                    'config' => $root.'/.php-cs-fixer.dist.php',
-                    'path' => [$root.'/src'],
-                ],
-                true,
+                'config' => $root.'/.php-cs-fixer.dist.php',
+                'path' => [$root.'/src'],
             ],
+            true,
+        ];
+
+        yield [
+            [],
+            false,
+        ];
+
+        yield [
             [
-                [],
-                false,
+                'path' => [$root.'/src'],
             ],
+            false,
+        ];
+
+        yield [
             [
-                [
-                    'path' => [$root.'/src'],
-                ],
-                false,
+                'config' => $root.'/.php-cs-fixer.dist.php',
+                'path' => [$root.'/src'],
+                'path-mode' => ConfigurationResolver::PATH_MODE_INTERSECTION,
             ],
+            false,
+        ];
+
+        // scenario when loaded config is not setting custom finder
+        yield [
             [
-                [
-                    'config' => $root.'/.php-cs-fixer.dist.php',
-                    'path' => [$root.'/src'],
-                    'path-mode' => ConfigurationResolver::PATH_MODE_INTERSECTION,
-                ],
-                false,
+                'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_3/.php-cs-fixer.dist.php',
+                'path' => [$root.'/src'],
             ],
-            // scenario when loaded config is not setting custom finder
+            false,
+        ];
+
+        // scenario when loaded config contains not fully defined finder
+        yield [
             [
-                [
-                    'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_3/.php-cs-fixer.dist.php',
-                    'path' => [$root.'/src'],
-                ],
-                false,
+                'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_9/.php-cs-fixer.php',
+                'path' => [$root.'/src'],
             ],
-            // scenario when loaded config contains not fully defined finder
-            [
-                [
-                    'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_9/.php-cs-fixer.php',
-                    'path' => [$root.'/src'],
-                ],
-                false,
-            ],
+            false,
         ];
     }
 
@@ -1082,19 +1104,19 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     public static function provideResolveDifferCases(): iterable
     {
-        return [
-            [
-                \PhpCsFixer\Differ\NullDiffer::class,
-                false,
-            ],
-            [
-                \PhpCsFixer\Differ\NullDiffer::class,
-                null,
-            ],
-            [
-                \PhpCsFixer\Differ\UnifiedDiffer::class,
-                true,
-            ],
+        yield [
+            \PhpCsFixer\Differ\NullDiffer::class,
+            false,
+        ];
+
+        yield [
+            \PhpCsFixer\Differ\NullDiffer::class,
+            null,
+        ];
+
+        yield [
+            \PhpCsFixer\Differ\UnifiedDiffer::class,
+            true,
         ];
     }
 
@@ -1123,14 +1145,17 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     public static function provideResolveBooleanOptionCases(): iterable
     {
-        return [
-            [true, true, 'yes'],
-            [true, false, 'yes'],
-            [false, true, 'no'],
-            [false, false, 'no'],
-            [true, true, null],
-            [false, false, null],
-        ];
+        yield [true, true, 'yes'];
+
+        yield [true, false, 'yes'];
+
+        yield [false, true, 'no'];
+
+        yield [false, false, 'no'];
+
+        yield [true, true, null];
+
+        yield [false, false, null];
     }
 
     public function testWithEmptyRules(): void
@@ -1164,21 +1189,22 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     public static function provideDeprecatedFixerConfiguredCases(): iterable
     {
-        return [
-            [true],
-            [['foo' => true]],
-            [false],
-        ];
+        yield [true];
+
+        yield [['foo' => true]];
+
+        yield [false];
     }
 
     public static function provideGetDirectoryCases(): iterable
     {
-        return [
-            [null, '/my/path/my/file', 'my/file'],
-            ['/my/path/.php-cs-fixer.cache', '/my/path/my/file', 'my/file'],
-            ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', 'dir2/file'],
-            ['dir/.php-cs-fixer.cache', '/my/path/dir/dir3/file', 'dir3/file'],
-        ];
+        yield [null, '/my/path/my/file', 'my/file'];
+
+        yield ['/my/path/.php-cs-fixer.cache', '/my/path/my/file', 'my/file'];
+
+        yield ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', 'dir2/file'];
+
+        yield ['dir/.php-cs-fixer.cache', '/my/path/dir/dir3/file', 'dir3/file'];
     }
 
     /**

@@ -33,9 +33,8 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                 namespace Bar {
                     function STRLEN($str) {
                         return "overriden" . \strlen($str);
@@ -45,51 +44,57 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                 namespace {
                     echo \Bar\STRLEN("xxx");
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo strtolower("hello 1");
                 ',
-                '<?php
+            '<?php
                     echo STRTOLOWER("hello 1");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo strtolower //a
                         ("hello 2");
                 ',
-                '<?php
+            '<?php
                     echo STRTOLOWER //a
                         ("hello 2");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo strtolower /**/   ("hello 3");
                 ',
-                '<?php
+            '<?php
                     echo STRTOLOWER /**/   ("hello 3");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo \sqrt(4);
                 ',
-                '<?php
+            '<?php
                     echo \sQrT(4);
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo "1".\sqrt("hello 5");
                 ',
-                '<?php
+            '<?php
                     echo "1".\SQRT("hello 5");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class Test{
                         public function gettypE()
                         {
@@ -105,55 +110,64 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     new STRTOLOWER();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     new \STRTOLOWER();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     new \A\B\STRTOLOWER();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     a::STRTOLOWER();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a->STRTOLOWER();
                 ',
-            ],
-            [
-                '<?php fOoO();',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php fOoO();',
+        ];
+
+        yield [
+            '<?php
                     namespace Foo {
                         function &Next() {
                             return prev(-1);
                         }
                     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $next1 = & next($array1);
                     $next2 = & \next($array2);
                 ',
-                '<?php
+            '<?php
                     $next1 = & Next($array1);
                     $next2 = & \Next($array2);
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     namespace Foo;
                     use function MyStuff\StrToLower;
                     class Bar {
@@ -161,20 +175,21 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                             return StrToLower($this->name);
                         }
                     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo \sqrt(4 , );
                 ',
-                '<?php
+            '<?php
                     echo \sQrT(4 , );
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a->STRTOLOWER(1,);
                 ',
-            ],
         ];
     }
 

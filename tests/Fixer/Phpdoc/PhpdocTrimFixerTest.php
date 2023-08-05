@@ -35,9 +35,8 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                <<<'EOF'
+        yield [
+            <<<'EOF'
                 <?php
     /**
      * @param EngineInterface $templating
@@ -46,9 +45,10 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
      */
 
 EOF
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 /**
  * @return int количество деактивированных
@@ -57,16 +57,16 @@ function deactivateCompleted()
 {
     return 0;
 }',
-            ],
-            [
-                mb_convert_encoding('
+        ];
+
+        yield [
+            mb_convert_encoding('
 <?php
 /**
  * Test à
  */
 function foo(){}
 ', 'Windows-1252', 'UTF-8'),
-            ],
         ];
     }
 

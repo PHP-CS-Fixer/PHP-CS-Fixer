@@ -59,56 +59,66 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCastsCases(): iterable
     {
-        return [
-            [
-                '<?php echo "( int ) $foo";',
-            ],
-            [
-                '<?php $bar = (int) $foo;',
-                '<?php $bar = ( int)$foo;',
-            ],
-            [
-                '<?php $bar = (int) $foo;',
-                '<?php $bar = (	int)$foo;',
-            ],
-            [
-                '<?php $bar = (int) $foo;',
-                '<?php $bar = (int)	$foo;',
-            ],
-            [
-                '<?php $bar = (string) (int) $foo;',
-                '<?php $bar = ( string )( int )$foo;',
-            ],
-            [
-                '<?php $bar = (string) (int) $foo;',
-                '<?php $bar = (string)(int)$foo;',
-            ],
-            [
-                '<?php $bar = (string) (int) $foo;',
-                '<?php $bar = ( string   )    (   int )$foo;',
-            ],
-            [
-                '<?php $bar = (string) $foo;',
-                '<?php $bar = ( string )   $foo;',
-            ],
-            [
-                '<?php $bar = (float) Foo::bar();',
-                '<?php $bar = (float )Foo::bar();',
-            ],
-            [
-                '<?php $bar = Foo::baz((float) Foo::bar());',
-                '<?php $bar = Foo::baz((float )Foo::bar());',
-            ],
-            [
-                '<?php $bar = $query["params"] = (array) $query["params"];',
-                '<?php $bar = $query["params"] = (array)$query["params"];',
-            ],
-            [
-                "<?php \$bar = (int)\n \$foo;",
-            ],
-            [
-                "<?php \$bar = (int)\r\n \$foo;",
-            ],
+        yield [
+            '<?php echo "( int ) $foo";',
+        ];
+
+        yield [
+            '<?php $bar = (int) $foo;',
+            '<?php $bar = ( int)$foo;',
+        ];
+
+        yield [
+            '<?php $bar = (int) $foo;',
+            '<?php $bar = (	int)$foo;',
+        ];
+
+        yield [
+            '<?php $bar = (int) $foo;',
+            '<?php $bar = (int)	$foo;',
+        ];
+
+        yield [
+            '<?php $bar = (string) (int) $foo;',
+            '<?php $bar = ( string )( int )$foo;',
+        ];
+
+        yield [
+            '<?php $bar = (string) (int) $foo;',
+            '<?php $bar = (string)(int)$foo;',
+        ];
+
+        yield [
+            '<?php $bar = (string) (int) $foo;',
+            '<?php $bar = ( string   )    (   int )$foo;',
+        ];
+
+        yield [
+            '<?php $bar = (string) $foo;',
+            '<?php $bar = ( string )   $foo;',
+        ];
+
+        yield [
+            '<?php $bar = (float) Foo::bar();',
+            '<?php $bar = (float )Foo::bar();',
+        ];
+
+        yield [
+            '<?php $bar = Foo::baz((float) Foo::bar());',
+            '<?php $bar = Foo::baz((float )Foo::bar());',
+        ];
+
+        yield [
+            '<?php $bar = $query["params"] = (array) $query["params"];',
+            '<?php $bar = $query["params"] = (array)$query["params"];',
+        ];
+
+        yield [
+            "<?php \$bar = (int)\n \$foo;",
+        ];
+
+        yield [
+            "<?php \$bar = (int)\r\n \$foo;",
         ];
     }
 
@@ -123,56 +133,66 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCastsNoneSpaceCases(): iterable
     {
-        return [
-            [
-                '<?php echo "( int ) $foo";',
-            ],
-            [
-                '<?php $bar = (int)$foo;',
-                '<?php $bar = ( int)$foo;',
-            ],
-            [
-                '<?php $bar = (int)$foo;',
-                '<?php $bar = (	int)$foo;',
-            ],
-            [
-                '<?php $bar = (int)$foo;',
-                '<?php $bar = (int)	$foo;',
-            ],
-            [
-                '<?php $bar = (string)(int)$foo;',
-                '<?php $bar = ( string )( int )$foo;',
-            ],
-            [
-                '<?php $bar = (string)(int)$foo;',
-            ],
-            [
-                '<?php $bar = (string)(int)$foo;',
-                '<?php $bar = ( string   )    (   int )$foo;',
-            ],
-            [
-                '<?php $bar = (string)$foo;',
-                '<?php $bar = ( string )   $foo;',
-            ],
-            [
-                '<?php $bar = (float)Foo::bar();',
-                '<?php $bar = (float )Foo::bar();',
-            ],
-            [
-                '<?php $bar = Foo::baz((float)Foo::bar());',
-                '<?php $bar = Foo::baz((float )Foo::bar());',
-            ],
-            [
-                '<?php $bar = $query["params"] = (array)$query["params"];',
-            ],
-            [
-                '<?php $bar = (int)$foo;',
-                "<?php \$bar = (int)\n \$foo;",
-            ],
-            [
-                '<?php $bar = (int)$foo;',
-                "<?php \$bar = (int)\r\n \$foo;",
-            ],
+        yield [
+            '<?php echo "( int ) $foo";',
+        ];
+
+        yield [
+            '<?php $bar = (int)$foo;',
+            '<?php $bar = ( int)$foo;',
+        ];
+
+        yield [
+            '<?php $bar = (int)$foo;',
+            '<?php $bar = (	int)$foo;',
+        ];
+
+        yield [
+            '<?php $bar = (int)$foo;',
+            '<?php $bar = (int)	$foo;',
+        ];
+
+        yield [
+            '<?php $bar = (string)(int)$foo;',
+            '<?php $bar = ( string )( int )$foo;',
+        ];
+
+        yield [
+            '<?php $bar = (string)(int)$foo;',
+        ];
+
+        yield [
+            '<?php $bar = (string)(int)$foo;',
+            '<?php $bar = ( string   )    (   int )$foo;',
+        ];
+
+        yield [
+            '<?php $bar = (string)$foo;',
+            '<?php $bar = ( string )   $foo;',
+        ];
+
+        yield [
+            '<?php $bar = (float)Foo::bar();',
+            '<?php $bar = (float )Foo::bar();',
+        ];
+
+        yield [
+            '<?php $bar = Foo::baz((float)Foo::bar());',
+            '<?php $bar = Foo::baz((float )Foo::bar());',
+        ];
+
+        yield [
+            '<?php $bar = $query["params"] = (array)$query["params"];',
+        ];
+
+        yield [
+            '<?php $bar = (int)$foo;',
+            "<?php \$bar = (int)\n \$foo;",
+        ];
+
+        yield [
+            '<?php $bar = (int)$foo;',
+            "<?php \$bar = (int)\r\n \$foo;",
         ];
     }
 }

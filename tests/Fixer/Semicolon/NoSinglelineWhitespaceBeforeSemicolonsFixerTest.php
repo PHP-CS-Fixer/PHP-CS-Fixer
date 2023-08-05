@@ -37,62 +37,70 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixe
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php for ($uu = 0; ; ++$uu) {}',
-                '<?php for ($uu = 0    ;    ; ++$uu) {}',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php for ($uu = 0; ; ++$uu) {}',
+            '<?php for ($uu = 0    ;    ; ++$uu) {}',
+        ];
+
+        yield [
+            '<?php
 $this
     ->setName(\'readme1\')
     ->setDescription(\'Generates the README content, based on the fix command help\')
 ;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $this
     ->setName(\'readme2\')
     ->setDescription(\'Generates the README content, based on the fix command help\')
     ;',
-            ],
-            [
-                '<?php echo "$this->foo(\'with param containing ;\') ;";',
-                '<?php echo "$this->foo(\'with param containing ;\') ;" ;',
-            ],
-            [
-                '<?php $this->foo();',
-                '<?php $this->foo() ;',
-            ],
-            [
-                '<?php $this->foo(\'with param containing ;\');',
-                '<?php $this->foo(\'with param containing ;\') ;',
-            ],
-            [
-                '<?php $this->foo(\'with param containing ) ; \');',
-                '<?php $this->foo(\'with param containing ) ; \') ;',
-            ],
-            [
-                '<?php $this->foo("with param containing ) ; ");',
-                '<?php $this->foo("with param containing ) ; ")  ;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php echo "$this->foo(\'with param containing ;\') ;";',
+            '<?php echo "$this->foo(\'with param containing ;\') ;" ;',
+        ];
+
+        yield [
+            '<?php $this->foo();',
+            '<?php $this->foo() ;',
+        ];
+
+        yield [
+            '<?php $this->foo(\'with param containing ;\');',
+            '<?php $this->foo(\'with param containing ;\') ;',
+        ];
+
+        yield [
+            '<?php $this->foo(\'with param containing ) ; \');',
+            '<?php $this->foo(\'with param containing ) ; \') ;',
+        ];
+
+        yield [
+            '<?php $this->foo("with param containing ) ; ");',
+            '<?php $this->foo("with param containing ) ; ")  ;',
+        ];
+
+        yield [
+            '<?php
     $foo
         ->bar(1)
         ->baz(2)
     ;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $foo
         ->bar(1)
         //->baz(2)
     ;',
-            ],
-            [
-                '<?php $this->foo("with semicolon in string) ; ");',
-            ],
+        ];
+
+        yield [
+            '<?php $this->foo("with semicolon in string) ; ");',
         ];
     }
 }

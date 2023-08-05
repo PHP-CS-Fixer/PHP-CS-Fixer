@@ -54,23 +54,24 @@ final class BracesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixControlContinuationBracesCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     $a = function() {
         $a = 1;
         while (false);
     };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $a = function() {
         $a = 1;
         for ($i=0;$i<5;++$i);
     };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class Foo
     {
         public function A()
@@ -81,24 +82,26 @@ final class BracesFixerTest extends AbstractFixerTestCase
             $a = 1;
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (true) {
         $a = 1;
     } else {
         $b = 2;
     }',
-                '<?php
+            '<?php
     if (true) {
         $a = 1;
     }
     else {
         $b = 2;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     try {
         throw new \Exception();
     } catch (\LogicException $e) {
@@ -106,7 +109,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     } catch (\Exception $e) {
         // do nothing
     }',
-                '<?php
+            '<?php
     try {
         throw new \Exception();
     }catch (\LogicException $e) {
@@ -115,30 +118,32 @@ final class BracesFixerTest extends AbstractFixerTestCase
     catch (\Exception $e) {
         // do nothing
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (true) {
         echo 1;
     } elseif (true) {
         echo 2;
     }',
-                '<?php
+            '<?php
     if (true) {
         echo 1;
     } elseif (true)
     {
         echo 2;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     try {
         echo 1;
     } catch (Exception $e) {
         echo 2;
     }',
-                '<?php
+            '<?php
     try
     {
         echo 1;
@@ -147,9 +152,10 @@ final class BracesFixerTest extends AbstractFixerTestCase
     {
         echo 2;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class Foo
     {
         public function bar(
@@ -159,7 +165,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         ) {
         }
     }',
-                '<?php
+            '<?php
     class Foo
     {
         public function bar(
@@ -169,9 +175,10 @@ final class BracesFixerTest extends AbstractFixerTestCase
         ){
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (1) {
         self::${$key} = $val;
         self::${$type}[$rule] = $pattern;
@@ -179,78 +186,86 @@ final class BracesFixerTest extends AbstractFixerTestCase
         self::${$type}[$rule] = $pattern + self::${$type}["rules"];
     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (1) {
         do {
             $a = 1;
         } while (true);
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if /* 1 */ (2) {
     }',
-                '<?php
+            '<?php
     if /* 1 */ (2) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     if (1) {
                         echo $items{0}->foo;
                         echo $collection->items{1}->property;
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $a = function() {
         $a = 1;
         while (false);
     };',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     $a = function()
     {
         $a = 1;
         while (false);
     };',
-                '<?php
+            '<?php
     $a = function() {
         $a = 1;
         while (false);
     };',
-                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     $a = function() {
         $a = 1;
         for ($i=0;$i<5;++$i);
     };',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     $a = function()
     {
         $a = 1;
         for ($i=0;$i<5;++$i);
     };',
-                '<?php
+            '<?php
     $a = function() {
         $a = 1;
         for ($i=0;$i<5;++$i);
     };',
-                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     class Foo {
         public function A() {
             ?>
@@ -259,7 +274,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
             $a = 1;
         }
     }',
-                '<?php
+            '<?php
     class Foo
     {
         public function A()
@@ -270,26 +285,28 @@ final class BracesFixerTest extends AbstractFixerTestCase
             $a = 1;
         }
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true) {
         $a = 1;
     } else {
         $b = 2;
     }',
-                '<?php
+            '<?php
     if (true) {
         $a = 1;
     }
     else {
         $b = 2;
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true)
     {
         $a = 1;
@@ -298,17 +315,18 @@ final class BracesFixerTest extends AbstractFixerTestCase
     {
         $b = 2;
     }',
-                '<?php
+            '<?php
     if (true) {
         $a = 1;
     }
     else {
         $b = 2;
     }',
-                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     try {
         throw new \Exception();
     } catch (\LogicException $e) {
@@ -316,7 +334,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     } catch (\Exception $e) {
         // do nothing
     }',
-                '<?php
+            '<?php
     try {
         throw new \Exception();
     }catch (\LogicException $e) {
@@ -325,10 +343,11 @@ final class BracesFixerTest extends AbstractFixerTestCase
     catch (\Exception $e) {
         // do nothing
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     try
     {
         throw new \Exception();
@@ -341,7 +360,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
     {
         // do nothing
     }',
-                '<?php
+            '<?php
     try {
         throw new \Exception();
     }catch (\LogicException $e) {
@@ -350,32 +369,34 @@ final class BracesFixerTest extends AbstractFixerTestCase
     catch (\Exception $e) {
         // do nothing
     }',
-                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true) {
         echo 1;
     } elseif (true) {
         echo 2;
     }',
-                '<?php
+            '<?php
     if (true) {
         echo 1;
     } elseif (true)
     {
         echo 2;
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     try {
         echo 1;
     } catch (Exception $e) {
         echo 2;
     }',
-                '<?php
+            '<?php
     try
     {
         echo 1;
@@ -384,10 +405,11 @@ final class BracesFixerTest extends AbstractFixerTestCase
     {
         echo 2;
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     class Foo {
         public function bar(
             FooInterface $foo,
@@ -396,7 +418,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         ) {
         }
     }',
-                '<?php
+            '<?php
     class Foo
     {
         public function bar(
@@ -406,10 +428,11 @@ final class BracesFixerTest extends AbstractFixerTestCase
         ){
         }
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (1) {
         self::${$key} = $val;
         self::${$type}[$rule] = $pattern;
@@ -417,49 +440,54 @@ final class BracesFixerTest extends AbstractFixerTestCase
         self::${$type}[$rule] = $pattern + self::${$type}["rules"];
     }
                 ',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (1) {
         do {
             $a = 1;
         } while (true);
     }',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if /* 1 */ (2) {
     }',
-                '<?php
+            '<?php
     if /* 1 */ (2) {}',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
                     if (1) {
                         echo $items{0}->foo;
                         echo $collection->items{1}->property;
                     }
                 ',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php class A {
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php class A {
     /** */
 }',
-                '<?php class A
+            '<?php class A
 /** */
 {
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 class Foo
 {
     public function foo()
@@ -470,7 +498,7 @@ class Foo
         bar();
     }
 }',
-                '<?php
+            '<?php
 class Foo
 {
     public function foo(){
@@ -480,9 +508,10 @@ class Foo
     bar();
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class Foo
 {
     public function foo($foo)
@@ -493,9 +522,10 @@ class Foo
         ;
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class Foo
 {
     /**
@@ -508,7 +538,7 @@ class Foo
      */
     public $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
   /**
    * Foo.
@@ -520,9 +550,10 @@ class Foo {
    */
   public $bar;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class Foo
 {
     /*
@@ -535,7 +566,7 @@ class Foo
      */
     public $bar;
 }',
-                '<?php
+            '<?php
 class Foo {
   /*
    * Foo.
@@ -547,51 +578,55 @@ class Foo {
    */
   public $bar;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (1==1) {
     $a = 1;
     // test
     $b = 2;
 }',
-                '<?php
+            '<?php
 if (1==1) {
  $a = 1;
   // test
   $b = 2;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (1==1) {
     $a = 1;
     # test
     $b = 2;
 }',
-                '<?php
+            '<?php
 if (1==1) {
  $a = 1;
   # test
   $b = 2;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (1==1) {
     $a = 1;
     /** @var int $b */
     $b = a();
 }',
-                '<?php
+            '<?php
 if (1==1) {
     $a = 1;
     /** @var int $b */
 $b = a();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if ($b) {
         if (1==1) {
             $a = 1;
@@ -600,7 +635,7 @@ $b = a();
         }
     }
 ',
-                '<?php
+            '<?php
     if ($b) {
         if (1==1) {
          $a = 1;
@@ -609,9 +644,10 @@ $b = a();
         }
     }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if ($b) {
         if (1==1) {
             $a = 1;
@@ -621,7 +657,7 @@ $b = a();
         }
     }
 ',
-                '<?php
+            '<?php
     if ($b) {
         if (1==1) {
          $a = 1;
@@ -631,9 +667,10 @@ $b = a();
         }
     }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class A
 {
     public function B()
@@ -642,7 +679,7 @@ class A
         $a = 1;
     }
 }',
-                '<?php
+            '<?php
 class A {
     public function B()
     {/*
@@ -650,9 +687,10 @@ class A {
       $a = 1;
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class B
 {
     public function B()
@@ -662,7 +700,7 @@ class B
         $a = 1;
     }
 }',
-                '<?php
+            '<?php
 class B {
     public function B()
     {
@@ -671,9 +709,10 @@ class B {
        $a = 1;
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class C
 {
     public function C()
@@ -682,7 +721,7 @@ class C
         $a = 1;
     }
 }',
-                '<?php
+            '<?php
 class C {
     public function C()
     {
@@ -690,35 +729,38 @@ class C {
        $a = 1;
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($a) { /*
 */
     echo 1;
 }',
-                '<?php
+            '<?php
 if ($a){ /*
 */
 echo 1;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($a) { /**/ /*
 */
     echo 1;
     echo 2;
 }',
-                '<?php
+            '<?php
 if ($a){ /**/ /*
 */
 echo 1;
 echo 2;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 foreach ($foo as $bar) {
     if (true) {
     }
@@ -726,18 +768,20 @@ foreach ($foo as $bar) {
     elseif (false) {
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo()
 {
     $bar = 1;                   // multiline ...
                                 // ... comment
     $baz  = 2;                  // next comment
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo()
 {
     $foo = 1;
@@ -746,7 +790,7 @@ function foo()
     // ... comment
     return $foo;
 }',
-                '<?php
+            '<?php
 function foo()
 {
         $foo = 1;
@@ -755,18 +799,20 @@ function foo()
         // ... comment
         return $foo;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo()
 {
     $bar = 1;     /* bar */     // multiline ...
                                 // ... comment
     $baz  = 2;    /* baz */     // next comment
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class Foo
 {
     public function bar()
@@ -776,7 +822,7 @@ class Foo
         }
     }
 }',
-                '<?php
+            '<?php
 class Foo {
     public function bar() {
         foreach (new Bar() as $file)
@@ -785,33 +831,37 @@ class Foo {
         }
     }
 }',
-            ],
-            [
-                '<?php if ($condition) { ?>
+        ];
+
+        yield [
+            '<?php if ($condition) { ?>
 echo 1;
 <?php } else { ?>
 echo 2;
 <?php } ?>
 ',
-            ],
-            [
-                '<?php $arr = [true, false]; ?>
+        ];
+
+        yield [
+            '<?php $arr = [true, false]; ?>
 <?php foreach ($arr as $index => $item) {
     if ($item): ?>
     <?php echo $index; ?>
 <?php endif;
 } ?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 do {
     foo();
 } // comment
 while (false);
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 if (true) {
     ?>
@@ -824,14 +874,14 @@ if (true) {
 <hr />
     <?php
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
     function foo()
     {
     }',
-            ],
         ];
     }
 
@@ -849,90 +899,99 @@ if (true) {
 
     public static function provideFixMissingBracesAndIndentCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 if (true):
     $foo = 0;
 endif;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true)  :
     $foo = 0;
 endif;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (true) : $foo = 1; endif;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $foo = 1;
 }',
-                '<?php
+            '<?php
 if (true)$foo = 1;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $foo = 2;
 }',
-                '<?php
+            '<?php
 if (true)    $foo = 2;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $foo = 3;
 }',
-                '<?php
+            '<?php
 if (true){$foo = 3;}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     echo 1;
 } else {
     echo 2;
 }',
-                '<?php
+            '<?php
 if(true) { echo 1; } else echo 2;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     echo 3;
 } else {
     echo 4;
 }',
-                '<?php
+            '<?php
 if(true) echo 3; else { echo 4; }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     echo 5;
 } else {
     echo 6;
 }',
-                '<?php
+            '<?php
 if (true) echo 5; else echo 6;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     while (true) {
         $foo = 1;
         $bar = 2;
     }
 }',
-                '<?php
+            '<?php
 if (true) while (true) { $foo = 1; $bar = 2;}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     if (true) {
         echo 1;
@@ -942,11 +1001,12 @@ if (true) {
 } else {
     echo 3;
 }',
-                '<?php
+            '<?php
 if (true) if (true) echo 1; else echo 2; else echo 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     // sth here...
 
@@ -954,75 +1014,83 @@ if (true) {
         $d = 1;
     }
 }',
-                '<?php
+            '<?php
 if (true) {
     // sth here...
 
     if ($a && ($b || $c)) $d = 1;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 for ($i = 1; $i < 10; ++$i) {
     echo $i;
 }
 for ($i = 1; $i < 10; ++$i) {
     echo $i;
 }',
-                '<?php
+            '<?php
 for ($i = 1; $i < 10; ++$i) echo $i;
 for ($i = 1; $i < 10; ++$i) { echo $i; }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 for ($i = 1; $i < 5; ++$i) {
     for ($i = 1; $i < 10; ++$i) {
         echo $i;
     }
 }',
-                '<?php
+            '<?php
 for ($i = 1; $i < 5; ++$i) for ($i = 1; $i < 10; ++$i) { echo $i; }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 do {
     echo 1;
 } while (false);',
-                '<?php
+            '<?php
 do { echo 1; } while (false);',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 while ($foo->next());',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 foreach ($foo as $bar) {
     echo $bar;
 }',
-                '<?php
+            '<?php
 foreach ($foo as $bar) echo $bar;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $a = 1;
 }',
-                '<?php
+            '<?php
 if (true) {$a = 1;}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $a = 1;
 }',
-                '<?php
+            '<?php
 if (true) {
  $a = 1;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $a = 1;
     $b = 2;
@@ -1031,7 +1099,7 @@ if (true) {
     }
     $d = 4;
 }',
-                '<?php
+            '<?php
 if (true) {
  $a = 1;
         $b = 2;
@@ -1040,26 +1108,29 @@ if (true) {
                         }
         $d = 4;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $a = 1;
 
 
     $b = 2;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (1) {
     $a = 1;
 
     // comment at end
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (1) {
     if (2) {
         $a = "a";
@@ -1071,18 +1142,20 @@ if (1) {
     }
     $d = "d";
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 foreach ($numbers as $num) {
     for ($i = 0; $i < $num; ++$i) {
         $a = "a";
     }
     $b = "b";
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (1) {
     if (2) {
         $foo = 2;
@@ -1092,26 +1165,28 @@ if (1) {
         }
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     declare(ticks = 1) {
         $ticks = 1;
     }',
-                '<?php
+            '<?php
     declare  (
     ticks = 1  ) {
   $ticks = 1;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (true) {
         foo();
     } elseif (true) {
         bar();
     }',
-                '<?php
+            '<?php
     if (true)
     {
         foo();
@@ -1119,43 +1194,47 @@ if (1) {
     {
         bar();
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     while (true) {
         foo();
     }',
-                '<?php
+            '<?php
     while (true)
     {
         foo();
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     do {
         echo $test;
     } while ($test = $this->getTest());',
-                '<?php
+            '<?php
     do
     {
         echo $test;
     }
     while ($test = $this->getTest());',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     do {
         echo $test;
     } while ($test = $this->getTest());',
-                '<?php
+            '<?php
     do
     {
         echo $test;
     }while ($test = $this->getTest());',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class ClassName
     {
         /**
@@ -1163,7 +1242,7 @@ if (1) {
          */
         public $foo = null;
     }',
-                '<?php
+            '<?php
     class ClassName
     {
 
@@ -1177,9 +1256,10 @@ if (1) {
 
 
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     while ($true) {
         try {
             throw new \Exception();
@@ -1187,39 +1267,44 @@ if (1) {
             // do nothing
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     interface Foo
     {
         public function setConfig(ConfigInterface $config);
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function bar()
 {
     $a = 1; //comment
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 function & lambda()
 {
     return function () {
     };
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function nested()
 {
     $a = "a{$b->c()}d";
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo()
 {
     $a = $b->{$c->d}($e);
@@ -1229,45 +1314,51 @@ function foo()
     $p = array($q->{$r}, $s->{$t});
     $u->{$v}->w = 1;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function mixed()
 {
     $a = $b->{"a{$c}d"}();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function mixedComplex()
 {
     $a = $b->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function mixedComplex()
 {
     $a = ${"b{$foo}"}->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (true):
         echo 1;
     else:
         echo 2;
     endif;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if ($test) { //foo
         echo 1;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (true) {
         // foo
         // bar
@@ -1276,7 +1367,7 @@ function mixedComplex()
             print("bar");
         }
     }',
-                '<?php
+            '<?php
     if (true)
         // foo
         // bar
@@ -1287,9 +1378,10 @@ function mixedComplex()
             print("bar");
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (true) {
         // foo
         /* bar */
@@ -1298,7 +1390,7 @@ function mixedComplex()
             print("bar");
         }
     }',
-                '<?php
+            '<?php
     if (true)
         // foo
         /* bar */{
@@ -1308,15 +1400,17 @@ function mixedComplex()
             print("bar");
         }
     }',
-            ],
-            [
-                '<?php if (true) {
+        ];
+
+        yield [
+            '<?php if (true) {
     echo "s";
 } ?>x',
-                '<?php if (true) echo "s" ?>x',
-            ],
-            [
-                '<?php
+            '<?php if (true) echo "s" ?>x',
+        ];
+
+        yield [
+            '<?php
     class Foo
     {
         public function getFaxNumbers()
@@ -1331,7 +1425,7 @@ function mixedComplex()
             }
         }
     }',
-                '<?php
+            '<?php
     class Foo
     {
         public function getFaxNumbers()
@@ -1345,9 +1439,10 @@ function mixedComplex()
                 });
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     if (true) {
         echo 1;
@@ -1358,7 +1453,7 @@ if (true) {
     }
 }
 ',
-                '<?php
+            '<?php
 if(true)
     if(true)
         echo 1;
@@ -1367,9 +1462,10 @@ if(true)
     else
         echo 3;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     if (true) {
         echo 1;
@@ -1381,7 +1477,7 @@ if (true) {
 }
 echo 4;
 ',
-                '<?php
+            '<?php
 if(true)
     if(true)
         echo 1;
@@ -1391,9 +1487,10 @@ if(true)
         echo 3;
 echo 4;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     if (true) {
         echo 1;
@@ -1403,11 +1500,12 @@ if (true) {
         echo 3;
     }
 }',
-                '<?php
+            '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     if (true) {
         echo 1;
@@ -1417,26 +1515,28 @@ if (true) {
 } else {
     echo 3;
 }',
-                '<?php
+            '<?php
 if(true) if(true) echo 1; else echo 2; else echo 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 foreach ($data as $val) {
     // test val
     if ($val === "errors") {
         echo "!";
     }
 }',
-                '<?php
+            '<?php
 foreach ($data as $val)
     // test val
     if ($val === "errors") {
         echo "!";
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (1) {
     foreach ($data as $val) {
         // test val
@@ -1445,17 +1545,17 @@ if (1) {
         }
     }
 }',
-                '<?php
+            '<?php
 if (1)
     foreach ($data as $val)
         // test val
         if ($val === "errors") {
             echo "!";
         }',
-            ],
+        ];
 
-            [
-                '<?php
+        yield [
+            '<?php
     class Foo
     {
         public function main()
@@ -1463,7 +1563,7 @@ if (1)
             echo "Hello";
         }
     }',
-                '<?php
+            '<?php
     class Foo
     {
       public function main()
@@ -1471,10 +1571,10 @@ if (1)
         echo "Hello";
       }
     }',
-            ],
+        ];
 
-            [
-                '<?php
+        yield [
+            '<?php
 class Foo
 {
     public function main()
@@ -1482,7 +1582,7 @@ class Foo
         echo "Hello";
     }
 }',
-                '<?php
+            '<?php
 class Foo
 {
   public function main()
@@ -1490,30 +1590,33 @@ class Foo
     echo "Hello";
   }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class Foo
     {
         public $bar;
         public $baz;
     }',
-                '<?php
+            '<?php
     class Foo
     {
                 public $bar;
                 public $baz;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     function myFunction($foo, $bar)
     {
         return \Foo::{$foo}($bar);
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class C
     {
         public function __construct(
@@ -1521,110 +1624,121 @@ class Foo
             //comment
         }
     }',
-                '<?php
+            '<?php
     class C {
         public function __construct(
         )
         //comment
         {}
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true):
     $foo = 0;
 endif;',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true)  :
     $foo = 0;
 endif;',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true) : $foo = 1; endif;',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $foo = 1;
 }',
-                '<?php
+            '<?php
 if (true)$foo = 1;',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $foo = 2;
 }',
-                '<?php
+            '<?php
 if (true)    $foo = 2;',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $foo = 3;
 }',
-                '<?php
+            '<?php
 if (true){$foo = 3;}',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     echo 1;
 } else {
     echo 2;
 }',
-                '<?php
+            '<?php
 if(true) { echo 1; } else echo 2;',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     echo 3;
 } else {
     echo 4;
 }',
-                '<?php
+            '<?php
 if(true) echo 3; else { echo 4; }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     echo 5;
 } else {
     echo 6;
 }',
-                '<?php
+            '<?php
 if (true) echo 5; else echo 6;',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     while (true) {
         $foo = 1;
         $bar = 2;
     }
 }',
-                '<?php
+            '<?php
 if (true) while (true) { $foo = 1; $bar = 2;}',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     if (true) {
         echo 1;
@@ -1634,12 +1748,13 @@ if (true) {
 } else {
     echo 3;
 }',
-                '<?php
+            '<?php
 if (true) if (true) echo 1; else echo 2; else echo 3;',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     // sth here...
 
@@ -1647,84 +1762,92 @@ if (true) {
         $d = 1;
     }
 }',
-                '<?php
+            '<?php
 if (true) {
     // sth here...
 
     if ($a && ($b || $c)) $d = 1;
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 for ($i = 1; $i < 10; ++$i) {
     echo $i;
 }
 for ($i = 1; $i < 10; ++$i) {
     echo $i;
 }',
-                '<?php
+            '<?php
 for ($i = 1; $i < 10; ++$i) echo $i;
 for ($i = 1; $i < 10; ++$i) { echo $i; }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 for ($i = 1; $i < 5; ++$i) {
     for ($i = 1; $i < 10; ++$i) {
         echo $i;
     }
 }',
-                '<?php
+            '<?php
 for ($i = 1; $i < 5; ++$i) for ($i = 1; $i < 10; ++$i) { echo $i; }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 do {
     echo 1;
 } while (false);',
-                '<?php
+            '<?php
 do { echo 1; } while (false);',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 while ($foo->next());',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 foreach ($foo as $bar) {
     echo $bar;
 }',
-                '<?php
+            '<?php
 foreach ($foo as $bar) echo $bar;',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $a = 1;
 }',
-                '<?php
+            '<?php
 if (true) {$a = 1;}',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $a = 1;
 }',
-                '<?php
+            '<?php
 if (true) {
  $a = 1;
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $a = 1;
     $b = 2;
@@ -1733,7 +1856,7 @@ if (true) {
     }
     $d = 4;
 }',
-                '<?php
+            '<?php
 if (true) {
  $a = 1;
         $b = 2;
@@ -1742,31 +1865,34 @@ if (true) {
                         }
         $d = 4;
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     $a = 1;
 
 
     $b = 2;
 }',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (1) {
     $a = 1;
 
     // comment at end
 }',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (1) {
     if (2) {
         $a = "a";
@@ -1778,11 +1904,12 @@ if (1) {
     }
     $d = "d";
 }',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (1) {
     if (2) {
         $a = "a";
@@ -1797,7 +1924,7 @@ if (1) {
     }
     $d = "d";
 }',
-                '<?php
+            '<?php
 if (1) {
     if (2) {
         $a = "a";
@@ -1812,21 +1939,23 @@ if (1) {
     }
     $d = "d";
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 foreach ($numbers as $num) {
     for ($i = 0; $i < $num; ++$i) {
         $a = "a";
     }
     $b = "b";
 }',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (1) {
     if (2) {
         $foo = 2;
@@ -1836,29 +1965,31 @@ if (1) {
         }
     }
 }',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     declare(ticks = 1) {
         $ticks = 1;
     }',
-                '<?php
+            '<?php
     declare  (
     ticks = 1  ) {
   $ticks = 1;
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true) {
         foo();
     } elseif (true) {
         bar();
     }',
-                '<?php
+            '<?php
     if (true)
     {
         foo();
@@ -1866,54 +1997,58 @@ if (1) {
     {
         bar();
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     while (true) {
         foo();
     }',
-                '<?php
+            '<?php
     while (true)
     {
         foo();
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     do {
         echo $test;
     } while ($test = $this->getTest());',
-                '<?php
+            '<?php
     do
     {
         echo $test;
     }
     while ($test = $this->getTest());',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     do {
         echo $test;
     } while ($test = $this->getTest());',
-                '<?php
+            '<?php
     do
     {
         echo $test;
     }while ($test = $this->getTest());',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     class ClassName {
         /**
          * comment
          */
         public $foo = null;
     }',
-                '<?php
+            '<?php
     class ClassName
     {
 
@@ -1927,17 +2062,18 @@ if (1) {
 
 
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     class ClassName {
         /**
          * comment
          */
         public $foo = null;
     }',
-                '<?php
+            '<?php
     class ClassName
     {
 
@@ -1951,10 +2087,11 @@ if (1) {
 
 
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     while ($true) {
         try {
             throw new \Exception();
@@ -1962,11 +2099,12 @@ if (1) {
             // do nothing
         }
     }',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     while ($true)
     {
         try
@@ -1978,7 +2116,7 @@ if (1) {
             // do nothing
         }
     }',
-                '<?php
+            '<?php
     while ($true) {
         try {
             throw new \Exception();
@@ -1986,119 +2124,128 @@ if (1) {
             // do nothing
         }
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     interface Foo {
         public function setConfig(ConfigInterface $config);
     }',
-                '<?php
+            '<?php
     interface Foo
     {
         public function setConfig(ConfigInterface $config);
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     interface Foo {
         public function setConfig(ConfigInterface $config);
     }',
-                '<?php
+            '<?php
     interface Foo
     {
         public function setConfig(ConfigInterface $config);
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 function bar() {
     $a = 1; //comment
 }',
-                '<?php
+            '<?php
 function bar()
 {
     $a = 1; //comment
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 
 function & lambda() {
     return function () {
     };
 }',
-                '<?php
+            '<?php
 
 function & lambda()
 {
     return function () {
     };
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 
 function & lambda() {
     return function ()
     {
     };
 }',
-                '<?php
+            '<?php
 
 function & lambda()
 {
     return function () {
     };
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 
 function & lambda() {
     return function () {
     };
 }',
-                '<?php
+            '<?php
 
 function & lambda()
 {
     return function () {
     };
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 function nested() {
     $a = "a{$b->c()}d";
 }',
-                '<?php
+            '<?php
 function nested()
 {
     $a = "a{$b->c()}d";
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 function nested() {
     $a = "a{$b->c()}d";
 }',
-                '<?php
+            '<?php
 function nested()
 {
     $a = "a{$b->c()}d";
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 function foo() {
     $a = $b->{$c->d}($e);
     $f->{$g} = $h;
@@ -2107,7 +2254,7 @@ function foo() {
     $p = array($q->{$r}, $s->{$t});
     $u->{$v}->w = 1;
 }',
-                '<?php
+            '<?php
 function foo()
 {
     $a = $b->{$c->d}($e);
@@ -2117,10 +2264,11 @@ function foo()
     $p = array($q->{$r}, $s->{$t});
     $u->{$v}->w = 1;
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 function foo() {
     $a = $b->{$c->d}($e);
     $f->{$g} = $h;
@@ -2129,7 +2277,7 @@ function foo() {
     $p = array($q->{$r}, $s->{$t});
     $u->{$v}->w = 1;
 }',
-                '<?php
+            '<?php
 function foo()
 {
     $a = $b->{$c->d}($e);
@@ -2139,76 +2287,83 @@ function foo()
     $p = array($q->{$r}, $s->{$t});
     $u->{$v}->w = 1;
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 function mixed() {
     $a = $b->{"a{$c}d"}();
 }',
-                '<?php
+            '<?php
 function mixed()
 {
     $a = $b->{"a{$c}d"}();
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 function mixedComplex() {
     $a = $b->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
-                '<?php
+            '<?php
 function mixedComplex()
 {
     $a = $b->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 function mixedComplex() {
     $a = ${"b{$foo}"}->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
-                '<?php
+            '<?php
 function mixedComplex()
 {
     $a = ${"b{$foo}"}->{"a{$c->{\'foo-bar\'}()}d"}();
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true):
         echo 1;
     else:
         echo 2;
     endif;
 ',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true):
         echo 1;
     else:
         echo 2;
     endif;
 ',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     if ($test) { //foo
         echo 1;
     }',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true) {
         // foo
         // bar
@@ -2217,7 +2372,7 @@ function mixedComplex()
             print("bar");
         }
     }',
-                '<?php
+            '<?php
     if (true)
         // foo
         // bar
@@ -2228,10 +2383,11 @@ function mixedComplex()
             print("bar");
         }
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true)
     // foo
     // bar
@@ -2242,7 +2398,7 @@ function mixedComplex()
             print("bar");
         }
     }',
-                '<?php
+            '<?php
     if (true)
         // foo
         // bar
@@ -2253,10 +2409,11 @@ function mixedComplex()
             print("bar");
         }
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true) {
         // foo
         /* bar */
@@ -2265,7 +2422,7 @@ function mixedComplex()
             print("bar");
         }
     }',
-                '<?php
+            '<?php
     if (true)
         // foo
         /* bar */{
@@ -2275,17 +2432,19 @@ function mixedComplex()
             print("bar");
         }
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php if (true) {
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php if (true) {
     echo "s";
 } ?>x',
-                '<?php if (true) echo "s" ?>x',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            '<?php if (true) echo "s" ?>x',
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     class Foo {
         public function getFaxNumbers() {
             if (1) {
@@ -2298,7 +2457,7 @@ function mixedComplex()
             }
         }
     }',
-                '<?php
+            '<?php
     class Foo
     {
         public function getFaxNumbers()
@@ -2312,10 +2471,11 @@ function mixedComplex()
                 });
         }
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     class Foo {
         public function getFaxNumbers() {
             if (1)
@@ -2329,7 +2489,7 @@ function mixedComplex()
             }
         }
     }',
-                '<?php
+            '<?php
     class Foo
     {
         public function getFaxNumbers()
@@ -2343,10 +2503,11 @@ function mixedComplex()
                 });
         }
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     class Foo {
         public function getFaxNumbers() {
             if (1)
@@ -2361,7 +2522,7 @@ function mixedComplex()
             }
         }
     }',
-                '<?php
+            '<?php
     class Foo
     {
         public function getFaxNumbers()
@@ -2375,10 +2536,11 @@ function mixedComplex()
                 });
         }
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     if (true) {
         echo 1;
@@ -2389,7 +2551,7 @@ if (true) {
     }
 }
 ',
-                '<?php
+            '<?php
 if(true)
     if(true)
         echo 1;
@@ -2398,10 +2560,11 @@ if(true)
     else
         echo 3;
 ',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     if (true) {
         echo 1;
@@ -2413,7 +2576,7 @@ if (true) {
 }
 echo 4;
 ',
-                '<?php
+            '<?php
 if(true)
     if(true)
         echo 1;
@@ -2423,10 +2586,11 @@ if(true)
         echo 3;
 echo 4;
 ',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     if (true) {
         echo 1;
@@ -2436,12 +2600,13 @@ if (true) {
         echo 3;
     }
 }',
-                '<?php
+            '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     if (true) {
         echo 1;
@@ -2451,28 +2616,30 @@ if (true) {
 } else {
     echo 3;
 }',
-                '<?php
+            '<?php
 if(true) if(true) echo 1; else echo 2; else echo 3;',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 foreach ($data as $val) {
     // test val
     if ($val === "errors") {
         echo "!";
     }
 }',
-                '<?php
+            '<?php
 foreach ($data as $val)
     // test val
     if ($val === "errors") {
         echo "!";
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (1) {
     foreach ($data as $val) {
         // test val
@@ -2481,24 +2648,24 @@ if (1) {
         }
     }
 }',
-                '<?php
+            '<?php
 if (1)
     foreach ($data as $val)
         // test val
         if ($val === "errors") {
             echo "!";
         }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
 
-            [
-                '<?php
+        yield [
+            '<?php
     class Foo {
         public function main() {
             echo "Hello";
         }
     }',
-                '<?php
+            '<?php
     class Foo
     {
       public function main()
@@ -2506,16 +2673,17 @@ if (1)
         echo "Hello";
       }
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 class Foo {
     public function main() {
         echo "Hello";
     }
 }',
-                '<?php
+            '<?php
 class Foo
 {
   public function main()
@@ -2523,16 +2691,17 @@ class Foo
     echo "Hello";
   }
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 class Foo {
     public function main() {
         echo "Hello";
     }
 }',
-                '<?php
+            '<?php
 class Foo
 {
   public function main()
@@ -2540,53 +2709,57 @@ class Foo
     echo "Hello";
   }
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     class Foo {
         public $bar;
         public $baz;
     }',
-                '<?php
+            '<?php
     class Foo
     {
                 public $bar;
                 public $baz;
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     function myFunction($foo, $bar) {
         return \Foo::{$foo}($bar);
     }',
-                '<?php
+            '<?php
     function myFunction($foo, $bar)
     {
         return \Foo::{$foo}($bar);
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     class C {
         public function __construct(
         ) {
             //comment
         }
     }',
-                '<?php
+            '<?php
     class C {
         public function __construct(
         )
         //comment
         {}
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 class Something { # a
     public function sth() { //
         return function (int $foo) use ($bar) {
@@ -2602,7 +2775,7 @@ function D() { /**
 *
 */
 }',
-                '<?php
+            '<?php
 class Something # a
 {
     public function sth() //
@@ -2620,10 +2793,11 @@ function D() /**
 */
 {
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 class Foo
 {
     #[Baz]
@@ -2631,7 +2805,7 @@ class Foo
     {
     }
 }',
-                '<?php
+            '<?php
 class Foo
 {
  #[Baz]
@@ -2639,9 +2813,10 @@ class Foo
  {
    }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class Foo
 {
     public function bar($arg1,
@@ -2650,8 +2825,7 @@ class Foo
     {
     }
 }',
-                null,
-            ],
+            null,
         ];
     }
 
@@ -2669,51 +2843,55 @@ class Foo
 
     public static function provideFixClassyBracesCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     class FooA
                     {
                     }',
-                '<?php
+            '<?php
                     class FooA {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class FooB
                     {
                     }',
-                '<?php
+            '<?php
                     class FooB{}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class FooC
                     {
                     }',
-                '<?php
+            '<?php
                     class FooC
 {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     interface FooD
                     {
                     }',
-                '<?php
+            '<?php
                     interface FooD {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class TestClass extends BaseTestClass implements TestInterface
                 {
                     private $foo;
                 }',
-                '<?php
+            '<?php
                 class TestClass extends BaseTestClass implements TestInterface { private $foo;}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 abstract class Foo
 {
     public function getProcess($foo)
@@ -2721,63 +2899,70 @@ abstract class Foo
         return true;
     }
 }',
-            ],
-            ['<?php
+        ];
+
+        yield ['<?php
 function foo()
 {
     return "$c ($d)";
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class FooA {
                     }',
-                '<?php
+            '<?php
                     class FooA {}',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
                     class FooB {
                     }',
-                '<?php
+            '<?php
                     class FooB{}',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
                     class FooC {
                     }',
-                '<?php
+            '<?php
                     class FooC
 {}',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
                     interface FooD {
                     }',
-                '<?php
+            '<?php
                     interface FooD {}',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
                 class TestClass extends BaseTestClass implements TestInterface {
                     private $foo;
                 }',
-                '<?php
+            '<?php
                 class TestClass extends BaseTestClass implements TestInterface { private $foo;}',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 abstract class Foo {
     public function getProcess($foo) {
         return true;
     }
 }',
-                '<?php
+            '<?php
 abstract class Foo
 {
     public function getProcess($foo)
@@ -2785,56 +2970,60 @@ abstract class Foo
         return true;
     }
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 function foo() {
     return "$c ($d)";
 }',
-                '<?php
+            '<?php
 function foo()
 {
     return "$c ($d)";
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     trait TFoo
     {
         public $a;
     }',
-                '<?php
+            '<?php
     trait TFoo {public $a;}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     trait TFoo {
         public $a;
     }',
-                '<?php
+            '<?php
     trait TFoo {public $a;}',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     trait TFoo
     {
         public $a;
     }',
-                '<?php
+            '<?php
     trait TFoo {public $a;}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     trait TFoo {
         public $a;
     }',
-                '<?php
+            '<?php
     trait TFoo {public $a;}',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
     }
 
@@ -2852,9 +3041,8 @@ function foo()
 
     public static function provideFixAnonFunctionInShortArraySyntaxCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     function myFunction()
     {
         return [
@@ -2870,7 +3058,7 @@ function foo()
             ],
         ];
     }',
-                '<?php
+            '<?php
     function myFunction()
     {
         return [
@@ -2884,9 +3072,10 @@ function foo()
             ],
         ];
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     function myFunction() {
         return [
             [
@@ -2901,7 +3090,7 @@ function foo()
             ],
         ];
     }',
-                '<?php
+            '<?php
     function myFunction()
     {
         return [
@@ -2915,10 +3104,11 @@ function foo()
             ],
         ];
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     function myFunction() {
         return [
             [
@@ -2935,7 +3125,7 @@ function foo()
             ],
         ];
     }',
-                '<?php
+            '<?php
     function myFunction()
     {
         return [
@@ -2949,8 +3139,7 @@ function foo()
             ],
         ];
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
     }
 
@@ -2968,63 +3157,68 @@ function foo()
 
     public static function provideFixCommentBeforeBraceCases(): iterable
     {
-        return [
-            [
-                '<?php ',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php ',
+        ];
+
+        yield [
+            '<?php
     if ($test) { // foo
         echo 1;
     }',
-                '<?php
+            '<?php
     if ($test) // foo
     {
         echo 1;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $foo = function ($x) use ($y) { // foo
         echo 1;
     };',
-                '<?php
+            '<?php
     $foo = function ($x) use ($y) // foo
     {
         echo 1;
     };',
-            ],
-            [
-                '<?php ',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php ',
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if ($test) { // foo
         echo 1;
     }',
-                '<?php
+            '<?php
     if ($test) // foo
     {
         echo 1;
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     $foo = function ($x) use ($y) { // foo
         echo 1;
     };',
-                '<?php
+            '<?php
     $foo = function ($x) use ($y) // foo
     {
         echo 1;
     };',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     // 2.5+ API
     if (isNewApi()) {
         echo "new API";
@@ -3036,46 +3230,49 @@ function foo()
         echo "unknown API";
         // sth
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($a) { //
     ?><?php ++$a;
 } ?>',
-                '<?php
+            '<?php
 if ($a) { //
 ?><?php ++$a;
 } ?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($a) { /* */ /* */ /* */ /* */ /* */
     ?><?php ++$a;
 } ?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $foo = new class ($a) extends Foo implements Bar { // foo
         private $x;
     };',
-                '<?php
+            '<?php
     $foo = new class ($a) extends Foo implements Bar // foo
     {
         private $x;
     };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $foo = new class ($a) extends Foo implements Bar { // foo
         private $x;
     };',
-                '<?php
+            '<?php
     $foo = new class ($a) extends Foo implements Bar // foo
     {
         private $x;
     };',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
     }
 
@@ -3093,49 +3290,52 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
 
     public static function provideFixWhitespaceBeforeBraceCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     if (true) {
         echo 1;
     }',
-                '<?php
+            '<?php
     if (true)
     {
         echo 1;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (true) {
         echo 1;
     }',
-                '<?php
+            '<?php
     if (true){
         echo 1;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (true) {
         echo 1;
     }',
-                '<?php
+            '<?php
     if (true)           {
         echo 1;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     while ($file = $this->getFile()) {
     }',
-                '<?php
+            '<?php
     while ($file = $this->getFile())
     {
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     switch (n) {
         case label1:
             echo 1;
@@ -3145,7 +3345,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
             echo 3;
             echo 4;
     }',
-                '<?php
+            '<?php
     switch (n)
     {
         case label1:
@@ -3156,53 +3356,58 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
             echo 3;
             echo 4;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (true) {
         echo 1;
     }',
-                '<?php
+            '<?php
     if (true)
     {
         echo 1;
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true) {
         echo 1;
     }',
-                '<?php
+            '<?php
     if (true){
         echo 1;
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true) {
         echo 1;
     }',
-                '<?php
+            '<?php
     if (true)           {
         echo 1;
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     while ($file = $this->getFile()) {
     }',
-                '<?php
+            '<?php
     while ($file = $this->getFile())
     {
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     switch (n) {
         case label1:
             echo 1;
@@ -3212,7 +3417,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
             echo 3;
             echo 4;
     }',
-                '<?php
+            '<?php
     switch (n)
     {
         case label1:
@@ -3223,54 +3428,59 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
             echo 3;
             echo 4;
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true) {
         echo 1;
     }',
-                '<?php
+            '<?php
     if (true)
     {
         echo 1;
     }',
-                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true) {
         echo 1;
     }',
-                '<?php
+            '<?php
     if (true){
         echo 1;
     }',
-                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true) {
         echo 1;
     }',
-                '<?php
+            '<?php
     if (true)           {
         echo 1;
     }',
-                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     while ($file = $this->getFile()) {
     }',
-                '<?php
+            '<?php
     while ($file = $this->getFile())
     {
     }',
-                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     switch (n) {
         case label1:
             echo 1;
@@ -3280,7 +3490,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
             echo 3;
             echo 4;
     }',
-                '<?php
+            '<?php
     switch (n)
     {
         case label1:
@@ -3291,8 +3501,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
             echo 3;
             echo 4;
     }',
-                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
+            self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
     }
 
@@ -3310,18 +3519,18 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
 
     public static function provideFixFunctionsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     function download()
     {
     }',
-                '<?php
+            '<?php
     function download() {
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class Foo
 {
     public function AAAA()
@@ -3336,7 +3545,7 @@ class Foo
     {
     }
 }',
-                '<?php
+            '<?php
 class Foo
 {
     public function AAAA(){
@@ -3349,41 +3558,46 @@ class Foo
     {
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     filter(function () {
         return true;
     });
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     filter(function   ($a) {
     });',
-                '<?php
+            '<?php
     filter(function   ($a)
     {});',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     filter(function   ($b) {
     });',
-                '<?php
+            '<?php
     filter(function   ($b){});',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     foo(array_map(function ($object) use ($x, $y) {
         return array_filter($object->bar(), function ($o) {
             return $o->isBaz();
         });
     }, $collection));',
-                '<?php
+            '<?php
     foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class Foo
 {
     public static function bar()
@@ -3391,75 +3605,83 @@ class Foo
         return 1;
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     usort($this->fixers, function &($a, $b) use ($selfName) {
         return 1;
     });',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     usort(
         $this->fixers,
         function &($a, $b) use ($selfName) {
             return 1;
         }
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $fnc = function ($a, $b) { // random comment
         return 0;
     };',
-                '<?php
+            '<?php
     $fnc = function ($a, $b) // random comment
     {
         return 0;
     };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $fnc = function ($a, $b) { # random comment
         return 0;
     };',
-                '<?php
+            '<?php
     $fnc = function ($a, $b) # random comment
     {
         return 0;
     };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $fnc = function ($a, $b) { /* random comment */
         return 0;
     };',
-                '<?php
+            '<?php
     $fnc = function ($a, $b) /* random comment */
     {
         return 0;
     };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $fnc = function ($a, $b) { /** random comment */
         return 0;
     };',
-                '<?php
+            '<?php
     $fnc = function ($a, $b) /** random comment */
     {
         return 0;
     };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     function download() {
     }',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 class Foo {
     public function AAAA() {
     }
@@ -3470,7 +3692,7 @@ class Foo {
     public function CCCC() {
     }
 }',
-                '<?php
+            '<?php
 class Foo
 {
     public function AAAA(){
@@ -3483,47 +3705,52 @@ class Foo
     {
     }
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     filter(function () {
         return true;
     });
 ',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     filter(function   ($a) {
     });',
-                '<?php
+            '<?php
     filter(function   ($a)
     {});',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     filter(function   ($b) {
     });',
-                '<?php
+            '<?php
     filter(function   ($b){});',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     foo(array_map(function ($object) use ($x, $y) {
         return array_filter($object->bar(), function ($o) {
             return $o->isBaz();
         });
     }, $collection));',
-                '<?php
+            '<?php
     foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     foo(array_map(function ($object) use ($x, $y)
     {
         return array_filter($object->bar(), function ($o)
@@ -3531,18 +3758,19 @@ class Foo
             return $o->isBaz();
         });
     }, $collection));',
-                '<?php
+            '<?php
     foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 class Foo {
     public static function bar() {
         return 1;
     }
 }',
-                '<?php
+            '<?php
 class Foo
 {
     public static function bar()
@@ -3550,16 +3778,17 @@ class Foo
         return 1;
     }
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 class Foo {
     public static function bar() {
         return 1;
     }
 }',
-                '<?php
+            '<?php
 class Foo
 {
     public static function bar()
@@ -3567,16 +3796,17 @@ class Foo
         return 1;
     }
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 class Foo {
     public static function bar() {
         return 1;
     }
 }',
-                '<?php
+            '<?php
 class Foo
 {
     public static function bar()
@@ -3584,75 +3814,80 @@ class Foo
         return 1;
     }
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     usort($this->fixers, function &($a, $b) use ($selfName) {
         return 1;
     });',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     usort(
         $this->fixers,
         function &($a, $b) use ($selfName) {
             return 1;
         }
     );',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     $fnc = function ($a, $b) { // random comment
         return 0;
     };',
-                '<?php
+            '<?php
     $fnc = function ($a, $b) // random comment
     {
         return 0;
     };',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     $fnc = function ($a, $b) { # random comment
         return 0;
     };',
-                '<?php
+            '<?php
     $fnc = function ($a, $b) # random comment
     {
         return 0;
     };',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     $fnc = function ($a, $b) { /* random comment */
         return 0;
     };',
-                '<?php
+            '<?php
     $fnc = function ($a, $b) /* random comment */
     {
         return 0;
     };',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     $fnc = function ($a, $b) { /** random comment */
         return 0;
     };',
-                '<?php
+            '<?php
     $fnc = function ($a, $b) /** random comment */
     {
         return 0;
     };',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
     }
 
@@ -3670,53 +3905,55 @@ class Foo
 
     public static function provideFixMultiLineStructuresCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     if (true === true
         && true === true
     ) {
     }',
-                '<?php
+            '<?php
     if(true === true
         && true === true
     )
     {
     }',
-                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     foreach (
         $boo as $bar => $fooBarBazBuzz
     ) {
     }',
-                '<?php
+            '<?php
     foreach (
         $boo as $bar => $fooBarBazBuzz
     )
     {
     }',
-                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     $foo = function (
         $baz,
         $boo
     ) {
     };',
-                '<?php
+            '<?php
     $foo = function (
         $baz,
         $boo
     )
     {
     };',
-                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     class Foo
     {
         public static function bar(
@@ -3725,7 +3962,7 @@ class Foo
         ) {
         }
     }',
-                '<?php
+            '<?php
     class Foo
     {
         public static function bar(
@@ -3735,24 +3972,26 @@ class Foo
         {
         }
     }',
-                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true === true
         && true === true
     ) {
     }',
-                '<?php
+            '<?php
     if(true === true
         && true === true
     )
     {
     }',
-                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     if ($foo)
     {
     }
@@ -3761,7 +4000,7 @@ class Foo
         && true === true
     ) {
     }',
-                '<?php
+            '<?php
     if ($foo)
     {
     }
@@ -3771,8 +4010,7 @@ class Foo
     )
     {
     }',
-                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
+            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
     }
 
@@ -3790,76 +4028,81 @@ class Foo
 
     public static function provideFixSpaceAroundTokenCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     try {
         throw new Exception();
     } catch (Exception $e) {
         log($e);
     }',
-                '<?php
+            '<?php
     try{
         throw new Exception();
     }catch (Exception $e){
         log($e);
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     do {
         echo 1;
     } while ($test);',
-                '<?php
+            '<?php
     do{
         echo 1;
     }while($test);',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (true === true
         && true === true
     ) {
     }',
-                '<?php
+            '<?php
     if(true === true
         && true === true
     )     {
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (1) {
     }
     if ($this->tesT ($test)) {
     }',
-                '<?php
+            '<?php
     if(1){
     }
     if ($this->tesT ($test)) {
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     if (true) {
     } elseif (false) {
     } else {
     }',
-                '<?php
+            '<?php
     if(true){
     }elseif(false){
     }else{
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $foo = function& () use ($bar) {
     };',
-                '<?php
+            '<?php
     $foo = function& ()use($bar){};',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 // comment
 declare(strict_types=1);
@@ -3867,90 +4110,98 @@ declare(strict_types=1);
 // comment
 while (true) {
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 declare(ticks   =   1) {
 }',
-                '<?php
+            '<?php
 declare   (   ticks   =   1   )   {
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     try {
         throw new Exception();
     } catch (Exception $e) {
         log($e);
     }',
-                '<?php
+            '<?php
     try{
         throw new Exception();
     }catch (Exception $e){
         log($e);
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     do {
         echo 1;
     } while ($test);',
-                '<?php
+            '<?php
     do{
         echo 1;
     }while($test);',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true === true
         && true === true
     ) {
     }',
-                '<?php
+            '<?php
     if(true === true
         && true === true
     )     {
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (1) {
     }
     if ($this->tesT ($test)) {
     }',
-                '<?php
+            '<?php
     if(1){
     }
     if ($this->tesT ($test)) {
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     if (true) {
     } elseif (false) {
     } else {
     }',
-                '<?php
+            '<?php
     if(true){
     }elseif(false){
     }else{
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     $foo = function& () use ($bar) {
     };',
-                '<?php
+            '<?php
     $foo = function& ()use($bar){};',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 
 // comment
 declare(strict_types=1);
@@ -3958,18 +4209,18 @@ declare(strict_types=1);
 // comment
 while (true) {
 }',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 declare(ticks   =   1) {
 }',
-                '<?php
+            '<?php
 declare   (   ticks   =   1   )   {
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
     }
 
@@ -3987,9 +4238,8 @@ declare   (   ticks   =   1   )   {
 
     public static function provideFinallyCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     try {
         throw new \Exception();
     } catch (\LogicException $e) {
@@ -3999,7 +4249,7 @@ declare   (   ticks   =   1   )   {
     } finally {
         echo "finish!";
     }',
-                '<?php
+            '<?php
     try {
         throw new \Exception();
     }catch (\LogicException $e) {
@@ -4011,9 +4261,10 @@ declare   (   ticks   =   1   )   {
     finally     {
         echo "finish!";
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     try {
         throw new \Exception();
     } catch (\LogicException $e) {
@@ -4023,7 +4274,7 @@ declare   (   ticks   =   1   )   {
     } finally {
         echo "finish!";
     }',
-                '<?php
+            '<?php
     try {
         throw new \Exception();
     }catch (\LogicException $e) {
@@ -4035,10 +4286,11 @@ declare   (   ticks   =   1   )   {
     finally     {
         echo "finish!";
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     try
     {
         throw new \Exception();
@@ -4055,7 +4307,7 @@ declare   (   ticks   =   1   )   {
     {
         echo "finish!";
     }',
-                '<?php
+            '<?php
     try {
         throw new \Exception();
     }catch (\LogicException $e) {
@@ -4067,8 +4319,7 @@ declare   (   ticks   =   1   )   {
     finally     {
         echo "finish!";
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
     }
 
@@ -4086,39 +4337,40 @@ declare   (   ticks   =   1   )   {
 
     public static function provideFunctionImportCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     use function Foo\bar;
     if (true) {
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     use function Foo\bar;
     if (true) {
     }',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     use function Foo\bar;
     if (true)
     {
     }',
-                '<?php
+            '<?php
     use function Foo\bar;
     if (true) {
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     use function Foo\bar;
     if (true) {
     }',
-            ],
         ];
     }
 
@@ -4136,9 +4388,8 @@ declare   (   ticks   =   1   )   {
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     function foo($a)
     {
         // foo
@@ -4148,38 +4399,42 @@ declare   (   ticks   =   1   )   {
             }
         };
     }',
-                '<?php
+            '<?php
     function foo($a)
     {
         // foo
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     foo(1, new class implements Logger {
         public function log($message)
         {
             log($message);
         }
     }, 3);',
-                '<?php
+            '<?php
     foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $message = (new class() implements FooInterface {
 });',
-                '<?php
+            '<?php
 $message = (new class() implements FooInterface{});',
-            ],
-            [
-                '<?php $message = (new class() {
+        ];
+
+        yield [
+            '<?php $message = (new class() {
 });',
-                '<?php $message = (new class() {});',
-            ],
-            [
-                '<?php
+            '<?php $message = (new class() {});',
+        ];
+
+        yield [
+            '<?php
 if (1) {
     $message = (new class() extends Foo {
         public function bar()
@@ -4188,16 +4443,17 @@ if (1) {
         }
     });
 }',
-                '<?php
+            '<?php
 if (1) {
   $message = (new class() extends Foo
   {
     public function bar() { echo 1; }
   });
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class Foo
     {
         public function use()
@@ -4209,7 +4465,7 @@ if (1) {
         }
     }
                 ',
-                '<?php
+            '<?php
     class Foo
     {
         public function use() {
@@ -4219,9 +4475,10 @@ if (1) {
         }
     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $a = function (int $foo): string {
         echo $foo;
     };
@@ -4234,7 +4491,7 @@ if (1) {
     {
     }
                 ',
-                '<?php
+            '<?php
     $a = function (int $foo): string
     {
         echo $foo;
@@ -4248,9 +4505,10 @@ if (1) {
     function a() {
     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class Something
     {
         public function sth(): string
@@ -4260,7 +4518,7 @@ if (1) {
             };
         }
     }',
-                '<?php
+            '<?php
     class Something
     {
         public function sth(): string
@@ -4268,30 +4526,33 @@ if (1) {
             return function (int $foo) use ($bar): string { return $bar; };
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use function some\a\{
     test1,
     test2
 };
 test();',
-                '<?php
+            '<?php
 use function some\a\{
      test1,
     test2
  };
 test();',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     function foo($a) {
         // foo
         $foo = new class($a) extends Foo {
@@ -4299,16 +4560,17 @@ use const some\a\{ConstA, ConstB, ConstC};
             }
         };
     }',
-                '<?php
+            '<?php
     function foo($a)
     {
         // foo
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     function foo($a)
     {
         // foo
@@ -4318,16 +4580,17 @@ use const some\a\{ConstA, ConstB, ConstC};
             }
         };
     }',
-                '<?php
+            '<?php
     function foo($a)
     {
         // foo
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
-                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     function foo($a) {
         // foo
         $foo = new class($a) extends Foo {
@@ -4335,16 +4598,17 @@ use const some\a\{ConstA, ConstB, ConstC};
             }
         };
     }',
-                '<?php
+            '<?php
     function foo($a)
     {
         // foo
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     function foo($a)
     {
         // foo
@@ -4355,16 +4619,17 @@ use const some\a\{ConstA, ConstB, ConstC};
             }
         };
     }',
-                '<?php
+            '<?php
     function foo($a)
     {
         // foo
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
-                self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     function foo($a) {
         // foo
         $foo = new class($a) extends Foo
@@ -4373,95 +4638,105 @@ use const some\a\{ConstA, ConstB, ConstC};
             }
         };
     }',
-                '<?php
+            '<?php
     function foo($a)
     {
         // foo
         $foo = new class($a) extends Foo { public function bar() {} };
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     foo(1, new class implements Logger {
         public function log($message) {
             log($message);
         }
     }, 3);',
-                '<?php
+            '<?php
     foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     foo(1, new class implements Logger {
         public function log($message)
         {
             log($message);
         }
     }, 3);',
-                '<?php
+            '<?php
     foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
-                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     foo(1, new class implements Logger
     {
         public function log($message) {
             log($message);
         }
     }, 3);',
-                '<?php
+            '<?php
     foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 $message = (new class() implements FooInterface {
 });',
-                '<?php
+            '<?php
 $message = (new class() implements FooInterface{});',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 $message = (new class() implements FooInterface {
 });',
-                '<?php
+            '<?php
 $message = (new class() implements FooInterface{});',
-                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 $message = (new class() implements FooInterface
 {
 });',
-                '<?php
+            '<?php
 $message = (new class() implements FooInterface{});',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php $message = (new class() {
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php $message = (new class() {
 });',
-                '<?php $message = (new class() {});',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php $message = (new class() {
+            '<?php $message = (new class() {});',
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php $message = (new class() {
 });',
-                '<?php $message = (new class() {});',
-                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php $message = (new class()
+            '<?php $message = (new class() {});',
+            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php $message = (new class()
 {
 });',
-                '<?php $message = (new class() {});',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            '<?php $message = (new class() {});',
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 if (1) {
     $message = (new class() extends Foo {
         public function bar() {
@@ -4469,17 +4744,18 @@ if (1) {
         }
     });
 }',
-                '<?php
+            '<?php
 if (1) {
   $message = (new class() extends Foo
   {
     public function bar() { echo 1; }
   });
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (1)
 {
     $message = (new class() extends Foo {
@@ -4489,17 +4765,18 @@ if (1)
         }
     });
 }',
-                '<?php
+            '<?php
 if (1) {
   $message = (new class() extends Foo
   {
     public function bar() { echo 1; }
   });
 }',
-                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 if (1) {
     $message = (new class() extends Foo
     {
@@ -4508,17 +4785,18 @@ if (1) {
         }
     });
 }',
-                '<?php
+            '<?php
 if (1) {
   $message = (new class() extends Foo
   {
     public function bar() { echo 1; }
   });
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 if (1) {
     $message = (new class() extends Foo
     {
@@ -4527,17 +4805,18 @@ if (1) {
         }
     });
 }',
-                '<?php
+            '<?php
 if (1) {
   $message = (new class() extends Foo
   {
     public function bar() { echo 1; }
   });
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 if (1)
 {
     $message = (new class() extends Foo
@@ -4548,17 +4827,18 @@ if (1)
         }
     });
 }',
-                '<?php
+            '<?php
 if (1) {
   $message = (new class() extends Foo
   {
     public function bar() { echo 1; }
   });
 }',
-                self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 if (1)
 {
     $message = (new class() extends Foo
@@ -4568,17 +4848,18 @@ if (1)
         }
     });
 }',
-                '<?php
+            '<?php
 if (1) {
   $message = (new class() extends Foo
   {
     public function bar() { echo 1; }
   });
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     class Foo {
         public function use() {
         }
@@ -4587,7 +4868,7 @@ if (1) {
         }
     }
                 ',
-                '<?php
+            '<?php
     class Foo
     {
         public function use() {
@@ -4597,10 +4878,11 @@ if (1) {
         }
     }
                 ',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     class Foo {
         public function use() {
         }
@@ -4609,7 +4891,7 @@ if (1) {
         }
     }
                 ',
-                '<?php
+            '<?php
     class Foo
     {
         public function use() {
@@ -4619,10 +4901,11 @@ if (1) {
         }
     }
                 ',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     $a = function (int $foo): string {
         echo $foo;
     };
@@ -4634,7 +4917,7 @@ if (1) {
     function a() {
     }
                 ',
-                '<?php
+            '<?php
     $a = function (int $foo): string
     {
         echo $foo;
@@ -4648,10 +4931,11 @@ if (1) {
     function a() {
     }
                 ',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     $a = function (int $foo): string
     {
         echo $foo;
@@ -4665,7 +4949,7 @@ if (1) {
     function a() {
     }
                 ',
-                '<?php
+            '<?php
     $a = function (int $foo): string
     {
         echo $foo;
@@ -4679,10 +4963,11 @@ if (1) {
     function a() {
     }
                 ',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
     class Something {
         public function sth(): string {
             return function (int $foo) use ($bar): string {
@@ -4690,7 +4975,7 @@ if (1) {
             };
         }
     }',
-                '<?php
+            '<?php
     class Something
     {
         public function sth(): string
@@ -4698,10 +4983,11 @@ if (1) {
             return function (int $foo) use ($bar): string { return $bar; };
         }
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
     class Something {
         public function sth(): string {
             return function (int $foo) use ($bar): string
@@ -4710,7 +4996,7 @@ if (1) {
             };
         }
     }',
-                '<?php
+            '<?php
     class Something
     {
         public function sth(): string
@@ -4718,121 +5004,131 @@ if (1) {
             return function (int $foo) use ($bar): string { return $bar; };
         }
     }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 use function some\a\{
     test1,
     test2
 };
 test();',
-                '<?php
+            '<?php
 use function some\a\{
      test1,
     test2
  };
 test();',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 use function some\a\{
     test1,
     test2
 };
 test();',
-                '<?php
+            '<?php
 use function some\a\{
      test1,
     test2
  };
 test();',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 use function some\a\{
     test1,
     test2
 };
 test();',
-                '<?php
+            '<?php
 use function some\a\{
      test1,
     test2
  };
 test();',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
 ',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
 ',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
 ',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            '<?php
 $foo = new class () extends \Exception {
 };
 ',
-                '<?php
+            '<?php
 $foo = new class () extends \Exception {};
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo = new class () extends \Exception {};
 ',
-                null,
-                ['allow_single_line_anonymous_class_with_empty_body' => true],
-            ],
-            [
-                '<?php
+            null,
+            ['allow_single_line_anonymous_class_with_empty_body' => true],
+        ];
+
+        yield [
+            '<?php
 $foo = new class() {}; // comment
 ',
-                null,
-                ['allow_single_line_anonymous_class_with_empty_body' => true],
-            ],
-            [
-                '<?php
+            null,
+            ['allow_single_line_anonymous_class_with_empty_body' => true],
+        ];
+
+        yield [
+            '<?php
 $foo = new class() { /* comment */ }; // another comment
 ',
-                null,
-                ['allow_single_line_anonymous_class_with_empty_body' => true],
-            ],
-            [
-                '<?php
+            null,
+            ['allow_single_line_anonymous_class_with_empty_body' => true],
+        ];
+
+        yield [
+            '<?php
 $foo = new class () extends \Exception {
     protected $message = "Surprise";
 };
 ',
-                '<?php
+            '<?php
 $foo = new class () extends \Exception { protected $message = "Surprise"; };
 ',
-                ['allow_single_line_anonymous_class_with_empty_body' => true],
-            ],
+            ['allow_single_line_anonymous_class_with_empty_body' => true],
         ];
     }
 
@@ -4850,20 +5146,20 @@ $foo = new class () extends \Exception { protected $message = "Surprise"; };
 
     public static function providePreserveLineAfterControlBraceCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 if (1==1) { // test
     $a = 1;
 }
 echo $a;',
-                '<?php
+            '<?php
 if (1==1) // test
 { $a = 1; }
 echo $a;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($test) { // foo
     echo 1;
 }
@@ -4875,7 +5171,7 @@ if ($a === 3) { /**/
     echo 1;
 }
 ',
-                '<?php
+            '<?php
 if ($test) // foo
  {
     echo 1;
@@ -4886,9 +5182,10 @@ echo $a;
 if ($a === 3) /**/
 {echo 1;}
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     //  The blank line helps with legibility in nested control structures
     if (true) {
@@ -4897,13 +5194,15 @@ if (true) {
 
     // if body
 }',
-            ],
-            [
-                "<?php if (true) {\n    // CRLF newline\n}",
-                "<?php if (true) {\r\n\r\n// CRLF newline\n}",
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            "<?php if (true) {\n    // CRLF newline\n}",
+            "<?php if (true) {\r\n\r\n// CRLF newline\n}",
+        ];
+
+        yield [
+            '<?php
 if (true) {
     //  The blank line helps with legibility in nested control structures
     if (true) {
@@ -4912,11 +5211,12 @@ if (true) {
 
     // if body
 }',
-                null,
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true) {
     //  The blank line helps with legibility in nested control structures
     if (true) {
@@ -4925,7 +5225,7 @@ if (true) {
 
     // if body
 }',
-                '<?php
+            '<?php
 if (true) {
 
     //  The blank line helps with legibility in nested control structures
@@ -4935,10 +5235,11 @@ if (true) {
 
     // if body
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true)
 {
     //  The blank line helps with legibility in nested control structures
@@ -4949,7 +5250,7 @@ if (true)
 
     // if body
 }',
-                '<?php
+            '<?php
 if (true) {
 
     //  The blank line helps with legibility in nested control structures
@@ -4959,19 +5260,20 @@ if (true) {
 
     // if body
 }',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
-            [
-                "<?php if (true) {\n    // CRLF newline\n}",
-                "<?php if (true) {\r\n\r\n    // CRLF newline\n}",
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                "<?php if (true)
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
+        ];
+
+        yield [
+            "<?php if (true) {\n    // CRLF newline\n}",
+            "<?php if (true) {\r\n\r\n    // CRLF newline\n}",
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            "<?php if (true)
 {\n    // CRLF newline\n}",
-                "<?php if (true){\r\n\r\n// CRLF newline\n}",
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
+            "<?php if (true){\r\n\r\n// CRLF newline\n}",
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
     }
 
@@ -4989,35 +5291,36 @@ if (true) {
 
     public static function provideFixWithAllowSingleLineClosureCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     $callback = function () { return true; };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $callback = function () { if ($a) { return true; } return false; };',
-                '<?php
+            '<?php
     $callback = function () { if($a){ return true; } return false; };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $callback = function () { if ($a) { return true; } return false; };',
-                '<?php
+            '<?php
     $callback = function () { if($a) return true; return false; };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $callback = function () {
         if ($a) {
             return true;
         }
         return false;
     };',
-                '<?php
+            '<?php
     $callback = function () { if($a) return true;
     return false; };',
-            ],
         ];
     }
 
@@ -5031,20 +5334,18 @@ if (true) {
 
     public static function provideDoWhileLoopInsideAnIfWithoutBracketsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 if (true) {
     do {
         echo 1;
     } while (false);
 }',
-                '<?php
+            '<?php
 if (true)
     do {
         echo 1;
     } while (false);',
-            ],
         ];
     }
 
@@ -5064,9 +5365,8 @@ if (true)
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 if (true) {'."\r\n"
     ."\t".'if (true) {'."\r\n"
         ."\t\t".'echo 1;'."\r\n"
@@ -5076,11 +5376,12 @@ if (true) {'."\r\n"
         ."\t\t".'echo 3;'."\r\n"
     ."\t".'}'."\r\n"
 .'}',
-                '<?php
+            '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {'."\r\n"
     ."\t".'if (true) {'."\r\n"
         ."\t\t".'echo 1;'."\r\n"
@@ -5090,12 +5391,13 @@ if (true) {'."\r\n"
         ."\t\t".'echo 3;'."\r\n"
     ."\t".'}'."\r\n"
 .'}',
-                '<?php
+            '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-            ],
-            [
-                '<?php
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
 if (true)'
 ."\r\n".'{'."\r\n"
     ."\t".'if (true)'."\r\n\t".'{'."\r\n"
@@ -5110,10 +5412,9 @@ if (true)'
         ."\t\t".'echo 3;'."\r\n"
     ."\t".'}'."\r\n"
 .'}',
-                '<?php
+            '<?php
 if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
-                self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-            ],
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
     }
 
@@ -5127,9 +5428,8 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
 
     public static function provideNowdocInTemplatesCases(): iterable
     {
-        return [
-            [
-                <<<'EOT'
+        yield [
+            <<<'EOT'
 <?php
 if (true) {
     $var = <<<'NOWDOC'
@@ -5139,8 +5439,8 @@ NOWDOC;
 }
 
 EOT
-                ,
-                <<<'EOT'
+            ,
+            <<<'EOT'
 <?php
 if (true) {
 $var = <<<'NOWDOC'
@@ -5150,10 +5450,11 @@ NOWDOC;
 }
 
 EOT
-                ,
-            ],
-            [
-                <<<'EOT'
+            ,
+        ];
+
+        yield [
+            <<<'EOT'
 <?php
 if (true) {
     $var = <<<HEREDOC
@@ -5163,8 +5464,8 @@ HEREDOC;
 }
 
 EOT
-                ,
-                <<<'EOT'
+            ,
+            <<<'EOT'
 <?php
 if (true) {
 $var = <<<HEREDOC
@@ -5174,8 +5475,7 @@ HEREDOC;
 }
 
 EOT
-                ,
-            ],
+            ,
         ];
     }
 
@@ -5190,9 +5490,8 @@ EOT
 
     public static function provideFixCommentsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 function test()
 {
 //    $closure = function ($callback) use ($query) {
@@ -5202,9 +5501,10 @@ function test()
 //    };
     $a = 3;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function test()
 {
 //    $closure = function ($callback) use ($query) {
@@ -5214,9 +5514,10 @@ function test()
 //    };
     $a = 3;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($foo) {
     foo();
 
@@ -5227,9 +5528,10 @@ if ($foo) {
     bar();
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($foo) {
     foo();
 
@@ -5240,9 +5542,10 @@ if ($foo) {
     bar();
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($foo) {
     foo();
 
@@ -5255,9 +5558,10 @@ if ($foo) {
     bar();
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($foo) {
     foo();
 
@@ -5268,9 +5572,10 @@ if ($foo) {
     bar();
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($foo) {
     foo();
 //    bar();
@@ -5280,9 +5585,10 @@ if ($foo) {
     bar();
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($foo) {
     foo();
     '.'
@@ -5292,9 +5598,10 @@ if ($foo) {
     bar();
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($foo) {
     foo();
     '.'
@@ -5303,9 +5610,10 @@ if ($foo) {
     bar();
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo()
 {
     $a = 1;
@@ -5313,7 +5621,7 @@ function foo()
     return $a;
 }
 ',
-                '<?php
+            '<?php
 function foo()
 {
     $a = 1;
@@ -5321,9 +5629,10 @@ function foo()
     return $a;
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo()
 {
     $a = 1;
@@ -5333,7 +5642,7 @@ function foo()
     return $a;
 }
 ',
-                '<?php
+            '<?php
 function foo()
 {
     $a = 1;
@@ -5343,9 +5652,10 @@ function foo()
     return $a;
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo()
 {
     $a = 1;
@@ -5356,7 +5666,7 @@ function foo()
     return $a;
 }
 ',
-                '<?php
+            '<?php
 function foo()
 {
     $a = 1;
@@ -5367,7 +5677,6 @@ function foo()
     return $a;
 }
 ',
-            ],
         ];
     }
 

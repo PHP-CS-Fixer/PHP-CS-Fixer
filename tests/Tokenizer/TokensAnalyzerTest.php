@@ -815,26 +815,29 @@ enum Foo: string
 
     public static function provideIsLambdaCases(): iterable
     {
-        return [
-            [
-                [1 => false],
-                '<?php function foo () {};',
-            ],
-            [
-                [1 => false],
-                '<?php function /** foo */ foo () {};',
-            ],
-            [
-                [5 => true],
-                '<?php $foo = function () {};',
-            ],
-            [
-                [5 => true],
-                '<?php $foo = function /** foo */ () {};',
-            ],
-            [
-                [7 => true],
-                '<?php
+        yield [
+            [1 => false],
+            '<?php function foo () {};',
+        ];
+
+        yield [
+            [1 => false],
+            '<?php function /** foo */ foo () {};',
+        ];
+
+        yield [
+            [5 => true],
+            '<?php $foo = function () {};',
+        ];
+
+        yield [
+            [5 => true],
+            '<?php $foo = function /** foo */ () {};',
+        ];
+
+        yield [
+            [7 => true],
+            '<?php
 preg_replace_callback(
     "/(^|[a-z])/",
     function (array $matches) {
@@ -842,60 +845,67 @@ preg_replace_callback(
     },
     $string
 );',
-            ],
-            [
-                [5 => true],
-                '<?php $foo = function &() {};',
-            ],
-            [
-                [6 => true],
-                '<?php
+        ];
+
+        yield [
+            [5 => true],
+            '<?php $foo = function &() {};',
+        ];
+
+        yield [
+            [6 => true],
+            '<?php
                     $a = function (): array {
                         return [];
                     };',
-            ],
-            [
-                [2 => false],
-                '<?php
+        ];
+
+        yield [
+            [2 => false],
+            '<?php
                     function foo (): array {
                         return [];
                     };',
-            ],
-            [
-                [6 => true],
-                '<?php
+        ];
+
+        yield [
+            [6 => true],
+            '<?php
                     $a = function (): void {
                         return [];
                     };',
-            ],
-            [
-                [2 => false],
-                '<?php
+        ];
+
+        yield [
+            [2 => false],
+            '<?php
                     function foo (): void {
                         return [];
                     };',
-            ],
-            [
-                [6 => true],
-                '<?php
+        ];
+
+        yield [
+            [6 => true],
+            '<?php
                     $a = function (): ?int {
                         return [];
                     };',
-            ],
-            [
-                [6 => true],
-                '<?php
+        ];
+
+        yield [
+            [6 => true],
+            '<?php
                     $a = function (): int {
                         return [];
                     };',
-            ],
-            [
-                [2 => false],
-                '<?php
+        ];
+
+        yield [
+            [2 => false],
+            '<?php
                     function foo (): ?int {
                         return [];
                     };',
-            ],
         ];
     }
 
@@ -944,24 +954,25 @@ preg_replace_callback(
 
     public static function provideIsLambda80Cases(): iterable
     {
-        return [
-            [
-                [6 => true],
-                '<?php
+        yield [
+            [6 => true],
+            '<?php
                     $a = function (): ?static {
                         return [];
                     };',
-            ],
-            [
-                [6 => true],
-                '<?php
+        ];
+
+        yield [
+            [6 => true],
+            '<?php
                     $a = function (): static {
                         return [];
                     };',
-            ],
-            [
-                [14 => true],
-                '<?php
+        ];
+
+        yield [
+            [14 => true],
+            '<?php
 $c = 4; //
 $a = function(
     $a,
@@ -974,7 +985,6 @@ $a = function(
 
 
 $a(1,2);',
-            ],
         ];
     }
 
@@ -999,205 +1009,250 @@ $a(1,2);',
 
     public static function provideIsConstantInvocationCases(): iterable
     {
-        return [
-            [
-                [3 => true],
-                '<?php echo FOO;',
-            ],
-            [
-                [4 => true],
-                '<?php echo \FOO;',
-            ],
-            [
-                [3 => false, 5 => false, 7 => true],
-                '<?php echo Foo\Bar\BAR;',
-            ],
-            [
-                [3 => true, 7 => true, 11 => true],
-                '<?php echo FOO ? BAR : BAZ;',
-            ],
-            'Bitwise & and bitwise |' => [
-                [3 => true, 7 => true, 11 => true],
-                '<?php echo FOO & BAR | BAZ;',
-            ],
-            'Bitwise &' => [
-                [3 => true],
-                '<?php echo FOO & $bar;',
-            ],
-            [
-                [5 => true],
-                '<?php echo $foo[BAR];',
-            ],
-            [
-                [3 => true, 5 => true],
-                '<?php echo FOO[BAR];',
-            ],
-            [
-                [1 => false, 3 => true, 6 => false, 8 => true],
-                '<?php func(FOO, Bar\BAZ);',
-            ],
-            [
-                [4 => true, 8 => true],
-                '<?php if (FOO && BAR) {}',
-            ],
-            [
-                [3 => true, 7 => false, 9 => false, 11 => true],
-                '<?php return FOO * X\Y\BAR;',
-            ],
-            [
-                [3 => false, 11 => true, 16 => true, 20 => true],
-                '<?php function x() { yield FOO; yield FOO => BAR; }',
-            ],
-            [
-                [11 => true],
-                '<?php switch ($a) { case FOO: break; }',
-            ],
-            [
-                [3 => false],
-                '<?php namespace FOO;',
-            ],
-            [
-                [3 => false],
-                '<?php use FOO;',
-            ],
-            [
-                [5 => false, 7 => false, 9 => false],
-                '<?php use function FOO\BAR\BAZ;',
-            ],
-            [
-                [3 => false, 8 => false],
-                '<?php namespace X; const FOO = 1;',
-            ],
-            [
-                [3 => false],
-                '<?php class FOO {}',
-            ],
-            [
-                [3 => false],
-                '<?php interface FOO {}',
-            ],
-            [
-                [3 => false],
-                '<?php trait FOO {}',
-            ],
-            [
-                [3 => false, 7 => false],
-                '<?php class x extends FOO {}',
-            ],
-            [
-                [3 => false, 7 => false],
-                '<?php class x implements FOO {}',
-            ],
-            [
-                [3 => false, 7 => false, 10 => false, 13 => false],
-                '<?php class x implements FOO, BAR, BAZ {}',
-            ],
-            [
-                [3 => false, 9 => false],
-                '<?php class x { const FOO = 1; }',
-            ],
-            [
-                [3 => false, 9 => false],
-                '<?php class x { use FOO; }',
-            ],
-            [
-                [3 => false, 9 => false, 12 => false, 16 => false, 18 => false, 22 => false],
-                '<?php class x { use FOO, BAR { FOO::BAZ insteadof BAR; } }',
-            ],
-            [
-                [3 => false, 6 => false, 11 => false, 17 => false],
-                '<?php function x (FOO $foo, BAR &$bar, BAZ ...$baz) {}',
-            ],
-            [
-                [1 => false],
-                '<?php FOO();',
-            ],
-            [
-                [1 => false, 3 => false],
-                '<?php FOO::x();',
-            ],
-            [
-                [1 => false, 3 => false],
-                '<?php x::FOO();',
-            ],
-            [
-                [5 => false],
-                '<?php $foo instanceof FOO;',
-            ],
-            [
-                [9 => false],
-                '<?php try {} catch (FOO $e) {}',
-            ],
-            [
-                [4 => false],
-                '<?php "$foo[BAR]";',
-            ],
-            [
-                [5 => true],
-                '<?php "{$foo[BAR]}";',
-            ],
-            [
-                [1 => false, 6 => false],
-                '<?php FOO: goto FOO;',
-            ],
-            [
-                [1 => false, 3 => true, 7 => true],
-                '<?php foo(E_USER_DEPRECATED | E_DEPRECATED);',
-            ],
-            [
-                [3 => false, 7 => false, 10 => false, 13 => false],
-                '<?php interface Foo extends Bar, Baz, Qux {}',
-            ],
-            [
-                [3 => false, 5 => false, 8 => false, 10 => false, 13 => false, 15 => false],
-                '<?php use Foo\Bar, Foo\Baz, Foo\Qux;',
-            ],
-            [
-                [3 => false, 8 => false],
-                '<?php function x(): FOO {}',
-            ],
-            [
-                [3 => false, 5 => false, 8 => false, 11 => false, 15 => false, 18 => false],
-                '<?php use X\Y\{FOO, BAR as BAR2, BAZ};',
-            ],
-            [
-                [6 => false, 16 => false, 21 => false],
-                '<?php
+        yield [
+            [3 => true],
+            '<?php echo FOO;',
+        ];
+
+        yield [
+            [4 => true],
+            '<?php echo \FOO;',
+        ];
+
+        yield [
+            [3 => false, 5 => false, 7 => true],
+            '<?php echo Foo\Bar\BAR;',
+        ];
+
+        yield [
+            [3 => true, 7 => true, 11 => true],
+            '<?php echo FOO ? BAR : BAZ;',
+        ];
+
+        yield 'Bitwise & and bitwise |' => [
+            [3 => true, 7 => true, 11 => true],
+            '<?php echo FOO & BAR | BAZ;',
+        ];
+
+        yield 'Bitwise &' => [
+            [3 => true],
+            '<?php echo FOO & $bar;',
+        ];
+
+        yield [
+            [5 => true],
+            '<?php echo $foo[BAR];',
+        ];
+
+        yield [
+            [3 => true, 5 => true],
+            '<?php echo FOO[BAR];',
+        ];
+
+        yield [
+            [1 => false, 3 => true, 6 => false, 8 => true],
+            '<?php func(FOO, Bar\BAZ);',
+        ];
+
+        yield [
+            [4 => true, 8 => true],
+            '<?php if (FOO && BAR) {}',
+        ];
+
+        yield [
+            [3 => true, 7 => false, 9 => false, 11 => true],
+            '<?php return FOO * X\Y\BAR;',
+        ];
+
+        yield [
+            [3 => false, 11 => true, 16 => true, 20 => true],
+            '<?php function x() { yield FOO; yield FOO => BAR; }',
+        ];
+
+        yield [
+            [11 => true],
+            '<?php switch ($a) { case FOO: break; }',
+        ];
+
+        yield [
+            [3 => false],
+            '<?php namespace FOO;',
+        ];
+
+        yield [
+            [3 => false],
+            '<?php use FOO;',
+        ];
+
+        yield [
+            [5 => false, 7 => false, 9 => false],
+            '<?php use function FOO\BAR\BAZ;',
+        ];
+
+        yield [
+            [3 => false, 8 => false],
+            '<?php namespace X; const FOO = 1;',
+        ];
+
+        yield [
+            [3 => false],
+            '<?php class FOO {}',
+        ];
+
+        yield [
+            [3 => false],
+            '<?php interface FOO {}',
+        ];
+
+        yield [
+            [3 => false],
+            '<?php trait FOO {}',
+        ];
+
+        yield [
+            [3 => false, 7 => false],
+            '<?php class x extends FOO {}',
+        ];
+
+        yield [
+            [3 => false, 7 => false],
+            '<?php class x implements FOO {}',
+        ];
+
+        yield [
+            [3 => false, 7 => false, 10 => false, 13 => false],
+            '<?php class x implements FOO, BAR, BAZ {}',
+        ];
+
+        yield [
+            [3 => false, 9 => false],
+            '<?php class x { const FOO = 1; }',
+        ];
+
+        yield [
+            [3 => false, 9 => false],
+            '<?php class x { use FOO; }',
+        ];
+
+        yield [
+            [3 => false, 9 => false, 12 => false, 16 => false, 18 => false, 22 => false],
+            '<?php class x { use FOO, BAR { FOO::BAZ insteadof BAR; } }',
+        ];
+
+        yield [
+            [3 => false, 6 => false, 11 => false, 17 => false],
+            '<?php function x (FOO $foo, BAR &$bar, BAZ ...$baz) {}',
+        ];
+
+        yield [
+            [1 => false],
+            '<?php FOO();',
+        ];
+
+        yield [
+            [1 => false, 3 => false],
+            '<?php FOO::x();',
+        ];
+
+        yield [
+            [1 => false, 3 => false],
+            '<?php x::FOO();',
+        ];
+
+        yield [
+            [5 => false],
+            '<?php $foo instanceof FOO;',
+        ];
+
+        yield [
+            [9 => false],
+            '<?php try {} catch (FOO $e) {}',
+        ];
+
+        yield [
+            [4 => false],
+            '<?php "$foo[BAR]";',
+        ];
+
+        yield [
+            [5 => true],
+            '<?php "{$foo[BAR]}";',
+        ];
+
+        yield [
+            [1 => false, 6 => false],
+            '<?php FOO: goto FOO;',
+        ];
+
+        yield [
+            [1 => false, 3 => true, 7 => true],
+            '<?php foo(E_USER_DEPRECATED | E_DEPRECATED);',
+        ];
+
+        yield [
+            [3 => false, 7 => false, 10 => false, 13 => false],
+            '<?php interface Foo extends Bar, Baz, Qux {}',
+        ];
+
+        yield [
+            [3 => false, 5 => false, 8 => false, 10 => false, 13 => false, 15 => false],
+            '<?php use Foo\Bar, Foo\Baz, Foo\Qux;',
+        ];
+
+        yield [
+            [3 => false, 8 => false],
+            '<?php function x(): FOO {}',
+        ];
+
+        yield [
+            [3 => false, 5 => false, 8 => false, 11 => false, 15 => false, 18 => false],
+            '<?php use X\Y\{FOO, BAR as BAR2, BAZ};',
+        ];
+
+        yield [
+            [6 => false, 16 => false, 21 => false],
+            '<?php
 
 abstract class Baz
 {
     abstract public function test(): Foo;
 }
 ',
-            ],
-            [
-                [3 => false, 6 => false],
-                '<?php function x(?FOO $foo) {}',
-            ],
-            [
-                [3 => false, 9 => false],
-                '<?php function x(): ?FOO {}',
-            ],
-            [
-                [9 => false, 11 => false, 13 => false],
-                '<?php try {} catch (FOO|BAR|BAZ $e) {}',
-            ],
-            [
-                [3 => false, 11 => false, 16 => false],
-                '<?php interface Foo { public function bar(): Baz; }',
-            ],
-            [
-                [3 => false, 11 => false, 17 => false],
-                '<?php interface Foo { public function bar(): \Baz; }',
-            ],
-            [
-                [3 => false, 11 => false, 17 => false],
-                '<?php interface Foo { public function bar(): ?Baz; }',
-            ],
-            [
-                [3 => false, 11 => false, 18 => false],
-                '<?php interface Foo { public function bar(): ?\Baz; }',
-            ],
+        ];
+
+        yield [
+            [3 => false, 6 => false],
+            '<?php function x(?FOO $foo) {}',
+        ];
+
+        yield [
+            [3 => false, 9 => false],
+            '<?php function x(): ?FOO {}',
+        ];
+
+        yield [
+            [9 => false, 11 => false, 13 => false],
+            '<?php try {} catch (FOO|BAR|BAZ $e) {}',
+        ];
+
+        yield [
+            [3 => false, 11 => false, 16 => false],
+            '<?php interface Foo { public function bar(): Baz; }',
+        ];
+
+        yield [
+            [3 => false, 11 => false, 17 => false],
+            '<?php interface Foo { public function bar(): \Baz; }',
+        ];
+
+        yield [
+            [3 => false, 11 => false, 17 => false],
+            '<?php interface Foo { public function bar(): ?Baz; }',
+        ];
+
+        yield [
+            [3 => false, 11 => false, 18 => false],
+            '<?php interface Foo { public function bar(): ?\Baz; }',
         ];
     }
 
@@ -1411,43 +1466,49 @@ abstract class Baz
 
     public static function provideIsUnarySuccessorOperatorCases(): iterable
     {
-        return [
-            [
-                [2 => true],
-                '<?php $a++;',
-            ],
-            [
-                [2 => true],
-                '<?php $a--;',
-            ],
-            [
-                [3 => true],
-                '<?php $a ++;',
-            ],
-            [
-                [2 => true, 4 => false],
-                '<?php $a++ + 1;',
-            ],
-            [
-                [5 => true],
-                '<?php ${"a"}++;',
-            ],
-            [
-                [4 => true],
-                '<?php $foo->bar++;',
-            ],
-            [
-                [6 => true],
-                '<?php $foo->{"bar"}++;',
-            ],
-            'array access' => [
-                [5 => true],
-                '<?php $a["foo"]++;',
-            ],
-            'array curly access' => [
-                [5 => true],
-                '<?php $a{"foo"}++;',
-            ],
+        yield [
+            [2 => true],
+            '<?php $a++;',
+        ];
+
+        yield [
+            [2 => true],
+            '<?php $a--;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php $a ++;',
+        ];
+
+        yield [
+            [2 => true, 4 => false],
+            '<?php $a++ + 1;',
+        ];
+
+        yield [
+            [5 => true],
+            '<?php ${"a"}++;',
+        ];
+
+        yield [
+            [4 => true],
+            '<?php $foo->bar++;',
+        ];
+
+        yield [
+            [6 => true],
+            '<?php $foo->{"bar"}++;',
+        ];
+
+        yield 'array access' => [
+            [5 => true],
+            '<?php $a["foo"]++;',
+        ];
+
+        yield 'array curly access' => [
+            [5 => true],
+            '<?php $a{"foo"}++;',
         ];
     }
 
@@ -1472,67 +1533,79 @@ abstract class Baz
 
     public static function provideIsUnaryPredecessorOperatorCases(): iterable
     {
-        return [
-            [
-                [1 => true],
-                '<?php ++$a;',
-            ],
-            [
-                [1 => true],
-                '<?php --$a;',
-            ],
-            [
-                [1 => true],
-                '<?php -- $a;',
-            ],
-            [
-                [3 => false, 5 => true],
-                '<?php $a + ++$b;',
-            ],
-            [
-                [1 => true, 2 => true],
-                '<?php !!$a;',
-            ],
-            [
-                [5 => true],
-                '<?php $a = &$b;',
-            ],
-            [
-                [3 => true],
-                '<?php function &foo() {}',
-            ],
-            [
-                [1 => true],
-                '<?php @foo();',
-            ],
-            [
-                [3 => true, 8 => true],
-                '<?php foo(+ $a, -$b);',
-            ],
-            [
-                [5 => true, 11 => true, 17 => true],
-                '<?php function foo(&$a, array &$b, Bar &$c) {}',
-            ],
-            [
-                [8 => true],
-                '<?php function foo($a, ...$b) {}',
-            ],
-            [
-                [5 => true, 6 => true],
-                '<?php function foo(&...$b) {}',
-            ],
-            [
-                [7 => true],
-                '<?php function foo(array ...$b) {}',
-            ],
-            [
-                [7 => true],
-                '<?php $foo = function(...$a) {};',
-            ],
-            [
-                [10 => true],
-                '<?php $foo = function($a, ...$b) {};',
-            ],
+        yield [
+            [1 => true],
+            '<?php ++$a;',
+        ];
+
+        yield [
+            [1 => true],
+            '<?php --$a;',
+        ];
+
+        yield [
+            [1 => true],
+            '<?php -- $a;',
+        ];
+
+        yield [
+            [3 => false, 5 => true],
+            '<?php $a + ++$b;',
+        ];
+
+        yield [
+            [1 => true, 2 => true],
+            '<?php !!$a;',
+        ];
+
+        yield [
+            [5 => true],
+            '<?php $a = &$b;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php function &foo() {}',
+        ];
+
+        yield [
+            [1 => true],
+            '<?php @foo();',
+        ];
+
+        yield [
+            [3 => true, 8 => true],
+            '<?php foo(+ $a, -$b);',
+        ];
+
+        yield [
+            [5 => true, 11 => true, 17 => true],
+            '<?php function foo(&$a, array &$b, Bar &$c) {}',
+        ];
+
+        yield [
+            [8 => true],
+            '<?php function foo($a, ...$b) {}',
+        ];
+
+        yield [
+            [5 => true, 6 => true],
+            '<?php function foo(&...$b) {}',
+        ];
+
+        yield [
+            [7 => true],
+            '<?php function foo(array ...$b) {}',
+        ];
+
+        yield [
+            [7 => true],
+            '<?php $foo = function(...$a) {};',
+        ];
+
+        yield [
+            [10 => true],
+            '<?php $foo = function($a, ...$b) {};',
         ];
     }
 
@@ -1751,63 +1824,68 @@ $b;',
 
     public static function provideIsArrayCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     array("a" => 1);
                 ',
-                2,
-            ],
-            [
-                '<?php
+            2,
+        ];
+
+        yield [
+            '<?php
                     ["a" => 2];
                 ',
-                2, false,
-            ],
-            [
-                '<?php
+            2, false,
+        ];
+
+        yield [
+            '<?php
                     array(
                         "a" => 3
                     );
                 ',
-                2, true,
-            ],
-            [
-                '<?php
+            2, true,
+        ];
+
+        yield [
+            '<?php
                     [
                         "a" => 4
                     ];
                 ',
-                2, true,
-            ],
-            [
-                '<?php
+            2, true,
+        ];
+
+        yield [
+            '<?php
                     array(
                         "a" => array(5, 6, 7),
 8 => new \Exception(\'Hello\')
                     );
                 ',
-                2, true,
-            ],
-            [
-                // mix short array syntax
-                '<?php
+            2, true,
+        ];
+
+        yield [
+            // mix short array syntax
+            '<?php
                     array(
                         "a" => [9, 10, 11],
 12 => new \Exception(\'Hello\')
                     );
                 ',
-                2, true,
-            ],
-            // Windows/Max EOL testing
-            [
-                "<?php\r\narray('a' => 13);\r\n",
-                1,
-            ],
-            [
-                "<?php\r\n   array(\r\n       'a' => 14,\r\n       'b' =>  15\r\n   );\r\n",
-                2, true,
-            ],
+            2, true,
+        ];
+
+        // Windows/Max EOL testing
+        yield [
+            "<?php\r\narray('a' => 13);\r\n",
+            1,
+        ];
+
+        yield [
+            "<?php\r\n   array(\r\n       'a' => 14,\r\n       'b' =>  15\r\n   );\r\n",
+            2, true,
         ];
     }
 
@@ -1834,17 +1912,15 @@ $b;',
 
     public static function provideIsArray71Cases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     [$a] = $z;
                     ["a" => $a, "b" => $b] = $array;
                     $c = [$d, $e] = $array[$a];
                     [[$a, $b], [$c, $d]] = $d;
                     $array = []; $d = array();
                 ',
-                [76, 84],
-            ],
+            [76, 84],
         ];
     }
 
@@ -2030,12 +2106,13 @@ $b;',
 
     public static function provideArrayExceptionsCases(): iterable
     {
-        return [
-            ['<?php $a;', 1],
-            ["<?php\n \$a = (0+1); // [0,1]", 4],
-            ['<?php $text = "foo $bbb[0] bar";', 8],
-            ['<?php $text = "foo ${aaa[123]} bar";', 9],
-        ];
+        yield ['<?php $a;', 1];
+
+        yield ["<?php\n \$a = (0+1); // [0,1]", 4];
+
+        yield ['<?php $text = "foo $bbb[0] bar";', 8];
+
+        yield ['<?php $text = "foo ${aaa[123]} bar";', 9];
     }
 
     public function testIsBlockMultilineException(): void
@@ -2255,39 +2332,43 @@ SRC;
 
     public static function provideGetImportUseIndexesCases(): iterable
     {
-        return [
-            [
-                [1, 8],
-                '<?php use E\F?><?php use A\B;',
-            ],
-            [
-                [[1], [14], [29]],
-                '<?php
+        yield [
+            [1, 8],
+            '<?php use E\F?><?php use A\B;',
+        ];
+
+        yield [
+            [[1], [14], [29]],
+            '<?php
 use T\A;
 namespace A { use D\C; }
 namespace b { use D\C; }
 ',
-                true,
-            ],
-            [
-                [[1, 8]],
-                '<?php use D\B; use A\C?>',
-                true,
-            ],
-            [
-                [1, 8],
-                '<?php use D\B; use A\C?>',
-            ],
-            [
-                [7, 22],
-                '<?php
+            true,
+        ];
+
+        yield [
+            [[1, 8]],
+            '<?php use D\B; use A\C?>',
+            true,
+        ];
+
+        yield [
+            [1, 8],
+            '<?php use D\B; use A\C?>',
+        ];
+
+        yield [
+            [7, 22],
+            '<?php
 namespace A { use D\C; }
 namespace b { use D\C; }
 ',
-            ],
-            [
-                [3, 10, 34, 45, 54, 59, 77, 95],
-                <<<'EOF'
+        ];
+
+        yield [
+            [3, 10, 34, 45, 54, 59, 77, 95],
+            <<<'EOF'
 use Zoo\Bar;
 use Foo\Bar;
 use Foo\Zar\Baz;
@@ -2310,42 +2391,45 @@ class AnnotatedClass
 {
 }
 EOF
-                ,
-            ],
-            [
-                [1, 22, 41],
-                '<?php
+            ,
+        ];
+
+        yield [
+            [1, 22, 41],
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
                 ',
-            ],
-            [
-                [[1, 22, 41]],
-                '<?php
+        ];
+
+        yield [
+            [[1, 22, 41]],
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
                 ',
-                true,
-            ],
-            [
-                [1, 23, 43],
-                '<?php
+            true,
+        ];
+
+        yield [
+            [1, 23, 43],
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C,};
 use function some\a\{fn_a, fn_b, fn_c,};
 use const some\a\{ConstA, ConstB, ConstC,};
                 ',
-            ],
-            [
-                [[1, 23, 43]],
-                '<?php
+        ];
+
+        yield [
+            [[1, 23, 43]],
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C,};
 use function some\a\{fn_a, fn_b, fn_c,};
 use const some\a\{ConstA, ConstB, ConstC,};
                 ',
-                true,
-            ],
+            true,
         ];
     }
 

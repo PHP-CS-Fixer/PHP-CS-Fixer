@@ -1196,28 +1196,28 @@ use function some\a\{fn_a, fn_b, fn_c,};
 
     public static function provideInvalidSortAlgorithmCases(): iterable
     {
-        return [
+        yield [
             [
-                [
-                    'sort_algorithm' => 'dope',
-                    'imports_order' => null,
-                ],
-                '"dope"',
+                'sort_algorithm' => 'dope',
+                'imports_order' => null,
             ],
+            '"dope"',
+        ];
+
+        yield [
             [
-                [
-                    'sort_algorithm' => [OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH],
-                    'imports_order' => null,
-                ],
-                'array',
+                'sort_algorithm' => [OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH],
+                'imports_order' => null,
             ],
+            'array',
+        ];
+
+        yield [
             [
-                [
-                    'sort_algorithm' => new \stdClass(),
-                    'imports_order' => null,
-                ],
-                \stdClass::class,
+                'sort_algorithm' => new \stdClass(),
+                'imports_order' => null,
             ],
+            \stdClass::class,
         ];
     }
 
@@ -1812,9 +1812,8 @@ EOF;
 
     public static function provideFixByLengthCases(): iterable
     {
-        return [
-            [
-                <<<'EOF'
+        yield [
+            <<<'EOF'
 The normal
 use of this fixer
 should not change this sentence nor those statements below
@@ -1853,9 +1852,9 @@ class AnnotatedClass
     }
 }
 EOF
-                ,
+            ,
 
-                <<<'EOF'
+            <<<'EOF'
 The normal
 use of this fixer
 should not change this sentence nor those statements below
@@ -1894,10 +1893,11 @@ class AnnotatedClass
     }
 }
 EOF
-                ,
-            ],
-            [
-                '<?php
+            ,
+        ];
+
+        yield [
+            '<?php
 use A\B;
 use Foo\Bar\Biz;
 use some\b\{
@@ -1912,7 +1912,7 @@ use Some\Biz\Barz\Boozz\Foz\Which\Is\Really\Long;
 use const some\b\{ConstG, ConstX, ConstY, ConstZ};
 use some\c\{ClassR, ClassT, ClassV as V, NiceClassName};
 ',
-                '<?php
+            '<?php
 use function some\a\{fn_a, fn_b, fn_c};
 use Foo\Bar\Biz;
 use some\c\{ClassR, ClassT, ClassV as V, NiceClassName};
@@ -1927,19 +1927,19 @@ use const some\b\{ConstX, ConstY, ConstZ, ConstG};
 use some\b\{ClassA, ClassB, ClassC as C};
 use some\a\{  ClassY,ClassZ, /*z*/ ClassX as X};
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use const ZZZ;
 use function B;
 use function A123;
 ',
-                '<?php
+            '<?php
 use function B;
 use function A123;
 use const ZZZ;
 ',
-            ],
         ];
     }
 
@@ -1958,9 +1958,8 @@ use const ZZZ;
 
     public static function provideFixTypesOrderAndLengthCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 use A\B;
 use Some\Bar;
 use Foo\Zar\Baz;
@@ -1977,7 +1976,7 @@ use function some\a\{fn_a, fn_b};
 use function some\f\{fn_c, fn_d, fn_e};
 use function some\b\{fn_k, fn_l, func_m};
 ',
-                '<?php
+            '<?php
 use const some\a\{ConstA, ConstB, ConstC};
 use some\a\{ClassA, ClassB, ClassC as C};
 use Foo\Zar\Baz;
@@ -1994,7 +1993,6 @@ use function some\a\{fn_a, fn_b};
 use const some\b\{ConstD, ConstE, ConstF};
 use function some\f\{fn_c, fn_d, fn_e};
 ',
-            ],
         ];
     }
 
@@ -2015,9 +2013,8 @@ use function some\f\{fn_c, fn_d, fn_e};
 
     public static function provideFixTypesOrderAndAlphabetCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 use Aaa\Bbb;
 use Aaa\Ccc;
 use Bar\Biz\Boooz\Bum;
@@ -2039,7 +2036,7 @@ use function some\b\{fn_c, fn_d, fn_e};
 use function some\c\{fn_f};
 use function some\f\{fn_g, fn_h, fn_i};
 ',
-                '<?php
+            '<?php
 use Aaa\Ccc;
 use Foo\Zar\Baz;
 use function some\f\{fn_g, fn_h, fn_i};
@@ -2061,8 +2058,7 @@ use Aaa\Bbb;
 use const some\b\{ConstE};
 use function some\a\{fn_a, fn_b};
 ',
-                [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
-            ],
+            [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
         ];
     }
 
@@ -2083,9 +2079,8 @@ use function some\a\{fn_a, fn_b};
 
     public static function provideFixTypesOrderAndNoneCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 use Aaa\Ccc;
 use Foo\Zar\Baz;
 use some\a\{ClassA};
@@ -2107,7 +2102,7 @@ use function some\a\{fn_x};
 use function some\b\{fn_c, fn_d, fn_e};
 use function some\a\{fn_a, fn_b};
 ',
-                '<?php
+            '<?php
 use Aaa\Ccc;
 use Foo\Zar\Baz;
 use function some\f\{fn_g, fn_h, fn_i};
@@ -2129,8 +2124,7 @@ use Aaa\Bbb;
 use const some\b\{ConstE};
 use function some\a\{fn_a, fn_b};
 ',
-                [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
-            ],
+            [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
         ];
     }
 

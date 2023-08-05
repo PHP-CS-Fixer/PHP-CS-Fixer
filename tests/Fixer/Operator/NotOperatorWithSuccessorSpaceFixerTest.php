@@ -35,40 +35,43 @@ final class NotOperatorWithSuccessorSpaceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php $i = 0; $i++; $foo = ! false || (! true || ! ! false && (2 === (7 -5)));',
-                '<?php $i = 0; $i++; $foo = !false || (!true || !!false && (2 === (7 -5)));',
-            ],
-            [
-                '<?php $i = 0; $i--; $foo = ! false || ($i && ! true);',
-                '<?php $i = 0; $i--; $foo = !false || ($i && !true);',
-            ],
-            [
-                '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */true);',
-                '<?php $i = 0; $i--; $foo = !false || ($i && !/* some comment */true);',
-            ],
-            [
-                '<?php $i = 0; $i--; $foo = ! false || ($i && ! true);',
-                '<?php $i = 0; $i--; $foo = !false || ($i && !    true);',
-            ],
-            [
-                '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */ true);',
-                '<?php $i = 0; $i--; $foo = !false || ($i && !  /* some comment */ true);',
-            ],
-            'comment case' => [
-                '<?php
+        yield [
+            '<?php $i = 0; $i++; $foo = ! false || (! true || ! ! false && (2 === (7 -5)));',
+            '<?php $i = 0; $i++; $foo = !false || (!true || !!false && (2 === (7 -5)));',
+        ];
+
+        yield [
+            '<?php $i = 0; $i--; $foo = ! false || ($i && ! true);',
+            '<?php $i = 0; $i--; $foo = !false || ($i && !true);',
+        ];
+
+        yield [
+            '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */true);',
+            '<?php $i = 0; $i--; $foo = !false || ($i && !/* some comment */true);',
+        ];
+
+        yield [
+            '<?php $i = 0; $i--; $foo = ! false || ($i && ! true);',
+            '<?php $i = 0; $i--; $foo = !false || ($i && !    true);',
+        ];
+
+        yield [
+            '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */ true);',
+            '<?php $i = 0; $i--; $foo = !false || ($i && !  /* some comment */ true);',
+        ];
+
+        yield 'comment case' => [
+            '<?php
                 $a=#
 ! #
 $b;
                 ',
-                '<?php
+            '<?php
                 $a=#
 !
 #
 $b;
                 ',
-            ],
         ];
     }
 }

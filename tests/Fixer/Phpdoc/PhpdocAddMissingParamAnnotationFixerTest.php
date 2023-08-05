@@ -101,55 +101,58 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     /**
      *
      */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param int $foo
      * @param mixed $bar
      */
     function f1($foo, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param int $foo
      */
     function f1($foo, $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param int $bar
      * @param mixed $foo
      */
     function f2($foo, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param int $bar
      */
     function f2($foo, $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @return void
      * @param mixed $foo
      * @param mixed $bar
      */
     function f3($foo, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @return void
      */
     function f3($foo, $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     abstract class Foo {
         /**
          * @param int $bar
@@ -157,16 +160,17 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
          */
         abstract public function f4a($foo, $bar);
     }',
-                '<?php
+            '<?php
     abstract class Foo {
         /**
          * @param int $bar
          */
         abstract public function f4a($foo, $bar);
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class Foo {
         /**
          * @param int $bar
@@ -174,66 +178,71 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
          */
         static final public function f4b($foo, $bar) {}
     }',
-                '<?php
+            '<?php
     class Foo {
         /**
          * @param int $bar
          */
         static final public function f4b($foo, $bar) {}
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class Foo {
         /**
          * @var int
          */
         private $foo;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param $bar No type !!
      * @param mixed $foo
      */
     function f5($foo, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param $bar No type !!
      */
     function f5($foo, $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param int
      * @param int $bar
      * @param Foo\Bar $foo
      */
     function f6(Foo\Bar $foo, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param int
      * @param int $bar
      */
     function f6(Foo\Bar $foo, $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param int $bar
      * @param null|string $foo
      */
     function f7(string $foo = nuLl, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param int $bar
      */
     function f7(string $foo = nuLl, $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param int $bar
      * @param mixed $baz
@@ -241,34 +250,37 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @return void
      */
     function f9(string $foo, $bar, $baz) {}',
-                '<?php
+            '<?php
     /**
      * @param int $bar
      *
      * @return void
      */
     function f9(string $foo, $bar, $baz) {}',
-                ['only_untyped' => true],
-            ],
-            [
-                '<?php
+            ['only_untyped' => true],
+        ];
+
+        yield [
+            '<?php
     /**
      * @param bool|bool[] $caseSensitive Line 1
      *                                   Line 2
      */
      function f11($caseSensitive) {}
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /** @return string */
     function hello($string)
     {
         return $string;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /** @return string
      * @param mixed $string
      */
@@ -276,16 +288,17 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     {
         return $string;
     }',
-                '<?php
+            '<?php
     /** @return string
      */
     function hello($string)
     {
         return $string;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param mixed $string
      * @return string */
@@ -293,79 +306,84 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     {
         return $string;
     }',
-                '<?php
+            '<?php
     /**
      * @return string */
     function hello($string)
     {
         return $string;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param int $bar
      * @param string $foo
      */
     function f8(string $foo = "null", $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param int $bar
      */
     function f8(string $foo = "null", $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @{inheritdoc}
      */
     function f10(string $foo = "null", $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @inheritDoc
      */
     function f10(string $foo = "null", $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param int $bar
      * @param ?array $foo
      */
     function p1(?array $foo = null, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param int $bar
      */
     function p1(?array $foo = null, $bar) {}',
-                ['only_untyped' => false],
-            ],
-            [
-                '<?php
+            ['only_untyped' => false],
+        ];
+
+        yield [
+            '<?php
     /**
      * Foo
      * @param mixed $bar
      */
     function p1(?int $foo = 0, $bar) {}',
-                '<?php
+            '<?php
     /**
      * Foo
      */
     function p1(?int $foo = 0, $bar) {}',
-                ['only_untyped' => true],
-            ],
-            [
-                '<?php
+            ['only_untyped' => true],
+        ];
+
+        yield [
+            '<?php
     /**
      * Foo
      * @return int
      */
     function p1(?int $foo = 0) {}',
-                null,
-                ['only_untyped' => true],
-            ],
+            null,
+            ['only_untyped' => true],
         ];
     }
 
@@ -383,11 +401,9 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t * @param null|string \$foo\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
-                "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
-            ],
+        yield [
+            "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t * @param null|string \$foo\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
+            "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
         ];
     }
 
@@ -402,37 +418,36 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
 
     public static function provideByReferenceCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     /**
                      * something
                      * @param mixed $numbers
                      */
                     function add(&$numbers) {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * something
                      */
                     function add(&$numbers) {}
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     /**
                      * something
                      * @param null|array $numbers
                      */
                     function add(array &$numbers = null) {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * something
                      */
                     function add(array &$numbers = null) {}
                 ',
-            ],
         ];
     }
 
@@ -447,50 +462,50 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
 
     public static function provideVariableNumberOfArgumentsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     /**
                      * something
                      * @param array $numbers
                      */
                     function sum(...$numbers) {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * something
                      */
                     function sum(...$numbers) {}
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     /**
                      * @param int $a
                      * @param array $numbers
                      */
                     function sum($a, ...$numbers) {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @param int $a
                      */
                     function sum($a, ...$numbers) {}
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     /**
                      * @param \Date[] $numbers
                      */
                     function sum(\Date ...$numbers) {}
                 ',
-                '<?php
+            '<?php
                     /**
                      */
                     function sum(\Date ...$numbers) {}
                 ',
-            ],
         ];
     }
 

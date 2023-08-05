@@ -69,59 +69,69 @@ final class AllowedValueSubsetTest extends TestCase
 
     public static function provideInvokeCases(): iterable
     {
-        return [
-            [
-                ['foo', 'bar'],
-                true,
-            ],
-            [
-                ['bar', 'foo'],
-                true,
-            ],
-            [
-                ['foo'],
-                true,
-            ],
-            [
-                ['bar'],
-                true,
-            ],
-            [
-                [],
-                true,
-            ],
-            [
-                ['foo', 'bar', 'baz'],
-                false,
-            ],
-            [
-                ['baz'],
-                false,
-            ],
-            [
-                1,
-                false,
-            ],
-            [
-                1.2,
-                false,
-            ],
-            [
-                'foo',
-                false,
-            ],
-            [
-                new \stdClass(),
-                false,
-            ],
-            [
-                true,
-                false,
-            ],
-            [
-                null,
-                false,
-            ],
+        yield [
+            ['foo', 'bar'],
+            true,
+        ];
+
+        yield [
+            ['bar', 'foo'],
+            true,
+        ];
+
+        yield [
+            ['foo'],
+            true,
+        ];
+
+        yield [
+            ['bar'],
+            true,
+        ];
+
+        yield [
+            [],
+            true,
+        ];
+
+        yield [
+            ['foo', 'bar', 'baz'],
+            false,
+        ];
+
+        yield [
+            ['baz'],
+            false,
+        ];
+
+        yield [
+            1,
+            false,
+        ];
+
+        yield [
+            1.2,
+            false,
+        ];
+
+        yield [
+            'foo',
+            false,
+        ];
+
+        yield [
+            new \stdClass(),
+            false,
+        ];
+
+        yield [
+            true,
+            false,
+        ];
+
+        yield [
+            null,
+            false,
         ];
     }
 

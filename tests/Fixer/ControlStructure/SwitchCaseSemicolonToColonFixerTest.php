@@ -280,16 +280,16 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
 
     public static function provideFix80Cases(): iterable
     {
-        return [
-            'Simple match' => [
-                '<?php
+        yield 'Simple match' => [
+            '<?php
                     echo match ($a) {
                         default => "foo",
                     };
                 ',
-            ],
-            'Match in switch' => [
-                '<?php
+        ];
+
+        yield 'Match in switch' => [
+            '<?php
                     switch ($foo) {
                         case "bar":
                             echo match ($a) {
@@ -298,23 +298,23 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                             break;
                     }
                 ',
-            ],
-            'Match in case value' => [
-                '<?php
+        ];
+
+        yield 'Match in case value' => [
+            '<?php
                     switch ($foo) {
                         case match ($bar) {
                             default => "foo",
                         }: echo "It works!";
                     }
                 ',
-                '<?php
+            '<?php
                     switch ($foo) {
                         case match ($bar) {
                             default => "foo",
                         }; echo "It works!";
                     }
                 ',
-            ],
         ];
     }
 
