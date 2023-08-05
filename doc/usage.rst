@@ -211,6 +211,12 @@ Then, add the following command to your CI:
 
 Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
+GitLab Code Quality Integration
+###############################
+
+If you want to integrate with GitLab's Code Quality feature, in order for report to contain correct line numbers, you
+will need to use both ``--format=gitlab`` and ``--diff`` arguments.
+
 Environment options
 -------------------
 

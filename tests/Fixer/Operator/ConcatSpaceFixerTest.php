@@ -53,45 +53,52 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithoutSpaceCases(): iterable
     {
-        return [
-            [
-                '<?php $foo = "a".\'b\'."c"."d".$e.($f + 1);',
-                '<?php $foo = "a" . \'b\' ."c". "d" . $e.($f + 1);',
-            ],
-            [
-                '<?php $foo = 1 ."foo";',
-                '<?php $foo = 1 . "foo";',
-            ],
-            [
-                '<?php $foo = "foo". 1;',
-                '<?php $foo = "foo" . 1;',
-            ],
-            [
-                '<?php $foo = "a".
+        yield [
+            '<?php $foo = "a".\'b\'."c"."d".$e.($f + 1);',
+            '<?php $foo = "a" . \'b\' ."c". "d" . $e.($f + 1);',
+        ];
+
+        yield [
+            '<?php $foo = 1 ."foo";',
+            '<?php $foo = 1 . "foo";',
+        ];
+
+        yield [
+            '<?php $foo = "foo". 1;',
+            '<?php $foo = "foo" . 1;',
+        ];
+
+        yield [
+            '<?php $foo = "a".
 "b";',
-                '<?php $foo = "a" .
+            '<?php $foo = "a" .
 "b";',
-            ],
-            [
-                '<?php $a = "foobar"
+        ];
+
+        yield [
+            '<?php $a = "foobar"
     ."baz";',
-            ],
-            [
-                '<?php $a = "foobar"
+        ];
+
+        yield [
+            '<?php $a = "foobar"
                      //test
                      ."baz";',
-            ],
-            [
-                '<?php $a = "foobar"
+        ];
+
+        yield [
+            '<?php $a = "foobar"
                      /* test */
                      ."baz";',
-            ],
-            [
-                '<?php $a = "foobar" //
+        ];
+
+        yield [
+            '<?php $a = "foobar" //
     ."baz";',
-            ],
-            [
-                '<?php $a = "foobar" //
+        ];
+
+        yield [
+            '<?php $a = "foobar" //
                             ."baz"//
                             ."cex"/**/
                             ."dev"/**  */
@@ -100,24 +107,28 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                             ."ewer23"           '.'
                             ."dev"      /**  */
                     ;',
-            ],
-            [
-                '<?php $a = "foobar" //
+        ];
+
+        yield [
+            '<?php $a = "foobar" //
     ."baz" /**/
     ."something";',
-            ],
-            [
-                '<?php $a = "foobar"
+        ];
+
+        yield [
+            '<?php $a = "foobar"
     ."baz".      //
     "something";',
-            ],
-            [
-                '<?php $a = "foobar"
+        ];
+
+        yield [
+            '<?php $a = "foobar"
     ."baz".      /**  */
     "something";',
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php
                 \$longString = '*'
                     .'*****'
                     .'*****'
@@ -127,7 +138,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                     // Other comment
                     .'*****';
                 ",
-                "<?php
+            "<?php
                 \$longString = '*'
                     . '*****'
                     .  '*****'
@@ -137,7 +148,6 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                     // Other comment
                     .  '*****';
                 ",
-            ],
         ];
     }
 
@@ -152,9 +162,8 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithSpaceCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     $a =   //
                     $c .   /**/
                     $d     #
@@ -162,7 +171,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                     . $f . //
                     $z;
                 ',
-                '<?php
+            '<?php
                     $a =   //
                     $c   .   /**/
                     $d     #
@@ -170,39 +179,42 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                     .   $f   . //
                     $z;
                 ',
-            ],
-            [
-                '<?php $foo = "a" . \'b\' . "c" . "d" . $e . ($f + 1);',
-                '<?php $foo = "a" . \'b\' ."c". "d"    .  $e.($f + 1);',
-            ],
-            [
-                '<?php $foo = "a" .
+        ];
+
+        yield [
+            '<?php $foo = "a" . \'b\' . "c" . "d" . $e . ($f + 1);',
+            '<?php $foo = "a" . \'b\' ."c". "d"    .  $e.($f + 1);',
+        ];
+
+        yield [
+            '<?php $foo = "a" .
 "b";',
-                '<?php $foo = "a".
+            '<?php $foo = "a".
 "b";',
-            ],
-            [
-                '<?php $a = "foobar"
+        ];
+
+        yield [
+            '<?php $a = "foobar"
     . "baz";',
-                '<?php $a = "foobar"
+            '<?php $a = "foobar"
     ."baz";',
-            ],
-            [
-                '<?php echo $a . $b;
+        ];
+
+        yield [
+            '<?php echo $a . $b;
                     echo $d . $e .   //
                         $f;
                     echo $a . $b?>
                  <?php
                     echo $c;
                 ',
-                '<?php echo $a.$b;
+            '<?php echo $a.$b;
                     echo $d    .            $e          .   //
                         $f;
                     echo $a   .                  $b?>
                  <?php
                     echo $c;
                 ',
-            ],
         ];
     }
 }

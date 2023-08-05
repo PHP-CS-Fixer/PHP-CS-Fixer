@@ -33,7 +33,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     {
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(['assertions' => array_keys($this->getMethodsMap())]);
+        $this->fixer->configure(['assertions' => array_keys(self::getMethodsMap())]);
         $this->doTest($expected, $input);
     }
 
@@ -111,21 +111,19 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
      */
     public function testNoFixWithWrongNumberOfArguments(string $expected): void
     {
-        $this->fixer->configure(['assertions' => array_keys($this->getMethodsMap())]);
+        $this->fixer->configure(['assertions' => array_keys(self::getMethodsMap())]);
         $this->doTest($expected);
     }
 
     public static function provideNoFixWithWrongNumberOfArgumentsCases(): iterable
     {
-        $cases = [];
-
         foreach (self::getMethodsMap() as $candidate => $fix) {
-            $cases[sprintf('do not change call to "%s" without arguments.', $candidate)] = [
+            yield sprintf('do not change call to "%s" without arguments.', $candidate) => [
                 self::generateTest(sprintf('$this->%s();', $candidate)),
             ];
 
             foreach ([1, 4, 5, 10] as $argumentCount) {
-                $cases[sprintf('do not change call to "%s" with #%d arguments.', $candidate, $argumentCount)] = [
+                yield sprintf('do not change call to "%s" with #%d arguments.', $candidate, $argumentCount) => [
                     self::generateTest(
                         sprintf(
                             '$this->%s(%s);',
@@ -136,8 +134,6 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
                 ];
             }
         }
-
-        return $cases;
     }
 
     public function testInvalidConfig(): void

@@ -76,17 +76,16 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PHPUnit75Migration:risky
-  Using the `@PHPUnit75Migration:risky <./../../ruleSets/PHPUnit75MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert_internal_type`` rule with the config below:
+- `@PHPUnit75Migration:risky <./../../ruleSets/PHPUnit75MigrationRisky.rst>`_ with config:
 
   ``['target' => '7.5']``
 
-@PHPUnit84Migration:risky
-  Using the `@PHPUnit84Migration:risky <./../../ruleSets/PHPUnit84MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert_internal_type`` rule with the config below:
+- `@PHPUnit84Migration:risky <./../../ruleSets/PHPUnit84MigrationRisky.rst>`_ with config:
 
   ``['target' => '7.5']``
 
-@PHPUnit100Migration:risky
-  Using the `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert_internal_type`` rule with the config below:
+- `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ with config:
 
   ``['target' => '7.5']``
+
+

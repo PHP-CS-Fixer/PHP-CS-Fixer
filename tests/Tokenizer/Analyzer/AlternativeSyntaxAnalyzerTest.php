@@ -125,33 +125,33 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         yield ['<?php switch ($foo): case 1: foo(); endswitch;', 1, 18];
 
         $nested = <<<'PHP'
-        <?php
-        switch (foo()):
-            case 1:
-                switch (foo2()):
-                    case 2:
-                        if (bar()) {
+            <?php
+            switch (foo()):
+                case 1:
+                    switch (foo2()):
+                        case 2:
+                            if (bar()) {
 
-                        }
-                        switch (foo2()):
-                            case 4:
-                            {
-                                switch (foo3()) {
-                                    case 4:
-                                    {
+                            }
+                            switch (foo2()):
+                                case 4:
+                                {
+                                    switch (foo3()) {
+                                        case 4:
+                                        {
 
+                                        }
                                     }
                                 }
-                            }
-                        endswitch;
-                endswitch;
-            case 2:
-                switch (foo5()) {
-                    case 4:
-                        echo 1;
-                }
-        endswitch;
-        PHP;
+                            endswitch;
+                    endswitch;
+                case 2:
+                    switch (foo5()) {
+                        case 4:
+                            echo 1;
+                    }
+            endswitch;
+            PHP;
 
         yield [$nested, 1, 113];
 

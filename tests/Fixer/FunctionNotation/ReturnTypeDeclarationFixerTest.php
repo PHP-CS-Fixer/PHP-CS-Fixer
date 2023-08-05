@@ -59,33 +59,37 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithSpaceBeforeNoneCases(): iterable
     {
-        return [
-            [
-                '<?php function foo1(int $a) {}',
-            ],
-            [
-                '<?php function foo2(int $a): string {}',
-                '<?php function foo2(int $a):string {}',
-            ],
-            [
-                '<?php function foo3(int $c)/**/ : /**/ string {}',
-            ],
-            [
-                '<?php function foo4(int $a): string {}',
-                '<?php function foo4(int $a)  :  string {}',
-            ],
-            [
-                '<?php function foo5(int $e)#
+        yield [
+            '<?php function foo1(int $a) {}',
+        ];
+
+        yield [
+            '<?php function foo2(int $a): string {}',
+            '<?php function foo2(int $a):string {}',
+        ];
+
+        yield [
+            '<?php function foo3(int $c)/**/ : /**/ string {}',
+        ];
+
+        yield [
+            '<?php function foo4(int $a): string {}',
+            '<?php function foo4(int $a)  :  string {}',
+        ];
+
+        yield [
+            '<?php function foo5(int $e)#
 : #
 #
 string {}',
-                '<?php function foo5(int $e)#
+            '<?php function foo5(int $e)#
 :#
 #
 string {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     function foo1(int $a): string {}
                     function foo2(int $a): string {}
                     function foo3(int $a): string {}
@@ -96,7 +100,7 @@ string {}',
                     function foo8(int $a): string {}
                     function foo9(int $a): string {}
                 ',
-                '<?php
+            '<?php
                     function foo1(int $a):string {}
                     function foo2(int $a):string {}
                     function foo3(int $a):string {}
@@ -107,11 +111,11 @@ string {}',
                     function foo8(int $a):string {}
                     function foo9(int $a):string {}
                 ',
-            ],
-            [
-                '<?php fn(): int => 1;',
-                '<?php fn():int => 1;',
-            ],
+        ];
+
+        yield [
+            '<?php fn(): int => 1;',
+            '<?php fn():int => 1;',
         ];
     }
 
@@ -129,25 +133,27 @@ string {}',
 
     public static function provideFixWithSpaceBeforeOneCases(): iterable
     {
-        return [
-            [
-                '<?php function fooA(int $a) {}',
-            ],
-            [
-                '<?php function fooB(int $a) : string {}',
-                '<?php function fooB(int $a):string {}',
-            ],
-            [
-                '<?php function fooC(int $a)/**/ : /**/string {}',
-                '<?php function fooC(int $a)/**/:/**/string {}',
-            ],
-            [
-                '<?php function fooD(int $a) : string {}',
-                '<?php function fooD(int $a)  :  string {}',
-            ],
-            [
-                '<?php function fooE(int $a) /**/ : /**/ string {}',
-            ],
+        yield [
+            '<?php function fooA(int $a) {}',
+        ];
+
+        yield [
+            '<?php function fooB(int $a) : string {}',
+            '<?php function fooB(int $a):string {}',
+        ];
+
+        yield [
+            '<?php function fooC(int $a)/**/ : /**/string {}',
+            '<?php function fooC(int $a)/**/:/**/string {}',
+        ];
+
+        yield [
+            '<?php function fooD(int $a) : string {}',
+            '<?php function fooD(int $a)  :  string {}',
+        ];
+
+        yield [
+            '<?php function fooE(int $a) /**/ : /**/ string {}',
         ];
     }
 

@@ -99,9 +99,7 @@ switch ($foo) {
                         return true;
                     },
                 ])
-                ->setNormalizer(static function (Options $options, string $value): string {
-                    return rtrim($value);
-                })
+                ->setNormalizer(static fn (Options $options, string $value): string => rtrim($value))
                 ->setDefault('no break')
                 ->getOption(),
         ]);
@@ -205,7 +203,7 @@ switch ($foo) {
 
         $text = preg_quote($this->configuration['comment_text'], '~');
 
-        return 1 === Preg::match("~^((//|#)\\s*{$text}\\s*)|(/\\*\\*?\\s*{$text}(\\s+.*)*\\*/)$~i", $token->getContent());
+        return Preg::match("~^((//|#)\\s*{$text}\\s*)|(/\\*\\*?\\s*{$text}(\\s+.*)*\\*/)$~i", $token->getContent());
     }
 
     private function insertCommentAt(Tokens $tokens, int $casePosition): void

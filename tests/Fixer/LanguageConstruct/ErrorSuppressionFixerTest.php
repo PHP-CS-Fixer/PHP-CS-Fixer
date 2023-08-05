@@ -40,85 +40,101 @@ final class ErrorSuppressionFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield from [
-            [
-                '<?php trigger_error("This is not a deprecation warning."); @f(); ?>',
-            ],
-            [
-                '<?php trigger_error("This is not a deprecation warning.", E_USER_WARNING); ?>',
-            ],
-            [
-                '<?php A\B\trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ],
-            [
-                '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
-                '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ],
-            [
-                '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
-                null,
-                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => false],
-            ],
-            [
-                '<?php @\trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
-                '<?php \trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ],
-            [
-                '<?php echo "test";@trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
-                '<?php echo "test";trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ],
-            [
-                '<?php //
+        yield [
+            '<?php trigger_error("This is not a deprecation warning."); @f(); ?>',
+        ];
+
+        yield [
+            '<?php trigger_error("This is not a deprecation warning.", E_USER_WARNING); ?>',
+        ];
+
+        yield [
+            '<?php A\B\trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
+        ];
+
+        yield [
+            '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
+            '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
+        ];
+
+        yield [
+            '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
+            null,
+            [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => false],
+        ];
+
+        yield [
+            '<?php @\trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
+            '<?php \trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
+        ];
+
+        yield [
+            '<?php echo "test";@trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
+            '<?php echo "test";trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
+        ];
+
+        yield [
+            '<?php //
 @Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>',
-                '<?php //
+            '<?php //
 Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>',
-            ],
-            [
-                '<?php new trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ],
-            [
-                '<?php new \trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ],
-            [
-                '<?php $foo->trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ],
-            [
-                '<?php Foo::trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ],
-            [
-                '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); mkdir("dir"); ?>',
-                '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); ?>',
-                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true],
-            ],
-            [
-                '<?php $foo->isBar(); ?>',
-                '<?php @$foo->isBar(); ?>',
-                [ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true],
-            ],
-            [
-                '<?php Foo::isBar(); ?>',
-                '<?php @Foo::isBar(); ?>',
-                [ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true],
-            ],
-            [
-                '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); ?>',
-                '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); ?>',
-                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['mkdir']],
-            ],
-            [
-                '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); unlink($path); ?>',
-                '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); @unlink($path); ?>',
-                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['mkdir']],
-            ],
-            [
-                '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @trigger_error("This is not a deprecation warning.", E_USER_WARNING); ?>',
-                '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @trigger_error("This is not a deprecation warning.", E_USER_WARNING); ?>',
-                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['trigger_error']],
-            ],
-            [
-                '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );',
-                '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );',
-            ],
+        ];
+
+        yield [
+            '<?php new trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
+        ];
+
+        yield [
+            '<?php new \trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
+        ];
+
+        yield [
+            '<?php $foo->trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
+        ];
+
+        yield [
+            '<?php Foo::trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
+        ];
+
+        yield [
+            '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); mkdir("dir"); ?>',
+            '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); ?>',
+            [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true],
+        ];
+
+        yield [
+            '<?php $foo->isBar(); ?>',
+            '<?php @$foo->isBar(); ?>',
+            [ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true],
+        ];
+
+        yield [
+            '<?php Foo::isBar(); ?>',
+            '<?php @Foo::isBar(); ?>',
+            [ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true],
+        ];
+
+        yield [
+            '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); ?>',
+            '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); ?>',
+            [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['mkdir']],
+        ];
+
+        yield [
+            '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); unlink($path); ?>',
+            '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); @unlink($path); ?>',
+            [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['mkdir']],
+        ];
+
+        yield [
+            '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @trigger_error("This is not a deprecation warning.", E_USER_WARNING); ?>',
+            '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @trigger_error("This is not a deprecation warning.", E_USER_WARNING); ?>',
+            [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['trigger_error']],
+        ];
+
+        yield [
+            '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );',
+            '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );',
         ];
     }
 

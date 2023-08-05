@@ -64,26 +64,26 @@ abstract class AbstractReporterTestCase extends TestCase
 
     final public static function provideGenerateCases(): iterable
     {
-        return [
-            'no errors' => [
-                static::createNoErrorReport(),
-                new ReportSummary(
-                    [],
-                    10,
-                    0,
-                    0,
-                    false,
-                    false,
-                    false
-                ),
-            ],
-            'simple' => [
-                static::createSimpleReport(),
-                new ReportSummary(
-                    [
-                        'someFile.php' => [
-                            'appliedFixers' => ['some_fixer_name_here'],
-                            'diff' => '--- Original
+        yield 'no errors' => [
+            static::createNoErrorReport(),
+            new ReportSummary(
+                [],
+                10,
+                0,
+                0,
+                false,
+                false,
+                false
+            ),
+        ];
+
+        yield 'simple' => [
+            static::createSimpleReport(),
+            new ReportSummary(
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
+                        'diff' => '--- Original
 +++ New
 @@ -2,7 +2,7 @@
 
@@ -94,23 +94,24 @@ abstract class AbstractReporterTestCase extends TestCase
      {
      }
  }',
-                        ],
                     ],
-                    10,
-                    0,
-                    0,
-                    false,
-                    false,
-                    false
-                ),
-            ],
-            'with diff' => [
-                static::createWithDiffReport(),
-                new ReportSummary(
-                    [
-                        'someFile.php' => [
-                            'appliedFixers' => ['some_fixer_name_here'],
-                            'diff' => '--- Original
+                ],
+                10,
+                0,
+                0,
+                false,
+                false,
+                false
+            ),
+        ];
+
+        yield 'with diff' => [
+            static::createWithDiffReport(),
+            new ReportSummary(
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
+                        'diff' => '--- Original
 +++ New
 @@ -2,7 +2,7 @@
 
@@ -121,40 +122,42 @@ abstract class AbstractReporterTestCase extends TestCase
      {
      }
  }',
-                        ],
                     ],
-                    10,
-                    0,
-                    0,
-                    false,
-                    false,
-                    false
-                ),
-            ],
-            'with applied fixers' => [
-                static::createWithAppliedFixersReport(),
-                new ReportSummary(
-                    [
-                        'someFile.php' => [
-                            'appliedFixers' => ['some_fixer_name_here_1', 'some_fixer_name_here_2'],
-                            'diff' => '',
-                        ],
+                ],
+                10,
+                0,
+                0,
+                false,
+                false,
+                false
+            ),
+        ];
+
+        yield 'with applied fixers' => [
+            static::createWithAppliedFixersReport(),
+            new ReportSummary(
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here_1', 'some_fixer_name_here_2'],
+                        'diff' => '',
                     ],
-                    10,
-                    0,
-                    0,
-                    true,
-                    false,
-                    false
-                ),
-            ],
-            'with time and memory' => [
-                static::createWithTimeAndMemoryReport(),
-                new ReportSummary(
-                    [
-                        'someFile.php' => [
-                            'appliedFixers' => ['some_fixer_name_here'],
-                            'diff' => '--- Original
+                ],
+                10,
+                0,
+                0,
+                true,
+                false,
+                false
+            ),
+        ];
+
+        yield 'with time and memory' => [
+            static::createWithTimeAndMemoryReport(),
+            new ReportSummary(
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here'],
+                        'diff' => '--- Original
 +++ New
 @@ -2,7 +2,7 @@
 
@@ -165,37 +168,37 @@ abstract class AbstractReporterTestCase extends TestCase
      {
      }
  }',
-                        ],
                     ],
-                    10,
-                    1234,
-                    2621440, // 2.5 * 1024 * 1024
-                    false,
-                    false,
-                    false
-                ),
-            ],
-            'complex' => [
-                static::createComplexReport(),
-                new ReportSummary(
-                    [
-                        'someFile.php' => [
-                            'appliedFixers' => ['some_fixer_name_here_1', 'some_fixer_name_here_2'],
-                            'diff' => 'this text is a diff ;)',
-                        ],
-                        'anotherFile.php' => [
-                            'appliedFixers' => ['another_fixer_name_here'],
-                            'diff' => 'another diff here ;)',
-                        ],
+                ],
+                10,
+                1234,
+                2621440, // 2.5 * 1024 * 1024
+                false,
+                false,
+                false
+            ),
+        ];
+
+        yield 'complex' => [
+            static::createComplexReport(),
+            new ReportSummary(
+                [
+                    'someFile.php' => [
+                        'appliedFixers' => ['some_fixer_name_here_1', 'some_fixer_name_here_2'],
+                        'diff' => 'this text is a diff ;)',
                     ],
-                    10,
-                    1234,
-                    2621440, // 2.5 * 1024 * 1024
-                    true,
-                    true,
-                    true
-                ),
-            ],
+                    'anotherFile.php' => [
+                        'appliedFixers' => ['another_fixer_name_here'],
+                        'diff' => 'another diff here ;)',
+                    ],
+                ],
+                10,
+                1234,
+                2621440, // 2.5 * 1024 * 1024
+                true,
+                true,
+                true
+            ),
         ];
     }
 

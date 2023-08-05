@@ -37,14 +37,13 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     $arr = array(
         $a => array(1),
         $a => array(0 => array())
     );',
-                '<?php
+            '<?php
     $arr = array(
         $a =>
             array(1),
@@ -52,9 +51,10 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
             array(0 =>
             array())
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $a = array(
         "aaaaaa"    =>    "b",
         "c" => "d",
@@ -62,7 +62,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
         "ggg" => array(),
         "hh"      => [],
     );',
-                '<?php
+            '<?php
     $a = array(
         "aaaaaa"    =>    "b",
         "c"
@@ -74,9 +74,10 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
         "hh"      =>
             [],
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $hello = array(
         "foo" =>
         // hello there
@@ -91,22 +92,24 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
          */
         array()
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $fn = fn() => null;',
-                '<?php
+            '<?php
                     $fn = fn()
                         =>
                             null;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $foo = [
                         1 /* foo */ => $one,
                         2 => $two
                     ];',
-                '<?php
+            '<?php
                     $foo = [
                         1 /* foo */
                             =>
@@ -115,15 +118,16 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
                             =>
                                 $two
                     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $foo = [
                         1 // foo
                             => $one,
                         2 => $two,
                     ];',
-                '<?php
+            '<?php
                     $foo = [
                         1 // foo
                             =>
@@ -132,7 +136,6 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
                             =>
                                 $two,
                     ];',
-            ],
         ];
     }
 }

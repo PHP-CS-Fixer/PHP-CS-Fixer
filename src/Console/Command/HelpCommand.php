@@ -32,9 +32,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'help')]
 final class HelpCommand extends BaseHelpCommand
 {
-    /**
-     * @var string
-     */
     protected static $defaultName = 'help';
 
     /**
@@ -47,9 +44,7 @@ final class HelpCommand extends BaseHelpCommand
         $allowed = $option->getAllowedValues();
 
         if (null !== $allowed) {
-            $allowed = array_filter($allowed, static function ($value): bool {
-                return !$value instanceof \Closure;
-            });
+            $allowed = array_filter($allowed, static fn ($value): bool => !$value instanceof \Closure);
 
             usort($allowed, static function ($valueA, $valueB): int {
                 if ($valueA instanceof AllowedValueSubset) {

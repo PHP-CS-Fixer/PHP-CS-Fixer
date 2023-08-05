@@ -15,9 +15,10 @@ Rules
 - `ereg_to_preg <./../rules/alias/ereg_to_preg.rst>`_
 - `error_suppression <./../rules/language_construct/error_suppression.rst>`_
 - `fopen_flag_order <./../rules/function_notation/fopen_flag_order.rst>`_
-- `fopen_flags <./../rules/function_notation/fopen_flags.rst>`_
-  config:
+- `fopen_flags <./../rules/function_notation/fopen_flags.rst>`_ with config:
+
   ``['b_mode' => false]``
+
 - `function_to_constant <./../rules/language_construct/function_to_constant.rst>`_
 - `get_class_to_class_keyword <./../rules/language_construct/get_class_to_class_keyword.rst>`_
 - `implode_call <./../rules/function_notation/implode_call.rst>`_
@@ -25,12 +26,14 @@ Rules
 - `logical_operators <./../rules/operator/logical_operators.rst>`_
 - `modernize_strpos <./../rules/alias/modernize_strpos.rst>`_
 - `modernize_types_casting <./../rules/cast_notation/modernize_types_casting.rst>`_
-- `native_constant_invocation <./../rules/constant_notation/native_constant_invocation.rst>`_
-  config:
+- `native_constant_invocation <./../rules/constant_notation/native_constant_invocation.rst>`_ with config:
+
   ``['strict' => false]``
-- `native_function_invocation <./../rules/function_notation/native_function_invocation.rst>`_
-  config:
+
+- `native_function_invocation <./../rules/function_notation/native_function_invocation.rst>`_ with config:
+
   ``['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]``
+
 - `no_alias_functions <./../rules/alias/no_alias_functions.rst>`_
 - `no_homoglyph_names <./../rules/naming/no_homoglyph_names.rst>`_
 - `no_php4_constructor <./../rules/class_notation/no_php4_constructor.rst>`_

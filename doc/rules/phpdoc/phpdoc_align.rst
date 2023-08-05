@@ -11,7 +11,15 @@ Configuration
 ``tags``
 ~~~~~~~~
 
-The tags that should be aligned.
+The tags that should be aligned. Allowed values are tags with name (``'param',
+'property', 'property-read', 'property-write', 'phpstan-param',
+'phpstan-property', 'phpstan-property-read', 'phpstan-property-write',
+'phpstan-assert', 'phpstan-assert-if-true', 'phpstan-assert-if-false',
+'psalm-param', 'psalm-param-out', 'psalm-property', 'psalm-property-read',
+'psalm-property-write', 'psalm-assert', 'psalm-assert-if-true',
+'psalm-assert-if-false'``), tags with method signature (``'method',
+'phpstan-method', 'psalm-method'``) and any custom tag with description (e.g.
+``@tag <desc>``).
 
 Allowed types: ``array``
 
@@ -103,8 +111,6 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``phpdoc_align`` rule with the default config.
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``phpdoc_align`` rule with the default config.

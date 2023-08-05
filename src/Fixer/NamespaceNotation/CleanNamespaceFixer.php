@@ -45,6 +45,16 @@ final class CleanNamespaceFixer extends AbstractFixer
         return \PHP_VERSION_ID < 8_00_00 && $tokens->isTokenKindFound(T_NS_SEPARATOR);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before PhpUnitDataProviderReturnTypeFixer.
+     */
+    public function getPriority(): int
+    {
+        return 3;
+    }
+
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $count = $tokens->count();

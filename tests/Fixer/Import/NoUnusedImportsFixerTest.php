@@ -33,671 +33,698 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'simple' => [
-                <<<'EOF'
-<?php
-
-use Foo\Bar;
-use Foo\Bar\FooBar as FooBaz;
-use SomeClass;
-
-$a = new Bar();
-$a = new FooBaz();
-$a = new SomeClass();
-
-use Symfony\Annotation\Template;
-use Symfony\Doctrine\Entities\Entity;
-use Symfony\Array123\ArrayInterface;
-
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-    }
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-use Foo\Bar;
-use Foo\Bar\Baz;
-use Foo\Bar\FooBar as FooBaz;
-use Foo\Bar\Foo as Fooo;
-use Foo\Bar\Baar\Baar;
-use SomeClass;
-
-$a = new Bar();
-$a = new FooBaz();
-$a = new SomeClass();
-
-use Symfony\Annotation\Template;
-use Symfony\Doctrine\Entities\Entity;
-use Symfony\Array123\ArrayInterface;
-
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-    }
-}
-EOF
-                ,
-            ],
-            'with_indents' => [
-                <<<'EOF'
-<?php
-
-use Foo\Bar;
-    $foo = 1;
-use Foo\Bar\FooBar as FooBaz;
-    use SomeClassIndented;
-
-$a = new Bar();
-$a = new FooBaz();
-$a = new SomeClassIndented();
-
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-use Foo\Bar;
-use Foo\Bar\Baz;
-    $foo = 1;
-use Foo\Bar\FooBar as FooBaz;
-use Foo\Bar\Foo as Fooo;
-use Foo\Bar\Baar\Baar;
-    use SomeClassIndented;
-
-$a = new Bar();
-$a = new FooBaz();
-$a = new SomeClassIndented();
-
-EOF
-                ,
-            ],
-            'in_same_namespace_1' => [
-                <<<'EOF'
-<?php
-
-namespace Foo\Bar\FooBar;
-
-use Foo\Bar\FooBar\Foo as Fooz;
-use Foo\Bar\FooBar\Aaa\Bbb;
-use XYZ\FQCN_XYZ;
-
-$a = new Baz();
-$b = new Fooz();
-$c = new Bar\Fooz();
-$d = new Bbb();
-$e = new FQCN_Babo();
-$f = new FQCN_XYZ();
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-namespace Foo\Bar\FooBar;
-
-use Foo\Bar\FooBar\Baz;
-use Foo\Bar\FooBar\Foo as Fooz;
-use Foo\Bar\FooBar\Bar;
-use Foo\Bar\FooBar\Aaa\Bbb;
-use \Foo\Bar\FooBar\FQCN_Babo;
-use XYZ\FQCN_XYZ;
-
-$a = new Baz();
-$b = new Fooz();
-$c = new Bar\Fooz();
-$d = new Bbb();
-$e = new FQCN_Babo();
-$f = new FQCN_XYZ();
-EOF
-                ,
-            ],
-            'in_same_namespace_2' => [
-                <<<'EOF'
-<?php namespace App\Http\Controllers;
-
-
-EOF
-                ,
-                <<<'EOF'
-<?php namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-
-EOF
-                ,
-            ],
-            'in_same_namespace_multiple_1' => [
-                <<<'EOF'
-<?php
-
-namespace Foooooooo;
-namespace Foo;
-
-use Foooooooo\Baaaaz;
-
-$a = new Bar();
-$b = new Baz();
-$c = new Baaaaz();
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-namespace Foooooooo;
-namespace Foo;
-
-use Foo\Bar;
-use Foo\Baz;
-use Foooooooo\Baaaar;
-use Foooooooo\Baaaaz;
-
-$a = new Bar();
-$b = new Baz();
-$c = new Baaaaz();
-EOF
-                ,
-            ],
-            'in_same_namespace_multiple_2' => [
-                <<<'EOF'
-<?php
-
-namespace Foooooooo;
-
-use Foo\Bar;
-
-$a = new Baaaar();
-$b = new Baaaaz();
-$c = new Bar();
-
-namespace Foo;
-
-use Foooooooo\Baaaaz;
-
-$a = new Bar();
-$b = new Baz();
-$c = new Baaaaz();
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-namespace Foooooooo;
-
-use Foo\Bar;
-use Foo\Baz;
-use Foooooooo\Baaaar;
-use Foooooooo\Baaaaz;
-
-$a = new Baaaar();
-$b = new Baaaaz();
-$c = new Bar();
-
-namespace Foo;
-
-use Foo\Bar;
-use Foo\Baz;
-use Foooooooo\Baaaar;
-use Foooooooo\Baaaaz;
-
-$a = new Bar();
-$b = new Baz();
-$c = new Baaaaz();
-EOF
-                ,
-            ],
-            'in_same_namespace_multiple_braces' => [
-                <<<'EOF'
-<?php
-
-namespace Foooooooo
-{
-    use Foo\Bar;
-
-    $a = new Baaaar();
-    $b = new Baaaaz();
-    $c = new Bar();
-}
-
-namespace Foo
-{
-    use Foooooooo\Baaaaz;
-
-    $a = new Bar();
-    $b = new Baz();
-    $c = new Baaaaz();
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-namespace Foooooooo
-{
-    use Foo\Bar;
-    use Foo\Baz;
-    use Foooooooo\Baaaar;
-    use Foooooooo\Baaaaz;
-
-    $a = new Baaaar();
-    $b = new Baaaaz();
-    $c = new Bar();
-}
-
-namespace Foo
-{
-    use Foo\Bar;
-    use Foo\Baz;
-    use Foooooooo\Baaaar;
-    use Foooooooo\Baaaaz;
-
-    $a = new Bar();
-    $b = new Baz();
-    $c = new Baaaaz();
-}
-EOF
-                ,
-            ],
-            'multiple_use' => [
-                <<<'EOF'
-<?php
-
-namespace Foo;
-
-use BarB, BarC as C, BarD;
-use BarE;
-
-$c = new D();
-$e = new BarE();
-EOF
-                ,
-
-                <<<'EOF'
-<?php
-
-namespace Foo;
-
-use Bar;
-use BarA;
-use BarB, BarC as C, BarD;
-use BarB2;
-use BarB\B2;
-use BarE;
-
-$c = new D();
-$e = new BarE();
-EOF
-                ,
-            ],
-            'with_braces' => [
-                <<<'EOF'
-<?php
-
-namespace Foo\Bar\FooBar {
-    use Foo\Bar\FooBar\Foo as Fooz;
-    use Foo\Bar\FooBar\Aaa\Bbb;
-
-    $a = new Baz();
-    $b = new Fooz();
-    $c = new Bar\Fooz();
-    $d = new Bbb();
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-namespace Foo\Bar\FooBar {
-    use Foo\Bar\FooBar\Baz;
-    use Foo\Bar\FooBar\Foo as Fooz;
-    use Foo\Bar\FooBar\Bar;
-    use Foo\Bar\FooBar\Aaa\Bbb;
-
-    $a = new Baz();
-    $b = new Fooz();
-    $c = new Bar\Fooz();
-    $d = new Bbb();
-}
-EOF
-                ,
-            ],
-            'trailing_spaces' => [
-                <<<'EOF'
-<?php
-
-use Foo\Bar ;
-use Foo\Bar\FooBar as FooBaz ;
-
-$a = new Bar();
-$a = new FooBaz();
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-use Foo\Bar ;
-use Foo\Bar\FooBar as FooBaz ;
-use Foo\Bar\Foo as Fooo ;
-use SomeClass ;
-
-$a = new Bar();
-$a = new FooBaz();
-EOF
-                ,
-            ],
-            'traits' => [
-                <<<'EOF'
-<?php
-
-use Foo as Bar;
-use A\MyTrait1;
-
-class MyParent
-{
-    use MyTrait1;
-use MyTrait2;
-    use Bar;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-use Foo;
-use Foo as Bar;
-use A\MyTrait1;
-
-class MyParent
-{
-    use MyTrait1;
-use MyTrait2;
-    use Bar;
-}
-EOF
-                ,
-            ],
-            'function_use' => [
-                <<<'EOF'
-<?php
-
-use Foo;
-
-$f = new Foo();
-$a = function ($item) use ($f) {
-    return !in_array($item, $f);
-};
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-use Foo;
-use Bar;
-
-$f = new Foo();
-$a = function ($item) use ($f) {
-    return !in_array($item, $f);
-};
-EOF
-                ,
-            ],
-            'similar_names' => [
-                <<<'EOF'
-<?php
-
-use SomeEntityRepository;
-
-class SomeService
-{
-    public function __construct(SomeEntityRepository $repo)
-    {
-        $this->repo = $repo;
-    }
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-use SomeEntityRepository;
-use SomeEntity;
-
-class SomeService
-{
-    public function __construct(SomeEntityRepository $repo)
-    {
-        $this->repo = $repo;
-    }
-}
-EOF
-                ,
-            ],
-            'variable_name' => [
-                <<<'EOF'
-<?php
-
-
-$bar = null;
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-use Foo\Bar;
-
-$bar = null;
-EOF
-                ,
-            ],
-            'property name, method name, static method call, static property' => [
-                <<<'EOF'
-<?php
-
-
-$foo->bar = null;
-$foo->bar();
-$foo::bar();
-$foo::bar;
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-use Foo\Bar;
-
-$foo->bar = null;
-$foo->bar();
-$foo::bar();
-$foo::bar;
-EOF
-                ,
-            ],
-            'constant_name' => [
-                <<<'EOF'
-<?php
-
-
-class Baz
-{
-    const BAR = 0;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-use Foo\Bar;
-
-class Baz
-{
-    const BAR = 0;
-}
-EOF
-                ,
-            ],
-            'namespace_part' => [
-                <<<'EOF'
-<?php
-
-
-new \Baz\Bar();
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-use Foo\Bar;
-
-new \Baz\Bar();
-EOF
-                ,
-            ],
-            'use_in_string_1' => [
-                <<<'EOF'
-<?php
-$x=<<<'EOA'
-use a;
-use b;
-EOA;
-
-EOF
-                ,
-            ],
-            'use_in_string_2' => [
-                <<<'EOF'
-<?php
-$x='
-use a;
-use b;
-';
-EOF
-                ,
-            ],
-            'use_in_string_3' => [
-                <<<'EOF'
-<?php
-$x="
-use a;
-use b;
-";
-EOF
-                ,
-            ],
-            'import_in_global_namespace' => [
-                <<<'EOF'
-<?php
-namespace A;
-use \SplFileInfo;
-new SplFileInfo(__FILE__);
-EOF
-                ,
-            ],
-            'use_as_last_statement' => [
-                <<<'EOF'
-<?php
-
-EOF
-                ,
-
-                <<<'EOF'
-<?php
-use Bar\Finder;
-EOF
-                ,
-            ],
-            'use_with_same_last_part_that_is_in_namespace' => [
-                <<<'EOF'
-<?php
-
-namespace Foo\Finder;
-
-
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-namespace Foo\Finder;
-
-use Bar\Finder;
-EOF
-                ,
-            ],
-            'used_use_with_same_last_part_that_is_in_namespace' => [
-                <<<'EOF'
-<?php
-
-namespace Foo\Finder;
-
-use Bar\Finder;
-
-class Baz extends Finder
-{
-}
-EOF
-                ,
-            ],
-            'foo' => [
-                <<<'EOF'
-<?php
-namespace Aaa;
-
-
-class Ddd
-{
-}
-
-EOF
-                ,
-                <<<'EOF'
-<?php
-namespace Aaa;
-
-use Aaa\Bbb;
-use Ccc;
-
-class Ddd
-{
-}
-
-EOF
-                ,
-            ],
-            'close_tag_1' => [
-                '<?php
+        yield 'simple' => [
+            <<<'EOF'
+                <?php
+
+                use Foo\Bar;
+                use Foo\Bar\FooBar as FooBaz;
+                use SomeClass;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new SomeClass();
+
+                use Symfony\Annotation\Template;
+                use Symfony\Doctrine\Entities\Entity;
+                use Symfony\Array123\ArrayInterface;
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+                    }
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                use Foo\Bar;
+                use Foo\Bar\Baz;
+                use Foo\Bar\FooBar as FooBaz;
+                use Foo\Bar\Foo as Fooo;
+                use Foo\Bar\Baar\Baar;
+                use SomeClass;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new SomeClass();
+
+                use Symfony\Annotation\Template;
+                use Symfony\Doctrine\Entities\Entity;
+                use Symfony\Array123\ArrayInterface;
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+                    }
+                }
+                EOF
+            ,
+        ];
+
+        yield 'with_indents' => [
+            <<<'EOF'
+                <?php
+
+                use Foo\Bar;
+                    $foo = 1;
+                use Foo\Bar\FooBar as FooBaz;
+                    use SomeClassIndented;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new SomeClassIndented();
+
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                use Foo\Bar;
+                use Foo\Bar\Baz;
+                    $foo = 1;
+                use Foo\Bar\FooBar as FooBaz;
+                use Foo\Bar\Foo as Fooo;
+                use Foo\Bar\Baar\Baar;
+                    use SomeClassIndented;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new SomeClassIndented();
+
+                EOF
+            ,
+        ];
+
+        yield 'in_same_namespace_1' => [
+            <<<'EOF'
+                <?php
+
+                namespace Foo\Bar\FooBar;
+
+                use Foo\Bar\FooBar\Foo as Fooz;
+                use Foo\Bar\FooBar\Aaa\Bbb;
+                use XYZ\FQCN_XYZ;
+
+                $a = new Baz();
+                $b = new Fooz();
+                $c = new Bar\Fooz();
+                $d = new Bbb();
+                $e = new FQCN_Babo();
+                $f = new FQCN_XYZ();
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                namespace Foo\Bar\FooBar;
+
+                use Foo\Bar\FooBar\Baz;
+                use Foo\Bar\FooBar\Foo as Fooz;
+                use Foo\Bar\FooBar\Bar;
+                use Foo\Bar\FooBar\Aaa\Bbb;
+                use \Foo\Bar\FooBar\FQCN_Babo;
+                use XYZ\FQCN_XYZ;
+
+                $a = new Baz();
+                $b = new Fooz();
+                $c = new Bar\Fooz();
+                $d = new Bbb();
+                $e = new FQCN_Babo();
+                $f = new FQCN_XYZ();
+                EOF
+            ,
+        ];
+
+        yield 'in_same_namespace_2' => [
+            <<<'EOF'
+                <?php namespace App\Http\Controllers;
+
+
+                EOF
+            ,
+            <<<'EOF'
+                <?php namespace App\Http\Controllers;
+
+                use Illuminate\Http\Request;
+                use App\Http\Controllers\Controller;
+
+                EOF
+            ,
+        ];
+
+        yield 'in_same_namespace_multiple_1' => [
+            <<<'EOF'
+                <?php
+
+                namespace Foooooooo;
+                namespace Foo;
+
+                use Foooooooo\Baaaaz;
+
+                $a = new Bar();
+                $b = new Baz();
+                $c = new Baaaaz();
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                namespace Foooooooo;
+                namespace Foo;
+
+                use Foo\Bar;
+                use Foo\Baz;
+                use Foooooooo\Baaaar;
+                use Foooooooo\Baaaaz;
+
+                $a = new Bar();
+                $b = new Baz();
+                $c = new Baaaaz();
+                EOF
+            ,
+        ];
+
+        yield 'in_same_namespace_multiple_2' => [
+            <<<'EOF'
+                <?php
+
+                namespace Foooooooo;
+
+                use Foo\Bar;
+
+                $a = new Baaaar();
+                $b = new Baaaaz();
+                $c = new Bar();
+
+                namespace Foo;
+
+                use Foooooooo\Baaaaz;
+
+                $a = new Bar();
+                $b = new Baz();
+                $c = new Baaaaz();
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                namespace Foooooooo;
+
+                use Foo\Bar;
+                use Foo\Baz;
+                use Foooooooo\Baaaar;
+                use Foooooooo\Baaaaz;
+
+                $a = new Baaaar();
+                $b = new Baaaaz();
+                $c = new Bar();
+
+                namespace Foo;
+
+                use Foo\Bar;
+                use Foo\Baz;
+                use Foooooooo\Baaaar;
+                use Foooooooo\Baaaaz;
+
+                $a = new Bar();
+                $b = new Baz();
+                $c = new Baaaaz();
+                EOF
+            ,
+        ];
+
+        yield 'in_same_namespace_multiple_braces' => [
+            <<<'EOF'
+                <?php
+
+                namespace Foooooooo
+                {
+                    use Foo\Bar;
+
+                    $a = new Baaaar();
+                    $b = new Baaaaz();
+                    $c = new Bar();
+                }
+
+                namespace Foo
+                {
+                    use Foooooooo\Baaaaz;
+
+                    $a = new Bar();
+                    $b = new Baz();
+                    $c = new Baaaaz();
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                namespace Foooooooo
+                {
+                    use Foo\Bar;
+                    use Foo\Baz;
+                    use Foooooooo\Baaaar;
+                    use Foooooooo\Baaaaz;
+
+                    $a = new Baaaar();
+                    $b = new Baaaaz();
+                    $c = new Bar();
+                }
+
+                namespace Foo
+                {
+                    use Foo\Bar;
+                    use Foo\Baz;
+                    use Foooooooo\Baaaar;
+                    use Foooooooo\Baaaaz;
+
+                    $a = new Bar();
+                    $b = new Baz();
+                    $c = new Baaaaz();
+                }
+                EOF
+            ,
+        ];
+
+        yield 'multiple_use' => [
+            <<<'EOF'
+                <?php
+
+                namespace Foo;
+
+                use BarB, BarC as C, BarD;
+                use BarE;
+
+                $c = new D();
+                $e = new BarE();
+                EOF
+            ,
+
+            <<<'EOF'
+                <?php
+
+                namespace Foo;
+
+                use Bar;
+                use BarA;
+                use BarB, BarC as C, BarD;
+                use BarB2;
+                use BarB\B2;
+                use BarE;
+
+                $c = new D();
+                $e = new BarE();
+                EOF
+            ,
+        ];
+
+        yield 'with_braces' => [
+            <<<'EOF'
+                <?php
+
+                namespace Foo\Bar\FooBar {
+                    use Foo\Bar\FooBar\Foo as Fooz;
+                    use Foo\Bar\FooBar\Aaa\Bbb;
+
+                    $a = new Baz();
+                    $b = new Fooz();
+                    $c = new Bar\Fooz();
+                    $d = new Bbb();
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                namespace Foo\Bar\FooBar {
+                    use Foo\Bar\FooBar\Baz;
+                    use Foo\Bar\FooBar\Foo as Fooz;
+                    use Foo\Bar\FooBar\Bar;
+                    use Foo\Bar\FooBar\Aaa\Bbb;
+
+                    $a = new Baz();
+                    $b = new Fooz();
+                    $c = new Bar\Fooz();
+                    $d = new Bbb();
+                }
+                EOF
+            ,
+        ];
+
+        yield 'trailing_spaces' => [
+            <<<'EOF'
+                <?php
+
+                use Foo\Bar ;
+                use Foo\Bar\FooBar as FooBaz ;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                use Foo\Bar ;
+                use Foo\Bar\FooBar as FooBaz ;
+                use Foo\Bar\Foo as Fooo ;
+                use SomeClass ;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                EOF
+            ,
+        ];
+
+        yield 'traits' => [
+            <<<'EOF'
+                <?php
+
+                use Foo as Bar;
+                use A\MyTrait1;
+
+                class MyParent
+                {
+                    use MyTrait1;
+                use MyTrait2;
+                    use Bar;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                use Foo;
+                use Foo as Bar;
+                use A\MyTrait1;
+
+                class MyParent
+                {
+                    use MyTrait1;
+                use MyTrait2;
+                    use Bar;
+                }
+                EOF
+            ,
+        ];
+
+        yield 'function_use' => [
+            <<<'EOF'
+                <?php
+
+                use Foo;
+
+                $f = new Foo();
+                $a = function ($item) use ($f) {
+                    return !in_array($item, $f);
+                };
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                use Foo;
+                use Bar;
+
+                $f = new Foo();
+                $a = function ($item) use ($f) {
+                    return !in_array($item, $f);
+                };
+                EOF
+            ,
+        ];
+
+        yield 'similar_names' => [
+            <<<'EOF'
+                <?php
+
+                use SomeEntityRepository;
+
+                class SomeService
+                {
+                    public function __construct(SomeEntityRepository $repo)
+                    {
+                        $this->repo = $repo;
+                    }
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                use SomeEntityRepository;
+                use SomeEntity;
+
+                class SomeService
+                {
+                    public function __construct(SomeEntityRepository $repo)
+                    {
+                        $this->repo = $repo;
+                    }
+                }
+                EOF
+            ,
+        ];
+
+        yield 'variable_name' => [
+            <<<'EOF'
+                <?php
+
+
+                $bar = null;
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                use Foo\Bar;
+
+                $bar = null;
+                EOF
+            ,
+        ];
+
+        yield 'property name, method name, static method call, static property' => [
+            <<<'EOF'
+                <?php
+
+
+                $foo->bar = null;
+                $foo->bar();
+                $foo::bar();
+                $foo::bar;
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                use Foo\Bar;
+
+                $foo->bar = null;
+                $foo->bar();
+                $foo::bar();
+                $foo::bar;
+                EOF
+            ,
+        ];
+
+        yield 'constant_name' => [
+            <<<'EOF'
+                <?php
+
+
+                class Baz
+                {
+                    const BAR = 0;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                use Foo\Bar;
+
+                class Baz
+                {
+                    const BAR = 0;
+                }
+                EOF
+            ,
+        ];
+
+        yield 'namespace_part' => [
+            <<<'EOF'
+                <?php
+
+
+                new \Baz\Bar();
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                use Foo\Bar;
+
+                new \Baz\Bar();
+                EOF
+            ,
+        ];
+
+        yield 'use_in_string_1' => [
+            <<<'EOF'
+                <?php
+                $x=<<<'EOA'
+                use a;
+                use b;
+                EOA;
+
+                EOF
+            ,
+        ];
+
+        yield 'use_in_string_2' => [
+            <<<'EOF'
+                <?php
+                $x='
+                use a;
+                use b;
+                ';
+                EOF
+            ,
+        ];
+
+        yield 'use_in_string_3' => [
+            <<<'EOF'
+                <?php
+                $x="
+                use a;
+                use b;
+                ";
+                EOF
+            ,
+        ];
+
+        yield 'import_in_global_namespace' => [
+            <<<'EOF'
+                <?php
+                namespace A;
+                use \SplFileInfo;
+                new SplFileInfo(__FILE__);
+                EOF
+            ,
+        ];
+
+        yield 'use_as_last_statement' => [
+            <<<'EOF'
+                <?php
+
+                EOF
+            ,
+
+            <<<'EOF'
+                <?php
+                use Bar\Finder;
+                EOF
+            ,
+        ];
+
+        yield 'use_with_same_last_part_that_is_in_namespace' => [
+            <<<'EOF'
+                <?php
+
+                namespace Foo\Finder;
+
+
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                namespace Foo\Finder;
+
+                use Bar\Finder;
+                EOF
+            ,
+        ];
+
+        yield 'used_use_with_same_last_part_that_is_in_namespace' => [
+            <<<'EOF'
+                <?php
+
+                namespace Foo\Finder;
+
+                use Bar\Finder;
+
+                class Baz extends Finder
+                {
+                }
+                EOF
+            ,
+        ];
+
+        yield 'foo' => [
+            <<<'EOF'
+                <?php
+                namespace Aaa;
+
+
+                class Ddd
+                {
+                }
+
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+                namespace Aaa;
+
+                use Aaa\Bbb;
+                use Ccc;
+
+                class Ddd
+                {
+                }
+
+                EOF
+            ,
+        ];
+
+        yield 'close_tag_1' => [
+            '<?php
 ?>inline content<?php ?>',
-                '<?php
+            '<?php
      use A\AA;
      use B\C?>inline content<?php use A\D; use E\F ?>',
-            ],
-            'close_tag_2' => [
-                '<?php ?>',
-                '<?php use A\B;?>',
-            ],
-            'close_tag_3' => [
-                '<?php ?>',
-                '<?php use A\B?>',
-            ],
-            'case_mismatch_typo' => [
-                '<?php
+        ];
+
+        yield 'close_tag_2' => [
+            '<?php ?>',
+            '<?php use A\B;?>',
+        ];
+
+        yield 'close_tag_3' => [
+            '<?php ?>',
+            '<?php use A\B?>',
+        ];
+
+        yield 'case_mismatch_typo' => [
+            '<?php
 use Foo\exception; // must be kept by non-risky fixer
 
 try {
@@ -708,9 +735,10 @@ try {
     echo \'Exception caught\';
 }
 ',
-            ],
-            'with_matches_in_comments' => [
-                '<?php
+        ];
+
+        yield 'with_matches_in_comments' => [
+            '<?php
 use Foo;
 use Bar;
 use Baz;
@@ -718,9 +746,10 @@ use Baz;
 //Foo
 #Bar
 /*Baz*/',
-            ],
-            'with_case_insensitive_matches_in_comments' => [
-                '<?php
+        ];
+
+        yield 'with_case_insensitive_matches_in_comments' => [
+            '<?php
 use Foo;
 use Bar;
 use Baz;
@@ -728,355 +757,375 @@ use Baz;
 //foo
 #bar
 /*baz*/',
-            ],
-            'with_same_namespace_import_and_unused_import' => [
-                <<<'EOF'
-<?php
+        ];
 
-namespace Foo;
+        yield 'with_same_namespace_import_and_unused_import' => [
+            <<<'EOF'
+                <?php
 
-use Bar\C;
-/* test */
+                namespace Foo;
 
-abstract class D extends A implements C
-{
-}
+                use Bar\C;
+                /* test */
 
-EOF
-                ,
-                <<<'EOF'
-<?php
+                abstract class D extends A implements C
+                {
+                }
 
-namespace Foo;
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-use Bar\C;
-use Foo\A;
-use Foo\Bar\B /* test */ ;
+                namespace Foo;
 
-abstract class D extends A implements C
-{
-}
+                use Bar\C;
+                use Foo\A;
+                use Foo\Bar\B /* test */ ;
 
-EOF
-                ,
-            ],
-            'with_same_namespace_import_and_unused_import_after_namespace_statement' => [
-                <<<'EOF'
-<?php
+                abstract class D extends A implements C
+                {
+                }
 
-namespace Foo;
+                EOF
+            ,
+        ];
 
-use Foo\Bar\C;
+        yield 'with_same_namespace_import_and_unused_import_after_namespace_statement' => [
+            <<<'EOF'
+                <?php
 
-abstract class D extends A implements C
-{
-}
+                namespace Foo;
 
-EOF
-                ,
-                <<<'EOF'
-<?php
+                use Foo\Bar\C;
 
-namespace Foo;
+                abstract class D extends A implements C
+                {
+                }
 
-use Foo\A;
-use Foo\Bar\B;
-use Foo\Bar\C;
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-abstract class D extends A implements C
-{
-}
+                namespace Foo;
 
-EOF
-                ,
-            ],
-            'wrong_casing' => [
-                <<<'EOF'
-<?php
+                use Foo\A;
+                use Foo\Bar\B;
+                use Foo\Bar\C;
 
-use Foo\Foo;
-use Bar\Bar;
+                abstract class D extends A implements C
+                {
+                }
 
-$a = new FOO();
-$b = new bar();
-EOF
-                ,
-            ],
-            'phpdoc_unused' => [
-                <<<'EOF'
-<?php
+                EOF
+            ,
+        ];
 
-class Foo extends \PHPUnit_Framework_TestCase
-{
-    /**
-     * @expectedException \Exception
-     */
-    public function testBar()
-    { }
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
-use Some\Exception;
+        yield 'wrong_casing' => [
+            <<<'EOF'
+                <?php
 
-class Foo extends \PHPUnit_Framework_TestCase
-{
-    /**
-     * @expectedException \Exception
-     */
-    public function testBar()
-    { }
-}
-EOF
-                ,
-            ],
-            'imported_class_is_used_for_constants_1' => [
-                '<?php
+                use Foo\Foo;
+                use Bar\Bar;
+
+                $a = new FOO();
+                $b = new bar();
+                EOF
+            ,
+        ];
+
+        yield 'phpdoc_unused' => [
+            <<<'EOF'
+                <?php
+
+                class Foo extends \PHPUnit_Framework_TestCase
+                {
+                    /**
+                     * @expectedException \Exception
+                     */
+                    public function testBar()
+                    { }
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+                use Some\Exception;
+
+                class Foo extends \PHPUnit_Framework_TestCase
+                {
+                    /**
+                     * @expectedException \Exception
+                     */
+                    public function testBar()
+                    { }
+                }
+                EOF
+            ,
+        ];
+
+        yield 'imported_class_is_used_for_constants_1' => [
+            '<?php
 use A\ABC;
 $a = 5-ABC::Test;
 $a = 5-ABC::Test-5;
 $a = ABC::Test-5;
 ',
-            ],
-            'imported_class_is_used_for_constants_2' => [
-                '<?php
+        ];
+
+        yield 'imported_class_is_used_for_constants_2' => [
+            '<?php
 use A\ABC;
 $a = 5-ABC::Test;
 $a = 5-ABC::Test-5;
 ',
-            ],
-            'imported_class_is_used_for_constants_3' => [
-                '<?php
+        ];
+
+        yield 'imported_class_is_used_for_constants_3' => [
+            '<?php
 use A\ABC;
 $a = 5-ABC::Test;
 ',
-            ],
-            'imported_class_is_used_for_constants_4' => ['<?php
+        ];
+
+        yield 'imported_class_is_used_for_constants_4' => ['<?php
 use A\ABC;
 $a = ABC::Test-5;
 ',
-            ],
-            'imported_class_is_used_for_constants_5' => ['<?php
+        ];
+
+        yield 'imported_class_is_used_for_constants_5' => ['<?php
 use A\ABC;
 $a = 5-ABC::Test-5;
 ',
-            ],
-            'imported_class_is_used_for_constants_6' => ['<?php
+        ];
+
+        yield 'imported_class_is_used_for_constants_6' => ['<?php
 use A\ABC;
 $b = $a-->ABC::Test;
 ',
-            ],
-            'imported_class_name_is_prefix_with_dash_of_constant' => [
-                <<<'EOF'
-<?php
+        ];
+
+        yield 'imported_class_name_is_prefix_with_dash_of_constant' => [
+            <<<'EOF'
+                <?php
 
 
-class Dummy
-{
-const C = 'bar-bados';
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+                class Dummy
+                {
+                const C = 'bar-bados';
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-use Foo\Bar;
+                use Foo\Bar;
 
-class Dummy
-{
-const C = 'bar-bados';
-}
-EOF
-                ,
-            ],
-            'imported_class_name_is_suffix_with_dash_of_constant' => [
-                <<<'EOF'
-<?php
+                class Dummy
+                {
+                const C = 'bar-bados';
+                }
+                EOF
+            ,
+        ];
 
-
-class Dummy
-{
-    const C = 'tool-bar';
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-use Foo\Bar;
-
-class Dummy
-{
-    const C = 'tool-bar';
-}
-EOF
-                ,
-            ],
-            'imported_class_name_is_inside_with_dash_of_constant' => [
-                <<<'EOF'
-<?php
+        yield 'imported_class_name_is_suffix_with_dash_of_constant' => [
+            <<<'EOF'
+                <?php
 
 
-class Dummy
-{
-    const C = 'tool-bar-bados';
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+                class Dummy
+                {
+                    const C = 'tool-bar';
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-use Foo\Bar;
+                use Foo\Bar;
 
-class Dummy
-{
-    const C = 'tool-bar-bados';
-}
-EOF
-                ,
-            ],
-            'functions_in_the_global_namespace_should_not_be_removed_even_when_declaration_has_new_lines_and_is_uppercase' => [
-                <<<'EOF'
-<?php
+                class Dummy
+                {
+                    const C = 'tool-bar';
+                }
+                EOF
+            ,
+        ];
 
-namespace Foo;
-
-use function is_int;
-
-is_int(1);
-
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-namespace Foo;
-
-use function is_int;
-use function is_float;
-
-is_int(1);
-
-EOF
-                ,
-            ],
-            'constants_in_the_global_namespace_should_not_be_removed' => [
-                $expected = <<<'EOF'
-<?php
-
-namespace Foo;
-
-use const PHP_INT_MAX;
-
-echo PHP_INT_MAX;
-
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-namespace Foo;
-
-use const PHP_INT_MAX;
-use const PHP_INT_MIN;
-
-echo PHP_INT_MAX;
-
-EOF
-                ,
-            ],
-            'functions_in_the_global_namespace_should_not_be_removed_even_when_declaration_has_ne_lines_and_is_uppercase' => [
-                <<<'EOF'
-<?php
-
-namespace Foo;use/**/FUNCTION#1
-is_int;#2
-
-is_int(1);
-
-EOF
-                ,
-                <<<'EOF'
-<?php
-
-namespace Foo;use/**/FUNCTION#1
-is_int;#2
-use function
-    is_float;
-use
-    const
-        PHP_INT_MIN;
-
-is_int(1);
-
-EOF
-                ,
-            ],
-            'use_trait should never be removed' => [
-                <<<'EOF'
-<?php
-
-class UsesTraits
-{
-    /**
-     * @see #4086
-     */
-    private function withComplexStringVariable()
-    {
-        $name = 'World';
-
-        return "Hello, {$name}!";
-    }
-
-    use MyTrait;
-}
-
-EOF
-            ],
-            'imported_name_is_part_of_namespace' => [
-                <<<'EOF'
-<?php
-
-namespace App\Foo;
+        yield 'imported_class_name_is_inside_with_dash_of_constant' => [
+            <<<'EOF'
+                <?php
 
 
-class Baz
-{
-}
+                class Dummy
+                {
+                    const C = 'tool-bar-bados';
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-EOF
-                ,
-                <<<'EOF'
-<?php
+                use Foo\Bar;
 
-namespace App\Foo;
+                class Dummy
+                {
+                    const C = 'tool-bar-bados';
+                }
+                EOF
+            ,
+        ];
 
-use Foo\Bar\App;
+        yield 'functions_in_the_global_namespace_should_not_be_removed_even_when_declaration_has_new_lines_and_is_uppercase' => [
+            <<<'EOF'
+                <?php
 
-class Baz
-{
-}
+                namespace Foo;
 
-EOF
-            ],
-            'imported_name_is_part_of_namespace with closing tag' => [
-                <<<'EOF'
-<?php
-    namespace A\B {?>
-<?php
-    require_once __DIR__.'/test2.php' ?>
-<?php
-    use X\Z\Y
-?>
-<?php
-    $y = new Y() ?>
-<?php
-    var_dump($y);}
-EOF
-            ],
-            [
-                '<?php
+                use function is_int;
+
+                is_int(1);
+
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                namespace Foo;
+
+                use function is_int;
+                use function is_float;
+
+                is_int(1);
+
+                EOF
+            ,
+        ];
+
+        yield 'constants_in_the_global_namespace_should_not_be_removed' => [
+            $expected = <<<'EOF'
+                <?php
+
+                namespace Foo;
+
+                use const PHP_INT_MAX;
+
+                echo PHP_INT_MAX;
+
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                namespace Foo;
+
+                use const PHP_INT_MAX;
+                use const PHP_INT_MIN;
+
+                echo PHP_INT_MAX;
+
+                EOF
+            ,
+        ];
+
+        yield 'functions_in_the_global_namespace_should_not_be_removed_even_when_declaration_has_ne_lines_and_is_uppercase' => [
+            <<<'EOF'
+                <?php
+
+                namespace Foo;use/**/FUNCTION#1
+                is_int;#2
+
+                is_int(1);
+
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                namespace Foo;use/**/FUNCTION#1
+                is_int;#2
+                use function
+                    is_float;
+                use
+                    const
+                        PHP_INT_MIN;
+
+                is_int(1);
+
+                EOF
+            ,
+        ];
+
+        yield 'use_trait should never be removed' => [
+            <<<'EOF'
+                <?php
+
+                class UsesTraits
+                {
+                    /**
+                     * @see #4086
+                     */
+                    private function withComplexStringVariable()
+                    {
+                        $name = 'World';
+
+                        return "Hello, {$name}!";
+                    }
+
+                    use MyTrait;
+                }
+
+                EOF
+        ];
+
+        yield 'imported_name_is_part_of_namespace' => [
+            <<<'EOF'
+                <?php
+
+                namespace App\Foo;
+
+
+                class Baz
+                {
+                }
+
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                namespace App\Foo;
+
+                use Foo\Bar\App;
+
+                class Baz
+                {
+                }
+
+                EOF
+        ];
+
+        yield 'imported_name_is_part_of_namespace with closing tag' => [
+            <<<'EOF'
+                <?php
+                    namespace A\B {?>
+                <?php
+                    require_once __DIR__.'/test2.php' ?>
+                <?php
+                    use X\Z\Y
+                ?>
+                <?php
+                    $y = new Y() ?>
+                <?php
+                    var_dump($y);}
+                EOF
+        ];
+
+        yield [
+            '<?php
 use App\Http\Requests\StoreRequest;
 
 class StoreController
@@ -1087,7 +1136,7 @@ class StoreController
     public function __invoke(StoreRequest $request)
     {}
 }',
-                '<?php
+            '<?php
 use App\Http\Requests\StoreRequest;
 use Illuminate\Http\Request;
 
@@ -1099,185 +1148,202 @@ class StoreController
     public function __invoke(StoreRequest $request)
     {}
 }',
-            ],
-            'unused import matching function call' => [
-                '<?php
+        ];
+
+        yield 'unused import matching function call' => [
+            '<?php
 namespace Foo;
 bar();',
-                '<?php
+            '<?php
 namespace Foo;
 use Bar;
 bar();',
-            ],
-            'unused import matching function declaration' => [
-                '<?php
+        ];
+
+        yield 'unused import matching function declaration' => [
+            '<?php
 namespace Foo;
 function bar () {}',
-                '<?php
+            '<?php
 namespace Foo;
 use Bar;
 function bar () {}',
-            ],
-            'unused import matching method declaration' => [
-                '<?php
+        ];
+
+        yield 'unused import matching method declaration' => [
+            '<?php
 namespace Foo;
 class Foo {
     public function bar () {}
 }',
-                '<?php
+            '<?php
 namespace Foo;
 use Bar;
 class Foo {
     public function bar () {}
 }',
-            ],
-            'unused import matching constant usage' => [
-                '<?php
+        ];
+
+        yield 'unused import matching constant usage' => [
+            '<?php
 namespace Foo;
 echo BAR;',
-                '<?php
+            '<?php
 namespace Foo;
 use Bar;
 echo BAR;',
-            ],
-            'unused import matching class constant' => [
-                '<?php
+        ];
+
+        yield 'unused import matching class constant' => [
+            '<?php
 namespace Foo;
 class Foo {
     const BAR = 1;
 }',
-                '<?php
+            '<?php
 namespace Foo;
 use Bar;
 class Foo {
     const BAR = 1;
 }',
-            ],
-            'unused function import matching class usage' => [
-                '<?php
+        ];
+
+        yield 'unused function import matching class usage' => [
+            '<?php
 namespace Foo;
 new Bar();
 Baz::method();',
-                '<?php
+            '<?php
 namespace Foo;
 use function bar;
 use function baz;
 new Bar();
 Baz::method();',
-            ],
-            'unused function import matching method call' => [
-                '<?php
+        ];
+
+        yield 'unused function import matching method call' => [
+            '<?php
 namespace Foo;
 Foo::bar();',
-                '<?php
+            '<?php
 namespace Foo;
 use function bar;
 Foo::bar();',
-            ],
-            'unused function import matching method declaration' => [
-                '<?php
+        ];
+
+        yield 'unused function import matching method declaration' => [
+            '<?php
 namespace Foo;
 class Foo {
     public function bar () {}
 }',
-                '<?php
+            '<?php
 namespace Foo;
 use function bar;
 class Foo {
     public function bar () {}
 }',
-            ],
-            'unused function import matching constant usage' => [
-                '<?php
+        ];
+
+        yield 'unused function import matching constant usage' => [
+            '<?php
 namespace Foo;
 echo BAR;',
-                '<?php
+            '<?php
 namespace Foo;
 use function bar;
 echo BAR;',
-            ],
-            'unused function import matching class constant' => [
-                '<?php
+        ];
+
+        yield 'unused function import matching class constant' => [
+            '<?php
 namespace Foo;
 class Foo {
     const BAR = 1;
 }',
-                '<?php
+            '<?php
 namespace Foo;
 use function bar;
 class Foo {
     const BAR = 1;
 }',
-            ],
-            'unused constant import matching function call' => [
-                '<?php
+        ];
+
+        yield 'unused constant import matching function call' => [
+            '<?php
 namespace Foo;
 bar();',
-                '<?php
+            '<?php
 namespace Foo;
 use const BAR;
 bar();',
-            ],
-            'unused constant import matching function declaration' => [
-                '<?php
+        ];
+
+        yield 'unused constant import matching function declaration' => [
+            '<?php
 namespace Foo;
 function bar () {}',
-                '<?php
+            '<?php
 namespace Foo;
 use const BAR;
 function bar () {}',
-            ],
-            'unused constant import matching method declaration' => [
-                '<?php
+        ];
+
+        yield 'unused constant import matching method declaration' => [
+            '<?php
 namespace Foo;
 class Foo {
     public function bar () {}
 }',
-                '<?php
+            '<?php
 namespace Foo;
 use const BAR;
 class Foo {
     public function bar () {}
 }',
-            ],
-            'unused constant import matching class constant' => [
-                '<?php
+        ];
+
+        yield 'unused constant import matching class constant' => [
+            '<?php
 namespace Foo;
 class Foo {
     const BAR = 1;
 }',
-                '<?php
+            '<?php
 namespace Foo;
 use const BAR;
 class Foo {
     const BAR = 1;
 }',
-            ],
-            'attribute without braces' => [
-                '<?php
+        ];
+
+        yield 'attribute without braces' => [
+            '<?php
 use Foo;
 class Controller
 {
     #[Foo]
     public function foo() {}
 }',
-            ],
-            'attribute with braces' => [
-                '<?php
+        ];
+
+        yield 'attribute with braces' => [
+            '<?php
 use Foo;
 class Controller
 {
     #[Foo()]
     public function foo() {}
 }',
-            ],
-            'go to' => [
-                '<?php
+        ];
+
+        yield 'go to' => [
+            '<?php
 Bar1:
 Bar2:
 Bar3:
 ',
-                '<?php
+            '<?php
 use Bar1;
 use const Bar2;
 use function Bar3;
@@ -1285,21 +1351,23 @@ Bar1:
 Bar2:
 Bar3:
 ',
-            ],
-            [
-                $expected = <<<'EOF'
-<?php
-use some\a\{ClassD};
-use some\b\{ClassA, ClassB, ClassC as C};
-use function some\c\{fn_a, fn_b, fn_c};
-use const some\d\{ConstA, ConstB, ConstC};
+        ];
 
-new CLassD();
-echo fn_a();
-EOF
-            ],
-            [ // TODO test shows lot of cases where imports are not removed while could be
-                '<?php use A\{B,};
+        yield [
+            $expected = <<<'EOF'
+                <?php
+                use some\a\{ClassD};
+                use some\b\{ClassA, ClassB, ClassC as C};
+                use function some\c\{fn_a, fn_b, fn_c};
+                use const some\d\{ConstA, ConstB, ConstC};
+
+                new CLassD();
+                echo fn_a();
+                EOF
+        ];
+
+        yield [ // TODO test shows lot of cases where imports are not removed while could be
+            '<?php use A\{B,};
 use some\y\{ClassA, ClassB, ClassC as C,};
 use function some\a\{fn_a, fn_b, fn_c,};
 use const some\Z\{ConstAA,ConstBB,ConstCC,};
@@ -1310,7 +1378,7 @@ use C\{D,E,};
     echo ConstBB.ConstCC;
     fn_a(ClassA::test, new C());
 ',
-                '<?php use A\{B,};
+            '<?php use A\{B,};
 use some\y\{ClassA, ClassB, ClassC as C,};
 use function some\a\{fn_a, fn_b, fn_c,};
 use const some\Z\{ConstAA,ConstBB,ConstCC,};
@@ -1322,7 +1390,6 @@ use Z;
     echo ConstBB.ConstCC;
     fn_a(ClassA::test, new C());
 ',
-            ],
         ];
     }
 

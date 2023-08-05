@@ -117,6 +117,9 @@ abstract class AbstractFixerTestCase extends TestCase
         $fixerIsConfigurable = $this->fixer instanceof ConfigurableFixerInterface;
 
         self::assertValidDescription($fixerName, 'summary', $definition->getSummary());
+        if (null !== $definition->getDescription()) {
+            self::assertValidDescription($fixerName, 'description', $definition->getDescription());
+        }
 
         $samples = $definition->getCodeSamples();
         self::assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixerName));
@@ -131,6 +134,8 @@ abstract class AbstractFixerTestCase extends TestCase
             $code = $sample->getCode();
 
             self::assertNotEmpty($code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+
+            self::assertStringStartsNotWith("\n", $code, sprintf('[%s] Sample #%d must not start with linebreak', $fixerName, $sampleCounter));
 
             if (!$this->fixer instanceof SingleBlankLineAtEofFixer) {
                 self::assertStringEndsWith("\n", $code, sprintf('[%s] Sample #%d must end with linebreak', $fixerName, $sampleCounter));
@@ -171,7 +176,7 @@ abstract class AbstractFixerTestCase extends TestCase
             $duplicatedCodeSample = array_search(
                 $sample,
                 \array_slice($samples, 0, $sampleCounter),
-                false
+                true
             );
 
             self::assertFalse(
@@ -259,9 +264,7 @@ abstract class AbstractFixerTestCase extends TestCase
             return;
         }
 
-        $usedMethods = array_filter($usedMethods, static function (string $method): bool {
-            return 0 === Preg::match('/^(count|find|generate|get|is|rewind)/', $method);
-        });
+        $usedMethods = array_filter($usedMethods, static fn (string $method): bool => !Preg::match('/^(count|find|generate|get|is|rewind)/', $method));
 
         $allowedMethods = ['insertAt'];
         $nonAllowedMethods = array_diff($usedMethods, $allowedMethods);
@@ -354,15 +357,11 @@ abstract class AbstractFixerTestCase extends TestCase
         return new $fixerClassName();
     }
 
-    protected static function getTestFile(string $filename = __FILE__): \SplFileInfo
+    final protected static function getTestFile(string $filename = __FILE__): \SplFileInfo
     {
         static $files = [];
 
-        if (!isset($files[$filename])) {
-            $files[$filename] = new \SplFileInfo($filename);
-        }
-
-        return $files[$filename];
+        return $files[$filename] ?? $files[$filename] = new \SplFileInfo($filename);
     }
 
     /**
@@ -409,11 +408,9 @@ abstract class AbstractFixerTestCase extends TestCase
 
             $tokens->clearEmptyTokens();
 
-            self::assertSame(
-                \count($tokens),
-                \count(array_unique(array_map(static function (Token $token): string {
-                    return spl_object_hash($token);
-                }, $tokens->toArray()))),
+            self::assertSameSize(
+                $tokens,
+                array_unique(array_map(static fn (Token $token): string => spl_object_hash($token), $tokens->toArray())),
                 'Token items inside Tokens collection must be unique.'
             );
 
@@ -470,7 +467,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
     private static function assertValidDescription(string $fixerName, string $descriptionType, string $description): void
     {
-        self::assertMatchesRegularExpression('/^[A-Z`][^"]+\.$/', $description, sprintf('[%s] The %s must start with capital letter or a ` and end with dot.', $fixerName, $descriptionType));
+        self::assertMatchesRegularExpression('/^[A-Z`].+\.$/s', $description, sprintf('[%s] The %s must start with capital letter or a ` and end with dot.', $fixerName, $descriptionType));
         self::assertStringNotContainsString('phpdocs', $description, sprintf('[%s] `PHPDoc` must not be in the plural in %s.', $fixerName, $descriptionType));
         self::assertCorrectCasing($description, 'PHPDoc', sprintf('[%s] `PHPDoc` must be in correct casing in %s.', $fixerName, $descriptionType));
         self::assertCorrectCasing($description, 'PHPUnit', sprintf('[%s] `PHPUnit` must be in correct casing in %s.', $fixerName, $descriptionType));

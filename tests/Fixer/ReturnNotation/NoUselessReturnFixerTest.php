@@ -33,9 +33,8 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     function bar($baz)
                     {
                         if ($baz)
@@ -43,9 +42,10 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
                         else
                             return;
                     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     function bar($baz)
                     {
                         if ($baz)
@@ -53,9 +53,10 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
                         elseif($a)
                             return;
                     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     function bar($baz)
                     {
                         if ($baz)
@@ -63,33 +64,36 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
                         else if($a)
                             return;
                     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     function bar($baz)
                     {
                         if ($baz)
                             return;
                     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     function b($b) {
         if ($b) {
             return;
         }
          /**/
     }',
-                '<?php
+            '<?php
     function b($b) {
         if ($b) {
             return;
         }
         return /**/;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class Test2
     {
         private static function a($a)
@@ -120,7 +124,7 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
             $d();
         }
     }',
-                '<?php
+            '<?php
     class Test2
     {
         private static function a($a)
@@ -151,44 +155,48 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
             $d();
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     function aT($a) {
         if ($a) {
             return;
         }
                    '.'
     }',
-                '<?php
+            '<?php
     function aT($a) {
         if ($a) {
             return;
         }
         return           ;
     }',
-            ],
-            [
-                '<?php return;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php return;',
+        ];
+
+        yield [
+            '<?php
     function c($c) {
         if ($c) {
             return;
         }
         //'.'
     }',
-                '<?php
+            '<?php
     function c($c) {
         if ($c) {
             return;
         }
         return;//
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class Test {
 
         private static function d($d) {
@@ -197,7 +205,7 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
             }
             }
     }',
-                '<?php
+            '<?php
     class Test {
 
         private static function d($d) {
@@ -206,16 +214,18 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
             }
             return;}
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     interface FooInterface
     {
         public function fnc();
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     abstract class AbstractFoo
     {
         abstract public function fnc();
@@ -225,13 +235,15 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
             echo 1 . self::fn2();//{}
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     function foo () { }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 $a = function() {
                        /**/
                      '.'
@@ -239,7 +251,7 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
                     '.'
                 };
                 ',
-                '<?php
+            '<?php
                 $a = function() {
                     return  ; /**/
                     return ;
@@ -247,7 +259,6 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
                     return;
                 };
                 ',
-            ],
         ];
     }
 }

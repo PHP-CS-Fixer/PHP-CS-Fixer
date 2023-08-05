@@ -33,17 +33,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PER-CS1.0:risky
-  Using the `@PER-CS1.0:risky <./../../ruleSets/PER-CS1.0Risky.rst>`_ rule set will enable the ``no_trailing_whitespace_in_string`` rule.
+- `@PER-CS1.0:risky <./../../ruleSets/PER-CS1.0Risky.rst>`_
+- `@PER:risky <./../../ruleSets/PERRisky.rst>`_
+- `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
-@PER:risky
-  Using the `@PER:risky <./../../ruleSets/PERRisky.rst>`_ rule set will enable the ``no_trailing_whitespace_in_string`` rule.
-
-@PSR12:risky
-  Using the `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_ rule set will enable the ``no_trailing_whitespace_in_string`` rule.
-
-@PhpCsFixer:risky
-  Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``no_trailing_whitespace_in_string`` rule.
-
-@Symfony:risky
-  Using the `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ rule set will enable the ``no_trailing_whitespace_in_string`` rule.

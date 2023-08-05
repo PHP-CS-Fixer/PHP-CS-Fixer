@@ -71,5 +71,5 @@ Rule sets
 
 The rule is part of the following rule set:
 
-@DoctrineAnnotation
-  Using the `@DoctrineAnnotation <./../../ruleSets/DoctrineAnnotation.rst>`_ rule set will enable the ``doctrine_annotation_indentation`` rule with the default config.
+- `@DoctrineAnnotation <./../../ruleSets/DoctrineAnnotation.rst>`_
+

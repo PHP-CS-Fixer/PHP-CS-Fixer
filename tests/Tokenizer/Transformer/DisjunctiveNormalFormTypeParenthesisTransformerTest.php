@@ -324,4 +324,36 @@ return new static();
             ],
         ];
     }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideProcess83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testProcess83(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    public static function provideProcess83Cases(): iterable
+    {
+        yield 'typed const' => [
+            '<?php
+                class Foo {
+                    const A|(B&C) Bar = 1;
+                    const (B&C)|A Bar = 2;
+                    const D|(B&C)|A Bar = 3;
+                }',
+            [
+                12 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
+                16 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
+                27 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
+                31 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
+                46 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
+                50 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
+            ],
+        ];
+    }
 }

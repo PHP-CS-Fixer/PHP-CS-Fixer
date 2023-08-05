@@ -35,149 +35,158 @@ final class NoUnneededFinalMethodFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'default' => [
-                '<?php
+        yield 'default' => [
+            '<?php
 final class Foo {
     public function foo() {}
     protected function bar() {}
     private function baz() {}
 }',
-                '<?php
+            '<?php
 final class Foo {
     final public function foo() {}
     final protected function bar() {}
     final private function baz() {}
 }',
-            ],
-            'final-after-visibility' => [
-                '<?php
+        ];
+
+        yield 'final-after-visibility' => [
+            '<?php
 final class Foo {
     public function foo() {}
     protected function bar() {}
     private function baz() {}
 }',
-                '<?php
+            '<?php
 final class Foo {
     public final function foo() {}
     protected final function bar() {}
     private final function baz() {}
 }',
-            ],
-            'default-static' => [
-                '<?php
+        ];
+
+        yield 'default-static' => [
+            '<?php
 final class SomeClass {
     public static function foo() {}
     protected static function bar() {}
     private static function baz() {}
 }',
-                '<?php
+            '<?php
 final class SomeClass {
     final public static function foo() {}
     final protected static function bar() {}
     final private static function baz() {}
 }',
-            ],
-            'visibility-then-final-then-static' => [
-                '<?php
+        ];
+
+        yield 'visibility-then-final-then-static' => [
+            '<?php
 final class SomeClass {
     public static function foo() {}
     protected static function bar() {}
     private static function baz() {}
 }',
-                '<?php
+            '<?php
 final class SomeClass {
     public final static function foo() {}
     protected final static function bar() {}
     private final static function baz() {}
 }',
-            ],
-            'visibility-then-static-then-final' => [
-                '<?php
+        ];
+
+        yield 'visibility-then-static-then-final' => [
+            '<?php
 final class SomeClass {
     public static function foo() {}
     protected static function bar() {}
     private static function baz() {}
 }',
-                '<?php
+            '<?php
 final class SomeClass {
     public static final function foo() {}
     protected static final function bar() {}
     private static final function baz() {}
 }',
-            ],
-            'static-then-visibility-then-final' => [
-                '<?php
+        ];
+
+        yield 'static-then-visibility-then-final' => [
+            '<?php
 final class SomeClass {
     static public function foo() {}
     static protected function bar() {}
     static private function baz() {}
 }',
-                '<?php
+            '<?php
 final class SomeClass {
     static public final function foo() {}
     static protected final function bar() {}
     static private final function baz() {}
 }',
-            ],
-            'static-then-final-then-visibility' => [
-                '<?php
+        ];
+
+        yield 'static-then-final-then-visibility' => [
+            '<?php
 final class SomeClass {
     static public function foo() {}
     static protected function bar() {}
     static private function baz() {}
 }',
-                '<?php
+            '<?php
 final class SomeClass {
     static final public function foo() {}
     static final protected function bar() {}
     static final private function baz() {}
 }',
-            ],
-            'no-visibility' => [
-                '<?php
+        ];
+
+        yield 'no-visibility' => [
+            '<?php
 final class Foo {
     function foo() {}
     function bar() {}
     function baz() {}
 }',
-                '<?php
+            '<?php
 final class Foo {
     final function foo() {}
     final function bar() {}
     final function baz() {}
 }',
-            ],
-            'no-visibility-final-then-static' => [
-                '<?php
+        ];
+
+        yield 'no-visibility-final-then-static' => [
+            '<?php
 final class SomeClass {
     static function foo() {}
     static function bar() {}
     static function baz() {}
 }',
-                '<?php
+            '<?php
 final class SomeClass {
     final static function foo() {}
     final static function bar() {}
     final static function baz() {}
 }',
-            ],
-            'no-visibility-static-then-final' => [
-                '<?php
+        ];
+
+        yield 'no-visibility-static-then-final' => [
+            '<?php
 final class SomeClass {
     static function foo() {}
     static function bar() {}
     static function baz() {}
 }',
-                '<?php
+            '<?php
 final class SomeClass {
     static final function foo() {}
     static final function bar() {}
     static final function baz() {}
 }',
-            ],
-            'private-method' => [
-                '<?php
+        ];
+
+        yield 'private-method' => [
+            '<?php
 class Foo {
     final function bar0() {}
     final public function bar1() {}
@@ -188,7 +197,7 @@ class Foo {
     private function bar31() {}
     private function bar32() {}
 }',
-                '<?php
+            '<?php
 class Foo {
     final function bar0() {}
     final public function bar1() {}
@@ -199,48 +208,57 @@ class Foo {
     final private function bar31() {}
     private final function bar32() {}
 }',
-            ],
-            'private-method-with-visibility-before-final' => [
-                '<?php
+        ];
+
+        yield 'private-method-with-visibility-before-final' => [
+            '<?php
 class Foo {
     private function bar() {}
 }',
-                '<?php
+            '<?php
 class Foo {
     private final function bar() {}
 }',
-            ],
-            'preserve-comment' => [
-                '<?php final class Foo { /* comment */public function foo() {} }',
-                '<?php final class Foo { final/* comment */public function foo() {} }',
-            ],
-            'multiple-classes-per-file' => [
-                '<?php final class Foo { public function foo() {} } abstract class Bar { final public function bar() {} }',
-                '<?php final class Foo { final public function foo() {} } abstract class Bar { final public function bar() {} }',
-            ],
-            'non-final' => [
-                '<php class Foo { final public function foo() {} }',
-            ],
-            'abstract-class' => [
-                '<php abstract class Foo { final public function foo() {} }',
-            ],
-            'final-method-with-private-attribute' => [
-                '<?php abstract class Foo { private static $var; final public function foo() {} }',
-            ],
-            'trait' => [
-                '<php trait Foo { final public function foo() {} }',
-            ],
-            'do not fix constructors' => [
-                '<?php
+        ];
+
+        yield 'preserve-comment' => [
+            '<?php final class Foo { /* comment */public function foo() {} }',
+            '<?php final class Foo { final/* comment */public function foo() {} }',
+        ];
+
+        yield 'multiple-classes-per-file' => [
+            '<?php final class Foo { public function foo() {} } abstract class Bar { final public function bar() {} }',
+            '<?php final class Foo { final public function foo() {} } abstract class Bar { final public function bar() {} }',
+        ];
+
+        yield 'non-final' => [
+            '<php class Foo { final public function foo() {} }',
+        ];
+
+        yield 'abstract-class' => [
+            '<php abstract class Foo { final public function foo() {} }',
+        ];
+
+        yield 'final-method-with-private-attribute' => [
+            '<?php abstract class Foo { private static $var; final public function foo() {} }',
+        ];
+
+        yield 'trait' => [
+            '<php trait Foo { final public function foo() {} }',
+        ];
+
+        yield 'do not fix constructors' => [
+            '<?php
 class Bar
 {
     final private function __construct()
     {
     }
 }',
-            ],
-            'anonymous-class-inside' => [
-                '<?php
+        ];
+
+        yield 'anonymous-class-inside' => [
+            '<?php
 final class Foo
 {
     public function foo()
@@ -257,7 +275,7 @@ final class Foo
     }
 }
 ',
-                '<?php
+            '<?php
 final class Foo
 {
     final public function foo()
@@ -274,9 +292,10 @@ final class Foo
     }
 }
 ',
-            ],
-            'anonymous-class-inside-with-final-private-method' => [
-                '<?php
+        ];
+
+        yield 'anonymous-class-inside-with-final-private-method' => [
+            '<?php
 class Foo
 {
     private function bar()
@@ -289,7 +308,7 @@ class Foo
     }
 }
 ',
-                '<?php
+            '<?php
 class Foo
 {
     private function bar()
@@ -302,9 +321,10 @@ class Foo
     }
 }
 ',
-            ],
-            'final private static' => [
-                '<?php
+        ];
+
+        yield 'final private static' => [
+            '<?php
 class Foo {
     public function bar(){}
 
@@ -316,7 +336,7 @@ class Foo {
     static private function bar6() {echo 6;}
 }
 ',
-                '<?php
+            '<?php
 class Foo {
     public function bar(){}
 
@@ -328,23 +348,23 @@ class Foo {
     static private final function bar6() {echo 6;}
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 abstract class Foo {
     public final function bar1(){ $this->bar3(); }
     private function bar2(){ echo 1; }
 
     private function bar3(){ echo 2; }
 }',
-                '<?php
+            '<?php
 abstract class Foo {
     public final function bar1(){ $this->bar3(); }
     private function bar2(){ echo 1; }
 
     private final function bar3(){ echo 2; }
 }',
-            ],
         ];
     }
 

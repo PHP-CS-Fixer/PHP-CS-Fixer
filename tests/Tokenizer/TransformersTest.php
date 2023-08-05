@@ -44,31 +44,29 @@ final class TransformersTest extends TestCase
 
     public static function provideTransformCases(): iterable
     {
-        return [
-            'use trait after complex string variable' => [
-                <<<'SOURCE'
-<?php
+        yield 'use trait after complex string variable' => [
+            <<<'SOURCE'
+                <?php
 
-class TransformTest extends TestCase
-{
-    public function testSomething()
-    {
-        $a = 1;
-        $this->assertSame('1', "{$a}");
-    }
+                class TransformTest extends TestCase
+                {
+                    public function testSomething()
+                    {
+                        $a = 1;
+                        $this->assertSame('1', "{$a}");
+                    }
 
-    use TestTrait;
+                    use TestTrait;
 
-    public function testUsingTrait()
-    {
-        $this->testTraitFunction();
-    }
-}
+                    public function testUsingTrait()
+                    {
+                        $this->testTraitFunction();
+                    }
+                }
 
-SOURCE
-                ,
-                [46 => CT::T_USE_TRAIT],
-            ],
+                SOURCE
+            ,
+            [46 => CT::T_USE_TRAIT],
         ];
     }
 }

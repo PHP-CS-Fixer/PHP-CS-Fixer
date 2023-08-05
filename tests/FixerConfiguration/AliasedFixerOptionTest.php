@@ -39,10 +39,9 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideGetNameCases(): iterable
     {
-        return [
-            ['foo'],
-            ['bar'],
-        ];
+        yield ['foo'];
+
+        yield ['bar'];
     }
 
     /**
@@ -57,10 +56,9 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideGetDescriptionCases(): iterable
     {
-        return [
-            ['Foo.'],
-            ['Bar.'],
-        ];
+        yield ['Foo.'];
+
+        yield ['Bar.'];
     }
 
     /**
@@ -73,15 +71,14 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideHasDefaultCases(): iterable
     {
-        return [
-            [
-                false,
-                new AliasedFixerOption(new FixerOption('foo', 'Bar.'), 'baz'),
-            ],
-            [
-                true,
-                new AliasedFixerOption(new FixerOption('foo', 'Bar.', false, 'baz'), 'baz'),
-            ],
+        yield [
+            false,
+            new AliasedFixerOption(new FixerOption('foo', 'Bar.'), 'baz'),
+        ];
+
+        yield [
+            true,
+            new AliasedFixerOption(new FixerOption('foo', 'Bar.', false, 'baz'), 'baz'),
         ];
     }
 
@@ -97,10 +94,9 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideGetDefaultCases(): iterable
     {
-        return [
-            ['baz'],
-            ['foo'],
-        ];
+        yield ['baz'];
+
+        yield ['foo'];
     }
 
     public function testGetUndefinedDefault(): void
@@ -126,11 +122,11 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideGetAllowedTypesCases(): iterable
     {
-        return [
-            [null],
-            [['bool']],
-            [['bool', 'string']],
-        ];
+        yield [null];
+
+        yield [['bool']];
+
+        yield [['bool', 'string']];
     }
 
     /**
@@ -147,11 +143,11 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideGetAllowedValuesCases(): iterable
     {
-        return [
-            [null],
-            [['baz']],
-            [['baz', 'qux']],
-        ];
+        yield [null];
+
+        yield [['baz']];
+
+        yield [['baz', 'qux']];
     }
 
     public function testGetAllowedValuesClosure(): void
@@ -185,10 +181,9 @@ final class AliasedFixerOptionTest extends TestCase
 
     public static function provideGetAliasCases(): iterable
     {
-        return [
-            ['bar'],
-            ['baz'],
-        ];
+        yield ['bar'];
+
+        yield ['baz'];
     }
 
     public function testRequiredWithDefaultValue(): void

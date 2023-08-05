@@ -45,22 +45,22 @@ final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
     public function testLeaveNewLinesAlone(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    private function bar()
-    {
-        if ([1, 2, 3] && [
-            'foo',
-            'bar' ,
-            'baz'// a comment just to mix things up
-        ]) {
-            return 1;
-        };
-    }
-}
-EOF;
+            class Foo
+            {
+                private function bar()
+                {
+                    if ([1, 2, 3] && [
+                        'foo',
+                        'bar' ,
+                        'baz'// a comment just to mix things up
+                    ]) {
+                        return 1;
+                    };
+                }
+            }
+            EOF;
         $this->doTest($expected);
     }
 
@@ -74,110 +74,115 @@ EOF;
 
     public static function provideCommentsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 
 $withComments[0] // here is a comment
     [1] // and here is another
     [2] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = $b[# z
  1#z
  ];',
-                '<?php
+            '<?php
 $a = $b[ # z
  1#z
  ];',
-            ],
         ];
     }
 
     public function testLeaveComplexString(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-echo "I am printing some spaces here    {$foo->bar[1]}     {$foo->bar[1]}.";
-EOF;
+            echo "I am printing some spaces here    {$foo->bar[1]}     {$foo->bar[1]}.";
+            EOF;
         $this->doTest($expected);
     }
 
     public function testLeaveFunctions(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-function someFunc()    {   $someVar = [];   }
-EOF;
+            function someFunc()    {   $someVar = [];   }
+            EOF;
         $this->doTest($expected);
     }
 
     public static function provideFixSpaceOutsideOffsetCases(): iterable
     {
-        yield from [
-            [
-                '<?php
+        yield [
+            '<?php
 $a = $b[0]    ;',
-                '<?php
+            '<?php
 $a = $b   [0]    ;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = array($b[0]     ,   $b[0]  );',
-                '<?php
+            '<?php
 $a = array($b      [0]     ,   $b [0]  );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $withComments[0] // here is a comment
     [1] // and here is another
     [2][3] = 4;',
-                '<?php
+            '<?php
 $withComments [0] // here is a comment
     [1] // and here is another
     [2] [3] = 4;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $c = SOME_CONST[0][1][2];',
-                '<?php
+            '<?php
 $c = SOME_CONST [0] [1]   [2];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $f = someFunc()[0][1][2];',
-                '<?php
+            '<?php
 $f = someFunc() [0] [1]   [2];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo[][0][1][2] = 3;',
-                '<?php
+            '<?php
 $foo [] [0] [1]   [2] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo[0][1][2] = 3;',
-                '<?php
+            '<?php
 $foo [0] [1]   [2] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $bar = $foo[0][1][2];',
-                '<?php
+            '<?php
 $bar = $foo [0] [1]   [2];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $baz[0][1][2] = 3;',
-                '<?php
+            '<?php
 $baz [0]
      [1]
      [2] = 3;',
-            ],
         ];
 
         if (\PHP_VERSION_ID < 8_00_00) {
@@ -208,87 +213,96 @@ $var = $arr[0]{     0
 
     public static function provideFixSpaceInsideOffsetCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 $foo = array(1, 2, 3);
 $var = $foo[1];',
-                '<?php
+            '<?php
 $foo = array(1, 2, 3);
 $var = $foo[ 1 ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $arr = [2,   2 , ];
 $var = $arr[0];',
-                '<?php
+            '<?php
 $arr = [2,   2 , ];
 $var = $arr[ 0 ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $arr[2] = 3;',
-                '<?php
+            '<?php
 $arr[ 2    ] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $arr[] = 3;',
-                '<?php
+            '<?php
 $arr[  ] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $arr[]["some_offset"][] = 3;',
-                '<?php
+            '<?php
 $arr[  ][ "some_offset"   ][     ] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $arr[]["some  offset with  spaces"][] = 3;',
-                '<?php
+            '<?php
 $arr[  ][ "some  offset with  spaces"   ][     ] = 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = $arr[0];',
-                '<?php
+            '<?php
 $var = $arr[     0   ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = $arr[0][0];',
-                '<?php
+            '<?php
 $var = $arr[    0        ][ 0  ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = $arr[$a[$b]];',
-                '<?php
+            '<?php
 $var = $arr[    $a    [ $b    ]  ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = $arr[$a[$b]];',
-                '<?php
+            '<?php
 $var = $arr[	$a	[	$b	]	];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = $arr[0][
      0];',
-                '<?php
+            '<?php
 $var = $arr[0][
      0 ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = $arr[0][0
          ];',
-                '<?php
+            '<?php
 $var = $arr[0][     0
          ];',
-            ],
         ];
     }
 
@@ -309,40 +323,40 @@ $var = $arr[0][     0
             [
                 ['inside', 'outside'],
                 <<<'EOT'
-<?php
-$arr1[]["some_offset"][]{"foo"} = 3;
-EOT
+                    <?php
+                    $arr1[]["some_offset"][]{"foo"} = 3;
+                    EOT
                 ,
                 <<<'EOT'
-<?php
-$arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-EOT
+                    <?php
+                    $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
+                    EOT
                 ,
             ],
             [
                 ['inside'],
                 <<<'EOT'
-<?php
-$arr1[]  ["some_offset"] [] {"foo"} = 3;
-EOT
+                    <?php
+                    $arr1[]  ["some_offset"] [] {"foo"} = 3;
+                    EOT
                 ,
                 <<<'EOT'
-<?php
-$arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-EOT
+                    <?php
+                    $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
+                    EOT
                 ,
             ],
             [
                 ['outside'],
                 <<<'EOT'
-<?php
-$arr1[  ][ "some_offset"   ][     ]{ "foo" } = 3;
-EOT
+                    <?php
+                    $arr1[  ][ "some_offset"   ][     ]{ "foo" } = 3;
+                    EOT
                 ,
                 <<<'EOT'
-<?php
-$arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-EOT
+                    <?php
+                    $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
+                    EOT
                 ,
             ],
         ];

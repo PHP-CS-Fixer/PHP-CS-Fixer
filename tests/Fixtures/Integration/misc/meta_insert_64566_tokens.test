@@ -1,6 +1,10 @@
 --TEST--
 Test of super huge file that would require 64566 tokens to be inserted! Basically, this tests Tokens::insertSlices, without which this test would take few hours to execute.
+
+Test is disabled for MacOS because it regularly fails with timeout (see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7141)
 --RULESET--
 {
     "whitespace_after_comma_in_array": true
 }
+--REQUIREMENTS--
+{"os":["Linux","Windows"]}

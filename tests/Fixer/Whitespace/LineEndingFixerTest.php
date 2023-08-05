@@ -36,42 +36,40 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        $cases = self::provideCommonCases();
+        yield from self::provideCommonCases();
 
-        $cases[] = [
+        yield [
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \n |\nTEST;\n",
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\n", // both cases
         ];
 
-        $cases[] = [
+        yield [
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\nAAAAA \n |\nTEST;\n",
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \n |\r\nTEST;\r\n", // both cases
         ];
 
-        $cases['T_INLINE_HTML'] = [
+        yield 'T_INLINE_HTML' => [
             "<?php ?>\nZ\r\n<?php ?>\nZ\r\n",
         ];
 
-        $cases['!T_CONSTANT_ENCAPSED_STRING'] = [
+        yield '!T_CONSTANT_ENCAPSED_STRING' => [
             "<?php \$a=\"a\r\n\";",
         ];
 
-        $cases[] = [
+        yield [
             "<?php echo 'foo',\n\n'bar';",
             "<?php echo 'foo',\r\r\n'bar';",
         ];
 
-        $cases['T_CLOSE_TAG'] = [
+        yield 'T_CLOSE_TAG' => [
             "<?php\n?>\n<?php\n",
             "<?php\n?>\r\n<?php\n",
         ];
 
-        $cases['T_CLOSE_TAG II'] = [
+        yield 'T_CLOSE_TAG II' => [
             "<?php\n?>\n<?php\n?>\n<?php\n",
             "<?php\n?>\r\n<?php\n?>\r\n<?php\n",
         ];
-
-        return $cases;
     }
 
     /**
@@ -86,9 +84,7 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        yield from array_map(static function (array $case): array {
-            return array_reverse($case);
-        }, self::provideCommonCases());
+        yield from array_map(static fn (array $case): array => array_reverse($case), self::provideCommonCases());
 
         yield [
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\r\n",

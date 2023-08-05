@@ -64,15 +64,15 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                 new CodeSample("<?php\narray(\n    1,\n    2\n);\n"),
                 new VersionSpecificCodeSample(
                     <<<'SAMPLE'
-<?php
-    $x = [
-        'foo',
-        <<<EOD
-            bar
-            EOD
-    ];
+                        <?php
+                            $x = [
+                                'foo',
+                                <<<EOD
+                                    bar
+                                    EOD
+                            ];
 
-SAMPLE
+                        SAMPLE
                     ,
                     new VersionSpecification(7_03_00),
                     ['after_heredoc' => true]

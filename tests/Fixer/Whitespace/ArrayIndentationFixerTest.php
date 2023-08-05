@@ -37,690 +37,690 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
         return self::withLongArraySyntaxCases([
             [
                 <<<'EXPECTED'
-<?php
-$foo = [
-    'foo',
-    'bar' => 'baz',
-];
-EXPECTED
+                    <?php
+                    $foo = [
+                        'foo',
+                        'bar' => 'baz',
+                    ];
+                    EXPECTED
                 ,
                 <<<'INPUT'
-<?php
-$foo = [
-  'foo',
-        'bar' => 'baz',
- ];
-INPUT
+                    <?php
+                    $foo = [
+                      'foo',
+                            'bar' => 'baz',
+                     ];
+                    INPUT
                 ,
             ],
             [
                 <<<'EXPECTED'
-<?php
-    $foo = [
-        'foo',
-        'bar' => 'baz',
-    ];
-EXPECTED
+                    <?php
+                        $foo = [
+                            'foo',
+                            'bar' => 'baz',
+                        ];
+                    EXPECTED
                 ,
                 <<<'INPUT'
-<?php
-    $foo = [
-  'foo',
-        'bar' => 'baz',
- ];
-INPUT
+                    <?php
+                        $foo = [
+                      'foo',
+                            'bar' => 'baz',
+                     ];
+                    INPUT
                 ,
             ],
             [
                 <<<'EXPECTED'
-<?php
-$foo = [
-    ['bar', 'baz'],
-    [
-        'bar',
-        'baz'
-    ],
-];
-EXPECTED
+                    <?php
+                    $foo = [
+                        ['bar', 'baz'],
+                        [
+                            'bar',
+                            'baz'
+                        ],
+                    ];
+                    EXPECTED
                 ,
                 <<<'INPUT'
-<?php
-$foo = [
-        ['bar', 'baz'],
-     [
-        'bar',
-         'baz'
-         ],
- ];
-INPUT
+                    <?php
+                    $foo = [
+                            ['bar', 'baz'],
+                         [
+                            'bar',
+                             'baz'
+                             ],
+                     ];
+                    INPUT
                 ,
             ],
             [
                 <<<'EXPECTED'
-<?php
-$foo = [
-    ['foo',
-        'bar',
-        ['foo',
-            'bar',
-            ['foo',
-                'bar',
-                'baz']],
-        'baz'],
-];
-EXPECTED
+                    <?php
+                    $foo = [
+                        ['foo',
+                            'bar',
+                            ['foo',
+                                'bar',
+                                ['foo',
+                                    'bar',
+                                    'baz']],
+                            'baz'],
+                    ];
+                    EXPECTED
                 ,
                 <<<'INPUT'
-<?php
-$foo = [
- ['foo',
-  'bar',
-  ['foo',
-   'bar',
-   ['foo',
-    'bar',
-    'baz']],
-  'baz'],
- ];
-INPUT
+                    <?php
+                    $foo = [
+                     ['foo',
+                      'bar',
+                      ['foo',
+                       'bar',
+                       ['foo',
+                        'bar',
+                        'baz']],
+                      'baz'],
+                     ];
+                    INPUT
                 ,
             ],
             [
                 <<<'EXPECTED'
-<?php
-class Foo
-{
-    public $foo = [
-        ['bar', 'baz'],
-        [
-            'bar',
-            'baz'
-        ],
-    ];
+                    <?php
+                    class Foo
+                    {
+                        public $foo = [
+                            ['bar', 'baz'],
+                            [
+                                'bar',
+                                'baz'
+                            ],
+                        ];
 
-    public function bar()
-    {
-        return [
-            ['bar', 'baz'],
-            [
-                'bar',
-                'baz'
-            ],
-        ];
-    }
-}
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-class Foo
-{
-    public $foo = [
-        ['bar', 'baz'],
-     [
-        'bar',
-         'baz'
-         ],
- ];
-
-    public function bar()
-    {
-        return [
-                ['bar', 'baz'],
-             [
-                'bar',
-                 'baz'
-                 ],
-         ];
-    }
-}
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-$foo = [
-    'foo' => foo(
-               1,
-                2
-             ),
-    'bar' => bar(
-               1,
-                2
-             ),
-    'baz' => baz(
-               1,
-                2
-             ),
-];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-$foo = [
-   'foo' => foo(
-              1,
-               2
-            ),
-      'bar' => bar(
-                 1,
-                  2
-               ),
-         'baz' => baz(
-                    1,
-                     2
-                  ),
-];
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-$foo = [
-    'foo' => ['bar' => [
-        'baz',
-    ]],
-    'qux',
-];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-$foo = [
-  'foo' => ['bar' => [
-   'baz',
-  ]],
-  'qux',
-];
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-$foo = [
-    'foo' => [
-        (new Foo())
-                   ->foo(),
-    ],
-];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-$foo = [
-  'foo' => [
-     (new Foo())
-                ->foo(),
-  ],
-];
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-$foo = [
-    [new Foo(
-            )],
-    [new Foo(
-            )],
-];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-$foo = [
-      [new Foo(
-              )],
-  [new Foo(
-          )],
-];
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-$foo = new Foo([
-    (new Bar())
-        ->foo([
-            'foo',
-            'foo',
-        ])
-         ->bar(['bar', 'bar'])
-          ->baz([
-              'baz',
-              'baz',
-          ])
-    ,
-]);
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-$foo = new Foo([
-               (new Bar())
-                   ->foo([
-                           'foo',
-            'foo',
-               ])
-                    ->bar(['bar', 'bar'])
-                     ->baz([
-                           'baz',
-            'baz',
-               ])
-         ,
-]);
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-
-class Foo
-{
-    public function bar()
-    {
-        $foo = [
-            'foo',
-            'foo',
-        ];
-
-        $bar = [
-            'bar',
-            'bar',
-        ];
-    }
-}
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-
-class Foo
-{
-    public function bar()
-    {
-        $foo = [
-              'foo',
-         'foo',
-    ];
-
-        $bar = [
-  'bar',
-    'bar',
-                 ];
-    }
-}
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-
-class Foo
-{
-    public function bar()
-    {
-        return new Bar([
-            (new Baz())
-                ->qux([function ($a) {
-                    foreach ($a as $b) {
-                        if ($b) {
-                            throw new Exception(sprintf(
-                                'Oops: %s',
-                                $b
-                            ));
+                        public function bar()
+                        {
+                            return [
+                                ['bar', 'baz'],
+                                [
+                                    'bar',
+                                    'baz'
+                                ],
+                            ];
                         }
                     }
-                }]),
-        ]);
-    }
-}
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    class Foo
+                    {
+                        public $foo = [
+                            ['bar', 'baz'],
+                         [
+                            'bar',
+                             'baz'
+                             ],
+                     ];
 
-EXPECTED
+                        public function bar()
+                        {
+                            return [
+                                    ['bar', 'baz'],
+                                 [
+                                    'bar',
+                                     'baz'
+                                     ],
+                             ];
+                        }
+                    }
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = [
+                        'foo' => foo(
+                                   1,
+                                    2
+                                 ),
+                        'bar' => bar(
+                                   1,
+                                    2
+                                 ),
+                        'baz' => baz(
+                                   1,
+                                    2
+                                 ),
+                    ];
+                    EXPECTED
                 ,
                 <<<'INPUT'
-<?php
+                    <?php
+                    $foo = [
+                       'foo' => foo(
+                                  1,
+                                   2
+                                ),
+                          'bar' => bar(
+                                     1,
+                                      2
+                                   ),
+                             'baz' => baz(
+                                        1,
+                                         2
+                                      ),
+                    ];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = [
+                        'foo' => ['bar' => [
+                            'baz',
+                        ]],
+                        'qux',
+                    ];
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    $foo = [
+                      'foo' => ['bar' => [
+                       'baz',
+                      ]],
+                      'qux',
+                    ];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = [
+                        'foo' => [
+                            (new Foo())
+                                       ->foo(),
+                        ],
+                    ];
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    $foo = [
+                      'foo' => [
+                         (new Foo())
+                                    ->foo(),
+                      ],
+                    ];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = [
+                        [new Foo(
+                                )],
+                        [new Foo(
+                                )],
+                    ];
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    $foo = [
+                          [new Foo(
+                                  )],
+                      [new Foo(
+                              )],
+                    ];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = new Foo([
+                        (new Bar())
+                            ->foo([
+                                'foo',
+                                'foo',
+                            ])
+                             ->bar(['bar', 'bar'])
+                              ->baz([
+                                  'baz',
+                                  'baz',
+                              ])
+                        ,
+                    ]);
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    $foo = new Foo([
+                                   (new Bar())
+                                       ->foo([
+                                               'foo',
+                                'foo',
+                                   ])
+                                        ->bar(['bar', 'bar'])
+                                         ->baz([
+                                               'baz',
+                                'baz',
+                                   ])
+                             ,
+                    ]);
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
 
-class Foo
-{
-    public function bar()
-    {
-        return new Bar([
-(new Baz())
-    ->qux([function ($a) {
-        foreach ($a as $b) {
-            if ($b) {
-                throw new Exception(sprintf(
-                    'Oops: %s',
-                    $b
-                ));
-            }
-        }
-    }]),
-        ]);
-    }
-}
+                    class Foo
+                    {
+                        public function bar()
+                        {
+                            $foo = [
+                                'foo',
+                                'foo',
+                            ];
 
-INPUT
+                            $bar = [
+                                'bar',
+                                'bar',
+                            ];
+                        }
+                    }
+                    EXPECTED
                 ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
+                <<<'INPUT'
+                    <?php
 
-$foo = [
-    'Foo'.
-        foo()
-        .bar()
-    ,
-];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
+                    class Foo
+                    {
+                        public function bar()
+                        {
+                            $foo = [
+                                  'foo',
+                             'foo',
+                        ];
 
-$foo = [
-  'Foo'.
-      foo()
-      .bar()
-,
-];
-INPUT
+                            $bar = [
+                      'bar',
+                        'bar',
+                                     ];
+                        }
+                    }
+                    INPUT
                 ,
             ],
             [
                 <<<'EXPECTED'
-<?php
-$foo = [
-    [new \stdClass()],
-    'foo',
-];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-$foo = [
-  [new \stdClass()],
- 'foo',
-];
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-$foo = [
-    $bar
-        ? 'bar'
-        : 'foo'
-    ,
-];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-$foo = [
-  $bar
-      ? 'bar'
-      : 'foo'
-      ,
-];
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-$foo = [
-    $bar ?
-        'bar' :
-        'foo'
-    ,
-];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-$foo = [
-  $bar ?
-      'bar' :
-      'foo'
-      ,
-];
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
+                    <?php
 
-$foo = [
-    [
-        'foo',
-    ], [
-        'bar',
-    ],
-];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
+                    class Foo
+                    {
+                        public function bar()
+                        {
+                            return new Bar([
+                                (new Baz())
+                                    ->qux([function ($a) {
+                                        foreach ($a as $b) {
+                                            if ($b) {
+                                                throw new Exception(sprintf(
+                                                    'Oops: %s',
+                                                    $b
+                                                ));
+                                            }
+                                        }
+                                    }]),
+                            ]);
+                        }
+                    }
 
-$foo = [
-      [
-               'foo',
- ], [
-   'bar',
-  ],
-];
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-$foo = [
-    'foo', // comment
-    'bar',
-];
-EXPECTED
+                    EXPECTED
                 ,
                 <<<'INPUT'
-<?php
-$foo = [
-  'foo', // comment
-'bar',
- ];
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-$foo = [[[
-    'foo',
-    'bar',
-],
-],
-];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-$foo = [[[
-  'foo',
-'bar',
-],
- ],
-  ];
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-$foo = [
-    [
-        [
-            'foo',
-            'bar',
-        ]]];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-$foo = [
-[
-[
-    'foo',
-    'bar',
- ]]];
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-$foo = [
-    [
-        [[
-            [[[
-                'foo',
-                'bar',
-            ]
-            ]]
-        ]
-        ]
-    ]];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-$foo = [
-[
-[[
-[[[
-    'foo',
-    'bar',
- ]
-]]
-]
- ]
-]];
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-$foo = [[
-    [
-        [[[],[[
-            [[[
-                'foo',
-                'bar',
-            ],[[],[]]]
-            ]],[
-                'baz',
-            ]]
-        ],[]],[]]
-]
-];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-$foo = [[
-[
-[[[],[[
-[[[
-'foo',
-'bar',
-],[[],[]]]
-]],[
-'baz',
-]]
-],[]],[]]
-]
-];
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php if ($foo): ?>
-    <?php foo([
-        'bar',
-        'baz',
-    ]) ?>
-<?php endif ?>
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php if ($foo): ?>
-    <?php foo([
-          'bar',
-      'baz',
-   ]) ?>
-<?php endif ?>
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<div>
-    <a
-        class="link"
-        href="<?= Url::to([
-            '/site/page',
-            'id' => 123,
-        ]); ?>"
-    >
-        Link text
-    </a>
-</div>
-EXPECTED
-                ,
-                <<<'INPUT'
-<div>
-    <a
-        class="link"
-        href="<?= Url::to([
-              '/site/page',
-          'id' => 123,
-    ]); ?>"
-    >
-        Link text
-    </a>
-</div>
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-$arr = [
-    'a' => 'b',
+                    <?php
 
-    //  'c' => 'd',
-];
-EXPECTED
+                    class Foo
+                    {
+                        public function bar()
+                        {
+                            return new Bar([
+                    (new Baz())
+                        ->qux([function ($a) {
+                            foreach ($a as $b) {
+                                if ($b) {
+                                    throw new Exception(sprintf(
+                                        'Oops: %s',
+                                        $b
+                                    ));
+                                }
+                            }
+                        }]),
+                            ]);
+                        }
+                    }
+
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+
+                    $foo = [
+                        'Foo'.
+                            foo()
+                            .bar()
+                        ,
+                    ];
+                    EXPECTED
                 ,
                 <<<'INPUT'
-<?php
-$arr = [
-    'a' => 'b',
+                    <?php
 
-//  'c' => 'd',
-];
-INPUT
+                    $foo = [
+                      'Foo'.
+                          foo()
+                          .bar()
+                    ,
+                    ];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = [
+                        [new \stdClass()],
+                        'foo',
+                    ];
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    $foo = [
+                      [new \stdClass()],
+                     'foo',
+                    ];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = [
+                        $bar
+                            ? 'bar'
+                            : 'foo'
+                        ,
+                    ];
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    $foo = [
+                      $bar
+                          ? 'bar'
+                          : 'foo'
+                          ,
+                    ];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = [
+                        $bar ?
+                            'bar' :
+                            'foo'
+                        ,
+                    ];
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    $foo = [
+                      $bar ?
+                          'bar' :
+                          'foo'
+                          ,
+                    ];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+
+                    $foo = [
+                        [
+                            'foo',
+                        ], [
+                            'bar',
+                        ],
+                    ];
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+
+                    $foo = [
+                          [
+                                   'foo',
+                     ], [
+                       'bar',
+                      ],
+                    ];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = [
+                        'foo', // comment
+                        'bar',
+                    ];
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    $foo = [
+                      'foo', // comment
+                    'bar',
+                     ];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = [[[
+                        'foo',
+                        'bar',
+                    ],
+                    ],
+                    ];
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    $foo = [[[
+                      'foo',
+                    'bar',
+                    ],
+                     ],
+                      ];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = [
+                        [
+                            [
+                                'foo',
+                                'bar',
+                            ]]];
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    $foo = [
+                    [
+                    [
+                        'foo',
+                        'bar',
+                     ]]];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = [
+                        [
+                            [[
+                                [[[
+                                    'foo',
+                                    'bar',
+                                ]
+                                ]]
+                            ]
+                            ]
+                        ]];
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    $foo = [
+                    [
+                    [[
+                    [[[
+                        'foo',
+                        'bar',
+                     ]
+                    ]]
+                    ]
+                     ]
+                    ]];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = [[
+                        [
+                            [[[],[[
+                                [[[
+                                    'foo',
+                                    'bar',
+                                ],[[],[]]]
+                                ]],[
+                                    'baz',
+                                ]]
+                            ],[]],[]]
+                    ]
+                    ];
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    $foo = [[
+                    [
+                    [[[],[[
+                    [[[
+                    'foo',
+                    'bar',
+                    ],[[],[]]]
+                    ]],[
+                    'baz',
+                    ]]
+                    ],[]],[]]
+                    ]
+                    ];
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php if ($foo): ?>
+                        <?php foo([
+                            'bar',
+                            'baz',
+                        ]) ?>
+                    <?php endif ?>
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php if ($foo): ?>
+                        <?php foo([
+                              'bar',
+                          'baz',
+                       ]) ?>
+                    <?php endif ?>
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <div>
+                        <a
+                            class="link"
+                            href="<?= Url::to([
+                                '/site/page',
+                                'id' => 123,
+                            ]); ?>"
+                        >
+                            Link text
+                        </a>
+                    </div>
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <div>
+                        <a
+                            class="link"
+                            href="<?= Url::to([
+                                  '/site/page',
+                              'id' => 123,
+                        ]); ?>"
+                        >
+                            Link text
+                        </a>
+                    </div>
+                    INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $arr = [
+                        'a' => 'b',
+
+                        //  'c' => 'd',
+                    ];
+                    EXPECTED
+                ,
+                <<<'INPUT'
+                    <?php
+                    $arr = [
+                        'a' => 'b',
+
+                    //  'c' => 'd',
+                    ];
+                    INPUT
                 ,
             ],
             [
@@ -733,122 +733,122 @@ $foo = [
             ],
             [
                 <<<'EXPECTED'
-<?php
-$foo = [
-    'foo' =>
-          'Some'
-           .' long'
-            .' string',
-    'bar' =>
-        'Another'
-         .' long'
-          .' string'
-];
-EXPECTED
+                    <?php
+                    $foo = [
+                        'foo' =>
+                              'Some'
+                               .' long'
+                                .' string',
+                        'bar' =>
+                            'Another'
+                             .' long'
+                              .' string'
+                    ];
+                    EXPECTED
                 ,
                 <<<'INPUT'
-<?php
-$foo = [
-  'foo' =>
-        'Some'
-         .' long'
-          .' string',
-        'bar' =>
-            'Another'
-             .' long'
-              .' string'
-];
-INPUT
+                    <?php
+                    $foo = [
+                      'foo' =>
+                            'Some'
+                             .' long'
+                              .' string',
+                            'bar' =>
+                                'Another'
+                                 .' long'
+                                  .' string'
+                    ];
+                    INPUT
                 ,
             ],
             [
                 <<<'EXPECTED'
-<?php
-$foo = [
-    $test
-          ? [
-              123,
-          ]
-          : [
-              321,
-          ],
-];
-EXPECTED
+                    <?php
+                    $foo = [
+                        $test
+                              ? [
+                                  123,
+                              ]
+                              : [
+                                  321,
+                              ],
+                    ];
+                    EXPECTED
                 ,
                 <<<'INPUT'
-<?php
-$foo = [
-    $test
-          ? [
-                 123,
-          ]
-          : [
-                   321,
-          ],
-];
-INPUT
+                    <?php
+                    $foo = [
+                        $test
+                              ? [
+                                     123,
+                              ]
+                              : [
+                                       321,
+                              ],
+                    ];
+                    INPUT
                 ,
             ],
             [
                 <<<'EXPECTED'
-<?php
-$foo = [[
-    new Foo(
-        'foo'
-    ),
-]];
-EXPECTED
+                    <?php
+                    $foo = [[
+                        new Foo(
+                            'foo'
+                        ),
+                    ]];
+                    EXPECTED
                 ,
                 <<<'INPUT'
-<?php
-$foo = [[
-      new Foo(
-          'foo'
-      ),
-]];
-INPUT
+                    <?php
+                    $foo = [[
+                          new Foo(
+                              'foo'
+                          ),
+                    ]];
+                    INPUT
                 ,
             ],
             [
                 <<<'EXPECTED'
-<?php
-$array = [
-    'foo' => [
-        'bar' => [
-            'baz',
-        ],
-    ], // <- this one
-];
-EXPECTED
+                    <?php
+                    $array = [
+                        'foo' => [
+                            'bar' => [
+                                'baz',
+                            ],
+                        ], // <- this one
+                    ];
+                    EXPECTED
                 ,
                 <<<'INPUT'
-<?php
-$array = [
-    'foo' => [
-        'bar' => [
-            'baz',
-        ],
-], // <- this one
-];
-INPUT
+                    <?php
+                    $array = [
+                        'foo' => [
+                            'bar' => [
+                                'baz',
+                            ],
+                    ], // <- this one
+                    ];
+                    INPUT
                 ,
             ],
             [
                 <<<'EXPECTED'
-<?php
-$foo = [
-    ...$foo,
-    ...$bar,
-];
-EXPECTED
+                    <?php
+                    $foo = [
+                        ...$foo,
+                        ...$bar,
+                    ];
+                    EXPECTED
                 ,
                 <<<'INPUT'
-<?php
-$foo = [
-  ...$foo,
-        ...$bar,
- ];
-INPUT
+                    <?php
+                    $foo = [
+                      ...$foo,
+                            ...$bar,
+                     ];
+                    INPUT
                 ,
             ],
         ]);
@@ -868,38 +868,38 @@ INPUT
         return self::withLongArraySyntaxCases([
             [
                 <<<EXPECTED
-<?php
-\$foo = [
-\t'foo',
-\t'bar' => 'baz',
-];
-EXPECTED
+                    <?php
+                    \$foo = [
+                    \t'foo',
+                    \t'bar' => 'baz',
+                    ];
+                    EXPECTED
                 ,
                 <<<'INPUT'
-<?php
-$foo = [
-  'foo',
-        'bar' => 'baz',
- ];
-INPUT
+                    <?php
+                    $foo = [
+                      'foo',
+                            'bar' => 'baz',
+                     ];
+                    INPUT
                 ,
             ],
             [
                 <<<EXPECTED
-<?php
-\$foo = [
-\t'foo',
-\t'bar' => 'baz',
-];
-EXPECTED
+                    <?php
+                    \$foo = [
+                    \t'foo',
+                    \t'bar' => 'baz',
+                    ];
+                    EXPECTED
                 ,
                 <<<INPUT
-<?php
-\$foo = [
-\t\t\t'foo',
-\t\t'bar' => 'baz',
- ];
-INPUT
+                    <?php
+                    \$foo = [
+                    \t\t\t'foo',
+                    \t\t'bar' => 'baz',
+                     ];
+                    INPUT
                 ,
             ],
         ]);

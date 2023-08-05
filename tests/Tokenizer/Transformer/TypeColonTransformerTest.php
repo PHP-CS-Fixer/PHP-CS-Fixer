@@ -44,61 +44,67 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        return [
+        yield [
+            '<?php function foo(): array { return []; }',
             [
-                '<?php function foo(): array { return []; }',
-                [
-                    6 => CT::T_TYPE_COLON,
-                ],
+                6 => CT::T_TYPE_COLON,
             ],
+        ];
+
+        yield [
+            '<?php function & foo(): array { return []; }',
             [
-                '<?php function & foo(): array { return []; }',
-                [
-                    8 => CT::T_TYPE_COLON,
-                ],
+                8 => CT::T_TYPE_COLON,
             ],
+        ];
+
+        yield [
+            '<?php interface F { public function foo(): array; }',
             [
-                '<?php interface F { public function foo(): array; }',
-                [
-                    14 => CT::T_TYPE_COLON,
-                ],
+                14 => CT::T_TYPE_COLON,
             ],
+        ];
+
+        yield [
+            '<?php $a=1; $f = function () : array {};',
             [
-                '<?php $a=1; $f = function () : array {};',
-                [
-                    15 => CT::T_TYPE_COLON,
-                ],
+                15 => CT::T_TYPE_COLON,
             ],
+        ];
+
+        yield [
+            '<?php $a=1; $f = function () use($a) : array {};',
             [
-                '<?php $a=1; $f = function () use($a) : array {};',
-                [
-                    20 => CT::T_TYPE_COLON,
-                ],
+                20 => CT::T_TYPE_COLON,
             ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a = 1 ? [] : [];
                     $b = 1 ? fnc() : [];
                     $c = 1 ?: [];
                 ',
-            ],
+        ];
+
+        yield [
+            '<?php fn(): array => [];',
             [
-                '<?php fn(): array => [];',
-                [
-                    4 => CT::T_TYPE_COLON,
-                ],
+                4 => CT::T_TYPE_COLON,
             ],
+        ];
+
+        yield [
+            '<?php fn & (): array => [];',
             [
-                '<?php fn & (): array => [];',
-                [
-                    7 => CT::T_TYPE_COLON,
-                ],
+                7 => CT::T_TYPE_COLON,
             ],
+        ];
+
+        yield [
+            '<?php $a=1; $f = fn () : array => [];',
             [
-                '<?php $a=1; $f = fn () : array => [];',
-                [
-                    15 => CT::T_TYPE_COLON,
-                ],
+                15 => CT::T_TYPE_COLON,
             ],
         ];
     }
@@ -123,18 +129,17 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcess81Cases(): iterable
     {
-        return [
+        yield [
+            '<?php enum Foo: int {}',
             [
-                '<?php enum Foo: int {}',
-                [
-                    4 => CT::T_TYPE_COLON,
-                ],
+                4 => CT::T_TYPE_COLON,
             ],
+        ];
+
+        yield [
+            '<?php enum Foo /** */ : int {}',
             [
-                '<?php enum Foo /** */ : int {}',
-                [
-                    7 => CT::T_TYPE_COLON,
-                ],
+                7 => CT::T_TYPE_COLON,
             ],
         ];
     }

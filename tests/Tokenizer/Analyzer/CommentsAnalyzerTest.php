@@ -54,42 +54,44 @@ final class CommentsAnalyzerTest extends TestCase
 
     public static function provideCommentsCases(): iterable
     {
-        return [
-            'discover all 4 comments for the 1st comment with slash' => [
-                '<?php
+        yield 'discover all 4 comments for the 1st comment with slash' => [
+            '<?php
 $foo;
 // one
 // two
 // three
 // four
 $bar;',
-                4,
-                [4, 6, 8, 10],
-            ],
-            'discover all 4 comments for the 1st comment with hash' => [
-                '<?php
+            4,
+            [4, 6, 8, 10],
+        ];
+
+        yield 'discover all 4 comments for the 1st comment with hash' => [
+            '<?php
 $foo;
 # one
 # two
 # three
 # four
 $bar;',
-                4,
-                [4, 6, 8, 10],
-            ],
-            'discover 3 comments out of 4 for the 2nd comment' => [
-                '<?php
+            4,
+            [4, 6, 8, 10],
+        ];
+
+        yield 'discover 3 comments out of 4 for the 2nd comment' => [
+            '<?php
 $foo;
 // one
 // two
 // three
 // four
 $bar;',
-                6,
-                [6, 8, 10],
-            ],
-            'discover 3 comments when empty line separates 4th' => [
-                '<?php
+            6,
+            [6, 8, 10],
+        ];
+
+        yield 'discover 3 comments when empty line separates 4th' => [
+            '<?php
 $foo;
 // one
 // two
@@ -97,11 +99,12 @@ $foo;
 
 // four
 $bar;',
-                4,
-                [4, 6, 8],
-            ],
-            'discover 3 comments when empty line of CR separates 4th' => [
-                str_replace("\n", "\r", '<?php
+            4,
+            [4, 6, 8],
+        ];
+
+        yield 'discover 3 comments when empty line of CR separates 4th' => [
+            str_replace("\n", "\r", '<?php
 $foo;
 // one
 // two
@@ -109,41 +112,43 @@ $foo;
 
 // four
 $bar;'),
-                4,
-                [4, 6, 8],
-            ],
-            'discover correctly when mix of slash and hash' => [
-                '<?php
+            4,
+            [4, 6, 8],
+        ];
+
+        yield 'discover correctly when mix of slash and hash' => [
+            '<?php
 $foo;
 // one
 // two
 # three
 // four
 $bar;',
-                4,
-                [4, 6],
-            ],
-            'do not group asterisk comments' => [
-                '<?php
+            4,
+            [4, 6],
+        ];
+
+        yield 'do not group asterisk comments' => [
+            '<?php
 $foo;
 /* one */
 /* two */
 /* three */
 $bar;',
-                4,
-                [4],
-            ],
-            'handle fancy indent' => [
-                '<?php
+            4,
+            [4],
+        ];
+
+        yield 'handle fancy indent' => [
+            '<?php
 $foo;
         // one
        //  two
       //   three
      //    four
 $bar;',
-                4,
-                [4, 6, 8, 10],
-            ],
+            4,
+            [4, 6, 8, 10],
         ];
     }
 
@@ -170,13 +175,15 @@ $bar;',
 
     public static function provideHeaderCommentCases(): iterable
     {
-        return [
-            ['<?php /* Comment */ namespace Foo;', 1],
-            ['<?php /** Comment */ namespace Foo;', 1],
-            ['<?php declare(strict_types=1); /* Comment */ namespace Foo;', 9],
-            ['<?php /* We test this one */ /* Foo */ namespace Bar;', 1],
-            ['<?php /** Comment */ namespace Foo; declare(strict_types=1); /* Comment */ namespace Foo;', 1],
-        ];
+        yield ['<?php /* Comment */ namespace Foo;', 1];
+
+        yield ['<?php /** Comment */ namespace Foo;', 1];
+
+        yield ['<?php declare(strict_types=1); /* Comment */ namespace Foo;', 9];
+
+        yield ['<?php /* We test this one */ /* Foo */ namespace Bar;', 1];
+
+        yield ['<?php /** Comment */ namespace Foo; declare(strict_types=1); /* Comment */ namespace Foo;', 1];
     }
 
     /**
@@ -192,14 +199,17 @@ $bar;',
 
     public static function provideNotHeaderCommentCases(): iterable
     {
-        return [
-            ['<?php $foo; /* Comment */ $bar;', 4],
-            ['<?php foo(); /* Comment */ $bar;', 6],
-            ['<?php namespace Foo; /* Comment */ class Bar {};', 6],
-            ['<?php /* It is not header when no content after */', 1],
-            ['<?php /* Foo */ /* We test this one */ namespace Bar;', 3],
-            ['<?php /* Foo */ declare(strict_types=1); /* We test this one */ namespace Bar;', 11],
-        ];
+        yield ['<?php $foo; /* Comment */ $bar;', 4];
+
+        yield ['<?php foo(); /* Comment */ $bar;', 6];
+
+        yield ['<?php namespace Foo; /* Comment */ class Bar {};', 6];
+
+        yield ['<?php /* It is not header when no content after */', 1];
+
+        yield ['<?php /* Foo */ /* We test this one */ namespace Bar;', 3];
+
+        yield ['<?php /* Foo */ declare(strict_types=1); /* We test this one */ namespace Bar;', 11];
     }
 
     public function testPhpdocCandidateAcceptsOnlyComments(): void
@@ -226,46 +236,81 @@ $bar;',
 
     public static function providePhpdocCandidateCases(): iterable
     {
-        return [
-            ['<?php /* @var Foo */ $bar = "baz";'],
-            ['<?php /* Before namespace */ namespace Foo;'],
-            ['<?php /* Before class */ class Foo {}'],
-            ['<?php /* Before class */ abstract class Foo {}'],
-            ['<?php /* Before class */ final class Foo {}'],
-            ['<?php /* Before trait */ trait Foo {}'],
-            ['<?php /* Before interface */ interface Foo {}'],
-            ['<?php /* Before anonymous function */ function () {};'],
-            ['<?php class Foo { /* Before property */ private $bar; }'],
-            ['<?php class Foo { /* Before property */ protected $bar; }'],
-            ['<?php class Foo { /* Before property */ public $bar; }'],
-            ['<?php class Foo { /* Before property */ var $bar; }'],
-            ['<?php class Foo { /* Before function */ function bar() {} }'],
-            ['<?php class Foo { /* Before use */ use Bar; }'],
-            ['<?php class Foo { /* Before function */ final function bar() {} }'],
-            ['<?php class Foo { /* Before function */ private function bar() {} }'],
-            ['<?php class Foo { /* Before function */ protected function bar() {} }'],
-            ['<?php class Foo { /* Before function */ public function bar() {} }'],
-            ['<?php class Foo { /* Before function */ static function bar() {} }'],
-            ['<?php class Foo { /* Before function */ abstract function bar(); }'],
-            ['<?php class Foo { /* Before constant */ const FOO = 42; }'],
-            ['<?php /* Before require */ require "foo/php";'],
-            ['<?php /* Before require_once */ require_once "foo/php";'],
-            ['<?php /* Before include */ include "foo/php";'],
-            ['<?php /* Before include_once */ include_once "foo/php";'],
-            ['<?php /* @var array $foo */ foreach ($foo as $bar) {};'],
-            ['<?php /* @var int $foo */ if ($foo === -1) {};'],
-            ['<?php /* @var SomeClass $foo */ switch ($foo) { default: exit; };'],
-            ['<?php /* @var bool $foo */ while ($foo) { $foo--; };'],
-            ['<?php /* @var int $i */ for ($i = 0; $i < 16; $i++) {};'],
-            ['<?php /* @var int $i @var int $j */ list($i, $j) = getValues();'],
-            ['<?php /* @var string $s */ print($s);'],
-            ['<?php /* @var string $s */ echo($s);'],
-            ['<?php /* @var User $bar */ ($baz = tmp())->doSomething();'],
-            ['<?php /* @var User $bar */ list($bar) = a();'],
-            ['<?php /* Before anonymous function */ $fn = fn($x) => $x + 1;'],
-            ['<?php /* Before anonymous function */ fn($x) => $x + 1;'],
-            ['<?php /* @var int $x */ [$x] = [2];'],
-        ];
+        yield ['<?php /* @var Foo */ $bar = "baz";'];
+
+        yield ['<?php /* Before namespace */ namespace Foo;'];
+
+        yield ['<?php /* Before class */ class Foo {}'];
+
+        yield ['<?php /* Before class */ abstract class Foo {}'];
+
+        yield ['<?php /* Before class */ final class Foo {}'];
+
+        yield ['<?php /* Before trait */ trait Foo {}'];
+
+        yield ['<?php /* Before interface */ interface Foo {}'];
+
+        yield ['<?php /* Before anonymous function */ function () {};'];
+
+        yield ['<?php class Foo { /* Before property */ private $bar; }'];
+
+        yield ['<?php class Foo { /* Before property */ protected $bar; }'];
+
+        yield ['<?php class Foo { /* Before property */ public $bar; }'];
+
+        yield ['<?php class Foo { /* Before property */ var $bar; }'];
+
+        yield ['<?php class Foo { /* Before function */ function bar() {} }'];
+
+        yield ['<?php class Foo { /* Before use */ use Bar; }'];
+
+        yield ['<?php class Foo { /* Before function */ final function bar() {} }'];
+
+        yield ['<?php class Foo { /* Before function */ private function bar() {} }'];
+
+        yield ['<?php class Foo { /* Before function */ protected function bar() {} }'];
+
+        yield ['<?php class Foo { /* Before function */ public function bar() {} }'];
+
+        yield ['<?php class Foo { /* Before function */ static function bar() {} }'];
+
+        yield ['<?php class Foo { /* Before function */ abstract function bar(); }'];
+
+        yield ['<?php class Foo { /* Before constant */ const FOO = 42; }'];
+
+        yield ['<?php /* Before require */ require "foo/php";'];
+
+        yield ['<?php /* Before require_once */ require_once "foo/php";'];
+
+        yield ['<?php /* Before include */ include "foo/php";'];
+
+        yield ['<?php /* Before include_once */ include_once "foo/php";'];
+
+        yield ['<?php /* @var array $foo */ foreach ($foo as $bar) {};'];
+
+        yield ['<?php /* @var int $foo */ if ($foo === -1) {};'];
+
+        yield ['<?php /* @var SomeClass $foo */ switch ($foo) { default: exit; };'];
+
+        yield ['<?php /* @var bool $foo */ while ($foo) { $foo--; };'];
+
+        yield ['<?php /* @var int $i */ for ($i = 0; $i < 16; $i++) {};'];
+
+        yield ['<?php /* @var int $i @var int $j */ list($i, $j) = getValues();'];
+
+        yield ['<?php /* @var string $s */ print($s);'];
+
+        yield ['<?php /* @var string $s */ echo($s);'];
+
+        yield ['<?php /* @var User $bar */ ($baz = tmp())->doSomething();'];
+
+        yield ['<?php /* @var User $bar */ list($bar) = a();'];
+
+        yield ['<?php /* Before anonymous function */ $fn = fn($x) => $x + 1;'];
+
+        yield ['<?php /* Before anonymous function */ fn($x) => $x + 1;'];
+
+        yield ['<?php /* @var int $x */ [$x] = [2];'];
     }
 
     /**
@@ -282,18 +327,21 @@ $bar;',
 
     public static function provideNotPhpdocCandidateCases(): iterable
     {
-        return [
-            ['<?php class Foo {} /* At the end of file */'],
-            ['<?php class Foo { public $baz; public function baz(); /* At the end of class */ }'],
-            ['<?php /* Before increment */ $i++;'],
-            ['<?php /* Comment, but not doc block */ if ($foo === -1) {};'],
-            ['<?php
+        yield ['<?php class Foo {} /* At the end of file */'];
+
+        yield ['<?php class Foo { public $baz; public function baz(); /* At the end of class */ }'];
+
+        yield ['<?php /* Before increment */ $i++;'];
+
+        yield ['<?php /* Comment, but not doc block */ if ($foo === -1) {};'];
+
+        yield ['<?php
                 $a = $b[1]; // @phpstan-ignore-line
 
                 static::bar();',
-            ],
-            ['<?php /* @var int $a */ [$b] = [2];'],
         ];
+
+        yield ['<?php /* @var int $a */ [$b] = [2];'];
     }
 
     /**

@@ -195,7 +195,7 @@ final class Runner
 
         $fixInfo = null;
 
-        if (!empty($appliedFixers)) {
+        if ([] !== $appliedFixers) {
             $new = $tokens->generateCode();
             $newHash = $tokens->getCodeHash();
         }
@@ -257,7 +257,7 @@ final class Runner
                     $error = error_get_last();
 
                     throw new IOException(
-                        sprintf('Failed to write file "%s", "%s".', $fileName, $error ? $error['message'] : 'no reason available'),
+                        sprintf('Failed to write file "%s", "%s".', $fileName, null !== $error ? $error['message'] : 'no reason available'),
                         0,
                         null,
                         $fileName
@@ -270,7 +270,7 @@ final class Runner
 
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
-            new FixerFileProcessedEvent($fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
+            new FixerFileProcessedEvent(null !== $fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
         );
 
         return $fixInfo;

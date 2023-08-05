@@ -49,6 +49,6 @@ trait AssertTokensTrait
             );
         }
 
-        self::assertSame($expectedTokens->count(), $inputTokens->count(), 'Both collections must have the same length.');
+        self::assertSameSize($expectedTokens, $inputTokens, 'Both collections must have the same length.');
     }
 }

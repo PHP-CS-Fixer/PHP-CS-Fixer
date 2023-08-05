@@ -69,7 +69,6 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 
     public static function provideNoFixCases(): iterable
     {
-        $cases = [];
         $types = ['string', 'array', 'object'];
 
         if (\PHP_VERSION_ID < 8_00_00) {
@@ -77,13 +76,14 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         }
 
         foreach ($types as $cast) {
-            $cases[] = [sprintf('<?php $b=(%s) $d;', $cast)];
-            $cases[] = [sprintf('<?php $b=( %s ) $d;', $cast)];
-            $cases[] = [sprintf('<?php $b=(%s ) $d;', ucfirst($cast))];
-            $cases[] = [sprintf('<?php $b=(%s ) $d;', strtoupper($cast))];
-        }
+            yield [sprintf('<?php $b=(%s) $d;', $cast)];
 
-        return $cases;
+            yield [sprintf('<?php $b=( %s ) $d;', $cast)];
+
+            yield [sprintf('<?php $b=(%s ) $d;', ucfirst($cast))];
+
+            yield [sprintf('<?php $b=(%s ) $d;', strtoupper($cast))];
+        }
     }
 
     /**

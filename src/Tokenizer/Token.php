@@ -186,7 +186,7 @@ final class Token
         // detect unknown keys
         unset($otherPrototype[0], $otherPrototype[1]);
 
-        return empty($otherPrototype);
+        return [] === $otherPrototype;
     }
 
     /**

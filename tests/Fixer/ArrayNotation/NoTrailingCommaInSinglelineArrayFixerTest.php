@@ -35,96 +35,118 @@ final class NoTrailingCommaInSinglelineArrayFixerTest extends AbstractFixerTestC
 
     public static function provideFixCases(): iterable
     {
-        return [
-            ['<?php $x = array();'],
-            ['<?php $x = array("foo");'],
-            [
-                '<?php $x = array("foo");',
-                '<?php $x = array("foo", );',
-            ],
-            ["<?php \$x = array(\n'foo', \n);"],
-            ["<?php \$x = array('foo', \n);"],
-            ["<?php \$x = array(array('foo'), \n);", "<?php \$x = array(array('foo',), \n);"],
-            ["<?php \$x = array(array('foo',\n), \n);"],
-            [
-                '<?php
+        yield ['<?php $x = array();'];
+
+        yield ['<?php $x = array("foo");'];
+
+        yield [
+            '<?php $x = array("foo");',
+            '<?php $x = array("foo", );',
+        ];
+
+        yield ["<?php \$x = array(\n'foo', \n);"];
+
+        yield ["<?php \$x = array('foo', \n);"];
+
+        yield ["<?php \$x = array(array('foo'), \n);", "<?php \$x = array(array('foo',), \n);"];
+
+        yield ["<?php \$x = array(array('foo',\n), \n);"];
+
+        yield [
+            '<?php
     $test = array("foo", <<<TWIG
         foo
 TWIG
         , $twig, );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $test = array(
         "foo", <<<TWIG
         foo
 TWIG
         , $twig, );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $test = array("foo", <<<\'TWIG\'
         foo
 TWIG
         , $twig, );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $test = array(
         "foo", <<<\'TWIG\'
         foo
 TWIG
         , $twig, );',
-            ],
+        ];
 
-            // Short syntax
-            ['<?php $x = array([]);'],
-            ['<?php $x = [[]];'],
-            ['<?php $x = ["foo"];', '<?php $x = ["foo",];'],
-            ['<?php $x = bar(["foo"]);', '<?php $x = bar(["foo",]);'],
-            ["<?php \$x = bar([['foo'],\n]);"],
-            ["<?php \$x = ['foo', \n];"],
-            ['<?php $x = array([]);', '<?php $x = array([],);'],
-            ['<?php $x = [[]];', '<?php $x = [[],];'],
-            ['<?php $x = [$y[""]];', '<?php $x = [$y[""],];'],
-            [
-                '<?php
+        // Short syntax
+        yield ['<?php $x = array([]);'];
+
+        yield ['<?php $x = [[]];'];
+
+        yield ['<?php $x = ["foo"];', '<?php $x = ["foo",];'];
+
+        yield ['<?php $x = bar(["foo"]);', '<?php $x = bar(["foo",]);'];
+
+        yield ["<?php \$x = bar([['foo'],\n]);"];
+
+        yield ["<?php \$x = ['foo', \n];"];
+
+        yield ['<?php $x = array([]);', '<?php $x = array([],);'];
+
+        yield ['<?php $x = [[]];', '<?php $x = [[],];'];
+
+        yield ['<?php $x = [$y[""]];', '<?php $x = [$y[""],];'];
+
+        yield [
+            '<?php
     $test = ["foo", <<<TWIG
         foo
 TWIG
         , $twig, ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $test = [
         "foo", <<<TWIG
         foo
 TWIG
         , $twig, ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $test = ["foo", <<<\'TWIG\'
         foo
 TWIG
         , $twig, ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $test = [
         "foo", <<<\'TWIG\'
         foo
 TWIG
         , $twig, ];',
-            ],
-            [
-                '<?php $x = array(...$foo);',
-                '<?php $x = array(...$foo, );',
-            ],
-            [
-                '<?php $x = [...$foo];',
-                '<?php $x = [...$foo, ];',
-            ],
+        ];
+
+        yield [
+            '<?php $x = array(...$foo);',
+            '<?php $x = array(...$foo, );',
+        ];
+
+        yield [
+            '<?php $x = [...$foo];',
+            '<?php $x = [...$foo, ];',
         ];
     }
 }

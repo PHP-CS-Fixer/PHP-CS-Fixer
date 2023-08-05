@@ -297,7 +297,9 @@ class Tokens extends \SplFixedArray
     {
         $this->changed = true;
         $this->namespaceDeclarations = null;
-        $this->unregisterFoundToken($this[$index]);
+        if (isset($this[$index])) {
+            $this->unregisterFoundToken($this[$index]);
+        }
 
         parent::offsetUnset($index);
     }
@@ -322,7 +324,6 @@ class Tokens extends \SplFixedArray
             if (isset($this[$index])) {
                 $this->unregisterFoundToken($this[$index]);
             }
-
             $this->registerFoundToken($newval);
         }
 
@@ -607,9 +608,7 @@ class Tokens extends \SplFixedArray
      */
     public function getTokenOfKindSibling(int $index, int $direction, array $tokens = [], bool $caseSensitive = true): ?int
     {
-        $tokens = array_filter($tokens, function ($token): bool {
-            return $this->isTokenKindFound($this->extractTokenKind($token));
-        });
+        $tokens = array_filter($tokens, fn ($token): bool => $this->isTokenKindFound($this->extractTokenKind($token)));
 
         if (0 === \count($tokens)) {
             return null;
@@ -1048,7 +1047,7 @@ class Tokens extends \SplFixedArray
     public function isAllTokenKindsFound(array $tokenKinds): bool
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (empty($this->foundTokenKinds[$tokenKind])) {
+            if (!isset($this->foundTokenKinds[$tokenKind])) {
                 return false;
             }
         }
@@ -1064,7 +1063,7 @@ class Tokens extends \SplFixedArray
     public function isAnyTokenKindsFound(array $tokenKinds): bool
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (!empty($this->foundTokenKinds[$tokenKind])) {
+            if (isset($this->foundTokenKinds[$tokenKind])) {
                 return true;
             }
         }
@@ -1079,7 +1078,7 @@ class Tokens extends \SplFixedArray
      */
     public function isTokenKindFound($tokenKind): bool
     {
-        return !empty($this->foundTokenKinds[$tokenKind]);
+        return isset($this->foundTokenKinds[$tokenKind]);
     }
 
     /**
@@ -1117,7 +1116,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (1 === $this->countTokenKind(T_INLINE_HTML)) {
-            return 1 === Preg::match('/^#!.+$/', $this[0]->getContent());
+            return Preg::match('/^#!.+$/', $this[0]->getContent());
         }
 
         return 1 === ($this->countTokenKind(T_OPEN_TAG) + $this->countTokenKind(T_OPEN_TAG_WITH_ECHO));
@@ -1381,7 +1380,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Register token as found.
+     * Unregister token as not found.
      *
      * @param array{int}|string|Token $token token prototype
      */
@@ -1392,11 +1391,11 @@ class Tokens extends \SplFixedArray
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token);
 
-        if (!isset($this->foundTokenKinds[$tokenKind])) {
-            return;
+        if (1 === $this->foundTokenKinds[$tokenKind]) {
+            unset($this->foundTokenKinds[$tokenKind]);
+        } else {
+            --$this->foundTokenKinds[$tokenKind];
         }
-
-        --$this->foundTokenKinds[$tokenKind];
     }
 
     /**

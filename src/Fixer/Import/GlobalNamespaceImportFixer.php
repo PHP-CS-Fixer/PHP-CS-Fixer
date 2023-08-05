@@ -168,9 +168,7 @@ if (count($x)) {
      */
     private function importConstants(Tokens $tokens, array $useDeclarations): array
     {
-        [$global, $other] = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration): bool {
-            return $declaration->isConstant();
-        }, true);
+        [$global, $other] = $this->filterUseDeclarations($useDeclarations, static fn (NamespaceUseAnalysis $declaration): bool => $declaration->isConstant(), true);
 
         // find namespaced const declarations (`const FOO = 1`)
         // and add them to the not importable names (already used)
@@ -241,9 +239,7 @@ if (count($x)) {
      */
     private function importFunctions(Tokens $tokens, array $useDeclarations): array
     {
-        [$global, $other] = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration): bool {
-            return $declaration->isFunction();
-        }, false);
+        [$global, $other] = $this->filterUseDeclarations($useDeclarations, static fn (NamespaceUseAnalysis $declaration): bool => $declaration->isFunction(), false);
 
         // find function declarations
         // and add them to the not importable names (already used)
@@ -293,9 +289,7 @@ if (count($x)) {
      */
     private function importClasses(Tokens $tokens, array $useDeclarations): array
     {
-        [$global, $other] = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration): bool {
-            return $declaration->isClass();
-        }, false);
+        [$global, $other] = $this->filterUseDeclarations($useDeclarations, static fn (NamespaceUseAnalysis $declaration): bool => $declaration->isClass(), false);
 
         /** @var DocBlock[] $docBlocks */
         $docBlocks = [];
@@ -484,9 +478,7 @@ if (count($x)) {
             return;
         }
 
-        [$global] = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration): bool {
-            return $declaration->isConstant() && !$declaration->isAliased();
-        }, true);
+        [$global] = $this->filterUseDeclarations($useDeclarations, static fn (NamespaceUseAnalysis $declaration): bool => $declaration->isConstant() && !$declaration->isAliased(), true);
 
         if (!$global) {
             return;
@@ -526,9 +518,7 @@ if (count($x)) {
             return;
         }
 
-        [$global] = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration): bool {
-            return $declaration->isFunction() && !$declaration->isAliased();
-        }, false);
+        [$global] = $this->filterUseDeclarations($useDeclarations, static fn (NamespaceUseAnalysis $declaration): bool => $declaration->isFunction() && !$declaration->isAliased(), false);
 
         if (!$global) {
             return;
@@ -568,9 +558,7 @@ if (count($x)) {
             return;
         }
 
-        [$global] = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration): bool {
-            return $declaration->isClass() && !$declaration->isAliased();
-        }, false);
+        [$global] = $this->filterUseDeclarations($useDeclarations, static fn (NamespaceUseAnalysis $declaration): bool => $declaration->isClass() && !$declaration->isAliased(), false);
 
         if (!$global) {
             return;

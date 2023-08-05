@@ -44,9 +44,7 @@ final class DocumentationLocator
     {
         return $this->getFixersDocumentationDirectoryPath().'/'.Preg::replaceCallback(
             '/^.*\\\\(.+)\\\\(.+)Fixer$/',
-            static function (array $matches): string {
-                return Utils::camelCaseToUnderscore($matches[1]).'/'.Utils::camelCaseToUnderscore($matches[2]);
-            },
+            static fn (array $matches): string => Utils::camelCaseToUnderscore($matches[1]).'/'.Utils::camelCaseToUnderscore($matches[2]),
             \get_class($fixer)
         ).'.rst';
     }

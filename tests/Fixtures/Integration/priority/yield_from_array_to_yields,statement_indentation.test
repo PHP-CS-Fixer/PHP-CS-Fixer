@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: yield_from_array_to_yields,statement_indentation.
+--RULESET--
+{"statement_indentation": true, "yield_from_array_to_yields": true}
+--EXPECT--
+<?php function f() {
+     
+    yield 1;
+    yield 2;
+    yield 3;
+
+}
+
+--INPUT--
+<?php function f() {
+    yield from [
+        1,
+        2,
+        3,
+    ];
+}

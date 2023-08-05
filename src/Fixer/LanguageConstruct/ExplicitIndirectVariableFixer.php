@@ -34,13 +34,13 @@ final class ExplicitIndirectVariableFixer extends AbstractFixer
             [
                 new CodeSample(
                     <<<'EOT'
-<?php
-echo $$foo;
-echo $$foo['bar'];
-echo $foo->$bar['baz'];
-echo $foo->$callback($baz);
+                        <?php
+                        echo $$foo;
+                        echo $$foo['bar'];
+                        echo $foo->$bar['baz'];
+                        echo $foo->$callback($baz);
 
-EOT
+                        EOT
                 ),
             ]
         );

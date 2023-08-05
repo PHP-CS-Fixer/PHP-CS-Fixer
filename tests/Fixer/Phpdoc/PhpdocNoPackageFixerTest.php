@@ -28,19 +28,19 @@ final class PhpdocNoPackageFixerTest extends AbstractFixerTestCase
     public function testFixPackage(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     */
+            <?php
+                /**
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * @package Foo\Bar
-     */
+            <?php
+                /**
+                 * @package Foo\Bar
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -48,19 +48,19 @@ EOF;
     public function testFixSubpackage(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     */
+            <?php
+                /**
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * @subpackage Foo\Bar\Baz
-     */
+            <?php
+                /**
+                 * @subpackage Foo\Bar\Baz
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -68,22 +68,22 @@ EOF;
     public function testFixMany(): void
     {
         $expected = <<<'EOF'
-<?php
-/**
- * Hello!
- */
+            <?php
+            /**
+             * Hello!
+             */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-/**
- * Hello!
- * @package
- * @subpackage
- */
+            <?php
+            /**
+             * Hello!
+             * @package
+             * @subpackage
+             */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -91,12 +91,12 @@ EOF;
     public function testDoNothing(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * @var package
-     */
+            <?php
+                /**
+                 * @var package
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }

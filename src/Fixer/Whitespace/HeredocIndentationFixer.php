@@ -41,37 +41,37 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
             [
                 new VersionSpecificCodeSample(
                     <<<'SAMPLE'
-<?php
-    $a = <<<EOD
-abc
-    def
-EOD;
+                        <?php
+                            $a = <<<EOD
+                        abc
+                            def
+                        EOD;
 
-SAMPLE
+                        SAMPLE
                     ,
                     new VersionSpecification(7_03_00)
                 ),
                 new VersionSpecificCodeSample(
                     <<<'SAMPLE'
-<?php
-    $a = <<<'EOD'
-abc
-    def
-EOD;
+                        <?php
+                            $a = <<<'EOD'
+                        abc
+                            def
+                        EOD;
 
-SAMPLE
+                        SAMPLE
                     ,
                     new VersionSpecification(7_03_00)
                 ),
                 new VersionSpecificCodeSample(
                     <<<'SAMPLE'
-<?php
-    $a = <<<'EOD'
-abc
-    def
-EOD;
+                        <?php
+                            $a = <<<'EOD'
+                        abc
+                            def
+                        EOD;
 
-SAMPLE
+                        SAMPLE
                     ,
                     new VersionSpecification(7_03_00),
                     ['indentation' => 'same_as_start']

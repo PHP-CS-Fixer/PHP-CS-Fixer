@@ -163,9 +163,7 @@ final class OrderedTraitsFixer extends AbstractFixer
         };
 
         $sortedElements = $elements;
-        uasort($sortedElements, static function (Tokens $useA, Tokens $useB) use ($toTraitName): int {
-            return strcasecmp($toTraitName($useA), $toTraitName($useB));
-        });
+        uasort($sortedElements, static fn (Tokens $useA, Tokens $useB): int => strcasecmp($toTraitName($useA), $toTraitName($useB)));
 
         $sortedElements = array_combine(
             array_keys($elements),

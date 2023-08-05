@@ -33,49 +33,58 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'sample' => [
-                "<?php\n\$a = static function () use (\$b)\n{   echo \$b;\n};",
-                "<?php\n\$a = function () use (\$b)\n{   echo \$b;\n};",
-            ],
-            'minimal double fix case' => [
-                '<?php $a=static function(){};$b=static function(){};',
-                '<?php $a=function(){};$b=function(){};',
-            ],
-            [
-                '<?php $a  /**/  =   /**/     static function(){};',
-                '<?php $a  /**/  =   /**/     function(){};',
-            ],
-            [
-                '<?php $a  /**/  =   /**/ static function(){};',
-                '<?php $a  /**/  =   /**/ function(){};',
-            ],
-            [
-                '<?php $a  /**/  =   /**/static function(){};',
-                '<?php $a  /**/  =   /**/function(){};',
-            ],
-            [
-                '<?php $a=static fn() => null;$b=static fn() => null;',
-                '<?php $a=fn() => null;$b=fn() => null;',
-            ],
-            [
-                '<?php $a  /**/  =   /**/     static fn() => null;',
-                '<?php $a  /**/  =   /**/     fn() => null;',
-            ],
-            [
-                '<?php $a  /**/  =   /**/ static fn() => null;',
-                '<?php $a  /**/  =   /**/ fn() => null;',
-            ],
-            [
-                '<?php $a  /**/  =   /**/static fn() => null; echo $this->foo();',
-                '<?php $a  /**/  =   /**/fn() => null; echo $this->foo();',
-            ],
-            [
-                '<?php $a  /**/  =   /**/ static fn() => null ?> <?php echo $this->foo();',
-                '<?php $a  /**/  =   /**/ fn() => null ?> <?php echo $this->foo();',
-            ],
-            [
-                '<?php
+        yield 'sample' => [
+            "<?php\n\$a = static function () use (\$b)\n{   echo \$b;\n};",
+            "<?php\n\$a = function () use (\$b)\n{   echo \$b;\n};",
+        ];
+
+        yield 'minimal double fix case' => [
+            '<?php $a=static function(){};$b=static function(){};',
+            '<?php $a=function(){};$b=function(){};',
+        ];
+
+        yield [
+            '<?php $a  /**/  =   /**/     static function(){};',
+            '<?php $a  /**/  =   /**/     function(){};',
+        ];
+
+        yield [
+            '<?php $a  /**/  =   /**/ static function(){};',
+            '<?php $a  /**/  =   /**/ function(){};',
+        ];
+
+        yield [
+            '<?php $a  /**/  =   /**/static function(){};',
+            '<?php $a  /**/  =   /**/function(){};',
+        ];
+
+        yield [
+            '<?php $a=static fn() => null;$b=static fn() => null;',
+            '<?php $a=fn() => null;$b=fn() => null;',
+        ];
+
+        yield [
+            '<?php $a  /**/  =   /**/     static fn() => null;',
+            '<?php $a  /**/  =   /**/     fn() => null;',
+        ];
+
+        yield [
+            '<?php $a  /**/  =   /**/ static fn() => null;',
+            '<?php $a  /**/  =   /**/ fn() => null;',
+        ];
+
+        yield [
+            '<?php $a  /**/  =   /**/static fn() => null; echo $this->foo();',
+            '<?php $a  /**/  =   /**/fn() => null; echo $this->foo();',
+        ];
+
+        yield [
+            '<?php $a  /**/  =   /**/ static fn() => null ?> <?php echo $this->foo();',
+            '<?php $a  /**/  =   /**/ fn() => null ?> <?php echo $this->foo();',
+        ];
+
+        yield [
+            '<?php
                     class B
                     {
                         public function C()
@@ -85,13 +94,15 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ',
-            ],
-            [
-                '<?php static fn($a = ["foo" => "bar"]) => [];',
-                '<?php fn($a = ["foo" => "bar"]) => [];',
-            ],
-            [
-                '<?php class Foo {
+        ];
+
+        yield [
+            '<?php static fn($a = ["foo" => "bar"]) => [];',
+            '<?php fn($a = ["foo" => "bar"]) => [];',
+        ];
+
+        yield [
+            '<?php class Foo {
                     public function getNames()
                     {
                         return \array_map(
@@ -100,7 +111,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                         );
                     }
                 }',
-                '<?php class Foo {
+            '<?php class Foo {
                     public function getNames()
                     {
                         return \array_map(
@@ -109,9 +120,10 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                         );
                     }
                 }',
-            ],
-            [
-                '<?php class Foo {
+        ];
+
+        yield [
+            '<?php class Foo {
                     public function getNames()
                     {
                         return \array_map(
@@ -120,7 +132,6 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                         );
                     }
                 }',
-            ],
         ];
     }
 
@@ -134,9 +145,8 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
 
     public static function provideDoNotFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     class A
                     {
                         public function B()
@@ -149,9 +159,10 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class B
                     {
                         public function C()
@@ -163,9 +174,10 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class D
                     {
                         public function E()
@@ -179,9 +191,10 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class F
                     {
                         public function G()
@@ -194,9 +207,10 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class H
                     {
                         public function I()
@@ -209,9 +223,10 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class J
                     {
                         public function K()
@@ -224,9 +239,10 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class L
                     {
                         public function M()
@@ -240,9 +256,10 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class N
                     {
                         public function O()
@@ -254,12 +271,14 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ',
-            ],
-            [
-                '<?php function test(){} test();',
-            ],
-            [
-                '<?php abstract class P
+        ];
+
+        yield [
+            '<?php function test(){} test();',
+        ];
+
+        yield [
+            '<?php abstract class P
                 {
                     function test0(){}
                     public function test1(){}
@@ -268,9 +287,10 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                     private function test4(){}
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 class Q
 {
@@ -288,9 +308,10 @@ class Q
 $b = new Q();
 $b->abc();
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                 class A {}
                 class B extends A {
@@ -301,9 +322,10 @@ $b->abc();
                         };
                     }
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class B
                     {
                         public function C()
@@ -315,7 +337,6 @@ $b->abc();
                         }
                     }
                 ',
-            ],
         ];
     }
 }

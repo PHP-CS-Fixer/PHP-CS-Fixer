@@ -255,10 +255,9 @@ final class ConfigTest extends TestCase
             new IncludeFixer(),
         ];
 
-        return [
-            [$fixers, $fixers],
-            [$fixers, new \ArrayIterator($fixers)],
-        ];
+        yield [$fixers, $fixers];
+
+        yield [$fixers, new \ArrayIterator($fixers)];
     }
 
     public function testConfigConstructorWithName(): void

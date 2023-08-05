@@ -39,9 +39,8 @@ final class PhpUnitTestAnnotationFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'Annotation is used, and it should not be' => [
-                '<?php
+        yield 'Annotation is used, and it should not be' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -49,7 +48,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testItDoesSomething() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -57,10 +56,11 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function itDoesSomething() {}
 }',
-                ['style' => 'prefix'],
-            ],
-            'Annotation is not used, but should be' => [
-                '<?php
+            ['style' => 'prefix'],
+        ];
+
+        yield 'Annotation is not used, but should be' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -68,15 +68,16 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function itDoesSomething() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function testItDoesSomething() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation is not used, but should be, class is extra indented' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation is not used, but should be, class is extra indented' => [
+            '<?php
 if (1) {
     class Test extends \PhpUnit\FrameWork\TestCase
     {
@@ -86,17 +87,18 @@ if (1) {
         public function itDoesSomething() {}
     }
 }',
-                '<?php
+            '<?php
 if (1) {
     class Test extends \PhpUnit\FrameWork\TestCase
     {
         public function testItDoesSomething() {}
     }
 }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation is not used, but should be, and there is already a docBlock' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation is not used, but should be, and there is already a docBlock' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -106,7 +108,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function itDoesSomething() {}
     }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -114,10 +116,11 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testItDoesSomething() {}
     }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation is used, but should not be, and it depends on other tests' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation is used, but should not be, and it depends on other tests' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -134,7 +137,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testBbb () {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -151,10 +154,11 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function bbb () {}
 }',
-                ['style' => 'prefix'],
-            ],
-            'Annotation is not used, but should be, and it depends on other tests' => [
-                '<?php
+            ['style' => 'prefix'],
+        ];
+
+        yield 'Annotation is not used, but should be, and it depends on other tests' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -169,7 +173,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function bbb () {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function testAaa () {}
@@ -179,10 +183,11 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testBbb () {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation is removed, the function is one word and we want it to use camel case' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation is removed, the function is one word and we want it to use camel case' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -190,7 +195,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testWorks() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -198,9 +203,10 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function works() {}
 }',
-            ],
-            'Annotation is added, and it is snake case' => [
-                '<?php
+        ];
+
+        yield 'Annotation is added, and it is snake case' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -208,15 +214,16 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function it_has_snake_case() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function test_it_has_snake_case() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation gets added, it has an @depends, and we use snake case' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation gets added, it has an @depends, and we use snake case' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -231,7 +238,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function works_fine_too() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function test_works_fine () {}
@@ -241,10 +248,11 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function test_works_fine_too() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Class has both camel and snake case, annotated functions and not, and wants to add annotations' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Class has both camel and snake case, annotated functions and not, and wants to add annotations' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -283,7 +291,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function alreadyAnnotated() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function test_snake_cased () {}
@@ -312,10 +320,11 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function alreadyAnnotated() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation has to be added to multiple functions' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation has to be added to multiple functions' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -328,17 +337,18 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function itDoesSomething() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function testItWorks() {}
 
     public function testItDoesSomething() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Class with big doc blocks and multiple functions has to remove annotations' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Class with big doc blocks and multiple functions has to remove annotations' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
 
@@ -380,7 +390,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testDepends () {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
 
@@ -422,23 +432,25 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testDepends () {}
 }',
-            ],
-            'Test Annotation has to be removed, but its just one line' => [
-                '<?php
+        ];
+
+        yield 'Test Annotation has to be removed, but its just one line' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /** */
     public function testItWorks() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /** @test */
     public function itWorks() {}
 }',
-            ],
-            'Test annotation has to be added, but there is already a one line doc block' => [
-                '<?php
+        ];
+
+        yield 'Test annotation has to be added, but there is already a one line doc block' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -448,16 +460,17 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function itTestsDatabase() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /** @group Database */
     public function testItTestsDatabase() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Test annotation has to be added, but there is already a one line doc block which is a sentence' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Test annotation has to be added, but there is already a one line doc block which is a sentence' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -467,16 +480,17 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function itTestsDatabase() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /** I really like this test, it helps a lot */
     public function testItTestsDatabase() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Test annotation has to be added, but there is already a one line comment present' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Test annotation has to be added, but there is already a one line comment present' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     //I really like this test, it helps a lot
@@ -485,16 +499,17 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function itTestsDatabase() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     //I really like this test, it helps a lot
     public function testItTestsDatabase() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Test annotation has to be added, there is a one line doc block which is an @depends tag' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Test annotation has to be added, there is a one line doc block which is an @depends tag' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -509,7 +524,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function itDepends() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function testItTestsDatabase() {}
@@ -517,10 +532,11 @@ class Test extends \PhpUnit\FrameWork\TestCase
     /** @depends testItTestsDatabase */
     public function testItDepends() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation gets removed, but the function has a @testWith' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation gets removed, but the function has a @testWith' => [
+            '<?php
 final class ProcessLinterProcessBuilderTest extends TestCase
 {
     /**
@@ -543,7 +559,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
         );
     }
 }',
-                '<?php
+            '<?php
 final class ProcessLinterProcessBuilderTest extends TestCase
 {
     /**
@@ -566,9 +582,10 @@ final class ProcessLinterProcessBuilderTest extends TestCase
         );
     }
 }',
-            ],
-            'Annotation gets added, but there is already an @testWith in the doc block' => [
-                '<?php
+        ];
+
+        yield 'Annotation gets added, but there is already an @testWith in the doc block' => [
+            '<?php
 final class ProcessLinterProcessBuilderTest extends TestCase
 {
     /**
@@ -592,7 +609,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
         );
     }
 }',
-                '<?php
+            '<?php
 final class ProcessLinterProcessBuilderTest extends TestCase
 {
     /**
@@ -614,10 +631,11 @@ final class ProcessLinterProcessBuilderTest extends TestCase
         );
     }
 }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation gets properly removed, even when it is in a weird place' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation gets properly removed, even when it is in a weird place' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -645,7 +663,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testItDependsSomeMore() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -673,9 +691,10 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function itDependsSomeMore() {}
 }',
-            ],
-            'Annotation gets added when a single line has doc block has multiple tags already' => [
-                '<?php
+        ];
+
+        yield 'Annotation gets added when a single line has doc block has multiple tags already' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -685,30 +704,32 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function whyDoThis() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /** There is some text here @group Database @group Integration */
     public function testWhyDoThis() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation gets removed when a single line doc block has the tag, but there are other things as well' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation gets removed when a single line doc block has the tag, but there are other things as well' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /** There is some text here @group Database @group Integration */
     public function testWhyDoThis() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /** There is some @test text here @group Database @group Integration */
     public function testWhyDoThis() {}
 }',
-            ],
-            'Annotation is used, and should be' => [
-                '<?php
+        ];
+
+        yield 'Annotation is used, and should be' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -716,11 +737,12 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function itDoesSomething() {}
 }',
-                null,
-                ['style' => 'annotation'],
-            ],
-            'Annotation is not used, and should not be' => [
-                '<?php
+            null,
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation is not used, and should not be' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function testItDoesSomethingWithoutPhpDoc() {}
@@ -735,9 +757,10 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testingItDoesSomethingWithPhpDoc() {}
 }',
-            ],
-            'Annotation is added when it is already present in a weird place' => [
-                '<?php
+        ];
+
+        yield 'Annotation is added when it is already present in a weird place' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -747,7 +770,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function iHateMyTestSuite() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -755,29 +778,32 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function iHateMyTestSuite() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Docblock does not get converted to a multi line doc block if it already has @test annotation' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Docblock does not get converted to a multi line doc block if it already has @test annotation' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /** @test */
     public function doesSomeThings() {}
 }',
-                null,
-                ['style' => 'annotation'],
-            ],
-            'Annotation does not get added if class is not a test' => [
-                '<?php
+            null,
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation does not get added if class is not a test' => [
+            '<?php
 class Waterloo
 {
     public function testDoesSomeThings() {}
 }',
-                null,
-                ['style' => 'annotation'],
-            ],
-            'Annotation does not get removed if class is not a test' => [
-                '<?php
+            null,
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation does not get removed if class is not a test' => [
+            '<?php
 class Waterloo
 {
     /**
@@ -785,9 +811,10 @@ class Waterloo
      */
     public function doesSomeThings() {}
 }',
-            ],
-            'Annotation does not get added if there are no tests in the test class' => [
-                '<?php
+        ];
+
+        yield 'Annotation does not get added if there are no tests in the test class' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function setUp() {}
@@ -796,11 +823,12 @@ class Test extends \PhpUnit\FrameWork\TestCase
 
     public function someMoreChanges() {}
 }',
-                null,
-                ['style' => 'annotation'],
-            ],
-            'Abstract test gets annotation removed' => [
-                '<?php
+            null,
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Abstract test gets annotation removed' => [
+            '<?php
 abstract class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -808,7 +836,7 @@ abstract class Test extends \PhpUnit\FrameWork\TestCase
      */
     abstract function testFooBar();
 }',
-                '<?php
+            '<?php
 abstract class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -816,10 +844,11 @@ abstract class Test extends \PhpUnit\FrameWork\TestCase
      */
     abstract function fooBar();
 }',
-                ['style' => 'prefix'],
-            ],
-            'Annotation present, but method already have test prefix' => [
-                '<?php
+            ['style' => 'prefix'],
+        ];
+
+        yield 'Annotation present, but method already have test prefix' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -827,7 +856,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testarossaIsFromItaly() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -835,10 +864,11 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testarossaIsFromItaly() {}
 }',
-                ['style' => 'prefix'],
-            ],
-            'Annotation present, but method is test prefix' => [
-                '<?php
+            ['style' => 'prefix'],
+        ];
+
+        yield 'Annotation present, but method is test prefix' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -846,7 +876,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function test() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -854,10 +884,11 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function test() {}
 }',
-                ['style' => 'prefix'],
-            ],
-            'Abstract test gets annotation added' => [
-                '<?php
+            ['style' => 'prefix'],
+        ];
+
+        yield 'Abstract test gets annotation added' => [
+            '<?php
 abstract class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -865,15 +896,16 @@ abstract class Test extends \PhpUnit\FrameWork\TestCase
      */
     abstract function fooBar();
 }',
-                '<?php
+            '<?php
 abstract class Test extends \PhpUnit\FrameWork\TestCase
 {
     abstract function testFooBar();
 }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation gets added, but there is a number after the testprefix so it keeps the prefix' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation gets added, but there is a number after the testprefix so it keeps the prefix' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -881,15 +913,16 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function test123fooBar() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function test123fooBar() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation missing, but there is a lowercase character after the test prefix so it keeps the prefix' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation missing, but there is a lowercase character after the test prefix so it keeps the prefix' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -897,15 +930,16 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testarossaIsFromItaly() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function testarossaIsFromItaly() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation present, but there is a lowercase character after the test prefix so it keeps the prefix' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation present, but there is a lowercase character after the test prefix so it keeps the prefix' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -913,11 +947,12 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function testarossaIsFromItaly() {}
 }',
-                null,
-                ['style' => 'annotation'],
-            ],
-            'Annotation missing, method qualifies as test, but test prefix cannot be removed' => [
-                '<?php
+            null,
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation missing, method qualifies as test, but test prefix cannot be removed' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -925,15 +960,16 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function test() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function test() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation missing, method qualifies as test, but test_ prefix cannot be removed' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation missing, method qualifies as test, but test_ prefix cannot be removed' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -941,15 +977,16 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function test_() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function test_() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'Annotation present, method qualifies as test, but test_ prefix cannot be removed' => [
-                '<?php
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation present, method qualifies as test, but test_ prefix cannot be removed' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -957,11 +994,12 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function test_() {}
 }',
-                null,
-                ['style' => 'annotation'],
-            ],
-            'Annotation missing, method after fix still has "test" prefix' => [
-                '<?php
+            null,
+            ['style' => 'annotation'],
+        ];
+
+        yield 'Annotation missing, method after fix still has "test" prefix' => [
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
@@ -969,15 +1007,16 @@ class Test extends \PhpUnit\FrameWork\TestCase
      */
     public function test_foo() {}
 }',
-                '<?php
+            '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     public function test_test_foo() {}
 }',
-                ['style' => 'annotation'],
-            ],
-            'do not touch single line @depends annotation when already correct' => [
-                '<?php class FooTest extends \PHPUnit\Framework\TestCase
+            ['style' => 'annotation'],
+        ];
+
+        yield 'do not touch single line @depends annotation when already correct' => [
+            '<?php class FooTest extends \PHPUnit\Framework\TestCase
                 {
                     public function testOne() {}
 
@@ -987,7 +1026,6 @@ class Test extends \PhpUnit\FrameWork\TestCase
                     /**    @depends    testTwo    */
                     public function testThree() {}
                 }',
-            ],
         ];
     }
 
@@ -1005,9 +1043,8 @@ class Test extends \PhpUnit\FrameWork\TestCase
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 
                     class FooTest extends \PHPUnit_Framework_TestCase {
 
@@ -1017,7 +1054,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
                     public function testFooTest() {}
                     }
                 ',
-                '<?php
+            '<?php
 
                     class FooTest extends \PHPUnit_Framework_TestCase {
 
@@ -1027,7 +1064,6 @@ class Test extends \PhpUnit\FrameWork\TestCase
                     public function fooTest() {}
                     }
                 ',
-            ],
         ];
     }
 

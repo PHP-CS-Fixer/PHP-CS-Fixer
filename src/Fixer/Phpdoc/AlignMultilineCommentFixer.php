@@ -120,11 +120,11 @@ with a line not prefixed with asterisk
                 $whitespace = Preg::replace('/\S/', '', $tokens[$previousIndex]->getContent()).$whitespace;
             }
 
-            if (1 !== Preg::match('/\R(\h*)$/', $whitespace, $matches)) {
+            if (!Preg::match('/\R(\h*)$/', $whitespace, $matches)) {
                 continue;
             }
 
-            if ($token->isGivenKind(T_COMMENT) && 'all_multiline' !== $this->configuration['comment_type'] && 1 === Preg::match('/\R(?:\R|\s*[^\s\*])/', $token->getContent())) {
+            if ($token->isGivenKind(T_COMMENT) && 'all_multiline' !== $this->configuration['comment_type'] && Preg::match('/\R(?:\R|\s*[^\s\*])/', $token->getContent())) {
                 continue;
             }
 

@@ -35,81 +35,101 @@ final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            ['<?php $øøøøa = 1;'],
-            ['<?php $name = "This should not be changed";'],
-            ['<?php $name = "Это не меняется";'],
-            ['<?php $name = \'Это не меняется\';'],
-            ['<?php // This should not be chаnged'],
-            ['<?php /* This should not be chаnged */'],
-            [
-                '<?php $name = \'wrong\';',
-                '<?php $nаmе = \'wrong\';', // 'а' in name is a cyrillic letter
-            ],
-            [
-                '<?php $a->name = \'wrong\';',
-                '<?php $a->nаmе = \'wrong\';',
-            ],
-            [
-                '<?php class A { private $name; }',
-                '<?php class A { private $nаmе; }',
-            ],
-            [
-                '<?php class Broken {}',
-                '<?php class Вroken {}', // 'В' in Broken is a cyrillic letter
-            ],
-            [
-                '<?php interface Broken {}',
-                '<?php interface Вroken {}',
-            ],
-            [
-                '<?php trait Broken {}',
-                '<?php trait Вroken {}',
-            ],
-            [
-                '<?php $a = new Broken();',
-                '<?php $a = new Вroken();',
-            ],
-            [
-                '<?php class A extends Broken {}',
-                '<?php class A extends Вroken {}',
-            ],
-            [
-                '<?php class A implements Broken {}',
-                '<?php class A implements Вroken {}',
-            ],
-            [
-                '<?php class A { use Broken; }',
-                '<?php class A { use Вroken; }',
-            ],
-            [
-                '<?php echo Broken::class;',
-                '<?php echo Вroken::class;',
-            ],
-            [
-                '<?php function name() {}',
-                '<?php function nаmе() {}',
-            ],
-            [
-                '<?php name();',
-                '<?php nаmе();',
-            ],
-            [
-                '<?php $first_name = "a";',
-                '<?php $first＿name = "a";', // Weird underscore symbol
-            ],
-            [
-                '<?php class A { private string $name; }',
-                '<?php class A { private string $nаmе; }',
-            ],
-            [
-                '<?php class A { private ? Foo\Bar $name; }',
-                '<?php class A { private ? Foo\Bar $nаmе; }',
-            ],
-            [
-                '<?php class A { private array $name; }',
-                '<?php class A { private array $nаmе; }',
-            ],
+        yield ['<?php $øøøøa = 1;'];
+
+        yield ['<?php $name = "This should not be changed";'];
+
+        yield ['<?php $name = "Это не меняется";'];
+
+        yield ['<?php $name = \'Это не меняется\';'];
+
+        yield ['<?php // This should not be chаnged'];
+
+        yield ['<?php /* This should not be chаnged */'];
+
+        yield [
+            '<?php $name = \'wrong\';',
+            '<?php $nаmе = \'wrong\';', // 'а' in name is a cyrillic letter
+        ];
+
+        yield [
+            '<?php $a->name = \'wrong\';',
+            '<?php $a->nаmе = \'wrong\';',
+        ];
+
+        yield [
+            '<?php class A { private $name; }',
+            '<?php class A { private $nаmе; }',
+        ];
+
+        yield [
+            '<?php class Broken {}',
+            '<?php class Вroken {}', // 'В' in Broken is a cyrillic letter
+        ];
+
+        yield [
+            '<?php interface Broken {}',
+            '<?php interface Вroken {}',
+        ];
+
+        yield [
+            '<?php trait Broken {}',
+            '<?php trait Вroken {}',
+        ];
+
+        yield [
+            '<?php $a = new Broken();',
+            '<?php $a = new Вroken();',
+        ];
+
+        yield [
+            '<?php class A extends Broken {}',
+            '<?php class A extends Вroken {}',
+        ];
+
+        yield [
+            '<?php class A implements Broken {}',
+            '<?php class A implements Вroken {}',
+        ];
+
+        yield [
+            '<?php class A { use Broken; }',
+            '<?php class A { use Вroken; }',
+        ];
+
+        yield [
+            '<?php echo Broken::class;',
+            '<?php echo Вroken::class;',
+        ];
+
+        yield [
+            '<?php function name() {}',
+            '<?php function nаmе() {}',
+        ];
+
+        yield [
+            '<?php name();',
+            '<?php nаmе();',
+        ];
+
+        yield [
+            '<?php $first_name = "a";',
+            '<?php $first＿name = "a";', // Weird underscore symbol
+        ];
+
+        yield [
+            '<?php class A { private string $name; }',
+            '<?php class A { private string $nаmе; }',
+        ];
+
+        yield [
+            '<?php class A { private ? Foo\Bar $name; }',
+            '<?php class A { private ? Foo\Bar $nаmе; }',
+        ];
+
+        yield [
+            '<?php class A { private array $name; }',
+            '<?php class A { private array $nаmе; }',
         ];
     }
 }

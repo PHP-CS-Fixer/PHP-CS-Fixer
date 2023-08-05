@@ -38,9 +38,8 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     /**
      * @inheritdocs
      * @inheritDocs
@@ -49,9 +48,10 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      * @see Foo::bar()
      * {@see Foo::bar()}
      */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @inheritDoc
      * @inheritDoc
@@ -60,7 +60,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      * @see Foo::bar()
      * {@see Foo::bar()}
      */',
-                '<?php
+            '<?php
     /**
      * @inheritdocs
      * @inheritDocs
@@ -69,12 +69,13 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      * @see Foo::bar()
      * {@see Foo::bar()}
      */',
-                [
-                    'replacements' => ['inheritDocs' => 'inheritDoc'],
-                ],
-            ],
             [
-                '<?php
+                'replacements' => ['inheritDocs' => 'inheritDoc'],
+            ],
+        ];
+
+        yield [
+            '<?php
     /**
      * @inheritdoc
      * @inheritdoc
@@ -83,7 +84,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      * @see Foo::bar()
      * {@see Foo::bar()}
      */',
-                '<?php
+            '<?php
     /**
      * @inheritdocs
      * @inheritDocs
@@ -92,15 +93,16 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      * @see Foo::bar()
      * {@see Foo::bar()}
      */',
-                [
-                    'fix_annotation' => true,
-                    'fix_inline' => true,
-                    'replacements' => ['inheritdocs' => 'inheritdoc'],
-                    'case_sensitive' => false,
-                ],
-            ],
             [
-                '<?php
+                'fix_annotation' => true,
+                'fix_inline' => true,
+                'replacements' => ['inheritdocs' => 'inheritdoc'],
+                'case_sensitive' => false,
+            ],
+        ];
+
+        yield [
+            '<?php
     /**
      * @inheritDoc
      * @inheritDoc
@@ -109,7 +111,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      * @see Foo::bar()
      * {@see Foo::bar()}
      */',
-                '<?php
+            '<?php
     /**
      * @inheritdocs
      * @inheritDocs
@@ -118,13 +120,14 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      * @see Foo::bar()
      * {@see Foo::bar()}
      */',
-                [
-                    'fix_inline' => false,
-                    'replacements' => ['inheritDocs' => 'inheritDoc'],
-                ],
-            ],
             [
-                '<?php
+                'fix_inline' => false,
+                'replacements' => ['inheritDocs' => 'inheritDoc'],
+            ],
+        ];
+
+        yield [
+            '<?php
     /**
      * @inheritdocs
      * @inheritDocs
@@ -133,7 +136,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      * @see Foo::bar()
      * {@see Foo::bar()}
      */',
-                '<?php
+            '<?php
     /**
      * @inheritdocs
      * @inheritDocs
@@ -142,13 +145,14 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      * @see Foo::bar()
      * {@see Foo::bar()}
      */',
-                [
-                    'fix_annotation' => false,
-                    'replacements' => ['inheritDocs' => 'inheritDoc'],
-                ],
-            ],
             [
-                '<?php
+                'fix_annotation' => false,
+                'replacements' => ['inheritDocs' => 'inheritDoc'],
+            ],
+        ];
+
+        yield [
+            '<?php
     /**
      * @inheritdocs
      * @inheritDoc
@@ -157,7 +161,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      * @see Foo::bar()
      * {@see Foo::bar()}
      */',
-                '<?php
+            '<?php
     /**
      * @inheritdocs
      * @inheritDocs
@@ -166,13 +170,14 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      * @see Foo::bar()
      * {@see Foo::bar()}
      */',
-                [
-                    'case_sensitive' => true,
-                    'replacements' => ['inheritDocs' => 'inheritDoc'],
-                ],
-            ],
             [
-                '<?php
+                'case_sensitive' => true,
+                'replacements' => ['inheritDocs' => 'inheritDoc'],
+            ],
+        ];
+
+        yield [
+            '<?php
     /**
      * @inheritdoc
      * @inheritdoc
@@ -181,7 +186,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      * @see Foo::bar()
      * {@see Foo::bar()}
      */',
-                '<?php
+            '<?php
     /**
      * @inheritdocs
      * @inheritDocs
@@ -190,49 +195,50 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      * @link Foo::bar()
      * {@link Foo::bar()}
      */',
-                [
-                    'replacements' => [
-                        'inheritdocs' => 'inheritdoc',
-                        'link' => 'see',
-                    ],
+            [
+                'replacements' => [
+                    'inheritdocs' => 'inheritdoc',
+                    'link' => 'see',
                 ],
             ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @var int $foo
      * @Annotation("@type")
      */',
-                '<?php
+            '<?php
     /**
      * @type int $foo
      * @Annotation("@type")
      */',
-                [
-                    'fix_annotation' => true,
-                    'fix_inline' => true,
-                    'replacements' => [
-                        'type' => 'var',
-                    ],
+            [
+                'fix_annotation' => true,
+                'fix_inline' => true,
+                'replacements' => [
+                    'type' => 'var',
                 ],
             ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @var int $foo
      * @Annotation("@type")
      */',
-                '<?php
+            '<?php
     /**
      * @type int $foo
      * @Annotation("@type")
      */',
-                [
-                    'fix_annotation' => true,
-                    'fix_inline' => false,
-                    'replacements' => [
-                        'type' => 'var',
-                    ],
+            [
+                'fix_annotation' => true,
+                'fix_inline' => false,
+                'replacements' => [
+                    'type' => 'var',
                 ],
             ],
         ];
@@ -279,56 +285,60 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
 
     public static function provideConfigureWithInvalidReplacementsCases(): iterable
     {
-        return [
+        yield [
+            [1 => 'abc'],
+            true,
+            'Tag to replace must be a string.',
+        ];
+
+        yield [
+            ['a' => null],
+            true,
+            'Tag to replace to from "a" must be a string.',
+        ];
+
+        yield [
+            ['see' => 'link*/'],
+            true,
+            'Tag "see" cannot be replaced by invalid tag "link*/".',
+        ];
+
+        yield [
             [
-                [1 => 'abc'],
-                true,
-                'Tag to replace must be a string.',
+                'link' => 'see',
+                'a' => 'b',
+                'see' => 'link',
             ],
+            true,
+            'Cannot change tag "link" to tag "see", as the tag "see" is configured to be replaced to "link".',
+        ];
+
+        yield [
             [
-                ['a' => null],
-                true,
-                'Tag to replace to from "a" must be a string.',
+                'b' => 'see',
+                'see' => 'link',
+                'link' => 'b',
             ],
+            true,
+            'Cannot change tag "b" to tag "see", as the tag "see" is configured to be replaced to "link".',
+        ];
+
+        yield [
             [
-                ['see' => 'link*/'],
-                true,
-                'Tag "see" cannot be replaced by invalid tag "link*/".',
+                'see' => 'link',
+                'link' => 'b',
             ],
+            true,
+            'Cannot change tag "see" to tag "link", as the tag "link" is configured to be replaced to "b".',
+        ];
+
+        yield [
             [
-                [
-                    'link' => 'see',
-                    'a' => 'b',
-                    'see' => 'link',
-                ],
-                true,
-                'Cannot change tag "link" to tag "see", as the tag "see" is configured to be replaced to "link".',
+                'Foo' => 'bar',
+                'foo' => 'baz',
             ],
-            [
-                [
-                    'b' => 'see',
-                    'see' => 'link',
-                    'link' => 'b',
-                ],
-                true,
-                'Cannot change tag "b" to tag "see", as the tag "see" is configured to be replaced to "link".',
-            ],
-            [
-                [
-                    'see' => 'link',
-                    'link' => 'b',
-                ],
-                true,
-                'Cannot change tag "see" to tag "link", as the tag "link" is configured to be replaced to "b".',
-            ],
-            [
-                [
-                    'Foo' => 'bar',
-                    'foo' => 'baz',
-                ],
-                false,
-                'Tag "foo" cannot be configured to be replaced with several different tags when case sensitivity is off.',
-            ],
+            false,
+            'Tag "foo" cannot be configured to be replaced with several different tags when case sensitivity is off.',
         ];
     }
 }

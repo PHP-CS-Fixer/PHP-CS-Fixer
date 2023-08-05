@@ -35,109 +35,130 @@ final class CompactNullableTypehintFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php function foo(?int $param): ?int {}',
-            ],
-            [
-                '<?php function foo(? /* foo */ int $param): ? /* foo */ int {}',
-            ],
-            [
-                '<?php function foo(? /** foo */ int $param): ? /** foo */ int {}',
-            ],
-            [
-                '<?php function foo(? // foo
+        yield [
+            '<?php function foo(?int $param): ?int {}',
+        ];
+
+        yield [
+            '<?php function foo(? /* foo */ int $param): ? /* foo */ int {}',
+        ];
+
+        yield [
+            '<?php function foo(? /** foo */ int $param): ? /** foo */ int {}',
+        ];
+
+        yield [
+            '<?php function foo(? // foo
                     int $param): ? // foo
                     int {}',
-            ],
-            [
-                '<?php function foo(/**? int*/$param): ?int {}',
-                '<?php function foo(/**? int*/$param): ? int {}',
-            ],
-            [
-                '<?php function foo(?callable $param): ?callable {}',
-                '<?php function foo(? callable $param): ? callable {}',
-            ],
-            [
-                '<?php function foo(?array &$param): ?array {}',
-                '<?php function foo(? array &$param): ? array {}',
-            ],
-            [
-                '<?php function foo(?Bar $param): ?Bar {}',
-                '<?php function foo(? Bar $param): ? Bar {}',
-            ],
-            [
-                '<?php function foo(?\Bar $param): ?\Bar {}',
-                '<?php function foo(? \Bar $param): ? \Bar {}',
-            ],
-            [
-                '<?php function foo(?Bar\Baz $param): ?Bar\Baz {}',
-                '<?php function foo(? Bar\Baz $param): ? Bar\Baz {}',
-            ],
-            [
-                '<?php function foo(?Bar\Baz &$param): ?Bar\Baz {}',
-                '<?php function foo(? Bar\Baz &$param): ? Bar\Baz {}',
-            ],
-            [
-                '<?php $foo = function(?Bar\Baz $param): ?Bar\Baz {};',
-                '<?php $foo = function(? Bar\Baz $param): ? Bar\Baz {};',
-            ],
-            [
-                '<?php $foo = function(?Bar\Baz &$param): ?Bar\Baz {};',
-                '<?php $foo = function(? Bar\Baz &$param): ? Bar\Baz {};',
-            ],
-            [
-                '<?php class Test { public function foo(?Bar\Baz $param): ?Bar\Baz {} }',
-                '<?php class Test { public function foo(? Bar\Baz $param): ? Bar\Baz {} }',
-            ],
-            [
-                '<?php abstract class Test { abstract public function foo(?Bar\Baz $param); }',
-                '<?php abstract class Test { abstract public function foo(? Bar\Baz $param); }',
-            ],
-            [
-                '<?php $foo = function(?array $a,
+        ];
+
+        yield [
+            '<?php function foo(/**? int*/$param): ?int {}',
+            '<?php function foo(/**? int*/$param): ? int {}',
+        ];
+
+        yield [
+            '<?php function foo(?callable $param): ?callable {}',
+            '<?php function foo(? callable $param): ? callable {}',
+        ];
+
+        yield [
+            '<?php function foo(?array &$param): ?array {}',
+            '<?php function foo(? array &$param): ? array {}',
+        ];
+
+        yield [
+            '<?php function foo(?Bar $param): ?Bar {}',
+            '<?php function foo(? Bar $param): ? Bar {}',
+        ];
+
+        yield [
+            '<?php function foo(?\Bar $param): ?\Bar {}',
+            '<?php function foo(? \Bar $param): ? \Bar {}',
+        ];
+
+        yield [
+            '<?php function foo(?Bar\Baz $param): ?Bar\Baz {}',
+            '<?php function foo(? Bar\Baz $param): ? Bar\Baz {}',
+        ];
+
+        yield [
+            '<?php function foo(?Bar\Baz &$param): ?Bar\Baz {}',
+            '<?php function foo(? Bar\Baz &$param): ? Bar\Baz {}',
+        ];
+
+        yield [
+            '<?php $foo = function(?Bar\Baz $param): ?Bar\Baz {};',
+            '<?php $foo = function(? Bar\Baz $param): ? Bar\Baz {};',
+        ];
+
+        yield [
+            '<?php $foo = function(?Bar\Baz &$param): ?Bar\Baz {};',
+            '<?php $foo = function(? Bar\Baz &$param): ? Bar\Baz {};',
+        ];
+
+        yield [
+            '<?php class Test { public function foo(?Bar\Baz $param): ?Bar\Baz {} }',
+            '<?php class Test { public function foo(? Bar\Baz $param): ? Bar\Baz {} }',
+        ];
+
+        yield [
+            '<?php abstract class Test { abstract public function foo(?Bar\Baz $param); }',
+            '<?php abstract class Test { abstract public function foo(? Bar\Baz $param); }',
+        ];
+
+        yield [
+            '<?php $foo = function(?array $a,
                     ?array $b): ?Bar\Baz {};',
-                '<?php $foo = function(?
+            '<?php $foo = function(?
                     array $a,
                     ? array $b): ?
                     Bar\Baz {};',
-            ],
-            [
-                '<?php function foo(?array ...$param): ?array {}',
-                '<?php function foo(? array ...$param): ? array {}',
-            ],
-            [
-                '<?php class Foo { private ?string $foo; }',
-                '<?php class Foo { private ? string $foo; }',
-            ],
-            [
-                '<?php class Foo { protected ?string $foo; }',
-                '<?php class Foo { protected ? string $foo; }',
-            ],
-            [
-                '<?php class Foo { public ?string $foo; }',
-                '<?php class Foo { public ? string $foo; }',
-            ],
-            [
-                '<?php class Foo { var ?Foo\Bar $foo; }',
-                '<?php class Foo { var ? Foo\Bar $foo; }',
-            ],
-            [
-                '<?php $foo = fn(?Bar\Baz $param): ?Bar\Baz => null;',
-                '<?php $foo = fn(? Bar\Baz $param): ? Bar\Baz => null;',
-            ],
-            [
-                '<?php $foo = fn(?Bar\Baz &$param): ?Bar\Baz => null;',
-                '<?php $foo = fn(? Bar\Baz &$param): ? Bar\Baz => null;',
-            ],
-            [
-                '<?php $foo = fn(?array $a,
+        ];
+
+        yield [
+            '<?php function foo(?array ...$param): ?array {}',
+            '<?php function foo(? array ...$param): ? array {}',
+        ];
+
+        yield [
+            '<?php class Foo { private ?string $foo; }',
+            '<?php class Foo { private ? string $foo; }',
+        ];
+
+        yield [
+            '<?php class Foo { protected ?string $foo; }',
+            '<?php class Foo { protected ? string $foo; }',
+        ];
+
+        yield [
+            '<?php class Foo { public ?string $foo; }',
+            '<?php class Foo { public ? string $foo; }',
+        ];
+
+        yield [
+            '<?php class Foo { var ?Foo\Bar $foo; }',
+            '<?php class Foo { var ? Foo\Bar $foo; }',
+        ];
+
+        yield [
+            '<?php $foo = fn(?Bar\Baz $param): ?Bar\Baz => null;',
+            '<?php $foo = fn(? Bar\Baz $param): ? Bar\Baz => null;',
+        ];
+
+        yield [
+            '<?php $foo = fn(?Bar\Baz &$param): ?Bar\Baz => null;',
+            '<?php $foo = fn(? Bar\Baz &$param): ? Bar\Baz => null;',
+        ];
+
+        yield [
+            '<?php $foo = fn(?array $a,
                     ?array $b): ?Bar\Baz => null;',
-                '<?php $foo = fn(?
+            '<?php $foo = fn(?
                     array $a,
                     ? array $b): ?
                     Bar\Baz => null;',
-            ],
         ];
     }
 

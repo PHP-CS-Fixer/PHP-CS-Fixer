@@ -34,21 +34,21 @@ final class SimpleToComplexStringVariableFixer extends AbstractFixer
             [
                 new CodeSample(
                     <<<'EOT'
-<?php
-$name = 'World';
-echo "Hello ${name}!";
+                        <?php
+                        $name = 'World';
+                        echo "Hello ${name}!";
 
-EOT
+                        EOT
                 ),
                 new CodeSample(
                     <<<'EOT'
-<?php
-$name = 'World';
-echo <<<TEST
-Hello ${name}!
-TEST;
+                        <?php
+                        $name = 'World';
+                        echo <<<TEST
+                        Hello ${name}!
+                        TEST;
 
-EOT
+                        EOT
                 ),
             ],
             "Doesn't touch implicit variables. Works together nicely with `explicit_string_variable`."

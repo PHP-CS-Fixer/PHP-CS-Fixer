@@ -143,6 +143,6 @@ final class NoEmptyCommentFixer extends AbstractFixer
 
         $type = $this->getCommentType($content);
 
-        return 1 === Preg::match($mapper[$type], $content);
+        return Preg::match($mapper[$type], $content);
     }
 }

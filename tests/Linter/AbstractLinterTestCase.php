@@ -61,18 +61,18 @@ abstract class AbstractLinterTestCase extends TestCase
      */
     public static function provideLintFileCases(): iterable
     {
-        return [
-            [
-                __DIR__.'/../Fixtures/Linter/valid.php',
-            ],
-            [
-                __DIR__.'/../Fixtures/Linter/invalid.php',
-                sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
-            ],
-            [
-                __DIR__.'/../Fixtures/Linter/multiple.php',
-                'Fatal error: Multiple access type modifiers are not allowed on line 4.',
-            ],
+        yield [
+            __DIR__.'/../Fixtures/Linter/valid.php',
+        ];
+
+        yield [
+            __DIR__.'/../Fixtures/Linter/invalid.php',
+            sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
+        ];
+
+        yield [
+            __DIR__.'/../Fixtures/Linter/multiple.php',
+            'Fatal error: Multiple access type modifiers are not allowed on line 4.',
         ];
     }
 
@@ -94,19 +94,18 @@ abstract class AbstractLinterTestCase extends TestCase
 
     public static function provideLintSourceCases(): iterable
     {
-        return [
-            [
-                '<?php echo 123;',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php echo 123;',
+        ];
+
+        yield [
+            '<?php
                     print "line 2";
                     print "line 3";
                     print "line 4";
                     echo echo;
                 ',
-                sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
-            ],
+            sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
         ];
     }
 

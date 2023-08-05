@@ -23,6 +23,7 @@ use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Differ\DifferInterface;
@@ -286,11 +287,7 @@ final class ConfigurationResolver
     public function getDiffer(): DifferInterface
     {
         if (null === $this->differ) {
-            if ($this->options['diff']) {
-                $this->differ = new UnifiedDiffer();
-            } else {
-                $this->differ = new NullDiffer();
-            }
+            $this->differ = (true === $this->options['diff']) ? new UnifiedDiffer() : new NullDiffer();
         }
 
         return $this->differ;
@@ -331,14 +328,10 @@ final class ConfigurationResolver
 
             if (false === $this->getRiskyAllowed()) {
                 $riskyFixers = array_map(
-                    static function (FixerInterface $fixer): string {
-                        return $fixer->getName();
-                    },
+                    static fn (FixerInterface $fixer): string => $fixer->getName(),
                     array_filter(
                         $this->fixers,
-                        static function (FixerInterface $fixer): bool {
-                            return $fixer->isRisky();
-                        }
+                        static fn (FixerInterface $fixer): bool => $fixer->isRisky()
                     )
                 );
 
@@ -406,26 +399,27 @@ final class ConfigurationResolver
     /**
      * @throws InvalidConfigurationException
      */
-    public function getProgress(): string
+    public function getProgressType(): string
     {
         if (null === $this->progress) {
             if (OutputInterface::VERBOSITY_VERBOSE <= $this->options['verbosity'] && 'txt' === $this->getFormat()) {
                 $progressType = $this->options['show-progress'];
-                $progressTypes = ['none', 'dots'];
 
                 if (null === $progressType) {
-                    $progressType = $this->getConfig()->getHideProgress() ? 'none' : 'dots';
-                } elseif (!\in_array($progressType, $progressTypes, true)) {
+                    $progressType = $this->getConfig()->getHideProgress()
+                        ? ProgressOutputType::NONE
+                        : ProgressOutputType::DOTS;
+                } elseif (!\in_array($progressType, ProgressOutputType::AVAILABLE, true)) {
                     throw new InvalidConfigurationException(sprintf(
                         'The progress type "%s" is not defined, supported are %s.',
                         $progressType,
-                        Utils::naturalLanguageJoin($progressTypes)
+                        Utils::naturalLanguageJoin(ProgressOutputType::AVAILABLE)
                     ));
                 }
 
                 $this->progress = $progressType;
             } else {
-                $this->progress = 'none';
+                $this->progress = ProgressOutputType::NONE;
             }
         }
 
@@ -840,9 +834,7 @@ final class ConfigurationResolver
         $isIntersectionPathMode = self::PATH_MODE_INTERSECTION === $this->options['path-mode'];
 
         $paths = array_filter(array_map(
-            static function (string $path) {
-                return realpath($path);
-            },
+            static fn (string $path) => realpath($path),
             $this->getPath()
         ));
 

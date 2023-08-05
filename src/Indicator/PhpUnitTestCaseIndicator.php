@@ -40,7 +40,7 @@ final class PhpUnitTestCaseIndicator
             return false;
         }
 
-        if (0 !== Preg::match('/(?:Test|TestCase)$/', $tokens[$index]->getContent())) {
+        if (Preg::match('/(?:Test|TestCase)$/', $tokens[$index]->getContent())) {
             return true;
         }
 
@@ -53,7 +53,7 @@ final class PhpUnitTestCaseIndicator
                 continue; // not part of extends nor part of implements; so continue
             }
 
-            if (0 !== Preg::match('/(?:Test|TestCase)(?:Interface)?$/', $tokens[$index]->getContent())) {
+            if (Preg::match('/(?:Test|TestCase)(?:Interface)?$/', $tokens[$index]->getContent())) {
                 return true;
             }
         }

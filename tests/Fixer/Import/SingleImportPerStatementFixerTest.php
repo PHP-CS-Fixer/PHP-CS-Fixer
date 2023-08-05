@@ -36,130 +36,134 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     /**/use Foo;
                     use FooB;
                 ',
-                '<?php
+            '<?php
                     /**/use Foo,FooB;
                 ',
-            ],
-            [
-                <<<'EOF'
-use Some, Not, PHP, Like, Use, Statement;
-<?php
+        ];
 
-use Foo;
-use FooA;
-use FooB;
-use FooC;
-use FooD as D;
-use FooE;
-use FooF;
-use FooG as G;
-use FooH;
-use FooI;
-use FooJ;
-use FooZ;
+        yield [
+            <<<'EOF'
+                use Some, Not, PHP, Like, Use, Statement;
+                <?php
 
-EOF
-                ,
-                <<<'EOF'
-use Some, Not, PHP, Like, Use, Statement;
-<?php
+                use Foo;
+                use FooA;
+                use FooB;
+                use FooC;
+                use FooD as D;
+                use FooE;
+                use FooF;
+                use FooG as G;
+                use FooH;
+                use FooI;
+                use FooJ;
+                use FooZ;
 
-use Foo;
-use FooA, FooB;
-use FooC, FooD as D, FooE;
-use FooF,
-    FooG as G,
-  FooH,     FooI,
-        FooJ;
-use FooZ;
+                EOF
+            ,
+            <<<'EOF'
+                use Some, Not, PHP, Like, Use, Statement;
+                <?php
 
-EOF
-            ],
-            [
-                <<<'EOF'
-<?php
+                use Foo;
+                use FooA, FooB;
+                use FooC, FooD as D, FooE;
+                use FooF,
+                    FooG as G,
+                  FooH,     FooI,
+                        FooJ;
+                use FooZ;
 
-namespace {
-    use Foo;
-    use FooA;
-    use FooB;
-    use FooC;
-    use FooD as D;
-    use FooE;
-    use FooF;
-    use FooG as G;
-    use FooH;
-    use FooI;
-    use FooJ;
-    use FooZ;
-}
+                EOF
+        ];
 
-namespace Boo {
-    use Bar;
-    use BarA;
-    use BarB;
-    use BarC;
-    use BarD as D;
-    use BarE;
-    use BarF;
-    use BarG as G;
-    use BarH;
-    use BarI;
-    use BarJ;
-    use BarZ;
-}
+        yield [
+            <<<'EOF'
+                <?php
 
-EOF
-                ,
-                <<<'EOF'
-<?php
+                namespace {
+                    use Foo;
+                    use FooA;
+                    use FooB;
+                    use FooC;
+                    use FooD as D;
+                    use FooE;
+                    use FooF;
+                    use FooG as G;
+                    use FooH;
+                    use FooI;
+                    use FooJ;
+                    use FooZ;
+                }
 
-namespace {
-    use Foo;
-    use FooA, FooB;
-    use FooC, FooD as D, FooE;
-    use FooF,
-        FooG as G,
-      FooH,     FooI,
-            FooJ;
-    use FooZ;
-}
+                namespace Boo {
+                    use Bar;
+                    use BarA;
+                    use BarB;
+                    use BarC;
+                    use BarD as D;
+                    use BarE;
+                    use BarF;
+                    use BarG as G;
+                    use BarH;
+                    use BarI;
+                    use BarJ;
+                    use BarZ;
+                }
 
-namespace Boo {
-    use Bar;
-    use BarA, BarB;
-    use BarC, BarD as D, BarE;
-    use BarF,
-        BarG as G,
-      BarH,     BarI,
-            BarJ;
-    use BarZ;
-}
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-EOF
-            ],
-            [
-                '<?php
+                namespace {
+                    use Foo;
+                    use FooA, FooB;
+                    use FooC, FooD as D, FooE;
+                    use FooF,
+                        FooG as G,
+                      FooH,     FooI,
+                            FooJ;
+                    use FooZ;
+                }
+
+                namespace Boo {
+                    use Bar;
+                    use BarA, BarB;
+                    use BarC, BarD as D, BarE;
+                    use BarF,
+                        BarG as G,
+                      BarH,     BarI,
+                            BarJ;
+                    use BarZ;
+                }
+
+                EOF
+        ];
+
+        yield [
+            '<?php
                     use FooA;
                     use FooB;
                 ',
-                '<?php
+            '<?php
                     use FooA, FooB;
                 ',
-            ],
-            [
-                '<?php use FooA;
+        ];
+
+        yield [
+            '<?php use FooA;
 use FooB?>',
-                '<?php use FooA, FooB?>',
-            ],
-            [
-                '<?php
+            '<?php use FooA, FooB?>',
+        ];
+
+        yield [
+            '<?php
 use B;
 use C;
     use E;
@@ -167,83 +171,91 @@ use C;
         use G;
         use H;
 ',
-                '<?php
+            '<?php
 use B,C;
     use E,F;
         use G,H;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use B;
 /*
 */use C;
 ',
-                '<?php
+            '<?php
 use B,
 /*
 */C;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use A;
 use B;
 //,{} use ; :
 #,{} use ; :
 /*,{} use ; :*/
 use C  ; ',
-                '<?php
+            '<?php
 use A,B,
 //,{} use ; :
 #,{} use ; :
 /*,{} use ; :*/
 C  ; ',
-            ],
-            [
-                '<?php use Z ;
+        ];
+
+        yield [
+            '<?php use Z ;
 use X ?><?php new X(); // run before white space around semicolon',
-                '<?php use Z , X ?><?php new X(); // run before white space around semicolon',
-            ],
-            [
-                '<?php use FooA#
+            '<?php use Z , X ?><?php new X(); // run before white space around semicolon',
+        ];
+
+        yield [
+            '<?php use FooA#
 ;#
 #
 use FooB;',
-                '<?php use FooA#
+            '<?php use FooA#
 ,#
 #
 FooB;',
-            ],
-            [
-                '<?php use some\b\ClassB;
+        ];
+
+        yield [
+            '<?php use some\b\ClassB;
 use function some\b\CC as C;
 use function some\b\D;
 use const some\b\E;
 use function some\b\A\B;',
-                '<?php use some\b\{ClassB, function CC as C, function D, const E, function A\B};',
-            ],
-            [
-                '<?php
+            '<?php use some\b\{ClassB, function CC as C, function D, const E, function A\B};',
+        ];
+
+        yield [
+            '<?php
 use Foo\Bar;
 use Foo\Baz;',
-                '<?php
+            '<?php
 use Foo\ {
     Bar, Baz
 };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use Foo\Bar;
 use Foo\Baz;',
-                '<?php
+            '<?php
 use Foo\
 {
     Bar, Baz
 };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use function md5;
 use function str_repeat;
 use const true;
@@ -251,24 +263,24 @@ use const false;
 use A;
 use B;
 ',
-                '<?php
+            '<?php
 use function md5, str_repeat;
 use const true, false;
 use A,B;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use D\E;
 use D\F;
 use G\H;
 use G\I/*1*//*2*/;
 ',
-                '<?php
+            '<?php
 use D\{E,F,};
 use G\{H,I/*1*/,/*2*/};
 ',
-            ],
         ];
     }
 

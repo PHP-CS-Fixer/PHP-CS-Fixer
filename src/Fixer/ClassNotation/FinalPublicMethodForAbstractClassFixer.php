@@ -71,7 +71,7 @@ abstract class AbstractMachine
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_ABSTRACT, T_PUBLIC, T_FUNCTION]);
+        return $tokens->isAllTokenKindsFound([T_ABSTRACT, T_PUBLIC, T_FUNCTION]);
     }
 
     public function isRisky(): bool
@@ -81,11 +81,11 @@ abstract class AbstractMachine
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $classes = array_keys($tokens->findGivenKind(T_CLASS));
+        $abstracts = array_keys($tokens->findGivenKind(T_ABSTRACT));
 
-        while ($classIndex = array_pop($classes)) {
-            $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classIndex)];
-            if (!$prevToken->isGivenKind(T_ABSTRACT)) {
+        while ($abstractIndex = array_pop($abstracts)) {
+            $classIndex = $tokens->getNextTokenOfKind($abstractIndex, [[T_CLASS], [T_FUNCTION]]);
+            if (!$tokens[$classIndex]->isGivenKind(T_CLASS)) {
                 continue;
             }
 

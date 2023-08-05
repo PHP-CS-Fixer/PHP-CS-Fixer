@@ -291,9 +291,9 @@ final class TypeExpression
                 $type = substr($type, 1);
             }
 
-            if (1 === Preg::match('/\[\h*\]$/', $type)) {
+            if (Preg::match('/\[\h*\]$/', $type)) {
                 $type = 'array';
-            } elseif (1 === Preg::match('/^(.+?)\h*[<{(]/', $type, $matches)) {
+            } elseif (Preg::match('/^(.+?)\h*[<{(]/', $type, $matches)) {
                 $type = $matches[1];
             }
 
@@ -552,6 +552,7 @@ final class TypeExpression
             'array',
             'bool',
             'callable',
+            'false',
             'float',
             'int',
             'iterable',
@@ -561,16 +562,17 @@ final class TypeExpression
             'object',
             'resource',
             'string',
+            'true',
             'void',
         ], true)) {
             return $type;
         }
 
-        if (1 === Preg::match('/\[\]$/', $type)) {
+        if (Preg::match('/\[\]$/', $type)) {
             return 'array';
         }
 
-        if (1 === Preg::match('/^(.+?)</', $type, $matches)) {
+        if (Preg::match('/^(.+?)</', $type, $matches)) {
             return $matches[1];
         }
 

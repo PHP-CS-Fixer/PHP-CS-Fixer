@@ -52,9 +52,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'describe')]
 final class DescribeCommand extends Command
 {
-    /**
-     * @var string
-     */
     protected static $defaultName = 'describe';
 
     /**
@@ -424,9 +421,7 @@ final class DescribeCommand extends Command
             static function (array $matches) {
                 return Preg::replaceCallback(
                     '/`(.*)<(.*)>`_/',
-                    static function (array $matches): string {
-                        return $matches[1].'('.$matches[2].')';
-                    },
+                    static fn (array $matches): string => $matches[1].'('.$matches[2].')',
                     $matches[1]
                 );
             },

@@ -33,52 +33,60 @@ final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield from [
-            'comment' => [
-                '<?php $a++;//a ?>',
-                '<?php $a++//a ?>',
-            ],
-            'comment II' => [
-                '<?php $b++; /**/ ?>',
-                '<?php $b++ /**/ ?>',
-            ],
-            'no space' => [
-                '<?php $b++;?>',
-                '<?php $b++?>',
-            ],
-            [
-                '<?php echo 123; ?>',
-                '<?php echo 123 ?>',
-            ],
-            [
-                "<?php echo 123;\n\t?>",
-                "<?php echo 123\n\t?>",
-            ],
-            ['<?php ?>'],
-            ['<?php ; ?>'],
-            ['<?php if($a){}'],
-            ['<?php while($a > $b){}'],
-            [
-                '<?php if ($a == 5): ?>
+        yield 'comment' => [
+            '<?php $a++;//a ?>',
+            '<?php $a++//a ?>',
+        ];
+
+        yield 'comment II' => [
+            '<?php $b++; /**/ ?>',
+            '<?php $b++ /**/ ?>',
+        ];
+
+        yield 'no space' => [
+            '<?php $b++;?>',
+            '<?php $b++?>',
+        ];
+
+        yield [
+            '<?php echo 123; ?>',
+            '<?php echo 123 ?>',
+        ];
+
+        yield [
+            "<?php echo 123;\n\t?>",
+            "<?php echo 123\n\t?>",
+        ];
+
+        yield ['<?php ?>'];
+
+        yield ['<?php ; ?>'];
+
+        yield ['<?php if($a){}'];
+
+        yield ['<?php while($a > $b){}'];
+
+        yield [
+            '<?php if ($a == 5): ?>
 A is equal to 5
 <?php endif; ?>
 <?php switch ($foo): ?>
 <?php case 1: ?>
 ...
 <?php endswitch; ?>',
-                '<?php if ($a == 5): ?>
+            '<?php if ($a == 5): ?>
 A is equal to 5
 <?php endif; ?>
 <?php switch ($foo): ?>
 <?php case 1: ?>
 ...
 <?php endswitch ?>',
-            ],
-            [
-                '<?php if ($a == 5) { ?>
+        ];
+
+        yield [
+            '<?php if ($a == 5) { ?>
 A is equal to 5
 <?php } ?>',
-            ],
         ];
     }
 

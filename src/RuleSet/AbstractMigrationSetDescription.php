@@ -25,11 +25,11 @@ abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescriptio
     {
         $name = $this->getName();
 
-        if (0 !== Preg::match('#^@PHPUnit(\d+)(\d)Migration.*$#', $name, $matches)) {
+        if (Preg::match('#^@PHPUnit(\d+)(\d)Migration.*$#', $name, $matches)) {
             return sprintf('Rules to improve tests code for PHPUnit %d.%d compatibility.', $matches[1], $matches[2]);
         }
 
-        if (0 !== Preg::match('#^@PHP([\d]{2})Migration.*$#', $name, $matches)) {
+        if (Preg::match('#^@PHP([\d]{2})Migration.*$#', $name, $matches)) {
             return sprintf('Rules to improve code for PHP %d.%d compatibility.', $matches[1][0], $matches[1][1]);
         }
 

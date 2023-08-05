@@ -74,44 +74,60 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php random_int(0, getrandmax());',
-                '<?php rand();',
-                ['replacements' => ['rand' => 'random_int']],
-            ],
-            [
-                '<?php random_int#1
+        yield [
+            '<?php random_int(0, getrandmax());',
+            '<?php rand();',
+            ['replacements' => ['rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php random_int#1
                 #2
                 (0, getrandmax()#3
                 #4
                 )#5
                 ;',
-                '<?php rand#1
+            '<?php rand#1
                 #2
                 (#3
                 #4
                 )#5
                 ;',
-                ['replacements' => ['rand' => 'random_int']],
-            ],
-            ['<?php $smth->srand($a);'],
-            ['<?php srandSmth($a);'],
-            ['<?php smth_srand($a);'],
-            ['<?php new srand($a);'],
-            ['<?php new Smth\\srand($a);'],
-            ['<?php Smth\\srand($a);'],
-            ['<?php namespace\\srand($a);'],
-            ['<?php Smth::srand($a);'],
-            ['<?php new srand\\smth($a);'],
-            ['<?php srand::smth($a);'],
-            ['<?php srand\\smth($a);'],
-            ['<?php "SELECT ... srand(\$a) ...";'],
-            ['<?php "SELECT ... SRAND($a) ...";'],
-            ["<?php 'test'.'srand' . 'in concatenation';"],
-            ['<?php "test" . "srand"."in concatenation";'],
-            [
-                '<?php
+            ['replacements' => ['rand' => 'random_int']],
+        ];
+
+        yield ['<?php $smth->srand($a);'];
+
+        yield ['<?php srandSmth($a);'];
+
+        yield ['<?php smth_srand($a);'];
+
+        yield ['<?php new srand($a);'];
+
+        yield ['<?php new Smth\\srand($a);'];
+
+        yield ['<?php Smth\\srand($a);'];
+
+        yield ['<?php namespace\\srand($a);'];
+
+        yield ['<?php Smth::srand($a);'];
+
+        yield ['<?php new srand\\smth($a);'];
+
+        yield ['<?php srand::smth($a);'];
+
+        yield ['<?php srand\\smth($a);'];
+
+        yield ['<?php "SELECT ... srand(\$a) ...";'];
+
+        yield ['<?php "SELECT ... SRAND($a) ...";'];
+
+        yield ["<?php 'test'.'srand' . 'in concatenation';"];
+
+        yield ['<?php "test" . "srand"."in concatenation";'];
+
+        yield [
+            '<?php
 class SrandClass
 {
     const srand = 1;
@@ -127,60 +143,76 @@ class srand extends SrandClass{
     const srand = "srand";
 }
 ',
-            ],
-            ['<?php mt_srand($a);', '<?php srand($a);'],
-            ['<?php \\mt_srand($a);', '<?php \\srand($a);'],
-            ['<?php $a = &mt_srand($a);', '<?php $a = &srand($a);'],
-            ['<?php $a = &\\mt_srand($a);', '<?php $a = &\\srand($a);'],
-            ['<?php /* foo */ mt_srand /** bar */ ($a);', '<?php /* foo */ srand /** bar */ ($a);'],
-            ['<?php a(mt_getrandmax ());', '<?php a(getrandmax ());'],
-            ['<?php a(mt_rand());', '<?php a(rand());'],
-            ['<?php a(mt_srand());', '<?php a(srand());'],
-            ['<?php a(\\mt_srand());', '<?php a(\\srand());'],
-            [
-                '<?php rand(rand($a));',
-                null,
-                ['replacements' => ['rand' => 'random_int']],
-            ],
-            [
-                '<?php random_int($d, random_int($a,$b));',
-                '<?php rand($d, rand($a,$b));',
-                ['replacements' => ['rand' => 'random_int']],
-            ],
-            [
-                '<?php random_int($a, \Other\Scope\mt_rand($a));',
-                '<?php rand($a, \Other\Scope\mt_rand($a));',
-                ['replacements' => ['rand' => 'random_int']],
-            ],
-            [
-                '<?php $a = random_int(1,2) + random_int(3,4);',
-                '<?php $a = rand(1,2) + mt_rand(3,4);',
-                ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
-            ],
-            [
-                '<?php
+        ];
+
+        yield ['<?php mt_srand($a);', '<?php srand($a);'];
+
+        yield ['<?php \\mt_srand($a);', '<?php \\srand($a);'];
+
+        yield ['<?php $a = &mt_srand($a);', '<?php $a = &srand($a);'];
+
+        yield ['<?php $a = &\\mt_srand($a);', '<?php $a = &\\srand($a);'];
+
+        yield ['<?php /* foo */ mt_srand /** bar */ ($a);', '<?php /* foo */ srand /** bar */ ($a);'];
+
+        yield ['<?php a(mt_getrandmax ());', '<?php a(getrandmax ());'];
+
+        yield ['<?php a(mt_rand());', '<?php a(rand());'];
+
+        yield ['<?php a(mt_srand());', '<?php a(srand());'];
+
+        yield ['<?php a(\\mt_srand());', '<?php a(\\srand());'];
+
+        yield [
+            '<?php rand(rand($a));',
+            null,
+            ['replacements' => ['rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php random_int($d, random_int($a,$b));',
+            '<?php rand($d, rand($a,$b));',
+            ['replacements' => ['rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php random_int($a, \Other\Scope\mt_rand($a));',
+            '<?php rand($a, \Other\Scope\mt_rand($a));',
+            ['replacements' => ['rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php $a = random_int(1,2) + random_int(3,4);',
+            '<?php $a = rand(1,2) + mt_rand(3,4);',
+            ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php
                 interface Test
                 {
                     public function getrandmax();
                     public function &rand();
                 }',
-                null,
-                ['replacements' => ['rand' => 'random_int']],
-            ],
-            [
-                '<?php rand($d, rand($a,$b));',
-                null,
-                ['replacements' => ['rand' => 'rand']],
-            ],
-            [
-                '<?php $a = random_int(1,2,) + random_int(3,4,);',
-                '<?php $a = rand(1,2,) + mt_rand(3,4,);',
-                ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
-            ],
-            [
-                '<?php mt_srand($a,);',
-                '<?php srand($a,);',
-            ],
+            null,
+            ['replacements' => ['rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php rand($d, rand($a,$b));',
+            null,
+            ['replacements' => ['rand' => 'rand']],
+        ];
+
+        yield [
+            '<?php $a = random_int(1,2,) + random_int(3,4,);',
+            '<?php $a = rand(1,2,) + mt_rand(3,4,);',
+            ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php mt_srand($a,);',
+            '<?php srand($a,);',
         ];
     }
 

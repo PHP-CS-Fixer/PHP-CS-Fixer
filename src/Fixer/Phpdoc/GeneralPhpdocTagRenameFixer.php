@@ -107,7 +107,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
                             ));
                         }
 
-                        if (1 !== Preg::match('#^\S+$#', $to) || str_contains($to, '*/')) {
+                        if (!Preg::match('#^\S+$#', $to) || str_contains($to, '*/')) {
                             throw new InvalidOptionsException(sprintf(
                                 'Tag "%s" cannot be replaced by invalid tag "%s".',
                                 $from,
@@ -163,11 +163,9 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
         }
 
         if (true === $this->configuration['fix_annotation']) {
-            if ($this->configuration['fix_inline']) {
-                $regex = '/"[^"]*"(*SKIP)(*FAIL)|\b(?<=@)(%s)\b/';
-            } else {
-                $regex = '/"[^"]*"(*SKIP)(*FAIL)|(?<!\{@)(?<=@)(%s)(?!\})/';
-            }
+            $regex = $this->configuration['fix_inline']
+                ? '/"[^"]*"(*SKIP)(*FAIL)|\b(?<=@)(%s)\b/'
+                : '/"[^"]*"(*SKIP)(*FAIL)|(?<!\{@)(?<=@)(%s)(?!\})/';
         } else {
             $regex = '/(?<={@)(%s)(?=[ \t}])/';
         }

@@ -12,12 +12,20 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Console\Output;
+namespace PhpCsFixer\Console\Output\Progress;
+
+use PhpCsFixer\FixerFileProcessedEvent;
 
 /**
  * @internal
  */
-interface ProcessOutputInterface
+final class NullOutput implements ProgressOutputInterface
 {
-    public function printLegend(): void;
+    public function printLegend(): void
+    {
+    }
+
+    public function onFixerFileProcessed(FixerFileProcessedEvent $event): void
+    {
+    }
 }

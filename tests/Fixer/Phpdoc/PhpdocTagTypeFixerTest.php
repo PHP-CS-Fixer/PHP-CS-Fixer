@@ -38,9 +38,8 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 /**
  * @api
  * @author
@@ -64,7 +63,7 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
  * @var
  * @version
  */',
-                '<?php
+            '<?php
 /**
  * {@api}
  * {@author}
@@ -88,9 +87,10 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
  * {@var}
  * {@version}
  */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  * @api
  * @author
@@ -114,7 +114,7 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
  * @var
  * @version
  */',
-                '<?php
+            '<?php
 /**
  * {@api}
  * {@author}
@@ -138,32 +138,33 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
  * {@var}
  * {@version}
  */',
-                ['tags' => [
-                    'api' => 'annotation',
-                    'author' => 'annotation',
-                    'copyright' => 'annotation',
-                    'deprecated' => 'annotation',
-                    'example' => 'annotation',
-                    'global' => 'annotation',
-                    'inheritDoc' => 'annotation',
-                    'internal' => 'annotation',
-                    'license' => 'annotation',
-                    'method' => 'annotation',
-                    'package' => 'annotation',
-                    'param' => 'annotation',
-                    'property' => 'annotation',
-                    'return' => 'annotation',
-                    'see' => 'annotation',
-                    'since' => 'annotation',
-                    'throws' => 'annotation',
-                    'todo' => 'annotation',
-                    'uses' => 'annotation',
-                    'var' => 'annotation',
-                    'version' => 'annotation',
-                ]],
-            ],
-            [
-                '<?php
+            ['tags' => [
+                'api' => 'annotation',
+                'author' => 'annotation',
+                'copyright' => 'annotation',
+                'deprecated' => 'annotation',
+                'example' => 'annotation',
+                'global' => 'annotation',
+                'inheritDoc' => 'annotation',
+                'internal' => 'annotation',
+                'license' => 'annotation',
+                'method' => 'annotation',
+                'package' => 'annotation',
+                'param' => 'annotation',
+                'property' => 'annotation',
+                'return' => 'annotation',
+                'see' => 'annotation',
+                'since' => 'annotation',
+                'throws' => 'annotation',
+                'todo' => 'annotation',
+                'uses' => 'annotation',
+                'var' => 'annotation',
+                'version' => 'annotation',
+            ]],
+        ];
+
+        yield [
+            '<?php
 /**
  * {@api}
  * {@author}
@@ -187,7 +188,7 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
  * {@var}
  * {@version}
  */',
-                '<?php
+            '<?php
 /**
  * @api
  * @author
@@ -211,105 +212,114 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
  * @var
  * @version
  */',
-                ['tags' => [
-                    'api' => 'inline',
-                    'author' => 'inline',
-                    'copyright' => 'inline',
-                    'deprecated' => 'inline',
-                    'example' => 'inline',
-                    'global' => 'inline',
-                    'inheritDoc' => 'inline',
-                    'internal' => 'inline',
-                    'license' => 'inline',
-                    'method' => 'inline',
-                    'package' => 'inline',
-                    'param' => 'inline',
-                    'property' => 'inline',
-                    'return' => 'inline',
-                    'see' => 'inline',
-                    'since' => 'inline',
-                    'throws' => 'inline',
-                    'todo' => 'inline',
-                    'uses' => 'inline',
-                    'var' => 'inline',
-                    'version' => 'inline',
-                ]],
-            ],
-            [
-                '<?php
+            ['tags' => [
+                'api' => 'inline',
+                'author' => 'inline',
+                'copyright' => 'inline',
+                'deprecated' => 'inline',
+                'example' => 'inline',
+                'global' => 'inline',
+                'inheritDoc' => 'inline',
+                'internal' => 'inline',
+                'license' => 'inline',
+                'method' => 'inline',
+                'package' => 'inline',
+                'param' => 'inline',
+                'property' => 'inline',
+                'return' => 'inline',
+                'see' => 'inline',
+                'since' => 'inline',
+                'throws' => 'inline',
+                'todo' => 'inline',
+                'uses' => 'inline',
+                'var' => 'inline',
+                'version' => 'inline',
+            ]],
+        ];
+
+        yield [
+            '<?php
 /** @api */',
-                '<?php
+            '<?php
 /** {@api} */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  * @deprecated since version X
  */',
-                '<?php
+            '<?php
 /**
  * {@deprecated since version X}
  */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  * {@deprecated since version X}
  */',
-                '<?php
+            '<?php
 /**
  * @deprecated since version X
  */',
-                ['tags' => ['deprecated' => 'inline']],
-            ],
-            [
-                '<?php
+            ['tags' => ['deprecated' => 'inline']],
+        ];
+
+        yield [
+            '<?php
 /** {@deprecated since version X} */',
-                '<?php
+            '<?php
 /** @deprecated since version X */',
-                ['tags' => ['deprecated' => 'inline']],
-            ],
-            [
-                '<?php
+            ['tags' => ['deprecated' => 'inline']],
+        ];
+
+        yield [
+            '<?php
 /**
  * @inheritDoc
  */',
-                '<?php
+            '<?php
 /**
  * {@inheritDoc}
  */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  * @inheritdoc
  */',
-                '<?php
+            '<?php
 /**
  * {@inheritdoc}
  */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  * {@inheritdoc}
  */',
-                '<?php
+            '<?php
 /**
  * @inheritdoc
  */',
-                ['tags' => ['inheritDoc' => 'inline']],
-            ],
-            [
-                '<?php
+            ['tags' => ['inheritDoc' => 'inline']],
+        ];
+
+        yield [
+            '<?php
 /**
  * Some summary.
  *
  * {@inheritdoc}
  */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  * Some summary.
  *
@@ -321,69 +331,75 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
  *
  * @param Foo $foo
  */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  * {@inheritdoc}
  *
  * More description.
  */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  *
  * @inheritdoc
  *
  */',
-                '<?php
+            '<?php
 /**
  *
  * {@inheritdoc}
  *
  */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  * @return array{0: float, 1: int}
  */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /** @internal Please use {@see Foo} instead */',
-                '<?php
+            '<?php
 /** {@internal Please use {@see Foo} instead} */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  * @internal Please use {@see Foo} instead
  */',
-                '<?php
+            '<?php
 /**
  * {@internal Please use {@see Foo} instead}
  */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  *
  * @internal Please use {@see Foo} instead
  *
  */',
-                '<?php
+            '<?php
 /**
  *
  * {@internal Please use {@see Foo} instead}
  *
  */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /** @internal Foo Bar {@see JsonSerializable} */',
-            ],
         ];
     }
 

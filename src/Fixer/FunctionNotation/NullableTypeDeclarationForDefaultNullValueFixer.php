@@ -79,11 +79,11 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUnreachableDefaultArgumentValueFixer, OrderedTypesFixer.
+     * Must run before NoUnreachableDefaultArgumentValueFixer, NullableTypeDeclarationFixer, OrderedTypesFixer.
      */
     public function getPriority(): int
     {
-        return 1;
+        return 3;
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface

@@ -36,34 +36,48 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            ['<?php $x = "strlen";'],
-            ['<?php $x = Foo::strlen("bar");'],
-            ['<?php $x = new strlen("bar");'],
-            ['<?php $x = new \strlen("bar");'],
-            ['<?php $x = new Foo\strlen("bar");'],
-            ['<?php $x = Foo\strlen("bar");'],
-            ['<?php $x = strlen::call("bar");'],
-            ['<?php $x = $foo->strlen("bar");'],
-            ['<?php $x = strlen();'], // number of arguments mismatch
-            ['<?php $x = strlen($a, $b);'], // number of arguments mismatch
-            ['<?php $x = mb_strlen("bar");', '<?php $x = strlen("bar");'],
-            ['<?php $x = \mb_strlen("bar");', '<?php $x = \strlen("bar");'],
-            ['<?php $x = mb_strtolower(mb_strstr("bar", "a"));', '<?php $x = strtolower(strstr("bar", "a"));'],
-            ['<?php $x = mb_strtolower( \mb_strstr ("bar", "a"));', '<?php $x = strtolower( \strstr ("bar", "a"));'],
-            ['<?php $x = mb_substr("bar", 2, 1);', '<?php $x = substr("bar", 2, 1);'],
-            [
-                '<?php
+        yield ['<?php $x = "strlen";'];
+
+        yield ['<?php $x = Foo::strlen("bar");'];
+
+        yield ['<?php $x = new strlen("bar");'];
+
+        yield ['<?php $x = new \strlen("bar");'];
+
+        yield ['<?php $x = new Foo\strlen("bar");'];
+
+        yield ['<?php $x = Foo\strlen("bar");'];
+
+        yield ['<?php $x = strlen::call("bar");'];
+
+        yield ['<?php $x = $foo->strlen("bar");'];
+
+        yield ['<?php $x = strlen();']; // number of arguments mismatch
+
+        yield ['<?php $x = strlen($a, $b);']; // number of arguments mismatch
+
+        yield ['<?php $x = mb_strlen("bar");', '<?php $x = strlen("bar");'];
+
+        yield ['<?php $x = \mb_strlen("bar");', '<?php $x = \strlen("bar");'];
+
+        yield ['<?php $x = mb_strtolower(mb_strstr("bar", "a"));', '<?php $x = strtolower(strstr("bar", "a"));'];
+
+        yield ['<?php $x = mb_strtolower( \mb_strstr ("bar", "a"));', '<?php $x = strtolower( \strstr ("bar", "a"));'];
+
+        yield ['<?php $x = mb_substr("bar", 2, 1);', '<?php $x = substr("bar", 2, 1);'];
+
+        yield [
+            '<?php
                 interface Test
                 {
                     public function &strlen($a);
                     public function strtolower($a);
                 }',
-            ],
-            [
-                '<?php $a = mb_str_split($a);',
-                '<?php $a = str_split($a);',
-            ],
+        ];
+
+        yield [
+            '<?php $a = mb_str_split($a);',
+            '<?php $a = str_split($a);',
         ];
     }
 }

@@ -35,9 +35,7 @@ final class ErrorsManager
      */
     public function getInvalidErrors(): array
     {
-        return array_filter($this->errors, static function (Error $error): bool {
-            return Error::TYPE_INVALID === $error->getType();
-        });
+        return array_filter($this->errors, static fn (Error $error): bool => Error::TYPE_INVALID === $error->getType());
     }
 
     /**
@@ -47,9 +45,7 @@ final class ErrorsManager
      */
     public function getExceptionErrors(): array
     {
-        return array_filter($this->errors, static function (Error $error): bool {
-            return Error::TYPE_EXCEPTION === $error->getType();
-        });
+        return array_filter($this->errors, static fn (Error $error): bool => Error::TYPE_EXCEPTION === $error->getType());
     }
 
     /**
@@ -59,9 +55,7 @@ final class ErrorsManager
      */
     public function getLintErrors(): array
     {
-        return array_filter($this->errors, static function (Error $error): bool {
-            return Error::TYPE_LINT === $error->getType();
-        });
+        return array_filter($this->errors, static fn (Error $error): bool => Error::TYPE_LINT === $error->getType());
     }
 
     /**
@@ -69,7 +63,7 @@ final class ErrorsManager
      */
     public function isEmpty(): bool
     {
-        return empty($this->errors);
+        return [] === $this->errors;
     }
 
     public function report(Error $error): void

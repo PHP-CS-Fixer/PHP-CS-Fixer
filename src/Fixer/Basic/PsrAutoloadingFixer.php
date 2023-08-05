@@ -89,6 +89,11 @@ class InvalidName {}
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before SelfAccessorFixer.
+     */
     public function getPriority(): int
     {
         return -10;
@@ -104,7 +109,7 @@ class InvalidName {}
             // ignore file with extension other than php
             ('php' !== $file->getExtension())
             // ignore file with name that cannot be a class name
-            || 0 === Preg::match('/^'.TypeExpression::REGEX_IDENTIFIER.'$/', $file->getBasename('.php'))
+            || !Preg::match('/^'.TypeExpression::REGEX_IDENTIFIER.'$/', $file->getBasename('.php'))
         ) {
             return false;
         }

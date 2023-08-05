@@ -57,12 +57,18 @@ Array Notation
 - `normalize_index_brace <./array_notation/normalize_index_brace.rst>`_
 
   Array index should always be written by using square braces.
+- `return_to_yield_from <./array_notation/return_to_yield_from.rst>`_
+
+  If the function explicitly returns an array, and has the return type ``iterable``, then ``yield from`` must be used instead of ``return``.
 - `trim_array_spaces <./array_notation/trim_array_spaces.rst>`_
 
   Arrays should be formatted like function/method arguments, without leading or trailing single line space.
 - `whitespace_after_comma_in_array <./array_notation/whitespace_after_comma_in_array.rst>`_
 
   In array declaration, there MUST be a whitespace after each comma.
+- `yield_from_array_to_yields <./array_notation/yield_from_array_to_yields.rst>`_
+
+  Yield from array must be unpacked to series of yields.
 
 Basic
 -----
@@ -471,6 +477,9 @@ Language Construct
 - `no_unset_on_property <./language_construct/no_unset_on_property.rst>`_ *(risky)*
 
   Properties should be set to ``null`` instead of using ``unset``.
+- `nullable_type_declaration <./language_construct/nullable_type_declaration.rst>`_
+
+  Nullable single type declaration should be standardised using configured syntax.
 - `single_space_after_construct <./language_construct/single_space_after_construct.rst>`_ *(deprecated)*
 
   Ensures a single space after language constructs.
@@ -543,7 +552,7 @@ Operator
   There should not be useless concat operations.
 - `no_useless_nullsafe_operator <./operator/no_useless_nullsafe_operator.rst>`_
 
-  There should not be useless ``null-safe-operators`` ``?->`` used.
+  There should not be useless Null-safe operator ``?->`` used.
 - `not_operator_with_space <./operator/not_operator_with_space.rst>`_
 
   Logical NOT operators (``!``) should have leading and trailing whitespaces.
@@ -603,6 +612,9 @@ PHPUnit
 - `php_unit_data_provider_name <./php_unit/php_unit_data_provider_name.rst>`_ *(risky)*
 
   Data provider names must match the name of the test.
+- `php_unit_data_provider_return_type <./php_unit/php_unit_data_provider_return_type.rst>`_ *(risky)*
+
+  The return type of PHPUnit data provider must be ``iterable``.
 - `php_unit_data_provider_static <./php_unit/php_unit_data_provider_static.rst>`_ *(risky)*
 
   Data providers must be static.

@@ -197,12 +197,12 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PhpCsFixer:risky
-  Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``native_function_invocation`` rule with the config below:
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
 
   ``['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]``
 
-@Symfony:risky
-  Using the `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ rule set will enable the ``native_function_invocation`` rule with the config below:
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ with config:
 
   ``['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]``
+
+

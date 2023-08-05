@@ -43,338 +43,357 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
 
     public static function provideProcessCases(): iterable
     {
-        return [
+        yield [
+            '<?php echo (new Process())->getOutput();',
             [
-                '<?php echo (new Process())->getOutput();',
-                [
-                    3 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    9 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
-                [
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                3 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                9 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
             ],
             [
-                '<?php echo (new Process())::getOutput();',
-                [
-                    3 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    9 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
-                [
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php echo (new Process())::getOutput();',
+            [
+                3 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                9 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
             ],
             [
-                '<?php return foo()->bar(new Foo())->bar();',
-                [
-                    4 => '(',
-                    5 => ')',
-                    8 => '(',
-                    12 => '(',
-                    13 => ')',
-                    14 => ')',
-                    17 => '(',
-                    18 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php return foo()->bar(new Foo())->bar();',
+            [
+                4 => '(',
+                5 => ')',
+                8 => '(',
+                12 => '(',
+                13 => ')',
+                14 => ')',
+                17 => '(',
+                18 => ')',
             ],
             [
-                '<?php $foo[0](new Foo())->bar();',
-                [
-                    5 => '(',
-                    9 => '(',
-                    10 => ')',
-                    11 => ')',
-                    14 => '(',
-                    15 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php $foo[0](new Foo())->bar();',
+            [
+                5 => '(',
+                9 => '(',
+                10 => ')',
+                11 => ')',
+                14 => '(',
+                15 => ')',
             ],
             [
-                '<?php $foo{0}(new Foo())->bar();',
-                [
-                    5 => '(',
-                    9 => '(',
-                    10 => ')',
-                    11 => ')',
-                    14 => '(',
-                    15 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php $foo{0}(new Foo())->bar();',
+            [
+                5 => '(',
+                9 => '(',
+                10 => ')',
+                11 => ')',
+                14 => '(',
+                15 => ')',
             ],
             [
-                '<?php $foo(new Foo())->bar();',
-                [
-                    2 => '(',
-                    6 => '(',
-                    7 => ')',
-                    8 => ')',
-                    11 => '(',
-                    12 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php $foo(new Foo())->bar();',
+            [
+                2 => '(',
+                6 => '(',
+                7 => ')',
+                8 => ')',
+                11 => '(',
+                12 => ')',
             ],
             [
-                '<?php $$foo(new Foo())->bar();',
-                [
-                    3 => '(',
-                    7 => '(',
-                    8 => ')',
-                    9 => ')',
-                    12 => '(',
-                    13 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php $$foo(new Foo())->bar();',
+            [
+                3 => '(',
+                7 => '(',
+                8 => ')',
+                9 => ')',
+                12 => '(',
+                13 => ')',
             ],
             [
-                '<?php if ($foo){}(new Foo)->foo();',
-                [
-                    8 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    12 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
-                [
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php if ($foo){}(new Foo)->foo();',
+            [
+                8 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                12 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
             ],
             [
-                '<?php echo (((new \stdClass()))->a);',
-                [
-                    5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    12 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
-                [
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php echo (((new \stdClass()))->a);',
+            [
+                5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                12 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
             ],
             [
-                '<?php $foo = array(new Foo());',
-                [
-                    6 => '(',
-                    10 => '(',
-                    11 => ')',
-                    12 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php $foo = array(new Foo());',
+            [
+                6 => '(',
+                10 => '(',
+                11 => ')',
+                12 => ')',
             ],
             [
-                '<?php if (new Foo()) { } elseif (new Bar()) { } else if (new Baz()) { }',
-                [
-                    3 => '(',
-                    7 => '(',
-                    8 => ')',
-                    9 => ')',
-                    17 => '(',
-                    21 => '(',
-                    22 => ')',
-                    23 => ')',
-                    33 => '(',
-                    37 => '(',
-                    38 => ')',
-                    39 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php if (new Foo()) { } elseif (new Bar()) { } else if (new Baz()) { }',
+            [
+                3 => '(',
+                7 => '(',
+                8 => ')',
+                9 => ')',
+                17 => '(',
+                21 => '(',
+                22 => ')',
+                23 => ')',
+                33 => '(',
+                37 => '(',
+                38 => ')',
+                39 => ')',
             ],
             [
-                '<?php switch (new Foo()) { }',
-                [
-                    3 => '(',
-                    7 => '(',
-                    8 => ')',
-                    9 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php switch (new Foo()) { }',
+            [
+                3 => '(',
+                7 => '(',
+                8 => ')',
+                9 => ')',
             ],
             [
-                '<?php for (new Foo();;) { }',
-                [
-                    3 => '(',
-                    7 => '(',
-                    8 => ')',
-                    11 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php for (new Foo();;) { }',
+            [
+                3 => '(',
+                7 => '(',
+                8 => ')',
+                11 => ')',
             ],
             [
-                '<?php foreach (new Foo() as $foo) { }',
-                [
-                    3 => '(',
-                    7 => '(',
-                    8 => ')',
-                    13 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php foreach (new Foo() as $foo) { }',
+            [
+                3 => '(',
+                7 => '(',
+                8 => ')',
+                13 => ')',
             ],
             [
-                '<?php while (new Foo()) { }',
-                [
-                    3 => '(',
-                    7 => '(',
-                    8 => ')',
-                    9 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php while (new Foo()) { }',
+            [
+                3 => '(',
+                7 => '(',
+                8 => ')',
+                9 => ')',
             ],
             [
-                '<?php do { } while (new Foo());',
-                [
-                    9 => '(',
-                    13 => '(',
-                    14 => ')',
-                    15 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php do { } while (new Foo());',
+            [
+                9 => '(',
+                13 => '(',
+                14 => ')',
+                15 => ')',
             ],
             [
-                '<?php $static = new static(new \SplFileInfo(__FILE__));',
-                [
-                    8 => '(',
-                    13 => '(',
-                    15 => ')',
-                    16 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    '(',
-                    ')',
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php $static = new static(new \SplFileInfo(__FILE__));',
+            [
+                8 => '(',
+                13 => '(',
+                15 => ')',
+                16 => ')',
             ],
             [
-                '<?php $foo = new class(new \stdClass()) {};',
-                [
-                    8 => '(',
-                    13 => '(',
-                    14 => ')',
-                    15 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                ],
+                '(',
+                ')',
+                '(',
+                ')',
+            ],
+        ];
+
+        yield [
+            '<?php $foo = new class(new \stdClass()) {};',
+            [
+                8 => '(',
+                13 => '(',
+                14 => ')',
+                15 => ')',
             ],
             [
-                '<?php $foo = (new class(new \stdClass()) {});',
-                [
-                    5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    20 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
-                [
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+            ],
+        ];
+
+        yield [
+            '<?php $foo = (new class(new \stdClass()) {});',
+            [
+                5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                20 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
             ],
             [
-                '<?php $fn = fn() => null;',
-                [
-                    6 => '(',
-                    7 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php $fn = fn() => null;',
+            [
+                6 => '(',
+                7 => ')',
             ],
             [
-                '<?php $result = ($function)(new Argument());',
-                [
-                    5 => '(',
-                    7 => ')',
-                    8 => '(',
-                    12 => '(',
-                    13 => ')',
-                    14 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php $result = ($function)(new Argument());',
+            [
+                5 => '(',
+                7 => ')',
+                8 => '(',
+                12 => '(',
+                13 => ')',
+                14 => ')',
             ],
             [
-                '<?php $result = (new Invokable())(new Argument1());',
-                [
-                    5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    9 => '(',
-                    10 => ')',
-                    11 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                    12 => '(',
-                    16 => '(',
-                    17 => ')',
-                    18 => ')',
-                ],
-                [
-                    '(',
-                    ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                ],
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php $result = (new Invokable())(new Argument1());',
+            [
+                5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                9 => '(',
+                10 => ')',
+                11 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                12 => '(',
+                16 => '(',
+                17 => ')',
+                18 => ')',
+            ],
+            [
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
             ],
         ];
     }

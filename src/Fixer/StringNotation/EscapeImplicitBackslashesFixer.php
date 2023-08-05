@@ -34,17 +34,17 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
     public function getDefinition(): FixerDefinitionInterface
     {
         $codeSample = <<<'EOF'
-<?php
+            <?php
 
-$singleQuoted = 'String with \" and My\Prefix\\';
+            $singleQuoted = 'String with \" and My\Prefix\\';
 
-$doubleQuoted = "Interpret my \n but not my \a";
+            $doubleQuoted = "Interpret my \n but not my \a";
 
-$hereDoc = <<<HEREDOC
-Interpret my \100 but not my \999
-HEREDOC;
+            $hereDoc = <<<HEREDOC
+            Interpret my \100 but not my \999
+            HEREDOC;
 
-EOF;
+            EOF;
 
         return new FixerDefinition(
             'Escape implicit backslashes in strings and heredocs to ease the understanding of which are special chars interpreted by PHP and which not.',

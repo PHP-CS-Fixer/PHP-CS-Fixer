@@ -35,23 +35,26 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithDefaultConfigurationCases(): iterable
     {
-        return [
-            [
-                '<?php interface A{/** @return    $this */public function test();}',
-                '<?php interface A{/** @return    this */public function test();}',
-            ],
-            [
-                '<?php interface B{/** @return self|int */function test();}',
-                '<?php interface B{/** @return $SELF|int */function test();}',
-            ],
-            [
-                '<?php class D {} /** @return {@this} */ require_once($a);echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;',
-            ],
-            [
-                '<?php /** @return this */ require_once($a);echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1; class E {}',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php interface A{/** @return    $this */public function test();}',
+            '<?php interface A{/** @return    this */public function test();}',
+        ];
+
+        yield [
+            '<?php interface B{/** @return self|int */function test();}',
+            '<?php interface B{/** @return $SELF|int */function test();}',
+        ];
+
+        yield [
+            '<?php class D {} /** @return {@this} */ require_once($a);echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;',
+        ];
+
+        yield [
+            '<?php /** @return this */ require_once($a);echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1; class E {}',
+        ];
+
+        yield [
+            '<?php
 
 trait SomeTrait
 {
@@ -62,7 +65,7 @@ trait SomeTrait
     }
 }
 // class Foo { use Bla; } $a = (new Foo())->someTest();',
-                '<?php
+            '<?php
 
 trait SomeTrait
 {
@@ -73,7 +76,6 @@ trait SomeTrait
     }
 }
 // class Foo { use Bla; } $a = (new Foo())->someTest();',
-            ],
         ];
     }
 
@@ -90,12 +92,10 @@ trait SomeTrait
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php interface C{/** @return $self|int */function test();}',
-                null,
-                ['$static' => 'static'],
-            ],
+        yield [
+            '<?php interface C{/** @return $self|int */function test();}',
+            null,
+            ['$static' => 'static'],
         ];
     }
 
@@ -148,14 +148,17 @@ class F
 
     public static function provideGeneratedFixCases(): iterable
     {
-        return [
-            ['$this', 'this'],
-            ['$this', '@this'],
-            ['self', '$self'],
-            ['self', '@self'],
-            ['static', '$static'],
-            ['static', '@STATIC'],
-        ];
+        yield ['$this', 'this'];
+
+        yield ['$this', '@this'];
+
+        yield ['self', '$self'];
+
+        yield ['self', '@self'];
+
+        yield ['static', '$static'];
+
+        yield ['static', '@STATIC'];
     }
 
     /**
@@ -173,17 +176,16 @@ class F
 
     public static function provideInvalidConfigurationCases(): iterable
     {
-        return [
-            [
-                ['replacements' => [1 => 'a']],
-                'Invalid configuration: Unknown key "integer#1", expected any of "this", "@this", "$self", "@self", "$static" and "@static".',
-            ],
-            [
-                ['replacements' => [
-                    'this' => 'foo',
-                ]],
-                'Invalid configuration: Unknown value "string#foo", expected any of "$this", "static" and "self".',
-            ],
+        yield [
+            ['replacements' => [1 => 'a']],
+            'Invalid configuration: Unknown key "integer#1", expected any of "this", "@this", "$self", "@self", "$static" and "@static".',
+        ];
+
+        yield [
+            ['replacements' => [
+                'this' => 'foo',
+            ]],
+            'Invalid configuration: Unknown value "string#foo", expected any of "$this", "static" and "self".',
         ];
     }
 

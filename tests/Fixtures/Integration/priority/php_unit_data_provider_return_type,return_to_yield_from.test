@@ -1,0 +1,27 @@
+--TEST--
+Integration of fixers: php_unit_data_provider_return_type,return_to_yield_from.
+--RULESET--
+{"php_unit_data_provider_return_type": true, "return_to_yield_from": true}
+--EXPECT--
+<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideFooCases
+     */
+    function testFoo() {}
+    function provideFooCases(): iterable {
+        yield from [[1], [2], [3]];
+    }
+}
+
+--INPUT--
+<?php
+class FooTest extends TestCase {
+    /**
+     * @dataProvider provideFooCases
+     */
+    function testFoo() {}
+    function provideFooCases() {
+        return [[1], [2], [3]];
+    }
+}

@@ -197,24 +197,25 @@ public function A(){}
             $to .= sprintf("class A%d{\npublic function GA%d(){return new class {\npublic function B6B%d(){}\n};}\n\npublic function otherFunction%d(){}\n}", $i, $i, $i, $i);
         }
 
-        yield from [
-            [$to, $from],
-            [
-                '<?php $a = new class {
+        yield [$to, $from];
+
+        yield [
+            '<?php $a = new class {
                 public function H(){}
 
                 public function B7(){}
 
                 private function C(){}
                 };',
-                '<?php $a = new class {
+            '<?php $a = new class {
                 public function H(){}
                 public function B7(){}
                 private function C(){}
                 };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class A
                     {
 public function getFilter()
@@ -230,7 +231,7 @@ private $d = 123;
 };}
                     }
                 ',
-                '<?php
+            '<?php
                     class A
                     {public function getFilter()
                         {
@@ -244,7 +245,6 @@ private $d = 123;
 
                     }
                 ',
-            ],
         ];
     }
 
@@ -288,78 +288,83 @@ private $d = 123;
 
     public static function provideCommentBlockStartDetectionCases(): iterable
     {
-        return [
-            [
-                4,
-                '<?php
+        yield [
+            4,
+            '<?php
                     //ui
 
                     //j1
                     //k2
                 ',
-                6,
-            ],
-            [
-                4,
-                '<?php
+            6,
+        ];
+
+        yield [
+            4,
+            '<?php
                     //ui
 
                     //j1
                     //k2
                 ',
-                5,
-            ],
-            [
-                4,
-                '<?php
+            5,
+        ];
+
+        yield [
+            4,
+            '<?php
                     /**/
 
                     //j1
                     //k2
                 ',
-                6,
-            ],
-            [
-                4,
-                '<?php
+            6,
+        ];
+
+        yield [
+            4,
+            '<?php
                     $a;//j
                     //k
                 ',
-                6,
-            ],
-            [
-                2,
-                '<?php
+            6,
+        ];
+
+        yield [
+            2,
+            '<?php
                     //a
                 ',
-                2,
-            ],
-            [
-                2,
-                '<?php
+            2,
+        ];
+
+        yield [
+            2,
+            '<?php
                     //b
                     //c
                 ',
-                2,
-            ],
-            [
-                2,
-                '<?php
+            2,
+        ];
+
+        yield [
+            2,
+            '<?php
                     //d
                     //e
                 ',
-                4,
-            ],
-            [
-                2,
-                '<?php
+            4,
+        ];
+
+        yield [
+            2,
+            '<?php
                     /**/
                     //f
                     //g
                     //h
                 ',
-                8,
-            ],
+            8,
         ];
     }
 
@@ -373,9 +378,7 @@ private $d = 123;
 
     public static function provideFixClassesCases(): iterable
     {
-        $cases = [];
-
-        $cases[] = ['<?php
+        yield ['<?php
 class SomeClass1
 {
     // This comment
@@ -387,7 +390,7 @@ class SomeClass1
 }
 '];
 
-        $cases[] = [
+        yield [
             '<?php
 class SomeClass2
 {
@@ -411,7 +414,7 @@ class SomeClass2
             ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 class SomeClass3
 {
@@ -425,7 +428,7 @@ class SomeClass3
 }
 ', ];
 
-        $cases[] = [
+        yield [
             '<?php
 class SomeClass1
 {
@@ -502,7 +505,7 @@ class SomeClass1
 }
 ', ];
 
-        $cases[] = ['<?php
+        yield ['<?php
 class SomeClass
 {
     // comment
@@ -513,7 +516,7 @@ class SomeClass
 }
 '];
 
-        $cases[] = ['<?php
+        yield ['<?php
 class SomeClass
 {
     // This comment
@@ -525,7 +528,7 @@ class SomeClass
 }
 '];
 
-        $cases[] = [
+        yield [
             '<?php
 class SomeClass
 {
@@ -551,7 +554,7 @@ class SomeClass
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 class SomeClass
 {
@@ -573,7 +576,7 @@ class SomeClass
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 class SomeClass
 {
@@ -595,7 +598,7 @@ class SomeClass
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 abstract class MethodTest2
 {
@@ -656,7 +659,7 @@ function some1(){ echo 1;}
 function some2(){ echo 2;}',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 
 /*
@@ -701,7 +704,7 @@ final class NullLinter implements LinterInterface
         // do not touch anonymous functions (since PHP doesn't allow
         // for class attributes being functions :(, we only have to test
         // those used within methods)
-        $cases[] = [
+        yield [
             '<?php
 class MethodTestAnonymous
 {
@@ -722,7 +725,7 @@ class MethodTestAnonymous
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 class MethodTest1
 {
@@ -821,7 +824,7 @@ class MethodTest1
         ];
 
         // spaces between methods
-        $cases[] = [
+        yield [
             '<?php
 abstract class MethodTest3
 {
@@ -864,8 +867,9 @@ abstract class MethodTest3
     {
     }
 }', ];
+
         // don't change correct code
-        $cases[] = [
+        yield [
             '<?php
 class SmallHelperException extends \Exception
 {
@@ -889,7 +893,7 @@ class MethodTest123124124
         ];
 
         // do not touch function out of class scope
-        $cases[] = [
+        yield [
             '<?php
 function some0() {
 
@@ -913,7 +917,7 @@ function some2() {
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php interface A {
 public function B1(); // allowed comment
 
@@ -923,7 +927,8 @@ public function B1(); // allowed comment
                 public function C(); // allowed comment
             }',
         ];
-        $cases[] = [
+
+        yield [
             '<?php class Foo {
                 var $a;
 
@@ -935,7 +940,7 @@ public function B1(); // allowed comment
             }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
                 class A
                 {
@@ -957,8 +962,6 @@ public function B1(); // allowed comment
                 }
             ',
         ];
-
-        return $cases;
     }
 
     /**
@@ -971,10 +974,8 @@ public function B1(); // allowed comment
 
     public static function provideFixTraitsCases(): iterable
     {
-        $cases = [];
-
         // do not touch well formatted traits
-        $cases[] = [
+        yield [
             '<?php
 trait OkTrait
 {
@@ -991,7 +992,7 @@ trait OkTrait
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 trait ezcReflectionReturnInfo {
     public $x = 1;
@@ -1020,7 +1021,7 @@ trait ezcReflectionReturnInfo {
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 trait SomeReturnInfo {
     function getReturnType()
@@ -1051,8 +1052,6 @@ trait SomeReturnInfo {
     abstract public function getWorld();
 }',
         ];
-
-        return $cases;
     }
 
     /**
@@ -1065,8 +1064,7 @@ trait SomeReturnInfo {
 
     public static function provideFixInterfaceCases(): iterable
     {
-        $cases = [];
-        $cases[] = [
+        yield [
             '<?php
 interface TestInterface
 {
@@ -1100,7 +1098,7 @@ interface TestInterface
         ];
 
         // do not touch well formatted interfaces
-        $cases[] = [
+        yield [
             '<?php
 interface TestInterfaceOK
 {
@@ -1111,7 +1109,7 @@ interface TestInterfaceOK
         ];
 
         // method after trait use
-        $cases[] = [
+        yield [
             '<?php
 trait ezcReflectionReturnInfo {
     function getReturnDescription() {}
@@ -1134,8 +1132,6 @@ class ezcReflectionMethod extends ReflectionMethod {
 
 }',
         ];
-
-        return $cases;
     }
 
     /**
@@ -1150,15 +1146,14 @@ class ezcReflectionMethod extends ReflectionMethod {
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                "<?php\r\nclass SomeClass\r\n{\r\n    // comment\n\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
-                "<?php\r\nclass SomeClass\r\n{\r\n    // comment\n\n\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
-            ],
-            [
-                "<?php\r\nclass SomeClass\r\n{\r\n    // comment\r\n\r\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
-                "<?php\r\nclass SomeClass\r\n{\r\n    // comment\r\n\r\n\r\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
-            ],
+        yield [
+            "<?php\r\nclass SomeClass\r\n{\r\n    // comment\n\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
+            "<?php\r\nclass SomeClass\r\n{\r\n    // comment\n\n\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
+        ];
+
+        yield [
+            "<?php\r\nclass SomeClass\r\n{\r\n    // comment\r\n\r\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
+            "<?php\r\nclass SomeClass\r\n{\r\n    // comment\r\n\r\n\r\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
         ];
     }
 
@@ -1175,9 +1170,8 @@ class ezcReflectionMethod extends ReflectionMethod {
 
     public static function provideWithConfigCases(): iterable
     {
-        return [
-            'multi line property' => [
-                '<?php class Foo
+        yield 'multi line property' => [
+            '<?php class Foo
 {
      private $prop = [
          1 => true,
@@ -1187,7 +1181,7 @@ class ezcReflectionMethod extends ReflectionMethod {
  // comment2
      private $bar = 1;
 }',
-                '<?php class Foo
+            '<?php class Foo
 {
      private $prop = [
          1 => true,
@@ -1195,10 +1189,11 @@ class ezcReflectionMethod extends ReflectionMethod {
      ]; // comment2
      private $bar = 1;
 }',
-                ['elements' => ['property' => 'one']],
-            ],
-            'trait group import none' => [
-                '<?php class Foo
+            ['elements' => ['property' => 'one']],
+        ];
+
+        yield 'trait group import none' => [
+            '<?php class Foo
 {
     use Ao;
     use B0 { X0 as Y0;} // test
@@ -1211,7 +1206,7 @@ class ezcReflectionMethod extends ReflectionMethod {
     }
     use Dua;
 }',
-                '<?php class Foo
+            '<?php class Foo
 {
     use Ao;
 
@@ -1228,10 +1223,11 @@ class ezcReflectionMethod extends ReflectionMethod {
     }
     use Dua;
 }',
-                ['elements' => ['trait_import' => 'none']],
-            ],
-            [
-                '<?php
+            ['elements' => ['trait_import' => 'none']],
+        ];
+
+        yield [
+            '<?php
 class Foo
 {
     /** A */
@@ -1241,7 +1237,7 @@ class Foo
     private $foo1; #1
     private $foo2; /* @2 */
 }',
-                '<?php
+            '<?php
 class Foo
 {
     /** A */
@@ -1254,10 +1250,11 @@ class Foo
 
     private $foo2; /* @2 */
 }',
-                ['elements' => ['property' => 'none']],
-            ],
-            [
-                '<?php
+            ['elements' => ['property' => 'none']],
+        ];
+
+        yield [
+            '<?php
  class Sample
 {
     /** @var int */
@@ -1270,7 +1267,7 @@ class Foo
     const OTHER = 4;
     const OTHER2 = 5;
 }',
-                '<?php
+            '<?php
  class Sample
 {
     /** @var int */
@@ -1285,26 +1282,28 @@ class Foo
 
     const OTHER2 = 5;
 }',
-                ['elements' => ['const' => 'none']],
-            ],
-            'multiple trait import 5954' => [
-                '<?php
+            ['elements' => ['const' => 'none']],
+        ];
+
+        yield 'multiple trait import 5954' => [
+            '<?php
 class Foo
 {
     use Bar, Baz;
 }',
-                null,
-                ['elements' => ['method' => 'one']],
-            ],
-            'multiple trait import with method 5954' => [
-                '<?php
+            null,
+            ['elements' => ['method' => 'one']],
+        ];
+
+        yield 'multiple trait import with method 5954' => [
+            '<?php
 class Foo
 {
     use Bar, Baz;
 
     public function f() {}
 }',
-                '<?php
+            '<?php
 class Foo
 {
     use Bar, Baz;
@@ -1312,10 +1311,11 @@ class Foo
 
     public function f() {}
 }',
-                ['elements' => ['method' => 'one']],
-            ],
-            'trait group import 5843' => [
-                '<?php
+            ['elements' => ['method' => 'one']],
+        ];
+
+        yield 'trait group import 5843' => [
+            '<?php
             class Foo
 {
     use Ao;
@@ -1339,7 +1339,7 @@ class Foo
     {
     }
 }',
-                '<?php
+            '<?php
             class Foo
 {
     use Ao;
@@ -1358,10 +1358,11 @@ class Foo
     {
     }
 }',
-                ['elements' => ['method' => 'one', 'trait_import' => 'one']],
-            ],
-            [
-                '<?php
+            ['elements' => ['method' => 'one', 'trait_import' => 'one']],
+        ];
+
+        yield [
+            '<?php
 class Foo
 {
     use SomeTrait1;
@@ -1371,7 +1372,7 @@ class Foo
     public function Bar(){}
 }
 ',
-                '<?php
+            '<?php
 class Foo
 {
     use SomeTrait1;
@@ -1379,10 +1380,11 @@ class Foo
     public function Bar(){}
 }
 ',
-                ['elements' => ['method' => 'one', 'trait_import' => 'one']],
-            ],
-            'trait group import 5852' => [
-                '<?php
+            ['elements' => ['method' => 'one', 'trait_import' => 'one']],
+        ];
+
+        yield 'trait group import 5852' => [
+            '<?php
 class Foo
 {
     use A;
@@ -1393,7 +1395,7 @@ class Foo
      */
      public function A(){}
 }',
-                '<?php
+            '<?php
 class Foo
 {
     use A;
@@ -1406,10 +1408,11 @@ class Foo
 
      public function A(){}
 }',
-                ['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none']],
-            ],
-            [
-                '<?php
+            ['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none']],
+        ];
+
+        yield [
+            '<?php
 abstract class Example
 {
     use SomeTrait;
@@ -1419,7 +1422,7 @@ abstract class Example
 
     abstract public function method(): void;
 }',
-                '<?php
+            '<?php
 abstract class Example
 {
     use SomeTrait;
@@ -1427,10 +1430,11 @@ abstract class Example
     public $property;
     abstract public function method(): void;
 }',
-                ['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one']],
-            ],
-            [
-                '<?php
+            ['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one']],
+        ];
+
+        yield [
+            '<?php
                     class A
                     {
                         private $a = null;
@@ -1442,7 +1446,7 @@ abstract class Example
                         function A() {}
                      }
                 ',
-                '<?php
+            '<?php
                     class A
                     {
                         private $a = null;
@@ -1453,10 +1457,11 @@ abstract class Example
                         function A() {}
                      }
                 ',
-                ['elements' => ['property' => 'one']],
-            ],
-            [
-                '<?php
+            ['elements' => ['property' => 'one']],
+        ];
+
+        yield [
+            '<?php
                     class A
                     {
                         private $a = null;
@@ -1465,7 +1470,7 @@ abstract class Example
                         function A() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class A
                     {
                         private $a = null;
@@ -1475,10 +1480,11 @@ abstract class Example
                         function A() {}
                     }
                 ',
-                ['elements' => ['property' => 'none']],
-            ],
-            [
-                '<?php
+            ['elements' => ['property' => 'none']],
+        ];
+
+        yield [
+            '<?php
                     class A
                     {
                         const A = 1;
@@ -1488,7 +1494,7 @@ abstract class Example
                         const B = 2;
                     }
                 ',
-                '<?php
+            '<?php
                     class A
                     {
 
@@ -1497,10 +1503,11 @@ abstract class Example
                         const B = 2;
                     }
                 ',
-                ['elements' => ['const' => 'one']],
-            ],
-            [
-                '<?php
+            ['elements' => ['const' => 'one']],
+        ];
+
+        yield [
+            '<?php
                     class A
                     {
                         const A = 1;
@@ -1508,7 +1515,7 @@ abstract class Example
                         const B = 2;
                     }
                 ',
-                '<?php
+            '<?php
                     class A
                     {
                         const A = 1;
@@ -1518,10 +1525,11 @@ abstract class Example
                         const B = 2;
                     }
                 ',
-                ['elements' => ['const' => 'none']],
-            ],
-            [
-                '<?php
+            ['elements' => ['const' => 'none']],
+        ];
+
+        yield [
+            '<?php
                     class A
                     {
                         function D() {}
@@ -1529,24 +1537,25 @@ abstract class Example
                         function B4() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class A
                     {
                         function D() {}
                         function B4() {}
                     }
                 ',
-                ['elements' => ['method' => 'one']],
-            ],
-            [
-                '<?php
+            ['elements' => ['method' => 'one']],
+        ];
+
+        yield [
+            '<?php
                     class A
                     {
                         function A() {}
                         function B() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class A
                     {
                         function A() {}
@@ -1554,10 +1563,11 @@ abstract class Example
                         function B() {}
                     }
                 ',
-                ['elements' => ['method' => 'none']],
-            ],
-            [
-                '<?php
+            ['elements' => ['method' => 'none']],
+        ];
+
+        yield [
+            '<?php
                     class A
                     {
                         private $x;
@@ -1568,7 +1578,7 @@ abstract class Example
                         final function f2() {}
                      }
                 ',
-                '<?php
+            '<?php
                     class A
                     {
                         private $x;
@@ -1577,10 +1587,11 @@ abstract class Example
                         final function f2() {}
                      }
                 ',
-                ['elements' => ['property' => 'none', 'method' => 'one']],
-            ],
-            [
-                '<?php
+            ['elements' => ['property' => 'none', 'method' => 'one']],
+        ];
+
+        yield [
+            '<?php
                     class A
                     {
                         const FOO = 1;
@@ -1591,7 +1602,7 @@ abstract class Example
                         function f2() {}
                      }
                 ',
-                '<?php
+            '<?php
                     class A
                     {
                         const FOO = 1;
@@ -1600,10 +1611,11 @@ abstract class Example
                         function f2() {}
                      }
                 ',
-                ['elements' => ['const' => 'none', 'method' => 'one']],
-            ],
-            [
-                '<?php
+            ['elements' => ['const' => 'none', 'method' => 'one']],
+        ];
+
+        yield [
+            '<?php
                     class A
                     {
                         const FOO = 1;
@@ -1614,7 +1626,7 @@ abstract class Example
                         public function f2() {}
                      }
                 ',
-                '<?php
+            '<?php
                     class A
                     {
                         const FOO = 1;
@@ -1623,10 +1635,11 @@ abstract class Example
                         public function f2() {}
                      }
                 ',
-                ['elements' => ['const' => 'none', 'method' => 'one']],
-            ],
-            [
-                '<?php
+            ['elements' => ['const' => 'none', 'method' => 'one']],
+        ];
+
+        yield [
+            '<?php
                     class A
                     {
                         const B = 2;
@@ -1643,7 +1656,7 @@ abstract class Example
                         const A = 5;
                     }
                 ',
-                '<?php
+            '<?php
                     class A
                     {
                         const B = 2;
@@ -1659,10 +1672,11 @@ abstract class Example
                         const A = 5;
                     }
                 ',
-                ['elements' => ['const' => 'only_if_meta']],
-            ],
-            [
-                '<?php
+            ['elements' => ['const' => 'only_if_meta']],
+        ];
+
+        yield [
+            '<?php
                     class B
                     {
                         public $foo;
@@ -1672,7 +1686,7 @@ abstract class Example
                         public $baz;
                     }
                 ',
-                '<?php
+            '<?php
                     class B
                     {
                         public $foo;
@@ -1682,10 +1696,11 @@ abstract class Example
                         public $baz;
                     }
                 ',
-                ['elements' => ['property' => 'only_if_meta']],
-            ],
-            [
-                '<?php
+            ['elements' => ['property' => 'only_if_meta']],
+        ];
+
+        yield [
+            '<?php
                     class C
                     {
                         public function f1() {}
@@ -1696,7 +1711,7 @@ abstract class Example
                         public function f4() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class C
                     {
                         public function f1() {}
@@ -1708,10 +1723,11 @@ abstract class Example
                         public function f4() {}
                     }
                 ',
-                ['elements' => ['method' => 'only_if_meta']],
-            ],
-            [
-                '<?php
+            ['elements' => ['method' => 'only_if_meta']],
+        ];
+
+        yield [
+            '<?php
                 class Sample
                 {
                     /** @var int */
@@ -1734,7 +1750,7 @@ abstract class Example
                     public function __destruct() {}
                 }
                 ',
-                '<?php
+            '<?php
                 class Sample
                 {
                     /** @var int */
@@ -1758,10 +1774,11 @@ abstract class Example
                     public function __destruct() {}
                 }
                 ',
-                ['elements' => ['const' => 'only_if_meta', 'property' => 'only_if_meta', 'method' => 'only_if_meta']],
-            ],
-            [
-                '<?php
+            ['elements' => ['const' => 'only_if_meta', 'property' => 'only_if_meta', 'method' => 'only_if_meta']],
+        ];
+
+        yield [
+            '<?php
                     class A
                     {
                         use A;
@@ -1771,7 +1788,7 @@ abstract class Example
                         public $b = 1;
                     }
                 ',
-                '<?php
+            '<?php
                     class A
                     {
                         use A;
@@ -1783,8 +1800,7 @@ abstract class Example
                         public $b = 1;
                     }
                 ',
-                ['elements' => ['property' => 'none', 'trait_import' => 'none']],
-            ],
+            ['elements' => ['property' => 'none', 'trait_import' => 'none']],
         ];
     }
 
@@ -1801,9 +1817,8 @@ abstract class Example
 
     public static function provideFix71Cases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                 class Foo {
     public function H1(){}
 
@@ -1813,7 +1828,7 @@ abstract class Example
     /**  */
     private const BAZ = "a";
                 }',
-                '<?php
+            '<?php
                 class Foo {
 
 
@@ -1828,7 +1843,6 @@ abstract class Example
 
 
                 }',
-            ],
         ];
     }
 

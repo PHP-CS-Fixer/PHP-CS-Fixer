@@ -158,9 +158,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(
                     array_map(
-                        static function (string $string) {
-                            return '@'.$string;
-                        },
+                        static fn (string $string) => '@'.$string,
                         self::DEFAULTS['include'],
                     ),
                 )
@@ -172,9 +170,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(
                     array_map(
-                        static function (string $string) {
-                            return '@'.$string;
-                        },
+                        static fn (string $string) => '@'.$string,
                         self::DEFAULTS['exclude'],
                     ),
                 )
@@ -262,7 +258,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $tags = [];
 
         foreach ($doc->getAnnotations() as $annotation) {
-            if (1 !== Preg::match('/@\S+(?=\s|$)/', $annotation->getContent(), $matches)) {
+            if (!Preg::match('/@([^\(\s]+)/', $annotation->getContent(), $matches)) {
                 continue;
             }
             $tag = strtolower(substr(array_shift($matches), 1));
@@ -287,9 +283,9 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $attributeString = '';
         $currentIndex = $startIndex;
 
-        while ($currentIndex < $endIndex && $currentIndex = $tokens->getNextMeaningfulToken($currentIndex)) {
+        while ($currentIndex < $endIndex && null !== ($currentIndex = $tokens->getNextMeaningfulToken($currentIndex))) {
             if (!$tokens[$currentIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
-                if ($attributeString) {
+                if ('' !== $attributeString) {
                     $attributeCandidates[$attributeString] = true;
                     $attributeString = '';
                 }

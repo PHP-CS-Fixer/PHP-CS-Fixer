@@ -51,132 +51,132 @@ final class XmlReporterTest extends AbstractReporterTestCase
     protected static function createNoErrorReport(): string
     {
         return <<<'XML'
-<?xml version="1.0" encoding="UTF-8"?>
-<report>
-  <files />
-</report>
-XML;
+            <?xml version="1.0" encoding="UTF-8"?>
+            <report>
+              <files />
+            </report>
+            XML;
     }
 
     protected static function createSimpleReport(): string
     {
         return <<<'XML'
-<?xml version="1.0" encoding="UTF-8"?>
-<report>
-  <files>
-    <file id="1" name="someFile.php">
-      <diff>--- Original
-+++ New
-@@ -2,7 +2,7 @@
+            <?xml version="1.0" encoding="UTF-8"?>
+            <report>
+              <files>
+                <file id="1" name="someFile.php">
+                  <diff>--- Original
+            +++ New
+            @@ -2,7 +2,7 @@
 
- class Foo
- {
--    public function bar($foo = 1, $bar)
-+    public function bar($foo, $bar)
-     {
-     }
- }</diff>
-    </file>
-  </files>
-</report>
-XML;
+             class Foo
+             {
+            -    public function bar($foo = 1, $bar)
+            +    public function bar($foo, $bar)
+                 {
+                 }
+             }</diff>
+                </file>
+              </files>
+            </report>
+            XML;
     }
 
     protected static function createWithDiffReport(): string
     {
         return <<<'XML'
-<?xml version="1.0" encoding="UTF-8"?>
-<report>
-  <files>
-    <file id="1" name="someFile.php">
-      <diff>--- Original
-+++ New
-@@ -2,7 +2,7 @@
+            <?xml version="1.0" encoding="UTF-8"?>
+            <report>
+              <files>
+                <file id="1" name="someFile.php">
+                  <diff>--- Original
+            +++ New
+            @@ -2,7 +2,7 @@
 
- class Foo
- {
--    public function bar($foo = 1, $bar)
-+    public function bar($foo, $bar)
-     {
-     }
- }</diff>
-    </file>
-  </files>
-</report>
-XML;
+             class Foo
+             {
+            -    public function bar($foo = 1, $bar)
+            +    public function bar($foo, $bar)
+                 {
+                 }
+             }</diff>
+                </file>
+              </files>
+            </report>
+            XML;
     }
 
     protected static function createWithAppliedFixersReport(): string
     {
         return <<<'XML'
-<?xml version="1.0" encoding="UTF-8"?>
-<report>
-  <files>
-    <file id="1" name="someFile.php">
-      <applied_fixers>
-        <applied_fixer name="some_fixer_name_here_1"/>
-        <applied_fixer name="some_fixer_name_here_2"/>
-      </applied_fixers>
-    </file>
-  </files>
-</report>
-XML;
+            <?xml version="1.0" encoding="UTF-8"?>
+            <report>
+              <files>
+                <file id="1" name="someFile.php">
+                  <applied_fixers>
+                    <applied_fixer name="some_fixer_name_here_1"/>
+                    <applied_fixer name="some_fixer_name_here_2"/>
+                  </applied_fixers>
+                </file>
+              </files>
+            </report>
+            XML;
     }
 
     protected static function createWithTimeAndMemoryReport(): string
     {
         return <<<'XML'
-<?xml version="1.0" encoding="UTF-8"?>
-<report>
-  <files>
-    <file id="1" name="someFile.php">
-      <diff>--- Original
-+++ New
-@@ -2,7 +2,7 @@
+            <?xml version="1.0" encoding="UTF-8"?>
+            <report>
+              <files>
+                <file id="1" name="someFile.php">
+                  <diff>--- Original
+            +++ New
+            @@ -2,7 +2,7 @@
 
- class Foo
- {
--    public function bar($foo = 1, $bar)
-+    public function bar($foo, $bar)
-     {
-     }
- }</diff>
-    </file>
-  </files>
-  <time unit="s">
-    <total value="1.234"/>
-  </time>
-  <memory value="2.5" unit="MB"/>
-</report>
-XML;
+             class Foo
+             {
+            -    public function bar($foo = 1, $bar)
+            +    public function bar($foo, $bar)
+                 {
+                 }
+             }</diff>
+                </file>
+              </files>
+              <time unit="s">
+                <total value="1.234"/>
+              </time>
+              <memory value="2.5" unit="MB"/>
+            </report>
+            XML;
     }
 
     protected static function createComplexReport(): string
     {
         return <<<'XML'
-<?xml version="1.0" encoding="UTF-8"?>
-<report>
-  <files>
-    <file id="1" name="someFile.php">
-      <applied_fixers>
-        <applied_fixer name="some_fixer_name_here_1"/>
-        <applied_fixer name="some_fixer_name_here_2"/>
-      </applied_fixers>
-      <diff>this text is a diff ;)</diff>
-    </file>
-    <file id="2" name="anotherFile.php">
-      <applied_fixers>
-        <applied_fixer name="another_fixer_name_here"/>
-      </applied_fixers>
-      <diff>another diff here ;)</diff>
-    </file>
-  </files>
-  <time unit="s">
-    <total value="1.234"/>
-  </time>
-  <memory value="2.5" unit="MB"/>
-</report>
-XML;
+            <?xml version="1.0" encoding="UTF-8"?>
+            <report>
+              <files>
+                <file id="1" name="someFile.php">
+                  <applied_fixers>
+                    <applied_fixer name="some_fixer_name_here_1"/>
+                    <applied_fixer name="some_fixer_name_here_2"/>
+                  </applied_fixers>
+                  <diff>this text is a diff ;)</diff>
+                </file>
+                <file id="2" name="anotherFile.php">
+                  <applied_fixers>
+                    <applied_fixer name="another_fixer_name_here"/>
+                  </applied_fixers>
+                  <diff>another diff here ;)</diff>
+                </file>
+              </files>
+              <time unit="s">
+                <total value="1.234"/>
+              </time>
+              <memory value="2.5" unit="MB"/>
+            </report>
+            XML;
     }
 
     protected function createReporter(): ReporterInterface

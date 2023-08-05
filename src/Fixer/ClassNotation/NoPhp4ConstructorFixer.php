@@ -106,6 +106,7 @@ class Foo
                                 ++$i;
                             }
                         }
+
                         // and continue checking the classes that might follow
                         continue;
                     }
@@ -138,7 +139,7 @@ class Foo
             return; // no PHP4-constructor!
         }
 
-        if (!empty($php4['modifiers'][T_ABSTRACT]) || !empty($php4['modifiers'][T_STATIC])) {
+        if (isset($php4['modifiers'][T_ABSTRACT]) || isset($php4['modifiers'][T_STATIC])) {
             return; // PHP4 constructor can't be abstract or static
         }
 
