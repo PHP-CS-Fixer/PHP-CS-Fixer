@@ -40,9 +40,7 @@ final class Transformers
     {
         $this->registerBuiltInTransformers();
 
-        usort($this->items, static function (TransformerInterface $a, TransformerInterface $b): int {
-            return $b->getPriority() <=> $a->getPriority();
-        });
+        usort($this->items, static fn (TransformerInterface $a, TransformerInterface $b): int => $b->getPriority() <=> $a->getPriority());
     }
 
     public static function createSingleton(): self

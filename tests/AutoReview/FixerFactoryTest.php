@@ -916,9 +916,7 @@ final class FixerFactoryTest extends TestCase
 
         $docFixerNames = array_filter(
             array_keys(self::getAllFixers()),
-            static function (string $name): bool {
-                return str_contains($name, 'phpdoc');
-            }
+            static fn (string $name): bool => str_contains($name, 'phpdoc')
         );
 
         foreach ($docFixerNames as $docFixerName) {

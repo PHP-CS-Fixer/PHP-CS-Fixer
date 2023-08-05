@@ -44,9 +44,7 @@ final class ListDocumentGenerator
     {
         usort(
             $fixers,
-            static function (FixerInterface $fixer1, FixerInterface $fixer2): int {
-                return strnatcasecmp($fixer1->getName(), $fixer2->getName());
-            }
+            static fn (FixerInterface $fixer1, FixerInterface $fixer2): int => strnatcasecmp($fixer1->getName(), $fixer2->getName())
         );
 
         $documentation = <<<'RST'

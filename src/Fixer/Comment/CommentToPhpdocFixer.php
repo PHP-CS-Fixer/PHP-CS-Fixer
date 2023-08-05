@@ -79,9 +79,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
         parent::configure($configuration);
 
         $this->ignoredTags = array_map(
-            static function (string $tag): string {
-                return strtolower($tag);
-            },
+            static fn (string $tag): string => strtolower($tag),
             $this->configuration['ignored_tags']
         );
     }

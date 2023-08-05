@@ -165,9 +165,7 @@ final class FixerConfigurationResolverTest extends TestCase
     public function testResolveWithNormalizers(): void
     {
         $configuration = new FixerConfigurationResolver([
-            new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, string $value): int {
-                return (int) $value;
-            }),
+            new FixerOption('foo', 'Bar.', true, null, null, null, static fn (Options $options, string $value): int => (int) $value),
         ]);
 
         self::assertSame(

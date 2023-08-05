@@ -154,13 +154,9 @@ final class CiConfigurationTest extends TestCase
      */
     private function getAllPhpVersionsUsedByCiForDeployments(): array
     {
-        $jobs = array_filter($this->getGitHubJobs(), static function (array $job): bool {
-            return isset($job['execute-deployment']) && 'yes' === $job['execute-deployment'];
-        });
+        $jobs = array_filter($this->getGitHubJobs(), static fn (array $job): bool => isset($job['execute-deployment']) && 'yes' === $job['execute-deployment']);
 
-        return array_map(static function ($job): string {
-            return \is_string($job['php-version']) ? $job['php-version'] : sprintf('%.1f', $job['php-version']);
-        }, $jobs);
+        return array_map(static fn ($job): string => \is_string($job['php-version']) ? $job['php-version'] : sprintf('%.1f', $job['php-version']), $jobs);
     }
 
     /**

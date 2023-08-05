@@ -51,8 +51,6 @@ final class CommandTest extends TestCase
                 && str_starts_with(\get_class($commands[$name]), 'PhpCsFixer\\');
         });
 
-        return array_map(static function (string $name) use ($commands): array {
-            return [$commands[$name]];
-        }, $names);
+        return array_map(static fn (string $name): array => [$commands[$name]], $names);
     }
 }

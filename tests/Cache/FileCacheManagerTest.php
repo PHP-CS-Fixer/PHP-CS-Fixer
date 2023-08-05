@@ -51,9 +51,7 @@ final class FileCacheManagerTest extends TestCase
 
         $handlerProphecy = $this->prophesize(FileHandlerInterface::class);
         $handlerProphecy->read()->shouldBeCalled()->willReturn(null);
-        $handlerProphecy->write(Argument::that(static function (CacheInterface $cache) use ($signature): bool {
-            return $cache->getSignature() === $signature;
-        }))->shouldBeCalled();
+        $handlerProphecy->write(Argument::that(static fn (CacheInterface $cache): bool => $cache->getSignature() === $signature))->shouldBeCalled();
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
@@ -78,9 +76,7 @@ final class FileCacheManagerTest extends TestCase
 
         $handlerProphecy = $this->prophesize(FileHandlerInterface::class);
         $handlerProphecy->read()->shouldBeCalled()->willReturn($cache);
-        $handlerProphecy->write(Argument::that(static function (CacheInterface $cache) use ($signature): bool {
-            return $cache->getSignature() === $signature;
-        }))->shouldBeCalled();
+        $handlerProphecy->write(Argument::that(static fn (CacheInterface $cache): bool => $cache->getSignature() === $signature))->shouldBeCalled();
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(

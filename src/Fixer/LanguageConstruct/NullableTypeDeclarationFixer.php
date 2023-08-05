@@ -133,9 +133,7 @@ class ValueObject
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         $elements = array_map(
-            static function (array $element): string {
-                return 'method' === $element['type'] ? 'function' : $element['type'];
-            },
+            static fn (array $element): string => 'method' === $element['type'] ? 'function' : $element['type'],
             array_filter(
                 $tokensAnalyzer->getClassyElements(),
                 static fn (array $element): bool => \in_array($element['type'], ['method', 'property'], true)
