@@ -122,7 +122,7 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
                  '.'
                     // uno
                     yield 1;
-                    // duo
+                    // dos
                     yield 2;
                     // tres
                     yield 3;
@@ -132,7 +132,7 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
                 yield from [
                     // uno
                     1,
-                    // duo
+                    // dos
                     2,
                     // tres
                     3,
