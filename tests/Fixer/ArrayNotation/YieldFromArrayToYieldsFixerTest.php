@@ -120,6 +120,7 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
         yield [
             '<?php function f() {
                  '.'
+                    // uno
                     yield 1;
                     // duo
                     yield 2;
@@ -129,6 +130,7 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
             }',
             '<?php function f() {
                 yield from [
+                    // uno
                     1,
                     // duo
                     2,
