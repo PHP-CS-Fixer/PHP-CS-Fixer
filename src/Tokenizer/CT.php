@@ -58,6 +58,7 @@ final class CT
     public const T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE = 10037;
     public const T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN = 10038;
     public const T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE = 10039;
+    public const T_ENUM_CASE = 10040;
 
     private function __construct()
     {
