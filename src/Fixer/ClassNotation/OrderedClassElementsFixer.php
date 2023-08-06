@@ -333,7 +333,7 @@ Custom values:
      */
     private function getElements(Tokens $tokens, int $startIndex): array
     {
-        static $elementTokenKinds = [CT::T_USE_TRAIT, T_CASE, T_CONST, T_VARIABLE, T_FUNCTION];
+        static $elementTokenKinds = [CT::T_ENUM_CASE, CT::T_USE_TRAIT, T_CONST, T_VARIABLE, T_FUNCTION];
 
         ++$startIndex;
         $elements = [];
@@ -417,7 +417,7 @@ Custom values:
             return 'use_trait';
         }
 
-        if ($token->isGivenKind(T_CASE)) {
+        if ($token->isGivenKind(CT::T_ENUM_CASE)) {
             return 'case';
         }
 

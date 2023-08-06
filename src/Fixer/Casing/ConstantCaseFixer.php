@@ -142,16 +142,10 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if (null === $prevIndex || !$tokens[$prevIndex]->isGivenKind(T_CASE)) {
+        if (null === $prevIndex || !$tokens[$prevIndex]->isGivenKind(CT::T_ENUM_CASE)) {
             return false;
         }
 
-        if (!$tokens->isTokenKindFound(T_SWITCH)) {
-            return true;
-        }
-
-        $prevIndex = $tokens->getPrevTokenOfKind($prevIndex, [[T_ENUM], [T_SWITCH]]);
-
-        return null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_ENUM);
+        return true;
     }
 }

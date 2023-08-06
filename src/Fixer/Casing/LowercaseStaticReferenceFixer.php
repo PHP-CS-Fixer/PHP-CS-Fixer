@@ -97,7 +97,7 @@ class Foo extends Bar
                 continue;
             }
 
-            if ($tokens[$prevIndex]->isGivenKind(T_CASE) && !$tokens[$nextIndex]->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)) {
+            if ($tokens[$prevIndex]->isGivenKind([T_CASE, CT::T_ENUM_CASE]) && !$tokens[$nextIndex]->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)) {
                 continue;
             }
 
