@@ -1496,22 +1496,22 @@ do {
     }
 
     /**
+     * @param list<string> $statements
+     *
      * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected, ?string $input = null): void
+    public function testFix81(string $expected, ?string $input, array $statements): void
     {
-        $this->fixer->configure([
-            'statements' => ['case'],
-        ]);
+        $this->fixer->configure(['statements' => $statements]);
 
         $this->doTest($expected, $input);
     }
 
     public static function provideFix81Cases(): iterable
     {
-        yield 'enum' => [
+        yield 'fixing enum case and switch case' => [
             '<?php
 enum Suit {
     case Hearts;
@@ -1568,6 +1568,123 @@ enum UserStatus: string {
     }
 }
 ',
+            ['case', 'enum_case'],
+        ];
+
+        yield 'fixing enum case only' => [
+            '<?php
+enum Suit {
+    case Hearts;
+
+    case Diamonds;
+
+    case Clubs;
+
+
+    case Spades;
+}
+
+enum UserStatus: string {
+    case Pending = "P";
+
+    case Active = "A";
+
+    public function label(): string {
+        switch ($a) {
+            case 1:
+                return 1;
+            case 2:
+                return 2;
+        }
+
+        return "label";
+    }
+}
+',
+            '<?php
+enum Suit {
+    case Hearts;
+    case Diamonds;
+    case Clubs;
+
+
+    case Spades;
+}
+
+enum UserStatus: string {
+    case Pending = "P";
+    case Active = "A";
+
+    public function label(): string {
+        switch ($a) {
+            case 1:
+                return 1;
+            case 2:
+                return 2;
+        }
+
+        return "label";
+    }
+}
+',
+            ['enum_case'],
+        ];
+
+        yield 'fixing switch case only' => [
+            '<?php
+enum Suit {
+    case Hearts;
+    case Diamonds;
+    case Clubs;
+
+
+    case Spades;
+}
+
+enum UserStatus: string {
+    case Pending = "P";
+    case Active = "A";
+
+    public function label(): string {
+        switch ($a) {
+            case 1:
+                return 1;
+
+            case 2:
+                return 2;
+        }
+
+        return "label";
+    }
+}
+',
+            '<?php
+enum Suit {
+    case Hearts;
+    case Diamonds;
+    case Clubs;
+
+
+    case Spades;
+}
+
+enum UserStatus: string {
+    case Pending = "P";
+    case Active = "A";
+
+    public function label(): string {
+        switch ($a) {
+            case 1:
+                return 1;
+            case 2:
+                return 2;
+        }
+
+        return "label";
+    }
+}
+',
+            ['case'],
         ];
     }
 

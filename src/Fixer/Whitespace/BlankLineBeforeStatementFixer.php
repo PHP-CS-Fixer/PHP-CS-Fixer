@@ -24,6 +24,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -44,6 +45,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'declare' => T_DECLARE,
         'default' => T_DEFAULT,
         'do' => T_DO,
+        'enum_case' => CT::T_ENUM_CASE,
         'exit' => T_EXIT,
         'for' => T_FOR,
         'foreach' => T_FOREACH,
