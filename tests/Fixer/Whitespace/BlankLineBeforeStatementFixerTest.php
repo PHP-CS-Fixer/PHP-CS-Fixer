@@ -1515,9 +1515,7 @@ do {
             '<?php
 enum Suit {
     case Hearts;
-
     case Diamonds;
-
     case Clubs;
 
 
@@ -1526,7 +1524,6 @@ enum Suit {
 
 enum UserStatus: string {
     case Pending = "P";
-
     case Active = "A";
 
     public function label(): string {
