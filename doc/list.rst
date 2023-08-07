@@ -2350,7 +2350,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToPropertyTypeFixer <./../src/Fixer/FunctionNotation/PhpdocToPropertyTypeFixer.php>`_
 -  `phpdoc_to_return_type <./rules/function_notation/phpdoc_to_return_type.rst>`_
 
-   EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
+   EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature.
 
    *warning risky* This rule is EXPERIMENTAL and [1] is not covered with backward compatibility
    promise. [2] ``@return`` annotation is mandatory for the fixer to make

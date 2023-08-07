@@ -387,7 +387,7 @@ Function Notation
   EXPERIMENTAL: Takes ``@var`` annotation of non-mixed types and adjusts accordingly the property signature. Requires PHP >= 7.4.
 - `phpdoc_to_return_type <./function_notation/phpdoc_to_return_type.rst>`_ *(risky)*
 
-  EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
+  EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature.
 - `regular_callable_call <./function_notation/regular_callable_call.rst>`_ *(risky)*
 
   Callables must be called without using ``call_user_func*`` when possible.
