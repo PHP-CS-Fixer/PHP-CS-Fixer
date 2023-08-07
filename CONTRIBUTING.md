@@ -14,9 +14,7 @@ A *ruleset* is a collection of rules (*fixers*) that may be referenced in the co
 
 ### Config
 
-A *config* knows about the code style rules and the files and directories that
-must be scanned by the tool when run in the context of your project. It is
-useful for projects that follow a well-known directory structures, but the tool is not limited to any specific structure, and you can configure it in a very flexible way.
+A *config* knows about the code style rules and the files and directories that must be scanned by the tool when run in the context of your project. It is useful for projects that follow a well-known directory structures, but the tool is not limited to any specific structure, and you can configure it in a very flexible way.
 
 ## How to contribute
 
@@ -52,8 +50,7 @@ This project provides a Docker setup that allows working on it using any of the 
 
 To use it, you first need to install [Docker](https://docs.docker.com/get-docker/) ([Docker Compose](https://docs.docker.com/compose/) is a built-in plugin of the main tool).
 
-Next, copy [`docker-compose.override.yaml.dist`](./docker-compose.override.yaml.dist) to `docker-compose.override.yaml`
-and edit it to your needs. The relevant parameters that might require some tweaking have comments to help you.
+Next, copy [`docker-compose.override.yaml.dist`](./docker-compose.override.yaml.dist) to `docker-compose.override.yaml` and edit it to your needs. The relevant parameters that might require some tweaking have comments to help you.
 
 You can then build the images:
 
@@ -74,8 +71,7 @@ docker-compose run php-7.4 sh
 /app vendor/bin/phpunit
 ```
 
-The images come with an [`xdebug` script](github.com/julienfalque/xdebug/) that allows running any PHP command with
-Xdebug enabled to help debug problems.
+The images come with an [`xdebug` script](github.com/julienfalque/xdebug/) that allows running any PHP command with Xdebug enabled to help debug problems.
 
 ```console
 docker-compose run php-7.4 xdebug vendor/bin/phpunit
