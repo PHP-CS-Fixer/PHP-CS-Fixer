@@ -633,6 +633,9 @@ final class TokensAnalyzer
         return $tokens[$beforeStartIndex]->isGivenKind(T_DO);
     }
 
+    /**
+     * @throws \LogicException when provided index does not point to token containing T_CASE
+     */
     public function isEnumCase(int $caseIndex): bool
     {
         $tokens = $this->tokens;
