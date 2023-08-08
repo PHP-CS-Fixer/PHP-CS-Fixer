@@ -42,7 +42,7 @@ You can do some things to increase the chance that your Pull Request is accepted
 * If your changes are not up-to-date, [rebase](https://git-scm.com/docs/git-rebase) your branch onto the parent branch. Do it regularly whenever your branch is behind `master` branch, that will eliminate risk of problems after the merge.
 * Follow the conventions used in the project.
 * Remember about tests and documentation.
-* Don't bump version.
+* Don't bump `PhpCsFixer\Console\Application::VERSION`, it's done during release.
 
 ## Working With Docker
 
