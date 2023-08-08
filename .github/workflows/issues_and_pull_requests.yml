@@ -11,6 +11,7 @@ env:
   DAYS_BEFORE_ISSUE_STALE: 90
   DAYS_BEFORE_PR_CLOSE: 14
   DAYS_BEFORE_PR_STALE: 90
+  EXEMPT_MILESTONES: "long-term-ideas"
 
 jobs:
   handle_stale:
@@ -19,6 +20,7 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
+      # Config reference: https://github.com/actions/stale
       - name: "Handle stale issues and pull requests"
         uses: "actions/stale@v8"
         with:
@@ -27,6 +29,7 @@ jobs:
           days-before-issue-stale: "${{ env.DAYS_BEFORE_ISSUE_STALE }}"
           days-before-pr-close: "${{ env.DAYS_BEFORE_PR_CLOSE }}"
           days-before-pr-stale: "${{ env.DAYS_BEFORE_PR_STALE }}"
+          exempt-milestones: "${{ env.EXEMPT_MILESTONES }}"
           labels-to-add-when-unstale: "status/to verify"
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           stale-issue-label: "status/stale"
