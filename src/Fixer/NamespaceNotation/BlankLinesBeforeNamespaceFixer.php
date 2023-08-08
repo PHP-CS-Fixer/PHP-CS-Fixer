@@ -60,7 +60,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
      */
     public function getPriority(): int
     {
-        return 0;
+        return -31;
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
