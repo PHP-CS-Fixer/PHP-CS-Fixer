@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: header_comment,blank_lines_before_namespace.
+--RULESET--
+{ "header_comment": { "header": "" }, "blank_lines_before_namespace": true }
+--EXPECT--
+<?php
+
+namespace Foo;
+class Bar {}
+
+--INPUT--
+<?php
+
+/*
+ * Header.
+ */
+
+namespace Foo;
+class Bar {}
