@@ -87,7 +87,7 @@ final class Runner
         $this->linter = $linter;
         $this->isDryRun = $isDryRun;
         $this->cacheManager = $cacheManager;
-        $this->directory = $directory ?: new Directory('');
+        $this->directory = $directory ?? new Directory('');
         $this->stopOnViolation = $stopOnViolation;
     }
 
