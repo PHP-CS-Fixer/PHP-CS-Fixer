@@ -467,11 +467,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Variable \\$expression might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/DocBlock/TypeExpressionTest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$index \\(int\\) of method PhpCsFixer\\\\Tests\\\\Test\\\\TokensWithObservedTransformers\\:\\:offsetSet\\(\\) should be contravariant with parameter \\$offset \\(int\\|null\\) of method ArrayAccess\\<int,PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\>\\:\\:offsetSet\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Test/TokensWithObservedTransformers.php',
