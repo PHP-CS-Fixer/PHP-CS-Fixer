@@ -88,6 +88,10 @@
         "docs": "@php dev-tools/doc.php",
         "install-tools": "@composer -d dev-tools install",
         "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi dev-tools/mess-detector/phpmd.xml --exclude vendor/*,dev-tools/vendor/*,dev-tools/phpstan/*,tests/Fixtures/*",
+        "normalize": [
+            "@composer normalize -d dev-tools --dry-run ../composer.json",
+            "@composer normalize -d dev-tools --dry-run composer.json"
+        ],
         "phpstan": "@php -d memory_limit=512M dev-tools/vendor/bin/phpstan analyse",
         "phpstan:baseline": "@php -d memory_limit=512M dev-tools/vendor/bin/phpstan analyse --generate-baseline=./dev-tools/phpstan/baseline.php",
         "qa": "@quality-assurance",
@@ -121,6 +125,7 @@
         "docs": "Regenerate docs",
         "install-tools": "Install DEV tools",
         "mess-detector": "Analyse code with Mess Detector",
+        "normalize": "Run normalization for composer.json files",
         "phpstan": "Run PHPStan analysis",
         "phpstan:baseline": "Dump PHPStan baseline file - use only for updating, do not add new errors when possible",
         "post-autoload-dump": "Run additional tasks after installing/updating main dependencies",
