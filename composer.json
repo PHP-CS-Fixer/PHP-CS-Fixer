@@ -115,8 +115,6 @@
     },
     "scripts-descriptions": {
         "cs:check": "Check coding standards",
-        "cs:diff": "Check coding standards in modified files",
-        "cs:diff-fix": "Fix coding standards in modified files",
         "cs:fix": "Fix coding standards",
         "dev-tools:check": "Check DEV environment's requirements",
         "dev-tools:docs": "Regenerate docs",
