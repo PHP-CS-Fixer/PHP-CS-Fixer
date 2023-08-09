@@ -83,7 +83,6 @@
         "post-autoload-dump": [
             "@install-tools"
         ],
-
         "cs:check": "@php php-cs-fixer fix --dry-run --diff",
         "cs:fix": "@php php-cs-fixer fix",
         "docs": "@php dev-tools/doc.php",
@@ -120,8 +119,8 @@
         "cs:check": "Check coding standards",
         "cs:fix": "Fix coding standards",
         "docs": "Regenerate docs",
-        "mess-detector": "Analyse code with Mess Detector",
         "install-tools": "Install DEV tools",
+        "mess-detector": "Analyse code with Mess Detector",
         "phpstan": "Run PHPStan analysis",
         "phpstan:baseline": "Dump PHPStan baseline file - use only for updating, do not add new errors when possible",
         "post-autoload-dump": "Run additional tasks after installing/updating main dependencies",
