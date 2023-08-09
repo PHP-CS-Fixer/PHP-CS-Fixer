@@ -80,6 +80,10 @@
         "sort-packages": true
     },
     "scripts": {
+        "post-autoload-dump": [
+            "@install-tools"
+        ],
+
         "cs:check": "@php php-cs-fixer fix --dry-run --diff",
         "cs:fix": "@php php-cs-fixer fix",
         "docs": "@php dev-tools/doc.php",
@@ -120,6 +124,7 @@
         "install-tools": "Install DEV tools",
         "phpstan": "Run PHPStan analysis",
         "phpstan:baseline": "Dump PHPStan baseline file - use only for updating, do not add new errors when possible",
+        "post-autoload-dump": "Run additional tasks after installing/updating main dependencies",
         "qa": "Run QA suite",
         "quality-assurance": "Run QA suite",
         "sa": "Run static analysis",
