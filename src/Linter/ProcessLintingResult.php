@@ -46,7 +46,7 @@ final class ProcessLintingResult implements LintingResultInterface
     private function getProcessErrorMessage(): string
     {
         $errorOutput = $this->process->getErrorOutput();
-        $output = strtok(ltrim($errorOutput !== '' ? $errorOutput : $this->process->getOutput()), "\n");
+        $output = strtok(ltrim('' !== $errorOutput ? $errorOutput : $this->process->getOutput()), "\n");
 
         if (false === $output) {
             return 'Fatal error: Unable to lint file.';
