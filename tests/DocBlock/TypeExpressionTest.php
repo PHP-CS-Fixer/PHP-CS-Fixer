@@ -864,6 +864,7 @@ final class TypeExpressionTest extends TestCase
     {
         $pcreJitBackup = \ini_get('pcre.jit');
 
+        $expression = null;
         $innerExpressionsDataWithoutJit = null;
 
         try {
