@@ -73,7 +73,7 @@ List of Available Rules
 
    - | ``default``
      | Default fix strategy.
-     | Allowed values: ``'align'``, ``'align_by_scope'``, ``'align_single_space'``, ``'align_single_space_by_scope'``, ``'align_single_space_minimal'``, ``'align_single_space_minimal_by_scope'``, ``'no_space'``, ``'single_space'`` and ``null``
+     | Allowed values: ``'align'``, ``'align_by_scope'``, ``'align_single_space'``, ``'align_single_space_by_scope'``, ``'align_single_space_minimal'``, ``'align_single_space_minimal_by_scope'``, ``'at_least_single_space'``, ``'no_space'``, ``'single_space'`` and ``null``
      | Default value: ``'single_space'``
    - | ``operators``
      | Dictionary of ``binary operator`` => ``fix strategy`` values that differ from the default strategy. Supported are: ``=``, ``*``, ``/``, ``%``, ``<``, ``>``, ``|``, ``^``, ``+``, ``-``, ``&``, ``&=``, ``&&``, ``||``, ``.=``, ``/=``, ``=>``, ``==``, ``>=``, ``===``, ``!=``, ``<>``, ``!==``, ``<=``, ``and``, ``or``, ``xor``, ``-=``, ``%=``, ``*=``, ``|=``, ``+=``, ``<<``, ``<<=``, ``>>``, ``>>=``, ``^=``, ``**``, ``**=``, ``<=>``, ``??`` and ``??=``.
@@ -81,7 +81,7 @@ List of Available Rules
      | Default value: ``[]``
 
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\BinaryOperatorSpacesFixer <./../src/Fixer/Operator/BinaryOperatorSpacesFixer.php>`_
 -  `blank_lines_before_namespace <./rules/namespace_notation/blank_lines_before_namespace.rst>`_

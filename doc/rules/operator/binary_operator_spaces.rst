@@ -12,7 +12,7 @@ Configuration
 
 Default fix strategy.
 
-Allowed values: ``'align'``, ``'align_by_scope'``, ``'align_single_space'``, ``'align_single_space_by_scope'``, ``'align_single_space_minimal'``, ``'align_single_space_minimal_by_scope'``, ``'no_space'``, ``'single_space'``, ``'at_least_single_space'`` and ``null``
+Allowed values: ``'align'``, ``'align_by_scope'``, ``'align_single_space'``, ``'align_single_space_by_scope'``, ``'align_single_space_minimal'``, ``'align_single_space_minimal_by_scope'``, ``'at_least_single_space'``, ``'no_space'``, ``'single_space'`` and ``null``
 
 Default value: ``'single_space'``
 
@@ -244,28 +244,23 @@ With configuration: ``['operators' => ['=>' => 'align_single_space_minimal_by_sc
    +    "baz"           => 1,
     ];
 
-Example #13
-~~~~~~~~~~~
-
-With configuration: ``['default' => 'at_least_single_space']``.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-    $array = [
-        "foo"            =>   1,
-   -    "baaaaaaaaaaar"=>  11,
-   +    "baaaaaaaaaaar" =>  11,
-    ];
-
 Rule sets
 ---------
 
 The rule is part of the following rule sets:
 
+- `@PER <./../../ruleSets/PER.rst>`_ with config:
+
+  ``['default' => 'at_least_single_space']``
+
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+
+  ``['default' => 'at_least_single_space']``
+
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
+
+  ``['default' => 'at_least_single_space']``
+
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
-- `@PRS-12 <./../../ruleSets/PSR12.rst>`_
 
