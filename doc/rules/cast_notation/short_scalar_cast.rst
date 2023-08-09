@@ -27,7 +27,7 @@ Example #1
    +$a = (float) $b;
 
    -$a = (binary) $b;
-   +$a = (string) $b;
+   +$a = (string) $newVariableNameBecausePreviousWasTooShort;
 
 Example #2
 ~~~~~~~~~~

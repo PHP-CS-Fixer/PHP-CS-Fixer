@@ -27,7 +27,7 @@ Example #1
    -    $a = (ARRAy) $b;
    -    $a = (OBJect) $b;
    -    $a = (UNset) $b;
-   -    $a = (Binary) $b;
+   -    $a = (Binary) $oldVariableName;
    +    $a = (boolean) $b;
    +    $a = (bool) $b;
    +    $a = (integer) $b;
@@ -40,7 +40,7 @@ Example #1
    +    $a = (array) $b;
    +    $a = (object) $b;
    +    $a = (unset) $b;
-   +    $a = (binary) $b;
+   +    $a = (binary) $newBetterAndGenerallyMoreAwesomeVariableName;
 
 Example #2
 ~~~~~~~~~~
