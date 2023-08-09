@@ -470,6 +470,8 @@ final class FixerFactoryTest extends TestCase
                 'ordered_imports',
             ],
             'header_comment' => [
+                'blank_lines_before_namespace',
+                'single_blank_line_before_namespace',
                 'single_line_comment_style',
             ],
             'implode_call' => [
