@@ -155,8 +155,20 @@ abstract class AbstractFixerTestCase extends TestCase
                 $configSamplesProvided['default'] = true;
             }
 
-            if ($sample instanceof VersionSpecificCodeSampleInterface && !$sample->isSuitableFor(\PHP_VERSION_ID)) {
-                continue;
+            if ($sample instanceof VersionSpecificCodeSampleInterface) {
+                $supportedPhpVersions = [7_04_00, 8_00_00, 8_01_00, 8_02_00];
+
+                $hasSuitableSupportedVersion = false;
+                foreach ($supportedPhpVersions as $version) {
+                    if ($sample->isSuitableFor($version)) {
+                        $hasSuitableSupportedVersion = true;
+                    }
+                }
+                self::assertTrue($hasSuitableSupportedVersion, 'Version specific code sample must be suitable for at least 1 supported PHP version.');
+
+                if (!$sample->isSuitableFor(\PHP_VERSION_ID)) {
+                    continue;
+                }
             }
 
             if ($fixerIsConfigurable) {
