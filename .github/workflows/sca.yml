@@ -121,9 +121,9 @@ jobs:
         if: ${{ env.CHANGED_PHP_FILES }}
         run: |
           if [ '${{ github.event_name }}' == 'pull_request' ]; then
-            ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | grep -v /Fixtures/ | xargs | sed 's/ /,/g'` github ./dev-tools/mess-detector/phpmd.xml
+            ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | grep -v /Fixtures/ | xargs | sed 's/ /,/g'` github ./dev-tools/mess-detector/phpmd.xml --baseline-file ./dev-tools/mess-detector/phpmd.baseline.xml
           else
-            ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | grep -v /Fixtures/ | xargs | sed 's/ /,/g'` ansi ./dev-tools/mess-detector/phpmd.xml
+            ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | grep -v /Fixtures/ | xargs | sed 's/ /,/g'` ansi ./dev-tools/mess-detector/phpmd.xml --baseline-file ./dev-tools/mess-detector/phpmd.baseline.xml
           fi
 
       - name: Check - ensure test files are not present in the archive
