@@ -2,7 +2,7 @@
 set -eu
 
 files_with_trailing_spaces=$(
-    git grep -EIn "\\s$" \
+    git grep -n "\\s$" \
         ':!doc/rules/*' \
         ':!tests/Fixtures/*' \
     | sort -fh
