@@ -97,6 +97,8 @@
         "qa": "@quality-assurance",
         "quality-assurance": [
             "Composer\\Config::disableProcessTimeout",
+            "@install-tools --quiet",
+            "@normalize",
             "@sa",
             "@test"
         ],
