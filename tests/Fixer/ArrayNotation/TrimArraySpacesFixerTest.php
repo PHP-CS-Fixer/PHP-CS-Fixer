@@ -462,5 +462,24 @@ function a()
     yield [ "a" => 1, "b" => 2 ];
 }',
         ];
+
+        yield 'array destructuring' => [
+            "<?php ['url' => \$url] = \$data;",
+            "<?php [                  'url' => \$url                         ] = \$data;",
+        ];
+
+        yield 'array destructuring with comments' => [
+            "<?php [/* foo */ 'url' => \$url /* bar */] = \$data;",
+            "<?php [     /* foo */ 'url' => \$url /* bar */     ] = \$data;",
+        ];
+
+        yield 'multiline array destructuring' => [
+            '<?php
+    [
+        \'url\' => $url,
+        \'token\' => $token,
+    ] = $data;
+',
+        ];
     }
 }
