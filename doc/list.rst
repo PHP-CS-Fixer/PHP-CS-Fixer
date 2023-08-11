@@ -886,6 +886,14 @@ List of Available Rules
 
    Transforms imported FQCN parameters and return types in function arguments to short version.
 
+   Configuration options:
+
+   - | ``no_namespace_backslash``
+     | Whether FQCN is prefixed with backslash even when in no/global namespace.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+
+
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Import\\FullyQualifiedStrictTypesFixer <./../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php>`_

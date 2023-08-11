@@ -26,10 +26,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, bool> $config
+     *
      * @dataProvider provideNewLogicCases
      */
-    public function testNewLogic(string $expected, ?string $input = null): void
+    public function testNewLogic(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -39,6 +42,12 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
             '<?php
 namespace Foo\Bar;
 function test(\Foo\Bar $x) {}',
+        ];
+
+        yield 'reserved type' => [
+            '<?php
+
+function test(int $x): void {}',
         ];
 
         yield 'namespace cases' => [
@@ -86,6 +95,18 @@ namespace A\B\C\D
         yield 'simple use with global' => [
             '<?php use A\Exception; function foo(Exception $e, \Exception $e2) {}',
             '<?php use A\Exception; function foo(\A\Exception $e, \Exception $e2) {}',
+        ];
+
+        yield 'no backslash with global' => [
+            '<?php use A\Exception; function foo(Exception $e, Foo $e2) {}',
+            '<?php use A\Exception; function foo(A\Exception $e, \Foo $e2) {}',
+            ['no_namespace_backslash' => false],
+        ];
+
+        yield 'backslash must be kept when conflicts with other use with global' => [
+            '<?php use A\Exception; function foo(Exception $e, \Exception $e2) {}',
+            null,
+            ['no_namespace_backslash' => false],
         ];
 
         yield 'simple use as' => [
@@ -576,11 +597,11 @@ class SomeClass
 }',
         ];
 
-        yield 'Test reference' => [
-            '<?php
-function withReference(Exception &$e) {}',
+        yield 'Test reference in global namespace without use' => [
             '<?php
 function withReference(\Exception &$e) {}',
+            '<?php
+function withReference(Exception &$e) {}',
         ];
 
         yield 'Test reference with use' => [
@@ -684,23 +705,23 @@ class Two
         ];
 
         yield [
-            '<?php function foo(A|B|C $x) {}',
             '<?php function foo(\A|\B|\C $x) {}',
+            '<?php function foo(A|B|C $x) {}',
         ];
 
         yield [
-            '<?php function foo(): A|B|C {}',
             '<?php function foo(): \A|\B|\C {}',
+            '<?php function foo(): A|B|C {}',
         ];
 
         yield 'aaa' => [
-            '<?php function foo(): A | B | C {}',
             '<?php function foo(): \A | \B | \C {}',
+            '<?php function foo(): A | B | C {}',
         ];
 
         yield [
-            '<?php function f(): Foo|Bar|A\B\C {}',
-            '<?php function f(): Foo|\Bar|\A\B\C {}',
+            '<?php function f(): \Foo|\Bar|\A\B\C|\A\B {}',
+            '<?php function f(): \Foo|Bar|A\B\C|\A\B {}',
         ];
     }
 
@@ -717,8 +738,17 @@ class Two
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php function f(): Foo&Bar & A\B\C {}',
+            '<?php function f(): \Foo&\Bar & \A\B\C {}',
             '<?php function f(): Foo&\Bar & \A\B\C {}',
+        ];
+
+        yield 'union/intersect param in global namespace without use' => [
+            '<?php
+function foo(\X|\Y $a, \X&\Y $b) {}
+function bar(\X|\Y $a, \X&\Y $b) {}',
+            '<?php
+function foo(\X|\Y $a, \X&\Y $b) {}
+function bar(X|Y $a, X&Y $b) {}',
         ];
 
         yield [
@@ -728,9 +758,9 @@ use Foo\Bar\Baz;
 
 class SomeClass
 {
-    public function doSomething(Bar $foo): Foo\Bar\Ba3{}
-    public function doSomethingMore(Bar|B $foo): Baz{}
-    public function doSomethingElse(Bar&A\Z $foo): Baz{}
+    public function doSomething(Bar $foo): \Foo\Bar\Ba3{}
+    public function doSomethingMore(Bar|\B $foo): Baz{}
+    public function doSomethingElse(Bar&\A\Z $foo): Baz{}
 }',
             '<?php
 use Foo\Bar;
@@ -738,9 +768,9 @@ use Foo\Bar\Baz;
 
 class SomeClass
 {
-    public function doSomething(\Foo\Bar $foo): \Foo\Bar\Ba3{}
+    public function doSomething(\Foo\Bar $foo): Foo\Bar\Ba3{}
     public function doSomethingMore(\Foo\Bar|B $foo): \Foo\Bar\Baz{}
-    public function doSomethingElse(\Foo\Bar&\A\Z $foo): \Foo\Bar\Baz{}
+    public function doSomethingElse(\Foo\Bar&A\Z $foo): \Foo\Bar\Baz{}
 }',
         ];
     }
@@ -757,9 +787,29 @@ class SomeClass
 
     public static function provideFix82Cases(): iterable
     {
+        yield 'simple param in global namespace without use' => [
+            '<?php
+function foo(\X $x, \Y $y, int $z) {}
+function bar(\X $x, \Y $y, true $z) {}',
+            '<?php
+function foo(\X $x, \Y $y, int $z) {}
+function bar(X $x, Y $y, true $z) {}',
+        ];
+
+        yield 'simple return in global namespace without use' => [
+            '<?php
+function foo(): \X {}
+function bar(): \Y {}
+function x(): never {}',
+            '<?php
+function foo(): \X {}
+function bar(): Y {}
+function x(): never {}',
+        ];
+
         yield [
-            '<?php function foo((A&B)|(x&y&Ze)|int|null $x) {}',
             '<?php function foo((\A&\B)|(\x&\y&\Ze)|int|null $x) {}',
+            '<?php function foo((A&B)|(x&y&Ze)|int|null $x) {}',
         ];
     }
 }

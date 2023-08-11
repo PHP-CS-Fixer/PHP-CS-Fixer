@@ -8,13 +8,14 @@ Integration of fixers: fully_qualified_strict_types,no_superfluous_phpdoc_tags.
 /**
  * @param bool $expected
  */
-function testSomething(Foo $foo, $expected) {}
+function testSomething(\Foo $foo, \Bar $bar, $expected) {}
 
 --INPUT--
 <?php
 // No namespace
 /**
  * @param Foo  $foo
+ * @param \Bar $bar
  * @param bool $expected
  */
-function testSomething(\Foo $foo, $expected) {}
+function testSomething(\Foo $foo, Bar $bar, $expected) {}

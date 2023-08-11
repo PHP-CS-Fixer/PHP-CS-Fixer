@@ -51,7 +51,7 @@ fsync($fp);
 class TestNewWithInitialiers
 {
     public function __construct(
-        private Logger $logger = new NullLogger(),
+        private \Logger $logger = new NullLogger(),
     ) {}
 }
 
