@@ -154,11 +154,9 @@ final class FixerDocumentGenerator
                     );
                 } else {
                     $allowedKind = 'Allowed values';
-                    $allowed = array_map(static function ($value): string {
-                        return $value instanceof AllowedValueSubset
-                            ? 'a subset of ``'.Utils::toString($value->getAllowedValues()).'``'
-                            : '``'.Utils::toString($value).'``';
-                    }, $allowed);
+                    $allowed = array_map(static fn ($value): string => $value instanceof AllowedValueSubset
+                        ? 'a subset of ``'.Utils::toString($value->getAllowedValues()).'``'
+                        : '``'.Utils::toString($value).'``', $allowed);
                 }
 
                 $allowed = Utils::naturalLanguageJoin($allowed, '');

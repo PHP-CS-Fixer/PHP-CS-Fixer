@@ -289,10 +289,7 @@ final class ProjectCodeTest extends TestCase
 
             $methods = array_filter(
                 $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
-                static function (\ReflectionMethod $reflectionMethod) use ($reflectionClass): bool {
-                    return $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName()
-                        && str_starts_with($reflectionMethod->getName(), 'provide');
-                }
+                static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName() && str_starts_with($reflectionMethod->getName(), 'provide')
             );
 
             foreach ($methods as $method) {
@@ -738,15 +735,13 @@ final class ProjectCodeTest extends TestCase
         ;
 
         $classes = array_map(
-            static function (SplFileInfo $file): string {
-                return sprintf(
-                    '%s\\%s%s%s',
-                    'PhpCsFixer',
-                    strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
-                    '' !== $file->getRelativePath() ? '\\' : '',
-                    $file->getBasename('.'.$file->getExtension())
-                );
-            },
+            static fn (SplFileInfo $file): string => sprintf(
+                '%s\\%s%s%s',
+                'PhpCsFixer',
+                strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
+                '' !== $file->getRelativePath() ? '\\' : '',
+                $file->getBasename('.'.$file->getExtension())
+            ),
             iterator_to_array($finder, false)
         );
 
@@ -776,14 +771,12 @@ final class ProjectCodeTest extends TestCase
         ;
 
         $classes = array_map(
-            static function (SplFileInfo $file): string {
-                return sprintf(
-                    'PhpCsFixer\\Tests\\%s%s%s',
-                    strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
-                    '' !== $file->getRelativePath() ? '\\' : '',
-                    $file->getBasename('.'.$file->getExtension())
-                );
-            },
+            static fn (SplFileInfo $file): string => sprintf(
+                'PhpCsFixer\\Tests\\%s%s%s',
+                strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
+                '' !== $file->getRelativePath() ? '\\' : '',
+                $file->getBasename('.'.$file->getExtension())
+            ),
             iterator_to_array($finder, false)
         );
 
