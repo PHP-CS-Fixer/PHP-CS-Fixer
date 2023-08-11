@@ -99,6 +99,8 @@
             "Composer\\Config::disableProcessTimeout",
             "@install-tools --quiet",
             "@normalize",
+            "@self-check",
+            "@mess-detector",
             "@sa",
             "@test"
         ],
