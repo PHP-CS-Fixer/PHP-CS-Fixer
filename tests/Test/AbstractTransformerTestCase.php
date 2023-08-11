@@ -123,7 +123,7 @@ abstract class AbstractTransformerTestCase extends TestCase
                 $tokens,
                 array_map(
                     static fn ($kindOrPrototype) => \is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype,
-                    array_unique(array_merge($observedKindsOrPrototypes, $expectedTokens))
+                    array_unique([...$observedKindsOrPrototypes, ...$expectedTokens])
                 )
             ),
             'Number of expected tokens does not match actual token count.'

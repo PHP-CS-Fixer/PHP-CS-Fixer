@@ -385,10 +385,10 @@ interface Bar
 
         foreach ($types as $i => $type) {
             if (\is_array($type)) {
-                $newTokens = array_merge(
-                    $newTokens,
-                    $this->createTypeDeclarationTokens($type, '&', true)
-                );
+                $newTokens = [
+                    ...$newTokens,
+                    ...$this->createTypeDeclarationTokens($type, '&', true),
+                ];
             } elseif (isset($specialTypes[$type])) {
                 $newTokens[] = new Token($specialTypes[$type]);
             } else {

@@ -47,10 +47,10 @@ final class CiConfigurationTest extends TestCase
             $supportedMinPhp = 8;
         }
 
-        $supportedVersions = array_merge(
-            $supportedVersions,
-            self::generateMinorVersionsRange($supportedMinPhp, $supportedMaxPhp)
-        );
+        $supportedVersions = [
+            ...$supportedVersions,
+            ...self::generateMinorVersionsRange($supportedMinPhp, $supportedMaxPhp),
+        ];
 
         self::assertTrue(\count($supportedVersions) > 0);
 
