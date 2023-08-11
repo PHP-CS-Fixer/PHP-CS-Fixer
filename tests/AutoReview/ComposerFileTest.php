@@ -26,15 +26,15 @@ use PHPUnit\Framework\TestCase;
  */
 final class ComposerFileTest extends TestCase
 {
-    public function testScriptAreHavingDescriptions(): void
+    public function testScriptsHaveDescriptions(): void
     {
         $composerJsonContent = file_get_contents(__DIR__.'/../../composer.json');
-        $composerJson = json_decode($composerJsonContent, true);
+        $composerJson = json_decode($composerJsonContent, true, 512, JSON_THROW_ON_ERROR);
 
         $scripts = array_keys($composerJson['scripts']);
         $descriptions = array_keys($composerJson['scripts-descriptions']);
 
         self::assertSame([], array_diff($scripts, $descriptions), 'There should be no scripts with missing description.');
-        self::assertSame([], array_diff($descriptions, $scripts), 'There should be no description for not defined script.');
+        self::assertSame([], array_diff($descriptions, $scripts), 'There should be no superfluous description for not defined scripts.');
     }
 }
