@@ -597,11 +597,11 @@ class SomeClass
 }',
         ];
 
-        yield 'Test reference in global namespace without use' => [
-            '<?php
-function withReference(\Exception &$e) {}',
+        yield 'Test reference' => [
             '<?php
 function withReference(Exception &$e) {}',
+            '<?php
+function withReference(\Exception &$e) {}',
         ];
 
         yield 'Test reference with use' => [
@@ -705,23 +705,23 @@ class Two
         ];
 
         yield [
-            '<?php function foo(\A|\B|\C $x) {}',
             '<?php function foo(A|B|C $x) {}',
+            '<?php function foo(\A|\B|\C $x) {}',
         ];
 
         yield [
-            '<?php function foo(): \A|\B|\C {}',
             '<?php function foo(): A|B|C {}',
+            '<?php function foo(): \A|\B|\C {}',
         ];
 
         yield 'aaa' => [
-            '<?php function foo(): \A | \B | \C {}',
             '<?php function foo(): A | B | C {}',
+            '<?php function foo(): \A | \B | \C {}',
         ];
 
         yield [
-            '<?php function f(): \Foo|\Bar|\A\B\C|\A\B {}',
-            '<?php function f(): \Foo|Bar|A\B\C|\A\B {}',
+            '<?php function f(): Foo|Bar|A\B\C {}',
+            '<?php function f(): Foo|\Bar|\A\B\C {}',
         ];
     }
 
@@ -738,7 +738,7 @@ class Two
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php function f(): \Foo&\Bar & \A\B\C {}',
+            '<?php function f(): Foo&Bar & A\B\C {}',
             '<?php function f(): Foo&\Bar & \A\B\C {}',
         ];
 
@@ -758,9 +758,9 @@ use Foo\Bar\Baz;
 
 class SomeClass
 {
-    public function doSomething(Bar $foo): \Foo\Bar\Ba3{}
-    public function doSomethingMore(Bar|\B $foo): Baz{}
-    public function doSomethingElse(Bar&\A\Z $foo): Baz{}
+    public function doSomething(Bar $foo): Foo\Bar\Ba3{}
+    public function doSomethingMore(Bar|B $foo): Baz{}
+    public function doSomethingElse(Bar&A\Z $foo): Baz{}
 }',
             '<?php
 use Foo\Bar;
@@ -768,9 +768,9 @@ use Foo\Bar\Baz;
 
 class SomeClass
 {
-    public function doSomething(\Foo\Bar $foo): Foo\Bar\Ba3{}
+    public function doSomething(\Foo\Bar $foo): \Foo\Bar\Ba3{}
     public function doSomethingMore(\Foo\Bar|B $foo): \Foo\Bar\Baz{}
-    public function doSomethingElse(\Foo\Bar&A\Z $foo): \Foo\Bar\Baz{}
+    public function doSomethingElse(\Foo\Bar&\A\Z $foo): \Foo\Bar\Baz{}
 }',
         ];
     }
@@ -808,8 +808,8 @@ function x(): never {}',
         ];
 
         yield [
-            '<?php function foo((\A&\B)|(\x&\y&\Ze)|int|null $x) {}',
             '<?php function foo((A&B)|(x&y&Ze)|int|null $x) {}',
+            '<?php function foo((\A&\B)|(\x&\y&\Ze)|int|null $x) {}',
         ];
     }
 }
