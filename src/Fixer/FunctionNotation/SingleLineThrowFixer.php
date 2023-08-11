@@ -140,7 +140,7 @@ final class SingleLineThrowFixer extends AbstractFixer
         static $tokens = null;
 
         if (null === $tokens) {
-            $tokens = array_merge(self::REMOVE_WHITESPACE_AFTER_TOKENS, self::REMOVE_WHITESPACE_AROUND_TOKENS);
+            $tokens = [...self::REMOVE_WHITESPACE_AFTER_TOKENS, ...self::REMOVE_WHITESPACE_AROUND_TOKENS];
         }
 
         return $token->equalsAny($tokens) || $token->isObjectOperator();
@@ -151,7 +151,7 @@ final class SingleLineThrowFixer extends AbstractFixer
         static $tokens = null;
 
         if (null === $tokens) {
-            $tokens = array_merge(self::REMOVE_WHITESPACE_AROUND_TOKENS, self::REMOVE_WHITESPACE_BEFORE_TOKENS);
+            $tokens = [...self::REMOVE_WHITESPACE_AROUND_TOKENS, ...self::REMOVE_WHITESPACE_BEFORE_TOKENS];
         }
 
         return $token->equalsAny($tokens) || $token->isObjectOperator();

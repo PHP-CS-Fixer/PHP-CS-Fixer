@@ -265,11 +265,11 @@ yield  from  baz();
 
     public function isCandidate(Tokens $tokens): bool
     {
-        $tokenKinds = array_merge(
-            array_values($this->fixTokenMapContainASingleSpace),
-            array_values($this->fixTokenMapPrecededByASingleSpace),
-            array_values($this->fixTokenMapFollowedByASingleSpace),
-        );
+        $tokenKinds = [
+            ...array_values($this->fixTokenMapContainASingleSpace),
+            ...array_values($this->fixTokenMapPrecededByASingleSpace),
+            ...array_values($this->fixTokenMapFollowedByASingleSpace),
+        ];
 
         return $tokens->isAnyTokenKindsFound($tokenKinds) && !$tokens->hasAlternativeSyntax();
     }

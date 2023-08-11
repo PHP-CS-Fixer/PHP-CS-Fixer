@@ -209,13 +209,11 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
      */
     private function getAllowedKinds(): array
     {
-        return array_merge(
-            [
-                T_DNUMBER, T_LNUMBER, T_VARIABLE, T_STRING, T_CONSTANT_ENCAPSED_STRING, T_DOUBLE_CAST,
-                T_INT_CAST, T_INC, T_DEC, T_NS_SEPARATOR, T_WHITESPACE, T_DOUBLE_COLON, T_LINE, T_COMMENT, T_DOC_COMMENT,
-                CT::T_NAMESPACE_OPERATOR,
-            ],
-            Token::getObjectOperatorKinds()
-        );
+        return [
+            T_DNUMBER, T_LNUMBER, T_VARIABLE, T_STRING, T_CONSTANT_ENCAPSED_STRING, T_DOUBLE_CAST,
+            T_INT_CAST, T_INC, T_DEC, T_NS_SEPARATOR, T_WHITESPACE, T_DOUBLE_COLON, T_LINE, T_COMMENT, T_DOC_COMMENT,
+            CT::T_NAMESPACE_OPERATOR,
+            ...Token::getObjectOperatorKinds(),
+        ];
     }
 }

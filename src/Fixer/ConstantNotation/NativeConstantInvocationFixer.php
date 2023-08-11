@@ -125,7 +125,7 @@ namespace {
             $getDefinedConstants = get_defined_constants(true);
             unset($getDefinedConstants['user']);
             foreach ($getDefinedConstants as $constants) {
-                $constantsToEscape = array_merge($constantsToEscape, array_keys($constants));
+                $constantsToEscape = [...$constantsToEscape, ...array_keys($constants)];
             }
         }
 
