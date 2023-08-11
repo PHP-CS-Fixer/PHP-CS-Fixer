@@ -89,7 +89,7 @@
         "dev-tools:docs": "@php dev-tools/doc.php",
         "dev-tools:install": "@composer -d dev-tools install",
         "docs": "@dev-tools:docs",
-        "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi phpmd.xml",
+        "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi dev-tools/mess-detector/phpmd.xml --exclude vendor/*,dev-tools/vendor/*,dev-tools/phpstan/*,tests/Fixtures/*",
         "phpstan": "@php -d memory_limit=256M dev-tools/vendor/bin/phpstan analyse",
         "phpstan:baseline": "@php -d memory_limit=256M dev-tools/vendor/bin/phpstan analyse --generate-baseline=./dev-tools/phpstan/baseline.php",
         "qa": "@quality-assurance",
