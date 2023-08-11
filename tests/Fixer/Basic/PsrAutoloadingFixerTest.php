@@ -391,15 +391,13 @@ class PsrAutoloadingFixer {}
             }
         }
 
-        return array_map(function ($case): array {
-            return [
-                '<?php
+        return array_map(fn ($case): array => [
+            '<?php
 namespace Aaa;
 class Bar {}',
-                null,
-                self::getTestFile($case),
-            ];
-        }, $cases);
+            null,
+            self::getTestFile($case),
+        ], $cases);
     }
 
     public static function provideAnonymousClassCases(): iterable
