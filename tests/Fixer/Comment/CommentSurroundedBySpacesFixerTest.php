@@ -16,7 +16,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixerCustomFixers\Fixer\CommentSurroundedBySpacesFixer
+ * @covers \PhpCsFixer\Fixer\Comment\CommentSurroundedBySpacesFixer
  */
 final class CommentSurroundedBySpacesFixerTest extends AbstractFixerTestCase
 {
