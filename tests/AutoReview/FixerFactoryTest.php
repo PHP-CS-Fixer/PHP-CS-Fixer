@@ -655,6 +655,7 @@ final class FixerFactoryTest extends TestCase
                 'no_extra_blank_lines',
                 'no_whitespace_in_blank_line',
                 'single_line_comment_style',
+                'single_line_empty_body',
             ],
             'no_useless_sprintf' => [
                 'method_argument_space',

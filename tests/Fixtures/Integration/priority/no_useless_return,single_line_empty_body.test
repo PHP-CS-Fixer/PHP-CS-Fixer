@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: no_useless_return,single_line_empty_body.
+--RULESET--
+{"no_useless_return": true, "single_line_empty_body": true}
+--EXPECT--
+<?php
+function foo() {}
+
+--INPUT--
+<?php
+function foo()
+{
+    return;
+}
