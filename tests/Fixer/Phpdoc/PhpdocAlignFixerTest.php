@@ -1285,12 +1285,12 @@ class Foo {}
         ];
 
         yield 'CUSTOM tags' => [
-            ['tags' => ['param', 'xxxxxxxxxxxxx']],
+            ['tags' => ['param', 'xxx-xxxxxxxxx']],
             '<?php
     /**
      * @param         EngineInterface $templating
      * @param         string          $format
-     * @xxxxxxxxxxxxx int             $code       An HTTP response status code
+     * @xxx-xxxxxxxxx int             $code       An HTTP response status code
      * @param         bool            $debug
      * @param         mixed           &$reference A parameter passed by reference
      */
@@ -1300,7 +1300,7 @@ class Foo {}
     /**
      * @param  EngineInterface $templating
      * @param string      $format
-     * @xxxxxxxxxxxxx  int  $code       An HTTP response status code
+     * @xxx-xxxxxxxxx  int  $code       An HTTP response status code
      * @param    bool         $debug
      * @param  mixed    &$reference     A parameter passed by reference
      */
