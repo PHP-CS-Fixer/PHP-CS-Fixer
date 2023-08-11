@@ -15,11 +15,11 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixerCustomFixers\Fixer\AbstractFixer;
 
-final class CommentSurroundedBySpacesFixer extends AbstractFixer
+final class CommentSurroundedBySpacesFixer extends AbstractFixerTestCase
 {
     public function getDefinition(): FixerDefinitionInterface
     {
