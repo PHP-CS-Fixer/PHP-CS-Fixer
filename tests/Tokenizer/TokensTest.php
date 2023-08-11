@@ -1895,7 +1895,7 @@ $bar;',
             $token = $tokens[$index];
             $expectedPrototype = $expectedToken->getPrototype();
 
-            self::assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype), $token->toJson()));
+            self::assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype, JSON_THROW_ON_ERROR), $token->toJson()));
         }
     }
 }

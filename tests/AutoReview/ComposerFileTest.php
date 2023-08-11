@@ -29,7 +29,7 @@ final class ComposerFileTest extends TestCase
     public function testScriptAreHavingDescriptions(): void
     {
         $composerJsonContent = file_get_contents(__DIR__.'/../../composer.json');
-        $composerJson = json_decode($composerJsonContent, true);
+        $composerJson = json_decode($composerJsonContent, true, 512, JSON_THROW_ON_ERROR);
 
         $scripts = array_keys($composerJson['scripts']);
         $descriptions = array_keys($composerJson['scripts-descriptions']);

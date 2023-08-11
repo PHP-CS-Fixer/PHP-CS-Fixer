@@ -1036,7 +1036,7 @@ class Tokens extends \SplFixedArray
             $this->rewind();
         }
 
-        return json_encode($output, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
+        return json_encode($output, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
     }
 
     /**

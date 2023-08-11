@@ -94,7 +94,7 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
 
         file_put_contents(
             $tmpPath.'/composer.json',
-            json_encode($initialComposerFileState, JSON_PRETTY_PRINT)
+            json_encode($initialComposerFileState, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT)
         );
 
         self::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
@@ -136,7 +136,7 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
 
         file_put_contents(
             $tmpPath.'/composer.json',
-            json_encode($initialComposerFileState, JSON_PRETTY_PRINT)
+            json_encode($initialComposerFileState, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT)
         );
 
         $cwd = __DIR__.'/../..';

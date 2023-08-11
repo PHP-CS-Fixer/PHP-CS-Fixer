@@ -114,7 +114,7 @@ final class CacheTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $json = json_encode($data);
+        $json = json_encode($data, JSON_THROW_ON_ERROR);
 
         Cache::fromJson($json);
     }
