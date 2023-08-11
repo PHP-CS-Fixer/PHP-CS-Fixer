@@ -174,36 +174,25 @@ class SomeClass
                 continue;
             }
 
-            if (!$withLeadingBackslash) {
-                if ('' === $namespaceName && true === $this->configuration['no_namespace_backslash']) {
-                    // if we are in the global namespace and the type is not imported enforce the leading '\'
-                    // to unify CS with namespaced files
-                    if (!isset($uses[$typeNameLower])) {
-                        foreach ($uses as $useShortName) {
-                            if (strtolower($useShortName) === $typeNameLower) {
-                                continue 2;
-                            }
-                        }
-
-                        $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($typeName, true));
+            if ('' === $namespaceName) {
+                // if we are in the global namespace and the type is not imported the leading '\' can be removed (TODO nice config candidate)
+                foreach ($uses as $useShortName) {
+                    if (strtolower($useShortName) === $typeNameLower) {
+                        continue 2;
                     }
                 }
 
-                continue; // Not a FQCN, no shorter type possible
-            }
-
-            if ('' === $namespaceName) {
                 if (true === $this->configuration['no_namespace_backslash']) {
-                    // if we are in the global namespace and the type is not imported keep the leading '\'
+                    // if we are in the global namespace and the type is not imported enforce the leading '\'
                     // to unify CS with namespaced files
-                } else {
-                    // if we are in the global namespace and the type is not imported the leading '\' can be removed (TODO nice config candidate)
-                    foreach ($uses as $useShortName) {
-                        if (strtolower($useShortName) === $typeNameLower) {
-                            continue 2;
-                        }
+                    if (!$withLeadingBackslash && !isset($uses[$typeNameLower])) {
+                        $tokens->overrideRange(
+                            $startIndex,
+                            $endIndex,
+                            $this->namespacedStringToTokens($typeName, true)
+                        );
                     }
-
+                } else {
                     $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($typeName));
                 }
             } elseif (!str_contains($typeName, '\\')) {
