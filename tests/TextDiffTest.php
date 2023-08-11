@@ -78,7 +78,7 @@ final class TextDiffTest extends TestCase
             yield [$expected, $format, false];
         }
 
-        $expected = substr(json_encode($expected), 1, -1);
+        $expected = substr(json_encode($expected, JSON_THROW_ON_ERROR), 1, -1);
 
         yield [$expected, 'json', true];
 

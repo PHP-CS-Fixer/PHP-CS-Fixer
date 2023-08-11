@@ -45,6 +45,6 @@ final class JsonReporter implements ReporterInterface
             ];
         }
 
-        return json_encode($json, JSON_PRETTY_PRINT);
+        return json_encode($json, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
     }
 }

@@ -54,7 +54,7 @@ final class JsonReporter implements ReporterInterface
             'memory' => round($reportSummary->getMemory() / 1024 / 1024, 3),
         ];
 
-        $json = json_encode($json);
+        $json = json_encode($json, JSON_THROW_ON_ERROR);
 
         return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($json) : $json;
     }
