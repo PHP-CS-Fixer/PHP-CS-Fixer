@@ -39,11 +39,11 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after ClassDefinitionFixer, CurlyBracesPositionFixer.
+     * Must run after ClassDefinitionFixer, CurlyBracesPositionFixer, NoUselessReturnFixer.
      */
     public function getPriority(): int
     {
-        return -3;
+        return -19;
     }
 
     public function isCandidate(Tokens $tokens): bool
