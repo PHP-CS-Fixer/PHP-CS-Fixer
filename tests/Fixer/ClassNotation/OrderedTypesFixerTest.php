@@ -707,7 +707,7 @@ try {
     }
 
     /**
-     * @dataProvider provideCaseSensitiveCases
+     * @dataProvider provideFixWithCaseSensitiveCases
      *
      * @requires PHP 8.0
      */
@@ -723,36 +723,11 @@ try {
     /**
      * @return iterable<(null|array<string, string>|string)[]|string[]>
      */
-    public static function provideCaseSensitiveCases(): iterable
+    public static function provideFixWithCaseSensitiveCases(): iterable
     {
         yield [
             "<?php\nclass Foo\n{\n    public null|AAa|Aa \$bar = null;\n}\n",
             "<?php\nclass Foo\n{\n    public Aa|AAa|null \$bar = null;\n}\n",
-        ];
-    }
-
-    /**
-     * @dataProvider provideDirectionDescendCases
-     *
-     * @requires PHP 8.0
-     */
-    public function testFixWithDirectionDescend(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure([
-            'direction' => 'descend',
-        ]);
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<(null|array<string, string>|string)[]|string[]>
-     */
-    public static function provideDirectionDescendCases(): iterable
-    {
-        yield [
-            "<?php\nclass Foo\n{\n    public null|string|int|array \$bar = null;\n}\n",
-            "<?php\nclass Foo\n{\n    public array|string|int|null \$bar = null;\n}\n",
         ];
     }
 }

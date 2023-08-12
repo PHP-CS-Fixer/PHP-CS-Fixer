@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\Phpdoc;
 
-use PhpCsFixer\AbstractOrderFixer;
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\TypeExpression;
@@ -29,39 +29,8 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class PhpdocTypesOrderFixer extends AbstractOrderFixer implements ConfigurableFixerInterface
+final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private const OPTION_SORT_ALGORITHM = 'sort_algorithm';
-
-    private const OPTION_NULL_ADJUSTMENT = 'null_adjustment';
-
-    private const NULL_ADJUSTMENT_ALWAYS_FIRST = 'always_first';
-
-    private const NULL_ADJUSTMENT_ALWAYS_LAST = 'always_last';
-
-    private const NULL_ADJUSTMENT_NONE = 'none';
-
-    /**
-     * Array of supported sort orders in configuration.
-     *
-     * @var string[]
-     */
-    private const SUPPORTED_SORT_ORDER_OPTIONS = [
-        AbstractOrderFixer::SORT_ORDER_ALPHA,
-        AbstractOrderFixer::SORT_ORDER_NONE,
-    ];
-
-    /**
-     * Array of supported sort orders in configuration.
-     *
-     * @var string[]
-     */
-    private const SUPPORTED_NULL_ADJUSTMENT_OPTIONS = [
-        self::NULL_ADJUSTMENT_ALWAYS_FIRST,
-        self::NULL_ADJUSTMENT_ALWAYS_LAST,
-        self::NULL_ADJUSTMENT_NONE,
-    ];
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -80,7 +49,7 @@ final class PhpdocTypesOrderFixer extends AbstractOrderFixer implements Configur
  * @param null|string $bar
  */
 ',
-                    [self::OPTION_NULL_ADJUSTMENT => self::NULL_ADJUSTMENT_ALWAYS_LAST]
+                    ['null_adjustment' => 'always_last']
                 ),
                 new CodeSample(
                     '<?php
@@ -88,7 +57,7 @@ final class PhpdocTypesOrderFixer extends AbstractOrderFixer implements Configur
  * @param null|string|int|\Foo $bar
  */
 ',
-                    [self::OPTION_SORT_ALGORITHM => AbstractOrderFixer::SORT_ORDER_ALPHA]
+                    ['sort_algorithm' => 'alpha']
                 ),
                 new CodeSample(
                     '<?php
@@ -97,8 +66,8 @@ final class PhpdocTypesOrderFixer extends AbstractOrderFixer implements Configur
  */
 ',
                     [
-                        self::OPTION_SORT_ALGORITHM => AbstractOrderFixer::SORT_ORDER_ALPHA,
-                        self::OPTION_NULL_ADJUSTMENT => self::NULL_ADJUSTMENT_ALWAYS_LAST,
+                        'sort_algorithm' => 'alpha',
+                        'null_adjustment' => 'always_last',
                     ]
                 ),
                 new CodeSample(
@@ -108,8 +77,8 @@ final class PhpdocTypesOrderFixer extends AbstractOrderFixer implements Configur
  */
 ',
                     [
-                        self::OPTION_SORT_ALGORITHM => AbstractOrderFixer::SORT_ORDER_ALPHA,
-                        self::OPTION_NULL_ADJUSTMENT => self::NULL_ADJUSTMENT_NONE,
+                        'sort_algorithm' => 'alpha',
+                        'null_adjustment' => 'none',
                     ]
                 ),
                 new CodeSample(
@@ -118,15 +87,7 @@ final class PhpdocTypesOrderFixer extends AbstractOrderFixer implements Configur
  * @param Aaa|AA $bar
  */
 ',
-                    [AbstractOrderFixer::OPTION_CASE_SENSITIVE => true]
-                ),
-                new CodeSample(
-                    '<?php
-/**
- * @param string|array|int $bar
- */
-',
-                    [AbstractOrderFixer::OPTION_DIRECTION => self::DIRECTION_DESCEND]
+                    ['case_sensitive' => true]
                 ),
             ]
         );
@@ -151,21 +112,17 @@ final class PhpdocTypesOrderFixer extends AbstractOrderFixer implements Configur
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder(self::OPTION_SORT_ALGORITHM, 'The sorting algorithm to apply.'))
-                ->setAllowedValues(self::SUPPORTED_SORT_ORDER_OPTIONS)
-                ->setDefault(AbstractOrderFixer::SORT_ORDER_ALPHA)
+            (new FixerOptionBuilder('sort_algorithm', 'The sorting algorithm to apply.'))
+                ->setAllowedValues(['alpha', 'none'])
+                ->setDefault('alpha')
                 ->getOption(),
-            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_DIRECTION, 'Which direction the types should be sorted.'))
-                ->setAllowedValues(AbstractOrderFixer::SUPPORTED_DIRECTION_OPTIONS)
-                ->setDefault(AbstractOrderFixer::DIRECTION_ASCEND)
+            (new FixerOptionBuilder('null_adjustment', 'Forces the position of `null` (overrides `sort_algorithm`).'))
+                ->setAllowedValues(['always_first', 'always_last', 'none'])
+                ->setDefault('always_first')
                 ->getOption(),
-            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_CASE_SENSITIVE, 'Whether the sorting should be case sensitive.'))
+            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
-                ->getOption(),
-            (new FixerOptionBuilder(self::OPTION_NULL_ADJUSTMENT, 'Forces the position of `null` (overrides `sort_algorithm`).'))
-                ->setAllowedValues(self::SUPPORTED_NULL_ADJUSTMENT_OPTIONS)
-                ->setDefault(self::NULL_ADJUSTMENT_ALWAYS_FIRST)
                 ->getOption(),
         ]);
     }
@@ -207,11 +164,6 @@ final class PhpdocTypesOrderFixer extends AbstractOrderFixer implements Configur
         }
     }
 
-    protected function getSortOrderOptionName(): string
-    {
-        return self::OPTION_SORT_ALGORITHM;
-    }
-
     /**
      * @return string[]
      */
@@ -226,20 +178,20 @@ final class PhpdocTypesOrderFixer extends AbstractOrderFixer implements Configur
                 $lowerCaseA = strtolower($a);
                 $lowerCaseB = strtolower($b);
 
-                if (self::NULL_ADJUSTMENT_NONE !== $this->configuration[self::OPTION_NULL_ADJUSTMENT]) {
+                if ('none' !== $this->configuration['null_adjustment']) {
                     if ('null' === $lowerCaseA && 'null' !== $lowerCaseB) {
-                        return self::NULL_ADJUSTMENT_ALWAYS_LAST === $this->configuration[self::OPTION_NULL_ADJUSTMENT]
-                            ? 1
-                            : -1;
+                        return 'always_last' === $this->configuration['null_adjustment'] ? 1 : -1;
                     }
                     if ('null' !== $lowerCaseA && 'null' === $lowerCaseB) {
-                        return self::NULL_ADJUSTMENT_ALWAYS_LAST === $this->configuration[self::OPTION_NULL_ADJUSTMENT]
-                            ? -1
-                            : 1;
+                        return 'always_last' === $this->configuration['null_adjustment'] ? -1 : 1;
                     }
                 }
 
-                return $this->getScoreWithSortAlgorithm($a, $b);
+                if ('alpha' === $this->configuration['sort_algorithm']) {
+                    return $this->configuration['case_sensitive'] ? strcmp($a, $b) : strcasecmp($a, $b);
+                }
+
+                return 0;
             }
         );
 

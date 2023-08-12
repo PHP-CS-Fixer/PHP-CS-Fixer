@@ -815,34 +815,12 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithCaseSensitiveCases(): array
+    public static function provideFixWithCaseSensitiveCases(): iterable
     {
         return [
             [
                 '<?php /** @var AA|Aaa */',
                 '<?php /** @var Aaa|AA */',
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixWithDirectionDescendCases
-     */
-    public function testFixWithDirectionDescend(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure([
-            'direction' => 'descend',
-        ]);
-
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixWithDirectionDescendCases(): array
-    {
-        return [
-            [
-                '<?php /** @var string|int|array */',
-                '<?php /** @var array|string|int */',
             ],
         ];
     }

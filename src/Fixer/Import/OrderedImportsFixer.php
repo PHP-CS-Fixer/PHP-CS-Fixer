@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\Import;
 
-use PhpCsFixer\AbstractOrderFixer;
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -37,39 +37,51 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * @author Darius Matulionis <darius@matulionis.lt>
  * @author Adriano Pilger <adriano.pilger@gmail.com>
  */
-final class OrderedImportsFixer extends AbstractOrderFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
+final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
-    private const OPTION_SORT_ALGORITHM = 'sort_algorithm';
+    /**
+     * @internal
+     */
+    public const IMPORT_TYPE_CLASS = 'class';
 
-    private const OPTION_IMPORTS_ORDER = 'imports_order';
+    /**
+     * @internal
+     */
+    public const IMPORT_TYPE_CONST = 'const';
 
-    private const IMPORT_TYPE_CLASS = 'class';
+    /**
+     * @internal
+     */
+    public const IMPORT_TYPE_FUNCTION = 'function';
 
-    private const IMPORT_TYPE_CONST = 'const';
+    /**
+     * @internal
+     */
+    public const SORT_ALPHA = 'alpha';
 
-    private const IMPORT_TYPE_FUNCTION = 'function';
+    /**
+     * @internal
+     */
+    public const SORT_LENGTH = 'length';
+
+    /**
+     * @internal
+     */
+    public const SORT_NONE = 'none';
 
     /**
      * Array of supported sort types in configuration.
      *
      * @var string[]
      */
-    private const SUPPORTED_SORT_TYPES = [
-        self::IMPORT_TYPE_CLASS,
-        self::IMPORT_TYPE_CONST,
-        self::IMPORT_TYPE_FUNCTION,
-    ];
+    private const SUPPORTED_SORT_TYPES = [self::IMPORT_TYPE_CLASS, self::IMPORT_TYPE_CONST, self::IMPORT_TYPE_FUNCTION];
 
     /**
      * Array of supported sort algorithms in configuration.
      *
      * @var string[]
      */
-    private const SUPPORTED_SORT_ORDER_OPTIONS = [
-        AbstractOrderFixer::SORT_ORDER_ALPHA,
-        AbstractOrderFixer::SORT_ORDER_LENGTH,
-        AbstractOrderFixer::SORT_ORDER_NONE,
-    ];
+    private const SUPPORTED_SORT_ALGORITHMS = [self::SORT_ALPHA, self::SORT_LENGTH, self::SORT_NONE];
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -80,12 +92,8 @@ final class OrderedImportsFixer extends AbstractOrderFixer implements Configurab
                     "<?php\nuse function AAC;\nuse const AAB;\nuse AAA;\n"
                 ),
                 new CodeSample(
-                    "<?php\nuse function AAA;\nuse const AAC;\nuse AAB;\n",
-                    [self::OPTION_DIRECTION => AbstractOrderFixer::DIRECTION_DESCEND]
-                ),
-                new CodeSample(
                     "<?php\nuse function Aaa;\nuse const AA;\n",
-                    [self::OPTION_CASE_SENSITIVE => true]
+                    ['case_sensitive' => true]
                 ),
                 new CodeSample(
                     '<?php
@@ -94,7 +102,7 @@ use Bar1;
 use Acme;
 use Bar;
 ',
-                    [self::OPTION_SORT_ALGORITHM => AbstractOrderFixer::SORT_ORDER_LENGTH]
+                    ['sort_algorithm' => self::SORT_LENGTH]
                 ),
                 new CodeSample(
                     '<?php
@@ -109,8 +117,8 @@ use function CCC\AA;
 use function DDD;
 ',
                     [
-                        self::OPTION_SORT_ALGORITHM => AbstractOrderFixer::SORT_ORDER_LENGTH,
-                        self::OPTION_IMPORTS_ORDER => [
+                        'sort_algorithm' => self::SORT_LENGTH,
+                        'imports_order' => [
                             self::IMPORT_TYPE_CONST,
                             self::IMPORT_TYPE_CLASS,
                             self::IMPORT_TYPE_FUNCTION,
@@ -130,8 +138,8 @@ use function DDD;
 use function CCC\AA;
 ',
                     [
-                        self::OPTION_SORT_ALGORITHM => AbstractOrderFixer::SORT_ORDER_ALPHA,
-                        self::OPTION_IMPORTS_ORDER => [
+                        'sort_algorithm' => self::SORT_ALPHA,
+                        'imports_order' => [
                             self::IMPORT_TYPE_CONST,
                             self::IMPORT_TYPE_CLASS,
                             self::IMPORT_TYPE_FUNCTION,
@@ -151,8 +159,8 @@ use AAC;
 use Bar;
 ',
                     [
-                        self::OPTION_SORT_ALGORITHM => AbstractOrderFixer::SORT_ORDER_NONE,
-                        self::OPTION_IMPORTS_ORDER => [
+                        'sort_algorithm' => self::SORT_NONE,
+                        'imports_order' => [
                             self::IMPORT_TYPE_CONST,
                             self::IMPORT_TYPE_CLASS,
                             self::IMPORT_TYPE_FUNCTION,
@@ -228,19 +236,11 @@ use Bar;
         $supportedSortTypes = self::SUPPORTED_SORT_TYPES;
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder(self::OPTION_SORT_ALGORITHM, 'Whether the statements should be sorted alphabetically or by length, or not sorted.'))
-                ->setAllowedValues(self::SUPPORTED_SORT_ORDER_OPTIONS)
-                ->setDefault(AbstractOrderFixer::SORT_ORDER_ALPHA)
+            (new FixerOptionBuilder('sort_algorithm', 'Whether the statements should be sorted alphabetically or by length, or not sorted.'))
+                ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
+                ->setDefault(self::SORT_ALPHA)
                 ->getOption(),
-            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_DIRECTION, 'Which direction the imports should be sorted.'))
-                ->setAllowedValues(AbstractOrderFixer::SUPPORTED_DIRECTION_OPTIONS)
-                ->setDefault(AbstractOrderFixer::DIRECTION_ASCEND)
-                ->getOption(),
-            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_CASE_SENSITIVE, 'Whether the sorting should be case sensitive.'))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(false)
-                ->getOption(),
-            (new FixerOptionBuilder(self::OPTION_IMPORTS_ORDER, 'Defines the order of import types.'))
+            (new FixerOptionBuilder('imports_order', 'Defines the order of import types.'))
                 ->setAllowedTypes(['array', 'null'])
                 ->setAllowedValues([static function (?array $value) use ($supportedSortTypes): bool {
                     if (null !== $value) {
@@ -267,12 +267,11 @@ use Bar;
                 }])
                 ->setDefault(null) // @TODO set to ['class', 'function', 'const'] on 4.0
                 ->getOption(),
+            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
         ]);
-    }
-
-    protected function getSortOrderOptionName(): string
-    {
-        return self::OPTION_SORT_ALGORITHM;
     }
 
     /**
@@ -289,7 +288,9 @@ use Bar;
         $firstNamespace = str_replace('\\', ' ', $this->prepareNamespace($first['namespace']));
         $secondNamespace = str_replace('\\', ' ', $this->prepareNamespace($second['namespace']));
 
-        return $this->getScoreWithSortAlgorithm($firstNamespace, $secondNamespace);
+        return $this->configuration['case_sensitive']
+            ? strcmp($firstNamespace, $secondNamespace)
+            : strcasecmp($firstNamespace, $secondNamespace);
     }
 
     /**
@@ -305,7 +306,18 @@ use Bar;
         $firstNamespace = (self::IMPORT_TYPE_CLASS === $first['importType'] ? '' : $first['importType'].' ').$this->prepareNamespace($first['namespace']);
         $secondNamespace = (self::IMPORT_TYPE_CLASS === $second['importType'] ? '' : $second['importType'].' ').$this->prepareNamespace($second['namespace']);
 
-        return $this->getScoreWithSortAlgorithm($firstNamespace, $secondNamespace, true);
+        $firstNamespaceLength = \strlen($firstNamespace);
+        $secondNamespaceLength = \strlen($secondNamespace);
+
+        if ($firstNamespaceLength === $secondNamespaceLength) {
+            $sortResult = $this->configuration['case_sensitive']
+                ? strcmp($firstNamespace, $secondNamespace)
+                : strcasecmp($firstNamespace, $secondNamespace);
+        } else {
+            $sortResult = $firstNamespaceLength > $secondNamespaceLength ? 1 : -1;
+        }
+
+        return $sortResult;
     }
 
     private function prepareNamespace(string $namespace): string
@@ -348,9 +360,7 @@ use Bar;
                 $token = $tokens[$index];
 
                 if ($index === $endIndex || (!$group && $token->equals(','))) {
-                    if ($group
-                        && AbstractOrderFixer::SORT_ORDER_NONE !== $this->configuration[self::OPTION_SORT_ALGORITHM]
-                    ) {
+                    if ($group && self::SORT_NONE !== $this->configuration['sort_algorithm']) {
                         // if group import, sort the items within the group definition
 
                         // figure out where the list of namespace parts within the group def. starts
@@ -459,7 +469,7 @@ use Bar;
         }
 
         // Is sort types provided, sorting by groups and each group by algorithm
-        if (null !== $this->configuration[self::OPTION_IMPORTS_ORDER]) {
+        if (null !== $this->configuration['imports_order']) {
             // Grouping indices by import type.
             $groupedByTypes = [];
 
@@ -475,7 +485,7 @@ use Bar;
             // Ordering groups
             $sortedGroups = [];
 
-            foreach ($this->configuration[self::OPTION_IMPORTS_ORDER] as $type) {
+            foreach ($this->configuration['imports_order'] as $type) {
                 if (isset($groupedByTypes[$type]) && [] !== $groupedByTypes[$type]) {
                     foreach ($groupedByTypes[$type] as $startIndex => $item) {
                         $sortedGroups[$startIndex] = $item;
@@ -525,9 +535,9 @@ use Bar;
      */
     private function sortByAlgorithm(array $indices): array
     {
-        if (AbstractOrderFixer::SORT_ORDER_ALPHA === $this->configuration[self::OPTION_SORT_ALGORITHM]) {
+        if (self::SORT_ALPHA === $this->configuration['sort_algorithm']) {
             uasort($indices, [$this, 'sortAlphabetically']);
-        } elseif (AbstractOrderFixer::SORT_ORDER_LENGTH === $this->configuration[self::OPTION_SORT_ALGORITHM]) {
+        } elseif (self::SORT_LENGTH === $this->configuration['sort_algorithm']) {
             uasort($indices, [$this, 'sortByLength']);
         }
 

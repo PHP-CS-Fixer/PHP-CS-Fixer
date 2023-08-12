@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\ClassNotation;
 
-use PhpCsFixer\AbstractOrderFixer;
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -35,39 +35,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
  */
-final class OrderedTypesFixer extends AbstractOrderFixer implements ConfigurableFixerInterface
+final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private const OPTION_SORT_ALGORITHM = 'sort_algorithm';
-
-    private const OPTION_NULL_ADJUSTMENT = 'null_adjustment';
-
-    private const NULL_ADJUSTMENT_ALWAYS_FIRST = 'always_first';
-
-    private const NULL_ADJUSTMENT_ALWAYS_LAST = 'always_last';
-
-    private const NULL_ADJUSTMENT_NONE = 'none';
-
-    /**
-     * Array of supported sort orders in configuration.
-     *
-     * @var string[]
-     */
-    private const SUPPORTED_SORT_ORDER_OPTIONS = [
-        AbstractOrderFixer::SORT_ORDER_ALPHA,
-        AbstractOrderFixer::SORT_ORDER_NONE,
-    ];
-
-    /**
-     * Array of supported sort orders in configuration.
-     *
-     * @var string[]
-     */
-    private const SUPPORTED_NULL_ADJUSTMENT_OPTIONS = [
-        self::NULL_ADJUSTMENT_ALWAYS_FIRST,
-        self::NULL_ADJUSTMENT_ALWAYS_LAST,
-        self::NULL_ADJUSTMENT_NONE,
-    ];
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -93,19 +62,7 @@ interface Foo
 ',
                     new VersionSpecification(8_00_00),
                     [
-                        AbstractOrderFixer::OPTION_CASE_SENSITIVE => true,
-                    ]
-                ),
-                new VersionSpecificCodeSample(
-                    '<?php
-interface Foo
-{
-    public function bar(array|int|string $foo): int|string;
-}
-',
-                    new VersionSpecification(8_00_00),
-                    [
-                        AbstractOrderFixer::OPTION_DIRECTION => AbstractOrderFixer::DIRECTION_DESCEND,
+                        'case_sensitive' => true,
                     ]
                 ),
                 new VersionSpecificCodeSample(
@@ -117,8 +74,8 @@ interface Foo
     public function foo(\Stringable&\Countable $obj): int;
 }
 ',
-                    new VersionSpecification(8_01_00),
-                    [self::OPTION_NULL_ADJUSTMENT => self::NULL_ADJUSTMENT_ALWAYS_LAST]
+                    new VersionSpecification(80100),
+                    ['null_adjustment' => 'always_last']
                 ),
                 new VersionSpecificCodeSample(
                     '<?php
@@ -127,10 +84,10 @@ interface Bar
     public function bar(null|string|int $foo): string|int;
 }
 ',
-                    new VersionSpecification(8_00_00),
+                    new VersionSpecification(80000),
                     [
-                        self::OPTION_SORT_ALGORITHM => AbstractOrderFixer::SORT_ORDER_NONE,
-                        self::OPTION_NULL_ADJUSTMENT => self::NULL_ADJUSTMENT_ALWAYS_LAST,
+                        'sort_algorithm' => 'none',
+                        'null_adjustment' => 'always_last',
                     ]
                 ),
             ]
@@ -156,21 +113,17 @@ interface Bar
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder(self::OPTION_SORT_ALGORITHM, 'Whether the types should be sorted alphabetically, or not sorted.'))
-                ->setAllowedValues(self::SUPPORTED_SORT_ORDER_OPTIONS)
-                ->setDefault(AbstractOrderFixer::SORT_ORDER_ALPHA)
+            (new FixerOptionBuilder('sort_algorithm', 'Whether the types should be sorted alphabetically, or not sorted.'))
+                ->setAllowedValues(['alpha', 'none'])
+                ->setDefault('alpha')
                 ->getOption(),
-            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_DIRECTION, 'Which direction the types should be sorted.'))
-                ->setAllowedValues(AbstractOrderFixer::SUPPORTED_DIRECTION_OPTIONS)
-                ->setDefault(AbstractOrderFixer::DIRECTION_ASCEND)
+            (new FixerOptionBuilder('null_adjustment', 'Forces the position of `null` (overrides `sort_algorithm`).'))
+                ->setAllowedValues(['always_first', 'always_last', 'none'])
+                ->setDefault('always_first')
                 ->getOption(),
-            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_CASE_SENSITIVE, 'Whether the sorting should be case sensitive.'))
+            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
-                ->getOption(),
-            (new FixerOptionBuilder(self::OPTION_NULL_ADJUSTMENT, 'Forces the position of `null` (overrides `sort_algorithm`).'))
-                ->setAllowedValues(self::SUPPORTED_NULL_ADJUSTMENT_OPTIONS)
-                ->setDefault(self::NULL_ADJUSTMENT_ALWAYS_FIRST)
                 ->getOption(),
         ]);
     }
@@ -195,11 +148,6 @@ interface Bar
             $this->fixMethodArgumentType($functionsAnalyzer, $tokens, $index);
             $this->fixMethodReturnType($functionsAnalyzer, $tokens, $index);
         }
-    }
-
-    protected function getSortOrderOptionName(): string
-    {
-        return self::OPTION_SORT_ALGORITHM;
     }
 
     /**
@@ -410,21 +358,21 @@ interface Bar
             $lowerCaseA = strtolower($a);
             $lowerCaseB = strtolower($b);
 
-            if (self::NULL_ADJUSTMENT_NONE !== $this->configuration[self::OPTION_NULL_ADJUSTMENT]) {
+            if ('none' !== $this->configuration['null_adjustment']) {
                 if ('null' === $lowerCaseA && 'null' !== $lowerCaseB) {
-                    return self::NULL_ADJUSTMENT_ALWAYS_LAST === $this->configuration[self::OPTION_NULL_ADJUSTMENT]
-                        ? 1
-                        : -1;
+                    return 'always_last' === $this->configuration['null_adjustment'] ? 1 : -1;
                 }
 
                 if ('null' !== $lowerCaseA && 'null' === $lowerCaseB) {
-                    return self::NULL_ADJUSTMENT_ALWAYS_LAST === $this->configuration[self::OPTION_NULL_ADJUSTMENT]
-                        ? -1
-                        : 1;
+                    return 'always_last' === $this->configuration['null_adjustment'] ? -1 : 1;
                 }
             }
 
-            return $this->getScoreWithSortAlgorithm($a, $b);
+            if ('alpha' === $this->configuration['sort_algorithm']) {
+                return $this->configuration['case_sensitive'] ? strcmp($a, $b) : strcasecmp($a, $b);
+            }
+
+            return 0;
         });
 
         return $types;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\ClassNotation;
 
-use PhpCsFixer\AbstractOrderFixer;
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -28,19 +28,44 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dave van der Brugge <dmvdbrugge@gmail.com>
  */
-final class OrderedInterfacesFixer extends AbstractOrderFixer implements ConfigurableFixerInterface
+final class OrderedInterfacesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /** @internal */
-    private const OPTION_ORDER = 'order';
+    public const OPTION_DIRECTION = 'direction';
+
+    /** @internal */
+    public const OPTION_ORDER = 'order';
+
+    /** @internal */
+    public const DIRECTION_ASCEND = 'ascend';
+
+    /** @internal */
+    public const DIRECTION_DESCEND = 'descend';
+
+    /** @internal */
+    public const ORDER_ALPHA = 'alpha';
+
+    /** @internal */
+    public const ORDER_LENGTH = 'length';
 
     /**
-     * Array of supported sort orders in configuration.
+     * Array of supported directions in configuration.
      *
      * @var string[]
      */
-    private const SUPPORTED_SORT_ORDER_OPTIONS = [
-        AbstractOrderFixer::SORT_ORDER_ALPHA,
-        AbstractOrderFixer::SORT_ORDER_LENGTH,
+    private const SUPPORTED_DIRECTION_OPTIONS = [
+        self::DIRECTION_ASCEND,
+        self::DIRECTION_DESCEND,
+    ];
+
+    /**
+     * Array of supported orders in configuration.
+     *
+     * @var string[]
+     */
+    private const SUPPORTED_ORDER_OPTIONS = [
+        self::ORDER_ALPHA,
+        self::ORDER_LENGTH,
     ];
 
     public function getDefinition(): FixerDefinitionInterface
@@ -53,30 +78,30 @@ final class OrderedInterfacesFixer extends AbstractOrderFixer implements Configu
                 ),
                 new CodeSample(
                     "<?php\n\nfinal class ExampleA implements Gamma, Alpha, Beta {}\n\ninterface ExampleB extends Gamma, Alpha, Beta {}\n",
-                    [AbstractOrderFixer::OPTION_DIRECTION => AbstractOrderFixer::DIRECTION_DESCEND]
+                    [self::OPTION_DIRECTION => self::DIRECTION_DESCEND]
                 ),
                 new CodeSample(
                     "<?php\n\nfinal class ExampleA implements MuchLonger, Short, Longer {}\n\ninterface ExampleB extends MuchLonger, Short, Longer {}\n",
-                    [self::OPTION_ORDER => AbstractOrderFixer::SORT_ORDER_LENGTH]
+                    [self::OPTION_ORDER => self::ORDER_LENGTH]
                 ),
                 new CodeSample(
                     "<?php\n\nfinal class ExampleA implements MuchLonger, Short, Longer {}\n\ninterface ExampleB extends MuchLonger, Short, Longer {}\n",
                     [
-                        self::OPTION_ORDER => AbstractOrderFixer::SORT_ORDER_LENGTH,
-                        AbstractOrderFixer::OPTION_DIRECTION => AbstractOrderFixer::DIRECTION_DESCEND,
+                        self::OPTION_ORDER => self::ORDER_LENGTH,
+                        self::OPTION_DIRECTION => self::DIRECTION_DESCEND,
                     ]
                 ),
                 new CodeSample(
                     "<?php\n\nfinal class ExampleA implements IgnorecaseB, IgNoReCaSeA, IgnoreCaseC {}\n\ninterface ExampleB extends IgnorecaseB, IgNoReCaSeA, IgnoreCaseC {}\n",
                     [
-                        self::OPTION_ORDER => AbstractOrderFixer::SORT_ORDER_ALPHA,
+                        self::OPTION_ORDER => self::ORDER_ALPHA,
                     ]
                 ),
                 new CodeSample(
                     "<?php\n\nfinal class ExampleA implements Casesensitivea, CaseSensitiveA, CasesensitiveA {}\n\ninterface ExampleB extends Casesensitivea, CaseSensitiveA, CasesensitiveA {}\n",
                     [
-                        self::OPTION_ORDER => AbstractOrderFixer::SORT_ORDER_ALPHA,
-                        AbstractOrderFixer::OPTION_CASE_SENSITIVE => true,
+                        self::OPTION_ORDER => self::ORDER_ALPHA,
+                        'case_sensitive' => true,
                     ]
                 ),
             ],
@@ -139,7 +164,19 @@ final class OrderedInterfacesFixer extends AbstractOrderFixer implements Configu
             }
 
             usort($interfaces, function (array $first, array $second): int {
-                return $this->getScoreWithSortAlgorithm($first['normalized'], $second['normalized']);
+                $score = self::ORDER_LENGTH === $this->configuration[self::OPTION_ORDER]
+                    ? \strlen($first['normalized']) - \strlen($second['normalized'])
+                    : (
+                        $this->configuration['case_sensitive']
+                        ? strcmp($first['normalized'], $second['normalized'])
+                        : strcasecmp($first['normalized'], $second['normalized'])
+                    );
+
+                if (self::DIRECTION_DESCEND === $this->configuration[self::OPTION_DIRECTION]) {
+                    $score *= -1;
+                }
+
+                return $score;
             });
 
             $changed = false;
@@ -170,23 +207,18 @@ final class OrderedInterfacesFixer extends AbstractOrderFixer implements Configu
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(self::OPTION_ORDER, 'How the interfaces should be ordered.'))
-                ->setAllowedValues(self::SUPPORTED_SORT_ORDER_OPTIONS)
-                ->setDefault(AbstractOrderFixer::SORT_ORDER_ALPHA)
+                ->setAllowedValues(self::SUPPORTED_ORDER_OPTIONS)
+                ->setDefault(self::ORDER_ALPHA)
                 ->getOption(),
-            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_DIRECTION, 'Which direction the interfaces should be ordered.'))
-                ->setAllowedValues(AbstractOrderFixer::SUPPORTED_DIRECTION_OPTIONS)
-                ->setDefault(AbstractOrderFixer::DIRECTION_ASCEND)
+            (new FixerOptionBuilder(self::OPTION_DIRECTION, 'Which direction the interfaces should be ordered.'))
+                ->setAllowedValues(self::SUPPORTED_DIRECTION_OPTIONS)
+                ->setDefault(self::DIRECTION_ASCEND)
                 ->getOption(),
-            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_CASE_SENSITIVE, 'Whether the sorting should be case sensitive.'))
+            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
         ]);
-    }
-
-    protected function getSortOrderOptionName(): string
-    {
-        return self::OPTION_ORDER;
     }
 
     /**

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\ClassNotation;
 
-use PhpCsFixer\AbstractOrderFixer;
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -25,42 +25,18 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class OrderedTraitsFixer extends AbstractOrderFixer implements ConfigurableFixerInterface
+final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /** @internal */
-    private const OPTION_ORDER = 'order';
-
-    /**
-     * Array of supported sort orders in configuration.
-     *
-     * @var string[]
-     */
-    private const SUPPORTED_SORT_ORDER_OPTIONS = [
-        AbstractOrderFixer::SORT_ORDER_ALPHA,
-        AbstractOrderFixer::SORT_ORDER_LENGTH,
-    ];
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Trait `use` statements must be sorted alphabetically or by length.',
+            'Trait `use` statements must be sorted alphabetically.',
             [
                 new CodeSample("<?php class Foo { \nuse Z; use A; }\n"),
                 new CodeSample(
-                    "<?php class Foo { \nuse Aaa; use A; use Aa; }\n",
-                    [self::OPTION_ORDER => AbstractOrderFixer::SORT_ORDER_LENGTH]
-                ),
-                new CodeSample(
-                    "<?php class Foo { \nuse Aaa; use A; use Aa; }\n",
-                    [
-                        self::OPTION_ORDER => AbstractOrderFixer::SORT_ORDER_LENGTH,
-                        AbstractOrderFixer::OPTION_DIRECTION => AbstractOrderFixer::DIRECTION_DESCEND,
-                    ]
-                ),
-                new CodeSample(
                     "<?php class Foo { \nuse Aaa; use AA; }\n",
                     [
-                        AbstractOrderFixer::OPTION_CASE_SENSITIVE => true,
+                        'case_sensitive' => true,
                     ]
                 ),
             ],
@@ -82,15 +58,7 @@ final class OrderedTraitsFixer extends AbstractOrderFixer implements Configurabl
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder(self::OPTION_ORDER, 'How the traits should be ordered.'))
-                ->setAllowedValues(self::SUPPORTED_SORT_ORDER_OPTIONS)
-                ->setDefault(AbstractOrderFixer::SORT_ORDER_ALPHA)
-                ->getOption(),
-            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_DIRECTION, 'Which direction the traits should be ordered by.'))
-                ->setAllowedValues(AbstractOrderFixer::SUPPORTED_DIRECTION_OPTIONS)
-                ->setDefault(AbstractOrderFixer::DIRECTION_ASCEND)
-                ->getOption(),
-            (new FixerOptionBuilder(AbstractOrderFixer::OPTION_CASE_SENSITIVE, 'Whether the sorting should be case sensitive.'))
+            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
@@ -102,11 +70,6 @@ final class OrderedTraitsFixer extends AbstractOrderFixer implements Configurabl
         foreach ($this->findUseStatementsGroups($tokens) as $uses) {
             $this->sortUseStatements($tokens, $uses);
         }
-    }
-
-    protected function getSortOrderOptionName(): string
-    {
-        return self::OPTION_ORDER;
     }
 
     /**
@@ -220,9 +183,12 @@ final class OrderedTraitsFixer extends AbstractOrderFixer implements Configurabl
         };
 
         $sortedElements = $elements;
-        uasort($sortedElements, function (Tokens $useA, Tokens $useB) use ($toTraitName): int {
-            return $this->getScoreWithSortAlgorithm($toTraitName($useA), $toTraitName($useB));
-        });
+        uasort(
+            $sortedElements,
+            fn (Tokens $useA, Tokens $useB): int => $this->configuration['case_sensitive']
+                ? strcmp($toTraitName($useA), $toTraitName($useB))
+                : strcasecmp($toTraitName($useA), $toTraitName($useB))
+        );
 
         $sortedElements = array_combine(
             array_keys($elements),

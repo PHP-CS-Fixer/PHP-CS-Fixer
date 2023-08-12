@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -1055,7 +1056,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     'method_public',
                     'method_private',
                 ],
-                'sort_algorithm' => 'alpha',
+                'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
             ],
             <<<'EOT'
                 <?php
@@ -1112,7 +1113,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     'method_protected',
                     'method_private',
                 ],
-                'sort_algorithm' => 'alpha',
+                'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
             ],
             <<<'EOT'
                 <?php
@@ -1223,7 +1224,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     'method_protected_abstract',
                     'method_private',
                 ],
-                'sort_algorithm' => 'alpha',
+                'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
             ],
             <<<'EOT'
                 <?php
@@ -1346,7 +1347,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            ['sort_algorithm' => 'alpha'],
+            ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA],
             <<<'EOT'
                 <?php
 
@@ -1374,7 +1375,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            ['sort_algorithm' => 'alpha'],
+            ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA],
             <<<'EOT'
                 <?php
 
@@ -1398,7 +1399,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            ['sort_algorithm' => 'alpha', 'case_sensitive' => true],
+            ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA, 'case_sensitive' => true],
             <<<'EOT'
                 <?php
 
@@ -1419,68 +1420,6 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     const A_ = 1;
                 }
                 EOT
-        ];
-    }
-
-    /**
-     * @param array<string, mixed> $configuration
-     *
-     * @dataProvider provideDirectionConfigurationCases
-     */
-    public function testFixWithDirectionConfigurationAlgorithm(array $configuration, string $expected, string $input): void
-    {
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideDirectionConfigurationCases(): array
-    {
-        return [
-            [
-                [
-                    'order' => [
-                        'property_public_static',
-                        'method_public',
-                        'method_private',
-                    ],
-                    'sort_algorithm' => 'alpha',
-                    'direction' => 'descend',
-                ],
-                <<<'EOT'
-<?php
-class Example
-{
-    private function F(){}
-    private function E(){}
-    public function D(){}
-    public function C1(){}
-    public function C(){}
-    public function B2(){}
-    public function B1(){}
-    public function A(){}
-    public static $pubStatProp2;
-    public static $pubStatProp1;
-}
-EOT
-                ,
-                <<<'EOT'
-<?php
-class Example
-{
-    public static $pubStatProp1;
-    public function B1(){}
-    public function B2(){}
-    public function A(){}
-    private function E(){}
-    public function C(){}
-    public static $pubStatProp2;
-    public function D(){}
-    private function F(){}
-    public function C1(){}
-}
-EOT
-                ,
-            ],
         ];
     }
 
@@ -1531,7 +1470,7 @@ EOT
                 public ?int $foo;
             }',
             [
-                'sort_algorithm' => 'alpha',
+                'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
             ],
         ];
     }
@@ -1555,7 +1494,7 @@ class TestClass
     public function %s(){}
     public function %s(){}
 }';
-        $this->fixer->configure(['order' => ['use_trait'], 'sort_algorithm' => 'alpha']);
+        $this->fixer->configure(['order' => ['use_trait'], 'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA]);
         $this->doTest(
             sprintf($template, $methodName2, $methodName1),
             sprintf($template, $methodName1, $methodName2)

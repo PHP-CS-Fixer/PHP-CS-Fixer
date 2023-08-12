@@ -50,15 +50,6 @@ Allowed values: ``'alpha'`` and ``'none'``
 
 Default value: ``'none'``
 
-``direction``
-~~~~~~~~~~~~~
-
-Which direction the elements should be ordered.
-
-Allowed values: ``'ascend'``, ``'descend'``
-
-Default value: ``'ascend'``
-
 ``case_sensitive``
 ~~~~~~~~~~~~~~~~~~
 
@@ -158,25 +149,6 @@ With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha'
     }
 
 Example #4
-~~~~~~~~~~
-
-With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha', 'direction' => 'descend']``.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-    class Example
-    {
-        public function D(){}
-   +    public function C(){}
-        public function B(){}
-        public function A(){}
-   -    public function C(){}
-    }
-
-Example #5
 ~~~~~~~~~~
 
 With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha', 'case_sensitive' => true]``.

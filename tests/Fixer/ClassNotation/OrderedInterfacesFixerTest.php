@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\OrderedInterfacesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -130,7 +131,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
      */
     public function testFixAlphaDescend(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure(['direction' => 'descend']);
+        $this->fixer->configure([OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND]);
         $this->doTest($expected, $input);
     }
 
@@ -156,7 +157,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
      */
     public function testFixLength(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure(['order' => 'length']);
+        $this->fixer->configure([OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH]);
         $this->doTest($expected, $input);
     }
 
@@ -198,8 +199,8 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
     public function testFixLengthDescend(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
-            'order' => 'length',
-            'direction' => 'descend',
+            OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH,
+            OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND,
         ]);
         $this->doTest($expected, $input);
     }
@@ -242,13 +243,13 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
     public function testFixCaseSensitiveAlpha(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
-            'order' => 'alpha',
+            OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_ALPHA,
             'case_sensitive' => true,
         ]);
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCaseSensitiveAlphaCases(): array
+    public static function provideFixCaseSensitiveAlphaCases(): iterable
     {
         return [
             'single' => [

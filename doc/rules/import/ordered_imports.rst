@@ -17,14 +17,14 @@ Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
 
 Default value: ``'alpha'``
 
-``direction``
-~~~~~~~~~~~~~
+``imports_order``
+~~~~~~~~~~~~~~~~~
 
-Which direction the imports should be sorted.
+Defines the order of import types.
 
-Allowed values: ``'ascend'``, ``'descend'``
+Allowed types: ``array`` and ``null``
 
-Default value: ``'ascend'``
+Default value: ``null``
 
 ``case_sensitive``
 ~~~~~~~~~~~~~~~~~~
@@ -34,15 +34,6 @@ Whether the sorting should be case sensitive.
 Allowed types: ``bool``
 
 Default value: ``false``
-
-``imports_order``
-~~~~~~~~~~~~~~~~~
-
-Defines the order of import types.
-
-Allowed types: ``array`` and ``null``
-
-Default value: ``null``
 
 Examples
 --------
@@ -66,21 +57,6 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['direction' => 'descend']``.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-   -use function AAA;
-    use const AAC;
-    use AAB;
-   +use function AAA;
-
-Example #3
-~~~~~~~~~~
-
 With configuration: ``['case_sensitive' => true]``.
 
 .. code-block:: diff
@@ -92,7 +68,7 @@ With configuration: ``['case_sensitive' => true]``.
     use function Aaa;
    -use const AA;
 
-Example #4
+Example #3
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'length']``.
@@ -110,7 +86,7 @@ With configuration: ``['sort_algorithm' => 'length']``.
    -use Acme;
    -use Bar;
 
-Example #5
+Example #4
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'length', 'imports_order' => ['const', 'class', 'function']]``.
@@ -133,7 +109,7 @@ With configuration: ``['sort_algorithm' => 'length', 'imports_order' => ['const'
     use function CCC\AA;
    -use function DDD;
 
-Example #6
+Example #5
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'alpha', 'imports_order' => ['const', 'class', 'function']]``.
@@ -156,7 +132,7 @@ With configuration: ``['sort_algorithm' => 'alpha', 'imports_order' => ['const',
     use function DDD;
    -use function CCC\AA;
 
-Example #7
+Example #6
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'none', 'imports_order' => ['const', 'class', 'function']]``.
