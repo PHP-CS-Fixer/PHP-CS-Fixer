@@ -888,10 +888,10 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``no_namespace_backslash``
-     | Whether FQCN is prefixed with backslash even when in no/global namespace.
+   - | ``leading_backslash_in_global_namespace``
+     | Whether FQCN is prefixed with backslash when that FQCN is used in global namespace context.
      | Allowed types: ``bool``
-     | Default value: ``true``
+     | Default value: ``false``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_

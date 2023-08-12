@@ -67,7 +67,7 @@ class SomeClass
     }
 }
 ',
-                    ['no_namespace_backslash' => false]
+                    ['leading_backslash_in_global_namespace' => true]
                 ),
             ]
         );
@@ -92,9 +92,12 @@ class SomeClass
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('no_namespace_backslash', 'Whether FQCN is prefixed with backslash even when in no/global namespace.'))
+            (new FixerOptionBuilder(
+                'leading_backslash_in_global_namespace',
+                'Whether FQCN is prefixed with backslash when that FQCN is used in global namespace context.'
+            ))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(true)
+                ->setDefault(false)
                 ->getOption(),
         ]);
     }
@@ -182,7 +185,7 @@ class SomeClass
                     }
                 }
 
-                if (true === $this->configuration['no_namespace_backslash']) {
+                if (true === $this->configuration['leading_backslash_in_global_namespace']) {
                     // if we are in the global namespace and the type is not imported enforce the leading '\'
                     // to unify CS with namespaced files
                     if (!$withLeadingBackslash && !isset($uses[$typeNameLower])) {

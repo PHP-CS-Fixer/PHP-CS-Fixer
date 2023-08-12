@@ -8,14 +8,15 @@ short version.
 Configuration
 -------------
 
-``no_namespace_backslash``
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+``leading_backslash_in_global_namespace``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Whether FQCN is prefixed with backslash even when in no/global namespace.
+Whether FQCN is prefixed with backslash when that FQCN is used in global
+namespace context.
 
 Allowed types: ``bool``
 
-Default value: ``true``
+Default value: ``false``
 
 Examples
 --------
@@ -42,7 +43,7 @@ Example #1
         }
 
    -    public function doY(Foo\NotImported $u, \Foo\NotImported $v)
-   +    public function doY(\Foo\NotImported $u, \Foo\NotImported $v)
+   +    public function doY(Foo\NotImported $u, Foo\NotImported $v)
         {
         }
     }
@@ -50,7 +51,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['no_namespace_backslash' => false]``.
+With configuration: ``['leading_backslash_in_global_namespace' => true]``.
 
 .. code-block:: diff
 
@@ -61,7 +62,7 @@ With configuration: ``['no_namespace_backslash' => false]``.
     class SomeClass
     {
    -    public function doY(Foo\NotImported $u, \Foo\NotImported $v)
-   +    public function doY(Foo\NotImported $u, Foo\NotImported $v)
+   +    public function doY(\Foo\NotImported $u, \Foo\NotImported $v)
         {
         }
     }

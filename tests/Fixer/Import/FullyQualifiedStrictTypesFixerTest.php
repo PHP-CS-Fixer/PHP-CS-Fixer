@@ -100,13 +100,16 @@ namespace A\B\C\D
         yield 'no backslash with global' => [
             '<?php use A\Exception; function foo(Exception $e, Foo $e2) {}',
             '<?php use A\Exception; function foo(A\Exception $e, \Foo $e2) {}',
-            ['no_namespace_backslash' => false],
+        ];
+
+        yield 'leading backslash in global namespace' => [
+            '<?php use A\Exception; function foo(Exception $e, \Foo $e2) {}',
+            '<?php use A\Exception; function foo(A\Exception $e, Foo $e2) {}',
+            ['leading_backslash_in_global_namespace' => true],
         ];
 
         yield 'backslash must be kept when conflicts with other use with global' => [
             '<?php use A\Exception; function foo(Exception $e, \Exception $e2) {}',
-            null,
-            ['no_namespace_backslash' => false],
         ];
 
         yield 'simple use as' => [
@@ -726,12 +729,15 @@ class Two
     }
 
     /**
+     * @param array<string, bool> $config
+     *
      * @requires PHP 8.1
      *
      * @dataProvider provideFix81Cases
      */
-    public function testFix81(string $expected, ?string $input = null): void
+    public function testFix81(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -749,6 +755,7 @@ function bar(\X|\Y $a, \X&\Y $b) {}',
             '<?php
 function foo(\X|\Y $a, \X&\Y $b) {}
 function bar(X|Y $a, X&Y $b) {}',
+            ['leading_backslash_in_global_namespace' => true],
         ];
 
         yield [
@@ -776,12 +783,15 @@ class SomeClass
     }
 
     /**
+     * @param array<string, bool> $config
+     *
      * @requires PHP 8.2
      *
      * @dataProvider provideFix82Cases
      */
-    public function testFix82(string $expected, ?string $input = null): void
+    public function testFix82(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -794,6 +804,7 @@ function bar(\X $x, \Y $y, true $z) {}',
             '<?php
 function foo(\X $x, \Y $y, int $z) {}
 function bar(X $x, Y $y, true $z) {}',
+            ['leading_backslash_in_global_namespace' => true],
         ];
 
         yield 'simple return in global namespace without use' => [
@@ -805,6 +816,7 @@ function x(): never {}',
 function foo(): \X {}
 function bar(): Y {}
 function x(): never {}',
+            ['leading_backslash_in_global_namespace' => true],
         ];
 
         yield [
