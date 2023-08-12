@@ -164,5 +164,24 @@ final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
      */
     $someVar = "hello";',
         ];
+
+        yield 'do not rename tags' => [
+            '<?php
+                /**
+                 * {@iD ontWantToBeChanged}
+                 * @Route("/conventions/{@id cc}", name="api_v1_convention_read_by_idcc")
+                 *
+                 * {@id}
+                 */
+            ',
+            '<?php
+                /**
+                 * { @iDontWantToBeChanged }
+                 * @Route("/conventions/@{idcc}", name="api_v1_convention_read_by_idcc")
+                 *
+                 * { @ids }
+                 */
+            ',
+        ];
     }
 }
