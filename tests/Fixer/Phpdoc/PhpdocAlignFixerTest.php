@@ -1284,13 +1284,13 @@ class Foo {}
         ',
         ];
 
-        yield 'custom tags' => [
-            ['tags' => ['param', 'phpstan-param']],
+        yield 'CUSTOM tags' => [
+            ['tags' => ['param', 'xxx-xxxxxxxxx']],
             '<?php
     /**
      * @param         EngineInterface $templating
      * @param         string          $format
-     * @phpstan-param int             $code       An HTTP response status code
+     * @xxx-xxxxxxxxx int             $code       An HTTP response status code
      * @param         bool            $debug
      * @param         mixed           &$reference A parameter passed by reference
      */
@@ -1300,7 +1300,7 @@ class Foo {}
     /**
      * @param  EngineInterface $templating
      * @param string      $format
-     * @phpstan-param  int  $code       An HTTP response status code
+     * @xxx-xxxxxxxxx  int  $code       An HTTP response status code
      * @param    bool         $debug
      * @param  mixed    &$reference     A parameter passed by reference
      */
