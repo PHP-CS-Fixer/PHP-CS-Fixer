@@ -25,6 +25,9 @@ final class PSR12Set extends AbstractRuleSetDescription
     {
         return [
             '@PSR2' => true,
+            'binary_operator_spaces' => [
+                'default' => 'at_least_single_space',
+            ],
             'blank_line_after_opening_tag' => true,
             'blank_line_between_import_groups' => true,
             'blank_lines_before_namespace' => true,

@@ -8,6 +8,10 @@ Rules
 -----
 
 - `@PSR2 <./PSR2.rst>`_
+- `binary_operator_spaces <./../rules/operator/binary_operator_spaces.rst>`_ with config:
+
+  ``['default' => 'at_least_single_space']``
+
 - `blank_line_after_opening_tag <./../rules/php_tag/blank_line_after_opening_tag.rst>`_
 - `blank_line_between_import_groups <./../rules/whitespace/blank_line_between_import_groups.rst>`_
 - `blank_lines_before_namespace <./../rules/namespace_notation/blank_lines_before_namespace.rst>`_
