@@ -80,25 +80,35 @@
         "sort-packages": true
     },
     "scripts": {
+        "post-autoload-dump": [
+            "@install-tools"
+        ],
         "cs:check": "@php php-cs-fixer fix --dry-run --diff",
         "cs:fix": "@php php-cs-fixer fix",
-        "dev-tools:check": [
-            "./dev-tools/check_file_permissions.sh",
-            "./dev-tools/check_trailing_spaces.sh"
-        ],
-        "dev-tools:docs": "@php dev-tools/doc.php",
-        "dev-tools:install": "@composer -d dev-tools install",
-        "docs": "@dev-tools:docs",
+        "docs": "@php dev-tools/doc.php",
+        "install-tools": "@composer --working-dir=dev-tools install",
         "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi dev-tools/mess-detector/phpmd.xml --exclude vendor/*,dev-tools/vendor/*,dev-tools/phpstan/*,tests/Fixtures/*",
-        "phpstan": "@php -d memory_limit=256M dev-tools/vendor/bin/phpstan analyse",
-        "phpstan:baseline": "@php -d memory_limit=256M dev-tools/vendor/bin/phpstan analyse --generate-baseline=./dev-tools/phpstan/baseline.php",
+        "normalize": [
+            "@composer normalize --working-dir=dev-tools --dry-run ../composer.json",
+            "@composer normalize --working-dir=dev-tools --dry-run composer.json"
+        ],
+        "phpstan": "@php -d memory_limit=512M dev-tools/vendor/bin/phpstan analyse",
+        "phpstan:baseline": "@php -d memory_limit=512M dev-tools/vendor/bin/phpstan analyse --generate-baseline=./dev-tools/phpstan/baseline.php",
         "qa": "@quality-assurance",
         "quality-assurance": [
             "Composer\\Config::disableProcessTimeout",
+            "@install-tools --quiet",
+            "@normalize",
+            "@self-check",
+            "@mess-detector",
             "@sa",
             "@test"
         ],
         "sa": "@static-analysis",
+        "self-check": [
+            "./dev-tools/check_file_permissions.sh",
+            "./dev-tools/check_trailing_spaces.sh"
+        ],
         "static-analysis": [
             "@phpstan",
             "@cs:check"
@@ -116,16 +126,17 @@
     "scripts-descriptions": {
         "cs:check": "Check coding standards",
         "cs:fix": "Fix coding standards",
-        "dev-tools:check": "Check DEV environment's requirements",
-        "dev-tools:docs": "Regenerate docs",
-        "dev-tools:install": "Install DEV tools",
         "docs": "Regenerate docs",
+        "install-tools": "Install DEV tools",
         "mess-detector": "Analyse code with Mess Detector",
+        "normalize": "Run normalization for composer.json files",
         "phpstan": "Run PHPStan analysis",
         "phpstan:baseline": "Dump PHPStan baseline file - use only for updating, do not add new errors when possible",
+        "post-autoload-dump": "Run additional tasks after installing/updating main dependencies",
         "qa": "Run QA suite",
         "quality-assurance": "Run QA suite",
         "sa": "Run static analysis",
+        "self-check": "Run set of self-checks ensuring repository's validity",
         "static-analysis": "Run static analysis",
         "test": "Run tests",
         "test:all": "Run all tests",
