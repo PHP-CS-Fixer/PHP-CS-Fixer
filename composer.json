@@ -100,7 +100,6 @@
             "@install-tools --quiet",
             "@normalize",
             "@self-check",
-            "@mess-detector",
             "@sa",
             "@test"
         ],
@@ -110,8 +109,9 @@
             "./dev-tools/check_trailing_spaces.sh"
         ],
         "static-analysis": [
+            "@cs:check",
             "@phpstan",
-            "@cs:check"
+            "@mess-detector"
         ],
         "test": "@test:all",
         "test:all": [
