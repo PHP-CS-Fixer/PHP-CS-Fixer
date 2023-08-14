@@ -135,7 +135,7 @@
         "post-autoload-dump": "Run additional tasks after installing/updating main dependencies",
         "qa": "Run QA suite [alias for 'quality-assurance']",
         "quality-assurance": "Run QA suite",
-        "sa": "Run static analysis [alias for '@static-analysis']",
+        "sa": "Run static analysis [alias for 'static-analysis']",
         "self-check": "Run set of self-checks ensuring repository's validity",
         "static-analysis": "Run static analysis",
         "test": "Run all tests [alias for 'test:all']",
