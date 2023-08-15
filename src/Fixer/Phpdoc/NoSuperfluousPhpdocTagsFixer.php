@@ -26,6 +26,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
@@ -606,7 +607,7 @@ class Foo {
                     return substr($type, 1);
                 }
 
-                if (null !== $namespace) {
+                if (null !== $namespace && !(new TypeAnalysis($type))->isReservedType()) {
                     $type = strtolower($namespace).'\\'.$type;
                 }
 
