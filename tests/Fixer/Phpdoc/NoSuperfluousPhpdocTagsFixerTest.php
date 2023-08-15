@@ -2418,6 +2418,23 @@ class Foo {
     public function foo($foo) {}
 }',
         ];
+
+        yield 'explicit null must stay - /wo namespace' => [
+            '<?php
+class Foo {
+    /** @return null */
+    public function foo() {}
+}',
+        ];
+
+        yield 'explicit null must stay - /w namespace' => [
+            '<?php
+namespace A\B;
+class Foo {
+    /** @return null */
+    public function foo() {}
+}',
+        ];
     }
 
     /**
