@@ -544,7 +544,7 @@ class Foo {
 
         $annotationTypes = $this->toComparableNames($annotation->getTypes(), $namespace, $currentSymbol, $symbolShortNames);
 
-        if (['null'] === $annotationTypes) {
+        if (['null'] === $annotationTypes && ['null'] !== $info['types']) {
             return false;
         }
 
