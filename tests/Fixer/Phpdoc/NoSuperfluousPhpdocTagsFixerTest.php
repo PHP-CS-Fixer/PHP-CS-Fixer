@@ -2435,6 +2435,21 @@ class Foo {
     public function foo() {}
 }',
         ];
+
+        yield 'explicit null with null native type' => [
+            '<?php
+namespace A\B;
+class Foo {
+    /**  */
+    public function foo(): null { return null; }
+}',
+            '<?php
+namespace A\B;
+class Foo {
+    /** @return null */
+    public function foo(): null { return null; }
+}',
+        ];
     }
 
     /**
