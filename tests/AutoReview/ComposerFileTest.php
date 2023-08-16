@@ -65,6 +65,9 @@ final class ComposerFileTest extends TestCase
         }
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private static function readComposerJson(): array
     {
         $composerJsonContent = file_get_contents(__DIR__.'/../../composer.json');
