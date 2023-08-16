@@ -237,7 +237,7 @@ class FooTest extends TestCase {
 }';
 
         return array_map(
-            fn (string $type): string => sprintf($template, $type),
+            static fn (string $type): string => sprintf($template, $type),
             $types
         );
     }

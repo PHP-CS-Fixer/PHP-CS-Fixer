@@ -116,7 +116,7 @@ final class SelfUpdateCommandTest extends TestCase
 
         $versionChecker
             ->compareVersions(Argument::type('string'), Argument::type('string'))
-            ->will(fn (array $arguments): int => $actualVersionCheck->compareVersions($arguments[0], $arguments[1]))
+            ->will(static fn (array $arguments): int => $actualVersionCheck->compareVersions($arguments[0], $arguments[1]))
         ;
 
         $command = new SelfUpdateCommand(
@@ -279,7 +279,7 @@ final class SelfUpdateCommandTest extends TestCase
         $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
 
         $newMajorVersion = self::getNewMajorReleaseVersion();
-        $versionChecker->getLatestVersion()->will(function () use ($latestVersionSuccess, $newMajorVersion): string {
+        $versionChecker->getLatestVersion()->will(static function () use ($latestVersionSuccess, $newMajorVersion): string {
             if ($latestVersionSuccess) {
                 return $newMajorVersion;
             }
@@ -290,7 +290,7 @@ final class SelfUpdateCommandTest extends TestCase
         $newMinorVersion = self::getNewMinorReleaseVersion();
         $versionChecker
             ->getLatestVersionOfMajor(self::getCurrentMajorVersion())
-            ->will(function () use ($latestMinorVersionSuccess, $newMinorVersion): string {
+            ->will(static function () use ($latestMinorVersionSuccess, $newMinorVersion): string {
                 if ($latestMinorVersionSuccess) {
                     return $newMinorVersion;
                 }
@@ -432,7 +432,7 @@ final class SelfUpdateCommandTest extends TestCase
         $toolInfo->isInstalledAsPhar()->willReturn($isInstalledAsPhar);
         $toolInfo
             ->getPharDownloadUri(Argument::type('string'))
-            ->will(fn (array $arguments): string => "{$root->url()}/{$arguments[0]}.phar")
+            ->will(static fn (array $arguments): string => "{$root->url()}/{$arguments[0]}.phar")
         ;
 
         return $toolInfo->reveal();

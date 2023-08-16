@@ -391,7 +391,7 @@ class PsrAutoloadingFixer {}
             }
         }
 
-        return array_map(fn ($case): array => [
+        return array_map(static fn ($case): array => [
             '<?php
 namespace Aaa;
 class Bar {}',
