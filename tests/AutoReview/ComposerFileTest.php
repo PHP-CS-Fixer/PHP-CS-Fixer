@@ -43,7 +43,7 @@ final class ComposerFileTest extends TestCase
 
         $scripts = array_keys($composerJson['scripts']);
 
-        $aliases = array_reduce($scripts, function (array $carry, string $script) use ($composerJson): array {
+        $aliases = array_reduce($scripts, static function (array $carry, string $script) use ($composerJson): array {
             $code = $composerJson['scripts'][$script];
 
             if (\is_string($code) && '@' === $code[0]) {
