@@ -7,6 +7,8 @@ on:
     - cron: "0 12 * * *"
 
 env:
+  CLOSE_MESSAGE: |
+    The fact this was automatically closed doesn't mean that the idea got rejected - it simply didn't get any priority for way too long to keep it open. If you're still interested in this, please let as know, we can consider re-opening it.
   DAYS_BEFORE_ISSUE_CLOSE: 30
   DAYS_BEFORE_ISSUE_STALE: 90
   DAYS_BEFORE_PR_CLOSE: 14
@@ -28,6 +30,8 @@ jobs:
       - name: "Handle stale issues and pull requests"
         uses: "actions/stale@v8"
         with:
+          close-issue-message: "${{ env.CLOSE_MESSAGE }}"
+          close-pr-message: "${{ env.CLOSE_MESSAGE }} When it comes to pull requests it may be better to create new one, on top of main branch."
           close-pr-label: "status/to recover"
           days-before-issue-close: "${{ env.DAYS_BEFORE_ISSUE_CLOSE }}"
           days-before-issue-stale: "${{ env.DAYS_BEFORE_ISSUE_STALE }}"
