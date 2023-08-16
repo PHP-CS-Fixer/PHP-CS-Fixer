@@ -2418,6 +2418,23 @@ class Foo {
     public function foo($foo) {}
 }',
         ];
+
+        yield 'explicit null must stay - global namespace' => [
+            '<?php
+class Foo {
+    /** @return null */
+    public function foo() {}
+}',
+        ];
+
+        yield 'explicit null must stay - custom namespace' => [
+            '<?php
+namespace A\B;
+class Foo {
+    /** @return null */
+    public function foo() {}
+}',
+        ];
     }
 
     /**
@@ -2816,6 +2833,35 @@ enum Foo {
      * @return self
      */
     public function bar(Foo $other): Foo {}
+}',
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     *
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input = null, array $config = []): void
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield 'explicit null with null native type' => [
+            '<?php
+class Foo {
+    /**  */
+    public function foo(): null { return null; }
+}',
+            '<?php
+class Foo {
+    /** @return null */
+    public function foo(): null { return null; }
 }',
         ];
     }

@@ -76,6 +76,8 @@ final class TypeAnalysisTest extends TestCase
 
         yield ['never', true];
 
+        yield ['null', true];
+
         yield ['object', true];
 
         yield ['resource', true];
