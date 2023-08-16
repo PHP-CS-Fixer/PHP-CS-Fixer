@@ -133,12 +133,12 @@
         "phpstan": "Run PHPStan analysis",
         "phpstan:baseline": "Dump PHPStan baseline file - use only for updating, do not add new errors when possible",
         "post-autoload-dump": "Run additional tasks after installing/updating main dependencies",
-        "qa": "Run QA suite",
+        "qa": "Alias for 'quality-assurance'",
         "quality-assurance": "Run QA suite",
-        "sa": "Run static analysis",
+        "sa": "Alias for 'static-analysis'",
         "self-check": "Run set of self-checks ensuring repository's validity",
         "static-analysis": "Run static analysis",
-        "test": "Run tests",
+        "test": "Alias for 'test:all'",
         "test:all": "Run all tests",
         "test:coverage": "Run tool-related tests"
     }
