@@ -2419,7 +2419,7 @@ class Foo {
 }',
         ];
 
-        yield 'explicit null must stay - /wo namespace' => [
+        yield 'explicit null must stay - global namespace' => [
             '<?php
 class Foo {
     /** @return null */
@@ -2427,7 +2427,7 @@ class Foo {
 }',
         ];
 
-        yield 'explicit null must stay - /w namespace' => [
+        yield 'explicit null must stay - custom namespace' => [
             '<?php
 namespace A\B;
 class Foo {
