@@ -12,6 +12,10 @@ env:
   DAYS_BEFORE_PR_CLOSE: 14
   DAYS_BEFORE_PR_STALE: 90
   EXEMPT_MILESTONES: "long-term-ideas"
+  STALE_CLARIFICATION: |
+    The purpose of this action is to enforce backlog review once in a while. This is mostly for maintainers and helps with keeping repository in good condition, because stale issues and PRs can accumulate over time and make it harder for others to find relevant information. It is also possible that some changes has been made to the repo already, and issue or PR became outdated, but wasn't closed for some reason. This action helps with periodic review and closing of such stale items in automated way.
+
+    You may let maintainers handle this or verify current relevancy by yourself, to help with re-triage. Any activity will remove stale label so it won't be automatically closed at this point.
 
 jobs:
   handle_stale:
@@ -36,10 +40,14 @@ jobs:
           stale-issue-message: |
             Since this issue has not had any activity within the last ${{ env.DAYS_BEFORE_ISSUE_STALE }} days, I have marked it as stale.
 
+            ${{ env.STALE_CLARIFICATION }}
+
             I will close it if no further activity occurs within the next ${{ env.DAYS_BEFORE_ISSUE_CLOSE }} days.
           stale-pr-label: "status/stale"
           stale-pr-message: |
             Since this pull request has not had any activity within the last ${{ env.DAYS_BEFORE_PR_STALE }} days, I have marked it as stale.
+
+            ${{ env.STALE_CLARIFICATION }}
 
             I will close it if no further activity occurs within the next ${{ env.DAYS_BEFORE_PR_CLOSE }} days.
 
