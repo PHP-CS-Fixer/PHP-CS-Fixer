@@ -27,3 +27,11 @@ Example #1
    +$a = static function () use ($b)
     {   echo $b;
     };
+
+Rule sets
+---------
+
+The rule is part of the following rule set:
+
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
+

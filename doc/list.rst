@@ -3113,6 +3113,8 @@ List of Available Rules
 
    *warning risky* Risky when using ``->bindTo`` on lambdas without referencing to ``$this``.
 
+   Part of rule set `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_
+
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\StaticLambdaFixer <./../src/Fixer/FunctionNotation/StaticLambdaFixer.php>`_
 -  `strict_comparison <./rules/strict/strict_comparison.rst>`_
 
