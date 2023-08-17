@@ -289,17 +289,17 @@ Fixing examples:
         ));
 
         $things = false;
-        $fixer->configure([])->will(function () use (&$things): void {
+        $fixer->configure([])->will(static function () use (&$things): void {
             $things = false;
         });
-        $fixer->configure(['functions' => ['foo', 'bar']])->will(function () use (&$things): void {
+        $fixer->configure(['functions' => ['foo', 'bar']])->will(static function () use (&$things): void {
             $things = true;
         });
 
         $fixer->fix(
             Argument::type(\SplFileInfo::class),
             Argument::type(\PhpCsFixer\Tokenizer\Tokens::class)
-        )->will(function (array $arguments) use (&$things): void {
+        )->will(static function (array $arguments) use (&$things): void {
             $arguments[1][3] = new Token([
                 $arguments[1][3]->getId(),
                 $things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'',

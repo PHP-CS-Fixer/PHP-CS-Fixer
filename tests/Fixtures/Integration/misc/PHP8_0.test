@@ -6,7 +6,8 @@ PHP 8.0 test.
     "@PHP80Migration:risky": true,
     "@PhpCsFixer": true,
     "@PhpCsFixer:risky": true,
-    "phpdoc_to_return_type": true
+    "phpdoc_to_return_type": true,
+    "static_lambda": true
 }
 --REQUIREMENTS--
 {"php": 80000}
@@ -94,9 +95,9 @@ function foo(string $param = null): void
 call_user_func('foo', 1);
 
 // https://wiki.php.net/rfc/trailing_comma_in_closure_use_list
-$foo1a = function (): void {};
-$foo1b = function (): void {};
-$foo2 = function () use ($bar, $baz): void { echo $bar.$baz; };
+$foo1a = static function (): void {};
+$foo1b = static function (): void {};
+$foo2 = static function () use ($bar, $baz): void { echo $bar.$baz; };
 
 // https://wiki.php.net/rfc/mixed_type_v2
 class T_Mixed
@@ -110,7 +111,7 @@ class T_Mixed
 if (1) {
     foo() ?? throw new \Exception();
     $a = $condition && throw new Exception();
-    $callable = fn () => throw new Exception();
+    $callable = static fn () => throw new Exception();
     $value = $falsableValue ?: throw new InvalidArgumentException();
 }
 

@@ -130,7 +130,7 @@ final class Cache implements CacheInterface
 
         // before v3.11.1 the hashes were crc32 encoded and saved as integers
         // @TODO: remove the to string cast/array_map in v4.0
-        $cache->hashes = array_map(fn ($v): string => \is_int($v) ? (string) $v : $v, $data['hashes']);
+        $cache->hashes = array_map(static fn ($v): string => \is_int($v) ? (string) $v : $v, $data['hashes']);
 
         return $cache;
     }

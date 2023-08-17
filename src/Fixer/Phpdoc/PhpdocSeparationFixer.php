@@ -134,7 +134,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $allowTagToBelongToOnlyOneGroup = function ($groups) {
+        $allowTagToBelongToOnlyOneGroup = static function ($groups) {
             $tags = [];
             foreach ($groups as $groupIndex => $group) {
                 foreach ($group as $member) {

@@ -839,7 +839,7 @@ final class TypeExpressionTest extends TestCase
      */
     private function checkInnerTypeExpressionsStartIndex(TypeExpression $typeExpression): array
     {
-        $innerTypeExpressions = \Closure::bind(fn () => $typeExpression->innerTypeExpressions, null, TypeExpression::class)();
+        $innerTypeExpressions = \Closure::bind(static fn () => $typeExpression->innerTypeExpressions, null, TypeExpression::class)();
 
         $res = [];
         foreach ($innerTypeExpressions as ['start_index' => $innerStartIndex, 'expression' => $innerExpression]) {

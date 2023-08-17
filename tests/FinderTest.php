@@ -44,7 +44,7 @@ final class FinderTest extends TestCase
         self::assertContains(
             realpath(__DIR__.'/../.php-cs-fixer.dist.php'),
             array_map(
-                fn (SplFileInfo $file): string => $file->getRealPath(),
+                static fn (SplFileInfo $file): string => $file->getRealPath(),
                 iterator_to_array($finder->getIterator())
             )
         );
