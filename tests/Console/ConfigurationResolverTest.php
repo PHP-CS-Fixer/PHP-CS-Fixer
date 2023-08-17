@@ -501,12 +501,10 @@ final class ConfigurationResolverTest extends TestCase
     public static function provideResolveIntersectionOfPathsCases(): iterable
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
-        $cb = static function (array $items) use ($dir): array {
-            return array_map(
-                static fn (string $item): string => realpath($dir.'/'.$item),
-                $items
-            );
-        };
+        $cb = static fn (array $items): array => array_map(
+            static fn (string $item): string => realpath($dir.'/'.$item),
+            $items
+        );
 
         yield 'no path at all' => [
             new \LogicException(),

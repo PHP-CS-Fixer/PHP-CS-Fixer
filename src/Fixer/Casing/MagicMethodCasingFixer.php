@@ -72,7 +72,7 @@ $foo->__INVOKE(1);
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING) && $tokens->isAnyTokenKindsFound(array_merge([T_FUNCTION, T_DOUBLE_COLON], Token::getObjectOperatorKinds()));
+        return $tokens->isTokenKindFound(T_STRING) && $tokens->isAnyTokenKindsFound([T_FUNCTION, T_DOUBLE_COLON, ...Token::getObjectOperatorKinds()]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void

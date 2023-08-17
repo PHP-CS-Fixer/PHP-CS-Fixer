@@ -969,7 +969,7 @@ class Foo {
             $longSyntaxCases[] = $case;
         }
 
-        return array_merge($cases, $longSyntaxCases);
+        return [...$cases, ...$longSyntaxCases];
     }
 
     private static function toLongArraySyntax(string $php): string

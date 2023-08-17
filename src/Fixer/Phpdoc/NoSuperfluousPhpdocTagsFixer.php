@@ -26,6 +26,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
@@ -519,11 +520,11 @@ class Foo {
         array $symbolShortNames
     ): bool {
         if ('param' === $annotation->getTag()->getName()) {
-            $regex = '{@param(?:\s+'.TypeExpression::REGEX_TYPES.')?(?:\s+(?:\&\s*)?(?:\.{3}\s*)?\$\S+)?(?:\s+(?<description>(?!\*+\/)\S+))?}s';
+            $regex = '{@param(?:\s+'.TypeExpression::REGEX_TYPES.')?(?!\S)(?:\s+(?:\&\s*)?(?:\.{3}\s*)?\$\S+)?(?:\s+(?<description>(?!\*+\/)\S+))?}s';
         } elseif ('var' === $annotation->getTag()->getName()) {
-            $regex = '{@var(?:\s+'.TypeExpression::REGEX_TYPES.')?(?:\s+\$\S+)?(?:\s+(?<description>(?!\*\/)\S+))?}s';
+            $regex = '{@var(?:\s+'.TypeExpression::REGEX_TYPES.')?(?!\S)(?:\s+\$\S+)?(?:\s+(?<description>(?!\*\/)\S+))?}s';
         } else {
-            $regex = '{@return(?:\s+'.TypeExpression::REGEX_TYPES.')?(?:\s+(?<description>(?!\*\/)\S+))?}s';
+            $regex = '{@return(?:\s+'.TypeExpression::REGEX_TYPES.')?(?!\S)(?:\s+(?<description>(?!\*\/)\S+))?}s';
         }
 
         if (!Preg::match($regex, $annotation->getContent(), $matches)) {
@@ -543,7 +544,7 @@ class Foo {
 
         $annotationTypes = $this->toComparableNames($annotation->getTypes(), $namespace, $currentSymbol, $symbolShortNames);
 
-        if ([] === $annotationTypes || ['null'] === $annotationTypes) {
+        if (['null'] === $annotationTypes && ['null'] !== $info['types']) {
             return false;
         }
 
@@ -606,7 +607,7 @@ class Foo {
                     return substr($type, 1);
                 }
 
-                if (null !== $namespace) {
+                if (null !== $namespace && !(new TypeAnalysis($type))->isReservedType()) {
                     $type = strtolower($namespace).'\\'.$type;
                 }
 

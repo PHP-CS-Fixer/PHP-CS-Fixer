@@ -2318,6 +2318,145 @@ class TestClass {
     }
 
     /**
+     * @dataProvider provideIsEnumCaseCases
+     *
+     * @param array<int, bool> $expected
+     *
+     * @requires PHP 8.1
+     */
+    public function testIsEnumCase(string $source, array $expected): void
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_CASE)) {
+                try {
+                    $tokensAnalyzer->isEnumCase($index);
+                    self::fail('TokensAnalyzer::isEnumCase() did not throw LogicException.');
+                } catch (\Throwable $e) {
+                    self::assertInstanceOf(\LogicException::class, $e);
+                    self::assertMatchesRegularExpression('/^No T_CASE given at index \d+, got \S+ instead\.$/', $e->getMessage());
+                }
+
+                continue;
+            }
+
+            self::assertSame($expected[$index], $tokensAnalyzer->isEnumCase($index));
+        }
+    }
+
+    public static function provideIsEnumCaseCases(): iterable
+    {
+        yield 'switch only' => [
+            '<?php
+function bar(string $a): string
+{
+    switch ($a) {
+        case \'one\':
+            return $a;
+        case \'two\':
+        default:
+            return strtoupper($a);
+    }
+}
+',
+            [
+                23 => false,
+                33 => false,
+            ],
+        ];
+
+        yield 'pure enum' => [
+            '<?php
+enum Foo
+{
+    case One;
+    case Two;
+}
+',
+            [
+                7 => true,
+                12 => true,
+            ],
+        ];
+
+        yield 'pure enum with switch' => [
+            '<?php
+enum Foo
+{
+    case One;
+    case Two;
+
+    public static function getLowerName(self $instance): string
+    {
+        switch ($instance->name) {
+            case \'One\':
+            case \'Two\':
+                return strtolower($instance->name);
+        }
+    }
+}
+',
+            [
+                7 => true,
+                12 => true,
+                45 => false,
+                50 => false,
+            ],
+        ];
+
+        yield 'backed enum' => [
+            '<?php
+enum Suit: string
+{
+    case Hearts = \'hearts\';
+    case Spades = \'spades\';
+    case Clubs = \'clubs\';
+    case Diamonds = \'diamonds\';
+}
+',
+            [
+                10 => true,
+                19 => true,
+                28 => true,
+                37 => true,
+            ],
+        ];
+
+        yield 'backed enum with switch' => [
+            '<?php
+enum Suit: string
+{
+    case Hearts = \'hearts\';
+    case Spades = \'spades\';
+    case Clubs = \'clubs\';
+    case Diamonds = \'diamonds\';
+
+    public static function getUppercasedValue(self $instance): string
+    {
+        switch ($instance->value) {
+            case \'hearts\':
+            case \'spades\':
+                return strtoupper($instance->value);
+            default:
+                return $instance->value;
+        }
+    }
+}
+',
+            [
+                10 => true,
+                19 => true,
+                28 => true,
+                37 => true,
+                74 => false,
+                79 => false,
+            ],
+        ];
+    }
+
+    /**
      * @param array<int, list<int>>|list<int> $expected
      *
      * @dataProvider provideGetImportUseIndexesCases

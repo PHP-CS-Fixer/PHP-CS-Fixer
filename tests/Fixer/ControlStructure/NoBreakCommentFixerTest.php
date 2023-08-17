@@ -1107,12 +1107,10 @@ switch ($foo) {
     {
         $cases = self::provideFixCases();
 
-        $replaceCommentText = static function (string $php): string {
-            return strtr($php, [
-                'No break' => 'Fall-through case!',
-                'no break' => 'fall-through case!',
-            ]);
-        };
+        $replaceCommentText = static fn (string $php): string => strtr($php, [
+            'No break' => 'Fall-through case!',
+            'no break' => 'fall-through case!',
+        ]);
 
         foreach ($cases as $case) {
             $case[0] = $replaceCommentText($case[0]);

@@ -266,6 +266,10 @@ function getValues() {
                 continue;
             }
 
+            if ($token->isGivenKind(T_CASE) && $analyzer->isEnumCase($index)) {
+                continue;
+            }
+
             $insertBlankLineIndex = $this->getInsertBlankLineIndex($tokens, $index);
             $prevNonWhitespace = $tokens->getPrevNonWhitespace($insertBlankLineIndex);
 

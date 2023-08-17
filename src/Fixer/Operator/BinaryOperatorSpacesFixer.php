@@ -43,6 +43,11 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * @internal
      */
+    public const AT_LEAST_SINGLE_SPACE = 'at_least_single_space';
+
+    /**
+     * @internal
+     */
     public const NO_SPACE = 'no_space';
 
     /**
@@ -156,6 +161,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
         self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE,
         self::SINGLE_SPACE,
         self::NO_SPACE,
+        self::AT_LEAST_SINGLE_SPACE,
         null,
     ];
 
@@ -401,6 +407,12 @@ $array = [
             return;
         }
 
+        if (self::AT_LEAST_SINGLE_SPACE === $this->operators[$tokenContent]) {
+            $this->fixWhiteSpaceAroundOperatorToAtLeastSingleSpace($tokens, $index);
+
+            return;
+        }
+
         if (self::NO_SPACE === $this->operators[$tokenContent]) {
             $this->fixWhiteSpaceAroundOperatorToNoSpace($tokens, $index);
 
@@ -451,6 +463,19 @@ $array = [
                 $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
+            $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
+        }
+    }
+
+    private function fixWhiteSpaceAroundOperatorToAtLeastSingleSpace(Tokens $tokens, int $index): void
+    {
+        // fix white space after operator
+        if (!$tokens[$index + 1]->isWhitespace()) {
+            $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
+        }
+
+        // fix white space before operator
+        if (!$tokens[$index - 1]->isWhitespace()) {
             $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
         }
     }

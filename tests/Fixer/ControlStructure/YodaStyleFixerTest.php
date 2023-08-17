@@ -793,7 +793,7 @@ $a#4
         $assignmentOperators = ['=', '**=', '*=', '|=', '+=', '-=', '^=', '<<=', '>>=', '&=', '.=', '/=', '%=', '??='];
         $logicalOperators = ['xor', 'or', 'and', '||', '&&', '??'];
 
-        foreach (array_merge($assignmentOperators, $logicalOperators) as $operator) {
+        foreach ([...$assignmentOperators, ...$logicalOperators] as $operator) {
             yield [
                 sprintf('<?php $a %s 4 === $b ? 2 : 3;', $operator),
                 sprintf('<?php $a %s $b === 4 ? 2 : 3;', $operator),

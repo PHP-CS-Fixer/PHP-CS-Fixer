@@ -101,7 +101,7 @@ final class TagComparatorTest extends TestCase
 
         yield [[['param', 'return'], ['author', 'since']], 'author', 'since', true];
 
-        yield [array_merge(TagComparator::DEFAULT_GROUPS, [['param', 'return']]), 'link', 'see', true];
+        yield [[...TagComparator::DEFAULT_GROUPS, ['param', 'return']], 'link', 'see', true];
 
         yield [[['param', 'return']], 'category', 'package', false];
     }

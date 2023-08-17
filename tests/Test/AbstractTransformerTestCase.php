@@ -123,7 +123,7 @@ abstract class AbstractTransformerTestCase extends TestCase
                 $tokens,
                 array_map(
                     static fn ($kindOrPrototype) => \is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype,
-                    array_unique(array_merge($observedKindsOrPrototypes, $expectedTokens))
+                    array_unique([...$observedKindsOrPrototypes, ...$expectedTokens])
                 )
             ),
             'Number of expected tokens does not match actual token count.'
@@ -172,7 +172,7 @@ abstract class AbstractTransformerTestCase extends TestCase
 
         foreach ($expectedTokens as $index => $tokenIdOrContent) {
             if (\is_string($tokenIdOrContent)) {
-                self::assertTrue($tokens[$index]->equals($tokenIdOrContent), sprintf('The token at index %d should be %s, got %s', $index, json_encode($tokenIdOrContent), $tokens[$index]->toJson()));
+                self::assertTrue($tokens[$index]->equals($tokenIdOrContent), sprintf('The token at index %d should be %s, got %s', $index, json_encode($tokenIdOrContent, JSON_THROW_ON_ERROR), $tokens[$index]->toJson()));
 
                 continue;
             }

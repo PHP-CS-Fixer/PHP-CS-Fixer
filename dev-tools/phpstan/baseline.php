@@ -222,11 +222,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Import/GlobalNamespaceImportFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Import/GroupImportFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\OrderedImportsFixer\\:\\:getNewOrder\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Import/OrderedImportsFixer.php',
@@ -280,11 +275,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\{syntax\\: \'long\'\\|\'short\'\\}\\) of method PhpCsFixer\\\\Fixer\\\\ListNotation\\\\ListSyntaxFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\Fixer\\\\ConfigurableFixerInterface\\:\\:configure\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ListNotation/ListSyntaxFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/ConcatSpaceFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable method call on \\$this\\(PhpCsFixer\\\\Fixer\\\\Operator\\\\ConcatSpaceFixer\\)\\.$#',
@@ -402,16 +392,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/StatementIndentationFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Linter/ProcessLintingResult.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Runner/Runner.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$className \\(string\\) of method PhpCsFixer\\\\StdinFileInfo\\:\\:getFileInfo\\(\\) should be contravariant with parameter \\$class \\(string\\|null\\) of method SplFileInfo\\:\\:getFileInfo\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/StdinFileInfo.php',
@@ -420,11 +400,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$className \\(string\\) of method PhpCsFixer\\\\StdinFileInfo\\:\\:getPathInfo\\(\\) should be contravariant with parameter \\$class \\(string\\|null\\) of method SplFileInfo\\:\\:getPathInfo\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/StdinFileInfo.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/Analysis/ArgumentAnalysis.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Foreach overwrites \\$key with its key variable\\.$#',
@@ -465,11 +440,6 @@ $ignoreErrors[] = [
 	'message' => '#^Variable \\$index might not be defined\\.$#',
 	'count' => 5,
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$expression might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/DocBlock/TypeExpressionTest.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$index \\(int\\) of method PhpCsFixer\\\\Tests\\\\Test\\\\TokensWithObservedTransformers\\:\\:offsetSet\\(\\) should be contravariant with parameter \\$offset \\(int\\|null\\) of method ArrayAccess\\<int,PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\>\\:\\:offsetSet\\(\\)$#',

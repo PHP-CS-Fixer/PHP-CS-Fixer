@@ -387,7 +387,7 @@ Function Notation
   EXPERIMENTAL: Takes ``@var`` annotation of non-mixed types and adjusts accordingly the property signature. Requires PHP >= 7.4.
 - `phpdoc_to_return_type <./function_notation/phpdoc_to_return_type.rst>`_ *(risky)*
 
-  EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
+  EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature.
 - `regular_callable_call <./function_notation/regular_callable_call.rst>`_ *(risky)*
 
   Callables must be called without using ``call_user_func*`` when possible.
@@ -866,7 +866,7 @@ Whitespace
   Remove extra spaces in a nullable typehint.
 - `heredoc_indentation <./whitespace/heredoc_indentation.rst>`_
 
-  Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.
+  Heredoc/nowdoc content must be properly indented.
 - `indentation_type <./whitespace/indentation_type.rst>`_
 
   Code MUST use configured indentation type.
@@ -882,7 +882,7 @@ Whitespace
 - `no_spaces_around_offset <./whitespace/no_spaces_around_offset.rst>`_
 
   There MUST NOT be spaces around offset braces.
-- `no_spaces_inside_parenthesis <./whitespace/no_spaces_inside_parenthesis.rst>`_
+- `no_spaces_inside_parenthesis <./whitespace/no_spaces_inside_parenthesis.rst>`_ *(deprecated)*
 
   There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.
 - `no_trailing_whitespace <./whitespace/no_trailing_whitespace.rst>`_
@@ -894,6 +894,9 @@ Whitespace
 - `single_blank_line_at_eof <./whitespace/single_blank_line_at_eof.rst>`_
 
   A PHP file without end tag must always end with a single empty line feed.
+- `spaces_inside_parentheses <./whitespace/spaces_inside_parentheses.rst>`_
+
+  Parentheses must be declared using the configured whitespace.
 - `statement_indentation <./whitespace/statement_indentation.rst>`_
 
   Each statement must be indented.

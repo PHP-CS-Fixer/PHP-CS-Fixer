@@ -5,6 +5,14 @@ Rule ``no_spaces_inside_parenthesis``
 There MUST NOT be a space after the opening parenthesis. There MUST NOT be a
 space before the closing parenthesis.
 
+Warning
+-------
+
+This rule is deprecated and will be removed on next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``spaces_inside_parentheses`` instead.
+
 Examples
 --------
 
@@ -34,16 +42,3 @@ Example #2
    +function foo($bar, $baz)
     {
     }
-
-Rule sets
----------
-
-The rule is part of the following rule sets:
-
-- `@PER <./../../ruleSets/PER.rst>`_
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
-- `@PSR2 <./../../ruleSets/PSR2.rst>`_
-- `@PSR12 <./../../ruleSets/PSR12.rst>`_
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
-

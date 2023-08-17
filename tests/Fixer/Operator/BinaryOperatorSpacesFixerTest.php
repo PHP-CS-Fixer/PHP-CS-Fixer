@@ -134,6 +134,18 @@ $a//
 
         yield [
             '<?php
+    $a =  1;
+    $b = 2;
+            ',
+            '<?php
+    $a =  1;
+    $b=2;
+            ',
+            ['operators' => ['=' => BinaryOperatorSpacesFixer::AT_LEAST_SINGLE_SPACE]],
+        ];
+
+        yield [
+            '<?php
     $var = [1 => 2];
     foreach ([
                 1 => 2,

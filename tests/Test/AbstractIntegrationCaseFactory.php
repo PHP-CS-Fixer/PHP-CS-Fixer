@@ -227,11 +227,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         if ((null === $encoded || '' === $encoded) && null !== $template) {
             $decoded = [];
         } else {
-            $decoded = json_decode($encoded, true);
-
-            if (JSON_ERROR_NONE !== json_last_error()) {
-                throw new \InvalidArgumentException(sprintf('Malformed JSON: "%s", error: "%s".', $encoded, json_last_error_msg()));
-            }
+            $decoded = json_decode($encoded, true, 512, JSON_THROW_ON_ERROR);
         }
 
         if (null !== $template) {
