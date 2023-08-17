@@ -263,7 +263,7 @@ final class TypeExpression
      */
     public function sortTypes(\Closure $compareCallback): void
     {
-        $this->walkTypes(function (self $type) use ($compareCallback): void {
+        $this->walkTypes(static function (self $type) use ($compareCallback): void {
             if ($type->isUnionType) {
                 $type->innerTypeExpressions = Utils::stableSort(
                     $type->innerTypeExpressions,
