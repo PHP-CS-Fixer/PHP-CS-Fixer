@@ -259,7 +259,34 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
                     * @return array{FOO: bool, NULL: null|int, BAR: string|BAZ}
                     */',
             '<?php /**
-                    * @return array{FOO: BOOL, NULL: NULL|INT, BAR: STRING|BAZ}
+                    * @return ARRAY{FOO: BOOL, NULL: NULL|INT, BAR: STRING|BAZ}
+                    */',
+        ];
+
+        yield 'union with \'NULL\'' => [
+            '<?php /**
+                    * @return \'NULL\'|null|false
+                    */',
+            '<?php /**
+                    * @return \'NULL\'|NULL|false
+                    */',
+        ];
+
+        yield 'union with "NULL"' => [
+            '<?php /**
+                    * @return null|"NULL"|false
+                    */',
+            '<?php /**
+                    * @return NULL|"NULL"|false
+                    */',
+        ];
+
+        yield 'method with reserved identifier' => [
+            '<?php /**
+                    * @method bool BOOL(): void
+                    */',
+            '<?php /**
+                    * @method BOOL BOOL(): void
                     */',
         ];
 

@@ -215,9 +215,9 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Closure(int $a, array<Closure(int ...$args): Item<X>>): bool'];
 
-        yield ['Closure_can_be_regular_class()'];
+        yield ['Closure_can_be_aliased()'];
 
-        yield ['Closure_can_be_regular_class(): (u|v)'];
+        yield ['Closure_can_be_aliased(): (u|v)'];
 
         yield ['array  <  int   , callable  (  string  )  :   bool  >'];
 
@@ -591,10 +591,16 @@ final class TypeExpressionTest extends TestCase
      */
     public function testSortTypes(string $typesExpression, string $expectResult): void
     {
+        $sortCaseFx = static fn (TypeExpression $a, TypeExpression $b): int => strcasecmp($a->toString(), $b->toString());
+        $sortCrc32Fx = static fn (TypeExpression $a, TypeExpression $b): int => crc32($a->toString()) <=> crc32($b->toString());
+
         $expression = $this->parseTypeExpression($typesExpression, null, []);
 
-        $expression->sortTypes(static fn (TypeExpression $a, TypeExpression $b): int => strcasecmp($a->toString(), $b->toString()));
+        $expression->sortTypes($sortCaseFx);
+        self::assertSame($expectResult, $expression->toString());
 
+        $expression->sortTypes($sortCrc32Fx);
+        $expression->sortTypes($sortCaseFx);
         self::assertSame($expectResult, $expression->toString());
     }
 
@@ -608,6 +614,16 @@ final class TypeExpressionTest extends TestCase
         yield 'simple' => [
             'int|bool',
             'bool|int',
+        ];
+
+        yield 'multiple union' => [
+            'C___|D____|B__|A',
+            'A|B__|C___|D____',
+        ];
+
+        yield 'multiple intersect' => [
+            'C___&D____&B__&A',
+            'A&B__&C___&D____',
         ];
 
         yield 'simple in generic' => [
@@ -793,8 +809,8 @@ final class TypeExpressionTest extends TestCase
         ];
 
         yield 'parenthesized in closure return type' => [
-            'Closure(): (string|float)',
-            'Closure(): (float|string)',
+            'Closure(Y|X): (string|float)',
+            'Closure(X|Y): (float|string)',
         ];
 
         yield 'conditional with variable' => [

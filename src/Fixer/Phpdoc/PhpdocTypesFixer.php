@@ -129,18 +129,32 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
 
     protected function normalize(string $type): string
     {
-        return Preg::replaceCallback(
-            '/(\b|(?=\$|\\\\))(\$|\\\\)?'.TypeExpression::REGEX_IDENTIFIER.'(?!\\\\|\h*:)/',
-            function (array $matches): string {
-                $valueLower = strtolower($matches[0]);
+        $typeExpression = new TypeExpression($type, null, []);
+
+        $typeExpression->walkTypes(function (TypeExpression $type): void {
+            if (!$type->isUnionType()) {
+                $value = $type->toString();
+                $valueLower = strtolower($value);
                 if (isset($this->typesSetToFix[$valueLower])) {
-                    return $valueLower;
+                    $value = $valueLower;
                 }
 
-                return $matches[0];
-            },
-            $type
-        );
+                // normalize shape/callable/generic identifiers too
+                // TODO parse them as inner types and this will be not needed then
+                $value = Preg::replaceCallback(
+                    '/^(\??\s*)([^()[\]{}<>\'"]++)([()[\]{}<>])/',
+                    fn ($matches) => $matches[1].$this->normalize($matches[2]).$matches[3],
+                    $value
+                );
+
+                // TODO TypeExpression should be immutable and walkTypes method should be changed to mapTypes method
+                \Closure::bind(function () use ($type, $value): void {
+                    $type->value = $value;
+                }, null, TypeExpression::class)();
+            }
+        });
+
+        return $typeExpression->toString();
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
