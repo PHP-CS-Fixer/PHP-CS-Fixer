@@ -6,8 +6,7 @@ PHP 8.0 test.
     "@PHP80Migration:risky": true,
     "@PhpCsFixer": true,
     "@PhpCsFixer:risky": true,
-    "phpdoc_to_return_type": true,
-    "static_lambda": true
+    "phpdoc_to_return_type": true
 }
 --REQUIREMENTS--
 {"php": 80000}
