@@ -23,8 +23,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -74,7 +72,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                         'keep_multiple_spaces_after_comma' => false,
                     ]
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     <<<'SAMPLE'
                         <?php
                         sample(
@@ -87,7 +85,6 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
 
                         SAMPLE
                     ,
-                    new VersionSpecification(7_03_00),
                     ['after_heredoc' => true]
                 ),
             ],
