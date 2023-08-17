@@ -1133,6 +1133,24 @@ functionCall(
     1,
     2,
     [
+        "a" => "b",
+    ]
+);',
+            '<?php
+functionCall(1, 2, [
+    "a" => "b",
+]);',
+            [
+                'on_nested_multiline' => 'always',
+            ],
+        ];
+
+        yield [
+            '<?php
+functionCall(
+    1,
+    2,
+    [
         "a" => [
             1, 2, 3
         ],
