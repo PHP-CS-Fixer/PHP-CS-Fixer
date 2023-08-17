@@ -148,7 +148,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
                 );
 
                 // TODO TypeExpression should be immutable and walkTypes method should be changed to mapTypes method
-                \Closure::bind(function () use ($type, $value): void {
+                \Closure::bind(static function () use ($type, $value): void {
                     $type->value = $value;
                 }, null, TypeExpression::class)();
             }
