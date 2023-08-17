@@ -37,24 +37,6 @@ final class LowercaseCastFixer extends AbstractFixer
     $a = (INT) $b;
     $a = (DOUBLE) $b;
     $a = (FLoaT) $b;
-    $a = (reaL) $b;
-    $a = (flOAT) $b;
-    $a = (sTRING) $b;
-    $a = (ARRAy) $b;
-    $a = (OBJect) $b;
-    $a = (UNset) $b;
-    $a = (Binary) $b;
-',
-                    new VersionSpecification(null, 7_03_99)
-                ),
-                new VersionSpecificCodeSample(
-                    '<?php
-    $a = (BOOLEAN) $b;
-    $a = (BOOL) $b;
-    $a = (INTEGER) $b;
-    $a = (INT) $b;
-    $a = (DOUBLE) $b;
-    $a = (FLoaT) $b;
     $a = (flOAT) $b;
     $a = (sTRING) $b;
     $a = (ARRAy) $b;

@@ -20,26 +20,6 @@ Example #1
    -$a = (boolean) $b;
    -$a = (integer) $b;
    -$a = (double) $b;
-   -$a = (real) $b;
-   +$a = (bool) $b;
-   +$a = (int) $b;
-   +$a = (float) $b;
-   +$a = (float) $b;
-
-   -$a = (binary) $b;
-   +$a = (string) $b;
-
-Example #2
-~~~~~~~~~~
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-   -$a = (boolean) $b;
-   -$a = (integer) $b;
-   -$a = (double) $b;
    +$a = (bool) $b;
    +$a = (int) $b;
    +$a = (float) $b;
