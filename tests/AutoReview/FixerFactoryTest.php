@@ -498,6 +498,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'method_argument_space' => [
                 'array_indentation',
+                'statement_indentation',
             ],
             'modernize_strpos' => [
                 'binary_operator_spaces',

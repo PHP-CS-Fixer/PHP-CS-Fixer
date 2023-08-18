@@ -1189,6 +1189,25 @@ function foo(
     #[\Foo\Bar] $bar, #[\Foo\Baz] $baz, #[\Foo\Buzz] $buzz
 ) {}',
         ];
+
+        yield 'multiline attributes' => [
+            '<?php
+function foo(
+    $foo,
+    #[
+    Foo\Bar,
+    Foo\Baz,
+    Foo\Buzz(a: \'astral\', b: 1234),
+]
+    $bar
+) {}',
+            '<?php
+function foo($foo, #[
+    Foo\Bar,
+    Foo\Baz,
+    Foo\Buzz(a: \'astral\', b: 1234),
+] $bar) {}',
+        ];
     }
 
     /**
