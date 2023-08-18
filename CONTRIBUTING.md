@@ -21,7 +21,7 @@ A *config* knows about the code style rules and the files and directories that m
 ### Development
 
 * [Fork](https://help.github.com/articles/fork-a-repo/) this repository. You can use native Git approach or use [`gh` CLI tool](https://cli.github.com/).
-* Create new branch on top of the latest revision of `master` branch (if you already had project locally, then make sure to update this branch before going to next steps). It's good when branch's name reflects intent of the changes, but this is not strict requirement since Pull Request provides description of the change. However, with good branch naming it's easier to work on multiple changes simultaneously.
+* Create new branch on top of the latest revision of `master` branch (if you already had project locally, then make sure to update this branch before going to next steps). It's good when branch's name reflects intent of the changes, but this is not strict requirement since pull request provides description of the change. However, with good branch naming it's easier to work on multiple changes simultaneously.
 * Install dependencies by running `composer update` (since project does not contain `composer.lock` it's better to ensure latest versions of packages by running `update` command instead of `install`).
 * Make changes. Please remember that **all** changes have to be covered by tests.
   * if you work on a bug fix, please start with reproducing the problem by adding failing test case(s). When you have failing test case(s), you can [create pull request](#opening-a-pull-request) just to reproduce fail in the CI. Then you can provide fix _in the subsequent commits_, it will make code review easier. It's allowed to modify existing test cases in bug fix pull request, but *only if* current behavior is proved to be invalid.
@@ -35,10 +35,10 @@ A *config* knows about the code style rules and the files and directories that m
 
 ### Opening a [pull request](https://help.github.com/articles/about-pull-requests/)
 
-You can do some things to increase the chance that your Pull Request is accepted without communication ping-pong between you and the reviewers:
+You can do some things to increase the chance that your pull request is accepted without communication ping-pong between you and the reviewers:
 
 * Submit [single](https://en.wikipedia.org/wiki/Single-responsibility_principle) pull request per fix or feature.
-* Don't amend commits because it makes review rounds harder - all commits from your branch will be squashed (without commit messages) during merge, so you can treat Pull Request as a playground, without keeping everything tidy at any point.
+* Don't amend commits because it makes review rounds harder - all commits from your branch will be squashed (without commit messages) during merge, so you can treat pull request as a playground, without keeping everything tidy at any point.
 * If your changes are not up-to-date, [rebase](https://git-scm.com/docs/git-rebase) your branch onto the parent branch. Do it regularly whenever your branch is behind `master` branch, that will eliminate risk of problems after the merge.
 * Follow the conventions used in the project.
 * Remember about tests and documentation.
