@@ -103,7 +103,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
     /**
      * {@inheritdoc}
      *
-     * Must run before ArrayIndentationFixer.
+     * Must run before ArrayIndentationFixer, StatementIndentationFixer.
      * Must run after CombineNestedDirnameFixer, FunctionDeclarationFixer, ImplodeCallFixer, LambdaNotUsedImportFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, NoUselessSprintfFixer, PowToExponentiationFixer, StrictParamFixer.
      */
     public function getPriority(): int
@@ -330,8 +330,17 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 continue;
             }
 
-            if ($token->equals(',') && !$tokens[$tokens->getNextMeaningfulToken($index)]->equals(')')) {
+            $isAttribute = $token->isGivenKind(CT::T_ATTRIBUTE_CLOSE);
+
+            if (
+                ($token->equals(',') || $isAttribute)
+                && !$tokens[$tokens->getNextMeaningfulToken($index)]->equals(')')
+            ) {
                 $this->fixNewline($tokens, $index, $indentation);
+
+                if ($isAttribute) {
+                    $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+                }
             }
         }
 
