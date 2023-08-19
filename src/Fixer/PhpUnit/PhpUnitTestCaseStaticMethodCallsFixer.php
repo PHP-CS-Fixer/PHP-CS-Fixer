@@ -36,30 +36,6 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
     /**
-     * @internal
-     */
-    public const CALL_TYPE_THIS = 'this';
-
-    /**
-     * @internal
-     */
-    public const CALL_TYPE_SELF = 'self';
-
-    /**
-     * @internal
-     */
-    public const CALL_TYPE_STATIC = 'static';
-
-    /**
-     * @var array<string,bool>
-     */
-    private array $allowedValues = [
-        self::CALL_TYPE_THIS => true,
-        self::CALL_TYPE_SELF => true,
-        self::CALL_TYPE_STATIC => true,
-    ];
-
-    /**
      * @var array<string,true>
      */
     private array $staticMethods = [
@@ -197,7 +173,9 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertNull' => true,
         'assertObjectEquals' => true,
         'assertObjectHasAttribute' => true,
+        'assertObjectHasProperty' => true,
         'assertObjectNotHasAttribute' => true,
+        'assertObjectNotHasProperty' => true,
         'assertRegExp' => true,
         'assertSame' => true,
         'assertSameSize' => true,
@@ -299,6 +277,30 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'setUpBeforeClass' => true,
         'tearDownAfterClass' => true,
         'throwException' => true,
+    ];
+
+    /**
+     * @internal
+     */
+    public const CALL_TYPE_THIS = 'this';
+
+    /**
+     * @internal
+     */
+    public const CALL_TYPE_SELF = 'self';
+
+    /**
+     * @internal
+     */
+    public const CALL_TYPE_STATIC = 'static';
+
+    /**
+     * @var array<string,bool>
+     */
+    private array $allowedValues = [
+        self::CALL_TYPE_THIS => true,
+        self::CALL_TYPE_SELF => true,
+        self::CALL_TYPE_STATIC => true,
     ];
 
     /**
