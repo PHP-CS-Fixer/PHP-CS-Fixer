@@ -22,8 +22,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -82,11 +80,10 @@ $f = function () {};
 ',
                     ['closure_function_spacing' => self::SPACING_NONE]
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 $f = fn () => null;
 ',
-                    new VersionSpecification(7_04_00),
                     ['closure_fn_spacing' => self::SPACING_NONE]
                 ),
             ]

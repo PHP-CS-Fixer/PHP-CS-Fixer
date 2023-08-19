@@ -22,8 +22,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -38,7 +36,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements
             'In array declaration, there MUST NOT be a whitespace before each comma.',
             [
                 new CodeSample("<?php \$x = array(1 , \"2\");\n"),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     <<<'PHP'
                         <?php
                             $x = [<<<EOD
@@ -48,7 +46,6 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements
                             ];
 
                         PHP,
-                    new VersionSpecification(7_03_00),
                     ['after_heredoc' => true]
                 ),
             ]

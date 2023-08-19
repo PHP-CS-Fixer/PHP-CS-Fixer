@@ -166,6 +166,14 @@ abstract class AbstractFixerTestCase extends TestCase
                 }
                 self::assertTrue($hasSuitableSupportedVersion, 'Version specific code sample must be suitable for at least 1 supported PHP version.');
 
+                $hasUnsuitableSupportedVersion = false;
+                foreach ($supportedPhpVersions as $version) {
+                    if (!$sample->isSuitableFor($version)) {
+                        $hasUnsuitableSupportedVersion = true;
+                    }
+                }
+                self::assertTrue($hasUnsuitableSupportedVersion, 'Version specific code sample must be unsuitable for at least 1 supported PHP version.');
+
                 if (!$sample->isSuitableFor(\PHP_VERSION_ID)) {
                     continue;
                 }
