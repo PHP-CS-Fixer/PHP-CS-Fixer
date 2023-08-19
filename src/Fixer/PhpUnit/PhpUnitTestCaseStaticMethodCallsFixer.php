@@ -36,6 +36,21 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
     /**
+     * @internal
+     */
+    public const CALL_TYPE_THIS = 'this';
+
+    /**
+     * @internal
+     */
+    public const CALL_TYPE_SELF = 'self';
+
+    /**
+     * @internal
+     */
+    public const CALL_TYPE_STATIC = 'static';
+
+    /**
      * @var array<string,true>
      */
     private array $staticMethods = [
@@ -278,21 +293,6 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'tearDownAfterClass' => true,
         'throwException' => true,
     ];
-
-    /**
-     * @internal
-     */
-    public const CALL_TYPE_THIS = 'this';
-
-    /**
-     * @internal
-     */
-    public const CALL_TYPE_SELF = 'self';
-
-    /**
-     * @internal
-     */
-    public const CALL_TYPE_STATIC = 'static';
 
     /**
      * @var array<string,bool>
