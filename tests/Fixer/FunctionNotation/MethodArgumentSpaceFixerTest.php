@@ -1101,6 +1101,116 @@ $fn = fn(
     }
 
     /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'multiple attributes' => [
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $id,
+        #[Foo]
+        #[Bar]
+        private ?string $name = null,
+    ) {}
+}',
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $id,
+        #[Foo] #[Bar] private ?string $name = null,
+    ) {}
+}',
+        ];
+
+        yield 'single attribute markup with comma separated list' => [
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $id,
+        #[Foo, Bar]
+        private ?string $name = null,
+    ) {}
+}',
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $id,
+        #[Foo, Bar] private ?string $name = null,
+    ) {}
+}',
+        ];
+
+        yield 'attributes with arguments' => [
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $id,
+        #[Foo(value: 1234, otherValue: [1, 2, 3])]
+        #[Bar(Bar::BAZ, array(\'[\',\']\'))]
+        private ?string $name = null,
+    ) {}
+}',
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $id,
+        #[Foo(value: 1234, otherValue: [1, 2, 3])] #[Bar(Bar::BAZ, array(\'[\',\']\'))] private ?string $name = null,
+    ) {}
+}',
+        ];
+
+        yield 'fully qualified attributes' => [
+            '<?php
+function foo(
+    #[\Foo\Bar]
+    $bar,
+    #[\Foo\Baz]
+    $baz,
+    #[\Foo\Buzz]
+    $buzz
+) {}',
+            '<?php
+function foo(
+    #[\Foo\Bar] $bar, #[\Foo\Baz] $baz, #[\Foo\Buzz] $buzz
+) {}',
+        ];
+
+        yield 'multiline attributes' => [
+            '<?php
+function foo(
+    $foo,
+    #[
+    Foo\Bar,
+    Foo\Baz,
+    Foo\Buzz(a: \'astral\', b: 1234),
+]
+    $bar
+) {}',
+            '<?php
+function foo($foo, #[
+    Foo\Bar,
+    Foo\Baz,
+    Foo\Buzz(a: \'astral\', b: 1234),
+] $bar) {}',
+        ];
+    }
+
+    /**
      * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
