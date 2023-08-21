@@ -351,5 +351,17 @@ $letters = [
             null,
             ['max_length' => 0],
         ];
+
+        yield 'Destructuring to multiline' => [
+            '<?php
+[
+$foo,
+$bar,
+$baz
+] = $arr;',
+            '<?php
+[$foo, $bar, $baz] = $arr;',
+            ['max_length' => 0],
+        ];
     }
 }
