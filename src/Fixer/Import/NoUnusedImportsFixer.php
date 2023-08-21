@@ -131,10 +131,6 @@ final class NoUnusedImportsFixer extends AbstractFixer
                     continue;
                 }
 
-                if ($inAttribute) {
-                    return true;
-                }
-
                 $prevMeaningfulToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
                 if ($prevMeaningfulToken->isGivenKind(T_NAMESPACE)) {
@@ -148,6 +144,10 @@ final class NoUnusedImportsFixer extends AbstractFixer
                     || $prevMeaningfulToken->isObjectOperator()
                 ) {
                     continue;
+                }
+
+                if ($inAttribute) {
+                    return true;
                 }
 
                 $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($index);
