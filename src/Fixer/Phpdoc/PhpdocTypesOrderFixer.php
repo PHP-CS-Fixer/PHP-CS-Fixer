@@ -188,7 +188,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                 }
 
                 if ('alpha' === $this->configuration['sort_algorithm']) {
-                    return (bool) $this->configuration['case_sensitive'] ? strcmp($a, $b) : strcasecmp($a, $b);
+                    return $this->configuration['case_sensitive'] ? strcmp($a, $b) : strcasecmp($a, $b);
                 }
 
                 return 0;

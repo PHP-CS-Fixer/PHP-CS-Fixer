@@ -1295,20 +1295,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
             use Bar1;
             use Fooo;
 
-            class AnnotatedClass
-            {
-                /**
-                 * @Template(foobar=21)
-                 * @param Entity $foo
-                 */
-                public function doSomething($foo)
-                {
-                    $bar = $foo->toArray();
-                    /** @var ArrayInterface $bar */
-
-                    return function () use ($bar, $foo) {};
-                }
-            }
+            class AnnotatedClass { }
             EOF;
 
         $input = <<<'EOF'
@@ -1319,20 +1306,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
             use Bar1;
             use BaRr;
 
-            class AnnotatedClass
-            {
-                /**
-                 * @Template(foobar=21)
-                 * @param Entity $foo
-                 */
-                public function doSomething($foo)
-                {
-                    $bar = $foo->toArray();
-                    /** @var ArrayInterface $bar */
-
-                    return function () use ($bar, $foo) {};
-                }
-            }
+            class AnnotatedClass { }
             EOF;
 
         $this->doTest($expected, $input);
