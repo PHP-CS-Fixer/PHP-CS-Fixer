@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -35,28 +37,28 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class ListFixersCommand extends Command
 {
     /** @var string */
-    const COMMAND_NAME = 'list';
+    public const COMMAND_NAME = 'list';
 
     /**
      * @var string
      *
      * @internal
      */
-    const THICK = "\xE2\x9C\x94";
+    public const THICK = "\xE2\x9C\x94";
 
     /**
      * @var string
      *
      * @internal
      */
-    const CROSS = "\xE2\x9C\x96";
+    public const CROSS = "\xE2\x9C\x96";
 
     /**
      * @var string
      *
      * @internal
      */
-    const PLUS = "\xe2\x9c\x9a";
+    public const PLUS = "\xe2\x9c\x9a";
 
     /** @var ToolInfoInterface */
     private $toolInfo;
@@ -130,10 +132,6 @@ final class ListFixersCommand extends Command
     /** @var int */
     private $countCustomFixers = 0;
 
-    /**
-     * @param ToolInfoInterface $toolInfo
-     * @param null|FixerFactory $fixerFactory
-     */
     public function __construct(ToolInfoInterface $toolInfo, FixerFactory $fixerFactory = null)
     {
         parent::__construct(self::COMMAND_NAME);
@@ -150,10 +148,7 @@ final class ListFixersCommand extends Command
         $this->fixerNameValidator = new FixerNameValidator();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDefinition(
@@ -173,9 +168,6 @@ final class ListFixersCommand extends Command
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->hideConfigured = $input->getOption('hide-configured');
@@ -214,9 +206,7 @@ final class ListFixersCommand extends Command
         }
 
         // Order fixers alphabetically
-        usort($this->availableFixers, static function (FixerInterface $a, FixerInterface $b) {
-            return strcmp($a->getName(), $b->getName());
-        });
+        usort($this->availableFixers, static fn (FixerInterface $a, FixerInterface $b) => strcmp($a->getName(), $b->getName()));
 
         foreach ($this->availableFixers as $fixer) {
             $this->processFixer($fixer);
@@ -238,10 +228,9 @@ final class ListFixersCommand extends Command
     }
 
     /**
-     * @param string           $name
-     * @param RuleSetInterface $set
+     * @param string $name
      */
-    private function processRuleSet($name, RuleSetInterface $set)
+    private function processRuleSet($name, RuleSetInterface $set): void
     {
         /** @var bool $value */
         foreach ($set->getRules() as $rule => $value) {
@@ -250,10 +239,7 @@ final class ListFixersCommand extends Command
         }
     }
 
-    /**
-     * @param FixerInterface $fixer
-     */
-    private function processFixer(FixerInterface $fixer)
+    private function processFixer(FixerInterface $fixer): void
     {
         $this->fixerList[$fixer->getName()]['name'] = $fixer->getName();
         $this->fixerList[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
@@ -266,8 +252,6 @@ final class ListFixersCommand extends Command
     }
 
     /**
-     * @param OutputInterface $output
-     *
      * @return Table
      */
     private function buildTable(OutputInterface $output)
@@ -430,15 +414,12 @@ final class ListFixersCommand extends Command
         }, $rows);
     }
 
-    private function calculateComparison()
+    private function calculateComparison(): void
     {
         $this->undefinedFixers = array_diff_key($this->fixerList, $this->configuredFixers, $this->enabledFixers);
     }
 
-    /**
-     * @param OutputInterface $output
-     */
-    private function dumpComparison(OutputInterface $output)
+    private function dumpComparison(OutputInterface $output): void
     {
         if (empty($this->undefinedFixers)) {
             $output->writeln("\nYou are aware of all existing rules! Yeah!");
@@ -447,7 +428,7 @@ final class ListFixersCommand extends Command
         }
 
         $line = var_export(
-            array_map(static function () {return false; }, $this->undefinedFixers),
+            array_map(static fn () => false, $this->undefinedFixers),
             true
         );
 
@@ -461,13 +442,11 @@ final class ListFixersCommand extends Command
                 $this->configName,
                 $this->configFile,
                 $line
-        )
+            )
         );
     }
 
     /**
-     * @param FixerInterface $fixer
-     *
      * @return bool
      */
     private function isFixerConfigured(FixerInterface $fixer)
@@ -476,8 +455,6 @@ final class ListFixersCommand extends Command
     }
 
     /**
-     * @param FixerInterface $fixer
-     *
      * @return bool
      */
     private function isFixerEnabled(FixerInterface $fixer)
@@ -486,8 +463,6 @@ final class ListFixersCommand extends Command
     }
 
     /**
-     * @param FixerInterface $fixer
-     *
      * @return bool
      */
     private function isFixerEnabledThroughInheritance(FixerInterface $fixer)
@@ -496,8 +471,6 @@ final class ListFixersCommand extends Command
     }
 
     /**
-     * @param FixerInterface $fixer
-     *
      * @return bool
      */
     private function isFixerRisky(FixerInterface $fixer)
@@ -506,8 +479,6 @@ final class ListFixersCommand extends Command
     }
 
     /**
-     * @param FixerInterface $fixer
-     *
      * @return bool
      */
     private function isFixerDeprecated(FixerInterface $fixer)
@@ -516,8 +487,6 @@ final class ListFixersCommand extends Command
     }
 
     /**
-     * @param FixerInterface $fixer
-     *
      * @return bool
      */
     private function isCustomFixer(FixerInterface $fixer)
