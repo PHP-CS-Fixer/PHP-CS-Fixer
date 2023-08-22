@@ -236,4 +236,51 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                 ',
         ];
     }
+
+    /**
+     * @dataProvider provideFixCaseSensitiveAlphaCases
+     */
+    public function testFixCaseSensitiveAlpha(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_ALPHA,
+            'case_sensitive' => true,
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixCaseSensitiveAlphaCases(): iterable
+    {
+        return [
+            'single' => [
+                '<?php class A implements A {}',
+            ],
+            'multiple' => [
+                '<?php class A implements AA, Aaa, FF, Fff {}',
+                '<?php class A implements Fff, Aaa, FF, AA {}',
+            ],
+            'mixed' => [
+                '<?php class T implements \F\Q\C\N, Partially\Q\C\N, /* Who mixes these? */ UnNamespaced {}',
+                '<?php class T implements /* Who mixes these? */ UnNamespaced, \F\Q\C\N, Partially\Q\C\N {}',
+            ],
+            'normalized' => [
+                '<?php
+                    class A implements
+                         A\B\C\D,
+                         AAa\B\C\D,
+                         ABCDE,
+                         Aaa\B\C\D
+                    { /* */ }
+                ',
+                '<?php
+                    class A implements
+                         Aaa\B\C\D,
+                         AAa\B\C\D,
+                         ABCDE,
+                         A\B\C\D
+                    { /* */ }
+                ',
+            ],
+        ];
+    }
 }

@@ -1994,6 +1994,10 @@ List of Available Rules
      | Defines the order of import types.
      | Allowed types: ``array`` and ``null``
      | Default value: ``null``
+   - | ``case_sensitive``
+     | Whether the sorting should be case sensitive.
+     | Allowed types: ``bool``
+     | Default value: ``false``
 
 
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -2013,6 +2017,10 @@ List of Available Rules
      | Which direction the interfaces should be ordered.
      | Allowed values: ``'ascend'`` and ``'descend'``
      | Default value: ``'ascend'``
+   - | ``case_sensitive``
+     | Whether the sorting should be case sensitive.
+     | Allowed types: ``bool``
+     | Default value: ``false``
 
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\OrderedInterfacesFixer <./../src/Fixer/ClassNotation/OrderedInterfacesFixer.php>`_
@@ -2021,6 +2029,14 @@ List of Available Rules
    Trait ``use`` statements must be sorted alphabetically.
 
    *warning risky* Risky when depending on order of the imports.
+
+   Configuration options:
+
+   - | ``case_sensitive``
+     | Whether the sorting should be case sensitive.
+     | Allowed types: ``bool``
+     | Default value: ``false``
+
 
    Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
@@ -2039,6 +2055,10 @@ List of Available Rules
      | Forces the position of ``null`` (overrides ``sort_algorithm``).
      | Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
      | Default value: ``'always_first'``
+   - | ``case_sensitive``
+     | Whether the sorting should be case sensitive.
+     | Allowed types: ``bool``
+     | Default value: ``false``
 
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\OrderedTypesFixer <./../src/Fixer/ClassNotation/OrderedTypesFixer.php>`_
@@ -2410,6 +2430,10 @@ List of Available Rules
      | Forces the position of ``null`` (overrides ``sort_algorithm``).
      | Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
      | Default value: ``'always_first'``
+   - | ``case_sensitive``
+     | Whether the sorting should be case sensitive.
+     | Allowed types: ``bool``
+     | Default value: ``false``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_

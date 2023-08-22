@@ -705,4 +705,29 @@ try {
             ['sort_algorithm' => 'alpha'],
         ];
     }
+
+    /**
+     * @dataProvider provideFixWithCaseSensitiveCases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFixWithCaseSensitive(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'case_sensitive' => true,
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<(null|array<string, string>|string)[]|string[]>
+     */
+    public static function provideFixWithCaseSensitiveCases(): iterable
+    {
+        yield [
+            "<?php\nclass Foo\n{\n    public null|AAa|Aa \$bar = null;\n}\n",
+            "<?php\nclass Foo\n{\n    public Aa|AAa|null \$bar = null;\n}\n",
+        ];
+    }
 }

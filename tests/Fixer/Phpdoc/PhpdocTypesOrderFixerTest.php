@@ -802,4 +802,26 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             '<?php /** @var ?Deferred<TestLocations> */',
         ];
     }
+
+    /**
+     * @dataProvider provideFixWithCaseSensitiveCases
+     */
+    public function testFixWithCaseSensitive(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'case_sensitive' => true,
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixWithCaseSensitiveCases(): iterable
+    {
+        return [
+            [
+                '<?php /** @var AA|Aaa */',
+                '<?php /** @var Aaa|AA */',
+            ],
+        ];
+    }
 }

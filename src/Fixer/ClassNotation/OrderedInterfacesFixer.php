@@ -91,6 +91,19 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
                         self::OPTION_DIRECTION => self::DIRECTION_DESCEND,
                     ]
                 ),
+                new CodeSample(
+                    "<?php\n\nfinal class ExampleA implements IgnorecaseB, IgNoReCaSeA, IgnoreCaseC {}\n\ninterface ExampleB extends IgnorecaseB, IgNoReCaSeA, IgnoreCaseC {}\n",
+                    [
+                        self::OPTION_ORDER => self::ORDER_ALPHA,
+                    ]
+                ),
+                new CodeSample(
+                    "<?php\n\nfinal class ExampleA implements Casesensitivea, CaseSensitiveA, CasesensitiveA {}\n\ninterface ExampleB extends Casesensitivea, CaseSensitiveA, CasesensitiveA {}\n",
+                    [
+                        self::OPTION_ORDER => self::ORDER_ALPHA,
+                        'case_sensitive' => true,
+                    ]
+                ),
             ],
         );
     }
@@ -153,7 +166,11 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
             usort($interfaces, function (array $first, array $second): int {
                 $score = self::ORDER_LENGTH === $this->configuration[self::OPTION_ORDER]
                     ? \strlen($first['normalized']) - \strlen($second['normalized'])
-                    : strcasecmp($first['normalized'], $second['normalized']);
+                    : (
+                        $this->configuration['case_sensitive']
+                        ? strcmp($first['normalized'], $second['normalized'])
+                        : strcasecmp($first['normalized'], $second['normalized'])
+                    );
 
                 if (self::DIRECTION_DESCEND === $this->configuration[self::OPTION_DIRECTION]) {
                     $score *= -1;
@@ -196,6 +213,10 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
             (new FixerOptionBuilder(self::OPTION_DIRECTION, 'Which direction the interfaces should be ordered.'))
                 ->setAllowedValues(self::SUPPORTED_DIRECTION_OPTIONS)
                 ->setDefault(self::DIRECTION_ASCEND)
+                ->getOption(),
+            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
                 ->getOption(),
         ]);
     }

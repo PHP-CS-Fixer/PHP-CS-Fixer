@@ -92,6 +92,10 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                     "<?php\nuse function AAC;\nuse const AAB;\nuse AAA;\n"
                 ),
                 new CodeSample(
+                    "<?php\nuse function Aaa;\nuse const AA;\n",
+                    ['case_sensitive' => true]
+                ),
+                new CodeSample(
                     '<?php
 use Acme\Bar;
 use Bar1;
@@ -263,6 +267,10 @@ use Bar;
                 }])
                 ->setDefault(null) // @TODO set to ['class', 'function', 'const'] on 4.0
                 ->getOption(),
+            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
         ]);
     }
 
@@ -280,7 +288,9 @@ use Bar;
         $firstNamespace = str_replace('\\', ' ', $this->prepareNamespace($first['namespace']));
         $secondNamespace = str_replace('\\', ' ', $this->prepareNamespace($second['namespace']));
 
-        return strcasecmp($firstNamespace, $secondNamespace);
+        return $this->configuration['case_sensitive']
+            ? strcmp($firstNamespace, $secondNamespace)
+            : strcasecmp($firstNamespace, $secondNamespace);
     }
 
     /**
@@ -300,7 +310,9 @@ use Bar;
         $secondNamespaceLength = \strlen($secondNamespace);
 
         if ($firstNamespaceLength === $secondNamespaceLength) {
-            $sortResult = strcasecmp($firstNamespace, $secondNamespace);
+            $sortResult = $this->configuration['case_sensitive']
+                ? strcmp($firstNamespace, $secondNamespace)
+                : strcasecmp($firstNamespace, $secondNamespace);
         } else {
             $sortResult = $firstNamespaceLength > $secondNamespaceLength ? 1 : -1;
         }

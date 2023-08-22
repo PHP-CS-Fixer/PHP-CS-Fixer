@@ -25,6 +25,15 @@ Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
 
 Default value: ``'always_first'``
 
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether the sorting should be case sensitive.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
@@ -50,6 +59,22 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
+With configuration: ``['case_sensitive' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    interface Foo
+    {
+   -    public function bar(\Aaa|\AA $foo): string|int;
+   +    public function bar(\AA|\Aaa $foo): int|string;
+    }
+
+Example #3
+~~~~~~~~~~
+
 With configuration: ``['null_adjustment' => 'always_last']``.
 
 .. code-block:: diff
@@ -66,7 +91,7 @@ With configuration: ``['null_adjustment' => 'always_last']``.
    +    public function foo(\Countable&\Stringable $obj): int;
     }
 
-Example #3
+Example #4
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'none', 'null_adjustment' => 'always_last']``.

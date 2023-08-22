@@ -57,6 +57,18 @@ try {
                     '<?php
 interface Foo
 {
+    public function bar(\Aaa|\AA $foo): string|int;
+}
+',
+                    new VersionSpecification(8_00_00),
+                    [
+                        'case_sensitive' => true,
+                    ]
+                ),
+                new VersionSpecificCodeSample(
+                    '<?php
+interface Foo
+{
     public function bar(null|string|int $foo): string|int;
 
     public function foo(\Stringable&\Countable $obj): int;
@@ -108,6 +120,10 @@ interface Bar
             (new FixerOptionBuilder('null_adjustment', 'Forces the position of `null` (overrides `sort_algorithm`).'))
                 ->setAllowedValues(['always_first', 'always_last', 'none'])
                 ->setDefault('always_first')
+                ->getOption(),
+            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
                 ->getOption(),
         ]);
     }
@@ -353,7 +369,7 @@ interface Bar
             }
 
             if ('alpha' === $this->configuration['sort_algorithm']) {
-                return strcasecmp($a, $b);
+                return $this->configuration['case_sensitive'] ? strcmp($a, $b) : strcasecmp($a, $b);
             }
 
             return 0;
