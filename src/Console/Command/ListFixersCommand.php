@@ -18,8 +18,9 @@ use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\FixerNameValidator;
-use PhpCsFixer\RuleSet;
-use PhpCsFixer\RuleSetInterface;
+use PhpCsFixer\RuleSet\RuleSet;
+use PhpCsFixer\RuleSet\RuleSetInterface;
+use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -208,7 +209,7 @@ final class ListFixersCommand extends Command
 
         // Get the RuleSets and their Fixers
         $ruleSets = [];
-        foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
+        foreach (RuleSets::getSetDefinitions() as $setName => $set) {
             $ruleSets[$setName] = new RuleSet([$setName => true]);
         }
 
@@ -232,6 +233,8 @@ final class ListFixersCommand extends Command
             $this->calculateComparison();
             $this->dumpComparison($output);
         }
+
+        return 0;
     }
 
     /**
