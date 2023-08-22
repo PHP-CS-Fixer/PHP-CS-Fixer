@@ -630,6 +630,40 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
             ,
         ];
 
+        yield 'no_import_in_global_namespace' => [
+            <<<'EOF'
+                <?php
+                namespace A;
+                new \SplFileInfo(__FILE__);
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+                namespace A;
+                use SplFileInfo;
+                new \SplFileInfo(__FILE__);
+                EOF
+            ,
+        ];
+
+        yield 'no_import_attribute_in_global_namespace' => [
+            <<<'EOF'
+                <?php
+                namespace A;
+                #[\Attribute(\Attribute::TARGET_PROPERTY)]
+                final class B {}
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+                namespace A;
+                use Attribute;
+                #[\Attribute(\Attribute::TARGET_PROPERTY)]
+                final class B {}
+                EOF
+            ,
+        ];
+
         yield 'use_as_last_statement' => [
             <<<'EOF'
                 <?php
