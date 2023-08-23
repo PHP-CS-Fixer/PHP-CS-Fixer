@@ -236,7 +236,7 @@ final class ListFixersCommand extends Command
         $this->fixerList[$fixer->getName()]['name'] = $fixer->getName();
         $this->fixerList[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
         $this->fixerList[$fixer->getName()]['is_enabled'] = $this->isFixerEnabled($fixer);
-        $this->fixerList[$fixer->getName()]['is_enabled_Through_inheritance'] = $this->isFixerEnabledThroughInheritance($fixer);
+        $this->fixerList[$fixer->getName()]['is_enabled_through_inheritance'] = $this->isFixerEnabledThroughInheritance($fixer);
         $this->fixerList[$fixer->getName()]['is_risky'] = $this->isFixerRisky($fixer);
         $this->fixerList[$fixer->getName()]['is_inherited'] = false;
         $this->fixerList[$fixer->getName()]['is_deprecated'] = $this->isFixerDeprecated($fixer);
@@ -352,7 +352,7 @@ final class ListFixersCommand extends Command
                 $icon = self::THICK;
             }
 
-            if ($fixer['is_enabled_Through_inheritance']) {
+            if ($fixer['is_enabled_through_inheritance']) {
                 $color = '<fg=green>%s %s (>)</>';
                 $icon = self::THICK;
             }
