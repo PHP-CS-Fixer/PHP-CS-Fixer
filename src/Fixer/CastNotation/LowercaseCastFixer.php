@@ -15,10 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\CastNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -29,25 +28,7 @@ final class LowercaseCastFixer extends AbstractFixer
         return new FixerDefinition(
             'Cast should be written in lower case.',
             [
-                new VersionSpecificCodeSample(
-                    '<?php
-    $a = (BOOLEAN) $b;
-    $a = (BOOL) $b;
-    $a = (INTEGER) $b;
-    $a = (INT) $b;
-    $a = (DOUBLE) $b;
-    $a = (FLoaT) $b;
-    $a = (reaL) $b;
-    $a = (flOAT) $b;
-    $a = (sTRING) $b;
-    $a = (ARRAy) $b;
-    $a = (OBJect) $b;
-    $a = (UNset) $b;
-    $a = (Binary) $b;
-',
-                    new VersionSpecification(null, 7_03_99)
-                ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
     $a = (BOOLEAN) $b;
     $a = (BOOL) $b;
@@ -62,7 +43,6 @@ final class LowercaseCastFixer extends AbstractFixer
     $a = (UNset) $b;
     $a = (Binary) $b;
 ',
-                    new VersionSpecification(7_04_00)
                 ),
             ]
         );

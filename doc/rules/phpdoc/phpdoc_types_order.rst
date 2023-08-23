@@ -25,6 +25,15 @@ Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
 
 Default value: ``'always_first'``
 
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether the sorting should be case sensitive.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
@@ -101,6 +110,21 @@ With configuration: ``['sort_algorithm' => 'alpha', 'null_adjustment' => 'none']
     /**
    - * @param null|string|int|\Foo $bar
    + * @param \Foo|int|null|string $bar
+     */
+
+Example #6
+~~~~~~~~~~
+
+With configuration: ``['case_sensitive' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    /**
+   - * @param Aaa|AA $bar
+   + * @param AA|Aaa $bar
      */
 
 Rule sets

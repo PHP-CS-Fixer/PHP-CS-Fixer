@@ -44,12 +44,42 @@ final class IntegerLiteralCaseFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
+            '<?php $foo = -0xA1FB20;',
+            '<?php $foo = -0xa1fb20;',
+        ];
+
+        yield [
             '<?php $foo = 0b1101;',
             '<?php $foo = 0B1101;',
         ];
 
         yield [
             '<?php $A = 1_234_567;',
+        ];
+
+        yield [
+            '<?php $A = +0xAA_FF_00;',
+            '<?php $A = +0Xaa_ff_00;',
+        ];
+
+        yield [
+            '<?php $A = -0x00_AA_FF_00;',
+            '<?php $A = -0X00_aa_ff_00;',
+        ];
+
+        yield 'bin_PHP_INT_MAX' => [
+            '<?php $foo = 0b111111111111111111111111111111111111111111111111111111111111111;',
+            '<?php $foo = 0B111111111111111111111111111111111111111111111111111111111111111;',
+        ];
+
+        yield 'hex_plus_PHP_INT_MAX' => [
+            '<?php $foo = +0x7FFFFFFFFFFFFFFF;',
+            '<?php $foo = +0X7fffffffffffffff;',
+        ];
+
+        yield 'hex_minus_PHP_INT_MAX' => [
+            '<?php $foo = -0x7FFFFFFFFFFFFFFF;',
+            '<?php $foo = -0X7fffffffffffffff;',
         ];
     }
 
@@ -68,6 +98,11 @@ final class IntegerLiteralCaseFixerTest extends AbstractFixerTestCase
         yield [
             '<?php $foo = 0o123;',
             '<?php $foo = 0O123;',
+        ];
+
+        yield [
+            '<?php $foo = -0o123;',
+            '<?php $foo = -0O123;',
         ];
     }
 }

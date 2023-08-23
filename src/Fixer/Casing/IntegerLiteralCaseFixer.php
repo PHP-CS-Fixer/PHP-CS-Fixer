@@ -50,11 +50,7 @@ final class IntegerLiteralCaseFixer extends AbstractFixer
 
             $content = $token->getContent();
 
-            if (!Preg::match('#^0[bxoBXO][0-9a-fA-F]+$#', $content)) {
-                continue;
-            }
-
-            $newContent = '0'.strtolower($content[1]).strtoupper(substr($content, 2));
+            $newContent = Preg::replaceCallback('#^0([boxBOX])([0-9a-fA-F_]+)$#', static fn ($matches) => '0'.strtolower($matches[1]).strtoupper($matches[2]), $content);
 
             if ($content === $newContent) {
                 continue;

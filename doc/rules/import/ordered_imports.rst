@@ -26,6 +26,15 @@ Allowed types: ``array`` and ``null``
 
 Default value: ``null``
 
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether the sorting should be case sensitive.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
@@ -48,6 +57,20 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
+With configuration: ``['case_sensitive' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   +use const AA;
+    use function Aaa;
+   -use const AA;
+
+Example #3
+~~~~~~~~~~
+
 With configuration: ``['sort_algorithm' => 'length']``.
 
 .. code-block:: diff
@@ -63,7 +86,7 @@ With configuration: ``['sort_algorithm' => 'length']``.
    -use Acme;
    -use Bar;
 
-Example #3
+Example #4
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'length', 'imports_order' => ['const', 'class', 'function']]``.
@@ -86,7 +109,7 @@ With configuration: ``['sort_algorithm' => 'length', 'imports_order' => ['const'
     use function CCC\AA;
    -use function DDD;
 
-Example #4
+Example #5
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'alpha', 'imports_order' => ['const', 'class', 'function']]``.
@@ -109,7 +132,7 @@ With configuration: ``['sort_algorithm' => 'alpha', 'imports_order' => ['const',
     use function DDD;
    -use function CCC\AA;
 
-Example #5
+Example #6
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'none', 'imports_order' => ['const', 'class', 'function']]``.

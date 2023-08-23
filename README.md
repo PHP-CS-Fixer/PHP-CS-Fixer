@@ -47,6 +47,11 @@ mkdir -p tools/php-cs-fixer
 composer require --working-dir=tools/php-cs-fixer friendsofphp/php-cs-fixer
 ```
 
+Or using the main `composer.json`:
+```console
+composer require --dev friendsofphp/php-cs-fixer
+```
+
 For more details and other installation methods, see
 [installation instructions](./doc/installation.rst).
 

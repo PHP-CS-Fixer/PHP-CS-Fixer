@@ -15,10 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\RangeAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -31,9 +30,8 @@ final class AssignNullCoalescingToCoalesceEqualFixer extends AbstractFixer
         return new FixerDefinition(
             'Use the null coalescing assignment operator `??=` where possible.',
             [
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     "<?php\n\$foo = \$foo ?? 1;\n",
-                    new VersionSpecification(7_04_00)
                 ),
             ]
         );

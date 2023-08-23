@@ -16,10 +16,9 @@ namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\DocBlock\Annotation;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -39,7 +38,7 @@ final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFix
         return new FixerDefinition(
             'EXPERIMENTAL: Takes `@var` annotation of non-mixed types and adjusts accordingly the property signature. Requires PHP >= 7.4.',
             [
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 class Foo {
     /** @var int */
@@ -48,9 +47,8 @@ class Foo {
     private $bar;
 }
 ',
-                    new VersionSpecification(7_04_00)
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 class Foo {
     /** @var int */
@@ -59,7 +57,6 @@ class Foo {
     private $bar;
 }
 ',
-                    new VersionSpecification(7_04_00),
                     ['scalar_types' => false]
                 ),
             ],

@@ -12,11 +12,25 @@ Using this rule is risky
 
 Risky when depending on order of the imports.
 
+Configuration
+-------------
+
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether the sorting should be case sensitive.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
 Example #1
 ~~~~~~~~~~
+
+*Default* configuration.
 
 .. code-block:: diff
 
@@ -25,6 +39,19 @@ Example #1
     <?php class Foo { 
    -use Z; use A; }
    +use A; use Z; }
+
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['case_sensitive' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php class Foo { 
+   -use Aaa; use AA; }
+   +use AA; use Aaa; }
 
 Rule sets
 ---------

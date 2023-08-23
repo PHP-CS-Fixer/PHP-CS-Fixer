@@ -15,10 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -34,7 +33,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
         return new FixerDefinition(
             'Anonymous functions with one-liner return statement must use arrow functions.',
             [
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     <<<'SAMPLE'
                         <?php
                         foo(function ($a) use ($b) {
@@ -43,7 +42,6 @@ final class UseArrowFunctionsFixer extends AbstractFixer
 
                         SAMPLE
                     ,
-                    new VersionSpecification(7_04_00)
                 ),
             ],
             null,

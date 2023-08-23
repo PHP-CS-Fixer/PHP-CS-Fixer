@@ -1279,6 +1279,39 @@ use function some\a\{fn_a, fn_b, fn_c,};
         $this->doTest($expected, $input);
     }
 
+    public function testByLengthFixWithSameLengthAndCaseSensitive(): void
+    {
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
+            'case_sensitive' => true,
+        ]);
+
+        $expected = <<<'EOF'
+            <?php
+
+            use Acme;
+            use BaRr;
+            use Bar1;
+            use Fooo;
+
+            class AnnotatedClass { }
+            EOF;
+
+        $input = <<<'EOF'
+            <?php
+
+            use Acme;
+            use Fooo;
+            use Bar1;
+            use BaRr;
+
+            class AnnotatedClass { }
+            EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testByLengthFixWithMultipleNamespace(): void
     {
         $this->fixer->configure([
@@ -2176,5 +2209,32 @@ use function some\a\{fn_a, fn_b};
             EOF;
 
         $this->doTest($expected);
+    }
+
+    public function testFixWithCaseSensitive(): void
+    {
+        $this->fixer->configure([
+            'case_sensitive' => true,
+        ]);
+
+        $expected = <<<'EOF'
+            <?php
+
+            use AA;
+            use Aaa;
+
+            class Foo { }
+            EOF;
+
+        $input = <<<'EOF'
+            <?php
+
+            use Aaa;
+            use AA;
+
+            class Foo { }
+            EOF;
+
+        $this->doTest($expected, $input);
     }
 }
