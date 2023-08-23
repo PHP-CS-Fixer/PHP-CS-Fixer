@@ -24,6 +24,7 @@ use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\ToolInfoInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,10 +35,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Adamo Aerendir Crespi <hello@aerendir.me>
  * @author Patrick Landolt <landolt@gmail.com>
  */
+#[AsCommand(name: 'list-fixers')]
 final class ListFixersCommand extends Command
 {
-    /** @var string */
-    public const COMMAND_NAME = 'list';
+    protected static $defaultName = 'list-fixers';
 
     /**
      * @var string
@@ -129,7 +130,7 @@ final class ListFixersCommand extends Command
 
     public function __construct(ToolInfoInterface $toolInfo, FixerFactory $fixerFactory = null)
     {
-        parent::__construct(self::COMMAND_NAME);
+        parent::__construct();
 
         $this->toolInfo = $toolInfo;
 
