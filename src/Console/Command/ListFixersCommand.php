@@ -60,77 +60,72 @@ final class ListFixersCommand extends Command
      */
     public const PLUS = "\xe2\x9c\x9a";
 
-    /** @var ToolInfoInterface */
-    private $toolInfo;
+    private ToolInfoInterface $toolInfo;
 
-    /** @var FixerFactory */
-    private $fixerFactory;
+    private FixerFactory $fixerFactory;
 
-    /** @var FixerNameValidator */
-    private $fixerNameValidator;
+    private FixerNameValidator $fixerNameValidator;
 
-    /** @var string */
-    private $configName;
+    private string $configName;
 
-    /** @var string */
-    private $configFile;
+    private string $configFile;
 
     /** @var FixerInterface[] */
-    private $availableFixers;
+    private array $availableFixers = [];
 
     /** @var FixerInterface[] */
-    private $configuredFixers;
+    private array $configuredFixers = [];
 
     /** @var FixerInterface[] */
-    private $enabledFixers;
+    private array $enabledFixers = [];
 
     /** @var FixerInterface[] */
-    private $enabledFixersThroughInheritance;
+    private array $enabledFixersThroughInheritance = [];
 
     /** @var FixerInterface[] */
-    private $undefinedFixers;
+    private array $undefinedFixers = [];
 
-    /** @var array */
-    private $fixerList = [];
+    /**
+     * @var array<string, array{
+     *   name: string,
+     *   in_set?: array<string>,
+     *   is_configured: bool,
+     *   is_enabled: bool,
+     *   is_inherited?: bool,
+     *   is_enabled_through_inheritance: bool,
+     *   is_risky: bool,
+     *   is_inherited: bool,
+     *   is_deprecated: bool,
+     *   is_custom: bool
+     * }>
+     */
+    private array $fixerList = [];
 
-    /** @var bool */
-    private $hideConfigured;
+    private bool $hideConfigured;
 
-    /** @var bool */
-    private $hideEnabled;
+    private bool $hideEnabled;
 
-    /** @var bool */
-    private $hideRisky;
+    private bool $hideRisky;
 
-    /** @var bool */
-    private $hideInherited;
+    private bool $hideInherited;
 
-    /** @var bool */
-    private $hideDeprecated;
+    private bool $hideDeprecated;
 
-    /** @var bool */
-    private $hideCustom;
+    private bool $hideCustom;
 
-    /** @var bool */
-    private $hideInheritance;
+    private bool $hideInheritance;
 
-    /** @var int */
-    private $countConfiguredFixers = 0;
+    private int $countConfiguredFixers = 0;
 
-    /** @var int */
-    private $countRiskyFixers = 0;
+    private int $countRiskyFixers = 0;
 
-    /** @var int */
-    private $countEnabledFixers = 0;
+    private int $countEnabledFixers = 0;
 
-    /** @var int */
-    private $countInheritedFixers = 0;
+    private int $countInheritedFixers = 0;
 
-    /** @var int */
-    private $countDeprecatedFixers = 0;
+    private int $countDeprecatedFixers = 0;
 
-    /** @var int */
-    private $countCustomFixers = 0;
+    private int $countCustomFixers = 0;
 
     public function __construct(ToolInfoInterface $toolInfo, FixerFactory $fixerFactory = null)
     {
@@ -227,10 +222,7 @@ final class ListFixersCommand extends Command
         return 0;
     }
 
-    /**
-     * @param string $name
-     */
-    private function processRuleSet($name, RuleSetInterface $set): void
+    private function processRuleSet(string $name, RuleSetInterface $set): void
     {
         /** @var bool $value */
         foreach ($set->getRules() as $rule => $value) {
@@ -251,10 +243,7 @@ final class ListFixersCommand extends Command
         $this->fixerList[$fixer->getName()]['is_custom'] = $this->isCustomFixer($fixer);
     }
 
-    /**
-     * @return Table
-     */
-    private function buildTable(OutputInterface $output)
+    private function buildTable(OutputInterface $output): Table
     {
         $table = new Table($output);
 
@@ -294,10 +283,7 @@ final class ListFixersCommand extends Command
         return $table;
     }
 
-    /**
-     * @return array
-     */
-    private function filterFixers()
+    private function filterFixers(): array
     {
         $hideConfigured = $this->hideConfigured;
         $hideEnabled = $this->hideEnabled;
