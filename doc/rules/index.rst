@@ -399,7 +399,7 @@ Function Notation
   Throwing exception must be done in single line.
 - `static_lambda <./function_notation/static_lambda.rst>`_ *(risky)*
 
-  Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
+  Lambdas not (indirectly) referencing ``$this`` must be declared ``static``.
 - `use_arrow_functions <./function_notation/use_arrow_functions.rst>`_ *(risky)*
 
   Anonymous functions with one-liner return statement must use arrow functions.

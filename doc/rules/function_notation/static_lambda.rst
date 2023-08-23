@@ -2,7 +2,7 @@
 Rule ``static_lambda``
 ======================
 
-Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
+Lambdas not (indirectly) referencing ``$this`` must be declared ``static``.
 
 Warning
 -------
