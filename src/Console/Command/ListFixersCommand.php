@@ -407,7 +407,7 @@ final class ListFixersCommand extends Command
 
     private function dumpComparison(OutputInterface $output): void
     {
-        if (empty($this->undefinedFixers)) {
+        if ([] === $this->undefinedFixers) {
             $output->writeln("\nYou are aware of all existing rules! Yeah!");
 
             return;
