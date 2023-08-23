@@ -3133,9 +3133,11 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Whitespace\\StatementIndentationFixer <./../src/Fixer/Whitespace/StatementIndentationFixer.php>`_
 -  `static_lambda <./rules/function_notation/static_lambda.rst>`_
 
-   Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
+   Lambdas not (indirectly) referencing ``$this`` must be declared ``static``.
 
    *warning risky* Risky when using ``->bindTo`` on lambdas without referencing to ``$this``.
+
+   Part of rule set `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\StaticLambdaFixer <./../src/Fixer/FunctionNotation/StaticLambdaFixer.php>`_
 -  `strict_comparison <./rules/strict/strict_comparison.rst>`_

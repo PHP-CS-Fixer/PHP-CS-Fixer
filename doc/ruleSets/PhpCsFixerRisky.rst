@@ -28,6 +28,7 @@ Rules
 
   ``['call_type' => 'self']``
 
+- `static_lambda <./../rules/function_notation/static_lambda.rst>`_
 - `strict_comparison <./../rules/strict/strict_comparison.rst>`_
 - `strict_param <./../rules/strict/strict_param.rst>`_
 

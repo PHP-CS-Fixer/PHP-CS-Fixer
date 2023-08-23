@@ -53,6 +53,7 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDescription
             'php_unit_data_provider_return_type' => true,
             'php_unit_strict' => true,
             'php_unit_test_case_static_method_calls' => ['call_type' => 'self'],
+            'static_lambda' => true,
             'strict_comparison' => true,
             'strict_param' => true,
         ];
