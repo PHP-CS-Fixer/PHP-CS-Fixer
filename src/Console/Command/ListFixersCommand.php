@@ -35,12 +35,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Adamo Aerendir Crespi <hello@aerendir.me>
  * @author Patrick Landolt <landolt@gmail.com>
  */
-#[AsCommand(name: self::COMMAND_NAME)]
+#[AsCommand(name: self::NAME)]
 final class ListFixersCommand extends Command
 {
     /** @var string */
-    private const COMMAND_NAME = 'list-fixers';
-    protected static $defaultName = self::COMMAND_NAME;
+    public const NAME = 'list-fixers';
+    protected static $defaultName = self::NAME;
 
     /**
      * @var string
@@ -114,7 +114,7 @@ final class ListFixersCommand extends Command
 
     public function __construct(ToolInfoInterface $toolInfo, FixerFactory $fixerFactory = null)
     {
-        parent::__construct(self::COMMAND_NAME);
+        parent::__construct(self::NAME);
 
         $this->toolInfo = $toolInfo;
 

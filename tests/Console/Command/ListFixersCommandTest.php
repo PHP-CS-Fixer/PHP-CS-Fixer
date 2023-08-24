@@ -30,10 +30,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class ListFixersCommandTest extends TestCase
 {
-    /**
-     * @var Application
-     */
-    private $application;
+    private Application $application;
 
     protected function setUp(): void
     {
@@ -47,14 +44,11 @@ final class ListFixersCommandTest extends TestCase
         self::assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
     }
 
-    /**
-     * @return CommandTester
-     */
-    private function doTestExecute()
+    private function doTestExecute(): CommandTester
     {
         $this->application->add(new ListFixersCommand(new ToolInfo()));
 
-        $command = $this->application->find('list');
+        $command = $this->application->find(ListFixersCommand::NAME);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(
