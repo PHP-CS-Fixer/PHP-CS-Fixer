@@ -1,5 +1,7 @@
 {
     "symbol-whitelist" : [
+        "Doctrine\\Common\\Annotations\\DocLexer",
+        "Doctrine\\Common\\Lexer\\Token",
         "Symfony\\Component\\EventDispatcher\\Event",
         "Symfony\\Contracts\\EventDispatcher\\Event",
         "Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface",
