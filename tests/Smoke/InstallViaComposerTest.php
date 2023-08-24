@@ -183,29 +183,39 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         $this->fs->remove($tmpPath);
     }
 
-    public function testDoctrineAnnotationRulesetWorksIfSuggestedDependenciesAreInstalled(): void
+    /**
+     * @dataProvider provideDoctrineAnnotationRulesetWorksIfSuggestedDependenciesAreInstalledCases
+     */
+    public function testDoctrineAnnotationRulesetWorksIfSuggestedDependenciesAreInstalled(string $annotationsVersion, string $lexerVersion): void
     {
         $tmpPath = $this->createFakeComposerProject($this->currentCodeAsComposerDependency);
 
         self::assertCommandsWork(
             [
                 'composer install -q',
-                'composer require doctrine/annotations doctrine/lexer',
+                sprintf('composer require doctrine/annotations:%s doctrine/lexer:%s', $annotationsVersion, $lexerVersion),
                 'composer dump-autoload --optimize',
                 'php vendor/autoload.php',
-                'echo "<?php class /** @SomeAnnotation() */Foo {}" > test.php',
+                'echo "<?php /** @SomeAnnotation() */ class Foo {}" > test.php',
             ],
             $tmpPath
         );
 
         self::assertSame(
             0,
-            CommandExecutor::create('vendor/bin/php-cs-fixer fix --rules=@DoctrineAnnotation test.php', $tmpPath)
+            CommandExecutor::create('vendor/bin/php-cs-fixer fix --dry-run -vvv --rules=@DoctrineAnnotation test.php', $tmpPath)
                 ->getResult()
                 ->getCode()
         );
 
         $this->fs->remove($tmpPath);
+    }
+
+    public static function provideDoctrineAnnotationRulesetWorksIfSuggestedDependenciesAreInstalledCases(): iterable
+    {
+        yield ['*', '*'];
+
+        yield ['^1', '^2'];
     }
 
     /**
