@@ -35,31 +35,27 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Adamo Aerendir Crespi <hello@aerendir.me>
  * @author Patrick Landolt <landolt@gmail.com>
  */
-#[AsCommand(name: 'list-fixers')]
+#[AsCommand(name: self::COMMAND_NAME)]
 final class ListFixersCommand extends Command
 {
-    protected static $defaultName = 'list-fixers';
+    /** @var string */
+    private const COMMAND_NAME = 'list-fixers';
+    protected static $defaultName = self::COMMAND_NAME;
 
     /**
      * @var string
-     *
-     * @internal
      */
-    public const THICK = "\xE2\x9C\x94";
+    private const THICK = "\xE2\x9C\x94";
 
     /**
      * @var string
-     *
-     * @internal
      */
-    public const CROSS = "\xE2\x9C\x96";
+    private const CROSS = "\xE2\x9C\x96";
 
     /**
      * @var string
-     *
-     * @internal
      */
-    public const PLUS = "\xe2\x9c\x9a";
+    private const PLUS = "\xe2\x9c\x9a";
 
     private ToolInfoInterface $toolInfo;
 
@@ -71,20 +67,20 @@ final class ListFixersCommand extends Command
 
     private string $configFile;
 
-    /** @var FixerInterface[] */
-    private array $availableFixers = [];
+    /** @var array<int, FixerInterface> */
+    private array $availableFixers;
 
-    /** @var FixerInterface[] */
-    private array $configuredFixers = [];
+    /** @var array<int, FixerInterface> */
+    private array $configuredFixers;
 
-    /** @var FixerInterface[] */
-    private array $enabledFixers = [];
+    /** @var array<int, FixerInterface> */
+    private array $enabledFixers;
 
-    /** @var FixerInterface[] */
-    private array $enabledFixersThroughInheritance = [];
+    /** @var array<int, FixerInterface> */
+    private array $enabledFixersThroughInheritance;
 
-    /** @var FixerInterface[] */
-    private array $undefinedFixers = [];
+    /** @var array<int, FixerInterface> */
+    private array $undefinedFixers;
 
     /**
      * @var array<string, array{
@@ -103,34 +99,22 @@ final class ListFixersCommand extends Command
     private array $fixerList = [];
 
     private bool $hideConfigured;
-
     private bool $hideEnabled;
-
     private bool $hideRisky;
-
     private bool $hideInherited;
-
     private bool $hideDeprecated;
-
     private bool $hideCustom;
-
     private bool $hideInheritance;
-
     private int $countConfiguredFixers = 0;
-
     private int $countRiskyFixers = 0;
-
     private int $countEnabledFixers = 0;
-
     private int $countInheritedFixers = 0;
-
     private int $countDeprecatedFixers = 0;
-
     private int $countCustomFixers = 0;
 
     public function __construct(ToolInfoInterface $toolInfo, FixerFactory $fixerFactory = null)
     {
-        parent::__construct();
+        parent::__construct(self::COMMAND_NAME);
 
         $this->toolInfo = $toolInfo;
 
@@ -144,6 +128,9 @@ final class ListFixersCommand extends Command
         $this->fixerNameValidator = new FixerNameValidator();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function configure(): void
     {
         $this
@@ -164,6 +151,9 @@ final class ListFixersCommand extends Command
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->hideConfigured = $input->getOption('hide-configured');
@@ -220,7 +210,7 @@ final class ListFixersCommand extends Command
             $this->dumpComparison($output);
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function processRuleSet(string $name, RuleSetInterface $set): void
@@ -420,11 +410,13 @@ final class ListFixersCommand extends Command
         );
 
         $output->writeln(
-            sprintf(
-                "\nCopy and paste the following <info>%d</info> undefined rules in your <comment>%s</comment> config file %s.\n\n"
-            ."// Below the rules I don't want to use\n"
-            ."%s;\n"
-            .'// END Rules to never use',
+            sprintf(<<<EOF
+                    Copy and paste the following <info>%d</info> undefined rules in your <comment>%s</comment> config file %s.
+
+                    // Below the rules I don't want to use
+                    %s;
+                    // END Rules to never use
+                    EOF,
                 \count($this->undefinedFixers),
                 $this->configName,
                 $this->configFile,
@@ -433,50 +425,32 @@ final class ListFixersCommand extends Command
         );
     }
 
-    /**
-     * @return bool
-     */
-    private function isFixerConfigured(FixerInterface $fixer)
+    private function isFixerConfigured(FixerInterface $fixer): bool
     {
         return isset($this->configuredFixers[$fixer->getName()]);
     }
 
-    /**
-     * @return bool
-     */
-    private function isFixerEnabled(FixerInterface $fixer)
+    private function isFixerEnabled(FixerInterface $fixer): bool
     {
         return isset($this->enabledFixers[$fixer->getName()]);
     }
 
-    /**
-     * @return bool
-     */
-    private function isFixerEnabledThroughInheritance(FixerInterface $fixer)
+    private function isFixerEnabledThroughInheritance(FixerInterface $fixer): bool
     {
         return isset($this->enabledFixersThroughInheritance[$fixer->getName()]);
     }
 
-    /**
-     * @return bool
-     */
-    private function isFixerRisky(FixerInterface $fixer)
+    private function isFixerRisky(FixerInterface $fixer): bool
     {
         return $fixer->isRisky();
     }
 
-    /**
-     * @return bool
-     */
-    private function isFixerDeprecated(FixerInterface $fixer)
+    private function isFixerDeprecated(FixerInterface $fixer): bool
     {
         return $fixer instanceof DeprecatedFixerInterface;
     }
 
-    /**
-     * @return bool
-     */
-    private function isCustomFixer(FixerInterface $fixer)
+    private function isCustomFixer(FixerInterface $fixer): bool
     {
         return $this->fixerNameValidator->isValid($fixer->getName(), true);
     }
