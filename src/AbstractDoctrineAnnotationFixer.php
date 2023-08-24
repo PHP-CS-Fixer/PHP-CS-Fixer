@@ -41,6 +41,13 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        if (
+            !class_exists('Doctrine\Common\Annotations\DocLexer')
+            || !class_exists('Doctrine\Common\Lexer\Token')
+        ) {
+            throw new \RuntimeException('You need to install `doctrine/annotations` and `doctrine/lexer` to be able to use '.static::class);
+        }
+
         // fetch indices one time, this is safe as we never add or remove a token during fixing
         $analyzer = new TokensAnalyzer($tokens);
         $this->classyElements = $analyzer->getClassyElements();
