@@ -65,6 +65,22 @@ final class ComposerFileTest extends TestCase
         }
     }
 
+    public function testDoctrineSuggestionsContainProperVersionConstraints(): void
+    {
+        $composerJson = self::readComposerJson();
+        $doctrinePackages = ['doctrine/annotations', 'doctrine/lexer'];
+
+        foreach ($doctrinePackages as $package) {
+            $suggestion = $composerJson['suggest'][$package];
+            $constraint = $composerJson['require-dev'][$package];
+
+            self::assertSame(
+                "Required ({$constraint}) if you want to use @DoctrineAnnotation rule set (or single fixers related to Doctrine Annotations)",
+                $suggestion
+            );
+        }
+    }
+
     /**
      * @return array<string, mixed>
      */
