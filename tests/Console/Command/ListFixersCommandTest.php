@@ -41,6 +41,9 @@ final class ListFixersCommandTest extends TestCase
     {
         $cmdTester = $this->doTestExecute();
 
+        $expected = $cmdTester->getDisplay();
+        $this->saveExpected('no_options', $expected);
+
         self::assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
     }
 
@@ -63,5 +66,13 @@ final class ListFixersCommandTest extends TestCase
         );
 
         return $commandTester;
+    }
+
+    /**
+     * @deprecated Just useful while writing those tests
+     */
+    private function saveExpected(string $filename, string $content):void
+    {
+        file_put_contents(sprintf(__DIR__.'/expected/%s.txt', $filename), $content);
     }
 }
