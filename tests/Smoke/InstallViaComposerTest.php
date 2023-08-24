@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
+use Keradus\CliExecutor\ExecutionException;
 use PhpCsFixer\Console\Application;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -33,6 +34,22 @@ use Symfony\Component\Filesystem\Filesystem;
 final class InstallViaComposerTest extends AbstractSmokeTestCase
 {
     private Filesystem $fs;
+
+    /** @var array<string, mixed> */
+    private array $currentCodeAsComposerDependency = [
+        'repositories' => [
+            [
+                'type' => 'path',
+                'url' => __DIR__.'/../..',
+                'options' => [
+                    'symlink' => false,
+                ],
+            ],
+        ],
+        'require' => [
+            'friendsofphp/php-cs-fixer' => '*@dev',
+        ],
+    ];
 
     /**
      * @var string[]
@@ -82,17 +99,7 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
 
     public function testInstallationViaPathIsPossible(): void
     {
-        $tmpPath = $this->createFakeComposerProject([
-            'repositories' => [
-                [
-                    'type' => 'path',
-                    'url' => __DIR__.'/../..',
-                ],
-            ],
-            'require' => [
-                'friendsofphp/php-cs-fixer' => '*@dev',
-            ],
-        ]);
+        $tmpPath = $this->createFakeComposerProject($this->currentCodeAsComposerDependency);
 
         self::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
 
@@ -152,6 +159,53 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
 
         $this->fs->remove($tmpPath);
         $this->fs->remove($tmpArtifactPath);
+    }
+
+    public function testDoctrineAnnotationRulesetThrowsAnExceptionWhenDoctrinePackagesAreNotInstalled(): void
+    {
+        $tmpPath = $this->createFakeComposerProject($this->currentCodeAsComposerDependency);
+
+        self::assertCommandsWork(
+            [
+                'composer install -q',
+                'composer dump-autoload --optimize',
+                'php vendor/autoload.php',
+                'echo "<?php class /** @SomeAnnotation() */Foo {}" > test.php',
+            ],
+            $tmpPath
+        );
+
+        $this->expectException(ExecutionException::class);
+        $this->expectExceptionMessageMatches('|.*You need to install `doctrine/annotations` and `doctrine/lexer` to be able to use.*|');
+
+        CommandExecutor::create('vendor/bin/php-cs-fixer fix --dry-run -vvv --rules=@DoctrineAnnotation test.php', $tmpPath)->getResult();
+
+        $this->fs->remove($tmpPath);
+    }
+
+    public function testDoctrineAnnotationRulesetWorksIfSuggestedDependenciesAreInstalled(): void
+    {
+        $tmpPath = $this->createFakeComposerProject($this->currentCodeAsComposerDependency);
+
+        self::assertCommandsWork(
+            [
+                'composer install -q',
+                'composer require doctrine/annotations doctrine/lexer',
+                'composer dump-autoload --optimize',
+                'php vendor/autoload.php',
+                'echo "<?php class /** @SomeAnnotation() */Foo {}" > test.php',
+            ],
+            $tmpPath
+        );
+
+        self::assertSame(
+            0,
+            CommandExecutor::create('vendor/bin/php-cs-fixer fix --rules=@DoctrineAnnotation test.php', $tmpPath)
+                ->getResult()
+                ->getCode()
+        );
+
+        $this->fs->remove($tmpPath);
     }
 
     /**
