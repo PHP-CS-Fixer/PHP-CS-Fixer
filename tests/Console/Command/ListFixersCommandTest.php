@@ -37,32 +37,49 @@ final class ListFixersCommandTest extends TestCase
         $this->application = new Application();
     }
 
-    public function testShowCommand(): void
+    public function testConfigOptionNotPassedUsesDefaultConfigFile(): void
     {
         $cmdTester = $this->doTestExecute();
 
-        $expected = $cmdTester->getDisplay();
-        $this->saveExpected('no_options', $expected);
+        $result = $cmdTester->getDisplay();
 
         self::assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
+
+        // "  // Loaded config default from /path/to/library/.php-cs-fixer.dist.php."
+        self::assertStringContainsString('// Loaded config default from', $result);
+        self::assertStringContainsString('/.php-cs-fixer.dist.php.', $result);
     }
 
-    private function doTestExecute(): CommandTester
+    public function testConfigOptionThrowsExceptionIfCustomConfigFileDoesNotExist(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot read config file "/not/existent/config_file.php".');
+
+        $cmdTester = $this->doTestExecute(['--config' => '/not/existent/config_file.php']);
+
+        self::assertNotSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
+    }
+
+    private function doTestExecute(array $options = []): CommandTester
     {
         $this->application->add(new ListFixersCommand(new ToolInfo()));
 
         $command = $this->application->find(ListFixersCommand::NAME);
         $commandTester = new CommandTester($command);
 
+
         $commandTester->execute(
-            [
-                $command->getName(),
-            ],
+            array_merge(
+                [
+                    $command->getName()
+                ],
+                $options
+            ),
             [
                 'interactive' => false,
                 'decorated' => false,
                 'verbosity' => OutputInterface::VERBOSITY_DEBUG,
-            ]
+            ],
         );
 
         return $commandTester;

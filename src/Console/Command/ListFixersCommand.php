@@ -148,7 +148,23 @@ final class ListFixersCommand extends Command
                 ]
             )
             ->setDescription('Lists all available fixers and shows which ones are enabled, inherited or disabled.')
-        ;
+            ->setHelp(
+                <<<'EOT'
+The <info>%command.name%</info> command lists all available fixers and shows which ones are enabled, inherited or disabled.
+
+By default, the command searches for one of the default config files of PHP CS Fixer:
+
+- <comment>.php_cs.php</comment>
+- <comment>.php-cs-fixer.php</comment>
+- <comment>.php_cs.dist.php</comment>
+- <comment>.php-cs-fixer.dist.php</comment>
+
+To use a custom config file, use the <comment>--config</comment> options, passing its pathname:
+
+ <info>%command.name% --config path/to/.custom_phpcs</info>
+
+EOT
+            );
     }
 
     /**
@@ -164,19 +180,11 @@ final class ListFixersCommand extends Command
         $this->hideCustom = $input->getOption('hide-custom');
         $this->hideInheritance = $input->getOption('hide-inheritance');
 
-        $resolver = new ConfigurationResolver(
-            new Config(),
-            [
-                'config' => $input->getOption('config'),
-            ],
-            getcwd(),
-            $this->toolInfo
-        );
+        $resolver = $this->createResolver($input);
 
-        $this->configName = $resolver->getConfig()->getName();
-        $this->configFile = $resolver->getConfigFile();
-
-        $output->writeln(sprintf('Loaded config <comment>%s</comment> from %s.', $this->configName, $this->configFile));
+        $output->writeln('');
+        $output->writeln(sprintf('  // Loaded config <comment>%s</comment> from <comment>%s</comment>.', $this->configName, $this->configFile));
+        $output->writeln('');
 
         $this->availableFixers = array_merge($this->fixerFactory->getFixers(), $resolver->getConfig()->getCustomFixers());
         $this->configuredFixers = $resolver->getConfig()->getRules();
@@ -211,6 +219,24 @@ final class ListFixersCommand extends Command
         }
 
         return self::SUCCESS;
+    }
+
+    private function createResolver(InputInterface $input): ConfigurationResolver {
+        $configFilePathname = $input->getOption('config');
+
+        $resolver = new ConfigurationResolver(
+            new Config(),
+            [
+                'config' => $configFilePathname,
+            ],
+            getcwd(),
+            $this->toolInfo
+        );
+
+        $this->configName = $resolver->getConfig()->getName();
+        $this->configFile = $resolver->getConfigFile();
+
+        return $resolver;
     }
 
     private function processRuleSet(string $name, RuleSetInterface $set): void
