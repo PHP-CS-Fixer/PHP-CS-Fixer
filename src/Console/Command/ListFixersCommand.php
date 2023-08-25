@@ -226,6 +226,8 @@ To analyze only configured fixers, pass the <comment>--$optOnlyConfigured</comme
 
 If you pass this option, the report will only list the fixers that are explicitly configured.
 
+So, passing this option will not show fixers that are configured in the sets you have included in the config file.
+
 The command provides also a lot of filters useful to hide fixers of some kind.
 
 Passing <comment>--$optHideConfigured</comment> option, the report will not show fixers that are configured:
