@@ -55,7 +55,7 @@ final class ListFixersCommandTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot read config file "/not/existent/config_file.php".');
 
-        $cmdTester = $this->doTestExecute(['--config' => '/not/existent/config_file.php']);
+        $cmdTester = $this->doTestExecute([ListFixersCommand::OPT_CONFIG => '/not/existent/config_file.php']);
 
         self::assertNotSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
     }
@@ -67,14 +67,14 @@ final class ListFixersCommandTest extends TestCase
         $command = $this->application->find(ListFixersCommand::NAME);
         $commandTester = new CommandTester($command);
 
+        $commandOptions = [$command->getName()];
+
+        foreach ($options as $option => $value) {
+            $commandOptions[sprintf('--%s', $option)] = $value;
+        }
 
         $commandTester->execute(
-            array_merge(
-                [
-                    $command->getName()
-                ],
-                $options
-            ),
+            $commandOptions,
             [
                 'interactive' => false,
                 'decorated' => false,

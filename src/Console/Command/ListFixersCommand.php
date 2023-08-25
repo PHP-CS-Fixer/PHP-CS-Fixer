@@ -40,6 +40,18 @@ final class ListFixersCommand extends Command
 {
     /** @var string */
     public const NAME = 'list-fixers';
+
+    public const OPT_CONFIG = 'config';
+    public const OPT_ONLY_CONFIGURED = 'only-configured';
+    public const OPT_HIDE_CONFIGURED = 'hide-configured';
+    public const OPT_HIDE_ENABLED = 'hide-enabled';
+    public const OPT_HIDE_RISKY = 'hide-risky';
+    public const OPT_HIDE_INHERITED = 'hide-inherited';
+    public const OPT_HIDE_DEPRECATED = 'hide-deprecated';
+    public const OPT_HIDE_CUSTOM = 'hide-custom';
+    public const OPT_HIDE_INHERITANCE = 'hide-inheritance';
+    public const OPT_COMPARE = 'compare';
+
     protected static $defaultName = self::NAME;
 
     /**
@@ -98,6 +110,7 @@ final class ListFixersCommand extends Command
      */
     private array $fixerList = [];
 
+    private bool $onlyConfigured;
     private bool $hideConfigured;
     private bool $hideEnabled;
     private bool $hideRisky;
@@ -133,23 +146,35 @@ final class ListFixersCommand extends Command
      */
     protected function configure(): void
     {
+        $optConfig = self::OPT_CONFIG;
+        $optOnlyConfigured = self::OPT_ONLY_CONFIGURED;
+        $optHideConfigured = self::OPT_HIDE_CONFIGURED;
+        $optHideEnabled = self::OPT_HIDE_ENABLED;
+        $optHideRisky = self::OPT_HIDE_RISKY;
+        $optHideInherited = self::OPT_HIDE_INHERITED;
+        $optHideDeprecated = self::OPT_HIDE_DEPRECATED;
+        $optHideCustom = self::OPT_HIDE_CUSTOM;
+        $optHideInheritance = self::OPT_HIDE_INHERITANCE;
+        $optCompare = self::OPT_COMPARE;
+
         $this
             ->setDefinition(
                 [
-                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
-                    new InputOption('hide-configured', '', InputOption::VALUE_NONE, 'Hide fixers that are configured (in the config file or because of inheritance).'),
-                    new InputOption('hide-enabled', '', InputOption::VALUE_NONE, 'Hide fixers that are currently enabled (the ones that are not disabled with [\'fixer_name\' => false]).'),
-                    new InputOption('hide-risky', '', InputOption::VALUE_NONE, 'Hide fixers that are marked as risky.'),
-                    new InputOption('hide-inherited', '', InputOption::VALUE_NONE, 'Hide fixers that inherited from RuleSets.'),
-                    new InputOption('hide-deprecated', '', InputOption::VALUE_NONE, 'Hide fixers that are deprecated.'),
-                    new InputOption('hide-custom', '', InputOption::VALUE_NONE, 'Hide fixers that are custom.'),
-                    new InputOption('hide-inheritance', '', InputOption::VALUE_NONE, 'Hide the addition inheritance information.'),
-                    new InputOption('compare', '', InputOption::VALUE_NONE, 'Dumps the comparing result between your config and all available fixers in a copy-and-pastable format ready for the .php_cs file.'),
+                    new InputOption(self::OPT_CONFIG, '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
+                    new InputOption(self::OPT_ONLY_CONFIGURED, '', InputOption::VALUE_NONE, 'Show only fixers configured explicitly'),
+                    new InputOption(self::OPT_HIDE_CONFIGURED, '', InputOption::VALUE_NONE, 'Hide fixers that are configured (in the config file or because of inheritance).'),
+                    new InputOption(self::OPT_HIDE_ENABLED, '', InputOption::VALUE_NONE, 'Hide fixers that are currently enabled (the ones that are not disabled with [\'fixer_name\' => false]).'),
+                    new InputOption(self::OPT_HIDE_RISKY, '', InputOption::VALUE_NONE, 'Hide fixers that are marked as risky.'),
+                    new InputOption(self::OPT_HIDE_INHERITED, '', InputOption::VALUE_NONE, 'Hide fixers that inherited from RuleSets.'),
+                    new InputOption(self::OPT_HIDE_DEPRECATED, '', InputOption::VALUE_NONE, 'Hide fixers that are deprecated.'),
+                    new InputOption(self::OPT_HIDE_CUSTOM, '', InputOption::VALUE_NONE, 'Hide fixers that are custom.'),
+                    new InputOption(self::OPT_HIDE_INHERITANCE, '', InputOption::VALUE_NONE, 'Hide the addition inheritance information.'),
+                    new InputOption(self::OPT_COMPARE, '', InputOption::VALUE_NONE, 'Dumps the comparing result between your config and all available fixers in a copy-and-pastable format ready for the .php_cs file.'),
                 ]
             )
             ->setDescription('Lists all available fixers and shows which ones are enabled, inherited or disabled.')
             ->setHelp(
-                <<<'EOT'
+                <<<EOT
 The <info>%command.name%</info> command lists all available fixers and shows which ones are enabled, inherited or disabled.
 
 By default, the command searches for one of the default config files of PHP CS Fixer:
@@ -159,9 +184,9 @@ By default, the command searches for one of the default config files of PHP CS F
 - <comment>.php_cs.dist.php</comment>
 - <comment>.php-cs-fixer.dist.php</comment>
 
-To use a custom config file, use the <comment>--config</comment> options, passing its pathname:
+To use a custom config file, use the <comment>--$optConfig</comment> option, passing its pathname:
 
- <info>%command.name% --config path/to/.custom_phpcs</info>
+ <info>%command.name% --$optConfig path/to/.custom_phpcs</info>
 
 EOT
             );
@@ -172,13 +197,14 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->hideConfigured = $input->getOption('hide-configured');
-        $this->hideEnabled = $input->getOption('hide-enabled');
-        $this->hideRisky = $input->getOption('hide-risky');
-        $this->hideInherited = $input->getOption('hide-inherited');
-        $this->hideDeprecated = $input->getOption('hide-deprecated');
-        $this->hideCustom = $input->getOption('hide-custom');
-        $this->hideInheritance = $input->getOption('hide-inheritance');
+        $this->onlyConfigured = $input->getOption(self::OPT_ONLY_CONFIGURED);
+        $this->hideConfigured = $input->getOption(self::OPT_HIDE_CONFIGURED);
+        $this->hideEnabled = $input->getOption(self::OPT_HIDE_ENABLED);
+        $this->hideRisky = $input->getOption(self::OPT_HIDE_RISKY);
+        $this->hideInherited = $input->getOption(self::OPT_HIDE_INHERITED);
+        $this->hideDeprecated = $input->getOption(self::OPT_HIDE_DEPRECATED);
+        $this->hideCustom = $input->getOption(self::OPT_HIDE_CUSTOM);
+        $this->hideInheritance = $input->getOption(self::OPT_HIDE_INHERITANCE);
 
         $resolver = $this->createResolver($input);
 
