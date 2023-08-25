@@ -202,23 +202,15 @@ The full report has the following columns:
 - <comment>Configured</comment>: if the fixer is configured in the config file.
 - <comment>Enabled</comment>: if the fixer is enabled.
 - <comment>Risky</comment>: if the fixer is risky.
-- <comment>Inherited</comment>: if the fixer is inherited from a set.
+- <comment>In at least one set</comment>: if the fixer is configured at least by one set.
 - <comment>Deprecated</comment>: if the fixer is deprecated.
 - <comment>Custom</comment>: if the fixer is custom.
 
-In the column "Fixer", below the name of the fixer are reported the sets that enable it.
+The column "In at least one set" doesn't refer to the configuration of PHP CS Fixer.
 
-Remember that the final configuration of the rule is the last one found by PHP CS Fixer.
+Instead it refers to PHP CS Fixer in general: if a fixer is present in a set, but this set is not imported in the configuration, this column will anyway be green.
 
-So, if you enable a fixer in a set and then disable it in the config file, the fixer will be disabled.
-
-If a set includes a fixer with a configuration; then another set includes that set but changes the configuration of the fixer, the final configuration of the fixer will be the one set in the second set.
-
-The same happens if you enable a fixer in a set and then disable it in the config file.
-
-Anyway, the table shows each set that include the rule.
-
-The column "Inherited" will always be true if the fixer is also present in a set you have included in the config, regardless the fact it is also included explicitly in the config.
+This doesn't mean the rule is enabled, but only that it is present in a set.
 
 <comment>HIDING FIXERS</comment>
 <comment>=============</comment>
@@ -383,7 +375,7 @@ EOT
         }
 
         if (!$this->hideInherited) {
-            $columns[] = sprintf('Inherited (%d)', $this->countInheritedFixers);
+            $columns[] = sprintf('In at least one set (%d)', $this->countInheritedFixers);
         }
 
         if (!$this->hideDeprecated) {
