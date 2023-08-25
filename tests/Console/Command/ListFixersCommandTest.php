@@ -69,6 +69,26 @@ final class ListFixersCommandTest extends TestCase
         self::assertNotSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
     }
 
+    public function testOptionOnlyConfiguredShowsOnlyExplicitlyConfiguredFixers(): void
+    {
+        $fileName = ListFixersCommand::OPT_ONLY_CONFIGURED;
+        $configFile = $this->getConfigFilePath($fileName);
+        $cmdTester = $this->doTestExecute([
+            ListFixersCommand::OPT_CONFIG => $configFile,
+            ListFixersCommand::OPT_ONLY_CONFIGURED => true,
+        ]);
+
+        $result = $cmdTester->getDisplay();
+        $result = $this->prepareOutputForTest($result);
+
+        // $this->saveExpected($fileName, $result);
+
+        $expected = $this->loadExpectedOutput($fileName);
+
+        self::assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
+        self::assertSame($expected, $result);
+    }
+
     private function doTestExecute(array $options = []): CommandTester
     {
         $this->application->add(new ListFixersCommand(new ToolInfo()));
@@ -99,6 +119,25 @@ final class ListFixersCommandTest extends TestCase
      */
     private function saveExpected(string $filename, string $content):void
     {
-        file_put_contents(sprintf(__DIR__.'/expected/%s.txt', $filename), $content);
+        file_put_contents(sprintf(__DIR__.'/../../Fixtures/ListFixersCommand/%s.expected.txt', $filename), $content);
+    }
+
+    private function prepareOutputForTest(string $output): string
+    {
+        $exploded = explode("\n", $output);
+
+        unset($exploded[0], $exploded[1], $exploded[2]);
+
+        return implode("\n", $exploded);
+    }
+
+    private function getConfigFilePath(string $filename): string
+    {
+        return sprintf(__DIR__.'/../../Fixtures/ListFixersCommand/%s.config.php', $filename);
+    }
+
+    private function loadExpectedOutput(string $filename): string
+    {
+        return file_get_contents(sprintf(__DIR__.'/../../Fixtures/ListFixersCommand/%s.expected.txt', $filename));
     }
 }
