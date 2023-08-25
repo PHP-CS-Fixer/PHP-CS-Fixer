@@ -188,6 +188,33 @@ To use a custom config file, use the <comment>--$optConfig</comment> option, pas
 
  <info>%command.name% --$optConfig path/to/.custom_phpcs</info>
 
+<comment>MEANING OF THE COLUMNS</comment>
+<comment>======================</comment>
+
+The full report has the following columns:
+
+- <comment>Fixer</comment>: the name of the fixer.
+- <comment>Configured</comment>: if the fixer is configured in the config file.
+- <comment>Enabled</comment>: if the fixer is enabled.
+- <comment>Risky</comment>: if the fixer is risky.
+- <comment>Inherited</comment>: if the fixer is inherited from a set.
+- <comment>Deprecated</comment>: if the fixer is deprecated.
+- <comment>Custom</comment>: if the fixer is custom.
+
+In the column "Fixer", below the name of the fixer are reported the sets that enable it.
+
+Remember that the final configuration of the rule is the last one found by PHP CS Fixer.
+
+So, if you enable a fixer in a set and then disable it in the config file, the fixer will be disabled.
+
+If a set includes a fixer with a configuration; then another set includes that set but changes the configuration of the fixer, the final configuration of the fixer will be the one set in the second set.
+
+The same happens if you enable a fixer in a set and then disable it in the config file.
+
+Anyway, the table shows each set that include the rule.
+
+The column "Inherited" will always be true if the fixer is also present in a set you have included in the config, regardless the fact it is also included explicitly in the config.
+
 <comment>HIDING FIXERS</comment>
 <comment>=============</comment>
 
