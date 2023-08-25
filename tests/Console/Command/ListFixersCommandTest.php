@@ -60,6 +60,15 @@ final class ListFixersCommandTest extends TestCase
         self::assertNotSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
     }
 
+    public function testOptionsHideConfiguredAndOnlyConfiguredCannotBeUsedTogether(): void
+    {
+        $this->expectException(\LogicException::class);
+
+        $cmdTester = $this->doTestExecute();
+
+        self::assertNotSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
+    }
+
     private function doTestExecute(array $options = []): CommandTester
     {
         $this->application->add(new ListFixersCommand(new ToolInfo()));

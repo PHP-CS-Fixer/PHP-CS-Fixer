@@ -188,6 +188,25 @@ To use a custom config file, use the <comment>--$optConfig</comment> option, pas
 
  <info>%command.name% --$optConfig path/to/.custom_phpcs</info>
 
+<comment>HIDING FIXERS</comment>
+<comment>=============</comment>
+
+When you run the command without any option, it will show all fixers that PHP CS Fixer can find, also if they are not present in the loaded config file.
+
+To analyze only configured fixers, pass the <comment>--$optOnlyConfigured</comment> option:
+
+ <info>%command.name% --$optOnlyConfigured</info>
+
+If you pass this option, the report will only list the fixers that are explicitly configured.
+
+The command provides also a lot of filters useful to hide fixers of some kind.
+
+Passing <comment>--$optHideConfigured</comment> option, the report will not show fixers that are configured:
+
+ <info>%command.name% --$optHideConfigured</info>
+
+NOTE: The <comment>--$optOnlyConfigured</comment> and <comment>--$optHideConfigured</comment> options cannot be used together.
+
 EOT
             );
     }
@@ -197,15 +216,7 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->onlyConfigured = $input->getOption(self::OPT_ONLY_CONFIGURED);
-        $this->hideConfigured = $input->getOption(self::OPT_HIDE_CONFIGURED);
-        $this->hideEnabled = $input->getOption(self::OPT_HIDE_ENABLED);
-        $this->hideRisky = $input->getOption(self::OPT_HIDE_RISKY);
-        $this->hideInherited = $input->getOption(self::OPT_HIDE_INHERITED);
-        $this->hideDeprecated = $input->getOption(self::OPT_HIDE_DEPRECATED);
-        $this->hideCustom = $input->getOption(self::OPT_HIDE_CUSTOM);
-        $this->hideInheritance = $input->getOption(self::OPT_HIDE_INHERITANCE);
-
+        $this->configureOptions($input);
         $resolver = $this->createResolver($input);
 
         $output->writeln('');
@@ -245,6 +256,22 @@ EOT
         }
 
         return self::SUCCESS;
+    }
+
+    private function configureOptions(InputInterface $input): void
+    {
+        $this->onlyConfigured = $input->getOption(self::OPT_ONLY_CONFIGURED);
+        $this->hideConfigured = $input->getOption(self::OPT_HIDE_CONFIGURED);
+        $this->hideEnabled = $input->getOption(self::OPT_HIDE_ENABLED);
+        $this->hideRisky = $input->getOption(self::OPT_HIDE_RISKY);
+        $this->hideInherited = $input->getOption(self::OPT_HIDE_INHERITED);
+        $this->hideDeprecated = $input->getOption(self::OPT_HIDE_DEPRECATED);
+        $this->hideCustom = $input->getOption(self::OPT_HIDE_CUSTOM);
+        $this->hideInheritance = $input->getOption(self::OPT_HIDE_INHERITANCE);
+
+        if ($this->onlyConfigured && $this->hideConfigured) {
+            throw new \InvalidArgumentException(sprintf('The options "--%s" and "--%s" cannot be used together.', self::OPT_ONLY_CONFIGURED, self::OPT_HIDE_CONFIGURED));
+        }
     }
 
     private function createResolver(InputInterface $input): ConfigurationResolver {
@@ -328,51 +355,48 @@ EOT
 
     private function filterFixers(): array
     {
-        $hideConfigured = $this->hideConfigured;
-        $hideEnabled = $this->hideEnabled;
-        $hideRisky = $this->hideRisky;
-        $hideInherited = $this->hideInherited;
-        $hideDeprecated = $this->hideDeprecated;
-        $hideCustom = $this->hideCustom;
+        $rows = array_filter($this->fixerList, function (array $fixer) {
+            if ($this->onlyConfigured && false === $fixer['is_configured']) {
+                return false;
+            }
 
-        $rows = array_filter($this->fixerList, function (array $fixer) use ($hideConfigured, $hideEnabled, $hideRisky, $hideInherited, $hideDeprecated, $hideCustom) {
             if ($fixer['is_configured']) {
-                if ($hideConfigured) {
+                if ($this->hideConfigured) {
                     return false;
                 }
                 ++$this->countConfiguredFixers;
             }
 
             if ($fixer['is_enabled']) {
-                if ($hideEnabled) {
+                if ($this->hideEnabled) {
                     return false;
                 }
                 ++$this->countEnabledFixers;
             }
 
             if ($fixer['is_risky']) {
-                if ($hideRisky) {
+                if ($this->hideRisky) {
                     return false;
                 }
                 ++$this->countRiskyFixers;
             }
 
             if ($fixer['is_inherited']) {
-                if ($hideInherited) {
+                if ($this->hideInherited) {
                     return false;
                 }
                 ++$this->countInheritedFixers;
             }
 
             if ($fixer['is_deprecated']) {
-                if ($hideDeprecated) {
+                if ($this->hideDeprecated) {
                     return false;
                 }
                 ++$this->countDeprecatedFixers;
             }
 
             if ($fixer['is_custom']) {
-                if ($hideCustom) {
+                if ($this->hideCustom) {
                     return false;
                 }
                 ++$this->countCustomFixers;
