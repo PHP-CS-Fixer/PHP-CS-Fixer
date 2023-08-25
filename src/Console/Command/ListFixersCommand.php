@@ -69,6 +69,11 @@ final class ListFixersCommand extends Command
      */
     private const PLUS = "\xe2\x9c\x9a";
 
+    /**
+     * @var string
+     */
+    private const INHERITED = "\xe2\x9d\xaf";
+
     private ToolInfoInterface $toolInfo;
 
     private FixerFactory $fixerFactory;
@@ -256,6 +261,14 @@ EOT
         $output->writeln(sprintf('  // Loaded config <comment>%s</comment> from <comment>%s</comment>.', $this->configName, $this->configFile));
         $output->writeln('');
 
+        $legend = [
+            sprintf('<fg=green>%s Enabled</>', self::THICK),
+            sprintf('<fg=green>%s Enabled through inheritance</>', self::INHERITED),
+            sprintf('<fg=red>%s Disabled</>', self::CROSS),
+            sprintf('<fg=yellow>%s Not configured nor inherited</>', self::PLUS),
+        ];
+
+        $output->writeln(implode(' | ', $legend));
         $this->availableFixers = array_merge($this->fixerFactory->getFixers(), $resolver->getConfig()->getCustomFixers());
         $this->configuredFixers = $resolver->getConfig()->getRules();
         $this->enabledFixers = $resolver->getRules();
@@ -453,8 +466,8 @@ EOT
             }
 
             if ($fixer['is_enabled_through_inheritance']) {
-                $color = '<fg=green>%s %s (>)</>';
-                $icon = self::THICK;
+                $color = '<fg=green>%s %s</>';
+                $icon = self::INHERITED;
             }
 
             if (!$fixer['is_enabled'] && $fixer['is_configured']) {
