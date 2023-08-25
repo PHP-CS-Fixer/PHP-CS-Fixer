@@ -64,7 +64,10 @@ final class ListFixersCommandTest extends TestCase
     {
         $this->expectException(\LogicException::class);
 
-        $cmdTester = $this->doTestExecute();
+        $cmdTester = $this->doTestExecute([
+            ListFixersCommand::OPT_HIDE_CONFIGURED => true,
+            ListFixersCommand::OPT_ONLY_CONFIGURED => true,
+        ]);
 
         self::assertNotSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
     }
@@ -147,7 +150,7 @@ final class ListFixersCommandTest extends TestCase
     {
         $exploded = explode("\n", $output);
 
-        unset($exploded[0], $exploded[1], $exploded[2]);
+        unset($exploded[0], $exploded[1], $exploded[2], $exploded[3]);
 
         return implode("\n", $exploded);
     }
