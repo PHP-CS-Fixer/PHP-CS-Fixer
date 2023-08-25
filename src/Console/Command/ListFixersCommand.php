@@ -207,6 +207,10 @@ Passing <comment>--$optHideConfigured</comment> option, the report will not show
 
 NOTE: The <comment>--$optOnlyConfigured</comment> and <comment>--$optHideConfigured</comment> options cannot be used together.
 
+Below the name of each fixer you can read the sets that enable it. To hide this information, pass the <comment>--$optHideInheritance</comment> option:
+
+ <info>%command.name% --$optHideInheritance</info>
+
 EOT
             );
     }

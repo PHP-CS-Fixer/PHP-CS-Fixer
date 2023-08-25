@@ -89,6 +89,27 @@ final class ListFixersCommandTest extends TestCase
         self::assertSame($expected, $result);
     }
 
+    public function testOptionHideInheritanceActuallyHidesSetsThatEnableAFixer(): void
+    {
+        $fileName = ListFixersCommand::OPT_HIDE_INHERITANCE;
+        $configFile = $this->getConfigFilePath($fileName);
+        $cmdTester = $this->doTestExecute([
+            ListFixersCommand::OPT_CONFIG => $configFile,
+            ListFixersCommand::OPT_ONLY_CONFIGURED => true,
+            ListFixersCommand::OPT_HIDE_INHERITANCE => true,
+        ]);
+
+        $result = $cmdTester->getDisplay();
+        $result = $this->prepareOutputForTest($result);
+
+        // $this->saveExpected($fileName, $result);
+
+        $expected = $this->loadExpectedOutput($fileName);
+
+        self::assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
+        self::assertSame($expected, $result);
+    }
+
     private function doTestExecute(array $options = []): CommandTester
     {
         $this->application->add(new ListFixersCommand(new ToolInfo()));
