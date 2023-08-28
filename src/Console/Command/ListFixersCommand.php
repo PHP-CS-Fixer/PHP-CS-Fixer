@@ -366,10 +366,6 @@ EOT
             $columns[] = sprintf('Configured (%d)', $this->countConfiguredFixers);
         }
 
-        if (!$this->hideEnabled) {
-            $columns[] = sprintf('Enabled (%d)', $this->countEnabledFixers);
-        }
-
         if (!$this->hideRisky) {
             $columns[] = sprintf('Risky (%d)', $this->countRiskyFixers);
         }
@@ -479,10 +475,6 @@ EOT
 
             if (!$this->hideConfigured) {
                 $row['is_configured'] = $fixer['is_configured'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS);
-            }
-
-            if (!$this->hideEnabled) {
-                $row['is_enabled'] = $fixer['is_enabled'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS);
             }
 
             if (!$this->hideRisky) {
