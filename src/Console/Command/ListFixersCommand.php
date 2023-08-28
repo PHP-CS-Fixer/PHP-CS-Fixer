@@ -122,7 +122,6 @@ final class ListFixersCommand extends Command
     private bool $hideInherited;
     private bool $hideDeprecated;
     private bool $hideCustom;
-    private bool $hideInheritance;
     private int $countConfiguredFixers = 0;
     private int $countRiskyFixers = 0;
     private int $countEnabledFixers = 0;
@@ -305,7 +304,6 @@ EOT
         $this->hideInherited = $input->getOption(self::OPT_HIDE_INHERITED);
         $this->hideDeprecated = $input->getOption(self::OPT_HIDE_DEPRECATED);
         $this->hideCustom = $input->getOption(self::OPT_HIDE_CUSTOM);
-        $this->hideInheritance = $input->getOption(self::OPT_HIDE_INHERITANCE);
 
         if ($this->onlyConfigured && $this->hideConfigured) {
             throw new \InvalidArgumentException(sprintf('The options "--%s" and "--%s" cannot be used together.', self::OPT_ONLY_CONFIGURED, self::OPT_HIDE_CONFIGURED));
@@ -341,6 +339,10 @@ EOT
 
     private function processFixer(FixerInterface $fixer): void
     {
+        if ('enabled' === $fixer->getName()) {
+            $eccolo = 'qui';
+        }
+
         $this->fixerList[$fixer->getName()]['name'] = $fixer->getName();
         $this->fixerList[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
         $this->fixerList[$fixer->getName()]['is_enabled'] = $this->isFixerEnabled($fixer);
@@ -362,16 +364,12 @@ EOT
             sprintf('Fixer (%d)', \count($rows)),
         ];
 
-        if (!$this->hideConfigured) {
-            $columns[] = sprintf('Configured (%d)', $this->countConfiguredFixers);
-        }
-
         if (!$this->hideRisky) {
             $columns[] = sprintf('Risky (%d)', $this->countRiskyFixers);
         }
 
         if (!$this->hideInherited) {
-            $columns[] = sprintf('In at least one set (%d)', $this->countInheritedFixers);
+            $columns[] = sprintf('From set (%d)', $this->countInheritedFixers);
         }
 
         if (!$this->hideDeprecated) {
@@ -415,7 +413,7 @@ EOT
                 ++$this->countRiskyFixers;
             }
 
-            if ($fixer['is_inherited']) {
+            if ($fixer['is_inherited'] && false === $fixer['is_configured']) {
                 if ($this->hideInherited) {
                     return false;
                 }
@@ -440,11 +438,6 @@ EOT
         });
 
         return array_map(function (array $fixer) {
-            $path = null;
-            if (isset($fixer['in_set'])) {
-                $path = implode("\n  ", array_reverse($fixer['in_set']));
-            }
-
             $color = '<fg=yellow>%s %s</>';
             $icon = self::PLUS;
 
@@ -463,26 +456,18 @@ EOT
                 $icon = self::CROSS;
             }
 
-            $nameFormat = '<fg=green>%s</>';
-            if (!$this->hideInheritance && null !== $path) {
-                $nameFormat .= "\n  %s";
-            }
             $name = sprintf($color, $icon, $fixer['name']);
 
             $row = [
-                'name' => sprintf($nameFormat, $name, $path),
+                'name' => $name,
             ];
-
-            if (!$this->hideConfigured) {
-                $row['is_configured'] = $fixer['is_configured'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS);
-            }
 
             if (!$this->hideRisky) {
                 $row['is_risky'] = $fixer['is_risky'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS);
             }
 
             if (!$this->hideInherited) {
-                $row['is_inherited'] = $fixer['is_inherited'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS);
+                $row['is_inherited'] = $fixer['is_inherited'] && false === $fixer['is_configured'] ? array_pop($fixer['in_set']) : sprintf('<fg=red;>%s</>', self::CROSS);
             }
 
             if (!$this->hideDeprecated) {
