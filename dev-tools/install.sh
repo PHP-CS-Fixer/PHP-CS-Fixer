@@ -10,7 +10,6 @@
 # again) until success. required for unattended build.
 #
 # usage: ./dev-tools/install.sh
-#    or: travis_retry ./dev-tools/install.sh
 #    or: ./install.sh
 #    or: ./install.sh || ./install.sh || ./install.sh
 #
