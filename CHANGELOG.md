@@ -3,6 +3,32 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.24.0
+---------------------
+
+* chore: apply CS (#7240)
+* chore: apply static_lambda rule (#7239)
+* chore: Improve template for creating new issue (#7255)
+* CI: Conventional Commits support in PRLint config (#7037)
+* CI: Remove Travis leftovers (#7259)
+* docs: Add information about installing Fixer as dev dependency (#7129)
+* docs: document composer script aliases (#7230)
+* DX: Add script for running Composer Require Checker (#7252)
+* DX: composer script aliases - ensure templated description (#7235)
+* DX: composer-script - count PHPMD as static-analysis (#7231)
+* DX: do not allow version specific code sample with minimum PHP version lower than the lowest supported one (#7207)
+* DX: ensure version specific code samples are suitable for at least 1 supported PHP version (#7212)
+* DX: Improve contributing guide (#7241)
+* DX: More descriptive stale messages (#7236)
+* feat(@PhpCsFixer:risky): add static_lambda rule (#7237)
+* feat: Add literal separator support for `integer_literal_case` (#7081)
+* feat: Configurable case sensitivity for more ordering fixers (#7021)
+* feat: Support for attributes in `method_argument_space` (#7242)
+* fix: import detection for attributes at `NoUnusedImportsFixer` (#7246)
+* fix: `no_superfluous_phpdoc_tags` with `null` phpdoc (#7234)
+* fix: `phpdoc_types` must not lowercase literal types (#7108)
+* test: Add static methods from PHPUnit 9.6.11 (#7243)
+
 Changelog for v3.23.0
 ---------------------
 
