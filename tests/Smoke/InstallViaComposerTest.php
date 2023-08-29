@@ -161,7 +161,12 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         $this->fs->remove($tmpArtifactPath);
     }
 
-    public function testDoctrineAnnotationRulesetThrowsAnExceptionWhenDoctrinePackagesAreNotInstalled(): void
+    /**
+     * @param array<string> $additionalCommands
+     *
+     * @dataProvider provideDoctrineAnnotationRulesetThrowsAnExceptionWhenSupportedDoctrinePackagesAreNotInstalledCases
+     */
+    public function testDoctrineAnnotationRulesetThrowsAnExceptionWhenSupportedDoctrinePackagesAreNotInstalled(array $additionalCommands): void
     {
         $tmpPath = $this->createFakeComposerProject($this->currentCodeAsComposerDependency);
 
@@ -169,14 +174,15 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
             [
                 'composer install -q',
                 'composer dump-autoload --optimize',
+                ...$additionalCommands,
                 'php vendor/autoload.php',
-                'echo "<?php class /** @SomeAnnotation() */Foo {}" > test.php',
+                'echo "<?php /** @SomeAnnotation */ class Foo {}" > test.php',
             ],
             $tmpPath
         );
 
         $this->expectException(ExecutionException::class);
-        $this->expectExceptionMessageMatches('|.*You need to install `doctrine/annotations` and `doctrine/lexer` to be able to use.*|');
+        $this->expectExceptionMessageMatches('|.*You need to install proper versions of `doctrine/annotations` and `doctrine/lexer` to be able to use.*|');
 
         CommandExecutor::create('vendor/bin/php-cs-fixer fix --dry-run -vvv --rules=@DoctrineAnnotation test.php', $tmpPath)->getResult();
 
@@ -184,19 +190,40 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
     }
 
     /**
+     * @return iterable<array<array<string>>>
+     */
+    public static function provideDoctrineAnnotationRulesetThrowsAnExceptionWhenSupportedDoctrinePackagesAreNotInstalledCases(): iterable
+    {
+        yield [[]];
+
+        yield [['composer require doctrine/annotations:"^1" doctrine/lexer:"^2"']];
+    }
+
+    /**
      * @dataProvider provideDoctrineAnnotationRulesetWorksIfSuggestedDependenciesAreInstalledCases
      */
-    public function testDoctrineAnnotationRulesetWorksIfSuggestedDependenciesAreInstalled(string $annotationsVersion, string $lexerVersion): void
+    public function testDoctrineAnnotationRulesetWorksIfSuggestedDependenciesAreInstalled(string $composerFlags): void
     {
         $tmpPath = $this->createFakeComposerProject($this->currentCodeAsComposerDependency);
+        $composerJson = json_decode(
+            file_get_contents(__DIR__.'/../../composer.json'),
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
 
         self::assertCommandsWork(
             [
                 'composer install -q',
-                sprintf('composer require doctrine/annotations:%s doctrine/lexer:%s', $annotationsVersion, $lexerVersion),
+                sprintf(
+                    'composer require doctrine/annotations:"%s" doctrine/lexer:"%s" %s',
+                    $composerJson['require-dev']['doctrine/annotations'],
+                    $composerJson['require-dev']['doctrine/lexer'],
+                    $composerFlags
+                ),
                 'composer dump-autoload --optimize',
                 'php vendor/autoload.php',
-                'echo "<?php /** @SomeAnnotation() */ class Foo {}" > test.php',
+                'echo "<?php /** @SomeAnnotation */ class Foo {}" > test.php',
             ],
             $tmpPath
         );
@@ -213,9 +240,9 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
 
     public static function provideDoctrineAnnotationRulesetWorksIfSuggestedDependenciesAreInstalledCases(): iterable
     {
-        yield ['*', '*'];
+        yield [''];
 
-        yield ['^1', '^2'];
+        yield ['--prefer-lowest'];
     }
 
     /**

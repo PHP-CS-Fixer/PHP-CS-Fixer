@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer;
 
+use Doctrine\Common\Annotations\CachedReader as DoctrineAnnotationsCachedReader;
+use Doctrine\Common\Annotations\DocLexer as DoctrineAnnotationsLexer;
+use Doctrine\Common\Lexer\Token as DoctrineLexerToken;
 use PhpCsFixer\Doctrine\Annotation\Tokens as DoctrineAnnotationTokens;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -41,11 +44,8 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        if (
-            !class_exists('Doctrine\Common\Annotations\DocLexer')
-            || !class_exists('Doctrine\Common\Lexer\Token')
-        ) {
-            throw new \RuntimeException('You need to install `doctrine/annotations` and `doctrine/lexer` to be able to use '.static::class);
+        if (!$this->supportedDoctrineDependenciesAreInstalled()) {
+            throw new \RuntimeException('You need to install proper versions of `doctrine/annotations` and `doctrine/lexer` to be able to use '.static::class);
         }
 
         // fetch indices one time, this is safe as we never add or remove a token during fixing
@@ -238,5 +238,18 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
         }
 
         return $tokens[$this->classyElements[$index]['classIndex']]->isGivenKind(T_CLASS); // interface, enums and traits cannot have doctrine annotations
+    }
+
+    private function supportedDoctrineDependenciesAreInstalled(): bool
+    {
+        $annotationsInstalled = class_exists(DoctrineAnnotationsLexer::class);
+        $lexerInstalled = class_exists(DoctrineLexerToken::class);
+
+        if (!$annotationsInstalled || !$lexerInstalled) {
+            return false;
+        }
+
+        // `CachedReader` was available in v1 (since initial to latest version) and was removed in v2.
+        return !class_exists(DoctrineAnnotationsCachedReader::class);
     }
 }
