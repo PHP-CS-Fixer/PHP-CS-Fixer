@@ -16,6 +16,9 @@ namespace PhpCsFixer\Doctrine\Annotation;
 
 use PhpCsFixer\Preg;
 
+/**
+ * @internal
+ */
 final class DocLexer
 {
     public const T_NONE = 1;
@@ -53,13 +56,6 @@ final class DocLexer
         '\\' => self::T_NAMESPACE_SEPARATOR,
     ];
 
-    /** @var array<string, int> */
-    private array $withCase = [
-        'true' => self::T_TRUE,
-        'false' => self::T_FALSE,
-        'null' => self::T_NULL,
-    ];
-
     /** @var list<Token> */
     private array $tokens = [];
 
@@ -69,18 +65,9 @@ final class DocLexer
 
     private ?string $regex;
 
-    /**
-     * Sets the input data to be tokenized.
-     *
-     * The Lexer is immediately reset and the new input tokenized.
-     * Any unprocessed tokens from any previous input are lost.
-     *
-     * @param string $input the input to be tokenized
-     */
     public function setInput(string $input): void
     {
         $this->tokens = [];
-
         $this->reset();
         $this->scan($input);
     }
@@ -138,13 +125,6 @@ final class DocLexer
             return self::T_IDENTIFIER;
         }
 
-        $lowerValue = strtolower($value);
-
-        if (isset($this->withCase[$lowerValue])) {
-            return $this->withCase[$lowerValue];
-        }
-
-        // Checking numeric value
         if (is_numeric($value)) {
             return str_contains($value, '.') || false !== stripos($value, 'e')
                 ? self::T_FLOAT : self::T_INTEGER;
@@ -153,9 +133,6 @@ final class DocLexer
         return $type;
     }
 
-    /**
-     * @param string $input a query string
-     */
     private function scan(string $input): void
     {
         if (!isset($this->regex)) {
@@ -175,11 +152,7 @@ final class DocLexer
             $firstMatch = $match[0];
             $type = $this->getType($firstMatch);
 
-            $this->tokens[] = new Token(
-                $type,
-                $firstMatch,
-                (int) $match[1]
-            );
+            $this->tokens[] = new Token($type, $firstMatch, (int) $match[1]);
         }
     }
 }
