@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Doctrine\Annotation;
 
-use Doctrine\Common\Annotations\DocLexer;
+use PhpCsFixer\Doctrine\DocLexer;
 
 /**
  * A Doctrine annotation token.

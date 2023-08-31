@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Doctrine\Annotation;
 
-use Doctrine\Common\Annotations\DocLexer;
-use Doctrine\Common\Lexer\Token as LexerToken;
+use PhpCsFixer\Doctrine\DocLexer;
+use PhpCsFixer\Doctrine\Token as LexerToken;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token as PhpToken;
 

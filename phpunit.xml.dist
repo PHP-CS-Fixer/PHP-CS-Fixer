@@ -32,6 +32,11 @@
         <include>
             <directory>./src</directory>
         </include>
+        <exclude>
+            <file>./src/Doctrine/AbstractLexer.php</file>
+            <file>./src/Doctrine/DocLexer.php</file>
+            <file>./src/Doctrine/Token.php</file>
+        </exclude>
     </coverage>
 
     <listeners>

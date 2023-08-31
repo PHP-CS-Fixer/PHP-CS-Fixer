@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Doctrine\Annotation;
 
-use Doctrine\Common\Annotations\DocLexer;
 use PhpCsFixer\Doctrine\Annotation\Token;
+use PhpCsFixer\Doctrine\DocLexer;
 use PhpCsFixer\Tests\TestCase;
 
 /**
