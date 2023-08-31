@@ -12,16 +12,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Doctrine;
+namespace PhpCsFixer\Doctrine\Annotation;
 
 use PhpCsFixer\Preg;
 
-/**
- * Simple lexer for docblock annotations.
- *
- * @template-extends AbstractLexer<DocLexer::T_*, string>
- */
-final class DocLexer extends AbstractLexer
+final class DocLexer
 {
     public const T_NONE = 1;
     public const T_INTEGER = 2;
@@ -44,8 +39,8 @@ final class DocLexer extends AbstractLexer
     public const T_COLON = 112;
     public const T_MINUS = 113;
 
-    /** @var array<string, self::T*> */
-    protected $noCase = [
+    /** @var array<string, int> */
+    private array $noCase = [
         '@' => self::T_AT,
         ',' => self::T_COMMA,
         '(' => self::T_OPEN_PARENTHESIS,
@@ -58,25 +53,57 @@ final class DocLexer extends AbstractLexer
         '\\' => self::T_NAMESPACE_SEPARATOR,
     ];
 
-    /** @var array<string, self::T*> */
-    protected $withCase = [
+    /** @var array<string, int> */
+    private array $withCase = [
         'true' => self::T_TRUE,
         'false' => self::T_FALSE,
         'null' => self::T_NULL,
     ];
 
+    /** @var list<Token> */
+    private array $tokens = [];
+
+    private int $position = 0;
+
+    private int $peek = 0;
+
+    private ?string $regex;
+
     /**
-     * Whether the next token starts immediately, or if there were
-     * non-captured symbols before that.
+     * Sets the input data to be tokenized.
+     *
+     * The Lexer is immediately reset and the new input tokenized.
+     * Any unprocessed tokens from any previous input are lost.
+     *
+     * @param string $input the input to be tokenized
      */
-    public function nextTokenIsAdjacent(): bool
+    public function setInput(string $input): void
     {
-        return null === $this->token
-            || (null !== $this->lookahead
-                && ($this->lookahead->position - $this->token->position) === \strlen($this->token->value));
+        $this->tokens = [];
+
+        $this->reset();
+        $this->scan($input);
     }
 
-    protected function getCatchablePatterns(): array
+    public function reset(): void
+    {
+        $this->peek = 0;
+        $this->position = 0;
+    }
+
+    public function peek(): ?Token
+    {
+        if (isset($this->tokens[$this->position + $this->peek])) {
+            return $this->tokens[$this->position + $this->peek++];
+        }
+
+        return null;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function getCatchablePatterns(): array
     {
         return [
             '[a-z_\\\][a-z0-9_\:\\\]*[a-z_][a-z0-9_]*',
@@ -85,12 +112,15 @@ final class DocLexer extends AbstractLexer
         ];
     }
 
-    protected function getNonCatchablePatterns(): array
+    /**
+     * @return list<string>
+     */
+    private function getNonCatchablePatterns(): array
     {
         return ['\s+', '\*+', '(.)'];
     }
 
-    protected function getType(&$value)
+    private function getType(string &$value): int
     {
         $type = self::T_NONE;
 
@@ -121,5 +151,35 @@ final class DocLexer extends AbstractLexer
         }
 
         return $type;
+    }
+
+    /**
+     * @param string $input a query string
+     */
+    private function scan(string $input): void
+    {
+        if (!isset($this->regex)) {
+            $this->regex = sprintf(
+                '/(%s)|%s/%s',
+                implode(')|(', $this->getCatchablePatterns()),
+                implode('|', $this->getNonCatchablePatterns()),
+                'iu'
+            );
+        }
+
+        $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
+        $matches = Preg::split($this->regex, $input, -1, $flags);
+
+        foreach ($matches as $match) {
+            // Must remain before 'value' assignment since it can change content
+            $firstMatch = $match[0];
+            $type = $this->getType($firstMatch);
+
+            $this->tokens[] = new Token(
+                $type,
+                $firstMatch,
+                (int) $match[1]
+            );
+        }
     }
 }

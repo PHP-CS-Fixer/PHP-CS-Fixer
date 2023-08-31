@@ -20,6 +20,7 @@ use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\AbstractDoctrineAnnotationFixer
+ * @covers \PhpCsFixer\Doctrine\Annotation\DocLexer
  * @covers \PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationBracesFixer
  */
 final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotationFixerTestCase

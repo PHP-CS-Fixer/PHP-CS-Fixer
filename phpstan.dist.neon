@@ -10,9 +10,6 @@ parameters:
         - src
         - tests
     excludePaths:
-        - src/Doctrine/AbstractLexer.php
-        - src/Doctrine/DocLexer.php
-        - src/Doctrine/Token.php
         - tests/Fixtures
     reportUnmatchedIgnoredErrors: true # Do not allow outdated errors in the baseline
     treatPhpDocTypesAsCertain: false
