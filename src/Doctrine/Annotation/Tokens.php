@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Doctrine\Annotation;
 
-use PhpCsFixer\Doctrine\Annotation\Token as DoctrineToken;
+use PhpCsFixer\Doctrine\Annotation\Token as AnnotationToken;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token as PhpToken;
 
@@ -103,7 +103,7 @@ final class Tokens extends \SplFixedArray
                 $lastTokenEndIndex = 0;
                 foreach (\array_slice($scannedTokens, 0, $nbScannedTokensToUse) as $token) {
                     if ($token->isType(DocLexer::T_STRING)) {
-                        $token = new DoctrineToken(
+                        $token = new AnnotationToken(
                             $token->getType(),
                             '"'.str_replace('"', '""', $token->getContent()).'"',
                             $token->getPosition()
