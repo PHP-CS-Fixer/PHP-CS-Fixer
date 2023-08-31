@@ -54,7 +54,7 @@ final class DocLexer
     public const T_COLON = 112;
     public const T_MINUS = 113;
 
-    /** @var array<string, int> */
+    /** @var array<string, self::T_*> */
     private array $noCase = [
         '@' => self::T_AT,
         ',' => self::T_COMMA,
@@ -119,6 +119,9 @@ final class DocLexer
         return ['\s+', '\*+', '(.)'];
     }
 
+    /**
+     * @return self::T_*
+     */
     private function getType(string &$value): int
     {
         $type = self::T_NONE;
