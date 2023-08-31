@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.25.0
+---------------------
+
+* feat: Remove Doctrine dependencies (#7263)
+
 Changelog for v3.24.0
 ---------------------
 
