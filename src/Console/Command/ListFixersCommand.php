@@ -74,6 +74,8 @@ final class ListFixersCommand extends Command
      */
     private const INHERITED = "\xe2\x9d\xaf";
 
+    private ?ConfigurationResolver $configurationResolver;
+
     private ToolInfoInterface $toolInfo;
 
     private FixerFactory $fixerFactory;
@@ -102,6 +104,7 @@ final class ListFixersCommand extends Command
     /**
      * @var array<string, array{
      *   name: string,
+     *   source?: string,
      *   in_set?: array<string>,
      *   is_configured: bool,
      *   is_enabled: bool,
@@ -246,7 +249,7 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->configureOptions($input);
-        $resolver = $this->createResolver($input);
+        $this->createResolver($input);
 
         $output->writeln('');
         $output->writeln(sprintf('  // Loaded config <comment>%s</comment> from <comment>%s</comment>.', $this->configName, $this->configFile));
@@ -260,9 +263,12 @@ EOT
         ];
 
         $output->writeln(implode(' | ', $legend));
-        $this->availableFixers = array_merge($this->fixerFactory->getFixers(), $resolver->getConfig()->getCustomFixers());
-        $this->configuredFixers = $resolver->getConfig()->getRules();
-        $this->enabledFixers = $resolver->getRules();
+        $this->availableFixers = array_merge(
+            $this->fixerFactory->getFixers(),
+            $this->configurationResolver->getConfig()->getCustomFixers()
+        );
+        $this->configuredFixers = $this->configurationResolver->getConfig()->getRules();
+        $this->enabledFixers = $this->configurationResolver->getRules();
 
         // fixers that are in enabled, but not in configured!
         $this->enabledFixersThroughInheritance = array_diff_key($this->enabledFixers, $this->configuredFixers);
@@ -310,13 +316,11 @@ EOT
         }
     }
 
-    private function createResolver(InputInterface $input): ConfigurationResolver {
-        $configFilePathname = $input->getOption('config');
-
+    private function createResolver(InputInterface $input): void {
         $resolver = new ConfigurationResolver(
             new Config(),
             [
-                'config' => $configFilePathname,
+                'config' => $input->getOption('config'),
             ],
             getcwd(),
             $this->toolInfo
@@ -325,7 +329,7 @@ EOT
         $this->configName = $resolver->getConfig()->getName();
         $this->configFile = $resolver->getConfigFile();
 
-        return $resolver;
+        $this->configurationResolver = $resolver;
     }
 
     private function processRuleSet(string $name, RuleSetInterface $set): void
@@ -339,11 +343,8 @@ EOT
 
     private function processFixer(FixerInterface $fixer): void
     {
-        if ('enabled' === $fixer->getName()) {
-            $eccolo = 'qui';
-        }
-
         $this->fixerList[$fixer->getName()]['name'] = $fixer->getName();
+        $this->fixerList[$fixer->getName()]['source'] = $this->configurationResolver->getRulesSource()[$fixer->getName()] ?? null;
         $this->fixerList[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
         $this->fixerList[$fixer->getName()]['is_enabled'] = $this->isFixerEnabled($fixer);
         $this->fixerList[$fixer->getName()]['is_enabled_through_inheritance'] = $this->isFixerEnabledThroughInheritance($fixer);
@@ -467,7 +468,9 @@ EOT
             }
 
             if (!$this->hideInherited) {
-                $row['is_inherited'] = $fixer['is_inherited'] && false === $fixer['is_configured'] ? array_pop($fixer['in_set']) : sprintf('<fg=red;>%s</>', self::CROSS);
+                $row['is_inherited'] = $fixer['is_inherited'] && false === $fixer['is_configured'] && isset($fixer['source'])
+                    ? $fixer['source']
+                    : sprintf('<fg=red;>%s</>', self::CROSS);
             }
 
             if (!$this->hideDeprecated) {
