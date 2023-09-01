@@ -43,6 +43,17 @@ interface RuleSetInterface
     public function getRules(): array;
 
     /**
+     * Get information about rules' source. Each rule can be defined on several levels:
+     * - imported rule set
+     * - nested rule set
+     * - directly in the root level of the config
+     * With this information you can know where given rule was defined.
+     *
+     * @return array<string, string>
+     */
+    public function getRulesSource(): array;
+
+    /**
      * Check given rule is in rules set.
      */
     public function hasRule(string $rule): bool;
