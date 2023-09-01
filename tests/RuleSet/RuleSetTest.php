@@ -186,6 +186,22 @@ final class RuleSetTest extends TestCase
         );
     }
 
+    public function testResolveRulesSources(): void
+    {
+        $ruleSet = new RuleSet([
+            '@PhpCsFixer' => true,
+            'array_indentation' => false,
+        ]);
+
+        $sources = $ruleSet->getRulesSource();
+        self::assertSame('config', $sources['array_indentation']);
+        self::assertSame('@PhpCsFixer', $sources['blank_line_before_statement']);
+        self::assertSame('@Symfony', $sources['align_multiline_comment']);
+        self::assertSame('@PSR12', $sources['blank_line_after_opening_tag']);
+        self::assertSame('@PSR2', $sources['blank_line_after_namespace']);
+        self::assertSame('@PSR1', $sources['encoding']);
+    }
+
     public function testResolveRulesWithNestedSet(): void
     {
         $ruleSet = new RuleSet([

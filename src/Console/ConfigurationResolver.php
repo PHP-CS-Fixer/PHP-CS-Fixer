@@ -470,6 +470,16 @@ final class ConfigurationResolver
         return $this->getRuleSet()->getRules();
     }
 
+    /**
+     * Returns information about rules' source (where each rule was defined).
+     *
+     * @return array<string, string>
+     */
+    public function getRulesSource(): array
+    {
+        return $this->getRuleSet()->getRulesSource();
+    }
+
     public function getUsingCache(): bool
     {
         if (null === $this->usingCache) {
