@@ -19,6 +19,4 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
  *
  * @covers \PhpCsFixer\RuleSet\Sets\PERCS1x0RiskySet
  */
-final class PERCS1x0RiskySetTest extends AbstractSetTestCase
-{
-}
+final class PERCS1x0RiskySetTest extends AbstractSetTestCase {}

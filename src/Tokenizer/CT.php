@@ -59,9 +59,7 @@ final class CT
     public const T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN = 10038;
     public const T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE = 10039;
 
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * Get name for custom token.
