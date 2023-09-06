@@ -19,6 +19,4 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
  *
  * @covers \PhpCsFixer\RuleSet\Sets\PHP71MigrationSet
  */
-final class PHP71MigrationSetTest extends AbstractSetTestCase
-{
-}
+final class PHP71MigrationSetTest extends AbstractSetTestCase {}

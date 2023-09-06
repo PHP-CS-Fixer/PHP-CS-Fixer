@@ -22,3 +22,11 @@ Example #1
    -{
    -}
    +) {}
+
+Rule sets
+---------
+
+The rule is part of the following rule set:
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+
