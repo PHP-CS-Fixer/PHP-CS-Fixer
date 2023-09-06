@@ -83,6 +83,7 @@
         ],
         "cs:check": "@php php-cs-fixer fix --dry-run --diff",
         "cs:fix": "@php php-cs-fixer fix",
+        "cs:fix:para": "echo '🔍 Will run in batches of 50 files.'; php php-cs-fixer list-files --config=.php-cs-fixer.dist.php | xargs -n 50 -P 8 php php-cs-fixer fix --config=.php-cs-fixer.dist.php --path-mode intersection 2> /dev/null",
         "docs": "@php dev-tools/doc.php",
         "install-tools": "@composer --working-dir=dev-tools install",
         "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi dev-tools/mess-detector/phpmd.xml --exclude vendor/*,dev-tools/vendor/*,dev-tools/phpstan/*,tests/Fixtures/*",
