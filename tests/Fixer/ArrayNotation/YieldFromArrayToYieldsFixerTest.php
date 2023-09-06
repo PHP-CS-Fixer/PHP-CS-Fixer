@@ -246,14 +246,18 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
 
         yield 'from empty arrays' => [
             '<?php
-            function foo()
+            function foo1()
             {
                 yield from [/*empty*/ ];
+            }
+            function foo2()
+            {
+                yield from array(/*empty*/ );
             }
             function bar()
             {
                 yield from [];
-                yield from [];
+                yield from array();
             }
             function baz()
             {
@@ -262,14 +266,18 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
                 yield from [];
             }',
             '<?php
-            function foo()
+            function foo1()
             {
                 yield from [/*empty*/ ];
+            }
+            function foo2()
+            {
+                yield from array(/*empty*/ );
             }
             function bar()
             {
                 yield from [];
-                yield from [];
+                yield from array();
             }
             function baz()
             {
