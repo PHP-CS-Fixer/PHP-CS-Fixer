@@ -31,16 +31,24 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Yield from array must be unpacked to series of yields.',
-            [new CodeSample('<?php function generate() {
+            [
+                new CodeSample('<?php function generate() {
     yield from [
         1,
         2,
         3,
     ];
 }
-')],
-            'The conversion will make the array in `yield from` changed in arrays of 1 less dimension.'
+'),
+            ],
+            'The conversion will make the array in `yield from` changed in arrays of 1 less dimension.',
+            'The rule is risky in case of `yield from` being used multiple times within single function scope and one relies on the list-alike indices (e.g. `function foo() { yield from ["a"]; yield from ["b"]; }`).'
         );
+    }
+
+    public function isRisky(): bool
+    {
+        return true;
     }
 
     public function isCandidate(Tokens $tokens): bool
