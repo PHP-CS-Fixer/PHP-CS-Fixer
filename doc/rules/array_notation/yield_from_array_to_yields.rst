@@ -10,6 +10,16 @@ Description
 The conversion will make the array in ``yield from`` changed in arrays of 1 less
 dimension.
 
+Warning
+-------
+
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The rule is risky in case of ``yield from`` being used multiple times within
+single function scope and one relies on the list-alike indices (e.g. ``function
+foo() { yield from ["a"]; yield from ["b"]; }``).
+
 Examples
 --------
 
@@ -38,5 +48,5 @@ Rule sets
 
 The rule is part of the following rule set:
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 

@@ -63,7 +63,6 @@ Rules
 
   ``['ensure_single_space' => true]``
 
-- `yield_from_array_to_yields <./../rules/array_notation/yield_from_array_to_yields.rst>`_
 
 Disabled rules
 --------------

@@ -3351,7 +3351,11 @@ List of Available Rules
    The conversion will make the array in ``yield from`` changed in arrays of 1
    less dimension.
 
-   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+   *warning risky* The rule is risky in case of ``yield from`` being used multiple times within
+   single function scope and one relies on the list-alike indices (e.g.
+   ``function foo() { yield from ["a"]; yield from ["b"]; }``).
+
+   Part of rule set `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\YieldFromArrayToYieldsFixer <./../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php>`_
 -  `yoda_style <./rules/control_structure/yoda_style.rst>`_
