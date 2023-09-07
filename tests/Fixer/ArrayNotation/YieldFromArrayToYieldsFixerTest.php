@@ -244,7 +244,7 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
             }',
         ];
 
-        yield 'from empty arrays' => [
+        yield 'skip empty arrays' => [
             '<?php
             function foo1()
             {
