@@ -252,6 +252,13 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
             }
             function foo2()
             {
+                yield from [
+                    // Inline comment,
+                    # and another one
+                ];
+            }
+            function foo3()
+            {
                 yield from array(/*empty*/ );
             }
             function bar()
@@ -271,6 +278,13 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
                 yield from [/*empty*/ ];
             }
             function foo2()
+            {
+                yield from [
+                    // Inline comment,
+                    # and another one
+                ];
+            }
+            function foo3()
             {
                 yield from array(/*empty*/ );
             }
