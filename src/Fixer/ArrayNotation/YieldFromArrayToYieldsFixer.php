@@ -140,6 +140,11 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
                 $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
             }
 
+            // is there empty "yield from []" ?
+            if ($endIndex === $tokens->getNextMeaningfulToken($startIndex)) {
+                continue;
+            }
+
             // is there any nested "yield from"?
             if ([] !== $tokens->findGivenKind(T_YIELD_FROM, $startIndex, $endIndex)) {
                 continue;
