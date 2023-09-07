@@ -42,7 +42,7 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
 '),
             ],
             'The conversion will make the array in `yield from` changed in arrays of 1 less dimension.',
-            'The rule is risky in case of `yield from` being used multiple times within single function scope and one relies on the list-alike indices (e.g. `function foo() { yield from ["a"]; yield from ["b"]; }`).'
+            'The rule is risky in case of `yield from` being used multiple times within single function scope, while using list-alike data sources (e.g. `function foo() { yield from ["a"]; yield from ["b"]; }`). It only matters when consuming such iterator with key-value context, because set of yielded keys may be changed after applying this rule.'
         );
     }
 
