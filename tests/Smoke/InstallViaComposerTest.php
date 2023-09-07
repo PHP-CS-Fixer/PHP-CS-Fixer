@@ -64,6 +64,13 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         'vendor/bin/php-cs-fixer fix --help',
     ];
 
+    public function __construct()
+    {
+        $this->fs = new Filesystem();
+
+        parent::__construct();
+    }
+
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -89,11 +96,6 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         } catch (\RuntimeException $e) {
             self::markTestSkippedOrFail('Composer check failed. Details:'."\n".$e->getMessage());
         }
-    }
-
-    protected function setUp(): void
-    {
-        $this->fs = new Filesystem();
     }
 
     public function testInstallationViaPathIsPossible(): void
