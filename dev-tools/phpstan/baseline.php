@@ -252,11 +252,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Import/OrderedImportsFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
-    'count' => 2,
-    'path' => __DIR__ . '/../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\SingleImportPerStatementFixer\\:\\:getGroupDeclaration\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Import/SingleImportPerStatementFixer.php',

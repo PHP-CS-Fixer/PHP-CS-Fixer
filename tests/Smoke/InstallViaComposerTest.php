@@ -20,6 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Greg Korba <greg@codito.dev>
  *
  * @internal
  *
@@ -31,6 +32,24 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class InstallViaComposerTest extends AbstractSmokeTestCase
 {
+    private Filesystem $fs;
+
+    /** @var array<string, mixed> */
+    private array $currentCodeAsComposerDependency = [
+        'repositories' => [
+            [
+                'type' => 'path',
+                'url' => __DIR__.'/../..',
+                'options' => [
+                    'symlink' => false,
+                ],
+            ],
+        ],
+        'require' => [
+            'friendsofphp/php-cs-fixer' => '*@dev',
+        ],
+    ];
+
     /**
      * @var string[]
      */
@@ -44,6 +63,13 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         'vendor/bin/php-cs-fixer --version',
         'vendor/bin/php-cs-fixer fix --help',
     ];
+
+    public function __construct()
+    {
+        $this->fs = new Filesystem();
+
+        parent::__construct();
+    }
 
     public static function setUpBeforeClass(): void
     {
@@ -74,32 +100,11 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
 
     public function testInstallationViaPathIsPossible(): void
     {
-        $fs = new Filesystem();
-
-        $tmpPath = tempnam(sys_get_temp_dir(), 'cs_fixer_tmp_');
-        unlink($tmpPath);
-        $fs->mkdir($tmpPath);
-
-        $initialComposerFileState = [
-            'repositories' => [
-                [
-                    'type' => 'path',
-                    'url' => __DIR__.'/../..',
-                ],
-            ],
-            'require' => [
-                'friendsofphp/php-cs-fixer' => '*@dev',
-            ],
-        ];
-
-        file_put_contents(
-            $tmpPath.'/composer.json',
-            json_encode($initialComposerFileState, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT)
-        );
+        $tmpPath = $this->createFakeComposerProject($this->currentCodeAsComposerDependency);
 
         self::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
 
-        $fs->remove($tmpPath);
+        $this->fs->remove($tmpPath);
     }
 
     // test that respects `export-ignore` from `.gitattributes` file
@@ -110,19 +115,13 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
             self::markTestSkippedOrFail('No zip extension available.');
         }
 
-        $fs = new Filesystem();
-
-        $tmpPath = tempnam(sys_get_temp_dir(), 'cs_fixer_tmp_');
-        unlink($tmpPath);
-        $fs->mkdir($tmpPath);
-
         $tmpArtifactPath = tempnam(sys_get_temp_dir(), 'cs_fixer_tmp_');
         unlink($tmpArtifactPath);
-        $fs->mkdir($tmpArtifactPath);
+        $this->fs->mkdir($tmpArtifactPath);
 
         $fakeVersion = preg_replace('/\\-.+/', '', Application::VERSION, 1).'-alpha987654321';
 
-        $initialComposerFileState = [
+        $tmpPath = $this->createFakeComposerProject([
             'repositories' => [
                 [
                     'type' => 'artifact',
@@ -132,12 +131,7 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
             'require' => [
                 'friendsofphp/php-cs-fixer' => $fakeVersion,
             ],
-        ];
-
-        file_put_contents(
-            $tmpPath.'/composer.json',
-            json_encode($initialComposerFileState, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT)
-        );
+        ]);
 
         $cwd = __DIR__.'/../..';
 
@@ -164,8 +158,8 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         self::assertCommandsWork($stepsToPrepareArtifact, $tmpArtifactPath);
         self::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
 
-        $fs->remove($tmpPath);
-        $fs->remove($tmpArtifactPath);
+        $this->fs->remove($tmpPath);
+        $this->fs->remove($tmpArtifactPath);
     }
 
     /**
@@ -176,5 +170,37 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         foreach ($commands as $command) {
             self::assertSame(0, CommandExecutor::create($command, $cwd)->getResult()->getCode());
         }
+    }
+
+    /**
+     * @param array<string, mixed> $initialComposerFileState
+     *
+     * @return string Path to temporary directory containing Composer project
+     */
+    private function createFakeComposerProject(array $initialComposerFileState): string
+    {
+        $tmpPath = tempnam(sys_get_temp_dir(), 'cs_fixer_tmp_');
+
+        if (false === $tmpPath) {
+            throw new \RuntimeException('Creating directory for fake Composer project has failed.');
+        }
+
+        unlink($tmpPath);
+        $this->fs->mkdir($tmpPath);
+
+        try {
+            file_put_contents(
+                $tmpPath.'/composer.json',
+                json_encode($initialComposerFileState, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT)
+            );
+        } catch (\JsonException $e) {
+            throw new \InvalidArgumentException(
+                'Initial Composer file state could not be saved as composer.json',
+                $e->getCode(),
+                $e
+            );
+        }
+
+        return $tmpPath;
     }
 }
