@@ -3352,8 +3352,10 @@ List of Available Rules
    less dimension.
 
    *warning risky* The rule is risky in case of ``yield from`` being used multiple times within
-   single function scope and one relies on the list-alike indices (e.g.
-   ``function foo() { yield from ["a"]; yield from ["b"]; }``).
+   single function scope, while using list-alike data sources (e.g. ``function
+   foo() { yield from ["a"]; yield from ["b"]; }``). It only matters when
+   consuming such iterator with key-value context, because set of yielded keys
+   may be changed after applying this rule.
 
    Part of rule set `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_
 
