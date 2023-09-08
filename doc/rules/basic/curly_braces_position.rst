@@ -232,6 +232,10 @@ The rule is part of the following rule sets:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 

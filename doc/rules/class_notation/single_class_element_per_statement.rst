@@ -70,6 +70,10 @@ The rule is part of the following rule sets:
 
   ``['elements' => ['property']]``
 
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['elements' => ['property']]``
+
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
 
   ``['elements' => ['property']]``
