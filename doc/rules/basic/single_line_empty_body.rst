@@ -26,7 +26,8 @@ Example #1
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
 
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 

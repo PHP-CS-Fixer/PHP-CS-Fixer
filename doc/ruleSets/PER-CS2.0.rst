@@ -8,3 +8,4 @@ Rules
 -----
 
 - `@PER-CS1.0 <./PER-CS1.0.rst>`_
+- `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_

@@ -41,9 +41,7 @@ class Foo extends Bar implements FooInterfaceA
 class Aaa implements
     Bbb,
     Ccc,
-    Ddd
-{
-}
+    Ddd {}
 
 $a = new Foo();
 $b = (bool) 1;
