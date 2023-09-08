@@ -3008,6 +3008,8 @@ List of Available Rules
 
    Empty body of class, interface, trait, enum or function must be abbreviated as ``{}`` and placed on the same line as the previous symbol, separated by a single space.
 
+   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+
    `Source PhpCsFixer\\Fixer\\Basic\\SingleLineEmptyBodyFixer <./../src/Fixer/Basic/SingleLineEmptyBodyFixer.php>`_
 -  `single_line_throw <./rules/function_notation/single_line_throw.rst>`_
 
@@ -3349,7 +3351,13 @@ List of Available Rules
    The conversion will make the array in ``yield from`` changed in arrays of 1
    less dimension.
 
-   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+   *warning risky* The rule is risky in case of ``yield from`` being used multiple times within
+   single function scope, while using list-alike data sources (e.g. ``function
+   foo() { yield from ["a"]; yield from ["b"]; }``). It only matters when
+   consuming such iterator with key-value context, because set of yielded keys
+   may be changed after applying this rule.
+
+   Part of rule set `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\YieldFromArrayToYieldsFixer <./../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php>`_
 -  `yoda_style <./rules/control_structure/yoda_style.rst>`_

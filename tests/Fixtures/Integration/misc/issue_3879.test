@@ -12,9 +12,7 @@ Integration of fixers: align_multiline_comment and PHPDoc rules.
  *
  * @return int the number of runs needed to fix this is 2 :(
  */
-function fixMe($str)
-{
-}
+function fixMe($str) {}
 
 --INPUT--
 <?php
@@ -26,6 +24,4 @@ function fixMe($str)
 
  * @return int The number of runs needed to fix this is 2 :( .
  */
-function fixMe($str)
-{
-}
+function fixMe($str) {}

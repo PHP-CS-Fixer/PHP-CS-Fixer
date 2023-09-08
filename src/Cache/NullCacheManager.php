@@ -26,7 +26,5 @@ final class NullCacheManager implements CacheManagerInterface
         return true;
     }
 
-    public function setFile(string $file, string $fileContent): void
-    {
-    }
+    public function setFile(string $file, string $fileContent): void {}
 }

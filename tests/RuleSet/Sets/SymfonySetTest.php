@@ -19,6 +19,4 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
  *
  * @covers \PhpCsFixer\RuleSet\Sets\SymfonySet
  */
-final class SymfonySetTest extends AbstractSetTestCase
-{
-}
+final class SymfonySetTest extends AbstractSetTestCase {}

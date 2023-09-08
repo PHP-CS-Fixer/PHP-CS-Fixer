@@ -304,6 +304,26 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
      */
 ',
         ];
+
+        yield 'param with extra chevrons' => [
+            '<?php /** @param array <3> $value */',
+            '<?php /** @param ARRAY <3> $value */',
+        ];
+
+        yield 'param with extra parentheses' => [
+            '<?php /** @param \Closure (int) $value */',
+            '<?php /** @param \Closure (INT) $value */',
+        ];
+
+        yield 'param with union type and extra parentheses' => [
+            '<?php /** @param \Closure (float|int) $value */',
+            '<?php /** @param \Closure (FLOAT|INT) $value */',
+        ];
+
+        yield 'return with union type and extra parentheses' => [
+            '<?php /** @return float|int (number) count of something */',
+            '<?php /** @return FLOAT|INT (number) count of something */',
+        ];
     }
 
     public function testWrongConfig(): void

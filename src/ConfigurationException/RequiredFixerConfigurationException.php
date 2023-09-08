@@ -19,6 +19,4 @@ namespace PhpCsFixer\ConfigurationException;
  *
  * @internal
  */
-final class RequiredFixerConfigurationException extends InvalidFixerConfigurationException
-{
-}
+final class RequiredFixerConfigurationException extends InvalidFixerConfigurationException {}

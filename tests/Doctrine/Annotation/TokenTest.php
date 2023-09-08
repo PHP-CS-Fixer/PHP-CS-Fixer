@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Doctrine\Annotation;
 
-use Doctrine\Common\Annotations\DocLexer;
+use PhpCsFixer\Doctrine\Annotation\DocLexer;
 use PhpCsFixer\Doctrine\Annotation\Token;
 use PhpCsFixer\Tests\TestCase;
 
@@ -33,20 +33,24 @@ final class TokenTest extends TestCase
 
         self::assertSame(DocLexer::T_NONE, $token->getType());
         self::assertSame('', $token->getContent());
+        self::assertSame(0, $token->getPosition());
     }
 
     public function testConstructorSetsValues(): void
     {
         $type = 42;
         $content = 'questionable';
+        $position = 16;
 
         $token = new Token(
             $type,
-            $content
+            $content,
+            $position,
         );
 
         self::assertSame($type, $token->getType());
         self::assertSame($content, $token->getContent());
+        self::assertSame($position, $token->getPosition());
     }
 
     public function testCanModifyType(): void

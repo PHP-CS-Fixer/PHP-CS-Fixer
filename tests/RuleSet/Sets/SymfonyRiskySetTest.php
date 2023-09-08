@@ -19,6 +19,4 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
  *
  * @covers \PhpCsFixer\RuleSet\Sets\SymfonyRiskySet
  */
-final class SymfonyRiskySetTest extends AbstractSetTestCase
-{
-}
+final class SymfonyRiskySetTest extends AbstractSetTestCase {}
