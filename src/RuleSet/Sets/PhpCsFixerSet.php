@@ -118,7 +118,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'single_line_empty_body' => true,
             'single_line_throw' => false,
             'whitespace_after_comma_in_array' => ['ensure_single_space' => true],
-            'yield_from_array_to_yields' => true,
         ];
     }
 

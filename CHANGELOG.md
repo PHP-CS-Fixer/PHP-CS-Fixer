@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.26.0
+---------------------
+
+* chore(checkbashisms): update to 2.23.6 (#7276)
+* chore(phpstan): reduce baseline (#7275)
+* feat: Add `single_line_empty_body` to `@PhpCsFixer` (#7266)
+* fix(YieldFromArrayToYieldsFixer): mark as Risky (#7272)
+* fix(YieldFromArrayToYieldsFixer): skip touching empty array (#7273)
+* test: Introduce common way of creating fake Composer project in `InstallViaComposerTest` (#7265)
+
 Changelog for v3.25.1
 ---------------------
 

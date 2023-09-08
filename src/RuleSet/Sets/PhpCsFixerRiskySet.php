@@ -56,6 +56,7 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDescription
             'static_lambda' => true,
             'strict_comparison' => true,
             'strict_param' => true,
+            'yield_from_array_to_yields' => true,
         ];
     }
 
