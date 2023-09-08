@@ -83,6 +83,7 @@
         ],
         "cs:check": "@php php-cs-fixer fix --dry-run --diff",
         "cs:fix": "@php php-cs-fixer fix",
+        "cs:fix:parallel": "echo '🔍 Will run in batches of 50 files.'; if [[ -f .php-cs-fixer.php ]]; then FIXER_CONFIG=.php-cs-fixer.php; else FIXER_CONFIG=.php-cs-fixer.dist.php; fi; php php-cs-fixer list-files --config=$FIXER_CONFIG | xargs -n 50 -P 8 php php-cs-fixer fix --config=$FIXER_CONFIG --path-mode intersection 2> /dev/null",
         "docs": "@php dev-tools/doc.php",
         "install-tools": "@composer --working-dir=dev-tools install",
         "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi dev-tools/mess-detector/phpmd.xml --exclude vendor/*,dev-tools/vendor/*,dev-tools/phpstan/*,tests/Fixtures/*",
@@ -126,6 +127,7 @@
     "scripts-descriptions": {
         "cs:check": "Check coding standards",
         "cs:fix": "Fix coding standards",
+        "cs:fix:parallel": "Fix coding standards in naive parallel mode (using xargs)",
         "docs": "Regenerate docs",
         "install-tools": "Install DEV tools",
         "mess-detector": "Analyse code with Mess Detector",
