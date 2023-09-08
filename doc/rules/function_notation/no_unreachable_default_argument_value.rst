@@ -34,6 +34,7 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PER-CS1.0:risky <./../../ruleSets/PER-CS1.0Risky.rst>`_
+- `@PER-CS2.0:risky <./../../ruleSets/PER-CS2.0Risky.rst>`_
 - `@PER:risky <./../../ruleSets/PERRisky.rst>`_
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
 - `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_

@@ -222,6 +222,10 @@ The rule is part of the following rule sets:
 
   ``['on_multiline' => 'ensure_fully_multiline']``
 
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['on_multiline' => 'ensure_fully_multiline']``
+
 - `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``

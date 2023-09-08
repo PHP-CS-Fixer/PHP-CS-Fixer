@@ -181,6 +181,10 @@ The rule is part of the following rule sets:
 
   ``['order' => ['use_trait']]``
 
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['order' => ['use_trait']]``
+
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
