@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.26.1
+---------------------
+
+* fix: Handle superfluous asterisk in `no_superfluous_phpdoc_tags` (#7279)
+
 Changelog for v3.26.0
 ---------------------
 
