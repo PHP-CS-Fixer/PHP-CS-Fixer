@@ -2435,6 +2435,14 @@ class Foo {
     public function foo() {}
 }',
         ];
+
+        yield 'superfluous asterisk in corrupted phpDoc' => [
+            '<?php
+class Foo {
+    /** * @return Baz */
+    public function doFoo($bar) {}
+}',
+        ];
     }
 
     /**
