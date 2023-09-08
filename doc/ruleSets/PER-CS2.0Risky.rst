@@ -2,7 +2,7 @@
 Rule set ``@PER-CS2.0:risky``
 =============================
 
-EXPERIMENTAL: Rules that follow `PER Coding Style 2.0 <https://www.php-fig.org/per/coding-style/>`_. This set contains rules that are risky.
+Rules that follow `PER Coding Style 2.0 <https://www.php-fig.org/per/coding-style/>`_. This set contains rules that are risky.
 
 Rules
 -----

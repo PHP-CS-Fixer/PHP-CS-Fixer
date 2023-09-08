@@ -39,6 +39,6 @@ final class PERCS2x0Set extends AbstractRuleSetDescription
 
     public function getDescription(): string
     {
-        return 'EXPERIMENTAL: Rules that follow `PER Coding Style 2.0 <https://www.php-fig.org/per/coding-style/>`_.';
+        return 'Rules that follow `PER Coding Style 2.0 <https://www.php-fig.org/per/coding-style/>`_.';
     }
 }
