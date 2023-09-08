@@ -2,7 +2,7 @@
 Rule set ``@PER-CS2.0``
 =======================
 
-EXPERIMENTAL: Rules that follow `PER Coding Style 2.0 <https://www.php-fig.org/per/coding-style/>`_.
+Rules that follow `PER Coding Style 2.0 <https://www.php-fig.org/per/coding-style/>`_.
 
 Rules
 -----
