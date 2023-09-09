@@ -19,7 +19,7 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 /**
  * @internal
  *
- * @deprecated
+ * @deprecated Use `@PER-CS2.0` instead.
  *
  * @TODO 4.0 remove me
  *
