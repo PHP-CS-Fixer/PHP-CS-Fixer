@@ -18,7 +18,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 
 /**
- * @author HypeMC
+ * @author HypeMC <hypemc@gmail.com>
  *
  * @internal
  *

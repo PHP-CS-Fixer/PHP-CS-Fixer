@@ -55,6 +55,19 @@ List of Available Rules
    Part of rule sets `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\AssignNullCoalescingToCoalesceEqualFixer <./../src/Fixer/Operator/AssignNullCoalescingToCoalesceEqualFixer.php>`_
+-  `attribute_empty_parentheses <./rules/attribute_notation/attribute_empty_parentheses.rst>`_
+
+   PHP attributes declared without arguments must (not) be followed by empty parentheses.
+
+   Configuration options:
+
+   - | ``use_parentheses``
+     | Whether attributes should be followed by parentheses or not.
+     | Allowed types: ``bool``
+     | Default value: ``false``
+
+
+   `Source PhpCsFixer\\Fixer\\AttributeNotation\\AttributeEmptyParenthesesFixer <./../src/Fixer/AttributeNotation/AttributeEmptyParenthesesFixer.php>`_
 -  `backtick_to_shell_exec <./rules/alias/backtick_to_shell_exec.rst>`_
 
    Converts backtick operators to ``shell_exec`` calls.
