@@ -7,7 +7,7 @@ Rule set as used by the PHP-CS-Fixer development team, highly opinionated.
 Rules
 -----
 
-- `@PER <./PER.rst>`_
+- `@PER-CS2.0 <./PER-CS2.0.rst>`_
 - `@Symfony <./Symfony.rst>`_
 - `array_indentation <./../rules/whitespace/array_indentation.rst>`_
 - `blank_line_before_statement <./../rules/whitespace/blank_line_before_statement.rst>`_ with config:
@@ -58,7 +58,6 @@ Rules
 - `return_assignment <./../rules/return_notation/return_assignment.rst>`_
 - `self_static_accessor <./../rules/class_notation/self_static_accessor.rst>`_
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
-- `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_
 - `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_ with config:
 
   ``['ensure_single_space' => true]``
