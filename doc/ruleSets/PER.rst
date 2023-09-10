@@ -2,9 +2,9 @@
 Rule set ``@PER``
 =================
 
-Alias for the PER-CS rules. It is recommended you use ``@PER-CS1.0`` instead.
+Alias for the PER-CS rules. It is recommended you use ``@PER-CS2.0`` instead.
 
 Rules
 -----
 
-- `@PER-CS1.0 <./PER-CS1.0.rst>`_
+- `@PER-CS2.0 <./PER-CS2.0.rst>`_
