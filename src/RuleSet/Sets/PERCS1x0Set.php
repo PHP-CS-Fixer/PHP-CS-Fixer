@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet\Sets;
 
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 
 /**
  * @internal
@@ -26,7 +27,7 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  * @deprecated Use `@PER-CS2.0` instead.
  * @see https://github.com/php-fig/per-coding-style/blob/1.0.0/spec.md
  */
-final class PERCS1x0Set extends AbstractRuleSetDescription
+final class PERCS1x0Set extends AbstractRuleSetDescription implements DeprecatedRuleSetDescriptionInterface
 {
     public function getName(): string
     {
@@ -42,10 +43,11 @@ final class PERCS1x0Set extends AbstractRuleSetDescription
 
     public function getDescription(): string
     {
-        return <<<'DESC'
-            **This ruleset is deprecated** in favour of ``@PER-CS2.0``.
+        return 'Rules that follow `PER Coding Style 1.0 <https://www.php-fig.org/per/coding-style/>`_.';
+    }
 
-            Rules that follow `PER Coding Style 1.0 <https://www.php-fig.org/per/coding-style/>`_.
-            DESC;
+    public function getSuccessorsNames(): array
+    {
+        return ['@PER-CS2.0'];
     }
 }

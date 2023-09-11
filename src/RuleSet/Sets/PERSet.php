@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet\Sets;
 
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 
 /**
  * @internal
@@ -25,7 +26,7 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  *
  * Last updated to PER Coding Style v2.0.
  */
-final class PERSet extends AbstractRuleSetDescription
+final class PERSet extends AbstractRuleSetDescription implements DeprecatedRuleSetDescriptionInterface
 {
     public function getRules(): array
     {
@@ -37,5 +38,10 @@ final class PERSet extends AbstractRuleSetDescription
     public function getDescription(): string
     {
         return 'Alias for the PER-CS rules. It is recommended you use ``@PER-CS2.0`` instead.';
+    }
+
+    public function getSuccessorsNames(): array
+    {
+        return ['@PER-CS2.0'];
     }
 }
