@@ -195,12 +195,18 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
             array_values($sortedElements)
         );
 
+        $beforeOverrideCount = $tokens->count();
+
         foreach (array_reverse($sortedElements, true) as $index => $tokensToInsert) {
             $tokens->overrideRange(
                 $index,
                 $index + \count($elements[$index]) - 1,
                 $tokensToInsert
             );
+        }
+
+        if ($beforeOverrideCount < $tokens->count()) {
+            $tokens->clearEmptyTokens();
         }
     }
 }
