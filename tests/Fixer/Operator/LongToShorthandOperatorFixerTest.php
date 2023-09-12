@@ -33,7 +33,7 @@ final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): \Generator
+    public static function provideFixCases(): iterable
     {
         yield 'simple I' => [
             '<?php $a += 123;',
@@ -459,7 +459,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPrePHP80Cases(): \Generator
+    public static function provideFixPrePHP80Cases(): iterable
     {
         yield [
             '<?php

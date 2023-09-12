@@ -26,9 +26,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractShortOperatorFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $alternativeSyntaxAnalyzer = new AlternativeSyntaxAnalyzer();
@@ -89,6 +86,10 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
 
     abstract protected function isOperatorTokenCandidate(Tokens $tokens, int $index): bool;
 
+    /**
+     * @param array{start: int, end: int} $assignRange
+     * @param array{start: int, end: int} $operatorRange
+     */
     private function shortenOperation(
         Tokens $tokens,
         int $equalsIndex,
@@ -111,6 +112,9 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
         }
     }
 
+    /**
+     * @return array{start: int, end: int}
+     */
     private function getAfterOperatorRange(Tokens $tokens, int $index): array
     {
         $index = $tokens->getNextMeaningfulToken($index);
@@ -143,6 +147,9 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
         return $range;
     }
 
+    /**
+     * @return array{start: int, end: int}
+     */
     private function getBeforeOperatorRange(Tokens $tokens, int $index): array
     {
         static $blockOpenTypes;
@@ -206,6 +213,9 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
         return $range;
     }
 
+    /**
+     * @param array{start: int, end: int} $range
+     */
     private function clearMeaningfulFromRange(Tokens $tokens, array $range): void
     {
         // $range['end'] must be meaningful!

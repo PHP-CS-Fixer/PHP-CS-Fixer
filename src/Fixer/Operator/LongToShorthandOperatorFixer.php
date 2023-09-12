@@ -24,6 +24,9 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
 {
+    /**
+     * @var array<string, array{int, string}>
+     */
     private static array $operators = [
         '+' => [T_PLUS_EQUAL, '+='],
         '-' => [T_MINUS_EQUAL, '-='],
@@ -43,9 +46,6 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
 
     private TokensAnalyzer $tokensAnalyzer;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -63,12 +63,9 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
      */
     public function getPriority(): int
     {
-        return 7;
+        return 17;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         if ($tokens->isAnyTokenKindsFound(array_keys(self::$operators))) {
@@ -79,9 +76,6 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
         return \defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->operatorTypes = array_keys(self::$operators);
