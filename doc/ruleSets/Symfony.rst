@@ -53,6 +53,7 @@ Rules
 - `integer_literal_case <./../rules/casing/integer_literal_case.rst>`_
 - `lambda_not_used_import <./../rules/function_notation/lambda_not_used_import.rst>`_
 - `linebreak_after_opening_tag <./../rules/php_tag/linebreak_after_opening_tag.rst>`_
+- `long_to_shorthand_operator <./../rules/operator/long_to_shorthand_operator.rst>`_
 - `magic_constant_casing <./../rules/casing/magic_constant_casing.rst>`_
 - `magic_method_casing <./../rules/casing/magic_method_casing.rst>`_
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_ with config:

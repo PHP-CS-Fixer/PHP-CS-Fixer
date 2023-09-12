@@ -1110,6 +1110,13 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\LogicalOperatorsFixer <./../src/Fixer/Operator/LogicalOperatorsFixer.php>`_
+-  `long_to_shorthand_operator <./rules/operator/long_to_shorthand_operator.rst>`_
+
+   Shorthand notation for operators should be used if possible.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Operator\\LongToShorthandOperatorFixer <./../src/Fixer/Operator/LongToShorthandOperatorFixer.php>`_
 -  `lowercase_cast <./rules/cast_notation/lowercase_cast.rst>`_
 
    Cast should be written in lower case.

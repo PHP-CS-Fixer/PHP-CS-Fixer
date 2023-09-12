@@ -228,7 +228,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
         $pos = $first->getEnd();
         $final = $second->getStart();
 
-        for ($pos = $pos + 1; $pos < $final; ++$pos) {
+        for (++$pos; $pos < $final; ++$pos) {
             $doc->getLine($pos)->remove();
         }
     }
@@ -248,7 +248,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
             return;
         }
 
-        for ($pos = $pos + 1; $pos < $final; ++$pos) {
+        for (++$pos; $pos < $final; ++$pos) {
             $doc->getLine($pos)->remove();
         }
     }
