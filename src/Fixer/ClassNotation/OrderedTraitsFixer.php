@@ -205,7 +205,7 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
             );
         }
 
-        if($beforeOverrideCount < count($tokens) ){
+        if ($beforeOverrideCount < $tokens->count()) {
             $tokens->clearEmptyTokens();
         }
     }

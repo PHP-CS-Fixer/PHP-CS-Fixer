@@ -302,6 +302,7 @@ class Foo {
     use A;
 }',
         ];
+
         yield 'simple and with namespace' => [
             '<?php
 
@@ -314,7 +315,7 @@ class User
 class User
 {
     use TestA, Test\B;
-}'
+}',
         ];
     }
 
