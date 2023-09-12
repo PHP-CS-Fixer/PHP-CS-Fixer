@@ -128,7 +128,8 @@ final class DocumentationTest extends TestCase
         $paths = [];
 
         foreach (RuleSets::getSetDefinitions() as $name => $definition) {
-            $paths[$name] = $path = $locator->getRuleSetsDocumentationFilePath($name);
+            $path = $locator->getRuleSetsDocumentationFilePath($name);
+            $paths[$path] = $definition;
 
             self::assertFileEqualsString(
                 $generator->generateRuleSetsDocumentation($definition, $fixers),
