@@ -42,7 +42,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
      */
     public function getPriority(): int
     {
-        return -19;
+        return -99;
     }
 
     public function isCandidate(Tokens $tokens): bool

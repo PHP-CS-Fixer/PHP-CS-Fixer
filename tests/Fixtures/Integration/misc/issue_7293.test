@@ -1,0 +1,45 @@
+--TEST--
+Integration of several fixers related to curly braces, empty lines and trailing whitespace.
+--RULESET--
+{
+    "blank_line_before_statement": true,
+    "no_extra_blank_lines": {"tokens": ["curly_brace_block"]},
+    "no_useless_else": true,
+    "no_trailing_whitespace": true,
+    "no_whitespace_in_blank_line": true,
+    "statement_indentation": true
+}
+--EXPECT--
+<?php
+
+function foo()
+{
+    if (f1()) {
+        if (f2()) {
+            return 1;
+        }
+
+        return 2;
+    } elseif (f3()) {
+        return 3;
+    }
+    f4();
+}
+
+--INPUT--
+<?php
+
+function foo()
+{
+    if (f1()) {
+        if (f2()) {
+            return 1;
+        } else {
+            return 2;
+        }
+    } elseif (f3()) {
+        return 3;
+    } else {
+        f4();
+    }
+}

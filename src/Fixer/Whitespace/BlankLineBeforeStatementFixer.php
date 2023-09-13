@@ -239,7 +239,7 @@ function getValues() {
     /**
      * {@inheritdoc}
      *
-     * Must run after NoExtraBlankLinesFixer, NoUselessReturnFixer, ReturnAssignmentFixer, YieldFromArrayToYieldsFixer.
+     * Must run after NoExtraBlankLinesFixer, NoUselessElseFixer, NoUselessReturnFixer, ReturnAssignmentFixer, YieldFromArrayToYieldsFixer.
      */
     public function getPriority(): int
     {
