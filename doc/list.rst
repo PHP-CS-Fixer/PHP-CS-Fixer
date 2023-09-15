@@ -317,7 +317,7 @@ List of Available Rules
      | Default value: ``'none'``
 
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\ConcatSpaceFixer <./../src/Fixer/Operator/ConcatSpaceFixer.php>`_
 -  `constant_case <./rules/casing/constant_case.rst>`_

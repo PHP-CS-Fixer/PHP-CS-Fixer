@@ -19,6 +19,8 @@ class Foo extends Bar implements FooInterfaceA{
                 BazClass::bar($arg2, $arg3);
         }
 
+        $combined = $a.$b;
+
         STATIC::baz();
     }
 
