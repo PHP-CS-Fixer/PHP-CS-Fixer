@@ -6,7 +6,7 @@ services:
       args:
         ALPINE_VERSION: "3.16"
         PHP_VERSION: "7.4"
-        PHP_XDEBUG_VERSION: "3.1.2"
+        PHP_XDEBUG_VERSION: "3.1.6"
     working_dir: /app
     volumes:
       - .:/app
