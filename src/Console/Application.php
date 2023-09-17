@@ -39,8 +39,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    public const VERSION = '3.26.2-DEV';
-    public const VERSION_CODENAME = 'Crank Cake';
+    public const VERSION = '3.27.0';
+    public const VERSION_CODENAME = 'Jump & Run';
 
     private ToolInfo $toolInfo;
 
