@@ -30,6 +30,9 @@ changelog:
     - title: Chore 🧹
       labels:
         - type/chore
+    - title: Dependency Updates ⬆️
+      labels:
+        - type/deps
     - title: Other Changes
       labels:
         - "*"
