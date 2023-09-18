@@ -47,20 +47,29 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
 
 use Foo\Bar;
 use Foo\Bar\Baz;
-use Foo\Bar\Bam;
 
 /**
  * @see \Foo\Bar\Baz
- * @see \Foo\Bar\Bam
  */
 class SomeClass
 {
-    public function doX(\Foo\Bar $foo): \Foo\Bar\Baz
-    {
+    /**
+     * @var \Foo\Bar\Baz
+     */
+    public $baz;
+
+    /**
+     * @param \Foo\Bar\Baz $baz
+     */
+    public function __construct($baz) {
+        $this->baz = $baz;
     }
 
-    public function doY(Foo\NotImported $u, \Foo\NotImported $v)
-    {
+    /**
+     * @return \Foo\Bar\Baz
+     */
+    public function getBaz() {
+        return $this->baz;
     }
 }
 '
