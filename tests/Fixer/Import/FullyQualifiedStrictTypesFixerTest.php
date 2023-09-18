@@ -922,6 +922,97 @@ use Foo\Bar\SomeClass;
  */
 class SomeClassTest {}',
         ];
+
+        yield 'Imports with aliases' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz as Buzz;
+use Foo\Bar\Bam as Boom;
+
+/**
+ * @see Buzz
+ * @see Boom
+ */
+class SomeClass
+{
+    /**
+     * @var Buzz
+     */
+    public $baz;
+
+    /** @var Boom */
+    public $bam;
+
+    /**
+     * @param Buzz $baz
+     * @param Boom $bam
+     */
+    public function __construct($baz, $bam) {
+        $this->baz = $baz;
+        $this->bam = $bam;
+    }
+
+    /**
+     * @return Buzz
+     */
+    public function getBaz() {
+        return $this->baz;
+    }
+
+    /**
+     * @return Boom
+     */
+    public function getBam() {
+        return $this->bam;
+    }
+}',
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz as Buzz;
+use Foo\Bar\Bam as Boom;
+
+/**
+ * @see \Foo\Bar\Baz
+ * @see \Foo\Bar\Bam
+ */
+class SomeClass
+{
+    /**
+     * @var \Foo\Bar\Baz
+     */
+    public $baz;
+
+    /** @var \Foo\Bar\Bam */
+    public $bam;
+
+    /**
+     * @param \Foo\Bar\Baz $baz
+     * @param \Foo\Bar\Bam $bam
+     */
+    public function __construct($baz, $bam) {
+        $this->baz = $baz;
+        $this->bam = $bam;
+    }
+
+    /**
+     * @return \Foo\Bar\Baz
+     */
+    public function getBaz() {
+        return $this->baz;
+    }
+
+    /**
+     * @return \Foo\Bar\Bam
+     */
+    public function getBam() {
+        return $this->bam;
+    }
+}',
+        ];
     }
 
     /**
