@@ -39,7 +39,7 @@ final class PRTypeLabelsTest extends TestCase
             ...$prLintTypes,
             '*',
             'BC',
-            // 'deps' // TODO,
+            'deps',
             'revert',
         ];
         sort($expectedTypes);
