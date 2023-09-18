@@ -167,11 +167,22 @@ class SomeClass
         Preg::matchAll('#@([^\s]+)\s+([^\s]+)#', $phpDocContent, $matches);
 
         if ([] !== $matches) {
-            foreach ($matches[2] as $typeName) {
+            foreach ($matches[2] as $i => $typeName) {
+                if (!\in_array($matches[1][$i], ['param', 'return', 'see', 'var'], true)) {
+                    continue;
+                }
+
                 $shortTokens = $this->determineShortType($typeName, $uses, $namespaceName);
 
                 if (null !== $shortTokens) {
-                    $phpDocContent = str_replace($typeName, $shortTokens[0]->getContent(), $phpDocContent);
+                    $phpDocContent = str_replace(
+                        $typeName,
+                        implode('', array_map(
+                            static fn (Token $token) => $token->getContent(),
+                            $shortTokens
+                        )),
+                        $phpDocContent
+                    );
                 }
             }
 
