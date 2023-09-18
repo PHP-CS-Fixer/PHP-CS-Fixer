@@ -696,88 +696,112 @@ class Two
     }
 
     /**
-     * @return iterable<string, array{string, ?string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideCodeWithPhpDocCases(): iterable
     {
         yield 'Test class PHPDoc fixes' => [
             '<?php
+
 namespace Foo\Bar;
+
 use Foo\Bar\Baz;
 use Foo\Bar\Bam;
+
 /**
  * @see Baz
  * @see Bam
  */
 class SomeClass
 {
+    /**
+     * @var Baz
+     */
+    public $baz;
 
+    /** @var Bam */
+    public $bam;
 }',
             '<?php
+
 namespace Foo\Bar;
+
 use Foo\Bar\Baz;
 use Foo\Bar\Bam;
+
 /**
  * @see \Foo\Bar\Baz
  * @see \Foo\Bar\Bam
  */
 class SomeClass
 {
+    /**
+     * @var \Foo\Bar\Baz
+     */
+    public $baz;
 
+    /** @var \Foo\Bar\Bam */
+    public $bam;
 }',
         ];
 
         yield 'Test PHPDoc nullable fixes' => [
             '<?php
+
 namespace Foo\Bar;
+
 use Foo\Bar\Baz;
 use Foo\Bar\Bam;
+
 /**
  * @see Baz|null
  * @see Bam|null
  */
-class SomeClass
-{
-
-}',
+class SomeClass {}',
             '<?php
+
 namespace Foo\Bar;
+
 use Foo\Bar\Baz;
 use Foo\Bar\Bam;
+
 /**
  * @see \Foo\Bar\Baz|null
  * @see \Foo\Bar\Bam|null
  */
-class SomeClass
-{
-
-}',
+class SomeClass {}',
         ];
 
         yield 'Test PHPDoc in interface' => [
             '<?php
+
 namespace Foo\Bar;
+
 use Foo\Bar\Baz;
 
 interface SomeClass
 {
    /**
-    * @var SomeClass $foo
-    * @var Buz $buz
+    * @param SomeClass $foo
+    * @param Buz $buz
+    * @param Zoof\Buz $barbuz
     *
     * @return Baz
     */
     public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz;
 }',
             '<?php
+
 namespace Foo\Bar;
+
 use Foo\Bar\Baz;
 
 interface SomeClass
 {
    /**
-    * @var \Foo\Bar\SomeClass $foo
-    * @var \Foo\Bar\Buz $buz
+    * @param \Foo\Bar\SomeClass $foo
+    * @param \Foo\Bar\Buz $buz
+    * @param \Foo\Bar\Zoof\Buz $barbuz
     *
     * @return \Foo\Bar\Baz
     */
@@ -787,26 +811,30 @@ interface SomeClass
 
         yield 'Test PHPDoc in interface with no imports' => [
             '<?php
+
 namespace Foo\Bar;
 
 interface SomeClass
 {
    /**
-    * @var SomeClass $foo
-    * @var Buz $buz
+    * @param SomeClass $foo
+    * @param Buz $buz
+    * @param Zoof\Buz $barbuz
     *
     * @return Baz
     */
     public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz;
 }',
             '<?php
+
 namespace Foo\Bar;
 
 interface SomeClass
 {
    /**
-    * @var \Foo\Bar\SomeClass $foo
-    * @var \Foo\Bar\Buz $buz
+    * @param \Foo\Bar\SomeClass $foo
+    * @param \Foo\Bar\Buz $buz
+    * @param \Foo\Bar\Zoof\Buz $barbuz
     *
     * @return \Foo\Bar\Baz
     */
@@ -816,31 +844,28 @@ interface SomeClass
 
         yield 'Test not imported PHPDoc fixes' => [
             '<?php
+
 namespace Foo\Bar;
 
 /**
  * @see Baz
  * @see Bam
  */
-final class SomeClass
-{
-
-}',
+final class SomeClass {}',
             '<?php
+
 namespace Foo\Bar;
 
 /**
  * @see \Foo\Bar\Baz
  * @see \Foo\Bar\Bam
  */
-final class SomeClass
-{
-
-}',
+final class SomeClass {}',
         ];
 
         yield 'Test multiple PHPDoc blocks' => [
             '<?php
+
 namespace Foo\Bar;
 
 use Foo\Bar\Buz;
@@ -854,14 +879,15 @@ use Foo\Bar\SomeClass;
 interface SomeClass
 {
     /**
-    * @var SomeClass $foo
-    * @var Buz $buz
+    * @param SomeClass $foo
+    * @param Buz $buz
     *
     * @return Baz
     */
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz;
+    public function doSomething(SomeClass $foo, Buz $buz): Baz;
 }',
             '<?php
+
 namespace Foo\Bar;
 
 use Foo\Bar\Buz;
@@ -875,13 +901,26 @@ use Foo\Bar\SomeClass;
 interface SomeClass
 {
     /**
-    * @var \Foo\Bar\SomeClass $foo
-    * @var \Foo\Bar\Buz $buz
+    * @param \Foo\Bar\SomeClass $foo
+    * @param \Foo\Bar\Buz $buz
     *
     * @return \Foo\Bar\Baz
     */
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz;
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz): \Foo\Bar\Baz;
 }',
+        ];
+
+        yield 'Skip @covers in tests (they require FQCN)' => [
+            '<?php
+
+namespace Tests\Foo\Bar;
+
+use Foo\Bar\SomeClass;
+
+/**
+ * @covers \Foo\Bar\SomeClass
+ */
+class SomeClassTest {}',
         ];
     }
 
