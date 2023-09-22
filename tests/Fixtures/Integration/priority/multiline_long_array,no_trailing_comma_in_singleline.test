@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: multiline_long_array,no_trailing_comma_in_singleline.
 --RULESET--
-{"multiline_long_array": {"max_length": -1}, "no_trailing_comma_in_singleline": true}
+{"multiline_long_array": {"characters_threshold": -1}, "no_trailing_comma_in_singleline": true}
 --EXPECT--
 <?php
 
