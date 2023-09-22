@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: multiline_long_array,whitespace_after_comma_in_array.
 --RULESET--
-{"multiline_long_array": {"max_length": -1}, "whitespace_after_comma_in_array": true}
+{"multiline_long_array": {"characters_threshold": -1}, "whitespace_after_comma_in_array": true}
 --EXPECT--
 <?php
 

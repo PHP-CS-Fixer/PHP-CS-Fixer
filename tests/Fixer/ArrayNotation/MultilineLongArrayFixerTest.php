@@ -63,14 +63,14 @@ $foo = array /* comment */ ("foo","bar" => "baz");',
             '<?php
 $foo = [];',
             null,
-            ['max_length' => 0],
+            ['characters_threshold' => 0],
         ];
 
         yield 'Empty array with negative max length' => [
             '<?php
 $foo = [];',
             null,
-            ['max_length' => -1],
+            ['characters_threshold' => -1],
         ];
 
         yield 'Single-line array' => [
@@ -83,14 +83,14 @@ $foo = [
 $foo = ["foo","bar" => "baz",];',
         ];
 
-        yield 'Single-line array shorter than max_length' => [
+        yield 'Single-line array shorter than characters_threshold' => [
             '<?php
 $foo = ["foo","bar" => "baz",];',
             null,
-            ['max_length' => 30],
+            ['characters_threshold' => 30],
         ];
 
-        yield 'Single line array longer than max_length' => [
+        yield 'Single line array longer than characters_threshold' => [
             '<?php
 $foo = [
 "foo",
@@ -98,10 +98,10 @@ $foo = [
 ];',
             '<?php
 $foo = ["foo","bar" => "baz",];',
-            ['max_length' => 10],
+            ['characters_threshold' => 10],
         ];
 
-        yield 'Multi line array shorter than max_length.' => [
+        yield 'Multi line array shorter than characters_threshold.' => [
             '<?php
 $foo = ["foo","bar" => "baz",];',
             '<?php
@@ -109,10 +109,10 @@ $foo = [
 "foo",
 "bar" => "baz",
 ];',
-            ['max_length' => 30],
+            ['characters_threshold' => 30],
         ];
 
-        yield 'Multi line array shorter than max_length with tabs' => [
+        yield 'Multi line array shorter than characters_threshold with tabs' => [
             '<?php
 $foo = ["foo","bar" => "baz",];',
             '<?php
@@ -120,10 +120,10 @@ $foo = [
     "foo",
     "bar" => "baz",
 ];',
-            ['max_length' => 30],
+            ['characters_threshold' => 30],
         ];
 
-        yield 'Multi line array with negative max_length' => [
+        yield 'Multi line array with negative characters_threshold' => [
             '<?php
 $foo = ["foo","bar" => "baz",];',
             '<?php
@@ -131,24 +131,24 @@ $foo = [
 "foo",
 "bar" => "baz",
 ];',
-            ['max_length' => -1],
+            ['characters_threshold' => -1],
         ];
 
-        yield 'Multi line array longer than max_length' => [
+        yield 'Multi line array longer than characters_threshold' => [
             '<?php
 $foo = [
 "foo",
 "bar" => "baz",
 ];',
             null,
-            ['max_length' => 10],
+            ['characters_threshold' => 10],
         ];
 
         yield 'Single element array shorter than max length' => [
             '<?php
 $foo = ["foo"];',
             null,
-            ['max_length' => 10],
+            ['characters_threshold' => 10],
         ];
 
         yield 'Single element array longer than max length' => [
@@ -158,7 +158,7 @@ $foo = [
 ];',
             '<?php
 $foo = ["foobarbaz"];',
-            ['max_length' => 10],
+            ['characters_threshold' => 10],
         ];
 
         yield 'Space after comma' => [
@@ -225,7 +225,7 @@ $foo = [
 $foo = ["foo","bar" => ["baz" => "foo"],];',
         ];
 
-        yield 'Multiple nested arrays with max_length' => [
+        yield 'Multiple nested arrays with characters_threshold' => [
             '<?php
 $foo = [
 "foo",
@@ -234,7 +234,7 @@ $foo = [
 ];',
             '<?php
 $foo = ["foo","bar" => ["baz" => ["foo"]], ["baj"]];',
-            ['max_length' => 15],
+            ['characters_threshold' => 15],
         ];
 
         yield 'Nested arrays 2' => [
@@ -297,7 +297,7 @@ $foo = [
         "array" => 3,
     ],
 ];',
-            ['max_length' => 40],
+            ['characters_threshold' => 40],
         ];
 
         yield 'don\'t change anonymous class implements list but change array inside' => [
@@ -325,14 +325,14 @@ $y
 ];',
             '<?php
 $x = [1, "2", "c" => new class implements Foo, Bar { const FOO = ["x","y"]; },$y ];',
-            ['max_length' => 15],
+            ['characters_threshold' => 15],
         ];
 
         yield 'Comment in single-line array' => [
             '<?php
 $letters = ["a", /* @todo: add some other letters one day */ "z"];',
             null,
-            ['max_length' => 20],
+            ['characters_threshold' => 20],
         ];
 
         yield 'Comments in multi-line array' => [
@@ -342,14 +342,14 @@ $letters = [
 "z", /** This is not the letter a */
 ];',
             null,
-            ['max_length' => 20],
+            ['characters_threshold' => 20],
         ];
 
         yield 'Commented out array' => [
             '<?php
 /** $letters = ["a", "b "]; */',
             null,
-            ['max_length' => 0],
+            ['characters_threshold' => 0],
         ];
 
         yield 'Destructuring to multiline' => [
@@ -361,7 +361,7 @@ $baz
 ] = $arr;',
             '<?php
 [$foo, $bar, $baz] = $arr;',
-            ['max_length' => 0],
+            ['characters_threshold' => 0],
         ];
     }
 }

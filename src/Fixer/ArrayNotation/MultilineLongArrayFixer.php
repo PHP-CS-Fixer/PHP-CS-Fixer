@@ -31,13 +31,13 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class MultilineLongArrayFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private int $maxArrayLen = 0;
+    private int $charactersThreshold = 0;
 
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
-        $this->maxArrayLen = $this->configuration['max_length'] ?? 0;
+        $this->charactersThreshold = $this->configuration['characters_threshold'] ?? 0;
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -46,7 +46,7 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
             'A single-line array should be broken into multiple lines if it exceeds configured limit. Arrays that contain comments should be left unchanged.',
             [
                 new CodeSample("<?php\n\$array = ['a very very long element','another very long element'];\n"),
-                new CodeSample("<?php\n\$array = ['a very very long element','another very long element'];\n", ['max_length' => 10]),
+                new CodeSample("<?php\n\$array = ['a very very long element','another very long element'];\n", ['characters_threshold' => 10]),
             ]
         );
     }
@@ -73,7 +73,7 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('max_length', 'Maximum length in characters (excluding whitespaces) for single-line arrays. 0 : multi-line only, -1 : single-line only.'))
+            (new FixerOptionBuilder('characters_threshold', 'Maximum length in characters (excluding whitespaces) for single-line arrays. 0 : always multi-line, -1 : always single-line.'))
                 ->setAllowedTypes(['int'])
                 ->setDefault(0)
                 ->getOption(),
@@ -104,8 +104,8 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
                 $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
             }
 
-            if ($this->maxArrayLen > -1) {
-                $shouldBeMultiline = $this->computeArrayLen($tokens, $startIndex, $endIndex) > $this->maxArrayLen;
+            if ($this->charactersThreshold > -1) {
+                $shouldBeMultiline = $this->computeArrayLen($tokens, $startIndex, $endIndex) > $this->charactersThreshold;
             } else {
                 $shouldBeMultiline = false;
             }
@@ -172,7 +172,7 @@ final class MultilineLongArrayFixer extends AbstractFixer implements Configurabl
     }
 
     /**
-     * Depending on whether the array is longer than the `max_length` argument or not, adding or removing a line ending.
+     * Depending on whether the array is longer than the `characters_threshold` argument or not, adding or removing a line ending.
      *
      * @return null|Token if not null, a new token to insert at position $index + 1
      */

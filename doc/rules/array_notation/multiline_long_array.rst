@@ -8,11 +8,11 @@ configured limit. Arrays that contain comments should be left unchanged.
 Configuration
 -------------
 
-``max_length``
-~~~~~~~~~~~~~~
+``characters_threshold``
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Maximum length in characters (excluding whitespaces) for single-line arrays. 0 :
-multi-line only, -1 : single-line only.
+always multi-line, -1 : always single-line.
 
 Allowed types: ``int``
 
@@ -40,7 +40,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['max_length' => 10]``.
+With configuration: ``['characters_threshold' => 10]``.
 
 .. code-block:: diff
 
