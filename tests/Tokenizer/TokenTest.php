@@ -407,7 +407,7 @@ final class TokenTest extends TestCase
         yield [$function, false, [T_FUNCTION, 'function', 'unexpected']];
 
         yield [new Token('&'), true, '&'];
-        if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition with new MAJOR release 4.0
+        if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition when PHP 8.1+ is required
             yield [new Token('&'), true, new Token([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
 
             yield [new Token('&'), true, new Token([T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
