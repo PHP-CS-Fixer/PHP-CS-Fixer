@@ -3,6 +3,15 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.28.0
+---------------------
+
+* chore(prlint): allow for 'deps' type (#7304)
+* CI(prlint): allow for special chars in parentheses (#7308)
+* deps(dev-tools): update dev-tools (#7309)
+* DX: Bump XDebug version in Docker services (#7300)
+* feat(`@PER-CS2.0`): Add `concat_space` to the ruleset (#7302)
+
 Changelog for v3.27.0
 ---------------------
 
