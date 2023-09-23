@@ -82,8 +82,8 @@ final class ReturnToYieldFromFixer extends AbstractFixer
         $functionEndIndex = $arrayEndIndex;
         do {
             $functionEndIndex = $tokens->getNextMeaningfulToken($functionEndIndex);
-        } while ($tokens[$functionEndIndex]->equals(';'));
-        if (!$tokens[$functionEndIndex]->equals('}')) {
+        } while ($functionEndIndex !== null && $tokens[$functionEndIndex]->equals(';'));
+        if ($functionEndIndex === null || !$tokens[$functionEndIndex]->equals('}')) {
             return false;
         }
 
