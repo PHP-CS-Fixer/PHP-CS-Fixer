@@ -56,6 +56,11 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
         '];
 
         yield [
+            '<?php return [function(): iterable { yield from [1, 2, 3]; }];',
+            '<?php return [function(): iterable { return [1, 2, 3]; }];',
+        ];
+
+        yield [
             '<?php class Foo {
                 function bar(): iterable { yield from [1, 2, 3]; }
             }',
