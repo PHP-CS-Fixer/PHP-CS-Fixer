@@ -1119,8 +1119,9 @@ $fn = fn(
      *
      * @requires PHP 8.0
      */
-    public function testFix80(string $expected, ?string $input = null): void
+    public function testFix80(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -1145,6 +1146,45 @@ class MyClass
         #[Foo] #[Bar] private ?string $name = null,
     ) {}
 }',
+        ];
+
+        yield 'multiple attributes ignored' => [
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $id,
+        #[Foo] #[Bar] private ?string $name = null,
+    ) {}
+}',
+            null,
+            [
+                'attributes_on_multiline' => 'ignore',
+            ],
+        ];
+
+        yield 'multiple attributes single_lined' => [
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $id,
+        #[Foo] #[Bar] private ?string $name = null,
+    ) {}
+}',
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $id,
+        #[Foo]
+        #[Bar]
+        private ?string $name = null,
+    ) {}
+}',
+            [
+                'attributes_on_multiline' => 'ensure_single_line',
+            ],
         ];
 
         yield 'single attribute markup with comma separated list' => [

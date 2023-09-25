@@ -158,6 +158,13 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
+            (new FixerOptionBuilder(
+                'attributes_on_multiline',
+                'Defines how to handle function arguments lists that contain newlines.'
+            ))
+                ->setAllowedValues(['ignore', 'ensure_single_line', 'ensure_fully_multiline'])
+                ->setDefault('ensure_fully_multiline')
+                ->getOption(),
         ]);
     }
 
@@ -327,17 +334,25 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 continue;
             }
 
-            $isAttribute = $token->isGivenKind(CT::T_ATTRIBUTE_CLOSE);
+            if ($tokens[$tokens->getNextMeaningfulToken($index)]->equals(')')) {
+                continue;
+            }
 
-            if (
-                ($token->equals(',') || $isAttribute)
-                && !$tokens[$tokens->getNextMeaningfulToken($index)]->equals(')')
-            ) {
-                $this->fixNewline($tokens, $index, $indentation);
-
-                if ($isAttribute) {
+            if ($token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                if ('ensure_fully_multiline' === $this->configuration['attributes_on_multiline']) {
+                    $this->fixNewline($tokens, $index, $indentation);
+                    $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+                } elseif ('ensure_single_line' === $this->configuration['attributes_on_multiline']) {
+                    $this->ensureSingleLine($tokens, $index + 1);
+                    $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
                     $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
                 }
+
+                continue;
+            }
+
+            if ($token->equals(',')) {
+                $this->fixNewline($tokens, $index, $indentation);
             }
         }
 
