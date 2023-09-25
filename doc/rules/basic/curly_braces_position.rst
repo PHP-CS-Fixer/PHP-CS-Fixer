@@ -228,6 +228,10 @@ The rule is part of the following rule sets:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``

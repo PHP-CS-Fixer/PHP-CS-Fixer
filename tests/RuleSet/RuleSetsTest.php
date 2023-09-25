@@ -68,6 +68,8 @@ final class RuleSetsTest extends TestCase
         $setsWithoutTests = [
             '@PER',
             '@PER:risky',
+            '@PER-CS',
+            '@PER-CS:risky',
             '@PHP56Migration',
             '@PHP56Migration:risky',
             '@PHP70Migration',

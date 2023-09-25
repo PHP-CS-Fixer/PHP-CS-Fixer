@@ -62,6 +62,10 @@ The rule is part of the following rule sets:
 
   ``['group_to_single_imports' => false]``
 
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['group_to_single_imports' => false]``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['group_to_single_imports' => false]``

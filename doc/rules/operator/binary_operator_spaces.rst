@@ -253,6 +253,10 @@ The rule is part of the following rule sets:
 
   ``['default' => 'at_least_single_space']``
 
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['default' => 'at_least_single_space']``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['default' => 'at_least_single_space']``

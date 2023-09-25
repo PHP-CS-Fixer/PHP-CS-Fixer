@@ -67,6 +67,10 @@ The rule is part of the following rule sets:
 
   ``['spacing' => 'one']``
 
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['spacing' => 'one']``
+
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
 
   ``['spacing' => 'one']``
