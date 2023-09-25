@@ -160,13 +160,13 @@ jobs:
 
       - name: Run PHP CS Fixer with PHPDoc to type rules
         if: matrix.phpdoc-to-type-rules == 'yes'
-        run: php php-cs-fixer fix --diff --dry-run -v --config .php-cs-fixer.php-lowest.php
+        run: php php-cs-fixer check --diff -v --config .php-cs-fixer.php-lowest.php
 
       - name: Run PHP CS Fixer
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           PHP_CS_FIXER_FUTURE_MODE: 1
-        run: php php-cs-fixer fix --diff --dry-run -v
+        run: php php-cs-fixer check --diff -v
 
       - name: Execute deployment checks
         if: matrix.execute-deployment == 'yes'
