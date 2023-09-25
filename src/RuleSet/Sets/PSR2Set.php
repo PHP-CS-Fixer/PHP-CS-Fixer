@@ -37,6 +37,7 @@ final class PSR2Set extends AbstractRuleSetDescription
             'line_ending' => true,
             'lowercase_keywords' => true,
             'method_argument_space' => [
+                'attribute_placement' => 'ignore',
                 'on_multiline' => 'ensure_fully_multiline',
             ],
             'no_break_comment' => true,

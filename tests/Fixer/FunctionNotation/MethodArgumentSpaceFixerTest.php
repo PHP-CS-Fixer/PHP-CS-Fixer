@@ -1115,6 +1115,8 @@ $fn = fn(
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
@@ -1159,7 +1161,7 @@ class MyClass
 }',
             null,
             [
-                'attributes_on_multiline' => 'ignore',
+                'attribute_placement' => 'ignore',
             ],
         ];
 
@@ -1183,7 +1185,7 @@ class MyClass
     ) {}
 }',
             [
-                'attributes_on_multiline' => 'ensure_single_line',
+                'attribute_placement' => 'same_line',
             ],
         ];
 

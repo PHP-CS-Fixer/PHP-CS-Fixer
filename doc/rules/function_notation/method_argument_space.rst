@@ -43,6 +43,15 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
+``attribute_placement``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Defines how to handle argument attributes when function definition is multiline.
+
+Allowed values: ``'ignore'``, ``'same_line'`` and ``'standalone'``
+
+Default value: ``'standalone'``
+
 Examples
 --------
 
@@ -193,6 +202,68 @@ With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'keep_multipl
 Example #8
 ~~~~~~~~~~
 
+With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'attribute_placement' => 'ignore']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -function sample(#[Foo] #[Bar] $a=10,
+   -    $b=20,$c=30) {}
+   -sample(1,  2);
+   +function sample(
+   +    #[Foo] #[Bar] $a=10,
+   +    $b=20,
+   +    $c=30
+   +) {}
+   +sample(1, 2);
+
+Example #9
+~~~~~~~~~~
+
+With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'attribute_placement' => 'same_line']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -function sample(#[Foo] #[Bar] $a=10,
+   -    $b=20,$c=30) {}
+   -sample(1,  2);
+   +function sample(
+   +    #[Foo] #[Bar] $a=10,
+   +    $b=20,
+   +    $c=30
+   +) {}
+   +sample(1, 2);
+
+Example #10
+~~~~~~~~~~~
+
+With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'attribute_placement' => 'standalone']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -function sample(#[Foo] #[Bar] $a=10,
+   -    $b=20,$c=30) {}
+   -sample(1,  2);
+   +function sample(
+   +    #[Foo]
+   +    #[Bar]
+   +    $a=10,
+   +    $b=20,
+   +    $c=30
+   +) {}
+   +sample(1, 2);
+
+Example #11
+~~~~~~~~~~~
+
 With configuration: ``['after_heredoc' => true]``.
 
 .. code-block:: diff
@@ -216,7 +287,7 @@ The rule is part of the following rule sets:
 
 - `@PER <./../../ruleSets/PER.rst>`_ with config:
 
-  ``['on_multiline' => 'ensure_fully_multiline']``
+  ``['attribute_placement' => 'standalone', 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
 
@@ -224,11 +295,11 @@ The rule is part of the following rule sets:
 
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
-  ``['on_multiline' => 'ensure_fully_multiline']``
+  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
 
-  ``['on_multiline' => 'ensure_fully_multiline']``
+  ``['attribute_placement' => 'standalone', 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ with config:
 
@@ -252,11 +323,11 @@ The rule is part of the following rule sets:
 
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
 
-  ``['on_multiline' => 'ensure_fully_multiline']``
+  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
-  ``['on_multiline' => 'ensure_fully_multiline']``
+  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 

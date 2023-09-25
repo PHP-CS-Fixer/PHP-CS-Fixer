@@ -12,4 +12,8 @@ Rules
 
   ``['spacing' => 'one']``
 
+- `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_ with config:
+
+  ``['attribute_placement' => 'standalone', 'on_multiline' => 'ensure_fully_multiline']``
+
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_

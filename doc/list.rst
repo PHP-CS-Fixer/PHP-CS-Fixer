@@ -1193,6 +1193,10 @@ List of Available Rules
      | Whether the whitespace between heredoc end and comma should be removed.
      | Allowed types: ``bool``
      | Default value: ``false``
+   - | ``attribute_placement``
+     | Defines how to handle argument attributes when function definition is multiline.
+     | Allowed values: ``'ignore'``, ``'same_line'`` and ``'standalone'``
+     | Default value: ``'standalone'``
 
 
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_

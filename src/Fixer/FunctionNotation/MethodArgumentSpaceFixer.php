@@ -73,6 +73,27 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                     ]
                 ),
                 new CodeSample(
+                    "<?php\nfunction sample(#[Foo] #[Bar] \$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  2);\n",
+                    [
+                        'on_multiline' => 'ensure_fully_multiline',
+                        'attribute_placement' => 'ignore',
+                    ]
+                ),
+                new CodeSample(
+                    "<?php\nfunction sample(#[Foo] #[Bar] \$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  2);\n",
+                    [
+                        'on_multiline' => 'ensure_fully_multiline',
+                        'attribute_placement' => 'same_line',
+                    ]
+                ),
+                new CodeSample(
+                    "<?php\nfunction sample(#[Foo] #[Bar] \$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  2);\n",
+                    [
+                        'on_multiline' => 'ensure_fully_multiline',
+                        'attribute_placement' => 'standalone',
+                    ]
+                ),
+                new CodeSample(
                     <<<'SAMPLE'
                         <?php
                         sample(
@@ -159,11 +180,11 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 ->setDefault(false)
                 ->getOption(),
             (new FixerOptionBuilder(
-                'attributes_on_multiline',
-                'Defines how to handle function arguments lists that contain newlines.'
+                'attribute_placement',
+                'Defines how to handle argument attributes when function definition is multiline.'
             ))
-                ->setAllowedValues(['ignore', 'ensure_single_line', 'ensure_fully_multiline'])
-                ->setDefault('ensure_fully_multiline')
+                ->setAllowedValues(['ignore', 'same_line', 'standalone'])
+                ->setDefault('standalone')
                 ->getOption(),
         ]);
     }
@@ -339,14 +360,13 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             }
 
             if ($token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                if ('ensure_fully_multiline' === $this->configuration['attributes_on_multiline']) {
+                if ('standalone' === $this->configuration['attribute_placement']) {
                     $this->fixNewline($tokens, $index, $indentation);
-                    $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
-                } elseif ('ensure_single_line' === $this->configuration['attributes_on_multiline']) {
+                } elseif ('same_line' === $this->configuration['attribute_placement']) {
                     $this->ensureSingleLine($tokens, $index + 1);
                     $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
-                    $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
                 }
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
 
                 continue;
             }
@@ -360,7 +380,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
     }
 
     /**
-     * Method to insert newline after comma or opening parenthesis.
+     * Method to insert newline after comma, attribute or opening parenthesis.
      *
      * @param int    $index       index of a comma
      * @param string $indentation the indentation that should be used
