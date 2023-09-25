@@ -66,6 +66,10 @@ The rule is part of the following rule sets:
 
   ``['elements' => ['property']]``
 
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['elements' => ['property']]``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['elements' => ['property']]``

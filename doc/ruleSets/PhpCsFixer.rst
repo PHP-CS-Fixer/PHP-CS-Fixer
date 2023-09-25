@@ -7,7 +7,7 @@ Rule set as used by the PHP-CS-Fixer development team, highly opinionated.
 Rules
 -----
 
-- `@PER-CS2.0 <./PER-CS2.0.rst>`_
+- `@PER-CS <./PER-CS.rst>`_
 - `@Symfony <./Symfony.rst>`_
 - `array_indentation <./../rules/whitespace/array_indentation.rst>`_
 - `blank_line_before_statement <./../rules/whitespace/blank_line_before_statement.rst>`_ with config:

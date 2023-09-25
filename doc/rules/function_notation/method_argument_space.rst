@@ -218,6 +218,10 @@ The rule is part of the following rule sets:
 
   ``['on_multiline' => 'ensure_fully_multiline']``
 
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['on_multiline' => 'ensure_fully_multiline']``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['on_multiline' => 'ensure_fully_multiline']``

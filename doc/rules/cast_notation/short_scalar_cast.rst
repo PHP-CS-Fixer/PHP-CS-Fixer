@@ -33,6 +33,7 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PER <./../../ruleSets/PER.rst>`_
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
 - `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_
