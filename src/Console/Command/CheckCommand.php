@@ -24,11 +24,11 @@ use Symfony\Component\Console\Input\InputOption;
  *
  * @internal
  */
-#[AsCommand(name: 'check', description: 'Runs configured rules against configured files/directories without applying fixes.')]
+#[AsCommand(name: 'check', description: 'Checks if configured files/directories comply with configured rules.')]
 final class CheckCommand extends FixCommand
 {
     protected static $defaultName = 'check';
-    protected static $defaultDescription = 'Runs configured rules against configured files/directories without applying fixes.';
+    protected static $defaultDescription = 'Checks if configured files/directories comply with configured rules.';
 
     public function __construct(ToolInfoInterface $toolInfo)
     {
