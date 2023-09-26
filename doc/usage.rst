@@ -122,7 +122,7 @@ mechanism should be used.
 The ``check`` command
 ---------------------
 
-This command is an shorthand for ``fix --dry-run`` and offers all the options and arguments as ``fix`` command.
+This command is a shorthand for ``fix --dry-run`` and offers all the options and arguments as ``fix`` command.
 The only difference is that ``check`` command won't apply any changes, but will only print analysis result.
 
 The ``list-files`` command
