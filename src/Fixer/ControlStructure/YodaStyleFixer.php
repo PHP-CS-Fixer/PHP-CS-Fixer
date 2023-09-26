@@ -347,12 +347,13 @@ return $foo === count($bar);
 
     private function getCompareFixableInfo(Tokens $tokens, int $index, bool $yoda): ?array
     {
-        $left = $this->getLeftSideCompareFixableInfo($tokens, $index);
         $right = $this->getRightSideCompareFixableInfo($tokens, $index);
 
         if (!$yoda && $this->isOfLowerPrecedenceAssignment($tokens[$tokens->getNextMeaningfulToken($right['end'])])) {
             return null;
         }
+
+        $left = $this->getLeftSideCompareFixableInfo($tokens, $index);
 
         if ($this->isListStatement($tokens, $left['start'], $left['end']) || $this->isListStatement($tokens, $right['start'], $right['end'])) {
             return null; // do not fix lists assignment inside statements
@@ -440,6 +441,11 @@ return $foo === count($bar);
                 T_THROW,        // throw
                 T_COALESCE,
                 T_YIELD,        // yield
+                T_YIELD_FROM,
+                T_REQUIRE,
+                T_REQUIRE_ONCE,
+                T_INCLUDE,
+                T_INCLUDE_ONCE,
             ];
         }
 

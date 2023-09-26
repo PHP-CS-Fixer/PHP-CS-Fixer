@@ -223,26 +223,6 @@ if ($a = $obj instanceof A === true) {
         ];
 
         yield [
-            '<?php $a = 1 === include_once $a ? 1 : 2;',
-            '<?php $a = include_once $a === 1 ? 1 : 2;',
-        ];
-
-        yield [
-            '<?php echo 1 === include $a ? 1 : 2;',
-            '<?php echo include $a === 1 ? 1 : 2;',
-        ];
-
-        yield [
-            '<?php echo 1 === require_once $a ? 1 : 2;',
-            '<?php echo require_once $a === 1 ? 1 : 2;',
-        ];
-
-        yield [
-            '<?php echo 1 === require $a ? 1 : 2;',
-            '<?php echo require $a === 1 ? 1 : 2;',
-        ];
-
-        yield [
             '<?php switch(1 === $a){
                     case true: echo 1;
                 };',
@@ -866,6 +846,31 @@ switch ($a) {
         break;
 }
 ',
+        ];
+
+        yield 'require' => [
+            '<?php require 1 === $var ? "A.php" : "B.php";',
+            '<?php require $var === 1 ? "A.php" : "B.php";',
+        ];
+
+        yield 'require_once' => [
+            '<?php require_once 1 === $var ? "A.php" : "B.php";',
+            '<?php require_once $var === 1 ? "A.php" : "B.php";',
+        ];
+
+        yield 'include' => [
+            '<?php include 1 === $var ? "A.php" : "B.php";',
+            '<?php include $var === 1 ? "A.php" : "B.php";',
+        ];
+
+        yield 'include_once' => [
+            '<?php include_once 1 === $var ? "A.php" : "B.php";',
+            '<?php include_once $var === 1 ? "A.php" : "B.php";',
+        ];
+
+        yield 'yield from' => [
+            '<?php function test() {return yield from 1 === $a ? $c : $d;};',
+            '<?php function test() {return yield from $a === 1 ? $c : $d;};',
         ];
     }
 
