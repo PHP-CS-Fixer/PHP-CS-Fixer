@@ -1004,6 +1004,20 @@ $example = function () use ($message1,$message2) {
         $f);# comment4
 ',
         ];
+
+        yield [
+            '<?php
+foo(
+    /* bar */
+    "baz"
+);
+            ',
+            '<?php
+foo(
+    /* bar */ "baz"
+);
+            ',
+        ];
     }
 
     /**
