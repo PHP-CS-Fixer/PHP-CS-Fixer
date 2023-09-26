@@ -360,6 +360,10 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
         if ($tokens[$index + 2]->isComment()) {
             $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken($index + 2);
             if (!$this->isNewline($tokens[$nextMeaningfulTokenIndex - 1])) {
+                if ($tokens[$nextMeaningfulTokenIndex - 1]->isWhitespace()) {
+                    $tokens->clearAt($nextMeaningfulTokenIndex - 1);
+                }
+
                 $tokens->ensureWhitespaceAtIndex($nextMeaningfulTokenIndex, 0, $this->whitespacesConfig->getLineEnding().$indentation);
             }
 
