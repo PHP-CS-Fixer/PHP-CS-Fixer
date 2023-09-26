@@ -250,6 +250,11 @@ function Foo(INTEGER $a) {}
             '<?php return fn ((A&B)|C|Null $c): (X&Y)|Z|NULL => 1;',
         ];
 
+        yield 'iterable: disjunctive normal form types in arrow function' => [
+            '<?php return fn ((iterable&B)|C|null $c): (X&Y)|Z|null => 1;',
+            '<?php return fn ((ITERABLE&B)|C|Null $c): (X&Y)|Z|NULL => 1;',
+        ];
+
         foreach (['true', 'false', 'null'] as $type) {
             yield sprintf('standalone type `%s` in class method', $type) => [
                 sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', $type),
