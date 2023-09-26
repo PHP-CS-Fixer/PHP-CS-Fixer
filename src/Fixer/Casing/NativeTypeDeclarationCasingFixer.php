@@ -49,7 +49,7 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
      * null
      * static
      */
-    private const SUPPORTED_HINTS = [
+    private const CONST_SUPPORTED_HINTS = [
         'array' => true,
         'bool' => true,
         'float' => true,
@@ -74,7 +74,7 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Native type hints for constants should use the correct case.',
+            'Native type hints for should use the correct case.',
             [
                 new VersionSpecificCodeSample(
                     "<?php\nclass Foo\n{\n    const INT BAR = 1;\n}\n",
@@ -172,7 +172,7 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
         $typeContent = $tokens[$index]->getContent();
         $typeContentLower = strtolower($typeContent);
 
-        if (isset($this::SUPPORTED_HINTS[$typeContentLower]) && $typeContent !== $typeContentLower) {
+        if (isset($this::CONST_SUPPORTED_HINTS[$typeContentLower]) && $typeContent !== $typeContentLower) {
             $tokens[$index] = new Token([$tokens[$index]->getId(), $typeContentLower]);
         }
     }
