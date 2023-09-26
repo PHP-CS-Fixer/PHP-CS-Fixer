@@ -47,6 +47,7 @@ final class NativeConstTypeDeclarationCasingFixer extends AbstractFixer
      *
      * Not in the list referenced but supported:
      * null
+     * static
      */
     private const SUPPORTED_HINTS = [
         'array' => true,
@@ -60,6 +61,7 @@ final class NativeConstTypeDeclarationCasingFixer extends AbstractFixer
         'parent' => true,
         'self' => true,
         'string' => true,
+        'static' => true,
     ];
 
     private const TYPE_SEPARATION_TYPES = [
@@ -124,7 +126,7 @@ final class NativeConstTypeDeclarationCasingFixer extends AbstractFixer
     private function getTypeEnd(Tokens $tokens, int $index, int $upperLimit): int
     {
         if (!$tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
-            return $index; // callable, array, etc.
+            return $index; // callable, array, self, static, etc.
         }
 
         $endIndex = $index;

@@ -171,11 +171,19 @@ final class NativeConstTypeDeclarationCasingFixerTest extends AbstractFixerTestC
         ];
 
         yield 'enum, int' => [
-            '<?php enum E {
+            '<?php enum E: string {
+                case Hearts = "H";
+
                 const int TEST = 789;
+                const self A = self::Hearts;
+                const static B = self::Hearts;
             }',
-            '<?php enum E {
+            '<?php enum E: string {
+                case Hearts = "H";
+
                 const INT TEST = 789;
+                const SELF A = self::Hearts;
+                const STATIC B = self::Hearts;
             }',
         ];
 
@@ -184,11 +192,6 @@ final class NativeConstTypeDeclarationCasingFixerTest extends AbstractFixerTestC
                 PUBLIC FUNCTION FOO_1(INT|FLOAT|NULL|ITERABLE $A): VOID {}
 
                 PUBLIC CONST FOO&STRINGABLE G = A::B;
-            }
-
-            enum E {
-                PUBLIC CONST STATIC A = E::FOO;
-                CASE FOO;
             }
 
             CONST A = 1;',
