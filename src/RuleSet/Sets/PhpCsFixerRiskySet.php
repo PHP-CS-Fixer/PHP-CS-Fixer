@@ -24,7 +24,7 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDescription
     public function getRules(): array
     {
         return [
-            '@PER-CS2.0:risky' => true,
+            '@PER-CS:risky' => true,
             '@Symfony:risky' => true,
             'comment_to_phpdoc' => true,
             'final_internal_class' => true,
