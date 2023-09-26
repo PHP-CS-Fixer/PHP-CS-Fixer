@@ -19,12 +19,42 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 final class NativeTypeDeclarationCasingFixer extends AbstractFixer
 {
+    /*
+     * https://secure.php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration.
+     *
+     * self     PHP 5.0
+     * array    PHP 5.1
+     * callable PHP 5.4
+     * bool     PHP 7.0
+     * float    PHP 7.0
+     * int      PHP 7.0
+     * string   PHP 7.0
+     * iterable PHP 7.1
+     * void     PHP 7.1
+     * object   PHP 7.2
+     * static   PHP 8.0 (return type only)
+     * mixed    PHP 8.0
+     * false    PHP 8.0 (union return type only)
+     * null     PHP 8.0 (union return type only)
+     * never    PHP 8.1 (return type only)
+     * true     PHP 8.2 (standalone type: https://wiki.php.net/rfc/true-type)
+     * false    PHP 8.2 (standalone type: https://wiki.php.net/rfc/null-false-standalone-types)
+     * null     PHP 8.2 (standalone type: https://wiki.php.net/rfc/null-false-standalone-types)
+     *
+     * @var array<string, true>
+     */
+    private array $functionTypeHints;
+
+    private FunctionsAnalyzer $functionsAnalyzer;
+
     /*
      * https://wiki.php.net/rfc/typed_class_constants
      * Supported types
@@ -71,6 +101,41 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
         CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
     ];
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->functionTypeHints = [
+            'array' => true,
+            'bool' => true,
+            'callable' => true,
+            'float' => true,
+            'int' => true,
+            'iterable' => true,
+            'object' => true,
+            'self' => true,
+            'string' => true,
+            'void' => true,
+        ];
+
+        if (\PHP_VERSION_ID >= 8_00_00) {
+            $this->functionTypeHints['false'] = true;
+            $this->functionTypeHints['mixed'] = true;
+            $this->functionTypeHints['null'] = true;
+            $this->functionTypeHints['static'] = true;
+        }
+
+        if (\PHP_VERSION_ID >= 8_01_00) {
+            $this->functionTypeHints['never'] = true;
+        }
+
+        if (\PHP_VERSION_ID >= 8_02_00) {
+            $this->functionTypeHints['true'] = true;
+        }
+
+        $this->functionsAnalyzer = new FunctionsAnalyzer();
+    }
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -86,26 +151,72 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 8_03_00
-            && $tokens->isTokenKindFound(T_CONST)
-            && $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+        return
+            $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN])
+            || (
+                \PHP_VERSION_ID >= 8_03_00
+                && $tokens->isTokenKindFound(T_CONST)
+                && $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds())
+            );
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_CONST) || $this->isConstWithoutType($tokens, $index)) {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            $token = $tokens[$index];
+
+            if ($token->isGivenKind([T_FUNCTION, T_FN])) {
+                $this->fixFunctionReturnType($tokens, $index);
+                $this->fixFunctionArgumentTypes($tokens, $index);
+
                 continue;
             }
 
-            foreach ($this->getNativeTypeHintCandidates($tokens, $index) as $nativeTypeHintIndex) {
-                $this->fixCasing($tokens, $nativeTypeHintIndex);
+            if (\PHP_VERSION_ID >= 8_03_00 && $token->isGivenKind(T_CONST) && !$this->isConstWithoutType($tokens, $index)) {
+                foreach ($this->getNativeTypeHintCandidatesForConstants($tokens, $index) as $nativeTypeHintIndex) {
+                    $this->fixCasing($tokens, $nativeTypeHintIndex);
+                }
+
+                continue;
             }
         }
     }
 
+    private function fixFunctionArgumentTypes(Tokens $tokens, int $index): void
+    {
+        foreach ($this->functionsAnalyzer->getFunctionArguments($tokens, $index) as $argument) {
+            $this->fixArgumentType($tokens, $argument->getTypeAnalysis());
+        }
+    }
+
+    private function fixFunctionReturnType(Tokens $tokens, int $index): void
+    {
+        $this->fixArgumentType($tokens, $this->functionsAnalyzer->getFunctionReturnType($tokens, $index));
+    }
+
+    private function fixArgumentType(Tokens $tokens, ?TypeAnalysis $type = null): void
+    {
+        if (null === $type) {
+            return;
+        }
+
+        for ($index = $type->getStartIndex(); $index <= $type->getEndIndex(); ++$index) {
+            if ($tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(T_NS_SEPARATOR)) {
+                continue;
+            }
+
+            $lowerCasedName = strtolower($tokens[$index]->getContent());
+
+            if (!isset($this->functionTypeHints[$lowerCasedName])) {
+                continue;
+            }
+
+            $tokens[$index] = new Token([$tokens[$index]->getId(), $lowerCasedName]);
+        }
+    }
+
     /** @return iterable<int> */
-    private function getNativeTypeHintCandidates(Tokens $tokens, int $index): iterable
+    private function getNativeTypeHintCandidatesForConstants(Tokens $tokens, int $index): iterable
     {
         $constNameIndex = $this->getConstNameIndex($tokens, $index);
         $index = $this->getConstTypeFirstIndex($tokens, $index);

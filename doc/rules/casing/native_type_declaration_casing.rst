@@ -20,3 +20,12 @@ Example #1
    -    const INT BAR = 1;
    +    const int BAR = 1;
     }
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
+

@@ -135,7 +135,7 @@ Casing
 - `native_function_casing <./casing/native_function_casing.rst>`_
 
   Function defined by PHP should be called using the correct casing.
-- `native_function_type_declaration_casing <./casing/native_function_type_declaration_casing.rst>`_
+- `native_function_type_declaration_casing <./casing/native_function_type_declaration_casing.rst>`_ *(deprecated)*
 
   Native type declarations for functions should use the correct case.
 - `native_type_declaration_casing <./casing/native_type_declaration_casing.rst>`_
