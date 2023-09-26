@@ -1329,7 +1329,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixer <./../src/Fixer/Casing/NativeFunctionTypeDeclarationCasingFixer.php>`_
 -  `native_type_declaration_casing <./rules/casing/native_type_declaration_casing.rst>`_
 
-   Native type hints for constants should use the correct case.
+   Native type hints for should use the correct case.
 
    `Source PhpCsFixer\\Fixer\\Casing\\NativeTypeDeclarationCasingFixer <./../src/Fixer/Casing/NativeTypeDeclarationCasingFixer.php>`_
 -  `new_with_braces <./rules/operator/new_with_braces.rst>`_

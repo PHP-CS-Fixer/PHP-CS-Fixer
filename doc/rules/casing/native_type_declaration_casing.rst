@@ -2,7 +2,7 @@
 Rule ``native_type_declaration_casing``
 =======================================
 
-Native type hints for constants should use the correct case.
+Native type hints for should use the correct case.
 
 Examples
 --------
