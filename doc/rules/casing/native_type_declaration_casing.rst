@@ -1,6 +1,6 @@
-=============================================
-Rule ``native_const_type_declaration_casing``
-=============================================
+=======================================
+Rule ``native_type_declaration_casing``
+=======================================
 
 Native type hints for constants should use the correct case.
 

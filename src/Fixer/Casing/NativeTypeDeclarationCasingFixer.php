@@ -23,7 +23,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class NativeConstTypeDeclarationCasingFixer extends AbstractFixer
+final class NativeTypeDeclarationCasingFixer extends AbstractFixer
 {
     /*
      * https://wiki.php.net/rfc/typed_class_constants

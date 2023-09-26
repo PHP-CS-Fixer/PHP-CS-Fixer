@@ -1284,11 +1284,6 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ConstantNotation\\NativeConstantInvocationFixer <./../src/Fixer/ConstantNotation/NativeConstantInvocationFixer.php>`_
--  `native_const_type_declaration_casing <./rules/casing/native_const_type_declaration_casing.rst>`_
-
-   Native type hints for constants should use the correct case.
-
-   `Source PhpCsFixer\\Fixer\\Casing\\NativeConstTypeDeclarationCasingFixer <./../src/Fixer/Casing/NativeConstTypeDeclarationCasingFixer.php>`_
 -  `native_function_casing <./rules/casing/native_function_casing.rst>`_
 
    Function defined by PHP should be called using the correct casing.
@@ -1332,6 +1327,11 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixer <./../src/Fixer/Casing/NativeFunctionTypeDeclarationCasingFixer.php>`_
+-  `native_type_declaration_casing <./rules/casing/native_type_declaration_casing.rst>`_
+
+   Native type hints for constants should use the correct case.
+
+   `Source PhpCsFixer\\Fixer\\Casing\\NativeTypeDeclarationCasingFixer <./../src/Fixer/Casing/NativeTypeDeclarationCasingFixer.php>`_
 -  `new_with_braces <./rules/operator/new_with_braces.rst>`_
 
    All instances created with ``new`` keyword must (not) be followed by braces.

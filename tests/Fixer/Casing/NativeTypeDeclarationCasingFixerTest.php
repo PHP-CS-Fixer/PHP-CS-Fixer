@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\NativeConstTypeDeclarationCasingFixer
+ * @covers \PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer
  */
-final class NativeConstTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
+final class NativeTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
 {
     public function testDoNotFixCases(): void
     {
