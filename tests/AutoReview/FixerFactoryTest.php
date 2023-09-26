@@ -341,6 +341,8 @@ final class FixerFactoryTest extends TestCase
             ],
             'array_syntax' => [
                 'binary_operator_spaces',
+                'single_space_after_construct',
+                'single_space_around_construct',
                 'ternary_operator_spaces',
             ],
             'assign_null_coalescing_to_coalesce_equal' => [

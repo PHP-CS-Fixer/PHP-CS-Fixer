@@ -70,11 +70,11 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * {@inheritdoc}
      *
-     * Must run before BinaryOperatorSpacesFixer, TernaryOperatorSpacesFixer.
+     * Must run before BinaryOperatorSpacesFixer, SingleSpaceAfterConstructFixer, SingleSpaceAroundConstructFixer, TernaryOperatorSpacesFixer.
      */
     public function getPriority(): int
     {
-        return 1;
+        return 37;
     }
 
     public function isCandidate(Tokens $tokens): bool
