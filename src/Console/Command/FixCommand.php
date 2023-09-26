@@ -195,15 +195,15 @@ use Symfony\Component\Stopwatch\Stopwatch;
     {
         $this->setDefinition(
             [
-                new InputArgument('path', InputArgument::IS_ARRAY, 'The path that rules be run against (file or directory).'),
-                new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection).', ConfigurationResolver::PATH_MODE_OVERRIDE),
-                new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no).'),
-                new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
+                new InputArgument('path', InputArgument::IS_ARRAY, 'The path(s) that rules will be run against (each path can be a file or directory).'),
+                new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be `override` or `intersection`).', ConfigurationResolver::PATH_MODE_OVERRIDE),
+                new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be `yes` or `no`).'),
+                new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
                 new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.'),
-                new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no).'),
+                new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be `yes` or `no`).'),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
-                new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file.'),
+                new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
                 new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).'),
