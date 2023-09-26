@@ -176,6 +176,10 @@ The rule is part of the following rule sets:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``

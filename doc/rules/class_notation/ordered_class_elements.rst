@@ -177,6 +177,10 @@ The rule is part of the following rule sets:
 
   ``['order' => ['use_trait']]``
 
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['order' => ['use_trait']]``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
