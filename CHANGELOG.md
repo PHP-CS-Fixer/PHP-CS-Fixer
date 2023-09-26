@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.30.0
+---------------------
+
+* feat: Introduce `AttributeEmptyParenthesesFixer` (#7284)
+* fix(method_argument_space): inject new line after trailing space on current line (#7327)
+* fix(`YodaStyleFixer`): do not touch `require(_once)`, `include(_once)` and `yield from` statements (#7325)
+* fix: illegal offset type on file-wide return in `ReturnToYieldFromFixer` (#7318)
+
 Changelog for v3.29.0
 ---------------------
 
