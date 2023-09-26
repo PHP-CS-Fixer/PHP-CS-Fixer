@@ -70,6 +70,13 @@ Array Notation
 
   Yield from array must be unpacked to series of yields.
 
+Attribute Notation
+------------------
+
+- `attribute_empty_parentheses <./attribute_notation/attribute_empty_parentheses.rst>`_
+
+  PHP attributes declared without arguments must (not) be followed by empty parentheses.
+
 Basic
 -----
 
