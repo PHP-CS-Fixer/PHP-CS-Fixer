@@ -243,19 +243,19 @@ class Tokens extends \SplFixedArray
         static $definitions = null;
         if (null === $definitions) {
             $definitions = [
-                self::BLOCK_TYPE_CURLY_BRACE => [
+                self::BLOCK_TYPE_BRACE => [
                     'start' => '{',
                     'end' => '}',
                 ],
-                self::BLOCK_TYPE_PARENTHESIS_BRACE => [
+                self::BLOCK_TYPE_PARENTHESIS => [
                     'start' => '(',
                     'end' => ')',
                 ],
-                self::BLOCK_TYPE_INDEX_SQUARE_BRACE => [
+                self::BLOCK_TYPE_INDEX_BRACKET => [
                     'start' => '[',
                     'end' => ']',
                 ],
-                self::BLOCK_TYPE_ARRAY_SQUARE_BRACE => [
+                self::BLOCK_TYPE_ARRAY_BRACKET => [
                     'start' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, '['],
                     'end' => [CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'],
                 ],
@@ -275,11 +275,11 @@ class Tokens extends \SplFixedArray
                     'start' => [CT::T_GROUP_IMPORT_BRACE_OPEN, '{'],
                     'end' => [CT::T_GROUP_IMPORT_BRACE_CLOSE, '}'],
                 ],
-                self::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE => [
+                self::BLOCK_TYPE_DESTRUCTURING_BRACKET => [
                     'start' => [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['],
                     'end' => [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'],
                 ],
-                self::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION => [
+                self::BLOCK_TYPE_PARENTHESIS_CLASS_INSTANTIATION => [
                     'start' => [CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('],
                     'end' => [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'],
                 ],
