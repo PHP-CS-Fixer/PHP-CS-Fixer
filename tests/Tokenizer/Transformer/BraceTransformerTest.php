@@ -23,9 +23,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Tokenizer\Transformer\CurlyBraceTransformer
+ * @covers \PhpCsFixer\Tokenizer\Transformer\BraceTransformer
  */
-final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
+final class BraceTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @param array<int, int> $expectedTokens
