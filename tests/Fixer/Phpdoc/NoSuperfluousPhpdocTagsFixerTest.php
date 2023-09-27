@@ -1302,7 +1302,7 @@ class Foo {
 }',
         ];
 
-        yield 'same type declaration' => [
+        yield 'same type declaration (with extra empty line)' => [
             '<?php
 class Foo {
     /**
@@ -1321,7 +1321,7 @@ class Foo {
 }',
         ];
 
-        yield 'same type declaration with description' => [
+        yield 'same type declaration (with return type) with description' => [
             '<?php
 class Foo {
     /**
