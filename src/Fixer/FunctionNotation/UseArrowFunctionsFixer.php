@@ -87,7 +87,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 $parametersStart = $tokens->getNextMeaningfulToken($parametersStart);
             }
 
-            $parametersEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $parametersStart);
+            $parametersEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $parametersStart);
 
             if ($this->isMultilined($tokens, $parametersStart, $parametersEnd)) {
                 continue;

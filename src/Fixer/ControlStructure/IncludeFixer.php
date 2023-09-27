@@ -119,7 +119,7 @@ include_once("sample4.php");
                 $braceOpenIndex = $tokens->getNextMeaningfulToken($index);
 
                 if ($tokens[$braceOpenIndex]->equals('(')) {
-                    $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $braceOpenIndex);
+                    $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $braceOpenIndex);
 
                     $includy['braces'] = [
                         'open' => $braceOpenIndex,

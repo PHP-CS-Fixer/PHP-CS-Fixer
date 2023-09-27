@@ -151,7 +151,7 @@ function f9(string $foo, $bar, $baz) {}
             }
 
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
-            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
 
             $arguments = [];
 

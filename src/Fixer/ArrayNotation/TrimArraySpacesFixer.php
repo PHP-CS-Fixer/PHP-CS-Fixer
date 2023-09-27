@@ -57,11 +57,11 @@ final class TrimArraySpacesFixer extends AbstractFixer
 
         if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
             $startIndex = $tokens->getNextMeaningfulToken($startIndex);
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startIndex);
         } elseif ($tokens[$startIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, $startIndex);
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DESTRUCTURING_BRACKET, $startIndex);
         } else {
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $startIndex);
         }
 
         $nextIndex = $startIndex + 1;

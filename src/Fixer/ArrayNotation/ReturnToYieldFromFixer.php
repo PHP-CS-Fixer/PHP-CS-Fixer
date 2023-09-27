@@ -73,10 +73,10 @@ final class ReturnToYieldFromFixer extends AbstractFixer
         }
 
         if ($tokens[$arrayStartIndex]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
-            $arrayEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $arrayStartIndex);
+            $arrayEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $arrayStartIndex);
         } else {
             $arrayOpenParenthesisIndex = $tokens->getNextTokenOfKind($arrayStartIndex, ['(']);
-            $arrayEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $arrayOpenParenthesisIndex);
+            $arrayEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $arrayOpenParenthesisIndex);
         }
 
         $functionEndIndex = $arrayEndIndex;
@@ -87,7 +87,7 @@ final class ReturnToYieldFromFixer extends AbstractFixer
             return false;
         }
 
-        $functionStartIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $functionEndIndex);
+        $functionStartIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $functionEndIndex);
 
         $returnTypeIndex = $tokens->getPrevMeaningfulToken($functionStartIndex);
         if (!$tokens[$returnTypeIndex]->isGivenKind(T_STRING)) {

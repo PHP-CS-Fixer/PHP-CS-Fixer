@@ -67,7 +67,7 @@ final class UseTransformer extends AbstractTransformer
         }
 
         $index = $tokens->getNextTokenOfKind($index, ['{']);
-        $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        $innerLimit = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
         while ($index < $innerLimit) {
             $token = $tokens[++$index];

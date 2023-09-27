@@ -210,7 +210,7 @@ if (count($x)) {
 
             if ($token->isClassy()) {
                 $index = $tokens->getNextTokenOfKind($index, ['{']);
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }
@@ -643,7 +643,7 @@ if (count($x)) {
 
             if ($token->isClassy()) {
                 $classStart = $tokens->getNextTokenOfKind($index, ['{']);
-                $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
+                $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classStart);
 
                 for ($index = $classStart; $index <= $classEnd; ++$index) {
                     if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
@@ -658,7 +658,7 @@ if (count($x)) {
                         continue;
                     }
 
-                    $methodEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodStart);
+                    $methodEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $methodStart);
 
                     foreach ($this->findFunctionDeclarations($tokens, $methodStart, $methodEnd) as $function) {
                         yield $function;

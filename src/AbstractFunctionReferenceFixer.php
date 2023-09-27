@@ -69,6 +69,6 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
             return $this->find($functionNameToSearch, $tokens, $openParenthesis, $end);
         }
 
-        return [$functionName, $openParenthesis, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis)];
+        return [$functionName, $openParenthesis, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis)];
     }
 }
