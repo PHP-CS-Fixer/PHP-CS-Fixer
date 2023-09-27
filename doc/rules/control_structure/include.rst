@@ -3,7 +3,7 @@ Rule ``include``
 ================
 
 Include/Require and file path should be divided with a single space. File path
-should not be placed under brackets.
+should not be placed within parentheses.
 
 Examples
 --------

@@ -1034,7 +1034,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\ImplodeCallFixer <./../src/Fixer/FunctionNotation/ImplodeCallFixer.php>`_
 -  `include <./rules/control_structure/include.rst>`_
 
-   Include/Require and file path should be divided with a single space. File path should not be placed under brackets.
+   Include/Require and file path should be divided with a single space. File path should not be placed within parentheses.
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
