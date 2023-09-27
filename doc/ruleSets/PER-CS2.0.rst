@@ -12,4 +12,5 @@ Rules
 
   ``['spacing' => 'one']``
 
+- `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_

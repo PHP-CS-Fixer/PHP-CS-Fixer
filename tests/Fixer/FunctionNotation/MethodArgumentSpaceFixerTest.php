@@ -1115,12 +1115,15 @@ $fn = fn(
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
-    public function testFix80(string $expected, ?string $input = null): void
+    public function testFix80(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -1145,6 +1148,45 @@ class MyClass
         #[Foo] #[Bar] private ?string $name = null,
     ) {}
 }',
+        ];
+
+        yield 'keep attributes as-is' => [
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $id,
+        #[Foo] #[Bar] private ?string $name = null,
+    ) {}
+}',
+            null,
+            [
+                'attribute_placement' => 'ignore',
+            ],
+        ];
+
+        yield 'multiple attributes on the same line as argument' => [
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $id,
+        #[Foo] #[Bar] private ?string $name = null,
+    ) {}
+}',
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $id,
+        #[Foo]
+        #[Bar]
+        private ?string $name = null,
+    ) {}
+}',
+            [
+                'attribute_placement' => 'same_line',
+            ],
         ];
 
         yield 'single attribute markup with comma separated list' => [
