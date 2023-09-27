@@ -2,7 +2,7 @@
 Rule ``native_type_declaration_casing``
 =======================================
 
-Native type hints should be used in the correct case.
+Native type declarations should be used in the correct case.
 
 Examples
 --------

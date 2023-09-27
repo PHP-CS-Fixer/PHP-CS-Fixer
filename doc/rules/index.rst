@@ -140,7 +140,7 @@ Casing
   Native type declarations for functions should use the correct case.
 - `native_type_declaration_casing <./casing/native_type_declaration_casing.rst>`_
 
-  Native type hints should be used in the correct case.
+  Native type declarations should be used in the correct case.
 
 Cast Notation
 -------------
