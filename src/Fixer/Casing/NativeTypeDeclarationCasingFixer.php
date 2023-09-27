@@ -147,12 +147,12 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
             $this->functionTypeHints['mixed'] = true;
             $this->functionTypeHints['null'] = true;
             $this->functionTypeHints['static'] = true;
-
-            $this->propertyTypeModifiers[] = [T_READONLY];
         }
 
         if (\PHP_VERSION_ID >= 8_01_00) {
             $this->functionTypeHints['never'] = true;
+
+            $this->propertyTypeModifiers[] = [T_READONLY];
         }
 
         if (\PHP_VERSION_ID >= 8_02_00) {
