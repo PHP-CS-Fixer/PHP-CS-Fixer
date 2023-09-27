@@ -91,7 +91,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Native type hints for functions should use the correct case.',
+            'Native type declarations for functions should use the correct case.',
             [
                 new CodeSample("<?php\nclass Bar {\n    public function Foo(CALLABLE \$bar)\n    {\n        return 1;\n    }\n}\n"),
                 new CodeSample(
