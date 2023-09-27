@@ -1150,7 +1150,7 @@ class MyClass
 }',
         ];
 
-        yield 'multiple attributes ignored' => [
+        yield 'keep attributes as-is' => [
             '<?php
 class MyClass
 {
@@ -1165,7 +1165,7 @@ class MyClass
             ],
         ];
 
-        yield 'multiple attributes single_lined' => [
+        yield 'multiple attributes on the same line as argument' => [
             '<?php
 class MyClass
 {

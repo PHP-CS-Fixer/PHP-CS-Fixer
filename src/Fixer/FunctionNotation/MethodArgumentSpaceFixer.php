@@ -80,7 +80,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                     ]
                 ),
                 new CodeSample(
-                    "<?php\nfunction sample(#[Foo] #[Bar] \$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  2);\n",
+                    "<?php\nfunction sample(#[Foo]\n    #[Bar]\n    \$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  2);\n",
                     [
                         'on_multiline' => 'ensure_fully_multiline',
                         'attribute_placement' => 'same_line',

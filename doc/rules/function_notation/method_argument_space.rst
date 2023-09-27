@@ -229,7 +229,9 @@ With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'attribute_pl
    --- Original
    +++ New
     <?php
-   -function sample(#[Foo] #[Bar] $a=10,
+   -function sample(#[Foo]
+   -    #[Bar]
+   -    $a=10,
    -    $b=20,$c=30) {}
    -sample(1,  2);
    +function sample(
@@ -285,22 +287,13 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ with config:
-
-  ``['attribute_placement' => 'standalone', 'on_multiline' => 'ensure_fully_multiline']``
-
-- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
-
-  ``['on_multiline' => 'ensure_fully_multiline']``
-
+- `@PER <./../../ruleSets/PER.rst>`_
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
-
-  ``['attribute_placement' => 'standalone', 'on_multiline' => 'ensure_fully_multiline']``
-
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
 - `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``
