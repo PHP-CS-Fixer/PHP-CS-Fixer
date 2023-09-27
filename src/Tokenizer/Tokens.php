@@ -40,12 +40,15 @@ class Tokens extends \SplFixedArray
     /** @deprecated use BLOCK_TYPE_PARENTHESIS, will be removed in 4.0 */
     public const BLOCK_TYPE_PARENTHESIS_BRACE = 1;
     public const BLOCK_TYPE_PARENTHESIS = 1;
+
     /** @deprecated use BLOCK_TYPE_BRACE, will be removed in 4.0 */
     public const BLOCK_TYPE_CURLY_BRACE = 2;
     public const BLOCK_TYPE_BRACE = 2;
+
     /** @deprecated use BLOCK_TYPE_INDEX_BRACKET, will be removed in 4.0 */
     public const BLOCK_TYPE_INDEX_SQUARE_BRACE = 3;
     public const BLOCK_TYPE_INDEX_BRACKET = 3;
+
     /** @deprecated use BLOCK_TYPE_ARRAY_BRACKET, will be removed in 4.0 */
     public const BLOCK_TYPE_ARRAY_SQUARE_BRACE = 4;
     public const BLOCK_TYPE_ARRAY_BRACKET = 4;
@@ -53,9 +56,11 @@ class Tokens extends \SplFixedArray
     public const BLOCK_TYPE_DYNAMIC_VAR_BRACE = 6;
     public const BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE = 7;
     public const BLOCK_TYPE_GROUP_IMPORT_BRACE = 8;
+
     /** @deprecated use BLOCK_TYPE_DESTRUCTURING_BRACKET, will be removed in 4.0 */
     public const BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE = 9;
     public const BLOCK_TYPE_DESTRUCTURING_BRACKET = 9;
+
     /** @deprecated use BLOCK_TYPE_PARENTHESIS_CLASS_INSTANTIATION, will be removed in 4.0 */
     public const BLOCK_TYPE_BRACE_CLASS_INSTANTIATION = 10;
     public const BLOCK_TYPE_PARENTHESIS_CLASS_INSTANTIATION = 10;
