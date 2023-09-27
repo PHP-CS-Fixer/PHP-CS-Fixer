@@ -21,7 +21,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
-  * @deprecated in favor of NativeTypeDeclarationCasingFixer
+ * @deprecated in favor of NativeTypeDeclarationCasingFixer
  */
 final class NativeFunctionTypeDeclarationCasingFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {

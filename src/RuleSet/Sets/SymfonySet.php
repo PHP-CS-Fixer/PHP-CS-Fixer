@@ -77,7 +77,7 @@ final class SymfonySet extends AbstractRuleSetDescription
                 'on_multiline' => 'ignore',
             ],
             'native_function_casing' => true,
-            'native_function_type_declaration_casing' => true,
+            'native_type_declaration_casing' => true,
             'no_alias_language_construct_call' => true,
             'no_alternative_syntax' => true,
             'no_binary_string' => true,

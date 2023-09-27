@@ -24,6 +24,48 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NativeTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @dataProvider provideFixCases
+     */
+    public function testFix(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixCases(): iterable
+    {
+        yield [
+            '<?php
+                function A(int $a): void {}
+
+                class Foo
+                {
+                    private bool $c = false;
+                    private bool $d = false;
+
+                    public function B(int $a): bool { return $this->c || $this->d; }
+                }
+
+                function C(float $a): array { return [$a];}
+                function D(array $a): array { return [$a];}
+            ',
+            '<?php
+                function A(INT $a): VOID {}
+
+                class Foo
+                {
+                    private BOOL $c = false;
+                    private BOOL $d = false;
+
+                    public function B(INT $a): BOOL { return $this->c || $this->d; }
+                }
+
+                function C(FLOAT $a): ARRAY { return [$a];}
+                function D(ARRAY $a): ARRAY { return [$a];}
+            ',
+        ];
+    }
+
+    /**
      * @dataProvider provideFixFunctionTypesCases
      */
     public function testFixFunctionTypes(string $expected, ?string $input = null): void
@@ -463,5 +505,96 @@ function Foo(INTEGER $a) {}
                 const INT = "A"; // outside class; INT is the name of the const, not the type
             ',
         );
+    }
+
+    /**
+     * @dataProvider provideFixClassPropertiesCases
+     */
+    public function testFixClassProperties(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixClassPropertiesCases(): iterable
+    {
+        yield 'class properties single type' => [
+            '<?php
+                class D{}
+
+                $a = new class extends D {
+                    private array $ax;
+                    private bool $bx = false;
+                    private float $cx = 3.14;
+                    private int $dx = 667;
+                    private iterable $ex = [];
+                    private mixed $f;
+                    private object $g;
+                    private parent $h;
+                    private self $i;
+                    private static $j;
+                    private ?string $k;
+
+                    private $INT = 1;
+                    private FOO $bar;
+                    private A\INT\B $z;
+                };
+            ',
+            '<?php
+                class D{}
+
+                $a = new class extends D {
+                    private ARRAY $ax;
+                    private BOOL $bx = false;
+                    private FLOAT $cx = 3.14;
+                    private INT $dx = 667;
+                    private ITERABLE $ex = [];
+                    private MIXED $f;
+                    private OBJECT $g;
+                    private PARENT $h;
+                    private Self $i;
+                    private STatic $j;
+                    private ?STRIng $k;
+
+                    private $INT = 1;
+                    private FOO $bar;
+                    private A\INT\B $z;
+                };
+            ',
+        ];
+
+        if (\PHP_VERSION_ID >= 8_00_00) {
+            yield 'union Types' => [
+                '<?php $a = new class {
+                    private null|int|bool $a4 = false;
+                };',
+                '<?php $a = new class {
+                    private NULL|INT|BOOL $a4 = false;
+                };',
+            ];
+        }
+
+        if (\PHP_VERSION_ID >= 8_01_00) {
+            yield 'class readonly property' => [
+                '<?php class Z {
+                    private readonly array $ax;
+                };',
+                '<?php class Z {
+                    private readonly ARRAY $ax;
+                };',
+            ];
+        }
+
+        if (\PHP_VERSION_ID >= 8_02_00) {
+            yield 'intersection Types' => [
+                '<?php $a = new class {
+                    private (A&B)|int|D $d5;
+                    private (A\STRING\B&B\INT\C)|int|(A&B) $e6;
+                };',
+                '<?php $a = new class {
+                    private (A&B)|INT|D $d5;
+                    private (A\STRING\B&B\INT\C)|int|(A&B) $e6;
+                };',
+            ];
+        }
     }
 }

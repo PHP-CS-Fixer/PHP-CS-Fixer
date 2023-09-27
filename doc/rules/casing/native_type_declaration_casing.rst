@@ -2,12 +2,28 @@
 Rule ``native_type_declaration_casing``
 =======================================
 
-Native type hints for should use the correct case.
+Native type hints should be used in the correct case.
 
 Examples
 --------
 
 Example #1
+~~~~~~~~~~
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Bar {
+   -    public function Foo(CALLABLE $bar): INT
+   +    public function Foo(callable $bar): int
+        {
+            return 1;
+        }
+    }
+
+Example #2
 ~~~~~~~~~~
 
 .. code-block:: diff

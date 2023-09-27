@@ -1329,7 +1329,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixer <./../src/Fixer/Casing/NativeFunctionTypeDeclarationCasingFixer.php>`_
 -  `native_type_declaration_casing <./rules/casing/native_type_declaration_casing.rst>`_
 
-   Native type hints for should use the correct case.
+   Native type hints should be used in the correct case.
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Casing;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -24,10 +25,72 @@ use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 final class NativeTypeDeclarationCasingFixer extends AbstractFixer
 {
     /*
+     * https://wiki.php.net/rfc/typed_class_constants
+     * Supported types
+     * Class constant type declarations support all type declarations supported by PHP,
+     * except `void`, `callable`, `never`.
+     *
+     * array
+     * bool
+     * callable
+     * float
+     * int
+     * iterable
+     * object
+     * mixed
+     * parent
+     * self
+     * string
+     * any class or interface name -> not native, so not applicable for this Fixer
+     * ?type -> not native, `?` has no casing, so not applicable for this Fixer
+     *
+     * Not in the list referenced but supported:
+     * null
+     * static
+     */
+    private const CLASS_CONST_SUPPORTED_HINTS = [
+        'array' => true,
+        'bool' => true,
+        'float' => true,
+        'int' => true,
+        'iterable' => true,
+        'mixed' => true,
+        'null' => true,
+        'object' => true,
+        'parent' => true,
+        'self' => true,
+        'string' => true,
+        'static' => true,
+    ];
+
+    private const CLASS_PROPERTY_SUPPORTED_HINTS = [
+        'array' => true,
+        'bool' => true,
+        'float' => true,
+        'int' => true,
+        'iterable' => true,
+        'mixed' => true,
+        'null' => true,
+        'object' => true,
+        'parent' => true,
+        'self' => true,
+        'static' => true,
+        'string' => true,
+    ];
+
+    private const TYPE_SEPARATION_TYPES = [
+        CT::T_TYPE_ALTERNATION,
+        CT::T_TYPE_INTERSECTION,
+        CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
+        CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
+    ];
+
+    /**
      * https://secure.php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration.
      *
      * self     PHP 5.0
@@ -55,55 +118,16 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
 
     private FunctionsAnalyzer $functionsAnalyzer;
 
-    /*
-     * https://wiki.php.net/rfc/typed_class_constants
-     * Supported types
-     * Class constant type declarations support all type declarations supported by PHP,
-     * except `void`, `callable`, `never`.
-     *
-     * array
-     * bool
-     * callable
-     * float
-     * int
-     * iterable
-     * object
-     * mixed
-     * parent
-     * self
-     * string
-     * any class or interface name -> not native, so not applicable for this Fixer
-     * ?type -> not native, `?` has no casing, so not applicable for this Fixer
-     *
-     * Not in the list referenced but supported:
-     * null
-     * static
+    /**
+     * @var list<list<int>>
      */
-    private const CONST_SUPPORTED_HINTS = [
-        'array' => true,
-        'bool' => true,
-        'float' => true,
-        'int' => true,
-        'iterable' => true,
-        'mixed' => true,
-        'null' => true,
-        'object' => true,
-        'parent' => true,
-        'self' => true,
-        'string' => true,
-        'static' => true,
-    ];
-
-    private const TYPE_SEPARATION_TYPES = [
-        CT::T_TYPE_ALTERNATION,
-        CT::T_TYPE_INTERSECTION,
-        CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
-        CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
-    ];
+    private array $propertyTypeModifiers;
 
     public function __construct()
     {
         parent::__construct();
+
+        $this->propertyTypeModifiers = [[T_PRIVATE], [T_PROTECTED], [T_PUBLIC]];
 
         $this->functionTypeHints = [
             'array' => true,
@@ -123,6 +147,8 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
             $this->functionTypeHints['mixed'] = true;
             $this->functionTypeHints['null'] = true;
             $this->functionTypeHints['static'] = true;
+
+            $this->propertyTypeModifiers[] = [T_READONLY];
         }
 
         if (\PHP_VERSION_ID >= 8_01_00) {
@@ -139,8 +165,11 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Native type hints for should use the correct case.',
+            'Native type hints should be used in the correct case.',
             [
+                new CodeSample(
+                    "<?php\nclass Bar {\n    public function Foo(CALLABLE \$bar): INT\n    {\n        return 1;\n    }\n}\n"
+                ),
                 new VersionSpecificCodeSample(
                     "<?php\nclass Foo\n{\n    const INT BAR = 1;\n}\n",
                     new VersionSpecification(8_03_00),
@@ -151,33 +180,30 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
+        $classyFound = $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+
         return
             $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN])
+            || ($classyFound && $tokens->isTokenKindFound(T_STRING))
             || (
                 \PHP_VERSION_ID >= 8_03_00
                 && $tokens->isTokenKindFound(T_CONST)
-                && $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds())
+                && $classyFound
             );
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            $token = $tokens[$index];
+        $this->fixFunctions($tokens);
+        $this->fixClassConstantsAndProperties($tokens);
+    }
 
-            if ($token->isGivenKind([T_FUNCTION, T_FN])) {
+    private function fixFunctions(Tokens $tokens): void
+    {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            if ($tokens[$index]->isGivenKind([T_FUNCTION, T_FN])) {
                 $this->fixFunctionReturnType($tokens, $index);
                 $this->fixFunctionArgumentTypes($tokens, $index);
-
-                continue;
-            }
-
-            if (\PHP_VERSION_ID >= 8_03_00 && $token->isGivenKind(T_CONST) && !$this->isConstWithoutType($tokens, $index)) {
-                foreach ($this->getNativeTypeHintCandidatesForConstants($tokens, $index) as $nativeTypeHintIndex) {
-                    $this->fixCasing($tokens, $nativeTypeHintIndex);
-                }
-
-                continue;
             }
         }
     }
@@ -205,21 +231,39 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
                 continue;
             }
 
-            $lowerCasedName = strtolower($tokens[$index]->getContent());
+            $this->fixCasing($this->functionTypeHints, $tokens, $index);
+        }
+    }
 
-            if (!isset($this->functionTypeHints[$lowerCasedName])) {
+    private function fixClassConstantsAndProperties(Tokens $tokens): void
+    {
+        $analyzer = new TokensAnalyzer($tokens);
+        $elements = array_reverse($analyzer->getClassyElements(), true);
+
+        foreach ($elements as $index => $element) {
+            if ('const' === $element['type']) {
+                if (\PHP_VERSION_ID >= 8_03_00 && !$this->isConstWithoutType($tokens, $index)) {
+                    foreach ($this->getNativeTypeHintCandidatesForConstant($tokens, $index) as $nativeTypeHintIndex) {
+                        $this->fixCasing($this::CLASS_CONST_SUPPORTED_HINTS, $tokens, $nativeTypeHintIndex);
+                    }
+                }
+
                 continue;
             }
 
-            $tokens[$index] = new Token([$tokens[$index]->getId(), $lowerCasedName]);
+            if ('property' === $element['type']) {
+                foreach ($this->getNativeTypeHintCandidatesForProperty($tokens, $index) as $nativeTypeHintIndex) {
+                    $this->fixCasing($this::CLASS_PROPERTY_SUPPORTED_HINTS, $tokens, $nativeTypeHintIndex);
+                }
+            }
         }
     }
 
     /** @return iterable<int> */
-    private function getNativeTypeHintCandidatesForConstants(Tokens $tokens, int $index): iterable
+    private function getNativeTypeHintCandidatesForConstant(Tokens $tokens, int $index): iterable
     {
         $constNameIndex = $this->getConstNameIndex($tokens, $index);
-        $index = $this->getConstTypeFirstIndex($tokens, $index);
+        $index = $this->getFirstIndexOfType($tokens, $index);
 
         do {
             $typeEnd = $this->getTypeEnd($tokens, $index, $constNameIndex);
@@ -232,6 +276,58 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
                 $index = $tokens->getNextMeaningfulToken($index);
             } while ($tokens[$index]->isGivenKind(self::TYPE_SEPARATION_TYPES));
         } while ($index < $constNameIndex);
+    }
+
+    private function isConstWithoutType(Tokens $tokens, int $index): bool
+    {
+        $index = $tokens->getNextMeaningfulToken($index);
+
+        return $tokens[$index]->isGivenKind(T_STRING) && $tokens[$tokens->getNextMeaningfulToken($index)]->equals('=');
+    }
+
+    private function getConstNameIndex(Tokens $tokens, int $index): int
+    {
+        return $tokens->getPrevMeaningfulToken(
+            $tokens->getNextTokenOfKind($index, ['=']),
+        );
+    }
+
+    /** @return iterable<int> */
+    private function getNativeTypeHintCandidatesForProperty(Tokens $tokens, int $index): iterable
+    {
+        $propertyNameIndex = $index;
+        $index = $tokens->getPrevTokenOfKind($index, $this->propertyTypeModifiers);
+
+        $index = $this->getFirstIndexOfType($tokens, $index);
+
+        do {
+            $typeEnd = $this->getTypeEnd($tokens, $index, $propertyNameIndex);
+
+            if ($typeEnd === $index) {
+                yield $index;
+            }
+
+            do {
+                $index = $tokens->getNextMeaningfulToken($index);
+            } while ($tokens[$index]->isGivenKind(self::TYPE_SEPARATION_TYPES));
+        } while ($index < $propertyNameIndex);
+
+        return [];
+    }
+
+    private function getFirstIndexOfType(Tokens $tokens, int $index): int
+    {
+        $index = $tokens->getNextMeaningfulToken($index);
+
+        if ($tokens[$index]->isGivenKind(CT::T_NULLABLE_TYPE)) {
+            $index = $tokens->getNextMeaningfulToken($index);
+        }
+
+        if ($tokens[$index]->isGivenKind(CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN)) {
+            $index = $tokens->getNextMeaningfulToken($index);
+        }
+
+        return $index;
     }
 
     private function getTypeEnd(Tokens $tokens, int $index, int $upperLimit): int
@@ -249,41 +345,15 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
         return $endIndex;
     }
 
-    private function isConstWithoutType(Tokens $tokens, int $index): bool
-    {
-        $index = $tokens->getNextMeaningfulToken($index);
-
-        return $tokens[$index]->isGivenKind(T_STRING) && $tokens[$tokens->getNextMeaningfulToken($index)]->equals('=');
-    }
-
-    private function getConstNameIndex(Tokens $tokens, int $index): int
-    {
-        return $tokens->getPrevMeaningfulToken(
-            $tokens->getNextTokenOfKind($index, ['=']),
-        );
-    }
-
-    private function getConstTypeFirstIndex(Tokens $tokens, int $index): int
-    {
-        $index = $tokens->getNextMeaningfulToken($index);
-
-        if ($tokens[$index]->isGivenKind(CT::T_NULLABLE_TYPE)) {
-            $index = $tokens->getNextMeaningfulToken($index);
-        }
-
-        if ($tokens[$index]->isGivenKind(CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN)) {
-            $index = $tokens->getNextMeaningfulToken($index);
-        }
-
-        return $index;
-    }
-
-    private function fixCasing(Tokens $tokens, int $index): void
+    /**
+     * @param array<string, true> $supportedTypeHints
+     */
+    private function fixCasing(array $supportedTypeHints, Tokens $tokens, int $index): void
     {
         $typeContent = $tokens[$index]->getContent();
         $typeContentLower = strtolower($typeContent);
 
-        if (isset($this::CONST_SUPPORTED_HINTS[$typeContentLower]) && $typeContent !== $typeContentLower) {
+        if (isset($supportedTypeHints[$typeContentLower]) && $typeContent !== $typeContentLower) {
             $tokens[$index] = new Token([$tokens[$index]->getId(), $typeContentLower]);
         }
     }
