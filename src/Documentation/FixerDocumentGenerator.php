@@ -77,7 +77,7 @@ final class FixerDocumentGenerator
             $deprecationDescription = <<<'RST'
 
                 This rule is deprecated and will be removed in the next major version
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 RST;
             $alternatives = $fixer->getSuccessorsNames();
 
