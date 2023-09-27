@@ -95,11 +95,11 @@ final class ListDocumentGenerator
 
                     if ($option instanceof DeprecatedFixerOptionInterface) {
                         $deprecationMessage = RstUtils::toRst($option->getDeprecationMessage(), 3);
-                        $documentation .= "\n     | warning:: This option is deprecated and will be removed on next major version. {$deprecationMessage}";
+                        $documentation .= "\n     | warning:: This option is deprecated and will be removed in the next major version. {$deprecationMessage}";
                     }
 
                     if ($option instanceof AliasedFixerOption) {
-                        $documentation .= "\n     | note:: The previous name of this option was ``{$option->getAlias()}`` but it is now deprecated and will be removed on next major version.";
+                        $documentation .= "\n     | note:: The previous name of this option was ``{$option->getAlias()}`` but it is now deprecated and will be removed in the next major version.";
                     }
 
                     $allowed = HelpCommand::getDisplayableAllowedValues($option);

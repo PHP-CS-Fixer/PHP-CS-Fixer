@@ -7,8 +7,8 @@ Ensure single space between function's argument and its typehint.
 Warning
 -------
 
-This rule is deprecated and will be removed on next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``type_declaration_spaces`` instead.
 
