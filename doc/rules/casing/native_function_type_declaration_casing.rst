@@ -2,7 +2,7 @@
 Rule ``native_function_type_declaration_casing``
 ================================================
 
-Native type hints for functions should use the correct case.
+Native type declarations for functions should use the correct case.
 
 Examples
 --------
