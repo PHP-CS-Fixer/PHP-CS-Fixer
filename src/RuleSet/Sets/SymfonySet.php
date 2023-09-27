@@ -111,6 +111,9 @@ final class SymfonySet extends AbstractRuleSetDescription
                 'remove_inheritdoc' => true,
             ],
             'no_trailing_comma_in_singleline' => true,
+            'no_unneeded_braces' => [
+                'namespaces' => true,
+            ],
             'no_unneeded_control_parentheses' => [
                 'statements' => [
                     'break',
@@ -123,9 +126,6 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'yield',
                     'yield_from',
                 ],
-            ],
-            'no_unneeded_curly_braces' => [
-                'namespaces' => true,
             ],
             'no_unneeded_import_alias' => true,
             'no_unset_cast' => true,
