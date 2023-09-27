@@ -156,7 +156,7 @@ abstract class AbstractFixerTestCase extends TestCase
             }
 
             if ($sample instanceof VersionSpecificCodeSampleInterface) {
-                $supportedPhpVersions = [7_04_00, 8_00_00, 8_01_00, 8_02_00];
+                $supportedPhpVersions = [7_04_00, 8_00_00, 8_01_00, 8_02_00, 8_03_00];
 
                 $hasSuitableSupportedVersion = false;
                 foreach ($supportedPhpVersions as $version) {
