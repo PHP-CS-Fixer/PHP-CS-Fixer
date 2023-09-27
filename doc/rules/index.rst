@@ -281,7 +281,7 @@ Control Structure
   Empty loop-condition must be in configured style.
 - `include <./control_structure/include.rst>`_
 
-  Include/Require and file path should be divided with a single space. File path should not be placed under brackets.
+  Include/Require and file path should be divided with a single space. File path should not be placed within parentheses.
 - `no_alternative_syntax <./control_structure/no_alternative_syntax.rst>`_
 
   Replace control structure alternative syntax to use braces.
