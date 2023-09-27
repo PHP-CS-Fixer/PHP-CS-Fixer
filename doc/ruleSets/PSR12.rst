@@ -19,7 +19,7 @@ Rules
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
-- `compact_nullable_typehint <./../rules/whitespace/compact_nullable_typehint.rst>`_
+- `compact_nullable_type_declaration <./../rules/whitespace/compact_nullable_type_declaration.rst>`_
 - `curly_braces_position <./../rules/basic/curly_braces_position.rst>`_ with config:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``

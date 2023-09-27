@@ -315,9 +315,18 @@ List of Available Rules
 
    Rule is applied only in a PHP 7.1+ environment.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   *warning deprecated*   Use ``compact_nullable_type_declaration`` instead.
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypehintFixer <./../src/Fixer/Whitespace/CompactNullableTypehintFixer.php>`_
+-  `compact_nullable_type_declaration <./rules/whitespace/compact_nullable_type_declaration.rst>`_
+
+   Remove extra spaces in a nullable type declaration.
+
+   Rule is applied only in a PHP 7.1+ environment.
+
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypeDeclarationFixer <./../src/Fixer/Whitespace/CompactNullableTypeDeclarationFixer.php>`_
 -  `concat_space <./rules/operator/concat_space.rst>`_
 
    Concatenation should be spaced according to configuration.
