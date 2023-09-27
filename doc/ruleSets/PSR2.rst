@@ -9,11 +9,11 @@ Rules
 
 - `@PSR1 <./PSR1.rst>`_
 - `blank_line_after_namespace <./../rules/namespace_notation/blank_line_after_namespace.rst>`_
+- `braces_position <./../rules/basic/braces_position.rst>`_
 - `class_definition <./../rules/class_notation/class_definition.rst>`_
 - `constant_case <./../rules/casing/constant_case.rst>`_
 - `control_structure_braces <./../rules/control_structure/control_structure_braces.rst>`_
 - `control_structure_continuation_position <./../rules/control_structure/control_structure_continuation_position.rst>`_
-- `curly_braces_position <./../rules/basic/curly_braces_position.rst>`_
 - `elseif <./../rules/control_structure/elseif.rst>`_
 - `function_declaration <./../rules/function_notation/function_declaration.rst>`_
 - `indentation_type <./../rules/whitespace/indentation_type.rst>`_
