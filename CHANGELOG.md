@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.31.0
+---------------------
+
+* chore: Use type declaration instead of type hint (#7338)
+* feat: Introduce `attribute_placement` option for `MethodArgumentSpaceFixer` (#7320)
+* fix: Adjust wording related to deprecations (#7332)
+* fix: Correct deprecation header in rules' docs (#7337)
+* fix: Replace mention of bracket with parenthesis (#7336)
+* fix: `FunctionToConstantFixer` should run before `NativeConstantInvocationFixer` (#7344)
+
 Changelog for v3.30.0
 ---------------------
 
