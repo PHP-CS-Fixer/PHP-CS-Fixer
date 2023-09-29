@@ -85,13 +85,13 @@ Rules
   ``['remove_inheritdoc' => true]``
 
 - `no_trailing_comma_in_singleline <./../rules/basic/no_trailing_comma_in_singleline.rst>`_
+- `no_unneeded_braces <./../rules/control_structure/no_unneeded_braces.rst>`_ with config:
+
+  ``['namespaces' => true]``
+
 - `no_unneeded_control_parentheses <./../rules/control_structure/no_unneeded_control_parentheses.rst>`_ with config:
 
   ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``
-
-- `no_unneeded_curly_braces <./../rules/control_structure/no_unneeded_curly_braces.rst>`_ with config:
-
-  ``['namespaces' => true]``
 
 - `no_unneeded_import_alias <./../rules/import/no_unneeded_import_alias.rst>`_
 - `no_unset_cast <./../rules/cast_notation/no_unset_cast.rst>`_

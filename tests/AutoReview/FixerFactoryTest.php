@@ -627,6 +627,12 @@ final class FixerFactoryTest extends TestCase
                 'no_empty_phpdoc',
                 'void_return',
             ],
+            'no_unneeded_braces' => [
+                'no_useless_else',
+                'no_useless_return',
+                'return_assignment',
+                'simplified_if_return',
+            ],
             'no_unneeded_control_parentheses' => [
                 'concat_space',
                 'no_trailing_whitespace',

@@ -1803,6 +1803,21 @@ List of Available Rules
    Part of rule sets `@PER-CS1.0:risky <./ruleSets/PER-CS1.0Risky.rst>`_ `@PER-CS2.0:risky <./ruleSets/PER-CS2.0Risky.rst>`_ `@PER-CS:risky <./ruleSets/PER-CSRisky.rst>`_ `@PER:risky <./ruleSets/PERRisky.rst>`_ `@PSR12:risky <./ruleSets/PSR12Risky.rst>`_ `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\StringNotation\\NoTrailingWhitespaceInStringFixer <./../src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php>`_
+-  `no_unneeded_braces <./rules/control_structure/no_unneeded_braces.rst>`_
+
+   Removes unneeded braces that are superfluous and aren't part of a control structure's body.
+
+   Configuration options:
+
+   - | ``namespaces``
+     | Remove unneeded braces from bracketed namespaces.
+     | Allowed types: ``bool``
+     | Default value: ``false``
+
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededBracesFixer <./../src/Fixer/ControlStructure/NoUnneededBracesFixer.php>`_
 -  `no_unneeded_control_parentheses <./rules/control_structure/no_unneeded_control_parentheses.rst>`_
 
    Removes unneeded parentheses around control statements.
@@ -1822,6 +1837,8 @@ List of Available Rules
 
    Removes unneeded curly braces that are superfluous and aren't part of a control structure's body.
 
+   *warning deprecated*   Use ``no_unneeded_braces`` instead.
+
    Configuration options:
 
    - | ``namespaces``
@@ -1829,8 +1846,6 @@ List of Available Rules
      | Allowed types: ``bool``
      | Default value: ``false``
 
-
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededCurlyBracesFixer <./../src/Fixer/ControlStructure/NoUnneededCurlyBracesFixer.php>`_
 -  `no_unneeded_final_method <./rules/class_notation/no_unneeded_final_method.rst>`_

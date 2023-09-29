@@ -297,10 +297,13 @@ Control Structure
 - `no_trailing_comma_in_list_call <./control_structure/no_trailing_comma_in_list_call.rst>`_ *(deprecated)*
 
   Remove trailing commas in list function calls.
+- `no_unneeded_braces <./control_structure/no_unneeded_braces.rst>`_
+
+  Removes unneeded braces that are superfluous and aren't part of a control structure's body.
 - `no_unneeded_control_parentheses <./control_structure/no_unneeded_control_parentheses.rst>`_
 
   Removes unneeded parentheses around control statements.
-- `no_unneeded_curly_braces <./control_structure/no_unneeded_curly_braces.rst>`_
+- `no_unneeded_curly_braces <./control_structure/no_unneeded_curly_braces.rst>`_ *(deprecated)*
 
   Removes unneeded curly braces that are superfluous and aren't part of a control structure's body.
 - `no_useless_else <./control_structure/no_useless_else.rst>`_
