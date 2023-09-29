@@ -1340,6 +1340,25 @@ List of Available Rules
 
    All instances created with ``new`` keyword must (not) be followed by braces.
 
+   *warning deprecated*   Use ``new_with_parentheses`` instead.
+
+   Configuration options:
+
+   - | ``named_class``
+     | Whether named classes should be followed by parentheses.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``anonymous_class``
+     | Whether anonymous classes should be followed by parentheses.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+
+
+   `Source PhpCsFixer\\Fixer\\Operator\\NewWithBracesFixer <./../src/Fixer/Operator/NewWithBracesFixer.php>`_
+-  `new_with_parentheses <./rules/operator/new_with_parentheses.rst>`_
+
+   All instances created with ``new`` keyword must (not) be followed by parentheses.
+
    Configuration options:
 
    - | ``named_class``
@@ -1354,7 +1373,7 @@ List of Available Rules
 
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
-   `Source PhpCsFixer\\Fixer\\Operator\\NewWithBracesFixer <./../src/Fixer/Operator/NewWithBracesFixer.php>`_
+   `Source PhpCsFixer\\Fixer\\Operator\\NewWithParenthesesFixer <./../src/Fixer/Operator/NewWithParenthesesFixer.php>`_
 -  `non_printable_character <./rules/basic/non_printable_character.rst>`_
 
    Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
