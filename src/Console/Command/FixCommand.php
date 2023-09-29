@@ -43,12 +43,15 @@ use Symfony\Component\Stopwatch\Stopwatch;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @final
+ *
  * @internal
  */
-#[AsCommand(name: 'fix')]
-final class FixCommand extends Command
+#[AsCommand(name: 'fix', description: 'Fixes a directory or a file.')]
+/* final */ class FixCommand extends Command
 {
     protected static $defaultName = 'fix';
+    protected static $defaultDescription = 'Fixes a directory or a file.';
 
     private EventDispatcherInterface $eventDispatcher;
 
@@ -82,7 +85,7 @@ final class FixCommand extends Command
     public function getHelp(): string
     {
         return <<<'EOF'
-            The <info>%command.name%</info> command tries to fix as much coding standards
+            The <info>%command.name%</info> command tries to %command.name% as much coding standards
             problems as possible on a given file or files in a given directory and its subdirectories:
 
                 <info>$ php %command.full_name% /path/to/dir</info>
@@ -159,7 +162,7 @@ final class FixCommand extends Command
 
                 <info>$ php %command.full_name% --verbose --show-progress=dots</info>
 
-            By using <command>--using-cache</command> option with `yes` or `no` you can set if the caching
+            By using <comment>--using-cache</comment> option with `yes` or `no` you can set if the caching
             mechanism should be used.
 
             The command can also read from standard input, in which case it won't
@@ -175,7 +178,7 @@ final class FixCommand extends Command
             Exit code
             ---------
 
-            Exit code of the fix command is built using following bit flags:
+            Exit code of the `%command.name%` command is built using following bit flags:
 
             *  0 - OK.
             *  1 - General error (or PHP minimal requirement not matched).
@@ -190,25 +193,22 @@ final class FixCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDefinition(
-                [
-                    new InputArgument('path', InputArgument::IS_ARRAY, 'The path.'),
-                    new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection).', ConfigurationResolver::PATH_MODE_OVERRIDE),
-                    new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no).'),
-                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
-                    new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
-                    new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules.'),
-                    new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no).'),
-                    new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
-                    new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file.'),
-                    new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
-                    new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
-                    new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).'),
-                ]
-            )
-            ->setDescription('Fixes a directory or a file.')
-        ;
+        $this->setDefinition(
+            [
+                new InputArgument('path', InputArgument::IS_ARRAY, 'The path(s) that rules will be run against (each path can be a file or directory).'),
+                new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be `override` or `intersection`).', ConfigurationResolver::PATH_MODE_OVERRIDE),
+                new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be `yes` or `no`).'),
+                new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
+                new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
+                new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.'),
+                new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be `yes` or `no`).'),
+                new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
+                new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
+                new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
+                new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).'),
+            ]
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -227,7 +227,7 @@ final class FixCommand extends Command
             [
                 'allow-risky' => $input->getOption('allow-risky'),
                 'config' => $passedConfig,
-                'dry-run' => $input->getOption('dry-run'),
+                'dry-run' => $this->isDryRun($input),
                 'rules' => $passedRules,
                 'path' => $input->getArgument('path'),
                 'path-mode' => $input->getOption('path-mode'),
@@ -350,5 +350,10 @@ final class FixCommand extends Command
             \count($exceptionErrors) > 0,
             \count($lintErrors) > 0
         );
+    }
+
+    protected function isDryRun(InputInterface $input): bool
+    {
+        return $input->getOption('dry-run');
     }
 }

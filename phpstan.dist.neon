@@ -14,7 +14,7 @@ parameters:
     reportUnmatchedIgnoredErrors: true # Do not allow outdated errors in the baseline
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
-        - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens)\.$/'
+        - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens|Console\\Command\\FixCommand)\.$/'
         - '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
 
         # ignore PHPUnit data providers return type as they are not checked against the test methods anyway

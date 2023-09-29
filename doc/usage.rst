@@ -75,7 +75,7 @@ Complete configuration for rules can be supplied using a ``json`` formatted stri
 
     php php-cs-fixer.phar fix /path/to/project --rules='{"concat_space": {"spacing": "none"}}'
 
-The ``--dry-run`` flag will run the fixer without making changes to your files.
+The ``--dry-run`` flag will run the fixer without making changes to your files (implicitly set when you use `check` command).
 
 The ``--diff`` flag can be used to let the fixer output all the changes it makes in ``udiff`` format.
 
@@ -118,6 +118,12 @@ fixed but without actually modifying them:
 
 By using ``--using-cache`` option with ``yes`` or ``no`` you can set if the caching
 mechanism should be used.
+
+The ``check`` command
+---------------------
+
+This command is a shorthand for ``fix --dry-run`` and offers all the options and arguments as ``fix`` command.
+The only difference is that ``check`` command won't apply any changes, but will only print analysis result.
 
 The ``list-files`` command
 --------------------------
@@ -207,7 +213,7 @@ Then, add the following command to your CI:
     '
     CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}")
     if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$"; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
-    vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --dry-run --stop-on-violation --using-cache=no ${EXTRA_ARGS}
+    vendor/bin/php-cs-fixer check --config=.php-cs-fixer.dist.php -v --stop-on-violation --using-cache=no ${EXTRA_ARGS}
 
 Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
