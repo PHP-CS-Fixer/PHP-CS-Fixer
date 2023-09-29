@@ -186,6 +186,45 @@ List of Available Rules
 
 
    `Source PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../src/Fixer/Basic/BracesFixer.php>`_
+-  `braces_position <./rules/basic/braces_position.rst>`_
+
+   Braces must be placed as configured.
+
+   Configuration options:
+
+   - | ``control_structures_opening_brace``
+     | The position of the opening brace of control structures‘ body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+     | Default value: ``'same_line'``
+   - | ``functions_opening_brace``
+     | The position of the opening brace of functions‘ body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+     | Default value: ``'next_line_unless_newline_at_signature_end'``
+   - | ``anonymous_functions_opening_brace``
+     | The position of the opening brace of anonymous functions‘ body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+     | Default value: ``'same_line'``
+   - | ``classes_opening_brace``
+     | The position of the opening brace of classes‘ body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+     | Default value: ``'next_line_unless_newline_at_signature_end'``
+   - | ``anonymous_classes_opening_brace``
+     | The position of the opening brace of anonymous classes‘ body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+     | Default value: ``'same_line'``
+   - | ``allow_single_line_empty_anonymous_classes``
+     | Allow anonymous classes to have opening and closing braces on the same line.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``allow_single_line_anonymous_functions``
+     | Allow anonymous functions to have opening and closing braces on the same line.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+
+
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Basic\\BracesPositionFixer <./../src/Fixer/Basic/BracesPositionFixer.php>`_
 -  `cast_spaces <./rules/cast_notation/cast_spaces.rst>`_
 
    A single space or none should be between cast and variable.
@@ -383,6 +422,8 @@ List of Available Rules
 
    Curly braces must be placed as configured.
 
+   *warning deprecated*   Use ``braces_position`` instead.
+
    Configuration options:
 
    - | ``control_structures_opening_brace``
@@ -414,8 +455,6 @@ List of Available Rules
      | Allowed types: ``bool``
      | Default value: ``true``
 
-
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer <./../src/Fixer/Basic/CurlyBracesPositionFixer.php>`_
 -  `date_time_create_from_format_call <./rules/function_notation/date_time_create_from_format_call.rst>`_

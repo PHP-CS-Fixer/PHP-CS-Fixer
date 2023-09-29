@@ -83,7 +83,10 @@ Basic
 - `braces <./basic/braces.rst>`_ *(deprecated)*
 
   The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
-- `curly_braces_position <./basic/curly_braces_position.rst>`_
+- `braces_position <./basic/braces_position.rst>`_
+
+  Braces must be placed as configured.
+- `curly_braces_position <./basic/curly_braces_position.rst>`_ *(deprecated)*
 
   Curly braces must be placed as configured.
 - `encoding <./basic/encoding.rst>`_

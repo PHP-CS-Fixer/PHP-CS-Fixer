@@ -26,11 +26,11 @@ final class PSR2Set extends AbstractRuleSetDescription
         return [
             '@PSR1' => true,
             'blank_line_after_namespace' => true,
+            'braces_position' => true,
             'class_definition' => true,
             'constant_case' => true,
             'control_structure_braces' => true,
             'control_structure_continuation_position' => true,
-            'curly_braces_position' => true,
             'elseif' => true,
             'function_declaration' => true,
             'indentation_type' => true,

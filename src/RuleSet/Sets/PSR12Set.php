@@ -31,14 +31,14 @@ final class PSR12Set extends AbstractRuleSetDescription
             'blank_line_after_opening_tag' => true,
             'blank_line_between_import_groups' => true,
             'blank_lines_before_namespace' => true,
+            'braces_position' => [
+                'allow_single_line_empty_anonymous_classes' => true,
+            ],
             'class_definition' => [
                 'inline_constructor_arguments' => false, // handled by method_argument_space fixer
                 'space_before_parenthesis' => true, // defined in PSR12 ¶8. Anonymous Classes
             ],
             'compact_nullable_type_declaration' => true,
-            'curly_braces_position' => [
-                'allow_single_line_empty_anonymous_classes' => true,
-            ],
             'declare_equal_normalize' => true,
             'lowercase_cast' => true,
             'lowercase_static_reference' => true,

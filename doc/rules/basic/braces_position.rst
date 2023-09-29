@@ -1,16 +1,8 @@
-==============================
-Rule ``curly_braces_position``
-==============================
+========================
+Rule ``braces_position``
+========================
 
-Curly braces must be placed as configured.
-
-Warning
--------
-
-This rule is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You should use ``braces_position`` instead.
+Braces must be placed as configured.
 
 Configuration
 -------------
@@ -226,3 +218,39 @@ With configuration: ``['allow_single_line_anonymous_functions' => true]``.
    +$result = true;
    +    return $result;
    +};
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+- `@PER <./../../ruleSets/PER.rst>`_ with config:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
+- `@PSR2 <./../../ruleSets/PSR2.rst>`_
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
+
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
+
+

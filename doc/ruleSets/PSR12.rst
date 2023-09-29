@@ -15,15 +15,15 @@ Rules
 - `blank_line_after_opening_tag <./../rules/php_tag/blank_line_after_opening_tag.rst>`_
 - `blank_line_between_import_groups <./../rules/whitespace/blank_line_between_import_groups.rst>`_
 - `blank_lines_before_namespace <./../rules/namespace_notation/blank_lines_before_namespace.rst>`_
+- `braces_position <./../rules/basic/braces_position.rst>`_ with config:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
 - `class_definition <./../rules/class_notation/class_definition.rst>`_ with config:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
 - `compact_nullable_type_declaration <./../rules/whitespace/compact_nullable_type_declaration.rst>`_
-- `curly_braces_position <./../rules/basic/curly_braces_position.rst>`_ with config:
-
-  ``['allow_single_line_empty_anonymous_classes' => true]``
-
 - `declare_equal_normalize <./../rules/language_construct/declare_equal_normalize.rst>`_
 - `lowercase_cast <./../rules/cast_notation/lowercase_cast.rst>`_
 - `lowercase_static_reference <./../rules/casing/lowercase_static_reference.rst>`_

@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: no_multiple_statements_per_line,braces_position.
+--RULESET--
+{"no_multiple_statements_per_line": true, "braces_position": true}
+--EXPECT--
+<?php
+f(function () {
+static $x;
+if (true) {
+}
+});
+
+--INPUT--
+<?php
+f(function () { static $x; if (true) {} });
