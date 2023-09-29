@@ -96,10 +96,11 @@ namespace {
      * {@inheritdoc}
      *
      * Must run before GlobalNamespaceImportFixer.
+     * Must run after FunctionToConstantFixer.
      */
     public function getPriority(): int
     {
-        return 10;
+        return 1;
     }
 
     public function isCandidate(Tokens $tokens): bool

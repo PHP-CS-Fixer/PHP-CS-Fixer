@@ -136,7 +136,7 @@ $object->method1()
 
                 $content = $previous->getContent();
                 if (str_starts_with($content, $lineEnding) && $tokens[$index - 2]->isComment()) {
-                    // if there is comment between closing bracket and semicolon
+                    // if there is comment between closing parenthesis and semicolon
 
                     // unset whitespace and semicolon
                     $tokens->clearAt($previousIndex);
