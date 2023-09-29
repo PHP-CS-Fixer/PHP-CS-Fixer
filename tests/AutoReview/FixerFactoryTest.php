@@ -536,6 +536,9 @@ final class FixerFactoryTest extends TestCase
             'new_with_braces' => [
                 'class_definition',
             ],
+            'new_with_parentheses' => [
+                'class_definition',
+            ],
             'no_alias_functions' => [
                 'implode_call',
                 'php_unit_dedicate_assert',

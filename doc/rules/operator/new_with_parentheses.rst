@@ -1,16 +1,9 @@
-========================
-Rule ``new_with_braces``
-========================
+=============================
+Rule ``new_with_parentheses``
+=============================
 
-All instances created with ``new`` keyword must (not) be followed by braces.
-
-Warning
--------
-
-This rule is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You should use ``new_with_parentheses`` instead.
+All instances created with ``new`` keyword must (not) be followed by
+parentheses.
 
 Configuration
 -------------
@@ -79,3 +72,17 @@ With configuration: ``['named_class' => false]``.
 
    -$x = new X();
    +$x = new X;
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+- `@PER <./../../ruleSets/PER.rst>`_
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
+

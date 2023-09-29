@@ -551,9 +551,12 @@ Operator
 - `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_
 
   Shorthand notation for operators should be used if possible.
-- `new_with_braces <./operator/new_with_braces.rst>`_
+- `new_with_braces <./operator/new_with_braces.rst>`_ *(deprecated)*
 
   All instances created with ``new`` keyword must (not) be followed by braces.
+- `new_with_parentheses <./operator/new_with_parentheses.rst>`_
+
+  All instances created with ``new`` keyword must (not) be followed by parentheses.
 - `no_space_around_double_colon <./operator/no_space_around_double_colon.rst>`_
 
   There must be no space around double colons (also called Scope Resolution Operator or Paamayim Nekudotayim).
