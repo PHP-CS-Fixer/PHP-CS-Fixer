@@ -71,7 +71,7 @@ function foo(\$bar, \$baz)
      */
     public function getPriority(): int
     {
-        return 2;
+        return 3;
     }
 
     public function isCandidate(Tokens $tokens): bool

@@ -35,7 +35,7 @@ final class PSR12Set extends AbstractRuleSetDescription
                 'inline_constructor_arguments' => false, // handled by method_argument_space fixer
                 'space_before_parenthesis' => true, // defined in PSR12 ¶8. Anonymous Classes
             ],
-            'compact_nullable_typehint' => true,
+            'compact_nullable_type_declaration' => true,
             'curly_braces_position' => [
                 'allow_single_line_empty_anonymous_classes' => true,
             ],

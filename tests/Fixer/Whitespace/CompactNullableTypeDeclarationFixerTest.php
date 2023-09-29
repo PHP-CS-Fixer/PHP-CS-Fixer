@@ -19,6 +19,6 @@ namespace PhpCsFixer\Tests\Fixer\Whitespace;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\CompactNullableTypehintFixer
+ * @covers \PhpCsFixer\Fixer\Whitespace\CompactNullableTypeDeclarationFixer
  */
-final class CompactNullableTypehintFixerTest extends AbstractNullableTypeDeclarationFixerTestCase {}
+final class CompactNullableTypeDeclarationFixerTest extends AbstractNullableTypeDeclarationFixerTestCase {}
