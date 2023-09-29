@@ -448,6 +448,7 @@ final class FixerFactoryTest extends TestCase
                 'method_argument_space',
             ],
             'function_to_constant' => [
+                'native_constant_invocation',
                 'native_function_casing',
                 'no_extra_blank_lines',
                 'no_singleline_whitespace_before_semicolons',

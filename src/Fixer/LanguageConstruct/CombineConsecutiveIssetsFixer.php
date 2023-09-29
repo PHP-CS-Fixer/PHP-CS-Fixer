@@ -38,7 +38,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
      */
     public function getPriority(): int
     {
-        return 3;
+        return 4;
     }
 
     public function isCandidate(Tokens $tokens): bool
