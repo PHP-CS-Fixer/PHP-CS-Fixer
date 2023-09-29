@@ -94,7 +94,7 @@ function foo(\$bar, \$baz)
                     continue;
                 }
 
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
 
                 // remove space after opening `(`
                 if (!$tokens[$tokens->getNextNonWhitespace($index)]->isComment()) {
@@ -114,7 +114,7 @@ function foo(\$bar, \$baz)
                     continue;
                 }
 
-                $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
 
                 // if not other content than spaces in block remove spaces
                 $blockContent = $this->getBlockContent($index, $endParenthesisIndex, $tokens);
@@ -135,7 +135,7 @@ function foo(\$bar, \$baz)
 
                 if ($afterParenthesisToken->isGivenKind(CT::T_USE_LAMBDA)) {
                     $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, ['(']);
-                    $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $useStartParenthesisIndex);
+                    $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $useStartParenthesisIndex);
 
                     // add single-line edge whitespaces inside use parentheses
                     $this->fixParenthesisInnerEdge($tokens, $useStartParenthesisIndex, $useEndParenthesisIndex);

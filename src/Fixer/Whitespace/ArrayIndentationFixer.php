@@ -74,7 +74,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
                 || ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_ARRAY))
             ) {
                 $endIndex = $tokens->findBlockEnd(
-                    $token->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS_BRACE : Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE,
+                    $token->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS : Tokens::BLOCK_TYPE_ARRAY_BRACKET,
                     $index
                 );
 

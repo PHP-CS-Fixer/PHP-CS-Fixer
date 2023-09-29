@@ -105,7 +105,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
 
     private function fixToLongArraySyntax(Tokens $tokens, int $index): void
     {
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
 
         $tokens[$index] = new Token('(');
         $tokens[$closeIndex] = new Token(')');
@@ -116,7 +116,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     private function fixToShortArraySyntax(Tokens $tokens, int $index): void
     {
         $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
 
         $tokens[$openIndex] = new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']);
         $tokens[$closeIndex] = new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']);

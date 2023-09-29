@@ -724,29 +724,29 @@ final class TokensTest extends TestCase
     {
         yield [4, '<?php ${$bar};', Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2];
 
-        yield [4, '<?php test(1);', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2];
+        yield [4, '<?php test(1);', Tokens::BLOCK_TYPE_PARENTHESIS, 2];
 
         yield [4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2];
 
-        yield [4, '<?php $a[1];', Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, 2];
+        yield [4, '<?php $a[1];', Tokens::BLOCK_TYPE_INDEX_BRACKET, 2];
 
-        yield [6, '<?php [1, "foo"];', Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 1];
+        yield [6, '<?php [1, "foo"];', Tokens::BLOCK_TYPE_ARRAY_BRACKET, 1];
 
         yield [5, '<?php $foo->{$bar};', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3];
 
-        yield [4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2];
+        yield [4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS, 2];
 
-        yield [6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_CURLY_BRACE, 5];
+        yield [6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_BRACE, 5];
 
-        yield [11, '<?php $foo = (new Foo());', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5];
+        yield [11, '<?php $foo = (new Foo());', Tokens::BLOCK_TYPE_PARENTHESIS_CLASS_INSTANTIATION, 5];
 
         yield [10, '<?php $object->{"set_{$name}"}(42);', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3];
 
-        yield [19, '<?php $foo = (new class () implements Foo {});', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5];
+        yield [19, '<?php $foo = (new class () implements Foo {});', Tokens::BLOCK_TYPE_PARENTHESIS_CLASS_INSTANTIATION, 5];
 
         yield [10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5];
 
-        yield [3, '<?php [$a] = $array;', Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, 1];
+        yield [3, '<?php [$a] = $array;', Tokens::BLOCK_TYPE_DESTRUCTURING_BRACKET, 1];
     }
 
     /**
@@ -870,12 +870,12 @@ final class TokensTest extends TestCase
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php foo(1, 2);');
 
-        self::assertSame(7, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2));
+        self::assertSame(7, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, 2));
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Invalid param \$startIndex - not a proper block "start"\.$/');
 
-        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 7);
+        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, 7);
     }
 
     public function testFindBlockStartEdgeCalledMultipleTimes(): void
@@ -883,12 +883,12 @@ final class TokensTest extends TestCase
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php foo(1, 2);');
 
-        self::assertSame(2, $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 7));
+        self::assertSame(2, $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, 7));
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Invalid param \$startIndex - not a proper block "end"\.$/');
 
-        $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2);
+        $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, 2);
     }
 
     public function testEmptyTokens(): void
@@ -1323,7 +1323,7 @@ $bar;',
     {
         yield [
             [
-                'type' => Tokens::BLOCK_TYPE_CURLY_BRACE,
+                'type' => Tokens::BLOCK_TYPE_BRACE,
                 'isStart' => true,
             ],
             '<?php { echo 1; }',
@@ -1714,7 +1714,7 @@ $bar;',
     {
         $tokens = $this->getBlockEdgeCachingTestTokens();
 
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
         self::assertSame(9, $endIndex);
 
         $tokens->offsetSet(5, new Token('('));
@@ -1723,22 +1723,22 @@ $bar;',
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid param $startIndex - not a proper block "start".');
 
-        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
     }
 
     public function testBlockEdgeCachingClearAt(): void
     {
         $tokens = $this->getBlockEdgeCachingTestTokens();
 
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
         self::assertSame(9, $endIndex);
 
         $tokens->clearAt(7); // note: offsetUnset doesn't work here
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
         self::assertSame(9, $endIndex);
 
         $tokens->clearEmptyTokens();
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
         self::assertSame(8, $endIndex);
     }
 
@@ -1746,12 +1746,12 @@ $bar;',
     {
         $tokens = $this->getBlockEdgeCachingTestTokens();
 
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
         self::assertSame(9, $endIndex);
 
         $tokens->insertSlices([6 => [new Token([T_COMMENT, '/* A */'])], new Token([T_COMMENT, '/* B */'])]);
 
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
         self::assertSame(11, $endIndex);
     }
 

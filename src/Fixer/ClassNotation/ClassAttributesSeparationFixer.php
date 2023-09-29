@@ -488,7 +488,7 @@ class Sample
 
                 $classIndex = $element['classIndex'];
                 $classOpen = $tokens->getNextTokenOfKind($classIndex, ['{']);
-                $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+                $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpen);
                 $class = [
                     'index' => $classIndex,
                     'open' => $classOpen,
@@ -542,7 +542,7 @@ class Sample
             if (true === $attributes['abstract']) {
                 $elementEndIndex = $tokens->getNextTokenOfKind($element['index'], [';']);
             } else {
-                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($element['index'], ['{']));
+                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $tokens->getNextTokenOfKind($element['index'], ['{']));
             }
         } elseif ('trait_import' === $element['type']) {
             $elementEndIndex = $element['index'];
@@ -552,7 +552,7 @@ class Sample
             } while ($tokens[$elementEndIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR]) || $tokens[$elementEndIndex]->equals(','));
 
             if (!$tokens[$elementEndIndex]->equals(';')) {
-                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($element['index'], ['{']));
+                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $tokens->getNextTokenOfKind($element['index'], ['{']));
             }
         } else { // 'const', 'property', enum-'case', or 'method' of an interface
             $elementEndIndex = $tokens->getNextTokenOfKind($element['index'], [';']);

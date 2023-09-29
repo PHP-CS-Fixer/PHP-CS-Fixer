@@ -69,7 +69,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
 
             // skip T_FOR parenthesis to ignore double `;` like `for ($i = 1; ; ++$i) {...}`
             if ($tokens[$index]->isGivenKind(T_FOR)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $tokens->getNextMeaningfulToken($index)) + 1;
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $tokens->getNextMeaningfulToken($index)) + 1;
 
                 continue;
             }
@@ -131,7 +131,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
             $beforeCurlyOpeningKinds = [T_ELSE, T_FINALLY, T_NAMESPACE, T_OPEN_TAG];
         }
 
-        $curlyOpeningIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $curlyCloseIndex);
+        $curlyOpeningIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $curlyCloseIndex);
         $beforeCurlyOpeningIndex = $tokens->getPrevMeaningfulToken($curlyOpeningIndex);
 
         if ($tokens[$beforeCurlyOpeningIndex]->isGivenKind($beforeCurlyOpeningKinds) || $tokens[$beforeCurlyOpeningIndex]->equalsAny([';', '{', '}'])) {
@@ -165,7 +165,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
             return;
         }
 
-        $openingBraceIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $beforeCurlyOpeningIndex);
+        $openingBraceIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $beforeCurlyOpeningIndex);
         $beforeOpeningBraceIndex = $tokens->getPrevMeaningfulToken($openingBraceIndex);
 
         if ($tokens[$beforeOpeningBraceIndex]->isGivenKind([T_IF, T_ELSEIF, T_FOR, T_FOREACH, T_WHILE, T_SWITCH, T_CATCH, T_DECLARE])) {

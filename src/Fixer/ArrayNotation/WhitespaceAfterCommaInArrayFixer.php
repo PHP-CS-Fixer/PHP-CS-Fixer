@@ -69,10 +69,10 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements Co
 
             if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                 $startIndex = $index;
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
+                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $startIndex);
             } else {
                 $startIndex = $tokens->getNextTokenOfKind($index, ['(']);
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startIndex);
             }
 
             for ($i = $endIndex - 1; $i > $startIndex; --$i) {
@@ -106,11 +106,11 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements Co
     private function skipNonArrayElements(int $index, Tokens $tokens): int
     {
         if ($tokens[$index]->equals('}')) {
-            return $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+            return $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $index);
         }
 
         if ($tokens[$index]->equals(')')) {
-            $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
             $startIndex = $tokens->getPrevMeaningfulToken($startIndex);
             if (!$tokens[$startIndex]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 return $startIndex;

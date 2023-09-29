@@ -230,7 +230,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
         }
 
         $braceOpenIndex = $tokens->getNextMeaningfulToken($index);
-        $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $braceOpenIndex);
+        $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $braceOpenIndex);
 
         if ($braceCloseIndex === $tokens->getNextMeaningfulToken($braceOpenIndex)) { // no arguments passed
             if (isset($this->functionsFixMap['get_class'])) {

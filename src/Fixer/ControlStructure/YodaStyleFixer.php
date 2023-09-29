@@ -243,7 +243,7 @@ return $foo === count($bar);
 
             if (
                 $block['isStart']
-                || ($nonBlockFound && Tokens::BLOCK_TYPE_CURLY_BRACE === $block['type']) // closing of structure not related to the comparison
+                || ($nonBlockFound && Tokens::BLOCK_TYPE_BRACE === $block['type']) // closing of structure not related to the comparison
             ) {
                 break;
             }
@@ -531,7 +531,7 @@ return $foo === count($bar);
         // handle multiple braces around statement ((($a === 1)))
         while (
             $tokens[$index]->equals('(')
-            && $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index) === $end
+            && $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index) === $end
         ) {
             $index = $tokens->getNextMeaningfulToken($index);
             $end = $tokens->getPrevMeaningfulToken($end);
@@ -594,7 +594,7 @@ return $foo === count($bar);
                 && $next->equalsAny(['[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']])
             ) {
                 $index = $tokens->findBlockEnd(
-                    $next->equals('[') ? Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE : Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE,
+                    $next->equals('[') ? Tokens::BLOCK_TYPE_INDEX_BRACKET : Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE,
                     $nextIndex
                 );
 

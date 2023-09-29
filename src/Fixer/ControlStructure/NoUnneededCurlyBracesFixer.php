@@ -75,7 +75,7 @@ namespace Foo {
     {
         foreach ($this->findCurlyBraceOpen($tokens) as $index) {
             if ($this->isOverComplete($tokens, $index)) {
-                $this->clearOverCompleteBraces($tokens, $index, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index));
+                $this->clearOverCompleteBraces($tokens, $index, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index));
             }
         }
 
@@ -142,7 +142,7 @@ namespace Foo {
             return; // `;`
         }
 
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
         $afterCloseIndex = $tokens->getNextMeaningfulToken($closeIndex);
 
         if (null !== $afterCloseIndex && (!$tokens[$afterCloseIndex]->isGivenKind(T_CLOSE_TAG) || null !== $tokens->getNextMeaningfulToken($afterCloseIndex))) {

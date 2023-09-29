@@ -91,7 +91,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
             }
 
             $openParenthesis = $tokens->getNextMeaningfulToken($index);
-            $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
+            $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis);
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openParenthesis, $closeParenthesis);
 
             if (1 > \count($arguments)) {
@@ -142,7 +142,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
             )
         ) {
             $firstArgEndIndex = $tokens->findBlockEnd(
-                Tokens::BLOCK_TYPE_CURLY_BRACE,
+                Tokens::BLOCK_TYPE_BRACE,
                 $tokens->getNextTokenOfKind($firstArgIndex, ['{'])
             );
 
@@ -179,7 +179,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
 
                 $blockType = Tokens::detectBlockType($newCallTokens[$newCallIndex]);
 
-                if (null !== $blockType && (Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE === $blockType['type'] || Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE === $blockType['type'])) {
+                if (null !== $blockType && (Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE === $blockType['type'] || Tokens::BLOCK_TYPE_INDEX_BRACKET === $blockType['type'])) {
                     $newCallIndex = $newCallTokens->findBlockStart($blockType['type'], $newCallIndex);
 
                     continue;

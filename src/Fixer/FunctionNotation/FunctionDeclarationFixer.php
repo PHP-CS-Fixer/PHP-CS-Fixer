@@ -118,7 +118,7 @@ $f = fn () => null;
                 continue;
             }
 
-            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
+            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startParenthesisIndex);
 
             if (false === $this->configuration['trailing_comma_single_line']
                 && !$tokens->isPartialCodeMultiline($index, $endParenthesisIndex)
@@ -154,7 +154,7 @@ $f = fn () => null;
                 $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex + 1, 0, ' ');
 
                 $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, ['(']);
-                $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $useStartParenthesisIndex);
+                $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $useStartParenthesisIndex);
 
                 if (false === $this->configuration['trailing_comma_single_line']
                     && !$tokens->isPartialCodeMultiline($index, $useEndParenthesisIndex)

@@ -100,7 +100,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
         $close = $previous = $tokens->getPrevMeaningfulToken($index);
         // short 'if' detection
         if ($tokens[$close]->equals('}')) {
-            $previous = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $close);
+            $previous = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $close);
         }
 
         $open = $tokens->getPrevTokenOfKind($previous, [[T_IF], [T_ELSE], [T_ELSEIF]]);
@@ -132,7 +132,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
         // token is always ')' here.
         // If it is part of the condition the token is always in, return false.
         // If it is not it is a nested condition so return true
-        $open = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $candidateIndex);
+        $open = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $candidateIndex);
 
         return $tokens->getPrevMeaningfulToken($open) > $lowerLimitIndex;
     }
@@ -178,7 +178,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
                 }
 
                 $index = $tokens->findBlockStart(
-                    Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+                    Tokens::BLOCK_TYPE_PARENTHESIS,
                     $index
                 );
 

@@ -97,7 +97,7 @@ class Foo
                     }
 
                     // the index points to the { of a block-namespace
-                    $nspEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nspIndex);
+                    $nspEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $nspIndex);
 
                     if ($index < $nspEnd) {
                         // the class is inside a block namespace, skip other classes that might be in it
@@ -116,7 +116,7 @@ class Foo
             $classNameIndex = $tokens->getNextMeaningfulToken($index);
             $className = $tokens[$classNameIndex]->getContent();
             $classStart = $tokens->getNextTokenOfKind($classNameIndex, ['{']);
-            $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
+            $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classStart);
 
             $this->fixConstructor($tokens, $className, $classStart, $classEnd);
             $this->fixParent($tokens, $classStart, $classEnd);
@@ -394,7 +394,7 @@ class Foo
         } else {
             // find method body start and the end of the function definition
             $bodyStart = $tokens->getNextTokenOfKind($function[2], ['{']);
-            $funcEnd = null !== $bodyStart ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $bodyStart) : null;
+            $funcEnd = null !== $bodyStart ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $bodyStart) : null;
         }
 
         return [

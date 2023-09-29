@@ -78,13 +78,13 @@ final class ArrayPushFixer extends AbstractFixer
             $openBraceIndex = $tokens->getNextMeaningfulToken($callIndex);
             $blockType = Tokens::detectBlockType($tokens[$openBraceIndex]);
 
-            if (null === $blockType || Tokens::BLOCK_TYPE_PARENTHESIS_BRACE !== $blockType['type']) {
+            if (null === $blockType || Tokens::BLOCK_TYPE_PARENTHESIS !== $blockType['type']) {
                 continue;
             }
 
             // figure out where the arguments list closes
 
-            $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
+            $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openBraceIndex);
 
             // meaningful after `)` must be `;`, `? >` or nothing
 

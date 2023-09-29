@@ -300,7 +300,7 @@ switch ($foo) {
 
         if ($initialToken->isGivenKind(self::getParenthesisedStructureKinds())) {
             $position = $tokens->findBlockEnd(
-                Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+                Tokens::BLOCK_TYPE_PARENTHESIS,
                 $tokens->getNextTokenOfKind($position, ['('])
             );
         } elseif ($initialToken->isGivenKind(T_CLASS)) {
@@ -308,7 +308,7 @@ switch ($foo) {
 
             if ('(' === $tokens[$openParenthesisPosition]->getContent()) {
                 $position = $tokens->findBlockEnd(
-                    Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+                    Tokens::BLOCK_TYPE_PARENTHESIS,
                     $openParenthesisPosition
                 );
             }
@@ -320,11 +320,11 @@ switch ($foo) {
             return $tokens->getNextTokenOfKind($position, [';']);
         }
 
-        $position = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $position);
+        $position = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $position);
 
         if ($initialToken->isGivenKind(T_DO)) {
             $position = $tokens->findBlockEnd(
-                Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+                Tokens::BLOCK_TYPE_PARENTHESIS,
                 $tokens->getNextTokenOfKind($position, ['('])
             );
 

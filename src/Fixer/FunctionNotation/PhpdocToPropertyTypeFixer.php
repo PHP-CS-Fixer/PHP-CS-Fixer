@@ -98,14 +98,14 @@ class Foo {
     private function fixClass(Tokens $tokens, int $index): void
     {
         $index = $tokens->getNextTokenOfKind($index, ['{']);
-        $classEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        $classEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
         for (; $index < $classEndIndex; ++$index) {
             if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
                 $index = $tokens->getNextTokenOfKind($index, ['{', ';']);
 
                 if ($tokens[$index]->equals('{')) {
-                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
                 }
 
                 continue;

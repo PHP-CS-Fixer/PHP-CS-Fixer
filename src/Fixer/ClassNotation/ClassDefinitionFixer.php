@@ -197,7 +197,7 @@ $foo = new class(){};
             }
 
             if ($tokens[$end]->equals(')')) { // skip constructor arguments of anonymous class
-                $end = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $end);
+                $end = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $end);
             }
         }
 

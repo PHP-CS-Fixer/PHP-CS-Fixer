@@ -100,7 +100,7 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
             $endIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
 
             if ($tokens[$endIndex]->equals('{')) {
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $endIndex);
+                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $endIndex);
             }
 
             $use = [];
@@ -154,7 +154,7 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
             }
 
             if ($token->equals('{')) {
-                $index = $use->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $use->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
             }
         }
 

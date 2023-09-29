@@ -137,7 +137,7 @@ class Foo {
             if ($token->isGivenKind($symbolKinds)) {
                 $currentSymbol = $tokens[$tokens->getNextMeaningfulToken($index)]->getContent();
                 $currentSymbolEndIndex = $tokens->findBlockEnd(
-                    Tokens::BLOCK_TYPE_CURLY_BRACE,
+                    Tokens::BLOCK_TYPE_BRACE,
                     $tokens->getNextTokenOfKind($index, ['{']),
                 );
 
@@ -311,7 +311,7 @@ class Foo {
         $docBlock = new DocBlock($content);
 
         $openingParenthesisIndex = $tokens->getNextTokenOfKind($element['index'], ['(']);
-        $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex);
+        $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openingParenthesisIndex);
 
         $argumentsInfo = $this->getArgumentsInfo(
             $tokens,

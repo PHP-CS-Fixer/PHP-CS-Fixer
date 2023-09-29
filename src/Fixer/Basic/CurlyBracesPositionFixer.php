@@ -196,7 +196,7 @@ $bar = function () { $result = true;
                 continue;
             }
 
-            $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openBraceIndex);
+            $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $openBraceIndex);
 
             $addNewlinesInsideBraces = true;
             if ($allowSingleLine || $allowSingleLineIfEmpty || $index < $allowSingleLineUntil) {
@@ -382,7 +382,7 @@ $bar = function () { $result = true;
             return $structureTokenIndex;
         }
 
-        return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
+        return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $nextIndex);
     }
 
     private function isFollowedByNewLine(Tokens $tokens, int $index): bool

@@ -40,13 +40,13 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
      */
     private const BLOCK_TYPES = [
         Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE,
-        Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE,
-        Tokens::BLOCK_TYPE_CURLY_BRACE,
-        Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE,
+        Tokens::BLOCK_TYPE_ARRAY_BRACKET,
+        Tokens::BLOCK_TYPE_BRACE,
+        Tokens::BLOCK_TYPE_DESTRUCTURING_BRACKET,
         Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE,
         Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE,
-        Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE,
-        Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+        Tokens::BLOCK_TYPE_INDEX_BRACKET,
+        Tokens::BLOCK_TYPE_PARENTHESIS,
     ];
 
     private const BEFORE_TYPES = [
@@ -191,9 +191,9 @@ while ($y) { continue (2); }
 
         foreach ($tokens as $openIndex => $token) {
             if ($token->equals('(')) {
-                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
             } elseif ($token->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN)) {
-                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, $openIndex);
+                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_CLASS_INSTANTIATION, $openIndex);
             } else {
                 continue;
             }
@@ -480,7 +480,7 @@ while ($y) { continue (2); }
         if ($tokens[$beforeOpenIndex]->equals('(') && $tokens[$afterCloseIndex]->equals(';')) {
             $forCandidateIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
         } elseif ($tokens[$afterCloseIndex]->equals(')') && $tokens[$beforeOpenIndex]->equals(';')) {
-            $forCandidateIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $afterCloseIndex);
+            $forCandidateIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $afterCloseIndex);
             $forCandidateIndex = $tokens->getPrevMeaningfulToken($forCandidateIndex);
         }
 
@@ -516,7 +516,7 @@ while ($y) { continue (2); }
             return false;
         }
 
-        $beforeOpenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $beforeOpenIndex);
+        $beforeOpenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $beforeOpenIndex);
         $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
 
         if ($tokens[$beforeOpenIndex]->isGivenKind(CT::T_RETURN_REF)) {
@@ -729,7 +729,7 @@ while ($y) { continue (2); }
 
     private function closeCurlyBelongsToDynamicElement(Tokens $tokens, int $beforeOpenIndex): bool
     {
-        $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $beforeOpenIndex);
+        $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $beforeOpenIndex);
         $index = $tokens->getPrevMeaningfulToken($index);
 
         if ($tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {

@@ -48,7 +48,7 @@ final class CommentsAnalyzer
                 return false;
             }
 
-            $braceOpenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $braceCloseIndex);
+            $braceOpenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $braceCloseIndex);
             $declareIndex = $tokens->getPrevMeaningfulToken($braceOpenIndex);
             if (!$tokens[$declareIndex]->isGivenKind(T_DECLARE)) {
                 return false;
@@ -228,7 +228,7 @@ final class CommentsAnalyzer
         }
 
         $openParenthesisIndex = $tokens->getNextMeaningfulToken($controlIndex);
-        $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
+        $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesisIndex);
         $docsContent = $docsToken->getContent();
 
         for ($index = $openParenthesisIndex + 1; $index < $closeParenthesisIndex; ++$index) {

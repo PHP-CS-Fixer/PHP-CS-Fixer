@@ -184,9 +184,9 @@ else {
                 } elseif ($token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_GROUP_IMPORT_BRACE_CLOSE]]);
                 } elseif ($token->equals('{')) {
-                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
                 } elseif ($token->equals('(')) {
-                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
                 } else {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
                 }
@@ -230,7 +230,7 @@ else {
             if ($token->isGivenKind($blockSignatureFirstTokens)) {
                 for ($endIndex = $index + 1, $max = \count($tokens); $endIndex < $max; ++$endIndex) {
                     if ($tokens[$endIndex]->equals('(')) {
-                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex);
+                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $endIndex);
 
                         continue;
                     }
@@ -284,7 +284,7 @@ else {
 
                 for ($max = \count($tokens); $endIndex < $max; ++$endIndex) {
                     if ($tokens[$endIndex]->equals('(')) {
-                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex);
+                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $endIndex);
 
                         continue;
                     }
@@ -466,11 +466,11 @@ else {
 
             if ($searchEndToken->equalsAny(['(', '{', [CT::T_ARRAY_SQUARE_BRACE_OPEN]])) {
                 if ($searchEndToken->equals('(')) {
-                    $blockType = Tokens::BLOCK_TYPE_PARENTHESIS_BRACE;
+                    $blockType = Tokens::BLOCK_TYPE_PARENTHESIS;
                 } elseif ($searchEndToken->equals('{')) {
-                    $blockType = Tokens::BLOCK_TYPE_CURLY_BRACE;
+                    $blockType = Tokens::BLOCK_TYPE_BRACE;
                 } else {
-                    $blockType = Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE;
+                    $blockType = Tokens::BLOCK_TYPE_ARRAY_BRACKET;
                 }
 
                 $searchEndIndex = $tokens->findBlockEnd($blockType, $searchEndIndex);
@@ -497,7 +497,7 @@ else {
             if ($tokens[$index]->isGivenKind(T_SWITCH)) {
                 $braceIndex = $tokens->getNextMeaningfulToken(
                     $tokens->findBlockEnd(
-                        Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+                        Tokens::BLOCK_TYPE_PARENTHESIS,
                         $tokens->getNextMeaningfulToken($index)
                     )
                 );
@@ -505,14 +505,14 @@ else {
                 if ($tokens[$braceIndex]->equals(':')) {
                     $index = $this->alternativeSyntaxAnalyzer->findAlternativeSyntaxBlockEnd($tokens, $index);
                 } else {
-                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $braceIndex);
+                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $braceIndex);
                 }
 
                 continue;
             }
 
             if ($tokens[$index]->equals('{')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }

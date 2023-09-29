@@ -57,7 +57,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
 
             if (\in_array('inside', $this->configuration['positions'], true)) {
                 if ($token->equals('[')) {
-                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
+                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_BRACKET, $index);
                 } else {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, $index);
                 }

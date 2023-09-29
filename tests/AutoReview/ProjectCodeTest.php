@@ -478,7 +478,7 @@ final class ProjectCodeTest extends TestCase
             throw new \UnexpectedValueException('Classy without {} - braces.');
         }
 
-        $classyEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextTokenOfKind);
+        $classyEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $nextTokenOfKind);
 
         self::assertNull($tokens->getNextNonWhitespace($classyEndIndex), sprintf('File "%s" should only contains a single classy.', $file));
     }

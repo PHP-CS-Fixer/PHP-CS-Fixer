@@ -142,7 +142,7 @@ final class FunctionsAnalyzer
     public function getFunctionArguments(Tokens $tokens, int $functionIndex): array
     {
         $argumentsStart = $tokens->getNextTokenOfKind($functionIndex, ['(']);
-        $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStart);
+        $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $argumentsStart);
         $argumentAnalyzer = new ArgumentsAnalyzer();
         $arguments = [];
 
@@ -157,7 +157,7 @@ final class FunctionsAnalyzer
     public function getFunctionReturnType(Tokens $tokens, int $methodIndex): ?TypeAnalysis
     {
         $argumentsStart = $tokens->getNextTokenOfKind($methodIndex, ['(']);
-        $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStart);
+        $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $argumentsStart);
         $typeColonIndex = $tokens->getNextMeaningfulToken($argumentsEnd);
 
         if (!$tokens[$typeColonIndex]->isGivenKind(CT::T_TYPE_COLON)) {
@@ -225,11 +225,11 @@ final class FunctionsAnalyzer
                     $i = $tokens->getNextTokenOfKind($i, ['(', '{']);
 
                     if ($tokens[$i]->equals('(')) { // anonymous class
-                        $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $i);
+                        $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $i);
                         $i = $tokens->getNextTokenOfKind($i, ['{']);
                     }
 
-                    $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
+                    $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $i);
 
                     continue;
                 }

@@ -82,7 +82,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
     private function fixLambda(Tokens $tokens, int $lambdaUseIndex): void
     {
         $lambdaUseOpenBraceIndex = $tokens->getNextTokenOfKind($lambdaUseIndex, ['(']);
-        $lambdaUseCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $lambdaUseOpenBraceIndex);
+        $lambdaUseCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $lambdaUseOpenBraceIndex);
         $arguments = $this->argumentsAnalyzer->getArguments($tokens, $lambdaUseOpenBraceIndex, $lambdaUseCloseBraceIndex);
 
         $imports = $this->filterArguments($tokens, $arguments);
@@ -189,7 +189,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
                 $index = $tokens->getNextTokenOfKind($index, ['(', '{']);
 
                 if ($tokens[$index]->equals('(')) {
-                    $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                    $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
                     $arguments = $this->argumentsAnalyzer->getArguments($tokens, $index, $closeBraceIndex);
 
                     $imports = $this->countImportsUsedAsArgument($tokens, $imports, $arguments);
@@ -198,7 +198,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
                 }
 
                 // skip body
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }
@@ -206,7 +206,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
             if ($token->isGivenKind(T_FUNCTION)) {
                 // check if used as argument
                 $lambdaUseOpenBraceIndex = $tokens->getNextTokenOfKind($index, ['(']);
-                $lambdaUseCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $lambdaUseOpenBraceIndex);
+                $lambdaUseCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $lambdaUseOpenBraceIndex);
                 $arguments = $this->argumentsAnalyzer->getArguments($tokens, $lambdaUseOpenBraceIndex, $lambdaUseCloseBraceIndex);
 
                 $imports = $this->countImportsUsedAsArgument($tokens, $imports, $arguments);
@@ -216,7 +216,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
 
                 if ($tokens[$index]->isGivenKind(CT::T_USE_LAMBDA)) {
                     $lambdaUseOpenBraceIndex = $tokens->getNextTokenOfKind($index, ['(']);
-                    $lambdaUseCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $lambdaUseOpenBraceIndex);
+                    $lambdaUseCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $lambdaUseOpenBraceIndex);
                     $arguments = $this->argumentsAnalyzer->getArguments($tokens, $lambdaUseOpenBraceIndex, $lambdaUseCloseBraceIndex);
 
                     $imports = $this->countImportsUsedAsArgument($tokens, $imports, $arguments);
@@ -225,7 +225,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
                 }
 
                 // skip body
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }
@@ -267,7 +267,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
             $lambdaUseIndex = $tokens->getNextMeaningfulToken($lambdaUseIndex);
         }
 
-        $lambdaUseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $lambdaUseIndex); // we are @ ')' after this
+        $lambdaUseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $lambdaUseIndex); // we are @ ')' after this
         $lambdaUseIndex = $tokens->getNextMeaningfulToken($lambdaUseIndex);
 
         if (!$tokens[$lambdaUseIndex]->isGivenKind(CT::T_USE_LAMBDA)) {

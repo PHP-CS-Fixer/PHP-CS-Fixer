@@ -111,7 +111,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $argumentsCount = $argumentsAnalyzer->countArguments(
                     $tokens,
                     $openingParenthesisIndex,
-                    $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex)
+                    $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openingParenthesisIndex)
                 );
 
                 if (2 === $argumentsCount || 3 === $argumentsCount) {

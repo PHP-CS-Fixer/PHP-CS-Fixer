@@ -126,7 +126,7 @@ final class ImplodeCallFixer extends AbstractFixer
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         $openParenthesis = $tokens->getNextTokenOfKind($functionNameIndex, ['(']);
-        $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
+        $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis);
 
         $indices = [];
 
