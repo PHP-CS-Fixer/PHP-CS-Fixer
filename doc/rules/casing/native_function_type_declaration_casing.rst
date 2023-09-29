@@ -4,6 +4,14 @@ Rule ``native_function_type_declaration_casing``
 
 Native type declarations for functions should use the correct case.
 
+Warning
+-------
+
+This rule is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``native_type_declaration_casing`` instead.
+
 Examples
 --------
 
@@ -64,12 +72,3 @@ Example #4
     {
         return 'hi!';
     }
-
-Rule sets
----------
-
-The rule is part of the following rule sets:
-
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
-

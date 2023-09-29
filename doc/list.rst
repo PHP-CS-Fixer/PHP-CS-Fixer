@@ -1372,9 +1372,16 @@ List of Available Rules
 
    Native type declarations for functions should use the correct case.
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   *warning deprecated*   Use ``native_type_declaration_casing`` instead.
 
    `Source PhpCsFixer\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixer <./../src/Fixer/Casing/NativeFunctionTypeDeclarationCasingFixer.php>`_
+-  `native_type_declaration_casing <./rules/casing/native_type_declaration_casing.rst>`_
+
+   Native type declarations should be used in the correct case.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Casing\\NativeTypeDeclarationCasingFixer <./../src/Fixer/Casing/NativeTypeDeclarationCasingFixer.php>`_
 -  `new_with_braces <./rules/operator/new_with_braces.rst>`_
 
    All instances created with ``new`` keyword must (not) be followed by braces.

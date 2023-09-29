@@ -61,7 +61,7 @@ Rules
   ``['on_multiline' => 'ignore']``
 
 - `native_function_casing <./../rules/casing/native_function_casing.rst>`_
-- `native_function_type_declaration_casing <./../rules/casing/native_function_type_declaration_casing.rst>`_
+- `native_type_declaration_casing <./../rules/casing/native_type_declaration_casing.rst>`_
 - `no_alias_language_construct_call <./../rules/alias/no_alias_language_construct_call.rst>`_
 - `no_alternative_syntax <./../rules/control_structure/no_alternative_syntax.rst>`_
 - `no_binary_string <./../rules/string_notation/no_binary_string.rst>`_
