@@ -39,7 +39,7 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after ClassDefinitionFixer, CurlyBracesPositionFixer, NoUselessReturnFixer.
+     * Must run after BracesPositionFixer, ClassDefinitionFixer, CurlyBracesPositionFixer, NoUselessReturnFixer.
      */
     public function getPriority(): int
     {

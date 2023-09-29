@@ -362,6 +362,10 @@ final class FixerFactoryTest extends TestCase
             'braces' => [
                 'heredoc_indentation',
             ],
+            'braces_position' => [
+                'single_line_empty_body',
+                'statement_indentation',
+            ],
             'class_attributes_separation' => [
                 'braces',
                 'indentation_type',
@@ -398,6 +402,7 @@ final class FixerFactoryTest extends TestCase
                 'spaces_inside_parentheses',
             ],
             'control_structure_braces' => [
+                'braces_position',
                 'control_structure_continuation_position',
                 'curly_braces_position',
                 'no_multiple_statements_per_line',
@@ -448,6 +453,7 @@ final class FixerFactoryTest extends TestCase
                 'method_argument_space',
             ],
             'function_to_constant' => [
+                'native_constant_invocation',
                 'native_function_casing',
                 'no_extra_blank_lines',
                 'no_singleline_whitespace_before_semicolons',
@@ -535,6 +541,9 @@ final class FixerFactoryTest extends TestCase
             'new_with_braces' => [
                 'class_definition',
             ],
+            'new_with_parentheses' => [
+                'class_definition',
+            ],
             'no_alias_functions' => [
                 'implode_call',
                 'php_unit_dedicate_assert',
@@ -593,6 +602,7 @@ final class FixerFactoryTest extends TestCase
                 'method_argument_space',
             ],
             'no_multiple_statements_per_line' => [
+                'braces_position',
                 'curly_braces_position',
             ],
             'no_php4_constructor' => [
@@ -616,6 +626,12 @@ final class FixerFactoryTest extends TestCase
             'no_superfluous_phpdoc_tags' => [
                 'no_empty_phpdoc',
                 'void_return',
+            ],
+            'no_unneeded_braces' => [
+                'no_useless_else',
+                'no_useless_return',
+                'return_assignment',
+                'simplified_if_return',
             ],
             'no_unneeded_control_parentheses' => [
                 'concat_space',

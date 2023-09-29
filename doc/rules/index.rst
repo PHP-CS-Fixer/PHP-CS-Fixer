@@ -83,7 +83,10 @@ Basic
 - `braces <./basic/braces.rst>`_ *(deprecated)*
 
   The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
-- `curly_braces_position <./basic/curly_braces_position.rst>`_
+- `braces_position <./basic/braces_position.rst>`_
+
+  Braces must be placed as configured.
+- `curly_braces_position <./basic/curly_braces_position.rst>`_ *(deprecated)*
 
   Curly braces must be placed as configured.
 - `encoding <./basic/encoding.rst>`_
@@ -297,10 +300,13 @@ Control Structure
 - `no_trailing_comma_in_list_call <./control_structure/no_trailing_comma_in_list_call.rst>`_ *(deprecated)*
 
   Remove trailing commas in list function calls.
+- `no_unneeded_braces <./control_structure/no_unneeded_braces.rst>`_
+
+  Removes unneeded braces that are superfluous and aren't part of a control structure's body.
 - `no_unneeded_control_parentheses <./control_structure/no_unneeded_control_parentheses.rst>`_
 
   Removes unneeded parentheses around control statements.
-- `no_unneeded_curly_braces <./control_structure/no_unneeded_curly_braces.rst>`_
+- `no_unneeded_curly_braces <./control_structure/no_unneeded_curly_braces.rst>`_ *(deprecated)*
 
   Removes unneeded curly braces that are superfluous and aren't part of a control structure's body.
 - `no_useless_else <./control_structure/no_useless_else.rst>`_
@@ -554,9 +560,12 @@ Operator
 - `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_
 
   Shorthand notation for operators should be used if possible.
-- `new_with_braces <./operator/new_with_braces.rst>`_
+- `new_with_braces <./operator/new_with_braces.rst>`_ *(deprecated)*
 
   All instances created with ``new`` keyword must (not) be followed by braces.
+- `new_with_parentheses <./operator/new_with_parentheses.rst>`_
+
+  All instances created with ``new`` keyword must (not) be followed by parentheses.
 - `no_space_around_double_colon <./operator/no_space_around_double_colon.rst>`_
 
   There must be no space around double colons (also called Scope Resolution Operator or Paamayim Nekudotayim).
@@ -874,7 +883,10 @@ Whitespace
 - `blank_line_between_import_groups <./whitespace/blank_line_between_import_groups.rst>`_
 
   Putting blank lines between ``use`` statement groups.
-- `compact_nullable_typehint <./whitespace/compact_nullable_typehint.rst>`_
+- `compact_nullable_type_declaration <./whitespace/compact_nullable_type_declaration.rst>`_
+
+  Remove extra spaces in a nullable type declaration.
+- `compact_nullable_typehint <./whitespace/compact_nullable_typehint.rst>`_ *(deprecated)*
 
   Remove extra spaces in a nullable typehint.
 - `heredoc_indentation <./whitespace/heredoc_indentation.rst>`_

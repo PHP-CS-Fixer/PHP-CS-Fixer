@@ -309,6 +309,7 @@ abstract class AbstractFixerTestCase extends TestCase
                 'method_chaining_indentation',
                 'native_constant_invocation',
                 'new_with_braces',
+                'new_with_parentheses',
                 'no_short_echo_tag',
                 'not_operator_with_space',
                 'not_operator_with_successor_space',

@@ -39,22 +39,22 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
 	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
+	'path' => __DIR__ . '/../../src/Fixer/Basic/BracesPositionFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in \\|\\|, mixed given on the left side\\.$#',
 	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
+	'path' => __DIR__ . '/../../src/Fixer/Basic/BracesPositionFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in \\|\\|, mixed given on the right side\\.$#',
 	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
+	'path' => __DIR__ . '/../../src/Fixer/Basic/BracesPositionFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable \\$prevIndex might not be defined\\.$#',
 	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/CurlyBracesPositionFixer.php',
+	'path' => __DIR__ . '/../../src/Fixer/Basic/BracesPositionFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
@@ -299,7 +299,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in an if condition, mixed given\\.$#',
 	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/NewWithBracesFixer.php',
+	'path' => __DIR__ . '/../../src/Fixer/Operator/NewWithParenthesesFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a negated boolean, mixed given\\.$#',

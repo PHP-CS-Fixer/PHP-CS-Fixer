@@ -39,8 +39,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    public const VERSION = '3.30.1-DEV';
-    public const VERSION_CODENAME = 'Jump & Run';
+    public const VERSION = '3.32.1-DEV';
+    public const VERSION_CODENAME = 'Deprecation train';
 
     private ToolInfo $toolInfo;
 

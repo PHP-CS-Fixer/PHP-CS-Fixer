@@ -186,6 +186,45 @@ List of Available Rules
 
 
    `Source PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../src/Fixer/Basic/BracesFixer.php>`_
+-  `braces_position <./rules/basic/braces_position.rst>`_
+
+   Braces must be placed as configured.
+
+   Configuration options:
+
+   - | ``control_structures_opening_brace``
+     | The position of the opening brace of control structures‘ body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+     | Default value: ``'same_line'``
+   - | ``functions_opening_brace``
+     | The position of the opening brace of functions‘ body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+     | Default value: ``'next_line_unless_newline_at_signature_end'``
+   - | ``anonymous_functions_opening_brace``
+     | The position of the opening brace of anonymous functions‘ body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+     | Default value: ``'same_line'``
+   - | ``classes_opening_brace``
+     | The position of the opening brace of classes‘ body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+     | Default value: ``'next_line_unless_newline_at_signature_end'``
+   - | ``anonymous_classes_opening_brace``
+     | The position of the opening brace of anonymous classes‘ body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+     | Default value: ``'same_line'``
+   - | ``allow_single_line_empty_anonymous_classes``
+     | Allow anonymous classes to have opening and closing braces on the same line.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``allow_single_line_anonymous_functions``
+     | Allow anonymous functions to have opening and closing braces on the same line.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+
+
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Basic\\BracesPositionFixer <./../src/Fixer/Basic/BracesPositionFixer.php>`_
 -  `cast_spaces <./rules/cast_notation/cast_spaces.rst>`_
 
    A single space or none should be between cast and variable.
@@ -315,9 +354,18 @@ List of Available Rules
 
    Rule is applied only in a PHP 7.1+ environment.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   *warning deprecated*   Use ``compact_nullable_type_declaration`` instead.
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypehintFixer <./../src/Fixer/Whitespace/CompactNullableTypehintFixer.php>`_
+-  `compact_nullable_type_declaration <./rules/whitespace/compact_nullable_type_declaration.rst>`_
+
+   Remove extra spaces in a nullable type declaration.
+
+   Rule is applied only in a PHP 7.1+ environment.
+
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypeDeclarationFixer <./../src/Fixer/Whitespace/CompactNullableTypeDeclarationFixer.php>`_
 -  `concat_space <./rules/operator/concat_space.rst>`_
 
    Concatenation should be spaced according to configuration.
@@ -374,6 +422,8 @@ List of Available Rules
 
    Curly braces must be placed as configured.
 
+   *warning deprecated*   Use ``braces_position`` instead.
+
    Configuration options:
 
    - | ``control_structures_opening_brace``
@@ -405,8 +455,6 @@ List of Available Rules
      | Allowed types: ``bool``
      | Default value: ``true``
 
-
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer <./../src/Fixer/Basic/CurlyBracesPositionFixer.php>`_
 -  `date_time_create_from_format_call <./rules/function_notation/date_time_create_from_format_call.rst>`_
@@ -1338,6 +1386,25 @@ List of Available Rules
 
    All instances created with ``new`` keyword must (not) be followed by braces.
 
+   *warning deprecated*   Use ``new_with_parentheses`` instead.
+
+   Configuration options:
+
+   - | ``named_class``
+     | Whether named classes should be followed by parentheses.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``anonymous_class``
+     | Whether anonymous classes should be followed by parentheses.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+
+
+   `Source PhpCsFixer\\Fixer\\Operator\\NewWithBracesFixer <./../src/Fixer/Operator/NewWithBracesFixer.php>`_
+-  `new_with_parentheses <./rules/operator/new_with_parentheses.rst>`_
+
+   All instances created with ``new`` keyword must (not) be followed by parentheses.
+
    Configuration options:
 
    - | ``named_class``
@@ -1352,7 +1419,7 @@ List of Available Rules
 
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
-   `Source PhpCsFixer\\Fixer\\Operator\\NewWithBracesFixer <./../src/Fixer/Operator/NewWithBracesFixer.php>`_
+   `Source PhpCsFixer\\Fixer\\Operator\\NewWithParenthesesFixer <./../src/Fixer/Operator/NewWithParenthesesFixer.php>`_
 -  `non_printable_character <./rules/basic/non_printable_character.rst>`_
 
    Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
@@ -1743,6 +1810,21 @@ List of Available Rules
    Part of rule sets `@PER-CS1.0:risky <./ruleSets/PER-CS1.0Risky.rst>`_ `@PER-CS2.0:risky <./ruleSets/PER-CS2.0Risky.rst>`_ `@PER-CS:risky <./ruleSets/PER-CSRisky.rst>`_ `@PER:risky <./ruleSets/PERRisky.rst>`_ `@PSR12:risky <./ruleSets/PSR12Risky.rst>`_ `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\StringNotation\\NoTrailingWhitespaceInStringFixer <./../src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php>`_
+-  `no_unneeded_braces <./rules/control_structure/no_unneeded_braces.rst>`_
+
+   Removes unneeded braces that are superfluous and aren't part of a control structure's body.
+
+   Configuration options:
+
+   - | ``namespaces``
+     | Remove unneeded braces from bracketed namespaces.
+     | Allowed types: ``bool``
+     | Default value: ``false``
+
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededBracesFixer <./../src/Fixer/ControlStructure/NoUnneededBracesFixer.php>`_
 -  `no_unneeded_control_parentheses <./rules/control_structure/no_unneeded_control_parentheses.rst>`_
 
    Removes unneeded parentheses around control statements.
@@ -1762,6 +1844,8 @@ List of Available Rules
 
    Removes unneeded curly braces that are superfluous and aren't part of a control structure's body.
 
+   *warning deprecated*   Use ``no_unneeded_braces`` instead.
+
    Configuration options:
 
    - | ``namespaces``
@@ -1769,8 +1853,6 @@ List of Available Rules
      | Allowed types: ``bool``
      | Default value: ``false``
 
-
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededCurlyBracesFixer <./../src/Fixer/ControlStructure/NoUnneededCurlyBracesFixer.php>`_
 -  `no_unneeded_final_method <./rules/class_notation/no_unneeded_final_method.rst>`_

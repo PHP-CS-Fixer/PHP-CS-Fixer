@@ -1,17 +1,9 @@
-=================================
-Rule ``no_unneeded_curly_braces``
-=================================
+===========================
+Rule ``no_unneeded_braces``
+===========================
 
-Removes unneeded curly braces that are superfluous and aren't part of a control
+Removes unneeded braces that are superfluous and aren't part of a control
 structure's body.
-
-Warning
--------
-
-This rule is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You should use ``no_unneeded_braces`` instead.
 
 Configuration
 -------------
@@ -19,7 +11,7 @@ Configuration
 ``namespaces``
 ~~~~~~~~~~~~~~
 
-Remove unneeded curly braces from bracketed namespaces.
+Remove unneeded braces from bracketed namespaces.
 
 Allowed types: ``bool``
 
@@ -66,3 +58,18 @@ With configuration: ``['namespaces' => true]``.
         function Bar(){}
    -}
    +
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['namespaces' => true]``
+
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['namespaces' => true]``
+
+

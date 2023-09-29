@@ -16,6 +16,10 @@ Rules
 
   ``['statements' => ['return']]``
 
+- `braces_position <./../rules/basic/braces_position.rst>`_ with config:
+
+  ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
+
 - `cast_spaces <./../rules/cast_notation/cast_spaces.rst>`_
 - `class_attributes_separation <./../rules/class_notation/class_attributes_separation.rst>`_ with config:
 
@@ -28,10 +32,6 @@ Rules
 - `class_reference_name_casing <./../rules/casing/class_reference_name_casing.rst>`_
 - `clean_namespace <./../rules/namespace_notation/clean_namespace.rst>`_
 - `concat_space <./../rules/operator/concat_space.rst>`_
-- `curly_braces_position <./../rules/basic/curly_braces_position.rst>`_ with config:
-
-  ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
-
 - `declare_parentheses <./../rules/language_construct/declare_parentheses.rst>`_
 - `echo_tag_syntax <./../rules/php_tag/echo_tag_syntax.rst>`_
 - `empty_loop_body <./../rules/control_structure/empty_loop_body.rst>`_ with config:
@@ -85,13 +85,13 @@ Rules
   ``['remove_inheritdoc' => true]``
 
 - `no_trailing_comma_in_singleline <./../rules/basic/no_trailing_comma_in_singleline.rst>`_
+- `no_unneeded_braces <./../rules/control_structure/no_unneeded_braces.rst>`_ with config:
+
+  ``['namespaces' => true]``
+
 - `no_unneeded_control_parentheses <./../rules/control_structure/no_unneeded_control_parentheses.rst>`_ with config:
 
   ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``
-
-- `no_unneeded_curly_braces <./../rules/control_structure/no_unneeded_curly_braces.rst>`_ with config:
-
-  ``['namespaces' => true]``
 
 - `no_unneeded_import_alias <./../rules/import/no_unneeded_import_alias.rst>`_
 - `no_unset_cast <./../rules/cast_notation/no_unset_cast.rst>`_
