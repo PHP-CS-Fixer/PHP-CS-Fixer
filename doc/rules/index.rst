@@ -871,7 +871,10 @@ Whitespace
 - `blank_line_between_import_groups <./whitespace/blank_line_between_import_groups.rst>`_
 
   Putting blank lines between ``use`` statement groups.
-- `compact_nullable_typehint <./whitespace/compact_nullable_typehint.rst>`_
+- `compact_nullable_type_declaration <./whitespace/compact_nullable_type_declaration.rst>`_
+
+  Remove extra spaces in a nullable type declaration.
+- `compact_nullable_typehint <./whitespace/compact_nullable_typehint.rst>`_ *(deprecated)*
 
   Remove extra spaces in a nullable typehint.
 - `heredoc_indentation <./whitespace/heredoc_indentation.rst>`_
