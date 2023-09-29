@@ -54,6 +54,9 @@
         "symfony/phpunit-bridge": "^6.2.3",
         "symfony/yaml": "^5.4 || ^6.0"
     },
+    "conflict": {
+        "stevebauman/unfinalize": "*"
+    },
     "suggest": {
         "ext-dom": "For handling output formats in XML",
         "ext-mbstring": "For handling non-UTF8 characters."
