@@ -23,7 +23,7 @@ Rules
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
-- `compact_nullable_typehint <./../rules/whitespace/compact_nullable_typehint.rst>`_
+- `compact_nullable_type_declaration <./../rules/whitespace/compact_nullable_type_declaration.rst>`_
 - `declare_equal_normalize <./../rules/language_construct/declare_equal_normalize.rst>`_
 - `lowercase_cast <./../rules/cast_notation/lowercase_cast.rst>`_
 - `lowercase_static_reference <./../rules/casing/lowercase_static_reference.rst>`_

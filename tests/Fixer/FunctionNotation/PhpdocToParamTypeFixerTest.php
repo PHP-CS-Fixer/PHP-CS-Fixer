@@ -47,11 +47,11 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield 'typehint already defined' => [
+        yield 'type declaration already defined' => [
             '<?php /** @param int $foo */ function foo(int $foo) {}',
         ];
 
-        yield 'typehint already defined with wrong phpdoc typehint' => [
+        yield 'type declaration already defined with wrong phpdoc type' => [
             '<?php /** @param string $foo */ function foo(int $foo) {}',
         ];
 

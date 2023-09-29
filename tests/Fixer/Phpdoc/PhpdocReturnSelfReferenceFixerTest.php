@@ -109,7 +109,7 @@ trait SomeTrait
 
         $expected = sprintf('<?php
 /**
- * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type hint
+ * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type declaration
  */
 class F
 {
@@ -127,7 +127,7 @@ class F
 
         $input = sprintf('<?php
 /**
- * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type hint
+ * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type declaration
  */
 class F
 {
