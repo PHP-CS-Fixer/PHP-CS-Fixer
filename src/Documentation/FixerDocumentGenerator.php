@@ -22,6 +22,7 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
@@ -129,7 +130,11 @@ final class FixerDocumentGenerator
 
             $configurationDefinition = $fixer->getConfigurationDefinition();
 
-            foreach ($configurationDefinition->getOptions() as $option) {
+            $options = $configurationDefinition->getOptions();
+
+            usort($options, static fn (FixerOptionInterface $a, FixerOptionInterface $b): int => strcmp($a->getName(), $b->getName()));
+
+            foreach ($options as $option) {
                 $optionInfo = "``{$option->getName()}``";
                 $optionInfo .= "\n".str_repeat('~', \strlen($optionInfo));
 
