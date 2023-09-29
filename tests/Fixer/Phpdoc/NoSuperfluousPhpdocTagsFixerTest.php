@@ -36,7 +36,7 @@ final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield 'no typehint' => [
+        yield 'no type declaration' => [
             '<?php
 class Foo {
     /**
@@ -48,7 +48,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint' => [
+        yield 'same type declaration' => [
             '<?php
 class Foo {
     /**
@@ -64,7 +64,7 @@ class Foo {
 }',
         ];
 
-        yield 'same optional typehint' => [
+        yield 'same optional type declaration' => [
             '<?php
 class Foo {
     /**
@@ -80,7 +80,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint with description' => [
+        yield 'same type declaration with description' => [
             '<?php
 class Foo {
     /**
@@ -190,7 +190,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint with different casing' => [
+        yield 'same type declaration with different casing' => [
             '<?php
 class Foo {
     /**
@@ -206,7 +206,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint with leading backslash - global' => [
+        yield 'same type declaration with leading backslash - global' => [
             '<?php
 class Foo {
     /**
@@ -222,7 +222,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint with leading backslash - namespaced' => [
+        yield 'same type declaration with leading backslash - namespaced' => [
             '<?php
 namespace Xxx;
 
@@ -242,7 +242,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint without leading backslash - global' => [
+        yield 'same type declaration without leading backslash - global' => [
             '<?php
 class Foo {
     /**
@@ -258,7 +258,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint without leading backslash - namespaced' => [
+        yield 'same type declaration without leading backslash - namespaced' => [
             '<?php
 namespace Xxx;
 
@@ -278,7 +278,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint with null implied from native type - param type' => [
+        yield 'same type declaration with null implied from native type - param type' => [
             '<?php
 class Foo {
     /**
@@ -299,7 +299,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint with null implied from native type - return type' => [
+        yield 'same type declaration with null implied from native type - return type' => [
             '<?php
 class Foo {
     /**
@@ -319,7 +319,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint with null implied from native type - property' => [
+        yield 'same type declaration with null implied from native type - property' => [
             '<?php
 class Foo {
     /**  */
@@ -332,7 +332,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint with null but native type without null - invalid phpdoc must be kept unfixed' => [
+        yield 'same type declaration with null but native type without null - invalid phpdoc must be kept unfixed' => [
             '<?php
 class Foo {
     /** @var bool|null */
@@ -469,7 +469,7 @@ class Foo {
 }',
         ];
 
-        yield 'with special type hints' => [
+        yield 'with special type declarations' => [
             '<?php
 class Foo {
     /**
@@ -1302,7 +1302,7 @@ class Foo {
 }',
         ];
 
-        yield 'same type hint' => [
+        yield 'same type declaration (with extra empty line)' => [
             '<?php
 class Foo {
     /**
@@ -1321,7 +1321,7 @@ class Foo {
 }',
         ];
 
-        yield 'same type hint with description' => [
+        yield 'same type declaration (with return type) with description' => [
             '<?php
 class Foo {
     /**
@@ -1416,7 +1416,7 @@ use Foo\Bar as Baz;
 function foo(Baz $bar): Baz {}',
         ];
 
-        yield 'with scalar type hints' => [
+        yield 'with scalar type declarations' => [
             '<?php
 class Foo {
     /**
@@ -1477,7 +1477,7 @@ trait Foo {}',
             ['remove_inheritdoc' => true],
         ];
 
-        yield 'same nullable type hint' => [
+        yield 'same nullable type declaration' => [
             '<?php
 class Foo {
     /**
@@ -1496,7 +1496,7 @@ class Foo {
 }',
         ];
 
-        yield 'same nullable type hint reversed' => [
+        yield 'same nullable type declaration reversed' => [
             '<?php
 class Foo {
     /**
@@ -1515,7 +1515,7 @@ class Foo {
 }',
         ];
 
-        yield 'same nullable type hint with description' => [
+        yield 'same nullable type declaration with description' => [
             '<?php
 class Foo {
     /**
@@ -1527,7 +1527,7 @@ class Foo {
 }',
         ];
 
-        yield 'same optional nullable type hint' => [
+        yield 'same optional nullable type declaration' => [
             '<?php
 class Foo {
     /**
@@ -1626,7 +1626,7 @@ use Foo\Bar as Baz;
 function foo(?Baz $bar): ?Baz {}',
         ];
 
-        yield 'with nullable special type hints' => [
+        yield 'with nullable special type declarations' => [
             '<?php
 class Foo {
     /**
@@ -2040,7 +2040,7 @@ class Foo {
 }',
         ];
 
-        yield 'phpdoc does not match property typehint' => [
+        yield 'phpdoc does not match property type declaration' => [
             '<?php
 class Foo {
     /**

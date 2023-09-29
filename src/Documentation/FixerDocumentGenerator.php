@@ -76,8 +76,8 @@ final class FixerDocumentGenerator
         if ($fixer instanceof DeprecatedFixerInterface) {
             $deprecationDescription = <<<'RST'
 
-                This rule is deprecated and will be removed on next major version
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                This rule is deprecated and will be removed in the next major version
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 RST;
             $alternatives = $fixer->getSuccessorsNames();
 
@@ -135,13 +135,13 @@ final class FixerDocumentGenerator
 
                 if ($option instanceof DeprecatedFixerOptionInterface) {
                     $deprecationMessage = RstUtils::toRst($option->getDeprecationMessage());
-                    $optionInfo .= "\n\n.. warning:: This option is deprecated and will be removed on next major version. {$deprecationMessage}";
+                    $optionInfo .= "\n\n.. warning:: This option is deprecated and will be removed in the next major version. {$deprecationMessage}";
                 }
 
                 $optionInfo .= "\n\n".RstUtils::toRst($option->getDescription());
 
                 if ($option instanceof AliasedFixerOption) {
-                    $optionInfo .= "\n\n.. note:: The previous name of this option was ``{$option->getAlias()}`` but it is now deprecated and will be removed on next major version.";
+                    $optionInfo .= "\n\n.. note:: The previous name of this option was ``{$option->getAlias()}`` but it is now deprecated and will be removed in the next major version.";
                 }
 
                 $allowed = HelpCommand::getDisplayableAllowedValues($option);

@@ -315,9 +315,18 @@ List of Available Rules
 
    Rule is applied only in a PHP 7.1+ environment.
 
-   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   *warning deprecated*   Use ``compact_nullable_type_declaration`` instead.
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypehintFixer <./../src/Fixer/Whitespace/CompactNullableTypehintFixer.php>`_
+-  `compact_nullable_type_declaration <./rules/whitespace/compact_nullable_type_declaration.rst>`_
+
+   Remove extra spaces in a nullable type declaration.
+
+   Rule is applied only in a PHP 7.1+ environment.
+
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypeDeclarationFixer <./../src/Fixer/Whitespace/CompactNullableTypeDeclarationFixer.php>`_
 -  `concat_space <./rules/operator/concat_space.rst>`_
 
    Concatenation should be spaced according to configuration.
@@ -773,12 +782,12 @@ List of Available Rules
 
    - | ``annotation_include``
      | Class level attribute or annotation tags that must be set in order to fix the class (case insensitive).
-     | warning:: This option is deprecated and will be removed on next major version. Use ``include`` to configure PHPDoc annotations tags and attributes.
+     | warning:: This option is deprecated and will be removed in the next major version. Use ``include`` to configure PHPDoc annotations tags and attributes.
      | Allowed types: ``array``
      | Default value: ``['@internal']``
    - | ``annotation_exclude``
      | Class level attribute or annotation tags that must be omitted to fix the class, even if all of the white list ones are used as well (case insensitive).
-     | warning:: This option is deprecated and will be removed on next major version. Use ``exclude`` to configure PHPDoc annotations tags and attributes.
+     | warning:: This option is deprecated and will be removed in the next major version. Use ``exclude`` to configure PHPDoc annotations tags and attributes.
      | Allowed types: ``array``
      | Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity', '@Document', '@ODM\\Document']``
    - | ``include``
@@ -1034,7 +1043,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\ImplodeCallFixer <./../src/Fixer/FunctionNotation/ImplodeCallFixer.php>`_
 -  `include <./rules/control_structure/include.rst>`_
 
-   Include/Require and file path should be divided with a single space. File path should not be placed under brackets.
+   Include/Require and file path should be divided with a single space. File path should not be placed within parentheses.
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
@@ -1322,7 +1331,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\NativeFunctionInvocationFixer <./../src/Fixer/FunctionNotation/NativeFunctionInvocationFixer.php>`_
 -  `native_function_type_declaration_casing <./rules/casing/native_function_type_declaration_casing.rst>`_
 
-   Native type hints for functions should use the correct case.
+   Native type declarations for functions should use the correct case.
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 

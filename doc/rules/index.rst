@@ -137,7 +137,7 @@ Casing
   Function defined by PHP should be called using the correct casing.
 - `native_function_type_declaration_casing <./casing/native_function_type_declaration_casing.rst>`_
 
-  Native type hints for functions should use the correct case.
+  Native type declarations for functions should use the correct case.
 
 Cast Notation
 -------------
@@ -281,7 +281,7 @@ Control Structure
   Empty loop-condition must be in configured style.
 - `include <./control_structure/include.rst>`_
 
-  Include/Require and file path should be divided with a single space. File path should not be placed under brackets.
+  Include/Require and file path should be divided with a single space. File path should not be placed within parentheses.
 - `no_alternative_syntax <./control_structure/no_alternative_syntax.rst>`_
 
   Replace control structure alternative syntax to use braces.
@@ -871,7 +871,10 @@ Whitespace
 - `blank_line_between_import_groups <./whitespace/blank_line_between_import_groups.rst>`_
 
   Putting blank lines between ``use`` statement groups.
-- `compact_nullable_typehint <./whitespace/compact_nullable_typehint.rst>`_
+- `compact_nullable_type_declaration <./whitespace/compact_nullable_type_declaration.rst>`_
+
+  Remove extra spaces in a nullable type declaration.
+- `compact_nullable_typehint <./whitespace/compact_nullable_typehint.rst>`_ *(deprecated)*
 
   Remove extra spaces in a nullable typehint.
 - `heredoc_indentation <./whitespace/heredoc_indentation.rst>`_
