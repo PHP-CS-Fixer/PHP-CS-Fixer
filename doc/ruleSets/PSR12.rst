@@ -27,7 +27,7 @@ Rules
 - `declare_equal_normalize <./../rules/language_construct/declare_equal_normalize.rst>`_
 - `lowercase_cast <./../rules/cast_notation/lowercase_cast.rst>`_
 - `lowercase_static_reference <./../rules/casing/lowercase_static_reference.rst>`_
-- `new_with_braces <./../rules/operator/new_with_braces.rst>`_
+- `new_with_parentheses <./../rules/operator/new_with_parentheses.rst>`_
 - `no_blank_lines_after_class_opening <./../rules/class_notation/no_blank_lines_after_class_opening.rst>`_
 - `no_leading_import_slash <./../rules/import/no_leading_import_slash.rst>`_
 - `no_whitespace_in_blank_line <./../rules/whitespace/no_whitespace_in_blank_line.rst>`_
