@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.34.0
+---------------------
+
+* feat: Introduce `check` command (alias for `fix --dry-run`) (#7322)
+
 Changelog for v3.33.0
 ---------------------
 
