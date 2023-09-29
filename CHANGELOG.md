@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.32.0
+---------------------
+
+* deps: Prevent using PHPCSFixer along with `unfinalize` package (#7343)
+* feat: Deprecate `CompactNullableTypehintFixer` and proxy to `CompactNullableTypeDeclarationFixer` (#7339)
+* feat: Deprecate `CurlyBracesPositionFixer` and proxy to `BracesPositionFixer` (#7334)
+* feat: Deprecate `NewWithBracesFixer` and proxy to `NewWithParenthesesFixer` (#7331)
+* feat: Deprecate `NoUnneededCurlyBracesFixer` and proxy to `NoUnneededBracesFixer` (#7335)
+* feat: Rename `CurlyBraceTransformer` to `BraceTransformer` (#7333)
+
 Changelog for v3.31.0
 ---------------------
 
