@@ -122,7 +122,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                             $valueRange = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $valueRange);
                         }
 
-                        if ($valueRange === null || $valueRange === 0 || $valueRange > $endIndex) {
+                        if (null === $valueRange || 0 === $valueRange || $valueRange > $endIndex) {
                             $valueRange = $endIndex;
                         }
 
@@ -186,7 +186,15 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                 return -$specialSortDirection;
             }
 
-            return strcmp((string) $a, (string) $b);
+            if ($a < $b) {
+                return -1;
+            }
+
+            if ($a > $b) {
+                return 1;
+            }
+
+            return 0;
         });
 
         return $contentKeys;
@@ -239,9 +247,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
 
             $keyTokens = Tokens::fromArray(\array_slice($clonedTokens->toArray(), $keyTokenIndex, $startIndex - $keyTokenIndex - 1));
 
-            $key = implode('', array_map(function ($item) {
-                return $item->getContent();
-            }, $keyTokens->toArray()));
+            $key = implode('', array_map(static fn ($item) => $item->getContent(), $keyTokens->toArray()));
         } else {
             $keyTokenIndex = $clonedTokens->getPrevMeaningfulToken($startIndex);
             $key = $clonedTokens[$keyTokenIndex]->getContent();
