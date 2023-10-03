@@ -186,15 +186,12 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                 return -$specialSortDirection;
             }
 
-            if ($a < $b) {
-                return -1;
-            }
-
-            if ($a > $b) {
-                return 1;
-            }
-
-            return 0;
+            /**
+             * PHPstan is lying to us by telling us both $a and $b should always be strings which is just not the case.
+             *
+             * @phpstan-ignore-next-line
+             */
+            return strcmp((string) $a, (string) $b);
         });
 
         return $contentKeys;
