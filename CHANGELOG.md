@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.34.1
+---------------------
+
+* deps: revert "prevent using PHPCSFixer along with unfinalize package (#7343)" (#7348)
+
 Changelog for v3.34.0
 ---------------------
 
