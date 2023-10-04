@@ -1307,6 +1307,13 @@ List of Available Rules
    Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Semicolon\\MultilineWhitespaceBeforeSemicolonsFixer <./../src/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixer.php>`_
+-  `named_argument_space <./rules/function_notation/named_argument_space.rst>`_
+
+   There MUST NOT be a space between the argument name and colon, and there MUST be a single space between the colon and the argument value.
+
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\FunctionNotation\\NamedArgumentSpaceFixer <./../src/Fixer/FunctionNotation/NamedArgumentSpaceFixer.php>`_
 -  `native_constant_invocation <./rules/constant_notation/native_constant_invocation.rst>`_
 
    Add leading ``\`` before constant invocation of internal constant to speed up resolving. Constant name match is case-sensitive, except for ``null``, ``false`` and ``true``.

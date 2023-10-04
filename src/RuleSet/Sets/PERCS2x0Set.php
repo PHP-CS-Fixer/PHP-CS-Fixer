@@ -39,6 +39,7 @@ final class PERCS2x0Set extends AbstractRuleSetDescription
                 'closure_fn_spacing' => 'none',
             ],
             'method_argument_space' => true,
+            'named_argument_space' => true,
             'single_line_empty_body' => true,
         ];
     }

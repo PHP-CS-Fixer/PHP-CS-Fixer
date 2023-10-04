@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: named_argument_space,method_argument_space.
+--RULESET--
+{"named_argument_space": true, "method_argument_space": true}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+$a = foo(bar: 1, baz: 2);
+
+--INPUT--
+<?php
+$a = foo(bar :1,baz:2);

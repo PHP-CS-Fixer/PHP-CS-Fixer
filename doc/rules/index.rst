@@ -380,6 +380,9 @@ Function Notation
 - `method_argument_space <./function_notation/method_argument_space.rst>`_
 
   In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma. Argument lists MAY be split across multiple lines, where each subsequent line is indented once. When doing so, the first item in the list MUST be on the next line, and there MUST be only one argument per line.
+- `named_argument_space <./function_notation/named_argument_space.rst>`_
+
+  There MUST NOT be a space between the argument name and colon, and there MUST be a single space between the colon and the argument value.
 - `native_function_invocation <./function_notation/native_function_invocation.rst>`_ *(risky)*
 
   Add leading ``\`` before function invocation to speed up resolving.
