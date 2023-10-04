@@ -110,9 +110,13 @@ With configuration: ``['sort_algorithm' => 'none', 'null_adjustment' => 'always_
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
+
 
 References
 ----------
