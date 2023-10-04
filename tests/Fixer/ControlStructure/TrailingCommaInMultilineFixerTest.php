@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
-use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
@@ -28,30 +27,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @requires PHP <8.0
-     *
-     * @dataProvider provideInvalidConfigurationCases
-     *
-     * @param mixed $exceptionMessega
-     * @param mixed $configuration
-     */
-    public function testInvalidConfiguration($exceptionMessega, $configuration): void
-    {
-        $this->expectException(InvalidForEnvFixerConfigurationException::class);
-        $this->expectExceptionMessage($exceptionMessega);
-
-        $this->fixer->configure($configuration);
-    }
-
-    public static function provideInvalidConfigurationCases(): iterable
-    {
-        yield [
-            '[trailing_comma_in_multiline] Invalid configuration for env: "parameters" option can only be enabled with PHP 8.0+.',
-            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
-        ];
-    }
-
     /**
      * @param array<string, mixed> $config
      *
@@ -608,6 +583,19 @@ $a
 ); }};',
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
         ];
+
+        yield 'default config does not fix array destructuring' => [
+            '<?php
+            list(
+                $a7,
+                $b7
+            ) = $z7;
+
+            [
+                $x7,
+                $y7
+            ] = $ff7;',
+        ];
     }
 
     /**
@@ -719,6 +707,106 @@ $x = match ($a) { 1 => 0,
             ',
             null,
             ['elements' => ['match']],
+        ];
+    }
+
+    /**
+     * @dataProvider provideArrayDestructuringCases
+     */
+    public function testArrayDestructuring(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['elements' => ['array_destructuring']]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideArrayDestructuringCases(): iterable
+    {
+        yield 'simple long array destructuring syntax' => [
+            '<?php
+                list(
+                    $b1,
+                    $c1,
+                ) = $t1;
+
+                list($a1) = $k1;
+            ',
+            '<?php
+                list(
+                    $b1,
+                    $c1
+                ) = $t1;
+
+                list($a1) = $k1;
+            ',
+        ];
+
+        yield 'simple short array destructuring syntax' => [
+            '<?php
+                [
+                    $b2,
+                    $c2,
+                ] = $t2;
+
+                [$v2,$d2] = $p2;
+            ',
+            '<?php
+                [
+                    $b2,
+                    $c2
+                ] = $t2;
+
+                [$v2,$d2] = $p2;
+            ',
+        ];
+
+        yield 'short and long destructuring array syntax' => [
+            '<?php
+                list(
+                    $a3,
+                    $b3,
+                ) = $z3;
+
+                [
+                    $x3,
+                    $y3,
+                ] = $ff3;
+            ',
+            '<?php
+                list(
+                    $a3,
+                    $b3
+                ) = $z3;
+
+                [
+                    $x3,
+                    $y3
+                ] = $ff3;
+            ',
+        ];
+
+        yield [
+            '<?php
+                list(
+                    9 => $ty4,
+                    10 => $gh4,
+                ) = $sd4;
+
+                [
+                    1 => $xa4,
+                    2 => $xb4,
+                ] = $zz4;
+            ',
+            '<?php
+                list(
+                    9 => $ty4,
+                    10 => $gh4
+                ) = $sd4;
+
+                [
+                    1 => $xa4,
+                    2 => $xb4
+                ] = $zz4;
+            ',
         ];
     }
 }

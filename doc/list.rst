@@ -3361,7 +3361,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Operator\\TernaryToNullCoalescingFixer <./../src/Fixer/Operator/TernaryToNullCoalescingFixer.php>`_
 -  `trailing_comma_in_multiline <./rules/control_structure/trailing_comma_in_multiline.rst>`_
 
-   Multi-line arrays, arguments list, parameters list and ``match`` expressions must have a trailing comma.
+   Multi-line arrays, arguments list, parameters list, ``match`` and array destructuring expressions must have a trailing comma.
 
    Configuration options:
 
@@ -3371,11 +3371,11 @@ List of Available Rules
      | Default value: ``false``
    - | ``elements``
      | Where to fix multiline trailing comma (PHP >= 8.0 for ``parameters`` and ``match``).
-     | Allowed values: a subset of ``['arguments', 'arrays', 'match', 'parameters']``
+     | Allowed values: a subset of ``['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']``
      | Default value: ``['arrays']``
 
 
-   Part of rule sets `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\TrailingCommaInMultilineFixer <./../src/Fixer/ControlStructure/TrailingCommaInMultilineFixer.php>`_
 -  `trim_array_spaces <./rules/array_notation/trim_array_spaces.rst>`_

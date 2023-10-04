@@ -18,3 +18,7 @@ Rules
 
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_
+- `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_ with config:
+
+  ``['elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
+
