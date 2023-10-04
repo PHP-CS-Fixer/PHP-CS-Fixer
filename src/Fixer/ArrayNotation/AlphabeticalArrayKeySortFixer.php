@@ -186,7 +186,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                 return -$specialSortDirection;
             }
 
-            /**
+            /*
              * PHPstan is lying to us by telling us both $a and $b should always be strings which is just not the case.
              *
              * @phpstan-ignore-next-line
