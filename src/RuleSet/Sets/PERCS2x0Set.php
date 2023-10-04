@@ -35,6 +35,11 @@ final class PERCS2x0Set extends AbstractRuleSetDescription
         return [
             '@PER-CS1.0' => true,
             'concat_space' => ['spacing' => 'one'],
+            'function_declaration' => [
+                'closure_fn_spacing' => 'none',
+                'closure_function_spacing' => 'one',
+                'trailing_comma_single_line' => false,
+            ],
             'method_argument_space' => true,
             'single_line_empty_body' => true,
         ];
