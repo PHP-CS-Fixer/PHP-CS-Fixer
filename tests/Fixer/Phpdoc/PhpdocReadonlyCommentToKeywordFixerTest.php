@@ -23,7 +23,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocReadonlyCommentToKeywordFixer
  */
-class PhpdocReadonlyCommentToKeywordFixerTest extends AbstractFixerTestCase
+final class PhpdocReadonlyCommentToKeywordFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
@@ -33,107 +33,107 @@ class PhpdocReadonlyCommentToKeywordFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
         yield [
             <<<'EOT'
-            <?php
+                <?php
 
 
-            readonly class C {
-            }
-            EOT,
+                readonly class C {
+                }
+                EOT,
             <<<'EOT'
-            <?php
+                <?php
 
-            /** @readonly */
-            class C {
-            }
-            EOT,
+                /** @readonly */
+                class C {
+                }
+                EOT,
         ];
 
         yield [
             <<<'EOT'
-            <?php
+                <?php
 
-            /**
-             */
-            readonly class C {
-            }
-            EOT,
+                /**
+                 */
+                readonly class C {
+                }
+                EOT,
             <<<'EOT'
-            <?php
+                <?php
 
-            /**
-             * @readonly
-             */
-            class C {
-            }
-            EOT,
+                /**
+                 * @readonly
+                 */
+                class C {
+                }
+                EOT,
         ];
 
         yield [
             <<<'EOT'
-            <?php
+                <?php
 
-            /**
-             * Very impressive class
-             *
-             */
-            readonly class C {
-            }
-            EOT,
+                /**
+                 * Very impressive class
+                 *
+                 */
+                readonly class C {
+                }
+                EOT,
             <<<'EOT'
-            <?php
+                <?php
 
-            /**
-             * Very impressive class
-             *
-             * @readonly
-             */
-            class C {
-            }
-            EOT,
+                /**
+                 * Very impressive class
+                 *
+                 * @readonly
+                 */
+                class C {
+                }
+                EOT,
         ];
 
         yield [
             <<<'EOT'
-            <?php
+                <?php
 
-            /**
-             */
-            final readonly class C {
-            }
-            EOT,
+                /**
+                 */
+                final readonly class C {
+                }
+                EOT,
             <<<'EOT'
-            <?php
+                <?php
 
-            /**
-             * @readonly
-             */
-            final class C {
-            }
-            EOT,
+                /**
+                 * @readonly
+                 */
+                final class C {
+                }
+                EOT,
         ];
 
         yield [
             <<<'EOT'
-            <?php
+                <?php
 
-            /**
-             */
-            abstract readonly class C {
-            }
-            EOT,
+                /**
+                 */
+                abstract readonly class C {
+                }
+                EOT,
             <<<'EOT'
-            <?php
+                <?php
 
-            /**
-             * @readonly
-             */
-            abstract class C {
-            }
-            EOT,
+                /**
+                 * @readonly
+                 */
+                abstract class C {
+                }
+                EOT,
         ];
     }
 }

@@ -27,7 +27,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocReadonlyCommentToKeywordFixer extends AbstractFixer
 {
-
     /**
      * {@inheritdoc}
      *
@@ -36,6 +35,32 @@ final class PhpdocReadonlyCommentToKeywordFixer extends AbstractFixer
     public function getPriority(): int
     {
         return 4;
+    }
+
+    public function isCandidate(Tokens $tokens): bool
+    {
+        if (!\defined('T_READONLY')) {
+            return false;
+        }
+
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+    }
+
+    public function getDefinition(): FixerDefinitionInterface
+    {
+        return new FixerDefinition(
+            'Converts readonly comment to readonly keyword.',
+            [
+                new CodeSample(
+                    <<<EOT
+                            <?php
+                            /** @readonly */
+                            class C {
+                            }\n
+                        EOT,
+                ),
+            ]
+        );
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -80,35 +105,11 @@ final class PhpdocReadonlyCommentToKeywordFixer extends AbstractFixer
 
             if ('' === $newContent) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($mainIndex);
+
                 continue;
             }
 
             $tokens[$mainIndex] = new Token([T_DOC_COMMENT, $doc->getContent()]);
         }
-    }
-
-    public function isCandidate(Tokens $tokens): bool
-    {
-        if(!defined('T_READONLY')) {
-            return false;
-        }
-
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
-
-    public function getDefinition(): FixerDefinitionInterface
-    {
-        return new FixerDefinition(
-            'Converts readonly comment to readonly keyword.',
-            [
-                new CodeSample(<<<EOT
-                    <?php
-                    /** @readonly */
-                    class C {
-                    }\n
-                EOT,
-                ),
-            ]
-        );
     }
 }
