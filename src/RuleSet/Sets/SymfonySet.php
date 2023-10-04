@@ -67,7 +67,6 @@ final class SymfonySet extends AbstractRuleSetDescription
             ],
             'include' => true,
             'increment_style' => true,
-            'integer_literal_case' => true,
             'lambda_not_used_import' => true,
             'linebreak_after_opening_tag' => true,
             'long_to_shorthand_operator' => true,
@@ -135,6 +134,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_whitespace_before_comma_in_array' => true,
             'normalize_index_brace' => true,
             'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => false],
+            'numeric_literal_case' => true,
             'object_operator_without_whitespace' => true,
             'operator_linebreak' => [
                 'only_booleans' => true,

@@ -1121,7 +1121,7 @@ List of Available Rules
 
    Integer literals must be in correct case.
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   *warning deprecated*   Use ``numeric_literal_case`` instead.
 
    `Source PhpCsFixer\\Fixer\\Casing\\IntegerLiteralCaseFixer <./../src/Fixer/Casing/IntegerLiteralCaseFixer.php>`_
 -  `is_null <./rules/language_construct/is_null.rst>`_
@@ -2022,6 +2022,13 @@ List of Available Rules
    Part of rule set `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\FunctionNotation\\NullableTypeDeclarationForDefaultNullValueFixer <./../src/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixer.php>`_
+-  `numeric_literal_case <./rules/casing/numeric_literal_case.rst>`_
+
+   Number literals must be in correct case.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Casing\\NumericLiteralCaseFixer <./../src/Fixer/Casing/NumericLiteralCaseFixer.php>`_
 -  `object_operator_without_whitespace <./rules/operator/object_operator_without_whitespace.rst>`_
 
    There should not be space before or after object operators ``->`` and ``?->``.

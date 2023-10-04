@@ -120,7 +120,7 @@ Casing
 - `constant_case <./casing/constant_case.rst>`_
 
   The PHP constants ``true``, ``false``, and ``null`` MUST be written using the correct casing.
-- `integer_literal_case <./casing/integer_literal_case.rst>`_
+- `integer_literal_case <./casing/integer_literal_case.rst>`_ *(deprecated)*
 
   Integer literals must be in correct case.
 - `lowercase_keywords <./casing/lowercase_keywords.rst>`_
@@ -144,6 +144,9 @@ Casing
 - `native_type_declaration_casing <./casing/native_type_declaration_casing.rst>`_
 
   Native type declarations should be used in the correct case.
+- `numeric_literal_case <./casing/numeric_literal_case.rst>`_
+
+  Number literals must be in correct case.
 
 Cast Notation
 -------------

@@ -50,7 +50,6 @@ Rules
 
 - `include <./../rules/control_structure/include.rst>`_
 - `increment_style <./../rules/operator/increment_style.rst>`_
-- `integer_literal_case <./../rules/casing/integer_literal_case.rst>`_
 - `lambda_not_used_import <./../rules/function_notation/lambda_not_used_import.rst>`_
 - `linebreak_after_opening_tag <./../rules/php_tag/linebreak_after_opening_tag.rst>`_
 - `long_to_shorthand_operator <./../rules/operator/long_to_shorthand_operator.rst>`_
@@ -104,6 +103,7 @@ Rules
 
   ``['use_nullable_type_declaration' => false]``
 
+- `numeric_literal_case <./../rules/casing/numeric_literal_case.rst>`_
 - `object_operator_without_whitespace <./../rules/operator/object_operator_without_whitespace.rst>`_
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_ with config:
 

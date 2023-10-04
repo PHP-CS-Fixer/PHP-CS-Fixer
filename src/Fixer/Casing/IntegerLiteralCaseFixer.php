@@ -14,15 +14,16 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\Casing;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Preg;
-use PhpCsFixer\Tokenizer\Token;
-use PhpCsFixer\Tokenizer\Tokens;
 
-final class IntegerLiteralCaseFixer extends AbstractFixer
+/**
+ * @deprecated in favor of NumericLiteralCaseFixer
+ */
+final class IntegerLiteralCaseFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -36,27 +37,15 @@ final class IntegerLiteralCaseFixer extends AbstractFixer
         );
     }
 
-    public function isCandidate(Tokens $tokens): bool
+    public function getSuccessorsNames(): array
     {
-        return $tokens->isTokenKindFound(T_LNUMBER);
+        return array_keys($this->proxyFixers);
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+    protected function createProxyFixers(): array
     {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_LNUMBER)) {
-                continue;
-            }
+        $fixer = new NumericLiteralCaseFixer();
 
-            $content = $token->getContent();
-
-            $newContent = Preg::replaceCallback('#^0([boxBOX])([0-9a-fA-F_]+)$#', static fn ($matches) => '0'.strtolower($matches[1]).strtoupper($matches[2]), $content);
-
-            if ($content === $newContent) {
-                continue;
-            }
-
-            $tokens[$index] = new Token([T_LNUMBER, $newContent]);
-        }
+        return [$fixer];
     }
 }
