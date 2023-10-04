@@ -77,4 +77,9 @@ final class DocumentationLocator
     {
         return $this->path.'/list.rst';
     }
+
+    public function getUsageFilePath(): string
+    {
+        return $this->path.'/usage.rst';
+    }
 }
