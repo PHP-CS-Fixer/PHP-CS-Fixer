@@ -24,6 +24,23 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @covers \PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer::annotationIsSuperfluous
+     */
+    public function testAnnotationIsNotSuperfluous(): void
+    {
+        $this->doTest(
+            '<?php
+            class Foo {
+                /**
+                 * @param null|mixed $baz
+                 */
+                public function bar($baz) {}
+            }
+            '
+        );
+    }
+
+    /**
      * @param array<string, mixed> $config
      *
      * @dataProvider provideFixCases
