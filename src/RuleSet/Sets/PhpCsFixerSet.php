@@ -104,6 +104,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'no_useless_return' => true,
             'nullable_type_declaration_for_default_null_value' => false,
             'ordered_class_elements' => true,
+            'ordered_types' => true,
             'php_unit_internal_class' => true,
             'php_unit_test_class_requires_covers' => true,
             'phpdoc_add_missing_param_annotation' => true,
