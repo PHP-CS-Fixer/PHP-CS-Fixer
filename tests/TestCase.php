@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
-use PHPUnitGoodPractices\Polyfill\PolyfillTrait;
 use PHPUnitGoodPractices\Traits\ExpectationViaCodeOverAnnotationTrait;
 use PHPUnitGoodPractices\Traits\ExpectOverSetExceptionTrait;
 use PHPUnitGoodPractices\Traits\IdentityOverEqualityTrait;
@@ -45,7 +44,6 @@ abstract class TestCase extends InterimTestCase
     use ExpectDeprecationTrait;
     use ExpectOverSetExceptionTrait;
     use IdentityOverEqualityTrait;
-    use PolyfillTrait;
     use ProphecyOverMockObjectTrait;
     use ProphesizeOnlyInterfaceTrait;
 }
