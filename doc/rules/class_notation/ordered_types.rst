@@ -106,3 +106,11 @@ With configuration: ``['sort_algorithm' => 'none', 'null_adjustment' => 'always_
    -    public function bar(null|string|int $foo): string|int;
    +    public function bar(string|int|null $foo): string|int;
     }
+
+Rule sets
+---------
+
+The rule is part of the following rule set:
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+
