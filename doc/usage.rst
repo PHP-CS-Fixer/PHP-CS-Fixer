@@ -21,7 +21,7 @@ which will use the intersection of the paths from the config file and from the a
 
     php php-cs-fixer.phar fix --path-mode=intersection /path/to/dir
 
-The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml``, ``checkstyle``, ``junit`` and ``gitlab``.
+The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``checkstyle``, ``gitlab``, ``json``, ``junit``and ``xml``.
 
 NOTE: the output for the following formats are generated in accordance with schemas
 
