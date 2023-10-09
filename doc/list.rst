@@ -103,12 +103,12 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``min_line_breaks``
-     | Minimum line breaks that should exist before namespace declaration.
-     | Allowed types: ``int``
-     | Default value: ``2``
    - | ``max_line_breaks``
      | Maximum line breaks that should exist before namespace declaration.
+     | Allowed types: ``int``
+     | Default value: ``2``
+   - | ``min_line_breaks``
+     | Minimum line breaks that should exist before namespace declaration.
      | Allowed types: ``int``
      | Default value: ``2``
 
@@ -171,18 +171,18 @@ List of Available Rules
      | Whether single line lambda notation should be allowed.
      | Allowed types: ``bool``
      | Default value: ``false``
-   - | ``position_after_functions_and_oop_constructs``
-     | Whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).
-     | Allowed values: ``'next'`` and ``'same'``
-     | Default value: ``'next'``
-   - | ``position_after_control_structures``
-     | Whether the opening brace should be placed on "next" or "same" line after control structures.
-     | Allowed values: ``'next'`` and ``'same'``
-     | Default value: ``'same'``
    - | ``position_after_anonymous_constructs``
      | Whether the opening brace should be placed on "next" or "same" line after anonymous constructs (anonymous classes and lambda functions).
      | Allowed values: ``'next'`` and ``'same'``
      | Default value: ``'same'``
+   - | ``position_after_control_structures``
+     | Whether the opening brace should be placed on "next" or "same" line after control structures.
+     | Allowed values: ``'next'`` and ``'same'``
+     | Default value: ``'same'``
+   - | ``position_after_functions_and_oop_constructs``
+     | Whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).
+     | Allowed values: ``'next'`` and ``'same'``
+     | Default value: ``'next'``
 
 
    `Source PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../src/Fixer/Basic/BracesFixer.php>`_
@@ -192,14 +192,18 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``control_structures_opening_brace``
-     | The position of the opening brace of control structures‘ body.
+   - | ``allow_single_line_anonymous_functions``
+     | Allow anonymous functions to have opening and closing braces on the same line.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``allow_single_line_empty_anonymous_classes``
+     | Allow anonymous classes to have opening and closing braces on the same line.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``anonymous_classes_opening_brace``
+     | The position of the opening brace of anonymous classes‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
      | Default value: ``'same_line'``
-   - | ``functions_opening_brace``
-     | The position of the opening brace of functions‘ body.
-     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
-     | Default value: ``'next_line_unless_newline_at_signature_end'``
    - | ``anonymous_functions_opening_brace``
      | The position of the opening brace of anonymous functions‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
@@ -208,18 +212,14 @@ List of Available Rules
      | The position of the opening brace of classes‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
      | Default value: ``'next_line_unless_newline_at_signature_end'``
-   - | ``anonymous_classes_opening_brace``
-     | The position of the opening brace of anonymous classes‘ body.
+   - | ``control_structures_opening_brace``
+     | The position of the opening brace of control structures‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
      | Default value: ``'same_line'``
-   - | ``allow_single_line_empty_anonymous_classes``
-     | Allow anonymous classes to have opening and closing braces on the same line.
-     | Allowed types: ``bool``
-     | Default value: ``true``
-   - | ``allow_single_line_anonymous_functions``
-     | Allow anonymous functions to have opening and closing braces on the same line.
-     | Allowed types: ``bool``
-     | Default value: ``true``
+   - | ``functions_opening_brace``
+     | The position of the opening brace of functions‘ body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+     | Default value: ``'next_line_unless_newline_at_signature_end'``
 
 
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -261,6 +261,10 @@ List of Available Rules
 
    Configuration options:
 
+   - | ``inline_constructor_arguments``
+     | Whether constructor argument list in anonymous classes should be single line.
+     | Allowed types: ``bool``
+     | Default value: ``true``
    - | ``multi_line_extends_each_single_line``
      | Whether definitions should be multiline.
      | Allowed types: ``bool``
@@ -277,10 +281,6 @@ List of Available Rules
      | Whether there should be a single space after the parenthesis of anonymous class (PSR12) or not.
      | Allowed types: ``bool``
      | Default value: ``false``
-   - | ``inline_constructor_arguments``
-     | Whether constructor argument list in anonymous classes should be single line.
-     | Allowed types: ``bool``
-     | Default value: ``true``
 
 
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -426,14 +426,18 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``control_structures_opening_brace``
-     | The position of the opening brace of control structures‘ body.
+   - | ``allow_single_line_anonymous_functions``
+     | Allow anonymous functions to have opening and closing braces on the same line.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``allow_single_line_empty_anonymous_classes``
+     | Allow anonymous classes to have opening and closing braces on the same line.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``anonymous_classes_opening_brace``
+     | The position of the opening brace of anonymous classes‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
      | Default value: ``'same_line'``
-   - | ``functions_opening_brace``
-     | The position of the opening brace of functions‘ body.
-     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
-     | Default value: ``'next_line_unless_newline_at_signature_end'``
    - | ``anonymous_functions_opening_brace``
      | The position of the opening brace of anonymous functions‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
@@ -442,18 +446,14 @@ List of Available Rules
      | The position of the opening brace of classes‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
      | Default value: ``'next_line_unless_newline_at_signature_end'``
-   - | ``anonymous_classes_opening_brace``
-     | The position of the opening brace of anonymous classes‘ body.
+   - | ``control_structures_opening_brace``
+     | The position of the opening brace of control structures‘ body.
      | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
      | Default value: ``'same_line'``
-   - | ``allow_single_line_empty_anonymous_classes``
-     | Allow anonymous classes to have opening and closing braces on the same line.
-     | Allowed types: ``bool``
-     | Default value: ``true``
-   - | ``allow_single_line_anonymous_functions``
-     | Allow anonymous functions to have opening and closing braces on the same line.
-     | Allowed types: ``bool``
-     | Default value: ``true``
+   - | ``functions_opening_brace``
+     | The position of the opening brace of functions‘ body.
+     | Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
+     | Default value: ``'next_line_unless_newline_at_signature_end'``
 
 
    `Source PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer <./../src/Fixer/Basic/CurlyBracesPositionFixer.php>`_
@@ -588,42 +588,42 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``ignored_tags``
-     | List of tags that must not be treated as Doctrine Annotations.
-     | Allowed types: ``array``
-     | Default value: ``['abstract', 'access', 'code', 'deprec', 'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc', 'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar', 'staticVar', 'throw', 'api', 'author', 'category', 'copyright', 'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal', 'license', 'link', 'method', 'package', 'param', 'property', 'property-read', 'property-write', 'return', 'see', 'since', 'source', 'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var', 'version', 'after', 'afterClass', 'backupGlobals', 'backupStaticAttributes', 'before', 'beforeClass', 'codeCoverageIgnore', 'codeCoverageIgnoreStart', 'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass', 'coversNothing', 'dataProvider', 'depends', 'expectedException', 'expectedExceptionCode', 'expectedExceptionMessage', 'expectedExceptionMessageRegExp', 'group', 'large', 'medium', 'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses', 'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses', 'SuppressWarnings', 'noinspection', 'package_version', 'enduml', 'startuml', 'psalm', 'phpstan', 'template', 'fix', 'FIXME', 'fixme', 'override']``
-   - | ``around_parentheses``
-     | Whether to fix spaces around parentheses.
-     | Allowed types: ``bool``
-     | Default value: ``true``
-   - | ``around_commas``
-     | Whether to fix spaces around commas.
-     | Allowed types: ``bool``
-     | Default value: ``true``
-   - | ``before_argument_assignments``
-     | Whether to add, remove or ignore spaces before argument assignment operator.
-     | Allowed types: ``null`` and ``bool``
-     | Default value: ``false``
    - | ``after_argument_assignments``
      | Whether to add, remove or ignore spaces after argument assignment operator.
      | Allowed types: ``null`` and ``bool``
      | Default value: ``false``
-   - | ``before_array_assignments_equals``
-     | Whether to add, remove or ignore spaces before array ``=`` assignment operator.
+   - | ``after_array_assignments_colon``
+     | Whether to add, remove or ignore spaces after array assignment ``:`` operator.
      | Allowed types: ``null`` and ``bool``
      | Default value: ``true``
    - | ``after_array_assignments_equals``
      | Whether to add, remove or ignore spaces after array assignment ``=`` operator.
      | Allowed types: ``null`` and ``bool``
      | Default value: ``true``
+   - | ``around_commas``
+     | Whether to fix spaces around commas.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``around_parentheses``
+     | Whether to fix spaces around parentheses.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``before_argument_assignments``
+     | Whether to add, remove or ignore spaces before argument assignment operator.
+     | Allowed types: ``null`` and ``bool``
+     | Default value: ``false``
    - | ``before_array_assignments_colon``
      | Whether to add, remove or ignore spaces before array ``:`` assignment operator.
      | Allowed types: ``null`` and ``bool``
      | Default value: ``true``
-   - | ``after_array_assignments_colon``
-     | Whether to add, remove or ignore spaces after array assignment ``:`` operator.
+   - | ``before_array_assignments_equals``
+     | Whether to add, remove or ignore spaces before array ``=`` assignment operator.
      | Allowed types: ``null`` and ``bool``
      | Default value: ``true``
+   - | ``ignored_tags``
+     | List of tags that must not be treated as Doctrine Annotations.
+     | Allowed types: ``array``
+     | Default value: ``['abstract', 'access', 'code', 'deprec', 'encode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc', 'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar', 'staticVar', 'throw', 'api', 'author', 'category', 'copyright', 'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal', 'license', 'link', 'method', 'package', 'param', 'property', 'property-read', 'property-write', 'return', 'see', 'since', 'source', 'subpackage', 'throws', 'todo', 'TODO', 'usedBy', 'uses', 'var', 'version', 'after', 'afterClass', 'backupGlobals', 'backupStaticAttributes', 'before', 'beforeClass', 'codeCoverageIgnore', 'codeCoverageIgnoreStart', 'codeCoverageIgnoreEnd', 'covers', 'coversDefaultClass', 'coversNothing', 'dataProvider', 'depends', 'expectedException', 'expectedExceptionCode', 'expectedExceptionMessage', 'expectedExceptionMessageRegExp', 'group', 'large', 'medium', 'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses', 'runInSeparateProcess', 'small', 'test', 'testdox', 'ticket', 'uses', 'SuppressWarnings', 'noinspection', 'package_version', 'enduml', 'startuml', 'psalm', 'phpstan', 'template', 'fix', 'FIXME', 'fixme', 'override']``
 
 
    Part of rule set `@DoctrineAnnotation <./ruleSets/DoctrineAnnotation.rst>`_
@@ -751,10 +751,6 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``single_quoted``
-     | Whether to fix single-quoted strings.
-     | Allowed types: ``bool``
-     | Default value: ``false``
    - | ``double_quoted``
      | Whether to fix double-quoted strings.
      | Allowed types: ``bool``
@@ -763,6 +759,10 @@ List of Available Rules
      | Whether to fix heredoc syntax.
      | Allowed types: ``bool``
      | Default value: ``true``
+   - | ``single_quoted``
+     | Whether to fix single-quoted strings.
+     | Allowed types: ``bool``
+     | Default value: ``false``
 
 
    Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
@@ -819,28 +819,28 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``annotation_include``
-     | Class level attribute or annotation tags that must be set in order to fix the class (case insensitive).
-     | warning:: This option is deprecated and will be removed in the next major version. Use ``include`` to configure PHPDoc annotations tags and attributes.
-     | Allowed types: ``array``
-     | Default value: ``['@internal']``
    - | ``annotation_exclude``
      | Class level attribute or annotation tags that must be omitted to fix the class, even if all of the white list ones are used as well (case insensitive).
      | warning:: This option is deprecated and will be removed in the next major version. Use ``exclude`` to configure PHPDoc annotations tags and attributes.
      | Allowed types: ``array``
      | Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity', '@Document', '@ODM\\Document']``
-   - | ``include``
+   - | ``annotation_include``
      | Class level attribute or annotation tags that must be set in order to fix the class (case insensitive).
+     | warning:: This option is deprecated and will be removed in the next major version. Use ``include`` to configure PHPDoc annotations tags and attributes.
      | Allowed types: ``array``
-     | Default value: ``['internal']``
-   - | ``exclude``
-     | Class level attribute or annotation tags that must be omitted to fix the class, even if all of the white list ones are used as well (case insensitive).
-     | Allowed types: ``array``
-     | Default value: ``['final', 'Entity', 'ORM\\Entity', 'ORM\\Mapping\\Entity', 'Mapping\\Entity', 'Document', 'ODM\\Document']``
+     | Default value: ``['@internal']``
    - | ``consider_absent_docblock_as_internal_class``
      | Whether classes without any DocBlock should be fixed to final.
      | Allowed types: ``bool``
      | Default value: ``false``
+   - | ``exclude``
+     | Class level attribute or annotation tags that must be omitted to fix the class, even if all of the white list ones are used as well (case insensitive).
+     | Allowed types: ``array``
+     | Default value: ``['final', 'Entity', 'ORM\\Entity', 'ORM\\Mapping\\Entity', 'Mapping\\Entity', 'Document', 'ODM\\Document']``
+   - | ``include``
+     | Class level attribute or annotation tags that must be set in order to fix the class (case insensitive).
+     | Allowed types: ``array``
+     | Default value: ``['internal']``
 
 
    Part of rule set `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_
@@ -910,12 +910,12 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``closure_function_spacing``
-     | Spacing to use before open parenthesis for closures.
-     | Allowed values: ``'none'`` and ``'one'``
-     | Default value: ``'one'``
    - | ``closure_fn_spacing``
      | Spacing to use before open parenthesis for short arrow functions.
+     | Allowed values: ``'none'`` and ``'one'``
+     | Default value: ``'one'``
+   - | ``closure_function_spacing``
+     | Spacing to use before open parenthesis for closures.
      | Allowed values: ``'none'`` and ``'one'``
      | Default value: ``'one'``
    - | ``trailing_comma_single_line``
@@ -974,6 +974,10 @@ List of Available Rules
 
    Configuration options:
 
+   - | ``case_sensitive``
+     | Whether tags should be replaced only if they have exact same casing.
+     | Allowed types: ``bool``
+     | Default value: ``false``
    - | ``fix_annotation``
      | Whether annotation tags should be fixed.
      | Allowed types: ``bool``
@@ -986,10 +990,6 @@ List of Available Rules
      | A map of tags to replace.
      | Allowed types: ``array``
      | Default value: ``[]``
-   - | ``case_sensitive``
-     | Whether tags should be replaced only if they have exact same casing.
-     | Allowed types: ``bool``
-     | Default value: ``false``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -1010,6 +1010,10 @@ List of Available Rules
 
    Configuration options:
 
+   - | ``import_classes``
+     | Whether to import, not import or ignore global classes.
+     | Allowed values: ``false``, ``null`` and ``true``
+     | Default value: ``true``
    - | ``import_constants``
      | Whether to import, not import or ignore global constants.
      | Allowed values: ``false``, ``null`` and ``true``
@@ -1018,10 +1022,6 @@ List of Available Rules
      | Whether to import, not import or ignore global functions.
      | Allowed values: ``false``, ``null`` and ``true``
      | Default value: ``null``
-   - | ``import_classes``
-     | Whether to import, not import or ignore global classes.
-     | Allowed values: ``false``, ``null`` and ``true``
-     | Default value: ``true``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -1038,14 +1038,14 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``header``
-     | Proper header content.
-     | Allowed types: ``string``
-     | This option is required.
    - | ``comment_type``
      | Comment syntax type.
      | Allowed values: ``'comment'`` and ``'PHPDoc'``
      | Default value: ``'comment'``
+   - | ``header``
+     | Proper header content.
+     | Allowed types: ``string``
+     | This option is required.
    - | ``location``
      | The location of the inserted header.
      | Allowed values: ``'after_declare_strict'`` and ``'after_open'``
@@ -1237,14 +1237,6 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``keep_multiple_spaces_after_comma``
-     | Whether keep multiple spaces after comma.
-     | Allowed types: ``bool``
-     | Default value: ``false``
-   - | ``on_multiline``
-     | Defines how to handle function arguments lists that contain newlines.
-     | Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'`` and ``'ignore'``
-     | Default value: ``'ensure_fully_multiline'``
    - | ``after_heredoc``
      | Whether the whitespace between heredoc end and comma should be removed.
      | Allowed types: ``bool``
@@ -1253,6 +1245,14 @@ List of Available Rules
      | Defines how to handle argument attributes when function definition is multiline.
      | Allowed values: ``'ignore'``, ``'same_line'`` and ``'standalone'``
      | Default value: ``'standalone'``
+   - | ``keep_multiple_spaces_after_comma``
+     | Whether keep multiple spaces after comma.
+     | Allowed types: ``bool``
+     | Default value: ``false``
+   - | ``on_multiline``
+     | Defines how to handle function arguments lists that contain newlines.
+     | Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'`` and ``'ignore'``
+     | Default value: ``'ensure_fully_multiline'``
 
 
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PHP73Migration <./ruleSets/PHP73Migration.rst>`_ `@PHP74Migration <./ruleSets/PHP74Migration.rst>`_ `@PHP80Migration <./ruleSets/PHP80Migration.rst>`_ `@PHP81Migration <./ruleSets/PHP81Migration.rst>`_ `@PHP82Migration <./ruleSets/PHP82Migration.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -1315,6 +1315,10 @@ List of Available Rules
 
    Configuration options:
 
+   - | ``exclude``
+     | List of constants to ignore.
+     | Allowed types: ``array``
+     | Default value: ``['null', 'false', 'true']``
    - | ``fix_built_in``
      | Whether to fix constants returned by ``get_defined_constants``. User constants are not accounted in this list and must be specified in the include one.
      | Allowed types: ``bool``
@@ -1323,10 +1327,6 @@ List of Available Rules
      | List of additional constants to fix.
      | Allowed types: ``array``
      | Default value: ``[]``
-   - | ``exclude``
-     | List of constants to ignore.
-     | Allowed types: ``array``
-     | Default value: ``['null', 'false', 'true']``
    - | ``scope``
      | Only fix constant invocations that are made within a namespace or fix all.
      | Allowed values: ``'all'`` and ``'namespaced'``
@@ -1398,12 +1398,12 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``named_class``
-     | Whether named classes should be followed by parentheses.
-     | Allowed types: ``bool``
-     | Default value: ``true``
    - | ``anonymous_class``
      | Whether anonymous classes should be followed by parentheses.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``named_class``
+     | Whether named classes should be followed by parentheses.
      | Allowed types: ``bool``
      | Default value: ``true``
 
@@ -1415,12 +1415,12 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``named_class``
-     | Whether named classes should be followed by parentheses.
-     | Allowed types: ``bool``
-     | Default value: ``true``
    - | ``anonymous_class``
      | Whether anonymous classes should be followed by parentheses.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``named_class``
+     | Whether named classes should be followed by parentheses.
      | Allowed types: ``bool``
      | Default value: ``true``
 
@@ -1745,12 +1745,12 @@ List of Available Rules
      | Whether type ``mixed`` without description is allowed (``true``) or considered superfluous (``false``).
      | Allowed types: ``bool``
      | Default value: ``false``
-   - | ``remove_inheritdoc``
-     | Remove ``@inheritDoc`` tags.
-     | Allowed types: ``bool``
-     | Default value: ``false``
    - | ``allow_unused_params``
      | Whether ``param`` annotation without actual signature is allowed (``true``) or considered superfluous (``false``).
+     | Allowed types: ``bool``
+     | Default value: ``false``
+   - | ``remove_inheritdoc``
+     | Remove ``@inheritDoc`` tags.
      | Allowed types: ``bool``
      | Default value: ``false``
 
@@ -2084,6 +2084,10 @@ List of Available Rules
 
    Configuration options:
 
+   - | ``case_sensitive``
+     | Whether the sorting should be case sensitive.
+     | Allowed types: ``bool``
+     | Default value: ``false``
    - | ``order``
      | List of strings defining order of elements.
      | Allowed types: ``array``
@@ -2092,10 +2096,6 @@ List of Available Rules
      | How multiple occurrences of same type statements should be sorted.
      | Allowed values: ``'alpha'`` and ``'none'``
      | Default value: ``'none'``
-   - | ``case_sensitive``
-     | Whether the sorting should be case sensitive.
-     | Allowed types: ``bool``
-     | Default value: ``false``
 
 
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -2107,18 +2107,18 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``sort_algorithm``
-     | Whether the statements should be sorted alphabetically or by length, or not sorted.
-     | Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
-     | Default value: ``'alpha'``
-   - | ``imports_order``
-     | Defines the order of import types.
-     | Allowed types: ``array`` and ``null``
-     | Default value: ``null``
    - | ``case_sensitive``
      | Whether the sorting should be case sensitive.
      | Allowed types: ``bool``
      | Default value: ``false``
+   - | ``imports_order``
+     | Defines the order of import types.
+     | Allowed types: ``array`` and ``null``
+     | Default value: ``null``
+   - | ``sort_algorithm``
+     | Whether the statements should be sorted alphabetically or by length, or not sorted.
+     | Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
+     | Default value: ``'alpha'``
 
 
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -2130,18 +2130,18 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``order``
-     | How the interfaces should be ordered.
-     | Allowed values: ``'alpha'`` and ``'length'``
-     | Default value: ``'alpha'``
-   - | ``direction``
-     | Which direction the interfaces should be ordered.
-     | Allowed values: ``'ascend'`` and ``'descend'``
-     | Default value: ``'ascend'``
    - | ``case_sensitive``
      | Whether the sorting should be case sensitive.
      | Allowed types: ``bool``
      | Default value: ``false``
+   - | ``direction``
+     | Which direction the interfaces should be ordered.
+     | Allowed values: ``'ascend'`` and ``'descend'``
+     | Default value: ``'ascend'``
+   - | ``order``
+     | How the interfaces should be ordered.
+     | Allowed values: ``'alpha'`` and ``'length'``
+     | Default value: ``'alpha'``
 
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\OrderedInterfacesFixer <./../src/Fixer/ClassNotation/OrderedInterfacesFixer.php>`_
@@ -2168,18 +2168,18 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``sort_algorithm``
-     | Whether the types should be sorted alphabetically, or not sorted.
-     | Allowed values: ``'alpha'`` and ``'none'``
-     | Default value: ``'alpha'``
-   - | ``null_adjustment``
-     | Forces the position of ``null`` (overrides ``sort_algorithm``).
-     | Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
-     | Default value: ``'always_first'``
    - | ``case_sensitive``
      | Whether the sorting should be case sensitive.
      | Allowed types: ``bool``
      | Default value: ``false``
+   - | ``null_adjustment``
+     | Forces the position of ``null`` (overrides ``sort_algorithm``).
+     | Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
+     | Default value: ``'always_first'``
+   - | ``sort_algorithm``
+     | Whether the types should be sorted alphabetically, or not sorted.
+     | Allowed values: ``'alpha'`` and ``'none'``
+     | Default value: ``'alpha'``
 
 
    Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
@@ -2206,14 +2206,14 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``tags``
-     | The tags that should be aligned. Allowed values are tags with name (``'param', 'property', 'property-read', 'property-write', 'phpstan-param', 'phpstan-property', 'phpstan-property-read', 'phpstan-property-write', 'phpstan-assert', 'phpstan-assert-if-true', 'phpstan-assert-if-false', 'psalm-param', 'psalm-param-out', 'psalm-property', 'psalm-property-read', 'psalm-property-write', 'psalm-assert', 'psalm-assert-if-true', 'psalm-assert-if-false'``), tags with method signature (``'method', 'phpstan-method', 'psalm-method'``) and any custom tag with description (e.g. ``@tag <desc>``).
-     | Allowed types: ``array``
-     | Default value: ``['method', 'param', 'property', 'return', 'throws', 'type', 'var']``
    - | ``align``
      | How comments should be aligned.
      | Allowed values: ``'left'`` and ``'vertical'``
      | Default value: ``'vertical'``
+   - | ``tags``
+     | The tags that should be aligned. Allowed values are tags with name (``'param', 'property', 'property-read', 'property-write', 'phpstan-param', 'phpstan-property', 'phpstan-property-read', 'phpstan-property-write', 'phpstan-assert', 'phpstan-assert-if-true', 'phpstan-assert-if-false', 'psalm-param', 'psalm-param-out', 'psalm-property', 'psalm-property-read', 'psalm-property-write', 'psalm-assert', 'psalm-assert-if-true', 'psalm-assert-if-false'``), tags with method signature (``'method', 'phpstan-method', 'psalm-method'``) and any custom tag with description (e.g. ``@tag <desc>``).
+     | Allowed types: ``array``
+     | Default value: ``['method', 'param', 'property', 'return', 'throws', 'type', 'var']``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -2258,12 +2258,12 @@ List of Available Rules
      | Whether const blocks should be single or multi line.
      | Allowed values: ``'multi'``, ``'single'`` and ``null``
      | Default value: ``'multi'``
-   - | ``property``
-     | Whether property doc blocks should be single or multi line.
-     | Allowed values: ``'multi'``, ``'single'`` and ``null``
-     | Default value: ``'multi'``
    - | ``method``
      | Whether method doc blocks should be single or multi line.
+     | Allowed values: ``'multi'``, ``'single'`` and ``null``
+     | Default value: ``'multi'``
+   - | ``property``
+     | Whether property doc blocks should be single or multi line.
      | Allowed values: ``'multi'``, ``'single'`` and ``null``
      | Default value: ``'multi'``
 
@@ -2545,18 +2545,18 @@ List of Available Rules
 
    Configuration options:
 
-   - | ``sort_algorithm``
-     | The sorting algorithm to apply.
-     | Allowed values: ``'alpha'`` and ``'none'``
-     | Default value: ``'alpha'``
-   - | ``null_adjustment``
-     | Forces the position of ``null`` (overrides ``sort_algorithm``).
-     | Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
-     | Default value: ``'always_first'``
    - | ``case_sensitive``
      | Whether the sorting should be case sensitive.
      | Allowed types: ``bool``
      | Default value: ``false``
+   - | ``null_adjustment``
+     | Forces the position of ``null`` (overrides ``sort_algorithm``).
+     | Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
+     | Default value: ``'always_first'``
+   - | ``sort_algorithm``
+     | The sorting algorithm to apply.
+     | Allowed values: ``'alpha'`` and ``'none'``
+     | Default value: ``'alpha'``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -3181,14 +3181,14 @@ List of Available Rules
      | List of constructs which must contain a single space.
      | Allowed values: a subset of ``['yield_from']``
      | Default value: ``['yield_from']``
-   - | ``constructs_preceded_by_a_single_space``
-     | List of constructs which must be preceded by a single space.
-     | Allowed values: a subset of ``['as', 'use_lambda']``
-     | Default value: ``['as', 'use_lambda']``
    - | ``constructs_followed_by_a_single_space``
      | List of constructs which must be followed by a single space.
      | Allowed values: a subset of ``['abstract', 'as', 'attribute', 'break', 'case', 'catch', 'class', 'clone', 'comment', 'const', 'const_import', 'continue', 'do', 'echo', 'else', 'elseif', 'enum', 'extends', 'final', 'finally', 'for', 'foreach', 'function', 'function_import', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'insteadof', 'interface', 'match', 'named_argument', 'namespace', 'new', 'open_tag_with_echo', 'php_doc', 'php_open', 'print', 'private', 'protected', 'public', 'readonly', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'trait', 'try', 'type_colon', 'use', 'use_lambda', 'use_trait', 'var', 'while', 'yield', 'yield_from']``
      | Default value: ``['abstract', 'as', 'attribute', 'break', 'case', 'catch', 'class', 'clone', 'comment', 'const', 'const_import', 'continue', 'do', 'echo', 'else', 'elseif', 'enum', 'extends', 'final', 'finally', 'for', 'foreach', 'function', 'function_import', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'insteadof', 'interface', 'match', 'named_argument', 'namespace', 'new', 'open_tag_with_echo', 'php_doc', 'php_open', 'print', 'private', 'protected', 'public', 'readonly', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'trait', 'try', 'type_colon', 'use', 'use_lambda', 'use_trait', 'var', 'while', 'yield', 'yield_from']``
+   - | ``constructs_preceded_by_a_single_space``
+     | List of constructs which must be preceded by a single space.
+     | Allowed values: a subset of ``['as', 'use_lambda']``
+     | Default value: ``['as', 'use_lambda']``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -3489,6 +3489,10 @@ List of Available Rules
 
    Configuration options:
 
+   - | ``always_move_variable``
+     | Whether variables should always be on non assignable side when applying Yoda style.
+     | Allowed types: ``bool``
+     | Default value: ``false``
    - | ``equal``
      | Style for equal (``==``, ``!=``) statements.
      | Allowed types: ``bool`` and ``null``
@@ -3501,10 +3505,6 @@ List of Available Rules
      | Style for less and greater than (``<``, ``<=``, ``>``, ``>=``) statements.
      | Allowed types: ``bool`` and ``null``
      | Default value: ``null``
-   - | ``always_move_variable``
-     | Whether variables should always be on non assignable side when applying Yoda style.
-     | Allowed types: ``bool``
-     | Default value: ``false``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
