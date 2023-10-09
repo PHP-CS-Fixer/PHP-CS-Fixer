@@ -2174,6 +2174,8 @@ List of Available Rules
      | Default value: ``false``
 
 
+   Part of rule set `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_
+
    `Source PhpCsFixer\\Fixer\\ClassNotation\\OrderedTypesFixer <./../src/Fixer/ClassNotation/OrderedTypesFixer.php>`_
 -  `phpdoc_add_missing_param_annotation <./rules/phpdoc/phpdoc_add_missing_param_annotation.rst>`_
 

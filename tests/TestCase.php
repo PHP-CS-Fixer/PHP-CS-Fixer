@@ -15,12 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
-use PHPUnitGoodPractices\Polyfill\PolyfillTrait;
-use PHPUnitGoodPractices\Traits\ExpectationViaCodeOverAnnotationTrait;
-use PHPUnitGoodPractices\Traits\ExpectOverSetExceptionTrait;
-use PHPUnitGoodPractices\Traits\IdentityOverEqualityTrait;
-use PHPUnitGoodPractices\Traits\ProphecyOverMockObjectTrait;
-use PHPUnitGoodPractices\Traits\ProphesizeOnlyInterfaceTrait;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
@@ -29,23 +23,8 @@ use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
  *
  * @internal
  */
-abstract class InterimTestCase extends BaseTestCase
+abstract class TestCase extends BaseTestCase
 {
-    use ProphecyTrait;
-}
-
-/**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
- */
-abstract class TestCase extends InterimTestCase
-{
-    use ExpectationViaCodeOverAnnotationTrait;
     use ExpectDeprecationTrait;
-    use ExpectOverSetExceptionTrait;
-    use IdentityOverEqualityTrait;
-    use PolyfillTrait;
-    use ProphecyOverMockObjectTrait;
-    use ProphesizeOnlyInterfaceTrait;
+    use ProphecyTrait;
 }
