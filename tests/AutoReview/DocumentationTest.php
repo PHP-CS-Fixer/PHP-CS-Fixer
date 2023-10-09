@@ -194,9 +194,10 @@ final class DocumentationTest extends TestCase
     {
         $locator = new DocumentationLocator();
         $usage = $locator->getUsageFilePath();
-        \assert(is_file($usage));
+        $this->assertFileExists($usage);
+
         $usage = file_get_contents($usage);
-        \assert(\is_string($usage));
+        $this->assertIsString($usage);
 
         $reporterFactory = new ReporterFactory();
         $reporterFactory->registerBuiltInReporters();
