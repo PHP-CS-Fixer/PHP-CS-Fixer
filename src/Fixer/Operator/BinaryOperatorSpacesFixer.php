@@ -924,6 +924,25 @@ $array = [
                     $delta = abs($rightmostSymbol - $currentSymbol);
 
                     if ($delta > 0) {
+                        if (
+                            self::ALIGN !== $alignStrategy
+                            && self::ALIGN_BY_SCOPE !== $alignStrategy
+                        ) {
+                            foreach (array_keys($this->alignOperatorTokens) as $alignOperatorToken) {
+                                $escapedAlignOperator = preg_quote($alignOperatorToken, '/');
+                                $pattern = '/(?<!'
+                                    .preg_quote($placeholder, '/')
+                                    .preg_quote($tokenContent, '/')
+                                    .')\s+('
+                                    .$escapedAlignOperator
+                                    .')/';
+
+                                if (preg_match($pattern, $line, $matches)) {
+                                    $line = preg_replace($pattern, ' '.trim($matches[0]), $line);
+                                }
+                            }
+                        }
+
                         $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
                         $lines[$index] = $line;
                     }
