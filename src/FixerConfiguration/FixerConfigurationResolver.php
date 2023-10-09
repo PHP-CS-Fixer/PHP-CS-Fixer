@@ -39,11 +39,11 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
             $this->addOption($option);
         }
 
-        usort($this->options, static fn (FixerOptionInterface $a, FixerOptionInterface $b): int => strcmp($a->getName(), $b->getName()));
-
         if (0 === \count($this->registeredNames)) {
             throw new \LogicException('Options cannot be empty.');
         }
+
+        usort($this->options, static fn (FixerOptionInterface $a, FixerOptionInterface $b): int => strcmp($a->getName(), $b->getName()));
     }
 
     public function getOptions(): array
