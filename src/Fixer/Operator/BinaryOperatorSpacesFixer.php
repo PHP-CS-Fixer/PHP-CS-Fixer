@@ -937,8 +937,10 @@ $array = [
                                     .$escapedAlignOperator
                                     .')/';
 
-                                if (preg_match($pattern, $line, $matches)) {
-                                    $line = preg_replace($pattern, ' '.trim($matches[0]), $line);
+                                var_dump($pattern);
+
+                                if (Preg::match($pattern, $line, $matches)) {
+                                    $line = Preg::replace($pattern, ' '.trim($matches[0]), $line);
                                 }
                             }
                         }
