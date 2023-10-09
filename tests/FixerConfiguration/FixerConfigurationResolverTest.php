@@ -65,13 +65,22 @@ final class FixerConfigurationResolverTest extends TestCase
 
     public function testGetOptions(): void
     {
+        $fooOption = new FixerOption('foo', 'Bar.');
+        $bazOption = new FixerOption('baz', 'Qux.');
+
         $options = [
-            new FixerOption('foo', 'Bar.'),
-            new FixerOption('baz', 'Qux.'),
+            $fooOption,
+            $bazOption,
         ];
+
         $configuration = new FixerConfigurationResolver($options);
 
-        self::assertSame($options, $configuration->getOptions());
+        $expected = [
+            $bazOption,
+            $fooOption,
+        ];
+
+        self::assertSame($expected, $configuration->getOptions());
     }
 
     public function testResolve(): void
