@@ -7,14 +7,14 @@ Sorts PHPDoc types.
 Configuration
 -------------
 
-``sort_algorithm``
+``case_sensitive``
 ~~~~~~~~~~~~~~~~~~
 
-The sorting algorithm to apply.
+Whether the sorting should be case sensitive.
 
-Allowed values: ``'alpha'`` and ``'none'``
+Allowed types: ``bool``
 
-Default value: ``'alpha'``
+Default value: ``false``
 
 ``null_adjustment``
 ~~~~~~~~~~~~~~~~~~~
@@ -25,14 +25,14 @@ Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
 
 Default value: ``'always_first'``
 
-``case_sensitive``
+``sort_algorithm``
 ~~~~~~~~~~~~~~~~~~
 
-Whether the sorting should be case sensitive.
+The sorting algorithm to apply.
 
-Allowed types: ``bool``
+Allowed values: ``'alpha'`` and ``'none'``
 
-Default value: ``false``
+Default value: ``'alpha'``
 
 Examples
 --------

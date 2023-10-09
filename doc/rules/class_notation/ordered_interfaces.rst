@@ -7,14 +7,14 @@ Orders the interfaces in an ``implements`` or ``interface extends`` clause.
 Configuration
 -------------
 
-``order``
-~~~~~~~~~
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
 
-How the interfaces should be ordered.
+Whether the sorting should be case sensitive.
 
-Allowed values: ``'alpha'`` and ``'length'``
+Allowed types: ``bool``
 
-Default value: ``'alpha'``
+Default value: ``false``
 
 ``direction``
 ~~~~~~~~~~~~~
@@ -25,14 +25,14 @@ Allowed values: ``'ascend'`` and ``'descend'``
 
 Default value: ``'ascend'``
 
-``case_sensitive``
-~~~~~~~~~~~~~~~~~~
+``order``
+~~~~~~~~~
 
-Whether the sorting should be case sensitive.
+How the interfaces should be ordered.
 
-Allowed types: ``bool``
+Allowed values: ``'alpha'`` and ``'length'``
 
-Default value: ``false``
+Default value: ``'alpha'``
 
 Examples
 --------

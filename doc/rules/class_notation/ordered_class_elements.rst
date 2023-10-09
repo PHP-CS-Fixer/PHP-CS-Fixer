@@ -32,6 +32,15 @@ the order of that specific method.
 Configuration
 -------------
 
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether the sorting should be case sensitive.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``order``
 ~~~~~~~~~
 
@@ -49,15 +58,6 @@ How multiple occurrences of same type statements should be sorted.
 Allowed values: ``'alpha'`` and ``'none'``
 
 Default value: ``'none'``
-
-``case_sensitive``
-~~~~~~~~~~~~~~~~~~
-
-Whether the sorting should be case sensitive.
-
-Allowed types: ``bool``
-
-Default value: ``false``
 
 Examples
 --------

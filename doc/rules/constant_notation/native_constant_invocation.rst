@@ -17,6 +17,15 @@ Risky when any of the constants are namespaced or overridden.
 Configuration
 -------------
 
+``exclude``
+~~~~~~~~~~~
+
+List of constants to ignore.
+
+Allowed types: ``array``
+
+Default value: ``['null', 'false', 'true']``
+
 ``fix_built_in``
 ~~~~~~~~~~~~~~~~
 
@@ -35,15 +44,6 @@ List of additional constants to fix.
 Allowed types: ``array``
 
 Default value: ``[]``
-
-``exclude``
-~~~~~~~~~~~
-
-List of constants to ignore.
-
-Allowed types: ``array``
-
-Default value: ``['null', 'false', 'true']``
 
 ``scope``
 ~~~~~~~~~

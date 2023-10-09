@@ -7,19 +7,19 @@ Spaces should be properly placed in a function declaration.
 Configuration
 -------------
 
-``closure_function_spacing``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``closure_fn_spacing``
+~~~~~~~~~~~~~~~~~~~~~~
 
-Spacing to use before open parenthesis for closures.
+Spacing to use before open parenthesis for short arrow functions.
 
 Allowed values: ``'none'`` and ``'one'``
 
 Default value: ``'one'``
 
-``closure_fn_spacing``
-~~~~~~~~~~~~~~~~~~~~~~
+``closure_function_spacing``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Spacing to use before open parenthesis for short arrow functions.
+Spacing to use before open parenthesis for closures.
 
 Allowed values: ``'none'`` and ``'one'``
 

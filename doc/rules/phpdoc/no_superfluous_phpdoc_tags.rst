@@ -18,20 +18,20 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
-``remove_inheritdoc``
-~~~~~~~~~~~~~~~~~~~~~
-
-Remove ``@inheritDoc`` tags.
-
-Allowed types: ``bool``
-
-Default value: ``false``
-
 ``allow_unused_params``
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Whether ``param`` annotation without actual signature is allowed (``true``) or
 considered superfluous (``false``).
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
+``remove_inheritdoc``
+~~~~~~~~~~~~~~~~~~~~~
+
+Remove ``@inheritDoc`` tags.
 
 Allowed types: ``bool``
 

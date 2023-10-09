@@ -17,19 +17,19 @@ Allowed values: ``'multi'``, ``'single'`` and ``null``
 
 Default value: ``'multi'``
 
-``property``
-~~~~~~~~~~~~
+``method``
+~~~~~~~~~~
 
-Whether property doc blocks should be single or multi line.
+Whether method doc blocks should be single or multi line.
 
 Allowed values: ``'multi'``, ``'single'`` and ``null``
 
 Default value: ``'multi'``
 
-``method``
-~~~~~~~~~~
+``property``
+~~~~~~~~~~~~
 
-Whether method doc blocks should be single or multi line.
+Whether property doc blocks should be single or multi line.
 
 Allowed values: ``'multi'``, ``'single'`` and ``null``
 
