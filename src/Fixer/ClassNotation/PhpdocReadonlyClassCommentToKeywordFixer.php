@@ -79,7 +79,7 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
                 $annotation->remove();
             }
 
-            if (count($annotations) === 0) {
+            if (0 === \count($annotations)) {
                 continue;
             }
 
