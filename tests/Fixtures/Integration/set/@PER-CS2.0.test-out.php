@@ -48,3 +48,5 @@ class Aaa implements
 $a = new Foo();
 $b = (bool) 1;
 $c = true ? (int) '1' : 2;
+
+$fn = fn($a) => $a;
