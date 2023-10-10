@@ -19,61 +19,116 @@ jobs:
         include:
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
-            job-description: 'with lowest deps'
+            job-description: 'tests'
+            run-tests: 'yes'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.4'
+            job-description: 'Fixer with lowest deps'
+            fixer-mode: 'standard'
             composer-flags: '--prefer-lowest' # should be checked on the lowest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
-            job-description: 'with PHPDoc to type rules'
-            phpdoc-to-type-rules: 'yes' # should be checked on the lowest supported PHP version
+            job-description: 'Fixer with PHPDoc to type rules'
+            fixer-mode: 'phpdoc-to-type-rules' # should be checked on the lowest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
-            job-description: 'with Symfony ^5'
+            job-description: 'Fixer with Symfony ^5'
+            fixer-mode: 'standard'
             execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.0'
+            job-description: 'Fixer'
+            fixer-mode: 'standard'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.0'
+            job-description: 'tests'
+            run-tests: 'yes'
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.1'
-            job-description: 'with Symfony ^6'
+            job-description: 'Fixer'
+            fixer-mode: 'standard'
+            execute-flex-with-symfony-version: '^6' # explicit check for Symfony 6.x compatibility
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.1'
+            job-description: 'tests'
+            run-tests: 'yes'
             execute-flex-with-symfony-version: '^6' # explicit check for Symfony 6.x compatibility
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
+            job-description: 'Fixer'
+            fixer-mode: 'standard'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
             job-description: 'with migration rules'
-            migration-rules: 'yes' # should be checked on the highest supported PHP version
+            fixer-mode: 'migration-rules' # should be checked on the highest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
             job-description: 'auto-review'
+            run-tests: 'yes'
             phpunit-flags: '--group auto-review'
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
-            job-description: 'with calculating code coverage'
-            calculate-code-coverage: 'yes'
+            job-description: 'tests'
+            run-tests: 'yes'
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
-            job-description: 'with deployment'
-            execute-deployment: 'yes'
+            job-description: 'code coverage'
+            code-coverage: 'yes'
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '8.3'
-            PHP_CS_FIXER_IGNORE_ENV: 1
-            composer-flags: '--ignore-platform-req=PHP'
+            php-version: '8.2'
+            job-description: 'deployment check'
+            execute-deployment: 'yes'
 
           - operating-system: 'windows-latest'
             php-version: '8.2'
-            job-description: 'on Windows'
+            job-description: 'Fixer on Windows'
+            fixer-mode: 'standard'
+            FAST_LINT_TEST_CASES: 1
+
+          - operating-system: 'windows-latest'
+            php-version: '8.2'
+            job-description: 'tests on Windows'
+            run-tests: 'yes'
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: 'macos-latest'
             php-version: '8.2'
-            job-description: 'on macOS'
+            job-description: 'Fixer on macOS'
+            fixer-mode: 'standard'
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
+
+          - operating-system: 'macos-latest'
+            php-version: '8.2'
+            job-description: 'tests on macOS'
+            run-tests: 'yes'
+            FAST_LINT_TEST_CASES: 1
+
+          - operating-system: 'ubuntu-22.04'
+            php-version: '8.3'
+            job-description: 'Fixer'
+            fixer-mode: 'standard'
+            composer-flags: '--ignore-platform-req=PHP'
+            PHP_CS_FIXER_IGNORE_ENV: 1
+
+          - operating-system: 'ubuntu-22.04'
+            php-version: '8.3'
+            job-description: 'tests'
+            run-tests: 'yes'
+            composer-flags: '--ignore-platform-req=PHP'
+            PHP_CS_FIXER_IGNORE_ENV: 1
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
 
@@ -87,7 +142,7 @@ jobs:
         uses: actions/github-script@v6
         id: code-coverage-driver
         with:
-          script: 'return "${{ matrix.calculate-code-coverage }}" == "yes" ? "pcov" : "none"'
+          script: 'return "${{ matrix.code-coverage }}" == "yes" ? "pcov" : "none"'
           result-encoding: string
 
       - name: Setup PHP
@@ -131,37 +186,38 @@ jobs:
       # execute migration rules before running tests and self-fixing,
       # so that we know that our codebase is future-ready
       - name: Run PHP CS Fixer with migration rules
-        if: matrix.migration-rules == 'yes'
+        if: matrix.fixer-mode == 'migration-rules'
         run: php php-cs-fixer fix --config .php-cs-fixer.php-highest.php -q
 
       - name: Disable time limit for tests when collecting coverage
-        if: matrix.calculate-code-coverage == 'yes'
+        if: matrix.code-coverage == 'yes'
         run: sed 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' phpunit.xml.dist > phpunit.xml
 
       - name: Run tests
-        if: matrix.calculate-code-coverage != 'yes'
+        if: matrix.run-tests == 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
         run: vendor/bin/paraunit run ${{ matrix.phpunit-flags || '--exclude-group auto-review' }}
 
       - name: Collect code coverage
-        if: matrix.calculate-code-coverage == 'yes'
+        if: matrix.code-coverage == 'yes'
         env:
           FAST_LINT_TEST_CASES: 1
         run: vendor/bin/paraunit coverage --testsuite coverage --exclude-group covers-nothing --clover build/logs/clover.xml
 
       - name: Upload coverage results to Coveralls
-        if: matrix.calculate-code-coverage == 'yes'
+        if: matrix.code-coverage == 'yes'
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: php vendor/bin/php-coveralls --verbose
 
       - name: Run PHP CS Fixer with PHPDoc to type rules
-        if: matrix.phpdoc-to-type-rules == 'yes'
+        if: matrix.fixer-mode == 'phpdoc-to-type-rules'
         run: php php-cs-fixer check --diff -v --config .php-cs-fixer.php-lowest.php
 
       - name: Run PHP CS Fixer
+        if: matrix.fixer-mode == 'standard'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           PHP_CS_FIXER_FUTURE_MODE: 1
