@@ -10,6 +10,7 @@ readonly class Foo
 {
 
 }
+
 --INPUT--
 <?php
 
