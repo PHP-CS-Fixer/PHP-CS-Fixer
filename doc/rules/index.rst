@@ -209,6 +209,9 @@ Class Notation
 - `ordered_types <./class_notation/ordered_types.rst>`_
 
   Sort union types and intersection types using configured order.
+- `phpdoc_readonly_class_comment_to_keyword <./class_notation/phpdoc_readonly_class_comment_to_keyword.rst>`_
+
+  Converts readonly comment on classes to the readonly keyword.
 - `protected_to_private <./class_notation/protected_to_private.rst>`_
 
   Converts ``protected`` variables and methods to ``private`` where possible.
@@ -752,9 +755,6 @@ PHPDoc
 - `phpdoc_param_order <./phpdoc/phpdoc_param_order.rst>`_
 
   Orders all ``@param`` annotations in DocBlocks according to method signature.
-- `phpdoc_readonly_comment_to_keyword <./phpdoc/phpdoc_readonly_comment_to_keyword.rst>`_
-
-  Converts readonly comment to readonly keyword.
 - `phpdoc_return_self_reference <./phpdoc/phpdoc_return_self_reference.rst>`_
 
   The type of ``@return`` annotations of methods returning a reference to itself must the configured one.

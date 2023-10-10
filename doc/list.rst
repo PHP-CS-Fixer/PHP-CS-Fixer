@@ -2337,11 +2337,11 @@ List of Available Rules
    Orders all ``@param`` annotations in DocBlocks according to method signature.
 
    `Source PhpCsFixer\\Fixer\\Phpdoc\\PhpdocParamOrderFixer <./../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php>`_
--  `phpdoc_readonly_comment_to_keyword <./rules/phpdoc/phpdoc_readonly_comment_to_keyword.rst>`_
+-  `phpdoc_readonly_class_comment_to_keyword <./rules/class_notation/phpdoc_readonly_class_comment_to_keyword.rst>`_
 
-   Converts readonly comment to readonly keyword.
+   Converts readonly comment on classes to the readonly keyword.
 
-   `Source PhpCsFixer\\Fixer\\Phpdoc\\PhpdocReadonlyCommentToKeywordFixer <./../src/Fixer/Phpdoc/PhpdocReadonlyCommentToKeywordFixer.php>`_
+   `Source PhpCsFixer\\Fixer\\ClassNotation\\PhpdocReadonlyClassCommentToKeywordFixer <./../src/Fixer/ClassNotation/PhpdocReadonlyClassCommentToKeywordFixer.php>`_
 -  `phpdoc_return_self_reference <./rules/phpdoc/phpdoc_return_self_reference.rst>`_
 
    The type of ``@return`` annotations of methods returning a reference to itself must the configured one.

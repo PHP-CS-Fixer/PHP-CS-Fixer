@@ -12,7 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Fixer\Phpdoc;
+namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocReadonlyCommentToKeywordFixer
+ * @covers \PhpCsFixer\Fixer\ClassNotation\PhpdocReadonlyClassCommentToKeywordFixer
  */
-final class PhpdocReadonlyCommentToKeywordFixerTest extends AbstractFixerTestCase
+final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
@@ -132,6 +132,33 @@ final class PhpdocReadonlyCommentToKeywordFixerTest extends AbstractFixerTestCas
                  * @readonly
                  */
                 abstract class C {
+                }
+                EOT,
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php
+                /**
+                 */
+                readonly class A {
+                }
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @readonly
+                 */
+                readonly class A {
+                }
+                EOT,
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php
+                /** Class A. */
+                class A {
                 }
                 EOT,
         ];

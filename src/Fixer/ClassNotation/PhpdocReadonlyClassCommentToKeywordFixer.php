@@ -12,7 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Fixer\Phpdoc;
+namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
@@ -25,12 +25,13 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Marcel Behrmann <marcel@behrmann.dev>
  */
-final class PhpdocReadonlyCommentToKeywordFixer extends AbstractFixer
+final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      *
-     * Must run before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer, PhpdocAlignFixer.
+     * Must run before NoEmptyPhpdocFixer, NoExtraBlankLinesFixer, PhpdocAlignFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
     {
@@ -49,7 +50,7 @@ final class PhpdocReadonlyCommentToKeywordFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Converts readonly comment to readonly keyword.',
+            'Converts readonly comment on classes to the readonly keyword.',
             [
                 new CodeSample(
                     <<<EOT
@@ -78,8 +79,13 @@ final class PhpdocReadonlyCommentToKeywordFixer extends AbstractFixer
                 $annotation->remove();
             }
 
+            if (count($annotations) === 0) {
+                continue;
+            }
+
             $mainIndex = $index;
             $index = $tokens->getNextMeaningfulToken($index);
+            $addReadonly = true;
 
             while ($tokens[$index]->isGivenKind([
                 T_ABSTRACT,
@@ -87,7 +93,12 @@ final class PhpdocReadonlyCommentToKeywordFixer extends AbstractFixer
                 T_PRIVATE,
                 T_PUBLIC,
                 T_PROTECTED,
+                T_READONLY,
             ])) {
+                if ($tokens[$index]->isGivenKind([T_READONLY])) {
+                    $addReadonly = false;
+                }
+
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
@@ -95,7 +106,9 @@ final class PhpdocReadonlyCommentToKeywordFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens->insertAt($index, [new Token([T_READONLY, 'readonly']), new Token([T_WHITESPACE, ' '])]);
+            if ($addReadonly) {
+                $tokens->insertAt($index, [new Token([T_READONLY, 'readonly']), new Token([T_WHITESPACE, ' '])]);
+            }
 
             $newContent = $doc->getContent();
 
