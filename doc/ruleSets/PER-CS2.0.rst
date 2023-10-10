@@ -12,5 +12,9 @@ Rules
 
   ``['spacing' => 'one']``
 
+- `function_declaration <./../rules/function_notation/function_declaration.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'none']``
+
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_
