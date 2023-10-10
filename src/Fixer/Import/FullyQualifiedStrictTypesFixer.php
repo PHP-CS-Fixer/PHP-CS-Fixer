@@ -178,16 +178,15 @@ class SomeClass
             }
 
             if ('' === $namespaceName) {
-                // if we are in the global namespace and the type is not imported the leading '\' can be removed (TODO nice config candidate)
                 foreach ($uses as $useShortName) {
                     if (strtolower($useShortName) === $typeNameLower) {
                         continue 2;
                     }
                 }
 
+                // if we are in the global namespace and the type is not imported,
+                // we enforce/remove leading backslash (depending on the configuration)
                 if (true === $this->configuration['leading_backslash_in_global_namespace']) {
-                    // if we are in the global namespace and the type is not imported enforce the leading '\'
-                    // to unify CS with namespaced files
                     if (!$withLeadingBackslash && !isset($uses[$typeNameLower])) {
                         $tokens->overrideRange(
                             $startIndex,
