@@ -26,10 +26,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, bool> $config
+     *
      * @dataProvider provideNewLogicCases
      */
-    public function testNewLogic(string $expected, ?string $input = null): void
+    public function testNewLogic(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -39,6 +42,12 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
             '<?php
 namespace Foo\Bar;
 function test(\Foo\Bar $x) {}',
+        ];
+
+        yield 'reserved type' => [
+            '<?php
+
+function test(int $x): void {}',
         ];
 
         yield 'namespace cases' => [
@@ -86,6 +95,21 @@ namespace A\B\C\D
         yield 'simple use with global' => [
             '<?php use A\Exception; function foo(Exception $e, \Exception $e2) {}',
             '<?php use A\Exception; function foo(\A\Exception $e, \Exception $e2) {}',
+        ];
+
+        yield 'no backslash with global' => [
+            '<?php use A\Exception; function foo(Exception $e, Foo $e2) {}',
+            '<?php use A\Exception; function foo(A\Exception $e, \Foo $e2) {}',
+        ];
+
+        yield 'leading backslash in global namespace' => [
+            '<?php use A\Exception; function foo(Exception $e, \Foo $e2) {}',
+            '<?php use A\Exception; function foo(A\Exception $e, Foo $e2) {}',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'backslash must be kept when conflicts with other use with global' => [
+            '<?php use A\Exception; function foo(Exception $e, \Exception $e2) {}',
         ];
 
         yield 'simple use as' => [
@@ -705,12 +729,15 @@ class Two
     }
 
     /**
+     * @param array<string, bool> $config
+     *
      * @requires PHP 8.1
      *
      * @dataProvider provideFix81Cases
      */
-    public function testFix81(string $expected, ?string $input = null): void
+    public function testFix81(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -719,6 +746,16 @@ class Two
         yield [
             '<?php function f(): Foo&Bar & A\B\C {}',
             '<?php function f(): Foo&\Bar & \A\B\C {}',
+        ];
+
+        yield 'union/intersect param in global namespace without use' => [
+            '<?php
+function foo(\X|\Y $a, \X&\Y $b) {}
+function bar(\X|\Y $a, \X&\Y $b) {}',
+            '<?php
+function foo(\X|\Y $a, \X&\Y $b) {}
+function bar(X|Y $a, X&Y $b) {}',
+            ['leading_backslash_in_global_namespace' => true],
         ];
 
         yield [
@@ -746,17 +783,42 @@ class SomeClass
     }
 
     /**
+     * @param array<string, bool> $config
+     *
      * @requires PHP 8.2
      *
      * @dataProvider provideFix82Cases
      */
-    public function testFix82(string $expected, ?string $input = null): void
+    public function testFix82(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
     public static function provideFix82Cases(): iterable
     {
+        yield 'simple param in global namespace without use' => [
+            '<?php
+function foo(\X $x, \Y $y, int $z) {}
+function bar(\X $x, \Y $y, true $z) {}',
+            '<?php
+function foo(\X $x, \Y $y, int $z) {}
+function bar(X $x, Y $y, true $z) {}',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'simple return in global namespace without use' => [
+            '<?php
+function foo(): \X {}
+function bar(): \Y {}
+function x(): never {}',
+            '<?php
+function foo(): \X {}
+function bar(): Y {}
+function x(): never {}',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
         yield [
             '<?php function foo((A&B)|(x&y&Ze)|int|null $x) {}',
             '<?php function foo((\A&\B)|(\x&\y&\Ze)|int|null $x) {}',
