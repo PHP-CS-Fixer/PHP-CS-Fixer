@@ -35,15 +35,15 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
      */
     public function __construct(iterable $options)
     {
-        foreach ($options as $option) {
+        $fixerOptionSorter = new FixerOptionSorter();
+
+        foreach ($fixerOptionSorter->sort($options) as $option) {
             $this->addOption($option);
         }
 
         if (0 === \count($this->registeredNames)) {
             throw new \LogicException('Options cannot be empty.');
         }
-
-        usort($this->options, static fn (FixerOptionInterface $a, FixerOptionInterface $b): int => strcmp($a->getName(), $b->getName()));
     }
 
     public function getOptions(): array

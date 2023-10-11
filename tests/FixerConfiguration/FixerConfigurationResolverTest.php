@@ -18,6 +18,7 @@ use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionSorter;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
@@ -65,20 +66,15 @@ final class FixerConfigurationResolverTest extends TestCase
 
     public function testGetOptions(): void
     {
-        $fooOption = new FixerOption('foo', 'Bar.');
-        $bazOption = new FixerOption('baz', 'Qux.');
-
         $options = [
-            $fooOption,
-            $bazOption,
+            new FixerOption('foo', 'Bar.'),
+            new FixerOption('baz', 'Qux.'),
         ];
-
         $configuration = new FixerConfigurationResolver($options);
 
-        $expected = [
-            $bazOption,
-            $fooOption,
-        ];
+        $fixerOptionSorter = new FixerOptionSorter();
+
+        $expected = $fixerOptionSorter->sort($options);
 
         self::assertSame($expected, $configuration->getOptions());
     }
