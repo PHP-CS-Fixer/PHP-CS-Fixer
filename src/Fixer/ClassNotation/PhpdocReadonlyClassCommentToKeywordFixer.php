@@ -19,6 +19,8 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -40,11 +42,7 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        if (!\defined('T_READONLY')) {
-            return false;
-        }
-
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return \PHP_VERSION_ID >= 8_02_00 && $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -52,13 +50,14 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
         return new FixerDefinition(
             'Converts readonly comment on classes to the readonly keyword.',
             [
-                new CodeSample(
+                new VersionSpecificCodeSample(
                     <<<EOT
                             <?php
                             /** @readonly */
                             class C {
                             }\n
                         EOT,
+                    new VersionSpecification(8_02_00)
                 ),
             ]
         );
@@ -75,12 +74,12 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
 
             $annotations = $doc->getAnnotationsOfType('readonly');
 
-            foreach ($annotations as $annotation) {
-                $annotation->remove();
-            }
-
             if (0 === \count($annotations)) {
                 continue;
+            }
+
+            foreach ($annotations as $annotation) {
+                $annotation->remove();
             }
 
             $mainIndex = $index;
@@ -111,10 +110,6 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
             }
 
             $newContent = $doc->getContent();
-
-            if ($newContent === $token->getContent()) {
-                continue;
-            }
 
             if ('' === $newContent) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($mainIndex);

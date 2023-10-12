@@ -27,6 +27,8 @@ final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTe
 {
     /**
      * @dataProvider provideFixCases
+     *
+     * @requires PHP 8.2
      */
     public function testFix(string $expected, ?string $input = null): void
     {
