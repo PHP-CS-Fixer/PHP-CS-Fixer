@@ -209,7 +209,7 @@ Class Notation
 - `ordered_types <./class_notation/ordered_types.rst>`_
 
   Sort union types and intersection types using configured order.
-- `phpdoc_readonly_class_comment_to_keyword <./class_notation/phpdoc_readonly_class_comment_to_keyword.rst>`_
+- `phpdoc_readonly_class_comment_to_keyword <./class_notation/phpdoc_readonly_class_comment_to_keyword.rst>`_ *(risky)*
 
   Converts readonly comment on classes to the readonly keyword.
 - `protected_to_private <./class_notation/protected_to_private.rst>`_
