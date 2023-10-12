@@ -11,7 +11,7 @@ Using this rule is risky
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 If classes marked with ``@readonly`` annotation were extended anyway, applying
-this fixer may break the inheritance for these classes.
+this fixer may break the inheritance for their child classes.
 
 Examples
 --------
