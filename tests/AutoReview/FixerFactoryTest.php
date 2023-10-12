@@ -234,9 +234,10 @@ final class FixerFactoryTest extends TestCase
         }
 
         foreach ($graph as $fixerName => $edges) {
-            $expectedMessage = "/**\n     * {@inheritdoc}\n     *";
+            $expectedMessage = "/**\n     * {@inheritdoc}";
 
             foreach ($edges as $label => $others) {
+                $expectedMessage .= "\n     *";
                 if (\count($others) > 0) {
                     $shortClassNames = [];
 
@@ -245,7 +246,15 @@ final class FixerFactoryTest extends TestCase
                     }
 
                     sort($shortClassNames);
-                    $expectedMessage .= sprintf("\n     * Must run %s %s.", $label, implode(', ', $shortClassNames));
+
+                    $format = <<<'TXT'
+
+                             * Must run %s:
+                             *
+                             * - %s
+                        TXT;
+
+                    $expectedMessage .= sprintf($format, $label, implode("\n     * - ", $shortClassNames));
                 }
             }
 
