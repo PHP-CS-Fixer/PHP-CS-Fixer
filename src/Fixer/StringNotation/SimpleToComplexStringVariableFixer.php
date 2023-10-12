@@ -58,7 +58,9 @@ final class SimpleToComplexStringVariableFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after ExplicitStringVariableFixer.
+     * Must run after:
+     *
+     * - ExplicitStringVariableFixer
      */
     public function getPriority(): int
     {

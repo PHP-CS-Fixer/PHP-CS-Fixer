@@ -37,7 +37,9 @@ final class NoTrailingCommaInSinglelineFunctionCallFixer extends AbstractProxyFi
     /**
      * {@inheritdoc}
      *
-     * Must run before NoSpacesInsideParenthesisFixer.
+     * Must run before:
+     *
+     * - NoSpacesInsideParenthesisFixer
      */
     public function getPriority(): int
     {

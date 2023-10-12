@@ -72,7 +72,10 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
     /**
      * {@inheritdoc}
      *
-     * Must run after BracesFixer, StatementIndentationFixer.
+     * Must run after:
+     *
+     * - BracesFixer
+     * - StatementIndentationFixer
      */
     public function getPriority(): int
     {

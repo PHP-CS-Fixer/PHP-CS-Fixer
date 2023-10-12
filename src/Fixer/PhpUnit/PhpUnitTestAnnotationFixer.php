@@ -67,7 +67,11 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     /**
      * {@inheritdoc}
      *
-     * Must run before NoEmptyPhpdocFixer, PhpUnitMethodCasingFixer, PhpdocTrimFixer.
+     * Must run before:
+     *
+     * - NoEmptyPhpdocFixer
+     * - PhpUnitMethodCasingFixer
+     * - PhpdocTrimFixer
      */
     public function getPriority(): int
     {

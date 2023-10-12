@@ -63,8 +63,18 @@ else {
     /**
      * {@inheritdoc}
      *
-     * Must run before HeredocIndentationFixer.
-     * Must run after BracesPositionFixer, ClassAttributesSeparationFixer, CurlyBracesPositionFixer, MethodArgumentSpaceFixer, NoUselessElseFixer, YieldFromArrayToYieldsFixer.
+     * Must run before:
+     *
+     * - HeredocIndentationFixer
+     *
+     * Must run after:
+     *
+     * - BracesPositionFixer
+     * - ClassAttributesSeparationFixer
+     * - CurlyBracesPositionFixer
+     * - MethodArgumentSpaceFixer
+     * - NoUselessElseFixer
+     * - YieldFromArrayToYieldsFixer
      */
     public function getPriority(): int
     {

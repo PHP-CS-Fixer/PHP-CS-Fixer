@@ -44,8 +44,18 @@ final class PhpdocTagCasingFixer extends AbstractProxyFixer implements Configura
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocAlignFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run before:
+     *
+     * - PhpdocAlignFixer
+     *
+     * Must run after:
+     *
+     * - AlignMultilineCommentFixer
+     * - CommentToPhpdocFixer
+     * - PhpdocIndentFixer
+     * - PhpdocScalarFixer
+     * - PhpdocToCommentFixer
+     * - PhpdocTypesFixer
      */
     public function getPriority(): int
     {

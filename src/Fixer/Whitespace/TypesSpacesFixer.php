@@ -63,7 +63,10 @@ final class TypesSpacesFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * {@inheritdoc}
      *
-     * Must run after NullableTypeDeclarationFixer, OrderedTypesFixer.
+     * Must run after:
+     *
+     * - NullableTypeDeclarationFixer
+     * - OrderedTypesFixer
      */
     public function getPriority(): int
     {

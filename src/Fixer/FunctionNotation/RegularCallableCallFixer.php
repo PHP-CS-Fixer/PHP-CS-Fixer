@@ -58,8 +58,14 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
     /**
      * {@inheritdoc}
      *
-     * Must run before NativeFunctionInvocationFixer.
-     * Must run after NoBinaryStringFixer, NoUselessConcatOperatorFixer.
+     * Must run before:
+     *
+     * - NativeFunctionInvocationFixer
+     *
+     * Must run after:
+     *
+     * - NoBinaryStringFixer
+     * - NoUselessConcatOperatorFixer
      */
     public function getPriority(): int
     {

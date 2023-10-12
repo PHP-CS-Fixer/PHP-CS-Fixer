@@ -71,8 +71,18 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before MultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer.
-     * Must run after NoSuperfluousElseifFixer, NoUnneededBracesFixer, NoUnneededCurlyBracesFixer, NoUselessElseFixer, SemicolonAfterInstructionFixer.
+     * Must run before:
+     *
+     * - MultilineWhitespaceBeforeSemicolonsFixer
+     * - NoSinglelineWhitespaceBeforeSemicolonsFixer
+     *
+     * Must run after:
+     *
+     * - NoSuperfluousElseifFixer
+     * - NoUnneededBracesFixer
+     * - NoUnneededCurlyBracesFixer
+     * - NoUselessElseFixer
+     * - SemicolonAfterInstructionFixer
      */
     public function getPriority(): int
     {

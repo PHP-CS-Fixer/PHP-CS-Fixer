@@ -52,7 +52,9 @@ final class ExplicitStringVariableFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after BacktickToShellExecFixer.
+     * Must run after:
+     *
+     * - BacktickToShellExecFixer
      */
     public function getPriority(): int
     {

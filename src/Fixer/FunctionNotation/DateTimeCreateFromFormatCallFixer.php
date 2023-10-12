@@ -44,7 +44,9 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after NoUselessConcatOperatorFixer.
+     * Must run after:
+     *
+     * - NoUselessConcatOperatorFixer
      */
     public function getPriority(): int
     {

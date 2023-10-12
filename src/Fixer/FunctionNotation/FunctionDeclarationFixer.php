@@ -93,8 +93,15 @@ $f = fn () => null;
     /**
      * {@inheritdoc}
      *
-     * Must run before MethodArgumentSpaceFixer.
-     * Must run after SingleSpaceAfterConstructFixer, SingleSpaceAroundConstructFixer, UseArrowFunctionsFixer.
+     * Must run before:
+     *
+     * - MethodArgumentSpaceFixer
+     *
+     * Must run after:
+     *
+     * - SingleSpaceAfterConstructFixer
+     * - SingleSpaceAroundConstructFixer
+     * - UseArrowFunctionsFixer
      */
     public function getPriority(): int
     {

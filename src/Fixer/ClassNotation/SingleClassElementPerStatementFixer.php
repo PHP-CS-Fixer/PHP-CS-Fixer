@@ -46,7 +46,9 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
     /**
      * {@inheritdoc}
      *
-     * Must run before ClassAttributesSeparationFixer.
+     * Must run before:
+     *
+     * - ClassAttributesSeparationFixer
      */
     public function getPriority(): int
     {

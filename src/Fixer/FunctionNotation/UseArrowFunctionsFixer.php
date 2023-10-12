@@ -62,7 +62,9 @@ final class UseArrowFunctionsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before FunctionDeclarationFixer.
+     * Must run before:
+     *
+     * - FunctionDeclarationFixer
      */
     public function getPriority(): int
     {

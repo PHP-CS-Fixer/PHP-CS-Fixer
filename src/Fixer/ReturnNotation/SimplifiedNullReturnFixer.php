@@ -49,7 +49,10 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUselessReturnFixer, VoidReturnFixer.
+     * Must run before:
+     *
+     * - NoUselessReturnFixer
+     * - VoidReturnFixer
      */
     public function getPriority(): int
     {

@@ -56,7 +56,10 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
     /**
      * {@inheritdoc}
      *
-     * Must run after BlankLineAfterOpeningTagFixer, HeaderCommentFixer.
+     * Must run after:
+     *
+     * - BlankLineAfterOpeningTagFixer
+     * - HeaderCommentFixer
      */
     public function getPriority(): int
     {

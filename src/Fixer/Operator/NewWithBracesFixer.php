@@ -52,7 +52,9 @@ final class NewWithBracesFixer extends AbstractProxyFixer implements Configurabl
     /**
      * {@inheritdoc}
      *
-     * Must run before ClassDefinitionFixer.
+     * Must run before:
+     *
+     * - ClassDefinitionFixer
      */
     public function getPriority(): int
     {

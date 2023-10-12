@@ -67,7 +67,9 @@ switch ($foo) {
     /**
      * {@inheritdoc}
      *
-     * Must run after NoAlternativeSyntaxFixer.
+     * Must run after:
+     *
+     * - NoAlternativeSyntaxFixer
      */
     public function getPriority(): int
     {

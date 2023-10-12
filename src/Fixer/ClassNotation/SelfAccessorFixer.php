@@ -62,7 +62,9 @@ class Sample
     /**
      * {@inheritdoc}
      *
-     * Must run after PsrAutoloadingFixer.
+     * Must run after:
+     *
+     * - PsrAutoloadingFixer
      */
     public function getPriority(): int
     {

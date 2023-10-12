@@ -65,7 +65,10 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
     /**
      * {@inheritdoc}
      *
-     * Must run before BinaryOperatorSpacesFixer, TernaryOperatorSpacesFixer.
+     * Must run before:
+     *
+     * - BinaryOperatorSpacesFixer
+     * - TernaryOperatorSpacesFixer
      */
     public function getPriority(): int
     {

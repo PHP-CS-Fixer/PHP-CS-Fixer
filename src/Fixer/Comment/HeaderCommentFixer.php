@@ -118,8 +118,16 @@ echo 1;
     /**
      * {@inheritdoc}
      *
-     * Must run before BlankLinesBeforeNamespaceFixer, SingleBlankLineBeforeNamespaceFixer, SingleLineCommentStyleFixer.
-     * Must run after DeclareStrictTypesFixer, NoBlankLinesAfterPhpdocFixer.
+     * Must run before:
+     *
+     * - BlankLinesBeforeNamespaceFixer
+     * - SingleBlankLineBeforeNamespaceFixer
+     * - SingleLineCommentStyleFixer
+     *
+     * Must run after:
+     *
+     * - DeclareStrictTypesFixer
+     * - NoBlankLinesAfterPhpdocFixer
      */
     public function getPriority(): int
     {

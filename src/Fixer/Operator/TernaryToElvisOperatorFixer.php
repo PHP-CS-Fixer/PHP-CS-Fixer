@@ -76,7 +76,10 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NoTrailingWhitespaceFixer, TernaryOperatorSpacesFixer.
+     * Must run before:
+     *
+     * - NoTrailingWhitespaceFixer
+     * - TernaryOperatorSpacesFixer
      */
     public function getPriority(): int
     {

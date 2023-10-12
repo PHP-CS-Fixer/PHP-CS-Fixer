@@ -74,7 +74,9 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
     /**
      * {@inheritdoc}
      *
-     * Must run after PhpUnitTestAnnotationFixer.
+     * Must run after:
+     *
+     * - PhpUnitTestAnnotationFixer
      */
     public function getPriority(): int
     {

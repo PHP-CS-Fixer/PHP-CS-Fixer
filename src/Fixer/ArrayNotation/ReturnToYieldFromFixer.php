@@ -46,8 +46,14 @@ final class ReturnToYieldFromFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before YieldFromArrayToYieldsFixer.
-     * Must run after PhpUnitDataProviderReturnTypeFixer, PhpdocToReturnTypeFixer.
+     * Must run before:
+     *
+     * - YieldFromArrayToYieldsFixer
+     *
+     * Must run after:
+     *
+     * - PhpUnitDataProviderReturnTypeFixer
+     * - PhpdocToReturnTypeFixer
      */
     public function getPriority(): int
     {

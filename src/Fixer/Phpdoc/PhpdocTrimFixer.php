@@ -46,8 +46,24 @@ final class Foo {}
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocAlignFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, PhpUnitTestAnnotationFixer, PhpdocIndentFixer, PhpdocNoAccessFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocOrderFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run before:
+     *
+     * - PhpdocAlignFixer
+     *
+     * Must run after:
+     *
+     * - AlignMultilineCommentFixer
+     * - CommentToPhpdocFixer
+     * - GeneralPhpdocAnnotationRemoveFixer
+     * - PhpUnitTestAnnotationFixer
+     * - PhpdocIndentFixer
+     * - PhpdocNoAccessFixer
+     * - PhpdocNoEmptyReturnFixer
+     * - PhpdocNoPackageFixer
+     * - PhpdocOrderFixer
+     * - PhpdocScalarFixer
+     * - PhpdocToCommentFixer
+     * - PhpdocTypesFixer
      */
     public function getPriority(): int
     {

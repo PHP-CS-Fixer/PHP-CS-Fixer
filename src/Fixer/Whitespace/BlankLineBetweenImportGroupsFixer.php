@@ -88,7 +88,9 @@ use Bar;
     /**
      * {@inheritdoc}
      *
-     * Must run after OrderedImportsFixer.
+     * Must run after:
+     *
+     * - OrderedImportsFixer
      */
     public function getPriority(): int
     {

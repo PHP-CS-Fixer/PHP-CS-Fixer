@@ -254,8 +254,29 @@ switch($a) {
     /**
      * {@inheritdoc}
      *
-     * Must run before BlankLineBeforeStatementFixer.
-     * Must run after ClassAttributesSeparationFixer, CombineConsecutiveUnsetsFixer, EmptyLoopBodyFixer, EmptyLoopConditionFixer, FunctionToConstantFixer, LongToShorthandOperatorFixer, ModernizeStrposFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnusedImportsFixer, NoUselessElseFixer, NoUselessReturnFixer, NoUselessSprintfFixer, PhpdocReadonlyClassCommentToKeywordFixer, StringLengthToEmptyFixer, YieldFromArrayToYieldsFixer.
+     * Must run before:
+     *
+     * - BlankLineBeforeStatementFixer
+     *
+     * Must run after:
+     *
+     * - ClassAttributesSeparationFixer
+     * - CombineConsecutiveUnsetsFixer
+     * - EmptyLoopBodyFixer
+     * - EmptyLoopConditionFixer
+     * - FunctionToConstantFixer
+     * - LongToShorthandOperatorFixer
+     * - ModernizeStrposFixer
+     * - NoEmptyCommentFixer
+     * - NoEmptyPhpdocFixer
+     * - NoEmptyStatementFixer
+     * - NoUnusedImportsFixer
+     * - NoUselessElseFixer
+     * - NoUselessReturnFixer
+     * - NoUselessSprintfFixer
+     * - PhpdocReadonlyClassCommentToKeywordFixer
+     * - StringLengthToEmptyFixer
+     * - YieldFromArrayToYieldsFixer
      */
     public function getPriority(): int
     {

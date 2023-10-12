@@ -52,8 +52,46 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     /**
      * {@inheritdoc}
      *
-     * Must run before GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocAnnotationWithoutDotFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocParamOrderFixer, PhpdocReadonlyClassCommentToKeywordFixer, PhpdocReturnSelfReferenceFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagTypeFixer, PhpdocToCommentFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer.
-     * Must run after AlignMultilineCommentFixer.
+     * Must run before:
+     *
+     * - GeneralPhpdocAnnotationRemoveFixer
+     * - GeneralPhpdocTagRenameFixer
+     * - NoBlankLinesAfterPhpdocFixer
+     * - NoEmptyPhpdocFixer
+     * - NoSuperfluousPhpdocTagsFixer
+     * - PhpdocAddMissingParamAnnotationFixer
+     * - PhpdocAlignFixer
+     * - PhpdocAnnotationWithoutDotFixer
+     * - PhpdocInlineTagNormalizerFixer
+     * - PhpdocLineSpanFixer
+     * - PhpdocNoAccessFixer
+     * - PhpdocNoAliasTagFixer
+     * - PhpdocNoEmptyReturnFixer
+     * - PhpdocNoPackageFixer
+     * - PhpdocNoUselessInheritdocFixer
+     * - PhpdocOrderByValueFixer
+     * - PhpdocOrderFixer
+     * - PhpdocParamOrderFixer
+     * - PhpdocReadonlyClassCommentToKeywordFixer
+     * - PhpdocReturnSelfReferenceFixer
+     * - PhpdocSeparationFixer
+     * - PhpdocSingleLineVarSpacingFixer
+     * - PhpdocSummaryFixer
+     * - PhpdocTagCasingFixer
+     * - PhpdocTagTypeFixer
+     * - PhpdocToCommentFixer
+     * - PhpdocToParamTypeFixer
+     * - PhpdocToPropertyTypeFixer
+     * - PhpdocToReturnTypeFixer
+     * - PhpdocTrimConsecutiveBlankLineSeparationFixer
+     * - PhpdocTrimFixer
+     * - PhpdocTypesOrderFixer
+     * - PhpdocVarAnnotationCorrectOrderFixer
+     * - PhpdocVarWithoutNameFixer
+     *
+     * Must run after:
+     *
+     * - AlignMultilineCommentFixer
      */
     public function getPriority(): int
     {

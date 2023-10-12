@@ -56,7 +56,9 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      *
-     * Must run after DeclareStrictTypesFixer.
+     * Must run after:
+     *
+     * - DeclareStrictTypesFixer
      */
     public function getPriority(): int
     {

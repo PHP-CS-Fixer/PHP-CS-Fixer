@@ -42,7 +42,9 @@ final class IsNullFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before YodaStyleFixer.
+     * Must run before:
+     *
+     * - YodaStyleFixer
      */
     public function getPriority(): int
     {

@@ -46,8 +46,49 @@ final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFi
     /**
      * {@inheritdoc}
      *
-     * Must run before GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocAnnotationWithoutDotFixer, PhpdocIndentFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocParamOrderFixer, PhpdocReadonlyClassCommentToKeywordFixer, PhpdocReturnSelfReferenceFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagTypeFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer, SingleLineCommentSpacingFixer, SingleLineCommentStyleFixer.
-     * Must run after CommentToPhpdocFixer.
+     * Must run before:
+     *
+     * - GeneralPhpdocAnnotationRemoveFixer
+     * - GeneralPhpdocTagRenameFixer
+     * - NoBlankLinesAfterPhpdocFixer
+     * - NoEmptyCommentFixer
+     * - NoEmptyPhpdocFixer
+     * - NoSuperfluousPhpdocTagsFixer
+     * - PhpdocAddMissingParamAnnotationFixer
+     * - PhpdocAlignFixer
+     * - PhpdocAnnotationWithoutDotFixer
+     * - PhpdocIndentFixer
+     * - PhpdocInlineTagNormalizerFixer
+     * - PhpdocLineSpanFixer
+     * - PhpdocNoAccessFixer
+     * - PhpdocNoAliasTagFixer
+     * - PhpdocNoEmptyReturnFixer
+     * - PhpdocNoPackageFixer
+     * - PhpdocNoUselessInheritdocFixer
+     * - PhpdocOrderByValueFixer
+     * - PhpdocOrderFixer
+     * - PhpdocParamOrderFixer
+     * - PhpdocReadonlyClassCommentToKeywordFixer
+     * - PhpdocReturnSelfReferenceFixer
+     * - PhpdocSeparationFixer
+     * - PhpdocSingleLineVarSpacingFixer
+     * - PhpdocSummaryFixer
+     * - PhpdocTagCasingFixer
+     * - PhpdocTagTypeFixer
+     * - PhpdocToParamTypeFixer
+     * - PhpdocToPropertyTypeFixer
+     * - PhpdocToReturnTypeFixer
+     * - PhpdocTrimConsecutiveBlankLineSeparationFixer
+     * - PhpdocTrimFixer
+     * - PhpdocTypesOrderFixer
+     * - PhpdocVarAnnotationCorrectOrderFixer
+     * - PhpdocVarWithoutNameFixer
+     * - SingleLineCommentSpacingFixer
+     * - SingleLineCommentStyleFixer
+     *
+     * Must run after:
+     *
+     * - CommentToPhpdocFixer
      */
     public function getPriority(): int
     {

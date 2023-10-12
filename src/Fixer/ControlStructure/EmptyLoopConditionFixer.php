@@ -47,7 +47,10 @@ final class EmptyLoopConditionFixer extends AbstractFixer implements Configurabl
     /**
      * {@inheritdoc}
      *
-     * Must run before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer.
+     * Must run before:
+     *
+     * - NoExtraBlankLinesFixer
+     * - NoTrailingWhitespaceFixer
      */
     public function getPriority(): int
     {

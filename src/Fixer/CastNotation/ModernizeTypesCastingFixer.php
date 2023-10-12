@@ -50,7 +50,9 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUnneededControlParenthesesFixer.
+     * Must run before:
+     *
+     * - NoUnneededControlParenthesesFixer
      */
     public function getPriority(): int
     {

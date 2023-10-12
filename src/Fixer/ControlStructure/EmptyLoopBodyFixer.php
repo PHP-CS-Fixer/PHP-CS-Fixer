@@ -53,8 +53,15 @@ final class EmptyLoopBodyFixer extends AbstractFixer implements ConfigurableFixe
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer, NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer.
-     * Must run after NoEmptyStatementFixer.
+     * Must run before:
+     *
+     * - BracesFixer
+     * - NoExtraBlankLinesFixer
+     * - NoTrailingWhitespaceFixer
+     *
+     * Must run after:
+     *
+     * - NoEmptyStatementFixer
      */
     public function getPriority(): int
     {

@@ -73,7 +73,9 @@ final class Example
     /**
      * {@inheritdoc}
      *
-     * Must run after NoUnusedImportsFixer.
+     * Must run after:
+     *
+     * - NoUnusedImportsFixer
      */
     public function getPriority(): int
     {

@@ -41,7 +41,9 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before AssignNullCoalescingToCoalesceEqualFixer.
+     * Must run before:
+     *
+     * - AssignNullCoalescingToCoalesceEqualFixer
      */
     public function getPriority(): int
     {

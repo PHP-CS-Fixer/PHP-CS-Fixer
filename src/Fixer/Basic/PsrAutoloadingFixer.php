@@ -92,7 +92,9 @@ class InvalidName {}
     /**
      * {@inheritdoc}
      *
-     * Must run before SelfAccessorFixer.
+     * Must run before:
+     *
+     * - SelfAccessorFixer
      */
     public function getPriority(): int
     {

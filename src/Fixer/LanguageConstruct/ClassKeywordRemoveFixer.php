@@ -61,7 +61,9 @@ $className = Baz::class;
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUnusedImportsFixer.
+     * Must run before:
+     *
+     * - NoUnusedImportsFixer
      */
     public function getPriority(): int
     {

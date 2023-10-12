@@ -80,8 +80,15 @@ class ValueObject
     /**
      * {@inheritdoc}
      *
-     * Must run before OrderedTypesFixer, TypesSpacesFixer.
-     * Must run after NullableTypeDeclarationForDefaultNullValueFixer, SingleSpaceAroundConstructFixer.
+     * Must run before:
+     *
+     * - OrderedTypesFixer
+     * - TypesSpacesFixer
+     *
+     * Must run after:
+     *
+     * - NullableTypeDeclarationForDefaultNullValueFixer
+     * - SingleSpaceAroundConstructFixer
      */
     public function getPriority(): int
     {

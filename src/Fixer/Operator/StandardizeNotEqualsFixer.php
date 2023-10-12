@@ -37,7 +37,9 @@ final class StandardizeNotEqualsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before BinaryOperatorSpacesFixer.
+     * Must run before:
+     *
+     * - BinaryOperatorSpacesFixer
      */
     public function getPriority(): int
     {

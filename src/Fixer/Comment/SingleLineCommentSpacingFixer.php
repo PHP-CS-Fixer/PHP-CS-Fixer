@@ -43,7 +43,9 @@ final class SingleLineCommentSpacingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after PhpdocToCommentFixer.
+     * Must run after:
+     *
+     * - PhpdocToCommentFixer
      */
     public function getPriority(): int
     {

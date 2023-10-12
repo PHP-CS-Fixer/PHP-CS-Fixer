@@ -39,7 +39,9 @@ final class ElseifFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after NoAlternativeSyntaxFixer.
+     * Must run after:
+     *
+     * - NoAlternativeSyntaxFixer
      */
     public function getPriority(): int
     {

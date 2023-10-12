@@ -53,7 +53,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUnusedImportsFixer, PhpdocOrderByValueFixer.
+     * Must run before:
+     *
+     * - NoUnusedImportsFixer
+     * - PhpdocOrderByValueFixer
      */
     public function getPriority(): int
     {

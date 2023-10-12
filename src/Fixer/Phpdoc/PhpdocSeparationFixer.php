@@ -104,8 +104,26 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocAlignFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, PhpUnitInternalClassFixer, PhpUnitSizeClassFixer, PhpUnitTestClassRequiresCoversFixer, PhpdocIndentFixer, PhpdocNoAccessFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocOrderFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run before:
+     *
+     * - PhpdocAlignFixer
+     *
+     * Must run after:
+     *
+     * - AlignMultilineCommentFixer
+     * - CommentToPhpdocFixer
+     * - GeneralPhpdocAnnotationRemoveFixer
+     * - PhpUnitInternalClassFixer
+     * - PhpUnitSizeClassFixer
+     * - PhpUnitTestClassRequiresCoversFixer
+     * - PhpdocIndentFixer
+     * - PhpdocNoAccessFixer
+     * - PhpdocNoEmptyReturnFixer
+     * - PhpdocNoPackageFixer
+     * - PhpdocOrderFixer
+     * - PhpdocScalarFixer
+     * - PhpdocToCommentFixer
+     * - PhpdocTypesFixer
      */
     public function getPriority(): int
     {

@@ -47,7 +47,9 @@ function example($foo = "two words", $bar) {}
     /**
      * {@inheritdoc}
      *
-     * Must run after NullableTypeDeclarationForDefaultNullValueFixer.
+     * Must run after:
+     *
+     * - NullableTypeDeclarationForDefaultNullValueFixer
      */
     public function getPriority(): int
     {

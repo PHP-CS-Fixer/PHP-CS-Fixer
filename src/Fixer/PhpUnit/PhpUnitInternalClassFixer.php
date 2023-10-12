@@ -49,7 +49,10 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
     /**
      * {@inheritdoc}
      *
-     * Must run before FinalInternalClassFixer, PhpdocSeparationFixer.
+     * Must run before:
+     *
+     * - FinalInternalClassFixer
+     * - PhpdocSeparationFixer
      */
     public function getPriority(): int
     {

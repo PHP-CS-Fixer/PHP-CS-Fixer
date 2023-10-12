@@ -95,8 +95,13 @@ namespace {
     /**
      * {@inheritdoc}
      *
-     * Must run before GlobalNamespaceImportFixer.
-     * Must run after FunctionToConstantFixer.
+     * Must run before:
+     *
+     * - GlobalNamespaceImportFixer
+     *
+     * Must run after:
+     *
+     * - FunctionToConstantFixer
      */
     public function getPriority(): int
     {

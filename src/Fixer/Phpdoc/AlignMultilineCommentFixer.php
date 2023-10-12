@@ -87,8 +87,46 @@ with a line not prefixed with asterisk
     /**
      * {@inheritdoc}
      *
-     * Must run before CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocAnnotationWithoutDotFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocParamOrderFixer, PhpdocReadonlyClassCommentToKeywordFixer, PhpdocReturnSelfReferenceFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagTypeFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer.
-     * Must run after ArrayIndentationFixer.
+     * Must run before:
+     *
+     * - CommentToPhpdocFixer
+     * - GeneralPhpdocAnnotationRemoveFixer
+     * - GeneralPhpdocTagRenameFixer
+     * - NoBlankLinesAfterPhpdocFixer
+     * - NoEmptyPhpdocFixer
+     * - NoSuperfluousPhpdocTagsFixer
+     * - PhpdocAddMissingParamAnnotationFixer
+     * - PhpdocAlignFixer
+     * - PhpdocAnnotationWithoutDotFixer
+     * - PhpdocInlineTagNormalizerFixer
+     * - PhpdocLineSpanFixer
+     * - PhpdocNoAccessFixer
+     * - PhpdocNoAliasTagFixer
+     * - PhpdocNoEmptyReturnFixer
+     * - PhpdocNoPackageFixer
+     * - PhpdocNoUselessInheritdocFixer
+     * - PhpdocOrderByValueFixer
+     * - PhpdocOrderFixer
+     * - PhpdocParamOrderFixer
+     * - PhpdocReadonlyClassCommentToKeywordFixer
+     * - PhpdocReturnSelfReferenceFixer
+     * - PhpdocSeparationFixer
+     * - PhpdocSingleLineVarSpacingFixer
+     * - PhpdocSummaryFixer
+     * - PhpdocTagCasingFixer
+     * - PhpdocTagTypeFixer
+     * - PhpdocToParamTypeFixer
+     * - PhpdocToPropertyTypeFixer
+     * - PhpdocToReturnTypeFixer
+     * - PhpdocTrimConsecutiveBlankLineSeparationFixer
+     * - PhpdocTrimFixer
+     * - PhpdocTypesOrderFixer
+     * - PhpdocVarAnnotationCorrectOrderFixer
+     * - PhpdocVarWithoutNameFixer
+     *
+     * Must run after:
+     *
+     * - ArrayIndentationFixer
      */
     public function getPriority(): int
     {

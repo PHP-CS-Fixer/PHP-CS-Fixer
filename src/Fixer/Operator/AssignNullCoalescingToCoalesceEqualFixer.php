@@ -38,8 +38,14 @@ final class AssignNullCoalescingToCoalesceEqualFixer extends AbstractShortOperat
     /**
      * {@inheritdoc}
      *
-     * Must run before BinaryOperatorSpacesFixer, NoWhitespaceInBlankLineFixer.
-     * Must run after TernaryToNullCoalescingFixer.
+     * Must run before:
+     *
+     * - BinaryOperatorSpacesFixer
+     * - NoWhitespaceInBlankLineFixer
+     *
+     * Must run after:
+     *
+     * - TernaryToNullCoalescingFixer
      */
     public function getPriority(): int
     {

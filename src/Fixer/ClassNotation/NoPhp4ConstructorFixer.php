@@ -49,7 +49,9 @@ class Foo
     /**
      * {@inheritdoc}
      *
-     * Must run before OrderedClassElementsFixer.
+     * Must run before:
+     *
+     * - OrderedClassElementsFixer
      */
     public function getPriority(): int
     {

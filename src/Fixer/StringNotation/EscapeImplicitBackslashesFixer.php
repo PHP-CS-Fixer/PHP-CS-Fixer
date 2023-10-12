@@ -81,8 +81,14 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
     /**
      * {@inheritdoc}
      *
-     * Must run before HeredocToNowdocFixer, SingleQuoteFixer.
-     * Must run after BacktickToShellExecFixer.
+     * Must run before:
+     *
+     * - HeredocToNowdocFixer
+     * - SingleQuoteFixer
+     *
+     * Must run after:
+     *
+     * - BacktickToShellExecFixer
      */
     public function getPriority(): int
     {

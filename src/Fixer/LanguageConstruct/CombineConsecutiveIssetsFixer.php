@@ -34,7 +34,14 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before MultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, NoSpacesInsideParenthesisFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer, SpacesInsideParenthesesFixer.
+     * Must run before:
+     *
+     * - MultilineWhitespaceBeforeSemicolonsFixer
+     * - NoSinglelineWhitespaceBeforeSemicolonsFixer
+     * - NoSpacesInsideParenthesisFixer
+     * - NoTrailingWhitespaceFixer
+     * - NoWhitespaceInBlankLineFixer
+     * - SpacesInsideParenthesesFixer
      */
     public function getPriority(): int
     {

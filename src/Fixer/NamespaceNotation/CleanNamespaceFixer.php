@@ -48,7 +48,9 @@ final class CleanNamespaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpUnitDataProviderReturnTypeFixer.
+     * Must run before:
+     *
+     * - PhpUnitDataProviderReturnTypeFixer
      */
     public function getPriority(): int
     {

@@ -59,7 +59,12 @@ final class NoUnneededCurlyBracesFixer extends AbstractProxyFixer implements Con
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUselessElseFixer, NoUselessReturnFixer, ReturnAssignmentFixer, SimplifiedIfReturnFixer.
+     * Must run before:
+     *
+     * - NoUselessElseFixer
+     * - NoUselessReturnFixer
+     * - ReturnAssignmentFixer
+     * - SimplifiedIfReturnFixer
      */
     public function getPriority(): int
     {

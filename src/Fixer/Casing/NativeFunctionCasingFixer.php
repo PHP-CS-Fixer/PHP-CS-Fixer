@@ -35,7 +35,11 @@ final class NativeFunctionCasingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after FunctionToConstantFixer, NoUselessSprintfFixer, PowToExponentiationFixer.
+     * Must run after:
+     *
+     * - FunctionToConstantFixer
+     * - NoUselessSprintfFixer
+     * - PowToExponentiationFixer
      */
     public function getPriority(): int
     {

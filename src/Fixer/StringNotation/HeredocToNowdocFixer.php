@@ -47,7 +47,9 @@ final class HeredocToNowdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after EscapeImplicitBackslashesFixer.
+     * Must run after:
+     *
+     * - EscapeImplicitBackslashesFixer
      */
     public function getPriority(): int
     {

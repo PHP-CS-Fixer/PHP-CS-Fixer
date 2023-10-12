@@ -56,8 +56,14 @@ final class SingleQuoteFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUselessConcatOperatorFixer.
-     * Must run after BacktickToShellExecFixer, EscapeImplicitBackslashesFixer.
+     * Must run before:
+     *
+     * - NoUselessConcatOperatorFixer
+     *
+     * Must run after:
+     *
+     * - BacktickToShellExecFixer
+     * - EscapeImplicitBackslashesFixer
      */
     public function getPriority(): int
     {

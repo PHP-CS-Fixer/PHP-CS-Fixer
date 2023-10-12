@@ -41,8 +41,26 @@ final class NoEmptyStatementFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer, CombineConsecutiveUnsetsFixer, EmptyLoopBodyFixer, MultilineWhitespaceBeforeSemicolonsFixer, NoExtraBlankLinesFixer, NoMultipleStatementsPerLineFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, NoTrailingWhitespaceFixer, NoUselessElseFixer, NoUselessReturnFixer, NoWhitespaceInBlankLineFixer, ReturnAssignmentFixer, SpaceAfterSemicolonFixer, SwitchCaseSemicolonToColonFixer.
-     * Must run after NoUselessSprintfFixer.
+     * Must run before:
+     *
+     * - BracesFixer
+     * - CombineConsecutiveUnsetsFixer
+     * - EmptyLoopBodyFixer
+     * - MultilineWhitespaceBeforeSemicolonsFixer
+     * - NoExtraBlankLinesFixer
+     * - NoMultipleStatementsPerLineFixer
+     * - NoSinglelineWhitespaceBeforeSemicolonsFixer
+     * - NoTrailingWhitespaceFixer
+     * - NoUselessElseFixer
+     * - NoUselessReturnFixer
+     * - NoWhitespaceInBlankLineFixer
+     * - ReturnAssignmentFixer
+     * - SpaceAfterSemicolonFixer
+     * - SwitchCaseSemicolonToColonFixer
+     *
+     * Must run after:
+     *
+     * - NoUselessSprintfFixer
      */
     public function getPriority(): int
     {
@@ -112,10 +130,17 @@ final class NoEmptyStatementFixer extends AbstractFixer
      *
      * Test for the following cases
      * - just '{' '}' block (following open tag or ';')
-     * - if, else, elseif
-     * - interface, trait, class (but not anonymous)
-     * - catch, finally (but not try)
-     * - for, foreach, while (but not 'do - while')
+     * - if
+     * - else
+     * - elseif
+     * - interface
+     * - trait
+     * - class (but not anonymous)
+     * - catch
+     * - finally (but not try)
+     * - for
+     * - foreach
+     * - while (but not 'do - while')
      * - switch
      * - function (declaration, but not lambda)
      * - declare (with '{' '}')

@@ -39,7 +39,10 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before BinaryOperatorSpacesFixer, MethodArgumentSpaceFixer.
+     * Must run before:
+     *
+     * - BinaryOperatorSpacesFixer
+     * - MethodArgumentSpaceFixer
      */
     public function getPriority(): int
     {

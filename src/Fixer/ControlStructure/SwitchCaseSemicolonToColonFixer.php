@@ -50,7 +50,9 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after NoEmptyStatementFixer.
+     * Must run after:
+     *
+     * - NoEmptyStatementFixer
      */
     public function getPriority(): int
     {

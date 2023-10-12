@@ -72,8 +72,19 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocAlignFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpUnitFqcnAnnotationFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run before:
+     *
+     * - PhpdocAlignFixer
+     *
+     * Must run after:
+     *
+     * - AlignMultilineCommentFixer
+     * - CommentToPhpdocFixer
+     * - PhpUnitFqcnAnnotationFixer
+     * - PhpdocIndentFixer
+     * - PhpdocScalarFixer
+     * - PhpdocToCommentFixer
+     * - PhpdocTypesFixer
      */
     public function getPriority(): int
     {

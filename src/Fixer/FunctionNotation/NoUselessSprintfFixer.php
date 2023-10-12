@@ -51,7 +51,14 @@ final class NoUselessSprintfFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before MethodArgumentSpaceFixer, NativeFunctionCasingFixer, NoEmptyStatementFixer, NoExtraBlankLinesFixer, NoSpacesInsideParenthesisFixer, SpacesInsideParenthesesFixer.
+     * Must run before:
+     *
+     * - MethodArgumentSpaceFixer
+     * - NativeFunctionCasingFixer
+     * - NoEmptyStatementFixer
+     * - NoExtraBlankLinesFixer
+     * - NoSpacesInsideParenthesisFixer
+     * - SpacesInsideParenthesesFixer
      */
     public function getPriority(): int
     {

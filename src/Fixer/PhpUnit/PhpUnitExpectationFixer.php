@@ -145,7 +145,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      *
-     * Must run after PhpUnitNoExpectationAnnotationFixer.
+     * Must run after:
+     *
+     * - PhpUnitNoExpectationAnnotationFixer
      */
     public function getPriority(): int
     {

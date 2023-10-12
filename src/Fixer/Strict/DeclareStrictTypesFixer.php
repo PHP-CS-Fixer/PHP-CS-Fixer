@@ -44,7 +44,11 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     /**
      * {@inheritdoc}
      *
-     * Must run before BlankLineAfterOpeningTagFixer, DeclareEqualNormalizeFixer, HeaderCommentFixer.
+     * Must run before:
+     *
+     * - BlankLineAfterOpeningTagFixer
+     * - DeclareEqualNormalizeFixer
+     * - HeaderCommentFixer
      */
     public function getPriority(): int
     {

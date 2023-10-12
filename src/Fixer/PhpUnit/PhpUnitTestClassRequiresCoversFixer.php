@@ -50,7 +50,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocSeparationFixer.
+     * Must run before:
+     *
+     * - PhpdocSeparationFixer
      */
     public function getPriority(): int
     {

@@ -53,7 +53,9 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractProxyFixer imple
     /**
      * {@inheritdoc}
      *
-     * Must run after HeaderCommentFixer.
+     * Must run after:
+     *
+     * - HeaderCommentFixer
      */
     public function getPriority(): int
     {

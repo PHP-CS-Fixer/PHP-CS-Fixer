@@ -71,8 +71,15 @@ final class CurlyBracesPositionFixer extends AbstractProxyFixer implements Confi
     /**
      * {@inheritdoc}
      *
-     * Must run before SingleLineEmptyBodyFixer, StatementIndentationFixer.
-     * Must run after ControlStructureBracesFixer, NoMultipleStatementsPerLineFixer.
+     * Must run before:
+     *
+     * - SingleLineEmptyBodyFixer
+     * - StatementIndentationFixer
+     *
+     * Must run after:
+     *
+     * - ControlStructureBracesFixer
+     * - NoMultipleStatementsPerLineFixer
      */
     public function getPriority(): int
     {

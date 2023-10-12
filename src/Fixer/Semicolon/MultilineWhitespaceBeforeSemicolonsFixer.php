@@ -71,8 +71,17 @@ $object->method1()
     /**
      * {@inheritdoc}
      *
-     * Must run before SpaceAfterSemicolonFixer.
-     * Must run after CombineConsecutiveIssetsFixer, GetClassToClassKeywordFixer, NoEmptyStatementFixer, SimplifiedIfReturnFixer, SingleImportPerStatementFixer.
+     * Must run before:
+     *
+     * - SpaceAfterSemicolonFixer
+     *
+     * Must run after:
+     *
+     * - CombineConsecutiveIssetsFixer
+     * - GetClassToClassKeywordFixer
+     * - NoEmptyStatementFixer
+     * - SimplifiedIfReturnFixer
+     * - SingleImportPerStatementFixer
      */
     public function getPriority(): int
     {

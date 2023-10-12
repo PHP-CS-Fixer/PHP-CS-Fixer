@@ -151,8 +151,18 @@ class Sample
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer, IndentationTypeFixer, NoExtraBlankLinesFixer, StatementIndentationFixer.
-     * Must run after OrderedClassElementsFixer, SingleClassElementPerStatementFixer, VisibilityRequiredFixer.
+     * Must run before:
+     *
+     * - BracesFixer
+     * - IndentationTypeFixer
+     * - NoExtraBlankLinesFixer
+     * - StatementIndentationFixer
+     *
+     * Must run after:
+     *
+     * - OrderedClassElementsFixer
+     * - SingleClassElementPerStatementFixer
+     * - VisibilityRequiredFixer
      */
     public function getPriority(): int
     {

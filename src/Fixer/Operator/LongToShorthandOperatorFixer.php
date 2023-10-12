@@ -59,7 +59,12 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before BinaryOperatorSpacesFixer, NoExtraBlankLinesFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, StandardizeIncrementFixer.
+     * Must run before:
+     *
+     * - BinaryOperatorSpacesFixer
+     * - NoExtraBlankLinesFixer
+     * - NoSinglelineWhitespaceBeforeSemicolonsFixer
+     * - StandardizeIncrementFixer
      */
     public function getPriority(): int
     {

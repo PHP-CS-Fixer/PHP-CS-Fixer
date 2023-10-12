@@ -34,8 +34,18 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer, SpaceAfterSemicolonFixer.
-     * Must run after NoEmptyStatementFixer, NoUnsetOnPropertyFixer, NoUselessElseFixer.
+     * Must run before:
+     *
+     * - NoExtraBlankLinesFixer
+     * - NoTrailingWhitespaceFixer
+     * - NoWhitespaceInBlankLineFixer
+     * - SpaceAfterSemicolonFixer
+     *
+     * Must run after:
+     *
+     * - NoEmptyStatementFixer
+     * - NoUnsetOnPropertyFixer
+     * - NoUselessElseFixer
      */
     public function getPriority(): int
     {

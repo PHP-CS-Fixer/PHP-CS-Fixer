@@ -37,8 +37,15 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer.
-     * Must run after NoSpacesInsideParenthesisFixer, SpacesInsideParenthesesFixer.
+     * Must run before:
+     *
+     * - NoExtraBlankLinesFixer
+     * - NoTrailingWhitespaceFixer
+     *
+     * Must run after:
+     *
+     * - NoSpacesInsideParenthesisFixer
+     * - SpacesInsideParenthesesFixer
      */
     public function getPriority(): int
     {

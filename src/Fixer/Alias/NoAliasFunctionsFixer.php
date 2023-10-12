@@ -223,7 +223,10 @@ mbereg_search_getregs();
     /**
      * {@inheritdoc}
      *
-     * Must run before ImplodeCallFixer, PhpUnitDedicateAssertFixer.
+     * Must run before:
+     *
+     * - ImplodeCallFixer
+     * - PhpUnitDedicateAssertFixer
      */
     public function getPriority(): int
     {

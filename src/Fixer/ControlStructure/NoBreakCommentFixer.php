@@ -78,7 +78,9 @@ switch ($foo) {
     /**
      * {@inheritdoc}
      *
-     * Must run after NoUselessElseFixer.
+     * Must run after:
+     *
+     * - NoUselessElseFixer
      */
     public function getPriority(): int
     {

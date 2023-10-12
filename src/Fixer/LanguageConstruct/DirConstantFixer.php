@@ -44,7 +44,9 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before CombineNestedDirnameFixer.
+     * Must run before:
+     *
+     * - CombineNestedDirnameFixer
      */
     public function getPriority(): int
     {

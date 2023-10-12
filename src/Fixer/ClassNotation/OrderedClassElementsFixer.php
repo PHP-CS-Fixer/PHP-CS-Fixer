@@ -235,8 +235,16 @@ Custom values:
     /**
      * {@inheritdoc}
      *
-     * Must run before ClassAttributesSeparationFixer, NoBlankLinesAfterClassOpeningFixer, SpaceAfterSemicolonFixer.
-     * Must run after NoPhp4ConstructorFixer, ProtectedToPrivateFixer.
+     * Must run before:
+     *
+     * - ClassAttributesSeparationFixer
+     * - NoBlankLinesAfterClassOpeningFixer
+     * - SpaceAfterSemicolonFixer
+     *
+     * Must run after:
+     *
+     * - NoPhp4ConstructorFixer
+     * - ProtectedToPrivateFixer
      */
     public function getPriority(): int
     {

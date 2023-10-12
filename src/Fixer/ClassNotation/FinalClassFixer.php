@@ -47,7 +47,10 @@ class MyApp {}
     /**
      * {@inheritdoc}
      *
-     * Must run before ProtectedToPrivateFixer, SelfStaticAccessorFixer.
+     * Must run before:
+     *
+     * - ProtectedToPrivateFixer
+     * - SelfStaticAccessorFixer
      */
     public function getPriority(): int
     {

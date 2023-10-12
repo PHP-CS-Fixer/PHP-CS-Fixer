@@ -62,7 +62,9 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerIn
     /**
      * {@inheritdoc}
      *
-     * Must run after NoShortBoolCastFixer.
+     * Must run after:
+     *
+     * - NoShortBoolCastFixer
      */
     public function getPriority(): int
     {

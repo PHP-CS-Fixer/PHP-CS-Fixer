@@ -49,8 +49,16 @@ function foo ($bar) {}
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocAlignFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocToCommentFixer.
+     * Must run before:
+     *
+     * - PhpdocAlignFixer
+     *
+     * Must run after:
+     *
+     * - AlignMultilineCommentFixer
+     * - CommentToPhpdocFixer
+     * - PhpdocIndentFixer
+     * - PhpdocToCommentFixer
      */
     public function getPriority(): int
     {

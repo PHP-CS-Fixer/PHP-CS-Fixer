@@ -48,7 +48,9 @@ final class DoctrineAnnotationArrayAssignmentFixer extends AbstractDoctrineAnnot
     /**
      * {@inheritdoc}
      *
-     * Must run before DoctrineAnnotationSpacesFixer.
+     * Must run before:
+     *
+     * - DoctrineAnnotationSpacesFixer
      */
     public function getPriority(): int
     {

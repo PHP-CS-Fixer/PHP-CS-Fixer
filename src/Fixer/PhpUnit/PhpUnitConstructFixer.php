@@ -86,7 +86,9 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpUnitDedicateAssertFixer.
+     * Must run before:
+     *
+     * - PhpUnitDedicateAssertFixer
      */
     public function getPriority(): int
     {

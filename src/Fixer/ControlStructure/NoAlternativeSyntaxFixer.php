@@ -54,7 +54,14 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer, ElseifFixer, NoSuperfluousElseifFixer, NoUnneededControlParenthesesFixer, NoUselessElseFixer, SwitchContinueToBreakFixer.
+     * Must run before:
+     *
+     * - BracesFixer
+     * - ElseifFixer
+     * - NoSuperfluousElseifFixer
+     * - NoUnneededControlParenthesesFixer
+     * - NoUselessElseFixer
+     * - SwitchContinueToBreakFixer
      */
     public function getPriority(): int
     {

@@ -37,7 +37,10 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NotOperatorWithSpaceFixer, NotOperatorWithSuccessorSpaceFixer.
+     * Must run before:
+     *
+     * - NotOperatorWithSpaceFixer
+     * - NotOperatorWithSuccessorSpaceFixer
      */
     public function getPriority(): int
     {

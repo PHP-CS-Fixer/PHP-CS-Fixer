@@ -107,7 +107,9 @@ return $foo === count($bar);
     /**
      * {@inheritdoc}
      *
-     * Must run after IsNullFixer.
+     * Must run after:
+     *
+     * - IsNullFixer
      */
     public function getPriority(): int
     {

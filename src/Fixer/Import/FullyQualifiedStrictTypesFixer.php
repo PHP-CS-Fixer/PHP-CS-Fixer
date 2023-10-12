@@ -76,8 +76,13 @@ class SomeClass
     /**
      * {@inheritdoc}
      *
-     * Must run before NoSuperfluousPhpdocTagsFixer.
-     * Must run after PhpdocToReturnTypeFixer.
+     * Must run before:
+     *
+     * - NoSuperfluousPhpdocTagsFixer
+     *
+     * Must run after:
+     *
+     * - PhpdocToReturnTypeFixer
      */
     public function getPriority(): int
     {

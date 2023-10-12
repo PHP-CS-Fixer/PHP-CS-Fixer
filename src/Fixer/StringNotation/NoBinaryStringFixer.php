@@ -51,7 +51,12 @@ final class NoBinaryStringFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUselessConcatOperatorFixer, PhpUnitDedicateAssertInternalTypeFixer, RegularCallableCallFixer, SetTypeToCastFixer.
+     * Must run before:
+     *
+     * - NoUselessConcatOperatorFixer
+     * - PhpUnitDedicateAssertInternalTypeFixer
+     * - RegularCallableCallFixer
+     * - SetTypeToCastFixer
      */
     public function getPriority(): int
     {

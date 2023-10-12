@@ -26,7 +26,9 @@ final class NoShortBoolCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before CastSpacesFixer.
+     * Must run before:
+     *
+     * - CastSpacesFixer
      */
     public function getPriority(): int
     {

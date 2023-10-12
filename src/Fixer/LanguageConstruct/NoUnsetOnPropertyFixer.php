@@ -54,7 +54,9 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before CombineConsecutiveUnsetsFixer.
+     * Must run before:
+     *
+     * - CombineConsecutiveUnsetsFixer
      */
     public function getPriority(): int
     {
