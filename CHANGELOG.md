@@ -3,6 +3,21 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.35.0
+---------------------
+
+* chore: Autoreview: test all formats are listed in `usage.rst` (#7357)
+* chore: no need for `phpunitgoodpractices/traits` anymore (#7362)
+* chore: Rename `indexes` to `indices` (#7368)
+* chore: stop using `phpunitgoodpractices/traits` (#7363)
+* chore: typo (#7367)
+* docs: Sort options in documentation (#7345)
+* feat(PhpdocReadonlyClassCommentToKeywordFixer): Introduction (#7353)
+* feat: Ability to keep/enforce leading `\` when in global namespace (#7186)
+* feat: Update `@PER-CS2.0` to match short closure space (#6970)
+* feat: use `ordered_types` in `@PhpCsFixer` (#7361)
+* fix(SingleLineThrowFixer): fixer goes out of range on close tag (#7369)
+
 Changelog for v3.34.1
 ---------------------
 

@@ -40,8 +40,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    public const VERSION = '3.34.2-DEV';
-    public const VERSION_CODENAME = 'BerSzcz Saturnalia';
+    public const VERSION = '3.35.0';
+    public const VERSION_CODENAME = 'Freezy Vrooom';
 
     private ToolInfo $toolInfo;
 
