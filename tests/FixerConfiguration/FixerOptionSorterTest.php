@@ -12,7 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace FixerConfiguration;
+namespace PhpCsFixer\Tests\FixerConfiguration;
 
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionSorter;
