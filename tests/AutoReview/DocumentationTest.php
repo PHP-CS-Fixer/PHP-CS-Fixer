@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Documentation\DocumentationLocator;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Documentation\ListDocumentGenerator;
@@ -187,6 +188,40 @@ final class DocumentationTest extends TestCase
             $listingFilePath,
             sprintf('Listing documentation is generated (please CONTRIBUTING.md), file "%s".', $listingFilePath)
         );
+    }
+
+    public function testAllReportFormatsAreInUsageDoc(): void
+    {
+        $locator = new DocumentationLocator();
+        $usage = $locator->getUsageFilePath();
+        self::assertFileExists($usage);
+
+        $usage = file_get_contents($usage);
+        self::assertIsString($usage);
+
+        $reporterFactory = new ReporterFactory();
+        $reporterFactory->registerBuiltInReporters();
+
+        $formats = array_filter(
+            $reporterFactory->getFormats(),
+            static fn (string $format): bool => 'txt' !== $format,
+        );
+
+        foreach ($formats as $format) {
+            self::assertStringContainsString(sprintf('* ``%s``', $format), $usage);
+        }
+
+        $lastFormat = array_pop($formats);
+        $expectedContent = 'Supported formats are ``txt`` (default one), ';
+
+        foreach ($formats as $format) {
+            $expectedContent .= '``'.$format.'``, ';
+        }
+
+        $expectedContent = substr($expectedContent, 0, -2);
+        $expectedContent .= 'and ``'.$lastFormat.'``.';
+
+        self::assertStringContainsString($expectedContent, $usage);
     }
 
     private static function assertFileEqualsString(string $expectedString, string $actualFilePath, string $message = ''): void

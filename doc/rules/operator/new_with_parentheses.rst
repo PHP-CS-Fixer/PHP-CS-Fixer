@@ -8,19 +8,19 @@ parentheses.
 Configuration
 -------------
 
-``named_class``
-~~~~~~~~~~~~~~~
+``anonymous_class``
+~~~~~~~~~~~~~~~~~~~
 
-Whether named classes should be followed by parentheses.
+Whether anonymous classes should be followed by parentheses.
 
 Allowed types: ``bool``
 
 Default value: ``true``
 
-``anonymous_class``
-~~~~~~~~~~~~~~~~~~~
+``named_class``
+~~~~~~~~~~~~~~~
 
-Whether anonymous classes should be followed by parentheses.
+Whether named classes should be followed by parentheses.
 
 Allowed types: ``bool``
 

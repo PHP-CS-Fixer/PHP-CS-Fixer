@@ -7,6 +7,15 @@ Imports or fully qualifies global classes/functions/constants.
 Configuration
 -------------
 
+``import_classes``
+~~~~~~~~~~~~~~~~~~
+
+Whether to import, not import or ignore global classes.
+
+Allowed values: ``false``, ``null`` and ``true``
+
+Default value: ``true``
+
 ``import_constants``
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -24,15 +33,6 @@ Whether to import, not import or ignore global functions.
 Allowed values: ``false``, ``null`` and ``true``
 
 Default value: ``null``
-
-``import_classes``
-~~~~~~~~~~~~~~~~~~
-
-Whether to import, not import or ignore global classes.
-
-Allowed values: ``false``, ``null`` and ``true``
-
-Default value: ``true``
 
 Examples
 --------

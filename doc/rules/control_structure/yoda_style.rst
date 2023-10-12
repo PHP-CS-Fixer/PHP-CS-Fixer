@@ -9,6 +9,16 @@ Write conditions in Yoda style (``true``), non-Yoda style (``['equal' => false,
 Configuration
 -------------
 
+``always_move_variable``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether variables should always be on non assignable side when applying Yoda
+style.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``equal``
 ~~~~~~~~~
 
@@ -35,16 +45,6 @@ Style for less and greater than (``<``, ``<=``, ``>``, ``>=``) statements.
 Allowed types: ``bool`` and ``null``
 
 Default value: ``null``
-
-``always_move_variable``
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-Whether variables should always be on non assignable side when applying Yoda
-style.
-
-Allowed types: ``bool``
-
-Default value: ``false``
 
 Examples
 --------

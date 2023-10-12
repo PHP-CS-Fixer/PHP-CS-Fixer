@@ -71,7 +71,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
                 continue;
             }
 
-            $prev = $tokens->getPrevMeaningfulToken($dirnameInfo['indexes'][0]);
+            $prev = $tokens->getPrevMeaningfulToken($dirnameInfo['indices'][0]);
 
             if (!$tokens[$prev]->equals('(')) {
                 continue;
@@ -83,7 +83,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
 
             while ($dirnameInfo = $this->getDirnameInfo($tokens, $prev, $firstArgumentEnd)) {
                 $dirnameInfoArray[] = $dirnameInfo;
-                $prev = $tokens->getPrevMeaningfulToken($dirnameInfo['indexes'][0]);
+                $prev = $tokens->getPrevMeaningfulToken($dirnameInfo['indices'][0]);
 
                 if (!$tokens[$prev]->equals('(')) {
                     break;
@@ -105,7 +105,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
      * @param int      $index                 Index of `dirname`
      * @param null|int $firstArgumentEndIndex Index of last token of first argument of `dirname` call
      *
-     * @return array{indexes: list<int>, secondArgument?: int, levels: int, end: int}|bool `false` when it is not a (supported) `dirname` call, an array with info about the dirname call otherwise
+     * @return array{indices: list<int>, secondArgument?: int, levels: int, end: int}|bool `false` when it is not a (supported) `dirname` call, an array with info about the dirname call otherwise
      */
     private function getDirnameInfo(Tokens $tokens, int $index, ?int $firstArgumentEndIndex = null)
     {
@@ -117,18 +117,18 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             return false;
         }
 
-        $info = ['indexes' => []];
+        $info = ['indices' => []];
         $prev = $tokens->getPrevMeaningfulToken($index);
 
         if ($tokens[$prev]->isGivenKind(T_NS_SEPARATOR)) {
-            $info['indexes'][] = $prev;
+            $info['indices'][] = $prev;
         }
 
-        $info['indexes'][] = $index;
+        $info['indices'][] = $index;
 
         // opening parenthesis "("
         $next = $tokens->getNextMeaningfulToken($index);
-        $info['indexes'][] = $next;
+        $info['indices'][] = $next;
 
         if (null !== $firstArgumentEndIndex) {
             $next = $tokens->getNextMeaningfulToken($firstArgumentEndIndex);
@@ -150,11 +150,11 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             }
         }
 
-        $info['indexes'][] = $next;
+        $info['indices'][] = $next;
 
         if ($tokens[$next]->equals(',')) {
             $next = $tokens->getNextMeaningfulToken($next);
-            $info['indexes'][] = $next;
+            $info['indices'][] = $next;
         }
 
         if ($tokens[$next]->equals(')')) {
@@ -174,7 +174,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         $next = $tokens->getNextMeaningfulToken($next);
 
         if ($tokens[$next]->equals(',')) {
-            $info['indexes'][] = $next;
+            $info['indices'][] = $next;
             $next = $tokens->getNextMeaningfulToken($next);
         }
 
@@ -182,14 +182,14 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             return false;
         }
 
-        $info['indexes'][] = $next;
+        $info['indices'][] = $next;
         $info['end'] = $next;
 
         return $info;
     }
 
     /**
-     * @param array<array{indexes: list<int>, secondArgument?: int, levels: int, end: int}> $dirnameInfoArray
+     * @param array<array{indices: list<int>, secondArgument?: int, levels: int, end: int}> $dirnameInfoArray
      */
     private function combineDirnames(Tokens $tokens, array $dirnameInfoArray): void
     {
@@ -199,7 +199,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         foreach ($dirnameInfoArray as $dirnameInfo) {
             $levels += $dirnameInfo['levels'];
 
-            foreach ($dirnameInfo['indexes'] as $index) {
+            foreach ($dirnameInfo['indices'] as $index) {
                 $tokens->removeLeadingWhitespace($index);
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }

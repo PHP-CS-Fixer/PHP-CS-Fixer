@@ -23,15 +23,6 @@ have a uniformed way to have them written all over the codebase.
 Configuration
 -------------
 
-``single_quoted``
-~~~~~~~~~~~~~~~~~
-
-Whether to fix single-quoted strings.
-
-Allowed types: ``bool``
-
-Default value: ``false``
-
 ``double_quoted``
 ~~~~~~~~~~~~~~~~~
 
@@ -49,6 +40,15 @@ Whether to fix heredoc syntax.
 Allowed types: ``bool``
 
 Default value: ``true``
+
+``single_quoted``
+~~~~~~~~~~~~~~~~~
+
+Whether to fix single-quoted strings.
+
+Allowed types: ``bool``
+
+Default value: ``false``
 
 Examples
 --------

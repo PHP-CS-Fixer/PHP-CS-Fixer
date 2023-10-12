@@ -37,16 +37,15 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
-``position_after_functions_and_oop_constructs``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``position_after_anonymous_constructs``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Whether the opening brace should be placed on "next" or "same" line after classy
-constructs (non-anonymous classes, interfaces, traits, methods and non-lambda
-functions).
+Whether the opening brace should be placed on "next" or "same" line after
+anonymous constructs (anonymous classes and lambda functions).
 
 Allowed values: ``'next'`` and ``'same'``
 
-Default value: ``'next'``
+Default value: ``'same'``
 
 ``position_after_control_structures``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -58,15 +57,16 @@ Allowed values: ``'next'`` and ``'same'``
 
 Default value: ``'same'``
 
-``position_after_anonymous_constructs``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``position_after_functions_and_oop_constructs``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Whether the opening brace should be placed on "next" or "same" line after
-anonymous constructs (anonymous classes and lambda functions).
+Whether the opening brace should be placed on "next" or "same" line after classy
+constructs (non-anonymous classes, interfaces, traits, methods and non-lambda
+functions).
 
 Allowed values: ``'next'`` and ``'same'``
 
-Default value: ``'same'``
+Default value: ``'next'``
 
 Examples
 --------

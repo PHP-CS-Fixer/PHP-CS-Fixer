@@ -7,23 +7,32 @@ Braces must be placed as configured.
 Configuration
 -------------
 
-``control_structures_opening_brace``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``allow_single_line_anonymous_functions``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The position of the opening brace of control structures‘ body.
+Allow anonymous functions to have opening and closing braces on the same line.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
+``allow_single_line_empty_anonymous_classes``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Allow anonymous classes to have opening and closing braces on the same line.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
+``anonymous_classes_opening_brace``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The position of the opening brace of anonymous classes‘ body.
 
 Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
 Default value: ``'same_line'``
-
-``functions_opening_brace``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The position of the opening brace of functions‘ body.
-
-Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
-
-Default value: ``'next_line_unless_newline_at_signature_end'``
 
 ``anonymous_functions_opening_brace``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,32 +52,23 @@ Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line
 
 Default value: ``'next_line_unless_newline_at_signature_end'``
 
-``anonymous_classes_opening_brace``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``control_structures_opening_brace``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The position of the opening brace of anonymous classes‘ body.
+The position of the opening brace of control structures‘ body.
 
 Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
 Default value: ``'same_line'``
 
-``allow_single_line_empty_anonymous_classes``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``functions_opening_brace``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Allow anonymous classes to have opening and closing braces on the same line.
+The position of the opening brace of functions‘ body.
 
-Allowed types: ``bool``
+Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
-Default value: ``true``
-
-``allow_single_line_anonymous_functions``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Allow anonymous functions to have opening and closing braces on the same line.
-
-Allowed types: ``bool``
-
-Default value: ``true``
+Default value: ``'next_line_unless_newline_at_signature_end'``
 
 Examples
 --------

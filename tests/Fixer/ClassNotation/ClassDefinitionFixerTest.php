@@ -30,11 +30,11 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     public function testConfigureDefaultToFalse(): void
     {
         $defaultConfig = [
+            'inline_constructor_arguments' => true,
             'multi_line_extends_each_single_line' => false,
             'single_item_single_line' => false,
             'single_line' => false,
             'space_before_parenthesis' => false,
-            'inline_constructor_arguments' => true,
         ];
 
         $fixer = new ClassDefinitionFixer();

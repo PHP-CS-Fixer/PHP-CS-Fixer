@@ -8,6 +8,15 @@ aligned vertically.
 Configuration
 -------------
 
+``align``
+~~~~~~~~~
+
+How comments should be aligned.
+
+Allowed values: ``'left'`` and ``'vertical'``
+
+Default value: ``'vertical'``
+
 ``tags``
 ~~~~~~~~
 
@@ -24,15 +33,6 @@ The tags that should be aligned. Allowed values are tags with name (``'param',
 Allowed types: ``array``
 
 Default value: ``['method', 'param', 'property', 'return', 'throws', 'type', 'var']``
-
-``align``
-~~~~~~~~~
-
-How comments should be aligned.
-
-Allowed values: ``'left'`` and ``'vertical'``
-
-Default value: ``'vertical'``
 
 Examples
 --------

@@ -7,15 +7,14 @@ Ordering ``use`` statements.
 Configuration
 -------------
 
-``sort_algorithm``
+``case_sensitive``
 ~~~~~~~~~~~~~~~~~~
 
-Whether the statements should be sorted alphabetically or by length, or not
-sorted.
+Whether the sorting should be case sensitive.
 
-Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
+Allowed types: ``bool``
 
-Default value: ``'alpha'``
+Default value: ``false``
 
 ``imports_order``
 ~~~~~~~~~~~~~~~~~
@@ -26,14 +25,15 @@ Allowed types: ``array`` and ``null``
 
 Default value: ``null``
 
-``case_sensitive``
+``sort_algorithm``
 ~~~~~~~~~~~~~~~~~~
 
-Whether the sorting should be case sensitive.
+Whether the statements should be sorted alphabetically or by length, or not
+sorted.
 
-Allowed types: ``bool``
+Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
 
-Default value: ``false``
+Default value: ``'alpha'``
 
 Examples
 --------

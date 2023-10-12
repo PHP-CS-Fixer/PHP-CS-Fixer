@@ -7,6 +7,15 @@ Renames PHPDoc tags.
 Configuration
 -------------
 
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether tags should be replaced only if they have exact same casing.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``fix_annotation``
 ~~~~~~~~~~~~~~~~~~
 
@@ -33,15 +42,6 @@ A map of tags to replace.
 Allowed types: ``array``
 
 Default value: ``[]``
-
-``case_sensitive``
-~~~~~~~~~~~~~~~~~~
-
-Whether tags should be replaced only if they have exact same casing.
-
-Allowed types: ``bool``
-
-Default value: ``false``
 
 Examples
 --------

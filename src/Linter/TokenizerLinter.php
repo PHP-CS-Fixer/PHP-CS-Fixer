@@ -49,7 +49,7 @@ final class TokenizerLinter implements LinterInterface
             Tokens::fromCode($source);
 
             return new TokenizerLintingResult();
-        } catch (\ParseError|\CompileError $e) {
+        } catch (\CompileError|\ParseError $e) {
             return new TokenizerLintingResult($e);
         }
     }

@@ -7,19 +7,19 @@ Controls blank lines before a namespace declaration.
 Configuration
 -------------
 
-``min_line_breaks``
+``max_line_breaks``
 ~~~~~~~~~~~~~~~~~~~
 
-Minimum line breaks that should exist before namespace declaration.
+Maximum line breaks that should exist before namespace declaration.
 
 Allowed types: ``int``
 
 Default value: ``2``
 
-``max_line_breaks``
+``min_line_breaks``
 ~~~~~~~~~~~~~~~~~~~
 
-Maximum line breaks that should exist before namespace declaration.
+Minimum line breaks that should exist before namespace declaration.
 
 Allowed types: ``int``
 

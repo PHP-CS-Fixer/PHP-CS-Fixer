@@ -35,7 +35,9 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
      */
     public function __construct(iterable $options)
     {
-        foreach ($options as $option) {
+        $fixerOptionSorter = new FixerOptionSorter();
+
+        foreach ($fixerOptionSorter->sort($options) as $option) {
             $this->addOption($option);
         }
 

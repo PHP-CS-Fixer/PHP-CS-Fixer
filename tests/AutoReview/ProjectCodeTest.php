@@ -367,6 +367,38 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideTestClassCases
      */
+    public function testNoPHPUnitMockUsed(string $testClassName): void
+    {
+        $rc = new \ReflectionClass($testClassName);
+        $tokens = Tokens::fromCode(file_get_contents($rc->getFileName()));
+        $stringTokens = array_filter(
+            $tokens->toArray(),
+            static fn (Token $token): bool => $token->isGivenKind(T_STRING)
+        );
+
+        $strings = array_map(
+            static fn (Token $token): string => $token->getContent(),
+            $stringTokens
+        );
+        $strings = array_unique($strings);
+
+        $message = sprintf('Class %s must not use PHPUnit\'s mock,, it shall use ->prophesize() instead.', $testClassName);
+        self::assertNotContains('getMockBuilder', $strings, $message);
+        self::assertNotContains('createMock', $strings, $message);
+        self::assertNotContains('createMockForIntersectionOfInterfaces', $strings, $message);
+        self::assertNotContains('createPartialMock', $strings, $message);
+        self::assertNotContains('createTestProxy', $strings, $message);
+        self::assertNotContains('getMockForAbstractClass', $strings, $message);
+        self::assertNotContains('getMockFromWsdl', $strings, $message);
+        self::assertNotContains('getMockForTrait', $strings, $message);
+        self::assertNotContains('getMockClass', $strings, $message);
+        self::assertNotContains('createConfiguredMock', $strings, $message);
+        self::assertNotContains('getObjectForTrait', $strings, $message);
+    }
+
+    /**
+     * @dataProvider provideTestClassCases
+     */
     public function testExpectedInputOrder(string $testClassName): void
     {
         $reflectionClass = new \ReflectionClass($testClassName);
