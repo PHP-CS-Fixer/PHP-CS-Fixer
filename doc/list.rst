@@ -2351,6 +2351,9 @@ List of Available Rules
 
    Converts readonly comment on classes to the readonly keyword.
 
+   *warning risky* If classes marked with ``@readonly`` annotation were extended anyway,
+   applying this fixer may break the inheritance for their child classes.
+
    `Source PhpCsFixer\\Fixer\\ClassNotation\\PhpdocReadonlyClassCommentToKeywordFixer <./../src/Fixer/ClassNotation/PhpdocReadonlyClassCommentToKeywordFixer.php>`_
 -  `phpdoc_return_self_reference <./rules/phpdoc/phpdoc_return_self_reference.rst>`_
 

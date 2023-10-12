@@ -44,6 +44,11 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
         return \PHP_VERSION_ID >= 8_02_00 && $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
+    public function isRisky(): bool
+    {
+        return true;
+    }
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -58,7 +63,9 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
                         EOT,
                     new VersionSpecification(8_02_00)
                 ),
-            ]
+            ],
+            null,
+            'If classes marked with `@readonly` annotation were extended anyway, applying this fixer may break the inheritance for their child classes.'
         );
     }
 
