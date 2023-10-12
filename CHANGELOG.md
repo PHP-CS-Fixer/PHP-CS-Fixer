@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.35.1
+---------------------
+
+* fix: Mark `PhpdocReadonlyClassCommentToKeywordFixer` as risky (#7372)
+
 Changelog for v3.35.0
 ---------------------
 
