@@ -786,6 +786,11 @@ final class FixerFactoryTest extends TestCase
                 'phpdoc_separation',
                 'phpdoc_trim',
             ],
+            'phpdoc_readonly_class_comment_to_keyword' => [
+                'no_empty_phpdoc',
+                'no_extra_blank_lines',
+                'phpdoc_align',
+            ],
             'phpdoc_return_self_reference' => [
                 'no_superfluous_phpdoc_tags',
             ],
