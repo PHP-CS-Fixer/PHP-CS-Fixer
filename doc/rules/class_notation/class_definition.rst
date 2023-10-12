@@ -8,6 +8,15 @@ should be one space.
 Configuration
 -------------
 
+``inline_constructor_arguments``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether constructor argument list in anonymous classes should be single line.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
 ``multi_line_extends_each_single_line``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -44,15 +53,6 @@ Whether there should be a single space after the parenthesis of anonymous class
 Allowed types: ``bool``
 
 Default value: ``false``
-
-``inline_constructor_arguments``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Whether constructor argument list in anonymous classes should be single line.
-
-Allowed types: ``bool``
-
-Default value: ``true``
 
 Examples
 --------

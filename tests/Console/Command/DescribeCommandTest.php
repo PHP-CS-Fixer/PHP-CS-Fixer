@@ -48,8 +48,8 @@ Fixer applying this rule is risky.
 Can break stuff.
 
 Fixer is configurable using following options:
-* functions (a subset of ['foo', 'test']): list of `function` names to fix; defaults to ['foo', 'test']; DEPRECATED alias: funcs
 * deprecated_option (bool): a deprecated option; defaults to false. DEPRECATED: use option `functions` instead.
+* functions (a subset of ['foo', 'test']): list of `function` names to fix; defaults to ['foo', 'test']; DEPRECATED alias: funcs
 
 Fixing examples:
  * Example #1. Fixing with the default configuration.
@@ -87,8 +87,8 @@ Replaces bad stuff with good stuff.
 Can break stuff.
 
 Fixer is configurable using following options:
-* \033[32mfunctions\033[39m (a subset of \e[33m['foo', 'test']\e[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m; \e[37;41mDEPRECATED\e[39;49m alias: \033[33mfuncs\033[39m
 * \033[32mdeprecated_option\033[39m (\033[33mbool\033[39m): a deprecated option; defaults to \e[33mfalse\e[39m. \033[37;41mDEPRECATED\033[39;49m: use option \e[32m`functions`\e[39m instead.
+* \033[32mfunctions\033[39m (a subset of \e[33m['foo', 'test']\e[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m; \e[37;41mDEPRECATED\e[39;49m alias: \033[33mfuncs\033[39m
 
 Fixing examples:
  * Example #1. Fixing with the \033[33mdefault\033[39m configuration.

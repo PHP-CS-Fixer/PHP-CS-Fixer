@@ -16,24 +16,6 @@ This fixer covers rules defined in PSR2 ¶4.4, ¶4.6.
 Configuration
 -------------
 
-``keep_multiple_spaces_after_comma``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Whether keep multiple spaces after comma.
-
-Allowed types: ``bool``
-
-Default value: ``false``
-
-``on_multiline``
-~~~~~~~~~~~~~~~~
-
-Defines how to handle function arguments lists that contain newlines.
-
-Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'`` and ``'ignore'``
-
-Default value: ``'ensure_fully_multiline'``
-
 ``after_heredoc``
 ~~~~~~~~~~~~~~~~~
 
@@ -51,6 +33,24 @@ Defines how to handle argument attributes when function definition is multiline.
 Allowed values: ``'ignore'``, ``'same_line'`` and ``'standalone'``
 
 Default value: ``'standalone'``
+
+``keep_multiple_spaces_after_comma``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether keep multiple spaces after comma.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
+``on_multiline``
+~~~~~~~~~~~~~~~~
+
+Defines how to handle function arguments lists that contain newlines.
+
+Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'`` and ``'ignore'``
+
+Default value: ``'ensure_fully_multiline'``
 
 Examples
 --------
