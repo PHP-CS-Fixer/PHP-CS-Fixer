@@ -26,71 +26,71 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class NoExtraBlankLinesFixerTest extends AbstractFixerTestCase
 {
     private string $template = <<<'EOF'
-<?php
-use \DateTime;
+        <?php
+        use \DateTime;
 
-use \stdClass;
+        use \stdClass;
 
-use \InvalidArgumentException;
+        use \InvalidArgumentException;
 
-class Test {
+        class Test {
 
-    public function testThrow($a)
-    {
-        if ($a) {
-            throw new InvalidArgumentException('test.'); // test
+            public function testThrow($a)
+            {
+                if ($a) {
+                    throw new InvalidArgumentException('test.'); // test
 
-        }
-        $date = new DateTime();
-        $class = new stdClass();
-        $class = (string) $class;
-        $e = new InvalidArgumentException($class.$date->format('Y'));
-        throw $e;
-
-    }
-
-
-
-    public function testBreak($a)
-    {
-        switch($a) {
-            case 1:
-                echo $a;
-                break;
-
-            case 2:
-                echo 'test';
-                break;
-        }
-    }
-
-    protected static function testContinueAndReturn($a, $b)
-    {
-        while($a < 100) {
-            if ($b < time()) {
-
-                continue;
+                }
+                $date = new DateTime();
+                $class = new stdClass();
+                $class = (string) $class;
+                $e = new InvalidArgumentException($class.$date->format('Y'));
+                throw $e;
 
             }
 
-            return $b;
 
+
+            public function testBreak($a)
+            {
+                switch($a) {
+                    case 1:
+                        echo $a;
+                        break;
+
+                    case 2:
+                        echo 'test';
+                        break;
+                }
+            }
+
+            protected static function testContinueAndReturn($a, $b)
+            {
+                while($a < 100) {
+                    if ($b < time()) {
+
+                        continue;
+
+                    }
+
+                    return $b;
+
+                }
+
+                return $a;
+
+            }
+
+            private function test(){
+
+                // comment
+            }
+
+            private function test123(){
+                // comment
+            }
         }
-
-        return $a;
-
-    }
-
-    private function test(){
-
-        // comment
-    }
-
-    private function test123(){
-        // comment
-    }
-}
-EOF;
+        EOF;
 
     /**
      * @param list<int>    $lineNumberRemoved Line numbers expected to be removed after fixing
@@ -153,19 +153,19 @@ EOF;
     public function testFix(): void
     {
         $expected = <<<'EOF'
-<?php
-$a = new Bar();
+            <?php
+            $a = new Bar();
 
-$a = new FooBaz();
-EOF;
+            $a = new FooBaz();
+            EOF;
 
         $input = <<<'EOF'
-<?php
-$a = new Bar();
+            <?php
+            $a = new Bar();
 
 
-$a = new FooBaz();
-EOF;
+            $a = new FooBaz();
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -173,23 +173,23 @@ EOF;
     public function testFixWithManyEmptyLines(): void
     {
         $expected = <<<'EOF'
-<?php
-$a = new Bar();
+            <?php
+            $a = new Bar();
 
-$a = new FooBaz();
-EOF;
+            $a = new FooBaz();
+            EOF;
 
         $input = <<<'EOF'
-<?php
-$a = new Bar();
+            <?php
+            $a = new Bar();
 
 
 
 
 
 
-$a = new FooBaz();
-EOF;
+            $a = new FooBaz();
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -251,12 +251,12 @@ TEXT;
     public function testFixWithMultilineString(): void
     {
         $expected = <<<'EOF'
-<?php
-$a = 'Foo
+            <?php
+            $a = 'Foo
 
 
-Bar';
-EOF;
+            Bar';
+            EOF;
 
         $this->doTest($expected);
     }
@@ -264,41 +264,41 @@ EOF;
     public function testFixWithTrickyMultilineStrings(): void
     {
         $expected = <<<'EOF'
-<?php
-$a = 'Foo';
+            <?php
+            $a = 'Foo';
 
-$b = 'Bar
-
-
-Here\'s an escaped quote '
-
-.
-
-'
+            $b = 'Bar
 
 
-FooFoo';
-EOF;
+            Here\'s an escaped quote '
+
+            .
+
+            '
+
+
+            FooFoo';
+            EOF;
 
         $input = <<<'EOF'
-<?php
-$a = 'Foo';
+            <?php
+            $a = 'Foo';
 
 
-$b = 'Bar
+            $b = 'Bar
 
 
-Here\'s an escaped quote '
+            Here\'s an escaped quote '
 
 
-.
+            .
 
 
-'
+            '
 
 
-FooFoo';
-EOF;
+            FooFoo';
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -306,26 +306,26 @@ EOF;
     public function testFixWithCommentWithQuote(): void
     {
         $expected = <<<'EOF'
-<?php
-$a = 'foo';
+            <?php
+            $a = 'foo';
 
-// my comment's must have a quote
-$b = 'foobar';
+            // my comment's must have a quote
+            $b = 'foobar';
 
-$c = 'bar';
-EOF;
+            $c = 'bar';
+            EOF;
 
         $input = <<<'EOF'
-<?php
-$a = 'foo';
+            <?php
+            $a = 'foo';
 
 
-// my comment's must have a quote
-$b = 'foobar';
+            // my comment's must have a quote
+            $b = 'foobar';
 
 
-$c = 'bar';
-EOF;
+            $c = 'bar';
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -368,47 +368,46 @@ EOF;
 
     public static function provideFixWithCommentsCases(): iterable
     {
-        return [
-            [
-                <<<'EOF'
-<?php
-//class Test
-$a; //
+        yield [
+            <<<'EOF'
+                <?php
+                //class Test
+                $a; //
 
-$b;
-/***/
+                $b;
+                /***/
 
-$c;
-//
+                $c;
+                //
 
-$d;
-EOF
-                ,
-                <<<'EOF'
-<?php
-//class Test
-$a; //
-
+                $d;
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+                //class Test
+                $a; //
 
 
 
-$b;
-/***/
+
+                $b;
+                /***/
 
 
 
-$c;
-//
+                $c;
+                //
 
 
 
-$d;
-EOF
-            ],
-            [
-                "<?php\n//a\n\n\$a =1;",
-                "<?php\n//a\n\n\n\n\$a =1;",
-            ],
+                $d;
+                EOF
+        ];
+
+        yield [
+            "<?php\n//a\n\n\$a =1;",
+            "<?php\n//a\n\n\n\n\$a =1;",
         ];
     }
 
@@ -481,47 +480,53 @@ $b = 1;
 
     public static function provideBetweenUseCases(): iterable
     {
-        yield from [
-            ['<?php use A\B;'],
-            ['<?php use A\B?>'],
-            ['<?php use A\B;use A\D; return 1;'],
-            ["<?php use A\\B?>\n\n<?php use D\\E\\F?>"],
-            ['<?php use Y\B;use A\D; return 1;'],
-            [
-                '<?php
+        yield ['<?php use A\B;'];
+
+        yield ['<?php use A\B?>'];
+
+        yield ['<?php use A\B;use A\D; return 1;'];
+
+        yield ["<?php use A\\B?>\n\n<?php use D\\E\\F?>"];
+
+        yield ['<?php use Y\B;use A\D; return 1;'];
+
+        yield [
+            '<?php
                     use A\B;
                     use A\C;',
-                '<?php
+            '<?php
                     use A\B;
 
                     use A\C;',
-            ],
-            [
-                '<?php use A\E;use A\Z;
+        ];
+
+        yield [
+            '<?php use A\E;use A\Z;
                     use C;
                 return 1;
                 ',
-                '<?php use A\E;use A\Z;
+            '<?php use A\E;use A\Z;
 
                     use C;
                 return 1;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class Test {
                     use A;
 
                     use B;
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $example = function () use ($message) { var_dump($message); };
 
                     $example = function () use ($message) { var_dump($message); };
                 ',
-            ],
         ];
 
         yield [
@@ -567,65 +572,64 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
 
     public static function provideRemoveLinesBetweenUseStatementsCases(): iterable
     {
-        return [
-            [
-                <<<'EOF'
-<?php
+        yield [
+            <<<'EOF'
+                <?php
 
-use Zxy\Qux;
-use Zoo\Bar as Bar2;
-use Foo\Bar as Bar1;
-use Foo\Zar\Baz;
+                use Zxy\Qux;
+                use Zoo\Bar as Bar2;
+                use Foo\Bar as Bar1;
+                use Foo\Zar\Baz;
 
-$c = 1;
+                $c = 1;
 
-use Foo\Quxx as Quxx1;
-use Foo\Zar\Quxx;
+                use Foo\Quxx as Quxx1;
+                use Foo\Zar\Quxx;
 
-$a = new Bar1();
-$a = new Bar2();
-$a = new Baz();
-$a = new Qux();
-EOF
-                ,
+                $a = new Bar1();
+                $a = new Bar2();
+                $a = new Baz();
+                $a = new Qux();
+                EOF
+            ,
 
-                <<<'EOF'
-<?php
+            <<<'EOF'
+                <?php
 
-use Zxy\Qux;
+                use Zxy\Qux;
 
-use Zoo\Bar as Bar2;
+                use Zoo\Bar as Bar2;
 
-use Foo\Bar as Bar1;
-use Foo\Zar\Baz;
+                use Foo\Bar as Bar1;
+                use Foo\Zar\Baz;
 
-$c = 1;
+                $c = 1;
 
-use Foo\Quxx as Quxx1;
+                use Foo\Quxx as Quxx1;
 
-use Foo\Zar\Quxx;
+                use Foo\Zar\Quxx;
 
-$a = new Bar1();
-$a = new Bar2();
-$a = new Baz();
-$a = new Qux();
-EOF
-                ,
-            ],
-            [
-                '<?php
+                $a = new Bar1();
+                $a = new Bar2();
+                $a = new Baz();
+                $a = new Qux();
+                EOF
+            ,
+        ];
+
+        yield [
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
 use const some\a\{ConstA, ConstB, ConstC};
 ',
-                '<?php
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 
 use function some\a\{fn_a, fn_b, fn_c};
 
 use const some\a\{ConstA, ConstB, ConstC};
 ',
-            ],
         ];
     }
 
@@ -836,19 +840,20 @@ class Foo
 
     public static function provideBracesCases(): iterable
     {
-        return [
-            [
-                ['tokens' => ['curly_brace_block']],
-                "<?php function test()\n\n{}\n\necho 789;",
-            ],
-            [
-                ['tokens' => ['curly_brace_block']],
-                "<?php switch(\$a){\ncase 1:echo 789;}",
-                "<?php switch(\$a){\n   \ncase 1:echo 789;}",
-            ],
-            [
-                ['tokens' => ['parenthesis_brace_block']],
-                '<?php
+        yield [
+            ['tokens' => ['curly_brace_block']],
+            "<?php function test()\n\n{}\n\necho 789;",
+        ];
+
+        yield [
+            ['tokens' => ['curly_brace_block']],
+            "<?php switch(\$a){\ncase 1:echo 789;}",
+            "<?php switch(\$a){\n   \ncase 1:echo 789;}",
+        ];
+
+        yield [
+            ['tokens' => ['parenthesis_brace_block']],
+            '<?php
 is_int(
 1);
 function test(
@@ -860,7 +865,7 @@ $c
 
 
 }',
-                '<?php
+            '<?php
 is_int(
 
 1);
@@ -876,15 +881,17 @@ $c
 
 
 }',
-            ],
-            [
-                ['tokens' => ['parenthesis_brace_block']],
-                "<?php array(\n1,\n2,\n3,\n);",
-                "<?php array(\n  \n1,\n2,\n3,\n\n\n);",
-            ],
-            [
-                ['tokens' => ['parenthesis_brace_block']],
-                '<?php
+        ];
+
+        yield [
+            ['tokens' => ['parenthesis_brace_block']],
+            "<?php array(\n1,\n2,\n3,\n);",
+            "<?php array(\n  \n1,\n2,\n3,\n\n\n);",
+        ];
+
+        yield [
+            ['tokens' => ['parenthesis_brace_block']],
+            '<?php
     function a()
     {
         $b->d(e(
@@ -893,10 +900,11 @@ $c
         foreach ($a as $x) {
         }
     }',
-            ],
-            [
-                ['tokens' => ['return']],
-                '<?php
+        ];
+
+        yield [
+            ['tokens' => ['return']],
+            '<?php
 class Foo
 {
     public function bar() {return 1;}
@@ -904,7 +912,7 @@ class Foo
     public function baz() {return 2;
     }
 }',
-                '<?php
+            '<?php
 class Foo
 {
     public function bar() {return 1;}
@@ -913,12 +921,12 @@ class Foo
 
     }
 }',
-            ],
-            [
-                ['tokens' => ['square_brace_block']],
-                "<?php \$c = \$b[0];\n\n\n\$a = [\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
-                "<?php \$c = \$b[0];\n\n\n\$a = [\n\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
-            ],
+        ];
+
+        yield [
+            ['tokens' => ['square_brace_block']],
+            "<?php \$c = \$b[0];\n\n\n\$a = [\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
+            "<?php \$c = \$b[0];\n\n\n\$a = [\n\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
         ];
     }
 
@@ -976,16 +984,15 @@ class Foo
 
     public static function provideInSwitchStatementCases(): iterable
     {
-        return [
+        yield [
             [
-                [
-                    'break',
-                    'continue',
-                    'extra',
-                    'return',
-                    'throw',
-                ],
-                '<?php
+                'break',
+                'continue',
+                'extra',
+                'return',
+                'throw',
+            ],
+            '<?php
                     /** a  */
                     switch ($a) {
                         case 1:
@@ -1009,7 +1016,7 @@ class Foo
                         default:
                             echo 1;
                     }',
-                '<?php
+            '<?php
                     /** a  */
                     switch ($a) {
                         case 1:
@@ -1041,21 +1048,22 @@ class Foo
                         default:
                             echo 1;
                     }',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'switch',
-                    'case',
-                    'default',
-                ],
-                '<?php
+                'switch',
+                'case',
+                'default',
+            ],
+            '<?php
                     switch($a) {
                         case 0:
                         case 1:
                         default:
                             return 1;
                     }',
-                '<?php
+            '<?php
                     switch($a) {
 
                         case 0:
@@ -1066,27 +1074,27 @@ class Foo
 
                             return 1;
                     }',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'switch',
-                    'case',
-                    'default',
-                ],
-                '<?php
-                    switch($a) { case 2: echo 3;
-                    default: return 1;}
-
-
-                    // above stays empty',
-                '<?php
-                    switch($a) { case 2: echo 3;
-
-                    default: return 1;}
-
-
-                    // above stays empty',
+                'switch',
+                'case',
+                'default',
             ],
+            '<?php
+                    switch($a) { case 2: echo 3;
+                    default: return 1;}
+
+
+                    // above stays empty',
+            '<?php
+                    switch($a) { case 2: echo 3;
+
+                    default: return 1;}
+
+
+                    // above stays empty',
         ];
     }
 

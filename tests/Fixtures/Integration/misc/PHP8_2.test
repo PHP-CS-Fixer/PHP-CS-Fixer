@@ -25,9 +25,7 @@ enum A: string
 }
 
 #[Attr(A::B->name)]
-class E
-{
-}
+class E {}
 
 // https://wiki.php.net/rfc/null-false-standalone-types
 class FalseNull
@@ -38,8 +36,7 @@ class FalseNull
     public function __construct(
         private false $falsy = false,
         private null $nully = null
-    ) {
-    }
+    ) {}
 
     public function falsy(): false
     {
@@ -58,9 +55,7 @@ class FalseNull
     }
 }
 
-function falsyNull(null $n, false $f): null|false
-{
-}
+function falsyNull(null $n, false $f): null|false {}
 
 array_filter([], fn (null $n) => null === $n);
 array_filter([], fn (false $n) => false === $n);
@@ -72,8 +67,7 @@ class TrueType
 
     public function __construct(
         private true $havingABud = true
-    ) {
-    }
+    ) {}
 
     public function havingABud(): true
     {
@@ -102,7 +96,7 @@ trait WithConstants
 }
 
 // https://wiki.php.net/rfc/dnf_types
-function generateSlug((HasTitle&HasId)|null $post)
+function generateSlug(null|(HasId&HasTitle) $post)
 {
     throw new \Exception('not implemented');
 }

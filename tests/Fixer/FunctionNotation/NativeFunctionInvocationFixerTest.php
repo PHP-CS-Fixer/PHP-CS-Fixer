@@ -65,16 +65,21 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
 
     public static function provideConfigureRejectsInvalidConfigurationElementCases(): iterable
     {
-        return [
-            'null' => [null],
-            'false' => [false],
-            'true' => [false],
-            'int' => [1],
-            'array' => [[]],
-            'float' => [0.1],
-            'object' => [new \stdClass()],
-            'not-trimmed' => ['  is_string  '],
-        ];
+        yield 'null' => [null];
+
+        yield 'false' => [false];
+
+        yield 'true' => [false];
+
+        yield 'int' => [1];
+
+        yield 'array' => [[]];
+
+        yield 'float' => [0.1];
+
+        yield 'object' => [new \stdClass()];
+
+        yield 'not-trimmed' => ['  is_string  '];
     }
 
     /**
@@ -101,20 +106,22 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
 
     public static function provideConfigureIncludeSetsCases(): iterable
     {
-        return [
-            [['foo', 'bar']],
-            [[NativeFunctionInvocationFixer::SET_ALL]],
-            [[NativeFunctionInvocationFixer::SET_ALL, 'bar']],
-            [
-                ['@xxx'],
-                InvalidFixerConfigurationException::class,
-                '[native_function_invocation] Invalid configuration: Unknown set "@xxx", known sets are "@all", "@internal" and "@compiler_optimized".',
-            ],
-            [
-                [' x '],
-                InvalidFixerConfigurationException::class,
-                '[native_function_invocation] Invalid configuration: Each element must be a non-empty, trimmed string, got "string" instead.',
-            ],
+        yield [['foo', 'bar']];
+
+        yield [[NativeFunctionInvocationFixer::SET_ALL]];
+
+        yield [[NativeFunctionInvocationFixer::SET_ALL, 'bar']];
+
+        yield [
+            ['@xxx'],
+            InvalidFixerConfigurationException::class,
+            '[native_function_invocation] Invalid configuration: Unknown set "@xxx", known sets are "@all", "@internal" and "@compiler_optimized".',
+        ];
+
+        yield [
+            [' x '],
+            InvalidFixerConfigurationException::class,
+            '[native_function_invocation] Invalid configuration: Each element must be a non-empty, trimmed string, got "string" instead.',
         ];
     }
 
@@ -127,36 +134,36 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         ]);
 
         $before = <<<'PHP'
-<?php
+            <?php
 
-namespace WithClassNotPrefixed;
+            namespace WithClassNotPrefixed;
 
-class Bar
-{
-    public function baz($foo)
-    {
-        if (isset($foo)) {
-            is_string($foo);
-        }
-    }
-}
-PHP;
+            class Bar
+            {
+                public function baz($foo)
+                {
+                    if (isset($foo)) {
+                        is_string($foo);
+                    }
+                }
+            }
+            PHP;
 
         $after = <<<'PHP'
-<?php
+            <?php
 
-namespace WithClassNotPrefixed;
+            namespace WithClassNotPrefixed;
 
-class Bar
-{
-    public function baz($foo)
-    {
-        if (isset($foo)) {
-            \is_string($foo);
-        }
-    }
-}
-PHP;
+            class Bar
+            {
+                public function baz($foo)
+                {
+                    if (isset($foo)) {
+                        \is_string($foo);
+                    }
+                }
+            }
+            PHP;
 
         $this->doTest($before);
 
@@ -175,25 +182,26 @@ PHP;
 
     public static function provideFixWithDefaultConfigurationCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 
 \is_string($foo);
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 \is_string($foo);
 ',
-                '<?php
+            '<?php
 
 is_string($foo);
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 class Foo
 {
@@ -203,21 +211,23 @@ class Foo
     }
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 json_encode($foo);
 \strlen($foo);
 ',
-                '<?php
+            '<?php
 
 json_encode($foo);
 strlen($foo);
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 class Foo
 {
@@ -227,7 +237,7 @@ class Foo
     }
 }
 ',
-                '<?php
+            '<?php
 
 class Foo
 {
@@ -237,25 +247,26 @@ class Foo
     }
 }
 ',
-            ],
-            'fix multiple calls in single code' => [
-                '<?php
+        ];
+
+        yield 'fix multiple calls in single code' => [
+            '<?php
 
 json_encode($foo);
 \strlen($foo);
 \strlen($foo);
 ',
-                '<?php
+            '<?php
 
 json_encode($foo);
 strlen($foo);
 strlen($foo);
 ',
-            ],
-            [
-                '<?php $name = \get_class($foo, );',
-                '<?php $name = get_class($foo, );',
-            ],
+        ];
+
+        yield [
+            '<?php $name = \get_class($foo, );',
+            '<?php $name = get_class($foo, );',
         ];
     }
 
@@ -275,15 +286,15 @@ strlen($foo);
 
     public static function provideFixWithConfiguredExcludeCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 
 is_string($foo);
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 class Foo
 {
@@ -293,7 +304,6 @@ class Foo
     }
 }
 ',
-            ],
         ];
     }
 
@@ -308,24 +318,25 @@ class Foo
 
     public static function provideFixWithNamespaceConfigurationCases(): iterable
     {
-        return [
-            [
-                '<?php echo count([1]);',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php echo count([1]);',
+        ];
+
+        yield [
+            '<?php
 namespace space1 { ?>
 <?php echo \count([2]) ?>
 <?php }namespace {echo count([1]);}
 ',
-                '<?php
+            '<?php
 namespace space1 { ?>
 <?php echo count([2]) ?>
 <?php }namespace {echo count([1]);}
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 namespace Bar {
     echo \strLEN("in 1");
 }
@@ -346,7 +357,7 @@ namespace {
     echo strlen("out 3");
 }
 ',
-                '<?php
+            '<?php
 namespace Bar {
     echo strLEN("in 1");
 }
@@ -367,9 +378,10 @@ namespace {
     echo strlen("out 3");
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 namespace space11 ?>
 
     <?php
@@ -377,7 +389,7 @@ echo \strlen(__NAMESPACE__);
 namespace space2;
 echo \strlen(__NAMESPACE__);
 ',
-                '<?php
+            '<?php
 namespace space11 ?>
 
     <?php
@@ -385,13 +397,15 @@ echo strlen(__NAMESPACE__);
 namespace space2;
 echo strlen(__NAMESPACE__);
 ',
-            ],
-            [
-                '<?php namespace PhpCsFixer\Tests\Fixer\Casing;\count([1]);',
-                '<?php namespace PhpCsFixer\Tests\Fixer\Casing;count([1]);',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php namespace PhpCsFixer\Tests\Fixer\Casing;\count([1]);',
+            '<?php namespace PhpCsFixer\Tests\Fixer\Casing;count([1]);',
+        ];
+
+        yield [
+            '<?php
 namespace Space12;
 
 echo \count([1]);
@@ -401,7 +415,7 @@ namespace Space2;
 echo \count([1]);
 ?>
 ',
-                '<?php
+            '<?php
 namespace Space12;
 
 echo count([1]);
@@ -411,12 +425,14 @@ namespace Space2;
 echo count([1]);
 ?>
 ',
-            ],
-            [
-                '<?php namespace {echo strlen("out 2");}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php namespace {echo strlen("out 2");}',
+        ];
+
+        yield [
+            '<?php
 namespace space13 {
     echo \strlen("in 1");
 }
@@ -429,7 +445,7 @@ namespace { // global
     echo strlen("global 1");
 }
 ',
-                '<?php
+            '<?php
 namespace space13 {
     echo strlen("in 1");
 }
@@ -442,9 +458,10 @@ namespace { // global
     echo strlen("global 1");
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 namespace space1 {
     echo \count([1]);
 }
@@ -452,7 +469,7 @@ namespace {
     echo \count([1]);
 }
 ',
-                '<?php
+            '<?php
 namespace space1 {
     echo count([1]);
 }
@@ -460,8 +477,7 @@ namespace {
     echo count([1]);
 }
 ',
-                'all',
-            ],
+            'all',
         ];
     }
 
@@ -478,44 +494,45 @@ namespace {
 
     public static function provideFixWithConfiguredIncludeCases(): iterable
     {
-        yield from [
-            'include set + 1, exclude 1' => [
-                '<?php
+        yield 'include set + 1, exclude 1' => [
+            '<?php
                     echo \count([1]);
                     \some_other($a, 3);
                     echo strlen($a);
                     not_me();
                 ',
-                '<?php
+            '<?php
                     echo count([1]);
                     some_other($a, 3);
                     echo strlen($a);
                     not_me();
                 ',
-                [
-                    'include' => [NativeFunctionInvocationFixer::SET_INTERNAL, 'some_other'],
-                    'exclude' => ['strlen'],
-                ],
+            [
+                'include' => [NativeFunctionInvocationFixer::SET_INTERNAL, 'some_other'],
+                'exclude' => ['strlen'],
             ],
-            'include @all' => [
-                '<?php
+        ];
+
+        yield 'include @all' => [
+            '<?php
                     echo \count([1]);
                     \some_other($a, 3);
                     echo \strlen($a);
                     \me_as_well();
                 ',
-                '<?php
+            '<?php
                     echo count([1]);
                     some_other($a, 3);
                     echo strlen($a);
                     me_as_well();
                 ',
-                [
-                    'include' => [NativeFunctionInvocationFixer::SET_ALL],
-                ],
+            [
+                'include' => [NativeFunctionInvocationFixer::SET_ALL],
             ],
-            'include @compiler_optimized' => [
-                '<?php
+        ];
+
+        yield 'include @compiler_optimized' => [
+            '<?php
                     // do not fix
                     $a = strrev($a);
                     $a .= str_repeat($a, 4);
@@ -524,7 +541,7 @@ namespace {
                     $c = \get_class($d);
                     $e = \intval($f);
                 ',
-                '<?php
+            '<?php
                     // do not fix
                     $a = strrev($a);
                     $a .= str_repeat($a, 4);
@@ -533,40 +550,42 @@ namespace {
                     $c = get_class($d);
                     $e = intval($f);
                 ',
-                [
-                    'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
-                ],
-            ],
             [
-                '<?php class Foo {
+                'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
+            ],
+        ];
+
+        yield [
+            '<?php class Foo {
                         public function & strlen($name) {
                         }
                     }
                 ',
-            ],
-            'scope namespaced and strict enabled' => [
-                '<?php
+        ];
+
+        yield 'scope namespaced and strict enabled' => [
+            '<?php
                     $a = not_compiler_optimized_function();
                     $b = intval($c);
                 ',
-                '<?php
+            '<?php
                     $a = \not_compiler_optimized_function();
                     $b = \intval($c);
                 ',
-                [
-                    'scope' => 'namespaced',
-                    'strict' => true,
-                ],
-            ],
             [
-                '<?php
+                'scope' => 'namespaced',
+                'strict' => true,
+            ],
+        ];
+
+        yield [
+            '<?php
                     use function foo\json_decode;
                     json_decode($base);
                 ',
-                null,
-                [
-                    'include' => [NativeFunctionInvocationFixer::SET_ALL],
-                ],
+            null,
+            [
+                'include' => [NativeFunctionInvocationFixer::SET_ALL],
             ],
         ];
 

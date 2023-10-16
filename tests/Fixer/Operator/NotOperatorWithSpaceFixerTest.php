@@ -35,27 +35,29 @@ final class NotOperatorWithSpaceFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php $i = 0; $i++; ++$i; $foo = ! false || ( ! true);',
-                '<?php $i = 0; $i++; ++$i; $foo = !false || (!true);',
-            ],
-            [
-                '<?php $i = 0; $i--; --$i; $foo = ! false || ($i && ! true);',
-                '<?php $i = 0; $i--; --$i; $foo = !false || ($i && !true);',
-            ],
-            [
-                '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */true);',
-                '<?php $i = 0; $i--; $foo = !false || ($i && !/* some comment */true);',
-            ],
-            [
-                '<?php $i = 0; $i--; $foo = ! false || ($i && !    true);',
-                '<?php $i = 0; $i--; $foo = !false || ($i && !    true);',
-            ],
-            [
-                '<?php $i = 0; $i--; $foo = ! false || ($i &&    !    true);',
-                '<?php $i = 0; $i--; $foo = !false || ($i &&    !    true);',
-            ],
+        yield [
+            '<?php $i = 0; $i++; ++$i; $foo = ! false || ( ! true);',
+            '<?php $i = 0; $i++; ++$i; $foo = !false || (!true);',
+        ];
+
+        yield [
+            '<?php $i = 0; $i--; --$i; $foo = ! false || ($i && ! true);',
+            '<?php $i = 0; $i--; --$i; $foo = !false || ($i && !true);',
+        ];
+
+        yield [
+            '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */true);',
+            '<?php $i = 0; $i--; $foo = !false || ($i && !/* some comment */true);',
+        ];
+
+        yield [
+            '<?php $i = 0; $i--; $foo = ! false || ($i && !    true);',
+            '<?php $i = 0; $i--; $foo = !false || ($i && !    true);',
+        ];
+
+        yield [
+            '<?php $i = 0; $i--; $foo = ! false || ($i &&    !    true);',
+            '<?php $i = 0; $i--; $foo = !false || ($i &&    !    true);',
         ];
     }
 }

@@ -19,6 +19,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\Fixer\AbstractShortOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\AssignNullCoalescingToCoalesceEqualFixer
  */
 final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTestCase
@@ -61,6 +62,11 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
         yield 'simple array, comment' => [
             '<?php $a[1] /* 1 */ ??= /* 2 */ /* 3 */ /* 4 */ /* 5 */ 1;',
             '<?php $a[1]/* 1 */ = /* 2 */ $a[1/* 3 */] /* 4 */ ??/* 5 */ 1;',
+        ];
+
+        yield 'simple in call' => [
+            '<?php a(1, $a ??= 1);',
+            '<?php a(1, $a = $a ?? 1);',
         ];
 
         yield [
@@ -170,6 +176,7 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
                 $d = $a + $c ; $c ?? $c;
                 $a = ($a ?? $b) && $c; // just to be sure
                 $a = (string) $a ?? 1;
+                $a = 1 ?? $a;
             ',
         ];
 
@@ -205,5 +212,64 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
                 '<?php $a[1] = (($a{1})) ?? 1;',
             ];
         }
+
+        yield ['<?php $a[1][0] = $a ?? $a[1][0];'];
+
+        yield 'switch case & default' => [
+            '<?php
+switch(foo()) {
+    case 1:
+        $a ??= 1;
+        break;
+    default:
+        $b ??= 1;
+        break;
+}
+',
+            '<?php
+switch(foo()) {
+    case 1:
+        $a = $a ?? 1;
+        break;
+    default:
+        $b = $b ?? 1;
+        break;
+}
+',
+        ];
+
+        yield 'operator precedence' => [
+            '<?php $x = $z ? $b : $a = $a ?? 123;',
+        ];
+
+        yield 'alternative syntax' => [
+            '<?php foreach([1, 2, 3] as $i): $a ??= 1; endforeach;',
+            '<?php foreach([1, 2, 3] as $i): $a = $a ?? 1; endforeach;',
+        ];
+
+        yield 'assign and return' => [
+            '<?php
+
+class Foo
+{
+    private $test;
+
+    public function bar($i)
+    {
+        return $this->test ??= $i;
+    }
+}',
+            '<?php
+
+class Foo
+{
+    private $test;
+
+    public function bar($i)
+    {
+        return $this->test = $this->test ?? $i;
+    }
+}',
+        ];
     }
 }

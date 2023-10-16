@@ -65,12 +65,12 @@ final class TextDiffTest extends TestCase
     public static function provideDiffReportingDecoratedCases(): iterable
     {
         $expected = <<<'TEST'
-%A$output->writeln('<error>'.(int)$output.'</error>');%A
-%A$output->writeln('<error>'.(int) $output.'</error>');%A
-%A$output->writeln('<error> TEST </error>');%A
-%A$output->writeln('<error>'.(int)$output.'</error>');%A
-%A$output->writeln('<error>'.(int) $output.'</error>');%A
-TEST;
+            %A$output->writeln('<error>'.(int)$output.'</error>');%A
+            %A$output->writeln('<error>'.(int) $output.'</error>');%A
+            %A$output->writeln('<error> TEST </error>');%A
+            %A$output->writeln('<error>'.(int)$output.'</error>');%A
+            %A$output->writeln('<error>'.(int) $output.'</error>');%A
+            TEST;
 
         foreach (['txt', 'xml', 'junit'] as $format) {
             yield [$expected, $format, true];
@@ -78,7 +78,7 @@ TEST;
             yield [$expected, $format, false];
         }
 
-        $expected = substr(json_encode($expected), 1, -1);
+        $expected = substr(json_encode($expected, JSON_THROW_ON_ERROR), 1, -1);
 
         yield [$expected, 'json', true];
 

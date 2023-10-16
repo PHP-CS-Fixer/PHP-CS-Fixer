@@ -7,19 +7,19 @@ Spaces should be properly placed in a function declaration.
 Configuration
 -------------
 
-``closure_function_spacing``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``closure_fn_spacing``
+~~~~~~~~~~~~~~~~~~~~~~
 
-Spacing to use before open parenthesis for closures.
+Spacing to use before open parenthesis for short arrow functions.
 
 Allowed values: ``'none'`` and ``'one'``
 
 Default value: ``'one'``
 
-``closure_fn_spacing``
-~~~~~~~~~~~~~~~~~~~~~~
+``closure_function_spacing``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Spacing to use before open parenthesis for short arrow functions.
+Spacing to use before open parenthesis for closures.
 
 Allowed values: ``'none'`` and ``'one'``
 
@@ -94,20 +94,21 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PER
-  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``function_declaration`` rule with the default config.
+- `@PER <./../../ruleSets/PER.rst>`_ with config:
 
-@PER-CS1.0
-  Using the `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ rule set will enable the ``function_declaration`` rule with the default config.
+  ``['closure_fn_spacing' => 'none']``
 
-@PSR2
-  Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``function_declaration`` rule with the default config.
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
 
-@PSR12
-  Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``function_declaration`` rule with the default config.
+  ``['closure_fn_spacing' => 'none']``
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``function_declaration`` rule with the default config.
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
 
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``function_declaration`` rule with the default config.
+  ``['closure_fn_spacing' => 'none']``
+
+- `@PSR2 <./../../ruleSets/PSR2.rst>`_
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
+

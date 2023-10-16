@@ -45,16 +45,21 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideConfigureRejectsInvalidControlStatementCases(): iterable
     {
-        return [
-            'null' => [null],
-            'false' => [false],
-            'true' => [true],
-            'int' => [0],
-            'float' => [3.14],
-            'array' => [[]],
-            'object' => [new \stdClass()],
-            'unknown' => ['foo'],
-        ];
+        yield 'null' => [null];
+
+        yield 'false' => [false];
+
+        yield 'true' => [true];
+
+        yield 'int' => [0];
+
+        yield 'float' => [3.14];
+
+        yield 'array' => [[]];
+
+        yield 'object' => [new \stdClass()];
+
+        yield 'unknown' => ['foo'];
     }
 
     /**
@@ -81,9 +86,8 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithAuthorCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
                         /**
                          * @author Bob
@@ -99,25 +103,27 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe2() {}
                     }
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                     /**
                      * @author Alice
                      * @author Bob
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @author Bob
                      * @author Alice
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                     /**
                      * Comment 1
                      * @author Alice
@@ -127,7 +133,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * Comment 1
                      * @author Bob
@@ -137,9 +143,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                     /**
                      * @author Alice
                      * @author chris
@@ -148,7 +155,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @author Alice
                      * @author Erna
@@ -157,9 +164,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'data provider' => [
-                '<?php
+        ];
+
+        yield 'data provider' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -170,7 +178,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -181,7 +189,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-            ],
         ];
     }
 
@@ -201,9 +208,8 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithCoversCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
                         /**
                          * @covers Foo
@@ -219,25 +225,27 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe2() {}
                     }
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                     /**
                      * @covers Bar
                      * @covers Foo
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @covers Foo
                      * @covers Bar
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                     /**
                      * Comment 1
                      * @covers Bar
@@ -247,7 +255,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * Comment 1
                      * @covers Foo
@@ -257,9 +265,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                     /**
                      * @covers A
                      * @covers c
@@ -268,7 +277,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @covers A
                      * @covers E
@@ -277,9 +286,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'data provider' => [
-                '<?php
+        ];
+
+        yield 'data provider' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -290,7 +300,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -301,7 +311,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-            ],
         ];
     }
 
@@ -321,9 +330,8 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithCoversNothingCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
                         /**
                          * @coversNothing Foo
@@ -339,25 +347,27 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe2() {}
                     }
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                     /**
                      * @coversNothing Bar
                      * @coversNothing Foo
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @coversNothing Foo
                      * @coversNothing Bar
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                     /**
                      * Comment 1
                      * @coversNothing Bar
@@ -367,7 +377,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * Comment 1
                      * @coversNothing Foo
@@ -377,9 +387,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                     /**
                      * @coversNothing A
                      * @coversNothing c
@@ -388,7 +399,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @coversNothing A
                      * @coversNothing E
@@ -397,9 +408,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'data provider' => [
-                '<?php
+        ];
+
+        yield 'data provider' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -410,7 +422,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -421,7 +433,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-            ],
         ];
     }
 
@@ -441,9 +452,8 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithDataProviderCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
                         /**
                          * @dataProvider Foo::provideData()
@@ -459,25 +469,27 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe2() {}
                     }
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                     /**
                      * @dataProvider Bar::provideData()
                      * @dataProvider Foo::provideData()
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @dataProvider Foo::provideData()
                      * @dataProvider Bar::provideData()
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                     /**
                      * Comment 1
                      * @dataProvider Bar::provideData()
@@ -487,7 +499,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * Comment 1
                      * @dataProvider Foo::provideData()
@@ -497,9 +509,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                     /**
                      * @dataProvider A::provideData()
                      * @dataProvider c::provideData()
@@ -508,7 +521,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @dataProvider A::provideData()
                      * @dataProvider E::provideData()
@@ -517,9 +530,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'data provider' => [
-                '<?php
+        ];
+
+        yield 'data provider' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -530,7 +544,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -541,7 +555,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-            ],
         ];
     }
 
@@ -561,9 +574,8 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithDependsCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
                         /**
                          * @depends testFoo
@@ -579,25 +591,27 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe2() {}
                     }
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                     /**
                      * @depends testBar
                      * @depends testFoo
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @depends testFoo
                      * @depends testBar
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                     /**
                      * Comment 1
                      * @depends testBar
@@ -607,7 +621,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * Comment 1
                      * @depends testFoo
@@ -617,9 +631,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                     /**
                      * @depends testA
                      * @depends testc
@@ -628,7 +643,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @depends testA
                      * @depends testE
@@ -637,9 +652,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'data provider' => [
-                '<?php
+        ];
+
+        yield 'data provider' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -650,7 +666,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -661,7 +677,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-            ],
         ];
     }
 
@@ -681,9 +696,8 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithGroupCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
                         /**
                          * @group slow
@@ -699,25 +713,27 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe2() {}
                     }
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                     /**
                      * @group fast
                      * @group slow
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @group slow
                      * @group fast
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                     /**
                      * Comment 1
                      * @group fast
@@ -727,7 +743,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * Comment 1
                      * @group slow
@@ -737,9 +753,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                     /**
                      * @group A
                      * @group c
@@ -748,7 +765,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @group A
                      * @group E
@@ -757,9 +774,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'data provider' => [
-                '<?php
+        ];
+
+        yield 'data provider' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -770,7 +788,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -781,7 +799,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-            ],
         ];
     }
 
@@ -801,9 +818,8 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithInternalCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
                         /**
                          * @internal Foo
@@ -819,25 +835,27 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe2() {}
                     }
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                     /**
                      * @internal Bar
                      * @internal Foo
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @internal Foo
                      * @internal Bar
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                     /**
                      * Comment 1
                      * @internal Bar
@@ -847,7 +865,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * Comment 1
                      * @internal Foo
@@ -857,9 +875,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                     /**
                      * @internal A
                      * @internal c
@@ -868,7 +887,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @internal A
                      * @internal E
@@ -877,9 +896,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'data provider' => [
-                '<?php
+        ];
+
+        yield 'data provider' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -890,7 +910,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -901,7 +921,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-            ],
         ];
     }
 
@@ -921,17 +940,17 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithMethodCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                 /**
                  * @method int foo(array $b)
                  */
                 class Foo {}
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                 /**
                  * @method bool bar(int $a, bool $b)
                  * @method array|null baz()
@@ -939,7 +958,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * @method int foo(array $b)
                  * @method bool bar(int $a, bool $b)
@@ -947,9 +966,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                 /**
                  * Comment 1
                  * @method bool bar(int $a, bool $b)
@@ -959,7 +979,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * Comment 1
                  * @method int foo(array $b)
@@ -969,9 +989,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                 /**
                  * @method int A()
                  * @method bool b()
@@ -980,7 +1001,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * @method array|null c()
                  * @method float D()
@@ -989,25 +1010,27 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
-            'with-possibly-unexpected-comparable' => [
-                '<?php
+        ];
+
+        yield 'with-possibly-unexpected-comparable' => [
+            '<?php
                 /**
                  * @method int foo(Z $b)
                  * @method int fooA( $b)
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * @method int fooA( $b)
                  * @method int foo(Z $b)
                  */
                 class Foo {}
                 ',
-            ],
-            'with-and-without-types' => [
-                '<?php
+        ];
+
+        yield 'with-and-without-types' => [
+            '<?php
                 /**
                  * @method int A()
                  * @method b()
@@ -1016,7 +1039,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * @method array|null c()
                  * @method D()
@@ -1025,7 +1048,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
         ];
     }
 
@@ -1045,9 +1067,8 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithMixinCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                     /**
                      * @package SomePackage
                      * @mixin Bar
@@ -1063,9 +1084,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                     class Foo2 {
                     }
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                     /**
                      * @mixin Bar1
                      * @mixin Bar2
@@ -1074,7 +1096,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                     class Foo {
                     }
                 ',
-                '<?php
+            '<?php
                     /**
                      * @mixin Bar2
                      * @mixin Bar3
@@ -1083,9 +1105,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                     class Foo {
                     }
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                     /**
                      * Comment 1
                      * @mixin Bar1
@@ -1096,7 +1119,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                     class Foo {
                     }
                 ',
-                '<?php
+            '<?php
                     /**
                      * Comment 1
                      * @mixin Bar2
@@ -1107,9 +1130,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                     class Foo {
                     }
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                     /**
                      * @mixin A
                      * @mixin b
@@ -1118,7 +1142,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                     class Foo {
                     }
                 ',
-                '<?php
+            '<?php
                     /**
                      * @mixin b
                      * @mixin A
@@ -1127,9 +1151,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                     class Foo {
                     }
                 ',
-            ],
-            'fully-qualified' => [
-                '<?php
+        ];
+
+        yield 'fully-qualified' => [
+            '<?php
                     /**
                      * @mixin \A\B\Bar2
                      * @mixin Bar1
@@ -1138,7 +1163,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                     class Foo {
                     }
                 ',
-                '<?php
+            '<?php
                     /**
                      * @mixin Bar3
                      * @mixin Bar1
@@ -1147,7 +1172,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                     class Foo {
                     }
                 ',
-            ],
         ];
     }
 
@@ -1167,17 +1191,17 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithPropertyCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                 /**
                  * @property int|\stdClass $foo
                  */
                 class Foo {}
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                 /**
                  * @property bool $bar
                  * @property array|null $baz
@@ -1185,7 +1209,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * @property int|\stdClass $foo
                  * @property bool $bar
@@ -1193,9 +1217,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                 /**
                  * Comment 1
                  * @property bool $bar
@@ -1205,7 +1230,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * Comment 1
                  * @property int|\stdClass $foo
@@ -1215,9 +1240,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                 /**
                  * @property int|\stdClass $A
                  * @property bool $b
@@ -1226,7 +1252,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * @property array|null $C
                  * @property float $D
@@ -1235,9 +1261,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
-            'with-and-without-types' => [
-                '<?php
+        ];
+
+        yield 'with-and-without-types' => [
+            '<?php
                 /**
                  * @property int|\stdClass $A
                  * @property $b
@@ -1246,7 +1273,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * @property array|null $C
                  * @property $D
@@ -1255,7 +1282,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
         ];
     }
 
@@ -1275,17 +1301,17 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithPropertyReadCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                 /**
                  * @property-read int|\stdClass $foo
                  */
                 class Foo {}
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                 /**
                  * @property-read bool $bar
                  * @property-read array|null $baz
@@ -1293,7 +1319,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * @property-read int|\stdClass $foo
                  * @property-read bool $bar
@@ -1301,9 +1327,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                 /**
                  * Comment 1
                  * @property-read bool $bar
@@ -1313,7 +1340,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * Comment 1
                  * @property-read int|\stdClass $foo
@@ -1323,9 +1350,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                 /**
                  * @property-read int|\stdClass $A
                  * @property-read bool $b
@@ -1334,7 +1362,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * @property-read array|null $C
                  * @property-read float $D
@@ -1343,9 +1371,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
-            'with-and-without-types' => [
-                '<?php
+        ];
+
+        yield 'with-and-without-types' => [
+            '<?php
                 /**
                  * @property-read int|\stdClass $A
                  * @property-read $b
@@ -1354,7 +1383,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * @property-read array|null $C
                  * @property-read $D
@@ -1363,7 +1392,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
         ];
     }
 
@@ -1383,17 +1411,17 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithPropertyWriteCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                 /**
                  * @property-write int|\stdClass $foo
                  */
                 class Foo {}
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                 /**
                  * @property-write bool $bar
                  * @property-write array|null $baz
@@ -1401,7 +1429,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * @property-write int|\stdClass $foo
                  * @property-write bool $bar
@@ -1409,9 +1437,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                 /**
                  * Comment 1
                  * @property-write bool $bar
@@ -1421,7 +1450,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * Comment 1
                  * @property-write int|\stdClass $foo
@@ -1431,9 +1460,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                 /**
                  * @property-write int|\stdClass $A
                  * @property-write bool $b
@@ -1442,7 +1472,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * @property-write array|null $C
                  * @property-write float $D
@@ -1451,9 +1481,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
-            'with-and-without-types' => [
-                '<?php
+        ];
+
+        yield 'with-and-without-types' => [
+            '<?php
                 /**
                  * @property-write int|\stdClass $A
                  * @property-write $b
@@ -1462,7 +1493,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-                '<?php
+            '<?php
                 /**
                  * @property-write array|null $C
                  * @property-write $D
@@ -1471,7 +1502,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                  */
                 class Foo {}
                 ',
-            ],
         ];
     }
 
@@ -1491,9 +1521,8 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithRequiresCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
                         /**
                          * @requires function json_decode
@@ -1509,25 +1538,27 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe2() {}
                     }
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                     /**
                      * @requires extension redis
                      * @requires function json_decode
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @requires function json_decode
                      * @requires extension redis
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                     /**
                      * Comment 1
                      * @requires extension redis
@@ -1537,7 +1568,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * Comment 1
                      * @requires function json_decode
@@ -1547,9 +1578,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                     /**
                      * @requires extension redis
                      * @requires function json_decode
@@ -1558,7 +1590,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @requires PHP 7.2
                      * @requires function json_decode
@@ -1567,9 +1599,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'data provider' => [
-                '<?php
+        ];
+
+        yield 'data provider' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -1580,7 +1613,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -1591,7 +1624,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-            ],
         ];
     }
 
@@ -1611,9 +1643,8 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithThrowsCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                     class Foo {
                         /**
                          * @throws Bar
@@ -1629,9 +1660,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function baz() {}
                     }
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                     class Foo
                     {
                         /**
@@ -1641,7 +1673,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function bar() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class Foo
                     {
                         /**
@@ -1651,9 +1683,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function bar() {}
                     }
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                     class Foo
                     {
                         /**
@@ -1666,7 +1699,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function bar() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class Foo
                     {
                         /**
@@ -1679,9 +1712,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function bar() {}
                     }
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                     class Foo
                     {
                         /**
@@ -1692,7 +1726,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function bar() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class Foo
                     {
                         /**
@@ -1703,9 +1737,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function bar() {}
                     }
                 ',
-            ],
-            'fully-qualified' => [
-                '<?php
+        ];
+
+        yield 'fully-qualified' => [
+            '<?php
                     class Foo
                     {
                         /**
@@ -1716,7 +1751,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function bar() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class Foo
                     {
                         /**
@@ -1727,7 +1762,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function bar() {}
                     }
                 ',
-            ],
         ];
     }
 
@@ -1747,9 +1781,8 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithUsesCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
                         /**
                          * @uses Foo
@@ -1765,25 +1798,27 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe2() {}
                     }
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                     /**
                      * @uses Bar
                      * @uses Foo
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @uses Foo
                      * @uses Bar
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                     /**
                      * Comment 1
                      * @uses Bar
@@ -1793,7 +1828,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * Comment 1
                      * @uses Foo
@@ -1803,9 +1838,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                     /**
                      * @uses A
                      * @uses c
@@ -1814,7 +1850,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @uses A
                      * @uses E
@@ -1823,9 +1859,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'data provider' => [
-                '<?php
+        ];
+
+        yield 'data provider' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -1836,7 +1873,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -1847,7 +1884,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-            ],
         ];
     }
 
@@ -1868,9 +1904,8 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithMultipleConfiguredAnnotationsCases(): iterable
     {
-        return [
-            'skip on 1 or 0 occurrences' => [
-                '<?php
+        yield 'skip on 1 or 0 occurrences' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase {
                         /**
                          * @uses Foo
@@ -1887,9 +1922,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe2() {}
                     }
                 ',
-            ],
-            'base case' => [
-                '<?php
+        ];
+
+        yield 'base case' => [
+            '<?php
                     /**
                      * @uses Bar
                      * @uses Foo
@@ -1898,7 +1934,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @uses Foo
                      * @uses Bar
@@ -1907,9 +1943,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'preserve positions if other docblock parts are present' => [
-                '<?php
+        ];
+
+        yield 'preserve positions if other docblock parts are present' => [
+            '<?php
                     /**
                      * Comment 1
                      * @uses Bar
@@ -1923,7 +1960,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * Comment 1
                      * @uses Foo
@@ -1937,9 +1974,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'case-insensitive' => [
-                '<?php
+        ];
+
+        yield 'case-insensitive' => [
+            '<?php
                     /**
                      * @uses A
                      * @uses c
@@ -1948,7 +1986,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @uses c
                      * @uses A
@@ -1957,9 +1995,10 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'data provider' => [
-                '<?php
+        ];
+
+        yield 'data provider' => [
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -1974,7 +2013,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-                '<?php
+            '<?php
                     class FooTest extends \PHPUnit_Framework_TestCase
                     {
                         /**
@@ -1989,7 +2028,6 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                         public function testMe() {}
                     }
                 ',
-            ],
         ];
     }
 }

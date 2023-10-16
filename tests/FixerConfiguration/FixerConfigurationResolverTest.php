@@ -18,6 +18,7 @@ use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionSorter;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
@@ -71,7 +72,11 @@ final class FixerConfigurationResolverTest extends TestCase
         ];
         $configuration = new FixerConfigurationResolver($options);
 
-        self::assertSame($options, $configuration->getOptions());
+        $fixerOptionSorter = new FixerOptionSorter();
+
+        $expected = $fixerOptionSorter->sort($options);
+
+        self::assertSame($expected, $configuration->getOptions());
     }
 
     public function testResolve(): void
@@ -165,9 +170,7 @@ final class FixerConfigurationResolverTest extends TestCase
     public function testResolveWithNormalizers(): void
     {
         $configuration = new FixerConfigurationResolver([
-            new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, string $value): int {
-                return (int) $value;
-            }),
+            new FixerOption('foo', 'Bar.', true, null, null, null, static fn (Options $options, string $value): int => (int) $value),
         ]);
 
         self::assertSame(

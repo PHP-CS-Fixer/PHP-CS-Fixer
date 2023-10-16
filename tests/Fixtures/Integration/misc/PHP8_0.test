@@ -41,29 +41,25 @@ $country = $session?->user?->getAddress()?->country;
 class PostsController
 {
     #[Route('/api/posts/{id}', methods: ['GET'])]
-    public function get($id): void
-    {
-    }
+    public function get($id): void {}
 }
 
 $object = new #[ExampleAttribute] class() {
     #[ExampleAttribute]
-    public function foo(#[ExampleAttribute] $bar): void
-    {
-    }
+    public function foo(#[ExampleAttribute] $bar): void {}
 };
 
 // https://wiki.php.net/rfc/union_types_v2
 class Number
 {
-    private int|float|null $number;
+    private null|float|int $number;
 
-    public function setNumber(int|float $number): void
+    public function setNumber(float|int $number): void
     {
         $this->number = $number;
     }
 
-    public function getNumber(): int|float|null
+    public function getNumber(): null|float|int
     {
         return $this->number;
     }
@@ -75,42 +71,34 @@ class Number
 // https://wiki.php.net/rfc/static_return_type
 class T
 {
-    public function Foo(object $A): ?static
-    {
-    }
+    public function Foo(object $A): ?static {}
 
-    public function something(): static
-    {
-    }
+    public function something(): static {}
 }
 
 // https://wiki.php.net/rfc/variable_syntax_tweaks
 // nothing we can do
 
 // https://wiki.php.net/rfc/trailing_comma_in_parameter_list
-function foo(string $param = null): void
-{
-}
+function foo(string $param = null): void {}
 call_user_func('foo', 1);
 
 // https://wiki.php.net/rfc/trailing_comma_in_closure_use_list
-$foo1a = function (): void {};
-$foo1b = function (): void {};
-$foo2 = function () use ($bar, $baz): void { echo $bar.$baz; };
+$foo1a = static function (): void {};
+$foo1b = static function (): void {};
+$foo2 = static function () use ($bar, $baz): void { echo $bar.$baz; };
 
 // https://wiki.php.net/rfc/mixed_type_v2
 class T_Mixed
 {
-    public function Foo(mixed $a): mixed
-    {
-    }
+    public function Foo(mixed $a): mixed {}
 }
 
 // https://wiki.php.net/rfc/throw_expression
 if (1) {
     foo() ?? throw new \Exception();
     $a = $condition && throw new Exception();
-    $callable = fn () => throw new Exception();
+    $callable = static fn () => throw new Exception();
     $value = $falsableValue ?: throw new InvalidArgumentException();
 }
 
@@ -130,8 +118,7 @@ class Point
         protected float $y = 0.0,
         private float $z = 0.0,
         private ?string $desc = null,
-    ) {
-    }
+    ) {}
 }
 
 // https://wiki.php.net/rfc/match_expression_v2

@@ -43,8 +43,8 @@ final class ArgumentAnalysis
     {
         $this->name = $name;
         $this->nameIndex = $nameIndex;
-        $this->default = $default ?: null;
-        $this->typeAnalysis = $typeAnalysis ?: null;
+        $this->default = $default ?? null;
+        $this->typeAnalysis = $typeAnalysis ?? null;
     }
 
     public function getDefault(): ?string

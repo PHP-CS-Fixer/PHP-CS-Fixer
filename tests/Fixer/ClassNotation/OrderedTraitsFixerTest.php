@@ -302,5 +302,53 @@ class Foo {
     use A;
 }',
         ];
+
+        yield 'simple and with namespace' => [
+            '<?php
+
+class User
+{
+    use Test\B, TestA;
+}',
+            '<?php
+
+class User
+{
+    use TestA, Test\B;
+}',
+        ];
+    }
+
+    /**
+     * @param array<mixed> $configuration
+     *
+     * @dataProvider provideFixWithConfigurationCases
+     */
+    public function testFixWithConfiguration(array $configuration, string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
+    public static function provideFixWithConfigurationCases(): iterable
+    {
+        yield 'with case sensitive order' => [
+            [
+                'case_sensitive' => true,
+            ],
+            '<?php
+class Foo {
+    use AA;
+    use Aaa;
+}',
+            '<?php
+class Foo {
+    use Aaa;
+    use AA;
+}',
+        ];
     }
 }

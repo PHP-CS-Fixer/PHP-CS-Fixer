@@ -9,6 +9,16 @@ Write conditions in Yoda style (``true``), non-Yoda style (``['equal' => false,
 Configuration
 -------------
 
+``always_move_variable``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether variables should always be on non assignable side when applying Yoda
+style.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``equal``
 ~~~~~~~~~
 
@@ -35,16 +45,6 @@ Style for less and greater than (``<``, ``<=``, ``>``, ``>=``) statements.
 Allowed types: ``bool`` and ``null``
 
 Default value: ``null``
-
-``always_move_variable``
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-Whether variables should always be on non assignable side when applying Yoda
-style.
-
-Allowed types: ``bool``
-
-Default value: ``false``
 
 Examples
 --------
@@ -114,8 +114,6 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``yoda_style`` rule with the default config.
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``yoda_style`` rule with the default config.

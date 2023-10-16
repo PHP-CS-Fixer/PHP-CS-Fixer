@@ -33,17 +33,18 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield from [
-            'simple sample, last token candidate' => [
-                '<?php  echo 1;',
-                '<?php { echo 1;}',
-            ],
-            'minimal sample, first token candidate' => [
-                '<?php  // {}',
-                '<?php {} // {}',
-            ],
-            [
-                '<?php
+        yield 'simple sample, last token candidate' => [
+            '<?php  echo 1;',
+            '<?php { echo 1;}',
+        ];
+
+        yield 'minimal sample, first token candidate' => [
+            '<?php  // {}',
+            '<?php {} // {}',
+        ];
+
+        yield [
+            '<?php
                       echo 0;   //
                     echo 1;
                     switch($a) {
@@ -51,7 +52,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                     }
                     echo 4;  echo 5; //
                 ',
-                '<?php
+            '<?php
                     { { echo 0; } } //
                     {echo 1;}
                     switch($a) {
@@ -59,9 +60,10 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                     }
                     echo 4; { echo 5; }//
                 ',
-            ],
-            'no fixes' => [
-                '<?php
+        ];
+
+        yield 'no fixes' => [
+            '<?php
                     foreach($a as $b){}
                     while($a){}
                     do {} while($a);
@@ -80,16 +82,18 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                     interface D {}
                     trait E {}
                 ',
-            ],
-            'no fixes II' => [
-                '<?php
+        ];
+
+        yield 'no fixes II' => [
+            '<?php
                 declare(ticks=1) {
                 // entire script here
                 }
                 #',
-            ],
-            'no fix catch/try/finally' => [
-                '<?php
+        ];
+
+        yield 'no fix catch/try/finally' => [
+            '<?php
                     try {
 
                     } catch(\Exception $e) {
@@ -98,9 +102,10 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
 
                     }
                 ',
-            ],
-            'no fix namespace block' => [
-                '<?php
+        ];
+
+        yield 'no fix namespace block' => [
+            '<?php
                     namespace {
                     }
                     namespace A {
@@ -108,7 +113,6 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                     namespace A\B {
                     }
                 ',
-            ],
         ];
 
         yield 'provideNoFix7Cases' => [

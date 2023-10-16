@@ -23,6 +23,4 @@ namespace PhpCsFixer\Linter;
  *
  * @TODO 4.0 make class "final"
  */
-class UnavailableLinterException extends \RuntimeException
-{
-}
+class UnavailableLinterException extends \RuntimeException {}

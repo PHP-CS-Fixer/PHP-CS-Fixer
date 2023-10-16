@@ -21,6 +21,4 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  *
  * @internal
  */
-final class InvalidOptionsForEnvException extends InvalidOptionsException
-{
-}
+final class InvalidOptionsForEnvException extends InvalidOptionsException {}

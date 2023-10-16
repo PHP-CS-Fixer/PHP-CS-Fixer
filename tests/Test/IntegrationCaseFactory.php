@@ -19,6 +19,4 @@ namespace PhpCsFixer\Tests\Test;
  *
  * @internal
  */
-final class IntegrationCaseFactory extends AbstractIntegrationCaseFactory
-{
-}
+final class IntegrationCaseFactory extends AbstractIntegrationCaseFactory {}

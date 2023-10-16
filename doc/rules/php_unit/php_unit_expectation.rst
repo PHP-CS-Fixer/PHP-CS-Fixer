@@ -153,47 +153,40 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PHPUnit52Migration:risky
-  Using the `@PHPUnit52Migration:risky <./../../ruleSets/PHPUnit52MigrationRisky.rst>`_ rule set will enable the ``php_unit_expectation`` rule with the config below:
+- `@PHPUnit52Migration:risky <./../../ruleSets/PHPUnit52MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.2']``
 
-@PHPUnit54Migration:risky
-  Using the `@PHPUnit54Migration:risky <./../../ruleSets/PHPUnit54MigrationRisky.rst>`_ rule set will enable the ``php_unit_expectation`` rule with the config below:
+- `@PHPUnit54Migration:risky <./../../ruleSets/PHPUnit54MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.2']``
 
-@PHPUnit55Migration:risky
-  Using the `@PHPUnit55Migration:risky <./../../ruleSets/PHPUnit55MigrationRisky.rst>`_ rule set will enable the ``php_unit_expectation`` rule with the config below:
+- `@PHPUnit55Migration:risky <./../../ruleSets/PHPUnit55MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.2']``
 
-@PHPUnit56Migration:risky
-  Using the `@PHPUnit56Migration:risky <./../../ruleSets/PHPUnit56MigrationRisky.rst>`_ rule set will enable the ``php_unit_expectation`` rule with the config below:
+- `@PHPUnit56Migration:risky <./../../ruleSets/PHPUnit56MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.6']``
 
-@PHPUnit57Migration:risky
-  Using the `@PHPUnit57Migration:risky <./../../ruleSets/PHPUnit57MigrationRisky.rst>`_ rule set will enable the ``php_unit_expectation`` rule with the config below:
+- `@PHPUnit57Migration:risky <./../../ruleSets/PHPUnit57MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.6']``
 
-@PHPUnit60Migration:risky
-  Using the `@PHPUnit60Migration:risky <./../../ruleSets/PHPUnit60MigrationRisky.rst>`_ rule set will enable the ``php_unit_expectation`` rule with the config below:
+- `@PHPUnit60Migration:risky <./../../ruleSets/PHPUnit60MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.6']``
 
-@PHPUnit75Migration:risky
-  Using the `@PHPUnit75Migration:risky <./../../ruleSets/PHPUnit75MigrationRisky.rst>`_ rule set will enable the ``php_unit_expectation`` rule with the config below:
+- `@PHPUnit75Migration:risky <./../../ruleSets/PHPUnit75MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.6']``
 
-@PHPUnit84Migration:risky
-  Using the `@PHPUnit84Migration:risky <./../../ruleSets/PHPUnit84MigrationRisky.rst>`_ rule set will enable the ``php_unit_expectation`` rule with the config below:
+- `@PHPUnit84Migration:risky <./../../ruleSets/PHPUnit84MigrationRisky.rst>`_ with config:
 
   ``['target' => '8.4']``
 
-@PHPUnit100Migration:risky
-  Using the `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ rule set will enable the ``php_unit_expectation`` rule with the config below:
+- `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ with config:
 
   ``['target' => '8.4']``
+
+

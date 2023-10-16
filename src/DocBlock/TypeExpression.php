@@ -224,18 +224,28 @@ final class TypeExpression
         return [$this->value];
     }
 
-    /**
-     * @param callable(self $a, self $b): int $compareCallback
-     */
-    public function sortTypes(callable $compareCallback): void
+    public function isUnionType(): bool
     {
-        foreach (array_reverse($this->innerTypeExpressions) as [
+        return $this->isUnionType;
+    }
+
+    public function getTypesGlue(): string
+    {
+        return $this->typesGlue;
+    }
+
+    /**
+     * @param \Closure(self): void $callback
+     */
+    public function walkTypes(\Closure $callback): void
+    {
+        foreach ($this->innerTypeExpressions as [
             'start_index' => $startIndex,
             'expression' => $inner,
         ]) {
             $initialValueLength = \strlen($inner->toString());
 
-            $inner->sortTypes($compareCallback);
+            $inner->walkTypes($callback);
 
             $this->value = substr_replace(
                 $this->value,
@@ -245,20 +255,25 @@ final class TypeExpression
             );
         }
 
-        if ($this->isUnionType) {
-            $this->innerTypeExpressions = Utils::stableSort(
-                $this->innerTypeExpressions,
-                static fn (array $type): self => $type['expression'],
-                $compareCallback,
-            );
-
-            $this->value = implode($this->getTypesGlue(), $this->getTypes());
-        }
+        $callback($this);
     }
 
-    public function getTypesGlue(): string
+    /**
+     * @param \Closure(self, self): (-1|0|1) $compareCallback
+     */
+    public function sortTypes(\Closure $compareCallback): void
     {
-        return $this->typesGlue;
+        $this->walkTypes(static function (self $type) use ($compareCallback): void {
+            if ($type->isUnionType) {
+                $type->innerTypeExpressions = Utils::stableSort(
+                    $type->innerTypeExpressions,
+                    static fn (array $type): self => $type['expression'],
+                    $compareCallback,
+                );
+
+                $type->value = implode($type->getTypesGlue(), $type->getTypes());
+            }
+        });
     }
 
     public function getCommonType(): ?string
@@ -537,6 +552,7 @@ final class TypeExpression
             'array',
             'bool',
             'callable',
+            'false',
             'float',
             'int',
             'iterable',
@@ -546,6 +562,7 @@ final class TypeExpression
             'object',
             'resource',
             'string',
+            'true',
             'void',
         ], true)) {
             return $type;

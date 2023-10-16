@@ -30,11 +30,11 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     public function testConfigureDefaultToFalse(): void
     {
         $defaultConfig = [
+            'inline_constructor_arguments' => true,
             'multi_line_extends_each_single_line' => false,
             'single_item_single_line' => false,
             'single_line' => false,
             'space_before_parenthesis' => false,
-            'inline_constructor_arguments' => true,
         ];
 
         $fixer = new ClassDefinitionFixer();
@@ -120,123 +120,143 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 
     public static function provideFixingAnonymousClassesCases(): iterable
     {
-        return [
-            [
-                '<?php $a = new class(0) extends SomeClass implements SomeInterface, D {};',
-                "<?php \$a = new    class(0)     extends\nSomeClass\timplements    SomeInterface, D {};",
-            ],
-            [
-                '<?php $a = new class(1) extends SomeClass implements SomeInterface, D {};',
-                "<?php \$a = new    class(1)     extends\nSomeClass\timplements    SomeInterface, D {};",
-                ['single_line' => true],
-            ],
-            [
-                "<?php \$a = new class('1a') implements\nA\n{};",
-                "<?php \$a = new class('1a')   implements\nA{};",
-            ],
-            [
-                "<?php \$a = new class('1a') implements A {};",
-                "<?php \$a = new class('1a')   implements\nA{};",
-                ['single_item_single_line' => true],
-            ],
-            [
-                '<?php $a = new class {};',
-                '<?php $a = new class{};',
-            ],
-            [
-                '<?php $a = new class {};',
-                "<?php \$a = new class\n{};",
-            ],
-            [
-                '<?php $a = new class() {};',
-                "<?php \$a = new\n class  (  ){};",
-            ],
-            [
-                '<?php $a = new class(  ) {};',
-                "<?php \$a = new\n class  (  ){};",
-                ['inline_constructor_arguments' => false],
-            ],
-            [
-                '<?php $a = new class implements Foo {};',
-                "<?php \$a = new\n class    implements Foo {};",
-                ['inline_constructor_arguments' => false],
-            ],
-            [
-                '<?php $a = new class( $this->foo() , bar ( $a) ) {};',
-                "<?php \$a = new\n class  ( \$this->foo() , bar ( \$a) ){};",
-                ['inline_constructor_arguments' => false],
-            ],
-            [
-                '<?php $a = new class(10, 1, /**/ 2) {};',
-                '<?php $a = new class(  10, 1,/**/2  ){};',
-            ],
-            [
-                '<?php $a = new class(  10, 1,/**/2  ) {};',
-                '<?php $a = new class(  10, 1,/**/2  ){};',
-                ['inline_constructor_arguments' => false],
-            ],
-            [
-                '<?php $a = new class(2) {};',
-                '<?php $a = new    class(2){};',
-            ],
-            [
-                '<?php $a = new class($this->prop) {};',
-                '<?php $a = new class(   $this->prop   ){};',
-            ],
-            [
-                '<?php $a = new class(   $this->prop   ) {};',
-                '<?php $a = new class(   $this->prop   ){};',
-                ['inline_constructor_arguments' => false],
-            ],
-            [
-                "<?php \$a = new class(\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d) implements A, B {};",
-                "<?php \$a = new class(\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d) implements  A, \t B{};",
-                ['inline_constructor_arguments' => false],
-            ],
-            [
-                "<?php \$a = new class(\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d) implements A, B {};",
-                "<?php \$a = new   class  (\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d)    implements  A, \t B{};",
-                ['inline_constructor_arguments' => false],
-            ],
-            [
-                '<?php $a = new class($this->prop, $v[3], 4) {};',
-                '<?php $a = new class(   $this->prop,$v[3],   4)         {};',
-            ],
-            'PSR-12 Extends/Implements Parenthesis on the next line.' => [
-                '<?php
+        yield [
+            '<?php $a = new class(0) extends SomeClass implements SomeInterface, D {};',
+            "<?php \$a = new    class(0)     extends\nSomeClass\timplements    SomeInterface, D {};",
+        ];
+
+        yield [
+            '<?php $a = new class(1) extends SomeClass implements SomeInterface, D {};',
+            "<?php \$a = new    class(1)     extends\nSomeClass\timplements    SomeInterface, D {};",
+            ['single_line' => true],
+        ];
+
+        yield [
+            "<?php \$a = new class('1a') implements\nA\n{};",
+            "<?php \$a = new class('1a')   implements\nA{};",
+        ];
+
+        yield [
+            "<?php \$a = new class('1a') implements A {};",
+            "<?php \$a = new class('1a')   implements\nA{};",
+            ['single_item_single_line' => true],
+        ];
+
+        yield [
+            '<?php $a = new class {};',
+            '<?php $a = new class{};',
+        ];
+
+        yield [
+            '<?php $a = new class {};',
+            "<?php \$a = new class\n{};",
+        ];
+
+        yield [
+            '<?php $a = new class() {};',
+            "<?php \$a = new\n class  (  ){};",
+        ];
+
+        yield [
+            '<?php $a = new class(  ) {};',
+            "<?php \$a = new\n class  (  ){};",
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            '<?php $a = new class implements Foo {};',
+            "<?php \$a = new\n class    implements Foo {};",
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            '<?php $a = new class( $this->foo() , bar ( $a) ) {};',
+            "<?php \$a = new\n class  ( \$this->foo() , bar ( \$a) ){};",
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            '<?php $a = new class(10, 1, /**/ 2) {};',
+            '<?php $a = new class(  10, 1,/**/2  ){};',
+        ];
+
+        yield [
+            '<?php $a = new class(  10, 1,/**/2  ) {};',
+            '<?php $a = new class(  10, 1,/**/2  ){};',
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            '<?php $a = new class(2) {};',
+            '<?php $a = new    class(2){};',
+        ];
+
+        yield [
+            '<?php $a = new class($this->prop) {};',
+            '<?php $a = new class(   $this->prop   ){};',
+        ];
+
+        yield [
+            '<?php $a = new class(   $this->prop   ) {};',
+            '<?php $a = new class(   $this->prop   ){};',
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            "<?php \$a = new class(\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d) implements A, B {};",
+            "<?php \$a = new class(\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d) implements  A, \t B{};",
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            "<?php \$a = new class(\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d) implements A, B {};",
+            "<?php \$a = new   class  (\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d)    implements  A, \t B{};",
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            '<?php $a = new class($this->prop, $v[3], 4) {};',
+            '<?php $a = new class(   $this->prop,$v[3],   4)         {};',
+        ];
+
+        yield 'PSR-12 Extends/Implements Parenthesis on the next line.' => [
+            '<?php
 $instance = new class extends \Foo implements
 \ArrayAccess,
     \Countable,
     \Serializable
 {};',
-                '<?php
+            '<?php
 $instance = new class   extends \Foo  implements
 \ArrayAccess,\Countable,\Serializable{};',
-            ],
-            'PSR-12 Implements Parenthesis on the next line.' => [
-                '<?php
+        ];
+
+        yield 'PSR-12 Implements Parenthesis on the next line.' => [
+            '<?php
 $instance = new class implements
 \ArrayAccess,
     \Countable,
     \Serializable
 {};',
-                '<?php
+            '<?php
 $instance = new class implements
 \ArrayAccess,\Countable,\Serializable{};',
-            ],
-            'PSR-12 Extends Parenthesis on the next line.' => [
-                '<?php
+        ];
+
+        yield 'PSR-12 Extends Parenthesis on the next line.' => [
+            '<?php
 $instance = new class extends
 ArrayAccess
 {};',
-                '<?php
+            '<?php
 $instance = new class
 extends
 ArrayAccess
 {};',
-            ],
-            [
-                "<?php \$a = new #
+        ];
+
+        yield [
+            "<?php \$a = new #
 class #
 ( #
 '1a', #
@@ -250,7 +270,7 @@ B,
 #
 }#
 ;",
-                "<?php \$a = new#
+            "<?php \$a = new#
 class#
 (#
 '1a',#
@@ -263,9 +283,10 @@ B,C#
 #
 }#
 ;",
-            ],
-            [
-                "<?php \$a = new #
+        ];
+
+        yield [
+            "<?php \$a = new #
 class #
 ( #
 '1a', #
@@ -277,7 +298,7 @@ A #
 #
 }#
 ;",
-                "<?php \$a = new#
+            "<?php \$a = new#
 class#
 (#
 '1a',#
@@ -289,29 +310,32 @@ A#
 #
 }#
 ;",
-                ['single_item_single_line' => true],
-            ],
-            [
-                '<?php $a = new class() #
+            ['single_item_single_line' => true],
+        ];
+
+        yield [
+            '<?php $a = new class() #
 {};',
-                '<?php $a = new class()#
+            '<?php $a = new class()#
 {};',
-            ],
-            'space_before_parenthesis 1' => [
-                '<?php $z = new class () {};',
-                '<?php $z = new class()  {};',
-                ['space_before_parenthesis' => true],
-            ],
-            'space_before_parenthesis 2' => [
-                '<?php $z = new class () {};',
-                '<?php $z = new class   ()  {};',
-                ['space_before_parenthesis' => true],
-            ],
-            'space_before_parenthesis and inline_constructor_arguments' => [
-                '<?php $z = new class ( static::foo($this->bar())  ,baz() ) {};',
-                '<?php $z = new class   ( static::foo($this->bar())  ,baz() )  {};',
-                ['space_before_parenthesis' => true, 'inline_constructor_arguments' => false],
-            ],
+        ];
+
+        yield 'space_before_parenthesis 1' => [
+            '<?php $z = new class () {};',
+            '<?php $z = new class()  {};',
+            ['space_before_parenthesis' => true],
+        ];
+
+        yield 'space_before_parenthesis 2' => [
+            '<?php $z = new class () {};',
+            '<?php $z = new class   ()  {};',
+            ['space_before_parenthesis' => true],
+        ];
+
+        yield 'space_before_parenthesis and inline_constructor_arguments' => [
+            '<?php $z = new class ( static::foo($this->bar())  ,baz() ) {};',
+            '<?php $z = new class   ( static::foo($this->bar())  ,baz() )  {};',
+            ['space_before_parenthesis' => true, 'inline_constructor_arguments' => false],
         ];
     }
 
@@ -326,62 +350,67 @@ A#
 
     public static function provideFixingClassesWithConfigCases(): iterable
     {
-        return [
+        yield [
+            "<?php class configA implements B, C\n{}",
+            "<?php class configA implements\nB, C{}",
+            ['single_line' => true],
+        ];
+
+        yield [
+            "<?php class configA1 extends B\n{}",
+            "<?php class configA1\n extends\nB{}",
+            ['single_line' => true],
+        ];
+
+        yield [
+            "<?php class configA1a extends B\n{}",
+            "<?php class configA1a\n extends\nB{}",
+            ['single_line' => false, 'single_item_single_line' => true],
+        ];
+
+        yield [
+            "<?php class configA2 extends D implements B, C\n{}",
+            "<?php class configA2 extends D implements\nB,\nC{}",
+            ['single_line' => true],
+        ];
+
+        yield [
+            "<?php class configA3 extends D implements B, C\n{}",
+            "<?php class configA3\n extends\nD\n\t implements\nB,\nC{}",
+            ['single_line' => true],
+        ];
+
+        yield [
+            "<?php class configA4 extends D implements B, #\nC\n{}",
+            "<?php class configA4\n extends\nD\n\t implements\nB,#\nC{}",
+            ['single_line' => true],
+        ];
+
+        yield [
+            "<?php class configA5 implements A\n{}",
+            "<?php class configA5 implements\nA{}",
+            ['single_line' => false, 'single_item_single_line' => true],
+        ];
+
+        yield [
+            "<?php interface TestWithMultiExtendsMultiLine extends\n    A,\nAb,\n    C,\n    D\n{}",
+            "<?php interface TestWithMultiExtendsMultiLine extends A,\nAb,C,D\n{}",
             [
-                "<?php class configA implements B, C\n{}",
-                "<?php class configA implements\nB, C{}",
-                ['single_line' => true],
-            ],
-            [
-                "<?php class configA1 extends B\n{}",
-                "<?php class configA1\n extends\nB{}",
-                ['single_line' => true],
-            ],
-            [
-                "<?php class configA1a extends B\n{}",
-                "<?php class configA1a\n extends\nB{}",
-                ['single_line' => false, 'single_item_single_line' => true],
-            ],
-            [
-                "<?php class configA2 extends D implements B, C\n{}",
-                "<?php class configA2 extends D implements\nB,\nC{}",
-                ['single_line' => true],
-            ],
-            [
-                "<?php class configA3 extends D implements B, C\n{}",
-                "<?php class configA3\n extends\nD\n\t implements\nB,\nC{}",
-                ['single_line' => true],
-            ],
-            [
-                "<?php class configA4 extends D implements B, #\nC\n{}",
-                "<?php class configA4\n extends\nD\n\t implements\nB,#\nC{}",
-                ['single_line' => true],
-            ],
-            [
-                "<?php class configA5 implements A\n{}",
-                "<?php class configA5 implements\nA{}",
-                ['single_line' => false, 'single_item_single_line' => true],
-            ],
-            [
-                "<?php interface TestWithMultiExtendsMultiLine extends\n    A,\nAb,\n    C,\n    D\n{}",
-                "<?php interface TestWithMultiExtendsMultiLine extends A,\nAb,C,D\n{}",
-                [
-                    'single_line' => false,
-                    'single_item_single_line' => false,
-                    'multi_line_extends_each_single_line' => true,
-                ],
+                'single_line' => false,
+                'single_item_single_line' => false,
+                'multi_line_extends_each_single_line' => true,
             ],
         ];
     }
 
     public static function provideFixingInterfacesCases(): iterable
     {
-        $cases = array_merge(
+        yield from array_merge(
             self::provideClassyCases('interface'),
             self::provideClassyExtendingCases('interface')
         );
 
-        $cases[] = [
+        yield [
             '<?php
 interface Test extends
   /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
@@ -407,8 +436,6 @@ TestInterface3, /**/     TestInterface4   ,
         /**/TestInterface65    {}
             ',
         ];
-
-        return $cases;
     }
 
     public static function provideFixingTraitsCases(): iterable
@@ -439,84 +466,86 @@ TestInterface3, /**/     TestInterface4   ,
 
     public static function provideClassyDefinitionInfoCases(): iterable
     {
-        return [
+        yield [
+            '<?php class A{}',
             [
-                '<?php class A{}',
-                [
-                    'start' => 1,
-                    'classy' => 1,
-                    'open' => 4,
-                    'extends' => false,
-                    'implements' => false,
-                    'anonymousClass' => false,
-                    'final' => false,
-                    'abstract' => false,
-                    'readonly' => false,
-                ],
+                'start' => 1,
+                'classy' => 1,
+                'open' => 4,
+                'extends' => false,
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => false,
+                'abstract' => false,
+                'readonly' => false,
             ],
+        ];
+
+        yield [
+            '<?php final class A{}',
             [
-                '<?php final class A{}',
-                [
-                    'start' => 1,
-                    'classy' => 3,
-                    'open' => 6,
-                    'extends' => false,
-                    'implements' => false,
-                    'anonymousClass' => false,
-                    'final' => 1,
-                    'abstract' => false,
-                    'readonly' => false,
-                ],
+                'start' => 1,
+                'classy' => 3,
+                'open' => 6,
+                'extends' => false,
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => 1,
+                'abstract' => false,
+                'readonly' => false,
             ],
+        ];
+
+        yield [
+            '<?php abstract /**/ class A{}',
             [
-                '<?php abstract /**/ class A{}',
-                [
-                    'start' => 1,
-                    'classy' => 5,
-                    'open' => 8,
-                    'extends' => false,
-                    'implements' => false,
-                    'anonymousClass' => false,
-                    'final' => false,
-                    'abstract' => 1,
-                    'readonly' => false,
-                ],
+                'start' => 1,
+                'classy' => 5,
+                'open' => 8,
+                'extends' => false,
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => false,
+                'abstract' => 1,
+                'readonly' => false,
             ],
+        ];
+
+        yield [
+            '<?php class A extends B {}',
             [
-                '<?php class A extends B {}',
-                [
-                    'start' => 1,
-                    'classy' => 1,
-                    'open' => 9,
-                    'extends' => [
-                        'start' => 5,
-                        'numberOfExtends' => 1,
-                        'multiLine' => false,
-                    ],
-                    'implements' => false,
-                    'anonymousClass' => false,
-                    'final' => false,
-                    'abstract' => false,
-                    'readonly' => false,
+                'start' => 1,
+                'classy' => 1,
+                'open' => 9,
+                'extends' => [
+                    'start' => 5,
+                    'numberOfExtends' => 1,
+                    'multiLine' => false,
                 ],
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => false,
+                'abstract' => false,
+                'readonly' => false,
             ],
+        ];
+
+        yield [
+            '<?php interface A extends B,C,D {}',
             [
-                '<?php interface A extends B,C,D {}',
-                [
-                    'start' => 1,
-                    'classy' => 1,
-                    'open' => 13,
-                    'extends' => [
-                        'start' => 5,
-                        'numberOfExtends' => 3,
-                        'multiLine' => false,
-                    ],
-                    'implements' => false,
-                    'anonymousClass' => false,
-                    'final' => false,
-                    'abstract' => false,
-                    'readonly' => false,
+                'start' => 1,
+                'classy' => 1,
+                'open' => 13,
+                'extends' => [
+                    'start' => 5,
+                    'numberOfExtends' => 3,
+                    'multiLine' => false,
                 ],
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => false,
+                'abstract' => false,
+                'readonly' => false,
             ],
         ];
     }
@@ -533,38 +562,40 @@ TestInterface3, /**/     TestInterface4   ,
 
     public static function provideClassyInheritanceInfoCases(): iterable
     {
-        yield from [
-            '1' => [
-                '<?php
+        yield '1' => [
+            '<?php
 class X11 implements    Z   , T,R
 {
 }',
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
-            ],
-            '2' => [
-                '<?php
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+        ];
+
+        yield '2' => [
+            '<?php
 class X10 implements    Z   , T,R    //
 {
 }',
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
-            ],
-            '3' => [
-                '<?php class A implements B {}',
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 1, 'multiLine' => false],
-            ],
-            '4' => [
-                "<?php class A implements B,\n I{}",
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 2, 'multiLine' => true],
-            ],
-            '5' => [
-                "<?php class A implements Z\\C\\B,C,D  {\n\n\n}",
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
-            ],
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+        ];
+
+        yield '3' => [
+            '<?php class A implements B {}',
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 1, 'multiLine' => false],
+        ];
+
+        yield '4' => [
+            "<?php class A implements B,\n I{}",
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 2, 'multiLine' => true],
+        ];
+
+        yield '5' => [
+            "<?php class A implements Z\\C\\B,C,D  {\n\n\n}",
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
         ];
 
         if (\PHP_VERSION_ID < 8_00_00) {
@@ -618,22 +649,22 @@ namespace {
             ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => $multiLine],
         ];
 
-        yield from [
-            [
-                "<?php \$a = new    class(3)     extends\nSomeClass\timplements    SomeInterface, D {};",
-                'numberOfExtends',
-                ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
-            ],
-            [
-                "<?php \$a = new class(4) extends\nSomeClass\timplements SomeInterface, D\n\n{};",
-                'numberOfImplements',
-                ['start' => 16, 'numberOfImplements' => 2, 'multiLine' => false],
-            ],
-            [
-                "<?php \$a = new class(5) extends SomeClass\nimplements    SomeInterface, D {};",
-                'numberOfExtends',
-                ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
-            ],
+        yield [
+            "<?php \$a = new    class(3)     extends\nSomeClass\timplements    SomeInterface, D {};",
+            'numberOfExtends',
+            ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
+        ];
+
+        yield [
+            "<?php \$a = new class(4) extends\nSomeClass\timplements SomeInterface, D\n\n{};",
+            'numberOfImplements',
+            ['start' => 16, 'numberOfImplements' => 2, 'multiLine' => false],
+        ];
+
+        yield [
+            "<?php \$a = new class(5) extends SomeClass\nimplements    SomeInterface, D {};",
+            'numberOfExtends',
+            ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
         ];
     }
 
@@ -648,49 +679,50 @@ namespace {
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 $a = new class implements
     \RFb,
     \Fcc,
     \GFddZz
 {
 };',
-                '<?php
+            '<?php
 $a = new class implements
     \RFb,
     \Fcc, \GFddZz
 {
 };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = new class implements
     \RFb,
     \Fcc,
     \GFddZz
 {
 }?>',
-                '<?php
+            '<?php
 $a = new class implements
     \RFb,
     \Fcc, \GFddZz
 {
 }?>',
-            ],
-            [
-                '<?php new class(1, 2, 3, ) {};',
-                '<?php new class(1, 2, 3,) {};',
-            ],
-            [
-                '<?php new class(1, 2, 3, ) {};',
-                '<?php new class(
+        ];
+
+        yield [
+            '<?php new class(1, 2, 3, ) {};',
+            '<?php new class(1, 2, 3,) {};',
+        ];
+
+        yield [
+            '<?php new class(1, 2, 3, ) {};',
+            '<?php new class(
                     1,
                     2,
                     3,
                 ) {};',
-            ],
         ];
     }
 
@@ -706,11 +738,9 @@ $a = new class implements
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                "<?php\r\nclass Aaa implements\r\n\tBbb,\r\n\tCcc,\r\n\tDdd\r\n\t{\r\n\t}",
-                "<?php\r\nclass Aaa implements\r\n\tBbb, Ccc,\r\n\tDdd\r\n\t{\r\n\t}",
-            ],
+        yield [
+            "<?php\r\nclass Aaa implements\r\n\tBbb,\r\n\tCcc,\r\n\tDdd\r\n\t{\r\n\t}",
+            "<?php\r\nclass Aaa implements\r\n\tBbb, Ccc,\r\n\tDdd\r\n\t{\r\n\t}",
         ];
     }
 

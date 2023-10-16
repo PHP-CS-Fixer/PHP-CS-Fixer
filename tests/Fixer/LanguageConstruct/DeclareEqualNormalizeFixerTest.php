@@ -39,66 +39,73 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'minimal case remove whitespace (default config)' => [
-                '<?php declare(ticks=1);',
-                '<?php declare(ticks= 1);',
-                [],
-            ],
-            'minimal case remove whitespace (no space config)' => [
-                '<?php declare(ticks=1);',
-                '<?php declare(ticks  =  1);',
-                ['space' => 'none'],
-            ],
-            'minimal case add whitespace' => [
-                '<?php declare(ticks = 1);',
-                '<?php declare(ticks=1);',
-                ['space' => 'single'],
-            ],
-            'to much whitespace case add whitespace' => [
-                '<?php declare(ticks = 1);',
-                "<?php declare(ticks\n\t =   1);",
-                ['space' => 'single'],
-            ],
-            'repeating case remove whitespace (default config)' => [
-                '<?php declare(ticks=1);declare(ticks=1)?>',
-                '<?php declare(ticks= 1);declare(ticks= 1)?>',
-                [],
-            ],
-            'repeating case add whitespace' => [
-                '<?php declare ( ticks = 1 );declare( ticks = 1)  ?>',
-                '<?php declare ( ticks=1 );declare( ticks =1)  ?>',
-                ['space' => 'single'],
-            ],
-            'minimal case add whitespace comments, single' => [
-                '<?php declare(ticks#
+        yield 'minimal case remove whitespace (default config)' => [
+            '<?php declare(ticks=1);',
+            '<?php declare(ticks= 1);',
+            [],
+        ];
+
+        yield 'minimal case remove whitespace (no space config)' => [
+            '<?php declare(ticks=1);',
+            '<?php declare(ticks  =  1);',
+            ['space' => 'none'],
+        ];
+
+        yield 'minimal case add whitespace' => [
+            '<?php declare(ticks = 1);',
+            '<?php declare(ticks=1);',
+            ['space' => 'single'],
+        ];
+
+        yield 'to much whitespace case add whitespace' => [
+            '<?php declare(ticks = 1);',
+            "<?php declare(ticks\n\t =   1);",
+            ['space' => 'single'],
+        ];
+
+        yield 'repeating case remove whitespace (default config)' => [
+            '<?php declare(ticks=1);declare(ticks=1)?>',
+            '<?php declare(ticks= 1);declare(ticks= 1)?>',
+            [],
+        ];
+
+        yield 'repeating case add whitespace' => [
+            '<?php declare ( ticks = 1 );declare( ticks = 1)  ?>',
+            '<?php declare ( ticks=1 );declare( ticks =1)  ?>',
+            ['space' => 'single'],
+        ];
+
+        yield 'minimal case add whitespace comments, single' => [
+            '<?php declare(ticks#
 = #
 1#
 );',
-                '<?php declare(ticks#
+            '<?php declare(ticks#
 =#
 1#
 );',
-                ['space' => 'single'],
-            ],
-            'minimal case add whitespace comments, none' => [
-                '<?php declare(ticks#
+            ['space' => 'single'],
+        ];
+
+        yield 'minimal case add whitespace comments, none' => [
+            '<?php declare(ticks#
 =#
 1#
 );',
-                null,
-                ['space' => 'none'],
-            ],
-            'declare having multiple directives, single' => [
-                '<?php declare(strict_types=1, ticks=1);',
-                '<?php declare(strict_types = 1, ticks = 1);',
-                [],
-            ],
-            'declare having multiple directives, none' => [
-                '<?php declare(strict_types = 1, ticks = 1);',
-                '<?php declare(strict_types=1, ticks=1);',
-                ['space' => 'single'],
-            ],
+            null,
+            ['space' => 'none'],
+        ];
+
+        yield 'declare having multiple directives, single' => [
+            '<?php declare(strict_types=1, ticks=1);',
+            '<?php declare(strict_types = 1, ticks = 1);',
+            [],
+        ];
+
+        yield 'declare having multiple directives, none' => [
+            '<?php declare(strict_types = 1, ticks = 1);',
+            '<?php declare(strict_types=1, ticks=1);',
+            ['space' => 'single'],
         ];
     }
 
@@ -117,15 +124,14 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 
     public static function provideInvalidConfigCases(): iterable
     {
-        return [
-            [
-                [1, 2],
-                'The options "0", "1" do not exist.',
-            ],
-            [
-                ['space' => 'tab'],
-                'The option "space" with value "tab" is invalid.',
-            ],
+        yield [
+            [1, 2],
+            'The options "0", "1" do not exist.',
+        ];
+
+        yield [
+            ['space' => 'tab'],
+            'The option "space" with value "tab" is invalid.',
         ];
     }
 }

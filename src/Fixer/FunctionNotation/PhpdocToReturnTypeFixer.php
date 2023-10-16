@@ -50,7 +50,7 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'EXPERIMENTAL: Takes `@return` annotation of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.',
+            'EXPERIMENTAL: Takes `@return` annotation of non-mixed types and adjusts accordingly the function signature.',
             [
                 new CodeSample(
                     '<?php
@@ -62,16 +62,11 @@ function f1()
 /** @return void */
 function f2()
 {}
-'
-                ),
-                new VersionSpecificCodeSample(
-                    '<?php
 
 /** @return object */
 function my_foo()
 {}
 ',
-                    new VersionSpecification(7_02_00)
                 ),
                 new CodeSample(
                     '<?php
@@ -110,7 +105,7 @@ final class Foo {
     /**
      * {@inheritdoc}
      *
-     * Must run before FullyQualifiedStrictTypesFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAlignFixer, ReturnTypeDeclarationFixer.
+     * Must run before FullyQualifiedStrictTypesFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAlignFixer, ReturnToYieldFromFixer, ReturnTypeDeclarationFixer.
      * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int

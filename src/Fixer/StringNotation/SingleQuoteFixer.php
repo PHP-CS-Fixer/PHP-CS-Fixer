@@ -34,12 +34,12 @@ final class SingleQuoteFixer extends AbstractFixer implements ConfigurableFixerI
     public function getDefinition(): FixerDefinitionInterface
     {
         $codeSample = <<<'EOF'
-<?php
+            <?php
 
-$a = "sample";
-$b = "sample with 'single-quotes'";
+            $a = "sample";
+            $b = "sample with 'single-quotes'";
 
-EOF;
+            EOF;
 
         return new FixerDefinition(
             'Convert double quotes to single quotes for simple strings.',

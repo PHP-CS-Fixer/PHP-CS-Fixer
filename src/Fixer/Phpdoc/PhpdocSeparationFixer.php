@@ -43,21 +43,21 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
     public function getDefinition(): FixerDefinitionInterface
     {
         $code = <<<'EOF'
-<?php
-/**
- * Hello there!
- *
- * @author John Doe
- * @custom Test!
- *
- * @throws Exception|RuntimeException foo
- * @param string $foo
- *
- * @param bool   $bar Bar
- * @return int  Return the number of changes.
- */
+            <?php
+            /**
+             * Hello there!
+             *
+             * @author John Doe
+             * @custom Test!
+             *
+             * @throws Exception|RuntimeException foo
+             * @param string $foo
+             *
+             * @param bool   $bar Bar
+             * @return int  Return the number of changes.
+             */
 
-EOF;
+            EOF;
 
         return new FixerDefinition(
             'Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line.',
@@ -76,17 +76,17 @@ EOF;
                 ]]),
                 new CodeSample(
                     <<<'EOF'
-                    <?php
-                    /**
-                     * @ORM\Id
-                     *
-                     * @ORM\GeneratedValue
-                     * @Assert\NotNull
-                     *
-                     * @Assert\Type("string")
-                     */
+                        <?php
+                        /**
+                         * @ORM\Id
+                         *
+                         * @ORM\GeneratedValue
+                         * @Assert\NotNull
+                         *
+                         * @Assert\Type("string")
+                         */
 
-                    EOF,
+                        EOF,
                     ['groups' => [['ORM\*'], ['Assert\*']]],
                 ),
                 new CodeSample($code, ['skip_unlisted_annotations' => true]),
@@ -134,7 +134,7 @@ EOF;
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $allowTagToBelongToOnlyOneGroup = function ($groups) {
+        $allowTagToBelongToOnlyOneGroup = static function ($groups) {
             $tags = [];
             foreach ($groups as $groupIndex => $group) {
                 foreach ($group as $member) {
@@ -228,7 +228,7 @@ EOF;
         $pos = $first->getEnd();
         $final = $second->getStart();
 
-        for ($pos = $pos + 1; $pos < $final; ++$pos) {
+        for (++$pos; $pos < $final; ++$pos) {
             $doc->getLine($pos)->remove();
         }
     }
@@ -248,7 +248,7 @@ EOF;
             return;
         }
 
-        for ($pos = $pos + 1; $pos < $final; ++$pos) {
+        for (++$pos; $pos < $final; ++$pos) {
             $doc->getLine($pos)->remove();
         }
     }

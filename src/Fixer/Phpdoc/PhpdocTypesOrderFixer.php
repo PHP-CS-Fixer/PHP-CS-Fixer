@@ -81,6 +81,14 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                         'null_adjustment' => 'none',
                     ]
                 ),
+                new CodeSample(
+                    '<?php
+/**
+ * @param Aaa|AA $bar
+ */
+',
+                    ['case_sensitive' => true]
+                ),
             ]
         );
     }
@@ -111,6 +119,10 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
             (new FixerOptionBuilder('null_adjustment', 'Forces the position of `null` (overrides `sort_algorithm`).'))
                 ->setAllowedValues(['always_first', 'always_last', 'none'])
                 ->setDefault('always_first')
+                ->getOption(),
+            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
                 ->getOption(),
         ]);
     }
@@ -157,9 +169,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
      */
     private function sortTypes(TypeExpression $typeExpression): array
     {
-        $normalizeType = static function (string $type): string {
-            return Preg::replace('/^\\??\\\?/', '', $type);
-        };
+        $normalizeType = static fn (string $type): string => Preg::replace('/^\\??\\\?/', '', $type);
 
         $typeExpression->sortTypes(
             function (TypeExpression $a, TypeExpression $b) use ($normalizeType): int {
@@ -178,7 +188,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                 }
 
                 if ('alpha' === $this->configuration['sort_algorithm']) {
-                    return strcasecmp($a, $b);
+                    return $this->configuration['case_sensitive'] ? strcmp($a, $b) : strcasecmp($a, $b);
                 }
 
                 return 0;

@@ -65,17 +65,23 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 
     public static function provideIsShortArrayCases(): iterable
     {
-        return [
-            ['<?php $a=[];', [3], false],
-            ['<?php [$a] = [$b];', [7], false],
-            ['<?php [$a] = $b;', [1], false],
-            ['<?php [$a] = [$b] = [$b];', [1], false],
-            ['<?php function A(){}[$a] = [$b] = [$b];', [8], false],
-            ['<?php [$foo, $bar] = [$baz, $bat] = [$a, $b];', [10], false],
-            ['<?php [[$a, $b], [$c, $d]] = [[1, 2], [3, 4]];', [1], false],
-            ['<?php ["a" => $a, "b" => $b, "c" => $c] = $array;', [1], false],
-            ['<?php [$a, $b,, [$c, $d]] = $a;', [1, 9], false],
-        ];
+        yield ['<?php $a=[];', [3], false];
+
+        yield ['<?php [$a] = [$b];', [7], false];
+
+        yield ['<?php [$a] = $b;', [1], false];
+
+        yield ['<?php [$a] = [$b] = [$b];', [1], false];
+
+        yield ['<?php function A(){}[$a] = [$b] = [$b];', [8], false];
+
+        yield ['<?php [$foo, $bar] = [$baz, $bat] = [$a, $b];', [10], false];
+
+        yield ['<?php [[$a, $b], [$c, $d]] = [[1, 2], [3, 4]];', [1], false];
+
+        yield ['<?php ["a" => $a, "b" => $b, "c" => $c] = $array;', [1], false];
+
+        yield ['<?php [$a, $b,, [$c, $d]] = $a;', [1, 9], false];
     }
 
     /**
@@ -99,126 +105,148 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        return [
-            'Array offset only.' => [
-                '<?php $a = array(); $a[] = 0; $a[1] = 2;',
-            ],
-            'Short array construction.' => [
-                '<?php $b = [1, 2, 3];',
-                [
-                    5 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    13 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
-            ],
+        yield 'Array offset only.' => [
+            '<?php $a = array(); $a[] = 0; $a[1] = 2;',
+        ];
+
+        yield 'Short array construction.' => [
+            '<?php $b = [1, 2, 3];',
             [
-                '<?php function foo(array $c = [ ]) {}',
-                [
-                    11 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    13 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                5 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                13 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php function foo(array $c = [ ]) {}',
             [
-                '<?php [];',
-                [
-                    1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    2 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                11 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                13 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php [];',
             [
-                '<?php [1, "foo"];',
-                [
-                    1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    6 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                2 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php [1, "foo"];',
             [
-                '<?php [[]];',
-                [
-                    1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    2 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    3 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                    4 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                6 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php [[]];',
             [
-                '<?php ["foo", ["bar", "baz"]];',
-                [
-                    1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    5 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    10 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                    11 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                2 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                3 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                4 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php ["foo", ["bar", "baz"]];',
             [
-                '<?php (array) [1, 2];',
-                [
-                    3 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    8 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                5 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                10 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                11 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php (array) [1, 2];',
             [
-                '<?php [1,2][$x];',
-                [
-                    1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    5 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                3 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                8 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php [1,2][$x];',
             [
-                '<?php $a[] = []?>',
-                [
-                    7 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    8 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                5 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php $a[] = []?>',
             [
-                '<?php $b = [1];',
-                [
-                    5 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    7 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                7 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                8 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php $b = [1];',
             [
-                '<?php $c[] = 2?>',
+                5 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                7 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php $c[] = 2?>',
+        ];
+
+        yield [
+            '<?php $d[3] = 4;',
+        ];
+
+        yield [
+            '<?php $e = [];',
             [
-                '<?php $d[3] = 4;',
+                5 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                6 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
-            [
-                '<?php $e = [];',
-                [
-                    5 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    6 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
-            ],
-            [
-                '<?php array();',
-            ],
-            [
-                '<?php $x[] = 1;',
-            ],
-            [
-                '<?php $x[1];',
-            ],
-            [
-                '<?php $x [ 1 ];',
-            ],
-            [
-                '<?php ${"x"}[1];',
-            ],
-            [
-                '<?php FOO[1];',
-            ],
-            [
-                '<?php array("foo")[1];',
-            ],
-            [
-                '<?php foo()[1];',
-            ],
-            [
-                '<?php "foo"[1];//[]',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php array();',
+        ];
+
+        yield [
+            '<?php $x[] = 1;',
+        ];
+
+        yield [
+            '<?php $x[1];',
+        ];
+
+        yield [
+            '<?php $x [ 1 ];',
+        ];
+
+        yield [
+            '<?php ${"x"}[1];',
+        ];
+
+        yield [
+            '<?php FOO[1];',
+        ];
+
+        yield [
+            '<?php array("foo")[1];',
+        ];
+
+        yield [
+            '<?php foo()[1];',
+        ];
+
+        yield [
+            '<?php "foo"[1];//[]',
+        ];
+
+        yield [
+            '<?php
 
 class Test
 {
@@ -227,137 +255,151 @@ class Test
         $this->{camel_case($attributes)}[$key] = $value;
     }
 }',
-            ],
+        ];
+
+        yield [
+            '<?php [$a, $b, $c] = [1, 2, 3];',
             [
-                '<?php [$a, $b, $c] = [1, 2, 3];',
-                [
-                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    9 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    13 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    21 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                9 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                13 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                21 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php ["a" => $a, "b" => $b, "c" => $c] = $array;',
             [
-                '<?php ["a" => $a, "b" => $b, "c" => $c] = $array;',
-                [
-                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    21 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                21 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php [$e] = $d; if ($a){}[$a, $b] = b();',
             [
-                '<?php [$e] = $d; if ($a){}[$a, $b] = b();',
-                [
-                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    3 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    17 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    22 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                3 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                17 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                22 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php $a = [$x] = [$y] = [$z] = [];', // this sample makes no sense, however is in valid syntax
             [
-                '<?php $a = [$x] = [$y] = [$z] = [];', // this sample makes no sense, however is in valid syntax
-                [
-                    5 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    11 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    13 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    17 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    19 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    23 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    24 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                5 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                11 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                13 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                17 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                19 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                23 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                24 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php [$$a, $b] = $array;',
             [
-                '<?php [$$a, $b] = $array;',
-                [
-                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php [$a, $b,, [$c, $d]] = $a;',
             [
-                '<?php [$a, $b,, [$c, $d]] = $a;',
-                [
-                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    9 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    14 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    15 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                9 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                14 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                15 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ],
-            'nested I' => [
-                '<?php [$a[]] = $b;',
-                [
-                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    5 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
-            ],
-            'nested II (with array offset)' => [
-                '<?php [$a[1]] = $b;',
-                [
-                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    6 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
-            ],
-            'nested III' => [
-                '<?php [$a[1], [$b], $c[2]] = $d;',
-                [
-                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    8 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    10 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    17 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
-            ],
+        ];
+
+        yield 'nested I' => [
+            '<?php [$a[]] = $b;',
             [
-                '<?php [[[$a]/**/], $b[1], [/**/[$c]] /** */ ] = $d[1][2][3];',
-                [
-                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    2 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    3 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    5 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    16 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    18 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    20 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    21 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    25 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                5 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield 'nested II (with array offset)' => [
+            '<?php [$a[1]] = $b;',
             [
-                '<?php foreach ($z as [$a, $b]) {}',
-                [
-                    8 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    13 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                6 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield 'nested III' => [
+            '<?php [$a[1], [$b], $c[2]] = $d;',
             [
-                '<?php foreach ($a as $key => [$x, $y]) {}',
-                [
-                    12 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    17 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                8 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                10 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                17 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php [[[$a]/**/], $b[1], [/**/[$c]] /** */ ] = $d[1][2][3];',
             [
-                '<?php [$key => [$x, $y]];',
-                [
-                    1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    6 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    11 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                    12 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                2 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                3 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                5 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                16 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                18 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                20 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                21 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                25 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php foreach ($z as [$a, $b]) {}',
             [
-                '<?php array($key => [$x, $y]);',
-                [
-                    7 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    12 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                8 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                13 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php foreach ($a as $key => [$x, $y]) {}',
             [
-                '<?php [$key => [$x, $y] = foo()];',
-                [
-                    1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                    6 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    11 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    18 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                ],
+                12 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                17 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php [$key => [$x, $y]];',
+            [
+                1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                6 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                11 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                12 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php array($key => [$x, $y]);',
+            [
+                7 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                12 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+            ],
+        ];
+
+        yield [
+            '<?php [$key => [$x, $y] = foo()];',
+            [
+                1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                6 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                11 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                18 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
         ];
     }
@@ -381,42 +423,43 @@ class Test
 
     public static function provideProcess72Cases(): iterable
     {
-        return [
+        yield [
+            '<?php [&$a, $b] = $a;',
             [
-                '<?php [&$a, $b] = $a;',
-                [
-                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php [$a, &$b] = $a;',
             [
-                '<?php [$a, &$b] = $a;',
-                [
-                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php [&$a, &$b] = $a;',
             [
-                '<?php [&$a, &$b] = $a;',
-                [
-                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    8 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                8 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ],
+        ];
+
+        yield [
+            '<?php [[ [&$a, &$b], [&$c] ], [&$d/* */]] = $e;',
             [
-                '<?php [[ [&$a, &$b], [&$c] ], [&$d/* */]] = $e;',
-                [
-                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    2 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    4 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    11 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    14 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    17 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    19 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    22 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                    26 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                    27 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-                ],
+                1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                2 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                4 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                11 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                14 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                17 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                19 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                22 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                26 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                27 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ],
         ];
     }

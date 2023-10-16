@@ -37,58 +37,69 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
 
     public static function provideLongToShortFormatCases(): iterable
     {
-        return [
-            ['<?= \'Foo\';', '<?php echo \'Foo\';'],
-            ['<?= \'Foo\';', '<?php print \'Foo\';'],
-            ['<?= \'Foo\'; ?> PLAIN TEXT', '<?php echo \'Foo\'; ?> PLAIN TEXT'],
-            ['<?= \'Foo\'; ?> PLAIN TEXT', '<?php print \'Foo\'; ?> PLAIN TEXT'],
-            ['PLAIN TEXT<?= \'Foo\'; ?>', 'PLAIN TEXT<?php echo \'Foo\'; ?>'],
-            ['PLAIN TEXT<?= \'Foo\'; ?>', 'PLAIN TEXT<?php print \'Foo\'; ?>'],
-            ['<?= \'Foo\'; ?> <?= \'Bar\'; ?>', '<?php echo \'Foo\'; ?> <?php echo \'Bar\'; ?>'],
-            ['<?= \'Foo\'; ?> <?= \'Bar\'; ?>', '<?php print \'Foo\'; ?> <?php echo \'Bar\'; ?>'],
-            ['<?php echo \'Foo\'; someThingElse();'],
-            ['<?= \'Foo\'; someThingElse();', '<?php echo \'Foo\'; someThingElse();', false],
-            ['<?=/*this */ /** should be in the result*/ \'Foo\';', '<?php /*this */ /** should be in the result*/ echo \'Foo\';'],
-            [
-                <<<'EOT'
-<?=/*comment*/
-  1
-?>
-EOT
-                ,
-                <<<'EOT'
-<?php /*comment*/ echo
-  1
-?>
-EOT
-            ],
-            [
-                <<<'EOT'
-<?=/*comment*/ 1
-?>
-EOT
-                ,
-                <<<'EOT'
-<?php
-  /*comment*/ echo 1
-?>
-EOT
-            ],
-            [
-                <<<'EOT'
-<?=/*comment*/
-  1
-?>
-EOT
-                ,
-                <<<'EOT'
-<?php
-  /*comment*/
-  echo
-  1
-?>
-EOT
-            ],
+        yield ['<?= \'Foo\';', '<?php echo \'Foo\';'];
+
+        yield ['<?= \'Foo\';', '<?php print \'Foo\';'];
+
+        yield ['<?= \'Foo\'; ?> PLAIN TEXT', '<?php echo \'Foo\'; ?> PLAIN TEXT'];
+
+        yield ['<?= \'Foo\'; ?> PLAIN TEXT', '<?php print \'Foo\'; ?> PLAIN TEXT'];
+
+        yield ['PLAIN TEXT<?= \'Foo\'; ?>', 'PLAIN TEXT<?php echo \'Foo\'; ?>'];
+
+        yield ['PLAIN TEXT<?= \'Foo\'; ?>', 'PLAIN TEXT<?php print \'Foo\'; ?>'];
+
+        yield ['<?= \'Foo\'; ?> <?= \'Bar\'; ?>', '<?php echo \'Foo\'; ?> <?php echo \'Bar\'; ?>'];
+
+        yield ['<?= \'Foo\'; ?> <?= \'Bar\'; ?>', '<?php print \'Foo\'; ?> <?php echo \'Bar\'; ?>'];
+
+        yield ['<?php echo \'Foo\'; someThingElse();'];
+
+        yield ['<?= \'Foo\'; someThingElse();', '<?php echo \'Foo\'; someThingElse();', false];
+
+        yield ['<?=/*this */ /** should be in the result*/ \'Foo\';', '<?php /*this */ /** should be in the result*/ echo \'Foo\';'];
+
+        yield [
+            <<<'EOT'
+                <?=/*comment*/
+                  1
+                ?>
+                EOT
+            ,
+            <<<'EOT'
+                <?php /*comment*/ echo
+                  1
+                ?>
+                EOT
+        ];
+
+        yield [
+            <<<'EOT'
+                <?=/*comment*/ 1
+                ?>
+                EOT
+            ,
+            <<<'EOT'
+                <?php
+                  /*comment*/ echo 1
+                ?>
+                EOT
+        ];
+
+        yield [
+            <<<'EOT'
+                <?=/*comment*/
+                  1
+                ?>
+                EOT
+            ,
+            <<<'EOT'
+                <?php
+                  /*comment*/
+                  echo
+                  1
+                ?>
+                EOT
         ];
     }
 
@@ -114,13 +125,11 @@ EOT
             ['<?php <fn> \'Foo\'; ?> <?php <fn> \'Bar\'; ?>', '<?= \'Foo\'; ?> <?= \'Bar\'; ?>'],
             ['<?php <fn> foo();', '<?=foo();'],
         ];
-        $result = [];
+
         foreach ([EchoTagSyntaxFixer::LONG_FUNCTION_ECHO, EchoTagSyntaxFixer::LONG_FUNCTION_PRINT] as $fn) {
             foreach ($cases as $case) {
-                $result[] = [str_replace('<fn>', $fn, $case[0]), str_replace('<fn>', $fn, $case[1]), $fn];
+                yield [str_replace('<fn>', $fn, $case[0]), str_replace('<fn>', $fn, $case[1]), $fn];
             }
         }
-
-        return $result;
     }
 }

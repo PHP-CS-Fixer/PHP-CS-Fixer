@@ -34,7 +34,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @internal
  */
-final class CurlyBraceTransformer extends AbstractTransformer
+final class BraceTransformer extends AbstractTransformer
 {
     public function getRequiredPhpVersionId(): int
     {

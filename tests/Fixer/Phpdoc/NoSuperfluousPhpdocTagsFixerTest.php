@@ -36,7 +36,7 @@ final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield 'no typehint' => [
+        yield 'no type declaration' => [
             '<?php
 class Foo {
     /**
@@ -48,7 +48,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint' => [
+        yield 'same type declaration' => [
             '<?php
 class Foo {
     /**
@@ -64,7 +64,7 @@ class Foo {
 }',
         ];
 
-        yield 'same optional typehint' => [
+        yield 'same optional type declaration' => [
             '<?php
 class Foo {
     /**
@@ -80,7 +80,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint with description' => [
+        yield 'same type declaration with description' => [
             '<?php
 class Foo {
     /**
@@ -190,7 +190,7 @@ class Foo {
 }',
         ];
 
-        yield 'same typehint with different casing' => [
+        yield 'same type declaration with different casing' => [
             '<?php
 class Foo {
     /**
@@ -203,6 +203,140 @@ class Foo {
      * @param bar $bar
      */
     public function doFoo(Bar $bar) {}
+}',
+        ];
+
+        yield 'same type declaration with leading backslash - global' => [
+            '<?php
+class Foo {
+    /**
+     */
+    public function doFoo(Bar $bar) {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @param \Bar $bar
+     */
+    public function doFoo(Bar $bar) {}
+}',
+        ];
+
+        yield 'same type declaration with leading backslash - namespaced' => [
+            '<?php
+namespace Xxx;
+
+class Foo {
+    /**
+     */
+    public function doFoo(Model\Invoice $bar) {}
+}',
+            '<?php
+namespace Xxx;
+
+class Foo {
+    /**
+     * @param \Xxx\Model\Invoice $bar
+     */
+    public function doFoo(Model\Invoice $bar) {}
+}',
+        ];
+
+        yield 'same type declaration without leading backslash - global' => [
+            '<?php
+class Foo {
+    /**
+     */
+    public function doFoo(\Bar $bar) {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @param Bar $bar
+     */
+    public function doFoo(\Bar $bar) {}
+}',
+        ];
+
+        yield 'same type declaration without leading backslash - namespaced' => [
+            '<?php
+namespace Xxx;
+
+class Foo {
+    /**
+     */
+    public function doFoo(\Xxx\Bar $bar) {}
+}',
+            '<?php
+namespace Xxx;
+
+class Foo {
+    /**
+     * @param Bar $bar
+     */
+    public function doFoo(\Xxx\Bar $bar) {}
+}',
+        ];
+
+        yield 'same type declaration with null implied from native type - param type' => [
+            '<?php
+class Foo {
+    /**
+     */
+    public function setAttribute(?string $value, string $value2 = null): void
+    {
+    }
+}',
+            '<?php
+class Foo {
+    /**
+     * @param string $value
+     * @param string $value2
+     */
+    public function setAttribute(?string $value, string $value2 = null): void
+    {
+    }
+}',
+        ];
+
+        yield 'same type declaration with null implied from native type - return type' => [
+            '<?php
+class Foo {
+    /**
+     */
+    public function getX(): ?X
+    {
+    }
+}',
+            '<?php
+class Foo {
+    /**
+     * @return X
+     */
+    public function getX(): ?X
+    {
+    }
+}',
+        ];
+
+        yield 'same type declaration with null implied from native type - property' => [
+            '<?php
+class Foo {
+    /**  */
+    public ?bool $enabled;
+}',
+            '<?php
+class Foo {
+    /** @var bool */
+    public ?bool $enabled;
+}',
+        ];
+
+        yield 'same type declaration with null but native type without null - invalid phpdoc must be kept unfixed' => [
+            '<?php
+class Foo {
+    /** @var bool|null */
+    public bool $enabled;
 }',
         ];
 
@@ -335,7 +469,7 @@ class Foo {
 }',
         ];
 
-        yield 'with special type hints' => [
+        yield 'with special type declarations' => [
             '<?php
 class Foo {
     /**
@@ -1168,7 +1302,7 @@ class Foo {
 }',
         ];
 
-        yield 'same type hint' => [
+        yield 'same type declaration (with extra empty line)' => [
             '<?php
 class Foo {
     /**
@@ -1187,7 +1321,7 @@ class Foo {
 }',
         ];
 
-        yield 'same type hint with description' => [
+        yield 'same type declaration (with return type) with description' => [
             '<?php
 class Foo {
     /**
@@ -1282,7 +1416,7 @@ use Foo\Bar as Baz;
 function foo(Baz $bar): Baz {}',
         ];
 
-        yield 'with scalar type hints' => [
+        yield 'with scalar type declarations' => [
             '<?php
 class Foo {
     /**
@@ -1343,7 +1477,7 @@ trait Foo {}',
             ['remove_inheritdoc' => true],
         ];
 
-        yield 'same nullable type hint' => [
+        yield 'same nullable type declaration' => [
             '<?php
 class Foo {
     /**
@@ -1362,7 +1496,7 @@ class Foo {
 }',
         ];
 
-        yield 'same nullable type hint reversed' => [
+        yield 'same nullable type declaration reversed' => [
             '<?php
 class Foo {
     /**
@@ -1381,7 +1515,7 @@ class Foo {
 }',
         ];
 
-        yield 'same nullable type hint with description' => [
+        yield 'same nullable type declaration with description' => [
             '<?php
 class Foo {
     /**
@@ -1393,7 +1527,7 @@ class Foo {
 }',
         ];
 
-        yield 'same optional nullable type hint' => [
+        yield 'same optional nullable type declaration' => [
             '<?php
 class Foo {
     /**
@@ -1492,7 +1626,7 @@ use Foo\Bar as Baz;
 function foo(?Baz $bar): ?Baz {}',
         ];
 
-        yield 'with nullable special type hints' => [
+        yield 'with nullable special type declarations' => [
             '<?php
 class Foo {
     /**
@@ -1906,7 +2040,7 @@ class Foo {
 }',
         ];
 
-        yield 'phpdoc does not match property typehint' => [
+        yield 'phpdoc does not match property type declaration' => [
             '<?php
 class Foo {
     /**
@@ -2282,6 +2416,44 @@ class Foo {
 class Foo {
     /** @return */
     public function foo($foo) {}
+}',
+        ];
+
+        yield 'explicit null must stay - global namespace' => [
+            '<?php
+class Foo {
+    /** @return null */
+    public function foo() {}
+}',
+        ];
+
+        yield 'explicit null must stay - custom namespace' => [
+            '<?php
+namespace A\B;
+class Foo {
+    /** @return null */
+    public function foo() {}
+}',
+        ];
+
+        yield 'superfluous asterisk in corrupted phpDoc' => [
+            '<?php
+class Foo {
+    /** * @return Baz */
+    public function doFoo($bar) {}
+}',
+        ];
+
+        yield 'superfluous return type after superfluous asterisk in corrupted phpDoc' => [
+            '<?php
+class Foo {
+    /**  */
+    public function doFoo($bar): Baz {}
+}',
+            '<?php
+class Foo {
+    /** * @return Baz */
+    public function doFoo($bar): Baz {}
 }',
         ];
     }
@@ -2682,6 +2854,35 @@ enum Foo {
      * @return self
      */
     public function bar(Foo $other): Foo {}
+}',
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     *
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, ?string $input = null, array $config = []): void
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield 'explicit null with null native type' => [
+            '<?php
+class Foo {
+    /**  */
+    public function foo(): null { return null; }
+}',
+            '<?php
+class Foo {
+    /** @return null */
+    public function foo(): null { return null; }
 }',
         ];
     }

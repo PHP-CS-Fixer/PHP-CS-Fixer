@@ -266,9 +266,7 @@ while ($y) { continue (2); }
     {
         $defaults = array_filter(
             self::CONFIG_OPTIONS,
-            static function (string $option): bool {
-                return 'negative_instanceof' !== $option && 'others' !== $option && 'yield_from' !== $option;
-            }
+            static fn (string $option): bool => 'negative_instanceof' !== $option && 'others' !== $option && 'yield_from' !== $option
         );
 
         return new FixerConfigurationResolver([

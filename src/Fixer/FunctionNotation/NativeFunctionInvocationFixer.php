@@ -294,14 +294,10 @@ $c = get_class($d);
 
         if (\in_array(self::SET_ALL, $this->configuration['include'], true)) {
             if (\count($exclude) > 0) {
-                return static function (string $functionName) use ($exclude): bool {
-                    return !isset($exclude[strtolower($functionName)]);
-                };
+                return static fn (string $functionName): bool => !isset($exclude[strtolower($functionName)]);
             }
 
-            return static function (): bool {
-                return true;
-            };
+            return static fn (): bool => true;
         }
 
         $include = [];
@@ -319,14 +315,10 @@ $c = get_class($d);
         }
 
         if (\count($exclude) > 0) {
-            return static function (string $functionName) use ($include, $exclude): bool {
-                return isset($include[strtolower($functionName)]) && !isset($exclude[strtolower($functionName)]);
-            };
+            return static fn (string $functionName): bool => isset($include[strtolower($functionName)]) && !isset($exclude[strtolower($functionName)]);
         }
 
-        return static function (string $functionName) use ($include): bool {
-            return isset($include[strtolower($functionName)]);
-        };
+        return static fn (string $functionName): bool => isset($include[strtolower($functionName)]);
     }
 
     /**

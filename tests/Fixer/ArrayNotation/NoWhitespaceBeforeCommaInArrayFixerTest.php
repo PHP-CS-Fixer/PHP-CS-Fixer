@@ -39,137 +39,152 @@ final class NoWhitespaceBeforeCommaInArrayFixerTest extends AbstractFixerTestCas
 
     public static function provideFixCases(): iterable
     {
-        return [
-            // old style array
-            [
-                '<?php $x = array(1, "2",3);',
-                '<?php $x = array(1 , "2",3);',
-            ],
-            // old style array with comments
-            [
-                '<?php $x = array /* comment */ (1,  "2", 3);',
-                '<?php $x = array /* comment */ (1  ,  "2", 3);',
-            ],
-            // old style array with comments
-            [
-                '<?php $x = array(1#
+        // old style array
+        yield [
+            '<?php $x = array(1, "2",3);',
+            '<?php $x = array(1 , "2",3);',
+        ];
+
+        // old style array with comments
+        yield [
+            '<?php $x = array /* comment */ (1,  "2", 3);',
+            '<?php $x = array /* comment */ (1  ,  "2", 3);',
+        ];
+
+        // old style array with comments
+        yield [
+            '<?php $x = array(1#
 ,#
 "2", 3);',
-                '<?php $x = array(1#
+            '<?php $x = array(1#
 ,#
 "2"  , 3);',
-            ],
+        ];
 
-            // short array
-            [
-                '<?php $x = [1,  "2", 3,$y];',
-                '<?php $x = [1 ,  "2", 3 ,$y];',
-            ],
-            // don't change function calls
-            [
-                '<?php $x = [ 1, "2",getValue(1,2  ,3 ),$y];',
-                '<?php $x = [ 1 , "2",getValue(1,2  ,3 )   ,$y];',
-            ],
-            // don't change function declarations
-            [
-                '<?php $x = [1, "2", function( $x ,$y) { return $x + $y; }, $y];',
-                '<?php $x = [1 , "2", function( $x ,$y) { return $x + $y; }, $y];',
-            ],
-            // don't change function declarations but change array inside
-            [
-                '<?php $x = [ 1,  "2","c" => function( $x ,$y) { return [$x, $y]; }, $y];',
-                '<?php $x = [ 1 ,  "2","c" => function( $x ,$y) { return [$x , $y]; }, $y];',
-            ],
-            // don't change anonymous class implements list but change array inside
-            [
-                '<?php $x = [ 1,  "2","c" => new class implements Foo , Bar { const FOO = ["x", "y"]; }, $y];',
-                '<?php $x = [ 1 ,  "2","c" => new class implements Foo , Bar { const FOO = ["x" , "y"]; }, $y];',
-            ],
-            // associative array (old)
-            [
-                '<?php $x = array( "a" => $a, "b" =>  "b",3=>$this->foo(), "d" => 30);',
-                '<?php $x = array( "a" => $a , "b" =>  "b",3=>$this->foo()  , "d" => 30);',
-            ],
-            // associative array (short)
-            [
-                '<?php $x = [  "a" => $a, "b"=>"b",3 => $this->foo(), "d" =>30  ];',
-                '<?php $x = [  "a" => $a , "b"=>"b",3 => $this->foo()    , "d" =>30  ];',
-            ],
-            // nested arrays
-            [
-                '<?php $x = ["a" => $a, "b" => "b", 3=> [5,6, 7], "d" => array(1, 2,3,4)];',
-                '<?php $x = ["a" => $a , "b" => "b", 3=> [5 ,6, 7]  , "d" => array(1, 2,3 ,4)];',
-            ],
-            // multi line array
-            [
-                '<?php $x = [  "a" =>$a,
+        // short array
+        yield [
+            '<?php $x = [1,  "2", 3,$y];',
+            '<?php $x = [1 ,  "2", 3 ,$y];',
+        ];
+
+        // don't change function calls
+        yield [
+            '<?php $x = [ 1, "2",getValue(1,2  ,3 ),$y];',
+            '<?php $x = [ 1 , "2",getValue(1,2  ,3 )   ,$y];',
+        ];
+
+        // don't change function declarations
+        yield [
+            '<?php $x = [1, "2", function( $x ,$y) { return $x + $y; }, $y];',
+            '<?php $x = [1 , "2", function( $x ,$y) { return $x + $y; }, $y];',
+        ];
+
+        // don't change function declarations but change array inside
+        yield [
+            '<?php $x = [ 1,  "2","c" => function( $x ,$y) { return [$x, $y]; }, $y];',
+            '<?php $x = [ 1 ,  "2","c" => function( $x ,$y) { return [$x , $y]; }, $y];',
+        ];
+
+        // don't change anonymous class implements list but change array inside
+        yield [
+            '<?php $x = [ 1,  "2","c" => new class implements Foo , Bar { const FOO = ["x", "y"]; }, $y];',
+            '<?php $x = [ 1 ,  "2","c" => new class implements Foo , Bar { const FOO = ["x" , "y"]; }, $y];',
+        ];
+
+        // associative array (old)
+        yield [
+            '<?php $x = array( "a" => $a, "b" =>  "b",3=>$this->foo(), "d" => 30);',
+            '<?php $x = array( "a" => $a , "b" =>  "b",3=>$this->foo()  , "d" => 30);',
+        ];
+
+        // associative array (short)
+        yield [
+            '<?php $x = [  "a" => $a, "b"=>"b",3 => $this->foo(), "d" =>30  ];',
+            '<?php $x = [  "a" => $a , "b"=>"b",3 => $this->foo()    , "d" =>30  ];',
+        ];
+
+        // nested arrays
+        yield [
+            '<?php $x = ["a" => $a, "b" => "b", 3=> [5,6, 7], "d" => array(1, 2,3,4)];',
+            '<?php $x = ["a" => $a , "b" => "b", 3=> [5 ,6, 7]  , "d" => array(1, 2,3 ,4)];',
+        ];
+
+        // multi line array
+        yield [
+            '<?php $x = [  "a" =>$a,
                     "b"=>
                 "b",
                     3 => $this->foo(),
                     "d" => 30  ];',
-                '<?php $x = [  "a" =>$a ,
+            '<?php $x = [  "a" =>$a ,
                     "b"=>
                 "b",
                     3 => $this->foo()  ,
                     "d" => 30  ];',
-            ],
-            // multi line array
-            [
-                '<?php $a = [
+        ];
+
+        // multi line array
+        yield [
+            '<?php $a = [
                             "foo",
                             "bar",
                         ];',
-                '<?php $a = [
+            '<?php $a = [
                             "foo" ,
                             "bar"
                             ,
                         ];',
-            ],
-            // nested multiline
-            [
-                '<?php $a = array(array(
+        ];
+
+        // nested multiline
+        yield [
+            '<?php $a = array(array(
                                     array(T_OPEN_TAG),
                                     array(T_VARIABLE, "$x"),
                         ), 1);',
-            ],
-            [
-                '<?php $a = array( // comment
+        ];
+
+        yield [
+            '<?php $a = array( // comment
                     123,
                 );',
-            ],
-            [
-                "<?php \$x = array(<<<'EOF'
+        ];
+
+        yield [
+            "<?php \$x = array(<<<'EOF'
 <?php \$a = '\\foo\\bar\\\\';
 EOF
                 , <<<'EOF'
 <?php \$a = \"\\foo\\bar\\\\\";
 EOF
                     );",
-            ],
-            [
-                "<?php \$x = array(<<<'EOF'
+        ];
+
+        yield [
+            "<?php \$x = array(<<<'EOF'
 <?php \$a = '\\foo\\bar\\\\';
 EOF, <<<'EOF'
 <?php \$a = \"\\foo\\bar\\\\\";
 EOF
                     );",
-                "<?php \$x = array(<<<'EOF'
+            "<?php \$x = array(<<<'EOF'
 <?php \$a = '\\foo\\bar\\\\';
 EOF
                 , <<<'EOF'
 <?php \$a = \"\\foo\\bar\\\\\";
 EOF
                     );",
-                ['after_heredoc' => true],
-            ],
-            [
-                '<?php $x = array(...$foo, ...$bar);',
-                '<?php $x = array(...$foo , ...$bar);',
-            ],
-            [
-                '<?php $x = [...$foo, ...$bar];',
-                '<?php $x = [...$foo , ...$bar];',
-            ],
+            ['after_heredoc' => true],
+        ];
+
+        yield [
+            '<?php $x = array(...$foo, ...$bar);',
+            '<?php $x = array(...$foo , ...$bar);',
+        ];
+
+        yield [
+            '<?php $x = [...$foo, ...$bar];',
+            '<?php $x = [...$foo , ...$bar];',
         ];
     }
 }

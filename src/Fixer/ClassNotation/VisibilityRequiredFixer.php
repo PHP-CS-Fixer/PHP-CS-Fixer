@@ -106,7 +106,7 @@ class Sample
         }
 
         $expectedKindsGeneric = [T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR];
-        $expectedKindsPropertyKinds = array_merge($expectedKindsGeneric, $propertyTypeDeclarationKinds);
+        $expectedKindsPropertyKinds = [...$expectedKindsGeneric, ...$propertyTypeDeclarationKinds];
 
         foreach (array_reverse($tokensAnalyzer->getClassyElements(), true) as $index => $element) {
             if (!\in_array($element['type'], $this->configuration['elements'], true)) {

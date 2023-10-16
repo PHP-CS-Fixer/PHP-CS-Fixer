@@ -38,9 +38,8 @@ final class PhpdocLineSpanFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'It does not change doc blocks if not needed' => [
-                '<?php
+        yield 'It does not change doc blocks if not needed' => [
+            '<?php
 
 class Foo
 {
@@ -66,9 +65,10 @@ class Foo
     public function hello() {}
 }
 ',
-            ],
-            'It does change doc blocks to multi by default' => [
-                '<?php
+        ];
+
+        yield 'It does change doc blocks to multi by default' => [
+            '<?php
 
 class Foo
 {
@@ -94,7 +94,7 @@ class Foo
     public function hello() {}
 }
 ',
-                '<?php
+            '<?php
 
 class Foo
 {
@@ -112,9 +112,10 @@ class Foo
     public function hello() {}
 }
 ',
-            ],
-            'It does change doc blocks to single if configured to do so' => [
-                '<?php
+        ];
+
+        yield 'It does change doc blocks to single if configured to do so' => [
+            '<?php
 
 class Foo
 {
@@ -132,7 +133,7 @@ class Foo
     public function hello() {}
 }
 ',
-                '<?php
+            '<?php
 
 class Foo
 {
@@ -158,14 +159,15 @@ class Foo
     public function hello() {}
 }
 ',
-                [
-                    'property' => 'single',
-                    'const' => 'single',
-                    'method' => 'single',
-                ],
+            [
+                'property' => 'single',
+                'const' => 'single',
+                'method' => 'single',
             ],
-            'It does change complicated doc blocks to single if configured to do so' => [
-                '<?php
+        ];
+
+        yield 'It does change complicated doc blocks to single if configured to do so' => [
+            '<?php
 
 class Foo
 {
@@ -179,7 +181,7 @@ class Foo
     public $imageFileObject;
 }
 ',
-                '<?php
+            '<?php
 
 class Foo
 {
@@ -197,12 +199,13 @@ class Foo
     public $imageFileObject;
 }
 ',
-                [
-                    'property' => 'single',
-                ],
+            [
+                'property' => 'single',
             ],
-            'It does not changes doc blocks from single if configured to do so' => [
-                '<?php
+        ];
+
+        yield 'It does not changes doc blocks from single if configured to do so' => [
+            '<?php
 
 class Foo
 {
@@ -220,15 +223,16 @@ class Foo
     public function hello() {}
 }
 ',
-                null,
-                [
-                    'property' => 'single',
-                    'const' => 'single',
-                    'method' => 'single',
-                ],
+            null,
+            [
+                'property' => 'single',
+                'const' => 'single',
+                'method' => 'single',
             ],
-            'It can be configured to change certain elements to single line' => [
-                '<?php
+        ];
+
+        yield 'It can be configured to change certain elements to single line' => [
+            '<?php
 
 class Foo
 {
@@ -250,7 +254,7 @@ class Foo
     public function hello() {}
 }
 ',
-                '<?php
+            '<?php
 
 class Foo
 {
@@ -276,12 +280,13 @@ class Foo
     public function hello() {}
 }
 ',
-                [
-                    'property' => 'single',
-                ],
+            [
+                'property' => 'single',
             ],
-            'It wont change a doc block to single line if it has multiple useful lines' => [
-                '<?php
+        ];
+
+        yield 'It wont change a doc block to single line if it has multiple useful lines' => [
+            '<?php
 
 class Foo
 {
@@ -292,13 +297,14 @@ class Foo
     const FOO_BAR = "foobar";
 }
 ',
-                null,
-                [
-                    'const' => 'single',
-                ],
+            null,
+            [
+                'const' => 'single',
             ],
-            'It updates doc blocks correctly, even with more indentation' => [
-                '<?php
+        ];
+
+        yield 'It updates doc blocks correctly, even with more indentation' => [
+            '<?php
 
 if (false) {
     class Foo
@@ -313,7 +319,7 @@ if (false) {
     }
 }
 ',
-                '<?php
+            '<?php
 
 if (false) {
     class Foo
@@ -328,12 +334,13 @@ if (false) {
     }
 }
 ',
-                [
-                    'property' => 'single',
-                ],
+            [
+                'property' => 'single',
             ],
-            'It can convert empty doc blocks' => [
-                '<?php
+        ];
+
+        yield 'It can convert empty doc blocks' => [
+            '<?php
 
 class Foo
 {
@@ -345,7 +352,7 @@ class Foo
     /**  */
     private $foo;
 }',
-                '<?php
+            '<?php
 
 class Foo
 {
@@ -357,12 +364,13 @@ class Foo
      */
     private $foo;
 }',
-                [
-                    'property' => 'single',
-                ],
+            [
+                'property' => 'single',
             ],
-            'It can update doc blocks of static properties' => [
-                '<?php
+        ];
+
+        yield 'It can update doc blocks of static properties' => [
+            '<?php
 
 class Bar
 {
@@ -372,7 +380,7 @@ class Bar
     public static $variable = "acme";
 }
 ',
-                '<?php
+            '<?php
 
 class Bar
 {
@@ -380,9 +388,10 @@ class Bar
     public static $variable = "acme";
 }
 ',
-            ],
-            'It can update doc blocks of properties that use the var keyword instead of public' => [
-                '<?php
+        ];
+
+        yield 'It can update doc blocks of properties that use the var keyword instead of public' => [
+            '<?php
 
 class Bar
 {
@@ -392,7 +401,7 @@ class Bar
     var $variable = "acme";
 }
 ',
-                '<?php
+            '<?php
 
 class Bar
 {
@@ -400,9 +409,10 @@ class Bar
     var $variable = "acme";
 }
 ',
-            ],
-            'It can update doc blocks of static that do not declare visibility' => [
-                '<?php
+        ];
+
+        yield 'It can update doc blocks of static that do not declare visibility' => [
+            '<?php
 
 class Bar
 {
@@ -412,7 +422,7 @@ class Bar
     static $variable = "acme";
 }
 ',
-                '<?php
+            '<?php
 
 class Bar
 {
@@ -420,9 +430,10 @@ class Bar
     static $variable = "acme";
 }
 ',
-            ],
-            'It does not change method doc blocks if configured to do so' => [
-                '<?php
+        ];
+
+        yield 'It does not change method doc blocks if configured to do so' => [
+            '<?php
 
 class Foo
 {
@@ -434,13 +445,14 @@ class Foo
      */
     public function baz() {}
 }',
-                null,
-                [
-                    'method' => null,
-                ],
+            null,
+            [
+                'method' => null,
             ],
-            'It does not change property doc blocks if configured to do so' => [
-                '<?php
+        ];
+
+        yield 'It does not change property doc blocks if configured to do so' => [
+            '<?php
 
 class Foo
 {
@@ -452,13 +464,14 @@ class Foo
     /** @var mixed */
     public $bar;
 }',
-                null,
-                [
-                    'property' => null,
-                ],
+            null,
+            [
+                'property' => null,
             ],
-            'It does not change const doc blocks if configured to do so' => [
-                '<?php
+        ];
+
+        yield 'It does not change const doc blocks if configured to do so' => [
+            '<?php
 
 class Foo
 {
@@ -470,13 +483,14 @@ class Foo
     /** @var mixed */
     public const BAR = null;
 }',
-                null,
-                [
-                    'const' => null,
-                ],
+            null,
+            [
+                'const' => null,
             ],
-            'It can handle constants with visibility, does not crash on trait imports' => [
-                '<?php
+        ];
+
+        yield 'It can handle constants with visibility, does not crash on trait imports' => [
+            '<?php
 trait Bar
 {}
 
@@ -493,7 +507,7 @@ class Foo
     /**  */
     private $foo;
 }',
-                '<?php
+            '<?php
 trait Bar
 {}
 
@@ -510,19 +524,20 @@ class Foo
      */
     private $foo;
 }',
-                [
-                    'property' => 'single',
-                ],
+            [
+                'property' => 'single',
             ],
-            'It can handle properties with type declaration' => [
-                '<?php
+        ];
+
+        yield 'It can handle properties with type declaration' => [
+            '<?php
 
 class Foo
 {
     /**  */
     private ?string $foo;
 }',
-                '<?php
+            '<?php
 
 class Foo
 {
@@ -531,19 +546,20 @@ class Foo
      */
     private ?string $foo;
 }',
-                [
-                    'property' => 'single',
-                ],
+            [
+                'property' => 'single',
             ],
-            'It can handle properties with array type declaration' => [
-                '<?php
+        ];
+
+        yield 'It can handle properties with array type declaration' => [
+            '<?php
 
 class Foo
 {
     /** @var string[] */
     private array $foo;
 }',
-                '<?php
+            '<?php
 
 class Foo
 {
@@ -552,9 +568,8 @@ class Foo
      */
     private array $foo;
 }',
-                [
-                    'property' => 'single',
-                ],
+            [
+                'property' => 'single',
             ],
         ];
     }

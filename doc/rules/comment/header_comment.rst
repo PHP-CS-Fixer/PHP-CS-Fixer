@@ -7,15 +7,6 @@ Add, replace or remove header comment.
 Configuration
 -------------
 
-``header``
-~~~~~~~~~~
-
-Proper header content.
-
-Allowed types: ``string``
-
-This option is required.
-
 ``comment_type``
 ~~~~~~~~~~~~~~~~
 
@@ -24,6 +15,15 @@ Comment syntax type.
 Allowed values: ``'comment'`` and ``'PHPDoc'``
 
 Default value: ``'comment'``
+
+``header``
+~~~~~~~~~~
+
+Proper header content.
+
+Allowed types: ``string``
+
+This option is required.
 
 ``location``
 ~~~~~~~~~~~~

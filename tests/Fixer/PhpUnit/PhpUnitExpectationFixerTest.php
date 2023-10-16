@@ -41,9 +41,8 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         function testFnc()
@@ -55,7 +54,7 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
             zzz();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         function testFnc()
@@ -65,9 +64,10 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
             zzz();
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         function testFnc()
@@ -86,7 +86,7 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
             zzz();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         function testFnc()
@@ -102,9 +102,10 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
             zzz();
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         function testFnc()
@@ -114,7 +115,7 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
             );
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         function testFnc()
@@ -124,9 +125,10 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
             );
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         function testFnc()
@@ -142,7 +144,7 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
             );
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         function testFnc()
@@ -154,9 +156,10 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
             );
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo()
@@ -173,7 +176,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         bar();
     }
 }',
-                '<?php
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo()
@@ -188,10 +191,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         bar();
     }
 }',
-                ['target' => PhpUnitTargetVersion::VERSION_5_2],
-            ],
-            [
-                '<?php
+            ['target' => PhpUnitTargetVersion::VERSION_5_2],
+        ];
+
+        yield [
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo()
@@ -210,7 +214,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         bar();
     }
 }',
-                '<?php
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo()
@@ -225,10 +229,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         bar();
     }
 }',
-                ['target' => PhpUnitTargetVersion::VERSION_5_6],
-            ],
-            [
-                '<?php
+            ['target' => PhpUnitTargetVersion::VERSION_5_6],
+        ];
+
+        yield [
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo()
@@ -247,7 +252,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         bar();
     }
 }',
-                '<?php
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo()
@@ -262,10 +267,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         bar();
     }
 }',
-                ['target' => PhpUnitTargetVersion::VERSION_8_4],
-            ],
-            [
-                '<?php
+            ['target' => PhpUnitTargetVersion::VERSION_8_4],
+        ];
+
+        yield [
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo()
@@ -274,7 +280,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         foo();
     }
 }',
-                '<?php
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo()
@@ -283,10 +289,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         foo();
     }
 }',
-                ['target' => PhpUnitTargetVersion::VERSION_8_4],
-            ],
-            [
-                '<?php
+            ['target' => PhpUnitTargetVersion::VERSION_8_4],
+        ];
+
+        yield [
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo()
@@ -297,7 +304,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         foo();
     }
 }',
-                '<?php
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo()
@@ -307,10 +314,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         foo();
     }
 }',
-                ['target' => PhpUnitTargetVersion::VERSION_8_4],
-            ],
-            [
-                '<?php
+            ['target' => PhpUnitTargetVersion::VERSION_8_4],
+        ];
+
+        yield [
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo()
@@ -329,7 +337,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         bar();
     }
 }',
-                '<?php
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo()
@@ -344,10 +352,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         bar();
     }
 }',
-                ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
-            ],
-            [
-                '<?php
+            ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
+        ];
+
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         function testFnc()
@@ -359,7 +368,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             zzz();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         function testFnc()
@@ -369,9 +378,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             zzz();
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         function testFnc()
@@ -383,7 +393,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             zzz();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         function testFnc()
@@ -393,7 +403,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             zzz();
         }
     }',
-            ],
         ];
     }
 
@@ -447,7 +456,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $expected .= "\n}";
         $input .= "\n}";
 
-        return [[$expected, $input]];
+        yield [$expected, $input];
     }
 
     /**

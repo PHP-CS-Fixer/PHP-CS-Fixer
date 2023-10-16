@@ -40,9 +40,8 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'empty exception message' => [
-                '<?php
+        yield 'empty exception message' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -54,7 +53,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -66,9 +65,10 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-            ],
-            'expecting exception' => [
-                '<?php
+        ];
+
+        yield 'expecting exception' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -80,7 +80,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -91,9 +91,10 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-            ],
-            'expecting rooted exception' => [
-                '<?php
+        ];
+
+        yield 'expecting rooted exception' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -105,7 +106,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -116,9 +117,10 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-            ],
-            'expecting exception with msg' => [
-                '<?php
+        ];
+
+        yield 'expecting exception with msg' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -130,7 +132,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -142,9 +144,10 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-            ],
-            'expecting exception with code' => [
-                '<?php
+        ];
+
+        yield 'expecting exception with code' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -156,7 +159,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -168,9 +171,10 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-            ],
-            'expecting exception with msg and code' => [
-                '<?php
+        ];
+
+        yield 'expecting exception with msg and code' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -182,7 +186,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -195,9 +199,10 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-            ],
-            'expecting exception with msg regex [but too low target]' => [
-                '<?php
+        ];
+
+        yield 'expecting exception with msg regex [but too low target]' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -209,11 +214,12 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                null,
-                ['target' => PhpUnitTargetVersion::VERSION_3_2],
-            ],
-            'expecting exception with msg regex' => [
-                '<?php
+            null,
+            ['target' => PhpUnitTargetVersion::VERSION_3_2],
+        ];
+
+        yield 'expecting exception with msg regex' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -225,7 +231,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -237,10 +243,11 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                ['target' => PhpUnitTargetVersion::VERSION_4_3],
-            ],
-            'use_class_const=false' => [
-                '<?php
+            ['target' => PhpUnitTargetVersion::VERSION_4_3],
+        ];
+
+        yield 'use_class_const=false' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -252,7 +259,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -263,10 +270,11 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                ['use_class_const' => false],
-            ],
-            'keep rest of docblock' => [
-                '<?php
+            ['use_class_const' => false],
+        ];
+
+        yield 'keep rest of docblock' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -282,7 +290,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -297,9 +305,10 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-            ],
-            'fix method without visibility' => [
-                '<?php
+        ];
+
+        yield 'fix method without visibility' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -311,7 +320,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -322,9 +331,10 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-            ],
-            'fix final method' => [
-                '<?php
+        ];
+
+        yield 'fix final method' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -336,7 +346,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -347,9 +357,10 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-            ],
-            'ignore when no docblock' => [
-                '<?php
+        ];
+
+        yield 'ignore when no docblock' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         final function testFoo($param)
@@ -366,7 +377,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         final function testFoo($param)
@@ -382,9 +393,10 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-            ],
-            'valid docblock but for property, not method' => [
-                '<?php
+        ];
+
+        yield 'valid docblock but for property, not method' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -408,9 +420,10 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
              while (false) {}
          }
     }',
-            ],
-            'respect \' and " in expected msg' => [
-                '<?php
+        ];
+
+        yield 'respect \' and " in expected msg' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -424,7 +437,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -438,142 +451,145 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
             aaa();
         }
     }',
-            ],
-            'special \\ handling' => [
-                <<<'EOT'
-    <?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        public function testElementNonExistentOne()
-        {
-            $this->setExpectedException(\Cake\View\Exception\MissingElementException::class, 'A backslash at the end \\');
+        ];
 
-            $this->View->element('non_existent_element');
-        }
+        yield 'special \\ handling' => [
+            <<<'EOT'
+                    <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        public function testElementNonExistentOne()
+                        {
+                            $this->setExpectedException(\Cake\View\Exception\MissingElementException::class, 'A backslash at the end \\');
 
-        /**
-         */
-        public function testElementNonExistentTwo()
-        {
-            $this->setExpectedExceptionRegExp(\Cake\View\Exception\MissingElementException::class, '#^Element file "Element[\\\\/]non_existent_element\\.ctp" is missing\\.$#');
+                            $this->View->element('non_existent_element');
+                        }
 
-            $this->View->element('non_existent_element');
-        }
-    }
-EOT
-                ,
-                <<<'EOT'
-    <?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException \Cake\View\Exception\MissingElementException
-         * @expectedExceptionMessage A backslash at the end \
-         */
-        public function testElementNonExistentOne()
-        {
-            $this->View->element('non_existent_element');
-        }
+                        /**
+                         */
+                        public function testElementNonExistentTwo()
+                        {
+                            $this->setExpectedExceptionRegExp(\Cake\View\Exception\MissingElementException::class, '#^Element file "Element[\\\\/]non_existent_element\\.ctp" is missing\\.$#');
 
-        /**
-         * @expectedException \Cake\View\Exception\MissingElementException
-         * @expectedExceptionMessageRegExp #^Element file "Element[\\/]non_existent_element\.ctp" is missing\.$#
-         */
-        public function testElementNonExistentTwo()
-        {
-            $this->View->element('non_existent_element');
-        }
-    }
-EOT
-                ,
-            ],
-            'message on newline' => [
-                <<<'EOT'
-    <?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        public function testMessageOnMultilines()
-        {
-            $this->setExpectedException(\RuntimeException::class, 'Message on multilines AAA €');
+                            $this->View->element('non_existent_element');
+                        }
+                    }
+                EOT
+            ,
+            <<<'EOT'
+                    <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException \Cake\View\Exception\MissingElementException
+                         * @expectedExceptionMessage A backslash at the end \
+                         */
+                        public function testElementNonExistentOne()
+                        {
+                            $this->View->element('non_existent_element');
+                        }
 
-            aaa();
-        }
+                        /**
+                         * @expectedException \Cake\View\Exception\MissingElementException
+                         * @expectedExceptionMessageRegExp #^Element file "Element[\\/]non_existent_element\.ctp" is missing\.$#
+                         */
+                        public function testElementNonExistentTwo()
+                        {
+                            $this->View->element('non_existent_element');
+                        }
+                    }
+                EOT
+            ,
+        ];
 
-        /**
-         * @foo
-         */
-        public function testMessageOnMultilinesWithAnotherTag()
-        {
-            $this->setExpectedException(\RuntimeException::class, 'Message on multilines BBB è');
+        yield 'message on newline' => [
+            <<<'EOT'
+                    <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        public function testMessageOnMultilines()
+                        {
+                            $this->setExpectedException(\RuntimeException::class, 'Message on multilines AAA €');
 
-            bbb();
-        }
+                            aaa();
+                        }
 
-        /**
-         *
-         * @foo
-         */
-        public function testMessageOnMultilinesWithAnotherSpaceAndTag()
-        {
-            $this->setExpectedException(\RuntimeException::class, 'Message on multilines CCC ✔');
+                        /**
+                         * @foo
+                         */
+                        public function testMessageOnMultilinesWithAnotherTag()
+                        {
+                            $this->setExpectedException(\RuntimeException::class, 'Message on multilines BBB è');
 
-            ccc();
-        }
-    }
-EOT
-                ,
-                <<<'EOT'
-    <?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException \RuntimeException
-         * @expectedExceptionMessage Message
-         *                           on
-         *                           multilines AAA
-         *                           €
-         */
-        public function testMessageOnMultilines()
-        {
-            aaa();
-        }
+                            bbb();
+                        }
 
-        /**
-         * @expectedException \RuntimeException
-         * @expectedExceptionMessage Message
-         *                           on
-         *                           multilines BBB
-         *                           è
-         * @foo
-         */
-        public function testMessageOnMultilinesWithAnotherTag()
-        {
-            bbb();
-        }
+                        /**
+                         *
+                         * @foo
+                         */
+                        public function testMessageOnMultilinesWithAnotherSpaceAndTag()
+                        {
+                            $this->setExpectedException(\RuntimeException::class, 'Message on multilines CCC ✔');
 
-        /**
-         * @expectedException \RuntimeException
-         * @expectedExceptionMessage Message
-         *                           on
-         *                           multilines CCC
-         *                           ✔
-         *
-         * @foo
-         */
-        public function testMessageOnMultilinesWithAnotherSpaceAndTag()
-        {
-            ccc();
-        }
-    }
-EOT
-                ,
-            ],
-            'annotation with double @' => [
-                '<?php
+                            ccc();
+                        }
+                    }
+                EOT
+            ,
+            <<<'EOT'
+                    <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException \RuntimeException
+                         * @expectedExceptionMessage Message
+                         *                           on
+                         *                           multilines AAA
+                         *                           €
+                         */
+                        public function testMessageOnMultilines()
+                        {
+                            aaa();
+                        }
+
+                        /**
+                         * @expectedException \RuntimeException
+                         * @expectedExceptionMessage Message
+                         *                           on
+                         *                           multilines BBB
+                         *                           è
+                         * @foo
+                         */
+                        public function testMessageOnMultilinesWithAnotherTag()
+                        {
+                            bbb();
+                        }
+
+                        /**
+                         * @expectedException \RuntimeException
+                         * @expectedExceptionMessage Message
+                         *                           on
+                         *                           multilines CCC
+                         *                           ✔
+                         *
+                         * @foo
+                         */
+                        public function testMessageOnMultilinesWithAnotherSpaceAndTag()
+                        {
+                            ccc();
+                        }
+                    }
+                EOT
+            ,
+        ];
+
+        yield 'annotation with double @' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -586,7 +602,7 @@ EOT
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -598,9 +614,10 @@ EOT
             aaa();
         }
     }',
-            ],
-            'annotation with text before @' => [
-                '<?php
+        ];
+
+        yield 'annotation with text before @' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -611,9 +628,10 @@ EOT
             aaa();
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     abstract class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -622,9 +640,10 @@ EOT
          */
         abstract public function testFnc();
     }',
-            ],
-            'expecting exception in single line comment' => [
-                '<?php
+        ];
+
+        yield 'expecting exception in single line comment' => [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /** */
@@ -635,7 +654,7 @@ EOT
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /** @expectedException FooException */
@@ -644,9 +663,10 @@ EOT
             aaa();
         }
     }',
-            ],
-            'expecting exception with message below' => [
-                '<?php
+        ];
+
+        yield 'expecting exception with message below' => [
+            '<?php
     class MyTest extends TestCase
     {
         /**
@@ -658,7 +678,7 @@ EOT
             $this->initialize();
         }
     }',
-                '<?php
+            '<?php
     class MyTest extends TestCase
     {
         /**
@@ -671,7 +691,6 @@ EOT
             $this->initialize();
         }
     }',
-            ],
         ];
     }
 
@@ -692,9 +711,8 @@ EOT
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -706,7 +724,7 @@ EOT
             aaa();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -719,10 +737,10 @@ EOT
             aaa();
         }
     }',
-            ],
+        ];
 
-            [
-                '<?php
+        yield [
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
 /**
@@ -734,7 +752,7 @@ public function testFnc()
 aaa();
 }
 }',
-                '<?php
+            '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
 /**
@@ -747,7 +765,6 @@ public function testFnc()
 aaa();
 }
 }',
-            ],
         ];
     }
 }

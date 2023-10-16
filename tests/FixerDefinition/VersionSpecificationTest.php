@@ -58,10 +58,9 @@ final class VersionSpecificationTest extends TestCase
 
     public static function provideInvalidVersionCases(): iterable
     {
-        return [
-            'negative' => [-1],
-            'zero' => [0],
-        ];
+        yield 'negative' => [-1];
+
+        yield 'zero' => [0];
     }
 
     public function testConstructorRejectsMaximumLessThanMinimum(): void
@@ -89,12 +88,13 @@ final class VersionSpecificationTest extends TestCase
 
     public static function provideIsSatisfiedByReturnsTrueCases(): iterable
     {
-        return [
-            'version-same-as-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID],
-            'version-same-as-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID],
-            'version-between-minimum-and-maximum' => [\PHP_VERSION_ID - 1, \PHP_VERSION_ID + 1, \PHP_VERSION_ID],
-            'version-same-as-minimum-and-maximum' => [\PHP_VERSION_ID, \PHP_VERSION_ID, \PHP_VERSION_ID],
-        ];
+        yield 'version-same-as-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID];
+
+        yield 'version-same-as-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID];
+
+        yield 'version-between-minimum-and-maximum' => [\PHP_VERSION_ID - 1, \PHP_VERSION_ID + 1, \PHP_VERSION_ID];
+
+        yield 'version-same-as-minimum-and-maximum' => [\PHP_VERSION_ID, \PHP_VERSION_ID, \PHP_VERSION_ID];
     }
 
     /**
@@ -112,9 +112,8 @@ final class VersionSpecificationTest extends TestCase
 
     public static function provideIsSatisfiedByReturnsFalseCases(): iterable
     {
-        return [
-            'version-greater-than-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID + 1],
-            'version-less-than-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID - 1],
-        ];
+        yield 'version-greater-than-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID + 1];
+
+        yield 'version-less-than-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID - 1];
     }
 }

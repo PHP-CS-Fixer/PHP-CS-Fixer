@@ -62,22 +62,21 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
             'Multi-line arrays, arguments list, parameters list and `match` expressions must have a trailing comma.',
             [
                 new CodeSample("<?php\narray(\n    1,\n    2\n);\n"),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     <<<'SAMPLE'
-<?php
-    $x = [
-        'foo',
-        <<<EOD
-            bar
-            EOD
-    ];
+                        <?php
+                            $x = [
+                                'foo',
+                                <<<EOD
+                                    bar
+                                    EOD
+                            ];
 
-SAMPLE
+                        SAMPLE
                     ,
-                    new VersionSpecification(7_03_00),
                     ['after_heredoc' => true]
                 ),
-                new VersionSpecificCodeSample("<?php\nfoo(\n    1,\n    2\n);\n", new VersionSpecification(7_03_00), ['elements' => [self::ELEMENTS_ARGUMENTS]]),
+                new CodeSample("<?php\nfoo(\n    1,\n    2\n);\n", ['elements' => [self::ELEMENTS_ARGUMENTS]]),
                 new VersionSpecificCodeSample("<?php\nfunction foo(\n    \$x,\n    \$y\n)\n{\n}\n", new VersionSpecification(8_00_00), ['elements' => [self::ELEMENTS_PARAMETERS]]),
             ]
         );

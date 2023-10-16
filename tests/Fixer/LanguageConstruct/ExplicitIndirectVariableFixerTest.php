@@ -35,37 +35,39 @@ final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php echo ${$foo}($bar);',
-                '<?php echo $$foo($bar);',
-            ],
-            [
-                '<?php echo ${$foo}[\'bar\'][\'baz\'];',
-                '<?php echo $$foo[\'bar\'][\'baz\'];',
-            ],
-            [
-                '<?php echo $foo->{$bar}[\'baz\'];',
-                '<?php echo $foo->$bar[\'baz\'];',
-            ],
-            [
-                '<?php echo $foo->{$bar}[\'baz\']();',
-                '<?php echo $foo->$bar[\'baz\']();',
-            ],
-            [
-                '<?php echo $
+        yield [
+            '<?php echo ${$foo}($bar);',
+            '<?php echo $$foo($bar);',
+        ];
+
+        yield [
+            '<?php echo ${$foo}[\'bar\'][\'baz\'];',
+            '<?php echo $$foo[\'bar\'][\'baz\'];',
+        ];
+
+        yield [
+            '<?php echo $foo->{$bar}[\'baz\'];',
+            '<?php echo $foo->$bar[\'baz\'];',
+        ];
+
+        yield [
+            '<?php echo $foo->{$bar}[\'baz\']();',
+            '<?php echo $foo->$bar[\'baz\']();',
+        ];
+
+        yield [
+            '<?php echo $
 /* C1 */
 // C2
 {$foo}
 // C3
 ;',
-                '<?php echo $
+            '<?php echo $
 /* C1 */
 // C2
 $foo
 // C3
 ;',
-            ],
         ];
     }
 
@@ -84,15 +86,14 @@ $foo
 
     public static function provideFix80Cases(): iterable
     {
-        return [
-            [
-                '<?php echo $foo?->{$bar}["baz"];',
-                '<?php echo $foo?->$bar["baz"];',
-            ],
-            [
-                '<?php echo $foo?->{$bar}["baz"]();',
-                '<?php echo $foo?->$bar["baz"]();',
-            ],
+        yield [
+            '<?php echo $foo?->{$bar}["baz"];',
+            '<?php echo $foo?->$bar["baz"];',
+        ];
+
+        yield [
+            '<?php echo $foo?->{$bar}["baz"]();',
+            '<?php echo $foo?->$bar["baz"]();',
         ];
     }
 }

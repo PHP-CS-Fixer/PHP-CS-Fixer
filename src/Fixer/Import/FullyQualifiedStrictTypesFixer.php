@@ -15,6 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -28,7 +32,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author VeeWee <toonverwerft@gmail.com>
  */
-final class FullyQualifiedStrictTypesFixer extends AbstractFixer
+final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -39,10 +43,15 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer
                     '<?php
 
 use Foo\Bar;
+use Foo\Bar\Baz;
 
 class SomeClass
 {
-    public function doSomething(\Foo\Bar $foo)
+    public function doX(\Foo\Bar $foo): \Foo\Bar\Baz
+    {
+    }
+
+    public function doY(Foo\NotImported $u, \Foo\NotImported $v)
     {
     }
 }
@@ -51,16 +60,14 @@ class SomeClass
                 new CodeSample(
                     '<?php
 
-use Foo\Bar;
-use Foo\Bar\Baz;
-
 class SomeClass
 {
-    public function doSomething(\Foo\Bar $foo): \Foo\Bar\Baz
+    public function doY(Foo\NotImported $u, \Foo\NotImported $v)
     {
     }
 }
-'
+',
+                    ['leading_backslash_in_global_namespace' => true]
                 ),
             ]
         );
@@ -80,6 +87,19 @@ class SomeClass
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_FUNCTION);
+    }
+
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder(
+                'leading_backslash_in_global_namespace',
+                'Whether FQCN is prefixed with backslash when that FQCN is used in global namespace context.'
+            ))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -110,7 +130,9 @@ class SomeClass
     {
         $arguments = $functionsAnalyzer->getFunctionArguments($tokens, $index);
 
-        foreach ($arguments as $argument) {
+        foreach ($arguments as $i => $argument) {
+            $argument = $functionsAnalyzer->getFunctionArguments($tokens, $index)[$i];
+
             if ($argument->hasTypeAnalysis()) {
                 $this->replaceByShortType($tokens, $argument->getTypeAnalysis(), $uses, $namespaceName);
             }
@@ -128,10 +150,6 @@ class SomeClass
      */
     private function replaceByShortType(Tokens $tokens, TypeAnalysis $type, array $uses, string $namespaceName): void
     {
-        if ($type->isReservedType()) {
-            return;
-        }
-
         $typeStartIndex = $type->getStartIndex();
 
         if ($tokens[$typeStartIndex]->isGivenKind(CT::T_NULLABLE_TYPE)) {
@@ -142,25 +160,43 @@ class SomeClass
         $types = $this->getTypes($tokens, $typeStartIndex, $type->getEndIndex());
 
         foreach ($types as $typeName => [$startIndex, $endIndex]) {
-            if (!str_starts_with($typeName, '\\')) {
-                continue; // Not a FQCN, no shorter type possible
+            if ((new TypeAnalysis($typeName))->isReservedType()) {
+                return;
             }
 
-            $typeName = substr($typeName, 1);
+            $withLeadingBackslash = str_starts_with($typeName, '\\');
+            if ($withLeadingBackslash) {
+                $typeName = substr($typeName, 1);
+            }
             $typeNameLower = strtolower($typeName);
 
-            if (isset($uses[$typeNameLower])) {
+            if (isset($uses[$typeNameLower]) && ($withLeadingBackslash || '' === $namespaceName)) {
                 // if the type without leading "\" equals any of the full "uses" long names, it can be replaced with the short one
                 $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($uses[$typeNameLower]));
-            } elseif ('' === $namespaceName) {
-                // if we are in the global namespace and the type is not imported the leading '\' can be removed (TODO nice config candidate)
+
+                continue;
+            }
+
+            if ('' === $namespaceName) {
                 foreach ($uses as $useShortName) {
                     if (strtolower($useShortName) === $typeNameLower) {
                         continue 2;
                     }
                 }
 
-                $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($typeName));
+                // if we are in the global namespace and the type is not imported,
+                // we enforce/remove leading backslash (depending on the configuration)
+                if (true === $this->configuration['leading_backslash_in_global_namespace']) {
+                    if (!$withLeadingBackslash && !isset($uses[$typeNameLower])) {
+                        $tokens->overrideRange(
+                            $startIndex,
+                            $endIndex,
+                            $this->namespacedStringToTokens($typeName, true)
+                        );
+                    }
+                } else {
+                    $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($typeName));
+                }
             } elseif (!str_contains($typeName, '\\')) {
                 // If we're NOT in the global namespace, there's no related import,
                 // AND used type is from global namespace, then it can't be shortened.
@@ -189,40 +225,71 @@ class SomeClass
      */
     private function getTypes(Tokens $tokens, int $index, int $endIndex): iterable
     {
-        $index = $typeStartIndex = $typeEndIndex = $tokens->getNextMeaningfulToken($index - 1);
-        $type = $tokens[$index]->getContent();
-
+        $skipNextYield = false;
+        $typeStartIndex = $typeEndIndex = null;
+        $type = null;
         while (true) {
-            $index = $tokens->getNextMeaningfulToken($index);
-
-            if ($tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION])) {
-                yield $type => [$typeStartIndex, $typeEndIndex];
-
-                $index = $typeStartIndex = $typeEndIndex = $tokens->getNextMeaningfulToken($index);
-                $type = $tokens[$index]->getContent();
+            if ($tokens[$index]->isGivenKind(CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN)) {
+                $index = $tokens->getNextMeaningfulToken($index);
+                $typeStartIndex = $typeEndIndex = null;
+                $type = null;
 
                 continue;
             }
 
-            if ($index > $endIndex || !$tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
-                yield $type => [$typeStartIndex, $typeEndIndex];
+            if (
+                $tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE])
+                || $index > $endIndex
+            ) {
+                if (!$skipNextYield && null !== $typeStartIndex) {
+                    $origCount = \count($tokens);
 
-                break;
+                    yield $type => [$typeStartIndex, $typeEndIndex];
+
+                    $endIndex += \count($tokens) - $origCount;
+
+                    // type tokens were possibly updated, restart type match
+                    $skipNextYield = true;
+                    $index = $typeEndIndex = $typeStartIndex;
+                    $type = null;
+                } else {
+                    $skipNextYield = false;
+                    $index = $tokens->getNextMeaningfulToken($index);
+                    $typeStartIndex = $typeEndIndex = null;
+                    $type = null;
+                }
+
+                if ($index > $endIndex) {
+                    break;
+                }
+
+                continue;
+            }
+
+            if (null === $typeStartIndex) {
+                $typeStartIndex = $index;
+                $type = '';
             }
 
             $typeEndIndex = $index;
             $type .= $tokens[$index]->getContent();
+
+            $index = $tokens->getNextMeaningfulToken($index);
         }
     }
 
     /**
      * @return Token[]
      */
-    private function namespacedStringToTokens(string $input): array
+    private function namespacedStringToTokens(string $input, bool $withLeadingBackslash = false): array
     {
         $tokens = [];
-        $parts = explode('\\', $input);
 
+        if ($withLeadingBackslash) {
+            $tokens[] = new Token([T_NS_SEPARATOR, '\\']);
+        }
+
+        $parts = explode('\\', $input);
         foreach ($parts as $index => $part) {
             $tokens[] = new Token([T_STRING, $part]);
 

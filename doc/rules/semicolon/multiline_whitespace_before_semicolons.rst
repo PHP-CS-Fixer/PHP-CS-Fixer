@@ -58,7 +58,8 @@ Rule sets
 
 The rule is part of the following rule set:
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``multiline_whitespace_before_semicolons`` rule with the config below:
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
   ``['strategy' => 'new_line_for_chained_calls']``
+
+

@@ -52,8 +52,7 @@ class TestNewWithInitialiers
 {
     public function __construct(
         private Logger $logger = new NullLogger(),
-    ) {
-    }
+    ) {}
 }
 
 --INPUT--

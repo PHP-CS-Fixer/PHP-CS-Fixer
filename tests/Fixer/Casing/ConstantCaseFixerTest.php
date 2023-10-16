@@ -35,67 +35,83 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php if (true) if (false) if (null) {}',
-                '<?php if (TRUE) if (FALSE) if (NULL) {}',
-            ],
-            [
-                '<?php if (!true) if (!false) if (!null) {}',
-                '<?php if (!TRUE) if (!FALSE) if (!NULL) {}',
-            ],
-            [
-                '<?php if ($a == true) if ($a == false) if ($a == null) {}',
-                '<?php if ($a == TRUE) if ($a == FALSE) if ($a == NULL) {}',
-            ],
-            [
-                '<?php if ($a === true) if ($a === false) if ($a === null) {}',
-                '<?php if ($a === TRUE) if ($a === FALSE) if ($a === NULL) {}',
-            ],
-            [
-                '<?php if ($a != true) if ($a != false) if ($a != null) {}',
-                '<?php if ($a != TRUE) if ($a != FALSE) if ($a != NULL) {}',
-            ],
-            [
-                '<?php if ($a !== true) if ($a !== false) if ($a !== null) {}',
-                '<?php if ($a !== TRUE) if ($a !== FALSE) if ($a !== NULL) {}',
-            ],
-            [
-                '<?php if (true && true and true AND true || false or false OR false xor null XOR null) {}',
-                '<?php if (TRUE && TRUE and TRUE AND TRUE || FALSE or FALSE OR FALSE xor NULL XOR NULL) {}',
-            ],
-            [
-                '<?php /* foo */ true; /** bar */ false;',
-                '<?php /* foo */ TRUE; /** bar */ FALSE;',
-            ],
-            ['<?php echo $null;'],
-            ['<?php $x = False::foo();'],
-            ['<?php namespace Foo\Null;'],
-            ['<?php class Foo extends True {}'],
-            ['<?php class Foo implements False {}'],
-            ['<?php $foo instanceof True; $foo instanceof False; $foo instanceof Null;'],
-            [
-                '<?php
+        yield [
+            '<?php if (true) if (false) if (null) {}',
+            '<?php if (TRUE) if (FALSE) if (NULL) {}',
+        ];
+
+        yield [
+            '<?php if (!true) if (!false) if (!null) {}',
+            '<?php if (!TRUE) if (!FALSE) if (!NULL) {}',
+        ];
+
+        yield [
+            '<?php if ($a == true) if ($a == false) if ($a == null) {}',
+            '<?php if ($a == TRUE) if ($a == FALSE) if ($a == NULL) {}',
+        ];
+
+        yield [
+            '<?php if ($a === true) if ($a === false) if ($a === null) {}',
+            '<?php if ($a === TRUE) if ($a === FALSE) if ($a === NULL) {}',
+        ];
+
+        yield [
+            '<?php if ($a != true) if ($a != false) if ($a != null) {}',
+            '<?php if ($a != TRUE) if ($a != FALSE) if ($a != NULL) {}',
+        ];
+
+        yield [
+            '<?php if ($a !== true) if ($a !== false) if ($a !== null) {}',
+            '<?php if ($a !== TRUE) if ($a !== FALSE) if ($a !== NULL) {}',
+        ];
+
+        yield [
+            '<?php if (true && true and true AND true || false or false OR false xor null XOR null) {}',
+            '<?php if (TRUE && TRUE and TRUE AND TRUE || FALSE or FALSE OR FALSE xor NULL XOR NULL) {}',
+        ];
+
+        yield [
+            '<?php /* foo */ true; /** bar */ false;',
+            '<?php /* foo */ TRUE; /** bar */ FALSE;',
+        ];
+
+        yield ['<?php echo $null;'];
+
+        yield ['<?php $x = False::foo();'];
+
+        yield ['<?php namespace Foo\Null;'];
+
+        yield ['<?php class Foo extends True {}'];
+
+        yield ['<?php class Foo implements False {}'];
+
+        yield ['<?php $foo instanceof True; $foo instanceof False; $foo instanceof Null;'];
+
+        yield [
+            '<?php
     class Foo
     {
         const TRUE = 1;
         const FALSE = true;
         const NULL = null;
     }',
-                '<?php
+            '<?php
     class Foo
     {
         const TRUE = 1;
         const FALSE = TRUE;
         const NULL = NULL;
     }',
-            ],
-            ['<?php $x = new /**/False?>'],
-            ['<?php Null/**/::test();'],
-            ['<?php True//
-                                ::test();'],
-            ['<?php class Foo { public function Bar() { $this->False = 1; $this->True = 2; $this->Null = 3; } }'],
         ];
+
+        yield ['<?php $x = new /**/False?>'];
+
+        yield ['<?php Null/**/::test();'];
+
+        yield ['<?php True//
+                                ::test();'];
+
+        yield ['<?php class Foo { public function Bar() { $this->False = 1; $this->True = 2; $this->Null = 3; } }'];
     }
 
     /**

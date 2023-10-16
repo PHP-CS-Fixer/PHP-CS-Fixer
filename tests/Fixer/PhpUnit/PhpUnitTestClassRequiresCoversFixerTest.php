@@ -37,56 +37,60 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'already with annotation: @covers' => [
-                '<?php
+        yield 'already with annotation: @covers' => [
+            '<?php
                     /**
                      * @covers Foo
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'already with annotation: @coversDefaultClass' => [
-                '<?php
+        ];
+
+        yield 'already with annotation: @coversDefaultClass' => [
+            '<?php
                     /**
                      * @coversDefaultClass
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'without docblock #1' => [
-                '<?php
+        ];
+
+        yield 'without docblock #1' => [
+            '<?php
 
                     /**
                      * @coversNothing
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
 
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'without docblock #2 (class is final)' => [
-                '<?php
+        ];
+
+        yield 'without docblock #2 (class is final)' => [
+            '<?php
 
                     /**
                      * @coversNothing
                      */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
 
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'without docblock #2 (class is abstract)' => [
-                '<?php
+        ];
+
+        yield 'without docblock #2 (class is abstract)' => [
+            '<?php
                     abstract class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'with docblock but annotation is missing' => [
-                '<?php
+        ];
+
+        yield 'with docblock but annotation is missing' => [
+            '<?php
 
                     /**
                      * Description.
@@ -96,7 +100,7 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                      */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
 
                     /**
                      * Description.
@@ -105,9 +109,10 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                      */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'with one-line docblock but annotation is missing' => [
-                '<?php
+        ];
+
+        yield 'with one-line docblock but annotation is missing' => [
+            '<?php
 
                     /**
                      * Description.
@@ -115,44 +120,47 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                      */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
 
                     /** Description. */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'with 2-lines docblock but annotation is missing #1' => [
-                '<?php
+        ];
+
+        yield 'with 2-lines docblock but annotation is missing #1' => [
+            '<?php
 
                     /** Description.
                      * @coversNothing
                      */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
 
                     /** Description.
                      */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'with 2-lines docblock but annotation is missing #2' => [
-                '<?php
+        ];
+
+        yield 'with 2-lines docblock but annotation is missing #2' => [
+            '<?php
 
                     /**
                      * @coversNothing
                      * Description. */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
 
                     /**
                      * Description. */
                     final class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'with comment instead of docblock' => [
-                '<?php
+        ];
+
+        yield 'with comment instead of docblock' => [
+            '<?php
                     /*
                      * @covers Foo
                      */
@@ -161,21 +169,23 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
                     /*
                      * @covers Foo
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
-            'not a test class' => [
-                '<?php
+        ];
+
+        yield 'not a test class' => [
+            '<?php
 
                     class Foo {}
                 ',
-            ],
-            'multiple classes in one file' => [
-                '<?php /** */
+        ];
+
+        yield 'multiple classes in one file' => [
+            '<?php /** */
 
                     use \PHPUnit\Framework\TestCase;
 
@@ -207,7 +217,7 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                      */
                     class Baz4 extends TestCase {}
                 ',
-                '<?php /** */
+            '<?php /** */
 
                     use \PHPUnit\Framework\TestCase;
 
@@ -226,18 +236,18 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
 
                     class Baz4 extends TestCase {}
                 ',
-            ],
-            [
-                '<?php /* comment */
+        ];
+
+        yield [
+            '<?php /* comment */
 
 /**
  * @coversNothing
  */
 class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php /* comment */class FooTest extends \PHPUnit_Framework_TestCase {}
+            '<?php /* comment */class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
         ];
     }
 
@@ -258,20 +268,18 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 
                     /**
                      * @coversNothing
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-                '<?php
+            '<?php
 
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
-            ],
         ];
     }
 

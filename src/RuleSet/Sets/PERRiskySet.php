@@ -19,11 +19,11 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 /**
  * @internal
  *
- * @deprecated
+ * @deprecated Use `@PER-CS2.0:risky` instead.
  *
  * @TODO 4.0 remove me
  *
- * Last updated to PER Coding Style
+ * Last updated to PER Coding Style v2.0.
  */
 final class PERRiskySet extends AbstractRuleSetDescription
 {
@@ -35,12 +35,12 @@ final class PERRiskySet extends AbstractRuleSetDescription
     public function getRules(): array
     {
         return [
-            '@PER-CS1.0:risky' => true,
+            '@PER-CS2.0:risky' => true,
         ];
     }
 
     public function getDescription(): string
     {
-        return 'Alias for the PER-CS risky rules. It is recommended you use ``@PER-CS1.0:risky`` instead.';
+        return 'Alias for the PER-CS risky rules. It is recommended you use ``@PER-CS2.0:risky`` instead.';
     }
 }

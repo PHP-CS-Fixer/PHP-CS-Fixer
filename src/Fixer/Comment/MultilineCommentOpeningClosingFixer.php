@@ -34,21 +34,21 @@ final class MultilineCommentOpeningClosingFixer extends AbstractFixer
             [
                 new CodeSample(
                     <<<'EOT'
-<?php
+                        <?php
 
-/******
- * Multiline comment with arbitrary asterisks count
- ******/
+                        /******
+                         * Multiline comment with arbitrary asterisks count
+                         ******/
 
-/**\
- * Multiline comment that seems a DocBlock
- */
+                        /**\
+                         * Multiline comment that seems a DocBlock
+                         */
 
-/**
- * DocBlock with arbitrary asterisk count at the end
- **/
+                        /**
+                         * DocBlock with arbitrary asterisk count at the end
+                         **/
 
-EOT
+                        EOT
                 ),
             ]
         );

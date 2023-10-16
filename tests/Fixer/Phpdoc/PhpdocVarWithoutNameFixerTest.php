@@ -48,326 +48,339 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
 
     public static function provideFixVarCases(): iterable
     {
-        return [
-            'testFixVar' => [
-                <<<'EOF'
-<?php
+        yield 'testFixVar' => [
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /**
-     * @var string Hello!
-     */
-    public $foo;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /**
+                     * @var string Hello!
+                     */
+                    public $foo;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /**
-     * @var string $foo Hello!
-     */
-    public $foo;
-}
-EOF
-                ,
-            ],
-            'testFixType' => [
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /**
+                     * @var string $foo Hello!
+                     */
+                    public $foo;
+                }
+                EOF
+            ,
+        ];
 
-class Foo
-{
-    /**
-     * @var int|null
-     */
-    public $bar;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+        yield 'testFixType' => [
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /**
-     * @var int|null $bar
-     */
-    public $bar;
-}
-EOF
-                ,
-            ],
-            'testDoNothing' => [
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /**
+                     * @var int|null
+                     */
+                    public $bar;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /**
-     * @var Foo\Bar This is a variable.
-     */
-    public $bar;
-}
-EOF
-            ],
-            'testFixVarWithNestedKeys' => [
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /**
+                     * @var int|null $bar
+                     */
+                    public $bar;
+                }
+                EOF
+            ,
+        ];
 
-class Foo
-{
-    /**
-     * @var array {
-     *     @var bool   $required Whether this element is required
-     *     @var string $label    The display name for this element
-     * }
-     */
-     public $options;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+        yield 'testDoNothing' => [
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /**
-     * @var array $options {
-     *     @var bool   $required Whether this element is required
-     *     @var string $label    The display name for this element
-     * }
-     */
-     public $options;
-}
-EOF
-            ],
-            'testSingleLine' => [
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /**
+                     * @var Foo\Bar This is a variable.
+                     */
+                    public $bar;
+                }
+                EOF
+        ];
 
-class Foo
-{
-    /** @var Foo\Bar */
-    public $bar;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+        yield 'testFixVarWithNestedKeys' => [
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /** @var Foo\Bar $bar */
-    public $bar;
-}
-EOF
-                ,
-            ],
-            'testSingleLineProtected' => [
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /**
+                     * @var array {
+                     *     @var bool   $required Whether this element is required
+                     *     @var string $label    The display name for this element
+                     * }
+                     */
+                     public $options;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /** @var Foo\Bar */
-    protected $bar;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /**
+                     * @var array $options {
+                     *     @var bool   $required Whether this element is required
+                     *     @var string $label    The display name for this element
+                     * }
+                     */
+                     public $options;
+                }
+                EOF
+        ];
 
-class Foo
-{
-    /** @var Foo\Bar $bar */
-    protected $bar;
-}
-EOF
-                ,
-            ],
-            'testSingleLinePrivate' => [
-                <<<'EOF'
-<?php
+        yield 'testSingleLine' => [
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /** @var Foo\Bar */
-    private $bar;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /** @var Foo\Bar */
+                    public $bar;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /** @var Foo\Bar $bar */
-    private $bar;
-}
-EOF
-                ,
-            ],
-            'testSingleLineVar' => [
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /** @var Foo\Bar $bar */
+                    public $bar;
+                }
+                EOF
+            ,
+        ];
 
-class Foo
-{
-    /** @var Foo\Bar */
-    var $bar;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+        yield 'testSingleLineProtected' => [
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /** @var Foo\Bar $bar */
-    var $bar;
-}
-EOF
-                ,
-            ],
-            'testSingleLineStatic' => [
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /** @var Foo\Bar */
+                    protected $bar;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /** @var Foo\Bar */
-    static public $bar;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /** @var Foo\Bar $bar */
+                    protected $bar;
+                }
+                EOF
+            ,
+        ];
 
-class Foo
-{
-    /** @var Foo\Bar $bar */
-    static public $bar;
-}
-EOF
-                ,
-            ],
-            'testSingleLineNoSpace' => [
-                <<<'EOF'
-<?php
+        yield 'testSingleLinePrivate' => [
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /** @var Foo\Bar*/
-    public $bar;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /** @var Foo\Bar */
+                    private $bar;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /** @var Foo\Bar $bar*/
-    public $bar;
-}
-EOF
-                ,
-            ],
-            'testInlineDoc' => [
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /** @var Foo\Bar $bar */
+                    private $bar;
+                }
+                EOF
+            ,
+        ];
 
-class Foo
-{
-    /**
-     * Initializes this class with the given options.
-     *
-     * @param array $options {
-     *     @var bool   $required Whether this element is required
-     *     @var string $label    The display name for this element
-     * }
-     */
-    public function init($options)
-    {
-        // Do something
-    }
-}
-EOF
-                ,
-            ],
-            'testSingleLineNoProperty' => [
-                <<<'EOF'
-<?php
+        yield 'testSingleLineVar' => [
+            <<<'EOF'
+                <?php
 
-/** @var Foo\Bar $bar */
-$bar;
-EOF
-            ],
-            'testMultiLineNoProperty' => [
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /** @var Foo\Bar */
+                    var $bar;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-/**
- * @var Foo\Bar $bar
- */
-$bar;
-EOF
-            ],
-            'testVeryNestedInlineDoc' => [
-                <<<'EOF'
-<?php
+                class Foo
+                {
+                    /** @var Foo\Bar $bar */
+                    var $bar;
+                }
+                EOF
+            ,
+        ];
 
-class Foo
-{
-    /**
-     * @var array {
-     *     @var array $secondLevelOne   {
-     *         {@internal This should not break}
-     *         @var int $thirdLevel
-     *     }
-     *     @var array $secondLevelTwo   {
-     *         @var array $thirdLevel     {
-     *             @var string $fourthLevel
-     *         }
-     *         @var int   $moreThirdLevel
-     *     }
-     *     @var int   $secondLevelThree
-     * }
-     */
-    public $nestedFoo;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+        yield 'testSingleLineStatic' => [
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /**
-     * @var array $nestedFoo {
-     *     @var array $secondLevelOne   {
-     *         {@internal This should not break}
-     *         @var int $thirdLevel
-     *     }
-     *     @var array $secondLevelTwo   {
-     *         @var array $thirdLevel     {
-     *             @var string $fourthLevel
-     *         }
-     *         @var int   $moreThirdLevel
-     *     }
-     *     @var int   $secondLevelThree
-     * }
-     */
-    public $nestedFoo;
-}
-EOF
-            ],
-            [
-                '<?php
+                class Foo
+                {
+                    /** @var Foo\Bar */
+                    static public $bar;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                class Foo
+                {
+                    /** @var Foo\Bar $bar */
+                    static public $bar;
+                }
+                EOF
+            ,
+        ];
+
+        yield 'testSingleLineNoSpace' => [
+            <<<'EOF'
+                <?php
+
+                class Foo
+                {
+                    /** @var Foo\Bar*/
+                    public $bar;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                class Foo
+                {
+                    /** @var Foo\Bar $bar*/
+                    public $bar;
+                }
+                EOF
+            ,
+        ];
+
+        yield 'testInlineDoc' => [
+            <<<'EOF'
+                <?php
+
+                class Foo
+                {
+                    /**
+                     * Initializes this class with the given options.
+                     *
+                     * @param array $options {
+                     *     @var bool   $required Whether this element is required
+                     *     @var string $label    The display name for this element
+                     * }
+                     */
+                    public function init($options)
+                    {
+                        // Do something
+                    }
+                }
+                EOF
+            ,
+        ];
+
+        yield 'testSingleLineNoProperty' => [
+            <<<'EOF'
+                <?php
+
+                /** @var Foo\Bar $bar */
+                $bar;
+                EOF
+        ];
+
+        yield 'testMultiLineNoProperty' => [
+            <<<'EOF'
+                <?php
+
+                /**
+                 * @var Foo\Bar $bar
+                 */
+                $bar;
+                EOF
+        ];
+
+        yield 'testVeryNestedInlineDoc' => [
+            <<<'EOF'
+                <?php
+
+                class Foo
+                {
+                    /**
+                     * @var array {
+                     *     @var array $secondLevelOne   {
+                     *         {@internal This should not break}
+                     *         @var int $thirdLevel
+                     *     }
+                     *     @var array $secondLevelTwo   {
+                     *         @var array $thirdLevel     {
+                     *             @var string $fourthLevel
+                     *         }
+                     *         @var int   $moreThirdLevel
+                     *     }
+                     *     @var int   $secondLevelThree
+                     * }
+                     */
+                    public $nestedFoo;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                class Foo
+                {
+                    /**
+                     * @var array $nestedFoo {
+                     *     @var array $secondLevelOne   {
+                     *         {@internal This should not break}
+                     *         @var int $thirdLevel
+                     *     }
+                     *     @var array $secondLevelTwo   {
+                     *         @var array $thirdLevel     {
+                     *             @var string $fourthLevel
+                     *         }
+                     *         @var int   $moreThirdLevel
+                     *     }
+                     *     @var int   $secondLevelThree
+                     * }
+                     */
+                    public $nestedFoo;
+                }
+                EOF
+        ];
+
+        yield [
+            '<?php
 class Foo
 {
     /**
@@ -376,74 +389,77 @@ class Foo
     public $foo;
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class Foo{}
 /**  */',
-            ],
-            'anonymousClass' => [
-                <<<'EOF'
-<?php
+        ];
 
-class Anon
-{
-    public function getNewAnon()
-    {
-        return new class()
-        {
-            /**
-             * @var string
-             */
-            public $stringVar;
+        yield 'anonymousClass' => [
+            <<<'EOF'
+                <?php
 
-            public function getNewAnon()
-            {
-                return new class()
+                class Anon
                 {
-                    /**
-                     * @var string
-                     */
-                    public $stringVar;
-                };
-            }
-        };
-    }
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+                    public function getNewAnon()
+                    {
+                        return new class()
+                        {
+                            /**
+                             * @var string
+                             */
+                            public $stringVar;
 
-class Anon
-{
-    public function getNewAnon()
-    {
-        return new class()
-        {
-            /**
-             * @var $stringVar string
-             */
-            public $stringVar;
+                            public function getNewAnon()
+                            {
+                                return new class()
+                                {
+                                    /**
+                                     * @var string
+                                     */
+                                    public $stringVar;
+                                };
+                            }
+                        };
+                    }
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-            public function getNewAnon()
-            {
-                return new class()
+                class Anon
                 {
-                    /**
-                     * @var $stringVar string
-                     */
-                    public $stringVar;
-                };
-            }
-        };
-    }
-}
-EOF
-                ,
-            ],
-            [
-                '<?php
+                    public function getNewAnon()
+                    {
+                        return new class()
+                        {
+                            /**
+                             * @var $stringVar string
+                             */
+                            public $stringVar;
+
+                            public function getNewAnon()
+                            {
+                                return new class()
+                                {
+                                    /**
+                                     * @var $stringVar string
+                                     */
+                                    public $stringVar;
+                                };
+                            }
+                        };
+                    }
+                }
+                EOF
+            ,
+        ];
+
+        yield [
+            '<?php
 /**
  * Header
  */
@@ -475,9 +491,10 @@ $bar->doSomething(2);
  */
 list($bar) = a();
                 ',
-            ],
-            'const are not handled by this fixer' => [
-                '<?php
+        ];
+
+        yield 'const are not handled by this fixer' => [
+            '<?php
 class A
 {
     /**
@@ -486,95 +503,97 @@ class A
     private const SKIPPED_TYPES = ["a" => true];
 }
 ',
-            ],
-            'trait' => [
-                '<?php
+        ];
+
+        yield 'trait' => [
+            '<?php
  trait StaticExample {
     /**
      * @var string Hello!
      */
     public static $static = "foo";
 }',
-                '<?php
+            '<?php
  trait StaticExample {
     /**
      * @var string $static Hello!
      */
     public static $static = "foo";
 }',
-            ],
-            'complex type with union containing callable that has `$this` in signature' => [
-                <<<'EOF'
-<?php
+        ];
 
-class Foo
-{
-    /**
-     * @var array<string, string|array{ string|\Closure(mixed, string, $this): int|float }>|false Hello!
-     */
-    public $foo;
+        yield 'complex type with union containing callable that has `$this` in signature' => [
+            <<<'EOF'
+                <?php
 
-    /** @var int Hello! */
-    public $foo2;
+                class Foo
+                {
+                    /**
+                     * @var array<string, string|array{ string|\Closure(mixed, string, $this): int|float }>|false Hello!
+                     */
+                    public $foo;
 
-    /** @var int Hello! */
-    public $foo3;
+                    /** @var int Hello! */
+                    public $foo2;
 
-    /** @var int Hello! */
-    public $foo4;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+                    /** @var int Hello! */
+                    public $foo3;
 
-class Foo
-{
-    /**
-     * @var array<string, string|array{ string|\Closure(mixed, string, $this): int|float }>|false $foo Hello!
-     */
-    public $foo;
+                    /** @var int Hello! */
+                    public $foo4;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-    /** @var int $thi Hello! */
-    public $foo2;
+                class Foo
+                {
+                    /**
+                     * @var array<string, string|array{ string|\Closure(mixed, string, $this): int|float }>|false $foo Hello!
+                     */
+                    public $foo;
 
-    /** @var int $thiss Hello! */
-    public $foo3;
+                    /** @var int $thi Hello! */
+                    public $foo2;
 
-    /** @var int $this2 Hello! */
-    public $foo4;
-}
-EOF
-                ,
-            ],
-            'testFixMultibyteVariableName' => [
-                <<<'EOF'
-<?php
+                    /** @var int $thiss Hello! */
+                    public $foo3;
 
-class Foo
-{
-    /** @var int Hello! */
-    public $foo;
+                    /** @var int $this2 Hello! */
+                    public $foo4;
+                }
+                EOF
+            ,
+        ];
 
-    /** @var 🚀 🚀 */
-    public $foo2;
-}
-EOF
-                ,
-                <<<'EOF'
-<?php
+        yield 'testFixMultibyteVariableName' => [
+            <<<'EOF'
+                <?php
 
-class Foo
-{
-    /** @var int $my🚀 Hello! */
-    public $foo;
+                class Foo
+                {
+                    /** @var int Hello! */
+                    public $foo;
 
-    /** @var 🚀 $my 🚀 */
-    public $foo2;
-}
-EOF
-                ,
-            ],
+                    /** @var 🚀 🚀 */
+                    public $foo2;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                class Foo
+                {
+                    /** @var int $my🚀 Hello! */
+                    public $foo;
+
+                    /** @var 🚀 $my 🚀 */
+                    public $foo2;
+                }
+                EOF
+            ,
         ];
     }
 

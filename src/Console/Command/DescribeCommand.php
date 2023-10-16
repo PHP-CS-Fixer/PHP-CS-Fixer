@@ -155,7 +155,7 @@ final class DescribeCommand extends Command
         if ($fixer instanceof DeprecatedFixerInterface) {
             $successors = $fixer->getSuccessorsNames();
             $message = [] === $successors
-                ? 'will be removed on next major version'
+                ? 'will be removed in the next major version'
                 : sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
             $message = Preg::replace('/(`.+?`)/', '<info>$1</info>', $message);
             $summary .= sprintf(' <error>DEPRECATED</error>: %s.', $message);
@@ -205,11 +205,9 @@ final class DescribeCommand extends Command
                         $option->getAllowedTypes(),
                     );
                 } else {
-                    $allowed = array_map(static function ($value): string {
-                        return $value instanceof AllowedValueSubset
-                            ? 'a subset of <comment>'.Utils::toString($value->getAllowedValues()).'</comment>'
-                            : '<comment>'.Utils::toString($value).'</comment>';
-                    }, $allowed);
+                    $allowed = array_map(static fn ($value): string => $value instanceof AllowedValueSubset
+                        ? 'a subset of <comment>'.Utils::toString($value->getAllowedValues()).'</comment>'
+                        : '<comment>'.Utils::toString($value).'</comment>', $allowed);
                 }
 
                 $line .= ' ('.Utils::naturalLanguageJoin($allowed, '').')';
@@ -418,15 +416,11 @@ final class DescribeCommand extends Command
     {
         return Preg::replaceCallback(
             '/(`[^<]+<[^>]+>`_)/',
-            static function (array $matches) {
-                return Preg::replaceCallback(
-                    '/`(.*)<(.*)>`_/',
-                    static function (array $matches): string {
-                        return $matches[1].'('.$matches[2].')';
-                    },
-                    $matches[1]
-                );
-            },
+            static fn (array $matches) => Preg::replaceCallback(
+                '/`(.*)<(.*)>`_/',
+                static fn (array $matches): string => $matches[1].'('.$matches[2].')',
+                $matches[1]
+            ),
             $content
         );
     }

@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: phpdoc_readonly_class_comment_to_keyword,no_extra_blank_lines.
+--RULESET--
+{"phpdoc_readonly_class_comment_to_keyword": true, "no_extra_blank_lines": true}
+--REQUIREMENTS--
+{"php": 80200}
+--EXPECT--
+<?php
+
+readonly class Foo
+{
+
+}
+
+--INPUT--
+<?php
+
+/** @readonly */
+class Foo
+{
+
+}

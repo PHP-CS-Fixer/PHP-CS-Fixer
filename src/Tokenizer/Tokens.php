@@ -608,9 +608,7 @@ class Tokens extends \SplFixedArray
      */
     public function getTokenOfKindSibling(int $index, int $direction, array $tokens = [], bool $caseSensitive = true): ?int
     {
-        $tokens = array_filter($tokens, function ($token): bool {
-            return $this->isTokenKindFound($this->extractTokenKind($token));
-        });
+        $tokens = array_filter($tokens, fn ($token): bool => $this->isTokenKindFound($this->extractTokenKind($token)));
 
         if (0 === \count($tokens)) {
             return null;
@@ -1038,7 +1036,7 @@ class Tokens extends \SplFixedArray
             $this->rewind();
         }
 
-        return json_encode($output, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
+        return json_encode($output, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
     }
 
     /**

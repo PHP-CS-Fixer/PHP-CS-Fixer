@@ -37,31 +37,52 @@ final class FixerNameValidatorTest extends TestCase
 
     public static function provideIsValidCases(): iterable
     {
-        return [
-            ['', true, false],
-            ['', false, false],
-            ['foo', true, false],
-            ['foo', false, true],
-            ['foo_bar', false, true],
-            ['foo_bar_4', false, true],
-            ['Foo', false, false],
-            ['fooBar', false, false],
-            ['4foo', false, false],
-            ['_foo', false, false],
-            ['4_foo', false, false],
-            ['vendor/foo', false, false],
-            ['bendor/foo', true, false],
-            ['Vendor/foo', true, true],
-            ['Vendor4/foo', true, true],
-            ['4vendor/foo', true, false],
-            ['Vendor/foo', true, true],
-            ['FooBar/foo', true, true],
-            ['Foo-Bar/foo', true, false],
-            ['Foo_Bar/foo', true, false],
-            ['Foo/foo/bar', true, false],
-            ['/foo', true, false],
-            ['/foo', false, false],
-            ['/foo/bar', true, false],
-        ];
+        yield ['', true, false];
+
+        yield ['', false, false];
+
+        yield ['foo', true, false];
+
+        yield ['foo', false, true];
+
+        yield ['foo_bar', false, true];
+
+        yield ['foo_bar_4', false, true];
+
+        yield ['Foo', false, false];
+
+        yield ['fooBar', false, false];
+
+        yield ['4foo', false, false];
+
+        yield ['_foo', false, false];
+
+        yield ['4_foo', false, false];
+
+        yield ['vendor/foo', false, false];
+
+        yield ['bendor/foo', true, false];
+
+        yield ['Vendor/foo', true, true];
+
+        yield ['Vendor4/foo', true, true];
+
+        yield ['4vendor/foo', true, false];
+
+        yield ['Vendor/foo', true, true];
+
+        yield ['FooBar/foo', true, true];
+
+        yield ['Foo-Bar/foo', true, false];
+
+        yield ['Foo_Bar/foo', true, false];
+
+        yield ['Foo/foo/bar', true, false];
+
+        yield ['/foo', true, false];
+
+        yield ['/foo', false, false];
+
+        yield ['/foo/bar', true, false];
     }
 }

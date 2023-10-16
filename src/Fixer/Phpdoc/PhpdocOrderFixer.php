@@ -43,18 +43,18 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
     public function getDefinition(): FixerDefinitionInterface
     {
         $code = <<<'EOF'
-<?php
-/**
- * Hello there!
- *
- * @throws Exception|RuntimeException foo
- * @custom Test!
- * @return int  Return the number of changes.
- * @param string $foo
- * @param bool   $bar Bar
- */
+            <?php
+            /**
+             * Hello there!
+             *
+             * @throws Exception|RuntimeException foo
+             * @custom Test!
+             * @return int  Return the number of changes.
+             * @param string $foo
+             * @param bool   $bar Bar
+             */
 
-EOF;
+            EOF;
 
         return new FixerDefinition(
             'Annotations in PHPDoc should be ordered in defined sequence.',
@@ -88,7 +88,7 @@ EOF;
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('order', 'Sequence in which annotations in PHPDoc should be ordered.'))
                 ->setAllowedTypes(['string[]'])
-                ->setAllowedValues([function ($order) {
+                ->setAllowedValues([static function ($order) {
                     if (\count($order) < 2) {
                         throw new InvalidOptionsException('The option "order" value is invalid. Minimum two tags are required.');
                     }

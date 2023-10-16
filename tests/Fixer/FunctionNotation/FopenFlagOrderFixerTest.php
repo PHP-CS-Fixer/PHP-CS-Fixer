@@ -34,112 +34,125 @@ final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'most simple fix case' => [
-                '<?php
+        yield 'most simple fix case' => [
+            '<?php
                     $a = fopen($foo, \'rw+b\');
                 ',
-                '<?php
+            '<?php
                     $a = fopen($foo, \'brw+\');
                 ',
-            ],
-            '"fopen" casing insensitive' => [
-                '<?php
+        ];
+
+        yield '"fopen" casing insensitive' => [
+            '<?php
                     $a = \FOPen($foo, "cr+w+b");
                     $a = \FOPEN($foo, "crw+b");
                 ',
-                '<?php
+            '<?php
                     $a = \FOPen($foo, "bw+r+c");
                     $a = \FOPEN($foo, "bw+rc");
                 ',
-            ],
-            'comments around flags' => [
-                '<?php
+        ];
+
+        yield 'comments around flags' => [
+            '<?php
                     $a = fopen($foo,/*0*/\'rb\'/*1*/);
                 ',
-                '<?php
+            '<?php
                     $a = fopen($foo,/*0*/\'br\'/*1*/);
                 ',
-            ],
-            'binary string' => [
-                '<?php
+        ];
+
+        yield 'binary string' => [
+            '<?php
                     $a = \fopen($foo, b"cr+w+b");
                     $b = \fopen($foo, B"crw+b");
                     $c = \fopen($foo, b\'cr+w+b\');
                     $d = \fopen($foo, B\'crw+b\');
                 ',
-                '<?php
+            '<?php
                     $a = \fopen($foo, b"bw+r+c");
                     $b = \fopen($foo, B"bw+rc");
                     $c = \fopen($foo, b\'bw+r+c\');
                     $d = \fopen($foo, B\'bw+rc\');
                 ',
-            ],
-            'common typos' => [
-                '<?php
+        ];
+
+        yield 'common typos' => [
+            '<?php
                      $a = fopen($a, "b+r");
                      $b = fopen($b, \'b+w\');
                 ',
-            ],
-            // `t` cases
-            [
-                '<?php
+        ];
+
+        // `t` cases
+        yield [
+            '<?php
                     $a = fopen($foo, \'rw+t\');
                 ',
-                '<?php
+            '<?php
                     $a = fopen($foo, \'trw+\');
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a = \fopen($foo, \'rw+tb\');
                 ',
-                '<?php
+            '<?php
                     $a = \fopen($foo, \'btrw+\');
                 ',
-            ],
-            // don't fix cases
-            'single flag' => [
-                '<?php
+        ];
+
+        // don't fix cases
+        yield 'single flag' => [
+            '<?php
                     $a = fopen($foo, "r");
                     $a = fopen($foo, "r+");
                 ',
-            ],
-            'not simple flags' => [
-                '<?php
+        ];
+
+        yield 'not simple flags' => [
+            '<?php
                     $a = fopen($foo, "br+".$a);
                 ',
-            ],
-            'wrong # of arguments' => [
-                '<?php
+        ];
+
+        yield 'wrong # of arguments' => [
+            '<?php
                     $b = \fopen("br+");
                     $c = fopen($foo, "bw+", 1, 2 , 3);
                 ',
-            ],
-            '"flags" is too long (must be overridden)' => [
-                '<?php
+        ];
+
+        yield '"flags" is too long (must be overridden)' => [
+            '<?php
                     $d = fopen($foo, "r+w+a+x+c+etbX");
                 ',
-            ],
-            'static method call' => [
-                '<?php
+        ];
+
+        yield 'static method call' => [
+            '<?php
                     $e = A::fopen($foo, "bw+");
                 ',
-            ],
-            'method call' => [
-                '<?php
+        ];
+
+        yield 'method call' => [
+            '<?php
                     $f = $b->fopen($foo, "br+");
                 ',
-            ],
-            'comments, PHPDoc and literal' => [
-                '<?php
+        ];
+
+        yield 'comments, PHPDoc and literal' => [
+            '<?php
                     // fopen($foo, "brw");
                     /* fopen($foo, "brw"); */
                     echo("fopen($foo, \"brw\")");
                 ',
-            ],
-            'invalid flag values' => [
-                '<?php
+        ];
+
+        yield 'invalid flag values' => [
+            '<?php
                     $a = fopen($foo, \'\');
                     $a = fopen($foo, \'x\'); // ok but should not mark collection as changed
                     $a = fopen($foo, \'k\');
@@ -160,7 +173,6 @@ final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
                     $a = \fopen($foo, \'rロ\');
                     $a = \fopen($foo, \'w+ロ\');
                 ',
-            ],
         ];
     }
 }

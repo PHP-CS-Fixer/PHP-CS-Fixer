@@ -32,6 +32,15 @@ the order of that specific method.
 Configuration
 -------------
 
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether the sorting should be case sensitive.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``order``
 ~~~~~~~~~
 
@@ -49,15 +58,6 @@ How multiple occurrences of same type statements should be sorted.
 Allowed values: ``'alpha'`` and ``'none'``
 
 Default value: ``'none'``
-
-``case_sensitive``
-~~~~~~~~~~~~~~~~~~
-
-Whether the sorting should be case sensitive.
-
-Allowed types: ``bool``
-
-Default value: ``false``
 
 Examples
 --------
@@ -173,25 +173,29 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PER
-  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``ordered_class_elements`` rule with the config below:
+- `@PER <./../../ruleSets/PER.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
 
-@PER-CS1.0
-  Using the `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ rule set will enable the ``ordered_class_elements`` rule with the config below:
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
 
-@PSR12
-  Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``ordered_class_elements`` rule with the config below:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``ordered_class_elements`` rule with the default config.
-
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``ordered_class_elements`` rule with the config below:
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
+
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
+
+  ``['order' => ['use_trait']]``
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['order' => ['use_trait']]``
+
+

@@ -28,7 +28,7 @@ final class StaticLambdaFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Lambdas not (indirect) referencing `$this` must be declared `static`.',
+            'Lambdas not (indirectly) referencing `$this` must be declared `static`.',
             [new CodeSample("<?php\n\$a = function () use (\$b)\n{   echo \$b;\n};\n")],
             null,
             'Risky when using `->bindTo` on lambdas without referencing to `$this`.'

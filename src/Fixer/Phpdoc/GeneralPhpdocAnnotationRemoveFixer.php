@@ -146,9 +146,7 @@ function foo() {}
             return $doc->getAnnotationsOfType($this->configuration['annotations']);
         }
 
-        $typesToSearchFor = array_map(function (string $type): string {
-            return strtolower($type);
-        }, $this->configuration['annotations']);
+        $typesToSearchFor = array_map(static fn (string $type): string => strtolower($type), $this->configuration['annotations']);
 
         $annotations = [];
 

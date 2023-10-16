@@ -35,110 +35,123 @@ final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'handle goto labels 1' => [
-                '<?php
+        yield 'handle goto labels 1' => [
+            '<?php
 beginning:
 echo $guard ? 1 : 2;',
-                '<?php
+            '<?php
 beginning:
 echo $guard?1:2;',
-            ],
-            'handle goto labels 2' => [
-                '<?php
+        ];
+
+        yield 'handle goto labels 2' => [
+            '<?php
 function A(){}
 beginning:
 echo $guard ? 1 : 2;',
-                '<?php
+            '<?php
 function A(){}
 beginning:
 echo $guard?1:2;',
-            ],
-            'handle goto labels 3' => [
-                '<?php
+        ];
+
+        yield 'handle goto labels 3' => [
+            '<?php
 ;
 beginning:
 echo $guard ? 1 : 2;',
-                '<?php
+            '<?php
 ;
 beginning:
 echo $guard?1:2;',
-            ],
-            'handle goto labels 4' => [
-                '<?php
+        ];
+
+        yield 'handle goto labels 4' => [
+            '<?php
 {
 beginning:
 echo $guard ? 1 : 2;}',
-                '<?php
+            '<?php
 {
 beginning:
 echo $guard?1:2;}',
-            ],
-            [
-                '<?php $a = $a ? 1 : 0;',
-                '<?php $a = $a  ? 1 : 0;',
-            ],
-            [
-                '<?php $a = $a ?
+        ];
+
+        yield [
+            '<?php $a = $a ? 1 : 0;',
+            '<?php $a = $a  ? 1 : 0;',
+        ];
+
+        yield [
+            '<?php $a = $a ?
 #
 : $b;',
-            ],
-            [
-                '<?php $a = $a#
+        ];
+
+        yield [
+            '<?php $a = $a#
  ? '.'
 #
 1 : 0;',
-            ],
-            [
-                '<?php $val = (1===1) ? true : false;',
-                '<?php $val = (1===1)?true:false;',
-            ],
-            [
-                '<?php $val = 1===1 ? true : false;',
-                '<?php $val = 1===1?true:false;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php $val = (1===1) ? true : false;',
+            '<?php $val = (1===1)?true:false;',
+        ];
+
+        yield [
+            '<?php $val = 1===1 ? true : false;',
+            '<?php $val = 1===1?true:false;',
+        ];
+
+        yield [
+            '<?php
 $a = $b ? 2 : ($bc ? 2 : 3);
 $a = $bc ? 2 : 3;',
-                '<?php
+            '<?php
 $a = $b   ?   2  :    ($bc?2:3);
 $a = $bc?2:3;',
-            ],
-            [
-                '<?php $config = $config ?: new Config();',
-                '<?php $config = $config ? : new Config();',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php $config = $config ?: new Config();',
+            '<?php $config = $config ? : new Config();',
+        ];
+
+        yield [
+            '<?php
 $a = $b ? (
         $c + 1
     ) : (
         $d + 1
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = $b
     ? $c
     : $d;',
-                '<?php
+            '<?php
 $a = $b
     ?$c
     :$d;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = $b  //
     ? $c  /**/
     : $d;',
-                '<?php
+            '<?php
 $a = $b  //
     ?$c  /**/
     :$d;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = ($b
     ? $c
     : ($d
@@ -146,45 +159,49 @@ $a = ($b
         : $f
     )
 );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = ($b
     ? ($c1 ? $c2 : ($c3a ?: $c3b))
     : ($d1 ? $d2 : $d3)
 );',
-                '<?php
+            '<?php
 $a = ($b
     ? ($c1?$c2:($c3a? :$c3b))
     : ($d1?$d2:$d3)
 );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 $foo = $isBar ? 1 : 2;
                 switch ($foo) {
                     case 1: return 3;
                     case 2: return 4;
                 }
                 ',
-                '<?php
+            '<?php
                 $foo = $isBar? 1 : 2;
                 switch ($foo) {
                     case 1: return 3;
                     case 2: return 4;
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 return $isBar ? array_sum(array_map(function ($x) { switch ($x) { case 1: return $y ? 2 : 3; case 4: return 5; } }, [1, 2, 3])) : 128;
                 ',
-                '<?php
+            '<?php
                 return $isBar?array_sum(array_map(function ($x) { switch ($x) { case 1: return $y? 2 : 3; case 4: return 5; } }, [1, 2, 3])):128;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 declare(ticks=1):enddeclare;
                 for ($i = 0; $i < 100; $i++): echo "."; endfor;
                 foreach ($foo as $bar): $i++; endforeach;
@@ -193,7 +210,6 @@ $a = ($b
                 while ($i > 10): $i--; endwhile;
                 /* ternary operator to make the file a candidate for fixing */ true ? 1 : 0;
                 ',
-            ],
         ];
     }
 
@@ -209,9 +225,8 @@ $a = ($b
 
     public static function provideFix80Cases(): iterable
     {
-        return [
-            'nullable types in constructor property promotion' => [
-                '<?php
+        yield 'nullable types in constructor property promotion' => [
+            '<?php
 
 class Foo
 {
@@ -223,7 +238,6 @@ class Foo
         /* ternary operator to make the file a candidate for fixing */ true ? 1 : 0;
     }
 }',
-            ],
         ];
     }
 

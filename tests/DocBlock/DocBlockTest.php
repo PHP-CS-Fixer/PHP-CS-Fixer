@@ -172,31 +172,34 @@ final class DocBlockTest extends TestCase
 
     public static function provideMakeMultiLIneCases(): iterable
     {
-        return [
-            'It keeps a multi line doc block as is' => [
-                "/**\n * Hello\n */",
-            ],
-            'It keeps a multi line doc block as is with multiple annotations' => [
-                "/**\n * @foo\n *@bar\n */",
-            ],
-            'It keeps a multi line doc block with indentation' => [
-                "/**\n\t *@foo\n\t */",
-            ],
-            'It Converts a single line to multi line with no indentation' => [
-                '/** Hello */',
-                "/**\n * Hello\n */",
-            ],
-            'It Converts a single line to multi line with correct indentation' => [
-                '/** Hello */',
-                "/**\n     * Hello\n     */",
-                '    ',
-            ],
-            'It Converts a single line to multi line with correct indentation and Line ending' => [
-                '/** Hello */',
-                "/**\r\n     * Hello\r\n     */",
-                '    ',
-                "\r\n",
-            ],
+        yield 'It keeps a multi line doc block as is' => [
+            "/**\n * Hello\n */",
+        ];
+
+        yield 'It keeps a multi line doc block as is with multiple annotations' => [
+            "/**\n * @foo\n *@bar\n */",
+        ];
+
+        yield 'It keeps a multi line doc block with indentation' => [
+            "/**\n\t *@foo\n\t */",
+        ];
+
+        yield 'It Converts a single line to multi line with no indentation' => [
+            '/** Hello */',
+            "/**\n * Hello\n */",
+        ];
+
+        yield 'It Converts a single line to multi line with correct indentation' => [
+            '/** Hello */',
+            "/**\n     * Hello\n     */",
+            '    ',
+        ];
+
+        yield 'It Converts a single line to multi line with correct indentation and Line ending' => [
+            '/** Hello */',
+            "/**\r\n     * Hello\r\n     */",
+            '    ',
+            "\r\n",
         ];
     }
 
@@ -217,29 +220,32 @@ final class DocBlockTest extends TestCase
 
     public static function provideMakeSingleLineCases(): iterable
     {
-        return [
-            'It keeps a single line doc block as is' => [
-                '/** Hello */',
-            ],
-            'It converts a multi line doc block to a single line' => [
-                "/**\n * Hello\n */",
-                '/** Hello */',
-            ],
-            'It converts a multi line doc block to a single line with annotation' => [
-                "/**\n * @foo\n */",
-                '/** @foo */',
-            ],
-            'It converts a multi line doc block to a single line multiple empty lines' => [
-                "/**\n * @foo\n *\n *\n *\n * */",
-                '/** @foo */',
-            ],
-            'It changes an empty doc block to single line' => [
-                "/**\n *\n */",
-                '/**  */',
-            ],
-            'It does not change a multi line doc block if it can\'t' => [
-                self::$sample,
-            ],
+        yield 'It keeps a single line doc block as is' => [
+            '/** Hello */',
+        ];
+
+        yield 'It converts a multi line doc block to a single line' => [
+            "/**\n * Hello\n */",
+            '/** Hello */',
+        ];
+
+        yield 'It converts a multi line doc block to a single line with annotation' => [
+            "/**\n * @foo\n */",
+            '/** @foo */',
+        ];
+
+        yield 'It converts a multi line doc block to a single line multiple empty lines' => [
+            "/**\n * @foo\n *\n *\n *\n * */",
+            '/** @foo */',
+        ];
+
+        yield 'It changes an empty doc block to single line' => [
+            "/**\n *\n */",
+            '/**  */',
+        ];
+
+        yield 'It does not change a multi line doc block if it can\'t' => [
+            self::$sample,
         ];
     }
 }

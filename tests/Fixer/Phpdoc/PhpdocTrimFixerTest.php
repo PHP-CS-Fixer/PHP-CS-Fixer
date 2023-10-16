@@ -35,20 +35,20 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                <<<'EOF'
-                <?php
-    /**
-     * @param EngineInterface $templating
-     *
-     * @return void
-     */
+        yield [
+            <<<'EOF'
+                                <?php
+                    /**
+                     * @param EngineInterface $templating
+                     *
+                     * @return void
+                     */
 
-EOF
-            ],
-            [
-                '<?php
+                EOF
+        ];
+
+        yield [
+            '<?php
 
 /**
  * @return int количество деактивированных
@@ -57,54 +57,54 @@ function deactivateCompleted()
 {
     return 0;
 }',
-            ],
-            [
-                mb_convert_encoding('
+        ];
+
+        yield [
+            mb_convert_encoding('
 <?php
 /**
  * Test à
  */
 function foo(){}
 ', 'Windows-1252', 'UTF-8'),
-            ],
         ];
     }
 
     public function testFixMore(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * Hello there!
-     * @internal
-     *@param string $foo
-     *@throws Exception
-     *
-    *
-     *
-     *  @return bool
-     */
+            <?php
+                /**
+                 * Hello there!
+                 * @internal
+                 *@param string $foo
+                 *@throws Exception
+                 *
+                *
+                 *
+                 *  @return bool
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     *
-  *
-     * Hello there!
-     * @internal
-     *@param string $foo
-     *@throws Exception
-     *
-    *
-     *
-     *  @return bool
-     *
-     *
-     */
+            <?php
+                /**
+                 *
+              *
+                 * Hello there!
+                 * @internal
+                 *@param string $foo
+                 *@throws Exception
+                 *
+                *
+                 *
+                 *  @return bool
+                 *
+                 *
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -112,43 +112,43 @@ EOF;
     public function testClassDocBlock(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-namespace Foo;
+            namespace Foo;
 
-  /**
- * This is a class that does classy things.
- *
- * @internal
- *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <hello@gjcampbell.co.uk>
-   */
-class Bar {}
+              /**
+             * This is a class that does classy things.
+             *
+             * @internal
+             *
+             * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+             * @author Graham Campbell <hello@gjcampbell.co.uk>
+               */
+            class Bar {}
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-namespace Foo;
+            namespace Foo;
 
-  /**
-   *
- *
- * This is a class that does classy things.
- *
- * @internal
- *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
-    *
-  *
-   */
-class Bar {}
+              /**
+               *
+             *
+             * This is a class that does classy things.
+             *
+             * @internal
+             *
+             * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+             * @author Graham Campbell <hello@gjcampbell.co.uk>
+             *
+                *
+              *
+               */
+            class Bar {}
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -156,12 +156,12 @@ EOF;
     public function testEmptyDocBlock(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     *
-     */
+            <?php
+                /**
+                 *
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }
@@ -169,23 +169,23 @@ EOF;
     public function testEmptyLargerEmptyDocBlock(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     *
-     */
+            <?php
+                /**
+                 *
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     *
-     *
-     *
-     *
-     */
+            <?php
+                /**
+                 *
+                 *
+                 *
+                 *
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -193,21 +193,21 @@ EOF;
     public function testSuperSimpleDocBlockStart(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * Test.
-     */
+            <?php
+                /**
+                 * Test.
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     *
-     * Test.
-     */
+            <?php
+                /**
+                 *
+                 * Test.
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -215,21 +215,21 @@ EOF;
     public function testSuperSimpleDocBlockEnd(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * Test.
-     */
+            <?php
+                /**
+                 * Test.
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Test.
-     *
-     */
+            <?php
+                /**
+                 * Test.
+                 *
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
@@ -237,17 +237,17 @@ EOF;
     public function testWithLinesWithoutAsterisk(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-/**
- * Foo
-      Baz
- */
-class Foo
-{
-}
+            /**
+             * Foo
+                  Baz
+             */
+            class Foo
+            {
+            }
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }

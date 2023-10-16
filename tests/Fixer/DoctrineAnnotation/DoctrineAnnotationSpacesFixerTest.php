@@ -20,6 +20,7 @@ use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\AbstractDoctrineAnnotationFixer
+ * @covers \PhpCsFixer\Doctrine\Annotation\DocLexer
  * @covers \PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixer
  */
 final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotationFixerTestCase
@@ -59,7 +60,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixAllCases(): iterable
     {
-        $cases = self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo
@@ -318,7 +319,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  */'],
         ]);
 
-        $cases[] = [
+        yield [
             '<?php
 
 /**
@@ -326,8 +327,6 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  */
 ',
         ];
-
-        return $cases;
     }
 
     /**

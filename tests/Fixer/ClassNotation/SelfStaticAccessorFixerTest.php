@@ -33,9 +33,8 @@ final class SelfStaticAccessorFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'simple' => [
-                '<?php
+        yield 'simple' => [
+            '<?php
 final class Sample
 {
     public function getBar()
@@ -49,7 +48,7 @@ final class Sample
     }
 }
 ',
-                '<?php
+            '<?php
 final class Sample
 {
     public function getBar()
@@ -63,25 +62,27 @@ final class Sample
     }
 }
 ',
-            ],
-            'multiple' => [
-                '<?php
+        ];
+
+        yield 'multiple' => [
+            '<?php
                     final class Foo0 { public function A(){ return self::A; }}
                     final class Foo1 { public function A(){ return self::A; }}
                     final class Foo2 { public function A(){ return self::A; }}
                     final class Foo3 { public function A(){ return self::A; }}
                     final class Foo4{public function A(){return self::A;}}final class Foo5{public function A(){return self::A;}}
                 ',
-                '<?php
+            '<?php
                     final class Foo0 { public function A(){ return static::A; }}
                     final class Foo1 { public function A(){ return static::A; }}
                     final class Foo2 { public function A(){ return static::A; }}
                     final class Foo3 { public function A(){ return static::A; }}
                     final class Foo4{public function A(){return static::A;}}final class Foo5{public function A(){return static::A;}}
                 ',
-            ],
-            'comments and casing' => [
-                '<?php
+        ];
+
+        yield 'comments and casing' => [
+            '<?php
 FINAL CLASS Sample
 {
     public function getBar()
@@ -90,7 +91,7 @@ FINAL CLASS Sample
     }
 }
 ',
-                '<?php
+            '<?php
 FINAL CLASS Sample
 {
     public function getBar()
@@ -99,9 +100,10 @@ FINAL CLASS Sample
     }
 }
 ',
-            ],
-            'not final' => [
-                '<?php
+        ];
+
+        yield 'not final' => [
+            '<?php
 class Sample
 {
     public function getBar()
@@ -110,9 +112,10 @@ class Sample
     }
 }
 ',
-            ],
-            'abstract' => [
-                '<?php
+        ];
+
+        yield 'abstract' => [
+            '<?php
 abstract class Sample
 {
     public function getBar()
@@ -121,9 +124,10 @@ abstract class Sample
     }
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 final class Foo
 {
     public function bar()
@@ -134,7 +138,7 @@ final class Foo
     }
 }
                 ',
-                '<?php
+            '<?php
 final class Foo
 {
     public function bar()
@@ -145,9 +149,10 @@ final class Foo
     }
 }
                 ',
-            ],
-            'instance of' => [
-                '<?php
+        ];
+
+        yield 'instance of' => [
+            '<?php
 final class Foo
 {
     public function isBar($foo)
@@ -156,7 +161,7 @@ final class Foo
     }
 }
                 ',
-                '<?php
+            '<?php
 final class Foo
 {
     public function isBar($foo)
@@ -165,37 +170,42 @@ final class Foo
     }
 }
                 ',
-            ],
-            'in method as new' => [
-                '<?php final class A { public static function b() { return new self(); } }',
-                '<?php final class A { public static function b() { return new static(); } }',
-            ],
-            'in method as new with comments' => [
-                '<?php final class A { public static function b() { return new /* hmm */ self(); } }',
-                '<?php final class A { public static function b() { return new /* hmm */ static(); } }',
-            ],
-            'in method as new without parentheses' => [
-                '<?php final class A { public static function b() { return new self; } }',
-                '<?php final class A { public static function b() { return new static; } }',
-            ],
-            'simple anonymous class' => [
-                '<?php
+        ];
+
+        yield 'in method as new' => [
+            '<?php final class A { public static function b() { return new self(); } }',
+            '<?php final class A { public static function b() { return new static(); } }',
+        ];
+
+        yield 'in method as new with comments' => [
+            '<?php final class A { public static function b() { return new /* hmm */ self(); } }',
+            '<?php final class A { public static function b() { return new /* hmm */ static(); } }',
+        ];
+
+        yield 'in method as new without parentheses' => [
+            '<?php final class A { public static function b() { return new self; } }',
+            '<?php final class A { public static function b() { return new static; } }',
+        ];
+
+        yield 'simple anonymous class' => [
+            '<?php
 $a = new class {
     public function getBar()
     {
         return self::class;
     }
 };',
-                '<?php
+            '<?php
 $a = new class {
     public function getBar()
     {
         return static::class;
     }
 };',
-            ],
-            'nested anonymous class' => [
-                '<?php
+        ];
+
+        yield 'nested anonymous class' => [
+            '<?php
 final class Foo
 {
     public function Foo()
@@ -219,7 +229,7 @@ final class Foo
     }
 }
 ',
-                '<?php
+            '<?php
 final class Foo
 {
     public function Foo()
@@ -243,9 +253,10 @@ final class Foo
     }
 }
 ',
-            ],
-            'anonymous classes inside lambda' => [
-                '<?php
+        ];
+
+        yield 'anonymous classes inside lambda' => [
+            '<?php
 final class Foo
 {
     public function bar()
@@ -291,7 +302,7 @@ final class Foo
     }
 }
 ',
-                '<?php
+            '<?php
 final class Foo
 {
     public function bar()
@@ -337,12 +348,14 @@ final class Foo
     }
 }
 ',
-            ],
-            'no scope' => [
-                '<?php echo static::class;',
-            ],
-            'do not fix inside lambda' => [
-                '<?php
+        ];
+
+        yield 'no scope' => [
+            '<?php echo static::class;',
+        ];
+
+        yield 'do not fix inside lambda' => [
+            '<?php
 final class Foo
 {
     public function Bar()
@@ -356,7 +369,6 @@ final class Foo
 $a = static function() { return static::class; };
 $b = function() { return static::class; };
 ',
-            ],
         ];
     }
 

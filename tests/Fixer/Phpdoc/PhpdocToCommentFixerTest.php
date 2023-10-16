@@ -689,9 +689,8 @@ foreach($connections as $key => $sqlite) {
 
     public static function provideTraitsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
 /**
@@ -701,15 +700,13 @@ trait DocBlocks
 {
     public function test() {}
 }',
-            ],
         ];
     }
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 /** header */
 echo 123;
 
@@ -719,9 +716,10 @@ echo 123;
 /** @var Session $session */ # test
 $session = new Session();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
 /** @var int $a */
@@ -730,7 +728,7 @@ $first = true;// needed because by default first docblock is never fixed.
 /* @var int $c */
 [$a] = $c;
                 ',
-                '<?php
+            '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
 /** @var int $a */
@@ -739,9 +737,10 @@ $first = true;// needed because by default first docblock is never fixed.
 /** @var int $c */
 [$a] = $c;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
 /**
@@ -749,52 +748,56 @@ $first = true;// needed because by default first docblock is never fixed.
  */
 [$a] = $b;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class Foo {
                     /**
                      * Do not convert this
                      */
                     private int $foo;
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class Foo {
                     /**
                      * Do not convert this
                      */
                     protected ?string $foo;
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class Foo {
                     /**
                      * Do not convert this
                      */
                     public ? float $foo;
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class Foo {
                     /**
                      * Do not convert this
                      */
                     var ? Foo\Bar $foo;
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class Foo {
                     /**
                      * Do not convert this
                      */
                     var ? array $foo;
                 }',
-            ],
         ];
     }
 

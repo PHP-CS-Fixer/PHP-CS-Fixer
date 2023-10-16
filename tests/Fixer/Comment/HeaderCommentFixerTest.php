@@ -40,25 +40,25 @@ final class HeaderCommentFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                ['header' => ''],
-                '<?php
+        yield [
+            ['header' => ''],
+            '<?php
 
 $a;',
-                '<?php
+            '<?php
 
 /**
  * new
  */
 $a;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_declare_strict',
-                ],
-                '<?php
+                'header' => 'tmp',
+                'location' => 'after_declare_strict',
+            ],
+            '<?php
 declare(strict_types=1);
 
 /*
@@ -68,19 +68,20 @@ declare(strict_types=1);
 namespace A\B;
 
 echo 1;',
-                '<?php
+            '<?php
 declare(strict_types=1);namespace A\B;
 
 echo 1;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_declare_strict',
-                    'separate' => 'bottom',
-                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
-                ],
-                '<?php
+                'header' => 'tmp',
+                'location' => 'after_declare_strict',
+                'separate' => 'bottom',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
 declare(strict_types=1);
 /**
  * tmp
@@ -89,19 +90,20 @@ declare(strict_types=1);
 namespace A\B;
 
 echo 1;',
-                '<?php
+            '<?php
 declare(strict_types=1);
 
 namespace A\B;
 
 echo 1;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_open',
-                ],
-                '<?php
+                'header' => 'tmp',
+                'location' => 'after_open',
+            ],
+            '<?php
 
 /*
  * tmp
@@ -112,132 +114,141 @@ declare(strict_types=1);
 namespace A\B;
 
 echo 1;',
-                '<?php
+            '<?php
 declare(strict_types=1);
 
 namespace A\B;
 
 echo 1;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'new',
-                    'comment_type' => HeaderCommentFixer::HEADER_COMMENT,
-                ],
-                '<?php
+                'header' => 'new',
+                'comment_type' => HeaderCommentFixer::HEADER_COMMENT,
+            ],
+            '<?php
 
 /*
  * new
  */
                 ',
-                '<?php
+            '<?php
                     /** test */
                 ',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'new',
-                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
-                ],
-                '<?php
+                'header' => 'new',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
 
 /**
  * new
  */
                 ',
-                '<?php
+            '<?php
                     /* test */
                 ',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'def',
-                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
-                ],
-                '<?php
+                'header' => 'def',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
 
 /**
  * def
  */
 ',
-                '<?php
+            '<?php
 ',
-            ],
-            [
-                ['header' => 'xyz'],
-                '<?php
+        ];
+
+        yield [
+            ['header' => 'xyz'],
+            '<?php
 
 /*
  * xyz
  */
 
     $b;',
-                '<?php
+            '<?php
     $b;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'xyz123',
-                    'separate' => 'none',
-                ],
-                '<?php
+                'header' => 'xyz123',
+                'separate' => 'none',
+            ],
+            '<?php
 /*
  * xyz123
  */
     $a;',
-                '<?php
+            '<?php
     $a;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'abc',
-                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
-                ],
-                '<?php
+                'header' => 'abc',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
 
 /**
  * abc
  */
 
 $c;',
-                '<?php
+            '<?php
 $c;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'ghi',
-                    'separate' => 'both',
-                ],
-                '<?php
+                'header' => 'ghi',
+                'separate' => 'both',
+            ],
+            '<?php
 
 /*
  * ghi
  */
 
 $d;',
-                '<?php
+            '<?php
 $d;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'ghi',
-                    'separate' => 'top',
-                ],
-                '<?php
+                'header' => 'ghi',
+                'separate' => 'top',
+            ],
+            '<?php
 
 /*
  * ghi
  */
 $d;',
-                '<?php
+            '<?php
 $d;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_declare_strict',
-                ],
-                '<?php
+                'header' => 'tmp',
+                'location' => 'after_declare_strict',
+            ],
+            '<?php
 
 /*
  * tmp
@@ -246,32 +257,34 @@ $d;',
 declare(ticks=1);
 
 echo 1;',
-                '<?php
+            '<?php
 declare(ticks=1);
 
 echo 1;',
-            ],
-            [
-                ['header' => 'Foo'],
-                '<?php
+        ];
+
+        yield [
+            ['header' => 'Foo'],
+            '<?php
 
 /*
  * Foo
  */
 
 echo \'bar\';',
-                '<?php echo \'bar\';',
-            ],
-            [
-                ['header' => 'x'],
-                '<?php
+            '<?php echo \'bar\';',
+        ];
+
+        yield [
+            ['header' => 'x'],
+            '<?php
 
 /*
  * x
  */
 
 echo \'a\';',
-                '<?php
+            '<?php
 
 /*
  * y
@@ -279,10 +292,11 @@ echo \'a\';',
  */
 
 echo \'a\';',
-            ],
-            [
-                ['header' => "a\na"],
-                '<?php
+        ];
+
+        yield [
+            ['header' => "a\na"],
+            '<?php
 
 /*
  * a
@@ -290,7 +304,7 @@ echo \'a\';',
  */
 
 echo \'x\';',
-                '<?php
+            '<?php
 
 
 /*
@@ -300,15 +314,16 @@ echo \'x\';',
 
 
 echo \'x\';',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'foo',
-                    'location' => 'after_open',
-                    'separate' => 'bottom',
-                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
-                ],
-                '<?php
+                'header' => 'foo',
+                'location' => 'after_open',
+                'separate' => 'bottom',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
 /**
  * foo
  */
@@ -318,7 +333,7 @@ declare(strict_types=1);
 namespace A;
 
 echo 1;',
-                '<?php
+            '<?php
 
 declare(strict_types=1);
 /**
@@ -328,15 +343,16 @@ declare(strict_types=1);
 namespace A;
 
 echo 1;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'foo',
-                    'location' => 'after_open',
-                    'separate' => 'bottom',
-                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
-                ],
-                '<?php
+                'header' => 'foo',
+                'location' => 'after_open',
+                'separate' => 'bottom',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
 /**
  * foo
  */
@@ -349,7 +365,7 @@ declare(strict_types=1);
 namespace A;
 
 echo 1;',
-                '<?php
+            '<?php
 
 declare(strict_types=1);
 /**
@@ -359,13 +375,14 @@ declare(strict_types=1);
 namespace A;
 
 echo 1;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'Foo',
-                    'separate' => 'none',
-                ],
-                '<?php
+                'header' => 'Foo',
+                'separate' => 'none',
+            ],
+            '<?php
 
 declare(strict_types=1);
 /*
@@ -376,7 +393,7 @@ namespace SebastianBergmann\Foo;
 class Bar
 {
 }',
-                '<?php
+            '<?php
 /*
  * Foo
  */
@@ -388,10 +405,11 @@ namespace SebastianBergmann\Foo;
 class Bar
 {
 }',
-            ],
-            [
-                ['header' => 'tmp'],
-                '<?php
+        ];
+
+        yield [
+            ['header' => 'tmp'],
+            '<?php
 
 /*
  * tmp
@@ -401,35 +419,37 @@ class Bar
  * Foo class doc.
  */
 class Foo {}',
-                '<?php
+            '<?php
 
 /**
  * Foo class doc.
  */
 class Foo {}',
-            ],
-            [
-                ['header' => 'tmp'],
-                '<?php
+        ];
+
+        yield [
+            ['header' => 'tmp'],
+            '<?php
 
 /*
  * tmp
  */
 
 class Foo {}',
-                '<?php
+            '<?php
 
 /*
  * Foo class doc.
  */
 class Foo {}',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
-                ],
-                '<?php
+                'header' => 'tmp',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
 
 /**
  * tmp
@@ -439,55 +459,58 @@ class Foo {}',
  * Foo class doc.
  */
 class Foo {}',
-                '<?php
+            '<?php
 
 /**
  * Foo class doc.
  */
 class Foo {}',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
-                ],
-                '<?php
+                'header' => 'tmp',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
 
 /**
  * tmp
  */
 
 class Foo {}',
-                '<?php
+            '<?php
 
 /**
  * tmp
  */
 class Foo {}',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'separate' => 'top',
-                ],
-                '<?php
+                'header' => 'tmp',
+                'separate' => 'top',
+            ],
+            '<?php
 
 /*
  * tmp
  */
 class Foo {}',
-                '<?php
+            '<?php
 /**
  * Foo class doc.
  */
 class Foo {}',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'bar',
-                    'location' => 'after_open',
-                ],
-                '<?php
+                'header' => 'bar',
+                'location' => 'after_open',
+            ],
+            '<?php
 
 /*
  * bar
@@ -497,7 +520,7 @@ declare(strict_types=1);
 
 // foo
 foo();',
-                '<?php
+            '<?php
 
 /*
  * foo
@@ -507,13 +530,14 @@ declare(strict_types=1);
 
 // foo
 foo();',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'bar',
-                    'location' => 'after_open',
-                ],
-                '<?php
+                'header' => 'bar',
+                'location' => 'after_open',
+            ],
+            '<?php
 
 /*
  * bar
@@ -523,7 +547,7 @@ declare(strict_types=1);
 
 /* foo */
 foo();',
-                '<?php
+            '<?php
 
 /*
  * foo
@@ -533,28 +557,30 @@ declare(strict_types=1);
 
 /* foo */
 foo();',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_declare_strict',
-                ],
-                '<?php
+                'header' => 'tmp',
+                'location' => 'after_declare_strict',
+            ],
+            '<?php
 
 /*
  * tmp
  */
 
 declare(strict_types=1) ?>',
-                '<?php
+            '<?php
 declare(strict_types=1) ?>',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_declare_strict',
-                ],
-                '#!/usr/bin/env php
+                'header' => 'tmp',
+                'location' => 'after_declare_strict',
+            ],
+            '#!/usr/bin/env php
 <?php
 declare(strict_types=1);
 
@@ -565,39 +591,41 @@ declare(strict_types=1);
 namespace A\B;
 
 echo 1;',
-                '#!/usr/bin/env php
+            '#!/usr/bin/env php
 <?php
 declare(strict_types=1);namespace A\B;
 
 echo 1;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_open',
-                ],
-                'Short mixed file A
+                'header' => 'tmp',
+                'location' => 'after_open',
+            ],
+            'Short mixed file A
 Hello<?php echo "World!"; ?>',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_open',
-                ],
-                'Short mixed file B
+                'header' => 'tmp',
+                'location' => 'after_open',
+            ],
+            'Short mixed file B
 <?php echo "Hello"; ?>World!',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_open',
-                ],
-                'File with anything at the beginning and with multiple opening tags are not supported
+                'header' => 'tmp',
+                'location' => 'after_open',
+            ],
+            'File with anything at the beginning and with multiple opening tags are not supported
 <?php
 echo 1;
 ?>Hello World!<?php
 script_continues_here();',
-            ],
         ];
     }
 
@@ -632,40 +660,43 @@ echo 1;'
 
     public static function provideMisconfigurationCases(): iterable
     {
-        return [
-            [[], 'Missing required configuration: The required option "header" is missing.'],
+        yield [[], 'Missing required configuration: The required option "header" is missing.'];
+
+        yield [
+            ['header' => 1],
+            'Invalid configuration: The option "header" with value 1 is expected to be of type "string", but is of type "(int|integer)"\.',
+        ];
+
+        yield [
             [
-                ['header' => 1],
-                'Invalid configuration: The option "header" with value 1 is expected to be of type "string", but is of type "(int|integer)"\.',
+                'header' => '',
+                'comment_type' => 'foo',
             ],
+            'Invalid configuration: The option "comment_type" with value "foo" is invalid\. Accepted values are: "PHPDoc", "comment"\.',
+        ];
+
+        yield [
             [
-                [
-                    'header' => '',
-                    'comment_type' => 'foo',
-                ],
-                'Invalid configuration: The option "comment_type" with value "foo" is invalid\. Accepted values are: "PHPDoc", "comment"\.',
+                'header' => '',
+                'comment_type' => new \stdClass(),
             ],
+            'Invalid configuration: The option "comment_type" with value stdClass is invalid\. Accepted values are: "PHPDoc", "comment"\.',
+        ];
+
+        yield [
             [
-                [
-                    'header' => '',
-                    'comment_type' => new \stdClass(),
-                ],
-                'Invalid configuration: The option "comment_type" with value stdClass is invalid\. Accepted values are: "PHPDoc", "comment"\.',
+                'header' => '',
+                'location' => new \stdClass(),
             ],
+            'Invalid configuration: The option "location" with value stdClass is invalid\. Accepted values are: "after_open", "after_declare_strict"\.',
+        ];
+
+        yield [
             [
-                [
-                    'header' => '',
-                    'location' => new \stdClass(),
-                ],
-                'Invalid configuration: The option "location" with value stdClass is invalid\. Accepted values are: "after_open", "after_declare_strict"\.',
+                'header' => '',
+                'separate' => new \stdClass(),
             ],
-            [
-                [
-                    'header' => '',
-                    'separate' => new \stdClass(),
-                ],
-                'Invalid configuration: The option "separate" with value stdClass is invalid\. Accepted values are: "both", "top", "bottom", "none"\.',
-            ],
+            'Invalid configuration: The option "separate" with value stdClass is invalid\. Accepted values are: "both", "top", "bottom", "none"\.',
         ];
     }
 
@@ -691,21 +722,20 @@ echo 1;'
 
     public static function provideHeaderGenerationCases(): iterable
     {
-        return [
-            [
-                '/*
+        yield [
+            '/*
  * a
  */',
-                'a',
-                HeaderCommentFixer::HEADER_COMMENT,
-            ],
-            [
-                '/**
+            'a',
+            HeaderCommentFixer::HEADER_COMMENT,
+        ];
+
+        yield [
+            '/**
  * a
  */',
-                'a',
-                HeaderCommentFixer::HEADER_PHPDOC,
-            ],
+            'a',
+            HeaderCommentFixer::HEADER_PHPDOC,
         ];
     }
 
@@ -723,16 +753,21 @@ echo 1;'
 
     public static function provideDoNotTouchCases(): iterable
     {
-        return [
-            ["<?php\nphpinfo();\n?>\n<?"],
-            [" <?php\nphpinfo();\n"],
-            ["<?php\nphpinfo();\n?><hr/>"],
-            ["  <?php\n"],
-            ['<?= 1?>'],
-            ["<?= 1?><?php\n"],
-            ["<?= 1?>\n<?php\n"],
-            ["<?php\n// comment 1\n?><?php\n// comment 2\n"],
-        ];
+        yield ["<?php\nphpinfo();\n?>\n<?"];
+
+        yield [" <?php\nphpinfo();\n"];
+
+        yield ["<?php\nphpinfo();\n?><hr/>"];
+
+        yield ["  <?php\n"];
+
+        yield ['<?= 1?>'];
+
+        yield ["<?= 1?><?php\n"];
+
+        yield ["<?= 1?>\n<?php\n"];
+
+        yield ["<?php\n// comment 1\n?><?php\n// comment 2\n"];
     }
 
     public function testWithoutConfiguration(): void
@@ -756,17 +791,15 @@ echo 1;'
 
     public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield [
             [
-                [
-                    'header' => 'whitemess',
-                    'location' => 'after_declare_strict',
-                    'separate' => 'bottom',
-                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
-                ],
-                "<?php\r\ndeclare(strict_types=1);\r\n/**\r\n * whitemess\r\n */\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
-                "<?php\r\ndeclare(strict_types=1);\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
+                'header' => 'whitemess',
+                'location' => 'after_declare_strict',
+                'separate' => 'bottom',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
+            "<?php\r\ndeclare(strict_types=1);\r\n/**\r\n * whitemess\r\n */\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
+            "<?php\r\ndeclare(strict_types=1);\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
         ];
     }
 

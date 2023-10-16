@@ -36,95 +36,102 @@ final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
     public function testLeaveNewLinesAlone(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-class Foo
-{
-    private function bar()
-    {
-        if (foo(
-            'foo' ,
-            'bar'    ,
-            [1, 2, 3],
-            'baz' // a comment just to mix things up
-        )) {
-            return 1;
-        };
-    }
-}
-EOF;
+            class Foo
+            {
+                private function bar()
+                {
+                    if (foo(
+                        'foo' ,
+                        'bar'    ,
+                        [1, 2, 3],
+                        'baz' // a comment just to mix things up
+                    )) {
+                        return 1;
+                    };
+                }
+            }
+            EOF;
         $this->doTest($expected);
     }
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php foo();',
-                '<?php foo( );',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php foo();',
+            '<?php foo( );',
+        ];
+
+        yield [
+            '<?php
 if (true) {
     // if body
 }',
-                '<?php
+            '<?php
 if ( true ) {
     // if body
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     // if body
 }',
-                '<?php
+            '<?php
 if (     true   ) {
     // if body
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo($bar, $baz)
 {
     // function body
 }',
-                '<?php
+            '<?php
 function foo( $bar, $baz )
 {
     // function body
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo->bar($arg1, $arg2);',
-                '<?php
+            '<?php
 $foo->bar(  $arg1, $arg2   );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = array( 1, 2, 3 );
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $var = [ 1, 2, 3 ];
 ',
-            ],
-            // list call with trailing comma - need to leave alone
-            [
-                '<?php list($path, $mode, ) = foo();',
-            ],
-            [
-                '<?php list($path, $mode,) = foo();',
-            ],
-            [
-                '<?php
+        ];
+
+        // list call with trailing comma - need to leave alone
+        yield [
+            '<?php list($path, $mode, ) = foo();',
+        ];
+
+        yield [
+            '<?php list($path, $mode,) = foo();',
+        ];
+
+        yield [
+            '<?php
 $a = $b->test(  // do not remove space
     $e          // between `(` and `)`
                 // and this comment
 );',
-            ],
         ];
     }
 

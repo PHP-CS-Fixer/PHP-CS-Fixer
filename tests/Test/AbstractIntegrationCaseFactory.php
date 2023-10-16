@@ -105,18 +105,26 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--REQUIREMENTS--' block of a '.test' file and determines requirements.
      *
-     * @return array<string, int>|array{php: int}
+     * @return array{php: int, "php<"?: int, os: list<string>}
      */
     protected function determineRequirements(SplFileInfo $file, ?string $config): array
     {
         $parsed = $this->parseJson($config, [
             'php' => \PHP_VERSION_ID,
+            'os' => ['Linux', 'Darwin', 'Windows'],
         ]);
 
         if (!\is_int($parsed['php'])) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected int value like 50509 for "php", got "%s".',
                 get_debug_type($parsed['php']).'#'.$parsed['php'],
+            ));
+        }
+
+        if (!\is_array($parsed['os'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected array of OS names for "os", got "%s".',
+                get_debug_type($parsed['os']).' ('.$parsed['os'].')',
             ));
         }
 
@@ -216,14 +224,10 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     private function parseJson(?string $encoded, array $template = null): array
     {
         // content is optional if template is provided
-        if (!$encoded && null !== $template) {
+        if ((null === $encoded || '' === $encoded) && null !== $template) {
             $decoded = [];
         } else {
-            $decoded = json_decode($encoded, true);
-
-            if (JSON_ERROR_NONE !== json_last_error()) {
-                throw new \InvalidArgumentException(sprintf('Malformed JSON: "%s", error: "%s".', $encoded, json_last_error_msg()));
-            }
+            $decoded = json_decode($encoded, true, 512, JSON_THROW_ON_ERROR);
         }
 
         if (null !== $template) {

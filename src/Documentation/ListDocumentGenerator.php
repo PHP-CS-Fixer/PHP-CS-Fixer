@@ -44,17 +44,15 @@ final class ListDocumentGenerator
     {
         usort(
             $fixers,
-            static function (FixerInterface $fixer1, FixerInterface $fixer2): int {
-                return strnatcasecmp($fixer1->getName(), $fixer2->getName());
-            }
+            static fn (FixerInterface $fixer1, FixerInterface $fixer2): int => strnatcasecmp($fixer1->getName(), $fixer2->getName())
         );
 
         $documentation = <<<'RST'
-=======================
-List of Available Rules
-=======================
+            =======================
+            List of Available Rules
+            =======================
 
-RST;
+            RST;
         foreach ($fixers as $fixer) {
             $name = $fixer->getName();
             $definition = $fixer->getDefinition();
@@ -93,15 +91,15 @@ RST;
 
                 foreach ($configurationDefinition->getOptions() as $option) {
                     $documentation .= "\n   - | ``{$option->getName()}``";
-                    $documentation .= "\n     | {$option->getDescription()}";
+                    $documentation .= "\n     | ".RstUtils::ensureProperInlineCode($option->getDescription());
 
                     if ($option instanceof DeprecatedFixerOptionInterface) {
                         $deprecationMessage = RstUtils::toRst($option->getDeprecationMessage(), 3);
-                        $documentation .= "\n     | warning:: This option is deprecated and will be removed on next major version. {$deprecationMessage}";
+                        $documentation .= "\n     | warning:: This option is deprecated and will be removed in the next major version. {$deprecationMessage}";
                     }
 
                     if ($option instanceof AliasedFixerOption) {
-                        $documentation .= "\n     | note:: The previous name of this option was ``{$option->getAlias()}`` but it is now deprecated and will be removed on next major version.";
+                        $documentation .= "\n     | note:: The previous name of this option was ``{$option->getAlias()}`` but it is now deprecated and will be removed in the next major version.";
                     }
 
                     $allowed = HelpCommand::getDisplayableAllowedValues($option);
@@ -114,11 +112,9 @@ RST;
                         );
                     } else {
                         $allowedKind = 'Allowed values';
-                        $allowed = array_map(static function ($value): string {
-                            return $value instanceof AllowedValueSubset
-                                ? 'a subset of ``'.Utils::toString($value->getAllowedValues()).'``'
-                                : '``'.Utils::toString($value).'``';
-                        }, $allowed);
+                        $allowed = array_map(static fn ($value): string => $value instanceof AllowedValueSubset
+                            ? 'a subset of ``'.Utils::toString($value->getAllowedValues()).'``'
+                            : '``'.Utils::toString($value).'``', $allowed);
                     }
 
                     $allowed = Utils::naturalLanguageJoin($allowed, '');

@@ -44,72 +44,79 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        return [
+        yield [
+            '<?php function foo(?Barable $barA, ?Barable $barB): ?Fooable {}',
             [
-                '<?php function foo(?Barable $barA, ?Barable $barB): ?Fooable {}',
-                [
-                    5 => CT::T_NULLABLE_TYPE,
-                    11 => CT::T_NULLABLE_TYPE,
-                    18 => CT::T_NULLABLE_TYPE,
-                ],
+                5 => CT::T_NULLABLE_TYPE,
+                11 => CT::T_NULLABLE_TYPE,
+                18 => CT::T_NULLABLE_TYPE,
             ],
+        ];
+
+        yield [
+            '<?php interface Fooable { function foo(): ?Fooable; }',
             [
-                '<?php interface Fooable { function foo(): ?Fooable; }',
-                [
-                    14 => CT::T_NULLABLE_TYPE,
-                ],
+                14 => CT::T_NULLABLE_TYPE,
             ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a = 1 ? "aaa" : "bbb";
                     $b = 1 ? fnc() : [];
                     $c = 1 ?: [];
                 ',
-            ],
+        ];
+
+        yield [
+            '<?php class Foo { private ?string $foo; }',
             [
-                '<?php class Foo { private ?string $foo; }',
-                [
-                    9 => CT::T_NULLABLE_TYPE,
-                ],
+                9 => CT::T_NULLABLE_TYPE,
             ],
+        ];
+
+        yield [
+            '<?php class Foo { protected ?string $foo; }',
             [
-                '<?php class Foo { protected ?string $foo; }',
-                [
-                    9 => CT::T_NULLABLE_TYPE,
-                ],
+                9 => CT::T_NULLABLE_TYPE,
             ],
+        ];
+
+        yield [
+            '<?php class Foo { public ?string $foo; }',
             [
-                '<?php class Foo { public ?string $foo; }',
-                [
-                    9 => CT::T_NULLABLE_TYPE,
-                ],
+                9 => CT::T_NULLABLE_TYPE,
             ],
+        ];
+
+        yield [
+            '<?php class Foo { var ?string $foo; }',
             [
-                '<?php class Foo { var ?string $foo; }',
-                [
-                    9 => CT::T_NULLABLE_TYPE,
-                ],
+                9 => CT::T_NULLABLE_TYPE,
             ],
+        ];
+
+        yield [
+            '<?php class Foo { var ? Foo\Bar $foo; }',
             [
-                '<?php class Foo { var ? Foo\Bar $foo; }',
-                [
-                    9 => CT::T_NULLABLE_TYPE,
-                ],
+                9 => CT::T_NULLABLE_TYPE,
             ],
+        ];
+
+        yield [
+            '<?php fn(?Barable $barA, ?Barable $barB): ?Fooable => null;',
             [
-                '<?php fn(?Barable $barA, ?Barable $barB): ?Fooable => null;',
-                [
-                    3 => CT::T_NULLABLE_TYPE,
-                    9 => CT::T_NULLABLE_TYPE,
-                    16 => CT::T_NULLABLE_TYPE,
-                ],
+                3 => CT::T_NULLABLE_TYPE,
+                9 => CT::T_NULLABLE_TYPE,
+                16 => CT::T_NULLABLE_TYPE,
             ],
+        ];
+
+        yield [
+            '<?php class Foo { public ?array $foo; public static ?array $bar; }',
             [
-                '<?php class Foo { public ?array $foo; public static ?array $bar; }',
-                [
-                    9 => CT::T_NULLABLE_TYPE,
-                    19 => CT::T_NULLABLE_TYPE,
-                ],
+                9 => CT::T_NULLABLE_TYPE,
+                19 => CT::T_NULLABLE_TYPE,
             ],
         ];
     }

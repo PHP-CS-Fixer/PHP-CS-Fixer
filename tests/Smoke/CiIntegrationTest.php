@@ -201,89 +201,90 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 
     public static function provideIntegrationCases(): iterable
     {
-        return [
-            'random-changes' => [
-                'random-changes',
-                [
-                    'touch dir\ a/file.php',
-                    'rm -r dir\ c',
-                    'echo "" >> dir\ b/file\ b.php',
-                    'echo "echo 1;" >> dir\ b/file\ b.php',
-                    'git add .',
-                    'git commit -m "Random changes" -q',
-                ],
-                [
-                    'dir a/file.php',
-                    'dir b/file b.php',
-                ],
-                [
-                    '--path-mode=intersection',
-                    '--',
-                    'dir a/file.php',
-                    'dir b/file b.php',
-                    '',
-                ],
-                'S.                                                                  2 / 2 (100%)',
+        yield 'random-changes' => [
+            'random-changes',
+            [
+                'touch dir\ a/file.php',
+                'rm -r dir\ c',
+                'echo "" >> dir\ b/file\ b.php',
+                'echo "echo 1;" >> dir\ b/file\ b.php',
+                'git add .',
+                'git commit -m "Random changes" -q',
             ],
-            'changes-including-dist-config-file' => [
-                'changes-including-dist-config-file',
-                [
-                    'echo "" >> dir\ b/file\ b.php',
-                    'echo "echo 1;" >> dir\ b/file\ b.php',
-                    // `sed -i ...` is not handled the same on Linux and macOS
-                    'sed -e \'s/@Symfony/@PSR2/\' .php-cs-fixer.dist.php > .php-cs-fixer.dist.php.new',
-                    'mv .php-cs-fixer.dist.php.new .php-cs-fixer.dist.php',
-                    'git add .',
-                    'git commit -m "Random changes including config file" -q',
-                ],
-                [
-                    '.php-cs-fixer.dist.php',
-                    'dir b/file b.php',
-                ],
-                [
-                    '',
-                    '',
-                ],
-                '...                                                                 3 / 3 (100%)',
+            [
+                'dir a/file.php',
+                'dir b/file b.php',
             ],
-            'changes-including-custom-config-file-creation' => [
-                'changes-including-custom-config-file-creation',
-                [
-                    'echo "" >> dir\ b/file\ b.php',
-                    'echo "echo 1;" >> dir\ b/file\ b.php',
-                    'sed -e \'s/@Symfony/@PSR2/\' .php-cs-fixer.dist.php > .php-cs-fixer.php',
-                    'git add .',
-                    'git commit -m "Random changes including custom config file creation" -q',
-                ],
-                [
-                    '.php-cs-fixer.php',
-                    'dir b/file b.php',
-                ],
-                [
-                    '',
-                    '',
-                ],
-                '...                                                                 3 / 3 (100%)',
+            [
+                '--path-mode=intersection',
+                '--',
+                'dir a/file.php',
+                'dir b/file b.php',
+                '',
             ],
-            'changes-including-composer-lock' => [
-                'changes-including-composer-lock',
-                [
-                    'echo "" >> dir\ b/file\ b.php',
-                    'echo "echo 1;" >> dir\ b/file\ b.php',
-                    'touch composer.lock',
-                    'git add .',
-                    'git commit -m "Random changes including composer.lock" -q',
-                ],
-                [
-                    'composer.lock',
-                    'dir b/file b.php',
-                ],
-                [
-                    '',
-                    '',
-                ],
-                '...                                                                 3 / 3 (100%)',
+            'S.                                                                  2 / 2 (100%)',
+        ];
+
+        yield 'changes-including-dist-config-file' => [
+            'changes-including-dist-config-file',
+            [
+                'echo "" >> dir\ b/file\ b.php',
+                'echo "echo 1;" >> dir\ b/file\ b.php',
+                // `sed -i ...` is not handled the same on Linux and macOS
+                'sed -e \'s/@Symfony/@PSR2/\' .php-cs-fixer.dist.php > .php-cs-fixer.dist.php.new',
+                'mv .php-cs-fixer.dist.php.new .php-cs-fixer.dist.php',
+                'git add .',
+                'git commit -m "Random changes including config file" -q',
             ],
+            [
+                '.php-cs-fixer.dist.php',
+                'dir b/file b.php',
+            ],
+            [
+                '',
+                '',
+            ],
+            '...                                                                 3 / 3 (100%)',
+        ];
+
+        yield 'changes-including-custom-config-file-creation' => [
+            'changes-including-custom-config-file-creation',
+            [
+                'echo "" >> dir\ b/file\ b.php',
+                'echo "echo 1;" >> dir\ b/file\ b.php',
+                'sed -e \'s/@Symfony/@PSR2/\' .php-cs-fixer.dist.php > .php-cs-fixer.php',
+                'git add .',
+                'git commit -m "Random changes including custom config file creation" -q',
+            ],
+            [
+                '.php-cs-fixer.php',
+                'dir b/file b.php',
+            ],
+            [
+                '',
+                '',
+            ],
+            '...                                                                 3 / 3 (100%)',
+        ];
+
+        yield 'changes-including-composer-lock' => [
+            'changes-including-composer-lock',
+            [
+                'echo "" >> dir\ b/file\ b.php',
+                'echo "echo 1;" >> dir\ b/file\ b.php',
+                'touch composer.lock',
+                'git add .',
+                'git commit -m "Random changes including composer.lock" -q',
+            ],
+            [
+                'composer.lock',
+                'dir b/file b.php',
+            ],
+            [
+                '',
+                '',
+            ],
+            '...                                                                 3 / 3 (100%)',
         ];
     }
 

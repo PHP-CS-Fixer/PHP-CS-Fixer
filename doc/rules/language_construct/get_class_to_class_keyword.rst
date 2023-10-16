@@ -44,8 +44,6 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PHP80Migration:risky
-  Using the `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ rule set will enable the ``get_class_to_class_keyword`` rule.
+- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
-@Symfony:risky
-  Using the `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ rule set will enable the ``get_class_to_class_keyword`` rule.

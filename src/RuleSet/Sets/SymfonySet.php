@@ -34,6 +34,10 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'return',
                 ],
             ],
+            'braces_position' => [
+                'allow_single_line_anonymous_functions' => true,
+                'allow_single_line_empty_anonymous_classes' => true,
+            ],
             'cast_spaces' => true,
             'class_attributes_separation' => [
                 'elements' => [
@@ -46,10 +50,6 @@ final class SymfonySet extends AbstractRuleSetDescription
             'class_reference_name_casing' => true,
             'clean_namespace' => true,
             'concat_space' => true,
-            'curly_braces_position' => [
-                'allow_single_line_anonymous_functions' => true,
-                'allow_single_line_empty_anonymous_classes' => true,
-            ],
             'declare_parentheses' => true,
             'echo_tag_syntax' => true,
             'empty_loop_body' => ['style' => 'braces'],
@@ -70,13 +70,14 @@ final class SymfonySet extends AbstractRuleSetDescription
             'integer_literal_case' => true,
             'lambda_not_used_import' => true,
             'linebreak_after_opening_tag' => true,
+            'long_to_shorthand_operator' => true,
             'magic_constant_casing' => true,
             'magic_method_casing' => true,
             'method_argument_space' => [
                 'on_multiline' => 'ignore',
             ],
             'native_function_casing' => true,
-            'native_function_type_declaration_casing' => true,
+            'native_type_declaration_casing' => true,
             'no_alias_language_construct_call' => true,
             'no_alternative_syntax' => true,
             'no_binary_string' => true,
@@ -110,6 +111,9 @@ final class SymfonySet extends AbstractRuleSetDescription
                 'remove_inheritdoc' => true,
             ],
             'no_trailing_comma_in_singleline' => true,
+            'no_unneeded_braces' => [
+                'namespaces' => true,
+            ],
             'no_unneeded_control_parentheses' => [
                 'statements' => [
                     'break',
@@ -122,9 +126,6 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'yield',
                     'yield_from',
                 ],
-            ],
-            'no_unneeded_curly_braces' => [
-                'namespaces' => true,
             ],
             'no_unneeded_import_alias' => true,
             'no_unset_cast' => true,

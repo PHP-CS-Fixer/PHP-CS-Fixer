@@ -136,7 +136,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
     /**
      * Creates test data by parsing '.test' files.
      *
-     * @return IntegrationCase[][]
+     * @return iterable<string, array{IntegrationCase}>
      */
     public static function provideIntegrationCases(): iterable
     {
@@ -148,7 +148,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         $factory = static::createIntegrationCaseFactory();
-        $tests = [];
 
         /** @var SplFileInfo $file */
         foreach (Finder::create()->files()->in($fixturesDir) as $file) {
@@ -156,12 +155,10 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 continue;
             }
 
-            $tests[substr($file->getPathname(), \strlen(realpath(__DIR__.'/../../')) + 1)] = [
-                $factory->create($file),
-            ];
-        }
+            $relativePath = substr($file->getPathname(), \strlen(realpath(__DIR__.'/../../')) + 1);
 
-        return $tests;
+            yield $relativePath => [$factory->create($file)];
+        }
     }
 
     protected static function createIntegrationCaseFactory(): IntegrationCaseFactoryInterface
@@ -196,6 +193,17 @@ abstract class AbstractIntegrationTestCase extends TestCase
     {
         if (\PHP_VERSION_ID < $case->getRequirement('php')) {
             self::markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), \PHP_VERSION_ID));
+        }
+
+        if (!\in_array(PHP_OS, $case->getRequirement('os'), true)) {
+            self::markTestSkipped(
+                sprintf(
+                    'Unsupported OS (%s) for "%s", allowed are: %s.',
+                    PHP_OS,
+                    $case->getFileName(),
+                    implode(', ', $case->getRequirement('os'))
+                )
+            );
         }
 
         $input = $case->getInputCode();
@@ -312,9 +320,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             self::assertGreaterThan(
                 1,
                 \count(array_unique(array_map(
-                    static function (FixerInterface $fixer): int {
-                        return $fixer->getPriority();
-                    },
+                    static fn (FixerInterface $fixer): int => $fixer->getPriority(),
                     self::createFixers($case)
                 ))),
                 sprintf(

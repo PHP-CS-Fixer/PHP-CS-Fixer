@@ -23,16 +23,12 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Fixer for rules defined in PSR2 ¶4.4, ¶4.6.
- *
  * @author Kuanhung Chen <ericj.tw@gmail.com>
  */
 final class MethodArgumentSpaceFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
@@ -76,23 +72,44 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                         'keep_multiple_spaces_after_comma' => false,
                     ]
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
+                    "<?php\nfunction sample(#[Foo] #[Bar] \$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  2);\n",
+                    [
+                        'on_multiline' => 'ensure_fully_multiline',
+                        'attribute_placement' => 'ignore',
+                    ]
+                ),
+                new CodeSample(
+                    "<?php\nfunction sample(#[Foo]\n    #[Bar]\n    \$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  2);\n",
+                    [
+                        'on_multiline' => 'ensure_fully_multiline',
+                        'attribute_placement' => 'same_line',
+                    ]
+                ),
+                new CodeSample(
+                    "<?php\nfunction sample(#[Foo] #[Bar] \$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  2);\n",
+                    [
+                        'on_multiline' => 'ensure_fully_multiline',
+                        'attribute_placement' => 'standalone',
+                    ]
+                ),
+                new CodeSample(
                     <<<'SAMPLE'
-<?php
-sample(
-    <<<EOD
-        foo
-        EOD
-    ,
-    'bar'
-);
+                        <?php
+                        sample(
+                            <<<EOD
+                                foo
+                                EOD
+                            ,
+                            'bar'
+                        );
 
-SAMPLE
+                        SAMPLE
                     ,
-                    new VersionSpecification(7_03_00),
                     ['after_heredoc' => true]
                 ),
-            ]
+            ],
+            'This fixer covers rules defined in PSR2 ¶4.4, ¶4.6.'
         );
     }
 
@@ -101,21 +118,10 @@ SAMPLE
         return $tokens->isTokenKindFound('(');
     }
 
-    public function configure(array $configuration): void
-    {
-        parent::configure($configuration);
-
-        if (isset($configuration['ensure_fully_multiline'])) {
-            $this->configuration['on_multiline'] = $this->configuration['ensure_fully_multiline']
-                ? 'ensure_fully_multiline'
-                : 'ignore';
-        }
-    }
-
     /**
      * {@inheritdoc}
      *
-     * Must run before ArrayIndentationFixer.
+     * Must run before ArrayIndentationFixer, StatementIndentationFixer.
      * Must run after CombineNestedDirnameFixer, FunctionDeclarationFixer, ImplodeCallFixer, LambdaNotUsedImportFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, NoUselessSprintfFixer, PowToExponentiationFixer, StrictParamFixer.
      */
     public function getPriority(): int
@@ -172,6 +178,13 @@ SAMPLE
             (new FixerOptionBuilder('after_heredoc', 'Whether the whitespace between heredoc end and comma should be removed.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
+                ->getOption(),
+            (new FixerOptionBuilder(
+                'attribute_placement',
+                'Defines how to handle argument attributes when function definition is multiline.'
+            ))
+                ->setAllowedValues(['ignore', 'same_line', 'standalone'])
+                ->setDefault('standalone')
                 ->getOption(),
         ]);
     }
@@ -342,7 +355,23 @@ SAMPLE
                 continue;
             }
 
-            if ($token->equals(',') && !$tokens[$tokens->getNextMeaningfulToken($index)]->equals(')')) {
+            if ($tokens[$tokens->getNextMeaningfulToken($index)]->equals(')')) {
+                continue;
+            }
+
+            if ($token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                if ('standalone' === $this->configuration['attribute_placement']) {
+                    $this->fixNewline($tokens, $index, $indentation);
+                } elseif ('same_line' === $this->configuration['attribute_placement']) {
+                    $this->ensureSingleLine($tokens, $index + 1);
+                    $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
+                }
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+
+                continue;
+            }
+
+            if ($token->equals(',')) {
                 $this->fixNewline($tokens, $index, $indentation);
             }
         }
@@ -351,7 +380,7 @@ SAMPLE
     }
 
     /**
-     * Method to insert newline after comma or opening parenthesis.
+     * Method to insert newline after comma, attribute or opening parenthesis.
      *
      * @param int    $index       index of a comma
      * @param string $indentation the indentation that should be used
@@ -366,6 +395,10 @@ SAMPLE
         if ($tokens[$index + 2]->isComment()) {
             $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken($index + 2);
             if (!$this->isNewline($tokens[$nextMeaningfulTokenIndex - 1])) {
+                if ($tokens[$nextMeaningfulTokenIndex - 1]->isWhitespace()) {
+                    $tokens->clearAt($nextMeaningfulTokenIndex - 1);
+                }
+
                 $tokens->ensureWhitespaceAtIndex($nextMeaningfulTokenIndex, 0, $this->whitespacesConfig->getLineEnding().$indentation);
             }
 

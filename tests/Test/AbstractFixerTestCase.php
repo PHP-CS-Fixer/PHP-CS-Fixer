@@ -155,8 +155,28 @@ abstract class AbstractFixerTestCase extends TestCase
                 $configSamplesProvided['default'] = true;
             }
 
-            if ($sample instanceof VersionSpecificCodeSampleInterface && !$sample->isSuitableFor(\PHP_VERSION_ID)) {
-                continue;
+            if ($sample instanceof VersionSpecificCodeSampleInterface) {
+                $supportedPhpVersions = [7_04_00, 8_00_00, 8_01_00, 8_02_00, 8_03_00];
+
+                $hasSuitableSupportedVersion = false;
+                foreach ($supportedPhpVersions as $version) {
+                    if ($sample->isSuitableFor($version)) {
+                        $hasSuitableSupportedVersion = true;
+                    }
+                }
+                self::assertTrue($hasSuitableSupportedVersion, 'Version specific code sample must be suitable for at least 1 supported PHP version.');
+
+                $hasUnsuitableSupportedVersion = false;
+                foreach ($supportedPhpVersions as $version) {
+                    if (!$sample->isSuitableFor($version)) {
+                        $hasUnsuitableSupportedVersion = true;
+                    }
+                }
+                self::assertTrue($hasUnsuitableSupportedVersion, 'Version specific code sample must be unsuitable for at least 1 supported PHP version.');
+
+                if (!$sample->isSuitableFor(\PHP_VERSION_ID)) {
+                    continue;
+                }
             }
 
             if ($fixerIsConfigurable) {
@@ -264,9 +284,7 @@ abstract class AbstractFixerTestCase extends TestCase
             return;
         }
 
-        $usedMethods = array_filter($usedMethods, static function (string $method): bool {
-            return !Preg::match('/^(count|find|generate|get|is|rewind)/', $method);
-        });
+        $usedMethods = array_filter($usedMethods, static fn (string $method): bool => !Preg::match('/^(count|find|generate|get|is|rewind)/', $method));
 
         $allowedMethods = ['insertAt'];
         $nonAllowedMethods = array_diff($usedMethods, $allowedMethods);
@@ -291,6 +309,7 @@ abstract class AbstractFixerTestCase extends TestCase
                 'method_chaining_indentation',
                 'native_constant_invocation',
                 'new_with_braces',
+                'new_with_parentheses',
                 'no_short_echo_tag',
                 'not_operator_with_space',
                 'not_operator_with_successor_space',
@@ -412,9 +431,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
             self::assertSameSize(
                 $tokens,
-                array_unique(array_map(static function (Token $token): string {
-                    return spl_object_hash($token);
-                }, $tokens->toArray())),
+                array_unique(array_map(static fn (Token $token): string => spl_object_hash($token), $tokens->toArray())),
                 'Token items inside Tokens collection must be unique.'
             );
 

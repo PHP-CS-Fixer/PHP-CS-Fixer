@@ -7,6 +7,15 @@ Renames PHPDoc tags.
 Configuration
 -------------
 
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether tags should be replaced only if they have exact same casing.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``fix_annotation``
 ~~~~~~~~~~~~~~~~~~
 
@@ -33,15 +42,6 @@ A map of tags to replace.
 Allowed types: ``array``
 
 Default value: ``[]``
-
-``case_sensitive``
-~~~~~~~~~~~~~~~~~~
-
-Whether tags should be replaced only if they have exact same casing.
-
-Allowed types: ``bool``
-
-Default value: ``false``
 
 Examples
 --------
@@ -116,12 +116,12 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``general_phpdoc_tag_rename`` rule with the config below:
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
   ``['replacements' => ['inheritDocs' => 'inheritDoc']]``
 
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``general_phpdoc_tag_rename`` rule with the config below:
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['replacements' => ['inheritDocs' => 'inheritDoc']]``
+
+

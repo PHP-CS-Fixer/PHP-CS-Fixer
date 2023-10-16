@@ -25,8 +25,6 @@
         "ext-tokenizer": "*",
         "composer/semver": "^3.3",
         "composer/xdebug-handler": "^3.0.3",
-        "doctrine/annotations": "^2",
-        "doctrine/lexer": "^2 || ^3",
         "sebastian/diff": "^4.0 || ^5.0",
         "symfony/console": "^5.4 || ^6.0",
         "symfony/event-dispatcher": "^5.4 || ^6.0",
@@ -51,8 +49,6 @@
         "phpspec/prophecy": "^1.16",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.5",
-        "phpunitgoodpractices/polyfill": "^1.6",
-        "phpunitgoodpractices/traits": "^1.9.2",
         "symfony/phpunit-bridge": "^6.2.3",
         "symfony/yaml": "^5.4 || ^6.0"
     },
@@ -78,5 +74,73 @@
             "ergebnis/composer-normalize": true
         },
         "sort-packages": true
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@install-tools"
+        ],
+        "cs:check": "@php php-cs-fixer check --diff",
+        "cs:fix": "@php php-cs-fixer fix",
+        "cs:fix:parallel": "echo '🔍 Will run in batches of 50 files.'; if [[ -f .php-cs-fixer.php ]]; then FIXER_CONFIG=.php-cs-fixer.php; else FIXER_CONFIG=.php-cs-fixer.dist.php; fi; php php-cs-fixer list-files --config=$FIXER_CONFIG | xargs -n 50 -P 8 php php-cs-fixer fix --config=$FIXER_CONFIG --path-mode intersection 2> /dev/null",
+        "docs": "@php dev-tools/doc.php",
+        "install-tools": "@composer --working-dir=dev-tools install",
+        "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi dev-tools/mess-detector/phpmd.xml --exclude vendor/*,dev-tools/vendor/*,dev-tools/phpstan/*,tests/Fixtures/*",
+        "normalize": [
+            "@composer normalize --working-dir=dev-tools --dry-run ../composer.json",
+            "@composer normalize --working-dir=dev-tools --dry-run composer.json"
+        ],
+        "phpstan": "@php -d memory_limit=512M dev-tools/vendor/bin/phpstan analyse",
+        "phpstan:baseline": "@php -d memory_limit=512M dev-tools/vendor/bin/phpstan analyse --generate-baseline=./dev-tools/phpstan/baseline.php",
+        "qa": "@quality-assurance",
+        "quality-assurance": [
+            "Composer\\Config::disableProcessTimeout",
+            "@install-tools --quiet",
+            "@self-check",
+            "@sa",
+            "@test"
+        ],
+        "require-checker": "@php dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json",
+        "sa": "@static-analysis",
+        "self-check": [
+            "./dev-tools/check_file_permissions.sh",
+            "./dev-tools/check_trailing_spaces.sh",
+            "@normalize",
+            "@require-checker"
+        ],
+        "static-analysis": [
+            "@cs:check",
+            "@phpstan",
+            "@mess-detector"
+        ],
+        "test": "@test:all",
+        "test:all": [
+            "Composer\\Config::disableProcessTimeout",
+            "paraunit run --testsuite all"
+        ],
+        "test:coverage": [
+            "Composer\\Config::disableProcessTimeout",
+            "paraunit run --testsuite coverage"
+        ]
+    },
+    "scripts-descriptions": {
+        "cs:check": "Check coding standards",
+        "cs:fix": "Fix coding standards",
+        "cs:fix:parallel": "Fix coding standards in naive parallel mode (using xargs)",
+        "docs": "Regenerate docs",
+        "install-tools": "Install DEV tools",
+        "mess-detector": "Analyse code with Mess Detector",
+        "normalize": "Run normalization for composer.json files",
+        "phpstan": "Run PHPStan analysis",
+        "phpstan:baseline": "Dump PHPStan baseline file - use only for updating, do not add new errors when possible",
+        "post-autoload-dump": "Run additional tasks after installing/updating main dependencies",
+        "qa": "Alias for 'quality-assurance'",
+        "quality-assurance": "Run QA suite",
+        "require-checker": "Verifies if codebase does not contain soft dependencies",
+        "sa": "Alias for 'static-analysis'",
+        "self-check": "Run set of self-checks ensuring repository's validity",
+        "static-analysis": "Run static analysis",
+        "test": "Alias for 'test:all'",
+        "test:all": "Run all tests",
+        "test:coverage": "Run tool-related tests"
     }
 }

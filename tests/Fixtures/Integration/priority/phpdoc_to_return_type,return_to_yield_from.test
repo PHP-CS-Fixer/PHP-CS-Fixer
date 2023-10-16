@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: phpdoc_to_return_type,return_to_yield_from.
+--RULESET--
+{"phpdoc_to_return_type": true, "return_to_yield_from": true}
+--EXPECT--
+<?php
+/**
+ * @return iterable
+ */
+function foo(): iterable {
+    yield from [1, 2, 3];
+}
+
+--INPUT--
+<?php
+/**
+ * @return iterable
+ */
+function foo() {
+    return [1, 2, 3];
+}

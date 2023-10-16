@@ -106,31 +106,34 @@ class Test
 
     public static function provideFixToShortSyntaxCases(): iterable
     {
-        return [
-            [
-                '<?php [$x] = $a;',
-                '<?php list($x) = $a;',
-            ],
-            [
-                '<?php [$a, $b, $c] = $array;',
-                '<?php list($a, $b, $c) = $array;',
-            ],
-            [
-                '<?php ["a" => $a, "b" => $b, "c" => $c] = $array;',
-                '<?php list("a" => $a, "b" => $b, "c" => $c) = $array;',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php [$x] = $a;',
+            '<?php list($x) = $a;',
+        ];
+
+        yield [
+            '<?php [$a, $b, $c] = $array;',
+            '<?php list($a, $b, $c) = $array;',
+        ];
+
+        yield [
+            '<?php ["a" => $a, "b" => $b, "c" => $c] = $array;',
+            '<?php list("a" => $a, "b" => $b, "c" => $c) = $array;',
+        ];
+
+        yield [
+            '<?php
 #
 [//
     $x] =/**/$a?>',
-                '<?php
+            '<?php
 #
 list(//
     $x) =/**/$a?>',
-            ],
-            'messy comments case' => [
-                '<?php
+        ];
+
+        yield 'messy comments case' => [
+            '<?php
 #a
 #g
 [#h
@@ -144,7 +147,7 @@ $a#
 $a;#
 #
 ',
-                '<?php
+            '<?php
 #a
 list#g
 (#h
@@ -158,27 +161,31 @@ $a#
 $a;#
 #
 ',
-            ],
-            [
-                '<?php [$a, $b,, [$c, $d]] = $a;',
-                '<?php list($a, $b,, list($c, $d)) = $a;',
-            ],
-            [
-                '<?php [[$a, $b], [$c, $d]] = $a;',
-                '<?php list(list($a, $b), list($c, $d)) = $a;',
-            ],
-            [
-                '<?php [[$a, [$b]], [[$c, [$d]]]] = $a;',
-                '<?php list(list($a, list($b)), list(list($c, list($d)))) = $a;',
-            ],
-            [
-                '<?php [[$a]] = $foo();',
-                '<?php list(list($a)) = $foo();',
-            ],
-            [
-                '<?php foreach ($z as [$a, $b]) {}',
-                '<?php foreach ($z as list($a, $b)) {}',
-            ],
+        ];
+
+        yield [
+            '<?php [$a, $b,, [$c, $d]] = $a;',
+            '<?php list($a, $b,, list($c, $d)) = $a;',
+        ];
+
+        yield [
+            '<?php [[$a, $b], [$c, $d]] = $a;',
+            '<?php list(list($a, $b), list($c, $d)) = $a;',
+        ];
+
+        yield [
+            '<?php [[$a, [$b]], [[$c, [$d]]]] = $a;',
+            '<?php list(list($a, list($b)), list(list($c, list($d)))) = $a;',
+        ];
+
+        yield [
+            '<?php [[$a]] = $foo();',
+            '<?php list(list($a)) = $foo();',
+        ];
+
+        yield [
+            '<?php foreach ($z as [$a, $b]) {}',
+            '<?php foreach ($z as list($a, $b)) {}',
         ];
     }
 

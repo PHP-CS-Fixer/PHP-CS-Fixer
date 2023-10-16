@@ -28,9 +28,14 @@ final class RstUtils
 
     public static function toRst(string $string, int $indent = 0): string
     {
-        $string = wordwrap(Preg::replace('/(?<!`)(`.*?`)(?!`)/', '`$1`', $string), 80 - $indent);
+        $string = wordwrap(self::ensureProperInlineCode($string), 80 - $indent);
 
         return 0 === $indent ? $string : self::indent($string, $indent);
+    }
+
+    public static function ensureProperInlineCode(string $string): string
+    {
+        return Preg::replace('/(?<!`)(`[^`]+`)(?!`)/', '`$1`', $string);
     }
 
     public static function indent(string $string, int $indent): string

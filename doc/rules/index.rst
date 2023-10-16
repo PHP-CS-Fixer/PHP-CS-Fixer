@@ -57,12 +57,25 @@ Array Notation
 - `normalize_index_brace <./array_notation/normalize_index_brace.rst>`_
 
   Array index should always be written by using square braces.
+- `return_to_yield_from <./array_notation/return_to_yield_from.rst>`_
+
+  If the function explicitly returns an array, and has the return type ``iterable``, then ``yield from`` must be used instead of ``return``.
 - `trim_array_spaces <./array_notation/trim_array_spaces.rst>`_
 
   Arrays should be formatted like function/method arguments, without leading or trailing single line space.
 - `whitespace_after_comma_in_array <./array_notation/whitespace_after_comma_in_array.rst>`_
 
   In array declaration, there MUST be a whitespace after each comma.
+- `yield_from_array_to_yields <./array_notation/yield_from_array_to_yields.rst>`_ *(risky)*
+
+  Yield from array must be unpacked to series of yields.
+
+Attribute Notation
+------------------
+
+- `attribute_empty_parentheses <./attribute_notation/attribute_empty_parentheses.rst>`_
+
+  PHP attributes declared without arguments must (not) be followed by empty parentheses.
 
 Basic
 -----
@@ -70,7 +83,10 @@ Basic
 - `braces <./basic/braces.rst>`_ *(deprecated)*
 
   The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
-- `curly_braces_position <./basic/curly_braces_position.rst>`_
+- `braces_position <./basic/braces_position.rst>`_
+
+  Braces must be placed as configured.
+- `curly_braces_position <./basic/curly_braces_position.rst>`_ *(deprecated)*
 
   Curly braces must be placed as configured.
 - `encoding <./basic/encoding.rst>`_
@@ -122,9 +138,12 @@ Casing
 - `native_function_casing <./casing/native_function_casing.rst>`_
 
   Function defined by PHP should be called using the correct casing.
-- `native_function_type_declaration_casing <./casing/native_function_type_declaration_casing.rst>`_
+- `native_function_type_declaration_casing <./casing/native_function_type_declaration_casing.rst>`_ *(deprecated)*
 
-  Native type hints for functions should use the correct case.
+  Native type declarations for functions should use the correct case.
+- `native_type_declaration_casing <./casing/native_type_declaration_casing.rst>`_
+
+  Native type declarations should be used in the correct case.
 
 Cast Notation
 -------------
@@ -190,6 +209,9 @@ Class Notation
 - `ordered_types <./class_notation/ordered_types.rst>`_
 
   Sort union types and intersection types using configured order.
+- `phpdoc_readonly_class_comment_to_keyword <./class_notation/phpdoc_readonly_class_comment_to_keyword.rst>`_ *(risky)*
+
+  Converts readonly comment on classes to the readonly keyword.
 - `protected_to_private <./class_notation/protected_to_private.rst>`_
 
   Converts ``protected`` variables and methods to ``private`` where possible.
@@ -268,7 +290,7 @@ Control Structure
   Empty loop-condition must be in configured style.
 - `include <./control_structure/include.rst>`_
 
-  Include/Require and file path should be divided with a single space. File path should not be placed under brackets.
+  Include/Require and file path should be divided with a single space. File path should not be placed within parentheses.
 - `no_alternative_syntax <./control_structure/no_alternative_syntax.rst>`_
 
   Replace control structure alternative syntax to use braces.
@@ -281,10 +303,13 @@ Control Structure
 - `no_trailing_comma_in_list_call <./control_structure/no_trailing_comma_in_list_call.rst>`_ *(deprecated)*
 
   Remove trailing commas in list function calls.
+- `no_unneeded_braces <./control_structure/no_unneeded_braces.rst>`_
+
+  Removes unneeded braces that are superfluous and aren't part of a control structure's body.
 - `no_unneeded_control_parentheses <./control_structure/no_unneeded_control_parentheses.rst>`_
 
   Removes unneeded parentheses around control statements.
-- `no_unneeded_curly_braces <./control_structure/no_unneeded_curly_braces.rst>`_
+- `no_unneeded_curly_braces <./control_structure/no_unneeded_curly_braces.rst>`_ *(deprecated)*
 
   Removes unneeded curly braces that are superfluous and aren't part of a control structure's body.
 - `no_useless_else <./control_structure/no_useless_else.rst>`_
@@ -381,7 +406,7 @@ Function Notation
   EXPERIMENTAL: Takes ``@var`` annotation of non-mixed types and adjusts accordingly the property signature. Requires PHP >= 7.4.
 - `phpdoc_to_return_type <./function_notation/phpdoc_to_return_type.rst>`_ *(risky)*
 
-  EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
+  EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature.
 - `regular_callable_call <./function_notation/regular_callable_call.rst>`_ *(risky)*
 
   Callables must be called without using ``call_user_func*`` when possible.
@@ -393,7 +418,7 @@ Function Notation
   Throwing exception must be done in single line.
 - `static_lambda <./function_notation/static_lambda.rst>`_ *(risky)*
 
-  Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
+  Lambdas not (indirectly) referencing ``$this`` must be declared ``static``.
 - `use_arrow_functions <./function_notation/use_arrow_functions.rst>`_ *(risky)*
 
   Anonymous functions with one-liner return statement must use arrow functions.
@@ -535,9 +560,15 @@ Operator
 - `logical_operators <./operator/logical_operators.rst>`_ *(risky)*
 
   Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
-- `new_with_braces <./operator/new_with_braces.rst>`_
+- `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_
+
+  Shorthand notation for operators should be used if possible.
+- `new_with_braces <./operator/new_with_braces.rst>`_ *(deprecated)*
 
   All instances created with ``new`` keyword must (not) be followed by braces.
+- `new_with_parentheses <./operator/new_with_parentheses.rst>`_
+
+  All instances created with ``new`` keyword must (not) be followed by parentheses.
 - `no_space_around_double_colon <./operator/no_space_around_double_colon.rst>`_
 
   There must be no space around double colons (also called Scope Resolution Operator or Paamayim Nekudotayim).
@@ -546,7 +577,7 @@ Operator
   There should not be useless concat operations.
 - `no_useless_nullsafe_operator <./operator/no_useless_nullsafe_operator.rst>`_
 
-  There should not be useless ``null-safe-operators`` ``?->`` used.
+  There should not be useless Null-safe operator ``?->`` used.
 - `not_operator_with_space <./operator/not_operator_with_space.rst>`_
 
   Logical NOT operators (``!``) should have leading and trailing whitespaces.
@@ -606,6 +637,9 @@ PHPUnit
 - `php_unit_data_provider_name <./php_unit/php_unit_data_provider_name.rst>`_ *(risky)*
 
   Data provider names must match the name of the test.
+- `php_unit_data_provider_return_type <./php_unit/php_unit_data_provider_return_type.rst>`_ *(risky)*
+
+  The return type of PHPUnit data provider must be ``iterable``.
 - `php_unit_data_provider_static <./php_unit/php_unit_data_provider_static.rst>`_ *(risky)*
 
   Data providers must be static.
@@ -852,12 +886,15 @@ Whitespace
 - `blank_line_between_import_groups <./whitespace/blank_line_between_import_groups.rst>`_
 
   Putting blank lines between ``use`` statement groups.
-- `compact_nullable_typehint <./whitespace/compact_nullable_typehint.rst>`_
+- `compact_nullable_type_declaration <./whitespace/compact_nullable_type_declaration.rst>`_
+
+  Remove extra spaces in a nullable type declaration.
+- `compact_nullable_typehint <./whitespace/compact_nullable_typehint.rst>`_ *(deprecated)*
 
   Remove extra spaces in a nullable typehint.
 - `heredoc_indentation <./whitespace/heredoc_indentation.rst>`_
 
-  Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.
+  Heredoc/nowdoc content must be properly indented.
 - `indentation_type <./whitespace/indentation_type.rst>`_
 
   Code MUST use configured indentation type.
@@ -873,7 +910,7 @@ Whitespace
 - `no_spaces_around_offset <./whitespace/no_spaces_around_offset.rst>`_
 
   There MUST NOT be spaces around offset braces.
-- `no_spaces_inside_parenthesis <./whitespace/no_spaces_inside_parenthesis.rst>`_
+- `no_spaces_inside_parenthesis <./whitespace/no_spaces_inside_parenthesis.rst>`_ *(deprecated)*
 
   There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.
 - `no_trailing_whitespace <./whitespace/no_trailing_whitespace.rst>`_
@@ -885,6 +922,9 @@ Whitespace
 - `single_blank_line_at_eof <./whitespace/single_blank_line_at_eof.rst>`_
 
   A PHP file without end tag must always end with a single empty line feed.
+- `spaces_inside_parentheses <./whitespace/spaces_inside_parentheses.rst>`_
+
+  Parentheses must be declared using the configured whitespace.
 - `statement_indentation <./whitespace/statement_indentation.rst>`_
 
   Each statement must be indented.

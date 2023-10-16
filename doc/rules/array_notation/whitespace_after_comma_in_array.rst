@@ -51,10 +51,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``whitespace_after_comma_in_array`` rule with the config below:
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
   ``['ensure_single_space' => true]``
 
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``whitespace_after_comma_in_array`` rule with the default config.
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
+

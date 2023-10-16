@@ -5,6 +5,7 @@ PHP 7.4 test.
     "@Symfony": true,
     "array_syntax": false,
     "braces": false,
+    "braces_position": false,
     "class_definition": false,
     "curly_braces_position": false,
     "no_null_property_initialization": true,

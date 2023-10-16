@@ -45,34 +45,35 @@ final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        return [
+        yield [
+            "<?php // foo\n    \$a = 1;",
             [
-                "<?php // foo\n    \$a = 1;",
-                [
-                    1 => [T_COMMENT, '// foo'],
-                    2 => [T_WHITESPACE, "\n    "],
-                ],
+                1 => [T_COMMENT, '// foo'],
+                2 => [T_WHITESPACE, "\n    "],
             ],
+        ];
+
+        yield [
+            "<?php // foo\n\n ",
             [
-                "<?php // foo\n\n ",
-                [
-                    1 => [T_COMMENT, '// foo'],
-                    2 => [T_WHITESPACE, "\n\n "],
-                ],
+                1 => [T_COMMENT, '// foo'],
+                2 => [T_WHITESPACE, "\n\n "],
             ],
+        ];
+
+        yield [
+            "<?php // foo \r\n ",
             [
-                "<?php // foo \r\n ",
-                [
-                    1 => [T_COMMENT, '// foo'],
-                    2 => [T_WHITESPACE, " \r\n "],
-                ],
+                1 => [T_COMMENT, '// foo'],
+                2 => [T_WHITESPACE, " \r\n "],
             ],
+        ];
+
+        yield [
+            '<?php /* foo1 */// foo2         ',
             [
-                '<?php /* foo1 */// foo2         ',
-                [
-                    1 => [T_COMMENT, '/* foo1 */'],
-                    2 => [T_COMMENT, '// foo2'],
-                ],
+                1 => [T_COMMENT, '/* foo1 */'],
+                2 => [T_COMMENT, '// foo2'],
             ],
         ];
     }

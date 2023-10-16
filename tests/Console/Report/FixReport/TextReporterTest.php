@@ -30,7 +30,7 @@ final class TextReporterTest extends AbstractReporterTestCase
     protected static function createNoErrorReport(): string
     {
         return <<<'TEXT'
-TEXT;
+            TEXT;
     }
 
     protected static function createSimpleReport(): string
@@ -39,23 +39,23 @@ TEXT;
             "\n",
             PHP_EOL,
             <<<'TEXT'
-   1) someFile.php
-      ---------- begin diff ----------
---- Original
-+++ New
-@@ -2,7 +2,7 @@
+                   1) someFile.php
+                      ---------- begin diff ----------
+                --- Original
+                +++ New
+                @@ -2,7 +2,7 @@
 
- class Foo
- {
--    public function bar($foo = 1, $bar)
-+    public function bar($foo, $bar)
-     {
-     }
- }
-      ----------- end diff -----------
+                 class Foo
+                 {
+                -    public function bar($foo = 1, $bar)
+                +    public function bar($foo, $bar)
+                     {
+                     }
+                 }
+                      ----------- end diff -----------
 
 
-TEXT
+                TEXT
         );
     }
 
@@ -65,23 +65,23 @@ TEXT
             "\n",
             PHP_EOL,
             <<<'TEXT'
-   1) someFile.php
-      ---------- begin diff ----------
---- Original
-+++ New
-@@ -2,7 +2,7 @@
+                   1) someFile.php
+                      ---------- begin diff ----------
+                --- Original
+                +++ New
+                @@ -2,7 +2,7 @@
 
- class Foo
- {
--    public function bar($foo = 1, $bar)
-+    public function bar($foo, $bar)
-     {
-     }
- }
-      ----------- end diff -----------
+                 class Foo
+                 {
+                -    public function bar($foo = 1, $bar)
+                +    public function bar($foo, $bar)
+                     {
+                     }
+                 }
+                      ----------- end diff -----------
 
 
-TEXT
+                TEXT
         );
     }
 
@@ -91,9 +91,9 @@ TEXT
             "\n",
             PHP_EOL,
             <<<'TEXT'
-   1) someFile.php (some_fixer_name_here_1, some_fixer_name_here_2)
+                   1) someFile.php (some_fixer_name_here_1, some_fixer_name_here_2)
 
-TEXT
+                TEXT
         );
     }
 
@@ -103,25 +103,25 @@ TEXT
             "\n",
             PHP_EOL,
             <<<'TEXT'
-   1) someFile.php
-      ---------- begin diff ----------
---- Original
-+++ New
-@@ -2,7 +2,7 @@
+                   1) someFile.php
+                      ---------- begin diff ----------
+                --- Original
+                +++ New
+                @@ -2,7 +2,7 @@
 
- class Foo
- {
--    public function bar($foo = 1, $bar)
-+    public function bar($foo, $bar)
-     {
-     }
- }
-      ----------- end diff -----------
+                 class Foo
+                 {
+                -    public function bar($foo = 1, $bar)
+                +    public function bar($foo, $bar)
+                     {
+                     }
+                 }
+                      ----------- end diff -----------
 
 
-Fixed 1 of 10 files in 1.234 seconds, 2.500 MB memory used
+                Fixed 1 of 10 files in 1.234 seconds, 2.500 MB memory used
 
-TEXT
+                TEXT
         );
     }
 
@@ -131,20 +131,20 @@ TEXT
             "\n",
             PHP_EOL,
             <<<'TEXT'
-   1) someFile.php (<comment>some_fixer_name_here_1, some_fixer_name_here_2</comment>)
-<comment>      ---------- begin diff ----------</comment>
-this text is a diff ;)
-<comment>      ----------- end diff -----------</comment>
+                   1) someFile.php (<comment>some_fixer_name_here_1, some_fixer_name_here_2</comment>)
+                <comment>      ---------- begin diff ----------</comment>
+                this text is a diff ;)
+                <comment>      ----------- end diff -----------</comment>
 
-   2) anotherFile.php (<comment>another_fixer_name_here</comment>)
-<comment>      ---------- begin diff ----------</comment>
-another diff here ;)
-<comment>      ----------- end diff -----------</comment>
+                   2) anotherFile.php (<comment>another_fixer_name_here</comment>)
+                <comment>      ---------- begin diff ----------</comment>
+                another diff here ;)
+                <comment>      ----------- end diff -----------</comment>
 
 
-Found 2 of 10 files that can be fixed in 1.234 seconds, 2.500 MB memory used
+                Found 2 of 10 files that can be fixed in 1.234 seconds, 2.500 MB memory used
 
-TEXT
+                TEXT
         );
     }
 

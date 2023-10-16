@@ -35,150 +35,166 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php foo(function () use ($a, &$b) { return 1; });',
-            ],
-            [
-                '<?php foo(function () { bar(); return 1; });',
-            ],
-            [
-                '<?php foo(fn()=> 1);',
-                '<?php foo(function(){return 1;});',
-            ],
-            [
-                '<?php foo(fn()=>$a);',
-                '<?php foo(function()use($a){return$a;});',
-            ],
-            [
-                '<?php foo( fn () => 1 );',
-                '<?php foo( function () { return 1; } );',
-            ],
-            [
-                '<?php $func = static fn &(array &$a, string ...$b): ?int => 1;',
-                '<?php $func = static function &(array &$a, string ...$b): ?int { return 1; };',
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    foo(1, fn (int $a, Foo $b) => bar($a, $c), 2);
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-    foo(1, function (int $a, Foo $b) use ($c, $d) {
-        return bar($a, $c);
-    }, 2);
-INPUT
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    foo(fn () => 1);
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-    foo(function () {
+        yield [
+            '<?php foo(function () use ($a, &$b) { return 1; });',
+        ];
+
+        yield [
+            '<?php foo(function () { bar(); return 1; });',
+        ];
+
+        yield [
+            '<?php foo(fn()=> 1);',
+            '<?php foo(function(){return 1;});',
+        ];
+
+        yield [
+            '<?php foo(fn()=>$a);',
+            '<?php foo(function()use($a){return$a;});',
+        ];
+
+        yield [
+            '<?php foo( fn () => 1 );',
+            '<?php foo( function () { return 1; } );',
+        ];
+
+        yield [
+            '<?php $func = static fn &(array &$a, string ...$b): ?int => 1;',
+            '<?php $func = static function &(array &$a, string ...$b): ?int { return 1; };',
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(1, fn (int $a, Foo $b) => bar($a, $c), 2);
+                EXPECTED
+            ,
+            <<<'INPUT'
+                <?php
+                    foo(1, function (int $a, Foo $b) use ($c, $d) {
+                        return bar($a, $c);
+                    }, 2);
+                INPUT
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(fn () => 1);
+                EXPECTED
+            ,
+            <<<'INPUT'
+                <?php
+                    foo(function () {
 
 
-        return 1;
+                        return 1;
 
 
-    });
-INPUT
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    foo(fn ($a) => fn () => $a + 1);
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-    foo(function ($a) {
-        return function () use ($a) {
-            return $a + 1;
-        };
-    });
-INPUT
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    foo(function () {// comment
-        return 1;
-    });
-EXPECTED
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    foo(function () {
-        // comment
-        return 1;
-    });
-EXPECTED
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    foo(function () {
-        return 1; // comment
-    });
-EXPECTED
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    foo(function () {
-        return 1;
-        // comment
-    });
-EXPECTED
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    foo(function () {
-        return
-            1;
-    });
-EXPECTED
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    $func = function (
-        $a,
-        $b
-    ) {
-        return 1;
-    };
-EXPECTED
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    $func = function () {
-        return function () {
-            foo();
-        };
-    };
-EXPECTED
-            ],
-            [
-                '<?php $testDummy = fn () => null;',
-                '<?php $testDummy = function () { return; };',
-            ],
-            [
-                '<?php $testDummy = fn () => null ;',
-                '<?php $testDummy = function () { return ; };',
-            ],
-            [
-                '<?php $testDummy = fn () => null/* foo */;',
-                '<?php $testDummy = function () { return/* foo */; };',
-            ],
+                    });
+                INPUT
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(fn ($a) => fn () => $a + 1);
+                EXPECTED
+            ,
+            <<<'INPUT'
+                <?php
+                    foo(function ($a) {
+                        return function () use ($a) {
+                            return $a + 1;
+                        };
+                    });
+                INPUT
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(function () {// comment
+                        return 1;
+                    });
+                EXPECTED
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(function () {
+                        // comment
+                        return 1;
+                    });
+                EXPECTED
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(function () {
+                        return 1; // comment
+                    });
+                EXPECTED
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(function () {
+                        return 1;
+                        // comment
+                    });
+                EXPECTED
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(function () {
+                        return
+                            1;
+                    });
+                EXPECTED
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    $func = function (
+                        $a,
+                        $b
+                    ) {
+                        return 1;
+                    };
+                EXPECTED
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    $func = function () {
+                        return function () {
+                            foo();
+                        };
+                    };
+                EXPECTED
+        ];
+
+        yield [
+            '<?php $testDummy = fn () => null;',
+            '<?php $testDummy = function () { return; };',
+        ];
+
+        yield [
+            '<?php $testDummy = fn () => null ;',
+            '<?php $testDummy = function () { return ; };',
+        ];
+
+        yield [
+            '<?php $testDummy = fn () => null/* foo */;',
+            '<?php $testDummy = function () { return/* foo */; };',
         ];
     }
 }

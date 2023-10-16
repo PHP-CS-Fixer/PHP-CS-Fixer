@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\DoctrineAnnotation;
 
-use Doctrine\Common\Annotations\DocLexer;
 use PhpCsFixer\AbstractDoctrineAnnotationFixer;
+use PhpCsFixer\Doctrine\Annotation\DocLexer;
 use PhpCsFixer\Doctrine\Annotation\Token;
 use PhpCsFixer\Doctrine\Annotation\Tokens;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -48,15 +48,13 @@ final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixe
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        return new FixerConfigurationResolver(array_merge(
-            parent::createConfigurationDefinition()->getOptions(),
-            [
-                (new FixerOptionBuilder('syntax', 'Whether to add or remove braces.'))
-                    ->setAllowedValues(['with_braces', 'without_braces'])
-                    ->setDefault('without_braces')
-                    ->getOption(),
-            ]
-        ));
+        return new FixerConfigurationResolver([
+            ...parent::createConfigurationDefinition()->getOptions(),
+            (new FixerOptionBuilder('syntax', 'Whether to add or remove braces.'))
+                ->setAllowedValues(['with_braces', 'without_braces'])
+                ->setDefault('without_braces')
+                ->getOption(),
+        ]);
     }
 
     protected function fixAnnotations(Tokens $doctrineAnnotationTokens): void

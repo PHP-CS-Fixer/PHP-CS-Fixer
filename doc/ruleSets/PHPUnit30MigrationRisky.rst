@@ -7,6 +7,7 @@ Rules to improve tests code for PHPUnit 3.0 compatibility. This set contains rul
 Rules
 -----
 
-- `php_unit_dedicate_assert <./../rules/php_unit/php_unit_dedicate_assert.rst>`_
-  config:
+- `php_unit_dedicate_assert <./../rules/php_unit/php_unit_dedicate_assert.rst>`_ with config:
+
   ``['target' => '3.0']``
+

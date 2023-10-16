@@ -3,7 +3,7 @@ Rule ``phpdoc_to_return_type``
 ==============================
 
 EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts
-accordingly the function signature. Requires PHP >= 7.0.
+accordingly the function signature.
 
 Warning
 -------
@@ -54,23 +54,12 @@ Example #1
    +function f2(): void
     {}
 
-Example #2
-~~~~~~~~~~
-
-*Default* configuration.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-
     /** @return object */
    -function my_foo()
    +function my_foo(): object
     {}
 
-Example #3
+Example #2
 ~~~~~~~~~~
 
 With configuration: ``['scalar_types' => false]``.
@@ -87,7 +76,7 @@ With configuration: ``['scalar_types' => false]``.
     /** @return string */
     function bar() {}
 
-Example #4
+Example #3
 ~~~~~~~~~~
 
 *Default* configuration.

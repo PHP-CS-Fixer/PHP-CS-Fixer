@@ -96,7 +96,8 @@ Rule sets
 
 The rule is part of the following rule set:
 
-@PHPUnit100Migration:risky
-  Using the `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ rule set will enable the ``php_unit_data_provider_static`` rule with the config below:
+- `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ with config:
 
   ``['force' => true]``
+
+

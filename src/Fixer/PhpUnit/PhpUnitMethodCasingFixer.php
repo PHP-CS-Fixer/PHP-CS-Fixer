@@ -175,14 +175,12 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
                 continue;
             }
 
-            $newLineContent = Preg::replaceCallback('/(@depends\s+)(.+)(\b)/', function (array $matches): string {
-                return sprintf(
-                    '%s%s%s',
-                    $matches[1],
-                    $this->updateMethodCasing($matches[2]),
-                    $matches[3]
-                );
-            }, $lineContent);
+            $newLineContent = Preg::replaceCallback('/(@depends\s+)(.+)(\b)/', fn (array $matches): string => sprintf(
+                '%s%s%s',
+                $matches[1],
+                $this->updateMethodCasing($matches[2]),
+                $matches[3]
+            ), $lineContent);
 
             if ($newLineContent !== $lineContent) {
                 $lines[$inc] = new Line($newLineContent);

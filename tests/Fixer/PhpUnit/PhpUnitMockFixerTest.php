@@ -40,9 +40,8 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function testFoo()
@@ -50,7 +49,7 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
             $this->createMock("Foo");
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function testFoo()
@@ -58,9 +57,10 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
             $this->getMockWithoutInvokingTheOriginalConstructor("Foo");
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function testFoo()
@@ -70,7 +70,7 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
             $this->getMock("Foo", ["aaa"]);
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function testFoo()
@@ -80,10 +80,11 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
             $this->getMock("Foo", ["aaa"]);
         }
     }',
-                ['target' => PhpUnitTargetVersion::VERSION_5_4],
-            ],
-            [
-                '<?php
+            ['target' => PhpUnitTargetVersion::VERSION_5_4],
+        ];
+
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function testFoo()
@@ -94,7 +95,7 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
             $this->getMock("Foo", ["aaa"], ["argument"]);
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function testFoo()
@@ -105,9 +106,10 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
             $this->getMock("Foo", ["aaa"], ["argument"]);
         }
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class FooTest extends TestCase
     {
         public function testFoo()
@@ -124,7 +126,7 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
             $this->getMock("Foo", ["bbb", ], ["argument", ], );
         }
     }',
-                '<?php
+            '<?php
     class FooTest extends TestCase
     {
         public function testFoo()
@@ -141,7 +143,6 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
             $this->getMock("Foo", ["bbb", ], ["argument", ], );
         }
     }',
-            ],
         ];
     }
 

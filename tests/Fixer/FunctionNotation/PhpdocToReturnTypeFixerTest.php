@@ -46,30 +46,36 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield from [
-            'no phpdoc return' => [
-                '<?php function my_foo() {}',
-            ],
-            'invalid return' => [
-                '<?php /** @return */ function my_foo() {}',
-            ],
-            'invalid class 1' => [
-                '<?php /** @return \9 */ function my_foo() {}',
-            ],
-            'invalid class 2' => [
-                '<?php /** @return \\Foo\\\\Bar */ function my_foo() {}',
-            ],
-            'invalid class 3' => [
-                '<?php /** @return Break */ function my_foo() {}',
-            ],
-            'invalid class 4' => [
-                '<?php /** @return __CLASS__ */ function my_foo() {}',
-            ],
-            'invalid class 5' => [
-                '<?php /** @return I\Want\To\Bre\\\\ak\Free */ function queen() {}',
-            ],
-            'excluded class methods' => [
-                '<?php
+        yield 'no phpdoc return' => [
+            '<?php function my_foo() {}',
+        ];
+
+        yield 'invalid return' => [
+            '<?php /** @return */ function my_foo() {}',
+        ];
+
+        yield 'invalid class 1' => [
+            '<?php /** @return \9 */ function my_foo() {}',
+        ];
+
+        yield 'invalid class 2' => [
+            '<?php /** @return \\Foo\\\\Bar */ function my_foo() {}',
+        ];
+
+        yield 'invalid class 3' => [
+            '<?php /** @return Break */ function my_foo() {}',
+        ];
+
+        yield 'invalid class 4' => [
+            '<?php /** @return __CLASS__ */ function my_foo() {}',
+        ];
+
+        yield 'invalid class 5' => [
+            '<?php /** @return I\Want\To\Bre\\\\ak\Free */ function queen() {}',
+        ];
+
+        yield 'excluded class methods' => [
+            '<?php
 
                     class Foo
                     {
@@ -81,9 +87,10 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                         function __clone() {}
                     }
                 ',
-            ],
-            'multiple returns' => [
-                '<?php
+        ];
+
+        yield 'multiple returns' => [
+            '<?php
 
                     /**
                      * @return Bar
@@ -91,154 +98,188 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                      */
                     function xyz() {}
                 ',
-            ],
-            'non-root class' => [
-                '<?php /** @return Bar */ function my_foo(): Bar {}',
-                '<?php /** @return Bar */ function my_foo() {}',
-            ],
-            'non-root namespaced class' => [
-                '<?php /** @return My\Bar */ function my_foo(): My\Bar {}',
-                '<?php /** @return My\Bar */ function my_foo() {}',
-            ],
-            'root class' => [
-                '<?php /** @return \My\Bar */ function my_foo(): \My\Bar {}',
-                '<?php /** @return \My\Bar */ function my_foo() {}',
-            ],
-            'interface' => [
-                '<?php interface Foo { /** @return Bar */ function my_foo(): Bar; }',
-                '<?php interface Foo { /** @return Bar */ function my_foo(); }',
-            ],
-            'void return on ^7.1' => [
-                '<?php /** @return void */ function my_foo(): void {}',
-                '<?php /** @return void */ function my_foo() {}',
-            ],
-            'invalid void return on ^7.1' => [
-                '<?php /** @return null|void */ function my_foo() {}',
-            ],
-            'iterable return on ^7.1' => [
-                '<?php /** @return iterable */ function my_foo(): iterable {}',
-                '<?php /** @return iterable */ function my_foo() {}',
-            ],
-            'object return on ^7.2' => [
-                '<?php /** @return object */ function my_foo(): object {}',
-                '<?php /** @return object */ function my_foo() {}',
-                7_02_00,
-            ],
-            'fix scalar types by default, int' => [
-                '<?php /** @return int */ function my_foo(): int {}',
-                '<?php /** @return int */ function my_foo() {}',
-            ],
-            'fix scalar types by default, float' => [
-                '<?php /** @return float */ function my_foo(): float {}',
-                '<?php /** @return float */ function my_foo() {}',
-            ],
-            'fix scalar types by default, string' => [
-                '<?php /** @return string */ function my_foo(): string {}',
-                '<?php /** @return string */ function my_foo() {}',
-            ],
-            'fix scalar types by default, bool' => [
-                '<?php /** @return bool */ function my_foo(): bool {}',
-                '<?php /** @return bool */ function my_foo() {}',
-            ],
-            'fix scalar types by default, bool, make unqualified' => [
-                '<?php /** @return \bool */ function my_foo(): bool {}',
-                '<?php /** @return \bool */ function my_foo() {}',
-            ],
-            'fix scalar types by default, false' => [
-                '<?php /** @return false */ function my_foo(): bool {}',
-                '<?php /** @return false */ function my_foo() {}',
-            ],
-            'fix scalar types by default, true' => [
-                '<?php /** @return true */ function my_foo(): bool {}',
-                '<?php /** @return true */ function my_foo() {}',
-            ],
-            'do not fix scalar types when configured as such' => [
-                '<?php /** @return int */ function my_foo() {}',
-                null,
-                null,
-                ['scalar_types' => false],
-            ],
-            'array native type' => [
-                '<?php /** @return array */ function my_foo(): array {}',
-                '<?php /** @return array */ function my_foo() {}',
-            ],
-            'callable type' => [
-                '<?php /** @return callable */ function my_foo(): callable {}',
-                '<?php /** @return callable */ function my_foo() {}',
-            ],
-            'self accessor' => [
-                '<?php
+        ];
+
+        yield 'non-root class' => [
+            '<?php /** @return Bar */ function my_foo(): Bar {}',
+            '<?php /** @return Bar */ function my_foo() {}',
+        ];
+
+        yield 'non-root namespaced class' => [
+            '<?php /** @return My\Bar */ function my_foo(): My\Bar {}',
+            '<?php /** @return My\Bar */ function my_foo() {}',
+        ];
+
+        yield 'root class' => [
+            '<?php /** @return \My\Bar */ function my_foo(): \My\Bar {}',
+            '<?php /** @return \My\Bar */ function my_foo() {}',
+        ];
+
+        yield 'interface' => [
+            '<?php interface Foo { /** @return Bar */ function my_foo(): Bar; }',
+            '<?php interface Foo { /** @return Bar */ function my_foo(); }',
+        ];
+
+        yield 'void return on ^7.1' => [
+            '<?php /** @return void */ function my_foo(): void {}',
+            '<?php /** @return void */ function my_foo() {}',
+        ];
+
+        yield 'invalid void return on ^7.1' => [
+            '<?php /** @return null|void */ function my_foo() {}',
+        ];
+
+        yield 'iterable return on ^7.1' => [
+            '<?php /** @return iterable */ function my_foo(): iterable {}',
+            '<?php /** @return iterable */ function my_foo() {}',
+        ];
+
+        yield 'object return on ^7.2' => [
+            '<?php /** @return object */ function my_foo(): object {}',
+            '<?php /** @return object */ function my_foo() {}',
+            7_02_00,
+        ];
+
+        yield 'fix scalar types by default, int' => [
+            '<?php /** @return int */ function my_foo(): int {}',
+            '<?php /** @return int */ function my_foo() {}',
+        ];
+
+        yield 'fix scalar types by default, float' => [
+            '<?php /** @return float */ function my_foo(): float {}',
+            '<?php /** @return float */ function my_foo() {}',
+        ];
+
+        yield 'fix scalar types by default, string' => [
+            '<?php /** @return string */ function my_foo(): string {}',
+            '<?php /** @return string */ function my_foo() {}',
+        ];
+
+        yield 'fix scalar types by default, bool' => [
+            '<?php /** @return bool */ function my_foo(): bool {}',
+            '<?php /** @return bool */ function my_foo() {}',
+        ];
+
+        yield 'fix scalar types by default, bool, make unqualified' => [
+            '<?php /** @return \bool */ function my_foo(): bool {}',
+            '<?php /** @return \bool */ function my_foo() {}',
+        ];
+
+        yield 'fix scalar types by default, false' => [
+            '<?php /** @return false */ function my_foo(): bool {}',
+            '<?php /** @return false */ function my_foo() {}',
+        ];
+
+        yield 'fix scalar types by default, true' => [
+            '<?php /** @return true */ function my_foo(): bool {}',
+            '<?php /** @return true */ function my_foo() {}',
+        ];
+
+        yield 'do not fix scalar types when configured as such' => [
+            '<?php /** @return int */ function my_foo() {}',
+            null,
+            null,
+            ['scalar_types' => false],
+        ];
+
+        yield 'array native type' => [
+            '<?php /** @return array */ function my_foo(): array {}',
+            '<?php /** @return array */ function my_foo() {}',
+        ];
+
+        yield 'callable type' => [
+            '<?php /** @return callable */ function my_foo(): callable {}',
+            '<?php /** @return callable */ function my_foo() {}',
+        ];
+
+        yield 'self accessor' => [
+            '<?php
                     class Foo {
                         /** @return self */ function my_foo(): self {}
                     }
                 ',
-                '<?php
+            '<?php
                     class Foo {
                         /** @return self */ function my_foo() {}
                     }
                 ',
-            ],
-            'nullable self accessor' => [
-                '<?php
+        ];
+
+        yield 'nullable self accessor' => [
+            '<?php
                     class Foo {
                         /** @return self|null */ function my_foo(): ?self {}
                     }
                 ',
-                '<?php
+            '<?php
                     class Foo {
                         /** @return self|null */ function my_foo() {}
                     }
                 ',
-            ],
-            'skip resource special type' => [
-                '<?php /** @return resource */ function my_foo() {}',
-            ],
-            'null alone cannot be a return type' => [
-                '<?php /** @return null */ function my_foo() {}',
-            ],
-            'skip mixed types' => [
-                '<?php /** @return Foo|Bar */ function my_foo() {}',
-            ],
-            'nullable type' => [
-                '<?php /** @return null|Bar */ function my_foo(): ?Bar {}',
-                '<?php /** @return null|Bar */ function my_foo() {}',
-            ],
-            'nullable type with ? notation in phpDoc' => [
-                '<?php /** @return ?Bar */ function my_foo(): ?Bar {}',
-                '<?php /** @return ?Bar */ function my_foo() {}',
-            ],
-            'nullable type reverse order' => [
-                '<?php /** @return Bar|null */ function my_foo(): ?Bar {}',
-                '<?php /** @return Bar|null */ function my_foo() {}',
-            ],
-            'nullable native type' => [
-                '<?php /** @return null|array */ function my_foo(): ?array {}',
-                '<?php /** @return null|array */ function my_foo() {}',
-            ],
-            'skip primitive or array types' => [
-                '<?php /** @return string|string[] */ function my_foo() {}',
-            ],
-            'skip mixed nullable types' => [
-                '<?php /** @return null|Foo|Bar */ function my_foo() {}',
-            ],
-            'generics' => [
-                '<?php /** @return array<int, bool> */ function my_foo(): array {}',
-                '<?php /** @return array<int, bool> */ function my_foo() {}',
-            ],
-            'array of types' => [
-                '<?php /** @return Foo[] */ function my_foo(): array {}',
-                '<?php /** @return Foo[] */ function my_foo() {}',
-            ],
-            'array of array of types' => [
-                '<?php /** @return Foo[][] */ function my_foo(): array {}',
-                '<?php /** @return Foo[][] */ function my_foo() {}',
-            ],
-            'nullable array of types' => [
-                '<?php /** @return null|Foo[] */ function my_foo(): ?array {}',
-                '<?php /** @return null|Foo[] */ function my_foo() {}',
-            ],
-            'comments' => [
-                '<?php
+        ];
+
+        yield 'skip resource special type' => [
+            '<?php /** @return resource */ function my_foo() {}',
+        ];
+
+        yield 'null alone cannot be a return type' => [
+            '<?php /** @return null */ function my_foo() {}',
+        ];
+
+        yield 'skip mixed types' => [
+            '<?php /** @return Foo|Bar */ function my_foo() {}',
+        ];
+
+        yield 'nullable type' => [
+            '<?php /** @return null|Bar */ function my_foo(): ?Bar {}',
+            '<?php /** @return null|Bar */ function my_foo() {}',
+        ];
+
+        yield 'nullable type with ? notation in phpDoc' => [
+            '<?php /** @return ?Bar */ function my_foo(): ?Bar {}',
+            '<?php /** @return ?Bar */ function my_foo() {}',
+        ];
+
+        yield 'nullable type reverse order' => [
+            '<?php /** @return Bar|null */ function my_foo(): ?Bar {}',
+            '<?php /** @return Bar|null */ function my_foo() {}',
+        ];
+
+        yield 'nullable native type' => [
+            '<?php /** @return null|array */ function my_foo(): ?array {}',
+            '<?php /** @return null|array */ function my_foo() {}',
+        ];
+
+        yield 'skip primitive or array types' => [
+            '<?php /** @return string|string[] */ function my_foo() {}',
+        ];
+
+        yield 'skip mixed nullable types' => [
+            '<?php /** @return null|Foo|Bar */ function my_foo() {}',
+        ];
+
+        yield 'generics' => [
+            '<?php /** @return array<int, bool> */ function my_foo(): array {}',
+            '<?php /** @return array<int, bool> */ function my_foo() {}',
+        ];
+
+        yield 'array of types' => [
+            '<?php /** @return Foo[] */ function my_foo(): array {}',
+            '<?php /** @return Foo[] */ function my_foo() {}',
+        ];
+
+        yield 'array of array of types' => [
+            '<?php /** @return Foo[][] */ function my_foo(): array {}',
+            '<?php /** @return Foo[][] */ function my_foo() {}',
+        ];
+
+        yield 'nullable array of types' => [
+            '<?php /** @return null|Foo[] */ function my_foo(): ?array {}',
+            '<?php /** @return null|Foo[] */ function my_foo() {}',
+        ];
+
+        yield 'comments' => [
+            '<?php
                     class A
                     {
                         // comment 0
@@ -247,7 +288,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                         } // comment 3
                     }
                 ',
-                '<?php
+            '<?php
                     class A
                     {
                         // comment 0
@@ -256,90 +297,102 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                         } // comment 3
                     }
                 ',
-            ],
-            'array and traversable' => [
-                '<?php /** @return array|Traversable */ function my_foo(): iterable {}',
-                '<?php /** @return array|Traversable */ function my_foo() {}',
-            ],
-            'array and traversable with leading slash' => [
-                '<?php /** @return array|\Traversable */ function my_foo(): iterable {}',
-                '<?php /** @return array|\Traversable */ function my_foo() {}',
-            ],
-            'array and traversable in a namespace' => [
-                '<?php
+        ];
+
+        yield 'array and traversable' => [
+            '<?php /** @return array|Traversable */ function my_foo(): iterable {}',
+            '<?php /** @return array|Traversable */ function my_foo() {}',
+        ];
+
+        yield 'array and traversable with leading slash' => [
+            '<?php /** @return array|\Traversable */ function my_foo(): iterable {}',
+            '<?php /** @return array|\Traversable */ function my_foo() {}',
+        ];
+
+        yield 'array and traversable in a namespace' => [
+            '<?php
                      namespace App;
                      /** @return array|Traversable */
                      function my_foo() {}
                 ',
-            ],
-            'array and traversable with leading slash in a namespace' => [
-                '<?php
+        ];
+
+        yield 'array and traversable with leading slash in a namespace' => [
+            '<?php
                      namespace App;
                      /** @return array|\Traversable */
                      function my_foo(): iterable {}
                 ',
-                '<?php
+            '<?php
                      namespace App;
                      /** @return array|\Traversable */
                      function my_foo() {}
                 ',
-            ],
-            'array and imported traversable in a namespace' => [
-                '<?php
+        ];
+
+        yield 'array and imported traversable in a namespace' => [
+            '<?php
                      namespace App;
                      use Traversable;
                      /** @return array|Traversable */
                      function my_foo(): iterable {}
                 ',
-                '<?php
+            '<?php
                      namespace App;
                      use Traversable;
                      /** @return array|Traversable */
                      function my_foo() {}
                 ',
-            ],
-            'array and object aliased as traversable in a namespace' => [
-                '<?php
+        ];
+
+        yield 'array and object aliased as traversable in a namespace' => [
+            '<?php
                      namespace App;
                      use Foo as Traversable;
                      /** @return array|Traversable */
                      function my_foo() {}
                 ',
-            ],
-            'array of object and traversable' => [
-                '<?php /** @return Foo[]|Traversable */ function my_foo(): iterable {}',
-                '<?php /** @return Foo[]|Traversable */ function my_foo() {}',
-            ],
-            'array of object and iterable' => [
-                '<?php /** @return Foo[]|iterable */ function my_foo(): iterable {}',
-                '<?php /** @return Foo[]|iterable */ function my_foo() {}',
-            ],
-            'array of string and array of int' => [
-                '<?php /** @return string[]|int[] */ function my_foo(): array {}',
-                '<?php /** @return string[]|int[] */ function my_foo() {}',
-            ],
-            'intersection types' => [
-                '<?php
+        ];
+
+        yield 'array of object and traversable' => [
+            '<?php /** @return Foo[]|Traversable */ function my_foo(): iterable {}',
+            '<?php /** @return Foo[]|Traversable */ function my_foo() {}',
+        ];
+
+        yield 'array of object and iterable' => [
+            '<?php /** @return Foo[]|iterable */ function my_foo(): iterable {}',
+            '<?php /** @return Foo[]|iterable */ function my_foo() {}',
+        ];
+
+        yield 'array of string and array of int' => [
+            '<?php /** @return string[]|int[] */ function my_foo(): array {}',
+            '<?php /** @return string[]|int[] */ function my_foo() {}',
+        ];
+
+        yield 'intersection types' => [
+            '<?php
                     /** @return Bar&Baz */
                     function bar() {}
                 ',
-            ],
-            'very long class name before ampersand' => [
-                '<?php
+        ];
+
+        yield 'very long class name before ampersand' => [
+            '<?php
                     /** @return Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar&Baz */
                     function bar() {}
                 ',
-            ],
-            'very long class name after ampersand' => [
-                '<?php
+        ];
+
+        yield 'very long class name after ampersand' => [
+            '<?php
                     /** @return Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz */
                     function bar() {}
                 ',
-            ],
-            'arrow function' => [
-                '<?php /** @return int */ fn(): int => 1;',
-                '<?php /** @return int */ fn() => 1;',
-            ],
+        ];
+
+        yield 'arrow function' => [
+            '<?php /** @return int */ fn(): int => 1;',
+            '<?php /** @return int */ fn() => 1;',
         ];
     }
 

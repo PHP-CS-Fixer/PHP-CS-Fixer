@@ -45,15 +45,11 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
         parent::configure($configuration);
 
         if ('lower' === $this->configuration['case']) {
-            $this->fixFunction = static function (string $content): string {
-                return strtolower($content);
-            };
+            $this->fixFunction = static fn (string $content): string => strtolower($content);
         }
 
         if ('upper' === $this->configuration['case']) {
-            $this->fixFunction = static function (string $content): string {
-                return strtoupper($content);
-            };
+            $this->fixFunction = static fn (string $content): string => strtoupper($content);
         }
     }
 
@@ -107,26 +103,24 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
         static $forbiddenTokens = null;
 
         if (null === $forbiddenTokens) {
-            $forbiddenTokens = array_merge(
-                [
-                    T_AS,
-                    T_CLASS,
-                    T_CONST,
-                    T_EXTENDS,
-                    T_IMPLEMENTS,
-                    T_INSTANCEOF,
-                    T_INSTEADOF,
-                    T_INTERFACE,
-                    T_NEW,
-                    T_NS_SEPARATOR,
-                    T_PAAMAYIM_NEKUDOTAYIM,
-                    T_TRAIT,
-                    T_USE,
-                    CT::T_USE_TRAIT,
-                    CT::T_USE_LAMBDA,
-                ],
-                Token::getObjectOperatorKinds()
-            );
+            $forbiddenTokens = [
+                T_AS,
+                T_CLASS,
+                T_CONST,
+                T_EXTENDS,
+                T_IMPLEMENTS,
+                T_INSTANCEOF,
+                T_INSTEADOF,
+                T_INTERFACE,
+                T_NEW,
+                T_NS_SEPARATOR,
+                T_PAAMAYIM_NEKUDOTAYIM,
+                T_TRAIT,
+                T_USE,
+                CT::T_USE_TRAIT,
+                CT::T_USE_LAMBDA,
+                ...Token::getObjectOperatorKinds(),
+            ];
         }
 
         $token = $tokens[$index];

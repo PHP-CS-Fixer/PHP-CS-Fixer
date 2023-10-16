@@ -35,42 +35,45 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                 use A\B;
                 ',
-                '<?php
+            '<?php
                 use \A\B;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 use/*1*/A\C;
                 ',
-                '<?php
+            '<?php
                 use/*1*/\A\C;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 $a = function(\B\C $a) use ($b){
 
                 };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 namespace NS;
                 use A\B;
                 ',
-                '<?php
+            '<?php
                 namespace NS;
                 use \A\B;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 namespace NS{
                     use A\B;
                 }
@@ -78,7 +81,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use C\D;
                 }
                 ',
-                '<?php
+            '<?php
                 namespace NS{
                     use \A\B;
                 }
@@ -86,9 +89,10 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use \C\D;
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 namespace Foo {
                     use A;
                     use A\X;
@@ -103,7 +107,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     new X();
                 }
                 ',
-                '<?php
+            '<?php
                 namespace Foo {
                     use \A;
                     use \A\X;
@@ -118,28 +122,31 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     new X();
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 namespace Foo\Bar;
                 use Baz;
                 class Foo implements Baz {}
                 ',
-                '<?php
+            '<?php
                 namespace Foo\Bar;
                 use \Baz;
                 class Foo implements Baz {}
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 trait SomeTrait {
                     use \A;
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 namespace NS{
                     use A\B;
                     trait Tr8A{
@@ -150,7 +157,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use C\D;
                 }
                 ',
-                '<?php
+            '<?php
                 namespace NS{
                     use \A\B;
                     trait Tr8A{
@@ -161,27 +168,30 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use \C\D;
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 trait Foo {}
                 class Bar {
                     use \Foo;
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     use function a\b;
                     use const d\e;
                 ',
-                '<?php
+            '<?php
                     use function \a\b;
                     use const \d\e;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 namespace AAA;
 use some\a\{ClassA, ClassB, ClassC as C,};
 use function some\a\{fn_a, fn_b, fn_c,};
@@ -190,7 +200,7 @@ use const some\a\{ConstA,ConstB,ConstC
 };
 use const some\Z\{ConstX,ConstY,ConstZ,};
 ',
-                '<?php
+            '<?php
 namespace AAA;
 use \some\a\{ClassA, ClassB, ClassC as C,};
 use function \some\a\{fn_a, fn_b, fn_c,};
@@ -199,7 +209,6 @@ use const \some\a\{ConstA,ConstB,ConstC
 };
 use const \some\Z\{ConstX,ConstY,ConstZ,};
 ',
-            ],
         ];
     }
 

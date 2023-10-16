@@ -99,9 +99,7 @@ switch ($foo) {
                         return true;
                     },
                 ])
-                ->setNormalizer(static function (Options $options, string $value): string {
-                    return rtrim($value);
-                })
+                ->setNormalizer(static fn (Options $options, string $value): string => rtrim($value))
                 ->setDefault('no break')
                 ->getOption(),
         ]);

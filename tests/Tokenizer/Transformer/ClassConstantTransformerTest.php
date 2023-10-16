@@ -44,25 +44,26 @@ final class ClassConstantTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        return [
+        yield [
+            '<?php echo X::class;',
             [
-                '<?php echo X::class;',
-                [
-                    5 => CT::T_CLASS_CONSTANT,
-                ],
+                5 => CT::T_CLASS_CONSTANT,
             ],
+        ];
+
+        yield [
+            '<?php echo X::cLaSS;',
             [
-                '<?php echo X::cLaSS;',
-                [
-                    5 => CT::T_CLASS_CONSTANT,
-                ],
+                5 => CT::T_CLASS_CONSTANT,
             ],
-            [
-                '<?php echo X::bar;',
-            ],
-            [
-                '<?php class X{}',
-            ],
+        ];
+
+        yield [
+            '<?php echo X::bar;',
+        ];
+
+        yield [
+            '<?php class X{}',
         ];
     }
 }

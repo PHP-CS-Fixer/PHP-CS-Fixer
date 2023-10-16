@@ -15,13 +15,17 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class OrderedTraitsFixer extends AbstractFixer
+final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -29,6 +33,12 @@ final class OrderedTraitsFixer extends AbstractFixer
             'Trait `use` statements must be sorted alphabetically.',
             [
                 new CodeSample("<?php class Foo { \nuse Z; use A; }\n"),
+                new CodeSample(
+                    "<?php class Foo { \nuse Aaa; use AA; }\n",
+                    [
+                        'case_sensitive' => true,
+                    ]
+                ),
             ],
             null,
             'Risky when depending on order of the imports.'
@@ -43,6 +53,16 @@ final class OrderedTraitsFixer extends AbstractFixer
     public function isRisky(): bool
     {
         return true;
+    }
+
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -163,14 +183,19 @@ final class OrderedTraitsFixer extends AbstractFixer
         };
 
         $sortedElements = $elements;
-        uasort($sortedElements, static function (Tokens $useA, Tokens $useB) use ($toTraitName): int {
-            return strcasecmp($toTraitName($useA), $toTraitName($useB));
-        });
+        uasort(
+            $sortedElements,
+            fn (Tokens $useA, Tokens $useB): int => $this->configuration['case_sensitive']
+                ? strcmp($toTraitName($useA), $toTraitName($useB))
+                : strcasecmp($toTraitName($useA), $toTraitName($useB))
+        );
 
         $sortedElements = array_combine(
             array_keys($elements),
             array_values($sortedElements)
         );
+
+        $beforeOverrideCount = $tokens->count();
 
         foreach (array_reverse($sortedElements, true) as $index => $tokensToInsert) {
             $tokens->overrideRange(
@@ -178,6 +203,10 @@ final class OrderedTraitsFixer extends AbstractFixer
                 $index + \count($elements[$index]) - 1,
                 $tokensToInsert
             );
+        }
+
+        if ($beforeOverrideCount < $tokens->count()) {
+            $tokens->clearEmptyTokens();
         }
     }
 }

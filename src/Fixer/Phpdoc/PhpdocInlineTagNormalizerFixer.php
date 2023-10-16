@@ -76,10 +76,8 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
             // of text and closing bracket and between the tag and inline comment.
             $content = Preg::replaceCallback(
                 sprintf(
-                    '#(?:@{+|{+\h*@)\h*(%s)s?([^}]*)(?:}+)#i',
-                    implode('|', array_map(static function (string $tag): string {
-                        return preg_quote($tag, '/');
-                    }, $this->configuration['tags']))
+                    '#(?:@{+|{+\h*@)\h*(%s)\b([^}]*)(?:}+)#i',
+                    implode('|', array_map(static fn (string $tag): string => preg_quote($tag, '/'), $this->configuration['tags']))
                 ),
                 static function (array $matches): string {
                     $doc = trim($matches[2]);

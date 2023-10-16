@@ -38,308 +38,329 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php /* header comment */ $foo = true; /* string $bar */ $bar = "baz";',
-            ],
-            [
-                '<?php /* header comment */ $foo = true; /* $yoda string @var */',
-            ],
-            [
-                '<?php /* header comment */ $foo = true; /* $yoda @var string */',
-            ],
-            [
-                '<?php /* header comment */ $foo = true; /** @var string $bar */ $bar = "baz";',
-                '<?php /* header comment */ $foo = true; /* @var string $bar */ $bar = "baz";',
-            ],
-            [
-                '<?php /* header comment */ $foo = true; /** @var string $bar */ $bar = "baz";',
-                '<?php /* header comment */ $foo = true; /*@var string $bar */ $bar = "baz";',
-            ],
-            [
-                '<?php /* header comment */ $foo = true;
+        yield [
+            '<?php /* header comment */ $foo = true; /* string $bar */ $bar = "baz";',
+        ];
+
+        yield [
+            '<?php /* header comment */ $foo = true; /* $yoda string @var */',
+        ];
+
+        yield [
+            '<?php /* header comment */ $foo = true; /* $yoda @var string */',
+        ];
+
+        yield [
+            '<?php /* header comment */ $foo = true; /** @var string $bar */ $bar = "baz";',
+            '<?php /* header comment */ $foo = true; /* @var string $bar */ $bar = "baz";',
+        ];
+
+        yield [
+            '<?php /* header comment */ $foo = true; /** @var string $bar */ $bar = "baz";',
+            '<?php /* header comment */ $foo = true; /*@var string $bar */ $bar = "baz";',
+        ];
+
+        yield [
+            '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
                 $bar = "baz";
                 ',
-                '<?php /* header comment */ $foo = true;
+            '<?php /* header comment */ $foo = true;
                 /*** @var string $bar */
                 $bar = "baz";
                 ',
-            ],
-            [
-                '<?php /* header comment */ $foo = true;
+        ];
+
+        yield [
+            '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
                 $bar = "baz";
                 ',
-                '<?php /* header comment */ $foo = true;
+            '<?php /* header comment */ $foo = true;
                 // @var string $bar
                 $bar = "baz";
                 ',
-            ],
-            [
-                '<?php /* header comment */ $foo = true;
+        ];
+
+        yield [
+            '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
                 $bar = "baz";
                 ',
-                '<?php /* header comment */ $foo = true;
+            '<?php /* header comment */ $foo = true;
                 //@var string $bar
                 $bar = "baz";
                 ',
-            ],
-            [
-                '<?php /* header comment */ $foo = true;
+        ];
+
+        yield [
+            '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
                 $bar = "baz";
                 ',
-                '<?php /* header comment */ $foo = true;
+            '<?php /* header comment */ $foo = true;
                 # @var string $bar
                 $bar = "baz";
                 ',
-            ],
-            [
-                '<?php /* header comment */ $foo = true;
+        ];
+
+        yield [
+            '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
                 $bar = "baz";
                 ',
-                '<?php /* header comment */ $foo = true;
+            '<?php /* header comment */ $foo = true;
                 #@var string $bar
                 $bar = "baz";
                 ',
-            ],
-            [
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+        ];
 
-/**
- * @var string $bar
- */
-$bar = "baz";
-EOT
-                ,
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+        yield [
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
 
-/*
- * @var string $bar
- */
-$bar = "baz";
-EOT
-                ,
-            ],
-            [
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+                /**
+                 * @var string $bar
+                 */
+                $bar = "baz";
+                EOT
+            ,
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
 
-/**
- * This is my var
- * @var string $foo
- * stop using it
- * @deprecated since 1.2
- */
-$foo = 1;
-EOT
-                ,
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+                /*
+                 * @var string $bar
+                 */
+                $bar = "baz";
+                EOT
+            ,
+        ];
 
-// This is my var
-// @var string $foo
-// stop using it
-// @deprecated since 1.2
-$foo = 1;
-EOT
-                ,
-            ],
-            [
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+        yield [
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
 
-for (;;) {
-    /**
-     * This is my var
-     * @var string $foo
-     */
-    $foo = someValue();
-}
-EOT
-                ,
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+                /**
+                 * This is my var
+                 * @var string $foo
+                 * stop using it
+                 * @deprecated since 1.2
+                 */
+                $foo = 1;
+                EOT
+            ,
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
 
-for (;;) {
-    // This is my var
-    // @var string $foo
-    $foo = someValue();
-}
-EOT
-                ,
-            ],
-            [
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+                // This is my var
+                // @var string $foo
+                // stop using it
+                // @deprecated since 1.2
+                $foo = 1;
+                EOT
+            ,
+        ];
 
-/**
- * This is my var
- * @var string $foo
- * stop using it
- * @deprecated since 1.3
- */
-$foo = 1;
-EOT
-                ,
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+        yield [
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
 
-# This is my var
-# @var string $foo
-# stop using it
-# @deprecated since 1.3
-$foo = 1;
-EOT
-                ,
-            ],
-            [
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+                for (;;) {
+                    /**
+                     * This is my var
+                     * @var string $foo
+                     */
+                    $foo = someValue();
+                }
+                EOT
+            ,
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
 
-/**
- * @Column(type="string", length=32, unique=true, nullable=false)
- */
-$bar = 'baz';
-EOT
-                ,
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+                for (;;) {
+                    // This is my var
+                    // @var string $foo
+                    $foo = someValue();
+                }
+                EOT
+            ,
+        ];
 
-/*
- * @Column(type="string", length=32, unique=true, nullable=false)
- */
-$bar = 'baz';
-EOT
-                ,
-            ],
-            [
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+        yield [
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
 
-/**
- * @ORM\Column(name="id", type="integer")
- */
-$bar = 42;
-EOT
-                ,
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+                /**
+                 * This is my var
+                 * @var string $foo
+                 * stop using it
+                 * @deprecated since 1.3
+                 */
+                $foo = 1;
+                EOT
+            ,
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
 
-/*
- * @ORM\Column(name="id", type="integer")
- */
-$bar = 42;
-EOT
-                ,
-            ],
-            [
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+                # This is my var
+                # @var string $foo
+                # stop using it
+                # @deprecated since 1.3
+                $foo = 1;
+                EOT
+            ,
+        ];
 
-// This is my var
-// /** @var string $foo */
-$foo = 1;
-EOT
-                ,
-            ],
-            [
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+        yield [
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
 
-// @todo do something later
-$foo = 1;
-EOT
-                ,
-                null,
-                ['ignored_tags' => ['todo']],
-            ],
-            [
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+                /**
+                 * @Column(type="string", length=32, unique=true, nullable=false)
+                 */
+                $bar = 'baz';
+                EOT
+            ,
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
 
-// @TODO do something later
-$foo = 1;
-EOT
-                ,
-                null,
-                ['ignored_tags' => ['todo']],
-            ],
-            [
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+                /*
+                 * @Column(type="string", length=32, unique=true, nullable=false)
+                 */
+                $bar = 'baz';
+                EOT
+            ,
+        ];
 
-/**
- * @todo do something later
- * @var int $foo
- */
-$foo = 1;
-EOT
-                ,
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+        yield [
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
 
-// @todo do something later
-// @var int $foo
-$foo = 1;
-EOT
-                ,
-                ['ignored_tags' => ['todo']],
-            ],
-            [
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+                /**
+                 * @ORM\Column(name="id", type="integer")
+                 */
+                $bar = 42;
+                EOT
+            ,
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
 
-/**
- * @var int $foo
- * @todo do something later
- */
-$foo = 1;
-EOT
-                ,
-                <<<'EOT'
-<?php /* header comment */ $foo = true;
+                /*
+                 * @ORM\Column(name="id", type="integer")
+                 */
+                $bar = 42;
+                EOT
+            ,
+        ];
 
-// @var int $foo
-// @todo do something later
-$foo = 1;
-EOT
-                ,
-                ['ignored_tags' => ['todo']],
-            ],
-            [
-                '<?php // header
+        yield [
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
+
+                // This is my var
+                // /** @var string $foo */
+                $foo = 1;
+                EOT
+            ,
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
+
+                // @todo do something later
+                $foo = 1;
+                EOT
+            ,
+            null,
+            ['ignored_tags' => ['todo']],
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
+
+                // @TODO do something later
+                $foo = 1;
+                EOT
+            ,
+            null,
+            ['ignored_tags' => ['todo']],
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
+
+                /**
+                 * @todo do something later
+                 * @var int $foo
+                 */
+                $foo = 1;
+                EOT
+            ,
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
+
+                // @todo do something later
+                // @var int $foo
+                $foo = 1;
+                EOT
+            ,
+            ['ignored_tags' => ['todo']],
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
+
+                /**
+                 * @var int $foo
+                 * @todo do something later
+                 */
+                $foo = 1;
+                EOT
+            ,
+            <<<'EOT'
+                <?php /* header comment */ $foo = true;
+
+                // @var int $foo
+                // @todo do something later
+                $foo = 1;
+                EOT
+            ,
+            ['ignored_tags' => ['todo']],
+        ];
+
+        yield [
+            '<?php // header
                 /** /@foo */
                 namespace Foo\Bar;
 ',
-                '<?php // header
+            '<?php // header
                 ///@foo
                 namespace Foo\Bar;
 ',
-            ],
-            [
-                '<?php // header
+        ];
+
+        yield [
+            '<?php // header
                 /**
                  * / @foo
                  * / @bar
                  */
                 namespace Foo\Bar;
 ',
-                '<?php // header
+            '<?php // header
                 /// @foo
                 /// @bar
                 namespace Foo\Bar;
 ',
-            ],
-            [
-                '<?php /* header comment */ $foo = true; class Foo { /** @phpstan-use Bar<Baz> $bar */ use Bar; }',
-                '<?php /* header comment */ $foo = true; class Foo { /* @phpstan-use Bar<Baz> $bar */ use Bar; }',
-            ],
+        ];
+
+        yield [
+            '<?php /* header comment */ $foo = true; class Foo { /** @phpstan-use Bar<Baz> $bar */ use Bar; }',
+            '<?php /* header comment */ $foo = true; class Foo { /* @phpstan-use Bar<Baz> $bar */ use Bar; }',
         ];
     }
 }

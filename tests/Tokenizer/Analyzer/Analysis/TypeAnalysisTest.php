@@ -60,23 +60,45 @@ final class TypeAnalysisTest extends TestCase
 
     public static function provideReservedCases(): iterable
     {
-        return [
-            ['array', true],
-            ['bool', true],
-            ['callable', true],
-            ['float', true],
-            ['int', true],
-            ['iterable', true],
-            ['mixed', true],
-            ['never', true],
-            ['numeric', true],
-            ['object', true],
-            ['other', false],
-            ['resource', true],
-            ['self', true],
-            ['string', true],
-            ['void', true],
-        ];
+        yield ['array', true];
+
+        yield ['bool', true];
+
+        yield ['callable', true];
+
+        yield ['float', true];
+
+        yield ['int', true];
+
+        yield ['iterable', true];
+
+        yield ['mixed', true];
+
+        yield ['never', true];
+
+        yield ['null', true];
+
+        yield ['object', true];
+
+        yield ['resource', true];
+
+        yield ['self', true];
+
+        yield ['string', true];
+
+        yield ['void', true];
+
+        yield ['VOID', true];
+
+        yield ['Void', true];
+
+        yield ['voId', true];
+
+        yield ['other', false];
+
+        yield ['OTHER', false];
+
+        yield ['numeric', false];
     }
 
     /**
@@ -93,6 +115,10 @@ final class TypeAnalysisTest extends TestCase
         yield [false, 'string'];
 
         yield [true, '?string'];
+
+        yield [false, 'String'];
+
+        yield [true, '?String'];
 
         yield [false, '\foo\bar'];
 

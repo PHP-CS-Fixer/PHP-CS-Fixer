@@ -43,13 +43,16 @@ final class WhitespacesFixerConfigTest extends TestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            ['    ', "\n"],
-            ["\t", "\n"],
-            ['    ', "\r\n"],
-            ["\t", "\r\n"],
-            ['    ', 'asd', 'Invalid "lineEnding" param, expected "\n" or "\r\n".'],
-            ['std', "\n", 'Invalid "indent" param, expected tab or two or four spaces.'],
-        ];
+        yield ['    ', "\n"];
+
+        yield ["\t", "\n"];
+
+        yield ['    ', "\r\n"];
+
+        yield ["\t", "\r\n"];
+
+        yield ['    ', 'asd', 'Invalid "lineEnding" param, expected "\n" or "\r\n".'];
+
+        yield ['std', "\n", 'Invalid "indent" param, expected tab or two or four spaces.'];
     }
 }

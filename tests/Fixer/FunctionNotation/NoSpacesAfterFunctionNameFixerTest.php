@@ -35,17 +35,18 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield from [
-            'test function call' => [
-                '<?php abc($a);',
-                '<?php abc ($a);',
-            ],
-            'test method call' => [
-                '<?php $o->abc($a);',
-                '<?php $o->abc ($a);',
-            ],
-            'test function-like constructs' => [
-                '<?php
+        yield 'test function call' => [
+            '<?php abc($a);',
+            '<?php abc ($a);',
+        ];
+
+        yield 'test method call' => [
+            '<?php $o->abc($a);',
+            '<?php $o->abc ($a);',
+        ];
+
+        yield 'test function-like constructs' => [
+            '<?php
     include("something.php");
     include_once("something.php");
     require("something.php");
@@ -62,7 +63,7 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
     foo();
     $foo = &ref();
     ',
-                '<?php
+            '<?php
     include ("something.php");
     include_once ("something.php");
     require ("something.php");
@@ -79,70 +80,82 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
     foo ();
     $foo = &ref ();
     ',
-            ],
-            [
-                '<?php echo foo(1) ? "y" : "n";',
-                '<?php echo foo (1) ? "y" : "n";',
-            ],
-            [
-                '<?php echo isset($name) ? "y" : "n";',
-                '<?php echo isset ($name) ? "y" : "n";',
-            ],
-            [
-                '<?php include (isHtml())? "1.html": "1.php";',
-                '<?php include (isHtml ())? "1.html": "1.php";',
-            ],
-            // skip other language constructs
-            [
-                '<?php $a = 2 * (1 + 1);',
-            ],
-            [
-                '<?php echo ($a == $b) ? "foo" : "bar";',
-            ],
-            [
-                '<?php echo ($a == test($b)) ? "foo" : "bar";',
-            ],
-            [
-                '<?php include ($html)? "custom.html": "custom.php";',
-            ],
-            'don\'t touch function declarations' => [
-                '<?php
+        ];
+
+        yield [
+            '<?php echo foo(1) ? "y" : "n";',
+            '<?php echo foo (1) ? "y" : "n";',
+        ];
+
+        yield [
+            '<?php echo isset($name) ? "y" : "n";',
+            '<?php echo isset ($name) ? "y" : "n";',
+        ];
+
+        yield [
+            '<?php include (isHtml())? "1.html": "1.php";',
+            '<?php include (isHtml ())? "1.html": "1.php";',
+        ];
+
+        // skip other language constructs
+        yield [
+            '<?php $a = 2 * (1 + 1);',
+        ];
+
+        yield [
+            '<?php echo ($a == $b) ? "foo" : "bar";',
+        ];
+
+        yield [
+            '<?php echo ($a == test($b)) ? "foo" : "bar";',
+        ];
+
+        yield [
+            '<?php include ($html)? "custom.html": "custom.php";',
+        ];
+
+        yield 'don\'t touch function declarations' => [
+            '<?php
                 function TisMy ($p1)
                 {
                     print $p1;
                 }
                 ',
-            ],
-            [
-                '<?php class A {
+        ];
+
+        yield [
+            '<?php class A {
                     function TisMy    ($p1)
                     {
                         print $p1;
                     }
                 }',
-            ],
-            'test dynamic by array' => [
-                '<?php $a["e"](1); $a[2](1);',
-                '<?php $a["e"] (1); $a[2] (1);',
-            ],
-            'test variable variable' => [
-                '<?php
+        ];
+
+        yield 'test dynamic by array' => [
+            '<?php $a["e"](1); $a[2](1);',
+            '<?php $a["e"] (1); $a[2] (1);',
+        ];
+
+        yield 'test variable variable' => [
+            '<?php
 ${$e}(1);
 $$e(2);
                 ',
-                "<?php
+            "<?php
 \${\$e}\t(1);
 \$\$e    (2);
                 ",
-            ],
-            'test dynamic function and method calls' => [
-                '<?php $b->$a(); $c();',
-                '<?php $b->$a  (); $c  ();',
-            ],
-            'test function call comment' => [
-                '<?php abc#
+        ];
+
+        yield 'test dynamic function and method calls' => [
+            '<?php $b->$a(); $c();',
+            '<?php $b->$a  (); $c  ();',
+        ];
+
+        yield 'test function call comment' => [
+            '<?php abc#
  ($a);',
-            ],
         ];
 
         yield [

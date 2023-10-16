@@ -3,7 +3,7 @@ Rule ``include``
 ================
 
 Include/Require and file path should be divided with a single space. File path
-should not be placed under brackets.
+should not be placed within parentheses.
 
 Examples
 --------
@@ -30,8 +30,6 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``include`` rule.
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``include`` rule.

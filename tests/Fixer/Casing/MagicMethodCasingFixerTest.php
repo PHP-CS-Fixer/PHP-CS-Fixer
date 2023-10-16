@@ -275,24 +275,26 @@ class Foo extends Bar
 
     public static function provideDoNotFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 __Tostring();',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function __Tostring() {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     #->__sleep()
                     /** ->__sleep() */
                     echo $a->__sleep;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class B
                     {
                         public function _not_magic()
@@ -300,41 +302,46 @@ function __Tostring() {}',
                         }
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     function __alsoNotMagic()
                     {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     function __()
                     {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     function a()
                     {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a->__not_magic();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a->a();
                 ',
-            ],
-            [
-                '<?php A\B\__callstatic(); echo $a->b;',
-            ],
+        ];
+
+        yield [
+            '<?php A\B\__callstatic(); echo $a->b;',
         ];
     }
 

@@ -78,14 +78,13 @@ use Space\Models\ {
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $fixGroups = $this->configuration['group_to_single_imports'];
 
         foreach (array_reverse($tokensAnalyzer->getImportUseIndexes()) as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
             $groupClose = $tokens->getPrevMeaningfulToken($endIndex);
 
             if ($tokens[$groupClose]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
-                if ($fixGroups) {
+                if ($this->configuration['group_to_single_imports']) {
                     $this->fixGroupUse($tokens, $index, $endIndex);
                 }
             } else {

@@ -132,10 +132,17 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
      */
     private function fixWhiteSpaceAroundConcatToken(Tokens $tokens, int $index, int $offset): void
     {
+        if (-1 !== $offset && 1 !== $offset) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected `-1|1` for "$offset", got "%s"',
+                $offset
+            ));
+        }
+
         $offsetIndex = $index + $offset;
 
         if (!$tokens[$offsetIndex]->isWhitespace()) {
-            $tokens->insertAt($index + (1 === $offset ?: 0), new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($index + (1 === $offset ? 1 : 0), new Token([T_WHITESPACE, ' ']));
 
             return;
         }

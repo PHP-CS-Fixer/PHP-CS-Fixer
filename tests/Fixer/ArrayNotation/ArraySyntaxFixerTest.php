@@ -55,31 +55,51 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
 
     public static function provideFixLongSyntaxCases(): iterable
     {
-        return [
-            ['<?php $x = array();', '<?php $x = [];'],
-            ['<?php $x = array(); $y = array();', '<?php $x = []; $y = [];'],
-            ['<?php $x = array( );', '<?php $x = [ ];'],
-            ['<?php $x = array(\'foo\');', '<?php $x = [\'foo\'];'],
-            ['<?php $x = array( \'foo\' );', '<?php $x = [ \'foo\' ];'],
-            ['<?php $x = array(($y ? true : false));', '<?php $x = [($y ? true : false)];'],
-            ['<?php $x = array(($y ? array(true) : array(false)));', '<?php $x = [($y ? [true] : [false])];'],
-            ['<?php $x = array(($y ? array(true) : array( false )));', '<?php $x = [($y ? [true] : [ false ])];'],
-            ['<?php $x = array(($y ? array("t" => true) : array("f" => false)));', '<?php $x = [($y ? ["t" => true] : ["f" => false])];'],
-            ['<?php print_r(array(($y ? true : false)));', '<?php print_r([($y ? true : false)]);'],
-            ['<?php $x = array(array(array()));', '<?php $x = [[[]]];'],
-            ['<?php $x = array(array(array())); $y = array(array(array()));', '<?php $x = [[[]]]; $y = [[[]]];'],
-            ['<?php function(array $foo = array()) {};', '<?php function(array $foo = []) {};'],
-            ['<?php $x = array(1, 2)[0];', '<?php $x = [1, 2][0];'],
-            ['<?php $x[] = 1;'],
-            ['<?php $x[ ] = 1;'],
-            ['<?php $x[2] = 1;'],
-            ['<?php $x["a"] = 1;'],
-            ['<?php $x = func()[$x];'],
-            ['<?php $x = "foo"[$x];'],
-            ['<?php $text = "foo ${aaa[123]} bar $bbb[0] baz";'],
-            ['<?php foreach ($array as [$x, $y]) {}'],
-            ['<?php foreach ($array as $key => [$x, $y]) {}'],
-        ];
+        yield ['<?php $x = array();', '<?php $x = [];'];
+
+        yield ['<?php $x = array(); $y = array();', '<?php $x = []; $y = [];'];
+
+        yield ['<?php $x = array( );', '<?php $x = [ ];'];
+
+        yield ['<?php $x = array(\'foo\');', '<?php $x = [\'foo\'];'];
+
+        yield ['<?php $x = array( \'foo\' );', '<?php $x = [ \'foo\' ];'];
+
+        yield ['<?php $x = array(($y ? true : false));', '<?php $x = [($y ? true : false)];'];
+
+        yield ['<?php $x = array(($y ? array(true) : array(false)));', '<?php $x = [($y ? [true] : [false])];'];
+
+        yield ['<?php $x = array(($y ? array(true) : array( false )));', '<?php $x = [($y ? [true] : [ false ])];'];
+
+        yield ['<?php $x = array(($y ? array("t" => true) : array("f" => false)));', '<?php $x = [($y ? ["t" => true] : ["f" => false])];'];
+
+        yield ['<?php print_r(array(($y ? true : false)));', '<?php print_r([($y ? true : false)]);'];
+
+        yield ['<?php $x = array(array(array()));', '<?php $x = [[[]]];'];
+
+        yield ['<?php $x = array(array(array())); $y = array(array(array()));', '<?php $x = [[[]]]; $y = [[[]]];'];
+
+        yield ['<?php function(array $foo = array()) {};', '<?php function(array $foo = []) {};'];
+
+        yield ['<?php $x = array(1, 2)[0];', '<?php $x = [1, 2][0];'];
+
+        yield ['<?php $x[] = 1;'];
+
+        yield ['<?php $x[ ] = 1;'];
+
+        yield ['<?php $x[2] = 1;'];
+
+        yield ['<?php $x["a"] = 1;'];
+
+        yield ['<?php $x = func()[$x];'];
+
+        yield ['<?php $x = "foo"[$x];'];
+
+        yield ['<?php $text = "foo ${aaa[123]} bar $bbb[0] baz";'];
+
+        yield ['<?php foreach ($array as [$x, $y]) {}'];
+
+        yield ['<?php foreach ($array as $key => [$x, $y]) {}'];
     }
 
     /**
@@ -93,23 +113,36 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
 
     public static function provideFixShortSyntaxCases(): iterable
     {
-        return [
-            ['<?php $x = [];', '<?php $x = array();'],
-            ['<?php $x = []; $y = [];', '<?php $x = array(); $y = array();'],
-            ['<?php $x = [ ];', '<?php $x = array( );'],
-            ['<?php $x = [\'foo\'];', '<?php $x = array(\'foo\');'],
-            ['<?php $x = [ \'foo\' ];', '<?php $x = array( \'foo\' );'],
-            ['<?php $x = [($y ? true : false)];', '<?php $x = array(($y ? true : false));'],
-            ['<?php $x = [($y ? [true] : [false])];', '<?php $x = array(($y ? array(true) : array(false)));'],
-            ['<?php $x = [($y ? [true] : [ false ])];', '<?php $x = array(($y ? array(true) : array( false )));'],
-            ['<?php $x = [($y ? ["t" => true] : ["f" => false])];', '<?php $x = array(($y ? array("t" => true) : array("f" => false)));'],
-            ['<?php print_r([($y ? true : false)]);', '<?php print_r(array(($y ? true : false)));'],
-            ['<?php $x = [[[]]];', '<?php $x = array(array(array()));'],
-            ['<?php $x = [[[]]]; $y = [[[]]];', '<?php $x = array(array(array())); $y = array(array(array()));'],
-            ['<?php function(array $foo = []) {};', '<?php function(array $foo = array()) {};'],
-            ['<?php function(array $foo) {};'],
-            ['<?php function(array $foo = []) {};', '<?php function(array $foo = array()) {};'],
-            ['<?php $a  =   [  ];', '<?php $a  =  array (  );'],
-        ];
+        yield ['<?php $x = [];', '<?php $x = array();'];
+
+        yield ['<?php $x = []; $y = [];', '<?php $x = array(); $y = array();'];
+
+        yield ['<?php $x = [ ];', '<?php $x = array( );'];
+
+        yield ['<?php $x = [\'foo\'];', '<?php $x = array(\'foo\');'];
+
+        yield ['<?php $x = [ \'foo\' ];', '<?php $x = array( \'foo\' );'];
+
+        yield ['<?php $x = [($y ? true : false)];', '<?php $x = array(($y ? true : false));'];
+
+        yield ['<?php $x = [($y ? [true] : [false])];', '<?php $x = array(($y ? array(true) : array(false)));'];
+
+        yield ['<?php $x = [($y ? [true] : [ false ])];', '<?php $x = array(($y ? array(true) : array( false )));'];
+
+        yield ['<?php $x = [($y ? ["t" => true] : ["f" => false])];', '<?php $x = array(($y ? array("t" => true) : array("f" => false)));'];
+
+        yield ['<?php print_r([($y ? true : false)]);', '<?php print_r(array(($y ? true : false)));'];
+
+        yield ['<?php $x = [[[]]];', '<?php $x = array(array(array()));'];
+
+        yield ['<?php $x = [[[]]]; $y = [[[]]];', '<?php $x = array(array(array())); $y = array(array(array()));'];
+
+        yield ['<?php function(array $foo = []) {};', '<?php function(array $foo = array()) {};'];
+
+        yield ['<?php function(array $foo) {};'];
+
+        yield ['<?php function(array $foo = []) {};', '<?php function(array $foo = array()) {};'];
+
+        yield ['<?php $a  =   [  ];', '<?php $a  =  array (  );'];
     }
 }

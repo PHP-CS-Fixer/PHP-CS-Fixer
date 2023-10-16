@@ -287,11 +287,7 @@ final class ConfigurationResolver
     public function getDiffer(): DifferInterface
     {
         if (null === $this->differ) {
-            if ($this->options['diff']) {
-                $this->differ = new UnifiedDiffer();
-            } else {
-                $this->differ = new NullDiffer();
-            }
+            $this->differ = (true === $this->options['diff']) ? new UnifiedDiffer() : new NullDiffer();
         }
 
         return $this->differ;
@@ -332,14 +328,10 @@ final class ConfigurationResolver
 
             if (false === $this->getRiskyAllowed()) {
                 $riskyFixers = array_map(
-                    static function (FixerInterface $fixer): string {
-                        return $fixer->getName();
-                    },
+                    static fn (FixerInterface $fixer): string => $fixer->getName(),
                     array_filter(
                         $this->fixers,
-                        static function (FixerInterface $fixer): bool {
-                            return $fixer->isRisky();
-                        }
+                        static fn (FixerInterface $fixer): bool => $fixer->isRisky()
                     )
                 );
 
@@ -842,9 +834,7 @@ final class ConfigurationResolver
         $isIntersectionPathMode = self::PATH_MODE_INTERSECTION === $this->options['path-mode'];
 
         $paths = array_filter(array_map(
-            static function (string $path) {
-                return realpath($path);
-            },
+            static fn (string $path) => realpath($path),
             $this->getPath()
         ));
 

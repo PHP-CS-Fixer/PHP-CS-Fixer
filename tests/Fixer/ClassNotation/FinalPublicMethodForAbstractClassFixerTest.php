@@ -46,19 +46,22 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         $fixed = str_replace('public static function f4', 'final public static function f4', $fixed);
         $fixed = str_replace('static public function f7', 'final static public function f7', $fixed);
 
-        return [
-            'regular-class' => ["<?php class MyClass { {$original} }"],
-            'final-class' => ["<?php final class MyClass { {$original} }"],
-            'trait' => ["<?php trait MyClass { {$original} }"],
-            'interface' => [
-                '<?php interface MyClass {
+        yield 'regular-class' => ["<?php class MyClass { {$original} }"];
+
+        yield 'final-class' => ["<?php final class MyClass { {$original} }"];
+
+        yield 'trait' => ["<?php trait MyClass { {$original} }"];
+
+        yield 'interface' => [
+            '<?php interface MyClass {
                     public function f1();
                     public static function f4();
                     static public function f7();
                 }',
-            ],
-            'magic-methods' => [
-                '<?php abstract class MyClass {
+        ];
+
+        yield 'magic-methods' => [
+            '<?php abstract class MyClass {
                     public function __construct() {}
                     public function __destruct() {}
                     public function __call($a, $b) {}
@@ -74,48 +77,53 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
                     public function __clone() {}
                     public function __debugInfo() {}
                 }',
-            ],
-            'magic-methods-casing' => [
-                '<?php abstract class MyClass {
+        ];
+
+        yield 'magic-methods-casing' => [
+            '<?php abstract class MyClass {
                     public function __Construct() {}
                     public function __SET($a, $b) {}
                     public function __ToString() {}
                     public function __DeBuGiNfO() {}
                 }',
-            ],
-            'non magic-methods' => [
-                '<?php abstract class MyClass {
+        ];
+
+        yield 'non magic-methods' => [
+            '<?php abstract class MyClass {
                     final public function __foo() {}
                     final public static function __bar($a, $b) {}
                 }',
-                '<?php abstract class MyClass {
+            '<?php abstract class MyClass {
                     public function __foo() {}
                     public static function __bar($a, $b) {}
                 }',
-            ],
-            'abstract-class' => [
-                "<?php abstract class MyClass { {$fixed} }",
-                "<?php abstract class MyClass { {$original} }",
-            ],
-            'abstract-class-with-abstract-public-methods' => [
-                '<?php abstract class MyClass {
+        ];
+
+        yield 'abstract-class' => [
+            "<?php abstract class MyClass { {$fixed} }",
+            "<?php abstract class MyClass { {$original} }",
+        ];
+
+        yield 'abstract-class-with-abstract-public-methods' => [
+            '<?php abstract class MyClass {
                     abstract public function foo();
                     abstract public static function bar();
                 }',
-            ],
-            'anonymous-class' => [
-                sprintf(
-                    '<?php abstract class MyClass { private function test() { $a = new class { %s }; } }',
-                    self::getClassElementStubs()
-                ),
-            ],
-            'constant visibility' => [
-                '<?php abstract class MyClass {
+        ];
+
+        yield 'anonymous-class' => [
+            sprintf(
+                '<?php abstract class MyClass { private function test() { $a = new class { %s }; } }',
+                self::getClassElementStubs()
+            ),
+        ];
+
+        yield 'constant visibility' => [
+            '<?php abstract class MyClass {
                     public const A = 1;
                     protected const B = 2;
                     private const C = 3;
                 }',
-            ],
         ];
     }
 

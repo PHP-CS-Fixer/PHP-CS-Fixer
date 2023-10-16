@@ -35,125 +35,158 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php new DateTimeImmutable();',
-                '<?php new DateTime();',
-            ],
-            [
-                '<?php new DateTimeImmutable();',
-                '<?php new DATETIME();',
-            ],
-            [
-                '<?php new \DateTimeImmutable();',
-                '<?php new \DateTime();',
-            ],
-            [
-                '<?php new Foo\DateTime();',
-            ],
-            [
-                '<?php namespace Foo; new DateTime();',
-            ],
-            [
-                '<?php namespace Foo; new \DateTimeImmutable();',
-                '<?php namespace Foo; new \DateTime();',
-            ],
-            [
-                '<?php namespace Foo; use DateTime; new \DateTimeImmutable();',
-                '<?php namespace Foo; use DateTime; new DateTime();',
-            ],
-            [
-                '<?php namespace Foo; use DateTime; new Bar\DateTime();',
-            ],
-            [
-                '<?php namespace Foo; use DateTime\Bar; new DateTime();',
-            ],
-            [
-                '<?php namespace Foo; use Bar\DateTime; new DateTime();',
-            ],
-            [
-                '<?php namespace Foo; use DateTime\Bar; use DateTime; use Baz\DateTime as BazDateTime; new \DateTimeImmutable();',
-                '<?php namespace Foo; use DateTime\Bar; use DateTime; use Baz\DateTime as BazDateTime; new DateTime();',
-            ],
-            [
-                '<?php $foo = DateTime::ISO8601;',
-            ],
-            [
-                '<?php $foo = \datetime::ISO8601 + 24;',
-            ],
-            [
-                "<?php DateTimeImmutable::createFromFormat('j-M-Y', '15-Feb-2009');",
-                "<?php DateTime::createFromFormat('j-M-Y', '15-Feb-2009');",
-            ],
-            [
-                '<?php \DateTimeImmutable::getLastErrors();',
-                '<?php \DateTime::getLastErrors();',
-            ],
-            [
-                '<?php Foo\DateTime::createFromFormat();',
-            ],
-            [
-                '<?php $foo->DateTime();',
-            ],
-            [
-                '<?php Foo::DateTime();',
-            ],
-            [
-                '<?php Foo\DateTime();',
-            ],
-            [
-                '<?php date_create_immutable("now");',
-                '<?php date_create("now");',
-            ],
-            [
-                '<?php date_create_immutable();',
-                '<?php Date_Create();',
-            ],
-            [
-                '<?php \date_create_immutable();',
-                '<?php \date_create();',
-            ],
-            [
-                '<?php namespace Foo; date_create_immutable();',
-                '<?php namespace Foo; date_create();',
-            ],
-            [
-                '<?php namespace Foo; \date_create_immutable();',
-                '<?php namespace Foo; \date_create();',
-            ],
-            [
-                "<?php date_create_immutable_from_format('j-M-Y', '15-Feb-2009');",
-                "<?php date_create_from_format('j-M-Y', '15-Feb-2009');",
-            ],
-            [
-                '<?php Foo\date_create();',
-            ],
-            [
-                '<?php $foo->date_create();',
-            ],
-            [
-                '<?php Foo::date_create();',
-            ],
-            [
-                '<?php new date_create();',
-            ],
-            [
-                '<?php new \date_create();',
-            ],
-            [
-                '<?php new Foo\date_create();',
-            ],
-            [
-                '<?php class Foo { public function datetime() {} }',
-            ],
-            [
-                '<?php class Foo { public function date_create() {} }',
-            ],
-            [
-                '<?php namespace Foo; use DateTime; class Bar { public function datetime() {} }',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php new DateTimeImmutable();',
+            '<?php new DateTime();',
+        ];
+
+        yield [
+            '<?php new DateTimeImmutable();',
+            '<?php new DATETIME();',
+        ];
+
+        yield [
+            '<?php new \DateTimeImmutable();',
+            '<?php new \DateTime();',
+        ];
+
+        yield [
+            '<?php new Foo\DateTime();',
+        ];
+
+        yield [
+            '<?php namespace Foo; new DateTime();',
+        ];
+
+        yield [
+            '<?php namespace Foo; new \DateTimeImmutable();',
+            '<?php namespace Foo; new \DateTime();',
+        ];
+
+        yield [
+            '<?php namespace Foo; use DateTime; new \DateTimeImmutable();',
+            '<?php namespace Foo; use DateTime; new DateTime();',
+        ];
+
+        yield [
+            '<?php namespace Foo; use DateTime; new Bar\DateTime();',
+        ];
+
+        yield [
+            '<?php namespace Foo; use DateTime\Bar; new DateTime();',
+        ];
+
+        yield [
+            '<?php namespace Foo; use Bar\DateTime; new DateTime();',
+        ];
+
+        yield [
+            '<?php namespace Foo; use DateTime\Bar; use DateTime; use Baz\DateTime as BazDateTime; new \DateTimeImmutable();',
+            '<?php namespace Foo; use DateTime\Bar; use DateTime; use Baz\DateTime as BazDateTime; new DateTime();',
+        ];
+
+        yield [
+            '<?php $foo = DateTime::ISO8601;',
+        ];
+
+        yield [
+            '<?php $foo = \datetime::ISO8601 + 24;',
+        ];
+
+        yield [
+            "<?php DateTimeImmutable::createFromFormat('j-M-Y', '15-Feb-2009');",
+            "<?php DateTime::createFromFormat('j-M-Y', '15-Feb-2009');",
+        ];
+
+        yield [
+            '<?php \DateTimeImmutable::getLastErrors();',
+            '<?php \DateTime::getLastErrors();',
+        ];
+
+        yield [
+            '<?php Foo\DateTime::createFromFormat();',
+        ];
+
+        yield [
+            '<?php $foo->DateTime();',
+        ];
+
+        yield [
+            '<?php Foo::DateTime();',
+        ];
+
+        yield [
+            '<?php Foo\DateTime();',
+        ];
+
+        yield [
+            '<?php date_create_immutable("now");',
+            '<?php date_create("now");',
+        ];
+
+        yield [
+            '<?php date_create_immutable();',
+            '<?php Date_Create();',
+        ];
+
+        yield [
+            '<?php \date_create_immutable();',
+            '<?php \date_create();',
+        ];
+
+        yield [
+            '<?php namespace Foo; date_create_immutable();',
+            '<?php namespace Foo; date_create();',
+        ];
+
+        yield [
+            '<?php namespace Foo; \date_create_immutable();',
+            '<?php namespace Foo; \date_create();',
+        ];
+
+        yield [
+            "<?php date_create_immutable_from_format('j-M-Y', '15-Feb-2009');",
+            "<?php date_create_from_format('j-M-Y', '15-Feb-2009');",
+        ];
+
+        yield [
+            '<?php Foo\date_create();',
+        ];
+
+        yield [
+            '<?php $foo->date_create();',
+        ];
+
+        yield [
+            '<?php Foo::date_create();',
+        ];
+
+        yield [
+            '<?php new date_create();',
+        ];
+
+        yield [
+            '<?php new \date_create();',
+        ];
+
+        yield [
+            '<?php new Foo\date_create();',
+        ];
+
+        yield [
+            '<?php class Foo { public function datetime() {} }',
+        ];
+
+        yield [
+            '<?php class Foo { public function date_create() {} }',
+        ];
+
+        yield [
+            '<?php namespace Foo; use DateTime; class Bar { public function datetime() {} }',
+        ];
+
+        yield [
+            '<?php
                 namespace Foo;
                 use DateTime\Bar;
                 use DateTime;
@@ -163,7 +196,7 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
                 new \DateTimeImmutable();
                 new \DateTimeImmutable();
                 ',
-                '<?php
+            '<?php
                 namespace Foo;
                 use DateTime\Bar;
                 use DateTime;
@@ -173,7 +206,6 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
                 new DateTime();
                 new DateTime();
                 ',
-            ],
         ];
     }
 

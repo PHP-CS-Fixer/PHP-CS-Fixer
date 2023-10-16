@@ -7,15 +7,14 @@ Ordering ``use`` statements.
 Configuration
 -------------
 
-``sort_algorithm``
+``case_sensitive``
 ~~~~~~~~~~~~~~~~~~
 
-Whether the statements should be sorted alphabetically or by length, or not
-sorted.
+Whether the sorting should be case sensitive.
 
-Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
+Allowed types: ``bool``
 
-Default value: ``'alpha'``
+Default value: ``false``
 
 ``imports_order``
 ~~~~~~~~~~~~~~~~~
@@ -25,6 +24,16 @@ Defines the order of import types.
 Allowed types: ``array`` and ``null``
 
 Default value: ``null``
+
+``sort_algorithm``
+~~~~~~~~~~~~~~~~~~
+
+Whether the statements should be sorted alphabetically or by length, or not
+sorted.
+
+Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
+
+Default value: ``'alpha'``
 
 Examples
 --------
@@ -48,6 +57,20 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
+With configuration: ``['case_sensitive' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   +use const AA;
+    use function Aaa;
+   -use const AA;
+
+Example #3
+~~~~~~~~~~
+
 With configuration: ``['sort_algorithm' => 'length']``.
 
 .. code-block:: diff
@@ -63,7 +86,7 @@ With configuration: ``['sort_algorithm' => 'length']``.
    -use Acme;
    -use Bar;
 
-Example #3
+Example #4
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'length', 'imports_order' => ['const', 'class', 'function']]``.
@@ -86,7 +109,7 @@ With configuration: ``['sort_algorithm' => 'length', 'imports_order' => ['const'
     use function CCC\AA;
    -use function DDD;
 
-Example #4
+Example #5
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'alpha', 'imports_order' => ['const', 'class', 'function']]``.
@@ -109,7 +132,7 @@ With configuration: ``['sort_algorithm' => 'alpha', 'imports_order' => ['const',
     use function DDD;
    -use function CCC\AA;
 
-Example #5
+Example #6
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'none', 'imports_order' => ['const', 'class', 'function']]``.
@@ -137,27 +160,32 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PER
-  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``ordered_imports`` rule with the config below:
+- `@PER <./../../ruleSets/PER.rst>`_ with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
-@PER-CS1.0
-  Using the `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ rule set will enable the ``ordered_imports`` rule with the config below:
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
-@PSR12
-  Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``ordered_imports`` rule with the config below:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``ordered_imports`` rule with the config below:
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
+
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
+
+  ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``
 
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``ordered_imports`` rule with the config below:
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``
+
+

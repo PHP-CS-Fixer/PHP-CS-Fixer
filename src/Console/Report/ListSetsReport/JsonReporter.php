@@ -32,9 +32,7 @@ final class JsonReporter implements ReporterInterface
     {
         $sets = $reportSummary->getSets();
 
-        usort($sets, static function (RuleSetDescriptionInterface $a, RuleSetDescriptionInterface $b): int {
-            return strcmp($a->getName(), $b->getName());
-        });
+        usort($sets, static fn (RuleSetDescriptionInterface $a, RuleSetDescriptionInterface $b): int => strcmp($a->getName(), $b->getName()));
 
         $json = ['sets' => []];
 
@@ -47,6 +45,6 @@ final class JsonReporter implements ReporterInterface
             ];
         }
 
-        return json_encode($json, JSON_PRETTY_PRINT);
+        return json_encode($json, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
     }
 }

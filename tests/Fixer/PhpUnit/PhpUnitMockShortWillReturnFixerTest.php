@@ -35,9 +35,8 @@ final class PhpUnitMockShortWillReturnFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'do not fix' => [
-                '<?php
+        yield 'do not fix' => [
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")->will;
@@ -46,9 +45,10 @@ class FooTest extends TestCase {
         $someMock->method("someMethod")->will($this->doSomething(7));
     }
 }',
-            ],
-            'will return simple scenarios' => [
-                '<?php
+        ];
+
+        yield 'will return simple scenarios' => [
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")->willReturn(10);
@@ -77,7 +77,7 @@ class FooTest extends TestCase {
         $someMock->method("someMethod")->willReturn(2);
     }
 }',
-                '<?php
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")->will($this->returnValue(10));
@@ -106,9 +106,10 @@ class FooTest extends TestCase {
         $someMock->method("someMethod")->will($this->ReturnVALUE(2));
     }
 }',
-            ],
-            'will return with multi lines and messy indents' => [
-                '<?php
+        ];
+
+        yield 'will return with multi lines and messy indents' => [
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock
@@ -118,7 +119,7 @@ class FooTest extends TestCase {
             );
     }
 }',
-                '<?php
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock
@@ -128,9 +129,10 @@ class FooTest extends TestCase {
             );
     }
 }',
-            ],
-            'will return with multi lines, messy indents and comments inside' => [
-                '<?php
+        ];
+
+        yield 'will return with multi lines, messy indents and comments inside' => [
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock
@@ -142,7 +144,7 @@ class FooTest extends TestCase {
             );
     }
 }',
-                '<?php
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock
@@ -154,23 +156,25 @@ class FooTest extends TestCase {
             );
     }
 }',
-            ],
-            'will return with block comments in weird places' => [
-                '<?php
+        ];
+
+        yield 'will return with block comments in weird places' => [
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")->/* a */willReturn/* b */(/* c */ 10 /* d */);
     }
 }',
-                '<?php
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")->/* a */will/* b */(/* c */ $this->returnValue(10) /* d */);
     }
 }',
-            ],
-            'will return with comments persisted not touched even if put in unexpected places' => [
-                '<?php
+        ];
+
+        yield 'will return with comments persisted not touched even if put in unexpected places' => [
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")// a
@@ -183,7 +187,7 @@ class FooTest extends TestCase {
             10 /* i */);
     }
 }',
-                '<?php
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")// a
@@ -196,9 +200,10 @@ class FooTest extends TestCase {
             10) /* i */);
     }
 }',
-            ],
-            'will return with multi lines, messy indents and comments in weird places' => [
-                '<?php
+        ];
+
+        yield 'will return with multi lines, messy indents and comments in weird places' => [
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock
@@ -223,7 +228,7 @@ class FooTest extends TestCase {
              /* l */);
     }
 }',
-                '<?php
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock
@@ -248,35 +253,36 @@ class FooTest extends TestCase {
              /* l */);
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")->willReturn( 10 , );
     }
 }',
-                '<?php
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")->will($this->returnValue( 10 , ));
     }
 }',
-            ],
-            'with trailing commas' => [
-                '<?php
+        ];
+
+        yield 'with trailing commas' => [
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")->willReturn( 10 ,   );
     }
 }',
-                '<?php
+            '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")->will($this->returnValue( 10 , ) , );
     }
 }',
-            ],
         ];
     }
 

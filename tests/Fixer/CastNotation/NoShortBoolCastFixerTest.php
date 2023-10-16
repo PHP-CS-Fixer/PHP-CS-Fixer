@@ -33,31 +33,32 @@ final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
             $c = // lala
                 // cc
             (bool)$content;',
-                '<?php
+            '<?php
             $c = ! // lala
                 // cc
             !$content;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = \'0\';
 $b = /*
 
     */(bool)$a;',
-                '<?php
+            '<?php
 $a = \'0\';
 $b = !/*
 
     */!$a;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo($a, $b) {
     $c = (bool)$a;
     $d = !$a;
@@ -70,7 +71,7 @@ function foo($a, $b) {
     return (bool) $a;
 }
                 ',
-                '<?php
+            '<?php
 function foo($a, $b) {
     $c = !!$a;
     $d = !$a;
@@ -86,7 +87,6 @@ function foo($a, $b) {
     return !! $a;
 }
                 ',
-            ],
         ];
     }
 }

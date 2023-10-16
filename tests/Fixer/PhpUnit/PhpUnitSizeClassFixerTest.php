@@ -39,17 +39,17 @@ final class PhpUnitSizeClassFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return [
-            'It does not change normal classes' => [
-                '<?php
+        yield 'It does not change normal classes' => [
+            '<?php
 
 class Hello
 {
 }
 ',
-            ],
-            'It marks a test class as @small by default' => [
-                '<?php
+        ];
+
+        yield 'It marks a test class as @small by default' => [
+            '<?php
 
 /**
  * @small
@@ -58,15 +58,16 @@ class Test extends TestCase
 {
 }
 ',
-                '<?php
+            '<?php
 
 class Test extends TestCase
 {
 }
 ',
-            ],
-            'It marks a test class as specified in the configuration' => [
-                '<?php
+        ];
+
+        yield 'It marks a test class as specified in the configuration' => [
+            '<?php
 
 /**
  * @large
@@ -75,16 +76,17 @@ class Test extends TestCase
 {
 }
 ',
-                '<?php
+            '<?php
 
 class Test extends TestCase
 {
 }
 ',
-                ['group' => 'large'],
-            ],
-            'It adds an @small tag to a class that already has a doc block' => [
-                '<?php
+            ['group' => 'large'],
+        ];
+
+        yield 'It adds an @small tag to a class that already has a doc block' => [
+            '<?php
 
 /**
  * @coversNothing
@@ -94,7 +96,7 @@ class Test extends TestCase
 {
 }
 ',
-                '<?php
+            '<?php
 
 /**
  * @coversNothing
@@ -103,9 +105,10 @@ class Test extends TestCase
 {
 }
 ',
-            ],
-            'It does not change a class that is already @small' => [
-                '<?php
+        ];
+
+        yield 'It does not change a class that is already @small' => [
+            '<?php
 
 /**
  * @small
@@ -114,9 +117,10 @@ class Test extends TestCase
 {
 }
 ',
-            ],
-            'It does not change a class that is already @small and has other annotations' => [
-                '<?php
+        ];
+
+        yield 'It does not change a class that is already @small and has other annotations' => [
+            '<?php
 
 /**
  * @author malukenho
@@ -128,9 +132,10 @@ class Test extends TestCase
 {
 }
 ',
-            ],
-            'It works on other indentation levels' => [
-                '<?php
+        ];
+
+        yield 'It works on other indentation levels' => [
+            '<?php
 
 if (class_exists("Foo\Bar")) {
     /**
@@ -141,7 +146,7 @@ if (class_exists("Foo\Bar")) {
     }
 }
 ',
-                '<?php
+            '<?php
 
 if (class_exists("Foo\Bar")) {
     class Test Extends TestCase
@@ -149,9 +154,10 @@ if (class_exists("Foo\Bar")) {
     }
 }
 ',
-            ],
-            'It works on other indentation levels when the class has other annotations' => [
-                '<?php
+        ];
+
+        yield 'It works on other indentation levels when the class has other annotations' => [
+            '<?php
 
 if (class_exists("Foo\Bar")) {
     /**
@@ -166,7 +172,7 @@ if (class_exists("Foo\Bar")) {
     }
 }
 ',
-                '<?php
+            '<?php
 
 if (class_exists("Foo\Bar")) {
     /**
@@ -180,9 +186,10 @@ if (class_exists("Foo\Bar")) {
     }
 }
 ',
-            ],
-            'It always adds @small to the bottom of the doc block' => [
-                '<?php
+        ];
+
+        yield 'It always adds @small to the bottom of the doc block' => [
+            '<?php
 
 /**
  * @coversNothing
@@ -206,7 +213,7 @@ class Test extends TestCase
 {
 }
 ',
-                '<?php
+            '<?php
 
 /**
  * @coversNothing
@@ -229,18 +236,20 @@ class Test extends TestCase
 {
 }
 ',
-            ],
-            'It does not change a class with a single line @{size} doc block' => [
-                '<?php
+        ];
+
+        yield 'It does not change a class with a single line @{size} doc block' => [
+            '<?php
 
 /** @medium */
 class Test extends TestCase
 {
 }
 ',
-            ],
-            'It adds an @small tag to a class that already has a one linedoc block' => [
-                '<?php
+        ];
+
+        yield 'It adds an @small tag to a class that already has a one linedoc block' => [
+            '<?php
 
 /**
  * @coversNothing
@@ -250,24 +259,26 @@ class Test extends TestCase
 {
 }
 ',
-                '<?php
+            '<?php
 
 /** @coversNothing */
 class Test extends TestCase
 {
 }
 ',
-            ],
-            'By default it will not mark an abstract class as @small' => [
-                '<?php
+        ];
+
+        yield 'By default it will not mark an abstract class as @small' => [
+            '<?php
 
 abstract class Test
 {
 }
 ',
-            ],
-            'It works correctly with multiple classes in one file, even when one of them is not allowed' => [
-                '<?php
+        ];
+
+        yield 'It works correctly with multiple classes in one file, even when one of them is not allowed' => [
+            '<?php
 
 /**
  * @small
@@ -291,7 +302,7 @@ class Test3 extends TestCase
 {
 }
 ',
-                '<?php
+            '<?php
 
 class Test extends TestCase
 {
@@ -309,7 +320,6 @@ class Test3 extends TestCase
 {
 }
 ',
-            ],
         ];
     }
 

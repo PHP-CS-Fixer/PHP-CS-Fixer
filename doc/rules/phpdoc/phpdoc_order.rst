@@ -113,12 +113,12 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``phpdoc_order`` rule with the config below:
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
   ``['order' => ['param', 'return', 'throws']]``
 
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``phpdoc_order`` rule with the config below:
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['order' => ['param', 'return', 'throws']]``
+
+
