@@ -126,6 +126,6 @@ The rule is part of the following rule sets:
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
-  ``['remove_inheritdoc' => true]``
+  ``['remove_inheritdoc' => true, 'allow_unused_params' => true]``
 
 
