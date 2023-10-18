@@ -394,6 +394,20 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php /** @return int */ fn(): int => 1;',
             '<?php /** @return int */ fn() => 1;',
         ];
+
+        yield '$this accessor' => [
+            '<?php
+                    class Foo {
+                        /** @return $this */ function my_foo(): static {}
+                    }
+                ',
+            '<?php
+                    class Foo {
+                        /** @return $this */ function my_foo() {}
+                    }
+                ',
+            8_00_00,
+        ];
     }
 
     /**
@@ -481,19 +495,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                     public function something() {}
                 }
             ',
-        ];
-
-        yield '$this accessor' => [
-            '<?php
-                    class Foo {
-                        /** @return $this */ function my_foo(): static {}
-                    }
-                ',
-            '<?php
-                    class Foo {
-                        /** @return $this */ function my_foo() {}
-                    }
-                ',
         ];
     }
 }
