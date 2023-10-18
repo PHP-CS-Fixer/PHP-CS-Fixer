@@ -185,6 +185,10 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
             return null;
         }
 
+        if ('$this' === $commonType) {
+            $commonType = 'static';
+        }
+
         if ('static' === $commonType && (!$isReturnType || \PHP_VERSION_ID < 8_00_00)) {
             $commonType = 'self';
         }
