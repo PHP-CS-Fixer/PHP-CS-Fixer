@@ -47,7 +47,7 @@ final class NullableTypeDeclarationFixer extends AbstractFixer implements Config
             'Nullable single type declaration should be standardised using configured syntax.',
             [
                 new VersionSpecificCodeSample(
-                    "<?php\nfunction bar(null|int \$value, null|\\Closure \$callable): void {}\n",
+                    "<?php\nfunction bar(null|int \$value, null|\\Closure \$callable): int|null {}\n",
                     new VersionSpecification(8_00_00)
                 ),
                 new VersionSpecificCodeSample(
