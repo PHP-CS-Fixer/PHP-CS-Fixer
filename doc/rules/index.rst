@@ -291,6 +291,9 @@ Control Structure
 - `include <./control_structure/include.rst>`_
 
   Include/Require and file path should be divided with a single space. File path should not be placed within parentheses.
+- `match_has_one_case_on_every_arm <./control_structure/match_has_one_case_on_every_arm.rst>`_
+
+  Match only allow has one case on every arm.
 - `no_alternative_syntax <./control_structure/no_alternative_syntax.rst>`_
 
   Replace control structure alternative syntax to use braces.

@@ -1221,6 +1221,11 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Casing\\MagicMethodCasingFixer <./../src/Fixer/Casing/MagicMethodCasingFixer.php>`_
+-  `match_has_one_case_on_every_arm <./rules/control_structure/match_has_one_case_on_every_arm.rst>`_
+
+   Match only allow has one case on every arm.
+
+   `Source PhpCsFixer\\Fixer\\ControlStructure\\MatchHasOneCaseOnEveryArmFixer <./../src/Fixer/ControlStructure/MatchHasOneCaseOnEveryArmFixer.php>`_
 -  `mb_str_functions <./rules/alias/mb_str_functions.rst>`_
 
    Replace non multibyte-safe functions with corresponding mb function.
