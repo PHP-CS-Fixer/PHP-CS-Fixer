@@ -34,11 +34,11 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.0'
-            job-description: 'with Symfony ^6'
-            execute-flex-with-symfony-version: '^6' # explicit check for Symfony 6.x compatibility
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.1'
+            job-description: 'with Symfony ^6'
+            execute-flex-with-symfony-version: '^6' # explicit check for Symfony 6.x compatibility
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
