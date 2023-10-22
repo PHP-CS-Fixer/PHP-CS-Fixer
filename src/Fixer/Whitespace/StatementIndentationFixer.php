@@ -365,7 +365,35 @@ else {
                             (null !== $firstNonWhitespaceTokenIndex && $firstNonWhitespaceTokenIndex < $endIndex)
                             || (null !== $nextNewlineIndex && $nextNewlineIndex < $endIndex)
                         ) {
-                            $indent = true;
+                            if (
+                                // do we touch whitespace directly before comment...
+                                $tokens[$firstNonWhitespaceTokenIndex]->isGivenKind(T_COMMENT)
+                                // ...and afterwards, there is only comment or `}`
+                                && $tokens[$tokens->getNextNonWhitespace($firstNonWhitespaceTokenIndex)]->equals('}')
+                            ) {
+                                if (
+                                    // ... and the comment was only content in docblock
+                                    $tokens[$tokens->getPrevNonWhitespace($firstNonWhitespaceTokenIndex)]->equals('{')
+                                ) {
+                                    $indent = true;
+                                } else {
+                                    // or it was dedicated comment for next control loop
+                                    // ^^ we need to check if there is a control group afterwards, in that case
+                                    // FRS TODO
+
+                                    $nextIndex = $tokens->getNextNonWhitespace($firstNonWhitespaceTokenIndex);
+                                    $nextNextIndex = $tokens->getNextNonWhitespace($nextIndex);
+                                    // if ($FRS) var_dump(["sss" => $tokens[$nextNextIndex]->toJson()]);
+
+                                    if (null !== $nextNextIndex && $tokens[$nextNextIndex]->isGivenKind([T_ELSE, T_ELSEIF])) {
+                                        $indent = false;
+                                    } else {
+                                        $indent = true;
+                                    }
+                                }
+                            } else {
+                                $indent = true;
+                            }
                         }
                     }
 

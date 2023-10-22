@@ -930,7 +930,66 @@ if (true) {
 }',
         ];
 
+        yield 'comment before else blocks' => [
+            '<?php
+// foo
+if ($foo) {
+    echo "foo";
+// bar
+} else {
+    $aaa = 1;
+}',
+            '<?php
+    // foo
+if ($foo) {
+    echo "foo";
+    // bar
+} else {
+    $aaa = 1;
+}',
+        ];
+
+        yield 'comment before elseif blocks' => [
+            '<?php
+// foo
+if ($foo) {
+    echo "foo";
+// bar
+} elseif(1) {
+    echo "bar";
+} elseif(2) {
+    // do nothing
+} elseif(3) {
+    $aaa = 1;
+    // end comment in final block
+}',
+            '<?php
+    // foo
+if ($foo) {
+    echo "foo";
+    // bar
+} elseif(1) {
+    echo "bar";
+} elseif(2) {
+// do nothing
+} elseif(3) {
+    $aaa = 1;
+    // end comment in final block
+}',
+        ];
+
         yield 'comments at the end of if/elseif/else blocks' => [
+            '<?php
+if ($foo) {
+    echo "foo";
+// foo
+} elseif ($bar) {
+    echo "bar";
+// bar
+} else {
+    echo "baz";
+    // baz
+}',
             '<?php
 if ($foo) {
     echo "foo";
