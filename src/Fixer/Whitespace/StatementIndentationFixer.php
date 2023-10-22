@@ -378,12 +378,9 @@ else {
                                     $indent = true;
                                 } else {
                                     // or it was dedicated comment for next control loop
-                                    // ^^ we need to check if there is a control group afterwards, in that case
-                                    // FRS TODO
-
+                                    // ^^ we need to check if there is a control group afterwards, and in that case don't make extra indent level
                                     $nextIndex = $tokens->getNextNonWhitespace($firstNonWhitespaceTokenIndex);
                                     $nextNextIndex = $tokens->getNextNonWhitespace($nextIndex);
-                                    // if ($FRS) var_dump(["sss" => $tokens[$nextNextIndex]->toJson()]);
 
                                     if (null !== $nextNextIndex && $tokens[$nextNextIndex]->isGivenKind([T_ELSE, T_ELSEIF])) {
                                         $indent = false;
