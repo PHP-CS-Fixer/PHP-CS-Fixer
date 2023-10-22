@@ -776,15 +776,6 @@ $foo
 ;',
         ];
 
-        yield 'if with only a comment and followed by else' => [
-            '<?php
-if (true) {
-    // foo
-} else {
-    // bar
-}',
-        ];
-
         yield 'multiple anonymous functions as function arguments' => [
             '<?php
 foo(function () {
@@ -922,6 +913,15 @@ $result3 = (new Argument())(
     new Bar3(),
     3
 );',
+        ];
+
+        yield 'if with only a comment and followed by else' => [
+            '<?php
+if (true) {
+    // foo
+} else {
+    // bar
+}',
         ];
 
         yield 'comments at the end of if/elseif/else blocks' => [
