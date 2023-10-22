@@ -922,6 +922,12 @@ if (true) {
 } else {
     // bar
 }',
+            '<?php
+if (true) {
+// foo
+} else {
+        // bar
+}',
         ];
 
         yield 'comments at the end of if/elseif/else blocks' => [
