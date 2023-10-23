@@ -19,8 +19,9 @@ jobs:
         include:
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
-            job-description: 'tests'
+            job-description: 'tests with Symfony ^5'
             run-tests: 'yes'
+            execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
@@ -51,13 +52,13 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.1'
-            job-description: 'Fixer'
+            job-description: 'Fixer with Symfony ^6'
             fixer-mode: 'standard'
             execute-flex-with-symfony-version: '^6' # explicit check for Symfony 6.x compatibility
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.1'
-            job-description: 'tests'
+            job-description: 'tests with Symfony ^6'
             run-tests: 'yes'
             execute-flex-with-symfony-version: '^6' # explicit check for Symfony 6.x compatibility
 
