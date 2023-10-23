@@ -949,6 +949,46 @@ if ($foo) {
 }',
         ];
 
+        yield 'multiline comment in block - describing next block' => [
+            '<?php
+if (1) {
+    $b = "a";
+// multiline comment line 1
+// multiline comment line 2
+// multiline comment line 3
+} else {
+    $c = "b";
+}',
+            '<?php
+if (1) {
+    $b = "a";
+    // multiline comment line 1
+    // multiline comment line 2
+    // multiline comment line 3
+} else {
+    $c = "b";
+}',
+        ];
+
+        yield 'multiline comment in block - the only content in block' => [
+            '<?php
+if (1) {
+    // multiline comment line 1
+    // multiline comment line 2
+    // multiline comment line 3
+} else {
+    $c = "b";
+}',
+            '<?php
+if (1) {
+ // multiline comment line 1
+  // multiline comment line 2
+// multiline comment line 3
+} else {
+    $c = "b";
+}',
+        ];
+
         yield 'comment before elseif blocks' => [
             '<?php
 // foo

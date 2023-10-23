@@ -369,18 +369,18 @@ else {
                                 // do we touch whitespace directly before comment...
                                 $tokens[$firstNonWhitespaceTokenIndex]->isGivenKind(T_COMMENT)
                                 // ...and afterwards, there is only comment or `}`
-                                && $tokens[$tokens->getNextNonWhitespace($firstNonWhitespaceTokenIndex)]->equals('}')
+                                && $tokens[$tokens->getNextMeaningfulToken($firstNonWhitespaceTokenIndex)]->equals('}')
                             ) {
                                 if (
                                     // ... and the comment was only content in docblock
-                                    $tokens[$tokens->getPrevNonWhitespace($firstNonWhitespaceTokenIndex)]->equals('{')
+                                    $tokens[$tokens->getPrevMeaningfulToken($firstNonWhitespaceTokenIndex)]->equals('{')
                                 ) {
                                     $indent = true;
                                 } else {
                                     // or it was dedicated comment for next control loop
                                     // ^^ we need to check if there is a control group afterwards, and in that case don't make extra indent level
-                                    $nextIndex = $tokens->getNextNonWhitespace($firstNonWhitespaceTokenIndex);
-                                    $nextNextIndex = $tokens->getNextNonWhitespace($nextIndex);
+                                    $nextIndex = $tokens->getNextMeaningfulToken($firstNonWhitespaceTokenIndex);
+                                    $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
 
                                     if (null !== $nextNextIndex && $tokens[$nextNextIndex]->isGivenKind([T_ELSE, T_ELSEIF])) {
                                         $indent = false;
