@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ReferenceSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
@@ -334,6 +336,86 @@ final class ReferenceSpacesFixerTest extends AbstractFixerTestCase
             '<?php $foo = function() use (&$bar) {};',
             '<?php $foo = function() use (&    $bar) {};',
             ['assignment' => 'single_space'],
+        ];
+
+        // Configuration: assignment: no_space --- //
+
+        yield 'configured: assignment: no_space - assign - reference char with a single space after' => [
+            '<?php $foo =&$var;',
+            '<?php $foo =& $var;',
+            ['assignment' => 'no_space'],
+        ];
+
+        yield 'configured: assignment: no_space - assign - reference char with a single space on both sides' => [
+            '<?php $foo =&$var;',
+            '<?php $foo = & $var;',
+            ['assignment' => 'no_space'],
+        ];
+
+        yield 'configured: assignment: no_space - assign - reference char with a single space before' => [
+            '<?php $foo =&$var;',
+            '<?php $foo = &$var;',
+            ['assignment' => 'no_space'],
+        ];
+
+        yield 'configured: assignment: no_space - assign - reference char with a no spaces around' => [
+            '<?php $foo =&$var;',
+            null,
+            ['assignment' => 'no_space'],
+        ];
+
+        yield 'configured: assignment: no_space - assign - reference char with multiple spaces after' => [
+            '<?php $foo =&$var;',
+            '<?php $foo = &    $var;',
+            ['assignment' => 'no_space'],
+        ];
+
+        yield 'configured: assignment: no_space - assign - reference char with multiple spaces on both sides' => [
+            '<?php $foo =&$var;',
+            '<?php $foo =    &    $var;',
+            ['assignment' => 'no_space'],
+        ];
+
+        yield 'configured: assignment: no_space - assign - reference char with multiple spaces before' => [
+            '<?php $foo =&$var;',
+            '<?php $foo =    &$var;',
+            ['assignment' => 'no_space'],
+        ];
+
+        yield 'configured: assignment: no_space - function_signature - reference char with no space after' => [
+            '<?php function bar(&$foo) {};',
+            null,
+            ['assignment' => 'no_space'],
+        ];
+
+        yield 'configured: assignment: no_space - function_signature - reference char with a single space after' => [
+            '<?php function bar(&$foo) {};',
+            '<?php function bar(& $foo) {};',
+            ['assignment' => 'no_space'],
+        ];
+
+        yield 'configured: assignment: no_space - function_signature - reference char with multiple spaces after' => [
+            '<?php function bar(&$foo) {};',
+            '<?php function bar(&     $foo) {};',
+            ['assignment' => 'no_space'],
+        ];
+
+        yield 'configured: assignment: no_space - anonymous_function_use_block - reference char with no space after' => [
+            '<?php $foo = function() use (&$bar) {};',
+            null,
+            ['assignment' => 'no_space'],
+        ];
+
+        yield 'configured: assignment: no_space - anonymous_function_use_block - reference char a single multiple spaces after' => [
+            '<?php $foo = function() use (&$bar) {};',
+            '<?php $foo = function() use (& $bar) {};',
+            ['assignment' => 'no_space'],
+        ];
+
+        yield 'configured: assignment: no_space - anonymous_function_use_block - reference char with multiple spaces after' => [
+            '<?php $foo = function() use (&$bar) {};',
+            '<?php $foo = function() use (&    $bar) {};',
+            ['assignment' => 'no_space'],
         ];
 
         // Configuration: function_signature: by_reference --- //

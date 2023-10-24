@@ -2974,7 +2974,7 @@ List of Available Rules
      | Default value: ``'by_reference'``
    - | ``assignment``
      | Default fix strategy for reference operator in assignments.
-     | Allowed values: ``'by_assign'``, ``'by_reference'``, ``'single_space'`` and ``false``
+     | Allowed values: ``'by_assign'``, ``'by_reference'``, ``'no_space'``, ``'single_space'`` and ``false``
      | Default value: ``'by_reference'``
    - | ``function_signature``
      | Default fix strategy for reference operator in function signatures.

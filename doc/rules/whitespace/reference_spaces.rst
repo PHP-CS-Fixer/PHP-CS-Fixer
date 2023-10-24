@@ -21,7 +21,7 @@ Default value: ``'by_reference'``
 
 Default fix strategy for reference operator in assignments.
 
-Allowed values: ``'by_assign'``, ``'by_reference'``, ``'single_space'`` and ``false``
+Allowed values: ``'by_assign'``, ``'by_reference'``, ``'no_space'``, ``'single_space'`` and ``false``
 
 Default value: ``'by_reference'``
 
@@ -46,9 +46,8 @@ Example #1
 
    --- Original
    +++ New
-    <?php
-   -$foo = & $bar;
-   +$foo = &$bar;
+   -<?php $foo = & $bar;
+   +<?php $foo = &$bar;
 
 Example #2
 ~~~~~~~~~~
@@ -59,9 +58,8 @@ With configuration: ``['assignment' => 'by_assign']``.
 
    --- Original
    +++ New
-    <?php
-   -$foo = & $bar;
-   +$foo =& $bar;
+   -<?php $foo = & $bar;
+   +<?php $foo =& $bar;
 
 Example #3
 ~~~~~~~~~~
@@ -72,9 +70,8 @@ With configuration: ``['assignment' => 'by_reference']``.
 
    --- Original
    +++ New
-    <?php
-   -$foo = & $bar;
-   +$foo = &$bar;
+   -<?php $foo = & $bar;
+   +<?php $foo = &$bar;
 
 Example #4
 ~~~~~~~~~~
@@ -85,11 +82,22 @@ With configuration: ``['assignment' => 'single_space']``.
 
    --- Original
    +++ New
-    <?php
-   -$foo =&$bar;
-   +$foo = & $bar;
+   -<?php $foo =&$bar;
+   +<?php $foo = & $bar;
 
 Example #5
+~~~~~~~~~~
+
+With configuration: ``['assignment' => 'no_space']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   -<?php $foo =& $bar;
+   +<?php $foo =&$bar;
+
+Example #6
 ~~~~~~~~~~
 
 With configuration: ``['function_signature' => 'by_reference']``.
@@ -98,11 +106,10 @@ With configuration: ``['function_signature' => 'by_reference']``.
 
    --- Original
    +++ New
-    <?php
-   -function foo(& $bar) {}
-   +function foo(&$bar) {}
+   -<?php function foo(& $bar) {}
+   +<?php function foo(&$bar) {}
 
-Example #6
+Example #7
 ~~~~~~~~~~
 
 With configuration: ``['function_signature' => 'single_space']``.
@@ -111,11 +118,10 @@ With configuration: ``['function_signature' => 'single_space']``.
 
    --- Original
    +++ New
-    <?php
-   -function foo(&$bar) {}
-   +function foo(& $bar) {}
+   -<?php function foo(&$bar) {}
+   +<?php function foo(& $bar) {}
 
-Example #7
+Example #8
 ~~~~~~~~~~
 
 With configuration: ``['anonymous_function_use_block' => 'by_reference']``.
@@ -124,11 +130,10 @@ With configuration: ``['anonymous_function_use_block' => 'by_reference']``.
 
    --- Original
    +++ New
-    <?php
-   -$foo = function () use (& $bar) {};
-   +$foo = function () use (&$bar) {};
+   -<?php $foo = function () use (& $bar) {};
+   +<?php $foo = function () use (&$bar) {};
 
-Example #8
+Example #9
 ~~~~~~~~~~
 
 With configuration: ``['anonymous_function_use_block' => 'single_space']``.
@@ -137,6 +142,5 @@ With configuration: ``['anonymous_function_use_block' => 'single_space']``.
 
    --- Original
    +++ New
-    <?php
-   -$foo = function () use (&$bar) {};
-   +$foo = function () use (& $bar) {};
+   -<?php $foo = function () use (&$bar) {};
+   +<?php $foo = function () use (& $bar) {};

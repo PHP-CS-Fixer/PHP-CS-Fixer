@@ -61,6 +61,12 @@ final class ReferenceSpacesFixer extends AbstractFixer implements ConfigurableFi
      */
     public const SINGLE_SPACE = 'single_space';
 
+    /**
+     * @internal
+     */
+    public const NO_SPACE = 'no_space';
+
+    /** @var array<'&'|287|288> */
     private array $relevantTokens = [];
 
     public function configure(array $configuration): void
@@ -95,6 +101,11 @@ final class ReferenceSpacesFixer extends AbstractFixer implements ConfigurableFi
                     '<?php $foo =&$bar;
 ',
                     ['assignment' => self::SINGLE_SPACE]
+                ),
+                new CodeSample(
+                    '<?php $foo =& $bar;
+',
+                    ['assignment' => self::NO_SPACE]
                 ),
                 new CodeSample(
                     '<?php function foo(& $bar) {}
@@ -140,7 +151,7 @@ final class ReferenceSpacesFixer extends AbstractFixer implements ConfigurableFi
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('assignment', 'Default fix strategy for reference operator in assignments.'))
                 ->setDefault(self::BY_REFERENCE)
-                ->setAllowedValues([self::BY_REFERENCE, self::SINGLE_SPACE, self::BY_ASSIGN, false])
+                ->setAllowedValues([self::BY_REFERENCE, self::SINGLE_SPACE, self::BY_ASSIGN, self::NO_SPACE, false])
                 ->getOption(),
             (new FixerOptionBuilder(
                 'function_signature',
@@ -171,13 +182,6 @@ final class ReferenceSpacesFixer extends AbstractFixer implements ConfigurableFi
         }
     }
 
-    /**
-     * Fix whitespace before the reference operator.
-     *
-     * @param Tokens $tokens
-     * @param int $index
-     * @return void
-     */
     private function fixWhiteSpaceBeforeOperator(Tokens $tokens, int $index): void
     {
         // Only on assign by reference is it possible to fix space before
@@ -199,7 +203,7 @@ final class ReferenceSpacesFixer extends AbstractFixer implements ConfigurableFi
         ) {
             $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
         } elseif ($isWhitespace) {
-            if (self::BY_ASSIGN === $strategy) {
+            if (\in_array($strategy, [self::BY_ASSIGN, self::NO_SPACE], true)) {
                 $tokens->clearAt($index - 1);
             } elseif (' ' !== $tokens[$index - 1]->getContent()) {
                 $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
@@ -207,13 +211,6 @@ final class ReferenceSpacesFixer extends AbstractFixer implements ConfigurableFi
         }
     }
 
-    /**
-     * Fix whitespace after the reference operator.
-     *
-     * @param Tokens $tokens
-     * @param int $index
-     * @return void
-     */
     private function fixWhiteSpaceAfterOperator(Tokens $tokens, int $index): void
     {
         $type = '';
@@ -224,6 +221,7 @@ final class ReferenceSpacesFixer extends AbstractFixer implements ConfigurableFi
                 || '=' === $tokens[$search]->getContent()
             ) {
                 $type = $this->getReferenceType($tokens[$search]);
+
                 break;
             }
         }
@@ -240,7 +238,7 @@ final class ReferenceSpacesFixer extends AbstractFixer implements ConfigurableFi
         ) {
             $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
         } elseif ($isWhitespace) {
-            if (self::BY_REFERENCE === $strategy) {
+            if (\in_array($strategy, [self::BY_REFERENCE, self::NO_SPACE], true)) {
                 $tokens->clearAt($index + 1);
             } elseif (' ' !== $tokens[$index + 1]->getContent()) {
                 $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
@@ -251,9 +249,9 @@ final class ReferenceSpacesFixer extends AbstractFixer implements ConfigurableFi
     /**
      * Determines the reference type based on the given token.
      *
-     * @param Token $token The token to determine the reference type for.
+     * @param Token $token the token to determine the reference type for
      *
-     * @return string The reference type.
+     * @return string the reference type
      */
     private function getReferenceType(Token $token): string
     {
