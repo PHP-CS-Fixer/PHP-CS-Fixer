@@ -2962,6 +2962,27 @@ List of Available Rules
    Part of rule sets `@PHP70Migration:risky <./ruleSets/PHP70MigrationRisky.rst>`_ `@PHP71Migration:risky <./ruleSets/PHP71MigrationRisky.rst>`_ `@PHP74Migration:risky <./ruleSets/PHP74MigrationRisky.rst>`_ `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Alias\\RandomApiMigrationFixer <./../src/Fixer/Alias/RandomApiMigrationFixer.php>`_
+-  `reference_spaces <./rules/whitespace/reference_spaces.rst>`_
+
+   Reference operator should be surrounded by space as defined.
+
+   Configuration options:
+
+   - | ``anonymous_function_use_block``
+     | Default fix strategy for reference operator in anonymous function's use blocks.
+     | Allowed values: ``'by_reference'``, ``'single_space'`` and ``false``
+     | Default value: ``'by_reference'``
+   - | ``assignment``
+     | Default fix strategy for reference operator in assignments.
+     | Allowed values: ``'by_assign'``, ``'by_reference'``, ``'single_space'`` and ``false``
+     | Default value: ``'by_reference'``
+   - | ``function_signature``
+     | Default fix strategy for reference operator in function signatures.
+     | Allowed values: ``'by_reference'``, ``'single_space'`` and ``false``
+     | Default value: ``'by_reference'``
+
+
+   `Source PhpCsFixer\\Fixer\\Whitespace\\ReferenceSpacesFixer <./../src/Fixer/Whitespace/ReferenceSpacesFixer.php>`_
 -  `regular_callable_call <./rules/function_notation/regular_callable_call.rst>`_
 
    Callables must be called without using ``call_user_func*`` when possible.

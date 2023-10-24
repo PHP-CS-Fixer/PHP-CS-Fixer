@@ -919,6 +919,9 @@ Whitespace
 - `no_whitespace_in_blank_line <./whitespace/no_whitespace_in_blank_line.rst>`_
 
   Remove trailing whitespace at the end of blank lines.
+- `reference_spaces <./whitespace/reference_spaces.rst>`_
+
+  Reference operator should be surrounded by space as defined.
 - `single_blank_line_at_eof <./whitespace/single_blank_line_at_eof.rst>`_
 
   A PHP file without end tag must always end with a single empty line feed.
