@@ -30,8 +30,8 @@ Example #1
    --- Original
    +++ New
     <?php
-   -function bar(null|int $value, null|\Closure $callable): void {}
-   +function bar(?int $value, ?\Closure $callable): void {}
+   -function bar(null|int $value, null|\Closure $callable): int|null {}
+   +function bar(?int $value, ?\Closure $callable): ?int {}
 
 Example #2
 ~~~~~~~~~~
