@@ -76,7 +76,7 @@ function foo () {}
                     // final line of Description is NOT properly formatted
                     !$this->isCorrectlyFormatted($content)
                     // and first line  of Description, if different than final line, does NOT indicate a list
-                    && (1 === $end || ':' !== substr(rtrim($doc->getLine(1)?->getContent() ?? ''), -1))
+                    && (1 === $end || ($doc->isMultiLine() && ':' !== substr(rtrim($doc->getLine(1)->getContent()), -1)))
                 ) {
                     $line->setContent($content.'.'.$this->whitespacesConfig->getLineEnding());
                     $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
