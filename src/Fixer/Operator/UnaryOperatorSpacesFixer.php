@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
+ * Fixer for rules defined in PSR12 ¶6.1.
+ *
  * @author Gregor Harlan <gharlan@web.de>
  */
 final class UnaryOperatorSpacesFixer extends AbstractFixer
