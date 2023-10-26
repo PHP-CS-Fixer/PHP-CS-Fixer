@@ -47,4 +47,5 @@ Rules
 
 - `single_trait_insert_per_statement <./../rules/class_notation/single_trait_insert_per_statement.rst>`_
 - `ternary_operator_spaces <./../rules/operator/ternary_operator_spaces.rst>`_
+- `unary_operator_spaces <./../rules/operator/unary_operator_spaces.rst>`_
 - `visibility_required <./../rules/class_notation/visibility_required.rst>`_
