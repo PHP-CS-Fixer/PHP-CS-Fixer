@@ -776,15 +776,6 @@ $foo
 ;',
         ];
 
-        yield 'if with only a comment and followed by else' => [
-            '<?php
-if (true) {
-    // foo
-} else {
-    // bar
-}',
-        ];
-
         yield 'multiple anonymous functions as function arguments' => [
             '<?php
 foo(function () {
@@ -924,7 +915,121 @@ $result3 = (new Argument())(
 );',
         ];
 
+        yield 'if with only a comment and followed by else' => [
+            '<?php
+if (true) {
+    // foo
+} else {
+    // bar
+}',
+            '<?php
+if (true) {
+// foo
+} else {
+        // bar
+}',
+        ];
+
+        yield 'comment before else blocks' => [
+            '<?php
+// foo
+if ($foo) {
+    echo "foo";
+// bar
+} else {
+    $aaa = 1;
+}',
+            '<?php
+    // foo
+if ($foo) {
+    echo "foo";
+    // bar
+} else {
+    $aaa = 1;
+}',
+        ];
+
+        yield 'multiline comment in block - describing next block' => [
+            '<?php
+if (1) {
+    $b = "a";
+// multiline comment line 1
+// multiline comment line 2
+// multiline comment line 3
+} else {
+    $c = "b";
+}',
+            '<?php
+if (1) {
+    $b = "a";
+    // multiline comment line 1
+    // multiline comment line 2
+    // multiline comment line 3
+} else {
+    $c = "b";
+}',
+        ];
+
+        yield 'multiline comment in block - the only content in block' => [
+            '<?php
+if (1) {
+    // multiline comment line 1
+    // multiline comment line 2
+    // multiline comment line 3
+} else {
+    $c = "b";
+}',
+            '<?php
+if (1) {
+ // multiline comment line 1
+  // multiline comment line 2
+// multiline comment line 3
+} else {
+    $c = "b";
+}',
+        ];
+
+        yield 'comment before elseif blocks' => [
+            '<?php
+// foo
+if ($foo) {
+    echo "foo";
+// bar
+} elseif(1) {
+    echo "bar";
+} elseif(2) {
+    // do nothing
+} elseif(3) {
+    $aaa = 1;
+    // end comment in final block
+}',
+            '<?php
+    // foo
+if ($foo) {
+    echo "foo";
+    // bar
+} elseif(1) {
+    echo "bar";
+} elseif(2) {
+// do nothing
+} elseif(3) {
+    $aaa = 1;
+    // end comment in final block
+}',
+        ];
+
         yield 'comments at the end of if/elseif/else blocks' => [
+            '<?php
+if ($foo) {
+    echo "foo";
+// foo
+} elseif ($bar) {
+    echo "bar";
+// bar
+} else {
+    echo "baz";
+    // baz
+}',
             '<?php
 if ($foo) {
     echo "foo";
