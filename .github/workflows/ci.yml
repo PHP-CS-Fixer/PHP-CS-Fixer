@@ -150,6 +150,8 @@ jobs:
 
       - name: Collect code coverage
         if: matrix.calculate-code-coverage == 'yes'
+        env:
+          FAST_LINT_TEST_CASES: 1
         run: vendor/bin/paraunit coverage --testsuite coverage --exclude-group covers-nothing --clover build/logs/clover.xml
 
       - name: Upload coverage results to Coveralls
