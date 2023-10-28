@@ -3,6 +3,19 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.36.0
+---------------------
+
+* chore: disable `infection-installer` plugin, as we do not use `infection/*` yet (#7391)
+* chore: Run dev-tools on PHP 8.2 (#7389)
+* CI: Run Symfony 6 compat check on PHP 8.1 (#7383)
+* CI: use fast-linter when calculating code coverage (#7390)
+* docs: extend example for nullable_type_declaration (#7381)
+* DX: FixerFactoryTest - make assertion failing msg more descriptive (#7387)
+* feat: PhpdocSummaryFixer - support lists in description (#7385)
+* feat: PSR12 - configure unary_operator_spaces (#7388)
+* feat: StatementIndentationFixer - support comment for continuous control statement (#7384)
+
 Changelog for v3.35.1
 ---------------------
 

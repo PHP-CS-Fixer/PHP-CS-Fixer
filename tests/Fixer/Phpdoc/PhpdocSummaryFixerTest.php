@@ -203,6 +203,29 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    public function testWithList(): void
+    {
+        $expected = <<<'EOF'
+            <?php
+                /**
+                 * Options:
+                 *  * a: aaa
+                 *  * b: bbb
+                 *  * c: ccc
+                 */
+
+                /**
+                 * Options:
+                 *
+                 *  * a: aaa
+                 *  * b: bbb
+                 *  * c: ccc
+                 */
+            EOF;
+
+        $this->doTest($expected);
+    }
+
     public function testWithTags(): void
     {
         $expected = <<<'EOF'
