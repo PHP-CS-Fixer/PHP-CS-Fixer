@@ -6,7 +6,28 @@ The ``fix`` command
 -------------------
 
 The ``fix`` command tries to fix as much coding standards
-problems as possible on a given file or files in a given directory and its subdirectories:
+problems as possible.
+
+
+With config file created, you can run command as easy as:
+
+.. code-block:: console
+
+    php php-cs-fixer.phar fix
+
+If you do not have config file, you can run following command to fix non-hidden, non-vendor/ PHP files with default ruleset @PSR12:
+
+.. code-block:: console
+
+    php php-cs-fixer.phar fix .
+
+With some magic of tools provided by your OS, you can also fix files in parallel:
+
+.. code-block:: console
+
+    php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php | xargs -n 10 -P 8 php php-cs-fixer.phar fix --config=.php-cs-fixer.dist.php --path-mode intersection -v
+
+You can limit process to given file or files in a given directory and its subdirectories:
 
 .. code-block:: console
 
@@ -175,8 +196,10 @@ Caching
 The caching mechanism is enabled by default. This will speed up further runs by
 fixing only files that were modified since the last run. The tool will fix all
 files if the tool version has changed or the list of rules has changed.
-Cache is supported only for tool downloaded as phar file or installed via
-composer.
+The cache is supported only when the tool was downloaded as a phar file or
+installed via Composer. The cache is written to the drive progressively, so do
+not be afraid of interruption - rerun the command and start where you left.
+The cache mechanism also supports executing the command in parallel.
 
 Cache can be disabled via ``--using-cache`` option or config file:
 

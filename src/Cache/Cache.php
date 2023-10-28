@@ -134,4 +134,18 @@ final class Cache implements CacheInterface
 
         return $cache;
     }
+
+    /**
+     * @internal
+     */
+    public function backfillHashes(self $oldCache): bool
+    {
+        if (!$this->getSignature()->equals($oldCache->getSignature())) {
+            return false;
+        }
+
+        $this->hashes = array_merge($oldCache->hashes, $this->hashes);
+
+        return true;
+    }
 }
