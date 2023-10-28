@@ -78,7 +78,7 @@ final class FileHandler implements FileHandlerInterface
         fwrite($handle, $cache->toJson());
         fflush($handle);
         fsync($handle);
-        $this->fileMTime = $this->getFileCurrentMTime();
+        $this->fileMTime = time(); // we could take the fresh `mtime` of file that we just modified with `$this->getFileCurrentMTime()`, but `time()` should be good enough here and reduce IO operation
         fclose($handle);
     }
 
