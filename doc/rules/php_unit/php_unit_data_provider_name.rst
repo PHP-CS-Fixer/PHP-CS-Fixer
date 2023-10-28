@@ -10,7 +10,8 @@ Warning
 Using this rule is risky
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fixer could be risky if one is calling data provider by name as function.
+Fixer could be risky if one is calling data provider by name as function or if
+any of the test or the provider are overwritten in an inherited class.
 
 Configuration
 -------------

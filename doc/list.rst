@@ -2605,7 +2605,8 @@ List of Available Rules
 
    Data provider names must match the name of the test.
 
-   *warning risky* Fixer could be risky if one is calling data provider by name as function.
+   *warning risky* Fixer could be risky if one is calling data provider by name as function or
+   if any of the test or the provider are overwritten in an inherited class.
 
    Configuration options:
 

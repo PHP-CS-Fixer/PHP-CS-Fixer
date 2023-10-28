@@ -97,7 +97,8 @@ class FooTest extends TestCase {
                 ),
             ],
             null,
-            'Fixer could be risky if one is calling data provider by name as function.'
+            'Fixer could be risky if one is calling data provider by name as function or if any of the test or the provider'
+            .' are overwritten in an inherited class.'
         );
     }
 
@@ -133,12 +134,22 @@ class FooTest extends TestCase {
                 continue;
             }
 
+            // Skip abstract data providers.
+            if (null !== $this->findAbstractToken($dataProviderAnalysis->getNameIndex(), $tokens)) {
+                continue;
+            }
+
             $usageIndex = $dataProviderAnalysis->getUsageIndices()[0];
             if (substr_count($tokens[$usageIndex]->getContent(), '@dataProvider') > 1) {
                 continue;
             }
 
             $testNameIndex = $tokens->getNextTokenOfKind($usageIndex, [[T_STRING]]);
+
+            // Skip abstract tests.
+            if (null !== $this->findAbstractToken($testNameIndex, $tokens)) {
+                continue;
+            }
 
             $dataProviderNewName = $this->getProviderNameForTestName($tokens[$testNameIndex]->getContent());
             if (null !== $tokens->findSequence([[T_FUNCTION], [T_STRING, $dataProviderNewName]], $startIndex, $endIndex)) {
@@ -155,6 +166,22 @@ class FooTest extends TestCase {
 
             $tokens[$usageIndex] = new Token([T_DOC_COMMENT, $newCommentContent]);
         }
+    }
+
+    private function findAbstractToken(int $index, Tokens $tokens): ?int
+    {
+        $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($index);
+        $meaningfulTokens = [T_FUNCTION, T_ABSTRACT, T_PUBLIC, T_STATIC, T_FINAL];
+
+        while (null !== $prevMeaningfulIndex && $tokens[$prevMeaningfulIndex]->isGivenKind($meaningfulTokens)) {
+            if (T_ABSTRACT === $tokens[$prevMeaningfulIndex]->getId()) {
+                return $prevMeaningfulIndex;
+            }
+
+            $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulIndex);
+        }
+
+        return null;
     }
 
     private function getProviderNameForTestName(string $name): string

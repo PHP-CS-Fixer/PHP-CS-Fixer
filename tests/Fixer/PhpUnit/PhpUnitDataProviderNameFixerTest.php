@@ -291,24 +291,24 @@ class FooTest extends TestCase {
 }',
         ];
 
-        foreach (['abstract', 'final', 'private', 'protected', 'static', '/* private */'] as $modifier) {
+        foreach (['final', 'private', 'protected', 'static', '/* private */'] as $modifier) {
             yield sprintf('test function with %s modifier', $modifier) => [
                 sprintf('<?php
                 abstract class FooTest extends TestCase {
                     /**
                      * @dataProvider provideFooCases
                      */
-                    %s function testFoo() %s
+                    %s function testFoo() {}
                     public function provideFooCases() {}
-                }', $modifier, 'abstract' === $modifier ? ';' : '{}'),
+                }', $modifier),
                 sprintf('<?php
                 abstract class FooTest extends TestCase {
                     /**
                      * @dataProvider fooDataProvider
                      */
-                    %s function testFoo() %s
+                    %s function testFoo() {}
                     public function fooDataProvider() {}
-                }', $modifier, 'abstract' === $modifier ? ';' : '{}'),
+                }', $modifier),
             ];
         }
 
@@ -396,5 +396,27 @@ class FooTest extends TestCase {
                 $config,
             ];
         }
+
+        yield 'abstract data provider' => [
+            '<?php
+abstract class FooTest extends TestCase {
+    /**
+     * @dataProvider provideCustomCases
+     */
+    public function testFoo() {}
+    abstract public function provideCustomCases();
+}',
+        ];
+
+        yield 'abstract test' => [
+            '<?php
+abstract class FooTest extends TestCase {
+    /**
+     * @dataProvider provideCustomCases
+     */
+    abstract public function testFoo();
+    public function provideCustomCases() {}
+}',
+        ];
     }
 }
