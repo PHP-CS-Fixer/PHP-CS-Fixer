@@ -24,36 +24,32 @@ use Symfony\Component\Filesystem\Exception\IOException;
  */
 final class FileHandler implements FileHandlerInterface
 {
-    private string $file;
+    private \SplFileInfo $fileInfo;
 
     private int $fileMTime = 0;
 
     public function __construct(string $file)
     {
-        $this->file = $file;
+        $this->fileInfo = new \SplFileInfo($file);
     }
 
     public function getFile(): string
     {
-        return $this->file;
+        return $this->fileInfo->getPathname();
     }
 
     public function read(): ?CacheInterface
     {
-        if (!file_exists($this->file)) {
+        if (!$this->fileInfo->isFile() || !$this->fileInfo->isReadable()) {
             return null;
         }
-        // FRS
-        $handle = fopen($this->file, 'r');
-        if (false === $handle) {
-            return null;
-        }
-        // FRS
-        $cache = $this->readFromHandle($handle);
-        // FRS
+
+        $fileObject = $this->fileInfo->openFile('r');
+
+        $cache = $this->readFromHandle($fileObject);
         $this->fileMTime = $this->getFileCurrentMTime();
-        // FRS
-        fclose($handle);
+
+        unset($fileObject); // explicitly close file handler
 
         return $cache;
     }
@@ -61,68 +57,73 @@ final class FileHandler implements FileHandlerInterface
     public function write(CacheInterface $cache): void
     {
         $this->ensureFileIsWriteable();
-        // FRS
-        $handle = fopen($this->file, 'r+');
-        if (false === $handle) {
-            return;
-        }
-        // FRS
+
+        $fileObject = $this->fileInfo->openFile('r+');
+
         if (method_exists($cache, 'backfillHashes') && $this->fileMTime < $this->getFileCurrentMTime()) {
-            // FRS
-            flock($handle, LOCK_EX);
-            // FRS
-            var_dump('backfill??');
-            $oldCache = $this->readFromHandle($handle);
-            // FRS
-            rewind($handle);
+            $resultOfFlock = $fileObject->flock(LOCK_EX);
+            if (false === $resultOfFlock) {
+                // Lock failed, OK - we continue without the lock.
+                // noop
+            }
+
+            $oldCache = $this->readFromHandle($fileObject);
+
+            $fileObject->rewind();
 
             if (null !== $oldCache) {
                 $cache->backfillHashes($oldCache);
             }
         }
-        // FRS
-        ftruncate($handle, 0);
-        // FRS
-        var_dump(getmypid().' FRS WRITE');
-        fwrite($handle, $cache->toJson());
-        // FRS
-        fflush($handle);
-        // FRS
-        fsync($handle);
+
+        $resultOfTruncate = $fileObject->ftruncate(0);
+        if (false === $resultOfTruncate) {
+            // Truncate failed. OK - we do not save the cache.
+            return;
+        }
+
+        $resultOfWrite = $fileObject->fwrite($cache->toJson());
+        if (false === $resultOfWrite) {
+            // Write failed. OK - we did not save the cache.
+            return;
+        }
+
+        $resultOfFlush = $fileObject->fflush();
+        if (false === $resultOfFlush) {
+            // Flush failed. OK - part of cache can be missing, in case this was last chunk in this pid.
+            // noop
+        }
+
         $this->fileMTime = time(); // we could take the fresh `mtime` of file that we just modified with `$this->getFileCurrentMTime()`, but `time()` should be good enough here and reduce IO operation
-        // FRS
-        fclose($handle);
     }
 
     private function getFileCurrentMTime(): int
     {
-        // FRS
-        clearstatcache(true, $this->file);
-        // FRS
-        $mtime = filemtime($this->file);
+        clearstatcache(true, $this->fileInfo->getPathname());
+
+        $mtime = $this->fileInfo->getMTime();
 
         if (false === $mtime) {
-            // cannot check mtime? OK, let's pretend file is old
+            // cannot check mtime? OK - let's pretend file is old.
             $mtime = 0;
         }
 
         return $mtime;
     }
 
-    /**
-     * @param resource $handle
-     */
-    private function readFromHandle($handle): ?CacheInterface
+    private function readFromHandle(\SplFileObject $fileObject): ?CacheInterface
     {
         try {
-            // FRS
-            $size = @filesize($this->file);
+            $size = $fileObject->getSize();
             if (false === $size || 0 === $size) {
                 return null;
             }
-            // FRS
-            var_dump(getmypid().' FRS READ');
-            $content = fread($handle, $size);
+
+            $content = $fileObject->fread($size);
+
+            if (false === $content) {
+                return null;
+            }
 
             return Cache::fromJson($content);
         } catch (\InvalidArgumentException $exception) {
@@ -132,50 +133,52 @@ final class FileHandler implements FileHandlerInterface
 
     private function ensureFileIsWriteable(): void
     {
-        // FRS
-        if (file_exists($this->file)) {
-            // FRS
-            if (is_dir($this->file)) {
-                throw new IOException(
-                    sprintf('Cannot write cache file "%s" as the location exists as directory.', realpath($this->file)),
-                    0,
-                    null,
-                    $this->file
-                );
-            }
-            // FRS
-            if (!is_writable($this->file)) {
-                throw new IOException(
-                    sprintf('Cannot write to file "%s" as it is not writable.', realpath($this->file)),
-                    0,
-                    null,
-                    $this->file
-                );
-            }
-        } else {
-            // FRS
-            $dir = \dirname($this->file);
-
-            // Ensure path is created, but ignore if already exists. FYI: ignore EA suggestion in IDE,
-            // `mkdir()` returns `false` for existing paths, so we can't mix it with `is_dir()` in one condition.
-            // FRS
-            if (!is_dir($dir)) {
-                // FRS
-                @mkdir($dir, 0777, true);
-            }
-            // FRS
-            if (!is_dir($dir)) {
-                throw new IOException(
-                    sprintf('Directory of cache file "%s" does not exists and couldn\'t be created.', $this->file),
-                    0,
-                    null,
-                    $this->file
-                );
-            }
-            // FRS
-            @touch($this->file);
-            // FRS
-            @chmod($this->file, 0666);
+        if ($this->fileInfo->isFile() && $this->fileInfo->isWritable()) {
+            // all good
+            return;
         }
+
+        if ($this->fileInfo->isDir()) {
+            throw new IOException(
+                sprintf('Cannot write cache file "%s" as the location exists as directory.', $this->fileInfo->getRealPath()),
+                0,
+                null,
+                $this->fileInfo->getPathname()
+            );
+        }
+
+        if ($this->fileInfo->isFile() && !$this->fileInfo->isWritable()) {
+            throw new IOException(
+                sprintf('Cannot write to file "%s" as it is not writable.', $this->fileInfo->getRealPath()),
+                0,
+                null,
+                $this->fileInfo->getPathname()
+            );
+        }
+
+        $this->createFile($this->fileInfo->getPathname());
+    }
+
+    private function createFile(string $file): void
+    {
+        $dir = \dirname($file);
+
+        // Ensure path is created, but ignore if already exists. FYI: ignore EA suggestion in IDE,
+        // `mkdir()` returns `false` for existing paths, so we can't mix it with `is_dir()` in one condition.
+        if (!@is_dir($dir)) {
+            @mkdir($dir, 0777, true);
+        }
+
+        if (!@is_dir($dir)) {
+            throw new IOException(
+                sprintf('Directory of cache file "%s" does not exists and couldn\'t be created.', $file),
+                0,
+                null,
+                $file
+            );
+        }
+
+        @touch($file);
+        @chmod($file, 0666);
     }
 }
