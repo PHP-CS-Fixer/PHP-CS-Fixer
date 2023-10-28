@@ -40,8 +40,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    public const VERSION = '3.36.1-DEV';
-    public const VERSION_CODENAME = 'Freezy Vrooom';
+    public const VERSION = '3.37.0';
+    public const VERSION_CODENAME = 'ParaCache';
 
     private ToolInfo $toolInfo;
 

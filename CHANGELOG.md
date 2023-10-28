@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.37.0
+---------------------
+
+* feat: add parallel cache support (#7131)
+
 Changelog for v3.36.0
 ---------------------
 
