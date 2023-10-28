@@ -472,6 +472,7 @@ final class ConfigurationResolver
 
     public function getUsingCache(): bool
     {
+        return true;
         if (null === $this->usingCache) {
             if (null === $this->options['using-cache']) {
                 $this->usingCache = $this->getConfig()->getUsingCache();
