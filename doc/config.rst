@@ -41,7 +41,7 @@ The simplest config declares paths under control and rules to apply/check:
         ->setFinder($finder)
     ;
 
-Default finder ignores ``__DIR__ . "/vendor"`` dir, "hidden" paths (ones starting with a dot) and VCS paths (e.g. ".git"), and filter only for "*.php" files.
+Default finder ignores ``__DIR__ . "/vendor"`` dir, "hidden" paths (ones starting with a dot) and VCS paths (e.g. ``.git``), and filter only for ``*.php`` files.
 
 Configuring paths
 -----------------
