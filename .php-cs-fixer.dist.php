@@ -22,15 +22,14 @@ $header = <<<'EOF'
     with this source code in the file LICENSE.
     EOF;
 
-$finder = PhpCsFixer\Finder::create()
+$finder = (new PhpCsFixer\Finder())
     ->ignoreDotFiles(false)
     ->ignoreVCSIgnored(true)
     ->exclude(['dev-tools/phpstan', 'tests/Fixtures'])
     ->in(__DIR__)
 ;
 
-$config = new PhpCsFixer\Config();
-$config
+return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PHP74Migration' => true,
@@ -45,5 +44,3 @@ $config
     ])
     ->setFinder($finder)
 ;
-
-return $config;
