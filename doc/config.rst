@@ -19,9 +19,9 @@ The example below will add two rules to the default list of PSR12 set rules:
     <?php
 
     $finder = PhpCsFixer\Finder::create()
+        ->exclude('somedir')
+        ->>notPath('src/Symfony/Component/Translation/Tests/fixtures/resources.php')
         ->in(__DIR__)
-        ->exclude(['dir_a', 'dir_b'])
-        ->notPath(['foo.php', 'dir_c/bar.php'])
     ;
 
     $config = new PhpCsFixer\Config();
@@ -33,8 +33,8 @@ The example below will add two rules to the default list of PSR12 set rules:
         ->setFinder($finder)
     ;
 
-**NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, use ``notPath``.
-Both ``exclude`` and ``notPath`` methods accept only relative paths to the ones defined with the ``in`` method, can be called multiple times and accept string or array of them.
+**NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, try ``notPath``.
+Both ``exclude`` and ``notPath`` methods accept only relative paths to the ones defined with the ``in`` method.
 
 See `Symfony\\Finder <https://symfony.com/doc/current/components/finder.html#location>`_
 online documentation for other `Finder` methods.
