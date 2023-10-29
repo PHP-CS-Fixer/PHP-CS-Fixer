@@ -36,7 +36,7 @@ The example below will add two rules to the default list of PSR12 set rules:
 **NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, try ``notPath``.
 Both ``exclude`` and ``notPath`` methods accept only relative paths to the ones defined with the ``in`` method.
 
-See `Symfony\\Finder <https://symfony.com/doc/current/components/finder.html>`_
+See `Symfony\\Finder <https://symfony.com/doc/current/components/finder.html#location>`_
 online documentation for other `Finder` methods.
 
 You may also use an exclude list for the rules instead of the above shown include approach.
