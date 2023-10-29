@@ -21,7 +21,7 @@ The example below will add two rules to the default list of PSR12 set rules:
     $finder = PhpCsFixer\Finder::create()
         ->in(__DIR__)
         ->exclude(['dir_a', 'dir_b'])
-        ->notPath('bar.php')
+        ->notPath(['foo.php', 'dir_c/bar.php'])
     ;
 
     $config = new PhpCsFixer\Config();
