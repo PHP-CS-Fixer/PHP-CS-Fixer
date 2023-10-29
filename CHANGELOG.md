@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.37.1
+---------------------
+
+* docs: config file - provide better examples (#7396)
+* docs: config file - provide better link to Finder docs (#6992)
+
 Changelog for v3.37.0
 ---------------------
 
