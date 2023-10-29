@@ -198,7 +198,6 @@ interface Doc
         if ($tokens[$valueIndex]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $valueIndex);
         } else {
-            \assert($tokens[$valueIndex]->isGivenKind(T_ARRAY));
             $endIndex = $tokens->getNextMeaningfulToken($valueIndex);
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex);
         }
@@ -221,8 +220,6 @@ interface Doc
 
     private function getTypeForStringToken(Token $token): ?string
     {
-        \assert($token->isGivenKind(T_STRING));
-
         $content = $token->getContent();
         $contentLower = strtolower($content);
 
