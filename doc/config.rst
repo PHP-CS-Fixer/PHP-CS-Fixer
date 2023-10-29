@@ -14,26 +14,13 @@ With the ``--config`` option you can specify the path to the
 
 The example below will add two rules to the default list of PSR12 set rules:
 
-Consider your codebase as follow:
-
-```
-├── .php-cs-fixer.php
-└── src
-    ├── foo.php
-    ├── bar.php
-    ├── somedir
-    └── maindir
-        ├── subdir
-        └── baz.php
-```
-
 .. code-block:: php
 
     <?php
 
     $finder = PhpCsFixer\Finder::create()
-        ->in(__DIR__) // 'src'
-        ->exclude(['somedir', 'foo.php'])
+        ->in(__DIR__)
+        ->exclude(['dir_a', 'dir_b'])
         ->notPath('bar.php')
     ;
 
