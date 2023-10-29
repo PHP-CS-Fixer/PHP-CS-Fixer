@@ -226,10 +226,8 @@ interface Doc
         $content = $token->getContent();
         $contentLower = strtolower($content);
 
-        if ('true' === $contentLower || 'false' === $contentLower) {
-            $type = 'bool';
-        } elseif ('null' === $contentLower) {
-            $type = 'null';
+        if ('true' === $contentLower || 'false' === $contentLower || 'null' === $contentLower) {
+            $type = $contentLower;
         } elseif ($this->isPredefinedConstStr($content)) {
             $type = 'string';
         } elseif ($this->isPredefinedConstInt($content)) {
