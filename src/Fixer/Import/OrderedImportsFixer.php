@@ -569,16 +569,16 @@ use Bar;
                 $use['namespace']
             );
 
-            $numberOfInitial0TokensToClear = 3; // clear `<?php use `
+            $numberOfInitialTokensToClear = 3; // clear `<?php use `
             if (self::IMPORT_TYPE_CLASS !== $use['importType']) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
                 if ($tokens[$prevIndex]->equals(',')) {
-                    $numberOfInitial0TokensToClear = 5; // clear `<?php use const ` or `<?php use function `
+                    $numberOfInitialTokensToClear = 5; // clear `<?php use const ` or `<?php use function `
                 }
             }
 
             $declarationTokens = Tokens::fromCode($code);
-            $declarationTokens->clearRange(0, $numberOfInitial0TokensToClear - 1);
+            $declarationTokens->clearRange(0, $numberOfInitialTokensToClear - 1);
             $declarationTokens->clearAt(\count($declarationTokens) - 1); // clear `;`
             $declarationTokens->clearEmptyTokens();
 
