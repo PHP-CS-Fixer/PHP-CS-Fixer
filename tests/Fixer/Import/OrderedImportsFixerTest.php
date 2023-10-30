@@ -1137,6 +1137,16 @@ use function some\a\{fn_a, fn_b, fn_c,};
                 'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
             ],
         ];
+
+        yield [
+            '<?php use const CONST_A, CONST_B, CONST_C;',
+            '<?php use const CONST_C, CONST_B, CONST_A;',
+        ];
+
+        yield [
+            '<?php use function Foo\A, Foo\B, Foo\C;',
+            '<?php use function Foo\B, Foo\C, Foo\A;',
+        ];
     }
 
     public function testUnknownOrderTypes(): void
