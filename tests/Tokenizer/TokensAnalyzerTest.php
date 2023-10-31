@@ -2840,12 +2840,13 @@ class MyTestWithAnonymousClass extends TestCase
             ',
         ];
 
-        yield 'references' => [
+        yield 'references, splat and arrow cases' => [
             [
                 2 => 10,
                 13 => 21,
                 24 => 35,
                 42 => 51,
+                65 => 77,
             ],
             '<?php
                 fn(&$x) => $x;
@@ -2854,6 +2855,7 @@ class MyTestWithAnonymousClass extends TestCase
 
                 $fn = fn(&$x) => $x++;
                 $y = &$fn($x);
+                fn($x, &...$rest) => 1;
             ',
         ];
 
