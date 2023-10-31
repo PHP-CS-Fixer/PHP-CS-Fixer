@@ -41,10 +41,10 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
      * @var string[][]
      */
     public const OPTION_GROUPS_DEFAULT = [
-        ['deprecated', 'link', 'see', 'since'],
         ['author', 'copyright', 'license'],
         ['category', 'package', 'subpackage'],
         ['property', 'property-read', 'property-write'],
+        ['deprecated', 'link', 'see', 'since'],
     ];
 
     /**

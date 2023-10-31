@@ -131,7 +131,7 @@ Rules
 - `phpdoc_scalar <./../rules/phpdoc/phpdoc_scalar.rst>`_
 - `phpdoc_separation <./../rules/phpdoc/phpdoc_separation.rst>`_ with config:
 
-  ``['groups' => [['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['Annotation', 'NamedArgumentConstructor', 'Target']]]``
+  ``['groups' => [['Annotation', 'NamedArgumentConstructor', 'Target'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']]]``
 
 - `phpdoc_single_line_var_spacing <./../rules/phpdoc/phpdoc_single_line_var_spacing.rst>`_
 - `phpdoc_summary <./../rules/phpdoc/phpdoc_summary.rst>`_

@@ -169,8 +169,8 @@ final class SymfonySet extends AbstractRuleSetDescription
             'phpdoc_scalar' => true,
             'phpdoc_separation' => [
                 'groups' => [
-                    ...PhpdocSeparationFixer::OPTION_GROUPS_DEFAULT,
                     ['Annotation', 'NamedArgumentConstructor', 'Target'],
+                    ...PhpdocSeparationFixer::OPTION_GROUPS_DEFAULT,
                 ],
             ],
             'phpdoc_single_line_var_spacing' => true,
