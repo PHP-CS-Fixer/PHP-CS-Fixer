@@ -2931,7 +2931,7 @@ class MyTestWithAnonymousClass extends TestCase
             ',
         ];
 
-        yield [
+        yield 'arrow function returning array' => [
             [
                 5 => 21,
             ],
