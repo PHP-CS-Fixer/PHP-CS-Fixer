@@ -155,6 +155,12 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['groups' => [['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['Annotation', 'NamedArgumentConstructor', 'Target']]]``
+
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['groups' => [['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['Annotation', 'NamedArgumentConstructor', 'Target']]]``
+
 
