@@ -282,7 +282,7 @@ Custom values:
                                 return true;
                             }
 
-                            if (\is_string($value) && 'method:' === substr($value, 0, 7)) {
+                            if (\is_string($value) && str_starts_with($value, 'method:')) {
                                 return true;
                             }
                         }
