@@ -319,6 +319,40 @@ final class TokensAnalyzer
         return $startParenthesisToken->equals('(');
     }
 
+    public function getLastTokenIndexOfArrowFunction(int $index): int
+    {
+        if (!$this->tokens[$index]->isGivenKind(T_FN)) {
+            throw new \InvalidArgumentException(sprintf('Not an "arrow function" at given index %d.', $index));
+        }
+
+        $stopTokens = [')', ']', ',', ';', [T_CLOSE_TAG]];
+        $index = $this->tokens->getNextTokenOfKind($index, [[T_DOUBLE_ARROW]]);
+
+        while (true) {
+            $index = $this->tokens->getNextMeaningfulToken($index);
+
+            if ($this->tokens[$index]->equalsAny($stopTokens)) {
+                break;
+            }
+
+            $blockType = Tokens::detectBlockType($this->tokens[$index]);
+
+            if (null === $blockType) {
+                continue;
+            }
+
+            if ($blockType['isStart']) {
+                $index = $this->tokens->findBlockEnd($blockType['type'], $index);
+
+                continue;
+            }
+
+            break;
+        }
+
+        return $this->tokens->getPrevMeaningfulToken($index);
+    }
+
     /**
      * Check if the T_STRING under given index is a constant invocation.
      */

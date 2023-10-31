@@ -156,10 +156,6 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
             '<?php class Foo { /** @var resource */ private $foo; }',
         ];
 
-        yield 'skip mixed special type' => [
-            '<?php class Foo { /** @var mixed */ private $foo; }',
-        ];
-
         yield 'null alone cannot be a property type' => [
             '<?php class Foo { /** @var null */ private $foo; }',
         ];
@@ -519,6 +515,41 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
 
         yield 'very long class name after ampersand' => [
             '<?php class Foo { /** @var Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz */ private $x; }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixPre80Cases(): iterable
+    {
+        yield 'skip mixed type' => [
+            '<?php class Foo { /** @var mixed */ private $foo; }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPhp80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixPhp80Cases(): iterable
+    {
+        yield 'fix mixed type' => [
+            '<?php class Foo { /** @var mixed */ private mixed $foo; }',
+            '<?php class Foo { /** @var mixed */ private $foo; }',
         ];
     }
 
