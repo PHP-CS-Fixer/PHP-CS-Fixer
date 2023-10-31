@@ -13,7 +13,6 @@ env:
   DAYS_BEFORE_ISSUE_STALE: 90
   DAYS_BEFORE_PR_CLOSE: 14
   DAYS_BEFORE_PR_STALE: 90
-  EXEMPT_MILESTONES: "long-term-ideas"
   STALE_CLARIFICATION: |
     The purpose of this action is to enforce backlog review once in a while. This is mostly for maintainers and helps with keeping repository in good condition, because stale issues and PRs can accumulate over time and make it harder for others to find relevant information. It is also possible that some changes has been made to the repo already, and issue or PR became outdated, but wasn't closed for some reason. This action helps with periodic review and closing of such stale items in automated way.
 
@@ -37,7 +36,7 @@ jobs:
           days-before-issue-stale: "${{ env.DAYS_BEFORE_ISSUE_STALE }}"
           days-before-pr-close: "${{ env.DAYS_BEFORE_PR_CLOSE }}"
           days-before-pr-stale: "${{ env.DAYS_BEFORE_PR_STALE }}"
-          exempt-milestones: "${{ env.EXEMPT_MILESTONES }}"
+          exempt-all-milestones: true
           labels-to-add-when-unstale: "status/to verify"
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           stale-issue-label: "status/stale"
