@@ -415,15 +415,15 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @dataProvider provideUnionTypesCases
+     * @dataProvider provideIsUnionTypeCases
      */
     public function testIsUnionType(bool $expectedIsUnionType, string $typesExpression): void
     {
         $expression = new TypeExpression($typesExpression, null, []);
-        static::assertSame($expectedIsUnionType, $expression->isUnionType());
+        self::assertSame($expectedIsUnionType, $expression->isUnionType());
     }
 
-    public static function provideUnionTypesCases(): iterable
+    public static function provideIsUnionTypeCases(): iterable
     {
         yield [false, 'string'];
 

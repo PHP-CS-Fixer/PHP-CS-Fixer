@@ -22,6 +22,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @group phpdoc
+ *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToReturnTypeFixer
  */
 final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
