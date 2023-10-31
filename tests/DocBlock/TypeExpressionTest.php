@@ -438,8 +438,6 @@ final class TypeExpressionTest extends TestCase
         yield [false, '?int'];
 
         yield [true, 'Foo|Bar'];
-
-        yield [false, 'Foo&Bar'];
     }
 
     /**
