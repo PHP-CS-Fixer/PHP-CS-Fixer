@@ -118,6 +118,10 @@ function bar($foo) {}
             foreach ($this->getAnnotationsFromDocComment('param', $tokens, $docCommentIndex) as $paramTypeAnnotation) {
                 $typesExpression = $paramTypeAnnotation->getTypeExpression();
 
+                if (null === $typesExpression) {
+                    continue;
+                }
+
                 $typeInfo = $this->getCommonTypeInfo($typesExpression, false);
                 $unionTypes = null;
 

@@ -205,6 +205,10 @@ class Foo {
 
             $typesExpression = $annotation->getTypeExpression();
 
+            if (null === $typesExpression) {
+                continue;
+            }
+
             $typeInfo = $this->getCommonTypeInfo($typesExpression, false);
             $unionTypes = null;
 

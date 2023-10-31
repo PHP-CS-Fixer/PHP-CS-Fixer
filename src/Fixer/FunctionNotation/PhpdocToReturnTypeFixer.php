@@ -145,6 +145,11 @@ final class Foo {
             $returnTypeAnnotation = current($returnTypeAnnotations);
 
             $typesExpression = $returnTypeAnnotation->getTypeExpression();
+
+            if (null === $typesExpression) {
+                continue;
+            }
+
             $typeInfo = $this->getCommonTypeInfo($typesExpression, true);
             $unionTypes = null;
 
