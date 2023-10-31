@@ -30,20 +30,11 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(
-        string $expected,
-        ?string $input = null,
-        ?int $availableAboveVersion = null,
-        array $config = [],
-        ?int $skipFromVersion = null
-    ): void {
-        if (null !== $skipFromVersion && \PHP_VERSION_ID >= $skipFromVersion) {
-            static::markTestSkipped(sprintf('Only available up to version %d', $skipFromVersion));
-        }
-
+    public function testFix(string $expected, ?string $input = null, ?int $versionSpecificFix = null, array $config = []): void
+    {
         if (
             null !== $input
-            && (null !== $availableAboveVersion && \PHP_VERSION_ID < $availableAboveVersion)
+            && (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
         ) {
             $expected = $input;
             $input = null;
@@ -235,7 +226,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php /** @return null */ function my_foo() {}',
         ];
 
-        yield 'skip mixed types' => [
+        yield 'skip union types' => [
             '<?php /** @return Foo|Bar */ function my_foo() {}',
         ];
 
@@ -263,7 +254,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php /** @return string|string[] */ function my_foo() {}',
         ];
 
-        yield 'skip mixed nullable types' => [
+        yield 'skip nullable union types' => [
             '<?php /** @return null|Foo|Bar */ function my_foo() {}',
         ];
 
@@ -397,29 +388,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                     /** @return Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz */
                     function bar() {}
                 ',
-        ];
-
-        yield 'skip mixed type' => [
-            '<?php
-                    /** @return mixed */
-                    function bar() {}
-                ',
-            null,
-            null,
-            [],
-            80000,
-        ];
-
-        yield 'fix mixed type' => [
-            '<?php
-                    /** @return mixed */
-                    function bar(): mixed {}
-                ',
-            '<?php
-                    /** @return mixed */
-                    function bar() {}
-                ',
-            80000,
         ];
 
         yield 'arrow function' => [

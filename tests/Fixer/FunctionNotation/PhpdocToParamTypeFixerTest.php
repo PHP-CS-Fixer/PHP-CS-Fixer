@@ -30,26 +30,18 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(
-        string $expected,
-        ?string $input = null,
-        ?int $availableAboveVersion = null,
-        array $config = [],
-        ?int $skipFromVersion = null
-    ): void {
-        if (null !== $skipFromVersion && \PHP_VERSION_ID >= $skipFromVersion) {
-            static::markTestSkipped(sprintf('Only available up to version %d', $skipFromVersion));
-        }
-
+    public function testFix(string $expected, ?string $input = null, ?int $versionSpecificFix = null, array $config = []): void
+    {
         if (
             null !== $input
-            && (null !== $availableAboveVersion && \PHP_VERSION_ID < $availableAboveVersion)
+            && (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
         ) {
             $expected = $input;
             $input = null;
         }
 
         $this->fixer->configure($config);
+
         $this->doTest($expected, $input);
     }
 
@@ -196,32 +188,6 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     * @param float $tab
                     */
                     function my_foo($bar, $baz, $tab) {}',
-        ];
-
-        yield 'non-root class with mixed type of param for php < 8' => [
-            '<?php
-                /**
-                * @param mixed $bar
-                */
-                function my_foo($bar) {}',
-            null,
-            null,
-            [],
-            80000,
-        ];
-
-        yield 'non-root class with mixed type of param for php >= 8' => [
-            '<?php
-                    /**
-                    * @param mixed $bar
-                    */
-                    function my_foo(mixed $bar) {}',
-            '<?php
-                    /**
-                    * @param mixed $bar
-                    */
-                    function my_foo($bar) {}',
-            80000,
         ];
 
         yield 'non-root namespaced class' => [
@@ -529,6 +495,53 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     /** @param Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz $x */
                     function bar($x) {}
                 ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixPre80Cases(): iterable
+    {
+        yield 'skip mixed type of param' => [
+            '<?php
+                    /**
+                    * @param mixed $bar
+                    */
+                    function my_foo($bar) {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPhp80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixPhp80Cases(): iterable
+    {
+        yield 'non-root class with mixed type of param for php >= 8' => [
+            '<?php
+                    /**
+                    * @param mixed $bar
+                    */
+                    function my_foo(mixed $bar) {}',
+            '<?php
+                    /**
+                    * @param mixed $bar
+                    */
+                    function my_foo($bar) {}',
         ];
     }
 }
