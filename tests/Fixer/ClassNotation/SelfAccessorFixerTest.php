@@ -96,11 +96,6 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php class Foo { function bar() { function ($a = self::BAZ) { new self(); }; } }',
-            '<?php class Foo { function bar() { function ($a = Foo::BAZ) { new Foo(); }; } }',
-        ];
-
-        yield [
             // In trait "self" will reference the class it's used in, not the actual trait, so we can't replace "Foo" with "self" here
             '<?php trait Foo { function bar() { Foo::bar(); } } class Bar { use Foo; }',
         ];
@@ -193,6 +188,33 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
         yield [
             "<?php interface Foo{ public function bar()\t/**/:?/**/self; }",
             "<?php interface Foo{ public function bar()\t/**/:?/**/Foo; }",
+        ];
+
+        yield 'do not replace in lambda' => [
+            '<?php
+
+final class A
+{
+    public static function Z(): void
+    {
+        (function () {
+            var_dump(self::class, A::class);
+        })->bindTo(null, B::class)();
+    }
+}',
+        ];
+
+        yield 'do not replace in arrow function' => [
+            '<?php
+
+final class A
+{
+    public function Z($b): void
+    {
+        $a = fn($b) => self::class. A::class . $b;
+        echo $a;
+    }
+}',
         ];
     }
 

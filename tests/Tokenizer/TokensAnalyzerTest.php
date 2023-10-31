@@ -2803,6 +2803,153 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
+     * @dataProvider provideGetLastTokenIndexOfArrowFunctionCases
+     *
+     * @param array<int, int> $expectations
+     */
+    public function testGetLastTokenIndexOfArrowFunction(array $expectations, string $source): void
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        $indices = [];
+
+        foreach ($expectations as $index => $expectedEndIndex) {
+            $indices[$index] = $tokensAnalyzer->getLastTokenIndexOfArrowFunction($index);
+        }
+
+        self::assertSame($expectations, $indices);
+    }
+
+    public static function provideGetLastTokenIndexOfArrowFunctionCases(): iterable
+    {
+        yield 'simple cases' => [
+            [
+                2 => 11,
+                16 => 25,
+                28 => 39,
+                46 => 61,
+            ],
+            '<?php
+                fn(array $x) => $x;
+
+                static fn(): int => $x;
+
+                fn($x = 42) => $x;
+                $eq = fn ($x, $y) => $x == $y;
+            ',
+        ];
+
+        yield 'references, splat and arrow cases' => [
+            [
+                2 => 10,
+                13 => 21,
+                24 => 35,
+                42 => 51,
+                65 => 77,
+            ],
+            '<?php
+                fn(&$x) => $x;
+                fn&($x) => $x;
+                fn($x, ...$rest) => $rest;
+
+                $fn = fn(&$x) => $x++;
+                $y = &$fn($x);
+                fn($x, &...$rest) => 1;
+            ',
+        ];
+
+        yield 'different endings' => [
+            [
+                9 => 21,
+                31 => 43,
+            ],
+            '<?php
+                $results = array_map(
+                    fn ($item) => $item * 2,
+                    $list
+                );
+
+                return fn ($y) => $x * $y ?>
+            ',
+        ];
+
+        yield 'nested arrow function' => [
+            [
+                1 => 26,
+                14 => 25,
+            ],
+            '<?php fn(array $x, $z) => (fn(int $z):bool => $z);',
+        ];
+
+        yield 'arrow function as argument' => [
+            [
+                5 => 14,
+            ],
+            '<?php return foo(fn(array $x) => $x);',
+        ];
+
+        yield 'arrow function as collection item' => [
+            [
+                9 => 18,
+                26 => 35,
+                46 => 55,
+                62 => 69,
+            ],
+            '<?php return [
+                [1, fn(array $x) => $x1, 1],
+                [fn(array $x) => $x2, 1],
+                [1, fn(array $x) => $x3],
+                ([(fn($x4) => $x5)]),
+            ];',
+        ];
+
+        yield 'nested inside anonymous class' => [
+            [
+                1 => 46,
+                33 => 41,
+            ],
+            '<?php fn($x) => $a = new class($x) { public function foo() { return fn(&$x) => $x; } };',
+        ];
+
+        yield 'array destructuring' => [
+            [
+                4 => 13,
+            ],
+            '<?php return [fn(array $x) => $x1] = $x;',
+        ];
+
+        yield 'array_map() callback with different token blocks' => [
+            [
+                9 => 28,
+            ],
+            '<?php
+                $a = array_map(
+                    fn (array $item) => $item[\'callback\']($item[\'value\']),
+                    [/* items */]
+                );
+            ',
+        ];
+
+        yield 'arrow function returning array' => [
+            [
+                5 => 21,
+            ],
+            '<?php $z = fn ($a) => [0, 1, $a];',
+        ];
+    }
+
+    public function testCannotGetLastTokenIndexOfArrowFunctionForNonFnToken(): void
+    {
+        $tokens = Tokens::fromCode('<?php echo 1;');
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $tokensAnalyzer->getLastTokenIndexOfArrowFunction(1);
+    }
+
+    /**
      * @param array<int, bool> $expected
      */
     private function doIsConstantInvocationTest(array $expected, string $source): void

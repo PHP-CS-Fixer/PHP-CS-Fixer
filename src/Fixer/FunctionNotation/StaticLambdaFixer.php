@@ -71,7 +71,7 @@ final class StaticLambdaFixer extends AbstractFixer
                 $lambdaEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $lambdaOpenIndex);
             } else { // T_FN
                 $lambdaOpenIndex = $tokens->getNextTokenOfKind($argumentsEndIndex, [[T_DOUBLE_ARROW]]);
-                $lambdaEndIndex = $this->findExpressionEnd($tokens, $lambdaOpenIndex);
+                $lambdaEndIndex = $analyzer->getLastTokenIndexOfArrowFunction($index);
             }
 
             if ($this->hasPossibleReferenceToThis($tokens, $lambdaOpenIndex, $lambdaEndIndex)) {
@@ -89,31 +89,6 @@ final class StaticLambdaFixer extends AbstractFixer
 
             $index -= 4; // fixed after a lambda, closes candidate is at least 4 tokens before that
         }
-    }
-
-    private function findExpressionEnd(Tokens $tokens, int $index): int
-    {
-        $nextIndex = $tokens->getNextMeaningfulToken($index);
-
-        while (null !== $nextIndex) {
-            /** @var Token $nextToken */
-            $nextToken = $tokens[$nextIndex];
-
-            if ($nextToken->equalsAny([',', ';', [T_CLOSE_TAG]])) {
-                break;
-            }
-
-            $blockType = Tokens::detectBlockType($nextToken);
-
-            if (null !== $blockType && $blockType['isStart']) {
-                $nextIndex = $tokens->findBlockEnd($blockType['type'], $nextIndex);
-            }
-
-            $index = $nextIndex;
-            $nextIndex = $tokens->getNextMeaningfulToken($index);
-        }
-
-        return $index;
     }
 
     /**

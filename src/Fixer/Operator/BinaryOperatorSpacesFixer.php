@@ -626,7 +626,7 @@ $array = [
 
             if ($token->isGivenKind(T_FN)) {
                 $from = $tokens->getNextMeaningfulToken($index);
-                $until = $this->getLastTokenIndexOfFn($tokens, $index);
+                $until = $this->tokensAnalyzer->getLastTokenIndexOfArrowFunction($index);
                 $this->injectAlignmentPlaceholders($tokens, $from + 1, $until - 1, $tokenContent);
                 $index = $until;
 
@@ -715,7 +715,7 @@ $array = [
             if ($token->isGivenKind(T_FN)) {
                 $yieldFoundSinceLastPlaceholder = false;
                 $from = $tokens->getNextMeaningfulToken($index);
-                $until = $this->getLastTokenIndexOfFn($tokens, $index);
+                $until = $this->tokensAnalyzer->getLastTokenIndexOfArrowFunction($index);
                 $this->injectArrayAlignmentPlaceholders($tokens, $from + 1, $until - 1);
                 $index = $until;
 
@@ -934,34 +934,5 @@ $array = [
         }
 
         return $tmpCode;
-    }
-
-    private function getLastTokenIndexOfFn(Tokens $tokens, int $index): int
-    {
-        $index = $tokens->getNextTokenOfKind($index, [[T_DOUBLE_ARROW]]);
-
-        while (true) {
-            $index = $tokens->getNextMeaningfulToken($index);
-
-            if ($tokens[$index]->equalsAny([';', ',', [T_CLOSE_TAG]])) {
-                break;
-            }
-
-            $blockType = Tokens::detectBlockType($tokens[$index]);
-
-            if (null === $blockType) {
-                continue;
-            }
-
-            if ($blockType['isStart']) {
-                $index = $tokens->findBlockEnd($blockType['type'], $index);
-
-                continue;
-            }
-
-            break;
-        }
-
-        return $index;
     }
 }

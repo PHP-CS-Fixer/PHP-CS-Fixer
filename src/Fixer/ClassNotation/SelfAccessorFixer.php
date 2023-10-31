@@ -120,7 +120,21 @@ class Sample
                 continue;
             }
 
+            if ($token->isGivenKind(T_FN)) {
+                $i = $tokensAnalyzer->getLastTokenIndexOfArrowFunction($i);
+                $i = $tokens->getNextMeaningfulToken($i);
+
+                continue;
+            }
+
             if ($token->isGivenKind(T_FUNCTION)) {
+                if ($tokensAnalyzer->isLambda($i)) {
+                    $i = $tokens->getNextTokenOfKind($i, ['{']);
+                    $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
+
+                    continue;
+                }
+
                 $i = $tokens->getNextTokenOfKind($i, ['(']);
                 $insideMethodSignatureUntil = $tokens->getNextTokenOfKind($i, ['{', ';']);
 
