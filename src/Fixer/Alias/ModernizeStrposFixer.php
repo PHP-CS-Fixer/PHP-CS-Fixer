@@ -28,6 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ModernizeStrposFixer extends AbstractFixer
 {
+    /** @var list<array{operator: array{int, string}, operand: array{int, string}, replacement: array{int, string}, negate: bool}> */
     private const REPLACEMENTS = [
         [
             'operator' => [T_IS_IDENTICAL, '==='],
@@ -149,7 +150,8 @@ if (strpos($haystack, $needle) === false) {}
     }
 
     /**
-     * @param array{operator_index: int, operand_index: int} $operatorIndices
+     * @param array{operator_index: int, operand_index: int}                                                                                    $operatorIndices
+     * @param list<array{operator: array{int, string}|Token, operand: array{int, string}|Token, replacement: array{int, string}, negate: bool}> $replacements
      */
     private function fixCall(Tokens $tokens, int $functionIndex, array $operatorIndices, array $replacements): void
     {
@@ -184,7 +186,11 @@ if (strpos($haystack, $needle) === false) {}
         }
     }
 
-    private function fixSubstrCall(Tokens $tokens, int $functionStartIndex, int $functionEndIndex, array $operatorIndices, array $arguments): void
+    /**
+     * @param array{operator_index: int, operand_index: int} $operatorIndices
+     * @param array<int>                                     $argumentsIndices
+     */
+    private function fixSubstrCall(Tokens $tokens, int $functionStartIndex, int $functionEndIndex, array $operatorIndices, array $argumentsIndices): void
     {
         $operator = $tokens[$operatorIndices['operator_index']];
         $operand = $tokens[$operatorIndices['operand_index']];
@@ -193,8 +199,8 @@ if (strpos($haystack, $needle) === false) {}
             return;
         }
 
-        $thirdArgumentIsNegative = '-' === $tokens[$tokens->getPrevMeaningfulToken($arguments[2])]->getContent();
-        $secondArgumentIndex = $arguments[1];
+        $thirdArgumentIsNegative = '-' === $tokens[$tokens->getPrevMeaningfulToken($argumentsIndices[2])]->getContent();
+        $secondArgumentIndex = $argumentsIndices[1];
         $replacementFunctionName = $thirdArgumentIsNegative ? 'str_ends_with' : 'str_starts_with';
 
         $replacements = [
@@ -217,7 +223,11 @@ if (strpos($haystack, $needle) === false) {}
         $tokens->insertAt($secondArgumentIndex + 1, $operand);
 
         // after last step $tokens has been changed, so $operatorIndices needs to be recalculated.
-        $operatorIndices = $this->getCompareTokens($tokens, $functionStartIndex, -1) ?: $this->getCompareTokens($tokens, $functionEndIndex + 1, 1);
+        $operatorIndices = $this->getCompareTokens($tokens, $functionStartIndex, -1);
+
+        if ([] === $operatorIndices || null === $operatorIndices) {
+            $operatorIndices = $this->getCompareTokens($tokens, $functionEndIndex + 1, 1);
+        }
 
         $this->fixCall($tokens, $functionStartIndex, $operatorIndices, $replacements);
     }
