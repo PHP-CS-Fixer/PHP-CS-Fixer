@@ -42,7 +42,6 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
      * @var array<string, true>
      */
     private array $skippedTypes = [
-        'mixed' => true,
         'resource' => true,
         'null' => true,
     ];
@@ -120,10 +119,6 @@ final class Foo {
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        if (\PHP_VERSION_ID >= 8_00_00) {
-            unset($this->skippedTypes['mixed']);
-        }
-
         for ($index = $tokens->count() - 1; 0 < $index; --$index) {
             if (!$tokens[$index]->isGivenKind([T_FUNCTION, T_FN])) {
                 continue;

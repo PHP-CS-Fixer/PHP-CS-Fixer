@@ -226,7 +226,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php /** @return null */ function my_foo() {}',
         ];
 
-        yield 'skip mixed types' => [
+        yield 'skip union types' => [
             '<?php /** @return Foo|Bar */ function my_foo() {}',
         ];
 
@@ -254,7 +254,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php /** @return string|string[] */ function my_foo() {}',
         ];
 
-        yield 'skip mixed nullable types' => [
+        yield 'skip nullable union types' => [
             '<?php /** @return null|Foo|Bar */ function my_foo() {}',
         ];
 
