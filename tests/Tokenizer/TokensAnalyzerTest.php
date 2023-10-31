@@ -2919,7 +2919,7 @@ class MyTestWithAnonymousClass extends TestCase
             '<?php return [fn(array $x) => $x1] = $x;',
         ];
 
-        yield [
+        yield 'array_map() callback with different token blocks' => [
             [
                 9 => 28,
             ],
