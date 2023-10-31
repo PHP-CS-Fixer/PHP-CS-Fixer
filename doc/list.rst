@@ -2,6 +2,11 @@
 List of Available Rules
 =======================
 
+-  `align_enum_values <./rules/whitespace/align_enum_values.rst>`_
+
+   Align enum values on the ``=`` operator.
+
+   `Source PhpCsFixer\\Fixer\\Whitespace\\AlignEnumValuesFixer <./../src/Fixer/Whitespace/AlignEnumValuesFixer.php>`_
 -  `align_multiline_comment <./rules/phpdoc/align_multiline_comment.rst>`_
 
    Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.
