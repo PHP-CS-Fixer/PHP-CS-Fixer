@@ -43,6 +43,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
         'iterable' => 7_01_00,
         'object' => 7_02_00,
         'mixed' => 8_00_00,
+        'never' => 8_01_00,
         'union-types' => 8_00_00,
     ];
 
