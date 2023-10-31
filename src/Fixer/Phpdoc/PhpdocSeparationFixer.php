@@ -36,6 +36,18 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
+     * @internal
+     *
+     * @var string[][]
+     */
+    public const OPTION_GROUPS_DEFAULT = [
+        ['author', 'copyright', 'license'],
+        ['category', 'package', 'subpackage'],
+        ['property', 'property-read', 'property-write'],
+        ['deprecated', 'link', 'see', 'since'],
+    ];
+
+    /**
      * @var string[][]
      */
     private array $groups;
@@ -161,12 +173,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('groups', 'Sets of annotation types to be grouped together. Use `*` to match any tag character.'))
                 ->setAllowedTypes(['string[][]'])
-                ->setDefault([
-                    ['deprecated', 'link', 'see', 'since'],
-                    ['author', 'copyright', 'license'],
-                    ['category', 'package', 'subpackage'],
-                    ['property', 'property-read', 'property-write'],
-                ])
+                ->setDefault(self::OPTION_GROUPS_DEFAULT)
                 ->setAllowedValues([$allowTagToBelongToOnlyOneGroup])
                 ->getOption(),
             (new FixerOptionBuilder('skip_unlisted_annotations', 'Whether to skip annotations that are not listed in any group.'))

@@ -2394,7 +2394,7 @@ List of Available Rules
    - | ``groups``
      | Sets of annotation types to be grouped together. Use ``*`` to match any tag character.
      | Allowed types: ``string[][]``
-     | Default value: ``[['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write']]``
+     | Default value: ``[['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']]``
    - | ``skip_unlisted_annotations``
      | Whether to skip annotations that are not listed in any group.
      | Allowed types: ``bool``

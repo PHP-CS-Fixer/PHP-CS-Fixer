@@ -129,7 +129,10 @@ Rules
 
 - `phpdoc_return_self_reference <./../rules/phpdoc/phpdoc_return_self_reference.rst>`_
 - `phpdoc_scalar <./../rules/phpdoc/phpdoc_scalar.rst>`_
-- `phpdoc_separation <./../rules/phpdoc/phpdoc_separation.rst>`_
+- `phpdoc_separation <./../rules/phpdoc/phpdoc_separation.rst>`_ with config:
+
+  ``['groups' => [['Annotation', 'NamedArgumentConstructor', 'Target'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']]]``
+
 - `phpdoc_single_line_var_spacing <./../rules/phpdoc/phpdoc_single_line_var_spacing.rst>`_
 - `phpdoc_summary <./../rules/phpdoc/phpdoc_summary.rst>`_
 - `phpdoc_tag_type <./../rules/phpdoc/phpdoc_tag_type.rst>`_ with config:

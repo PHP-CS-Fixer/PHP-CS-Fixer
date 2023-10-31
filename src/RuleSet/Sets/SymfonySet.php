@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
+use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
@@ -166,7 +167,12 @@ final class SymfonySet extends AbstractRuleSetDescription
             ],
             'phpdoc_return_self_reference' => true,
             'phpdoc_scalar' => true,
-            'phpdoc_separation' => true,
+            'phpdoc_separation' => [
+                'groups' => [
+                    ['Annotation', 'NamedArgumentConstructor', 'Target'],
+                    ...PhpdocSeparationFixer::OPTION_GROUPS_DEFAULT,
+                ],
+            ],
             'phpdoc_single_line_var_spacing' => true,
             'phpdoc_summary' => true,
             'phpdoc_tag_type' => [
