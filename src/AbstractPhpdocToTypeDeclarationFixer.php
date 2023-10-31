@@ -226,7 +226,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
         $containsOtherThanEmptyType = false;
 
         foreach ($types as $type) {
-            if (empty($type)) {
+            if ('' === $type) {
                 return null;
             }
 
