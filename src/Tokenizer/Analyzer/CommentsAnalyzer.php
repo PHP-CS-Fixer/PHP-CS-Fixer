@@ -246,13 +246,17 @@ final class CommentsAnalyzer
     }
 
     /**
-     * Checks variable assignments through `list()`, `print()` etc. calls for correct docblock usage.
+     * Checks language constructs like `return`, `list()`, `print()` etc. for correct docblock usage.
      *
      * @param Token $docsToken              docs Token
      * @param int   $languageConstructIndex index of variable Token
      */
     private function isValidLanguageConstruct(Tokens $tokens, Token $docsToken, int $languageConstructIndex): bool
     {
+        if ($tokens[$languageConstructIndex]->isGivenKind(T_RETURN)) {
+            return true;
+        }
+
         static $languageStructures = [
             T_LIST,
             T_PRINT,
