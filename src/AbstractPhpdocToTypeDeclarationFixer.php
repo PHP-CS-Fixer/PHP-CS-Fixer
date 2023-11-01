@@ -216,11 +216,6 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
 
         $types = $typesExpression->getTypes();
         $isNullable = $typesExpression->allowsNull();
-
-        if (\count($types) < 2) {
-            return null;
-        }
-
         $unionTypes = [];
         $containsOtherThanIterableType = false;
         $containsOtherThanEmptyType = false;
