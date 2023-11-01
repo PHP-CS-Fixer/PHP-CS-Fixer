@@ -685,6 +685,16 @@ foreach($connections as $key => $sqlite) {
             fn ($x) => $x + 42;
             ',
         ];
+
+        yield 'do not convert before return' => [
+            '<?php
+function doSomething()
+{
+    /** @todo do not convert */
+    return;
+}
+',
+        ];
     }
 
     public static function provideTraitsCases(): iterable
