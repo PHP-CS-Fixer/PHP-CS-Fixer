@@ -203,7 +203,7 @@ final class Foo {
     {
         $typeTokens = Tokens::fromCode(sprintf(self::TYPE_CHECK_TEMPLATE, $type));
         $typeTokens->clearRange(0, 7);
-        $typeTokens->clearRange(count($typeTokens) - 3, count($typeTokens) - 1);
+        $typeTokens->clearRange(\count($typeTokens) - 3, \count($typeTokens) - 1);
         $typeTokens->clearEmptyTokens();
 
         return $typeTokens;

@@ -96,6 +96,16 @@ class Foo {
         }
     }
 
+    protected function createTokensFromRawType(string $type): Tokens
+    {
+        $typeTokens = Tokens::fromCode(sprintf(self::TYPE_CHECK_TEMPLATE, $type));
+        $typeTokens->clearRange(0, 8);
+        $typeTokens->clearRange(\count($typeTokens) - 5, \count($typeTokens) - 1);
+        $typeTokens->clearEmptyTokens();
+
+        return $typeTokens;
+    }
+
     private function fixClass(Tokens $tokens, int $index): void
     {
         $index = $tokens->getNextTokenOfKind($index, ['{']);
@@ -152,16 +162,6 @@ class Foo {
             $index = max($propertyIndices) + \count($newTokens) + 1;
             $classEndIndex += \count($newTokens);
         }
-    }
-
-    protected function createTokensFromRawType(string $type): Tokens
-    {
-        $typeTokens = Tokens::fromCode(sprintf(self::TYPE_CHECK_TEMPLATE, $type));
-        $typeTokens->clearRange(0, 8);
-        $typeTokens->clearRange(count($typeTokens) - 5, count($typeTokens) - 1);
-        $typeTokens->clearEmptyTokens();
-
-        return $typeTokens;
     }
 
     /**

@@ -179,7 +179,7 @@ function bar($foo) {}
     {
         $typeTokens = Tokens::fromCode(sprintf(self::TYPE_CHECK_TEMPLATE, $type));
         $typeTokens->clearRange(0, 4);
-        $typeTokens->clearRange(count($typeTokens) - 6, count($typeTokens) - 1);
+        $typeTokens->clearRange(\count($typeTokens) - 6, \count($typeTokens) - 1);
         $typeTokens->clearEmptyTokens();
 
         return $typeTokens;
