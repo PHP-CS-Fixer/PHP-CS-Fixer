@@ -44,7 +44,6 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
         'object' => 7_02_00,
         'mixed' => 8_00_00,
         'never' => 8_01_00,
-        'union-types' => 8_00_00,
     ];
 
     /**
@@ -207,7 +206,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
 
     protected function getUnionTypes(TypeExpression $typesExpression, bool $isReturnType): ?string
     {
-        if (\PHP_VERSION_ID < $this->versionSpecificTypes['union-types']) {
+        if (\PHP_VERSION_ID < 8_00_00) {
             return null;
         }
 
