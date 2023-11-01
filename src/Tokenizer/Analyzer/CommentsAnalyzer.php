@@ -19,6 +19,8 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+use const T_RETURN;
+
 /**
  * @author Kuba Werłos <werlos@gmail.com>
  *

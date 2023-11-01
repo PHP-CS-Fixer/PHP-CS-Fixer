@@ -30,6 +30,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
 {
+    private const TYPE_CHECK_TEMPLATE = '<?php function f(): %s {}';
+
     /**
      * @var array<int, array<int, int|string>>
      */
@@ -178,7 +180,7 @@ final class Foo {
                 continue;
             }
 
-            if (!$this->isValidSyntax(sprintf('<?php function f():%s {}', $returnType))) {
+            if (!$this->isValidSyntax(sprintf(self::TYPE_CHECK_TEMPLATE, $returnType))) {
                 continue;
             }
 
@@ -195,6 +197,16 @@ final class Foo {
                 )
             );
         }
+    }
+
+    protected function createTokensFromRawType(string $type): Tokens
+    {
+        $typeTokens = Tokens::fromCode(sprintf(self::TYPE_CHECK_TEMPLATE, $type));
+        $typeTokens->clearRange(0, 7);
+        $typeTokens->clearRange(count($typeTokens) - 3, count($typeTokens) - 1);
+        $typeTokens->clearEmptyTokens();
+
+        return $typeTokens;
     }
 
     /**

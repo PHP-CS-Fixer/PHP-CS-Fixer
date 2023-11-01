@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
 {
+    private const TYPE_CHECK_TEMPLATE = '<?php class A { private %s $b; }';
+
     /**
      * @var array<string, true>
      */
@@ -136,6 +138,10 @@ class Foo {
                 continue;
             }
 
+            if (!$this->isValidSyntax(sprintf(self::TYPE_CHECK_TEMPLATE, $propertyType))) {
+                continue;
+            }
+
             $newTokens = array_merge(
                 $this->createTypeDeclarationTokens($propertyType, $isNullable),
                 [new Token([T_WHITESPACE, ' '])]
@@ -146,6 +152,16 @@ class Foo {
             $index = max($propertyIndices) + \count($newTokens) + 1;
             $classEndIndex += \count($newTokens);
         }
+    }
+
+    protected function createTokensFromRawType(string $type): Tokens
+    {
+        $typeTokens = Tokens::fromCode(sprintf(self::TYPE_CHECK_TEMPLATE, $type));
+        $typeTokens->clearRange(0, 8);
+        $typeTokens->clearRange(count($typeTokens) - 5, count($typeTokens) - 1);
+        $typeTokens->clearEmptyTokens();
+
+        return $typeTokens;
     }
 
     /**

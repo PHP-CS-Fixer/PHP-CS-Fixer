@@ -128,43 +128,43 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
      */
     protected function createTypeDeclarationTokens(string $type, bool $isNullable): array
     {
-        static $specialTypes = [
-            'array' => [CT::T_ARRAY_TYPEHINT, 'array'],
-            'callable' => [T_CALLABLE, 'callable'],
-            'static' => [T_STATIC, 'static'],
-        ];
-
         $newTokens = [];
 
         if (true === $isNullable && 'mixed' !== $type) {
             $newTokens[] = new Token([CT::T_NULLABLE_TYPE, '?']);
         }
 
-        if (isset($specialTypes[$type])) {
-            $newTokens[] = new Token($specialTypes[$type]);
-        } else {
-            $typeUnqualified = ltrim($type, '\\');
+        $newTokens = array_merge(
+            $newTokens,
+            $this->createTokensFromRawType($type)->toArray()
+        );
 
-            if (isset($this->scalarTypes[$typeUnqualified]) || isset($this->versionSpecificTypes[$typeUnqualified])) {
-                // 'scalar's, 'void', 'iterable' and 'object' must be unqualified
-                $newTokens[] = new Token([T_STRING, $typeUnqualified]);
-            } else {
-                foreach (explode('\\', $type) as $nsIndex => $value) {
-                    if (0 === $nsIndex && '' === $value) {
-                        continue;
-                    }
+        // 'scalar's, 'void', 'iterable' and 'object' must be unqualified
+        foreach ($newTokens as $i => $token) {
+            if ($token->isGivenKind(T_STRING)) {
+                $typeUnqualified = $token->getContent();
 
-                    if (0 < $nsIndex) {
-                        $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
-                    }
-
-                    $newTokens[] = new Token([T_STRING, $value]);
+                if (
+                    (isset($this->scalarTypes[$typeUnqualified]) || isset($this->versionSpecificTypes[$typeUnqualified]))
+                    && isset($newTokens[$i - 1])
+                    && '\\' === $newTokens[$i - 1]->getContent()
+                ) {
+                    unset($newTokens[$i - 1]);
                 }
             }
         }
 
-        return $newTokens;
+        return array_values($newTokens);
     }
+
+    /**
+     * Each fixer inheriting from this class must define a way of creating token collection representing type
+     * gathered from phpDoc, e.g. `Foo|Bar` should be transformed into 3 tokens (`Foo`, `|` and `Bar`).
+     * This can't be standardised, because some types may be allowed in one place, and invalid in others.
+     *
+     * @param string $type Type determined (and simplified) from phpDoc
+     */
+    abstract protected function createTokensFromRawType(string $type): Tokens;
 
     /**
      * @return null|array{string, bool}
