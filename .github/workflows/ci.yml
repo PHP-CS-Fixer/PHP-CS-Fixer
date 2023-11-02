@@ -33,17 +33,6 @@ jobs:
             execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '7.4'
-            job-description: 'Fixer'
-            run-fixer: 'yes'
-            run-phpdoc-to-native-type: 'yes' # should be checked on the lowest supported PHP version
-
-          - operating-system: 'ubuntu-20.04'
-            php-version: '7.4'
-            job-description: 'tests'
-            run-tests: 'yes'
-
-          - operating-system: 'ubuntu-20.04'
             php-version: '8.0'
             job-description: 'Fixer'
             run-fixer: 'yes'
