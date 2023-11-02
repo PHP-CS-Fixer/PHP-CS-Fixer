@@ -145,13 +145,20 @@ jobs:
           script: 'return "${{ matrix.code-coverage }}" == "yes" ? "pcov" : "none"'
           result-encoding: string
 
+      - name: Get tools:flex flag for PHP config
+        uses: actions/github-script@v6
+        id: setup-php-tools
+        with:
+          script: 'return "${{ matrix.execute-flex-with-symfony-version }}" ? "flex" : "none"'
+          result-encoding: string
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           extensions: none, curl, dom, json, mbstring, opcache, simplexml, tokenizer, xml, xmlwriter, zip
           coverage: ${{ steps.code-coverage-driver.outputs.result }}
-          tools: flex
+          tools: ${{ steps.setup-php-tools.outputs.result }}
 
       - name: Get Composer cache directory
         id: composer-cache
