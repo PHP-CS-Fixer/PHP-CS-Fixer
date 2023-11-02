@@ -128,7 +128,7 @@ jobs:
           max_attempts: 5
           retry_wait_seconds: 30
           command: |
-            composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.composer-flags }}
+            composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ matrix.composer-flags }} # --no-scripts to avoid installing dev-tools for all jobs on CI level
             composer info -D
 
       # execute migration rules before running tests and self-fixing,
