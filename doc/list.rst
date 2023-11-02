@@ -3426,6 +3426,13 @@ List of Available Rules
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS <./ruleSets/PER-CS.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PER-CS2.0 <./ruleSets/PER-CS2.0.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\UnaryOperatorSpacesFixer <./../src/Fixer/Operator/UnaryOperatorSpacesFixer.php>`_
+-  `uppercase_case_name <./rules/casing/uppercase_case_name.rst>`_
+
+   PHP enums case names must be uppercased.
+
+   *warning risky* Since this changes variable names, it might break references.
+
+   `Source PhpCsFixer\\Fixer\\Casing\\UppercaseCaseNameFixer <./../src/Fixer/Casing/UppercaseCaseNameFixer.php>`_
 -  `use_arrow_functions <./rules/function_notation/use_arrow_functions.rst>`_
 
    Anonymous functions with one-liner return statement must use arrow functions.

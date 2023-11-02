@@ -144,6 +144,9 @@ Casing
 - `native_type_declaration_casing <./casing/native_type_declaration_casing.rst>`_
 
   Native type declarations should be used in the correct case.
+- `uppercase_case_name <./casing/uppercase_case_name.rst>`_ *(risky)*
+
+  PHP enums case names must be uppercased.
 
 Cast Notation
 -------------
