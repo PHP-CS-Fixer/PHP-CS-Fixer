@@ -855,43 +855,43 @@ $foo = [
 
         yield 'array destructuring' => [
             <<<'EXPECTED'
-                <?php
-                [
-                    $foo,
-                    $bar,
-                    $baz
-                ] = $arr;
-            EXPECTED
+                    <?php
+                    [
+                        $foo,
+                        $bar,
+                        $baz
+                    ] = $arr;
+                EXPECTED
             ,
             <<<'INPUT'
-                <?php
-                [
-                $foo,
-                            $bar,
-                  $baz
-                ] = $arr;
-            INPUT
+                    <?php
+                    [
+                    $foo,
+                                $bar,
+                      $baz
+                    ] = $arr;
+                INPUT
             ,
         ];
 
         yield 'array destructuring using list' => [
             <<<'EXPECTED'
-                <?php
-                list(
-                    $foo,
-                    $bar,
-                    $baz
-                ) = $arr;
-            EXPECTED
+                    <?php
+                    list(
+                        $foo,
+                        $bar,
+                        $baz
+                    ) = $arr;
+                EXPECTED
             ,
             <<<'INPUT'
-                <?php
-                list(
-                $foo,
-                            $bar,
-                  $baz
-                ) = $arr;
-            INPUT
+                    <?php
+                    list(
+                    $foo,
+                                $bar,
+                      $baz
+                    ) = $arr;
+                INPUT
             ,
         ];
     }
@@ -948,43 +948,43 @@ $foo = [
 
         yield 'array destructuring' => [
             <<<EXPECTED
-                <?php
-                [
-                \t\$foo,
-                \t\$bar,
-                \t\$baz
-                ] = \$arr;
-            EXPECTED
+                    <?php
+                    [
+                    \t\$foo,
+                    \t\$bar,
+                    \t\$baz
+                    ] = \$arr;
+                EXPECTED
             ,
-            <<<INPUT
-                <?php
-                [
-                \$foo,
-                            \$bar,
-                  \$baz
-                ] = \$arr;
-            INPUT
+            <<<'INPUT'
+                    <?php
+                    [
+                    $foo,
+                                $bar,
+                      $baz
+                    ] = $arr;
+                INPUT
             ,
         ];
 
         yield 'array destructuring using list' => [
             <<<EXPECTED
-                <?php
-                list(
-                \t\$foo,
-                \t\$bar,
-                \t\$baz
-                ) = \$arr;
-            EXPECTED
+                    <?php
+                    list(
+                    \t\$foo,
+                    \t\$bar,
+                    \t\$baz
+                    ) = \$arr;
+                EXPECTED
             ,
-            <<<INPUT
-                <?php
-                list(
-                \$foo,
-                            \$bar,
-                  \$baz
-                ) = \$arr;
-            INPUT
+            <<<'INPUT'
+                    <?php
+                    list(
+                    $foo,
+                                $bar,
+                      $baz
+                    ) = $arr;
+                INPUT
             ,
         ];
     }
