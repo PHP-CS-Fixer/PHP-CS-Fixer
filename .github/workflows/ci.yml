@@ -97,9 +97,6 @@ jobs:
           extensions: none, dom, json, opcache, simplexml, tokenizer, xml, xmlwriter, zip
           coverage: ${{ steps.code-coverage-driver.outputs.result }}
           tools: flex
-        env:
-          fail-fast: false # disabled as old PHP version cannot run flex
-          update: ${{ matrix.php-version == '8.0' }} # force update to 8.0.1+, ref https://github.com/shivammathur/setup-php/issues/394#issuecomment-760461251
 
       - name: Get Composer cache directory
         id: composer-cache
