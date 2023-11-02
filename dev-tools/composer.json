@@ -18,10 +18,10 @@
             "phpstan/extension-installer": true
         },
         "optimize-autoloader": true,
-        "prefer-stable": true,
         "platform": {
             "php": "8.2"
         },
+        "prefer-stable": true,
         "sort-packages": true
     }
 }
