@@ -205,7 +205,7 @@ jobs:
         run: sed 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' phpunit.xml.dist > phpunit.xml
 
       - name: Run tests
-        if: matrix.run-tests == 'yes'
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
