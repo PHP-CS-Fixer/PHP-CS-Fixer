@@ -19,26 +19,29 @@ jobs:
         include:
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
-            job-description: 'tests with Symfony ^5'
-            run-tests: 'yes'
+            job-description: 'Fixer with lowest deps'
+            run-fixer: 'yes'
+            run-phpdoc-to-native-type: 'yes' # should be checked on the lowest supported PHP version
+            composer-flags: '--prefer-lowest' # should be checked on the lowest supported PHP version
             execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
-            job-description: 'Fixer with lowest deps'
+            job-description: 'tests with lowest deps'
             run-fixer: 'yes'
             composer-flags: '--prefer-lowest' # should be checked on the lowest supported PHP version
+            execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
-            job-description: 'Fixer with PHPDoc to type rules'
+            job-description: 'Fixer'
+            run-fixer: 'yes'
             run-phpdoc-to-native-type: 'yes' # should be checked on the lowest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
-            job-description: 'Fixer with Symfony ^5'
-            run-fixer: 'yes'
-            execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
+            job-description: 'tests'
+            run-tests: 'yes'
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.0'
