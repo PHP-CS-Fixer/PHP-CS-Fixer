@@ -28,7 +28,7 @@ jobs:
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
             job-description: 'tests with lowest deps'
-            run-fixer: 'yes'
+            run-tests: 'yes'
             composer-flags: '--prefer-lowest' # should be checked on the lowest supported PHP version
             execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
 
