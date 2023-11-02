@@ -6,7 +6,7 @@ composer config platform.php 7.4
 
 # install package deps without dev-deps / remove already installed dev-deps
 # box can ignore dev-deps, but dev-deps, when installed, may lower version of prod-deps
-composer update --no-interaction --no-progress --no-dev --prefer-stable --optimize-autoloader
+composer update --no-interaction --no-progress --optimize-autoloader --no-scripts --no-dev
 composer info -D | sort
 
 composer show -d dev-tools humbug/box -q || composer update -d dev-tools --no-interaction --no-progress
