@@ -20,7 +20,7 @@ jobs:
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
             job-description: 'with lowest deps'
-            composer-flags: '--prefer-stable --prefer-lowest' # should be checked on the lowest supported PHP version
+            composer-flags: '--prefer-lowest' # should be checked on the lowest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
@@ -68,12 +68,12 @@ jobs:
           - operating-system: 'windows-latest'
             php-version: '8.2'
             job-description: 'on Windows'
-            FAST_LINT_TEST_CASES: 1
+            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: 'macos-latest'
             php-version: '8.2'
             job-description: 'on macOS'
-            FAST_LINT_TEST_CASES: 1
+            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
 
