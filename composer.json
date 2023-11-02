@@ -74,6 +74,7 @@
             "ergebnis/composer-normalize": true,
             "infection/extension-installer": false
         },
+        "prefer-stable": true,
         "sort-packages": true
     },
     "scripts": {
