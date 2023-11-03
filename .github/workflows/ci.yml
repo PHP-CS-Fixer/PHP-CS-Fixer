@@ -138,20 +138,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Get code coverage driver
+      - name: Resolve PHP coverage flag
         uses: actions/github-script@v6
-        id: code-coverage-driver
+        id: setup-php-resolve-coverage
         with:
           script: 'return "${{ matrix.code-coverage }}" == "yes" ? "pcov" : "none"'
+          result-encoding: string
+
+      - name: Resolve PHP tools flag
+        uses: actions/github-script@v6
+        id: setup-php-resolve-tools
+        with:
+          script: 'return "${{ matrix.execute-flex-with-symfony-version }}" ? "flex" : "none"'
           result-encoding: string
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: none, curl, dom, json, mbstring, opcache, simplexml, tokenizer, xml, xmlwriter, zip
-          coverage: ${{ steps.code-coverage-driver.outputs.result }}
-          tools: flex
+          extensions: none, curl, dom, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip
+          coverage: ${{ steps.setup-php-resolve-coverage.outputs.result }}
+          tools: composer, ${{ steps.setup-php-resolve-tools.outputs.result }}
 
       - name: Get Composer cache directory
         id: composer-cache
