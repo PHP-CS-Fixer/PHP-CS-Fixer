@@ -70,20 +70,14 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
+            job-description: 'tests'
+            run-tests: 'yes'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
             job-description: 'tests with migration rules'
             run-tests: 'yes'
             run-migration-rules: 'yes' # should be checked on the highest supported PHP version
-
-          - operating-system: 'ubuntu-20.04'
-            php-version: '8.2'
-            job-description: 'auto-review'
-            run-tests: 'yes'
-            phpunit-flags: '--group auto-review'
-
-          - operating-system: 'ubuntu-20.04'
-            php-version: '8.2'
-            job-description: 'tests'
-            run-tests: 'yes'
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
@@ -190,7 +184,7 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/paraunit run ${{ matrix.phpunit-flags || '--exclude-group auto-review' }}
+        run: vendor/bin/paraunit run --exclude-group auto-review
 
       - name: Collect code coverage
         if: matrix.collect-code-coverage == 'yes'
