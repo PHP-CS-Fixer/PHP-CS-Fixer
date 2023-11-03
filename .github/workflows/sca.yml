@@ -51,8 +51,6 @@ jobs:
           command: ./dev-tools/install.sh
 
       - name: Run AutoReview
-        env:
-          FAST_LINT_TEST_CASES: 1
         run: vendor/bin/paraunit run --testsuite auto-review
 
       - name: Check - file permissions
