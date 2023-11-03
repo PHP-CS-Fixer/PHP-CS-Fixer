@@ -14,7 +14,9 @@ runs:
         timeout_minutes: 5
         max_attempts: 5
         retry_wait_seconds: 30
-        command: composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ inputs.flags }} # --no-scripts to avoid installing dev-tools for all jobs on CI level
+        # `--no-scripts` to avoid side-effects (e.g. installing dev-tools for all jobs on CI level),
+        # all executed scripts should be explicit and run only when needed.
+        command: composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ inputs.flags }}
 
     - name: Report versions
       shell: bash
