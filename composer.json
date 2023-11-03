@@ -124,21 +124,21 @@
             "@test:unit",
             "@test:integration"
         ],
-        "test:unit": [
+        "test:coverage": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit run --testsuite unit"
+            "paraunit coverage --testsuite unit --exclude-group covers-nothing"
         ],
         "test:integration": [
             "Composer\\Config::disableProcessTimeout",
             "paraunit run --testsuite integration"
         ],
-        "test:coverage": [
-            "Composer\\Config::disableProcessTimeout",
-            "paraunit coverage --testsuite unit --exclude-group covers-nothing"
-        ],
         "test:smoke": [
             "Composer\\Config::disableProcessTimeout",
             "paraunit run --testsuite smoke"
+        ],
+        "test:unit": [
+            "Composer\\Config::disableProcessTimeout",
+            "paraunit run --testsuite unit"
         ]
     },
     "scripts-descriptions": {
@@ -161,9 +161,9 @@
         "static-analysis": "Run static analysis",
         "test": "Alias for 'test:all'",
         "test:all": "Run Unit and Integration tests (but *NOT* Smoke tests)",
-        "test:unit": "Run Unit tests",
-        "test:integration": "Run Integration tests",
         "test:coverage": "Run tests that provide code coverage",
-        "test:smoke": "Run Smoke tests"
+        "test:integration": "Run Integration tests",
+        "test:smoke": "Run Smoke tests",
+        "test:unit": "Run Unit tests"
     }
 }
