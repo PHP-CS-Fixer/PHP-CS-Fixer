@@ -122,7 +122,7 @@ jobs:
             composer-flags: '--ignore-platform-req=PHP'
             PHP_CS_FIXER_IGNORE_ENV: 1
 
-    name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
+    name: ${{ matrix.job-description }} @ PHP ${{ matrix.php-version }} (${{ matrix.operating-system }})
 
     runs-on: ${{ matrix.operating-system }}
 
