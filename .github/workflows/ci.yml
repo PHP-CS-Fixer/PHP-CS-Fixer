@@ -82,6 +82,7 @@ jobs:
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
             job-description: 'code coverage'
+            run-tests: 'yes'
             collect-code-coverage: 'yes'
 
           - operating-system: 'windows-latest'
@@ -159,7 +160,7 @@ jobs:
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
         run: vendor/bin/paraunit run --testsuite tests
 
-      - name: Collect code coverage
+      - name: Run tests and collect code coverage
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
           FAST_LINT_TEST_CASES: 1
