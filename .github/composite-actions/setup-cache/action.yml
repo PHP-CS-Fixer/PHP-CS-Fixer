@@ -20,8 +20,9 @@ runs:
       uses: actions/cache@v3
       with:
         path: ${{ steps.composer-cache-dir.outputs.dir }}
-        key: composer-${{ inputs.os }}-${{ inputs.php }}-${{ hashFiles('**/composer.*') }}
+        key: composer-${{ inputs.os }}-${{ inputs.php }}-${{ hashFiles('**/composer.json') }}-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
+          composer-${{ inputs.os }}-${{ inputs.php }}-${{ hashFiles('**/composer.json') }}-
           composer-${{ inputs.os }}-${{ inputs.php }}-
           composer-${{ inputs.os }}-
           composer-
