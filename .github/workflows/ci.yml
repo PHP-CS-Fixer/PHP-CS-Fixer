@@ -134,7 +134,7 @@ jobs:
         uses: actions/github-script@v6
         id: setup-php-resolve-coverage
         with:
-          script: 'return "${{ matrix.code-coverage }}" == "yes" ? "pcov" : "none"'
+          script: 'return "${{ matrix.collect-code-coverage }}" == "yes" ? "pcov" : "none"'
           result-encoding: string
 
       - name: Resolve PHP tools flag

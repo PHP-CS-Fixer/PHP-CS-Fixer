@@ -1,7 +1,7 @@
 name: "Install composer deps"
 
 inputs:
-  composer-flags:
+  flags:
     description: 'Composer flags'
     required: false
 
@@ -14,7 +14,7 @@ runs:
         timeout_minutes: 5
         max_attempts: 5
         retry_wait_seconds: 30
-        command: composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ matrix.composer-flags }} # --no-scripts to avoid installing dev-tools for all jobs on CI level
+        command: composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ inputs.flags }} # --no-scripts to avoid installing dev-tools for all jobs on CI level
 
     - name: Report versions
       shell: bash
