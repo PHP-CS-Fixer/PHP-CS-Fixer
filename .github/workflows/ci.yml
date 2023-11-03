@@ -153,42 +153,26 @@ jobs:
           result-encoding: string
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: ./.github/composite-actions/setup-php
         with:
-          php-version: ${{ matrix.php-version }}
-          extensions: none, curl, dom, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip
+          version: ${{ matrix.php-version }}
           coverage: ${{ steps.setup-php-resolve-coverage.outputs.result }}
-          tools: composer, ${{ steps.setup-php-resolve-tools.outputs.result }}
+          tools: ${{ steps.setup-php-resolve-tools.outputs.result }}
 
-      - name: Get Composer cache directory
-        id: composer-cache
-        shell: bash
-        run: echo "dir=$(composer config cache-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache dependencies
-        uses: actions/cache@v3
+      - name: Setup cache
+        uses: ./.github/composite-actions/setup-cache
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-${{ matrix.composer-flags }}
-          restore-keys: |
-            composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-
-            composer-${{ runner.os }}-${{ matrix.php-version }}-
-            composer-${{ runner.os }}-
-            composer-
+          php: ${{ matrix.php-version }}
+          os: ${{ runner.os }}
 
       - name: Configure Symfony Flex
         if: matrix.execute-flex-with-symfony-version
         run: composer config extra.symfony.require ${{ matrix.execute-flex-with-symfony-version }}
 
-      - name: Install dependencies
-        uses: nick-invision/retry@v2
+      - name: Install Composer deps
+        uses: ./.github/composite-actions/install-composer-deps
         with:
-          timeout_minutes: 5
-          max_attempts: 5
-          retry_wait_seconds: 30
-          command: |
-            composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ matrix.composer-flags }} # --no-scripts to avoid installing dev-tools for all jobs on CI level
-            composer info -D
+          flags: ${{ matrix.composer-flags }}
 
       # execute migration rules before running tests and self-fixing,
       # so that we know that our codebase is future-ready
