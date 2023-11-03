@@ -27,6 +27,4 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @group covers-nothing
  */
-abstract class AbstractSmokeTestCase extends TestCase
-{
-}
+abstract class AbstractSmokeTestCase extends TestCase {}
