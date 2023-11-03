@@ -121,12 +121,20 @@
         ],
         "test": "@test:all",
         "test:all": [
+            "@test:unit",
+            "@test:integration"
+        ],
+        "test:unit": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit run --testsuite tests"
+            "paraunit run --testsuite unit"
+        ],
+        "test:integration": [
+            "Composer\\Config::disableProcessTimeout",
+            "paraunit run --testsuite integration"
         ],
         "test:coverage": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit coverage --testsuite tests --exclude-group covers-nothing"
+            "paraunit coverage --testsuite unit --exclude-group covers-nothing"
         ],
         "test:smoke": [
             "Composer\\Config::disableProcessTimeout",
@@ -152,7 +160,9 @@
         "self-check": "Run set of self-checks ensuring repository's validity",
         "static-analysis": "Run static analysis",
         "test": "Alias for 'test:all'",
-        "test:all": "Run Unit and Integration tests",
+        "test:all": "Run Unit and Integration tests (but *NOT* Smoke tests)",
+        "test:unit": "Run Unit tests",
+        "test:integration": "Run Integration tests",
         "test:coverage": "Run tests that provide code coverage",
         "test:smoke": "Run Smoke tests"
     }
