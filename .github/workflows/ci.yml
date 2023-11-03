@@ -158,7 +158,7 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: none, curl, dom, json, mbstring, opcache, simplexml, tokenizer, xml, xmlwriter, zip
           coverage: ${{ steps.setup-php-resolve-coverage.outputs.result }}
-          tools: ${{ steps.setup-php-resolve-tools.outputs.result }} composer
+          tools: composer ${{ steps.setup-php-resolve-tools.outputs.result }}
 
       - name: Get Composer cache directory
         id: composer-cache
