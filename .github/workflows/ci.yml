@@ -130,41 +130,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Resolve PHP coverage flag
-        uses: actions/github-script@v6
-        id: setup-php-resolve-coverage
+      - name: Setup PHP with Composer deps
+        uses: ./.github/composite-actions/setup-php-with-composer-deps
         with:
-          script: 'return "${{ matrix.collect-code-coverage }}" == "yes" ? "pcov" : "none"'
-          result-encoding: string
-
-      - name: Resolve PHP tools flag
-        uses: actions/github-script@v6
-        id: setup-php-resolve-tools
-        with:
-          script: 'return "${{ matrix.execute-flex-with-symfony-version }}" ? "flex" : "none"'
-          result-encoding: string
-
-      - name: Setup PHP
-        uses: ./.github/composite-actions/setup-php
-        with:
-          version: ${{ matrix.php-version }}
-          coverage: ${{ steps.setup-php-resolve-coverage.outputs.result }}
-          tools: ${{ steps.setup-php-resolve-tools.outputs.result }}
-
-      - name: Setup cache
-        uses: ./.github/composite-actions/setup-cache
-        with:
-          php: ${{ matrix.php-version }}
           os: ${{ runner.os }}
-
-      - name: Configure Symfony Flex
-        if: matrix.execute-flex-with-symfony-version
-        run: composer config extra.symfony.require ${{ matrix.execute-flex-with-symfony-version }}
-
-      - name: Install Composer deps
-        uses: ./.github/composite-actions/install-composer-deps
-        with:
-          flags: ${{ matrix.composer-flags }}
+          php: ${{ matrix.php-version }}
+          php-coverage: ${{ matrix.collect-code-coverage }}
+          composer-flags: ${{ matrix.composer-flags }}
+          composer-flex-with-symfony-version: ${{ matrix.execute-flex-with-symfony-version }}
 
       # Execute migration rules before running tests and self-fixing,
       # so we know that our codebase is future-ready.
@@ -230,19 +203,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup PHP
-        uses: ./.github/composite-actions/setup-php
+      - name: Setup PHP with Composer deps
+        uses: ./.github/composite-actions/setup-php-with-composer-deps
         with:
-          version: ${{ matrix.php-version }}
-
-      - name: Setup cache
-        uses: ./.github/composite-actions/setup-cache
-        with:
-          php: ${{ matrix.php-version }}
           os: ${{ runner.os }}
-
-      - name: Install Composer deps
-        uses: ./.github/composite-actions/install-composer-deps
+          php: ${{ matrix.php-version }}
 
       - name: Build phar
         run: ./dev-tools/build.sh

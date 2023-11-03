@@ -29,22 +29,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup PHP
-        uses: ./.github/composite-actions/setup-php
+      - name: Setup PHP with Composer deps
+        uses: ./.github/composite-actions/setup-php-with-composer-deps
         with:
-          version: ${{ matrix.php-version }}
-          tools: cs2pr
-
-      - name: Setup cache
-        uses: ./.github/composite-actions/setup-cache
-        with:
-          php: ${{ matrix.php-version }}
           os: ${{ runner.os }}
-
-      - name: Install Composer deps
-        uses: ./.github/composite-actions/install-composer-deps
-        with:
-          flags: ${{ matrix.composer-flags }}
+          php: ${{ matrix.php-version }}
+          tools: cs2pr
+          coverage: ${{ steps.setup-php-resolve-coverage.outputs.result }}
 
       ## We want to have a lock-file used on PR level, so contributors are not bothered by SCA complains unrelated to their changes,
       ## and same time we want to be aware that we are complying with bleeding edge of SCA tools as maintainers observing the push hook.
