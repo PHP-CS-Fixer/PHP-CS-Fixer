@@ -87,11 +87,6 @@ jobs:
             job-description: 'code coverage'
             collect-code-coverage: 'yes'
 
-          - operating-system: 'ubuntu-20.04'
-            php-version: '8.2'
-            job-description: 'deployment check'
-            execute-deployment: 'yes'
-
           - operating-system: 'windows-latest'
             php-version: '8.2'
             job-description: 'Fixer on Windows'
@@ -214,8 +209,41 @@ jobs:
           PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer check --diff -v
 
-      - name: Execute deployment checks
-        if: matrix.execute-deployment == 'yes'
-        run: |
-          ./dev-tools/build.sh
-          PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 vendor/bin/phpunit tests/Smoke/
+  deployment:
+    needs: tests
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
+
+    name: Deployment checks
+
+    runs-on: ${{ matrix.operating-system }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: ./.github/composite-actions/setup-php
+        with:
+          version: ${{ matrix.php-version }}
+
+      - name: Setup cache
+        uses: ./.github/composite-actions/setup-cache
+        with:
+          php: ${{ matrix.php-version }}
+          os: ${{ runner.os }}
+
+      - name: Install Composer deps
+        uses: ./.github/composite-actions/install-composer-deps
+
+      - name: Build phar
+        run: ./dev-tools/build.sh
+
+      - name: Run smoke tests
+        env:
+          PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS: 0
+        run: vendor/bin/phpunit tests/Smoke/

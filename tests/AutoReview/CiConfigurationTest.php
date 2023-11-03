@@ -154,9 +154,7 @@ final class CiConfigurationTest extends TestCase
      */
     private function getAllPhpVersionsUsedByCiForDeployments(): array
     {
-        $jobs = array_filter($this->getGitHubJobs(), static fn (array $job): bool => isset($job['execute-deployment']) && 'yes' === $job['execute-deployment']);
-
-        return array_map(static fn ($job): string => \is_string($job['php-version']) ? $job['php-version'] : sprintf('%.1f', $job['php-version']), $jobs);
+        return array_map(static fn ($job): string => \is_string($job['php-version']) ? $job['php-version'] : sprintf('%.1f', $job['php-version']), $this->getGitHubDeploymentJobs());
     }
 
     /**
@@ -216,11 +214,11 @@ final class CiConfigurationTest extends TestCase
     /**
      * @return list<array<string, scalar>>
      */
-    private function getGitHubJobs(): array
+    private function getGitHubDeploymentJobs(): array
     {
         $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
 
-        return $yaml['jobs']['tests']['strategy']['matrix']['include'];
+        return $yaml['jobs']['deployment']['strategy']['matrix']['include'];
     }
 
     /**
