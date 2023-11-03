@@ -29,12 +29,4 @@ use PhpCsFixer\Tests\TestCase;
  */
 abstract class AbstractSmokeTestCase extends TestCase
 {
-    protected static function markTestSkippedOrFail(string $message): void
-    {
-        if (getenv('PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS')) {
-            self::markTestSkipped($message);
-        }
-
-        self::fail($message.' Failing as test is obligatory because of `PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0`.');
-    }
 }
