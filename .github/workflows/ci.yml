@@ -184,16 +184,16 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/paraunit run --exclude-group auto-review
+        run: vendor/bin/paraunit run --testsuite tests
 
       - name: Collect code coverage
-        if: matrix.collect-code-coverage == 'yes'
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
           FAST_LINT_TEST_CASES: 1
-        run: vendor/bin/paraunit coverage --testsuite coverage --exclude-group covers-nothing --clover build/logs/clover.xml
+        run: vendor/bin/paraunit coverage --testsuite tests --exclude-group covers-nothing --clover build/logs/clover.xml
 
       - name: Upload coverage results to Coveralls
-        if: matrix.collect-code-coverage == 'yes'
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: php vendor/bin/php-coveralls --verbose
@@ -249,5 +249,5 @@ jobs:
 
       - name: Run smoke tests
         env:
-          PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS: 0
-        run: vendor/bin/phpunit tests/Smoke/
+          FAST_LINT_TEST_CASES: 1
+        run: vendor/bin/phpunit --testsuite smoke

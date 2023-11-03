@@ -63,7 +63,7 @@ jobs:
       - name: Run AutoReview
         env:
           FAST_LINT_TEST_CASES: 1
-        run: vendor/bin/paraunit run --group auto-review
+        run: vendor/bin/paraunit run --testsuite auto-review
 
       - name: Check - file permissions
         run: ./dev-tools/check_file_permissions.sh

@@ -82,19 +82,19 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         try {
             CommandExecutor::create('php --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail('Missing `php` env script. Details:'."\n".$e->getMessage());
+            self::fail('Missing `php` env script. Details:'."\n".$e->getMessage());
         }
 
         try {
             CommandExecutor::create('composer --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail('Missing `composer` env script. Details:'."\n".$e->getMessage());
+            self::fail('Missing `composer` env script. Details:'."\n".$e->getMessage());
         }
 
         try {
             CommandExecutor::create('composer check', __DIR__.'/../..')->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail('Composer check failed. Details:'."\n".$e->getMessage());
+            self::fail('Composer check failed. Details:'."\n".$e->getMessage());
         }
     }
 
@@ -112,7 +112,8 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
     {
         // Composer Artifact Repository requires `zip` extension
         if (!\extension_loaded('zip')) {
-            self::markTestSkippedOrFail('No zip extension available.');
+            // We do not want to mark test as skipped, because we explicitly want to test this and `zip` is required
+            self::fail('No zip extension available.');
         }
 
         $tmpArtifactPath = tempnam(sys_get_temp_dir(), 'cs_fixer_tmp_');
