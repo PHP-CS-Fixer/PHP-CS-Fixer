@@ -60,7 +60,7 @@ jobs:
           retry_wait_seconds: 30
           command: ./dev-tools/install.sh
 
-      - name: Run tests
+      - name: Run AutoReview
         env:
           FAST_LINT_TEST_CASES: 1
         run: vendor/bin/paraunit run --group auto-review
