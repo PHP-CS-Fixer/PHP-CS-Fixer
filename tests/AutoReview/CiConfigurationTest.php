@@ -36,8 +36,8 @@ final class CiConfigurationTest extends TestCase
     {
         self::assertSame(
             [
-                "PHP_MAX" => $this->getMaxPhpVersionFromEntryFile(),
-                "PHP_MIN" => $this->getMinPhpVersionFromEntryFile(),
+                'PHP_MAX' => $this->getMaxPhpVersionFromEntryFile(),
+                'PHP_MIN' => $this->getMinPhpVersionFromEntryFile(),
             ],
             $this->getGitHubCiEnvs(),
         );

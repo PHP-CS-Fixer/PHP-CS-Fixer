@@ -170,7 +170,6 @@ jobs:
         with:
           flags: ${{ matrix.composer-flags }}
 
-
       # Execute migration rules before running tests and self-fixing,
       # so we know that our codebase is future-ready.
       # Should be checked on the highest supported PHP version.
