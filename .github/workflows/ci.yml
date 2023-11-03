@@ -182,7 +182,7 @@ jobs:
       # Should be checked on the lowest supported PHP version.
       # If any type can be converted from PHPDoc to native type on lowest supported PHP, we should commit such change.
       - name: Run PHP CS Fixer with PHPDoc to type rules
-        if: matrix.run-fixer == 'yes' && env.PHP_MIN == matrix.php-version
+        if: env.PHP_MIN == matrix.php-version && matrix.run-fixer == 'yes'
         env:
           PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer check --diff -v --config .php-cs-fixer.php-lowest.php
