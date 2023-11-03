@@ -66,11 +66,13 @@ jobs:
             php-version: '8.2'
             job-description: 'Fixer with migration rules'
             run-fixer: 'yes'
+            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
             job-description: 'tests with migration rules'
             run-tests: 'yes'
+            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
@@ -174,7 +176,7 @@ jobs:
       # so we know that our codebase is future-ready.
       # Should be checked on the highest supported PHP version.
       - name: Run PHP CS Fixer with migration rules
-        if: env.PHP_MAX == matrix.php-version
+        if: env.PHP_MAX == matrix.php-version && matrix.run-migration-rules == 'yes'
         env:
           PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer fix --config .php-cs-fixer.php-highest.php -q
