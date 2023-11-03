@@ -156,7 +156,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: none, curl, dom, json, mbstring, opcache, simplexml, tokenizer, xml, xmlwriter, zip
+          extensions: none, curl, dom, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip
           coverage: ${{ steps.setup-php-resolve-coverage.outputs.result }}
           tools: composer, ${{ steps.setup-php-resolve-tools.outputs.result }}
 
