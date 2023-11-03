@@ -32,6 +32,17 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class CiConfigurationTest extends TestCase
 {
+    public function testThatPhpVersionEnvsAreSetProperly(): void
+    {
+        self::assertSame(
+            [
+                "PHP_MAX" => $this->getMaxPhpVersionFromEntryFile(),
+                "PHP_MIN" => $this->getMinPhpVersionFromEntryFile(),
+            ],
+            $this->getGitHubCiEnvs(),
+        );
+    }
+
     public function testTestJobsRunOnEachPhp(): void
     {
         $supportedVersions = [];
@@ -209,6 +220,16 @@ final class CiConfigurationTest extends TestCase
         $phpVerId = end($sequence)->getContent();
 
         return $this->convertPhpVerIdToNiceVer($phpVerId);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getGitHubCiEnvs(): array
+    {
+        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
+
+        return $yaml['env'];
     }
 
     /**

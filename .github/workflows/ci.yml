@@ -11,6 +11,10 @@ concurrency:
   group: ci-${{ github.head_ref || github.run_id }} # will be canceled on subsequent pushes in pull requests but not branches
   cancel-in-progress: true
 
+env:
+  PHP_MAX: '8.2'
+  PHP_MIN: '7.4'
+
 jobs:
   tests:
     strategy:
@@ -21,7 +25,6 @@ jobs:
             php-version: '7.4'
             job-description: 'Fixer with lowest deps'
             run-fixer: 'yes'
-            run-phpdoc-to-native-type: 'yes' # should be checked on the lowest supported PHP version
             composer-flags: '--prefer-lowest' # should be checked on the lowest supported PHP version
             execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
 
@@ -63,13 +66,11 @@ jobs:
             php-version: '8.2'
             job-description: 'Fixer with migration rules'
             run-fixer: 'yes'
-            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
             job-description: 'tests with migration rules'
             run-tests: 'yes'
-            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
@@ -169,10 +170,14 @@ jobs:
         with:
           flags: ${{ matrix.composer-flags }}
 
-      # execute migration rules before running tests and self-fixing,
-      # so that we know that our codebase is future-ready
+
+      # Execute migration rules before running tests and self-fixing,
+      # so we know that our codebase is future-ready.
+      # Should be checked on the highest supported PHP version.
       - name: Run PHP CS Fixer with migration rules
-        if: matrix.run-migration-rules == 'yes'
+        if: env.PHP_MAX == matrix.php-version
+        env:
+          PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer fix --config .php-cs-fixer.php-highest.php -q
 
       - name: Disable time limit for tests when collecting coverage
@@ -198,16 +203,20 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: php vendor/bin/php-coveralls --verbose
 
-      - name: Run PHP CS Fixer with PHPDoc to type rules
-        if: matrix.run-phpdoc-to-native-type == 'yes'
-        run: php php-cs-fixer check --diff -v --config .php-cs-fixer.php-lowest.php
-
       - name: Run PHP CS Fixer
         if: matrix.run-fixer == 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer check --diff -v
+
+      # Should be checked on the lowest supported PHP version.
+      # If any type can be converted from PHPDoc to native type on lowest supported PHP, we should commit such change.
+      - name: Run PHP CS Fixer with PHPDoc to type rules
+        if: matrix.run-fixer == 'yes' && env.PHP_MIN == matrix.php-version
+        env:
+          PHP_CS_FIXER_FUTURE_MODE: 1
+        run: php php-cs-fixer check --diff -v --config .php-cs-fixer.php-lowest.php
 
   deployment:
     needs: tests
