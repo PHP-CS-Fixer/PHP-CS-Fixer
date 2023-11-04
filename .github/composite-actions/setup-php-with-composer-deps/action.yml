@@ -51,12 +51,6 @@ runs:
       shell: bash
       run: composer config extra.symfony.require ${{ inputs.composer-flex-with-symfony-version }}
 
-    - name: Setup cache
-      uses: ./.github/composite-actions/setup-cache
-      with:
-        php: ${{ inputs.php }}
-        os: ${{ inputs.os }}
-
     - name: Install Composer deps
       uses: ./.github/composite-actions/install-composer-deps
       with:
