@@ -1,4 +1,4 @@
-name: "Install composer deps"
+name: "Install Composer deps"
 
 inputs:
   flags:
@@ -9,17 +9,17 @@ runs:
   using: "composite"
   steps:
     # Warning!
-    # Use $GITUB_ENV instead of $GITHUB_OUTPUT.
+    # Use $GITHUB_ENV instead of $GITHUB_OUTPUT.
     #
     # The actions/cache is, on calling it in this composite action, reading the cache,
-    # and then also registering a shutdown function for whole workflow, to write the cache afterwards.
+    # and then also register a shutdown function for the whole workflow, to write the cache afterwards.
     #
-    # That registered shutdown function is _NOT_ having access to inputs.* nor steps.*.outputs for
+    # That registered shutdown function does _NOT_ have access to inputs.* nor steps.*.outputs for
     # `path` parameter, which is evaluated on both stages (read and write), yet `key` parameters
     # are evaluated on start only and are not affected by this issue.
     #
-    # Unfortunately, when the issue is faced, it does not break the build, simply raising a warning
-    # and completing the build successuflly, yet without storing the cache:
+    # Unfortunately, when the issue is faced, it does not break the build, simply raises a warning
+    # and completing the build successfully, yet without storing the cache:
     # > Warning: Input required and not supplied: path
     #
     # Refs:
