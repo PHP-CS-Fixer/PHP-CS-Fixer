@@ -28,42 +28,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Setup PHP with Composer deps
+        uses: ./.github/composite-actions/setup-php-with-composer-deps
         with:
-          php-version: ${{ matrix.php-version }}
-          extensions: none, curl, dom, json, mbstring, opcache, simplexml, tokenizer, xml, xmlwriter, zip
-          coverage: none # without this Xdebug will be enabled
+          os: ${{ runner.os }}
+          php: ${{ matrix.php-version }}
           tools: cs2pr
-
-      - name: Get Composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-${{ matrix.composer-flags }}
-          restore-keys: |
-            composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-
-            composer-${{ runner.os }}-${{ matrix.php-version }}-
-            composer-${{ runner.os }}-
-            composer-
-
-      - name: Install dependencies
-        uses: nick-invision/retry@v2
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          retry_wait_seconds: 30
-          command: composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.composer-flags }}
-
-      - name: Report versions
-        run: composer info -D
 
       ## We want to have a lock-file used on PR level, so contributors are not bothered by SCA complains unrelated to their changes,
       ## and same time we want to be aware that we are complying with bleeding edge of SCA tools as maintainers observing the push hook.
@@ -78,6 +49,9 @@ jobs:
           max_attempts: 5
           retry_wait_seconds: 30
           command: ./dev-tools/install.sh
+
+      - name: Run AutoReview
+        run: vendor/bin/paraunit run --testsuite auto-review
 
       - name: Check - file permissions
         run: ./dev-tools/check_file_permissions.sh

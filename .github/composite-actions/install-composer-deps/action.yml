@@ -1,0 +1,23 @@
+name: "Install composer deps"
+
+inputs:
+  flags:
+    description: 'Composer flags'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install dependencies
+      uses: nick-invision/retry@v2
+      with:
+        timeout_minutes: 5
+        max_attempts: 5
+        retry_wait_seconds: 30
+        # `--no-scripts` to avoid side-effects (e.g. installing dev-tools for all jobs on CI level),
+        # all executed scripts should be explicit and run only when needed.
+        command: composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ inputs.flags }}
+
+    - name: Show versions of packages
+      shell: bash
+      run: composer info -D

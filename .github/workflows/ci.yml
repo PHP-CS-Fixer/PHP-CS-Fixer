@@ -11,6 +11,10 @@ concurrency:
   group: ci-${{ github.head_ref || github.run_id }} # will be canceled on subsequent pushes in pull requests but not branches
   cancel-in-progress: true
 
+env:
+  PHP_MAX: '8.2'
+  PHP_MIN: '7.4'
+
 jobs:
   tests:
     strategy:
@@ -21,7 +25,6 @@ jobs:
             php-version: '7.4'
             job-description: 'Fixer with lowest deps'
             run-fixer: 'yes'
-            run-phpdoc-to-native-type: 'yes' # should be checked on the lowest supported PHP version
             composer-flags: '--prefer-lowest' # should be checked on the lowest supported PHP version
             execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
 
@@ -67,30 +70,20 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
+            job-description: 'tests'
+            run-tests: 'yes'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
             job-description: 'tests with migration rules'
             run-tests: 'yes'
             run-migration-rules: 'yes' # should be checked on the highest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
-            job-description: 'auto-review'
-            run-tests: 'yes'
-            phpunit-flags: '--group auto-review'
-
-          - operating-system: 'ubuntu-20.04'
-            php-version: '8.2'
-            job-description: 'tests'
-            run-tests: 'yes'
-
-          - operating-system: 'ubuntu-20.04'
-            php-version: '8.2'
             job-description: 'code coverage'
+            run-tests: 'yes'
             collect-code-coverage: 'yes'
-
-          - operating-system: 'ubuntu-20.04'
-            php-version: '8.2'
-            job-description: 'deployment check'
-            execute-deployment: 'yes'
 
           - operating-system: 'windows-latest'
             php-version: '8.2'
@@ -138,62 +131,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Resolve PHP coverage flag
-        uses: actions/github-script@v6
-        id: setup-php-resolve-coverage
+      - name: Setup PHP with Composer deps
+        uses: ./.github/composite-actions/setup-php-with-composer-deps
         with:
-          script: 'return "${{ matrix.code-coverage }}" == "yes" ? "pcov" : "none"'
-          result-encoding: string
+          os: ${{ runner.os }}
+          php: ${{ matrix.php-version }}
+          php-coverage: ${{ matrix.collect-code-coverage }}
+          composer-flags: ${{ matrix.composer-flags }}
+          composer-flex-with-symfony-version: ${{ matrix.execute-flex-with-symfony-version }}
 
-      - name: Resolve PHP tools flag
-        uses: actions/github-script@v6
-        id: setup-php-resolve-tools
-        with:
-          script: 'return "${{ matrix.execute-flex-with-symfony-version }}" ? "flex" : "none"'
-          result-encoding: string
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          extensions: none, curl, dom, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip
-          coverage: ${{ steps.setup-php-resolve-coverage.outputs.result }}
-          tools: composer, ${{ steps.setup-php-resolve-tools.outputs.result }}
-
-      - name: Get Composer cache directory
-        id: composer-cache
-        shell: bash
-        run: echo "dir=$(composer config cache-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-${{ matrix.composer-flags }}
-          restore-keys: |
-            composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-
-            composer-${{ runner.os }}-${{ matrix.php-version }}-
-            composer-${{ runner.os }}-
-            composer-
-
-      - name: Configure Symfony Flex
-        if: matrix.execute-flex-with-symfony-version
-        run: composer config extra.symfony.require ${{ matrix.execute-flex-with-symfony-version }}
-
-      - name: Install dependencies
-        uses: nick-invision/retry@v2
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          retry_wait_seconds: 30
-          command: |
-            composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ matrix.composer-flags }} # --no-scripts to avoid installing dev-tools for all jobs on CI level
-            composer info -D
-
-      # execute migration rules before running tests and self-fixing,
-      # so that we know that our codebase is future-ready
+      # Execute migration rules before running tests and self-fixing,
+      # so we know that our codebase is future-ready.
+      # Should be checked on the highest supported PHP version.
       - name: Run PHP CS Fixer with migration rules
-        if: matrix.run-migration-rules == 'yes'
+        if: env.PHP_MAX == matrix.php-version && matrix.run-migration-rules == 'yes'
+        env:
+          PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer fix --config .php-cs-fixer.php-highest.php -q
 
       - name: Disable time limit for tests when collecting coverage
@@ -205,23 +158,19 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/paraunit run ${{ matrix.phpunit-flags || '--exclude-group auto-review' }}
+        run: vendor/bin/paraunit run --testsuite unit,integration
 
-      - name: Collect code coverage
-        if: matrix.collect-code-coverage == 'yes'
+      - name: Run tests and collect code coverage
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
           FAST_LINT_TEST_CASES: 1
-        run: vendor/bin/paraunit coverage --testsuite coverage --exclude-group covers-nothing --clover build/logs/clover.xml
+        run: vendor/bin/paraunit coverage --testsuite unit --exclude-group covers-nothing --clover build/logs/clover.xml
 
       - name: Upload coverage results to Coveralls
-        if: matrix.collect-code-coverage == 'yes'
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: php vendor/bin/php-coveralls --verbose
-
-      - name: Run PHP CS Fixer with PHPDoc to type rules
-        if: matrix.run-phpdoc-to-native-type == 'yes'
-        run: php php-cs-fixer check --diff -v --config .php-cs-fixer.php-lowest.php
 
       - name: Run PHP CS Fixer
         if: matrix.run-fixer == 'yes'
@@ -230,8 +179,41 @@ jobs:
           PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer check --diff -v
 
-      - name: Execute deployment checks
-        if: matrix.execute-deployment == 'yes'
-        run: |
-          ./dev-tools/build.sh
-          PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 vendor/bin/phpunit tests/Smoke/
+      # Should be checked on the lowest supported PHP version.
+      # If any type can be converted from PHPDoc to native type on lowest supported PHP, we should commit such change.
+      - name: Run PHP CS Fixer with PHPDoc to type rules
+        if: env.PHP_MIN == matrix.php-version && matrix.run-fixer == 'yes'
+        env:
+          PHP_CS_FIXER_FUTURE_MODE: 1
+        run: php php-cs-fixer check --diff -v --config .php-cs-fixer.php-lowest.php
+
+  deployment:
+    needs: tests
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
+
+    name: Deployment checks
+
+    runs-on: ${{ matrix.operating-system }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP with Composer deps
+        uses: ./.github/composite-actions/setup-php-with-composer-deps
+        with:
+          os: ${{ runner.os }}
+          php: ${{ matrix.php-version }}
+
+      - name: Build phar
+        run: ./dev-tools/build.sh
+
+      - name: Run smoke tests
+        env:
+          FAST_LINT_TEST_CASES: 1
+        run: vendor/bin/phpunit --testsuite smoke

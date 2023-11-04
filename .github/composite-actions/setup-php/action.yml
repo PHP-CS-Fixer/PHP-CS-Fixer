@@ -1,0 +1,25 @@
+name: "Setup PHP"
+
+inputs:
+  version:
+    description: 'PHP version'
+    required: true
+  coverage:
+    description: 'coverage mode'
+    required: false
+    default: 'none'
+  tools:
+    description: 'tools'
+    required: false
+    default: 'none'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.version }}
+        coverage: ${{ inputs.coverage }}
+        tools: composer, ${{ inputs.tools }}
+        extensions: none, curl, dom, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip
