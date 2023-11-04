@@ -1,4 +1,4 @@
-name: "Install composer deps"
+name: "Install Composer deps"
 
 inputs:
   flags:
@@ -8,6 +8,41 @@ inputs:
 runs:
   using: "composite"
   steps:
+    # Warning!
+    # Use $GITHUB_ENV instead of $GITHUB_OUTPUT.
+    #
+    # The actions/cache is, on calling it in this composite action, reading the cache,
+    # and then also register a shutdown function for the whole workflow, to write the cache afterwards.
+    #
+    # That registered shutdown function does _NOT_ have access to inputs.* nor steps.*.outputs for
+    # `path` parameter, which is evaluated on both stages (read and write), yet `key` parameters
+    # are evaluated on start only and are not affected by this issue.
+    #
+    # Unfortunately, when the issue is faced, it does not break the build, simply raises a warning
+    # and completing the build successfully, yet without storing the cache:
+    # > Warning: Input required and not supplied: path
+    #
+    # Refs:
+    # - https://github.com/actions/cache/issues/638#issuecomment-1793564996
+    # - https://github.com/actions/cache/issues/803#issuecomment-1793565071
+    # - https://github.com/actions/runner/issues/2009#issuecomment-1793565031
+
+    - name: Get Composer cache params
+      shell: bash
+      run: |
+        echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
+        echo "COMPOSER_CACHE_PHP=$(php -r 'echo PHP_VERSION;')" >> $GITHUB_ENV
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.COMPOSER_CACHE_DIR }}
+        key: Composer-${{ runner.os }}-${{ env.COMPOSER_CACHE_PHP }}-${{ hashFiles('**/composer.json') }}-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          Composer-${{ runner.os }}-${{ env.COMPOSER_CACHE_PHP }}-${{ hashFiles('**/composer.json') }}-
+          Composer-${{ runner.os }}-${{ env.COMPOSER_CACHE_PHP }}-
+          Composer-${{ runner.os }}-
+
     - name: Install dependencies
       uses: nick-invision/retry@v2
       with:
