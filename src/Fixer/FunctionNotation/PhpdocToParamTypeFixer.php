@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
 {
+    private const TYPE_CHECK_TEMPLATE = '<?php function f(%s $x) {}';
+
     /**
      * @var array{int, string}[]
      */
@@ -116,13 +118,33 @@ function bar($foo) {}
             }
 
             foreach ($this->getAnnotationsFromDocComment('param', $tokens, $docCommentIndex) as $paramTypeAnnotation) {
-                $typeInfo = $this->getCommonTypeFromAnnotation($paramTypeAnnotation, false);
+                $typesExpression = $paramTypeAnnotation->getTypeExpression();
 
-                if (null === $typeInfo) {
+                if (null === $typesExpression) {
                     continue;
                 }
 
-                [$paramType, $isNullable] = $typeInfo;
+                $typeInfo = $this->getCommonTypeInfo($typesExpression, false);
+                $unionTypes = null;
+
+                if (null === $typeInfo) {
+                    $unionTypes = $this->getUnionTypes($typesExpression, false);
+                }
+
+                if (null === $typeInfo && null === $unionTypes) {
+                    continue;
+                }
+
+                if (null !== $typeInfo) {
+                    [$paramType, $isNullable] = $typeInfo;
+                } elseif (null !== $unionTypes) {
+                    $paramType = $unionTypes;
+                    $isNullable = false;
+                }
+
+                if (!isset($paramType, $isNullable)) {
+                    continue;
+                }
 
                 $startIndex = $tokens->getNextTokenOfKind($index, ['(']);
                 $variableIndex = $this->findCorrectVariable($tokens, $startIndex, $paramTypeAnnotation);
@@ -141,7 +163,7 @@ function bar($foo) {}
                     continue;
                 }
 
-                if (!$this->isValidSyntax(sprintf('<?php function f(%s $x) {}', $paramType))) {
+                if (!$this->isValidSyntax(sprintf(self::TYPE_CHECK_TEMPLATE, $paramType))) {
                     continue;
                 }
 
@@ -151,6 +173,16 @@ function bar($foo) {}
                 ));
             }
         }
+    }
+
+    protected function createTokensFromRawType(string $type): Tokens
+    {
+        $typeTokens = Tokens::fromCode(sprintf(self::TYPE_CHECK_TEMPLATE, $type));
+        $typeTokens->clearRange(0, 4);
+        $typeTokens->clearRange(\count($typeTokens) - 6, \count($typeTokens) - 1);
+        $typeTokens->clearEmptyTokens();
+
+        return $typeTokens;
     }
 
     private function findCorrectVariable(Tokens $tokens, int $startIndex, Annotation $paramTypeAnnotation): ?int

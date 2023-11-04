@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
 {
+    private const TYPE_CHECK_TEMPLATE = '<?php class A { private %s $b; }';
+
     /**
      * @var array<string, true>
      */
@@ -94,6 +96,16 @@ class Foo {
         }
     }
 
+    protected function createTokensFromRawType(string $type): Tokens
+    {
+        $typeTokens = Tokens::fromCode(sprintf(self::TYPE_CHECK_TEMPLATE, $type));
+        $typeTokens->clearRange(0, 8);
+        $typeTokens->clearRange(\count($typeTokens) - 5, \count($typeTokens) - 1);
+        $typeTokens->clearEmptyTokens();
+
+        return $typeTokens;
+    }
+
     private function fixClass(Tokens $tokens, int $index): void
     {
         $index = $tokens->getNextTokenOfKind($index, ['{']);
@@ -133,6 +145,10 @@ class Foo {
             [$propertyType, $isNullable] = $typeInfo;
 
             if (\in_array($propertyType, ['callable', 'never', 'void'], true)) {
+                continue;
+            }
+
+            if (!$this->isValidSyntax(sprintf(self::TYPE_CHECK_TEMPLATE, $propertyType))) {
                 continue;
             }
 
@@ -203,11 +219,28 @@ class Foo {
                 continue;
             }
 
-            $typeInfo = $this->getCommonTypeFromAnnotation($annotation, false);
+            $typesExpression = $annotation->getTypeExpression();
 
-            if (!isset($propertyTypes[$propertyName])) {
-                $propertyTypes[$propertyName] = [];
-            } elseif ($typeInfo !== $propertyTypes[$propertyName]) {
+            if (null === $typesExpression) {
+                continue;
+            }
+
+            $typeInfo = $this->getCommonTypeInfo($typesExpression, false);
+            $unionTypes = null;
+
+            if (null === $typeInfo) {
+                $unionTypes = $this->getUnionTypes($typesExpression, false);
+            }
+
+            if (null === $typeInfo && null === $unionTypes) {
+                continue;
+            }
+
+            if (null !== $unionTypes) {
+                $typeInfo = [$unionTypes, false];
+            }
+
+            if (\array_key_exists($propertyName, $propertyTypes) && $typeInfo !== $propertyTypes[$propertyName]) {
                 return null;
             }
 
