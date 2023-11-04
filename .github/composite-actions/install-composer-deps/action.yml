@@ -21,6 +21,11 @@ runs:
     # Unfortunately, when the issue is faced, it does not break the build, simply raising a warning
     # and completing the build successuflly, yet without storing the cache:
     # > Warning: Input required and not supplied: path
+    #
+    # Refs:
+    # - https://github.com/actions/cache/issues/638#issuecomment-1793564996
+    # - https://github.com/actions/cache/issues/803#issuecomment-1793565071
+    # - https://github.com/actions/runner/issues/2009#issuecomment-1793565031
 
     - name: Get Composer cache params
       shell: bash
