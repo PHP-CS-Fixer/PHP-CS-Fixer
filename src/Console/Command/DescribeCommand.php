@@ -18,6 +18,7 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Differ\FullDiffer;
+use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
@@ -43,9 +44,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use PhpCsFixer\Documentation\DocumentationLocator;
-use PhpCsFixer\Documentation\FixerDocumentGenerator;
-use PhpCsFixer\Documentation\ListDocumentGenerator;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -153,7 +151,7 @@ final class DescribeCommand extends Command
 
         $definition = $fixer->getDefinition();
 
-        $output->writeln(sprintf("<fg=blue>Description of the <info>`%s`</info> rule.</>", $name));
+        $output->writeln(sprintf('<fg=blue>Description of the <info>`%s`</info> rule.</>', $name));
         $output->writeln('');
 
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
@@ -313,12 +311,11 @@ final class DescribeCommand extends Command
             $output->writeln("Fixer is part of the following rule set{$plural}:");
 
             foreach ($ruleSetConfigs as $set => $config) {
-                if ($config !== null) {
+                if (null !== $config) {
                     $output->writeln(sprintf('* <info>%s</info> with config: <comment>%s</comment>', $set, Utils::toString($config)));
                 } else {
                     $output->writeln(sprintf('* <info>%s</info> with <comment>default</comment> config', $set));
                 }
-
             }
 
             $output->writeln('');
