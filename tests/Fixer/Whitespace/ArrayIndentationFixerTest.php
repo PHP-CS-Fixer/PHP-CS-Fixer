@@ -34,7 +34,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        return self::withLongArraySyntaxCases([
+        yield from self::withLongArraySyntaxCases([
             [
                 <<<'EXPECTED'
                     <?php
@@ -852,6 +852,48 @@ $foo = [
                 ,
             ],
         ]);
+
+        yield 'array destructuring' => [
+            <<<'EXPECTED'
+                    <?php
+                    [
+                        $foo,
+                        $bar,
+                        $baz
+                    ] = $arr;
+                EXPECTED
+            ,
+            <<<'INPUT'
+                    <?php
+                    [
+                    $foo,
+                                $bar,
+                      $baz
+                    ] = $arr;
+                INPUT
+            ,
+        ];
+
+        yield 'array destructuring using list' => [
+            <<<'EXPECTED'
+                    <?php
+                    list(
+                        $foo,
+                        $bar,
+                        $baz
+                    ) = $arr;
+                EXPECTED
+            ,
+            <<<'INPUT'
+                    <?php
+                    list(
+                    $foo,
+                                $bar,
+                      $baz
+                    ) = $arr;
+                INPUT
+            ,
+        ];
     }
 
     /**
@@ -865,7 +907,7 @@ $foo = [
 
     public static function provideFixWithTabsCases(): iterable
     {
-        return self::withLongArraySyntaxCases([
+        yield from self::withLongArraySyntaxCases([
             [
                 <<<EXPECTED
                     <?php
@@ -903,6 +945,48 @@ $foo = [
                 ,
             ],
         ]);
+
+        yield 'array destructuring' => [
+            <<<EXPECTED
+                    <?php
+                    [
+                    \t\$foo,
+                    \t\$bar,
+                    \t\$baz
+                    ] = \$arr;
+                EXPECTED
+            ,
+            <<<'INPUT'
+                    <?php
+                    [
+                    $foo,
+                                $bar,
+                      $baz
+                    ] = $arr;
+                INPUT
+            ,
+        ];
+
+        yield 'array destructuring using list' => [
+            <<<EXPECTED
+                    <?php
+                    list(
+                    \t\$foo,
+                    \t\$bar,
+                    \t\$baz
+                    ) = \$arr;
+                EXPECTED
+            ,
+            <<<'INPUT'
+                    <?php
+                    list(
+                    $foo,
+                                $bar,
+                      $baz
+                    ) = $arr;
+                INPUT
+            ,
+        ];
     }
 
     /**
