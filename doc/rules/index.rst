@@ -560,7 +560,7 @@ Operator
 - `logical_operators <./operator/logical_operators.rst>`_ *(risky)*
 
   Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
-- `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_
+- `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_ *(risky)*
 
   Shorthand notation for operators should be used if possible.
 - `new_with_braces <./operator/new_with_braces.rst>`_ *(deprecated)*
