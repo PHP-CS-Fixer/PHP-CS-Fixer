@@ -40,8 +40,11 @@ final class DescribeCommandTest extends TestCase
     public function testExecuteOutput(): void
     {
         $expected =
-"Description of Foo/bar rule.
-Fixes stuff. DEPRECATED: use `Foo/baz` instead.
+"Description of the `Foo/bar` rule.
+
+DEPRECATED: use `Foo/baz` instead.
+
+Fixes stuff.
 Replaces bad stuff with good stuff.
 
 Fixer applying this rule is risky.
@@ -79,8 +82,11 @@ Fixing examples:
     public function testExecuteOutputWithDecoration(): void
     {
         $expected =
-"\033[32mDescription of\033[39m Foo/bar \033[32mrule\033[39m.
-Fixes stuff. \033[37;41mDEPRECATED\033[39;49m: use \033[32m`Foo/baz`\033[39m instead.
+"\033[34mDescription of the \033[39m\033[32m`Foo/bar`\033[39m\033[34m rule.\033[39m
+
+\033[37;41mDEPRECATED\033[39;49m: use \033[32m`Foo/baz`\033[39m instead.
+
+Fixes stuff.
 Replaces bad stuff with good stuff.
 
 \033[37;41mFixer applying this rule is risky.\033[39;49m
@@ -227,7 +233,8 @@ Fixing examples:
         ]);
 
         $expected =
-"Description of Vendor/describe_fixture rule.
+"Description of the `Vendor/describe_fixture` rule.
+
 Fixture for describe command.
 
 Fixing examples:

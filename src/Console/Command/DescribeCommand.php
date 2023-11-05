@@ -43,6 +43,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use PhpCsFixer\Documentation\DocumentationLocator;
+use PhpCsFixer\Documentation\FixerDocumentGenerator;
+use PhpCsFixer\Documentation\ListDocumentGenerator;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -150,24 +153,25 @@ final class DescribeCommand extends Command
 
         $definition = $fixer->getDefinition();
 
-        $summary = $definition->getSummary();
+        $output->writeln(sprintf("<fg=blue>Description of the <info>`%s`</info> rule.</>", $name));
+        $output->writeln('');
+        
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $output->writeln(sprintf('Fixer class: <comment>%s</comment>.', \get_class($fixer)));
+            $output->writeln('');
+        }
 
         if ($fixer instanceof DeprecatedFixerInterface) {
             $successors = $fixer->getSuccessorsNames();
             $message = [] === $successors
                 ? 'will be removed in the next major version'
                 : sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
-            $message = Preg::replace('/(`.+?`)/', '<info>$1</info>', $message);
-            $summary .= sprintf(' <error>DEPRECATED</error>: %s.', $message);
+            $message = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $message);
+            $output->writeln(sprintf('<error>DEPRECATED</error>: %s.', $message));
+            $output->writeln('');
         }
 
-        $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
-
-        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $output->writeln(sprintf('Fixer class: <comment>%s</comment>.', \get_class($fixer)));
-        }
-
-        $output->writeln($summary);
+        $output->writeln($definition->getSummary());
 
         $description = $definition->getDescription();
 
@@ -253,7 +257,7 @@ final class DescribeCommand extends Command
 
         if (0 === \count($codeSamples)) {
             $output->writeln([
-                'Fixing examples cannot be demonstrated on the current PHP version.',
+                'Fixing examples <error>cannot be</error> demonstrated on the current PHP version.',
                 '',
             ]);
         } else {
@@ -300,6 +304,25 @@ final class DescribeCommand extends Command
                 $output->writeln([$diffFormatter->format($diff, '   %s'), '']);
             }
         }
+
+        $ruleSetConfigs = FixerDocumentGenerator::getSetsOfRule($name);
+
+        if ([] !== $ruleSetConfigs) {
+            ksort($ruleSetConfigs);
+            $plural = 1 !== \count($ruleSetConfigs) ? 's' : '';
+            $output->writeln("Fixer is part of the following rule set{$plural}:");
+
+            foreach ($ruleSetConfigs as $set => $config) {
+                if ($config !== null) {
+                    $output->writeln(sprintf('* <info>%s</info> with config: <comment>%s</comment>', $set, Utils::toString($config)));
+                } else {
+                    $output->writeln(sprintf('* <info>%s</info> with <comment>default</comment> config', $set));
+                }
+
+            }
+
+            $output->writeln('');
+        }
     }
 
     private function describeSet(OutputInterface $output, string $name): void
@@ -311,14 +334,16 @@ final class DescribeCommand extends Command
         $ruleSetDefinitions = RuleSets::getSetDefinitions();
         $fixers = $this->getFixers();
 
-        $output->writeln(sprintf('<info>Description of the</info> %s <info>set.</info>', $ruleSetDefinitions[$name]->getName()));
+        $output->writeln(sprintf('<fg=blue>Description of the <info>`%s`</info> set.</>', $ruleSetDefinitions[$name]->getName()));
+        $output->writeln('');
+
         $output->writeln($this->replaceRstLinks($ruleSetDefinitions[$name]->getDescription()));
+        $output->writeln('');
 
         if ($ruleSetDefinitions[$name]->isRisky()) {
-            $output->writeln('This set contains <error>risky</error> rules.');
+            $output->writeln('<error>This set contains risky rules.</error>');
+            $output->writeln('');
         }
-
-        $output->writeln('');
 
         $help = '';
 
