@@ -155,7 +155,7 @@ final class DescribeCommand extends Command
 
         $output->writeln(sprintf("<fg=blue>Description of the <info>`%s`</info> rule.</>", $name));
         $output->writeln('');
-        
+
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             $output->writeln(sprintf('Fixer class: <comment>%s</comment>.', \get_class($fixer)));
             $output->writeln('');
