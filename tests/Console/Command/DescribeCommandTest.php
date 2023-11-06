@@ -20,6 +20,7 @@ use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -48,11 +49,15 @@ final class DescribeCommandTest extends TestCase
     /**
      * @dataProvider provideExecuteOutputCases
      */
-    public function testExecuteOutput(string $expected, bool $decorated, ?FixerInterface $fixer = null): void
+    public function testExecuteOutput(string $expected, bool $expectedIsRegEx, bool $decorated, ?FixerInterface $fixer = null): void
     {
         $actual = $this->execute($fixer ? $fixer->getName() : 'Foo/bar', $decorated, $fixer)->getDisplay(true);
 
-        self::assertSame($expected, $actual);
+        if (true === $expectedIsRegEx) {
+            self::assertMatchesRegularExpression($expected, $actual);
+        } else {
+            self::assertSame($expected, $actual);
+        }
     }
 
     public static function provideExecuteOutputCases(): iterable
@@ -95,6 +100,7 @@ Fixing examples:
 
 ',
             false,
+            false,
         ];
 
         yield 'rule is configurable, risky and deprecated [with decoration]' => [
@@ -134,6 +140,7 @@ Fixing examples:
 \033[33m   ----------- end diff -----------\033[39m
 
 ",
+            false,
             true,
         ];
 
@@ -146,6 +153,7 @@ Description of the rule.
 Fixing examples are not available for this rule.
 
 ',
+            false,
             false,
             self::getMockedFixerWithSamples([
             ]),
@@ -180,6 +188,7 @@ Fixing examples:
 
 ',
             false,
+            false,
             self::getMockedFixerWithSamples([
                 new CodeSample(
                     "<?php echo 'BEFORE';".PHP_EOL,
@@ -209,6 +218,7 @@ Fixing examples:
 
 ',
             false,
+            false,
             self::getMockedFixerWithSamples([
                 new CodeSample(
                     "<?php echo 'BEFORE';".PHP_EOL,
@@ -230,6 +240,7 @@ Fixing examples cannot be demonstrated on the current PHP version.
 
 ',
             false,
+            false,
             self::getMockedFixerWithSamples([
                 new VersionSpecificCodeSample(
                     "<?php echo 'BEFORE';".PHP_EOL,
@@ -240,6 +251,26 @@ Fixing examples cannot be demonstrated on the current PHP version.
                     new VersionSpecification(20_00_00)
                 ),
             ]),
+        ];
+
+        yield 'rule that is part of ruleset' => [
+            '/^Description of the `binary_operator_spaces` rule.
+.*
+   ----------- end diff -----------
+
+'.preg_quote("Fixer is part of the following rule sets:
+* @PER with config: ['default' => 'at_least_single_space']
+* @PER-CS with config: ['default' => 'at_least_single_space']
+* @PER-CS1.0 with config: ['default' => 'at_least_single_space']
+* @PER-CS2.0 with config: ['default' => 'at_least_single_space']
+* @PSR12 with config: ['default' => 'at_least_single_space']
+* @PhpCsFixer with default config
+* @Symfony with default config").'
+$/s',
+
+            true,
+            false,
+            new BinaryOperatorSpacesFixer(),
         ];
     }
 
@@ -480,8 +511,11 @@ Fixing examples:
     {
         $fixer ??= $this->getDefaultMockedFixer();
 
+        $fixerClassName = \get_class($fixer);
+        $isBuiltIn = str_starts_with($fixerClassName, 'PhpCsFixer') && !str_contains($fixerClassName, '@anon');
+
         $fixerFactory = new FixerFactory();
-        $fixerFactory->registerFixer($fixer, true);
+        $fixerFactory->registerFixer($fixer, !$isBuiltIn);
 
         $application = new Application();
         $application->add(new DescribeCommand($fixerFactory));
