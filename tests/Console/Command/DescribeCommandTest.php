@@ -261,67 +261,75 @@ Fixing examples:
         self::assertSame(0, $commandTester->getStatusCode());
     }
 
-    private function execute(string $name, bool $decorated): CommandTester
-    {
-        $fixer = $this->prophesize();
-        $fixer->willImplement(\PhpCsFixer\Fixer\ConfigurableFixerInterface::class);
-        $fixer->willImplement(\PhpCsFixer\Fixer\DeprecatedFixerInterface::class);
+private function getDefaultMockedFixer(): \PhpCsFixer\Fixer\FixerInterface
+{
 
-        $fixer->getName()->willReturn('Foo/bar');
-        $fixer->getPriority()->willReturn(0);
-        $fixer->isRisky()->willReturn(true);
-        $fixer->getSuccessorsNames()->willReturn(['Foo/baz']);
+    $fixer = $this->prophesize();
+    $fixer->willImplement(\PhpCsFixer\Fixer\ConfigurableFixerInterface::class);
+    $fixer->willImplement(\PhpCsFixer\Fixer\DeprecatedFixerInterface::class);
 
-        $functionNames = ['foo', 'test'];
+    $fixer->getName()->willReturn('Foo/bar');
+    $fixer->getPriority()->willReturn(0);
+    $fixer->isRisky()->willReturn(true);
+    $fixer->getSuccessorsNames()->willReturn(['Foo/baz']);
 
-        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([
-            (new AliasedFixerOptionBuilder(new FixerOptionBuilder('functions', 'List of `function` names to fix.'), 'funcs'))
-                ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset($functionNames)])
-                ->setDefault($functionNames)
-                ->getOption(),
-            (new FixerOptionBuilder('deprecated_option', 'A deprecated option.'))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(false)
-                ->setDeprecationMessage('Use option `functions` instead.')
-                ->getOption(),
-        ]));
+    $functionNames = ['foo', 'test'];
 
-        $fixer->getDefinition()->willReturn(new FixerDefinition(
-            'Fixes stuff.',
-            [
-                new CodeSample(
-                    "<?php echo 'bad stuff and bad thing';\n"
-                ),
-                new CodeSample(
-                    "<?php echo 'bad stuff and bad thing';\n",
-                    ['functions' => ['foo', 'bar']]
-                ),
-            ],
-            'Replaces bad stuff with good stuff.',
-            'Can break stuff.'
-        ));
+    $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([
+        (new AliasedFixerOptionBuilder(new FixerOptionBuilder('functions', 'List of `function` names to fix.'), 'funcs'))
+            ->setAllowedTypes(['array'])
+            ->setAllowedValues([new AllowedValueSubset($functionNames)])
+            ->setDefault($functionNames)
+            ->getOption(),
+        (new FixerOptionBuilder('deprecated_option', 'A deprecated option.'))
+            ->setAllowedTypes(['bool'])
+            ->setDefault(false)
+            ->setDeprecationMessage('Use option `functions` instead.')
+            ->getOption(),
+    ]));
 
+    $fixer->getDefinition()->willReturn(new FixerDefinition(
+        'Fixes stuff.',
+        [
+            new CodeSample(
+                "<?php echo 'bad stuff and bad thing';\n"
+            ),
+            new CodeSample(
+                "<?php echo 'bad stuff and bad thing';\n",
+                ['functions' => ['foo', 'bar']]
+            ),
+        ],
+        'Replaces bad stuff with good stuff.',
+        'Can break stuff.'
+    ));
+
+    $things = false;
+    $fixer->configure([])->will(static function () use (&$things): void {
         $things = false;
-        $fixer->configure([])->will(static function () use (&$things): void {
-            $things = false;
-        });
-        $fixer->configure(['functions' => ['foo', 'bar']])->will(static function () use (&$things): void {
-            $things = true;
-        });
+    });
+    $fixer->configure(['functions' => ['foo', 'bar']])->will(static function () use (&$things): void {
+        $things = true;
+    });
 
-        $fixer->fix(
-            Argument::type(\SplFileInfo::class),
-            Argument::type(\PhpCsFixer\Tokenizer\Tokens::class)
-        )->will(static function (array $arguments) use (&$things): void {
-            $arguments[1][3] = new Token([
-                $arguments[1][3]->getId(),
-                $things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'',
-            ]);
-        });
+    $fixer->fix(
+        Argument::type(\SplFileInfo::class),
+        Argument::type(\PhpCsFixer\Tokenizer\Tokens::class)
+    )->will(static function (array $arguments) use (&$things): void {
+        $arguments[1][3] = new Token([
+            $arguments[1][3]->getId(),
+            $things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'',
+        ]);
+    });
+
+    return $fixer->reveal();
+}
+
+    private function execute(string $name, bool $decorated, ?\PhpCsFixer\Fixer\FixerInterface $fixer = null): CommandTester
+    {
+        $fixer = $fixer ?? $this->getDefaultMockedFixer();
 
         $fixerFactory = new FixerFactory();
-        $fixerFactory->registerFixer($fixer->reveal(), true);
+        $fixerFactory->registerFixer($fixer, true);
 
         $application = new Application();
         $application->add(new DescribeCommand($fixerFactory));
