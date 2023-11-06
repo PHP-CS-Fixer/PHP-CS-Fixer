@@ -413,12 +413,18 @@ Fixing examples:
     {
         return new class($samples) extends AbstractFixer {
             /**
+             * @var CodeSampleInterface[]
+             */
+            private $samples;
+
+            /**
              * @param CodeSampleInterface[] $samples
              */
             public function __construct(
-                private array $samples,
+                array $samples
             ) {
                 parent::__construct();
+                $this->samples = $samples;
             }
 
             public function getName(): string
