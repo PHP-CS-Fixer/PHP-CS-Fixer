@@ -76,7 +76,10 @@ Fixing examples:
    ----------- end diff -----------
 
 ';
-        self::assertSame($expected, $this->execute('Foo/bar', false)->getDisplay(true));
+
+        $actual = $this->execute('Foo/bar', false)->getDisplay(true);
+
+        self::assertSame($expected, $actual);
     }
 
     public function testExecuteOutputWithDecoration(): void
@@ -118,6 +121,7 @@ Fixing examples:
 \033[33m   ----------- end diff -----------\033[39m
 
 ";
+
         $actual = $this->execute('Foo/bar', true)->getDisplay(true);
 
         self::assertSame($expected, $actual);
