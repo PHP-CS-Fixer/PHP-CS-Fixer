@@ -37,10 +37,20 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class DescribeCommandTest extends TestCase
 {
-    public function testExecuteOutput(): void
+    /**
+     * @dataProvider provideExecuteOutputCases
+     */
+    public function testExecuteOutput(string $expected, bool $decorated): void
     {
-        $expected =
-"Description of the `Foo/bar` rule.
+        $actual = $this->execute('Foo/bar', $decorated)->getDisplay(true);
+
+        self::assertSame($expected, $actual);
+    }
+
+    public static function provideExecuteOutputCases(): iterable
+    {
+        yield 'rule is configurable, risky and deprecated' => [
+            "Description of the `Foo/bar` rule.
 
 DEPRECATED: use `Foo/baz` instead.
 
@@ -75,17 +85,12 @@ Fixing examples:
    ".'
    ----------- end diff -----------
 
-';
+',
+            false,
+        ];
 
-        $actual = $this->execute('Foo/bar', false)->getDisplay(true);
-
-        self::assertSame($expected, $actual);
-    }
-
-    public function testExecuteOutputWithDecoration(): void
-    {
-        $expected =
-"\033[34mDescription of the \033[39m\033[32m`Foo/bar`\033[39m\033[34m rule.\033[39m
+        yield 'rule is configurable, risky and deprecated [with decoration]' => [
+            "\033[34mDescription of the \033[39m\033[32m`Foo/bar`\033[39m\033[34m rule.\033[39m
 
 \033[37;41mDEPRECATED\033[39;49m: use \033[32m`Foo/baz`\033[39m instead.
 
@@ -120,11 +125,9 @@ Fixing examples:
    "."
 \033[33m   ----------- end diff -----------\033[39m
 
-";
-
-        $actual = $this->execute('Foo/bar', true)->getDisplay(true);
-
-        self::assertSame($expected, $actual);
+",
+            true,
+        ];
     }
 
     public function testExecuteStatusCode(): void
