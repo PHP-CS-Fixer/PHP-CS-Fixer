@@ -861,7 +861,9 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return list<array{int, string}|list>
+     * Return type is recursive.
+     *
+     * @return list<array{int, string}|list<mixed>>
      */
     private function checkInnerTypeExpressionsStartIndex(TypeExpression $typeExpression): array
     {
