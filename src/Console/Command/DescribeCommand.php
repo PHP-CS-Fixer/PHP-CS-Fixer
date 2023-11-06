@@ -253,7 +253,12 @@ final class DescribeCommand extends Command
             return true;
         });
 
-        if (0 === \count($codeSamples)) {
+        if (0 === \count($definition->getCodeSamples())) {
+            $output->writeln([
+                'Fixing examples are not available for this rule.',
+                '',
+            ]);
+        } elseif (0 === \count($codeSamples)) {
             $output->writeln([
                 'Fixing examples <error>cannot be</error> demonstrated on the current PHP version.',
                 '',

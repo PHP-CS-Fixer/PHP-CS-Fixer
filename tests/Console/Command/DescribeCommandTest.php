@@ -14,18 +14,26 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Command;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Tests\Fixtures\DescribeCommand\DescribeFixtureFixer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -40,9 +48,9 @@ final class DescribeCommandTest extends TestCase
     /**
      * @dataProvider provideExecuteOutputCases
      */
-    public function testExecuteOutput(string $expected, bool $decorated): void
+    public function testExecuteOutput(string $expected, bool $decorated, ?FixerInterface $fixer = null): void
     {
-        $actual = $this->execute('Foo/bar', $decorated)->getDisplay(true);
+        $actual = $this->execute($fixer ? $fixer->getName() : 'Foo/bar', $decorated, $fixer)->getDisplay(true);
 
         self::assertSame($expected, $actual);
     }
@@ -128,6 +136,111 @@ Fixing examples:
 ",
             true,
         ];
+
+        yield 'rule without code samples' => [
+            'Description of the `Foo/samples` rule.
+
+Summary of the rule.
+Description of the rule.
+
+Fixing examples are not available for this rule.
+
+',
+            false,
+            self::getMockedFixerWithSamples([
+            ]),
+        ];
+
+        yield 'rule with code samples' => [
+            "Description of the `Foo/samples` rule.
+
+Summary of the rule.
+Description of the rule.
+
+Fixing examples:
+ * Example #1.
+   ---------- begin diff ----------
+   --- Original
+   +++ New
+   @@ -1,1 +1,1 @@
+   -<?php echo 'BEFORE';
+   +<?php echo 'AFTER';
+   "."
+   ----------- end diff -----------
+
+ * Example #2.
+   ---------- begin diff ----------
+   --- Original
+   +++ New
+   @@ -1,1 +1,1 @@
+   -<?php echo 'BEFORE'.'-B';
+   +<?php echo 'AFTER'.'-B';
+   ".'
+   ----------- end diff -----------
+
+',
+            false,
+            self::getMockedFixerWithSamples([
+                new CodeSample(
+                    "<?php echo 'BEFORE';".PHP_EOL,
+                ),
+                new CodeSample(
+                    "<?php echo 'BEFORE'.'-B';".PHP_EOL,
+                ),
+            ]),
+        ];
+
+        yield 'rule with code samples (one with matching PHP version, one NOT)' => [
+            "Description of the `Foo/samples` rule.
+
+Summary of the rule.
+Description of the rule.
+
+Fixing examples:
+ * Example #1.
+   ---------- begin diff ----------
+   --- Original
+   +++ New
+   @@ -1,1 +1,1 @@
+   -<?php echo 'BEFORE';
+   +<?php echo 'AFTER';
+   ".'
+   ----------- end diff -----------
+
+',
+            false,
+            self::getMockedFixerWithSamples([
+                new CodeSample(
+                    "<?php echo 'BEFORE';".PHP_EOL,
+                ),
+                new VersionSpecificCodeSample(
+                    "<?php echo 'BEFORE'.'-B';".PHP_EOL,
+                    new VersionSpecification(20_00_00)
+                ),
+            ]),
+        ];
+
+        yield 'rule with code samples (all with NOT matching PHP version)' => [
+            'Description of the `Foo/samples` rule.
+
+Summary of the rule.
+Description of the rule.
+
+Fixing examples cannot be demonstrated on the current PHP version.
+
+',
+            false,
+            self::getMockedFixerWithSamples([
+                new VersionSpecificCodeSample(
+                    "<?php echo 'BEFORE';".PHP_EOL,
+                    new VersionSpecification(20_00_00)
+                ),
+                new VersionSpecificCodeSample(
+                    "<?php echo 'BEFORE'.'-B';".PHP_EOL,
+                    new VersionSpecification(20_00_00)
+                ),
+            ]),
+        ];
     }
 
     public function testExecuteStatusCode(): void
@@ -196,7 +309,7 @@ Fixing examples:
     {
         $fixerName = uniqid('Foo/bar_');
 
-        $fixer = $this->prophesize(\PhpCsFixer\Fixer\FixerInterface::class);
+        $fixer = $this->prophesize(FixerInterface::class);
         $fixer->getName()->willReturn($fixerName);
         $fixer->getPriority()->willReturn(0);
         $fixer->isRisky()->willReturn(true);
@@ -261,72 +374,111 @@ Fixing examples:
         self::assertSame(0, $commandTester->getStatusCode());
     }
 
-private function getDefaultMockedFixer(): \PhpCsFixer\Fixer\FixerInterface
-{
-
-    $fixer = $this->prophesize();
-    $fixer->willImplement(\PhpCsFixer\Fixer\ConfigurableFixerInterface::class);
-    $fixer->willImplement(\PhpCsFixer\Fixer\DeprecatedFixerInterface::class);
-
-    $fixer->getName()->willReturn('Foo/bar');
-    $fixer->getPriority()->willReturn(0);
-    $fixer->isRisky()->willReturn(true);
-    $fixer->getSuccessorsNames()->willReturn(['Foo/baz']);
-
-    $functionNames = ['foo', 'test'];
-
-    $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([
-        (new AliasedFixerOptionBuilder(new FixerOptionBuilder('functions', 'List of `function` names to fix.'), 'funcs'))
-            ->setAllowedTypes(['array'])
-            ->setAllowedValues([new AllowedValueSubset($functionNames)])
-            ->setDefault($functionNames)
-            ->getOption(),
-        (new FixerOptionBuilder('deprecated_option', 'A deprecated option.'))
-            ->setAllowedTypes(['bool'])
-            ->setDefault(false)
-            ->setDeprecationMessage('Use option `functions` instead.')
-            ->getOption(),
-    ]));
-
-    $fixer->getDefinition()->willReturn(new FixerDefinition(
-        'Fixes stuff.',
-        [
-            new CodeSample(
-                "<?php echo 'bad stuff and bad thing';\n"
-            ),
-            new CodeSample(
-                "<?php echo 'bad stuff and bad thing';\n",
-                ['functions' => ['foo', 'bar']]
-            ),
-        ],
-        'Replaces bad stuff with good stuff.',
-        'Can break stuff.'
-    ));
-
-    $things = false;
-    $fixer->configure([])->will(static function () use (&$things): void {
-        $things = false;
-    });
-    $fixer->configure(['functions' => ['foo', 'bar']])->will(static function () use (&$things): void {
-        $things = true;
-    });
-
-    $fixer->fix(
-        Argument::type(\SplFileInfo::class),
-        Argument::type(\PhpCsFixer\Tokenizer\Tokens::class)
-    )->will(static function (array $arguments) use (&$things): void {
-        $arguments[1][3] = new Token([
-            $arguments[1][3]->getId(),
-            $things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'',
-        ]);
-    });
-
-    return $fixer->reveal();
-}
-
-    private function execute(string $name, bool $decorated, ?\PhpCsFixer\Fixer\FixerInterface $fixer = null): CommandTester
+    /**
+     * @param CodeSample[] $samples
+     */
+    private static function getMockedFixerWithSamples(array $samples): FixerInterface
     {
-        $fixer = $fixer ?? $this->getDefaultMockedFixer();
+        return new class($samples) extends AbstractFixer {
+            public function __construct(
+                private array $samples,
+            ) {}
+
+            public function getName(): string
+            {
+                return 'Foo/samples';
+            }
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                return new FixerDefinition(
+                    'Summary of the rule.',
+                    $this->samples,
+                    'Description of the rule.',
+                    null,
+                );
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                return true;
+            }
+
+            public function applyFix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                $tokens[3] = new Token([
+                    $tokens[3]->getId(),
+                    "'AFTER'",
+                ]);
+            }
+        };
+    }
+
+    private function getDefaultMockedFixer(): FixerInterface
+    {
+        $fixer = $this->prophesize();
+        $fixer->willImplement(ConfigurableFixerInterface::class);
+        $fixer->willImplement(DeprecatedFixerInterface::class);
+
+        $fixer->getName()->willReturn('Foo/bar');
+        $fixer->getPriority()->willReturn(0);
+        $fixer->isRisky()->willReturn(true);
+        $fixer->getSuccessorsNames()->willReturn(['Foo/baz']);
+
+        $functionNames = ['foo', 'test'];
+
+        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([
+            (new AliasedFixerOptionBuilder(new FixerOptionBuilder('functions', 'List of `function` names to fix.'), 'funcs'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues([new AllowedValueSubset($functionNames)])
+                ->setDefault($functionNames)
+                ->getOption(),
+            (new FixerOptionBuilder('deprecated_option', 'A deprecated option.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->setDeprecationMessage('Use option `functions` instead.')
+                ->getOption(),
+        ]));
+
+        $fixer->getDefinition()->willReturn(new FixerDefinition(
+            'Fixes stuff.',
+            [
+                new CodeSample(
+                    "<?php echo 'bad stuff and bad thing';\n"
+                ),
+                new CodeSample(
+                    "<?php echo 'bad stuff and bad thing';\n",
+                    ['functions' => ['foo', 'bar']]
+                ),
+            ],
+            'Replaces bad stuff with good stuff.',
+            'Can break stuff.'
+        ));
+
+        $things = false;
+        $fixer->configure([])->will(static function () use (&$things): void {
+            $things = false;
+        });
+        $fixer->configure(['functions' => ['foo', 'bar']])->will(static function () use (&$things): void {
+            $things = true;
+        });
+
+        $fixer->fix(
+            Argument::type(\SplFileInfo::class),
+            Argument::type(Tokens::class)
+        )->will(static function (array $arguments) use (&$things): void {
+            $arguments[1][3] = new Token([
+                $arguments[1][3]->getId(),
+                $things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'',
+            ]);
+        });
+
+        return $fixer->reveal();
+    }
+
+    private function execute(string $name, bool $decorated, ?FixerInterface $fixer = null): CommandTester
+    {
+        $fixer ??= $this->getDefaultMockedFixer();
 
         $fixerFactory = new FixerFactory();
         $fixerFactory->registerFixer($fixer, true);
