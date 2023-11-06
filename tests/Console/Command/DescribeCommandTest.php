@@ -26,6 +26,7 @@ use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -51,7 +52,7 @@ final class DescribeCommandTest extends TestCase
      */
     public function testExecuteOutput(string $expected, bool $expectedIsRegEx, bool $decorated, ?FixerInterface $fixer = null): void
     {
-        $actual = $this->execute($fixer ? $fixer->getName() : 'Foo/bar', $decorated, $fixer)->getDisplay(true);
+        $actual = $this->execute(null !== $fixer ? $fixer->getName() : 'Foo/bar', $decorated, $fixer)->getDisplay(true);
 
         if (true === $expectedIsRegEx) {
             self::assertMatchesRegularExpression($expected, $actual);
@@ -406,14 +407,19 @@ Fixing examples:
     }
 
     /**
-     * @param CodeSample[] $samples
+     * @param CodeSampleInterface[] $samples
      */
     private static function getMockedFixerWithSamples(array $samples): FixerInterface
     {
         return new class($samples) extends AbstractFixer {
+            /**
+             * @param CodeSampleInterface[] $samples
+             */
             public function __construct(
                 private array $samples,
-            ) {}
+            ) {
+                parent::__construct();
+            }
 
             public function getName(): string
             {
