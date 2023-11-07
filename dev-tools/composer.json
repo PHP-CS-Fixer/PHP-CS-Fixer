@@ -15,7 +15,8 @@
     "config": {
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "infection/extension-installer": false
         },
         "optimize-autoloader": true,
         "platform": {

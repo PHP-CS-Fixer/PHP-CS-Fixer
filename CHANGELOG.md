@@ -3,6 +3,31 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.38.0
+---------------------
+
+* chore: upgrade phpstan (#7421)
+* CI: add curl and mbstring to build php (#7409)
+* CI: cache dev-tools/bin (#7416)
+* CI: Composer - move prefer-stable to file config (#7406)
+* CI: conditionally install flex (#7412)
+* CI: dev-tools/build.sh - no need to repeat 'prefer-stable', but let's use '--no-scripts' (#7408)
+* CI: Do not run post-autoload-dump on Composer install (#7403)
+* CI: general restructure (#7407)
+* CI: GitHub Actions - use actions/cache for Composer in composite action (#7415)
+* CI: Improve QA process - suplement (#7411)
+* CI: prevent Infection plugins during build time, as we do not use it (#7422)
+* CI: simplify setup-php config (#7404)
+* DX: Do not mark as stale issues/PRs with milestone assigned (#7398)
+* DX: Improve QA process (#7366)
+* feat: phpDoc to property/return/param Fixer - allow fixing mixed on PHP >= 8 (#6356)
+* feat: phpDoc to property/return/param Fixer - allow fixing union types on PHP >= 8 (#6359)
+* feat: Support for array destructuring in `array_indentation` (#7405)
+* feat: `@Symfony` - keep Annotation,NamedArgumentConstructor,Target annotations as single group (#7399)
+* fix(SelfAccessorFixer): do not touch references inside lambda and/or arrow function (#7349)
+* fix: long_to_shorthand_operator - mark as risky fixer (#7418)
+* fix: OrderedImportsFixer - handle non-grouped list of const/function imports (#7397)
+
 Changelog for v3.37.1
 ---------------------
 
