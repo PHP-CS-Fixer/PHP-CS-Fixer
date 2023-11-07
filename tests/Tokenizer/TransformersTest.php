@@ -42,6 +42,9 @@ final class TransformersTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<string, array{string, array<int, int>}>
+     */
     public static function provideTransformCases(): iterable
     {
         yield 'use trait after complex string variable' => [
