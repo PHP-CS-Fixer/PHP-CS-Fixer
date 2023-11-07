@@ -129,7 +129,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP with Composer deps
         uses: ./.github/composite-actions/setup-php-with-composer-deps
@@ -202,7 +202,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP with Composer deps
         uses: ./.github/composite-actions/setup-php-with-composer-deps
