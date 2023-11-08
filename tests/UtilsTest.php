@@ -61,6 +61,9 @@ final class UtilsTest extends TestCase
         self::assertSame($expected, Utils::camelCaseToUnderscore($expected));
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideCamelCaseToUnderscoreCases(): iterable
     {
         yield [
@@ -135,6 +138,9 @@ final class UtilsTest extends TestCase
         self::assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
     }
 
+    /**
+     * @return iterable<array{string, array{int, string}|string}>
+     */
     public static function provideCalculateTrailingWhitespaceIndentCases(): iterable
     {
         yield ['    ', [T_WHITESPACE, "\n\n    "]];
@@ -178,6 +184,9 @@ final class UtilsTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{list<mixed>, list<mixed>, callable, callable}>
+     */
     public static function provideStableSortCases(): iterable
     {
         yield [
@@ -347,6 +356,9 @@ final class UtilsTest extends TestCase
         self::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
     }
 
+    /**
+     * @return iterable<array{string, list<string>}>
+     */
     public static function provideNaturalLanguageJoinWithBackticksCases(): iterable
     {
         yield [
@@ -411,6 +423,9 @@ final class UtilsTest extends TestCase
         self::assertSame($expected, Utils::toString($input));
     }
 
+    /**
+     * @return iterable<array{string, mixed}>
+     */
     public static function provideToStringCases(): iterable
     {
         yield ["['a' => 3, 'b' => 'c']", ['a' => 3, 'b' => 'c']];

@@ -41,6 +41,9 @@ final class WhitespacesFixerConfigTest extends TestCase
         self::assertSame($lineEnding, $config->getLineEnding());
     }
 
+    /**
+     * @return iterable<array{0: string, 1: string, 2?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ['    ', "\n"];
