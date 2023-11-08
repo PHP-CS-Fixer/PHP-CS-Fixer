@@ -18,7 +18,10 @@ parameters:
         - '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
 
         # ignore PHPUnit data providers return type as they are not checked against the test methods anyway
-        - '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type (array|iterable)\.$#'
+        -
+            message: '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type (array|iterable)\.$#'
+            path: tests
+            count: 1132
 
         -
             message: '#Call to static method .+ with .+ will always evaluate to true.$#'
