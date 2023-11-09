@@ -114,12 +114,12 @@ final class Foo
 
     private function fixLine(Line $line): void
     {
-        $content = $line->getContent();
+        Preg::matchAll('/ \$'.TypeExpression::REGEX_IDENTIFIER.'(?<!\$this)/', $line->getContent(), $matches);
 
-        Preg::matchAll('/ \$'.TypeExpression::REGEX_IDENTIFIER.'(?<!\$this)/', $content, $matches);
-
-        if (isset($matches[0][0])) {
-            $line->setContent(str_replace($matches[0][0], '', $content));
+        if (isset($matches[0])) {
+            foreach ($matches[0] as $match) {
+                $line->setContent(str_replace($match, '', $line->getContent()));
+            }
         }
     }
 
