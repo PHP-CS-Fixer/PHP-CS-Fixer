@@ -167,6 +167,21 @@ $$e(2);
             '<?php $a()(1);',
             '<?php $a () (1);',
         ];
+
+        yield [
+            '<?php
+                echo (function () {})();
+                echo ($propertyValue ? "TRUE" : "FALSE") . EOL;
+                echo(FUNCTION_1);
+                echo (EXPRESSION + CONST_1), CONST_2;
+            ',
+            '<?php
+                echo (function () {})();
+                echo ($propertyValue ? "TRUE" : "FALSE") . EOL;
+                echo (FUNCTION_1);
+                echo (EXPRESSION + CONST_1), CONST_2;
+            ',
+        ];
     }
 
     /**
