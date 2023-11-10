@@ -82,6 +82,10 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             // check if it is a function call
             if ($tokens[$lastTokenIndex]->isGivenKind($functionyTokens)) {
                 $this->fixFunctionCall($tokens, $index);
+            } elseif ($tokens[$lastTokenIndex]->isGivenKind(T_ECHO)) {
+                if ($tokens[$nextNonWhiteSpace]->equals(';')) {
+                    $this->fixFunctionCall($tokens, $index);
+                }
             } elseif ($tokens[$lastTokenIndex]->isGivenKind(T_STRING)) { // for real function calls or definitions
                 $possibleDefinitionIndex = $tokens->getPrevMeaningfulToken($lastTokenIndex);
                 if (!$tokens[$possibleDefinitionIndex]->isGivenKind(T_FUNCTION)) {
@@ -139,7 +143,6 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     {
         static $tokens = [
             T_ARRAY,
-            T_ECHO,
             T_EMPTY,
             T_EVAL,
             T_EXIT,
@@ -165,7 +168,6 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     private function getLanguageConstructionTokenKinds(): array
     {
         static $languageConstructionTokens = [
-            T_ECHO,
             T_PRINT,
             T_INCLUDE,
             T_INCLUDE_ONCE,
