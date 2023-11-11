@@ -595,6 +595,29 @@ class A
                 EOF
             ,
         ];
+
+        yield '@var with callable syntax' => [
+            <<<'EOF'
+                <?php
+
+                class Foo
+                {
+                    /** @var array<callable(string, Buzz): void> */
+                    protected $bar;
+                }
+                EOF
+            ,
+            <<<'EOF'
+                <?php
+
+                class Foo
+                {
+                    /** @var array<callable(string $baz, Buzz $buzz): void> */
+                    protected $bar;
+                }
+                EOF
+            ,
+        ];
     }
 
     /**
