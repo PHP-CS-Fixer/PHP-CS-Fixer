@@ -64,14 +64,14 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
-            job-description: 'Fixer with migration rules'
-            run-fixer: 'yes'
-            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
+            job-description: 'tests'
+            run-tests: 'yes'
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
-            job-description: 'tests'
-            run-tests: 'yes'
+            job-description: 'Fixer with migration rules'
+            run-fixer: 'yes'
+            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
