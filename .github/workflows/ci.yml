@@ -81,6 +81,18 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.2'
+            job-description: 'Fixer with Symfony ^7'
+            run-fixer: 'yes'
+            execute-flex-with-symfony-version: '^7' # explicit check for Symfony 7.x compatibility
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
+            job-description: 'tests with Symfony ^7'
+            run-tests: 'yes'
+            execute-flex-with-symfony-version: '^7' # explicit check for Symfony 7.x compatibility
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
             job-description: 'code coverage'
             run-tests: 'yes'
             collect-code-coverage: 'yes'
