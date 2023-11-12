@@ -465,4 +465,67 @@ enum Foo: int {
             ',
         ];
     }
+
+    /**
+     * @dataProvider provideReturnStatementCases
+     */
+    public function testReturnStatement(string $code, bool $allowReturn, bool $expected): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $analyzer = new CommentsAnalyzer();
+
+        self::assertSame($expected, $analyzer->isBeforeStructuralElement($tokens, $index, $allowReturn));
+    }
+
+    public static function provideReturnStatementCases(): iterable
+    {
+        yield 'docblock disallow return' => [
+            '<?php
+            function returnClassName()
+            {
+                /** @todo something */
+                return;
+            }
+            ',
+            false,
+            false,
+        ];
+
+        yield 'comment disallow return' => [
+            '<?php
+            function returnClassName()
+            {
+                // @todo something
+                return;
+            }
+            ',
+            false,
+            false,
+        ];
+
+        yield 'docblock allow return' => [
+            '<?php
+            function returnClassName()
+            {
+                /** @todo something */
+                return;
+            }
+            ',
+            true,
+            true,
+        ];
+
+        yield 'comment allow return' => [
+            '<?php
+            function returnClassName()
+            {
+                // @todo something
+                return;
+            }
+            ',
+            true,
+            true,
+        ];
+    }
 }

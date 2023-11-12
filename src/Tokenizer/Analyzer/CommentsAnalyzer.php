@@ -65,7 +65,7 @@ final class CommentsAnalyzer
      *
      * @see https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md#3-definitions
      */
-    public function isBeforeStructuralElement(Tokens $tokens, int $index): bool
+    public function isBeforeStructuralElement(Tokens $tokens, int $index, bool $allowReturnStatement = false): bool
     {
         $token = $tokens[$index];
 
@@ -102,7 +102,11 @@ final class CommentsAnalyzer
             return true;
         }
 
-        if ($this->isValidLanguageConstruct($tokens, $token, $nextIndex)) {
+        if ($allowReturnStatement && $this->isValidReturnStatement($tokens, $nextIndex)) {
+            return true;
+        }
+
+        if ($this->isValidVariableAssignment($tokens, $token, $nextIndex)) {
             return true;
         }
 
@@ -246,17 +250,27 @@ final class CommentsAnalyzer
     }
 
     /**
-     * Checks language constructs like `return`, `list()`, `print()` etc. for correct docblock usage.
+     * Checks return statement for correct docblock usage.
      *
-     * @param Token $docsToken              docs Token
-     * @param int   $languageConstructIndex index of variable Token
+     * @param int $languageConstructIndex index of variable Token
      */
-    private function isValidLanguageConstruct(Tokens $tokens, Token $docsToken, int $languageConstructIndex): bool
+    private function isValidReturnStatement(Tokens $tokens, int $languageConstructIndex): bool
     {
         if ($tokens[$languageConstructIndex]->isGivenKind(T_RETURN)) {
             return true;
         }
 
+        return false;
+    }
+
+    /**
+     * Checks variable assignments through `list()`, `print()` etc. calls for correct docblock usage.
+     *
+     * @param Token $docsToken              docs Token
+     * @param int   $languageConstructIndex index of variable Token
+     */
+    private function isValidVariableAssignment(Tokens $tokens, Token $docsToken, int $languageConstructIndex): bool
+    {
         static $languageStructures = [
             T_LIST,
             T_PRINT,

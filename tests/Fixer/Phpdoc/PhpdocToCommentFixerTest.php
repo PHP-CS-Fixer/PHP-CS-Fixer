@@ -686,14 +686,34 @@ foreach($connections as $key => $sqlite) {
             ',
         ];
 
-        yield 'do not convert before return' => [
+        yield 'convert before return without option' => [
             '<?php
 function doSomething()
 {
-    /** @todo do not convert */
+    /* @var void */
     return;
 }
 ',
+            '<?php
+function doSomething()
+{
+    /** @var void */
+    return;
+}
+',
+            ['allow_before_return_statement' => false],
+        ];
+
+        yield 'do not convert before return with option' => [
+            '<?php
+function doSomething()
+{
+    /** @var void */
+    return;
+}
+',
+            null,
+            ['allow_before_return_statement' => true],
         ];
     }
 
