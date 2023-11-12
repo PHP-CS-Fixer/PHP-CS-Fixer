@@ -88,7 +88,7 @@ With configuration: ``['allow_before_return_statement' => true]``.
     }
 
     function returnClassName() {
-        /* @var class-string */
+        /** @var class-string */
         return \StdClass::class;
     }
 

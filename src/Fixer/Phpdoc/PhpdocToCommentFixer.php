@@ -101,7 +101,7 @@ foreach($connections as $key => $sqlite) {
 }
 
 function returnClassName() {
-    /* @var class-string */
+    /** @var class-string */
     return \StdClass::class;
 }
 ',
