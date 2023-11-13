@@ -478,6 +478,9 @@ enum Foo: int {
         self::assertSame($expected, $analyzer->isBeforeStructuralElement($tokens, $index, $allowReturn));
     }
 
+    /**
+     * @return iterable<string, array{string, bool, bool}>
+     */
     public static function provideReturnStatementCases(): iterable
     {
         yield 'docblock disallow return' => [

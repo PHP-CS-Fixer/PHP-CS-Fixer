@@ -125,8 +125,6 @@ function returnClassName() {
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        // @TODO: In 4.0, make allow_before_return_statement option true by default
-
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('ignored_tags', 'List of ignored tags (matched case insensitively).'))
                 ->setAllowedTypes(['array'])
@@ -134,7 +132,7 @@ function returnClassName() {
                 ->getOption(),
             (new FixerOptionBuilder('allow_before_return_statement', 'Whether to allow PhpDoc before return statement.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false)
+                ->setDefault(false) // @TODO 4.0: set to `true`
                 ->getOption(),
         ]);
     }
