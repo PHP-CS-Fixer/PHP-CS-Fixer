@@ -52,7 +52,9 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
             'Shorthand notation for operators should be used if possible.',
             [
                 new CodeSample("<?php\n\$i = \$i + 10;\n"),
-            ]
+            ],
+            null,
+            'Risky when applying for string offsets (e.g. `<?php $text = "foo"; $text[0] = $text[0] & "\x7F";`).',
         );
     }
 
@@ -64,6 +66,11 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
     public function getPriority(): int
     {
         return 17;
+    }
+
+    public function isRisky(): bool
+    {
+        return true;
     }
 
     public function isCandidate(Tokens $tokens): bool

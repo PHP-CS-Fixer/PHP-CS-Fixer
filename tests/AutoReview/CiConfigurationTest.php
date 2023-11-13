@@ -32,6 +32,17 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class CiConfigurationTest extends TestCase
 {
+    public function testThatPhpVersionEnvsAreSetProperly(): void
+    {
+        self::assertSame(
+            [
+                'PHP_MAX' => $this->getMaxPhpVersionFromEntryFile(),
+                'PHP_MIN' => $this->getMinPhpVersionFromEntryFile(),
+            ],
+            $this->getGitHubCiEnvs(),
+        );
+    }
+
     public function testTestJobsRunOnEachPhp(): void
     {
         $supportedVersions = [];
@@ -154,9 +165,7 @@ final class CiConfigurationTest extends TestCase
      */
     private function getAllPhpVersionsUsedByCiForDeployments(): array
     {
-        $jobs = array_filter($this->getGitHubJobs(), static fn (array $job): bool => isset($job['execute-deployment']) && 'yes' === $job['execute-deployment']);
-
-        return array_map(static fn ($job): string => \is_string($job['php-version']) ? $job['php-version'] : sprintf('%.1f', $job['php-version']), $jobs);
+        return array_map(static fn ($job): string => \is_string($job['php-version']) ? $job['php-version'] : sprintf('%.1f', $job['php-version']), $this->getGitHubDeploymentJobs());
     }
 
     /**
@@ -214,13 +223,23 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @return list<array<string, scalar>>
+     * @return array<string, string>
      */
-    private function getGitHubJobs(): array
+    private function getGitHubCiEnvs(): array
     {
         $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
 
-        return $yaml['jobs']['tests']['strategy']['matrix']['include'];
+        return $yaml['env'];
+    }
+
+    /**
+     * @return list<array<string, scalar>>
+     */
+    private function getGitHubDeploymentJobs(): array
+    {
+        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
+
+        return $yaml['jobs']['deployment']['strategy']['matrix']['include'];
     }
 
     /**

@@ -74,11 +74,16 @@
             "ergebnis/composer-normalize": true,
             "infection/extension-installer": false
         },
+        "prefer-stable": true,
         "sort-packages": true
     },
     "scripts": {
         "post-autoload-dump": [
             "@install-tools"
+        ],
+        "auto-review": [
+            "Composer\\Config::disableProcessTimeout",
+            "paraunit run --testsuite auto-review"
         ],
         "cs:check": "@php php-cs-fixer check --diff",
         "cs:fix": "@php php-cs-fixer fix",
@@ -97,7 +102,7 @@
             "Composer\\Config::disableProcessTimeout",
             "@install-tools --quiet",
             "@self-check",
-            "@sa",
+            "@static-analysis",
             "@test"
         ],
         "require-checker": "@php dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json",
@@ -106,7 +111,8 @@
             "./dev-tools/check_file_permissions.sh",
             "./dev-tools/check_trailing_spaces.sh",
             "@normalize",
-            "@require-checker"
+            "@require-checker",
+            "@auto-review"
         ],
         "static-analysis": [
             "@cs:check",
@@ -115,15 +121,28 @@
         ],
         "test": "@test:all",
         "test:all": [
-            "Composer\\Config::disableProcessTimeout",
-            "paraunit run --testsuite all"
+            "@test:unit",
+            "@test:integration"
         ],
         "test:coverage": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit run --testsuite coverage"
+            "paraunit coverage --testsuite unit --exclude-group covers-nothing"
+        ],
+        "test:integration": [
+            "Composer\\Config::disableProcessTimeout",
+            "paraunit run --testsuite integration"
+        ],
+        "test:smoke": [
+            "Composer\\Config::disableProcessTimeout",
+            "paraunit run --testsuite smoke"
+        ],
+        "test:unit": [
+            "Composer\\Config::disableProcessTimeout",
+            "paraunit run --testsuite unit"
         ]
     },
     "scripts-descriptions": {
+        "auto-review": "Execute Auto-review",
         "cs:check": "Check coding standards",
         "cs:fix": "Fix coding standards",
         "cs:fix:parallel": "Fix coding standards in naive parallel mode (using xargs)",
@@ -141,7 +160,10 @@
         "self-check": "Run set of self-checks ensuring repository's validity",
         "static-analysis": "Run static analysis",
         "test": "Alias for 'test:all'",
-        "test:all": "Run all tests",
-        "test:coverage": "Run tool-related tests"
+        "test:all": "Run Unit and Integration tests (but *NOT* Smoke tests)",
+        "test:coverage": "Run tests that provide code coverage",
+        "test:integration": "Run Integration tests",
+        "test:smoke": "Run Smoke tests",
+        "test:unit": "Run Unit tests"
     }
 }

@@ -21,6 +21,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
+ * @group phpdoc
+ *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToReturnTypeFixer
  */
 final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
@@ -30,16 +32,8 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, ?int $versionSpecificFix = null, array $config = []): void
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
-        if (
-            null !== $input
-            && (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
-        ) {
-            $expected = $input;
-            $input = null;
-        }
-
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
@@ -125,10 +119,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php /** @return void */ function my_foo() {}',
         ];
 
-        yield 'invalid void return on ^7.1' => [
-            '<?php /** @return null|void */ function my_foo() {}',
-        ];
-
         yield 'iterable return on ^7.1' => [
             '<?php /** @return iterable */ function my_foo(): iterable {}',
             '<?php /** @return iterable */ function my_foo() {}',
@@ -137,7 +127,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         yield 'object return on ^7.2' => [
             '<?php /** @return object */ function my_foo(): object {}',
             '<?php /** @return object */ function my_foo() {}',
-            7_02_00,
         ];
 
         yield 'fix scalar types by default, int' => [
@@ -177,7 +166,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 
         yield 'do not fix scalar types when configured as such' => [
             '<?php /** @return int */ function my_foo() {}',
-            null,
             null,
             ['scalar_types' => false],
         ];
@@ -226,10 +214,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php /** @return null */ function my_foo() {}',
         ];
 
-        yield 'skip union types' => [
-            '<?php /** @return Foo|Bar */ function my_foo() {}',
-        ];
-
         yield 'nullable type' => [
             '<?php /** @return null|Bar */ function my_foo(): ?Bar {}',
             '<?php /** @return null|Bar */ function my_foo() {}',
@@ -248,14 +232,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         yield 'nullable native type' => [
             '<?php /** @return null|array */ function my_foo(): ?array {}',
             '<?php /** @return null|array */ function my_foo() {}',
-        ];
-
-        yield 'skip primitive or array types' => [
-            '<?php /** @return string|string[] */ function my_foo() {}',
-        ];
-
-        yield 'skip nullable union types' => [
-            '<?php /** @return null|Foo|Bar */ function my_foo() {}',
         ];
 
         yield 'generics' => [
@@ -424,6 +400,22 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         yield 'skip mixed special type' => [
             '<?php /** @return mixed */ function my_foo() {}',
         ];
+
+        yield 'invalid void return on ^7.1' => [
+            '<?php /** @return null|void */ function my_foo() {}',
+        ];
+
+        yield 'skip union types' => [
+            '<?php /** @return Foo|Bar */ function my_foo() {}',
+        ];
+
+        yield 'skip primitive or array types' => [
+            '<?php /** @return string|string[] */ function my_foo() {}',
+        ];
+
+        yield 'skip nullable union types' => [
+            '<?php /** @return null|Foo|Bar */ function my_foo() {}',
+        ];
     }
 
     /**
@@ -481,6 +473,61 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                     public function something() {}
                 }
             ',
+        ];
+
+        yield 'union types' => [
+            '<?php /** @return Foo|Bar */ function my_foo(): Foo|Bar {}',
+            '<?php /** @return Foo|Bar */ function my_foo() {}',
+        ];
+
+        yield 'union types including generics' => [
+            '<?php /** @return string|array<int, string> */ function my_foo(): string|array {}',
+            '<?php /** @return string|array<int, string> */ function my_foo() {}',
+        ];
+
+        yield 'union types including nullable' => [
+            '<?php /** @return null|Foo|Bar */ function my_foo(): Foo|Bar|null {}',
+            '<?php /** @return null|Foo|Bar */ function my_foo() {}',
+        ];
+
+        yield 'primitive or array types' => [
+            '<?php /** @return string|string[] */ function my_foo(): string|array {}',
+            '<?php /** @return string|string[] */ function my_foo() {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPhpPre81Cases
+     *
+     * @requires PHP <8.1
+     */
+    public function testFixPhpPre81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixPhpPre81Cases(): iterable
+    {
+        yield 'skip never type' => [
+            '<?php /** @return never */ function bar() {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPhp81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFixPhp81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixPhp81Cases(): iterable
+    {
+        yield 'never type' => [
+            '<?php /** @return never */ function bar(): never {}',
+            '<?php /** @return never */ function bar() {}',
         ];
     }
 }

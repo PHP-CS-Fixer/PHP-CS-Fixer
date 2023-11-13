@@ -18,13 +18,20 @@
     timeoutForLargeTests="30"
 >
     <testsuites>
-        <testsuite name="all">
-            <directory>./tests</directory>
+        <testsuite name="unit">
+            <directory>./tests/</directory>
+            <exclude>./tests/IntegrationTest.php</exclude>
+            <exclude>./tests/AutoReview/</exclude>
+            <exclude>./tests/Smoke/</exclude>
         </testsuite>
-        <testsuite name="coverage">
-            <directory>./tests</directory>
-            <exclude>./tests/AutoReview</exclude>
-            <exclude>./tests/Smoke</exclude>
+        <testsuite name="integration">
+            <file>./tests/IntegrationTest.php</file>
+        </testsuite>
+        <testsuite name="smoke">
+            <directory>./tests/Smoke/</directory>
+        </testsuite>
+        <testsuite name="auto-review">
+            <directory>./tests/AutoReview/</directory>
         </testsuite>
     </testsuites>
 
@@ -42,6 +49,5 @@
         <ini name="zend.enable_gc" value="0"/>
         <ini name="memory_limit" value="10G"/>
         <env name="FAST_LINT_TEST_CASES" value="0"/>
-        <env name="PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS" value="1"/>
     </php>
 </phpunit>

@@ -36,6 +36,9 @@ final class WordMatcherTest extends TestCase
         self::assertSame($expected, $matcher->match($needle));
     }
 
+    /**
+     * @return iterable<array{?string, string, string[]}>
+     */
     public static function provideMatchCases(): iterable
     {
         yield [

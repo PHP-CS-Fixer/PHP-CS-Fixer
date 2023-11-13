@@ -1,0 +1,57 @@
+name: "Setup PHP with Composer deps"
+
+inputs:
+  os:
+    description: 'OS version'
+    required: true
+  php:
+    description: 'PHP version'
+    required: true
+  php-coverage:
+    description: 'Enable coverage driver'
+    required: false
+    default: 'no'
+  tools:
+    description: 'tools'
+    required: false
+    default: 'none'
+  composer-flags:
+    description: 'Composer flags'
+    required: false
+  composer-flex-with-symfony-version:
+    description: 'Sf version to determine with Flex'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Resolve PHP tools flag
+      uses: actions/github-script@v6
+      id: setup-php-resolve-tools
+      with:
+        script: 'return "${{ inputs.composer-flex-with-symfony-version }}" ? "flex" : "none"'
+        result-encoding: string
+
+    - name: Resolve PHP coverage flag
+      uses: actions/github-script@v6
+      id: setup-php-resolve-coverage
+      with:
+        script: 'return "${{ inputs.php-coverage }}" == "yes" ? "pcov" : "none"'
+        result-encoding: string
+
+    - name: Setup PHP
+      uses: ./.github/composite-actions/setup-php
+      with:
+        version: ${{ inputs.php }}
+        coverage: ${{ steps.setup-php-resolve-coverage.outputs.result }}
+        tools: ${{ steps.setup-php-resolve-tools.outputs.result }}, ${{ inputs.tools }}
+
+    - name: Configure Symfony Flex
+      if: inputs.composer-flex-with-symfony-version
+      shell: bash
+      run: composer config extra.symfony.require ${{ inputs.composer-flex-with-symfony-version }}
+
+    - name: Install Composer deps
+      uses: ./.github/composite-actions/install-composer-deps
+      with:
+        flags: ${{ inputs.composer-flags }}

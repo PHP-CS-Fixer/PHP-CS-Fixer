@@ -43,6 +43,9 @@ final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
         }
     }
 
+    /**
+     * @return iterable<array{string, array<int, array{int, string}>}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [

@@ -19,6 +19,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
+ * @group phpdoc
+ *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToPropertyTypeFixer
  */
 final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
@@ -160,10 +162,6 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
             '<?php class Foo { /** @var null */ private $foo; }',
         ];
 
-        yield 'skip mixed types' => [
-            '<?php class Foo { /** @var Foo|Bar */ private $foo; }',
-        ];
-
         yield 'nullable type' => [
             '<?php class Foo { /** @var null|Bar */ private ?Bar $foo; }',
             '<?php class Foo { /** @var null|Bar */ private $foo; }',
@@ -182,10 +180,6 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         yield 'nullable native type' => [
             '<?php class Foo { /** @var null|array */ private ?array $foo; }',
             '<?php class Foo { /** @var null|array */ private $foo; }',
-        ];
-
-        yield 'skip mixed nullable types' => [
-            '<?php class Foo { /** @var null|Foo|Bar */ private $foo; }',
         ];
 
         yield 'generics' => [
@@ -533,6 +527,14 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         yield 'skip mixed type' => [
             '<?php class Foo { /** @var mixed */ private $foo; }',
         ];
+
+        yield 'skip union types' => [
+            '<?php class Foo { /** @var Foo|Bar */ private $foo; }',
+        ];
+
+        yield 'skip union nullable types' => [
+            '<?php class Foo { /** @var null|Foo|Bar */ private $foo; }',
+        ];
     }
 
     /**
@@ -550,6 +552,21 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         yield 'fix mixed type' => [
             '<?php class Foo { /** @var mixed */ private mixed $foo; }',
             '<?php class Foo { /** @var mixed */ private $foo; }',
+        ];
+
+        yield 'union types' => [
+            '<?php class Foo { /** @var Foo|Bar */ private Foo|Bar $foo; }',
+            '<?php class Foo { /** @var Foo|Bar */ private $foo; }',
+        ];
+
+        yield 'union types including nullable' => [
+            '<?php class Foo { /** @var null|Foo|Bar */ private Foo|Bar|null $foo; }',
+            '<?php class Foo { /** @var null|Foo|Bar */ private $foo; }',
+        ];
+
+        yield 'union types including generics' => [
+            '<?php class Foo { /** @var string|array<int, bool> */ private string|array $foo; }',
+            '<?php class Foo { /** @var string|array<int, bool> */ private $foo; }',
         ];
     }
 

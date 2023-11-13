@@ -1183,7 +1183,10 @@ List of Available Rules
 
    Shorthand notation for operators should be used if possible.
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   *warning risky* Risky when applying for string offsets (e.g. ``<?php $text = "foo"; $text[0]
+   = $text[0] & "\x7F";``).
+
+   Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\LongToShorthandOperatorFixer <./../src/Fixer/Operator/LongToShorthandOperatorFixer.php>`_
 -  `lowercase_cast <./rules/cast_notation/lowercase_cast.rst>`_

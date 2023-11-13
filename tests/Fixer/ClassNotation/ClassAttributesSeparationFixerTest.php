@@ -2396,5 +2396,13 @@ enum Cards: string
                 const Baz = 2;
             }',
         ];
+
+        yield [
+            '<?php
+            class X
+            {
+                private A|(B&C) $propertyName;
+            }',
+        ];
     }
 }
