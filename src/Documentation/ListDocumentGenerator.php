@@ -161,7 +161,7 @@ final class ListDocumentGenerator
             $fileName = $reflectionObject->getFileName();
             $fileName = str_replace('\\', '/', $fileName);
             $fileName = substr($fileName, strrpos($fileName, '/src/Fixer/') + 1);
-            $fileName = "`Source {$className} <./../{$fileName}>`_";
+            $fileName = "Source: `{$className} <./../{$fileName}>`_";
             $documentation .= "\n   ".$fileName;
         }
 
