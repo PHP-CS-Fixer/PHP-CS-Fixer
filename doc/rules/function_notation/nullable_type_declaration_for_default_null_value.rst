@@ -120,3 +120,7 @@ The rule is part of the following rule set:
   ``['use_nullable_type_declaration' => false]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\NullableTypeDeclarationForDefaultNullValueFixer <./../src/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixer.php>`_

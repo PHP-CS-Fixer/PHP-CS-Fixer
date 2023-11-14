@@ -81,3 +81,7 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAddMissingParamAnnotationFixer <./../src/Fixer/Phpdoc/PhpdocAddMissingParamAnnotationFixer.php>`_

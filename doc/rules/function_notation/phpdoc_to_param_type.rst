@@ -68,3 +68,7 @@ With configuration: ``['scalar_types' => false]``.
    +function foo(Foo $foo) {}
     /** @param string $foo */
     function bar($foo) {}
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToParamTypeFixer <./../src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php>`_

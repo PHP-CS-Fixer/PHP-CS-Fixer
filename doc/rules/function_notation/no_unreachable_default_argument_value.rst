@@ -41,3 +41,7 @@ The rule is part of the following rule sets:
 - `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\NoUnreachableDefaultArgumentValueFixer <./../src/Fixer/FunctionNotation/NoUnreachableDefaultArgumentValueFixer.php>`_

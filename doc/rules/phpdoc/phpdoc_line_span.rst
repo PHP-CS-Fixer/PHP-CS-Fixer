@@ -75,3 +75,7 @@ With configuration: ``['property' => 'single']``.
    +    /** @var bool */
         public $var;
     }
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocLineSpanFixer <./../src/Fixer/Phpdoc/PhpdocLineSpanFixer.php>`_

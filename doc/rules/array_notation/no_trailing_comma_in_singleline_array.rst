@@ -25,3 +25,7 @@ Example #1
     <?php
    -$a = array('sample',  );
    +$a = array('sample');
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ArrayNotation\\NoTrailingCommaInSinglelineArrayFixer <./../src/Fixer/ArrayNotation/NoTrailingCommaInSinglelineArrayFixer.php>`_

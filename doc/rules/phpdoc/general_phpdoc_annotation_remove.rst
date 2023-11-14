@@ -79,3 +79,7 @@ With configuration: ``['annotations' => ['package', 'subpackage']]``.
      * @version 1.0
      */
     function foo() {}
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocAnnotationRemoveFixer <./../src/Fixer/Phpdoc/GeneralPhpdocAnnotationRemoveFixer.php>`_

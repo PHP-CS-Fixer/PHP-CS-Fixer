@@ -24,3 +24,7 @@ Example #1
    - * @param array $b
      */
     function m($a, array $b, Foo $c) {}
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocParamOrderFixer <./../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php>`_

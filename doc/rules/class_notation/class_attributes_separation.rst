@@ -145,3 +145,7 @@ The rule is part of the following rule sets:
   ``['elements' => ['method' => 'one']]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\ClassAttributesSeparationFixer <./../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php>`_

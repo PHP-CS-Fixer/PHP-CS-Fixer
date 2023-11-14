@@ -69,3 +69,7 @@ With configuration: ``['scalar_types' => false]``.
    -    private $bar;
    +    private \Traversable $bar;
     }
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToPropertyTypeFixer <./../src/Fixer/FunctionNotation/PhpdocToPropertyTypeFixer.php>`_

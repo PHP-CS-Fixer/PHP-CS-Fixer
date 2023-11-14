@@ -25,3 +25,7 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\CombineConsecutiveUnsetsFixer <./../src/Fixer/LanguageConstruct/CombineConsecutiveUnsetsFixer.php>`_

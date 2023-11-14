@@ -57,3 +57,7 @@ With configuration: ``['use_parentheses' => true]``.
    -#[Bar, Baz]
    +#[Bar(), Baz()]
     class Sample2 {}
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\AttributeNotation\\AttributeEmptyParenthesesFixer <./../src/Fixer/AttributeNotation/AttributeEmptyParenthesesFixer.php>`_

@@ -95,3 +95,7 @@ Example #3
             return new static($prototype);
         }
     }
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToReturnTypeFixer <./../src/Fixer/FunctionNotation/PhpdocToReturnTypeFixer.php>`_

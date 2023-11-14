@@ -125,3 +125,7 @@ With configuration: ``['header' => '']``.
     namespace A\B;
 
     echo 1;
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Comment\\HeaderCommentFixer <./../src/Fixer/Comment/HeaderCommentFixer.php>`_

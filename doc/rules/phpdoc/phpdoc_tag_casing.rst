@@ -49,3 +49,7 @@ With configuration: ``['tags' => ['foo']]``.
    - * @Foo
    + * @foo
      */
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTagCasingFixer <./../src/Fixer/Phpdoc/PhpdocTagCasingFixer.php>`_

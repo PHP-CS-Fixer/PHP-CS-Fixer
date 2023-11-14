@@ -57,3 +57,7 @@ With configuration: ``['group' => 'medium']``.
    + * @medium
    + */
     class MyTest extends TestCase {}
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitSizeClassFixer <./../src/Fixer/PhpUnit/PhpUnitSizeClassFixer.php>`_

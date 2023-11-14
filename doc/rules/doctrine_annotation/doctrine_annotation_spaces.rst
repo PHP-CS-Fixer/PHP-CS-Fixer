@@ -152,3 +152,7 @@ The rule is part of the following rule set:
   ``['before_array_assignments_colon' => false]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationSpacesFixer <./../src/Fixer/DoctrineAnnotation/DoctrineAnnotationSpacesFixer.php>`_

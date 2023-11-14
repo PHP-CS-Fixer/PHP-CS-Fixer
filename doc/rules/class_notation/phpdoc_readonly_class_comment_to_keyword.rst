@@ -29,3 +29,7 @@ Example #1
    +    
    +    readonly class C {
         }
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\PhpdocReadonlyClassCommentToKeywordFixer <./../src/Fixer/ClassNotation/PhpdocReadonlyClassCommentToKeywordFixer.php>`_

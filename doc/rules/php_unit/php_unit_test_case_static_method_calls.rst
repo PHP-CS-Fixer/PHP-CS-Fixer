@@ -93,3 +93,7 @@ The rule is part of the following rule set:
   ``['call_type' => 'self']``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestCaseStaticMethodCallsFixer <./../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php>`_

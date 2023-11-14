@@ -20,3 +20,7 @@ Example #1
    +if ( ! $bar) {
         echo "Help!";
     }
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\NotOperatorWithSpaceFixer <./../src/Fixer/Operator/NotOperatorWithSpaceFixer.php>`_
