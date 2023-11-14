@@ -26,3 +26,7 @@ Example #1
 
    -$className = Baz::class;
    +$className = 'Foo\Bar\Baz';
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordRemoveFixer <./../src/Fixer/LanguageConstruct/ClassKeywordRemoveFixer.php>`_

@@ -26,3 +26,7 @@ Example #1
     <?php
    -foo($a,);
    +foo($a);
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\NoTrailingCommaInSinglelineFunctionCallFixer <./../src/Fixer/FunctionNotation/NoTrailingCommaInSinglelineFunctionCallFixer.php>`_

@@ -127,3 +127,7 @@ The rule is part of the following rule sets:
 
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\NoAliasFunctionsFixer <./../src/Fixer/Alias/NoAliasFunctionsFixer.php>`_

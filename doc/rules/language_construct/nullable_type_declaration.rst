@@ -66,3 +66,7 @@ With configuration: ``['syntax' => 'question_mark']``.
    +    public ?bool $internal;
    +    public ?\Closure $callback;
     }
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\NullableTypeDeclarationFixer <./../src/Fixer/LanguageConstruct/NullableTypeDeclarationFixer.php>`_

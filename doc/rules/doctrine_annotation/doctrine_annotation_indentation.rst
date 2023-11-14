@@ -73,3 +73,7 @@ The rule is part of the following rule set:
 
 - `@DoctrineAnnotation <./../../ruleSets/DoctrineAnnotation.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationIndentationFixer <./../src/Fixer/DoctrineAnnotation/DoctrineAnnotationIndentationFixer.php>`_

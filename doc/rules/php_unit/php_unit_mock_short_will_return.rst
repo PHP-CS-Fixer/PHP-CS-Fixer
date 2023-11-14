@@ -51,3 +51,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockShortWillReturnFixer <./../src/Fixer/PhpUnit/PhpUnitMockShortWillReturnFixer.php>`_

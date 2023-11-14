@@ -34,3 +34,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocIndentFixer <./../src/Fixer/Phpdoc/PhpdocIndentFixer.php>`_

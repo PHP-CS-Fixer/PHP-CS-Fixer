@@ -65,3 +65,7 @@ The rule is part of the following rule sets:
   ``['remove_in_empty_for_expressions' => true]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Semicolon\\SpaceAfterSemicolonFixer <./../src/Fixer/Semicolon/SpaceAfterSemicolonFixer.php>`_

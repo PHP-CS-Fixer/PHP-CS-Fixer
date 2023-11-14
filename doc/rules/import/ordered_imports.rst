@@ -189,3 +189,7 @@ The rule is part of the following rule sets:
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Import\\OrderedImportsFixer <./../src/Fixer/Import/OrderedImportsFixer.php>`_

@@ -78,3 +78,7 @@ The rule is part of the following rule sets:
   ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededControlParenthesesFixer <./../src/Fixer/ControlStructure/NoUnneededControlParenthesesFixer.php>`_

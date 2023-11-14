@@ -138,3 +138,7 @@ The rule is part of the following rule sets:
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesOrderFixer <./../src/Fixer/Phpdoc/PhpdocTypesOrderFixer.php>`_

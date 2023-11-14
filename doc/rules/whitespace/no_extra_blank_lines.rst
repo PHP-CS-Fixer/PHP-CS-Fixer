@@ -228,3 +228,7 @@ The rule is part of the following rule sets:
   ``['tokens' => ['attribute', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'square_brace_block', 'switch', 'throw', 'use']]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\NoExtraBlankLinesFixer <./../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php>`_

@@ -38,3 +38,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\SwitchCaseSpaceFixer <./../src/Fixer/ControlStructure/SwitchCaseSpaceFixer.php>`_

@@ -243,3 +243,7 @@ The rule is part of the following rule sets:
   ``['statements' => ['return']]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\BlankLineBeforeStatementFixer <./../src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php>`_

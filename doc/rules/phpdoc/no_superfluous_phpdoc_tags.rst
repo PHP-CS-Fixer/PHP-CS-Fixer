@@ -129,3 +129,7 @@ The rule is part of the following rule sets:
   ``['remove_inheritdoc' => true]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\NoSuperfluousPhpdocTagsFixer <./../src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php>`_
