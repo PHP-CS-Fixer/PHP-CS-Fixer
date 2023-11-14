@@ -17,7 +17,6 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Documentation\DocumentationLocator;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
-use PhpCsFixer\Documentation\ListDocumentGenerator;
 use PhpCsFixer\Documentation\RuleSetDocumentationGenerator;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
@@ -30,7 +29,6 @@ use Symfony\Component\Finder\Finder;
  *
  * @covers \PhpCsFixer\Documentation\DocumentationLocator
  * @covers \PhpCsFixer\Documentation\FixerDocumentGenerator
- * @covers \PhpCsFixer\Documentation\ListDocumentGenerator
  * @covers \PhpCsFixer\Documentation\RstUtils
  * @covers \PhpCsFixer\Documentation\RuleSetDocumentationGenerator
  *
@@ -172,21 +170,6 @@ final class DocumentationTest extends TestCase
             $minimumVersionInformation,
             file_get_contents($installationDocPath),
             sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation)
-        );
-    }
-
-    public function testListingDocumentationIsUpToDate(): void
-    {
-        $locator = new DocumentationLocator();
-        $generator = new ListDocumentGenerator($locator);
-
-        $fixers = self::getFixers();
-        $listingFilePath = $locator->getListingFilePath();
-
-        self::assertFileEqualsString(
-            $generator->generateListingDocumentation($fixers),
-            $listingFilePath,
-            sprintf('Listing documentation is generated (please CONTRIBUTING.md), file "%s".', $listingFilePath)
         );
     }
 
