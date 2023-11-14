@@ -247,11 +247,11 @@ final class FixerDocumentGenerator
 
         $doc .= <<<RST
 
-        Source class
-        ------------
+            Source class
+            ------------
 
-        $fileName
-        RST;
+            {$fileName}
+            RST;
 
         return "{$doc}\n";
     }
