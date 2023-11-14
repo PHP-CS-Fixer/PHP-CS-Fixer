@@ -31,3 +31,7 @@ Example #2
     function baz(): ?int { return null; }
    -function xyz(): void { return null; }
    +function xyz(): void { return; }
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ReturnNotation\\SimplifiedNullReturnFixer <./../src/Fixer/ReturnNotation/SimplifiedNullReturnFixer.php>`_

@@ -48,3 +48,7 @@ Example #1
    +$a = mb_stristr($a, $b);
    +$a = mb_strrchr($a, $b);
    +$a = mb_substr_count($a, $b);
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\MbStrFunctionsFixer <./../src/Fixer/Alias/MbStrFunctionsFixer.php>`_

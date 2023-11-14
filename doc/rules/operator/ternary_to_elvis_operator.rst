@@ -44,3 +44,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\TernaryToElvisOperatorFixer <./../src/Fixer/Operator/TernaryToElvisOperatorFixer.php>`_

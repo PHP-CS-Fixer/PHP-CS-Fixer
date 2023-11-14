@@ -19,3 +19,7 @@ Example #1
    -    return [1, 2, 3];
    +    yield from [1, 2, 3];
     }
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ArrayNotation\\ReturnToYieldFromFixer <./../src/Fixer/ArrayNotation/ReturnToYieldFromFixer.php>`_

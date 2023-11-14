@@ -95,3 +95,7 @@ The rule is part of the following rule sets:
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\RandomApiMigrationFixer <./../src/Fixer/Alias/RandomApiMigrationFixer.php>`_

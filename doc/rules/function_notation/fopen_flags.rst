@@ -68,3 +68,7 @@ The rule is part of the following rule sets:
   ``['b_mode' => false]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\FopenFlagsFixer <./../src/Fixer/FunctionNotation/FopenFlagsFixer.php>`_

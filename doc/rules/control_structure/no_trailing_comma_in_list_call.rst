@@ -25,3 +25,7 @@ Example #1
     <?php
    -list($a, $b,) = foo();
    +list($a, $b) = foo();
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\NoTrailingCommaInListCallFixer <./../src/Fixer/ControlStructure/NoTrailingCommaInListCallFixer.php>`_

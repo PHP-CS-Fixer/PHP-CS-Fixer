@@ -32,3 +32,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\NoWhitespaceInBlankLineFixer <./../src/Fixer/Whitespace/NoWhitespaceInBlankLineFixer.php>`_

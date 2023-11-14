@@ -331,3 +331,7 @@ The rule is part of the following rule sets:
   ``['on_multiline' => 'ignore']``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixer <./../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php>`_

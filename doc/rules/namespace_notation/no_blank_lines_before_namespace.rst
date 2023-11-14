@@ -27,3 +27,7 @@ Example #1
    -
    -
     namespace Example;
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\NamespaceNotation\\NoBlankLinesBeforeNamespaceFixer <./../src/Fixer/NamespaceNotation/NoBlankLinesBeforeNamespaceFixer.php>`_

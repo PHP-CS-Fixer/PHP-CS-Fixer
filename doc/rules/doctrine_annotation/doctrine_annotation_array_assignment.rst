@@ -70,3 +70,7 @@ The rule is part of the following rule set:
   ``['operator' => ':']``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationArrayAssignmentFixer <./../src/Fixer/DoctrineAnnotation/DoctrineAnnotationArrayAssignmentFixer.php>`_

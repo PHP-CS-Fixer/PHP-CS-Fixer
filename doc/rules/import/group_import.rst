@@ -18,3 +18,7 @@ Example #1
    -use Foo\Bar;
    -use Foo\Baz;
    +use Foo\{Bar, Baz};
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Import\\GroupImportFixer <./../src/Fixer/Import/GroupImportFixer.php>`_

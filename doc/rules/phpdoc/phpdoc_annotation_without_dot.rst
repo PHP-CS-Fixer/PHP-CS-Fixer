@@ -29,3 +29,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAnnotationWithoutDotFixer <./../src/Fixer/Phpdoc/PhpdocAnnotationWithoutDotFixer.php>`_

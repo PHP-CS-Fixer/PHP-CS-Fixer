@@ -62,3 +62,7 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderReturnTypeFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixer.php>`_

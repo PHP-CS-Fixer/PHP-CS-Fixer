@@ -33,3 +33,7 @@ The rule is part of the following rule sets:
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Basic\\SingleLineEmptyBodyFixer <./../src/Fixer/Basic/SingleLineEmptyBodyFixer.php>`_

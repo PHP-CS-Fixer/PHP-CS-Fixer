@@ -138,3 +138,7 @@ The rule is part of the following rule sets:
   ``['target' => '5.6']``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixer <./../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php>`_

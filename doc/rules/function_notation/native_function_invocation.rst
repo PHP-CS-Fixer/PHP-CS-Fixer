@@ -206,3 +206,7 @@ The rule is part of the following rule sets:
   ``['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\NativeFunctionInvocationFixer <./../src/Fixer/FunctionNotation/NativeFunctionInvocationFixer.php>`_

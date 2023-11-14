@@ -57,3 +57,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Import\\SingleLineAfterImportsFixer <./../src/Fixer/Import/SingleLineAfterImportsFixer.php>`_

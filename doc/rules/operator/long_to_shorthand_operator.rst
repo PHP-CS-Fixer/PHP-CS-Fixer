@@ -35,3 +35,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\LongToShorthandOperatorFixer <./../src/Fixer/Operator/LongToShorthandOperatorFixer.php>`_

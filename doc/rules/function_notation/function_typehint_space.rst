@@ -38,3 +38,7 @@ Example #2
    -function sample(array  $a)
    +function sample(array $a)
     {}
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\FunctionTypehintSpaceFixer <./../src/Fixer/FunctionNotation/FunctionTypehintSpaceFixer.php>`_
