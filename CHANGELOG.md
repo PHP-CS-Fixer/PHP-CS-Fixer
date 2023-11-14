@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.38.1
+---------------------
+
+* chore: ListSetsCommand::execute - add missing return type (#7432)
+* chore: PHPStan - add counter to dataProvider exception, so we do not increase the tech debt on it (#7425)
+* CI: Use `actions/checkout` v4 (#7423)
+* fix: ClassAttributesSeparationFixer - handle Disjunctive Normal Form types parentheses (#7428)
+* fix: Remove all variable names in `@var` callable signature (#7429)
+* fix: Satisfy `composer normalize` (#7424)
+
 Changelog for v3.38.0
 ---------------------
 
