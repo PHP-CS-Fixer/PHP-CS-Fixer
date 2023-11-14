@@ -149,6 +149,7 @@ Keeping things as they are:
 
 .. code-block:: php
 
+   <?php
    // tests/Fixer/Comment/RemoveCommentsFixerTest.php
 
        // ...
@@ -164,6 +165,7 @@ Ensuring things change:
 
 .. code-block:: php
 
+   <?php
    // tests/Fixer/Comment/RemoveCommentsFixerTest.php
 
        // ...
@@ -238,6 +240,7 @@ First, we need to create one method to describe what this fixer does:
 
 .. code-block:: php
 
+   <?php
    // src/Fixer/Comment/RemoveCommentsFixer.php
 
    final class RemoveCommentsFixer extends AbstractFixer
@@ -267,6 +270,7 @@ Next, we must filter what type of tokens we want to fix. Here, we are interested
 
 .. code-block:: php
 
+   <?php
    // src/Fixer/Comment/RemoveCommentsFixer.php
 
    final class RemoveCommentsFixer extends AbstractFixer
@@ -283,6 +287,7 @@ For now, let us just make a fixer that applies no modification:
 
 .. code-block:: php
 
+   <?php
    // src/Fixer/Comment/RemoveCommentsFixer.php
 
    final class RemoveCommentsFixer extends AbstractFixer
@@ -334,6 +339,7 @@ iterate the token(s) we are interested in.
 
 .. code-block:: php
 
+   <?php
    // src/Fixer/Comment/RemoveCommentsFixer.php
 
    final class RemoveCommentsFixer extends AbstractFixer
@@ -357,6 +363,7 @@ token is a semicolon.
 
 .. code-block:: php
 
+   <?php
    // src/Fixer/Comment/RemoveCommentsFixer.php
 
    final class RemoveCommentsFixer extends AbstractFixer
