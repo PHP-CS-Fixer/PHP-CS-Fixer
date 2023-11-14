@@ -28,3 +28,7 @@ The rule is part of the following rule set:
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\SingleLineThrowFixer <./../src/Fixer/FunctionNotation/SingleLineThrowFixer.php>`_

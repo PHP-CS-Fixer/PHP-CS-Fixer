@@ -89,3 +89,7 @@ The rule is part of the following rule sets:
   ``['target' => '7.5']``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertInternalTypeFixer <./../src/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixer.php>`_

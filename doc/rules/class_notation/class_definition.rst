@@ -202,3 +202,7 @@ The rule is part of the following rule sets:
   ``['single_line' => true]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\ClassDefinitionFixer <./../src/Fixer/ClassNotation/ClassDefinitionFixer.php>`_

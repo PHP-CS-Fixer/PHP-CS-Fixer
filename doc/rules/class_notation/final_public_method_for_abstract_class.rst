@@ -36,3 +36,7 @@ Example #1
    +    final public function start()
         {}
     }
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\FinalPublicMethodForAbstractClassFixer <./../src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php>`_

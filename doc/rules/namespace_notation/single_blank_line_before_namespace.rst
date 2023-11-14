@@ -38,3 +38,7 @@ Example #2
 
    -
     namespace A{}
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\NamespaceNotation\\SingleBlankLineBeforeNamespaceFixer <./../src/Fixer/NamespaceNotation/SingleBlankLineBeforeNamespaceFixer.php>`_

@@ -59,3 +59,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMethodCasingFixer <./../src/Fixer/PhpUnit/PhpUnitMethodCasingFixer.php>`_

@@ -54,3 +54,7 @@ The rule is part of the following rule sets:
   ``['style' => 'braces']``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\EmptyLoopBodyFixer <./../src/Fixer/ControlStructure/EmptyLoopBodyFixer.php>`_

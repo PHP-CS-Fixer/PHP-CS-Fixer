@@ -77,3 +77,7 @@ The rule is part of the following rule sets:
   ``['only_booleans' => true]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\OperatorLinebreakFixer <./../src/Fixer/Operator/OperatorLinebreakFixer.php>`_

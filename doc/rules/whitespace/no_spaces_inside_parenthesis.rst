@@ -42,3 +42,7 @@ Example #2
    +function foo($bar, $baz)
     {
     }
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\NoSpacesInsideParenthesisFixer <./../src/Fixer/Whitespace/NoSpacesInsideParenthesisFixer.php>`_

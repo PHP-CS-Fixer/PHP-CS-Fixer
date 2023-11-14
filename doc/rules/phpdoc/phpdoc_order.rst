@@ -122,3 +122,7 @@ The rule is part of the following rule sets:
   ``['order' => ['param', 'return', 'throws']]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocOrderFixer <./../src/Fixer/Phpdoc/PhpdocOrderFixer.php>`_

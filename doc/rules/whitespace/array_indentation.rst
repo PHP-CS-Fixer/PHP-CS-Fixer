@@ -31,3 +31,7 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\ArrayIndentationFixer <./../src/Fixer/Whitespace/ArrayIndentationFixer.php>`_

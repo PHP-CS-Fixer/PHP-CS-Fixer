@@ -199,3 +199,7 @@ The rule is part of the following rule sets:
   ``['order' => ['use_trait']]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\OrderedClassElementsFixer <./../src/Fixer/ClassNotation/OrderedClassElementsFixer.php>`_

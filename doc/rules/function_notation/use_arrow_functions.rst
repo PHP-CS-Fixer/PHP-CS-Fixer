@@ -37,3 +37,7 @@ The rule is part of the following rule sets:
 - `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\UseArrowFunctionsFixer <./../src/Fixer/FunctionNotation/UseArrowFunctionsFixer.php>`_

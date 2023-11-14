@@ -72,3 +72,7 @@ Example #4
     {
         return 'hi!';
     }
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixer <./../src/Fixer/Casing/NativeFunctionTypeDeclarationCasingFixer.php>`_

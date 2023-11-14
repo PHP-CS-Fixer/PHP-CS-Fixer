@@ -238,6 +238,21 @@ final class FixerDocumentGenerator
             }
         }
 
+        $reflectionObject = new \ReflectionObject($fixer);
+        $className = str_replace('\\', '\\\\', $reflectionObject->getName());
+        $fileName = $reflectionObject->getFileName();
+        $fileName = str_replace('\\', '/', $fileName);
+        $fileName = substr($fileName, strrpos($fileName, '/src/Fixer/') + 1);
+        $fileName = "`{$className} <./../{$fileName}>`_";
+
+        $doc .= <<<RST
+
+            Source class
+            ------------
+
+            {$fileName}
+            RST;
+
         return "{$doc}\n";
     }
 

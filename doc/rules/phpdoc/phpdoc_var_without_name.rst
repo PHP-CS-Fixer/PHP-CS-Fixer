@@ -39,3 +39,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocVarWithoutNameFixer <./../src/Fixer/Phpdoc/PhpdocVarWithoutNameFixer.php>`_

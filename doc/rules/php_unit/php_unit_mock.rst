@@ -111,3 +111,7 @@ The rule is part of the following rule sets:
   ``['target' => '5.5']``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockFixer <./../src/Fixer/PhpUnit/PhpUnitMockFixer.php>`_

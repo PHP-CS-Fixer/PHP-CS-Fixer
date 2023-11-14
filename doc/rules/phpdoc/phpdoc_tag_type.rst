@@ -63,3 +63,7 @@ The rule is part of the following rule sets:
   ``['tags' => ['inheritDoc' => 'inline']]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTagTypeFixer <./../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php>`_

@@ -68,3 +68,7 @@ With configuration: ``['constructs' => ['yield_from']]``.
 
    -yield  from  baz();
    +yield from baz();
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixer <./../src/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixer.php>`_

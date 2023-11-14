@@ -66,3 +66,7 @@ With configuration: ``['namespaces' => true]``.
         function Bar(){}
    -}
    +
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededCurlyBracesFixer <./../src/Fixer/ControlStructure/NoUnneededCurlyBracesFixer.php>`_
