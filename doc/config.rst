@@ -13,7 +13,7 @@ It is possible to *not* have the config file. In that case, the default rule set
 
 It is also possible to provide command line options to customize rules, yet instead of using them,
 it's recommended to save the project configuration in a ``.php-cs-fixer.dist.php`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <../src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <./../src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php-cs-fixer.php`` file, which is
 the local configuration that will be used instead of the project configuration. It
