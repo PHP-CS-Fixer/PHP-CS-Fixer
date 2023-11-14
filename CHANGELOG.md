@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.38.2
+---------------------
+
+* docs: fix 'Could not lex literal_block as "php". Highlighting skipped.' (#7433)
+* docs: small unification between FixerDocumentGenerator and ListDocumentGenerator (#7435)
+* docs: unify ../ <> ./../ (#7434)
+
 Changelog for v3.38.1
 ---------------------
 
