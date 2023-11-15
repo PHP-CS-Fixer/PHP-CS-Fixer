@@ -89,7 +89,7 @@ final class GroupImportFixer extends AbstractFixer
             $namespaceA = $this->getNamespaceNameWithSlash($a);
             $namespaceB = $this->getNamespaceNameWithSlash($b);
 
-            $namespaceDifference = \strlen($namespaceA) - \strlen($namespaceB);
+            $namespaceDifference = \strlen($namespaceA) <=> \strlen($namespaceB);
 
             return 0 !== $namespaceDifference ? $namespaceDifference : strcmp($a->getFullName(), $b->getFullName());
         });
