@@ -1,0 +1,6 @@
+--TEST--
+Integration of @PHP83Migration.
+--RULESET--
+{"@PHP83Migration": true}
+--REQUIREMENTS--
+{"php": 80300}
