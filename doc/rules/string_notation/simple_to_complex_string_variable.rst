@@ -46,6 +46,7 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
+- `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
