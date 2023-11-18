@@ -289,7 +289,7 @@ use Bar;
         $secondNamespace = str_replace('\\', ' ', $this->prepareNamespace($second['namespace']));
 
         return true === $this->configuration['case_sensitive']
-            ? strcmp($firstNamespace, $secondNamespace)
+            ? $firstNamespace <=> $secondNamespace
             : strcasecmp($firstNamespace, $secondNamespace);
     }
 
@@ -311,7 +311,7 @@ use Bar;
 
         if ($firstNamespaceLength === $secondNamespaceLength) {
             $sortResult = true === $this->configuration['case_sensitive']
-                ? strcmp($firstNamespace, $secondNamespace)
+                ? $firstNamespace <=> $secondNamespace
                 : strcasecmp($firstNamespace, $secondNamespace);
         } else {
             $sortResult = $firstNamespaceLength > $secondNamespaceLength ? 1 : -1;
