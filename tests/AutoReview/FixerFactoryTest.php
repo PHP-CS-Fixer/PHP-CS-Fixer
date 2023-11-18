@@ -183,7 +183,7 @@ final class FixerFactoryTest extends TestCase
         $previous = '';
 
         foreach (self::getFixersPriorityGraph() as $fixerName => $edges) {
-            self::assertLessThan(0, strcmp($previous, $fixerName), sprintf('Not sorted "%s" "%s".', $previous, $fixerName));
+            self::assertLessThan(0, $previous <=> $fixerName, sprintf('Not sorted "%s" "%s".', $previous, $fixerName));
 
             $edgesSorted = $edges;
             sort($edgesSorted);

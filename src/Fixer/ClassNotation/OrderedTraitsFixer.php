@@ -186,7 +186,7 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
         uasort(
             $sortedElements,
             fn (Tokens $useA, Tokens $useB): int => $this->configuration['case_sensitive']
-                ? strcmp($toTraitName($useA), $toTraitName($useB))
+                ? $toTraitName($useA) <=> $toTraitName($useB)
                 : strcasecmp($toTraitName($useA), $toTraitName($useB))
         );
 
