@@ -10,7 +10,15 @@ $foo = [
     'bar' => 'baz'
 ];
 
+[
+    $foo,
+    $bar,
+    $baz
+] = $arr;
+
 --INPUT--
 <?php
 
 $foo = ['foo','bar' => 'baz'];
+
+[$foo, $bar, $baz] = $arr;
