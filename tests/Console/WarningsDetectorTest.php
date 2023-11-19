@@ -64,7 +64,7 @@ final class WarningsDetectorTest extends TestCase
 
         self::assertSame([
             'You are running PHP CS Fixer installed with old vendor `fabpot/php-cs-fixer`. Please update to `friendsofphp/php-cs-fixer`.',
-            'If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!',
+            'If you need help while solving warnings, ask at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/, we will help you!',
         ], $warningsDetector->getWarnings());
     }
 }
