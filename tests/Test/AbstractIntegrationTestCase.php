@@ -52,7 +52,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * --SETTINGS--*
  * {"key": "value"} # optional extension point for custom IntegrationTestCase class
  * --REQUIREMENTS--*
- * {"php": 70400**}
+ * {"php": 70400**, "php<": 80000***}
  * --EXPECT--
  * Expected code after fixing
  * --INPUT--*
@@ -60,6 +60,7 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  *   *  Section or any line in it may be omitted.
  *  **  PHP minimum version. Default to current running php version (no effect).
+ *  *** PHP upper limit, that is first too-high version. Default is empty (no effect).
  *
  * @internal
  */
@@ -193,8 +194,14 @@ abstract class AbstractIntegrationTestCase extends TestCase
      */
     protected function doTest(IntegrationCase $case): void
     {
-        if (\PHP_VERSION_ID < $case->getRequirement('php')) {
-            self::markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), \PHP_VERSION_ID));
+        $phpLowerLimit = $case->getRequirement('php');
+        if (\PHP_VERSION_ID < $phpLowerLimit) {
+            self::markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $phpLowerLimit, $case->getFileName(), \PHP_VERSION_ID));
+        }
+
+        $phpUpperLimit = $case->getRequirement('php<');
+        if (\PHP_VERSION_ID >= $phpUpperLimit) {
+            self::markTestSkipped(sprintf('PHP lower than %d is required for "%s", current "%d".', $phpUpperLimit, $case->getFileName(), \PHP_VERSION_ID));
         }
 
         if (!\in_array(PHP_OS, $case->getRequirement('os'), true)) {

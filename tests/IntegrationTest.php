@@ -78,27 +78,4 @@ final class IntegrationTest extends AbstractIntegrationTestCase
             );
         }
     }
-
-    protected function doTest(IntegrationCase $case): void
-    {
-        $requirements = $case->getRequirements();
-
-        if (isset($requirements['php<'])) {
-            $phpUpperLimit = $requirements['php<'];
-
-            if (!\is_int($phpUpperLimit)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Expected int value like 50509 for "php<", got "%s". IN "%s".',
-                    get_debug_type($phpUpperLimit).'#'.$phpUpperLimit,
-                    $case->getFileName(),
-                ));
-            }
-
-            if (\PHP_VERSION_ID >= $phpUpperLimit) {
-                self::markTestSkipped(sprintf('PHP lower than %d is required for "%s", current "%d".', $phpUpperLimit, $case->getFileName(), \PHP_VERSION_ID));
-            }
-        }
-
-        parent::doTest($case);
-    }
 }
