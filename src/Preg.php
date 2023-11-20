@@ -42,7 +42,7 @@ final class Preg
             return 1 === $result;
         }
 
-        throw self::newPregException(preg_last_error(), __METHOD__, (array) $pattern);
+        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, (array) $pattern);
     }
 
     /**
@@ -62,7 +62,7 @@ final class Preg
             return $result;
         }
 
-        throw self::newPregException(preg_last_error(), __METHOD__, (array) $pattern);
+        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, (array) $pattern);
     }
 
     /**
@@ -82,7 +82,7 @@ final class Preg
             return $result;
         }
 
-        throw self::newPregException(preg_last_error(), __METHOD__, (array) $pattern);
+        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, (array) $pattern);
     }
 
     /**
@@ -100,7 +100,7 @@ final class Preg
             return $result;
         }
 
-        throw self::newPregException(preg_last_error(), __METHOD__, (array) $pattern);
+        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, (array) $pattern);
     }
 
     /**
@@ -120,7 +120,7 @@ final class Preg
             return $result;
         }
 
-        throw self::newPregException(preg_last_error(), __METHOD__, (array) $pattern);
+        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, (array) $pattern);
     }
 
     /**
@@ -167,7 +167,7 @@ final class Preg
      *
      * @param string[] $patterns
      */
-    private static function newPregException(int $error, string $method, array $patterns): PregException
+    private static function newPregException(int $error, string $errorMsg, string $method, array $patterns): PregException
     {
         foreach ($patterns as $pattern) {
             $last = error_get_last();
@@ -196,6 +196,6 @@ final class Preg
             );
         }
 
-        return new PregException(sprintf('Error occurred when calling %s.', $method), $error);
+        return new PregException(sprintf('Error occurred when calling %s: %s.', $method, $errorMsg), $error);
     }
 }
