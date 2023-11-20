@@ -124,7 +124,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
 
         if (!\is_int($parsed['php<'])) {
             throw new \InvalidArgumentException(sprintf(
-                'Expected int value like 80301 for "php<", got "%s". IN "%s".',
+                'Expected int value like 80301 for "php<", got "%s".',
                 get_debug_type($parsed['php<']).'#'.$parsed['php<'],
             ));
         }
