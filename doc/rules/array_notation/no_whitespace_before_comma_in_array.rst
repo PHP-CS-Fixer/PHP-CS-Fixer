@@ -73,6 +73,10 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true]``
 
+- `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
