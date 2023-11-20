@@ -168,7 +168,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
                     ? \strlen($first['normalized']) - \strlen($second['normalized'])
                     : (
                         $this->configuration['case_sensitive']
-                        ? strcmp($first['normalized'], $second['normalized'])
+                        ? $first['normalized'] <=> $second['normalized']
                         : strcasecmp($first['normalized'], $second['normalized'])
                     );
 

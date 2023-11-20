@@ -32,7 +32,7 @@ final class TextReporter implements ReporterInterface
     {
         $sets = $reportSummary->getSets();
 
-        usort($sets, static fn (RuleSetDescriptionInterface $a, RuleSetDescriptionInterface $b): int => strcmp($a->getName(), $b->getName()));
+        usort($sets, static fn (RuleSetDescriptionInterface $a, RuleSetDescriptionInterface $b): int => $a->getName() <=> $b->getName());
 
         $output = '';
 
