@@ -18,3 +18,7 @@ Example #1
     <?php
    -if ($foo) { return true; } return false;
    +return (bool) ($foo)      ;
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\SimplifiedIfReturnFixer <./../src/Fixer/ControlStructure/SimplifiedIfReturnFixer.php>`_

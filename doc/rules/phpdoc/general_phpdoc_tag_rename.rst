@@ -125,3 +125,7 @@ The rule is part of the following rule sets:
   ``['replacements' => ['inheritDocs' => 'inheritDoc']]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocTagRenameFixer <./../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php>`_

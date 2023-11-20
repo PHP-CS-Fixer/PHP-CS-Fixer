@@ -1,6 +1,6 @@
 # Contributions Are Welcome!
 
-If you need any help, don't hesitate to ask the community using [GitHub Discussions](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/categories/q-a) or [Gitter](https://gitter.im/PHP-CS-Fixer/Lobby).
+If you need any help, don't hesitate to ask the community using [GitHub Discussions](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/categories/q-a).
 
 ## Glossary
 

@@ -61,3 +61,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\OrderedTraitsFixer <./../src/Fixer/ClassNotation/OrderedTraitsFixer.php>`_

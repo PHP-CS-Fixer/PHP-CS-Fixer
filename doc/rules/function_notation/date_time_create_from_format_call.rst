@@ -36,3 +36,7 @@ Example #1
    +++ New
    -<?php \DateTime::createFromFormat('Y-m-d', '2022-02-11');
    +<?php \DateTime::createFromFormat('!Y-m-d', '2022-02-11');
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\DateTimeCreateFromFormatCallFixer <./../src/Fixer/FunctionNotation/DateTimeCreateFromFormatCallFixer.php>`_

@@ -73,3 +73,7 @@ The rule is part of the following rule sets:
   ``['namespaces' => true]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededBracesFixer <./../src/Fixer/ControlStructure/NoUnneededBracesFixer.php>`_

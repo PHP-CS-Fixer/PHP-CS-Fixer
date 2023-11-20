@@ -38,3 +38,7 @@ Example #1
     <?php
    -class MyApp {}
    +final class MyApp {}
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\FinalClassFixer <./../src/Fixer/ClassNotation/FinalClassFixer.php>`_

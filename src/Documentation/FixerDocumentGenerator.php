@@ -238,6 +238,21 @@ final class FixerDocumentGenerator
             }
         }
 
+        $reflectionObject = new \ReflectionObject($fixer);
+        $className = str_replace('\\', '\\\\', $reflectionObject->getName());
+        $fileName = $reflectionObject->getFileName();
+        $fileName = str_replace('\\', '/', $fileName);
+        $fileName = substr($fileName, strrpos($fileName, '/src/Fixer/') + 1);
+        $fileName = "`{$className} <./../{$fileName}>`_";
+
+        $doc .= <<<RST
+
+            Source class
+            ------------
+
+            {$fileName}
+            RST;
+
         return "{$doc}\n";
     }
 
@@ -252,7 +267,7 @@ final class FixerDocumentGenerator
             'Phpdoc' => 'PHPDoc',
         ];
 
-        usort($fixers, static fn (FixerInterface $a, FixerInterface $b): int => strcmp(\get_class($a), \get_class($b)));
+        usort($fixers, static fn (FixerInterface $a, FixerInterface $b): int => \get_class($a) <=> \get_class($b));
 
         $documentation = <<<'RST'
             =======================

@@ -26,3 +26,7 @@ Example #1
     <?php
    -new DateTime();
    +new DateTimeImmutable();
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ClassUsage\\DateTimeImmutableFixer <./../src/Fixer/ClassUsage/DateTimeImmutableFixer.php>`_

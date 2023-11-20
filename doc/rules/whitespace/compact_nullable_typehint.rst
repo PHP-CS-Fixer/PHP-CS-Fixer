@@ -31,3 +31,7 @@ Example #1
    -function sample(? string $str): ? string
    +function sample(?string $str): ?string
     {}
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypehintFixer <./../src/Fixer/Whitespace/CompactNullableTypehintFixer.php>`_

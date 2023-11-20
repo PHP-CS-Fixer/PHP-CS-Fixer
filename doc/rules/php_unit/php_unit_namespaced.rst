@@ -131,3 +131,7 @@ The rule is part of the following rule sets:
   ``['target' => '6.0']``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNamespacedFixer <./../src/Fixer/PhpUnit/PhpUnitNamespacedFixer.php>`_

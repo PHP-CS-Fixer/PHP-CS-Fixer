@@ -41,3 +41,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\NoPhp4ConstructorFixer <./../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php>`_

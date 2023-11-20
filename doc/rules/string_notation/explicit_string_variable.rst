@@ -45,3 +45,7 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\StringNotation\\ExplicitStringVariableFixer <./../src/Fixer/StringNotation/ExplicitStringVariableFixer.php>`_

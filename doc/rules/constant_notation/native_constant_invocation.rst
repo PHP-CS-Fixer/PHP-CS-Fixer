@@ -147,3 +147,7 @@ The rule is part of the following rule sets:
   ``['strict' => false]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ConstantNotation\\NativeConstantInvocationFixer <./../src/Fixer/ConstantNotation/NativeConstantInvocationFixer.php>`_

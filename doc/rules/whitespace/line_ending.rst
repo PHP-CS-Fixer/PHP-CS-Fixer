@@ -37,3 +37,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\LineEndingFixer <./../src/Fixer/Whitespace/LineEndingFixer.php>`_

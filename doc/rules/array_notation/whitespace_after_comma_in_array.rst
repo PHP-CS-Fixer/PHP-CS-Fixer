@@ -57,3 +57,7 @@ The rule is part of the following rule sets:
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ArrayNotation\\WhitespaceAfterCommaInArrayFixer <./../src/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixer.php>`_

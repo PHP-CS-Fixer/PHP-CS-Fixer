@@ -190,3 +190,7 @@ The rule is part of the following rule sets:
   ``['target' => '8.4']``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitExpectationFixer <./../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php>`_

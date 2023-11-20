@@ -62,3 +62,7 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesFixer <./../src/Fixer/Phpdoc/PhpdocTypesFixer.php>`_

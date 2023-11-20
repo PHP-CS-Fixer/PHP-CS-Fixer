@@ -93,3 +93,7 @@ The rule is part of the following rule sets:
   ``['comment_types' => ['hash']]``
 
 
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\Comment\\SingleLineCommentStyleFixer <./../src/Fixer/Comment/SingleLineCommentStyleFixer.php>`_
