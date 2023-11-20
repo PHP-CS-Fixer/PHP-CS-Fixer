@@ -35,7 +35,7 @@ final class IntegrationCase
     private ?string $inputCode;
 
     /**
-     * @var array{php: int, "php<"?: int, os: list<string>}
+     * @var array{php: int, "php<": int, os: list<string>}
      */
     private array $requirements;
 
@@ -52,7 +52,7 @@ final class IntegrationCase
 
     /**
      * @param array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck?: bool} $settings
-     * @param array{php: int, "php<"?: int, os: list<string>}                                        $requirements
+     * @param array{php: int, "php<": int, os: list<string>}                                         $requirements
      * @param array{indent: string, lineEnding: string}                                              $config
      */
     public function __construct(
@@ -120,7 +120,7 @@ final class IntegrationCase
     }
 
     /**
-     * @return array{php: int, "php<"?: int, os: list<string>}
+     * @return array{php: int, "php<": int, os: list<string>}
      */
     public function getRequirements(): array
     {
