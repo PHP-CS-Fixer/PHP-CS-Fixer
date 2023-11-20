@@ -82,32 +82,32 @@ $bar = 'BAR';
 function bar(): string { return 'BAR'; }
 $baz = ['bar' => ['bar' => 'BAR']];
 
-echo Foo    ::    {$bar};
-echo Foo    ::    {bar  (   )};
-echo Foo    ::    {$baz    [   'bar'    ]    [    'bar'    ]};
+echo Foo    ::    {    $bar    };
+echo Foo    ::    {    bar  (   )    };
+echo Foo    ::    {    $baz    [   'bar'    ]    [    'bar'    ]    };
 
 // https://wiki.php.net/rfc/typed_class_constants
 enum E {
-    const    StRiNg TEST = "Test1";
+    const    StRiNg      TEST = "Test1";
 }
 
 trait T {
-    const        STRING TEST = E::TEST;
+    const        STRING      TEST = E::TEST;
 }
 
 interface I {
-    const                      StrinG TEST = E::TEST;
+    const                      StrinG     TEST = E::TEST;
 }
 
 class Foo implements I {
     use T;
 
-    const   strIng TEST = E::TEST;
+    const   strIng     TEST = E::TEST;
 }
  
 class Bar extends Foo {
     const
-           string TEST = "Test2";
+           string    TEST = "Test2";
 }
 
 // https://www.php.net/manual/en/migration83.new-features.php#migration83.new-features.core.readonly-modifier-improvements
