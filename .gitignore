@@ -2,11 +2,11 @@
 /.php-cs-fixer.php
 /.phpunit.result.cache
 /box.json
+/compose.override.yaml
 /composer.lock
 /dev-tools/bin/
 /dev-tools/phpstan/cache/
 /dev-tools/vendor/
-/docker-compose.override.yaml
 /php-cs-fixer.phar
 /php-cs-fixer.phar.asc
 /phpstan.neon

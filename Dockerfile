@@ -11,10 +11,10 @@ ARG PHP_XDEBUG_VERSION
 # https://github.com/composer/docker/pull/250
 COPY --from=composer/composer:2-bin /composer /usr/local/bin/composer
 
-RUN if ! getent group "${DOCKER_GROUP_ID}" > /dev/null; \
+RUN if [ ! -z "$DOCKER_GROUP_ID" ] && [ ! getent group "${DOCKER_GROUP_ID}" > /dev/null ]; \
     then addgroup -S -g "${DOCKER_GROUP_ID}" devs; \
   fi \
-  && if ! getent passwd "${DOCKER_USER_ID}" > /dev/null; \
+  && if [ ! -z "$DOCKER_USER_ID" ] && [ ! -z "$DOCKER_GROUP_ID" ] && [ ! getent passwd "${DOCKER_USER_ID}" > /dev/null ]; \
     then adduser -S -u "${DOCKER_USER_ID}" -G "$(getent group "${DOCKER_GROUP_ID}" | awk -F: '{printf $1}')" dev; \
   fi \
   # php extensions

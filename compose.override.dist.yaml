@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  php-7.4: &php
+    build:
+      args: &base_build_args
+        DOCKER_USER_ID: ${DOCKER_USER_ID:-1000}
+        DOCKER_GROUP_ID: ${DOCKER_GROUP_ID:-1000}
+    user: ${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}
+    extra_hosts:
+      # Required for Docker Linux until natively supported.
+      # See https://github.com/docker/for-linux/issues/264
+      - 'host.docker.internal: 172.17.0.1'
+    environment:
+      XDEBUG_MODE: ${XDEBUG_MODE:-off}
+      XDEBUG_CONFIG: 'idekey=${XDEBUG_IDEKEY:-PHPSTORM} client_host=${XDEBUG_CLIENT_HOST:-host.docker.internal}'
+  php-8.0:
+    <<: *php
+  php-8.1:
+    <<: *php
+  php-8.2:
+    <<: *php
+  php-8.3:
+    <<: *php
