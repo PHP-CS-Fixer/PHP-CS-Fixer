@@ -49,7 +49,7 @@ This project provides a Docker setup that allows working on it using any of the 
 
 To use it, you first need to install [Docker](https://docs.docker.com/get-docker/) ([Docker Compose](https://docs.docker.com/compose/) is a built-in plugin of the main tool).
 
-Next, copy [`docker-compose.override.yaml.dist`](./docker-compose.override.yaml.dist) to `docker-compose.override.yaml` and edit it to your needs. The relevant parameters that might require some tweaking have comments to help you.
+Next, copy [`compose.override.dist.yaml`](./compose.override.dist.yaml) to `compose.override.yaml` and edit it to your needs. The relevant parameters that might require some tweaking have comments to help you.
 
 You can then build the images:
 
