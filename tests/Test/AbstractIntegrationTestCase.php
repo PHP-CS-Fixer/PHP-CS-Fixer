@@ -51,13 +51,15 @@ use Symfony\Component\Finder\SplFileInfo;
  * {"indent": "    ", "lineEnding": "\n"}
  * --SETTINGS--*
  * {"key": "value"} # optional extension point for custom IntegrationTestCase class
+ * --REQUIREMENTS--*
+ * {"php": 70400**}
  * --EXPECT--
  * Expected code after fixing
  * --INPUT--*
  * Code to fix
  *
- *   * Section or any line in it may be omitted.
- *  ** PHP minimum version. Default to current running php version (no effect).
+ *   *  Section or any line in it may be omitted.
+ *  **  PHP minimum version. Default to current running php version (no effect).
  *
  * @internal
  */
