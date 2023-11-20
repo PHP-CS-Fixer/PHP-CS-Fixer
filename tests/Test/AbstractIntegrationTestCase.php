@@ -58,8 +58,8 @@ use Symfony\Component\Finder\SplFileInfo;
  * --INPUT--*
  * Code to fix
  *
- *   *  Section or any line in it may be omitted.
- *  **  PHP minimum version. Default to current running php version (no effect).
+ *    *  Section or any line in it may be omitted.
+ *   **  PHP minimum version. Default to current running php version (no effect).
  *  *** PHP upper limit, that is first too-high version. Default is empty (no effect).
  *
  * @internal
