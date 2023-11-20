@@ -40,6 +40,5 @@ services:
     <<: *php
     build:
       args:
-        ALPINE_VERSION: "3.17"
         PHP_VERSION: "8.3.0RC6"
         PHP_XDEBUG_VERSION: "3.3.0alpha3"
