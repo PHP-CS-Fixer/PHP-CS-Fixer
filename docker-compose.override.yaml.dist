@@ -21,3 +21,5 @@ services:
     <<: *php
   php-8.2:
     <<: *php
+  php-8.3:
+    <<: *php
