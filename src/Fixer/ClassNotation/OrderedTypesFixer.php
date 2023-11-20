@@ -369,7 +369,7 @@ interface Bar
             }
 
             if ('alpha' === $this->configuration['sort_algorithm']) {
-                return $this->configuration['case_sensitive'] ? strcmp($a, $b) : strcasecmp($a, $b);
+                return $this->configuration['case_sensitive'] ? $a <=> $b : strcasecmp($a, $b);
             }
 
             return 0;

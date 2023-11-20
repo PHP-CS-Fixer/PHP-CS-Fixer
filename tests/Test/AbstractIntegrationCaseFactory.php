@@ -111,7 +111,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     {
         $parsed = $this->parseJson($config, [
             'php' => \PHP_VERSION_ID,
-            'php<' => \PHP_INT_MAX,
+            'php<' => PHP_INT_MAX,
             'os' => ['Linux', 'Darwin', 'Windows'],
         ]);
 

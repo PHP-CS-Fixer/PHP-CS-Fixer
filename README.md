@@ -85,8 +85,8 @@ Dedicated plugins exist for:
 The PHP CS Fixer is maintained on GitHub at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.
 Bug reports and ideas about new features are welcome there.
 
-You can reach us at https://gitter.im/PHP-CS-Fixer/Lobby about the project,
-configuration, possible improvements, ideas and questions, please visit us!
+You can reach us in the [GitHub Discussions](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/) regarding the
+project, configuration, possible improvements, ideas and questions. Please visit us there!
 
 ## Contribute
 

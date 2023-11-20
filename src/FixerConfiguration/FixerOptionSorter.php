@@ -30,7 +30,7 @@ final class FixerOptionSorter
             $options = iterator_to_array($options, false);
         }
 
-        usort($options, static fn (FixerOptionInterface $a, FixerOptionInterface $b): int => strcmp($a->getName(), $b->getName()));
+        usort($options, static fn (FixerOptionInterface $a, FixerOptionInterface $b): int => $a->getName() <=> $b->getName());
 
         return $options;
     }
