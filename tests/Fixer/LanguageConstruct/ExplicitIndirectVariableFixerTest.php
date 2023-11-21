@@ -33,6 +33,9 @@ final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string|null}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'variable variable function call' => [
@@ -91,6 +94,9 @@ $foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string|null}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'dynamic property fetch with nullsafe operator' => [
@@ -114,6 +120,9 @@ $foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string|null}>
+     */
     public static function provideFix83Cases(): iterable
     {
         yield 'dynamic class const fetch with variable variable' => [
