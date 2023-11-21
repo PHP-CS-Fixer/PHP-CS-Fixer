@@ -44,6 +44,9 @@ final class UseTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<array{string, array<int, int>}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
@@ -157,6 +160,9 @@ use C\{D,E,};
         $this->doTest($source, $expectedTokens, [CT::T_USE_TRAIT]);
     }
 
+    /**
+     * @return iterable<array{string, array<int, int>}>
+     */
     public static function provideProcessPhp81Cases(): iterable
     {
         yield [
