@@ -34,7 +34,7 @@ final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<string, array{0: string, 1?: string|null}>
+     * @return iterable<string, array{0: string, 1?: null|string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -95,7 +95,7 @@ $foo
     }
 
     /**
-     * @return iterable<string, array{0: string, 1?: string|null}>
+     * @return iterable<string, array{0: string, 1?: null|string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -121,7 +121,7 @@ $foo
     }
 
     /**
-     * @return iterable<string, array{0: string, 1?: string|null}>
+     * @return iterable<string, array{0: string, 1?: null|string}>
      */
     public static function provideFix83Cases(): iterable
     {
