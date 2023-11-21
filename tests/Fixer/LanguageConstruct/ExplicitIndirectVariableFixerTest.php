@@ -69,6 +69,16 @@ $foo
 // C3
 ;',
         ];
+
+        yield 'dynamic static property access using variable variable' => [
+            '<?php echo Foo::${$bar};',
+            '<?php echo Foo::$$bar;',
+        ];
+
+        yield 'dynamic static property access using variable variable with method call' => [
+            '<?php echo Foo::${$bar}->baz();',
+            '<?php echo Foo::$$bar->baz();',
+        ];
     }
 
     /**
