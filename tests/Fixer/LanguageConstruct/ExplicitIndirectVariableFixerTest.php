@@ -103,4 +103,22 @@ $foo
             '<?php echo $foo?->$bar["baz"]();',
         ];
     }
+
+    /**
+     * @dataProvider provideFix83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testFix83(string $expected, ?string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix83Cases(): iterable
+    {
+        yield 'dynamic class const fetch with variable variable' => [
+            '<?php echo Foo::{${$bar}};',
+            '<?php echo Foo::{$$bar};',
+        ];
+    }
 }
