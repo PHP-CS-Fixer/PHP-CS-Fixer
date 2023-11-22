@@ -41,19 +41,19 @@ final class SwitchAnalyzerTest extends TestCase
      */
     public static function provideColonCases(): iterable
     {
-        yield [
+        yield 'ternary operator' => [
             false,
             '<?php $x ? 1 : 0;',
             7,
         ];
 
-        yield [
+        yield 'alternative syntax' => [
             false,
             '<?php if(true): 3; endif;',
             5,
         ];
 
-        yield [
+        yield 'label' => [
             false,
             '<?php gotoHere: echo "here";',
             2,
@@ -67,7 +67,7 @@ final class SwitchAnalyzerTest extends TestCase
             }';
 
         foreach ([13, 23, 31] as $index) {
-            yield [true, $switchCode, $index];
+            yield sprintf('switch at index %d', $index) => [true, $switchCode, $index];
         }
     }
 }

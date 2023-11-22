@@ -17,6 +17,9 @@ namespace PhpCsFixer\Tokenizer\Analyzer;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @internal
+ */
 final class SwitchAnalyzer
 {
     /** @var array<string, array<int>> */
