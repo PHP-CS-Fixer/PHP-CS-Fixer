@@ -69,8 +69,8 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * The `--REQUIREMENTS--` section can define additional constraints for running (or not) the test.
  * You can use these fields to fine-tune run conditions for test cases:
- *   - `php` represents minimum PHP version test should be run on. Default to current running PHP version (no effect).
- *   - `php<` represents maximum PHP version test should be run on. Default to PHP's maximum integer value (no effect).
+ *   - `php` represents minimum PHP version test should be run on. Defaults to current running PHP version (no effect).
+ *   - `php<` represents maximum PHP version test should be run on. Defaults to PHP's maximum integer value (no effect).
  *   - `os` represents operating system(s) test should be run on. Supported operating systems: Linux, Darwin and Windows.
  *     By default test is run on all supported operating systems.
  *
