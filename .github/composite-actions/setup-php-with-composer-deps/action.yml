@@ -55,7 +55,7 @@ runs:
       if: inputs.composer-flex-with-symfony-version == '^7'
       shell: bash
       run: |
-        composer config minimum-stability beta
+        composer config minimum-stability RC
         composer remove php-coveralls/php-coveralls facile-it/paraunit keradus/cli-executor --dev
 
     - name: Install Composer deps
