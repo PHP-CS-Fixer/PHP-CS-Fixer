@@ -56,7 +56,6 @@ runs:
       shell: bash
       run: |
         composer config minimum-stability beta
-        sed -i.bak -E 's|"(symfony/.*): "(\^[56].*)"|"\1: "^7@beta"|' composer.json
         composer remove php-coveralls/php-coveralls facile-it/paraunit keradus/cli-executor --dev
 
     - name: Install Composer deps
