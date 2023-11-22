@@ -55,8 +55,7 @@ runs:
       if: inputs.composer-flex-with-symfony-version == '^7'
       shell: bash
       run: |
-        composer config minimum-stability beta
-        sed -i.bak -E 's|"(symfony/.*): "(\^[56].*)"|"\1: "^7@beta"|' composer.json
+        composer config minimum-stability RC
         composer remove facile-it/paraunit --dev
 
     - name: Install Composer deps
