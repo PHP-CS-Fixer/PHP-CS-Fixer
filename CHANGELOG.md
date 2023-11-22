@@ -3,6 +3,23 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.39.0
+---------------------
+
+* chore: Add support for Symfony 7 (#7453)
+* chore: IntegrationTest - move support of php< requirement to main Integration classes (#7448)
+* CI: drop Symfony ^7 incompat exceptions of php-coveralls and cli-executor (#7455)
+* CI: early compatibility checks with Symfony 7 (#7431)
+* docs: drop list.rst and code behind it (#7436)
+* docs: remove Gitter mentions (#7441)
+* DX: Ability to run Fixer on PHP8.3 for development (#7449)
+* DX: describe command - for rules, list also sets that are including them (#7419)
+* DX: Docker clean up (#7450)
+* DX: more usage of spaceship operator (#7438)
+* DX: Put `Preg`'s last error message in exception message (#7443)
+* feat: Introduce `@PHP83Migration` ruleset and PHP 8.3 integration test (#7439)
+* test: Improve `AbstractIntegrationTestCase` description (#7452)
+
 Changelog for v3.38.2
 ---------------------
 
