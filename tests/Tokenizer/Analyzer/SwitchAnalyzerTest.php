@@ -26,14 +26,21 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class SwitchAnalyzerTest extends TestCase
 {
     /**
+     * @param array<int> $indices
+     *
      * @dataProvider provideColonCases
      */
-    public function testColon(bool $belongsToSwitch, string $code, int $index): void
+    public function testColon(string $code, array $indices): void
     {
         $tokens = Tokens::fromCode($code);
 
-        self::assertTrue($tokens[$index]->equals(':'));
-        self::assertSame($belongsToSwitch, SwitchAnalyzer::belongsToSwitch($tokens, $index));
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            self::assertSame(
+                \in_array($index, $indices, true),
+                SwitchAnalyzer::belongsToSwitch($tokens, $index),
+                sprintf('Index %d failed check.', $index)
+            );
+        }
     }
 
     /**
@@ -42,32 +49,40 @@ final class SwitchAnalyzerTest extends TestCase
     public static function provideColonCases(): iterable
     {
         yield 'ternary operator' => [
-            false,
             '<?php $x ? 1 : 0;',
-            7,
+            [],
         ];
 
         yield 'alternative syntax' => [
-            false,
             '<?php if(true): 3; endif;',
-            5,
+            [],
         ];
 
         yield 'label' => [
-            false,
             '<?php gotoHere: echo "here";',
-            2,
+            [],
         ];
 
-        $switchCode = '<?php
-            switch (true) {
-                case 1: return 2;
-                case 3: return 4;
-                default: return 5;;
-            }';
+        yield 'switch' => [
+            '<?php
+                switch ($value1) {
+                    case 1: return 2;
+                    case 3: return 4;
+                    default: return 5;
+                }
+            ',
+            [13, 23, 31],
+        ];
 
-        foreach ([13, 23, 31] as $index) {
-            yield sprintf('switch at index %d', $index) => [true, $switchCode, $index];
-        }
+        yield 'switch with alternative syntax' => [
+            '<?php
+                switch ($value1):
+                    case 1: return 2;
+                    default: return 3;
+                    case 4: return 5;
+                endswitch;
+            ',
+            [7, 12, 20, 30],
+        ];
     }
 }

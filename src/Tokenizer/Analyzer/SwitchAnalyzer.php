@@ -49,6 +49,10 @@ final class SwitchAnalyzer
 
         /** @var SwitchAnalysis $analysis */
         foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]) as $analysis) {
+            if ($tokens[$analysis->getOpenIndex()]->equals(':')) {
+                $colonIndices[] = $analysis->getOpenIndex();
+            }
+
             foreach ($analysis->getCases() as $case) {
                 $colonIndices[] = $case->getColonIndex();
             }
