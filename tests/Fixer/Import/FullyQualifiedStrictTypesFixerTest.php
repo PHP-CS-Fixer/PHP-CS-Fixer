@@ -556,6 +556,8 @@ class SomeClass
     }
 
     /**
+     * @param array<string, array<string, mixed>|bool> $config
+     *
      * @dataProvider provideCodeWithoutReturnTypesCases
      */
     public function testCodeWithoutReturnTypes(string $expected, ?string $input = null, array $config = []): void
@@ -1235,6 +1237,8 @@ function foo($dateTime) {}',
     }
 
     /**
+     * @param array<string, array<string, mixed>|bool> $config
+     *
      * @requires PHP 8.0
      *
      * @dataProvider provideFix80Cases

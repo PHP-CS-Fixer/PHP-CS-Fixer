@@ -320,6 +320,10 @@ namespace Foo\Bar {
         }
     }
 
+    /**
+     * @param array{content: string, tokens: array<int>} $class
+     * @param array<string, string>                      $uses
+     */
     private function shortenClassIfPossible(Tokens $tokens, array $class, array $uses, string $namespaceName): void
     {
         $longTypeContent = $class['content'];
@@ -450,6 +454,9 @@ namespace Foo\Bar {
         return null;
     }
 
+    /**
+     * @param array{content: string, tokens: array<int>} $class
+     */
     private function replaceClassWithShort(Tokens $tokens, array $class, string $short): void
     {
         $i = 0; // override the tokens
