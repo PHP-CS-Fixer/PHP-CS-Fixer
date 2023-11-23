@@ -44,7 +44,7 @@ final class SwitchAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, string, int}>
+     * @return iterable<array{string, array<int>}>
      */
     public static function provideColonCases(): iterable
     {
