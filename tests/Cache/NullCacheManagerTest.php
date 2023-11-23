@@ -28,14 +28,14 @@ final class NullCacheManagerTest extends TestCase
 {
     public function testIsFinal(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\NullCacheManager::class);
+        $reflection = new \ReflectionClass(NullCacheManager::class);
 
         self::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsCacheManagerInterface(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\NullCacheManager::class);
+        $reflection = new \ReflectionClass(NullCacheManager::class);
 
         self::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheManagerInterface::class));
     }
