@@ -24,10 +24,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\AlternativeSyntaxAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -106,8 +105,6 @@ function foo() {
         $gotoLabelAnalyzer = new GotoLabelAnalyzer();
         $alternativeSyntaxAnalyzer = new AlternativeSyntaxAnalyzer();
 
-        $excludedIndices = $this->getExcludedIndices($tokens);
-
         $index = $tokens->count();
         while ($index > 1) {
             --$index;
@@ -128,7 +125,7 @@ function foo() {
                 continue;
             }
 
-            if (\in_array($index, $excludedIndices, true)) {
+            if (SwitchAnalyzer::belongsToSwitch($tokens, $index)) {
                 continue;
             }
 
@@ -144,31 +141,6 @@ function foo() {
 
             $this->fixOperatorLinebreak($tokens, $operatorIndices);
         }
-    }
-
-    /**
-     * Currently only colons from "switch".
-     *
-     * @return int[]
-     */
-    private function getExcludedIndices(Tokens $tokens): array
-    {
-        $colonIndices = [];
-
-        /** @var SwitchAnalysis $analysis */
-        foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]) as $analysis) {
-            foreach ($analysis->getCases() as $case) {
-                $colonIndices[] = $case->getColonIndex();
-            }
-
-            $defaultAnalysis = $analysis->getDefaultAnalysis();
-
-            if (null !== $defaultAnalysis) {
-                $colonIndices[] = $defaultAnalysis->getColonIndex();
-            }
-        }
-
-        return $colonIndices;
     }
 
     /**
