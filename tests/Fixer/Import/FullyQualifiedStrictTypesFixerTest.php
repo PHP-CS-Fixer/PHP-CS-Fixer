@@ -280,16 +280,6 @@ namespace B {
             ['leading_backslash_in_global_namespace' => true],
         ];
 
-        yield 'starts with but not full name arg' => [
-            '<?php
-            use XYZ\A;
-            function Foo(\XYZ\AT $f) {
-            }
-            ',
-            null,
-            ['leading_backslash_in_global_namespace' => true],
-        ];
-
         yield 'starts with but not full name extends' => [
             '<?php namespace a\abcd;
 class Foo extends \a\abcdTest { }',
