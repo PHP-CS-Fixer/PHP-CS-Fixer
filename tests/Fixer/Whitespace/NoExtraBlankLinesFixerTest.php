@@ -1130,11 +1130,23 @@ class Foo {}'
         yield [
             ['tokens' => ['throw']],
             '<?php
-                $a = $bar ?? throw new \Exception();
+                $nullCoalescingOperator1 = $bar ?? throw new \Exception();
 
-                $a = $bar ?? throw new \Exception();
+                $nullCoalescingOperator2 = $bar ?? throw new \Exception();
 
-                $a = $bar ?? throw new \Exception();
+                $nullCoalescingOperator3 = $bar ?? throw new \Exception();
+
+                $ternaryOperator1 = $bar ? 42 : throw new \Exception();
+
+                $ternaryOperator2 = $bar ? 42 : throw new \Exception();
+
+                $ternaryOperator3 = $bar ? 42 : throw new \Exception();
+
+                $orOperator1 = $bar || throw new \Exception();
+
+                $orOperator2 = $bar || throw new \Exception();
+
+                $orOperator3 = $bar || throw new \Exception();
             ',
         ];
 
