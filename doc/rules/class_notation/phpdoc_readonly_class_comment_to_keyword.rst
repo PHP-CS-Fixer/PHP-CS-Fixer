@@ -31,5 +31,7 @@ Example #1
         }
 Source class
 ------------
+Source class
+------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\PhpdocReadonlyClassCommentToKeywordFixer <./../../../src/Fixer/ClassNotation/PhpdocReadonlyClassCommentToKeywordFixer.php>`_

@@ -52,3 +52,7 @@ With configuration: ``['characters_threshold' => 10]``.
    +'a very very long element',
    +'another very long element'
    +];
+Source class
+------------
+
+`PhpCsFixer\\Fixer\\ArrayNotation\\MultilineLongArrayFixer <./../src/Fixer/ArrayNotation/MultilineLongArrayFixer.php>`_
