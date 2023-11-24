@@ -56,7 +56,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'no whitespace' => [
-            '<?php class T implements/*An*/AnInterface/*end*/,/*Second*/SecondInterface{}',
+            '<?php class T implements/*An*/AnInterface,/*Second*/SecondInterface/*end*/{}',
             '<?php class T implements/*Second*/SecondInterface,/*An*/AnInterface/*end*/{}',
         ];
 
@@ -123,6 +123,17 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ',
+        ];
+
+        yield 'single line after interfaces' => [
+            '<?php
+                class Foo implements B, C //, A
+                {}
+            ',
+            '<?php
+                class Foo implements C, B //, A
+                {}
+            ',
         ];
     }
 
