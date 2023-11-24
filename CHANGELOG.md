@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.39.1
+---------------------
+
+* DX: introduce SwitchAnalyzer (#7456)
+* fix: NoExtraBlankLinesFixer - do not remove blank line after `? : throw` (#7457)
+* fix: OrderedInterfacesFixer - do not comment out interface (#7464)
+* test: Improve `ExplicitIndirectVariableFixerTest` (#7451)
+
 Changelog for v3.39.0
 ---------------------
 
