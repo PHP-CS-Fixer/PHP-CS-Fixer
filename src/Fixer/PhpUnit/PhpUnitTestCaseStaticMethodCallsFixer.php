@@ -419,9 +419,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
                 // do not change `self` to `this` in static methods
                 if ('this' === $callType) {
-                    $attributes = $analyzer->getMethodAttributes($index);
+                    $methodAnalysis = $analyzer->getMethodAnalysis($index);
 
-                    if (false !== $attributes['static']) {
+                    if ($methodAnalysis->isStatic()) {
                         $index = $this->findEndOfNextBlock($tokens, $index);
 
                         continue;

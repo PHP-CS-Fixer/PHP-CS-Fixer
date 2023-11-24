@@ -119,8 +119,8 @@ class FooTest extends TestCase {
             }
             $functionIndex = $tokens->getPrevTokenOfKind($dataProviderDefinitionIndex->getNameIndex(), [[T_FUNCTION]]);
 
-            $methodAttributes = $tokensAnalyzer->getMethodAttributes($functionIndex);
-            if (false !== $methodAttributes['static']) {
+            $methodAnalysis = $tokensAnalyzer->getMethodAnalysis($functionIndex);
+            if ($methodAnalysis->isStatic()) {
                 continue;
             }
 

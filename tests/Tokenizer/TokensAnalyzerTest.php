@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\MethodAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -2170,28 +2171,19 @@ $b;',
     }
 
     /**
-     * @param array{visibility: ?int, static: bool, abstract: bool, final: bool} $expected
-     *
      * @dataProvider provideGetFunctionPropertiesCases
      */
-    public function testGetFunctionProperties(string $source, int $index, array $expected): void
+    public function testGetFunctionProperties(string $source, int $index, MethodAnalysis $expected): void
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $attributes = $tokensAnalyzer->getMethodAttributes($index);
+        $methodAnalysis = $tokensAnalyzer->getMethodAnalysis($index);
 
-        self::assertSame($expected, $attributes);
+        self::assertSame(serialize($expected), serialize($methodAnalysis));
     }
 
     public static function provideGetFunctionPropertiesCases(): iterable
     {
-        $defaultAttributes = [
-            'visibility' => null,
-            'static' => false,
-            'abstract' => false,
-            'final' => false,
-        ];
-
         $template = '
 <?php
 class TestClass {
@@ -2200,45 +2192,54 @@ class TestClass {
     }
 }
 ';
-        $cases = [];
 
-        $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PRIVATE;
-        $cases[] = [sprintf($template, 'private'), 10, $attributes];
+        yield [
+            sprintf($template, 'private'),
+            10,
+            new MethodAnalysis(T_PRIVATE, false, false, false),
+        ];
 
-        $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PUBLIC;
-        $cases[] = [sprintf($template, 'public'), 10, $attributes];
+        yield [
+            sprintf($template, 'public'),
+            10,
+            new MethodAnalysis(T_PUBLIC, false, false, false),
+        ];
 
-        $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PROTECTED;
-        $cases[] = [sprintf($template, 'protected'), 10, $attributes];
+        yield [
+            sprintf($template, 'protected'),
+            10,
+            new MethodAnalysis(T_PROTECTED, false, false, false),
+        ];
 
-        $attributes = $defaultAttributes;
-        $attributes['visibility'] = null;
-        $attributes['static'] = true;
-        $cases[] = [sprintf($template, 'static'), 10, $attributes];
+        yield [
+            sprintf($template, 'static'),
+            10,
+            new MethodAnalysis(null, true, false, false),
+        ];
 
-        $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PUBLIC;
-        $attributes['static'] = true;
-        $attributes['final'] = true;
-        $cases[] = [sprintf($template, 'final public static'), 14, $attributes];
+        yield [
+            sprintf($template, 'final public static'),
+            14,
+            new MethodAnalysis(T_PUBLIC, true, false, true),
+        ];
 
-        $attributes = $defaultAttributes;
-        $attributes['visibility'] = null;
-        $attributes['abstract'] = true;
-        $cases[] = [sprintf($template, 'abstract'), 10, $attributes];
+        yield [
+            sprintf($template, 'abstract'),
+            10,
+            new MethodAnalysis(null, false, true, false),
+        ];
 
-        $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PUBLIC;
-        $attributes['abstract'] = true;
-        $cases[] = [sprintf($template, 'abstract public'), 12, $attributes];
+        yield [
+            sprintf($template, 'abstract public'),
+            12,
+            new MethodAnalysis(T_PUBLIC, false, true, false),
+        ];
 
-        $attributes = $defaultAttributes;
-        $cases[] = [sprintf($template, ''), 8, $attributes];
-
-        return $cases;
+        yield [
+            sprintf($template, ''),
+            8,
+            new MethodAnalysis(null, false, false, false),
+        ];
     }
 
     public function testIsWhilePartOfDoWhile(): void

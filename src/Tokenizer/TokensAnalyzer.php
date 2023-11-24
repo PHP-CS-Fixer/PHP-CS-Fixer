@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer;
 
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\MethodAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
 
@@ -205,40 +206,36 @@ final class TokensAnalyzer
 
     /**
      * @param int $index Index of the T_FUNCTION token
-     *
-     * @return array{visibility: null|T_PRIVATE|T_PROTECTED|T_PUBLIC, static: bool, abstract: bool, final: bool}
      */
-    public function getMethodAttributes(int $index): array
+    public function getMethodAnalysis(int $index): MethodAnalysis
     {
         if (!$this->tokens[$index]->isGivenKind(T_FUNCTION)) {
             throw new \LogicException(sprintf('No T_FUNCTION at given index %d, got "%s".', $index, $this->tokens[$index]->getName()));
         }
 
-        $attributes = [
-            'visibility' => null,
-            'static' => false,
-            'abstract' => false,
-            'final' => false,
-        ];
+        $visibility = null;
+        $isStatic = false;
+        $isAbstract = false;
+        $isFinal = false;
 
         for ($i = $index; $i >= 0; --$i) {
             $i = $this->tokens->getPrevMeaningfulToken($i);
             $token = $this->tokens[$i];
 
             if ($token->isGivenKind(T_STATIC)) {
-                $attributes['static'] = true;
+                $isStatic = true;
 
                 continue;
             }
 
             if ($token->isGivenKind(T_FINAL)) {
-                $attributes['final'] = true;
+                $isFinal = true;
 
                 continue;
             }
 
             if ($token->isGivenKind(T_ABSTRACT)) {
-                $attributes['abstract'] = true;
+                $isAbstract = true;
 
                 continue;
             }
@@ -246,19 +243,19 @@ final class TokensAnalyzer
             // visibility
 
             if ($token->isGivenKind(T_PRIVATE)) {
-                $attributes['visibility'] = T_PRIVATE;
+                $visibility = T_PRIVATE;
 
                 continue;
             }
 
             if ($token->isGivenKind(T_PROTECTED)) {
-                $attributes['visibility'] = T_PROTECTED;
+                $visibility = T_PROTECTED;
 
                 continue;
             }
 
             if ($token->isGivenKind(T_PUBLIC)) {
-                $attributes['visibility'] = T_PUBLIC;
+                $visibility = T_PUBLIC;
 
                 continue;
             }
@@ -268,7 +265,7 @@ final class TokensAnalyzer
             break;
         }
 
-        return $attributes;
+        return new MethodAnalysis($visibility, $isStatic, $isAbstract, $isFinal);
     }
 
     /**

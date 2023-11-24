@@ -76,16 +76,16 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             }
 
             ++$counter;
-            $visibility = $tokensAnalyzer->getMethodAttributes($i)['visibility'];
+            $methodAnalysis = $tokensAnalyzer->getMethodAnalysis($i);
 
-            if (T_PUBLIC === $visibility) {
+            if ($methodAnalysis->isPublic()) {
                 $index = $tokens->getPrevTokenOfKind($i, [[T_PUBLIC]]);
                 $tokens[$index] = new Token([T_PROTECTED, 'protected']);
 
                 continue;
             }
 
-            if (null === $visibility) {
+            if (!$methodAnalysis->hasVisibility()) {
                 $tokens->insertAt($i, [new Token([T_PROTECTED, 'protected']), new Token([T_WHITESPACE, ' '])]);
             }
         }

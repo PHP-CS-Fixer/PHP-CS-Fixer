@@ -537,9 +537,9 @@ class Sample
     {
         // find last token of the element
         if ('method' === $element['type'] && !$tokens[$class['index']]->isGivenKind(T_INTERFACE)) {
-            $attributes = $tokensAnalyzer->getMethodAttributes($element['index']);
+            $methodAnalysis = $tokensAnalyzer->getMethodAnalysis($element['index']);
 
-            if (true === $attributes['abstract']) {
+            if ($methodAnalysis->isAbstract()) {
                 $elementEndIndex = $tokens->getNextTokenOfKind($element['index'], [';']);
             } else {
                 $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($element['index'], ['{']));
