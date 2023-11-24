@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\MethodAnalysis;
  */
 final class MethodAnalysisTest extends TestCase
 {
-    public function testDataProviderAnalysis(): void
+    public function testMethodAnalysis(): void
     {
         $analysis = new MethodAnalysis(T_PROTECTED, false, true, false);
 
