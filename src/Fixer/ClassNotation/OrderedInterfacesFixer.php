@@ -132,7 +132,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
             }
 
             $implementsStart = $index + 1;
-            $implementsEnd = $tokens->getPrevNonWhitespace($tokens->getNextTokenOfKind($implementsStart, ['{']));
+            $implementsEnd = $tokens->getPrevMeaningfulToken($tokens->getNextTokenOfKind($implementsStart, ['{']));
 
             $interfaces = $this->getInterfaces($tokens, $implementsStart, $implementsEnd);
 
