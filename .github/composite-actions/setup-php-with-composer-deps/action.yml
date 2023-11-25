@@ -26,14 +26,14 @@ runs:
   using: "composite"
   steps:
     - name: Resolve PHP tools flag
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       id: setup-php-resolve-tools
       with:
         script: 'return "${{ inputs.composer-flex-with-symfony-version }}" ? "flex" : "none"'
         result-encoding: string
 
     - name: Resolve PHP coverage flag
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       id: setup-php-resolve-coverage
       with:
         script: 'return "${{ inputs.php-coverage }}" == "yes" ? "pcov" : "none"'
