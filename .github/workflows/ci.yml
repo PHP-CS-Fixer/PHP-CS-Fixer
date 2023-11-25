@@ -125,14 +125,12 @@ jobs:
             php-version: '8.3'
             job-description: 'Fixer'
             run-fixer: 'yes'
-            composer-flags: '--ignore-platform-req=PHP'
             PHP_CS_FIXER_IGNORE_ENV: 1
 
           - operating-system: 'ubuntu-22.04'
             php-version: '8.3'
             job-description: 'tests'
             run-tests: 'yes'
-            composer-flags: '--ignore-platform-req=PHP'
             PHP_CS_FIXER_IGNORE_ENV: 1
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}

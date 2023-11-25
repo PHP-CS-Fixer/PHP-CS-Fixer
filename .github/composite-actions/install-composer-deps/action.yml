@@ -32,6 +32,7 @@ runs:
       run: |
         echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
         echo "COMPOSER_CACHE_PHP=$(php -r 'echo PHP_VERSION;')" >> $GITHUB_ENV
+        echo "PHP_VERSION_ID=$(php -r 'echo PHP_VERSION_ID;')" >> $GITHUB_ENV
 
     - name: Cache Composer dependencies
       uses: actions/cache@v3
@@ -43,6 +44,13 @@ runs:
           Composer-${{ runner.os }}-${{ env.COMPOSER_CACHE_PHP }}-
           Composer-${{ runner.os }}-
 
+    - name: Auto-add ignore-platform-req
+      uses: actions/github-script@v6
+      id: resolve-ignore-platform-req
+      with:
+        script: 'return ${{ env.PHP_VERSION_ID }} >= 80300 ? "--ignore-platform-req=php+" : ""'
+        result-encoding: string
+
     - name: Install dependencies
       uses: nick-invision/retry@v2
       with:
@@ -51,7 +59,7 @@ runs:
         retry_wait_seconds: 30
         # `--no-scripts` to avoid side-effects (e.g. installing dev-tools for all jobs on CI level),
         # all executed scripts should be explicit and run only when needed.
-        command: composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ inputs.flags }}
+        command: composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ inputs.flags }} ${{ steps.resolve-ignore-platform-req.outputs.result }}
 
     - name: Show versions of packages
       shell: bash
