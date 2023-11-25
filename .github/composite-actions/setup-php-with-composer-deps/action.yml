@@ -55,7 +55,6 @@ runs:
       if: inputs.composer-flex-with-symfony-version == '^7'
       shell: bash
       run: |
-        composer config minimum-stability RC
         composer remove facile-it/paraunit --dev --no-update
 
     - name: Install Composer deps
