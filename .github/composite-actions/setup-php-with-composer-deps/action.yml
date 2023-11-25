@@ -56,7 +56,7 @@ runs:
       shell: bash
       run: |
         composer config minimum-stability RC
-        composer remove facile-it/paraunit --dev
+        composer remove facile-it/paraunit --dev --no-update
 
     - name: Install Composer deps
       uses: ./.github/composite-actions/install-composer-deps
