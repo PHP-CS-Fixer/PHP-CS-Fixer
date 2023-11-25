@@ -51,12 +51,6 @@ runs:
       shell: bash
       run: composer config extra.symfony.require ${{ inputs.composer-flex-with-symfony-version }}
 
-    - name: Configure Symfony ^8
-      if: inputs.composer-flex-with-symfony-version == '^8'
-      shell: bash
-      run: |
-        composer config minimum-stability RC
-
     - name: Configure Symfony ^7
       if: inputs.composer-flex-with-symfony-version == '^7'
       shell: bash
