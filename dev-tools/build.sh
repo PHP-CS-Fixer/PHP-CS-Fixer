@@ -9,10 +9,16 @@ composer config platform.php 7.4
 composer update --optimize-autoloader --no-interaction --no-progress --no-scripts --no-dev
 composer info -D | sort
 
-composer show -d dev-tools humbug/box -q || composer update -d dev-tools --no-interaction --no-progress
+# install box/phar
+mkdir -p dev-tools/bin
+if [ ! -x dev-tools/bin/box ]; then
+    wget -O dev-tools/bin/box "https://github.com/box-project/box/releases/download/4.1.0/box.phar"
+    chmod +x dev-tools/bin/box
+fi
+dev-tools/bin/box --version
 
 # build phar file
-dev-tools/vendor/bin/box compile
+dev-tools/bin/box compile
 
 # revert changes to composer
 git checkout composer.json
