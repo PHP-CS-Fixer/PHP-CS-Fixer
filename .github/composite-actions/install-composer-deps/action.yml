@@ -45,7 +45,7 @@ runs:
           Composer-${{ runner.os }}-
 
     - name: Auto-add ignore-platform-req
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       id: resolve-ignore-platform-req
       with:
         script: 'return ${{ env.PHP_VERSION_ID }} >= 80300 ? "--ignore-platform-req=php+" : ""'
