@@ -16,7 +16,7 @@ Example #1
    +++ New
     <?php
    -unset($a); unset($b);
-   +unset($a, $b);
+   +unset($a, $b); 
 
 Rule sets
 ---------

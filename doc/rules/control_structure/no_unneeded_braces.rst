@@ -30,17 +30,17 @@ Example #1
    --- Original
    +++ New
    -<?php {
-   +<?php
+   +<?php 
         echo 1;
    -}
 
    +
     switch ($b) {
    -    case 1: {
-   +    case 1:
+   +    case 1: 
             break;
    -    }
-   +
+   +    
     }
 
 Example #2

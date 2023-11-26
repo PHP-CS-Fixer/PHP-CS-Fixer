@@ -33,7 +33,7 @@ Example #2
     {
         /**
    -     * @inheritdoc
-   +     *
+   +     * 
          */
         public function Test()
         {

@@ -26,7 +26,7 @@ Example #1
         <?php
    -    /** @readonly */
    -    class C {
-   +
+   +    
    +    readonly class C {
         }
 Source class

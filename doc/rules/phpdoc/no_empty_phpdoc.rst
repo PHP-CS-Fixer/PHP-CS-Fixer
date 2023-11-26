@@ -15,7 +15,7 @@ Example #1
    --- Original
    +++ New
    -<?php /**  */
-   +<?php
+   +<?php 
 
 Rule sets
 ---------

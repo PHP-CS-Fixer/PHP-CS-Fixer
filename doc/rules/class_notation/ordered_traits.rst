@@ -36,7 +36,7 @@ Example #1
 
    --- Original
    +++ New
-    <?php class Foo {
+    <?php class Foo { 
    -use Z; use A; }
    +use A; use Z; }
 
@@ -49,7 +49,7 @@ With configuration: ``['case_sensitive' => true]``.
 
    --- Original
    +++ New
-    <?php class Foo {
+    <?php class Foo { 
    -use Aaa; use AA; }
    +use AA; use Aaa; }
 
