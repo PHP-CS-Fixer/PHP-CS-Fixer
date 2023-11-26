@@ -44,7 +44,7 @@ final class ReadmeTest extends TestCase
 
         self::assertEqualsCanonicalizing([
             '    if (\PHP_VERSION_ID === 80000) {'."\n",
-            '    if (\PHP_VERSION_ID < 70400 || \PHP_VERSION_ID >= 80300) {'."\n",
+            '    if (\PHP_VERSION_ID < 70400 || \PHP_VERSION_ID >= 80400) {'."\n",
         ], $phpVersionIdLines, 'Seems supported PHP versions changed in "./php-cs-fixer" - edit the README.md (and this test file) to match them!');
     }
 }

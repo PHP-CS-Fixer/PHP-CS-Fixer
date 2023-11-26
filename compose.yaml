@@ -40,5 +40,5 @@ services:
     <<: *php
     build:
       args:
-        PHP_VERSION: "8.3.0RC6"
+        PHP_VERSION: "8.3"
         PHP_XDEBUG_VERSION: "3.3.0alpha3"

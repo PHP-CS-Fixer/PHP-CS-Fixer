@@ -1,6 +1,6 @@
 {
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "ergebnis/composer-normalize": "^2.39.0",
         "jangregor/phpstan-prophecy": "^1.0.0",
         "maglnet/composer-require-checker": "^4.7.1",
@@ -19,7 +19,7 @@
         },
         "optimize-autoloader": true,
         "platform": {
-            "php": "8.2"
+            "php": "8.3"
         },
         "prefer-stable": true,
         "sort-packages": true

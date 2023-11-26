@@ -19,7 +19,7 @@ jobs:
         operating-system:
           - ubuntu-20.04
         php-version:
-          - 8.2
+          - 8.3
 
     name: Static Code Analysis
 
