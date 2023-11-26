@@ -124,13 +124,13 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
             (self::STR_DOUBLE_QUOTE === $firstOperand['type'] && self::STR_DOUBLE_QUOTE === $secondOperand['type'])
             || (self::STR_SINGLE_QUOTE === $firstOperand['type'] && self::STR_SINGLE_QUOTE === $secondOperand['type'])
         ) {
-            $this->mergeContantEscapedStringOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
+            $this->mergeConstantEscapedStringOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
 
             return;
         }
 
         if (self::STR_DOUBLE_QUOTE_VAR === $firstOperand['type'] && self::STR_DOUBLE_QUOTE_VAR === $secondOperand['type']) {
-            $this->mergeContantEscapedStringVarOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
+            $this->mergeConstantEscapedStringVarOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
 
             return;
         }
@@ -146,7 +146,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
             [$operand1, $operand2] = $operandPair;
 
             if (self::STR_DOUBLE_QUOTE_VAR === $operand1['type'] && self::STR_DOUBLE_QUOTE === $operand2['type']) {
-                $this->mergeContantEscapedStringVarOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
+                $this->mergeConstantEscapedStringVarOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
 
                 return;
             }
@@ -159,7 +159,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
                 $operantContent = $tokens[$operand2['start']]->getContent();
 
                 if ($this->isSimpleQuotedStringContent($operantContent)) {
-                    $this->mergeContantEscapedStringOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
+                    $this->mergeConstantEscapedStringOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
                 }
 
                 return;
@@ -169,7 +169,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
                 $operantContent = $tokens[$operand2['start']]->getContent();
 
                 if ($this->isSimpleQuotedStringContent($operantContent)) {
-                    $this->mergeContantEscapedStringVarOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
+                    $this->mergeConstantEscapedStringVarOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
                 }
 
                 return;
@@ -227,7 +227,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
      *     type: self::STR_*,
      * } $secondOperand
      */
-    private function mergeContantEscapedStringOperands(
+    private function mergeConstantEscapedStringOperands(
         Tokens $tokens,
         array $firstOperand,
         int $concatOperatorIndex,
@@ -260,7 +260,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
      *     type: self::STR_*,
      * } $secondOperand
      */
-    private function mergeContantEscapedStringVarOperands(
+    private function mergeConstantEscapedStringVarOperands(
         Tokens $tokens,
         array $firstOperand,
         int $concatOperatorIndex,

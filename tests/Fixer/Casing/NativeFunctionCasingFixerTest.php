@@ -37,7 +37,7 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
             '<?php
                 namespace Bar {
                     function STRLEN($str) {
-                        return "overriden" . \strlen($str);
+                        return "overridden" . \strlen($str);
                     }
                 }
 
