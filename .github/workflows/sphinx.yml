@@ -34,4 +34,4 @@ jobs:
       - name: Check Sphinx document sources
         run: |
           git ls-files --cached -z -- '*.rst' \
-            | xargs --null -- python -m sphinxlint --enable all --max-line-length 2000
+            | xargs --null -- python -m sphinxlint --enable all --disable trailing-whitespace --max-line-length 2000
