@@ -2,7 +2,6 @@
     "require": {
         "php": "^8.2",
         "ergebnis/composer-normalize": "^2.39.0",
-        "humbug/box": "4.1.0",
         "jangregor/phpstan-prophecy": "^1.0.0",
         "maglnet/composer-require-checker": "^4.7.1",
         "mi-schi/phpmd-extension": "^4.3.0",

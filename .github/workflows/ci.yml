@@ -220,6 +220,12 @@ jobs:
           os: ${{ runner.os }}
           php: ${{ matrix.php-version }}
 
+      - name: Cache dev-tools
+        uses: actions/cache@v3
+        with:
+          path: dev-tools/bin/
+          key: Build-${{ hashFiles('dev-tools/build.sh') }}
+
       - name: Build phar
         run: ./dev-tools/build.sh
 
