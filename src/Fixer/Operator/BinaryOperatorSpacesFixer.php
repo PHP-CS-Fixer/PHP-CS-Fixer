@@ -357,37 +357,68 @@ $array = [
                 ->setDefault(self::SINGLE_SPACE)
                 ->setAllowedValues(self::$allowedValues)
                 ->getOption(),
-            (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: '.Utils::naturalLanguageJoinWithBackticks(self::SUPPORTED_OPERATORS).'.'))
+            (new FixerOptionBuilder(
+                'operators',
+                'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: '.Utils::naturalLanguageJoinWithBackticks(
+                    self::SUPPORTED_OPERATORS
+                ).'.'
+            ))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([static function (array $option): bool {
-                    foreach ($option as $operator => $value) {
-                        if (!\in_array($operator, self::SUPPORTED_OPERATORS, true)) {
-                            throw new InvalidOptionsException(
-                                sprintf(
-                                    'Unexpected "operators" key, expected any of %s, got "%s".',
-                                    Utils::naturalLanguageJoin(self::SUPPORTED_OPERATORS),
-                                    \gettype($operator).'#'.$operator
-                                )
-                            );
+                ->setAllowedValues([
+                    static function (array $option): bool {
+                        foreach ($option as $operator => $value) {
+                            if (!\in_array(
+                                $operator,
+                                self::SUPPORTED_OPERATORS,
+                                true
+                            )) {
+                                throw new InvalidOptionsException(
+                                    sprintf(
+                                        'Unexpected "operators" key, expected any of %s, got "%s".',
+                                        Utils::naturalLanguageJoin(
+                                            self::SUPPORTED_OPERATORS
+                                        ),
+                                        \gettype(
+                                            $operator
+                                        ).'#'.$operator
+                                    )
+                                );
+                            }
+
+                            if (!\in_array(
+                                $value,
+                                self::$allowedValues,
+                                true
+                            )) {
+                                throw new InvalidOptionsException(
+                                    sprintf(
+                                        'Unexpected value for operator "%s", expected any of %s, got "%s".',
+                                        $operator,
+                                        Utils::naturalLanguageJoin(
+                                            array_map(
+                                                static fn (
+                                                    $value
+                                                ): string => Utils::toString(
+                                                    $value
+                                                ),
+                                                self::$allowedValues
+                                            )
+                                        ),
+                                        \is_object(
+                                            $value
+                                        ) ? \get_class(
+                                            $value
+                                        ) : (null === $value ? 'null' : \gettype(
+                                            $value
+                                        ).'#'.$value)
+                                    )
+                                );
+                            }
                         }
 
-                        if (!\in_array($value, self::$allowedValues, true)) {
-                            throw new InvalidOptionsException(
-                                sprintf(
-                                    'Unexpected value for operator "%s", expected any of %s, got "%s".',
-                                    $operator,
-                                    Utils::naturalLanguageJoin(array_map(
-                                        static fn ($value): string => Utils::toString($value),
-                                        self::$allowedValues
-                                    )),
-                                    \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value)
-                                )
-                            );
-                        }
-                    }
-
-                    return true;
-                }])
+                        return true;
+                    },
+                ])
                 ->setDefault([])
                 ->getOption(),
         ]);
@@ -449,7 +480,9 @@ $array = [
         // fix white space after operator
         if ($tokens[$index + 1]->isWhitespace()) {
             $content = $tokens[$index + 1]->getContent();
-            if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
+            if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getNextNonWhitespace(
+                $index + 1
+            )]->isComment()) {
                 $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
@@ -459,7 +492,9 @@ $array = [
         // fix white space before operator
         if ($tokens[$index - 1]->isWhitespace()) {
             $content = $tokens[$index - 1]->getContent();
-            if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+            if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace(
+                $index - 1
+            )]->isComment()) {
                 $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
@@ -576,20 +611,27 @@ $array = [
             ) {
                 if ('=>' === $tokenContent) {
                     for ($index = $tokens->count() - 2; $index > 0; --$index) {
-                        if ($tokens[$index]->isGivenKind(T_DOUBLE_ARROW)) { // always binary operator, never part of declare statement
+                        if ($tokens[$index]->isGivenKind(
+                            T_DOUBLE_ARROW
+                        )) { // always binary operator, never part of declare statement
                             $this->fixWhiteSpaceBeforeOperator($tokensClone, $index, $alignStrategy);
                         }
                     }
                 } elseif ('=' === $tokenContent) {
                     for ($index = $tokens->count() - 2; $index > 0; --$index) {
-                        if ('=' === $tokens[$index]->getContent() && !$this->isEqualPartOfDeclareStatement($tokens, $index) && $this->tokensAnalyzer->isBinaryOperator($index)) {
+                        if ('=' === $tokens[$index]->getContent() && !$this->isEqualPartOfDeclareStatement(
+                            $tokens,
+                            $index
+                        ) && $this->tokensAnalyzer->isBinaryOperator($index)) {
                             $this->fixWhiteSpaceBeforeOperator($tokensClone, $index, $alignStrategy);
                         }
                     }
                 } else {
                     for ($index = $tokens->count() - 2; $index > 0; --$index) {
                         $content = $tokens[$index]->getContent();
-                        if (strtolower($content) === $tokenContent && $this->tokensAnalyzer->isBinaryOperator($index)) { // never part of declare statement
+                        if (strtolower($content) === $tokenContent && $this->tokensAnalyzer->isBinaryOperator(
+                            $index
+                        )) { // never part of declare statement
                             $this->fixWhiteSpaceBeforeOperator($tokensClone, $index, $alignStrategy);
                         }
                     }
@@ -600,8 +642,12 @@ $array = [
         }
     }
 
-    private function injectAlignmentPlaceholdersDefault(Tokens $tokens, int $startAt, int $endAt, string $tokenContent): void
-    {
+    private function injectAlignmentPlaceholdersDefault(
+        Tokens $tokens,
+        int $startAt,
+        int $endAt,
+        string $tokenContent
+    ): void {
         $newLineFoundSinceLastPlaceholder = true;
 
         for ($index = $startAt; $index < $endAt; ++$index) {
@@ -722,7 +768,9 @@ $array = [
                 continue;
             }
 
-            if ($token->isGivenKind(T_ARRAY)) { // don't use "$tokens->isArray()" here, short arrays are handled in the next case
+            if ($token->isGivenKind(
+                T_ARRAY
+            )) { // don't use "$tokens->isArray()" here, short arrays are handled in the next case
                 $yieldFoundSinceLastPlaceholder = false;
                 $from = $tokens->getNextMeaningfulToken($index);
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $from);
@@ -928,18 +976,34 @@ $array = [
                             self::ALIGN !== $alignStrategy
                             && self::ALIGN_BY_SCOPE !== $alignStrategy
                         ) {
+                            $escapedAlignOperators = [];
                             foreach (array_keys($this->alignOperatorTokens) as $alignOperatorToken) {
-                                $escapedAlignOperator = preg_quote($alignOperatorToken, '/');
-                                $pattern = '/(?<!'
+                                $escapedAlignOperators[] = preg_quote($alignOperatorToken, '/');
+                            }
+                            $strForAdjust = str_replace(
+                                $placeholder.$tokenContent,
+                                '',
+                                mb_strstr($line, $placeholder.$tokenContent)
+                            );
+
+                            $pattern = '/\s*?('
+                                .implode('|', $escapedAlignOperators)
+                                .')/';
+
+                            if (Preg::match($pattern, $strForAdjust, $matches)) {
+                                $adjustedStr = Preg::replace(
+                                    '/\s*'.preg_quote($matches[1], '/').'/',
+                                    ' '.trim($matches[0]),
+                                    $strForAdjust
+                                );
+                                $line = Preg::replace(
+                                    '/(?<='
                                     .preg_quote($placeholder, '/')
                                     .preg_quote($tokenContent, '/')
-                                    .')\s+('
-                                    .$escapedAlignOperator
-                                    .')/';
-
-                                if (Preg::match($pattern, $line, $matches)) {
-                                    $line = Preg::replace($pattern, ' '.trim($matches[0]), $line);
-                                }
+                                    .').*/',
+                                    $adjustedStr,
+                                    $line
+                                );
                             }
                         }
 
