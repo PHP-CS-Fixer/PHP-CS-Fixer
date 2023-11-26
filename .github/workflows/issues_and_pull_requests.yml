@@ -7,16 +7,23 @@ on:
     - cron: "0 12 * * *"
 
 env:
-  CLOSE_MESSAGE: |
-    The fact this was automatically closed doesn't mean that the idea got rejected - it simply didn't get any priority for way too long to keep it open. If you're still interested in this, please let as know, we can consider re-opening it.
+  CLOSE_MESSAGE: >-
+    The fact this was automatically closed doesn't mean that the idea got rejected - it simply didn't get any priority for way too long to keep it open.
+    If you're still interested in this, please let as know, we can consider re-opening it.
   DAYS_BEFORE_ISSUE_CLOSE: 30
   DAYS_BEFORE_ISSUE_STALE: 90
   DAYS_BEFORE_PR_CLOSE: 14
   DAYS_BEFORE_PR_STALE: 90
-  STALE_CLARIFICATION: |
-    The purpose of this action is to enforce backlog review once in a while. This is mostly for maintainers and helps with keeping repository in good condition, because stale issues and PRs can accumulate over time and make it harder for others to find relevant information. It is also possible that some changes has been made to the repo already, and issue or PR became outdated, but wasn't closed for some reason. This action helps with periodic review and closing of such stale items in automated way.
+  STALE_CLARIFICATION: >-
+    The purpose of this action is to enforce backlog review once in a while.
+    This is mostly for maintainers and helps with keeping repository in good condition,
+    because stale issues and PRs can accumulate over time and make it harder for others to find relevant information.
+    It is also possible that some changes has been made to the repo already, and issue or PR became outdated, but wasn't closed for some reason.
+    This action helps with periodic review and closing of such stale items in automated way.
 
-    You may let maintainers handle this or verify current relevancy by yourself, to help with re-triage. Any activity will remove stale label so it won't be automatically closed at this point.
+
+    You may let maintainers handle this or verify current relevancy by yourself, to help with re-triage.
+    Any activity will remove stale label so it won't be automatically closed at this point.
 
 jobs:
   handle_stale:
