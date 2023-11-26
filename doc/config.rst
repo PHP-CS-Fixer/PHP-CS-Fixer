@@ -5,7 +5,7 @@ Config file
 No config
 ---------
 
-It is Possible to *not* have the config file. In that case, the default rule set (@PSR12) will be applied, yet the path will need to be provided via CLI.
+It is possible to *not* have the config file. In that case, the default rule set (@PSR12) will be applied, yet the path will need to be provided via CLI.
 
 .. code-block:: console
 
