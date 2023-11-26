@@ -64,7 +64,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
             '<?php
             class Foo {}
             class Bar extends BarParent {}
-            class Baz implements BazInteface {}
+            class Baz implements BazInterface {}
             abstract class A {}
             final class F {}
             ',
@@ -74,7 +74,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
             }
             class Bar extends BarParent
             {}
-            class Baz implements BazInteface    {}
+            class Baz implements BazInterface    {}
             abstract class A
             {}
             final class F
