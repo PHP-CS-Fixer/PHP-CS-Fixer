@@ -21,20 +21,20 @@ labels: kind/bug
 ### Runtime version
 
 <!--
-   Provide PHP CS Fixer version and PHP runtime by sharing result of this command:
-   $ php-cs-fixer -V
+  Provide PHP CS Fixer version and PHP runtime by sharing result of this command:
+  $ php-cs-fixer -V
 -->
 
 ### Used command
 
 <!--
-   Provide the command used to run PHP CS Fixer (run with `-vvv`).
+  Provide the command used to run PHP CS Fixer (run with `-vvv`).
 -->
 
 ### Configuration file
 
 <!--
-   Provide content of configuration file you used (.php-cs-fixer[.dist].php).
+  Provide content of configuration file you used (.php-cs-fixer[.dist].php).
 -->
 
 ### Code snippet that reproduces the problem
