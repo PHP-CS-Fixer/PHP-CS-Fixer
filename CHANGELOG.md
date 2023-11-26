@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.40.0
+---------------------
+
+* chore: officially support PHP 8.3 (#7466)
+* chore: update deps (#7471)
+* CI: add --no-update while dropping non-compat `facile-it/paraunit` (#7470)
+* CI: automate --ignore-platform-req=PHP (#7467)
+* CI: bump actions/github-script to v7 (#7468)
+* CI: move humbug/box out of dev-tools/composer.json (#7472)
+
 Changelog for v3.39.1
 ---------------------
 
