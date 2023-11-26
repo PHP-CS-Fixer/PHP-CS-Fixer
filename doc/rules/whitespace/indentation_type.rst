@@ -17,7 +17,7 @@ Example #1
     <?php
 
     if (true) {
-   -	echo 'Hello!';
+   -<TAB>echo 'Hello!';
    +    echo 'Hello!';
     }
 

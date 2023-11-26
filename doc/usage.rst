@@ -42,7 +42,7 @@ which will use the intersection of the paths from the config file and from the a
 
     php php-cs-fixer.phar fix --path-mode=intersection /path/to/dir
 
-The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``checkstyle``, ``gitlab``, ``json``, ``junit``and ``xml``.
+The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``checkstyle``, ``gitlab``, ``json``, ``junit`` and ``xml``.
 
 NOTE: the output for the following formats are generated in accordance with schemas
 
@@ -96,7 +96,7 @@ Complete configuration for rules can be supplied using a ``json`` formatted stri
 
     php php-cs-fixer.phar fix /path/to/project --rules='{"concat_space": {"spacing": "none"}}'
 
-The ``--dry-run`` flag will run the fixer without making changes to your files (implicitly set when you use `check` command).
+The ``--dry-run`` flag will run the fixer without making changes to your files (implicitly set when you use ``check`` command).
 
 The ``--diff`` flag can be used to let the fixer output all the changes it makes in ``udiff`` format.
 
@@ -123,7 +123,7 @@ automatically fix anything:
 
     cat foo.php | php php-cs-fixer.phar fix --diff -
 
-Finally, if you don't need BC kept on CLI level, you might use `PHP_CS_FIXER_FUTURE_MODE` to start using options that
+Finally, if you don't need BC kept on CLI level, you might use ``PHP_CS_FIXER_FUTURE_MODE`` to start using options that
 would be default in next MAJOR release and to forbid using deprecated configuration:
 
 .. code-block:: console
