@@ -19,7 +19,7 @@ Example #1
    -AAAAA ^M
    - |^M
    + 123"; $a = <<<TEST
-   +AAAAA 
+   +AAAAA
    + |
     TEST;
 

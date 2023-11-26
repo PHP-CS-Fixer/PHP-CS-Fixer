@@ -22,8 +22,8 @@ Example #1
 
    --- Original
    +++ New
-   -<?php $a = '  
-   -    foo 
+   -<?php $a = '
+   -    foo
    +<?php $a = '
    +    foo
     ';

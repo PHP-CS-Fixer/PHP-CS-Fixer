@@ -157,7 +157,7 @@ With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'keep_multipl
     <?php
    -function sample($a=10,
    -    $b=20,$c=30) {}
-   -sample(1,  
+   -sample(1,
    -    2);
    +function sample(
    +    $a=10,
@@ -183,7 +183,7 @@ With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'keep_multipl
     <?php
    -function sample($a=10,
    -    $b=20,$c=30) {}
-   -sample(1,  
+   -sample(1,
    -    2);
    -sample('foo',    'foobarbaz', 'baz');
    -sample('foobar', 'bar',       'baz');

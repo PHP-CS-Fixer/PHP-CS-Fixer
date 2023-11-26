@@ -15,8 +15,8 @@ Example #1
    --- Original
    +++ New
     <?php
-   -// This is 
-   -// a comment. 
+   -// This is
+   -// a comment.
    +// This is
    +// a comment.
 
