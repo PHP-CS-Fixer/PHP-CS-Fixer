@@ -214,7 +214,7 @@ jobs:
       matrix:
         include:
           - operating-system: 'ubuntu-20.04'
-            php-version: '8.3'
+            php-version: '8.2'
 
     name: Deployment checks
 
