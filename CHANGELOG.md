@@ -4916,7 +4916,7 @@ Changelog for v1.5.1
 --------------------
 
 * bug #1054 VisibilityFixer - fix var with array value assigned (localheinz, keradus)
-* bug #1048 MultilineArrayTrailingCommaFixer, SingleArrayNoTrailingCommaFixer - using heredoc inside array not cousin to treat it as multiline array (keradus)
+* bug #1048 MultilineArrayTrailingCommaFixer, SingleArrayNoTrailingCommaFixer - using heredoc inside array not causing to treat it as multiline array (keradus)
 * bug #1043 PhpdocToCommentFixer - also check other control structures, besides foreach (ceeram)
 * bug #1045 OrderedUseFixer - fix namespace order for trailing digits (rusitschka)
 * bug #1035 PhpdocToCommentFixer - Add static as valid keyword for structural element (ceeram)
