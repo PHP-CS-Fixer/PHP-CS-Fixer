@@ -36,7 +36,7 @@ Step by step
 ------------
 
 For this step-by-step, we are going to create a simple fixer that
-removes all comments from the code that are preceded by `;` (semicolon).
+removes all comments from the code that are preceded by ``;`` (semicolon).
 
 We are calling it ``remove_comments`` (code name), or,
 ``RemoveCommentsFixer`` (class name).
