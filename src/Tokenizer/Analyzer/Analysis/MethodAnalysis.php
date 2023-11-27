@@ -32,22 +32,22 @@ final class MethodAnalysis
         $this->isFinal = $isFinal;
     }
 
-    public function hasVisibility(): bool
+    public function hasVisibilityDeclared(): bool
     {
         return null !== $this->visibility;
     }
 
-    public function isPublic(): bool
+    public function isPublicVisibilityDeclared(): bool
     {
         return T_PUBLIC === $this->visibility;
     }
 
-    public function isProtected(): bool
+    public function isProtectedVisibilityDeclared(): bool
     {
         return T_PROTECTED === $this->visibility;
     }
 
-    public function isPrivate(): bool
+    public function isPrivateVisibilityDeclared(): bool
     {
         return T_PRINT === $this->visibility;
     }

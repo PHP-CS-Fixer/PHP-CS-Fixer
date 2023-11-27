@@ -28,10 +28,10 @@ final class MethodAnalysisTest extends TestCase
     {
         $analysis = new MethodAnalysis(T_PROTECTED, false, true, false);
 
-        self::assertTrue($analysis->hasVisibility());
-        self::assertFalse($analysis->isPublic());
-        self::assertTrue($analysis->isProtected());
-        self::assertFalse($analysis->isPrivate());
+        self::assertTrue($analysis->hasVisibilityDeclared());
+        self::assertFalse($analysis->isPublicVisibilityDeclared());
+        self::assertTrue($analysis->isProtectedVisibilityDeclared());
+        self::assertFalse($analysis->isPrivateVisibilityDeclared());
         self::assertFalse($analysis->isStatic());
         self::assertTrue($analysis->isAbstract());
         self::assertFalse($analysis->isFinal());
