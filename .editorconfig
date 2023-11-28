@@ -11,5 +11,5 @@ trim_trailing_whitespace = true
 [tests/Fixtures/**]
 trim_trailing_whitespace = false
 
-[*.{yml,yaml,md,json,xsd}]
+[*.{yml,yaml,md,xsd}]
 indent_size = 2
