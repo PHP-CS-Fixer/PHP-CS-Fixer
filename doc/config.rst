@@ -76,7 +76,7 @@ Note that ``exclude`` will work only for directories, so if you need to exclude 
 Both ``exclude`` and ``notPath`` methods accept only relative paths to the ones defined with the ``in`` method, can be called multiple times and accept string or array of them.
 
 See `Symfony\\Finder <https://symfony.com/doc/current/components/finder.html#location>`_
-online documentation for other `Finder` methods.
+online documentation for other ``Finder`` methods.
 
 Configuring rules
 -----------------

@@ -43,7 +43,7 @@ final class PERCS1x0Set extends AbstractRuleSetDescription
     public function getDescription(): string
     {
         return <<<'DESC'
-            **This ruleset is deprecated** in favour of `@PER-CS2.0`.
+            **This ruleset is deprecated** in favour of ``@PER-CS2.0``.
 
             Rules that follow `PER Coding Style 1.0 <https://www.php-fig.org/per/coding-style/>`_.
             DESC;

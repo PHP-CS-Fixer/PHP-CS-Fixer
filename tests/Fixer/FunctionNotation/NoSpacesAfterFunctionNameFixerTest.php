@@ -167,6 +167,55 @@ $$e(2);
             '<?php $a()(1);',
             '<?php $a () (1);',
         ];
+
+        yield [
+            '<?php
+                echo (function () {})();
+                echo ($propertyValue ? "TRUE" : "FALSE") . EOL;
+                echo(FUNCTION_1);
+                echo (EXPRESSION + CONST_1), CONST_2;
+            ',
+            '<?php
+                echo (function () {})();
+                echo ($propertyValue ? "TRUE" : "FALSE") . EOL;
+                echo (FUNCTION_1);
+                echo (EXPRESSION + CONST_1), CONST_2;
+            ',
+        ];
+
+        yield [
+            '<?php
+                include(SOME_PATH_1);
+                include_once(SOME_PATH_2);
+                require(SOME_PATH_3);
+                require_once(SOME_PATH_4);
+                print(SOME_VALUE);
+                print(FIRST_HALF_OF_STRING_1 . SECOND_HALF_OF_STRING_1);
+                print((FIRST_HALF_OF_STRING_2) . (SECOND_HALF_OF_STRING_2));
+            ',
+            '<?php
+                include         (SOME_PATH_1);
+                include_once    (SOME_PATH_2);
+                require         (SOME_PATH_3);
+                require_once    (SOME_PATH_4);
+                print           (SOME_VALUE);
+                print           (FIRST_HALF_OF_STRING_1 . SECOND_HALF_OF_STRING_1);
+                print           ((FIRST_HALF_OF_STRING_2) . (SECOND_HALF_OF_STRING_2));
+            ',
+        ];
+
+        yield [
+            '<?php
+                include         (DIR) . FILENAME_1;
+                include_once    (DIR) . (FILENAME_2);
+                require         (DIR) . FILENAME_3;
+                require_once    (DIR) . (FILENAME_4);
+                print           (FIRST_HALF_OF_STRING_1) . SECOND_HALF_OF_STRING_1;
+                print           (FIRST_HALF_OF_STRING_2) . ((((SECOND_HALF_OF_STRING_2))));
+                print           ((FIRST_HALF_OF_STRING_3)) . ((SECOND_HALF_OF_STRING_3));
+                print           ((((FIRST_HALF_OF_STRING_4)))) . ((((SECOND_HALF_OF_STRING_4))));
+            ',
+        ];
     }
 
     /**

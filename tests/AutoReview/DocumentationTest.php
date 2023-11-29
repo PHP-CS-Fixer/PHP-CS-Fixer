@@ -202,7 +202,7 @@ final class DocumentationTest extends TestCase
         }
 
         $expectedContent = substr($expectedContent, 0, -2);
-        $expectedContent .= 'and ``'.$lastFormat.'``.';
+        $expectedContent .= ' and ``'.$lastFormat.'``.';
 
         self::assertStringContainsString($expectedContent, $usage);
     }

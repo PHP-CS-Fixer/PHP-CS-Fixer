@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PHP_MAX: '8.2'
+  PHP_MAX: '8.3'
   PHP_MIN: '7.4'
 
 jobs:
@@ -68,71 +68,79 @@ jobs:
             run-tests: 'yes'
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '8.2'
+            php-version: '8.3'
+            job-description: 'Fixer'
+            run-fixer: 'yes'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.3'
+            job-description: 'tests'
+            run-tests: 'yes'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.3'
             job-description: 'Fixer with migration rules'
             run-fixer: 'yes'
             run-migration-rules: 'yes' # should be checked on the highest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '8.2'
+            php-version: '8.3'
             job-description: 'tests with migration rules'
             run-tests: 'yes'
             run-migration-rules: 'yes' # should be checked on the highest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '8.2'
+            php-version: '8.3'
             job-description: 'Fixer with Symfony ^7'
             run-fixer: 'yes'
             execute-flex-with-symfony-version: '^7' # explicit check for Symfony 7.x compatibility
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '8.2'
+            php-version: '8.3'
             job-description: 'tests with Symfony ^7'
             run-tests: 'yes'
             execute-flex-with-symfony-version: '^7' # explicit check for Symfony 7.x compatibility
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '8.2'
+            php-version: '8.3'
             job-description: 'code coverage'
             run-tests: 'yes'
             collect-code-coverage: 'yes'
 
           - operating-system: 'windows-latest'
-            php-version: '8.2'
+            php-version: '8.3'
             job-description: 'Fixer on Windows'
             run-fixer: 'yes'
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
 
           - operating-system: 'windows-latest'
-            php-version: '8.2'
+            php-version: '8.3'
             job-description: 'tests on Windows'
             run-tests: 'yes'
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: 'macos-latest'
-            php-version: '8.2'
+            php-version: '8.3'
             job-description: 'Fixer on macOS'
             run-fixer: 'yes'
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: 'macos-latest'
-            php-version: '8.2'
+            php-version: '8.3'
             job-description: 'tests on macOS'
             run-tests: 'yes'
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
 
           - operating-system: 'ubuntu-22.04'
-            php-version: '8.3'
+            php-version: '8.4'
             job-description: 'Fixer'
             run-fixer: 'yes'
-            composer-flags: '--ignore-platform-req=PHP'
             PHP_CS_FIXER_IGNORE_ENV: 1
 
           - operating-system: 'ubuntu-22.04'
-            php-version: '8.3'
+            php-version: '8.4'
             job-description: 'tests'
             run-tests: 'yes'
-            composer-flags: '--ignore-platform-req=PHP'
             PHP_CS_FIXER_IGNORE_ENV: 1
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
@@ -221,6 +229,12 @@ jobs:
         with:
           os: ${{ runner.os }}
           php: ${{ matrix.php-version }}
+
+      - name: Cache dev-tools
+        uses: actions/cache@v3
+        with:
+          path: dev-tools/bin/
+          key: Build-${{ hashFiles('dev-tools/build.sh') }}
 
       - name: Build phar
         run: ./dev-tools/build.sh

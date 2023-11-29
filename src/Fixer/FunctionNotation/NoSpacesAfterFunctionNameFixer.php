@@ -50,7 +50,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionyTokenKinds(), [T_STRING]));
+        return $tokens->isAnyTokenKindsFound([T_STRING, ...$this->getFunctionyTokenKinds()]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -73,7 +73,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             $nextNonWhiteSpace = $tokens->getNextMeaningfulToken($endParenthesisIndex);
             if (
                 null !== $nextNonWhiteSpace
-                && $tokens[$nextNonWhiteSpace]->equals('?')
+                && !$tokens[$nextNonWhiteSpace]->equals(';')
                 && $tokens[$lastTokenIndex]->isGivenKind($languageConstructionTokens)
             ) {
                 continue;

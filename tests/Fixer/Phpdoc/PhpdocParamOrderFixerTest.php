@@ -595,8 +595,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @param int   $a Long param
              *                 description
              * @param mixed $b
-             * @param mixed $superflous1 With text
-             * @param int $superflous2
+             * @param mixed $superfluous1 With text
+             * @param int $superfluous2
              * @return array Long return
              *               description
              * @throws Exception
@@ -613,10 +613,10 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @see Baz
              *
              * @param mixed $b
-             * @param mixed $superflous1 With text
+             * @param mixed $superfluous1 With text
              * @return array Long return
              *               description
-             * @param int $superflous2
+             * @param int $superfluous2
              * @throws Exception
              * @param int   $a Long param
              *                 description
@@ -787,8 +787,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              *     }
              *     @param mixed  $userdata
              * }
-             * @param $superflous1 Superflous
-             * @param $superflous2 Superflous
+             * @param $superfluous1 Superfluous
+             * @param $superfluous2 Superfluous
              *
              * @return bool
              */
@@ -798,7 +798,7 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
         $input = <<<'EOT'
             <?php
             /**
-             * @param $superflous1 Superflous
+             * @param $superfluous1 Superfluous
              * @param callable $callback {
              *     @param string $value
              *     @param int    $key
@@ -806,7 +806,7 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              *         $param array $array
              *     }
              * }
-             * @param $superflous2 Superflous
+             * @param $superfluous2 Superfluous
              * @param callable $foo {
              *     @param callable {
              *         @param string $inner1

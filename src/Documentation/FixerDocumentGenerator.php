@@ -245,6 +245,8 @@ final class FixerDocumentGenerator
             {$fileName}
             RST;
 
+        $doc = str_replace("\t", '<TAB>', $doc);
+
         return "{$doc}\n";
     }
 

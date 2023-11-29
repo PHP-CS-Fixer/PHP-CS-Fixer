@@ -25,6 +25,7 @@ projects. This tool does not only detect them, but also fixes them for you.
 * PHP 8.0 (except PHP 8.0.0 due to [bug in PHP tokenizer](https://bugs.php.net/bug.php?id=80462))
 * PHP 8.1
 * PHP 8.2
+* PHP 8.3
 
 > **Note**
 > Each new PHP version requires a huge effort to support the new syntax.
