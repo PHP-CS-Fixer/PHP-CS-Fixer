@@ -29,6 +29,8 @@ use Symfony\Component\Console\Output\StreamOutput;
 final class ErrorOutputTest extends TestCase
 {
     /**
+     * @param OutputInterface::VERBOSITY_* $verbosityLevel
+     *
      * @dataProvider provideErrorOutputCases
      */
     public function testErrorOutput(Error $error, int $verbosityLevel, int $lineNumber, int $exceptionLineNumber, string $process): void
@@ -138,6 +140,9 @@ Files that were not fixed due to errors reported during %s:
         self::assertStringNotContainsString($invalidDiff, $displayed);
     }
 
+    /**
+     * @param OutputInterface::VERBOSITY_* $verbosityLevel
+     */
     private function createStreamOutput(int $verbosityLevel): StreamOutput
     {
         $output = new StreamOutput(fopen('php://memory', 'w', false));
