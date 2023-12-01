@@ -25,9 +25,6 @@ final class Cache implements CacheInterface
 {
     private SignatureInterface $signature;
 
-    /**
-     * @var array<string, string>
-     */
     private array $hashes = [];
 
     public function __construct(SignatureInterface $signature)
