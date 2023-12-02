@@ -76,6 +76,9 @@ Attribute Notation
 - `attribute_empty_parentheses <./attribute_notation/attribute_empty_parentheses.rst>`_
 
   PHP attributes declared without arguments must (not) be followed by empty parentheses.
+- `ordered_attributes <./attribute_notation/ordered_attributes.rst>`_
+
+  Sorts attributes using the configured sort algorithm.
 
 Basic
 -----

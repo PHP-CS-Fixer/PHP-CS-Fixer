@@ -26,6 +26,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
@@ -179,7 +180,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * {@inheritdoc}
      *
-     * Must run before NoSuperfluousPhpdocTagsFixer, OrderedImportsFixer, OrderedInterfacesFixer, StatementIndentationFixer.
+     * Must run before NoSuperfluousPhpdocTagsFixer, OrderedAttributesFixer, OrderedImportsFixer, OrderedInterfacesFixer, StatementIndentationFixer.
      * Must run after ClassKeywordFixer, PhpdocToReturnTypeFixer.
      */
     public function getPriority(): int
@@ -312,7 +313,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                             $this->fixPrevName($tokens, $index, $uses, $namespaceName);
                         }
                     } elseif (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) { // @TODO: drop const check when PHP 8.0+ is required
-                        $this->fixNextName($tokens, $index, $uses, $namespaceName);
+                        $this->fixAttribute($tokens, $index, $uses, $namespaceName);
                     } elseif ($discoverSymbolsPhase && !\defined('T_ATTRIBUTE') && $tokens[$index]->isComment() && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $tokens[$index]->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
                         $this->determineShortType($matches[1], $uses, $namespaceName);
                     } elseif ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
@@ -686,6 +687,24 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             }
 
             $index = $tokens->getNextMeaningfulToken($index);
+        }
+    }
+
+    /**
+     * @param array<string, string> $uses
+     */
+    private function fixAttribute(Tokens $tokens, int $index, array $uses, string $namespaceName): void
+    {
+        $attributeAnalyses = AttributeAnalyzer::collectFor($tokens, $index);
+
+        foreach ($attributeAnalyses as $attributeAnalysis) {
+            foreach ($attributeAnalysis->getAttributes() as $attribute) {
+                $index = $attribute['start'];
+                while ($tokens[$index]->equalsAny([[T_STRING], [T_NS_SEPARATOR]])) {
+                    $index = $tokens->getPrevMeaningfulToken($index);
+                }
+                $this->fixNextName($tokens, $index, $uses, $namespaceName);
+            }
         }
     }
 
