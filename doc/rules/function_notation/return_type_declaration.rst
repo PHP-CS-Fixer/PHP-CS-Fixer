@@ -79,4 +79,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\ReturnTypeDeclarationFixer <./../src/Fixer/FunctionNotation/ReturnTypeDeclarationFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\ReturnTypeDeclarationFixer <./../../../src/Fixer/FunctionNotation/ReturnTypeDeclarationFixer.php>`_

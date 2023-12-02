@@ -41,4 +41,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\StatementIndentationFixer <./../src/Fixer/Whitespace/StatementIndentationFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\StatementIndentationFixer <./../../../src/Fixer/Whitespace/StatementIndentationFixer.php>`_

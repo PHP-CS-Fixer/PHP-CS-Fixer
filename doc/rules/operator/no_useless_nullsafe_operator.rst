@@ -34,4 +34,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\NoUselessNullsafeOperatorFixer <./../src/Fixer/Operator/NoUselessNullsafeOperatorFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\NoUselessNullsafeOperatorFixer <./../../../src/Fixer/Operator/NoUselessNullsafeOperatorFixer.php>`_

@@ -29,4 +29,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Basic\\OctalNotationFixer <./../src/Fixer/Basic/OctalNotationFixer.php>`_
+`PhpCsFixer\\Fixer\\Basic\\OctalNotationFixer <./../../../src/Fixer/Basic/OctalNotationFixer.php>`_

@@ -155,4 +155,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationSpacesFixer <./../src/Fixer/DoctrineAnnotation/DoctrineAnnotationSpacesFixer.php>`_
+`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationSpacesFixer <./../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationSpacesFixer.php>`_

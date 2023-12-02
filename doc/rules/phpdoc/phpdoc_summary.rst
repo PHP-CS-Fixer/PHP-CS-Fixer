@@ -33,4 +33,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSummaryFixer <./../src/Fixer/Phpdoc/PhpdocSummaryFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSummaryFixer <./../../../src/Fixer/Phpdoc/PhpdocSummaryFixer.php>`_

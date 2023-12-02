@@ -84,4 +84,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAddMissingParamAnnotationFixer <./../src/Fixer/Phpdoc/PhpdocAddMissingParamAnnotationFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAddMissingParamAnnotationFixer <./../../../src/Fixer/Phpdoc/PhpdocAddMissingParamAnnotationFixer.php>`_

@@ -54,4 +54,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockShortWillReturnFixer <./../src/Fixer/PhpUnit/PhpUnitMockShortWillReturnFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockShortWillReturnFixer <./../../../src/Fixer/PhpUnit/PhpUnitMockShortWillReturnFixer.php>`_

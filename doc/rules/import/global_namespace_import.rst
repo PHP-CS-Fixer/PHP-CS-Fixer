@@ -124,4 +124,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Import\\GlobalNamespaceImportFixer <./../src/Fixer/Import/GlobalNamespaceImportFixer.php>`_
+`PhpCsFixer\\Fixer\\Import\\GlobalNamespaceImportFixer <./../../../src/Fixer/Import/GlobalNamespaceImportFixer.php>`_

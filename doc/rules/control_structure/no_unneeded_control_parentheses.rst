@@ -81,4 +81,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededControlParenthesesFixer <./../src/Fixer/ControlStructure/NoUnneededControlParenthesesFixer.php>`_
+`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededControlParenthesesFixer <./../../../src/Fixer/ControlStructure/NoUnneededControlParenthesesFixer.php>`_

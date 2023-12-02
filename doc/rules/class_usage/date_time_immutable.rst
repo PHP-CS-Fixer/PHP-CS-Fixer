@@ -29,4 +29,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassUsage\\DateTimeImmutableFixer <./../src/Fixer/ClassUsage/DateTimeImmutableFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassUsage\\DateTimeImmutableFixer <./../../../src/Fixer/ClassUsage/DateTimeImmutableFixer.php>`_

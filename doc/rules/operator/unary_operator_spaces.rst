@@ -42,4 +42,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\UnaryOperatorSpacesFixer <./../src/Fixer/Operator/UnaryOperatorSpacesFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\UnaryOperatorSpacesFixer <./../../../src/Fixer/Operator/UnaryOperatorSpacesFixer.php>`_

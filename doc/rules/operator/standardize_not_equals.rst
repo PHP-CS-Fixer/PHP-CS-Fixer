@@ -29,4 +29,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\StandardizeNotEqualsFixer <./../src/Fixer/Operator/StandardizeNotEqualsFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\StandardizeNotEqualsFixer <./../../../src/Fixer/Operator/StandardizeNotEqualsFixer.php>`_

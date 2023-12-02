@@ -29,4 +29,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordRemoveFixer <./../src/Fixer/LanguageConstruct/ClassKeywordRemoveFixer.php>`_
+`PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordRemoveFixer <./../../../src/Fixer/LanguageConstruct/ClassKeywordRemoveFixer.php>`_

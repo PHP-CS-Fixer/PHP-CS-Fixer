@@ -67,4 +67,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Basic\\NonPrintableCharacterFixer <./../src/Fixer/Basic/NonPrintableCharacterFixer.php>`_
+`PhpCsFixer\\Fixer\\Basic\\NonPrintableCharacterFixer <./../../../src/Fixer/Basic/NonPrintableCharacterFixer.php>`_

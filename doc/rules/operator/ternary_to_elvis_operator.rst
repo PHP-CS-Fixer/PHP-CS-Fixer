@@ -47,4 +47,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\TernaryToElvisOperatorFixer <./../src/Fixer/Operator/TernaryToElvisOperatorFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\TernaryToElvisOperatorFixer <./../../../src/Fixer/Operator/TernaryToElvisOperatorFixer.php>`_

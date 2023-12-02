@@ -38,4 +38,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\StaticLambdaFixer <./../src/Fixer/FunctionNotation/StaticLambdaFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\StaticLambdaFixer <./../../../src/Fixer/FunctionNotation/StaticLambdaFixer.php>`_

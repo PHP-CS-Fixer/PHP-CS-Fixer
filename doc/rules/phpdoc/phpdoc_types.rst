@@ -65,4 +65,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesFixer <./../src/Fixer/Phpdoc/PhpdocTypesFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesFixer <./../../../src/Fixer/Phpdoc/PhpdocTypesFixer.php>`_

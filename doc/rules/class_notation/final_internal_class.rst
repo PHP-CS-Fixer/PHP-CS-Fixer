@@ -121,4 +121,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\FinalInternalClassFixer <./../src/Fixer/ClassNotation/FinalInternalClassFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\FinalInternalClassFixer <./../../../src/Fixer/ClassNotation/FinalInternalClassFixer.php>`_

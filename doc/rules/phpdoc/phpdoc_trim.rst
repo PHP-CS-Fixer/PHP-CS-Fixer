@@ -35,4 +35,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTrimFixer <./../src/Fixer/Phpdoc/PhpdocTrimFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTrimFixer <./../../../src/Fixer/Phpdoc/PhpdocTrimFixer.php>`_

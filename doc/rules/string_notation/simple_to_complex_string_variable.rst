@@ -53,4 +53,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\StringNotation\\SimpleToComplexStringVariableFixer <./../src/Fixer/StringNotation/SimpleToComplexStringVariableFixer.php>`_
+`PhpCsFixer\\Fixer\\StringNotation\\SimpleToComplexStringVariableFixer <./../../../src/Fixer/StringNotation/SimpleToComplexStringVariableFixer.php>`_

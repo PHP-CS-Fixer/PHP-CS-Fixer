@@ -22,4 +22,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ArrayNotation\\ReturnToYieldFromFixer <./../src/Fixer/ArrayNotation/ReturnToYieldFromFixer.php>`_
+`PhpCsFixer\\Fixer\\ArrayNotation\\ReturnToYieldFromFixer <./../../../src/Fixer/ArrayNotation/ReturnToYieldFromFixer.php>`_

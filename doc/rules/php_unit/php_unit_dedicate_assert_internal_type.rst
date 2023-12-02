@@ -92,4 +92,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertInternalTypeFixer <./../src/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertInternalTypeFixer <./../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixer.php>`_

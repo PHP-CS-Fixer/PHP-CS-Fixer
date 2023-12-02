@@ -62,4 +62,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\DeclareEqualNormalizeFixer <./../src/Fixer/LanguageConstruct/DeclareEqualNormalizeFixer.php>`_
+`PhpCsFixer\\Fixer\\LanguageConstruct\\DeclareEqualNormalizeFixer <./../../../src/Fixer/LanguageConstruct/DeclareEqualNormalizeFixer.php>`_

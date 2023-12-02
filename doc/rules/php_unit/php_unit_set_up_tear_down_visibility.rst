@@ -52,4 +52,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitSetUpTearDownVisibilityFixer <./../src/Fixer/PhpUnit/PhpUnitSetUpTearDownVisibilityFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitSetUpTearDownVisibilityFixer <./../../../src/Fixer/PhpUnit/PhpUnitSetUpTearDownVisibilityFixer.php>`_

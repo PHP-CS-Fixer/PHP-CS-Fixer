@@ -51,4 +51,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Alias\\MbStrFunctionsFixer <./../src/Fixer/Alias/MbStrFunctionsFixer.php>`_
+`PhpCsFixer\\Fixer\\Alias\\MbStrFunctionsFixer <./../../../src/Fixer/Alias/MbStrFunctionsFixer.php>`_

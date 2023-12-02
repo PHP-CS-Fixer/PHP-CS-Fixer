@@ -37,4 +37,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\NoUselessSprintfFixer <./../src/Fixer/FunctionNotation/NoUselessSprintfFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\NoUselessSprintfFixer <./../../../src/Fixer/FunctionNotation/NoUselessSprintfFixer.php>`_

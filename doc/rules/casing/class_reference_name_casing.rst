@@ -29,4 +29,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Casing\\ClassReferenceNameCasingFixer <./../src/Fixer/Casing/ClassReferenceNameCasingFixer.php>`_
+`PhpCsFixer\\Fixer\\Casing\\ClassReferenceNameCasingFixer <./../../../src/Fixer/Casing/ClassReferenceNameCasingFixer.php>`_

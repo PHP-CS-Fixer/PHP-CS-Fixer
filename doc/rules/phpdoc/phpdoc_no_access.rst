@@ -35,4 +35,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoAccessFixer <./../src/Fixer/Phpdoc/PhpdocNoAccessFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoAccessFixer <./../../../src/Fixer/Phpdoc/PhpdocNoAccessFixer.php>`_

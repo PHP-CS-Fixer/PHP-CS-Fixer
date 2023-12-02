@@ -66,4 +66,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Semicolon\\MultilineWhitespaceBeforeSemicolonsFixer <./../src/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixer.php>`_
+`PhpCsFixer\\Fixer\\Semicolon\\MultilineWhitespaceBeforeSemicolonsFixer <./../../../src/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixer.php>`_

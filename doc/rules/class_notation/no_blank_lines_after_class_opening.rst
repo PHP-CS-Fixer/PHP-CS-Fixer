@@ -39,4 +39,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\NoBlankLinesAfterClassOpeningFixer <./../src/Fixer/ClassNotation/NoBlankLinesAfterClassOpeningFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\NoBlankLinesAfterClassOpeningFixer <./../../../src/Fixer/ClassNotation/NoBlankLinesAfterClassOpeningFixer.php>`_

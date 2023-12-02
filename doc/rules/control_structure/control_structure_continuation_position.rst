@@ -72,4 +72,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\ControlStructureContinuationPositionFixer <./../src/Fixer/ControlStructure/ControlStructureContinuationPositionFixer.php>`_
+`PhpCsFixer\\Fixer\\ControlStructure\\ControlStructureContinuationPositionFixer <./../../../src/Fixer/ControlStructure/ControlStructureContinuationPositionFixer.php>`_

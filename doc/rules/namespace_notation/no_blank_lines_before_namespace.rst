@@ -30,4 +30,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\NamespaceNotation\\NoBlankLinesBeforeNamespaceFixer <./../src/Fixer/NamespaceNotation/NoBlankLinesBeforeNamespaceFixer.php>`_
+`PhpCsFixer\\Fixer\\NamespaceNotation\\NoBlankLinesBeforeNamespaceFixer <./../../../src/Fixer/NamespaceNotation/NoBlankLinesBeforeNamespaceFixer.php>`_

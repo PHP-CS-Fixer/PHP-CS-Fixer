@@ -119,4 +119,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAroundConstructFixer <./../src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php>`_
+`PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAroundConstructFixer <./../../../src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php>`_

@@ -43,4 +43,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoEmptyReturnFixer <./../src/Fixer/Phpdoc/PhpdocNoEmptyReturnFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoEmptyReturnFixer <./../../../src/Fixer/Phpdoc/PhpdocNoEmptyReturnFixer.php>`_

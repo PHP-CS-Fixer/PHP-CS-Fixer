@@ -60,4 +60,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Import\\SingleLineAfterImportsFixer <./../src/Fixer/Import/SingleLineAfterImportsFixer.php>`_
+`PhpCsFixer\\Fixer\\Import\\SingleLineAfterImportsFixer <./../../../src/Fixer/Import/SingleLineAfterImportsFixer.php>`_

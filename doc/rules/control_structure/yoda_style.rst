@@ -120,4 +120,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\YodaStyleFixer <./../src/Fixer/ControlStructure/YodaStyleFixer.php>`_
+`PhpCsFixer\\Fixer\\ControlStructure\\YodaStyleFixer <./../../../src/Fixer/ControlStructure/YodaStyleFixer.php>`_

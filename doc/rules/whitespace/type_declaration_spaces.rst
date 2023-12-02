@@ -93,4 +93,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\TypeDeclarationSpacesFixer <./../src/Fixer/Whitespace/TypeDeclarationSpacesFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\TypeDeclarationSpacesFixer <./../../../src/Fixer/Whitespace/TypeDeclarationSpacesFixer.php>`_

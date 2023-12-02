@@ -39,4 +39,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\VoidReturnFixer <./../src/Fixer/FunctionNotation/VoidReturnFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\VoidReturnFixer <./../../../src/Fixer/FunctionNotation/VoidReturnFixer.php>`_

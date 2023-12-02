@@ -73,4 +73,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoAliasTagFixer <./../src/Fixer/Phpdoc/PhpdocNoAliasTagFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoAliasTagFixer <./../../../src/Fixer/Phpdoc/PhpdocNoAliasTagFixer.php>`_

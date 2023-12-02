@@ -50,4 +50,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Strict\\StrictParamFixer <./../src/Fixer/Strict/StrictParamFixer.php>`_
+`PhpCsFixer\\Fixer\\Strict\\StrictParamFixer <./../../../src/Fixer/Strict/StrictParamFixer.php>`_

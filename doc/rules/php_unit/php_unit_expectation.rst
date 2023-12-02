@@ -193,4 +193,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitExpectationFixer <./../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitExpectationFixer <./../../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php>`_

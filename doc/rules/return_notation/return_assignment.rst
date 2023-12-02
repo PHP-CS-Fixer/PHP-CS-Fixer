@@ -32,4 +32,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ReturnNotation\\ReturnAssignmentFixer <./../src/Fixer/ReturnNotation/ReturnAssignmentFixer.php>`_
+`PhpCsFixer\\Fixer\\ReturnNotation\\ReturnAssignmentFixer <./../../../src/Fixer/ReturnNotation/ReturnAssignmentFixer.php>`_

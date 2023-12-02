@@ -72,4 +72,4 @@ With configuration: ``['scalar_types' => false]``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToPropertyTypeFixer <./../src/Fixer/FunctionNotation/PhpdocToPropertyTypeFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToPropertyTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToPropertyTypeFixer.php>`_

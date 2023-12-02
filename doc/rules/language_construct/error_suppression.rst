@@ -100,4 +100,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\ErrorSuppressionFixer <./../src/Fixer/LanguageConstruct/ErrorSuppressionFixer.php>`_
+`PhpCsFixer\\Fixer\\LanguageConstruct\\ErrorSuppressionFixer <./../../../src/Fixer/LanguageConstruct/ErrorSuppressionFixer.php>`_

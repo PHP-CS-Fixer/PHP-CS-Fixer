@@ -50,4 +50,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\ImplodeCallFixer <./../src/Fixer/FunctionNotation/ImplodeCallFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\ImplodeCallFixer <./../../../src/Fixer/FunctionNotation/ImplodeCallFixer.php>`_

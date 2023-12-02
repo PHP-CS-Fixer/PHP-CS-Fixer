@@ -98,4 +98,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Alias\\RandomApiMigrationFixer <./../src/Fixer/Alias/RandomApiMigrationFixer.php>`_
+`PhpCsFixer\\Fixer\\Alias\\RandomApiMigrationFixer <./../../../src/Fixer/Alias/RandomApiMigrationFixer.php>`_

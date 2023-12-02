@@ -117,4 +117,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\OrderedTypesFixer <./../src/Fixer/ClassNotation/OrderedTypesFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\OrderedTypesFixer <./../../../src/Fixer/ClassNotation/OrderedTypesFixer.php>`_

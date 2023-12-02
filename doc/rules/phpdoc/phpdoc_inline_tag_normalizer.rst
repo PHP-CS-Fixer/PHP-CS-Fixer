@@ -65,4 +65,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocInlineTagNormalizerFixer <./../src/Fixer/Phpdoc/PhpdocInlineTagNormalizerFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocInlineTagNormalizerFixer <./../../../src/Fixer/Phpdoc/PhpdocInlineTagNormalizerFixer.php>`_

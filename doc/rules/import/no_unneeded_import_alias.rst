@@ -29,4 +29,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Import\\NoUnneededImportAliasFixer <./../src/Fixer/Import/NoUnneededImportAliasFixer.php>`_
+`PhpCsFixer\\Fixer\\Import\\NoUnneededImportAliasFixer <./../../../src/Fixer/Import/NoUnneededImportAliasFixer.php>`_

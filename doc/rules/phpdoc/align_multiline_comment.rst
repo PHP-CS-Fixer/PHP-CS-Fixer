@@ -87,4 +87,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\AlignMultilineCommentFixer <./../src/Fixer/Phpdoc/AlignMultilineCommentFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\AlignMultilineCommentFixer <./../../../src/Fixer/Phpdoc/AlignMultilineCommentFixer.php>`_

@@ -69,4 +69,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Basic\\PsrAutoloadingFixer <./../src/Fixer/Basic/PsrAutoloadingFixer.php>`_
+`PhpCsFixer\\Fixer\\Basic\\PsrAutoloadingFixer <./../../../src/Fixer/Basic/PsrAutoloadingFixer.php>`_

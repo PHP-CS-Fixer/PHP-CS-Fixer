@@ -69,4 +69,4 @@ With configuration: ``['namespaces' => true]``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededCurlyBracesFixer <./../src/Fixer/ControlStructure/NoUnneededCurlyBracesFixer.php>`_
+`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededCurlyBracesFixer <./../../../src/Fixer/ControlStructure/NoUnneededCurlyBracesFixer.php>`_

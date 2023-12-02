@@ -32,4 +32,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\PhpdocReadonlyClassCommentToKeywordFixer <./../src/Fixer/ClassNotation/PhpdocReadonlyClassCommentToKeywordFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\PhpdocReadonlyClassCommentToKeywordFixer <./../../../src/Fixer/ClassNotation/PhpdocReadonlyClassCommentToKeywordFixer.php>`_

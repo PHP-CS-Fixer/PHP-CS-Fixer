@@ -60,4 +60,4 @@ With configuration: ``['group' => 'medium']``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitSizeClassFixer <./../src/Fixer/PhpUnit/PhpUnitSizeClassFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitSizeClassFixer <./../../../src/Fixer/PhpUnit/PhpUnitSizeClassFixer.php>`_

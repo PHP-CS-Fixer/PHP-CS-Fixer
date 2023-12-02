@@ -40,4 +40,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypeDeclarationFixer <./../src/Fixer/Whitespace/CompactNullableTypeDeclarationFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypeDeclarationFixer <./../../../src/Fixer/Whitespace/CompactNullableTypeDeclarationFixer.php>`_

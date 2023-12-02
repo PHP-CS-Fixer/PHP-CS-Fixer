@@ -29,4 +29,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocVarAnnotationCorrectOrderFixer <./../src/Fixer/Phpdoc/PhpdocVarAnnotationCorrectOrderFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocVarAnnotationCorrectOrderFixer <./../../../src/Fixer/Phpdoc/PhpdocVarAnnotationCorrectOrderFixer.php>`_

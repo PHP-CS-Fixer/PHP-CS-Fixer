@@ -76,4 +76,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededBracesFixer <./../src/Fixer/ControlStructure/NoUnneededBracesFixer.php>`_
+`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededBracesFixer <./../../../src/Fixer/ControlStructure/NoUnneededBracesFixer.php>`_

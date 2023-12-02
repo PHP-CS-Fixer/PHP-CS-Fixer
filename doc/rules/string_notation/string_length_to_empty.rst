@@ -37,4 +37,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\StringNotation\\StringLengthToEmptyFixer <./../src/Fixer/StringNotation/StringLengthToEmptyFixer.php>`_
+`PhpCsFixer\\Fixer\\StringNotation\\StringLengthToEmptyFixer <./../../../src/Fixer/StringNotation/StringLengthToEmptyFixer.php>`_

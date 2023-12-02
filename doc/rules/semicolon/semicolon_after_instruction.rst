@@ -28,4 +28,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Semicolon\\SemicolonAfterInstructionFixer <./../src/Fixer/Semicolon/SemicolonAfterInstructionFixer.php>`_
+`PhpCsFixer\\Fixer\\Semicolon\\SemicolonAfterInstructionFixer <./../../../src/Fixer/Semicolon/SemicolonAfterInstructionFixer.php>`_

@@ -30,4 +30,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpTag\\LinebreakAfterOpeningTagFixer <./../src/Fixer/PhpTag/LinebreakAfterOpeningTagFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpTag\\LinebreakAfterOpeningTagFixer <./../../../src/Fixer/PhpTag/LinebreakAfterOpeningTagFixer.php>`_

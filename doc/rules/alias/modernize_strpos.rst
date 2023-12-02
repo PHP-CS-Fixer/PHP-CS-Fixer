@@ -45,4 +45,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Alias\\ModernizeStrposFixer <./../src/Fixer/Alias/ModernizeStrposFixer.php>`_
+`PhpCsFixer\\Fixer\\Alias\\ModernizeStrposFixer <./../../../src/Fixer/Alias/ModernizeStrposFixer.php>`_

@@ -98,4 +98,4 @@ Example #3
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToReturnTypeFixer <./../src/Fixer/FunctionNotation/PhpdocToReturnTypeFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToReturnTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToReturnTypeFixer.php>`_

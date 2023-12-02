@@ -37,4 +37,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Alias\\BacktickToShellExecFixer <./../src/Fixer/Alias/BacktickToShellExecFixer.php>`_
+`PhpCsFixer\\Fixer\\Alias\\BacktickToShellExecFixer <./../../../src/Fixer/Alias/BacktickToShellExecFixer.php>`_

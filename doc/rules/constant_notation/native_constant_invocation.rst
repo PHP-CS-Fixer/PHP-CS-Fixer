@@ -150,4 +150,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ConstantNotation\\NativeConstantInvocationFixer <./../src/Fixer/ConstantNotation/NativeConstantInvocationFixer.php>`_
+`PhpCsFixer\\Fixer\\ConstantNotation\\NativeConstantInvocationFixer <./../../../src/Fixer/ConstantNotation/NativeConstantInvocationFixer.php>`_

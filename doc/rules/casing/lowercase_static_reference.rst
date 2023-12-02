@@ -70,4 +70,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Casing\\LowercaseStaticReferenceFixer <./../src/Fixer/Casing/LowercaseStaticReferenceFixer.php>`_
+`PhpCsFixer\\Fixer\\Casing\\LowercaseStaticReferenceFixer <./../../../src/Fixer/Casing/LowercaseStaticReferenceFixer.php>`_

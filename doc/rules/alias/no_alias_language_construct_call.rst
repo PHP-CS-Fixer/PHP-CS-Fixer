@@ -29,4 +29,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Alias\\NoAliasLanguageConstructCallFixer <./../src/Fixer/Alias/NoAliasLanguageConstructCallFixer.php>`_
+`PhpCsFixer\\Fixer\\Alias\\NoAliasLanguageConstructCallFixer <./../../../src/Fixer/Alias/NoAliasLanguageConstructCallFixer.php>`_

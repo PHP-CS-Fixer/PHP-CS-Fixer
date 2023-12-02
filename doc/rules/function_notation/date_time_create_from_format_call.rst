@@ -39,4 +39,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\DateTimeCreateFromFormatCallFixer <./../src/Fixer/FunctionNotation/DateTimeCreateFromFormatCallFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\DateTimeCreateFromFormatCallFixer <./../../../src/Fixer/FunctionNotation/DateTimeCreateFromFormatCallFixer.php>`_
