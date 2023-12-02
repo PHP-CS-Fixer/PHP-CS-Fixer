@@ -325,7 +325,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
             ))
         ));
 
-        $this->fixer->fix(self::getTestFile(), $tokens);
+        $this->fixer->fix(new \SplFileInfo(__FILE__), $tokens);
 
         self::assertNull($this->lintSource($tokens->generateCode()));
     }

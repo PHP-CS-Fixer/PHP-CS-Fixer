@@ -34,7 +34,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         if (null === $filepath) {
             $filepath = __FILE__;
         }
-        $file = self::getTestFile($filepath);
+        $file = new \SplFileInfo($filepath);
 
         if (null !== $dir) {
             $this->fixer->configure(['dir' => $dir]);
@@ -166,43 +166,41 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
             __DIR__,
         ];
 
-        $filepath = __DIR__.\DIRECTORY_SEPARATOR.'Psr'.\DIRECTORY_SEPARATOR.'Foo'.\DIRECTORY_SEPARATOR.'Bar.php';
-
         yield [ // namespace with wrong casing
             '<?php
-namespace Psr\Foo;
-class Bar {}
+namespace PhpCsFixer\Fixer;
+class FixerInterface {}
 ',
             '<?php
-namespace Psr\foo;
-class bar {}
+namespace PhpCsFixer\fixer;
+class FixerInterface {}
 ',
-            $filepath,
-            __DIR__,
+            __DIR__.'/../../../src/Fixer/FixerInterface.php',
+            __DIR__.'/../../../src',
         ];
 
         yield [ // class with wrong casing (2 levels namespace)
             '<?php
-class Psr_Foo_Bar {}
+class Fixer_Basic_PsrAutoloadingFixer {}
 ',
             '<?php
-class Psr_fOo_bAr {}
+class Fixer_bASIc_PsrAutoloadingFixer {}
 ',
-            $filepath,
-            __DIR__,
+            __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
+            __DIR__.'/../../../src',
         ];
 
         yield [ // namespaced class with wrong casing
             '<?php
-namespace Psr\Foo;
-class Bar {}
+namespace PhpCsFixer\Fixer;
+class FixerInterface {}
 ',
             '<?php
-namespace Psr\foo;
-class bar {}
+namespace PhpCsFixer\Fixer;
+class fixerinterface {}
 ',
-            $filepath,
-            __DIR__,
+            __DIR__.'/../../../src/Fixer/FixerInterface.php',
+            __DIR__.'/../../../src',
         ];
 
         yield [ // multiple classy elements in file
@@ -451,7 +449,7 @@ class extends stdClass {};
      */
     public function testFix81(string $expected, ?string $input = null): void
     {
-        $this->doTest($expected, $input, self::getTestFile(__FILE__));
+        $this->doTest($expected, $input, new \SplFileInfo(__FILE__));
     }
 
     public static function provideFix81Cases(): iterable
