@@ -27,20 +27,23 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * This is new test method, to replace old one some day.
-     *
-     * @dataProvider provideFixNewCases
+     * @dataProvider provideFixCases
      */
-    public function testFixNew(string $expected, ?string $input = null, ?string $dir = null): void
+    public function testFix(string $expected, ?string $input = null, ?string $filepath = null, ?string $dir = null): void
     {
+        if (null === $filepath) {
+            $filepath = __FILE__;
+        }
+        $file = self::getTestFile($filepath);
+
         if (null !== $dir) {
             $this->fixer->configure(['dir' => $dir]);
         }
 
-        $this->doTest($expected, $input, self::getTestFile(__FILE__));
+        $this->doTest($expected, $input, $file);
     }
 
-    public static function provideFixNewCases(): iterable
+    public static function provideFixCases(): iterable
     {
         foreach (['class', 'interface', 'trait'] as $element) {
             yield sprintf('%s with originally short name', $element) => [
@@ -92,17 +95,20 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         yield 'configured directory (1 subdirectory)' => [
             '<?php class Basic_PsrAutoloadingFixerTest {}',
             '<?php class PsrAutoloadingFixerTest {}',
+            null,
             __DIR__.'/..',
         ];
 
         yield 'configured directory (2 subdirectories)' => [
             '<?php class Fixer_Basic_PsrAutoloadingFixerTest {}',
             '<?php class PsrAutoloadingFixerTest {}',
+            null,
             __DIR__.'/../..',
         ];
 
         yield 'configured directory (other directory)' => [
             '<?php namespace Basic; class Foobar {}',
+            null,
             null,
             __DIR__.'/../../Test',
         ];
@@ -114,6 +120,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         yield 'namespace with wrong casing' => [
             '<?php namespace Fixer\\Basic; class PsrAutoloadingFixerTest {}',
             '<?php namespace Fixer\\BASIC; class PsrAutoloadingFixerTest {}',
+            null,
             __DIR__.'/../..',
         ];
 
@@ -137,12 +144,14 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         yield 'namespace partially matching directory structure with configured directory' => [
             '<?php namespace Foo\\Bar\\Baz\\Fixer\\Basic; class PsrAutoloadingFixerTest {}',
             '<?php namespace Foo\\Bar\\Baz\\FIXER\\Basic; class PsrAutoloadingFixerTest {}',
+            null,
             __DIR__.'/../..',
         ];
 
         yield 'namespace partially matching directory structure with comment and configured directory' => [
             '<?php namespace /* hi there */ Foo\\Bar\\Baz\\Fixer\\Basic; class /* hi there */ PsrAutoloadingFixerTest {}',
             '<?php namespace /* hi there */ Foo\\Bar\\Baz\\FIXER\\Basic; class /* hi there */ PsrAutoloadingFixerTest {}',
+            null,
             __DIR__.'/../..',
         ];
 
@@ -153,31 +162,10 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         yield 'namespace not matching directory structure with configured directory' => [
             '<?php namespace Foo\\Bar\\Baz; class PsrAutoloadingFixerTest {}',
             null,
+            null,
             __DIR__,
         ];
-    }
 
-    /**
-     * @dataProvider provideFixCases
-     * @dataProvider provideIgnoredCases
-     * @dataProvider provideAnonymousClassCases
-     */
-    public function testFix(string $expected, ?string $input = null, ?string $filepath = null, ?string $dir = null): void
-    {
-        if (null === $filepath) {
-            $filepath = __FILE__;
-        }
-        $file = self::getTestFile($filepath);
-
-        if (null !== $dir) {
-            $this->fixer->configure(['dir' => $dir]);
-        }
-
-        $this->doTest($expected, $input, $file);
-    }
-
-    public static function provideFixCases(): iterable
-    {
         $filepath = __DIR__.\DIRECTORY_SEPARATOR.'Psr'.\DIRECTORY_SEPARATOR.'Foo'.\DIRECTORY_SEPARATOR.'Bar.php';
 
         yield [ // namespace with wrong casing
@@ -358,10 +346,7 @@ class PsrAutoloadingFixer {}
             '<?php class PsrAutoloadingFixerTest {}',
             '<?php class PsrAutoloadingFixerTestFoo {}',
         ];
-    }
 
-    public static function provideIgnoredCases(): iterable
-    {
         $cases = ['.php', 'Foo.class.php', '4Foo.php', '$#.php'];
 
         foreach (['__halt_compiler', 'abstract', 'and', 'array', 'as', 'break', 'case', 'catch', 'class', 'clone', 'const', 'continue', 'declare', 'default', 'die', 'do', 'echo', 'else', 'elseif', 'empty', 'enddeclare', 'endfor', 'endforeach', 'endif', 'endswitch', 'endwhile', 'eval', 'exit', 'extends', 'final', 'for', 'foreach', 'function', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'interface', 'isset', 'list', 'namespace', 'new', 'or', 'print', 'private', 'protected', 'public', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'try', 'unset', 'use', 'var', 'while', 'xor'] as $keyword) {
@@ -386,17 +371,14 @@ class PsrAutoloadingFixer {}
             }
         }
 
-        return array_map(static fn ($case): array => [
+        yield from array_map(static fn ($case): array => [
             '<?php
 namespace Aaa;
 class Bar {}',
             null,
             $case,
         ], $cases);
-    }
 
-    public static function provideAnonymousClassCases(): iterable
-    {
         yield 'class with anonymous class' => [
             '<?php
 namespace PhpCsFixer\Tests\Fixer\Basic;
