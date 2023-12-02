@@ -41,4 +41,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\StringNotation\\StringLineEndingFixer <./../src/Fixer/StringNotation/StringLineEndingFixer.php>`_
+`PhpCsFixer\\Fixer\\StringNotation\\StringLineEndingFixer <./../../../src/Fixer/StringNotation/StringLineEndingFixer.php>`_

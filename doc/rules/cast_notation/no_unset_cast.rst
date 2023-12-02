@@ -33,4 +33,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\CastNotation\\NoUnsetCastFixer <./../src/Fixer/CastNotation/NoUnsetCastFixer.php>`_
+`PhpCsFixer\\Fixer\\CastNotation\\NoUnsetCastFixer <./../../../src/Fixer/CastNotation/NoUnsetCastFixer.php>`_

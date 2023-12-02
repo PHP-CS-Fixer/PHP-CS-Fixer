@@ -23,4 +23,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\NotOperatorWithSpaceFixer <./../src/Fixer/Operator/NotOperatorWithSpaceFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\NotOperatorWithSpaceFixer <./../../../src/Fixer/Operator/NotOperatorWithSpaceFixer.php>`_

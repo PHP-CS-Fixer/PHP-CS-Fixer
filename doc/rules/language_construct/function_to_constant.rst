@@ -90,4 +90,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\FunctionToConstantFixer <./../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php>`_
+`PhpCsFixer\\Fixer\\LanguageConstruct\\FunctionToConstantFixer <./../../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php>`_

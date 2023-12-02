@@ -187,4 +187,4 @@ With configuration: ``['position_after_functions_and_oop_constructs' => 'same']`
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../src/Fixer/Basic/BracesFixer.php>`_
+`PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../../../src/Fixer/Basic/BracesFixer.php>`_

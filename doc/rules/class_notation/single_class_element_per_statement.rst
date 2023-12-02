@@ -92,4 +92,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\SingleClassElementPerStatementFixer <./../src/Fixer/ClassNotation/SingleClassElementPerStatementFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\SingleClassElementPerStatementFixer <./../../../src/Fixer/ClassNotation/SingleClassElementPerStatementFixer.php>`_

@@ -148,4 +148,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\ClassAttributesSeparationFixer <./../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\ClassAttributesSeparationFixer <./../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php>`_

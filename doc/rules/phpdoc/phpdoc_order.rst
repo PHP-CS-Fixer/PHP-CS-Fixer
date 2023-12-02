@@ -125,4 +125,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocOrderFixer <./../src/Fixer/Phpdoc/PhpdocOrderFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocOrderFixer <./../../../src/Fixer/Phpdoc/PhpdocOrderFixer.php>`_

@@ -229,4 +229,4 @@ With configuration: ``['allow_single_line_anonymous_functions' => true]``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer <./../src/Fixer/Basic/CurlyBracesPositionFixer.php>`_
+`PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer <./../../../src/Fixer/Basic/CurlyBracesPositionFixer.php>`_

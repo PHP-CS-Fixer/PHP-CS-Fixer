@@ -34,4 +34,4 @@ Example #2
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ReturnNotation\\SimplifiedNullReturnFixer <./../src/Fixer/ReturnNotation/SimplifiedNullReturnFixer.php>`_
+`PhpCsFixer\\Fixer\\ReturnNotation\\SimplifiedNullReturnFixer <./../../../src/Fixer/ReturnNotation/SimplifiedNullReturnFixer.php>`_

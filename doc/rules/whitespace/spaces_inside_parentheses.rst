@@ -105,4 +105,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\SpacesInsideParenthesesFixer <./../src/Fixer/Whitespace/SpacesInsideParenthesesFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\SpacesInsideParenthesesFixer <./../../../src/Fixer/Whitespace/SpacesInsideParenthesesFixer.php>`_

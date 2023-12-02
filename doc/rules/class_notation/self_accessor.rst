@@ -48,4 +48,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\SelfAccessorFixer <./../src/Fixer/ClassNotation/SelfAccessorFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\SelfAccessorFixer <./../../../src/Fixer/ClassNotation/SelfAccessorFixer.php>`_

@@ -29,4 +29,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\LambdaNotUsedImportFixer <./../src/Fixer/FunctionNotation/LambdaNotUsedImportFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\LambdaNotUsedImportFixer <./../../../src/Fixer/FunctionNotation/LambdaNotUsedImportFixer.php>`_

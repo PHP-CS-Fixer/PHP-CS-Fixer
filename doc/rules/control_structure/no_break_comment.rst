@@ -83,4 +83,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\NoBreakCommentFixer <./../src/Fixer/ControlStructure/NoBreakCommentFixer.php>`_
+`PhpCsFixer\\Fixer\\ControlStructure\\NoBreakCommentFixer <./../../../src/Fixer/ControlStructure/NoBreakCommentFixer.php>`_

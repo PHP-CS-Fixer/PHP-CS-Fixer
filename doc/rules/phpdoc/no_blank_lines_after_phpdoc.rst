@@ -34,4 +34,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\NoBlankLinesAfterPhpdocFixer <./../src/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\NoBlankLinesAfterPhpdocFixer <./../../../src/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixer.php>`_

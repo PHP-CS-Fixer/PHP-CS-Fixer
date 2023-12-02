@@ -31,4 +31,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\NamespaceNotation\\NoLeadingNamespaceWhitespaceFixer <./../src/Fixer/NamespaceNotation/NoLeadingNamespaceWhitespaceFixer.php>`_
+`PhpCsFixer\\Fixer\\NamespaceNotation\\NoLeadingNamespaceWhitespaceFixer <./../../../src/Fixer/NamespaceNotation/NoLeadingNamespaceWhitespaceFixer.php>`_

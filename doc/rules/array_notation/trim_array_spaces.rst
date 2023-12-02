@@ -32,4 +32,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ArrayNotation\\TrimArraySpacesFixer <./../src/Fixer/ArrayNotation/TrimArraySpacesFixer.php>`_
+`PhpCsFixer\\Fixer\\ArrayNotation\\TrimArraySpacesFixer <./../../../src/Fixer/ArrayNotation/TrimArraySpacesFixer.php>`_

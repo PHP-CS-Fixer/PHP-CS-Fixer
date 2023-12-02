@@ -86,4 +86,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\NoUnneededFinalMethodFixer <./../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\NoUnneededFinalMethodFixer <./../../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php>`_

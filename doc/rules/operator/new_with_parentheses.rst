@@ -89,4 +89,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\NewWithParenthesesFixer <./../src/Fixer/Operator/NewWithParenthesesFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\NewWithParenthesesFixer <./../../../src/Fixer/Operator/NewWithParenthesesFixer.php>`_

@@ -42,4 +42,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Alias\\SetTypeToCastFixer <./../src/Fixer/Alias/SetTypeToCastFixer.php>`_
+`PhpCsFixer\\Fixer\\Alias\\SetTypeToCastFixer <./../../../src/Fixer/Alias/SetTypeToCastFixer.php>`_

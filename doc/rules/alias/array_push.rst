@@ -37,4 +37,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Alias\\ArrayPushFixer <./../src/Fixer/Alias/ArrayPushFixer.php>`_
+`PhpCsFixer\\Fixer\\Alias\\ArrayPushFixer <./../../../src/Fixer/Alias/ArrayPushFixer.php>`_

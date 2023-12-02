@@ -27,4 +27,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocParamOrderFixer <./../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocParamOrderFixer <./../../../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php>`_

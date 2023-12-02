@@ -75,4 +75,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\CastNotation\\CastSpacesFixer <./../src/Fixer/CastNotation/CastSpacesFixer.php>`_
+`PhpCsFixer\\Fixer\\CastNotation\\CastSpacesFixer <./../../../src/Fixer/CastNotation/CastSpacesFixer.php>`_

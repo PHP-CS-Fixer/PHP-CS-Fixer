@@ -104,4 +104,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../../../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php>`_

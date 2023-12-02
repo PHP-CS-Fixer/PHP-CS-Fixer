@@ -71,4 +71,4 @@ With configuration: ``['constructs' => ['yield_from']]``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixer <./../src/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixer.php>`_
+`PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixer <./../../../src/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixer.php>`_

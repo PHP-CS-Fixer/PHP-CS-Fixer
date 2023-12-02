@@ -33,4 +33,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\TernaryOperatorSpacesFixer <./../src/Fixer/Operator/TernaryOperatorSpacesFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\TernaryOperatorSpacesFixer <./../../../src/Fixer/Operator/TernaryOperatorSpacesFixer.php>`_

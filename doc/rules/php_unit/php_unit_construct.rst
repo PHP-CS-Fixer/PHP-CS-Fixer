@@ -83,4 +83,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitConstructFixer <./../src/Fixer/PhpUnit/PhpUnitConstructFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitConstructFixer <./../../../src/Fixer/PhpUnit/PhpUnitConstructFixer.php>`_

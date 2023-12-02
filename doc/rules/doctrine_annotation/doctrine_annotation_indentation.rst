@@ -76,4 +76,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationIndentationFixer <./../src/Fixer/DoctrineAnnotation/DoctrineAnnotationIndentationFixer.php>`_
+`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationIndentationFixer <./../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationIndentationFixer.php>`_

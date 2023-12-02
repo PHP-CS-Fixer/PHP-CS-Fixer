@@ -40,4 +40,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\UseArrowFunctionsFixer <./../src/Fixer/FunctionNotation/UseArrowFunctionsFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\UseArrowFunctionsFixer <./../../../src/Fixer/FunctionNotation/UseArrowFunctionsFixer.php>`_

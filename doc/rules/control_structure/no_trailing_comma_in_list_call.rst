@@ -28,4 +28,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\NoTrailingCommaInListCallFixer <./../src/Fixer/ControlStructure/NoTrailingCommaInListCallFixer.php>`_
+`PhpCsFixer\\Fixer\\ControlStructure\\NoTrailingCommaInListCallFixer <./../../../src/Fixer/ControlStructure/NoTrailingCommaInListCallFixer.php>`_

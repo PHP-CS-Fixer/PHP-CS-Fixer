@@ -60,4 +60,4 @@ With configuration: ``['use_parentheses' => true]``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\AttributeNotation\\AttributeEmptyParenthesesFixer <./../src/Fixer/AttributeNotation/AttributeEmptyParenthesesFixer.php>`_
+`PhpCsFixer\\Fixer\\AttributeNotation\\AttributeEmptyParenthesesFixer <./../../../src/Fixer/AttributeNotation/AttributeEmptyParenthesesFixer.php>`_

@@ -65,4 +65,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ArrayNotation\\ArraySyntaxFixer <./../src/Fixer/ArrayNotation/ArraySyntaxFixer.php>`_
+`PhpCsFixer\\Fixer\\ArrayNotation\\ArraySyntaxFixer <./../../../src/Fixer/ArrayNotation/ArraySyntaxFixer.php>`_

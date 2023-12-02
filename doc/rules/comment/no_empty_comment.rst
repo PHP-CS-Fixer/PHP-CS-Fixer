@@ -33,4 +33,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Comment\\NoEmptyCommentFixer <./../src/Fixer/Comment/NoEmptyCommentFixer.php>`_
+`PhpCsFixer\\Fixer\\Comment\\NoEmptyCommentFixer <./../../../src/Fixer/Comment/NoEmptyCommentFixer.php>`_

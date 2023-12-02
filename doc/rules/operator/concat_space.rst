@@ -81,4 +81,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\ConcatSpaceFixer <./../src/Fixer/Operator/ConcatSpaceFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\ConcatSpaceFixer <./../../../src/Fixer/Operator/ConcatSpaceFixer.php>`_

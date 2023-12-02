@@ -37,4 +37,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\SingleTraitInsertPerStatementFixer <./../src/Fixer/ClassNotation/SingleTraitInsertPerStatementFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\SingleTraitInsertPerStatementFixer <./../../../src/Fixer/ClassNotation/SingleTraitInsertPerStatementFixer.php>`_

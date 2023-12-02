@@ -35,4 +35,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\ExplicitIndirectVariableFixer <./../src/Fixer/LanguageConstruct/ExplicitIndirectVariableFixer.php>`_
+`PhpCsFixer\\Fixer\\LanguageConstruct\\ExplicitIndirectVariableFixer <./../../../src/Fixer/LanguageConstruct/ExplicitIndirectVariableFixer.php>`_

@@ -37,4 +37,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\NoSpaceAroundDoubleColonFixer <./../src/Fixer/Operator/NoSpaceAroundDoubleColonFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\NoSpaceAroundDoubleColonFixer <./../../../src/Fixer/Operator/NoSpaceAroundDoubleColonFixer.php>`_

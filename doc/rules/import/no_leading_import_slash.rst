@@ -35,4 +35,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Import\\NoLeadingImportSlashFixer <./../src/Fixer/Import/NoLeadingImportSlashFixer.php>`_
+`PhpCsFixer\\Fixer\\Import\\NoLeadingImportSlashFixer <./../../../src/Fixer/Import/NoLeadingImportSlashFixer.php>`_

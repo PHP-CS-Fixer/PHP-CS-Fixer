@@ -39,4 +39,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Strict\\DeclareStrictTypesFixer <./../src/Fixer/Strict/DeclareStrictTypesFixer.php>`_
+`PhpCsFixer\\Fixer\\Strict\\DeclareStrictTypesFixer <./../../../src/Fixer/Strict/DeclareStrictTypesFixer.php>`_

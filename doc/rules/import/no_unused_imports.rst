@@ -31,4 +31,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Import\\NoUnusedImportsFixer <./../src/Fixer/Import/NoUnusedImportsFixer.php>`_
+`PhpCsFixer\\Fixer\\Import\\NoUnusedImportsFixer <./../../../src/Fixer/Import/NoUnusedImportsFixer.php>`_

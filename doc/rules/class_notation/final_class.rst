@@ -41,4 +41,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\FinalClassFixer <./../src/Fixer/ClassNotation/FinalClassFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\FinalClassFixer <./../../../src/Fixer/ClassNotation/FinalClassFixer.php>`_

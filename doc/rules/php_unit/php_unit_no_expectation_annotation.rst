@@ -161,4 +161,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNoExpectationAnnotationFixer <./../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNoExpectationAnnotationFixer <./../../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php>`_

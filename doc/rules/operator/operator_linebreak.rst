@@ -80,4 +80,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\OperatorLinebreakFixer <./../src/Fixer/Operator/OperatorLinebreakFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\OperatorLinebreakFixer <./../../../src/Fixer/Operator/OperatorLinebreakFixer.php>`_

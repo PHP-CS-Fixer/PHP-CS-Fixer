@@ -130,4 +130,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Alias\\NoAliasFunctionsFixer <./../src/Fixer/Alias/NoAliasFunctionsFixer.php>`_
+`PhpCsFixer\\Fixer\\Alias\\NoAliasFunctionsFixer <./../../../src/Fixer/Alias/NoAliasFunctionsFixer.php>`_

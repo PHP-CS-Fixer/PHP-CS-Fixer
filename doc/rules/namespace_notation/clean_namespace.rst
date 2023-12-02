@@ -44,4 +44,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\NamespaceNotation\\CleanNamespaceFixer <./../src/Fixer/NamespaceNotation/CleanNamespaceFixer.php>`_
+`PhpCsFixer\\Fixer\\NamespaceNotation\\CleanNamespaceFixer <./../../../src/Fixer/NamespaceNotation/CleanNamespaceFixer.php>`_

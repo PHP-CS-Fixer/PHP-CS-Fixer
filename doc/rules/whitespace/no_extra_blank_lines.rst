@@ -231,4 +231,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\NoExtraBlankLinesFixer <./../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\NoExtraBlankLinesFixer <./../../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php>`_

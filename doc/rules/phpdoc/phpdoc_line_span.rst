@@ -78,4 +78,4 @@ With configuration: ``['property' => 'single']``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocLineSpanFixer <./../src/Fixer/Phpdoc/PhpdocLineSpanFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocLineSpanFixer <./../../../src/Fixer/Phpdoc/PhpdocLineSpanFixer.php>`_

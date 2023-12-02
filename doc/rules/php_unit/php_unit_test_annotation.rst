@@ -76,4 +76,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixer <./../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixer <./../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php>`_

@@ -60,4 +60,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\IncrementStyleFixer <./../src/Fixer/Operator/IncrementStyleFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\IncrementStyleFixer <./../../../src/Fixer/Operator/IncrementStyleFixer.php>`_

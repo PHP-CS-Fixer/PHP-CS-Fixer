@@ -35,4 +35,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\NoWhitespaceInBlankLineFixer <./../src/Fixer/Whitespace/NoWhitespaceInBlankLineFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\NoWhitespaceInBlankLineFixer <./../../../src/Fixer/Whitespace/NoWhitespaceInBlankLineFixer.php>`_

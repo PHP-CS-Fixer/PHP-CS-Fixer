@@ -21,4 +21,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Import\\GroupImportFixer <./../src/Fixer/Import/GroupImportFixer.php>`_
+`PhpCsFixer\\Fixer\\Import\\GroupImportFixer <./../../../src/Fixer/Import/GroupImportFixer.php>`_

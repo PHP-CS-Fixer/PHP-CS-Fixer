@@ -66,4 +66,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTagTypeFixer <./../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTagTypeFixer <./../../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php>`_

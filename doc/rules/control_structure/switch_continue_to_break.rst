@@ -57,4 +57,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\SwitchContinueToBreakFixer <./../src/Fixer/ControlStructure/SwitchContinueToBreakFixer.php>`_
+`PhpCsFixer\\Fixer\\ControlStructure\\SwitchContinueToBreakFixer <./../../../src/Fixer/ControlStructure/SwitchContinueToBreakFixer.php>`_

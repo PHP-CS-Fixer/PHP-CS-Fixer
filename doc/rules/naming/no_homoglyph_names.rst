@@ -37,4 +37,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Naming\\NoHomoglyphNamesFixer <./../src/Fixer/Naming/NoHomoglyphNamesFixer.php>`_
+`PhpCsFixer\\Fixer\\Naming\\NoHomoglyphNamesFixer <./../../../src/Fixer/Naming/NoHomoglyphNamesFixer.php>`_

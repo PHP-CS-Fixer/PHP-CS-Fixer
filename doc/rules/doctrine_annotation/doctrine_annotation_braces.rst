@@ -70,4 +70,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationBracesFixer <./../src/Fixer/DoctrineAnnotation/DoctrineAnnotationBracesFixer.php>`_
+`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationBracesFixer <./../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationBracesFixer.php>`_

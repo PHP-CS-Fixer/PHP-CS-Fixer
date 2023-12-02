@@ -78,4 +78,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Import\\FullyQualifiedStrictTypesFixer <./../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php>`_
+`PhpCsFixer\\Fixer\\Import\\FullyQualifiedStrictTypesFixer <./../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php>`_

@@ -30,4 +30,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\MethodChainingIndentationFixer <./../src/Fixer/Whitespace/MethodChainingIndentationFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\MethodChainingIndentationFixer <./../../../src/Fixer/Whitespace/MethodChainingIndentationFixer.php>`_

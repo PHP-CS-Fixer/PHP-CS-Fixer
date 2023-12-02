@@ -44,4 +44,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\NoUnreachableDefaultArgumentValueFixer <./../src/Fixer/FunctionNotation/NoUnreachableDefaultArgumentValueFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\NoUnreachableDefaultArgumentValueFixer <./../../../src/Fixer/FunctionNotation/NoUnreachableDefaultArgumentValueFixer.php>`_

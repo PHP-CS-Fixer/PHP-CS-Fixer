@@ -34,4 +34,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\ArrayIndentationFixer <./../src/Fixer/Whitespace/ArrayIndentationFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\ArrayIndentationFixer <./../../../src/Fixer/Whitespace/ArrayIndentationFixer.php>`_

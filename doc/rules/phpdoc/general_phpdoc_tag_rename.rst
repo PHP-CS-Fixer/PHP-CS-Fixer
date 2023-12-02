@@ -128,4 +128,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocTagRenameFixer <./../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocTagRenameFixer <./../../../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php>`_

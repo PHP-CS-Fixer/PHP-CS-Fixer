@@ -79,4 +79,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\HeredocIndentationFixer <./../src/Fixer/Whitespace/HeredocIndentationFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\HeredocIndentationFixer <./../../../src/Fixer/Whitespace/HeredocIndentationFixer.php>`_

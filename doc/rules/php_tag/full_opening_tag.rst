@@ -38,4 +38,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpTag\\FullOpeningTagFixer <./../src/Fixer/PhpTag/FullOpeningTagFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpTag\\FullOpeningTagFixer <./../../../src/Fixer/PhpTag/FullOpeningTagFixer.php>`_

@@ -92,4 +92,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocReturnSelfReferenceFixer <./../src/Fixer/Phpdoc/PhpdocReturnSelfReferenceFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocReturnSelfReferenceFixer <./../../../src/Fixer/Phpdoc/PhpdocReturnSelfReferenceFixer.php>`_

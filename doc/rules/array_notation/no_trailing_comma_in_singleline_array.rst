@@ -28,4 +28,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ArrayNotation\\NoTrailingCommaInSinglelineArrayFixer <./../src/Fixer/ArrayNotation/NoTrailingCommaInSinglelineArrayFixer.php>`_
+`PhpCsFixer\\Fixer\\ArrayNotation\\NoTrailingCommaInSinglelineArrayFixer <./../../../src/Fixer/ArrayNotation/NoTrailingCommaInSinglelineArrayFixer.php>`_

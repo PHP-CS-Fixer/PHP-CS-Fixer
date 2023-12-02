@@ -90,4 +90,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\TypesSpacesFixer <./../src/Fixer/Whitespace/TypesSpacesFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\TypesSpacesFixer <./../../../src/Fixer/Whitespace/TypesSpacesFixer.php>`_

@@ -51,4 +51,4 @@ Example #2
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\RegularCallableCallFixer <./../src/Fixer/FunctionNotation/RegularCallableCallFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\RegularCallableCallFixer <./../../../src/Fixer/FunctionNotation/RegularCallableCallFixer.php>`_
