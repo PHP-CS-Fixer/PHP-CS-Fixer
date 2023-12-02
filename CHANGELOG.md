@@ -3,6 +3,24 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.40.1
+---------------------
+
+* chore: Delete stray file x (#7473)
+* chore: Fix editorconfig (#7478)
+* chore: Fix typos (#7474)
+* chore: Fix YAML line length (#7476)
+* chore: Indent JSON files with 4 spaces (#7480)
+* chore: Make YAML workflow git-based (#7477)
+* chore: Use stable XDebug (#7489)
+* CI: Lint docs (#7479)
+* CI: Use PHPStan's native Github error formatter (#7487)
+* DX: fix PHPStan error (#7488)
+* DX: PsrAutoloadingFixerTest - do not build mock in data provider (#7491)
+* DX: PsrAutoloadingFixerTest - merge all data providers into one (#7492)
+* DX: Update PHPStan to 1.10.46 (#7486)
+* fix: `NoSpacesAfterFunctionNameFixer` - do not remove space if the opening parenthesis part of an expression (#7430)
+
 Changelog for v3.40.0
 ---------------------
 
