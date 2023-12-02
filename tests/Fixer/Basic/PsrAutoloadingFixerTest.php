@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
-use Prophecy\Prophet;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
@@ -163,11 +162,13 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
      * @dataProvider provideIgnoredCases
      * @dataProvider provideAnonymousClassCases
      */
-    public function testFix(string $expected, ?string $input = null, ?\SplFileInfo $file = null, ?string $dir = null): void
+    public function testFix(string $expected, ?string $input = null, ?string $filepath = null, ?string $dir = null): void
     {
-        if (null === $file) {
-            $file = self::getTestFile(__FILE__);
+        if (null === $filepath) {
+            $filepath = __FILE__;
         }
+        $file = self::getTestFile($filepath);
+
         if (null !== $dir) {
             $this->fixer->configure(['dir' => $dir]);
         }
@@ -177,13 +178,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        $prophet = new Prophet();
-        $fileProphecy = $prophet->prophesize(\SplFileInfo::class);
-        $fileProphecy->willBeConstructedWith(['']);
-        $fileProphecy->getBasename('.php')->willReturn('Bar');
-        $fileProphecy->getExtension()->willReturn('php');
-        $fileProphecy->getRealPath()->willReturn(__DIR__.\DIRECTORY_SEPARATOR.'Psr'.\DIRECTORY_SEPARATOR.'Foo'.\DIRECTORY_SEPARATOR.'Bar.php');
-        $file = $fileProphecy->reveal();
+        $filepath = __DIR__.\DIRECTORY_SEPARATOR.'Psr'.\DIRECTORY_SEPARATOR.'Foo'.\DIRECTORY_SEPARATOR.'Bar.php';
 
         yield [ // namespace with wrong casing
             '<?php
@@ -194,7 +189,7 @@ class Bar {}
 namespace Psr\foo;
 class bar {}
 ',
-            $file,
+            $filepath,
             __DIR__,
         ];
 
@@ -205,7 +200,7 @@ class Psr_Foo_Bar {}
             '<?php
 class Psr_fOo_bAr {}
 ',
-            $file,
+            $filepath,
             __DIR__,
         ];
 
@@ -218,7 +213,7 @@ class Bar {}
 namespace Psr\foo;
 class bar {}
 ',
-            $file,
+            $filepath,
             __DIR__,
         ];
 
@@ -297,7 +292,7 @@ namespace Foo\Bar\Baz\FIXER\Basic;
 class PsrAutoloadingFixer {}
 ',
             null,
-            self::getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
+            __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
         ];
 
         yield [ // namespace partially matching directory structure with comment
@@ -306,7 +301,7 @@ namespace /* hi there */ Foo\Bar\Baz\FIXER\Basic;
 class /* hi there */ PsrAutoloadingFixer {}
 ',
             null,
-            self::getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
+            __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
         ];
 
         yield [ // namespace not matching directory structure
@@ -315,7 +310,7 @@ namespace Foo\Bar\Baz;
 class PsrAutoloadingFixer {}
 ',
             null,
-            self::getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
+            __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
         ];
 
         yield [ // namespace partially matching directory structure with configured directory
@@ -327,7 +322,7 @@ class PsrAutoloadingFixer {}
 namespace Foo\Bar\Baz\FIXER\Basic;
 class PsrAutoloadingFixer {}
 ',
-            self::getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
+            __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
             __DIR__.'/../../../src/',
         ];
 
@@ -340,7 +335,7 @@ class /* hi there */ PsrAutoloadingFixer {}
 namespace /* hi there */ Foo\Bar\Baz\FIXER\Basic;
 class /* hi there */ PsrAutoloadingFixer {}
 ',
-            self::getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
+            __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
             __DIR__.'/../../../src/',
         ];
 
@@ -350,7 +345,7 @@ namespace Foo\Bar\Baz;
 class PsrAutoloadingFixer {}
 ',
             null,
-            self::getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
+            __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
             __DIR__.'/../../../src/Fixer/Basic',
         ];
 
@@ -396,7 +391,7 @@ class PsrAutoloadingFixer {}
 namespace Aaa;
 class Bar {}',
             null,
-            self::getTestFile($case),
+            $case,
         ], $cases);
     }
 

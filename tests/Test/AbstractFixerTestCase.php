@@ -382,7 +382,14 @@ abstract class AbstractFixerTestCase extends TestCase
     {
         static $files = [];
 
-        return $files[$filename] ?? $files[$filename] = new \SplFileInfo($filename);
+        return $files[$filename] ?? $files[$filename] = new class($filename) extends \SplFileInfo {
+            public function getRealPath(): string
+            {
+                return false !== parent::getRealPath()
+                    ? parent::getRealPath()
+                    : $this->getPathname();
+            }
+        };
     }
 
     /**
