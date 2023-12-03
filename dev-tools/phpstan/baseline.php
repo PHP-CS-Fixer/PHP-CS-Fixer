@@ -152,19 +152,19 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
+	'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedTraitsFixer.php',
+	'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedTraitsFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedTypesFixer.php',
+	'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedTypesFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Comment\\\\NoEmptyCommentFixer\\:\\:getCommentBlock\\(\\) return type has no value type specified in iterable type array\\.$#',
@@ -372,9 +372,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTrimConsecutiveBlankLineSeparationFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTypesOrderFixer.php',
+	'message' => '#^Only booleans are allowed in a ternary operator condition, mixed given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTypesOrderFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Strict\\\\StrictParamFixer\\:\\:fixFunction\\(\\) has parameter \\$functionParams with no value type specified in iterable type array\\.$#',
