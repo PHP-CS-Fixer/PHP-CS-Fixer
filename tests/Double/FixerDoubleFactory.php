@@ -225,7 +225,7 @@ class FixerDoubleFactory
                 bool $isCandidate,
                 bool $isRisky,
                 bool $supports,
-                int $priority,
+                int $priority
             ) {
                 $this->isCandidate = $isCandidate;
                 $this->isRisky = $isRisky;
