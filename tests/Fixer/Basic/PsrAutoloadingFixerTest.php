@@ -34,7 +34,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         if (null === $filepath) {
             $filepath = __FILE__;
         }
-        $file = self::getTestFile($filepath);
+        $file = self::getMockedTestFile($filepath);
 
         if (null !== $dir) {
             $this->fixer->configure(['dir' => $dir]);
@@ -460,5 +460,22 @@ class extends stdClass {};
             '<?php enum PsrAutoloadingFixerTest {}',
             '<?php enum psrautoloadingfixertest {}',
         ];
+    }
+
+    /**
+     * Mocked test file will return _some_ value for `getRealPath()`, even if file does not exist.
+     */
+    protected static function getMockedTestFile(string $filename = __FILE__): \SplFileInfo
+    {
+        static $files = [];
+
+        return $files[$filename] ?? $files[$filename] = new class($filename) extends \SplFileInfo {
+            public function getRealPath(): string
+            {
+                return false !== parent::getRealPath()
+                    ? parent::getRealPath()
+                    : $this->getPathname();
+            }
+        };
     }
 }
