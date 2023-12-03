@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.40.2
+---------------------
+
+* docs: fix link to source classes (#7493)
+
 Changelog for v3.40.1
 ---------------------
 
