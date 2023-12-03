@@ -65,7 +65,7 @@ jobs:
         run: ./dev-tools/check_trailing_spaces.sh
 
       - name: Check - phpstan
-        run: ./dev-tools/vendor/bin/phpstan analyse --error-format=github
+        run: ./dev-tools/vendor/bin/phpstan analyse --ansi
 
       - name: Check - composer-require-checker
         run: ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
