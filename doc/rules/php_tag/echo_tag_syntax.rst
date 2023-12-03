@@ -127,4 +127,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpTag\\EchoTagSyntaxFixer <./../src/Fixer/PhpTag/EchoTagSyntaxFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpTag\\EchoTagSyntaxFixer <./../../../src/Fixer/PhpTag/EchoTagSyntaxFixer.php>`_

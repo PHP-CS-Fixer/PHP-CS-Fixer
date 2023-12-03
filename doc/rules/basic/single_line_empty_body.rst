@@ -36,4 +36,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Basic\\SingleLineEmptyBodyFixer <./../src/Fixer/Basic/SingleLineEmptyBodyFixer.php>`_
+`PhpCsFixer\\Fixer\\Basic\\SingleLineEmptyBodyFixer <./../../../src/Fixer/Basic/SingleLineEmptyBodyFixer.php>`_

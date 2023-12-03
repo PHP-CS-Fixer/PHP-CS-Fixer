@@ -31,4 +31,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Casing\\IntegerLiteralCaseFixer <./../src/Fixer/Casing/IntegerLiteralCaseFixer.php>`_
+`PhpCsFixer\\Fixer\\Casing\\IntegerLiteralCaseFixer <./../../../src/Fixer/Casing/IntegerLiteralCaseFixer.php>`_

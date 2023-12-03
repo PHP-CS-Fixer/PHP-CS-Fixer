@@ -41,4 +41,4 @@ Example #2
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\FunctionTypehintSpaceFixer <./../src/Fixer/FunctionNotation/FunctionTypehintSpaceFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\FunctionTypehintSpaceFixer <./../../../src/Fixer/FunctionNotation/FunctionTypehintSpaceFixer.php>`_

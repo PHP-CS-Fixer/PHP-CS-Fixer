@@ -111,4 +111,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\SelfStaticAccessorFixer <./../src/Fixer/ClassNotation/SelfStaticAccessorFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\SelfStaticAccessorFixer <./../../../src/Fixer/ClassNotation/SelfStaticAccessorFixer.php>`_

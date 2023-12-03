@@ -82,4 +82,4 @@ With configuration: ``['named_class' => false]``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\NewWithBracesFixer <./../src/Fixer/Operator/NewWithBracesFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\NewWithBracesFixer <./../../../src/Fixer/Operator/NewWithBracesFixer.php>`_

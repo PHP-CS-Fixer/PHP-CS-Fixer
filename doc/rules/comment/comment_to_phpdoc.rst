@@ -67,4 +67,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Comment\\CommentToPhpdocFixer <./../src/Fixer/Comment/CommentToPhpdocFixer.php>`_
+`PhpCsFixer\\Fixer\\Comment\\CommentToPhpdocFixer <./../../../src/Fixer/Comment/CommentToPhpdocFixer.php>`_

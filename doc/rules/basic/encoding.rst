@@ -37,4 +37,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Basic\\EncodingFixer <./../src/Fixer/Basic/EncodingFixer.php>`_
+`PhpCsFixer\\Fixer\\Basic\\EncodingFixer <./../../../src/Fixer/Basic/EncodingFixer.php>`_

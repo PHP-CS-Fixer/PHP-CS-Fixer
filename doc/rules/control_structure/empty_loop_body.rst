@@ -57,4 +57,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\EmptyLoopBodyFixer <./../src/Fixer/ControlStructure/EmptyLoopBodyFixer.php>`_
+`PhpCsFixer\\Fixer\\ControlStructure\\EmptyLoopBodyFixer <./../../../src/Fixer/ControlStructure/EmptyLoopBodyFixer.php>`_

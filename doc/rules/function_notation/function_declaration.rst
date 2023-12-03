@@ -115,4 +115,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\FunctionDeclarationFixer <./../src/Fixer/FunctionNotation/FunctionDeclarationFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\FunctionDeclarationFixer <./../../../src/Fixer/FunctionNotation/FunctionDeclarationFixer.php>`_

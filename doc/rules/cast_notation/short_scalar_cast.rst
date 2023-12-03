@@ -48,4 +48,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\CastNotation\\ShortScalarCastFixer <./../src/Fixer/CastNotation/ShortScalarCastFixer.php>`_
+`PhpCsFixer\\Fixer\\CastNotation\\ShortScalarCastFixer <./../../../src/Fixer/CastNotation/ShortScalarCastFixer.php>`_

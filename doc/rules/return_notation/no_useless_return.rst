@@ -33,4 +33,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ReturnNotation\\NoUselessReturnFixer <./../src/Fixer/ReturnNotation/NoUselessReturnFixer.php>`_
+`PhpCsFixer\\Fixer\\ReturnNotation\\NoUselessReturnFixer <./../../../src/Fixer/ReturnNotation/NoUselessReturnFixer.php>`_

@@ -62,4 +62,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitInternalClassFixer <./../src/Fixer/PhpUnit/PhpUnitInternalClassFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitInternalClassFixer <./../../../src/Fixer/PhpUnit/PhpUnitInternalClassFixer.php>`_

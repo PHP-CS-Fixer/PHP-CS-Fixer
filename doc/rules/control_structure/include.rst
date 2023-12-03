@@ -36,4 +36,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\IncludeFixer <./../src/Fixer/ControlStructure/IncludeFixer.php>`_
+`PhpCsFixer\\Fixer\\ControlStructure\\IncludeFixer <./../../../src/Fixer/ControlStructure/IncludeFixer.php>`_

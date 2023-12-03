@@ -82,4 +82,4 @@ With configuration: ``['annotations' => ['package', 'subpackage']]``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocAnnotationRemoveFixer <./../src/Fixer/Phpdoc/GeneralPhpdocAnnotationRemoveFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocAnnotationRemoveFixer <./../../../src/Fixer/Phpdoc/GeneralPhpdocAnnotationRemoveFixer.php>`_

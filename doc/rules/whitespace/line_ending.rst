@@ -40,4 +40,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\LineEndingFixer <./../src/Fixer/Whitespace/LineEndingFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\LineEndingFixer <./../../../src/Fixer/Whitespace/LineEndingFixer.php>`_

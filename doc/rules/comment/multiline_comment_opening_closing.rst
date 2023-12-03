@@ -44,4 +44,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Comment\\MultilineCommentOpeningClosingFixer <./../src/Fixer/Comment/MultilineCommentOpeningClosingFixer.php>`_
+`PhpCsFixer\\Fixer\\Comment\\MultilineCommentOpeningClosingFixer <./../../../src/Fixer/Comment/MultilineCommentOpeningClosingFixer.php>`_

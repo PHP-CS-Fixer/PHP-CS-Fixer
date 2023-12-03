@@ -40,4 +40,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\StringNotation\\NoBinaryStringFixer <./../src/Fixer/StringNotation/NoBinaryStringFixer.php>`_
+`PhpCsFixer\\Fixer\\StringNotation\\NoBinaryStringFixer <./../../../src/Fixer/StringNotation/NoBinaryStringFixer.php>`_

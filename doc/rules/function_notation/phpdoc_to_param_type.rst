@@ -71,4 +71,4 @@ With configuration: ``['scalar_types' => false]``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToParamTypeFixer <./../src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToParamTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php>`_

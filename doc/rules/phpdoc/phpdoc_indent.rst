@@ -37,4 +37,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocIndentFixer <./../src/Fixer/Phpdoc/PhpdocIndentFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocIndentFixer <./../../../src/Fixer/Phpdoc/PhpdocIndentFixer.php>`_

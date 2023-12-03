@@ -29,4 +29,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Casing\\NativeFunctionCasingFixer <./../src/Fixer/Casing/NativeFunctionCasingFixer.php>`_
+`PhpCsFixer\\Fixer\\Casing\\NativeFunctionCasingFixer <./../../../src/Fixer/Casing/NativeFunctionCasingFixer.php>`_

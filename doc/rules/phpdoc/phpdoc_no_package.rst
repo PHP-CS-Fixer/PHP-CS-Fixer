@@ -35,4 +35,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoPackageFixer <./../src/Fixer/Phpdoc/PhpdocNoPackageFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoPackageFixer <./../../../src/Fixer/Phpdoc/PhpdocNoPackageFixer.php>`_

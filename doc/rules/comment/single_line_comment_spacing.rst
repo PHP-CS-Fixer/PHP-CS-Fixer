@@ -33,4 +33,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Comment\\SingleLineCommentSpacingFixer <./../src/Fixer/Comment/SingleLineCommentSpacingFixer.php>`_
+`PhpCsFixer\\Fixer\\Comment\\SingleLineCommentSpacingFixer <./../../../src/Fixer/Comment/SingleLineCommentSpacingFixer.php>`_

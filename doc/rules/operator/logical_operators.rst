@@ -40,4 +40,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\LogicalOperatorsFixer <./../src/Fixer/Operator/LogicalOperatorsFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\LogicalOperatorsFixer <./../../../src/Fixer/Operator/LogicalOperatorsFixer.php>`_

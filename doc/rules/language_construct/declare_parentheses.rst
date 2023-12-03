@@ -28,4 +28,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\DeclareParenthesesFixer <./../src/Fixer/LanguageConstruct/DeclareParenthesesFixer.php>`_
+`PhpCsFixer\\Fixer\\LanguageConstruct\\DeclareParenthesesFixer <./../../../src/Fixer/LanguageConstruct/DeclareParenthesesFixer.php>`_

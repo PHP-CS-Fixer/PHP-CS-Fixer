@@ -50,4 +50,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Casing\\LowercaseKeywordsFixer <./../src/Fixer/Casing/LowercaseKeywordsFixer.php>`_
+`PhpCsFixer\\Fixer\\Casing\\LowercaseKeywordsFixer <./../../../src/Fixer/Casing/LowercaseKeywordsFixer.php>`_

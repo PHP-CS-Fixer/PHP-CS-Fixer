@@ -21,4 +21,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\SimplifiedIfReturnFixer <./../src/Fixer/ControlStructure/SimplifiedIfReturnFixer.php>`_
+`PhpCsFixer\\Fixer\\ControlStructure\\SimplifiedIfReturnFixer <./../../../src/Fixer/ControlStructure/SimplifiedIfReturnFixer.php>`_

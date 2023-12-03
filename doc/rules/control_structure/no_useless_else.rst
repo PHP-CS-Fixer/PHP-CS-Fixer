@@ -33,4 +33,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\NoUselessElseFixer <./../src/Fixer/ControlStructure/NoUselessElseFixer.php>`_
+`PhpCsFixer\\Fixer\\ControlStructure\\NoUselessElseFixer <./../../../src/Fixer/ControlStructure/NoUselessElseFixer.php>`_

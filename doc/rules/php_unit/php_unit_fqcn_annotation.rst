@@ -43,4 +43,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitFqcnAnnotationFixer <./../src/Fixer/PhpUnit/PhpUnitFqcnAnnotationFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitFqcnAnnotationFixer <./../../../src/Fixer/PhpUnit/PhpUnitFqcnAnnotationFixer.php>`_

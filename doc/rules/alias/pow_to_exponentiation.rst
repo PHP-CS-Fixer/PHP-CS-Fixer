@@ -42,4 +42,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Alias\\PowToExponentiationFixer <./../src/Fixer/Alias/PowToExponentiationFixer.php>`_
+`PhpCsFixer\\Fixer\\Alias\\PowToExponentiationFixer <./../../../src/Fixer/Alias/PowToExponentiationFixer.php>`_

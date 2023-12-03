@@ -34,4 +34,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ArrayNotation\\NormalizeIndexBraceFixer <./../src/Fixer/ArrayNotation/NormalizeIndexBraceFixer.php>`_
+`PhpCsFixer\\Fixer\\ArrayNotation\\NormalizeIndexBraceFixer <./../../../src/Fixer/ArrayNotation/NormalizeIndexBraceFixer.php>`_

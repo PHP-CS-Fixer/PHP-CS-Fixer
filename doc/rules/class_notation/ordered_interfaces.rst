@@ -141,4 +141,4 @@ With configuration: ``['order' => 'alpha', 'case_sensitive' => true]``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\OrderedInterfacesFixer <./../src/Fixer/ClassNotation/OrderedInterfacesFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\OrderedInterfacesFixer <./../../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php>`_

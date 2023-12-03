@@ -29,4 +29,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\StringNotation\\HeredocToNowdocFixer <./../src/Fixer/StringNotation/HeredocToNowdocFixer.php>`_
+`PhpCsFixer\\Fixer\\StringNotation\\HeredocToNowdocFixer <./../../../src/Fixer/StringNotation/HeredocToNowdocFixer.php>`_

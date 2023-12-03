@@ -31,4 +31,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\SingleLineThrowFixer <./../src/Fixer/FunctionNotation/SingleLineThrowFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\SingleLineThrowFixer <./../../../src/Fixer/FunctionNotation/SingleLineThrowFixer.php>`_

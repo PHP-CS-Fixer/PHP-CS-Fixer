@@ -42,4 +42,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\CombineNestedDirnameFixer <./../src/Fixer/FunctionNotation/CombineNestedDirnameFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\CombineNestedDirnameFixer <./../../../src/Fixer/FunctionNotation/CombineNestedDirnameFixer.php>`_

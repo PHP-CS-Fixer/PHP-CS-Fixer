@@ -257,4 +257,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Basic\\BracesPositionFixer <./../src/Fixer/Basic/BracesPositionFixer.php>`_
+`PhpCsFixer\\Fixer\\Basic\\BracesPositionFixer <./../../../src/Fixer/Basic/BracesPositionFixer.php>`_

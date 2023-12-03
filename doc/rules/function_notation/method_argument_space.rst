@@ -338,4 +338,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixer <./../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixer <./../../../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php>`_

@@ -47,4 +47,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\SingleBlankLineAtEofFixer <./../src/Fixer/Whitespace/SingleBlankLineAtEofFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\SingleBlankLineAtEofFixer <./../../../src/Fixer/Whitespace/SingleBlankLineAtEofFixer.php>`_

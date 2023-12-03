@@ -39,4 +39,4 @@ Example #1
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\FinalPublicMethodForAbstractClassFixer <./../src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\FinalPublicMethodForAbstractClassFixer <./../../../src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php>`_

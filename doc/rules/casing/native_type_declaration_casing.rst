@@ -48,4 +48,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Casing\\NativeTypeDeclarationCasingFixer <./../src/Fixer/Casing/NativeTypeDeclarationCasingFixer.php>`_
+`PhpCsFixer\\Fixer\\Casing\\NativeTypeDeclarationCasingFixer <./../../../src/Fixer/Casing/NativeTypeDeclarationCasingFixer.php>`_

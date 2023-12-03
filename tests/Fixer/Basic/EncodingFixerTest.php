@@ -47,8 +47,8 @@ final class EncodingFixerTest extends AbstractFixerTestCase
      */
     private static function prepareTestCase(string $expectedFilename, ?string $inputFilename = null): array
     {
-        $expectedFile = self::getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$expectedFilename);
-        $inputFile = null !== $inputFilename ? self::getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$inputFilename) : null;
+        $expectedFile = new \SplFileInfo(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$expectedFilename);
+        $inputFile = null !== $inputFilename ? new \SplFileInfo(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$inputFilename) : null;
 
         return [
             file_get_contents($expectedFile->getRealPath()),

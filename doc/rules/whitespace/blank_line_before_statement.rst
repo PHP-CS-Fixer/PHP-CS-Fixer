@@ -246,4 +246,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\BlankLineBeforeStatementFixer <./../src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\BlankLineBeforeStatementFixer <./../../../src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php>`_

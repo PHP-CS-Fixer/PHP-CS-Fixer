@@ -37,4 +37,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpTag\\BlankLineAfterOpeningTagFixer <./../src/Fixer/PhpTag/BlankLineAfterOpeningTagFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpTag\\BlankLineAfterOpeningTagFixer <./../../../src/Fixer/PhpTag/BlankLineAfterOpeningTagFixer.php>`_

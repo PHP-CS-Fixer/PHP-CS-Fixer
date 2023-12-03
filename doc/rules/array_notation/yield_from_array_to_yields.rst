@@ -55,4 +55,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ArrayNotation\\YieldFromArrayToYieldsFixer <./../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php>`_
+`PhpCsFixer\\Fixer\\ArrayNotation\\YieldFromArrayToYieldsFixer <./../../../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php>`_

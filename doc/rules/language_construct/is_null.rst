@@ -37,4 +37,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\IsNullFixer <./../src/Fixer/LanguageConstruct/IsNullFixer.php>`_
+`PhpCsFixer\\Fixer\\LanguageConstruct\\IsNullFixer <./../../../src/Fixer/LanguageConstruct/IsNullFixer.php>`_

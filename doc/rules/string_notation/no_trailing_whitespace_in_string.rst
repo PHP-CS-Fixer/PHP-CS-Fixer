@@ -44,4 +44,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\StringNotation\\NoTrailingWhitespaceInStringFixer <./../src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php>`_
+`PhpCsFixer\\Fixer\\StringNotation\\NoTrailingWhitespaceInStringFixer <./../../../src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php>`_

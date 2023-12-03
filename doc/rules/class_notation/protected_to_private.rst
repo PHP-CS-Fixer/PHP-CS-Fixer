@@ -36,4 +36,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\ProtectedToPrivateFixer <./../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\ProtectedToPrivateFixer <./../../../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php>`_

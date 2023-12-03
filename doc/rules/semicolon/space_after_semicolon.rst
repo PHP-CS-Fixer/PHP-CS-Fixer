@@ -68,4 +68,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Semicolon\\SpaceAfterSemicolonFixer <./../src/Fixer/Semicolon/SpaceAfterSemicolonFixer.php>`_
+`PhpCsFixer\\Fixer\\Semicolon\\SpaceAfterSemicolonFixer <./../../../src/Fixer/Semicolon/SpaceAfterSemicolonFixer.php>`_

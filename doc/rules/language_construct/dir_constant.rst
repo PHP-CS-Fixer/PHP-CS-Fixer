@@ -37,4 +37,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\DirConstantFixer <./../src/Fixer/LanguageConstruct/DirConstantFixer.php>`_
+`PhpCsFixer\\Fixer\\LanguageConstruct\\DirConstantFixer <./../../../src/Fixer/LanguageConstruct/DirConstantFixer.php>`_

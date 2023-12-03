@@ -36,4 +36,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Strict\\StrictComparisonFixer <./../src/Fixer/Strict/StrictComparisonFixer.php>`_
+`PhpCsFixer\\Fixer\\Strict\\StrictComparisonFixer <./../../../src/Fixer/Strict/StrictComparisonFixer.php>`_

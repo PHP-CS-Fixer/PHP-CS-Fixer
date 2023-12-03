@@ -275,4 +275,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Operator\\BinaryOperatorSpacesFixer <./../src/Fixer/Operator/BinaryOperatorSpacesFixer.php>`_
+`PhpCsFixer\\Fixer\\Operator\\BinaryOperatorSpacesFixer <./../../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php>`_

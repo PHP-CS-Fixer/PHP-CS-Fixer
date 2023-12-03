@@ -114,4 +114,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockFixer <./../src/Fixer/PhpUnit/PhpUnitMockFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockFixer <./../../../src/Fixer/PhpUnit/PhpUnitMockFixer.php>`_

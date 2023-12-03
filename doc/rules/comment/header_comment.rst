@@ -128,4 +128,4 @@ With configuration: ``['header' => '']``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Comment\\HeaderCommentFixer <./../src/Fixer/Comment/HeaderCommentFixer.php>`_
+`PhpCsFixer\\Fixer\\Comment\\HeaderCommentFixer <./../../../src/Fixer/Comment/HeaderCommentFixer.php>`_

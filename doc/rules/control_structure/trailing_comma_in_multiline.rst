@@ -133,4 +133,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\TrailingCommaInMultilineFixer <./../src/Fixer/ControlStructure/TrailingCommaInMultilineFixer.php>`_
+`PhpCsFixer\\Fixer\\ControlStructure\\TrailingCommaInMultilineFixer <./../../../src/Fixer/ControlStructure/TrailingCommaInMultilineFixer.php>`_

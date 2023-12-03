@@ -146,4 +146,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\StringNotation\\EscapeImplicitBackslashesFixer <./../src/Fixer/StringNotation/EscapeImplicitBackslashesFixer.php>`_
+`PhpCsFixer\\Fixer\\StringNotation\\EscapeImplicitBackslashesFixer <./../../../src/Fixer/StringNotation/EscapeImplicitBackslashesFixer.php>`_

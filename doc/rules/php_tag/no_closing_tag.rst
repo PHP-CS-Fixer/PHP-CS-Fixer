@@ -39,4 +39,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpTag\\NoClosingTagFixer <./../src/Fixer/PhpTag/NoClosingTagFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpTag\\NoClosingTagFixer <./../../../src/Fixer/PhpTag/NoClosingTagFixer.php>`_

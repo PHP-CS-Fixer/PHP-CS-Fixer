@@ -47,4 +47,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\CastNotation\\ModernizeTypesCastingFixer <./../src/Fixer/CastNotation/ModernizeTypesCastingFixer.php>`_
+`PhpCsFixer\\Fixer\\CastNotation\\ModernizeTypesCastingFixer <./../../../src/Fixer/CastNotation/ModernizeTypesCastingFixer.php>`_

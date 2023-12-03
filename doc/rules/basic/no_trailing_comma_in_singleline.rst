@@ -64,4 +64,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Basic\\NoTrailingCommaInSinglelineFixer <./../src/Fixer/Basic/NoTrailingCommaInSinglelineFixer.php>`_
+`PhpCsFixer\\Fixer\\Basic\\NoTrailingCommaInSinglelineFixer <./../../../src/Fixer/Basic/NoTrailingCommaInSinglelineFixer.php>`_

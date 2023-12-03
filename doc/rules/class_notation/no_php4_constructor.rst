@@ -44,4 +44,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\NoPhp4ConstructorFixer <./../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\NoPhp4ConstructorFixer <./../../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php>`_

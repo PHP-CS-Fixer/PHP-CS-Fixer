@@ -41,4 +41,4 @@ Example #2
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\NamespaceNotation\\SingleBlankLineBeforeNamespaceFixer <./../src/Fixer/NamespaceNotation/SingleBlankLineBeforeNamespaceFixer.php>`_
+`PhpCsFixer\\Fixer\\NamespaceNotation\\SingleBlankLineBeforeNamespaceFixer <./../../../src/Fixer/NamespaceNotation/SingleBlankLineBeforeNamespaceFixer.php>`_

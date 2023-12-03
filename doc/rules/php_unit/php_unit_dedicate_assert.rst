@@ -141,4 +141,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixer <./../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php>`_
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixer <./../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php>`_

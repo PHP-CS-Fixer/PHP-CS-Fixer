@@ -45,4 +45,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\NoNullPropertyInitializationFixer <./../src/Fixer/ClassNotation/NoNullPropertyInitializationFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\NoNullPropertyInitializationFixer <./../../../src/Fixer/ClassNotation/NoNullPropertyInitializationFixer.php>`_

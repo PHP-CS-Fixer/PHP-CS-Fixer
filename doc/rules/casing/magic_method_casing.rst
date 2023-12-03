@@ -45,4 +45,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Casing\\MagicMethodCasingFixer <./../src/Fixer/Casing/MagicMethodCasingFixer.php>`_
+`PhpCsFixer\\Fixer\\Casing\\MagicMethodCasingFixer <./../../../src/Fixer/Casing/MagicMethodCasingFixer.php>`_

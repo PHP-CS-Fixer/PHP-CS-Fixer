@@ -95,4 +95,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\BlankLineBetweenImportGroupsFixer <./../src/Fixer/Whitespace/BlankLineBetweenImportGroupsFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\BlankLineBetweenImportGroupsFixer <./../../../src/Fixer/Whitespace/BlankLineBetweenImportGroupsFixer.php>`_

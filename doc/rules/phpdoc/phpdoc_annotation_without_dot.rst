@@ -32,4 +32,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAnnotationWithoutDotFixer <./../src/Fixer/Phpdoc/PhpdocAnnotationWithoutDotFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAnnotationWithoutDotFixer <./../../../src/Fixer/Phpdoc/PhpdocAnnotationWithoutDotFixer.php>`_

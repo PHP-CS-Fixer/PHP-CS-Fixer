@@ -28,4 +28,4 @@ The rule is part of the following rule set:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\CombineConsecutiveIssetsFixer <./../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php>`_
+`PhpCsFixer\\Fixer\\LanguageConstruct\\CombineConsecutiveIssetsFixer <./../../../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php>`_

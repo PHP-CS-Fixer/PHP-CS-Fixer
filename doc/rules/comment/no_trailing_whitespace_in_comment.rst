@@ -37,4 +37,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Comment\\NoTrailingWhitespaceInCommentFixer <./../src/Fixer/Comment/NoTrailingWhitespaceInCommentFixer.php>`_
+`PhpCsFixer\\Fixer\\Comment\\NoTrailingWhitespaceInCommentFixer <./../../../src/Fixer/Comment/NoTrailingWhitespaceInCommentFixer.php>`_

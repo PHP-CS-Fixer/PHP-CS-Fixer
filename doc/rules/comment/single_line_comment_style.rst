@@ -96,4 +96,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Comment\\SingleLineCommentStyleFixer <./../src/Fixer/Comment/SingleLineCommentStyleFixer.php>`_
+`PhpCsFixer\\Fixer\\Comment\\SingleLineCommentStyleFixer <./../../../src/Fixer/Comment/SingleLineCommentStyleFixer.php>`_

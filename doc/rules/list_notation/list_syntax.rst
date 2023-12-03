@@ -62,4 +62,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ListNotation\\ListSyntaxFixer <./../src/Fixer/ListNotation/ListSyntaxFixer.php>`_
+`PhpCsFixer\\Fixer\\ListNotation\\ListSyntaxFixer <./../../../src/Fixer/ListNotation/ListSyntaxFixer.php>`_

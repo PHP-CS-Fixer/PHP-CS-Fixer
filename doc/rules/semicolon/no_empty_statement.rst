@@ -50,4 +50,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Semicolon\\NoEmptyStatementFixer <./../src/Fixer/Semicolon/NoEmptyStatementFixer.php>`_
+`PhpCsFixer\\Fixer\\Semicolon\\NoEmptyStatementFixer <./../../../src/Fixer/Semicolon/NoEmptyStatementFixer.php>`_

@@ -28,4 +28,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\NoEmptyPhpdocFixer <./../src/Fixer/Phpdoc/NoEmptyPhpdocFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\NoEmptyPhpdocFixer <./../../../src/Fixer/Phpdoc/NoEmptyPhpdocFixer.php>`_

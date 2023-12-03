@@ -78,4 +78,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocScalarFixer <./../src/Fixer/Phpdoc/PhpdocScalarFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocScalarFixer <./../../../src/Fixer/Phpdoc/PhpdocScalarFixer.php>`_

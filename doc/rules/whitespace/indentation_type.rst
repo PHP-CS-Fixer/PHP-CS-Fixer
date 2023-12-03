@@ -38,4 +38,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Whitespace\\IndentationTypeFixer <./../src/Fixer/Whitespace/IndentationTypeFixer.php>`_
+`PhpCsFixer\\Fixer\\Whitespace\\IndentationTypeFixer <./../../../src/Fixer/Whitespace/IndentationTypeFixer.php>`_

@@ -51,4 +51,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoUselessInheritdocFixer <./../src/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoUselessInheritdocFixer <./../../../src/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixer.php>`_

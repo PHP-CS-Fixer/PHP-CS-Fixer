@@ -75,4 +75,4 @@ Example #4
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixer <./../src/Fixer/Casing/NativeFunctionTypeDeclarationCasingFixer.php>`_
+`PhpCsFixer\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixer <./../../../src/Fixer/Casing/NativeFunctionTypeDeclarationCasingFixer.php>`_

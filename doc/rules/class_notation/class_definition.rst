@@ -205,4 +205,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\ClassDefinitionFixer <./../src/Fixer/ClassNotation/ClassDefinitionFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\ClassDefinitionFixer <./../../../src/Fixer/ClassNotation/ClassDefinitionFixer.php>`_

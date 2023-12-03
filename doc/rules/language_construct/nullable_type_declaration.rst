@@ -69,4 +69,4 @@ With configuration: ``['syntax' => 'question_mark']``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\NullableTypeDeclarationFixer <./../src/Fixer/LanguageConstruct/NullableTypeDeclarationFixer.php>`_
+`PhpCsFixer\\Fixer\\LanguageConstruct\\NullableTypeDeclarationFixer <./../../../src/Fixer/LanguageConstruct/NullableTypeDeclarationFixer.php>`_

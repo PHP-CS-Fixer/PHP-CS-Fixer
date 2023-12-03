@@ -42,4 +42,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\NoSpacesAfterFunctionNameFixer <./../src/Fixer/FunctionNotation/NoSpacesAfterFunctionNameFixer.php>`_
+`PhpCsFixer\\Fixer\\FunctionNotation\\NoSpacesAfterFunctionNameFixer <./../../../src/Fixer/FunctionNotation/NoSpacesAfterFunctionNameFixer.php>`_

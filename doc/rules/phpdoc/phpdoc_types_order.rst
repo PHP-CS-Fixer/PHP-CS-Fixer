@@ -141,4 +141,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesOrderFixer <./../src/Fixer/Phpdoc/PhpdocTypesOrderFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesOrderFixer <./../../../src/Fixer/Phpdoc/PhpdocTypesOrderFixer.php>`_

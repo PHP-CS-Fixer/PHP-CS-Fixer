@@ -61,4 +61,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\StringNotation\\SingleQuoteFixer <./../src/Fixer/StringNotation/SingleQuoteFixer.php>`_
+`PhpCsFixer\\Fixer\\StringNotation\\SingleQuoteFixer <./../../../src/Fixer/StringNotation/SingleQuoteFixer.php>`_

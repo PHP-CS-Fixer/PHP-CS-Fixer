@@ -202,4 +202,4 @@ The rule is part of the following rule sets:
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\OrderedClassElementsFixer <./../src/Fixer/ClassNotation/OrderedClassElementsFixer.php>`_
+`PhpCsFixer\\Fixer\\ClassNotation\\OrderedClassElementsFixer <./../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php>`_

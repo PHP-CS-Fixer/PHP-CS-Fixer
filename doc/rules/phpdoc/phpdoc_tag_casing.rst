@@ -52,4 +52,4 @@ With configuration: ``['tags' => ['foo']]``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTagCasingFixer <./../src/Fixer/Phpdoc/PhpdocTagCasingFixer.php>`_
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTagCasingFixer <./../../../src/Fixer/Phpdoc/PhpdocTagCasingFixer.php>`_
