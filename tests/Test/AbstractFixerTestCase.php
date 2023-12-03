@@ -378,20 +378,6 @@ abstract class AbstractFixerTestCase extends TestCase
         return new $fixerClassName();
     }
 
-    final protected static function getTestFile(string $filename = __FILE__): \SplFileInfo
-    {
-        static $files = [];
-
-        return $files[$filename] ?? $files[$filename] = new class($filename) extends \SplFileInfo {
-            public function getRealPath(): string
-            {
-                return false !== parent::getRealPath()
-                    ? parent::getRealPath()
-                    : $this->getPathname();
-            }
-        };
-    }
-
     /**
      * Tests if a fixer fixes a given string to match the expected result.
      *
@@ -412,7 +398,7 @@ abstract class AbstractFixerTestCase extends TestCase
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');
         }
 
-        $file ??= self::getTestFile();
+        $file ??= new \SplFileInfo(__FILE__);
         $fileIsSupported = $this->fixer->supports($file);
 
         if (null !== $input) {
