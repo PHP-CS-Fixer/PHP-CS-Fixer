@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
+use PhpCsFixer\Tests\Double\FixerDoubleFactory;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -39,13 +39,13 @@ final class FixerFactoryTest extends TestCase
         self::assertSame($factory, $testInstance);
 
         $testInstance = $factory->registerCustomFixers(
-            [$this->createFixerDouble('Foo/f1'), $this->createFixerDouble('Foo/f2')]
+            [FixerDoubleFactory::createNamed('Foo/f1'), FixerDoubleFactory::createNamed('Foo/f2')]
         );
 
         self::assertSame($factory, $testInstance);
 
         $testInstance = $factory->registerFixer(
-            $this->createFixerDouble('f3'),
+            FixerDoubleFactory::createNamed('f3'),
             false
         );
 
@@ -96,10 +96,10 @@ final class FixerFactoryTest extends TestCase
     {
         $factory = new FixerFactory();
         $fxs = [
-            $this->createFixerDouble('f1', 0),
-            $this->createFixerDouble('f2', -10),
-            $this->createFixerDouble('f3', 10),
-            $this->createFixerDouble('f4', -10),
+            FixerDoubleFactory::createNamed('f1', 0),
+            FixerDoubleFactory::createNamed('f2', -10),
+            FixerDoubleFactory::createNamed('f3', 10),
+            FixerDoubleFactory::createNamed('f4', -10),
         ];
 
         foreach ($fxs as $fx) {
@@ -119,9 +119,9 @@ final class FixerFactoryTest extends TestCase
     {
         $factory = new FixerFactory();
 
-        $f1 = $this->createFixerDouble('f1');
-        $f2 = $this->createFixerDouble('Foo/f2');
-        $f3 = $this->createFixerDouble('Foo/f3');
+        $f1 = FixerDoubleFactory::createNamed('f1');
+        $f2 = FixerDoubleFactory::createNamed('Foo/f2');
+        $f3 = FixerDoubleFactory::createNamed('Foo/f3');
 
         $factory->registerFixer($f1, false);
         $factory->registerCustomFixers([$f2, $f3]);
@@ -141,8 +141,8 @@ final class FixerFactoryTest extends TestCase
 
         $factory = new FixerFactory();
 
-        $f1 = $this->createFixerDouble('non_unique_name');
-        $f2 = $this->createFixerDouble('non_unique_name');
+        $f1 = FixerDoubleFactory::createNamed('non_unique_name');
+        $f2 = FixerDoubleFactory::createNamed('non_unique_name');
         $factory->registerFixer($f1, false);
         $factory->registerFixer($f2, false);
     }
@@ -229,9 +229,9 @@ final class FixerFactoryTest extends TestCase
     {
         $factory = new FixerFactory();
 
-        $f1 = $this->createFixerDouble('f1');
-        $f2 = $this->createFixerDouble('Foo/f2');
-        $f3 = $this->createFixerDouble('Foo/f3');
+        $f1 = FixerDoubleFactory::createNamed('f1');
+        $f2 = FixerDoubleFactory::createNamed('Foo/f2');
+        $f3 = FixerDoubleFactory::createNamed('Foo/f3');
         $factory->registerFixer($f1, false);
         $factory->registerCustomFixers([$f2, $f3]);
 
@@ -245,8 +245,8 @@ final class FixerFactoryTest extends TestCase
     {
         $factory = new FixerFactory();
 
-        $f1 = $this->createFixerDouble('f1');
-        $f2 = $this->createFixerDouble('f2');
+        $f1 = FixerDoubleFactory::createNamed('f1');
+        $f2 = FixerDoubleFactory::createNamed('f2');
         $factory->registerFixer($f1, false);
         $factory->registerFixer($f2, false);
 
@@ -307,19 +307,19 @@ final class FixerFactoryTest extends TestCase
         $factory = new FixerFactory();
         $config = new WhitespacesFixerConfig();
 
-        $fixer = $this->prophesize(\PhpCsFixer\Fixer\WhitespacesAwareFixerInterface::class);
-        $fixer->getName()->willReturn('foo');
-        $fixer->setWhitespacesConfig($config)->shouldBeCalled();
+        $fixer = FixerDoubleFactory::createWhitespacesAwareFixer();
 
-        $factory->registerFixer($fixer->reveal(), false);
+        $factory->registerFixer($fixer, false);
         $factory->setWhitespacesConfig($config);
+
+        self::assertSame($config, $fixer->extraBehavior());
     }
 
     public function testRegisterFixerInvalidName(): void
     {
         $factory = new FixerFactory();
 
-        $fixer = $this->createFixerDouble('0');
+        $fixer = FixerDoubleFactory::createNamed('0');
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Fixer named "0" has invalid name.');
@@ -331,7 +331,7 @@ final class FixerFactoryTest extends TestCase
     {
         $factory = new FixerFactory();
 
-        $fixer = $this->createFixerDouble('non_configurable');
+        $fixer = FixerDoubleFactory::createNamed('non_configurable');
         $factory->registerFixer($fixer, false);
 
         $this->expectException(InvalidFixerConfigurationException::class);
@@ -352,19 +352,18 @@ final class FixerFactoryTest extends TestCase
     {
         $factory = new FixerFactory();
 
-        $fixer = $this->prophesize(ConfigurableFixerInterface::class);
-        $fixer->getName()->willReturn('foo');
+        $fixer = FixerDoubleFactory::createConfigurableFixer();
 
-        $factory->registerFixer($fixer->reveal(), false);
+        $factory->registerFixer($fixer, false);
 
         $this->expectException(InvalidFixerConfigurationException::class);
 
         $this->expectExceptionMessage(
-            '[foo] Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.'
+            '[configurable] Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.'
         );
 
         $factory->useRuleSet(new RuleSet([
-            'foo' => $value,
+            'configurable' => $value,
         ]));
     }
 
@@ -381,23 +380,14 @@ final class FixerFactoryTest extends TestCase
 
     public function testConfigurableFixerIsConfigured(): void
     {
-        $fixer = $this->prophesize(ConfigurableFixerInterface::class);
-        $fixer->getName()->willReturn('foo');
-        $fixer->configure(['bar' => 'baz'])->shouldBeCalled();
+        $fixer = FixerDoubleFactory::createConfigurableFixer();
 
         $factory = new FixerFactory();
-        $factory->registerFixer($fixer->reveal(), false);
+        $factory->registerFixer($fixer, false);
         $factory->useRuleSet(new RuleSet([
-            'foo' => ['bar' => 'baz'],
+            'configurable' => ['bar' => 'baz'],
         ]));
-    }
 
-    private function createFixerDouble(string $name, int $priority = 0): FixerInterface
-    {
-        $fixer = $this->prophesize(\PhpCsFixer\Fixer\FixerInterface::class);
-        $fixer->getName()->willReturn($name);
-        $fixer->getPriority()->willReturn($priority);
-
-        return $fixer->reveal();
+        self::assertSame(['bar' => 'baz'], $fixer->extraBehavior());
     }
 }

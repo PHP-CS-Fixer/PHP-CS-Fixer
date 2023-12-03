@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Tests\Double\FixerDoubleFactory;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Utils;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
@@ -221,10 +221,10 @@ final class UtilsTest extends TestCase
     public function testSortFixers(): void
     {
         $fixers = [
-            $this->createFixerDouble('f1', 0),
-            $this->createFixerDouble('f2', -10),
-            $this->createFixerDouble('f3', 10),
-            $this->createFixerDouble('f4', -10),
+            FixerDoubleFactory::createNamed('f1', 0),
+            FixerDoubleFactory::createNamed('f2', -10),
+            FixerDoubleFactory::createNamed('f3', 10),
+            FixerDoubleFactory::createNamed('f4', -10),
         ];
 
         self::assertSame(
@@ -449,14 +449,5 @@ final class UtilsTest extends TestCase
         yield ['1', 1];
 
         yield ["'foo'", 'foo'];
-    }
-
-    private function createFixerDouble(string $name, int $priority): FixerInterface
-    {
-        $fixer = $this->prophesize(FixerInterface::class);
-        $fixer->getName()->willReturn($name);
-        $fixer->getPriority()->willReturn($priority);
-
-        return $fixer->reveal();
     }
 }

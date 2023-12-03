@@ -14,8 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer;
-use PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\UnconfigurableFixer;
+use PhpCsFixer\Tests\Double\FixerDoubleFactory;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -27,7 +26,7 @@ final class AbstractFixerTest extends TestCase
 {
     public function testDefaults(): void
     {
-        $fixer = new UnconfigurableFixer();
+        $fixer = FixerDoubleFactory::createUnconfigurableFixer();
 
         self::assertFalse($fixer->isRisky());
         self::assertTrue($fixer->supports(new \SplFileInfo(__FILE__)));
@@ -35,7 +34,7 @@ final class AbstractFixerTest extends TestCase
 
     public function testConfigureUnconfigurable(): void
     {
-        $fixer = new UnconfigurableFixer();
+        $fixer = FixerDoubleFactory::createUnconfigurableFixer();
 
         self::assertSame(0, $fixer->getPriority());
         self::assertSame('unconfigurable', $fixer->getName());
@@ -48,7 +47,7 @@ final class AbstractFixerTest extends TestCase
 
     public function testGetConfigurationDefinitionUnconfigurable(): void
     {
-        $fixer = new UnconfigurableFixer();
+        $fixer = FixerDoubleFactory::createUnconfigurableFixer();
 
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage(sprintf('Cannot get configuration definition using Abstract parent, child "%s" not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".', \get_class($fixer)));
@@ -58,17 +57,17 @@ final class AbstractFixerTest extends TestCase
 
     public function testCreateConfigurationDefinitionUnconfigurable(): void
     {
-        $fixer = new UnconfigurableFixer();
+        $fixer = FixerDoubleFactory::createUnconfigurableFixer();
 
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot create configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
 
-        $fixer->doSomethingWithCreateConfigDefinition();
+        $fixer->extraBehavior();
     }
 
     public function testSetWhitespacesConfigUnconfigurable(): void
     {
-        $fixer = new UnconfigurableFixer();
+        $fixer = FixerDoubleFactory::createUnconfigurableFixer();
 
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot run method for class not implementing "PhpCsFixer\Fixer\WhitespacesAwareFixerInterface".');
@@ -78,9 +77,9 @@ final class AbstractFixerTest extends TestCase
 
     public function testGetWhitespacesFixerConfig(): void
     {
-        $fixer = new SimpleFixer();
+        $fixer = FixerDoubleFactory::createWhitespacesAwareFixer();
 
-        $config = $fixer->getWhitespacesConfig();
+        $config = $fixer->extraBehavior();
 
         self::assertSame('    ', $config->getIndent());
         self::assertSame("\n", $config->getLineEnding());
@@ -89,7 +88,7 @@ final class AbstractFixerTest extends TestCase
 
         $fixer->setWhitespacesConfig($newConfig);
 
-        $config = $fixer->getWhitespacesConfig();
+        $config = $fixer->extraBehavior();
 
         self::assertSame("\t", $config->getIndent());
         self::assertSame("\r\n", $config->getLineEnding());

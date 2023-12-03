@@ -32,6 +32,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Tests\Double\FixerDoubleFactory;
 use PhpCsFixer\Tests\Fixtures\DescribeCommand\DescribeFixtureFixer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
@@ -341,15 +342,10 @@ $/s',
     {
         $fixerName = uniqid('Foo/bar_');
 
-        $fixer = $this->prophesize(FixerInterface::class);
-        $fixer->getName()->willReturn($fixerName);
-        $fixer->getPriority()->willReturn(0);
-        $fixer->isRisky()->willReturn(true);
-        $fixer->getDefinition()->willReturn(new FixerDefinition('Fixes stuff.', []));
-        $mock = $fixer->reveal();
+        $fixer = FixerDoubleFactory::createNamed($fixerName);
 
         $fixerFactory = new FixerFactory();
-        $fixerFactory->registerFixer($mock, true);
+        $fixerFactory->registerFixer($fixer, true);
 
         $application = new Application();
         $application->add(new DescribeCommand($fixerFactory));
@@ -367,7 +363,7 @@ $/s',
             ]
         );
 
-        self::assertStringContainsString(\get_class($mock), $commandTester->getDisplay(true));
+        self::assertStringContainsString(preg_replace('/[\x00-\x1F\x7F-\xFF]/', '\\', \get_class($fixer)), $commandTester->getDisplay(true));
     }
 
     public function testCommandDescribesCustomFixer(): void
