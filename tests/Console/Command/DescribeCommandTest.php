@@ -363,7 +363,7 @@ $/s',
             ]
         );
 
-        self::assertStringContainsString(preg_replace('/[\x00-\x1F\x7F-\xFF]/', '\\', \get_class($fixer)), $commandTester->getDisplay(true));
+        self::assertStringContainsString(str_replace("\0", '\\', \get_class($fixer)), $commandTester->getDisplay(true));
     }
 
     public function testCommandDescribesCustomFixer(): void
