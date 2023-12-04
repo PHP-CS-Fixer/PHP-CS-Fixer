@@ -26,54 +26,51 @@ use Symfony\Component\Process\Process;
  */
 final class ProcessLintingResultTest extends TestCase
 {
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testCheckOK(): void
     {
-        $process = $this->prophesize();
-        $process->willExtend(Process::class);
+        $process = new class([]) extends Process {
+            public function wait(callable $callback = null): int
+            {
+                return 0;
+            }
 
-        $process
-            ->wait()
-            ->willReturn(0)
-        ;
+            public function isSuccessful(): bool
+            {
+                return true;
+            }
+        };
 
-        $process
-            ->isSuccessful()
-            ->willReturn(true)
-        ;
-
-        $result = new ProcessLintingResult($process->reveal());
+        $result = new ProcessLintingResult($process);
         $result->check();
+
+        $this->expectNotToPerformAssertions();
     }
 
     public function testCheckFail(): void
     {
-        $process = $this->prophesize();
-        $process->willExtend(Process::class);
+        $process = new class([]) extends Process {
+            public function wait(callable $callback = null): int
+            {
+                return 0;
+            }
 
-        $process
-            ->wait()
-            ->willReturn(0)
-        ;
+            public function isSuccessful(): bool
+            {
+                return false;
+            }
 
-        $process
-            ->isSuccessful()
-            ->willReturn(false)
-        ;
+            public function getErrorOutput(): string
+            {
+                return 'PHP Parse error:  syntax error, unexpected end of file, expecting \'{\' in test.php on line 4';
+            }
 
-        $process
-            ->getErrorOutput()
-            ->willReturn('PHP Parse error:  syntax error, unexpected end of file, expecting \'{\' in test.php on line 4')
-        ;
+            public function getExitCode(): int
+            {
+                return 123;
+            }
+        };
 
-        $process
-            ->getExitCode()
-            ->willReturn(123)
-        ;
-
-        $result = new ProcessLintingResult($process->reveal(), 'test.php');
+        $result = new ProcessLintingResult($process, 'test.php');
 
         $this->expectException(LintingException::class);
         $this->expectExceptionMessage('Parse error: syntax error, unexpected end of file, expecting \'{\' on line 4.');
