@@ -22,7 +22,10 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
 
-class FixerDoubleFactory
+/**
+ * @internal
+ */
+final class FixerDoubleFactory
 {
     /**
      * @return AbstractFixer|ConfigurableFixerInterface
@@ -77,54 +80,6 @@ class FixerDoubleFactory
         };
     }
 
-    public static function createNamed(
-        string $name,
-        int $priority = 0
-    ): FixerInterface {
-        return new class($name, $priority) implements FixerInterface {
-            private string $name;
-            private int $priority;
-
-            public function __construct(string $name, int $priority)
-            {
-                $this->name = $name;
-                $this->priority = $priority;
-            }
-
-            public function isCandidate(Tokens $tokens): bool
-            {
-                return true;
-            }
-
-            public function isRisky(): bool
-            {
-                return true;
-            }
-
-            public function fix(\SplFileInfo $file, Tokens $tokens): void {}
-
-            public function getDefinition(): FixerDefinition
-            {
-                return new FixerDefinition('Fixes stuff.', []);
-            }
-
-            public function getName(): string
-            {
-                return $this->name;
-            }
-
-            public function getPriority(): int
-            {
-                return $this->priority;
-            }
-
-            public function supports(\SplFileInfo $file): bool
-            {
-                return true;
-            }
-        };
-    }
-
     public static function createUnconfigurableFixer(): AbstractFixer
     {
         return new class() extends AbstractFixer {
@@ -172,13 +127,20 @@ class FixerDoubleFactory
         };
     }
 
-    public static function createSimple(
-        bool $isCandidate = true,
-        bool $isRisky = false,
-        bool $supports = false,
-        int $priority = 0
-    ): FixerInterface {
-        return new class($isCandidate, $isRisky, $supports, $priority) implements FixerInterface {
+    public static function createNamed(string $name, int $priority = 0): FixerInterface
+    {
+        return self::create($name, true, true, true, $priority);
+    }
+
+    public static function createSimple(bool $isCandidate, bool $isRisky = false, bool $supports = false, int $priority = 0): FixerInterface
+    {
+        return self::create(uniqid('abstract_proxy_double_'), $isCandidate, $isRisky, $supports, $priority);
+    }
+
+    private static function create(string $name, bool $isCandidate = true, bool $isRisky = false, bool $supports = false, int $priority = 0): FixerInterface
+    {
+        return new class($name, $isCandidate, $isRisky, $supports, $priority) implements FixerInterface {
+            private string $name;
             private bool $isCandidate;
             private bool $isRisky;
             private bool $supports;
@@ -186,12 +148,9 @@ class FixerDoubleFactory
             private int $fixCalled = 0;
             private static int $callCount = 1;
 
-            public function __construct(
-                bool $isCandidate,
-                bool $isRisky,
-                bool $supports,
-                int $priority
-            ) {
+            public function __construct(string $name, bool $isCandidate, bool $isRisky, bool $supports, int $priority)
+            {
+                $this->name = $name;
                 $this->isCandidate = $isCandidate;
                 $this->isRisky = $isRisky;
                 $this->supports = $supports;
@@ -220,12 +179,12 @@ class FixerDoubleFactory
 
             public function getDefinition(): FixerDefinition
             {
-                throw new \BadMethodCallException('Not implemented.');
+                return new FixerDefinition('Fixes stuff.', []);
             }
 
             public function getName(): string
             {
-                return uniqid('abstract_proxy_double_');
+                return $this->name;
             }
 
             public function getPriority(): int
