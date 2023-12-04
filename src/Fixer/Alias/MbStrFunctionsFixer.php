@@ -69,6 +69,10 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
     {
         parent::__construct();
 
+        if (\PHP_VERSION_ID >= 8_03_00) {
+            self::$functionsMap['str_pad'] = ['alternativeName' => 'mb_str_pad', 'argumentCount' => [1, 2, 3, 4]];
+        }
+
         $this->functions = array_filter(
             self::$functionsMap,
             static fn (array $mapping): bool => (new \ReflectionFunction($mapping['alternativeName']))->isInternal()
