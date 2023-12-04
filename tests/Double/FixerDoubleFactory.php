@@ -20,7 +20,6 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 class FixerDoubleFactory
@@ -54,12 +53,9 @@ class FixerDoubleFactory
                 throw new \LogicException('Not implemented.');
             }
 
-            protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
-            {
-                throw new \LogicException('Not implemented.');
-            }
+            protected function applyFix(\SplFileInfo $file, Tokens $tokens): void {}
 
-            public function getDefinition(): FixerDefinitionInterface
+            public function getDefinition(): FixerDefinition
             {
                 throw new \LogicException('Not implemented.');
             }
@@ -107,7 +103,7 @@ class FixerDoubleFactory
 
             public function fix(\SplFileInfo $file, Tokens $tokens): void {}
 
-            public function getDefinition(): FixerDefinitionInterface
+            public function getDefinition(): FixerDefinition
             {
                 return new FixerDefinition('Fixes stuff.', []);
             }
@@ -137,7 +133,7 @@ class FixerDoubleFactory
                 return 'unconfigurable';
             }
 
-            public function getDefinition(): FixerDefinitionInterface
+            public function getDefinition(): FixerDefinition
             {
                 throw new \LogicException('Not implemented.');
             }
@@ -147,10 +143,7 @@ class FixerDoubleFactory
                 return true;
             }
 
-            protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
-            {
-                throw new \BadMethodCallException('Not implemented.');
-            }
+            protected function applyFix(\SplFileInfo $file, Tokens $tokens): void {}
         };
     }
 
@@ -165,7 +158,7 @@ class FixerDoubleFactory
                 return uniqid('whitespace_aware_double_');
             }
 
-            public function getDefinition(): FixerDefinitionInterface
+            public function getDefinition(): FixerDefinition
             {
                 throw new \BadMethodCallException('Not implemented.');
             }
@@ -175,10 +168,7 @@ class FixerDoubleFactory
                 throw new \BadMethodCallException('Not implemented.');
             }
 
-            protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
-            {
-                throw new \BadMethodCallException('Not implemented.');
-            }
+            protected function applyFix(\SplFileInfo $file, Tokens $tokens): void {}
         };
     }
 
@@ -228,7 +218,7 @@ class FixerDoubleFactory
                 ++self::$callCount;
             }
 
-            public function getDefinition(): FixerDefinitionInterface
+            public function getDefinition(): FixerDefinition
             {
                 throw new \BadMethodCallException('Not implemented.');
             }
