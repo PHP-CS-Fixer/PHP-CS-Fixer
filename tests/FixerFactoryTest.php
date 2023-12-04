@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
@@ -312,7 +313,10 @@ final class FixerFactoryTest extends TestCase
         $factory->registerFixer($fixer, false);
         $factory->setWhitespacesConfig($config);
 
-        self::assertSame($config, $fixer->extraBehavior());
+        self::assertSame(
+            $config,
+            \Closure::bind(static fn (AbstractFixer $fixer): WhitespacesFixerConfig => $fixer->whitespacesConfig, null, $fixer)($fixer)
+        );
     }
 
     public function testRegisterFixerInvalidName(): void
@@ -388,6 +392,9 @@ final class FixerFactoryTest extends TestCase
             'configurable' => ['bar' => 'baz'],
         ]));
 
-        self::assertSame(['bar' => 'baz'], $fixer->extraBehavior());
+        self::assertSame(
+            ['bar' => 'baz'],
+            \Closure::bind(static fn (AbstractFixer $fixer): array => $fixer->configuration, null, $fixer)($fixer)
+        );
     }
 }

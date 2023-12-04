@@ -22,19 +22,15 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfig;
 
 class FixerDoubleFactory
 {
     /**
-     * @return ConfigurableFixerInterface|FixerDoubleInterface
+     * @return AbstractFixer|ConfigurableFixerInterface
      */
     public static function createConfigurableFixer()
     {
-        return new class() implements ConfigurableFixerInterface, FixerDoubleInterface {
-            /** @var array<mixed> */
-            private array $configuration;
-
+        return new class() extends AbstractFixer implements ConfigurableFixerInterface {
             /**
              * @param array<mixed> $configuration
              */
@@ -58,7 +54,7 @@ class FixerDoubleFactory
                 throw new \LogicException('Not implemented.');
             }
 
-            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
             {
                 throw new \LogicException('Not implemented.');
             }
@@ -81,14 +77,6 @@ class FixerDoubleFactory
             public function supports(\SplFileInfo $file): bool
             {
                 throw new \LogicException('Not implemented.');
-            }
-
-            /**
-             * @return array<mixed>
-             */
-            public function extraBehavior(): array
-            {
-                return $this->configuration;
             }
         };
     }
@@ -141,10 +129,7 @@ class FixerDoubleFactory
         };
     }
 
-    /**
-     * @return AbstractFixer|FixerDoubleInterface
-     */
-    public static function createUnconfigurableFixer()
+    public static function createUnconfigurableFixer(): AbstractFixer
     {
         return new class() extends AbstractFixer {
             public function getName(): string
@@ -166,20 +151,15 @@ class FixerDoubleFactory
             {
                 throw new \BadMethodCallException('Not implemented.');
             }
-
-            public function extraBehavior(): FixerConfigurationResolverInterface
-            {
-                return $this->createConfigurationDefinition();
-            }
         };
     }
 
     /**
-     * @return FixerDoubleInterface|WhitespacesAwareFixerInterface
+     * @return AbstractFixer|WhitespacesAwareFixerInterface
      */
     public static function createWhitespacesAwareFixer()
     {
-        return new class() extends AbstractFixer implements WhitespacesAwareFixerInterface, FixerDoubleInterface {
+        return new class() extends AbstractFixer implements WhitespacesAwareFixerInterface {
             public function getName(): string
             {
                 return uniqid('whitespace_aware_double_');
@@ -199,11 +179,6 @@ class FixerDoubleFactory
             {
                 throw new \BadMethodCallException('Not implemented.');
             }
-
-            public function extraBehavior(): WhitespacesFixerConfig
-            {
-                return $this->whitespacesConfig;
-            }
         };
     }
 
@@ -212,8 +187,8 @@ class FixerDoubleFactory
         bool $isRisky = false,
         bool $supports = false,
         int $priority = 0
-    ): FixerDoubleInterface {
-        return new class($isCandidate, $isRisky, $supports, $priority) implements FixerDoubleInterface {
+    ): FixerInterface {
+        return new class($isCandidate, $isRisky, $supports, $priority) implements FixerInterface {
             private bool $isCandidate;
             private bool $isRisky;
             private bool $supports;
@@ -271,11 +246,6 @@ class FixerDoubleFactory
             public function supports(\SplFileInfo $file): bool
             {
                 return $this->supports;
-            }
-
-            public function extraBehavior(): int
-            {
-                return $this->fixCalled;
             }
         };
     }

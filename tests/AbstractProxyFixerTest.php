@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
@@ -114,7 +115,14 @@ final class AbstractProxyFixerTest extends TestCase
 
         $proxyFixer->setWhitespacesConfig($config);
 
-        self::assertSame($config, $whitespacesAwareFixer->extraBehavior());
+        self::assertSame(
+            $config,
+            \Closure::bind(
+                static fn (AbstractFixer $fixer): WhitespacesFixerConfig => $fixer->whitespacesConfig,
+                null,
+                $proxyFixer
+            )($proxyFixer)
+        );
     }
 
     public function testApplyFixInPriorityOrder(): void
@@ -125,8 +133,8 @@ final class AbstractProxyFixerTest extends TestCase
         $proxyFixer = $this->buildProxyFixer([$fixer1, $fixer2]);
         $proxyFixer->fix(new \SplFileInfo(__FILE__), Tokens::fromCode('<?php echo 1;'));
 
-        self::assertSame(2, $fixer1->extraBehavior());
-        self::assertSame(1, $fixer2->extraBehavior());
+        self::assertSame(2, self::getFixCalled($fixer1));
+        self::assertSame(1, self::getFixCalled($fixer2));
     }
 
     /**
@@ -160,5 +168,11 @@ final class AbstractProxyFixerTest extends TestCase
                 return $this->fixers;
             }
         };
+    }
+
+    private static function getFixCalled(FixerInterface $fixer): int
+    {
+        // @phpstan-ignore-next-line for "Access to an undefined property $fixCalled"
+        return \Closure::bind(static fn (FixerInterface $fixer): int => $fixer->fixCalled, null, $fixer)($fixer);
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tests\Double\FixerDoubleFactory;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -62,7 +63,7 @@ final class AbstractFixerTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot create configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
 
-        $fixer->extraBehavior();
+        \Closure::bind(static function (AbstractFixer $fixer): void { $fixer->createConfigurationDefinition(); }, null, $fixer)($fixer);
     }
 
     public function testSetWhitespacesConfigUnconfigurable(): void
@@ -79,7 +80,7 @@ final class AbstractFixerTest extends TestCase
     {
         $fixer = FixerDoubleFactory::createWhitespacesAwareFixer();
 
-        $config = $fixer->extraBehavior();
+        $config = self::getWhitespaceConfig($fixer);
 
         self::assertSame('    ', $config->getIndent());
         self::assertSame("\n", $config->getLineEnding());
@@ -88,9 +89,14 @@ final class AbstractFixerTest extends TestCase
 
         $fixer->setWhitespacesConfig($newConfig);
 
-        $config = $fixer->extraBehavior();
+        $config = self::getWhitespaceConfig($fixer);
 
         self::assertSame("\t", $config->getIndent());
         self::assertSame("\r\n", $config->getLineEnding());
+    }
+
+    private static function getWhitespaceConfig(AbstractFixer $fixer): WhitespacesFixerConfig
+    {
+        return \Closure::bind(static fn (AbstractFixer $fixer): WhitespacesFixerConfig => $fixer->whitespacesConfig, null, $fixer)($fixer);
     }
 }
