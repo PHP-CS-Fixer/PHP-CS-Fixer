@@ -1,0 +1,81 @@
+name: Create and publish a Docker images
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+    branches:
+      - "main"
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - php-version: '7.4'
+            php-suffix: '-php7.4'
+            alpine-version: '3.16'
+          - php-version: '8.0'
+            php-suffix: '-php8.0'
+            alpine-version: '3.16'
+          - php-version: '8.1'
+            php-suffix: '-php8.1'
+            alpine-version: '3.18'
+          - php-version: '8.2'
+            php-suffix: '-php8.2'
+            alpine-version: '3.18'
+          - php-version: '8.3'
+            php-suffix: '-php8.3'
+            alpine-version: '3.18'
+          - php-version: 'latest'
+            php-suffix: ''
+            alpine-version: '3.18'
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Make image lowercase
+        run: |
+          echo IMAGE_NAME_LOWER=$(echo ${{ env.IMAGE_NAME }} | tr '[:upper:]' '[:lower:]') >> ${GITHUB_ENV}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LOWER }}
+          tags: |
+            type=edge,branch=main,suffix=${{ matrix.php-suffix }}
+            type=semver,pattern={{version}},suffix=${{ matrix.php-suffix }}
+            type=semver,pattern={{major}}.{{minor}},suffix=${{ matrix.php-suffix }}
+            type=semver,pattern={{major}},suffix=${{ matrix.php-suffix }}
+            type=semver,pattern=latest,suffix=${{ matrix.php-suffix }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56
+        with:
+          context: .
+          file: Dockerfile
+          target: dist
+          build-args: |
+            PHP_VERSION=${{ matrix.php-version }}
+            ALPINE_VERSION=${{ matrix.alpine-version }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

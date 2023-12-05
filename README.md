@@ -36,6 +36,31 @@ projects. This tool does not only detect them, but also fixes them for you.
 
 ## Documentation
 
+### Run with docker
+
+You can take a ready built docker image to run ``php-cs-fixer``.
+
+```console
+docker run -v $(pwd):/var/www ghcr.io/php-cs-fixer/php-cs-fixer:latest fix src
+```
+
+or integrate as check into gitlab-ci like this
+
+```yaml
+php-cs-fixer:
+  image: ghcr.io/php-cs-fixer/php-cs-fixer:3.41-php8.2
+  script:
+    php-cs-fixer fix --diff --dry-run --format=txt src
+```
+
+There are different tags for each stability and php version with syntax `<php-cs-fixer-version>-php<php-version>`. For example:
+
+* `3.41.1-php8.1`
+* `3.41-php8.2`
+* `3` (uses the latest php version)
+* `latest` (latest stable cs-fixer and latest stable php version)
+* `edge-php7.4` (current build from main with old php version)
+
 ### Installation
 
 The recommended way to install PHP CS Fixer is to use [Composer](https://getcomposer.org/download/)
