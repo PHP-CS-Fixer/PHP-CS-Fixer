@@ -188,18 +188,9 @@ final class CacheTest extends TestCase
 
     public function testToJsonThrowsExceptionOnInvalid(): void
     {
-        $invalidUtf8Sequence = "\xB1\x31";
+        $signature = $this->getSignatureDouble();
 
-        $signature = $this->prophesize(SignatureInterface::class);
-        $signature->getPhpVersion()->willReturn('7.1.0');
-        $signature->getFixerVersion()->willReturn('2.2.0');
-        $signature->getIndent()->willReturn('    ');
-        $signature->getLineEnding()->willReturn(PHP_EOL);
-        $signature->getRules()->willReturn([
-            $invalidUtf8Sequence => true,
-        ]);
-
-        $cache = new Cache($signature->reveal());
+        $cache = new Cache($signature);
 
         $this->expectException(
             \UnexpectedValueException::class
@@ -214,6 +205,38 @@ final class CacheTest extends TestCase
 
     private function getSignatureDouble(): SignatureInterface
     {
-        return $this->prophesize(SignatureInterface::class)->reveal();
+        return new class() implements SignatureInterface {
+            public function getPhpVersion(): string
+            {
+                return '7.1.0';
+            }
+
+            public function getFixerVersion(): string
+            {
+                return '2.2.0';
+            }
+
+            public function getIndent(): string
+            {
+                return '    ';
+            }
+
+            public function getLineEnding(): string
+            {
+                return PHP_EOL;
+            }
+
+            public function getRules(): array
+            {
+                return [
+                    "\xB1\x31" => true, // invalid UTF8 sequence
+                ];
+            }
+
+            public function equals(SignatureInterface $signature): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
     }
 }
