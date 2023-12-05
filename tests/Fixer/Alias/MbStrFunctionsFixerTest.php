@@ -79,9 +79,26 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
             '<?php $a = mb_str_split($a);',
             '<?php $a = str_split($a);',
         ];
+    }
 
-        if (\PHP_VERSION_ID >= 8_03_00) {
-            yield ['<?php $x = mb_str_pad("bar", 2, "0", STR_PAD_LEFT);', '<?php $x = str_pad("bar", 2, "0", STR_PAD_LEFT);'];
-        }
+    /**
+     * @requires PHP 8.3
+     *
+     * @dataProvider provideFix83Cases
+     */
+    public function testFix83(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, null|string}>
+     */
+    public static function provideFix83Cases(): iterable
+    {
+        yield 'mb_str_pad()' => [
+            '<?php $x = mb_str_pad("bar", 2, "0", STR_PAD_LEFT);',
+            '<?php $x = str_pad("bar", 2, "0", STR_PAD_LEFT);',
+        ];
     }
 }
