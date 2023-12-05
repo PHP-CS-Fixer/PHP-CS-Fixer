@@ -229,7 +229,7 @@ final class CacheTest extends TestCase
             public function getRules(): array
             {
                 return [
-                    "\xB1\x31" => true,
+                    "\xB1\x31" => true, // invalid UTF8 sequence
                 ];
             }
 
