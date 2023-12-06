@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 /**
@@ -26,5 +25,4 @@ use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 abstract class TestCase extends BaseTestCase
 {
     use ExpectDeprecationTrait;
-    use ProphecyTrait;
 }

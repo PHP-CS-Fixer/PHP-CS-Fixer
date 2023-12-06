@@ -128,11 +128,52 @@ final class DeprecatedFixerOptionTest extends TestCase
     {
         $normalizer = static fn () => null;
 
-        $decoratedOption = $this->prophesize(FixerOptionInterface::class);
-        $decoratedOption->getNormalizer()->willReturn($normalizer);
+        $fixerOption = new class($normalizer) implements FixerOptionInterface {
+            private \Closure $normalizer;
+
+            public function __construct(\Closure $normalizer)
+            {
+                $this->normalizer = $normalizer;
+            }
+
+            public function getName(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDescription(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function hasDefault(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDefault(): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getAllowedTypes(): ?array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getAllowedValues(): ?array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getNormalizer(): ?\Closure
+            {
+                return $this->normalizer;
+            }
+        };
 
         $option = new DeprecatedFixerOption(
-            $decoratedOption->reveal(),
+            $fixerOption,
             'deprecated'
         );
 

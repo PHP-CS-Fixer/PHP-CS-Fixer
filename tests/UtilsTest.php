@@ -15,7 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
@@ -453,10 +455,50 @@ final class UtilsTest extends TestCase
 
     private function createFixerDouble(string $name, int $priority): FixerInterface
     {
-        $fixer = $this->prophesize(FixerInterface::class);
-        $fixer->getName()->willReturn($name);
-        $fixer->getPriority()->willReturn($priority);
+        return new class($name, $priority) implements FixerInterface {
+            private string $name;
+            private int $priority;
 
-        return $fixer->reveal();
+            public function __construct(string $name, int $priority)
+            {
+                $this->name = $name;
+                $this->priority = $priority;
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isRisky(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getName(): string
+            {
+                return $this->name;
+            }
+
+            public function getPriority(): int
+            {
+                return $this->priority;
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
     }
 }
