@@ -60,6 +60,7 @@ final readonly class FixerTestNamingConventionRule implements Rule
                 self::METHOD_TEST_APPLY_FIX
             ))
                 ->identifier('php_cs_fixer.tests_convention.base_test_missing')
+                ->line($node->getLine())
                 ->build()
             ;
         }
@@ -109,6 +110,7 @@ final readonly class FixerTestNamingConventionRule implements Rule
                             (string) $method->name
                         ))
                             ->identifier('php_cs_fixer.tests_convention.invalid_version_specific_method_name')
+                            ->line($method->getLine())
                             ->build()
                         ;
                     }
