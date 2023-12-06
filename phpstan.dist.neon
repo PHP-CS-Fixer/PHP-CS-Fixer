@@ -4,6 +4,12 @@ includes:
     # Baseline, should only shrink! To regenerate it, just execute `composer phpstan:baseline`.
     - dev-tools/phpstan/baseline.php
 
+services:
+    -
+        class: PhpCsFixer\Tests\AutoReview\PhpStan\FixerTestNamingConventionRule
+        tags:
+            - phpstan.rules.rule
+
 parameters:
     level: 6
     paths:
