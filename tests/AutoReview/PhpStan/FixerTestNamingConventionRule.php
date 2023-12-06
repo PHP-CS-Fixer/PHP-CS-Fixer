@@ -28,11 +28,18 @@ use PHPStan\Rules\RuleErrorBuilder;
 /**
  * @implements Rule<Class_>
  */
-final readonly class FixerTestNamingConventionRule implements Rule
+final class FixerTestNamingConventionRule implements Rule
 {
     private const METHOD_TEST_APPLY_FIX = 'testApplyFix';
 
-    public function __construct(private Lexer $phpDocLexer, private PhpDocParser $phpDocParser) {}
+    private Lexer $phpDocLexer;
+    private PhpDocParser $phpDocParser;
+
+    public function __construct(Lexer $phpDocLexer, PhpDocParser $phpDocParser)
+    {
+        $this->phpDocLexer = $phpDocLexer;
+        $this->phpDocParser = $phpDocParser;
+    }
 
     public function getNodeType(): string
     {
