@@ -28,15 +28,15 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
     /**
      * @param array<string, bool> $config
      *
-     * @dataProvider provideNewLogicCases
+     * @dataProvider provideApplyFixCases
      */
-    public function testNewLogic(string $expected, ?string $input = null, array $config = []): void
+    public function testApplyFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public static function provideNewLogicCases(): iterable
+    public static function provideApplyFixCases(): iterable
     {
         yield 'namespace === type name' => [
             '<?php
@@ -690,14 +690,14 @@ class Two
     /**
      * @requires PHP 8.0
      *
-     * @dataProvider provideFix80Cases
+     * @dataProvider provideApplyFixOnPhpHigherOrEqualTo80Cases
      */
-    public function testFix80(string $expected, ?string $input = null): void
+    public function testApplyFixOnPhpHigherOrEqualTo80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases(): iterable
+    public static function provideApplyFixOnPhpHigherOrEqualTo80Cases(): iterable
     {
         yield [
             '<?php function foo(int|float $x) {}',
@@ -733,15 +733,15 @@ class Two
      *
      * @requires PHP 8.1
      *
-     * @dataProvider provideFix81Cases
+     * @dataProvider provideApplyFixOnPhpHigherOrEqualTo81Cases
      */
-    public function testFix81(string $expected, ?string $input = null, array $config = []): void
+    public function testApplyFixOnPhpHigherOrEqualTo81(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix81Cases(): iterable
+    public static function provideApplyFixOnPhpHigherOrEqualTo81Cases(): iterable
     {
         yield [
             '<?php function f(): Foo&Bar & A\B\C {}',
@@ -787,15 +787,15 @@ class SomeClass
      *
      * @requires PHP 8.2
      *
-     * @dataProvider provideFix82Cases
+     * @dataProvider provideApplyFixOnPhpHigherOrEqualTo82Cases
      */
-    public function testFix82(string $expected, ?string $input = null, array $config = []): void
+    public function testApplyFixOnPhpHigherOrEqualTo82(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix82Cases(): iterable
+    public static function provideApplyFixOnPhpHigherOrEqualTo82Cases(): iterable
     {
         yield 'simple param in global namespace without use' => [
             '<?php
