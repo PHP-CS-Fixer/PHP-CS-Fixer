@@ -756,9 +756,7 @@ final class ConfigurationResolver
 
         $configuredFixers = array_keys($ruleSet->getRules());
 
-        $fixers = $this->createFixerFactory()->getFixers();
-
-        $availableFixers = array_map(static fn (FixerInterface $fixer): string => $fixer->getName(), $fixers);
+        $availableFixers = $this->createFixerFactory()->getRegisteredFixerNames();
 
         $unknownFixers = array_diff($configuredFixers, $availableFixers);
 
@@ -842,13 +840,13 @@ final class ConfigurationResolver
             $message = substr($message, 0, -2).'.';
 
             if ($hasOldRule) {
-                $message .= "\nFor more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.";
+                $message .= "\nFor more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-rules";
             }
 
             throw new InvalidConfigurationException($message);
         }
 
-        foreach ($fixers as $fixer) {
+        foreach ($this->createFixerFactory()->getFixers() as $fixer) {
             $fixerName = $fixer->getName();
             if (isset($rules[$fixerName]) && $fixer instanceof DeprecatedFixerInterface) {
                 $successors = $fixer->getSuccessorsNames();
