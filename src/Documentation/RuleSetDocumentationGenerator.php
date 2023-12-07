@@ -17,6 +17,7 @@ namespace PhpCsFixer\Documentation;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 use PhpCsFixer\Utils;
 
@@ -99,7 +100,7 @@ final class RuleSetDocumentationGenerator
             );
         }
 
-        $rules = $definition->getRules();
+        $rules = RuleSet::normaliseConfig($definition->getRules());
 
         if ([] === $rules) {
             $doc .= "\n\nThis is an empty set.";
@@ -121,7 +122,7 @@ final class RuleSetDocumentationGenerator
                             $this->locator->getFixerDocumentationFilePath($fixerNames[$rule])
                         );
 
-                        $doc .= "\n- `{$rule} <{$path}>`_";
+                        $doc .= "\n- `{$fixerNames[$rule]->getName()} <{$path}>`_";
                     }
 
                     if (!\is_bool($config)) {
