@@ -16,6 +16,7 @@ namespace PhpCsFixer\RuleSet;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Future;
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Utils;
 
 /**
@@ -43,6 +44,8 @@ final class RuleSet implements RuleSetInterface
 
     public function __construct(array $set = [])
     {
+        $set = self::normaliseConfig($set);
+
         foreach ($set as $name => $value) {
             if ('' === $name) {
                 throw new \InvalidArgumentException('Rule/set name must not be empty.');
@@ -64,6 +67,39 @@ final class RuleSet implements RuleSetInterface
         }
 
         $this->rules = $this->resolveSet($set);
+    }
+
+    /**
+     * @param array<string, array<string, mixed>|bool> $rulesConfig
+     *
+     * @return array<string, array<string, mixed>|bool>
+     */
+    public static function normaliseConfig(array $rulesConfig): array
+    {
+        $normalisedConfig = [];
+
+        foreach ($rulesConfig as $name => $config) {
+            $normalisedConfig[\is_int($name) ? $name : self::normaliseRuleName($name)] = $config;
+        }
+
+        return $normalisedConfig;
+    }
+
+    /**
+     * We need to convert FQCN to rule name in order to resolve final configuration, and allow overriding
+     * rules that don't use FQCN as their name. This is especially helpful for configs that include rulesets
+     * and then fine-tune some rules or disable them. Without this normalisation it would be required to always
+     * use only exact names in the config (FQCN only where FQCN is used as name).
+     */
+    public static function normaliseRuleName(string $name): string
+    {
+        if (class_exists($name)
+            && \in_array(FixerInterface::class, class_implements($name), true)
+        ) {
+            return (new $name())->getName();
+        }
+
+        return $name;
     }
 
     public function hasRule(string $rule): bool
@@ -107,8 +143,10 @@ final class RuleSet implements RuleSetInterface
                     throw new \UnexpectedValueException(\sprintf('Nested rule set "%s" configuration must be a boolean.', $name));
                 }
 
-                $set = $this->resolveSubset($name, $value);
-                $resolvedRules = array_merge($resolvedRules, $set);
+                $resolvedRules = array_merge(
+                    $resolvedRules,
+                    $this->resolveSubset($name, $value)
+                );
             } else {
                 $resolvedRules[$name] = $value;
             }
@@ -143,7 +181,7 @@ final class RuleSet implements RuleSetInterface
             Future::triggerDeprecation(new \RuntimeException("Rule set \"{$setName}\" is deprecated. {$messageEnd}."));
         }
 
-        $rules = $ruleSet->getRules();
+        $rules = self::normaliseConfig($ruleSet->getRules());
 
         foreach ($rules as $name => $value) {
             if (str_starts_with($name, '@')) {
