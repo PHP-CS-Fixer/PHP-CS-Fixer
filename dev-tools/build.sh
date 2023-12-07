@@ -22,5 +22,4 @@ dev-tools/bin/box compile
 
 # revert changes to composer
 git checkout composer.json
-PHP83HACK=--ignore-platform-req=PHP+ # for building on local machine
-composer update --optimize-autoloader --no-interaction --no-progress --no-scripts -q $PHP83HACK
+composer update --optimize-autoloader --no-interaction --no-progress --no-scripts -q
