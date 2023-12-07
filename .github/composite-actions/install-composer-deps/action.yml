@@ -48,7 +48,7 @@ runs:
       uses: actions/github-script@v7
       id: resolve-ignore-platform-req
       with:
-        script: 'return ${{ env.PHP_VERSION_ID }} >= 80300 ? "--ignore-platform-req=php+" : ""'
+        script: 'return ${{ env.PHP_VERSION_ID }} >= 80400 ? "--ignore-platform-req=php+" : ""'
         result-encoding: string
 
     - name: Install dependencies
