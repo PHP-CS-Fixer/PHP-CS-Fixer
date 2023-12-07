@@ -59,20 +59,13 @@ final class RuleSetTest extends TestCase
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
 
-        $fixers = [];
-
-        foreach ($factory->getFixers() as $fixer) {
-            $fixers[$fixer->getName()] = $fixer;
-        }
-
-        self::assertArrayHasKey($ruleName, $fixers, \sprintf('RuleSet "%s" contains unknown rule.', $setName));
+        self::assertTrue($factory->hasRule($ruleName), \sprintf('RuleSet "%s" contains unknown rule.', $setName));
 
         if (true === $ruleConfig) {
             return; // rule doesn't need configuration.
         }
 
-        \assert(\array_key_exists($ruleName, $fixers));
-        $fixer = $fixers[$ruleName];
+        $fixer = $factory->getRule($ruleName);
         self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, \sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
 
         try {
