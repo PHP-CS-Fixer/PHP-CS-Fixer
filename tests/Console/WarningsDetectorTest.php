@@ -29,7 +29,7 @@ final class WarningsDetectorTest extends TestCase
 {
     public function testDetectOldVendorNotInstalledByComposer(): void
     {
-        $toolInfo = $this->getToolInfoDouble(false, ['name' => 'not-installed-by-composer']);
+        $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
 
         $warningsDetector = new WarningsDetector($toolInfo);
         $warningsDetector->detectOldVendor();
@@ -39,7 +39,7 @@ final class WarningsDetectorTest extends TestCase
 
     public function testDetectOldVendorNotLegacyPackage(): void
     {
-        $toolInfo = $this->getToolInfoDouble(false, ['name' => 'friendsofphp/php-cs-fixer']);
+        $toolInfo = $this->createToolInfoDouble(false, 'friendsofphp/php-cs-fixer');
 
         $warningsDetector = new WarningsDetector($toolInfo);
         $warningsDetector->detectOldVendor();
@@ -49,7 +49,7 @@ final class WarningsDetectorTest extends TestCase
 
     public function testDetectOldVendorLegacyPackage(): void
     {
-        $toolInfo = $this->getToolInfoDouble(true, ['name' => 'fabpot/php-cs-fixer']);
+        $toolInfo = $this->createToolInfoDouble(true, 'fabpot/php-cs-fixer');
 
         $warningsDetector = new WarningsDetector($toolInfo);
         $warningsDetector->detectOldVendor();
@@ -60,13 +60,13 @@ final class WarningsDetectorTest extends TestCase
         ], $warningsDetector->getWarnings());
     }
 
-    /**
-     * @param array{name: string} $composerInstallationDetails
-     */
-    private function getToolInfoDouble(bool $isInstalledByComposer, array $composerInstallationDetails): ToolInfoInterface
+    private function createToolInfoDouble(bool $isInstalledByComposer, string $packageName): ToolInfoInterface
     {
-        $composerInstallationDetails['version'] = '1.0.0';
-        $composerInstallationDetails['dist'] = [];
+        $composerInstallationDetails = [
+            'name' => $packageName,
+            'version' => '1.0.0',
+            'dist' => [],
+        ];
 
         return new class($isInstalledByComposer, $composerInstallationDetails) implements ToolInfoInterface {
             private bool $isInstalledByComposer;

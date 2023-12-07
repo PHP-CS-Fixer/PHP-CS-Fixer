@@ -41,7 +41,7 @@ final class RunnerTest extends TestCase
      */
     public function testThatFixSuccessfully(): void
     {
-        $linter = $this->getLinterDouble();
+        $linter = $this->createLinterDouble();
 
         $fixers = [
             new Fixer\ClassNotation\VisibilityRequiredFixer(),
@@ -162,7 +162,7 @@ final class RunnerTest extends TestCase
         self::assertSame($path, $spy->passedFile->getPath());
     }
 
-    private function getLinterDouble(): LinterInterface
+    private function createLinterDouble(): LinterInterface
     {
         return new class() implements LinterInterface {
             public function isAsync(): bool

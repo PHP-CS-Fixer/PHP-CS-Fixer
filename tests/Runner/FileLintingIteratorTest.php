@@ -32,7 +32,7 @@ final class FileLintingIteratorTest extends TestCase
 
         $fileLintingIterator = new FileLintingIterator(
             $iterator,
-            $this->getLinterDouble()
+            $this->createLinterDouble()
         );
 
         self::assertNull($fileLintingIterator->current());
@@ -56,7 +56,7 @@ final class FileLintingIteratorTest extends TestCase
 
         $fileLintingIterator = new FileLintingIterator(
             $iterator,
-            $this->getLinterDouble($lintingResultInterfaceProphecy)
+            $this->createLinterDouble($lintingResultInterfaceProphecy)
         );
 
         // test when not touched current is null
@@ -94,7 +94,7 @@ final class FileLintingIteratorTest extends TestCase
         self::assertNull($fileLintingIterator->currentLintingResult());
     }
 
-    private function getLinterDouble(?LintingResultInterface $lintingResult = null): LinterInterface
+    private function createLinterDouble(?LintingResultInterface $lintingResult = null): LinterInterface
     {
         return new class($lintingResult) implements LinterInterface {
             private ?LintingResultInterface $lintingResult;

@@ -36,7 +36,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
 
         $codeSample = new VersionSpecificCodeSample(
             $code,
-            $this->getVersionSpecificationDouble(),
+            $this->createVersionSpecificationDouble(),
             $configuration
         );
 
@@ -48,7 +48,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
     {
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
-            $this->getVersionSpecificationDouble()
+            $this->createVersionSpecificationDouble()
         );
 
         self::assertNull($codeSample->getConfiguration());
@@ -61,7 +61,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
     {
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
-            $this->getVersionSpecificationDouble($isSatisfied)
+            $this->createVersionSpecificationDouble($isSatisfied)
         );
 
         self::assertSame($isSatisfied, $codeSample->isSuitableFor($version));
@@ -74,7 +74,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
         yield 'is-not-satisfied' => [\PHP_VERSION_ID, false];
     }
 
-    private function getVersionSpecificationDouble(bool $isSatisfied = true): VersionSpecificationInterface
+    private function createVersionSpecificationDouble(bool $isSatisfied = true): VersionSpecificationInterface
     {
         return new class($isSatisfied) implements VersionSpecificationInterface {
             private bool $isSatisfied;

@@ -72,9 +72,9 @@ final class SelfUpdateCommandTest extends TestCase
     public function testCommandName(string $name): void
     {
         $command = new SelfUpdateCommand(
-            $this->getNewVersionCheckerDouble(),
-            $this->getToolInfoDouble(),
-            $this->getPharCheckerDouble(),
+            $this->createNewVersionCheckerDouble(),
+            $this->createToolInfoDouble(),
+            $this->createPharCheckerDouble(),
         );
 
         $application = new Application();
@@ -103,12 +103,12 @@ final class SelfUpdateCommandTest extends TestCase
         string $expectedFileContents,
         string $expectedDisplay
     ): void {
-        $versionChecker = $this->getNewVersionCheckerDouble($latestVersion, $latestMinorVersion);
+        $versionChecker = $this->createNewVersionCheckerDouble($latestVersion, $latestMinorVersion);
 
         $command = new SelfUpdateCommand(
             $versionChecker,
-            $this->getToolInfoDouble(),
-            $this->getPharCheckerDouble(),
+            $this->createToolInfoDouble(),
+            $this->createPharCheckerDouble(),
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -262,7 +262,7 @@ final class SelfUpdateCommandTest extends TestCase
         array $input,
         bool $decorated
     ): void {
-        $versionChecker = $this->getNewVersionCheckerDouble(
+        $versionChecker = $this->createNewVersionCheckerDouble(
             self::getNewMajorReleaseVersion(),
             self::getNewMinorReleaseVersion(),
             $latestMajorVersionSuccess,
@@ -271,8 +271,8 @@ final class SelfUpdateCommandTest extends TestCase
 
         $command = new SelfUpdateCommand(
             $versionChecker,
-            $this->getToolInfoDouble(),
-            $this->getPharCheckerDouble(),
+            $this->createToolInfoDouble(),
+            $this->createPharCheckerDouble(),
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -331,9 +331,9 @@ final class SelfUpdateCommandTest extends TestCase
     public function testExecuteWhenNotInstalledAsPhar(array $input, bool $decorated): void
     {
         $command = new SelfUpdateCommand(
-            $this->getNewVersionCheckerDouble(),
-            $this->getToolInfoDouble(false),
-            $this->getPharCheckerDouble(),
+            $this->createNewVersionCheckerDouble(),
+            $this->createToolInfoDouble(false),
+            $this->createPharCheckerDouble(),
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -394,7 +394,7 @@ final class SelfUpdateCommandTest extends TestCase
         );
     }
 
-    private function getToolInfoDouble(bool $isInstalledAsPhar = true): ToolInfoInterface
+    private function createToolInfoDouble(bool $isInstalledAsPhar = true): ToolInfoInterface
     {
         return new class($this->root, $isInstalledAsPhar) implements ToolInfoInterface {
             private vfsStreamDirectory $directory;
@@ -463,7 +463,7 @@ final class SelfUpdateCommandTest extends TestCase
         return self::getNewMajorVersion().'.0.0';
     }
 
-    private function getNewVersionCheckerDouble(
+    private function createNewVersionCheckerDouble(
         string $latestVersion = Application::VERSION,
         ?string $latestMinorVersion = Application::VERSION,
         bool $latestMajorVersionSuccess = true,
@@ -521,7 +521,7 @@ final class SelfUpdateCommandTest extends TestCase
         };
     }
 
-    private function getPharCheckerDouble(): PharCheckerInterface
+    private function createPharCheckerDouble(): PharCheckerInterface
     {
         return new class() implements PharCheckerInterface {
             public function checkFileValidity(string $filename): ?string

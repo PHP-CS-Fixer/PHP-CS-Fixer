@@ -35,8 +35,8 @@ final class FixerDefinitionTest extends TestCase
     public function testGetCodeSamples(): void
     {
         $samples = [
-            $this->getCodeSampleDouble(),
-            $this->getCodeSampleDouble(),
+            $this->createCodeSampleDouble(),
+            $this->createCodeSampleDouble(),
         ];
 
         $definition = new FixerDefinition('', $samples);
@@ -66,7 +66,7 @@ final class FixerDefinitionTest extends TestCase
         self::assertSame('Foo', $definition->getRiskyDescription());
     }
 
-    private function getCodeSampleDouble(): CodeSampleInterface
+    private function createCodeSampleDouble(): CodeSampleInterface
     {
         return new class() implements CodeSampleInterface {
             public function getCode(): string

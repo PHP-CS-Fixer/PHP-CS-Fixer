@@ -51,7 +51,7 @@ final class FileFilterIteratorTest extends TestCase
         $filter = new FileFilterIterator(
             new \ArrayIterator(array_fill(0, $repeat, $fileInfo)),
             $eventDispatcher,
-            $this->getCacheManagerDouble(true)
+            $this->createCacheManagerDouble(true)
         );
 
         self::assertCount(0, $events);
@@ -79,7 +79,7 @@ final class FileFilterIteratorTest extends TestCase
         $filter = new FileFilterIterator(
             new \ArrayIterator([new \SplFileInfo($file)]),
             $eventDispatcher,
-            $this->getCacheManagerDouble(false)
+            $this->createCacheManagerDouble(false)
         );
 
         self::assertCount(0, $filter);
@@ -109,7 +109,7 @@ final class FileFilterIteratorTest extends TestCase
         $filter = new FileFilterIterator(
             new \ArrayIterator([new \SplFileInfo($file)]),
             $eventDispatcher,
-            $this->getCacheManagerDouble(true)
+            $this->createCacheManagerDouble(true)
         );
 
         self::assertCount(0, $filter);
@@ -138,7 +138,7 @@ final class FileFilterIteratorTest extends TestCase
                 new \SplFileInfo('__INVALID__'),
             ]),
             $eventDispatcher,
-            $this->getCacheManagerDouble(true)
+            $this->createCacheManagerDouble(true)
         );
 
         self::assertCount(0, $filter);
@@ -152,7 +152,7 @@ final class FileFilterIteratorTest extends TestCase
         $filter = new FileFilterIterator(
             new \ArrayIterator([new \SplFileInfo($file)]),
             null,
-            $this->getCacheManagerDouble(false)
+            $this->createCacheManagerDouble(false)
         );
 
         self::assertCount(0, $filter);
@@ -163,7 +163,7 @@ final class FileFilterIteratorTest extends TestCase
         $filter = new FileFilterIterator(
             new \ArrayIterator([__FILE__]), // @phpstan-ignore-line we want this check for contexts without static analysis
             null,
-            $this->getCacheManagerDouble(true)
+            $this->createCacheManagerDouble(true)
         );
 
         $this->expectException(
@@ -192,7 +192,7 @@ final class FileFilterIteratorTest extends TestCase
         $filter = new FileFilterIterator(
             new \ArrayIterator([$link, $file]),
             null,
-            $this->getCacheManagerDouble(true)
+            $this->createCacheManagerDouble(true)
         );
 
         $files = iterator_to_array($filter);
@@ -200,7 +200,7 @@ final class FileFilterIteratorTest extends TestCase
         self::assertSame($file, reset($files));
     }
 
-    private function getCacheManagerDouble(bool $needFixing): CacheManagerInterface
+    private function createCacheManagerDouble(bool $needFixing): CacheManagerInterface
     {
         return new class($needFixing) implements CacheManagerInterface {
             private bool $needFixing;

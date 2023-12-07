@@ -34,7 +34,7 @@ final class CachingLinterTest extends TestCase
      */
     public function testIsAsync(bool $isAsync): void
     {
-        $sublinter = $this->getLinterDouble($isAsync, [], []);
+        $sublinter = $this->createLinterDouble($isAsync, [], []);
 
         $linter = new CachingLinter($sublinter);
 
@@ -56,10 +56,10 @@ final class CachingLinterTest extends TestCase
             'baz.php' => '<?php echo "foobarbaz";',
         ]);
 
-        $result1 = $this->getLintingResultDouble();
-        $result2 = $this->getLintingResultDouble();
+        $result1 = $this->createLintingResultDouble();
+        $result2 = $this->createLintingResultDouble();
 
-        $sublinter = $this->getLinterDouble(
+        $sublinter = $this->createLinterDouble(
             null,
             [
                 $fs->url().'/foo.php' => $result1,
@@ -78,10 +78,10 @@ final class CachingLinterTest extends TestCase
 
     public function testLintSourceIsCalledOnceOnSameContent(): void
     {
-        $result1 = $this->getLintingResultDouble();
-        $result2 = $this->getLintingResultDouble();
+        $result1 = $this->createLintingResultDouble();
+        $result2 = $this->createLintingResultDouble();
 
-        $sublinter = $this->getLinterDouble(
+        $sublinter = $this->createLinterDouble(
             null,
             [],
             [
@@ -101,7 +101,7 @@ final class CachingLinterTest extends TestCase
      * @param array<string, LintingResultInterface> $allowedLintFileCalls
      * @param array<string, LintingResultInterface> $allowedLintSourceCalls
      */
-    private function getLinterDouble(?bool $isAsync, array $allowedLintFileCalls, array $allowedLintSourceCalls): LinterInterface
+    private function createLinterDouble(?bool $isAsync, array $allowedLintFileCalls, array $allowedLintSourceCalls): LinterInterface
     {
         return new class($isAsync, $allowedLintFileCalls, $allowedLintSourceCalls) implements LinterInterface {
             private ?bool $isAsync;
@@ -154,7 +154,7 @@ final class CachingLinterTest extends TestCase
         };
     }
 
-    private function getLintingResultDouble(): LintingResultInterface
+    private function createLintingResultDouble(): LintingResultInterface
     {
         return new class() implements LintingResultInterface {
             public function check(): void

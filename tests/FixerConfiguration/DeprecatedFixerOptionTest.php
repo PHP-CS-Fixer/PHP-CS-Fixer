@@ -128,7 +128,27 @@ final class DeprecatedFixerOptionTest extends TestCase
     {
         $normalizer = static fn () => null;
 
-        $fixerOption = new class($normalizer) implements FixerOptionInterface {
+        $option = new DeprecatedFixerOption(
+            $this->createFixerOptionDouble($normalizer),
+            'deprecated'
+        );
+
+        self::assertSame($normalizer, $option->getNormalizer());
+    }
+
+    public function testGetDeprecationMessage(): void
+    {
+        $option = new DeprecatedFixerOption(
+            new FixerOption('foo', 'Foo.'),
+            'Use option "bar" instead.'
+        );
+
+        self::assertSame('Use option "bar" instead.', $option->getDeprecationMessage());
+    }
+
+    private function createFixerOptionDouble(\Closure $normalizer): FixerOptionInterface
+    {
+        return new class($normalizer) implements FixerOptionInterface {
             private \Closure $normalizer;
 
             public function __construct(\Closure $normalizer)
@@ -171,22 +191,5 @@ final class DeprecatedFixerOptionTest extends TestCase
                 return $this->normalizer;
             }
         };
-
-        $option = new DeprecatedFixerOption(
-            $fixerOption,
-            'deprecated'
-        );
-
-        self::assertSame($normalizer, $option->getNormalizer());
-    }
-
-    public function testGetDeprecationMessage(): void
-    {
-        $option = new DeprecatedFixerOption(
-            new FixerOption('foo', 'Foo.'),
-            'Use option "bar" instead.'
-        );
-
-        self::assertSame('Use option "bar" instead.', $option->getDeprecationMessage());
     }
 }

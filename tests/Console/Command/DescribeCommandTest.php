@@ -484,7 +484,7 @@ Fixing examples:
         };
     }
 
-    private function getDefaultMockedFixer(): FixerInterface
+    private function createFixerDouble(): FixerInterface
     {
         return new class() implements ConfigurableFixerInterface, DeprecatedFixerInterface {
             /** @var array<mixed> */
@@ -573,7 +573,7 @@ Fixing examples:
 
     private function execute(string $name, bool $decorated, ?FixerInterface $fixer = null): CommandTester
     {
-        $fixer ??= $this->getDefaultMockedFixer();
+        $fixer ??= $this->createFixerDouble();
 
         $fixerClassName = \get_class($fixer);
         $isBuiltIn = str_starts_with($fixerClassName, 'PhpCsFixer') && !str_contains($fixerClassName, '@anon');
