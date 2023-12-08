@@ -47,7 +47,7 @@ final class CacheTest extends TestCase
 
     public function testConstructorSetsValues(): void
     {
-        $signature = $this->getSignatureDouble();
+        $signature = $this->createSignatureDouble();
 
         $cache = new Cache($signature);
 
@@ -56,7 +56,7 @@ final class CacheTest extends TestCase
 
     public function testDefaults(): void
     {
-        $signature = $this->getSignatureDouble();
+        $signature = $this->createSignatureDouble();
 
         $cache = new Cache($signature);
 
@@ -68,7 +68,7 @@ final class CacheTest extends TestCase
 
     public function testCanSetAndGetValue(): void
     {
-        $signature = $this->getSignatureDouble();
+        $signature = $this->createSignatureDouble();
 
         $cache = new Cache($signature);
 
@@ -83,7 +83,7 @@ final class CacheTest extends TestCase
 
     public function testCanClearValue(): void
     {
-        $signature = $this->getSignatureDouble();
+        $signature = $this->createSignatureDouble();
 
         $cache = new Cache($signature);
 
@@ -188,7 +188,7 @@ final class CacheTest extends TestCase
 
     public function testToJsonThrowsExceptionOnInvalid(): void
     {
-        $signature = $this->getSignatureDouble();
+        $signature = $this->createSignatureDouble();
 
         $cache = new Cache($signature);
 
@@ -203,7 +203,7 @@ final class CacheTest extends TestCase
         $cache->toJson();
     }
 
-    private function getSignatureDouble(): SignatureInterface
+    private function createSignatureDouble(): SignatureInterface
     {
         return new class() implements SignatureInterface {
             public function getPhpVersion(): string

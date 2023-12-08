@@ -27,7 +27,7 @@ final class NewVersionCheckerTest extends TestCase
 {
     public function testGetLatestVersion(): void
     {
-        $checker = new NewVersionChecker($this->createGithubClientStub());
+        $checker = new NewVersionChecker($this->createGithubClientDouble());
 
         self::assertSame('v2.4.1', $checker->getLatestVersion());
     }
@@ -37,7 +37,7 @@ final class NewVersionCheckerTest extends TestCase
      */
     public function testGetLatestVersionOfMajor(int $majorVersion, ?string $expectedVersion): void
     {
-        $checker = new NewVersionChecker($this->createGithubClientStub());
+        $checker = new NewVersionChecker($this->createGithubClientDouble());
 
         self::assertSame($expectedVersion, $checker->getLatestVersionOfMajor($majorVersion));
     }
@@ -56,7 +56,7 @@ final class NewVersionCheckerTest extends TestCase
      */
     public function testCompareVersions(string $versionA, string $versionB, int $expectedResult): void
     {
-        $checker = new NewVersionChecker($this->createGithubClientStub());
+        $checker = new NewVersionChecker($this->createGithubClientDouble());
 
         self::assertSame(
             $expectedResult,
@@ -99,7 +99,7 @@ final class NewVersionCheckerTest extends TestCase
         }
     }
 
-    private function createGithubClientStub(): GithubClientInterface
+    private function createGithubClientDouble(): GithubClientInterface
     {
         return new class() implements GithubClientInterface {
             public function getTags(): array
