@@ -326,7 +326,7 @@ final class FileCacheManagerTest extends TestCase
                 return isset($this->fileMap[$file]);
             }
 
-            public function get(string $file): ?string
+            public function get(string $file): string
             {
                 return $this->fileMap[$file];
             }

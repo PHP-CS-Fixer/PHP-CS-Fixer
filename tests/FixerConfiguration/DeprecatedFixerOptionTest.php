@@ -186,7 +186,7 @@ final class DeprecatedFixerOptionTest extends TestCase
                 throw new \LogicException('Not implemented.');
             }
 
-            public function getNormalizer(): ?\Closure
+            public function getNormalizer(): \Closure
             {
                 return $this->normalizer;
             }
