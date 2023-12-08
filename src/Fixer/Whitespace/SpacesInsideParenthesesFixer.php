@@ -76,14 +76,14 @@ function foo(\$bar, \$baz)
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound('(');
+        return $tokens->isAnyTokenKindsFound(['(', CT::T_BRACE_CLASS_INSTANTIATION_OPEN]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if ('none' === $this->configuration['space']) {
             foreach ($tokens as $index => $token) {
-                if (!$token->equals('(')) {
+                if (!$token->equalsAny(['(', [CT::T_BRACE_CLASS_INSTANTIATION_OPEN]])) {
                     continue;
                 }
 
@@ -94,7 +94,8 @@ function foo(\$bar, \$baz)
                     continue;
                 }
 
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $blockType = Tokens::detectBlockType($tokens[$index]);
+                $endIndex = $tokens->findBlockEnd($blockType['type'], $index);
 
                 // remove space after opening `(`
                 if (!$tokens[$tokens->getNextNonWhitespace($index)]->isComment()) {
@@ -110,11 +111,12 @@ function foo(\$bar, \$baz)
 
         if ('single' === $this->configuration['space']) {
             foreach ($tokens as $index => $token) {
-                if (!$token->equals('(')) {
+                if (!$token->equalsAny(['(', [CT::T_BRACE_CLASS_INSTANTIATION_OPEN]])) {
                     continue;
                 }
 
-                $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $blockType = Tokens::detectBlockType($tokens[$index]);
+                $endParenthesisIndex = $tokens->findBlockEnd($blockType['type'], $index);
 
                 // if not other content than spaces in block remove spaces
                 $blockContent = $this->getBlockContent($index, $endParenthesisIndex, $tokens);
