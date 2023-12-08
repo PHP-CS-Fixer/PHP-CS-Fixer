@@ -47,16 +47,16 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
 
         yield 'test function-like constructs' => [
             '<?php
-    include("something.php");
-    include_once("something.php");
-    require("something.php");
-    require_once("something.php");
-    print("hello");
+    include ("something.php");
+    include_once ("something.php");
+    require ("something.php");
+    require_once ("something.php");
+    print ("hello");
     unset($hello);
     isset($hello);
     empty($hello);
     die($hello);
-    echo("hello");
+    echo ("hello");
     array("hello");
     list($a, $b) = $c;
     eval("a");
@@ -104,6 +104,11 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php echo ($a == $b) ? "foo" : "bar";',
+        ];
+
+        yield [
+            '<?php strlen($a . $b) ? "foo" : "bar";',
+            '<?php strlen ($a . $b) ? "foo" : "bar";',
         ];
 
         yield [
@@ -172,27 +177,17 @@ $$e(2);
             '<?php
                 echo (function () {})();
                 echo ($propertyValue ? "TRUE" : "FALSE") . EOL;
-                echo(FUNCTION_1);
-                echo (EXPRESSION + CONST_1), CONST_2;
-            ',
-            '<?php
-                echo (function () {})();
-                echo ($propertyValue ? "TRUE" : "FALSE") . EOL;
                 echo (FUNCTION_1);
                 echo (EXPRESSION + CONST_1), CONST_2;
             ',
         ];
 
         yield [
-            '<?php
-                include(SOME_PATH_1);
-                include_once(SOME_PATH_2);
-                require(SOME_PATH_3);
-                require_once(SOME_PATH_4);
-                print(SOME_VALUE);
-                print(FIRST_HALF_OF_STRING_1 . SECOND_HALF_OF_STRING_1);
-                print((FIRST_HALF_OF_STRING_2) . (SECOND_HALF_OF_STRING_2));
-            ',
+            '<?php echo foo(EXPRESSION + CONST_1), CONST_2;',
+            '<?php echo foo (EXPRESSION + CONST_1), CONST_2;',
+        ];
+
+        yield [
             '<?php
                 include         (SOME_PATH_1);
                 include_once    (SOME_PATH_2);
