@@ -241,6 +241,16 @@ multiply((2 + 3) * 4);
 multiply( (    2 + 3  ) * 4    );
 ',
         ];
+
+        yield [
+            '<?php $x = (new Foo())->bar();',
+            '<?php $x = ( new Foo() )->bar();',
+        ];
+
+        yield [
+            '<?php $x = (new Foo)->bar;',
+            '<?php $x = ( new Foo )->bar;',
+        ];
     }
 
     /**
@@ -422,6 +432,11 @@ multiply( ( 2 + 3 ) * 4 );
             '<?php
 multiply((2 + 3) * 4);
 ',
+        ];
+
+        yield [
+            '<?php $x = ( new Foo() )->bar();',
+            '<?php $x = (new Foo())->bar();',
         ];
     }
 
