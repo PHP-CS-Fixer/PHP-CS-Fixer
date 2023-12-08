@@ -80,7 +80,7 @@ final class AbstractFixerTest extends TestCase
 
     public function testGetWhitespacesFixerConfig(): void
     {
-        $fixer = $this->createFixerDouble();
+        $fixer = $this->createWhitespacesAwareFixerDouble();
 
         $config = AccessibleObject::create($fixer)->whitespacesConfig;
 
@@ -97,7 +97,7 @@ final class AbstractFixerTest extends TestCase
         self::assertSame("\r\n", $config->getLineEnding());
     }
 
-    private function createFixerDouble(): WhitespacesAwareFixerInterface
+    private function createWhitespacesAwareFixerDouble(): WhitespacesAwareFixerInterface
     {
         return new class() extends AbstractFixer implements WhitespacesAwareFixerInterface {
             public function getDefinition(): FixerDefinitionInterface
