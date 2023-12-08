@@ -228,7 +228,10 @@ final class FixerFactoryTest extends TestCase
                 }
             }
 
-            public function getRuleConfiguration(string $rule): ?array
+            /**
+             * @return array<string, mixed>
+             */
+            public function getRuleConfiguration(string $rule): array
             {
                 return $this->getRules()[$rule];
             }

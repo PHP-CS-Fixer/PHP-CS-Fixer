@@ -27,7 +27,7 @@ use PhpCsFixer\Linter\LintingResultInterface;
 final class FileLintingIterator extends \IteratorIterator
 {
     /**
-     * @var LintingResultInterface
+     * @var null|LintingResultInterface
      */
     private $currentResult;
 
