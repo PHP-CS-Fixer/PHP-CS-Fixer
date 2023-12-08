@@ -706,7 +706,7 @@ if (count($x)) {
             foreach ($types as $i => $fullType) {
                 $newFullType = $fullType;
 
-                Preg::matchAll('/[\\\\\w]+/', $fullType, $matches, PREG_OFFSET_CAPTURE);
+                Preg::matchAll('/[\\\\\w]+(?![\\\\\w:])/', $fullType, $matches, PREG_OFFSET_CAPTURE);
 
                 foreach (array_reverse($matches[0]) as [$type, $offset]) {
                     $newType = $callback($type);
