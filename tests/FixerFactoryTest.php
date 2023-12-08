@@ -17,9 +17,13 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
+use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -51,10 +55,33 @@ final class FixerFactoryTest extends TestCase
 
         self::assertSame($factory, $testInstance);
 
-        $ruleSetProphecy = $this->prophesize(RuleSetInterface::class);
-        $ruleSetProphecy->getRules()->willReturn([]);
+        $ruleSet = new class([]) implements RuleSetInterface {
+            /** @var array<string, array<string, mixed>|bool> */
+            private array $set;
+
+            public function __construct(array $set = [])
+            {
+                $this->set = $set;
+            }
+
+            public function getRuleConfiguration(string $rule): ?array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getRules(): array
+            {
+                return $this->set;
+            }
+
+            public function hasRule(string $rule): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
+
         $testInstance = $factory->useRuleSet(
-            $ruleSetProphecy->reveal()
+            $ruleSet
         );
 
         self::assertSame($factory, $testInstance);
@@ -73,7 +100,7 @@ final class FixerFactoryTest extends TestCase
             static function (string $className): bool {
                 $class = new \ReflectionClass($className);
 
-                return !$class->isAbstract() && $class->implementsInterface(FixerInterface::class) && str_starts_with($class->getNamespaceName(), 'PhpCsFixer\\Fixer\\');
+                return !$class->isAbstract() && !$class->isAnonymous() && $class->implementsInterface(FixerInterface::class) && str_starts_with($class->getNamespaceName(), 'PhpCsFixer\\Fixer\\');
             }
         );
 
@@ -307,11 +334,56 @@ final class FixerFactoryTest extends TestCase
         $factory = new FixerFactory();
         $config = new WhitespacesFixerConfig();
 
-        $fixer = $this->prophesize(\PhpCsFixer\Fixer\WhitespacesAwareFixerInterface::class);
-        $fixer->getName()->willReturn('foo');
-        $fixer->setWhitespacesConfig($config)->shouldBeCalled();
+        $fixer = new class($config) implements WhitespacesAwareFixerInterface {
+            private WhitespacesFixerConfig $config;
 
-        $factory->registerFixer($fixer->reveal(), false);
+            public function __construct(WhitespacesFixerConfig $config)
+            {
+                $this->config = $config;
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isRisky(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getName(): string
+            {
+                return 'foo';
+            }
+
+            public function getPriority(): int
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function setWhitespacesConfig(WhitespacesFixerConfig $config): void
+            {
+                TestCase::assertSame($this->config, $config);
+            }
+        };
+
+        $factory->registerFixer($fixer, false);
         $factory->setWhitespacesConfig($config);
     }
 
@@ -352,10 +424,54 @@ final class FixerFactoryTest extends TestCase
     {
         $factory = new FixerFactory();
 
-        $fixer = $this->prophesize(ConfigurableFixerInterface::class);
-        $fixer->getName()->willReturn('foo');
+        $fixer = new class() implements ConfigurableFixerInterface {
+            public function configure(array $configuration): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
 
-        $factory->registerFixer($fixer->reveal(), false);
+            public function getConfigurationDefinition(): FixerConfigurationResolverInterface
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isRisky(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getName(): string
+            {
+                return 'foo';
+            }
+
+            public function getPriority(): int
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
+
+        $factory->registerFixer($fixer, false);
 
         $this->expectException(InvalidFixerConfigurationException::class);
 
@@ -381,12 +497,55 @@ final class FixerFactoryTest extends TestCase
 
     public function testConfigurableFixerIsConfigured(): void
     {
-        $fixer = $this->prophesize(ConfigurableFixerInterface::class);
-        $fixer->getName()->willReturn('foo');
-        $fixer->configure(['bar' => 'baz'])->shouldBeCalled();
+        $fixer = new class() implements ConfigurableFixerInterface {
+            public function configure(array $configuration): void
+            {
+                TestCase::assertSame(['bar' => 'baz'], $configuration);
+            }
+
+            public function getConfigurationDefinition(): FixerConfigurationResolverInterface
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isRisky(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getName(): string
+            {
+                return 'foo';
+            }
+
+            public function getPriority(): int
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
 
         $factory = new FixerFactory();
-        $factory->registerFixer($fixer->reveal(), false);
+        $factory->registerFixer($fixer, false);
         $factory->useRuleSet(new RuleSet([
             'foo' => ['bar' => 'baz'],
         ]));
@@ -394,10 +553,50 @@ final class FixerFactoryTest extends TestCase
 
     private function createFixerDouble(string $name, int $priority = 0): FixerInterface
     {
-        $fixer = $this->prophesize(\PhpCsFixer\Fixer\FixerInterface::class);
-        $fixer->getName()->willReturn($name);
-        $fixer->getPriority()->willReturn($priority);
+        return new class($name, $priority) implements FixerInterface {
+            private string $name;
+            private int $priority;
 
-        return $fixer->reveal();
+            public function __construct(string $name, int $priority)
+            {
+                $this->name = $name;
+                $this->priority = $priority;
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isRisky(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getName(): string
+            {
+                return $this->name;
+            }
+
+            public function getPriority(): int
+            {
+                return $this->priority;
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
     }
 }

@@ -128,11 +128,8 @@ final class DeprecatedFixerOptionTest extends TestCase
     {
         $normalizer = static fn () => null;
 
-        $decoratedOption = $this->prophesize(FixerOptionInterface::class);
-        $decoratedOption->getNormalizer()->willReturn($normalizer);
-
         $option = new DeprecatedFixerOption(
-            $decoratedOption->reveal(),
+            $this->createFixerOptionDouble($normalizer),
             'deprecated'
         );
 
@@ -147,5 +144,52 @@ final class DeprecatedFixerOptionTest extends TestCase
         );
 
         self::assertSame('Use option "bar" instead.', $option->getDeprecationMessage());
+    }
+
+    private function createFixerOptionDouble(\Closure $normalizer): FixerOptionInterface
+    {
+        return new class($normalizer) implements FixerOptionInterface {
+            private \Closure $normalizer;
+
+            public function __construct(\Closure $normalizer)
+            {
+                $this->normalizer = $normalizer;
+            }
+
+            public function getName(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDescription(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function hasDefault(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDefault(): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getAllowedTypes(): ?array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getAllowedValues(): ?array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getNormalizer(): ?\Closure
+            {
+                return $this->normalizer;
+            }
+        };
     }
 }

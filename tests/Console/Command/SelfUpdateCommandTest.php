@@ -20,10 +20,12 @@ use org\bovigo\vfs\vfsStreamException;
 use org\bovigo\vfs\vfsStreamWrapper;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
+use PhpCsFixer\Console\SelfUpdate\GithubClientInterface;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
+use PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface;
+use PhpCsFixer\PharCheckerInterface;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfoInterface;
-use Prophecy\Argument;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -70,9 +72,9 @@ final class SelfUpdateCommandTest extends TestCase
     public function testCommandName(string $name): void
     {
         $command = new SelfUpdateCommand(
-            $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class)->reveal(),
-            $this->createToolInfo(),
-            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
+            $this->createNewVersionCheckerDouble(),
+            $this->createToolInfoDouble(),
+            $this->createPharCheckerDouble(),
         );
 
         $application = new Application();
@@ -101,28 +103,12 @@ final class SelfUpdateCommandTest extends TestCase
         string $expectedFileContents,
         string $expectedDisplay
     ): void {
-        $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
-
-        $versionChecker->getLatestVersion()->willReturn($latestVersion);
-
-        $versionChecker
-            ->getLatestVersionOfMajor(self::getCurrentMajorVersion())
-            ->willReturn($latestMinorVersion)
-        ;
-
-        $actualVersionCheck = new NewVersionChecker(
-            $this->prophesize(\PhpCsFixer\Console\SelfUpdate\GithubClientInterface::class)->reveal()
-        );
-
-        $versionChecker
-            ->compareVersions(Argument::type('string'), Argument::type('string'))
-            ->will(static fn (array $arguments): int => $actualVersionCheck->compareVersions($arguments[0], $arguments[1]))
-        ;
+        $versionChecker = $this->createNewVersionCheckerDouble($latestVersion, $latestMinorVersion);
 
         $command = new SelfUpdateCommand(
-            $versionChecker->reveal(),
-            $this->createToolInfo(),
-            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
+            $versionChecker,
+            $this->createToolInfoDouble(),
+            $this->createPharCheckerDouble(),
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -271,38 +257,22 @@ final class SelfUpdateCommandTest extends TestCase
      * @dataProvider provideExecuteWhenNotAbleToGetLatestVersionsCases
      */
     public function testExecuteWhenNotAbleToGetLatestVersions(
-        bool $latestVersionSuccess,
+        bool $latestMajorVersionSuccess,
         bool $latestMinorVersionSuccess,
         array $input,
         bool $decorated
     ): void {
-        $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
-
-        $newMajorVersion = self::getNewMajorReleaseVersion();
-        $versionChecker->getLatestVersion()->will(static function () use ($latestVersionSuccess, $newMajorVersion): string {
-            if ($latestVersionSuccess) {
-                return $newMajorVersion;
-            }
-
-            throw new \RuntimeException('Foo.');
-        });
-
-        $newMinorVersion = self::getNewMinorReleaseVersion();
-        $versionChecker
-            ->getLatestVersionOfMajor(self::getCurrentMajorVersion())
-            ->will(static function () use ($latestMinorVersionSuccess, $newMinorVersion): string {
-                if ($latestMinorVersionSuccess) {
-                    return $newMinorVersion;
-                }
-
-                throw new \RuntimeException('Foo.');
-            })
-        ;
+        $versionChecker = $this->createNewVersionCheckerDouble(
+            self::getNewMajorReleaseVersion(),
+            self::getNewMinorReleaseVersion(),
+            $latestMajorVersionSuccess,
+            $latestMinorVersionSuccess,
+        );
 
         $command = new SelfUpdateCommand(
-            $versionChecker->reveal(),
-            $this->createToolInfo(),
-            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
+            $versionChecker,
+            $this->createToolInfoDouble(),
+            $this->createPharCheckerDouble(),
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -361,9 +331,9 @@ final class SelfUpdateCommandTest extends TestCase
     public function testExecuteWhenNotInstalledAsPhar(array $input, bool $decorated): void
     {
         $command = new SelfUpdateCommand(
-            $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class)->reveal(),
-            $this->createToolInfo(false),
-            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
+            $this->createNewVersionCheckerDouble(),
+            $this->createToolInfoDouble(false),
+            $this->createPharCheckerDouble(),
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -424,18 +394,48 @@ final class SelfUpdateCommandTest extends TestCase
         );
     }
 
-    private function createToolInfo(bool $isInstalledAsPhar = true): ToolInfoInterface
+    private function createToolInfoDouble(bool $isInstalledAsPhar = true): ToolInfoInterface
     {
-        $root = $this->root;
+        return new class($this->root, $isInstalledAsPhar) implements ToolInfoInterface {
+            private vfsStreamDirectory $directory;
+            private bool $isInstalledAsPhar;
 
-        $toolInfo = $this->prophesize(ToolInfoInterface::class);
-        $toolInfo->isInstalledAsPhar()->willReturn($isInstalledAsPhar);
-        $toolInfo
-            ->getPharDownloadUri(Argument::type('string'))
-            ->will(static fn (array $arguments): string => "{$root->url()}/{$arguments[0]}.phar")
-        ;
+            public function __construct(vfsStreamDirectory $directory, bool $isInstalledAsPhar)
+            {
+                $this->directory = $directory;
+                $this->isInstalledAsPhar = $isInstalledAsPhar;
+            }
 
-        return $toolInfo->reveal();
+            public function getComposerInstallationDetails(): array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getComposerVersion(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getVersion(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isInstalledAsPhar(): bool
+            {
+                return $this->isInstalledAsPhar;
+            }
+
+            public function isInstalledByComposer(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getPharDownloadUri(string $version): string
+            {
+                return sprintf('%s/%s.phar', $this->directory->url(), $version);
+            }
+        };
     }
 
     private function getToolPath(): string
@@ -461,5 +461,73 @@ final class SelfUpdateCommandTest extends TestCase
     private static function getNewMajorReleaseVersion(): string
     {
         return self::getNewMajorVersion().'.0.0';
+    }
+
+    private function createNewVersionCheckerDouble(
+        string $latestVersion = Application::VERSION,
+        ?string $latestMinorVersion = Application::VERSION,
+        bool $latestMajorVersionSuccess = true,
+        bool $latestMinorVersionSuccess = true
+    ): NewVersionCheckerInterface {
+        return new class($latestVersion, $latestMinorVersion, $latestMajorVersionSuccess, $latestMinorVersionSuccess) implements NewVersionCheckerInterface {
+            private string $latestVersion;
+            private ?string $latestMinorVersion;
+            private bool $latestMajorVersionSuccess;
+            private bool $latestMinorVersionSuccess;
+
+            public function __construct(
+                string $latestVersion,
+                ?string $latestMinorVersion,
+                bool $latestMajorVersionSuccess = true,
+                bool $latestMinorVersionSuccess = true
+            ) {
+                $this->latestVersion = $latestVersion;
+                $this->latestMinorVersion = $latestMinorVersion;
+                $this->latestMajorVersionSuccess = $latestMajorVersionSuccess;
+                $this->latestMinorVersionSuccess = $latestMinorVersionSuccess;
+            }
+
+            public function getLatestVersion(): string
+            {
+                if ($this->latestMajorVersionSuccess) {
+                    return $this->latestVersion;
+                }
+
+                throw new \RuntimeException('Foo.');
+            }
+
+            public function getLatestVersionOfMajor(int $majorVersion): ?string
+            {
+                TestCase::assertSame((int) preg_replace('/^v?(\d+).*$/', '$1', Application::VERSION), $majorVersion);
+
+                if ($this->latestMinorVersionSuccess) {
+                    return $this->latestMinorVersion;
+                }
+
+                throw new \RuntimeException('Foo.');
+            }
+
+            public function compareVersions(string $versionA, string $versionB): int
+            {
+                return (new NewVersionChecker(
+                    new class() implements GithubClientInterface {
+                        public function getTags(): array
+                        {
+                            throw new \LogicException('Not implemented.');
+                        }
+                    }
+                ))->compareVersions($versionA, $versionB);
+            }
+        };
+    }
+
+    private function createPharCheckerDouble(): PharCheckerInterface
+    {
+        return new class() implements PharCheckerInterface {
+            public function checkFileValidity(string $filename): ?string
+            {
+                return null;
+            }
+        };
     }
 }

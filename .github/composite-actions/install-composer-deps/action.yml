@@ -44,13 +44,6 @@ runs:
           Composer-${{ runner.os }}-${{ env.COMPOSER_CACHE_PHP }}-
           Composer-${{ runner.os }}-
 
-    - name: Auto-add ignore-platform-req
-      uses: actions/github-script@v7
-      id: resolve-ignore-platform-req
-      with:
-        script: 'return ${{ env.PHP_VERSION_ID }} >= 80400 ? "--ignore-platform-req=php+" : ""'
-        result-encoding: string
-
     - name: Install dependencies
       uses: nick-invision/retry@v2
       with:
@@ -59,7 +52,7 @@ runs:
         retry_wait_seconds: 30
         # `--no-scripts` to avoid side-effects (e.g. installing dev-tools for all jobs on CI level),
         # all executed scripts should be explicit and run only when needed.
-        command: composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ inputs.flags }} ${{ steps.resolve-ignore-platform-req.outputs.result }}
+        command: composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ inputs.flags }}
 
     - name: Show versions of packages
       shell: bash

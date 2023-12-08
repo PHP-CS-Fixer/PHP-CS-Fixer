@@ -381,7 +381,7 @@ final class ProjectCodeTest extends TestCase
         );
         $strings = array_unique($strings);
 
-        $message = sprintf('Class %s must not use PHPUnit\'s mock,, it shall use ->prophesize() instead.', $testClassName);
+        $message = sprintf('Class %s must not use PHPUnit\'s mock, it shall use anonymous class instead.', $testClassName);
         self::assertNotContains('getMockBuilder', $strings, $message);
         self::assertNotContains('createMock', $strings, $message);
         self::assertNotContains('createMockForIntersectionOfInterfaces', $strings, $message);

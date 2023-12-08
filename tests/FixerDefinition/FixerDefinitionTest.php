@@ -35,8 +35,8 @@ final class FixerDefinitionTest extends TestCase
     public function testGetCodeSamples(): void
     {
         $samples = [
-            $this->prophesize(CodeSampleInterface::class)->reveal(),
-            $this->prophesize(CodeSampleInterface::class)->reveal(),
+            $this->createCodeSampleDouble(),
+            $this->createCodeSampleDouble(),
         ];
 
         $definition = new FixerDefinition('', $samples);
@@ -64,5 +64,20 @@ final class FixerDefinitionTest extends TestCase
         $definition = new FixerDefinition('', [], null, 'Foo');
 
         self::assertSame('Foo', $definition->getRiskyDescription());
+    }
+
+    private function createCodeSampleDouble(): CodeSampleInterface
+    {
+        return new class() implements CodeSampleInterface {
+            public function getCode(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getConfiguration(): ?array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
     }
 }

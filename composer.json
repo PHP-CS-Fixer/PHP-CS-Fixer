@@ -46,8 +46,6 @@
         "php-cs-fixer/accessible-object": "^1.1",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.4",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.4",
-        "phpspec/prophecy": "^1.18",
-        "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.6",
         "symfony/phpunit-bridge": "^6.3.8 || ^7.0",
         "symfony/yaml": "^5.4 || ^6.0 || ^7.0"

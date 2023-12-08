@@ -21,10 +21,11 @@ use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
 use PhpCsFixer\Linter\Linter;
+use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\Fixtures\FakeDiffer;
 use PhpCsFixer\Tests\TestCase;
-use Prophecy\Argument;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -40,19 +41,7 @@ final class RunnerTest extends TestCase
      */
     public function testThatFixSuccessfully(): void
     {
-        $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
-        $linterProphecy
-            ->isAsync()
-            ->willReturn(false)
-        ;
-        $linterProphecy
-            ->lintFile(Argument::type('string'))
-            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
-        ;
-        $linterProphecy
-            ->lintSource(Argument::type('string'))
-            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
-        ;
+        $linter = $this->createLinterDouble();
 
         $fixers = [
             new Fixer\ClassNotation\VisibilityRequiredFixer(),
@@ -71,7 +60,7 @@ final class RunnerTest extends TestCase
             new NullDiffer(),
             null,
             new ErrorsManager(),
-            $linterProphecy->reveal(),
+            $linter,
             true,
             new NullCacheManager(),
             new Directory($path),
@@ -91,7 +80,7 @@ final class RunnerTest extends TestCase
             new NullDiffer(),
             null,
             new ErrorsManager(),
-            $linterProphecy->reveal(),
+            $linter,
             true,
             new NullCacheManager(),
             new Directory($path),
@@ -171,5 +160,29 @@ final class RunnerTest extends TestCase
         $runner->fix();
 
         self::assertSame($path, $spy->passedFile->getPath());
+    }
+
+    private function createLinterDouble(): LinterInterface
+    {
+        return new class() implements LinterInterface {
+            public function isAsync(): bool
+            {
+                return false;
+            }
+
+            public function lintFile(string $path): LintingResultInterface
+            {
+                return new class() implements LintingResultInterface {
+                    public function check(): void {}
+                };
+            }
+
+            public function lintSource(string $source): LintingResultInterface
+            {
+                return new class() implements LintingResultInterface {
+                    public function check(): void {}
+                };
+            }
+        };
     }
 }

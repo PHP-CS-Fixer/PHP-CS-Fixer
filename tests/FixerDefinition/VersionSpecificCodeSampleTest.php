@@ -17,7 +17,6 @@ namespace PhpCsFixer\Tests\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecificationInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tests\TestCase;
-use Prophecy\Prophecy;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -37,7 +36,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
 
         $codeSample = new VersionSpecificCodeSample(
             $code,
-            $this->createVersionSpecificationMock()->reveal(),
+            $this->createVersionSpecificationDouble(),
             $configuration
         );
 
@@ -49,7 +48,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
     {
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
-            $this->createVersionSpecificationMock()->reveal()
+            $this->createVersionSpecificationDouble()
         );
 
         self::assertNull($codeSample->getConfiguration());
@@ -60,16 +59,9 @@ final class VersionSpecificCodeSampleTest extends TestCase
      */
     public function testIsSuitableForUsesVersionSpecification(int $version, bool $isSatisfied): void
     {
-        $versionSpecification = $this->createVersionSpecificationMock();
-
-        $versionSpecification
-            ->isSatisfiedBy($version)
-            ->willReturn($isSatisfied)
-        ;
-
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
-            $versionSpecification->reveal()
+            $this->createVersionSpecificationDouble($isSatisfied)
         );
 
         self::assertSame($isSatisfied, $codeSample->isSuitableFor($version));
@@ -82,11 +74,20 @@ final class VersionSpecificCodeSampleTest extends TestCase
         yield 'is-not-satisfied' => [\PHP_VERSION_ID, false];
     }
 
-    /**
-     * @return Prophecy\ObjectProphecy|VersionSpecificationInterface
-     */
-    private function createVersionSpecificationMock()
+    private function createVersionSpecificationDouble(bool $isSatisfied = true): VersionSpecificationInterface
     {
-        return $this->prophesize(\PhpCsFixer\FixerDefinition\VersionSpecificationInterface::class);
+        return new class($isSatisfied) implements VersionSpecificationInterface {
+            private bool $isSatisfied;
+
+            public function __construct(bool $isSatisfied)
+            {
+                $this->isSatisfied = $isSatisfied;
+            }
+
+            public function isSatisfiedBy(int $version): bool
+            {
+                return $this->isSatisfied;
+            }
+        };
     }
 }

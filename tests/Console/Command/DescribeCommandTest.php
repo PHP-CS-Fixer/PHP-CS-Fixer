@@ -36,7 +36,6 @@ use PhpCsFixer\Tests\Fixtures\DescribeCommand\DescribeFixtureFixer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use Prophecy\Argument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -339,17 +338,45 @@ $/s',
 
     public function testFixerClassNameIsExposedWhenVerbose(): void
     {
-        $fixerName = uniqid('Foo/bar_');
+        $fixer = new class() implements FixerInterface {
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
 
-        $fixer = $this->prophesize(FixerInterface::class);
-        $fixer->getName()->willReturn($fixerName);
-        $fixer->getPriority()->willReturn(0);
-        $fixer->isRisky()->willReturn(true);
-        $fixer->getDefinition()->willReturn(new FixerDefinition('Fixes stuff.', []));
-        $mock = $fixer->reveal();
+            public function isRisky(): bool
+            {
+                return true;
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDefinition(): FixerDefinition
+            {
+                return new FixerDefinition('Fixes stuff.', []);
+            }
+
+            public function getName(): string
+            {
+                return 'Foo/bar_baz';
+            }
+
+            public function getPriority(): int
+            {
+                return 0;
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
 
         $fixerFactory = new FixerFactory();
-        $fixerFactory->registerFixer($mock, true);
+        $fixerFactory->registerFixer($fixer, true);
 
         $application = new Application();
         $application->add(new DescribeCommand($fixerFactory));
@@ -360,14 +387,14 @@ $/s',
         $commandTester->execute(
             [
                 'command' => $command->getName(),
-                'name' => $fixerName,
+                'name' => 'Foo/bar_baz',
             ],
             [
                 'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
             ]
         );
 
-        self::assertStringContainsString(\get_class($mock), $commandTester->getDisplay(true));
+        self::assertStringContainsString(str_replace("\0", '\\', \get_class($fixer)), $commandTester->getDisplay(true));
     }
 
     public function testCommandDescribesCustomFixer(): void
@@ -457,71 +484,96 @@ Fixing examples:
         };
     }
 
-    private function getDefaultMockedFixer(): FixerInterface
+    private function createFixerDouble(): FixerInterface
     {
-        $fixer = $this->prophesize();
-        $fixer->willImplement(ConfigurableFixerInterface::class);
-        $fixer->willImplement(DeprecatedFixerInterface::class);
+        return new class() implements ConfigurableFixerInterface, DeprecatedFixerInterface {
+            /** @var array<mixed> */
+            private array $configuration;
 
-        $fixer->getName()->willReturn('Foo/bar');
-        $fixer->getPriority()->willReturn(0);
-        $fixer->isRisky()->willReturn(true);
-        $fixer->getSuccessorsNames()->willReturn(['Foo/baz']);
+            public function configure(array $configuration): void
+            {
+                $this->configuration = $configuration;
+            }
 
-        $functionNames = ['foo', 'test'];
+            public function getConfigurationDefinition(): FixerConfigurationResolver
+            {
+                $functionNames = ['foo', 'test'];
 
-        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([
-            (new AliasedFixerOptionBuilder(new FixerOptionBuilder('functions', 'List of `function` names to fix.'), 'funcs'))
-                ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset($functionNames)])
-                ->setDefault($functionNames)
-                ->getOption(),
-            (new FixerOptionBuilder('deprecated_option', 'A deprecated option.'))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(false)
-                ->setDeprecationMessage('Use option `functions` instead.')
-                ->getOption(),
-        ]));
+                return new FixerConfigurationResolver([
+                    (new AliasedFixerOptionBuilder(new FixerOptionBuilder('functions', 'List of `function` names to fix.'), 'funcs'))
+                        ->setAllowedTypes(['array'])
+                        ->setAllowedValues([new AllowedValueSubset($functionNames)])
+                        ->setDefault($functionNames)
+                        ->getOption(),
+                    (new FixerOptionBuilder('deprecated_option', 'A deprecated option.'))
+                        ->setAllowedTypes(['bool'])
+                        ->setDefault(false)
+                        ->setDeprecationMessage('Use option `functions` instead.')
+                        ->getOption(),
+                ]);
+            }
 
-        $fixer->getDefinition()->willReturn(new FixerDefinition(
-            'Fixes stuff.',
-            [
-                new CodeSample(
-                    "<?php echo 'bad stuff and bad thing';\n"
-                ),
-                new CodeSample(
-                    "<?php echo 'bad stuff and bad thing';\n",
-                    ['functions' => ['foo', 'bar']]
-                ),
-            ],
-            'Replaces bad stuff with good stuff.',
-            'Can break stuff.'
-        ));
+            public function getSuccessorsNames(): array
+            {
+                return ['Foo/baz'];
+            }
 
-        $things = false;
-        $fixer->configure([])->will(static function () use (&$things): void {
-            $things = false;
-        });
-        $fixer->configure(['functions' => ['foo', 'bar']])->will(static function () use (&$things): void {
-            $things = true;
-        });
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
 
-        $fixer->fix(
-            Argument::type(\SplFileInfo::class),
-            Argument::type(Tokens::class)
-        )->will(static function (array $arguments) use (&$things): void {
-            $arguments[1][3] = new Token([
-                $arguments[1][3]->getId(),
-                $things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'',
-            ]);
-        });
+            public function isRisky(): bool
+            {
+                return true;
+            }
 
-        return $fixer->reveal();
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                $tokens[3] = new Token([
+                    $tokens[3]->getId(),
+                    [] !== $this->configuration ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'',
+                ]);
+            }
+
+            public function getDefinition(): FixerDefinition
+            {
+                return new FixerDefinition(
+                    'Fixes stuff.',
+                    [
+                        new CodeSample(
+                            "<?php echo 'bad stuff and bad thing';\n"
+                        ),
+                        new CodeSample(
+                            "<?php echo 'bad stuff and bad thing';\n",
+                            ['functions' => ['foo', 'bar']]
+                        ),
+                    ],
+                    'Replaces bad stuff with good stuff.',
+                    'Can break stuff.'
+                );
+            }
+
+            public function getName(): string
+            {
+                return 'Foo/bar';
+            }
+
+            public function getPriority(): int
+            {
+                return 0;
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
     }
 
     private function execute(string $name, bool $decorated, ?FixerInterface $fixer = null): CommandTester
     {
-        $fixer ??= $this->getDefaultMockedFixer();
+        $fixer ??= $this->createFixerDouble();
 
         $fixerClassName = \get_class($fixer);
         $isBuiltIn = str_starts_with($fixerClassName, 'PhpCsFixer') && !str_contains($fixerClassName, '@anon');
