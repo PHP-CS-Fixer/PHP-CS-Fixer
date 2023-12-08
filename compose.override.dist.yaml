@@ -3,6 +3,7 @@ version: '3.8'
 services:
   php-7.4: &php
     build:
+      target: php
       args: &base_build_args
         DOCKER_USER_ID: ${DOCKER_USER_ID:-1000}
         DOCKER_GROUP_ID: ${DOCKER_GROUP_ID:-1000}

@@ -1,7 +1,16 @@
-ARG PHP_VERSION
+ARG PHP_VERSION=8.3
 ARG ALPINE_VERSION=3.18
 
-FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION}
+FROM alpine:3.18.4 as sphinx-lint
+
+RUN apk add python3 py3-pip git \
+    && pip install sphinx-lint
+
+# This must be the same as in CI's job, but `--null` must be changed to `-0` (Alpine)
+CMD git ls-files --cached -z -- '*.rst' \
+    | xargs -0 -- python3 -m sphinxlint --enable all --disable trailing-whitespace --max-line-length 2000
+
+FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION} as php
 
 ARG DOCKER_USER_ID
 ARG DOCKER_GROUP_ID

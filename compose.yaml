@@ -3,6 +3,7 @@ version: '3.8'
 services:
   php-7.4: &php
     build:
+      target: php
       args:
         ALPINE_VERSION: "3.16"
         PHP_VERSION: "7.4"
@@ -42,3 +43,10 @@ services:
       args:
         PHP_VERSION: "8.3"
         PHP_XDEBUG_VERSION: "3.3.0"
+
+  sphinx-lint:
+    build:
+      target: sphinx-lint
+    working_dir: /app
+    volumes:
+      - .:/app
