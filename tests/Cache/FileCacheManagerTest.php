@@ -48,8 +48,8 @@ final class FileCacheManagerTest extends TestCase
 
     public function testCreatesCacheIfHandlerReturnedNoCache(): void
     {
-        $signature = $this->getSignatureDouble(false);
-        $handler = $this->getFileHandlerDouble(null);
+        $signature = $this->createSignatureDouble(false);
+        $handler = $this->createFileHandlerDouble(null);
 
         $manager = new FileCacheManager($handler, $signature);
         unset($manager);
@@ -59,10 +59,10 @@ final class FileCacheManagerTest extends TestCase
 
     public function testCreatesCacheIfCachedSignatureIsDifferent(): void
     {
-        $cachedSignature = $this->getSignatureDouble(false);
-        $signature = $this->getSignatureDouble(false);
-        $cache = $this->getCacheDouble($cachedSignature);
-        $handler = $this->getFileHandlerDouble($cache);
+        $cachedSignature = $this->createSignatureDouble(false);
+        $signature = $this->createSignatureDouble(false);
+        $cache = $this->createCacheDouble($cachedSignature);
+        $handler = $this->createFileHandlerDouble($cache);
 
         $manager = new FileCacheManager($handler, $signature);
         unset($manager);
@@ -72,10 +72,10 @@ final class FileCacheManagerTest extends TestCase
 
     public function testUsesCacheIfCachedSignatureIsEqualAndNoFileWasUpdated(): void
     {
-        $cachedSignature = $this->getSignatureDouble(true);
-        $signature = $this->getSignatureDouble(true);
-        $cache = $this->getCacheDouble($cachedSignature);
-        $handler = $this->getFileHandlerDouble($cache);
+        $cachedSignature = $this->createSignatureDouble(true);
+        $signature = $this->createSignatureDouble(true);
+        $cache = $this->createCacheDouble($cachedSignature);
+        $handler = $this->createFileHandlerDouble($cache);
 
         $manager = new FileCacheManager($handler, $signature);
         unset($manager);
@@ -85,10 +85,10 @@ final class FileCacheManagerTest extends TestCase
 
     public function testNeedFixingReturnsTrueIfCacheHasNoHash(): void
     {
-        $cachedSignature = $this->getSignatureDouble(true);
-        $signature = $this->getSignatureDouble(true);
-        $cache = $this->getCacheDouble($cachedSignature);
-        $handler = $this->getFileHandlerDouble($cache, $this->getFile());
+        $cachedSignature = $this->createSignatureDouble(true);
+        $signature = $this->createSignatureDouble(true);
+        $cache = $this->createCacheDouble($cachedSignature);
+        $handler = $this->createFileHandlerDouble($cache, $this->getFile());
 
         $manager = new FileCacheManager($handler, $signature);
 
@@ -99,10 +99,10 @@ final class FileCacheManagerTest extends TestCase
     {
         $file = 'hello.php';
 
-        $cachedSignature = $this->getSignatureDouble(true);
-        $signature = $this->getSignatureDouble(true);
-        $cache = $this->getCacheDouble($cachedSignature, [$file => md5('<?php echo "Hello, old world!";')]);
-        $handler = $this->getFileHandlerDouble($cache, $this->getFile());
+        $cachedSignature = $this->createSignatureDouble(true);
+        $signature = $this->createSignatureDouble(true);
+        $cache = $this->createCacheDouble($cachedSignature, [$file => md5('<?php echo "Hello, old world!";')]);
+        $handler = $this->createFileHandlerDouble($cache, $this->getFile());
 
         $manager = new FileCacheManager($handler, $signature);
 
@@ -114,10 +114,10 @@ final class FileCacheManagerTest extends TestCase
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->getSignatureDouble(true);
-        $signature = $this->getSignatureDouble(true);
-        $cache = $this->getCacheDouble($cachedSignature, [$file => md5($fileContent)]);
-        $handler = $this->getFileHandlerDouble($cache, $this->getFile());
+        $cachedSignature = $this->createSignatureDouble(true);
+        $signature = $this->createSignatureDouble(true);
+        $cache = $this->createCacheDouble($cachedSignature, [$file => md5($fileContent)]);
+        $handler = $this->createFileHandlerDouble($cache, $this->getFile());
 
         $manager = new FileCacheManager($handler, $signature);
 
@@ -130,12 +130,12 @@ final class FileCacheManagerTest extends TestCase
         $file = '/foo/bar/baz/src/hello.php';
         $relativePathToFile = 'src/hello.php';
 
-        $directory = $this->getDirectoryDouble($relativePathToFile);
-        $cachedSignature = $this->getSignatureDouble(true);
-        $signature = $this->getSignatureDouble(true);
+        $directory = $this->createDirectoryDouble($relativePathToFile);
+        $cachedSignature = $this->createSignatureDouble(true);
+        $signature = $this->createSignatureDouble(true);
 
-        $cache = $this->getCacheDouble($cachedSignature, [$relativePathToFile => md5('<?php echo "Old!"')]);
-        $handler = $this->getFileHandlerDouble($cache, $this->getFile());
+        $cache = $this->createCacheDouble($cachedSignature, [$relativePathToFile => md5('<?php echo "Old!"')]);
+        $handler = $this->createFileHandlerDouble($cache, $this->getFile());
 
         $manager = new FileCacheManager($handler, $signature, false, $directory);
 
@@ -148,10 +148,10 @@ final class FileCacheManagerTest extends TestCase
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->getSignatureDouble(true);
-        $signature = $this->getSignatureDouble(true);
-        $cache = $this->getCacheDouble($cachedSignature);
-        $handler = $this->getFileHandlerDouble($cache, $cacheFile);
+        $cachedSignature = $this->createSignatureDouble(true);
+        $signature = $this->createSignatureDouble(true);
+        $cache = $this->createCacheDouble($cachedSignature);
+        $handler = $this->createFileHandlerDouble($cache, $cacheFile);
 
         $manager = new FileCacheManager($handler, $signature);
 
@@ -173,11 +173,11 @@ final class FileCacheManagerTest extends TestCase
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $cachedSignature = $this->getSignatureDouble(true);
-        $signature = $this->getSignatureDouble(true);
+        $cachedSignature = $this->createSignatureDouble(true);
+        $signature = $this->createSignatureDouble(true);
 
-        $cache = $this->getCacheDouble($cachedSignature);
-        $handler = $this->getFileHandlerDouble($cache, $cacheFile);
+        $cache = $this->createCacheDouble($cachedSignature);
+        $handler = $this->createFileHandlerDouble($cache, $cacheFile);
 
         self::assertFalse($cache->has($file));
 
@@ -197,11 +197,11 @@ final class FileCacheManagerTest extends TestCase
         $fileContent = '<?php echo "Hello!"';
         $previousFileContent = '<?php echo "Hello, world!"';
 
-        $cachedSignature = $this->getSignatureDouble(true);
-        $signature = $this->getSignatureDouble(true);
+        $cachedSignature = $this->createSignatureDouble(true);
+        $signature = $this->createSignatureDouble(true);
 
-        $cache = $this->getCacheDouble($cachedSignature, [$file => md5($previousFileContent)]);
-        $handler = $this->getFileHandlerDouble($cache, $cacheFile);
+        $cache = $this->createCacheDouble($cachedSignature, [$file => md5($previousFileContent)]);
+        $handler = $this->createFileHandlerDouble($cache, $cacheFile);
 
         $manager = new FileCacheManager($handler, $signature, $isDryRun);
 
@@ -217,12 +217,12 @@ final class FileCacheManagerTest extends TestCase
         $relativePathToFile = 'src/hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $directory = $this->getDirectoryDouble($relativePathToFile);
-        $cachedSignature = $this->getSignatureDouble(true);
-        $signature = $this->getSignatureDouble(true);
+        $directory = $this->createDirectoryDouble($relativePathToFile);
+        $cachedSignature = $this->createSignatureDouble(true);
+        $signature = $this->createSignatureDouble(true);
 
-        $cache = $this->getCacheDouble($cachedSignature);
-        $handler = $this->getFileHandlerDouble($cache, $cacheFile);
+        $cache = $this->createCacheDouble($cachedSignature);
+        $handler = $this->createFileHandlerDouble($cache, $cacheFile);
 
         $manager = new FileCacheManager($handler, $signature, false, $directory);
 
@@ -237,7 +237,7 @@ final class FileCacheManagerTest extends TestCase
         return __DIR__.'/../Fixtures/.php_cs.empty-cache';
     }
 
-    private function getDirectoryDouble(string $relativePathToFile): DirectoryInterface
+    private function createDirectoryDouble(string $relativePathToFile): DirectoryInterface
     {
         return new class($relativePathToFile) implements DirectoryInterface {
             private string $relativePathToFile;
@@ -254,7 +254,7 @@ final class FileCacheManagerTest extends TestCase
         };
     }
 
-    private function getSignatureDouble(bool $isEqual): SignatureInterface
+    private function createSignatureDouble(bool $isEqual): SignatureInterface
     {
         return new class($isEqual) implements SignatureInterface {
             private bool $isEqual;
@@ -299,7 +299,7 @@ final class FileCacheManagerTest extends TestCase
     /**
      * @param array<string, string> $fileMap
      */
-    private function getCacheDouble(SignatureInterface $signature, array $fileMap = []): CacheInterface
+    private function createCacheDouble(SignatureInterface $signature, array $fileMap = []): CacheInterface
     {
         return new class($signature, $fileMap) implements CacheInterface {
             private SignatureInterface $signature;
@@ -348,7 +348,7 @@ final class FileCacheManagerTest extends TestCase
         };
     }
 
-    private function getFileHandlerDouble(?CacheInterface $cache, ?string $file = null, ?string $signature = null): FileHandlerInterface
+    private function createFileHandlerDouble(?CacheInterface $cache, ?string $file = null, ?string $signature = null): FileHandlerInterface
     {
         return new class($cache, $file, $signature) implements FileHandlerInterface {
             private ?CacheInterface $cache;
