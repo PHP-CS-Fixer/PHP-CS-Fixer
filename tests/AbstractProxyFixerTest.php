@@ -32,13 +32,13 @@ final class AbstractProxyFixerTest extends TestCase
 {
     public function testCandidate(): void
     {
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true)]);
+        $proxyFixer = $this->createProxyFixer([new SimpleFixer(true)]);
         self::assertTrue($proxyFixer->isCandidate(new Tokens()));
 
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(false)]);
+        $proxyFixer = $this->createProxyFixer([new SimpleFixer(false)]);
         self::assertFalse($proxyFixer->isCandidate(new Tokens()));
 
-        $proxyFixer = $this->buildProxyFixer([
+        $proxyFixer = $this->createProxyFixer([
             new SimpleFixer(false),
             new SimpleFixer(true),
         ]);
@@ -48,13 +48,13 @@ final class AbstractProxyFixerTest extends TestCase
 
     public function testRisky(): void
     {
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, false)]);
+        $proxyFixer = $this->createProxyFixer([new SimpleFixer(true, false)]);
         self::assertFalse($proxyFixer->isRisky());
 
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, true)]);
+        $proxyFixer = $this->createProxyFixer([new SimpleFixer(true, true)]);
         self::assertTrue($proxyFixer->isRisky());
 
-        $proxyFixer = $this->buildProxyFixer([
+        $proxyFixer = $this->createProxyFixer([
             new SimpleFixer(true, false),
             new SimpleFixer(true, true),
             new SimpleFixer(true, false),
@@ -67,13 +67,13 @@ final class AbstractProxyFixerTest extends TestCase
     {
         $file = new \SplFileInfo(__FILE__);
 
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, false, false)]);
+        $proxyFixer = $this->createProxyFixer([new SimpleFixer(true, false, false)]);
         self::assertFalse($proxyFixer->supports($file));
 
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, true, true)]);
+        $proxyFixer = $this->createProxyFixer([new SimpleFixer(true, true, true)]);
         self::assertTrue($proxyFixer->supports($file));
 
-        $proxyFixer = $this->buildProxyFixer([
+        $proxyFixer = $this->createProxyFixer([
             new SimpleFixer(true, false, false),
             new SimpleFixer(true, true, false),
             new SimpleFixer(true, false, true),
@@ -84,13 +84,13 @@ final class AbstractProxyFixerTest extends TestCase
 
     public function testPrioritySingleFixer(): void
     {
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, false, false, 123)]);
+        $proxyFixer = $this->createProxyFixer([new SimpleFixer(true, false, false, 123)]);
         self::assertSame(123, $proxyFixer->getPriority());
     }
 
     public function testPriorityMultipleFixersNotSet(): void
     {
-        $proxyFixer = $this->buildProxyFixer([
+        $proxyFixer = $this->createProxyFixer([
             new SimpleFixer(true),
             new SimpleFixer(true, true),
             new SimpleFixer(true, false, true),
@@ -107,7 +107,7 @@ final class AbstractProxyFixerTest extends TestCase
         $config = new WhitespacesFixerConfig();
         $whitespacesAwareFixer = new SimpleWhitespacesAwareFixer();
 
-        $proxyFixer = $this->buildProxyFixer([
+        $proxyFixer = $this->createProxyFixer([
             new SimpleFixer(true, true),
             $whitespacesAwareFixer,
             new SimpleFixer(true, false, true),
@@ -123,7 +123,7 @@ final class AbstractProxyFixerTest extends TestCase
         $fixer1 = new SimpleFixer(true, false, true, 1);
         $fixer2 = new SimpleFixer(true, false, true, 10);
 
-        $proxyFixer = $this->buildProxyFixer([$fixer1, $fixer2]);
+        $proxyFixer = $this->createProxyFixer([$fixer1, $fixer2]);
         $proxyFixer->fix(new \SplFileInfo(__FILE__), Tokens::fromCode('<?php echo 1;'));
 
         self::assertSame(2, $fixer1->isFixCalled());
@@ -133,7 +133,7 @@ final class AbstractProxyFixerTest extends TestCase
     /**
      * @param FixerInterface[] $fixers
      */
-    private function buildProxyFixer(array $fixers): AbstractProxyFixer
+    private function createProxyFixer(array $fixers): AbstractProxyFixer
     {
         return new class($fixers) extends AbstractProxyFixer implements WhitespacesAwareFixerInterface {
             /**

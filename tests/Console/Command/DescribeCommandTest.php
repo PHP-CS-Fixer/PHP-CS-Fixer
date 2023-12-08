@@ -155,8 +155,7 @@ Fixing examples are not available for this rule.
 ',
             false,
             false,
-            self::getMockedFixerWithSamples([
-            ]),
+            self::createFixerWithSamplesDouble([]),
         ];
 
         yield 'rule with code samples' => [
@@ -189,7 +188,7 @@ Fixing examples:
 ',
             false,
             false,
-            self::getMockedFixerWithSamples([
+            self::createFixerWithSamplesDouble([
                 new CodeSample(
                     "<?php echo 'BEFORE';".PHP_EOL,
                 ),
@@ -219,7 +218,7 @@ Fixing examples:
 ',
             false,
             false,
-            self::getMockedFixerWithSamples([
+            self::createFixerWithSamplesDouble([
                 new CodeSample(
                     "<?php echo 'BEFORE';".PHP_EOL,
                 ),
@@ -241,7 +240,7 @@ Fixing examples cannot be demonstrated on the current PHP version.
 ',
             false,
             false,
-            self::getMockedFixerWithSamples([
+            self::createFixerWithSamplesDouble([
                 new VersionSpecificCodeSample(
                     "<?php echo 'BEFORE';".PHP_EOL,
                     new VersionSpecification(20_00_00)
@@ -436,7 +435,7 @@ Fixing examples:
     /**
      * @param CodeSampleInterface[] $samples
      */
-    private static function getMockedFixerWithSamples(array $samples): FixerInterface
+    private static function createFixerWithSamplesDouble(array $samples): FixerInterface
     {
         return new class($samples) extends AbstractFixer {
             /**
@@ -484,7 +483,7 @@ Fixing examples:
         };
     }
 
-    private function createFixerDouble(): FixerInterface
+    private function createConfigurableDeprecatedFixerDouble(): FixerInterface
     {
         return new class() implements ConfigurableFixerInterface, DeprecatedFixerInterface {
             /** @var array<mixed> */
@@ -573,7 +572,7 @@ Fixing examples:
 
     private function execute(string $name, bool $decorated, ?FixerInterface $fixer = null): CommandTester
     {
-        $fixer ??= $this->createFixerDouble();
+        $fixer ??= $this->createConfigurableDeprecatedFixerDouble();
 
         $fixerClassName = \get_class($fixer);
         $isBuiltIn = str_starts_with($fixerClassName, 'PhpCsFixer') && !str_contains($fixerClassName, '@anon');

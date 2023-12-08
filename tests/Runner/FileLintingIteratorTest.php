@@ -45,7 +45,7 @@ final class FileLintingIteratorTest extends TestCase
     {
         $file = new \SplFileInfo(__FILE__);
 
-        $lintingResultInterfaceProphecy = new class() implements LintingResultInterface {
+        $lintingResult = new class() implements LintingResultInterface {
             public function check(): void
             {
                 throw new \LogicException('Not implemented.');
@@ -56,7 +56,7 @@ final class FileLintingIteratorTest extends TestCase
 
         $fileLintingIterator = new FileLintingIterator(
             $iterator,
-            $this->createLinterDouble($lintingResultInterfaceProphecy)
+            $this->createLinterDouble($lintingResult)
         );
 
         // test when not touched current is null
@@ -65,13 +65,13 @@ final class FileLintingIteratorTest extends TestCase
 
         // test iterating
 
-        $this->fileLintingIteratorIterationTest($fileLintingIterator, $file, $lintingResultInterfaceProphecy);
+        $this->fileLintingIteratorIterationTest($fileLintingIterator, $file, $lintingResult);
 
         // rewind and test again
 
         $fileLintingIterator->rewind();
 
-        $this->fileLintingIteratorIterationTest($fileLintingIterator, $file, $lintingResultInterfaceProphecy);
+        $this->fileLintingIteratorIterationTest($fileLintingIterator, $file, $lintingResult);
     }
 
     private function fileLintingIteratorIterationTest(
