@@ -1094,6 +1094,43 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 }
                 INPUT
         ];
+
+        yield 'key in PHPDoc\'s array shape matching class name' => [
+            '<?php
+                namespace Foo;
+                use Exception;
+                class Bar {
+                    /**
+                     * @return array{code: int, exception: \Exception}
+                     */
+                    public function f1(): array {}
+                    /**
+                     * @return array{exception: \Exception}
+                     */
+                    public function f2(): array {}
+                    /**
+                     * @return array{exceptions: array<\Exception>}
+                     */
+                    public function f3(): array {}
+                }',
+            '<?php
+                namespace Foo;
+                use Exception;
+                class Bar {
+                    /**
+                     * @return array{code: int, exception: Exception}
+                     */
+                    public function f1(): array {}
+                    /**
+                     * @return array{exception: Exception}
+                     */
+                    public function f2(): array {}
+                    /**
+                     * @return array{exceptions: array<Exception>}
+                     */
+                    public function f3(): array {}
+                }',
+        ];
     }
 
     /**
