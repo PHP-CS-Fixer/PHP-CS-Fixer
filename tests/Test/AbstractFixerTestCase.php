@@ -461,7 +461,7 @@ abstract class AbstractFixerTestCase extends TestCase
         return null;
     }
 
-    protected static function assertCorrectCasing(string $needle, string $haystack, string $message): void
+    protected static function assertCorrectCasing(string $haystack, string $needle, string $message): void
     {
         self::assertSame(substr_count(strtolower($haystack), strtolower($needle)), substr_count($haystack, $needle), $message);
     }
