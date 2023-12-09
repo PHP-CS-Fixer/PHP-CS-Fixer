@@ -50,3 +50,10 @@ services:
     working_dir: /app
     volumes:
       - .:/app
+
+  markdown-lint:
+    image: registry.gitlab.com/pipeline-components/markdownlint:latest
+    command: mdl --git-recurse .
+    working_dir: /fixer
+    volumes:
+      - .:/fixer
