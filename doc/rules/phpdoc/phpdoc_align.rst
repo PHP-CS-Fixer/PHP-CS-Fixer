@@ -2,7 +2,7 @@
 Rule ``phpdoc_align``
 =====================
 
-All items of the given phpdoc tags must be either left-aligned or (by default)
+All items of the given PHPDoc tags must be either left-aligned or (by default)
 aligned vertically.
 
 Configuration

@@ -38,7 +38,7 @@ final class PhpdocOrderByValueFixer extends AbstractFixer implements Configurabl
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Order phpdoc tags by value.',
+            'Order PHPDoc tags by value.',
             [
                 new CodeSample(
                     '<?php
