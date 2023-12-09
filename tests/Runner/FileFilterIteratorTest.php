@@ -28,9 +28,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 final class FileFilterIteratorTest extends TestCase
 {
     /**
-     * @testWith [1]
-     *           [2]
-     *           [3]
+     * @dataProvider provideAcceptCases
      */
     public function testAccept(int $repeat): void
     {
@@ -60,6 +58,18 @@ final class FileFilterIteratorTest extends TestCase
 
         self::assertCount(1, $files);
         self::assertSame($fileInfo, reset($files));
+    }
+
+    /**
+     * @return iterable<array<int>>
+     */
+    public static function provideAcceptCases(): iterable
+    {
+        yield [1];
+
+        yield [2];
+
+        yield [3];
     }
 
     public function testEmitSkipEventWhenCacheNeedFixingFalse(): void

@@ -27,8 +27,7 @@ use PhpCsFixer\Tests\TestCase;
 final class ProcessLinterProcessBuilderTest extends TestCase
 {
     /**
-     * @testWith ["php", "foo.php", "'php' '-l' 'foo.php'"]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"]
+     * @dataProvider providePrepareCommandOnPhpOnLinuxOrMacCases
      *
      * @requires OS Linux|Darwin
      */
@@ -43,8 +42,17 @@ final class ProcessLinterProcessBuilderTest extends TestCase
     }
 
     /**
-     * @testWith ["php", "foo.php", "php -l foo.php"]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
+     * @return iterable<array{string, string, string}>
+     */
+    public static function providePrepareCommandOnPhpOnLinuxOrMacCases(): iterable
+    {
+        yield 'Linux-like' => ['php', 'foo.php', "'php' '-l' 'foo.php'"];
+
+        yield 'Windows-like' => ['C:\\Program Files\\php\\php.exe', 'foo bar\\baz.php', "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"];
+    }
+
+    /**
+     * @dataProvider providePrepareCommandOnPhpOnWindowsCases
      *
      * @requires OS ^Win
      */
@@ -56,5 +64,15 @@ final class ProcessLinterProcessBuilderTest extends TestCase
             $expected,
             $builder->build($file)->getCommandLine()
         );
+    }
+
+    /**
+     * @return iterable<array{string, string, string}>
+     */
+    public static function providePrepareCommandOnPhpOnWindowsCases(): iterable
+    {
+        yield 'Linux-like' => ['php', 'foo.php', 'php -l foo.php'];
+
+        yield 'Windows-like' => ['C:\\Program Files\\php\\php.exe', 'foo bar\\baz.php', '"C:\\Program Files\\php\\php.exe" -l "foo bar\\baz.php"'];
     }
 }
