@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
@@ -21,9 +22,15 @@ use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Finder;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Linter\LinterInterface;
-use PhpCsFixer\Tests\Fixtures\DeprecatedFixer;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -1172,7 +1179,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     public function testDeprecatedFixerConfigured($ruleConfig): void
     {
         $this->expectDeprecation('Rule "Vendor4/foo" is deprecated. Use "testA" and "testB" instead.');
-        $fixer = new DeprecatedFixer();
+        $fixer = $this->createDeprecatedFixerDouble();
         $config = new Config();
         $config->registerCustomFixers([$fixer]);
         $config->setRules([$fixer->getName() => $ruleConfig]);
@@ -1264,5 +1271,39 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
             $cwdPath,
             new TestToolInfo()
         );
+    }
+
+    private function createDeprecatedFixerDouble(): DeprecatedFixerInterface
+    {
+        return new class() extends AbstractFixer implements DeprecatedFixerInterface, ConfigurableFixerInterface {
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getSuccessorsNames(): array
+            {
+                return ['testA', 'testB'];
+            }
+
+            public function getName(): string
+            {
+                return 'Vendor4/foo';
+            }
+
+            protected function applyFix(\SplFileInfo $file, Tokens $tokens): void {}
+
+            protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+            {
+                return new FixerConfigurationResolver([
+                    (new FixerOptionBuilder('foo', 'Foo.'))->getOption(),
+                ]);
+            }
+        };
     }
 }
