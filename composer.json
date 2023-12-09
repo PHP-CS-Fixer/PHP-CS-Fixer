@@ -139,7 +139,7 @@
             "Composer\\Config::disableProcessTimeout",
             "paraunit run --testsuite unit"
         ],
-        "unused-deps": "@php dev-tools/vendor/bin/composer-unused"
+        "unused-deps": "@php dev-tools/vendor/bin/composer-unused --excludePackage=composer/xdebug-handler"
     },
     "scripts-descriptions": {
         "auto-review": "Execute Auto-review",
