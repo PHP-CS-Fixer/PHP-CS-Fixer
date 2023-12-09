@@ -1,0 +1,3 @@
+ignore_front_matter true
+rules "~MD002","~MD013","~MD033","~MD041"
+style "dev-tools/markdown.style.rb"

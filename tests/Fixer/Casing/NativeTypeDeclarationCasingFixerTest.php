@@ -562,6 +562,12 @@ function Foo(INTEGER $a) {}
             ',
         ];
 
+        yield 'var keyword' => [
+            '<?php class Foo {
+                var $bar;
+            }',
+        ];
+
         if (\PHP_VERSION_ID >= 8_00_00) {
             yield 'union Types' => [
                 '<?php $a = new class {
