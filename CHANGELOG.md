@@ -3,6 +3,30 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.41.0
+---------------------
+
+* chore: Move `mb_str_functions` PHP 8.3 cases to separate test (#7505)
+* chore: Symfony v7 is now stable (#7469)
+* CI: drop PHP 8.3 hacks (#7519)
+* docs: Improve docs for `no_spaces_after_function_name` (#7520)
+* DX: Ability to run Sphinx linter locally (#7481)
+* DX: AbstractFixerTest - use anonymous classes (#7527)
+* DX: Add progress output for `cs:check` script (#7514)
+* DX: align doubles naming (#7525)
+* DX: remove AbstractFixerTestCase::getTestFile() (#7495)
+* DX: remove jangregor/phpstan-prophecy (#7524)
+* DX: remove Prophecy (#7509)
+* DX: replace Prophecy with anonymous classes in CacheTest (#7503)
+* DX: replace Prophecy with anonymous classes in ProcessLintingResultTest (#7501)
+* DX: Utilise auto-discovery for PHPStan formatter (#7490)
+* feat: Support `mb_str_pad` function in `mb_str_functions` rule (#7499)
+* fix: BinaryOperatorSpacesFixer - do not add whitespace inside short function (#7523)
+* fix: Downgrade PDepend to version not supporting Symfony 7 (#7513)
+* fix: GlobalNamespaceImportFixer - key in PHPDoc's array shape matching class name (#7522)
+* fix: SpacesInsideParenthesesFixer - handle class instantiation parentheses (#7531)
+* Update PHPstan to 1.10.48 (#7532)
+
 Changelog for v3.40.2
 ---------------------
 
