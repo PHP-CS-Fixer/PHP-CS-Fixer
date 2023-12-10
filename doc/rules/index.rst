@@ -718,7 +718,7 @@ PHPDoc
   PHPDoc should contain ``@param`` for all params.
 - `phpdoc_align <./phpdoc/phpdoc_align.rst>`_
 
-  All items of the given phpdoc tags must be either left-aligned or (by default) aligned vertically.
+  All items of the given PHPDoc tags must be either left-aligned or (by default) aligned vertically.
 - `phpdoc_annotation_without_dot <./phpdoc/phpdoc_annotation_without_dot.rst>`_
 
   PHPDoc annotation descriptions should not be a sentence.
@@ -748,7 +748,7 @@ PHPDoc
   Classy that does not inherit must not have ``@inheritdoc`` tags.
 - `phpdoc_order_by_value <./phpdoc/phpdoc_order_by_value.rst>`_
 
-  Order phpdoc tags by value.
+  Order PHPDoc tags by value.
 - `phpdoc_order <./phpdoc/phpdoc_order.rst>`_
 
   Annotations in PHPDoc should be ordered in defined sequence.
