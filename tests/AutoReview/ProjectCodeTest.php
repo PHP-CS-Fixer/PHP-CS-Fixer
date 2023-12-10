@@ -480,6 +480,24 @@ final class ProjectCodeTest extends TestCase
             $methodId = $method->getDeclaringClass()->getName().'::'.$method->getName();
 
             self::assertSame('iterable', $method->getReturnType()?->getName(), sprintf('DataProvider `%s` must provide `iterable` as return in method prototype.', $methodId));
+
+            $doc = new DocBlock($method->getDocComment());
+
+            $returnDocs = $doc->getAnnotationsOfType('return');
+            if (\count($returnDocs) > 1) {
+                throw new \UnexpectedValueException(sprintf('Multiple `%s@return` annotations.', $methodId));
+            }
+            if (1 !== \count($returnDocs)) {
+                $this->addToAssertionCount(1); // no @return annotation, all good!
+
+                continue;
+            }
+
+            $returnDoc = $returnDocs[0];
+            $types = $returnDoc->getTypes();
+
+            self::assertCount(1, $types, sprintf('DataProvider `%s@return` must provide single type.', $methodId));
+            self::assertMatchesRegularExpression('/^iterable/', $types[0], sprintf('DataProvider `%s@return` must return iterable.', $methodId));
         }
     }
 
