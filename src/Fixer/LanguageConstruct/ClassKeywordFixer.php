@@ -38,7 +38,7 @@ final class ClassKeywordFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Converts FQCN strings to `*::class` keywords. Requires PHP >= 5.5.',
+            'Converts FQCN strings to `*::class` keywords.',
             array(
                 new VersionSpecificCodeSample(
                     '<?php
@@ -46,8 +46,7 @@ final class ClassKeywordFixer extends AbstractFixer
 use Foo\Bar\Baz;
 
 $className = Baz::class;
-',
-                    new VersionSpecification(50500)
+'
                 ),
             )
         );
@@ -58,7 +57,7 @@ $className = Baz::class;
      */
     public function isCandidate(Tokens $tokens)
     {
-        return PHP_VERSION_ID >= 50500;
+        return true;
     }
 
     /**
