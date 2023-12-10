@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.41.1
+---------------------
+
+* DX: Change `@testWith` to `@dataProvider` (#7535)
+* DX: Introduce Markdownlint (#7534)
+* fix: NativeTypeDeclarationCasingFixer - do not crash on `var` keyword (#7538)
+
 Changelog for v3.41.0
 ---------------------
 
