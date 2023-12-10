@@ -838,7 +838,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return array<array<null|array<string, mixed>|string>>
+     * @return iterable<string, array{0: string, 1?: string, 2?: array<string, mixed>}>
      */
     public static function provideDocCodeCases(): iterable
     {

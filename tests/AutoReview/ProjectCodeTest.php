@@ -479,7 +479,7 @@ final class ProjectCodeTest extends TestCase
         foreach ($dataProviderMethods as $method) {
             $methodId = $method->getDeclaringClass()->getName().'::'.$method->getName();
 
-            self::assertSame('iterable', $method->getReturnType()?->getName(), sprintf('DataProvider `%s` must provide `iterable` as return in method prototype.', $methodId));
+            self::assertSame('iterable', $method->getReturnType()?->__toString(), sprintf('DataProvider `%s` must provide `iterable` as return in method prototype.', $methodId));
 
             $doc = new DocBlock($method->getDocComment());
 
@@ -497,7 +497,7 @@ final class ProjectCodeTest extends TestCase
             $types = $returnDoc->getTypes();
 
             self::assertCount(1, $types, sprintf('DataProvider `%s@return` must provide single type.', $methodId));
-            self::assertMatchesRegularExpression('/^iterable/', $types[0], sprintf('DataProvider `%s@return` must return iterable.', $methodId));
+            self::assertMatchesRegularExpression('/^iterable\</', $types[0], sprintf('DataProvider `%s@return` must return iterable.', $methodId));
         }
     }
 
