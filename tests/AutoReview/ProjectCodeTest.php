@@ -466,7 +466,7 @@ final class ProjectCodeTest extends TestCase
 
         $dataProviderMethods = array_filter(
             $publicMethods,
-            static fn (\ReflectionMethod $reflectionMethod): bool => str_starts_with($reflectionMethod->getName(), 'provide') && false !== $reflectionMethod->getDocComment()
+            static fn (\ReflectionMethod $reflectionMethod): bool => str_starts_with($reflectionMethod->getName(), 'provide')
         );
 
         if ([] === $dataProviderMethods) {
@@ -481,7 +481,7 @@ final class ProjectCodeTest extends TestCase
 
             self::assertSame('iterable', $method->getReturnType()?->__toString(), sprintf('DataProvider `%s` must provide `iterable` as return in method prototype.', $methodId));
 
-            $doc = new DocBlock($method->getDocComment());
+            $doc = new DocBlock($method->getDocComment() ?: '/** */');
 
             $returnDocs = $doc->getAnnotationsOfType('return');
             if (\count($returnDocs) > 1) {
@@ -498,6 +498,7 @@ final class ProjectCodeTest extends TestCase
 
             self::assertCount(1, $types, sprintf('DataProvider `%s@return` must provide single type.', $methodId));
             self::assertMatchesRegularExpression('/^iterable\</', $types[0], sprintf('DataProvider `%s@return` must return iterable.', $methodId));
+            self::assertMatchesRegularExpression('/^iterable\\<(?:(?:int\\|)?string, )?array\\{/', $types[0], sprintf('DataProvider `%s@return` must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $methodId));
         }
     }
 
