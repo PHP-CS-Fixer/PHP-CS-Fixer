@@ -393,7 +393,7 @@ class Test extends TestCase
     }
 
     /**
-     * @return iterable<string[]>
+     * @return iterable<string, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -503,6 +503,9 @@ class Test extends TestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, 1: ?string, 2?: array<string, mixed>}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'If final is not added as an option, final classes will not be marked internal' => [

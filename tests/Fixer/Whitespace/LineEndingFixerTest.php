@@ -97,7 +97,7 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    private static function provideCommonCases(): array
+    private static function provideCommonCases(): iterable
     {
         return [
             'T_OPEN_TAG' => [
