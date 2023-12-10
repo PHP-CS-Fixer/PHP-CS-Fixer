@@ -455,7 +455,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideTestClassCases
      */
-    public function testDataPorvidersDeclaredReturnType(string $testClassName): void
+    public function testDataProvidersDeclaredReturnType(string $testClassName): void
     {
         $reflectionClass = new \ReflectionClass($testClassName);
 
@@ -479,9 +479,9 @@ final class ProjectCodeTest extends TestCase
         foreach ($dataProviderMethods as $method) {
             $methodId = $method->getDeclaringClass()->getName().'::'.$method->getName();
 
-            self::assertSame('iterable', $method->getReturnType()?->__toString(), sprintf('DataProvider `%s` must provide `iterable` as return in method prototype.', $methodId));
+            self::assertSame('iterable', $method->hasReturnType() ? $method->getReturnType()->__toString() : null, sprintf('DataProvider `%s` must provide `iterable` as return in method prototype.', $methodId));
 
-            $doc = new DocBlock($method->getDocComment() ?: '/** */');
+            $doc = new DocBlock(false !== $method->getDocComment() ? $method->getDocComment() : '/** */');
 
             $returnDocs = $doc->getAnnotationsOfType('return');
             if (\count($returnDocs) > 1) {
