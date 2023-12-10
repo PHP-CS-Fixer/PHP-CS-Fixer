@@ -350,7 +350,7 @@ abstract class AbstractFixerTestCase extends TestCase
         foreach ($configurationDefinition->getOptions() as $option) {
             self::assertInstanceOf(FixerOptionInterface::class, $option);
             self::assertNotEmpty($option->getDescription());
-            self::assertValidDescription($this->fixer->getName(), 'option:'. $option->getName(), $option->getDescription());
+            self::assertValidDescription($this->fixer->getName(), 'option:'.$option->getName(), $option->getDescription());
 
             self::assertSame(
                 !isset($this->allowedRequiredOptions[$this->fixer->getName()][$option->getName()]),
