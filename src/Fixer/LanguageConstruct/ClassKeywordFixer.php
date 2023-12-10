@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,14 +15,11 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
-use PhpCsFixer\Tokenizer\CT;
-use PhpCsFixer\Tokenizer\Token;
-use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Indicator\ClassyExistanceIndicator;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -30,40 +29,30 @@ final class ClassKeywordFixer extends AbstractFixer
     /**
      * @var string[]
      */
-    private $imports = array();
+    private $imports = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Converts FQCN strings to `*::class` keywords.',
-            array(
-                new VersionSpecificCodeSample(
+            'EXPERIMENTAL: Converts FQCN strings to `*::class` keywords.',
+            [
+                new CodeSample(
                     '<?php
 
-use Foo\Bar\Baz;
-
-$className = Baz::class;
+$foo = \'PhpCsFixer\Tokenizer\Tokens\';
+$bar = "\PhpCsFixer\Tokenizer\Tokens";
 '
                 ),
-            )
+            ]
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $indicator = new ClassyExistanceIndicator();
 
@@ -77,15 +66,15 @@ $className = Baz::class;
 
                 if ($indicator->exists($name)) {
                     try {
-                        $substitution = Tokens::fromCode("<?php echo \\$name::class;");
+                        $substitution = Tokens::fromCode("<?php echo \\{$name}::class;");
                         $substitution->clearRange(0, 2);
-                        $substitution[$substitution->getSize() - 1]->clear();
+                        $substitution->clearAt($substitution->getSize() - 1);
                         $substitution->clearEmptyTokens();
 
-                        $token->clear();
+                        $tokens->clearAt($index);
                         $tokens->insertAt($index, $substitution);
                     } catch (\Error $e) {
-                        var_dump("error with parsing class", $name);
+                        var_dump('error with parsing class', $name);
                         var_dump($e->getMessage());
                     }
                 }
