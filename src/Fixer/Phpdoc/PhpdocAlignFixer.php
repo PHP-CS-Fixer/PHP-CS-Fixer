@@ -145,7 +145,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
             EOF;
 
         return new FixerDefinition(
-            'All items of the given phpdoc tags must be either left-aligned or (by default) aligned vertically.',
+            'All items of the given PHPDoc tags must be either left-aligned or (by default) aligned vertically.',
             [
                 new CodeSample($code),
                 new CodeSample($code, ['align' => self::ALIGN_VERTICAL]),

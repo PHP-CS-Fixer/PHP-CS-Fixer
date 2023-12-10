@@ -2,7 +2,7 @@
 Rule ``phpdoc_order_by_value``
 ==============================
 
-Order phpdoc tags by value.
+Order PHPDoc tags by value.
 
 Configuration
 -------------
