@@ -453,6 +453,37 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @dataProvider provideTestClassCases
+     */
+    public function testXXXDataPorvidersDeclaredReturnType(string $testClassName): void
+    {
+        $reflectionClass = new \ReflectionClass($testClassName);
+
+        $publicMethods = array_filter(
+            $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
+            static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName()
+        );
+
+        $dataProviderMethods = array_filter(
+            $publicMethods,
+            static fn (\ReflectionMethod $reflectionMethod): bool => str_starts_with($reflectionMethod->getName(), 'provide') && false !== $reflectionMethod->getDocComment()
+        );
+
+        if ([] === $dataProviderMethods) {
+            $this->expectNotToPerformAssertions(); // no methods to test, all good!
+
+            return;
+        }
+
+        /** @var \ReflectionMethod $method */
+        foreach ($dataProviderMethods as $method) {
+            $methodId = $method->getDeclaringClass()->getName().'::'.$method->getName();
+
+            self::assertSame('iterable', $method->getReturnType()?->getName(), sprintf('DataProvider `%s` must provide `iterable` as return in method prototype.', $methodId));
+        }
+    }
+
+    /**
      * @dataProvider provideSrcClassCases
      * @dataProvider provideTestClassCases
      */
