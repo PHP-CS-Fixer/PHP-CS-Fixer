@@ -1,0 +1,31 @@
+--TEST--
+Integration of fixers: indentation_type,phpdoc_indent.
+--RULESET--
+{"indentation_type": true, "phpdoc_indent": true}
+--CONFIG--
+{"indent": "\t", "lineEnding": "\n"}
+--EXPECT--
+<?php
+class Foo
+{
+   /**
+    * Guaranteed to be random
+    */
+   public function getRandomNumber()
+   {
+	   return 4;
+   }
+}
+
+--INPUT--
+<?php
+class Foo
+{
+/**
+ * Guaranteed to be random
+ */
+   public function getRandomNumber()
+   {
+       return 4;
+   }
+}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,29 +16,24 @@ namespace PhpCsFixer\Fixer\Strict;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
- * @author SpacePossum
  */
 final class DeclareStrictTypesFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Force strict types declaration in all files. Requires PHP >= 7.0.',
             [
-                new VersionSpecificCodeSample(
-                    "<?php\n",
-                    new VersionSpecification(70000)
+                new CodeSample(
+                    "<?php\n"
                 ),
             ],
             null,
@@ -46,33 +43,25 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before BlankLineAfterOpeningTagFixer, DeclareEqualNormalizeFixer, HeaderCommentFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
-        // must run before BlankLineAfterOpeningTagFixer and DeclareEqualNormalizeFixer.
         return 2;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70000 && $tokens[0]->isGivenKind(T_OPEN_TAG);
+        return isset($tokens[0]) && $tokens[0]->isGivenKind(T_OPEN_TAG);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         // check if the declaration is already done
         $searchIndex = $tokens->getNextMeaningfulToken(0);
@@ -82,47 +71,20 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
             return;
         }
 
-        $sequence = $this->getDeclareStrictTypeSequence();
-        $sequenceLocation = $tokens->findSequence($sequence, $searchIndex, null, false);
+        $sequenceLocation = $tokens->findSequence([[T_DECLARE, 'declare'], '(', [T_STRING, 'strict_types'], '=', [T_LNUMBER], ')'], $searchIndex, null, false);
         if (null === $sequenceLocation) {
             $this->insertSequence($tokens); // declaration not found, insert one
 
             return;
         }
 
-        $this->fixStrictTypesCasing($tokens, $sequenceLocation);
+        $this->fixStrictTypesCasingAndValue($tokens, $sequenceLocation);
     }
 
     /**
-     * @return Token[]
-     */
-    private function getDeclareStrictTypeSequence()
-    {
-        static $sequence = null;
-
-        // do not look for open tag, closing semicolon or empty lines;
-        // - open tag is tested by isCandidate
-        // - semicolon or end tag must be there to be valid PHP
-        // - empty tokens and comments are dealt with later
-        if (null === $sequence) {
-            $sequence = [
-                new Token([T_DECLARE, 'declare']),
-                new Token('('),
-                new Token([T_STRING, 'strict_types']),
-                new Token('='),
-                new Token([T_LNUMBER, '1']),
-                new Token(')'),
-            ];
-        }
-
-        return $sequence;
-    }
-
-    /**
-     * @param Tokens            $tokens
      * @param array<int, Token> $sequence
      */
-    private function fixStrictTypesCasing(Tokens $tokens, array $sequence)
+    private function fixStrictTypesCasingAndValue(Tokens $tokens, array $sequence): void
     {
         /** @var int $index */
         /** @var Token $token */
@@ -130,27 +92,39 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
             if ($token->isGivenKind(T_STRING)) {
                 $tokens[$index] = new Token([T_STRING, strtolower($token->getContent())]);
 
+                continue;
+            }
+            if ($token->isGivenKind(T_LNUMBER)) {
+                $tokens[$index] = new Token([T_LNUMBER, '1']);
+
                 break;
             }
         }
     }
 
-    private function insertSequence(Tokens $tokens)
+    private function insertSequence(Tokens $tokens): void
     {
-        $sequence = $this->getDeclareStrictTypeSequence();
-        $sequence[] = new Token(';');
+        $sequence = [
+            new Token([T_DECLARE, 'declare']),
+            new Token('('),
+            new Token([T_STRING, 'strict_types']),
+            new Token('='),
+            new Token([T_LNUMBER, '1']),
+            new Token(')'),
+            new Token(';'),
+        ];
         $endIndex = \count($sequence);
 
         $tokens->insertAt(1, $sequence);
 
         // start index of the sequence is always 1 here, 0 is always open tag
         // transform "<?php\n" to "<?php " if needed
-        if (false !== strpos($tokens[0]->getContent(), "\n")) {
+        if (str_contains($tokens[0]->getContent(), "\n")) {
             $tokens[0] = new Token([$tokens[0]->getId(), trim($tokens[0]->getContent()).' ']);
         }
 
         if ($endIndex === \count($tokens) - 1) {
-            return; // no more tokens afters sequence, single_blank_line_at_eof might add a line
+            return; // no more tokens after sequence, single_blank_line_at_eof might add a line
         }
 
         $lineEnding = $this->whitespacesConfig->getLineEnding();

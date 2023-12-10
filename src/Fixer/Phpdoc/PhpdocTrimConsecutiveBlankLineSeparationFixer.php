@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,6 +20,7 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\DocBlock\ShortDescription;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -27,10 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocTrimConsecutiveBlankLineSeparationFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Removes extra blank lines after summary and after description in PHPDoc.',
@@ -61,16 +61,21 @@ function fnc($foo) {}
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before PhpdocAlignFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
-    public function isCandidate(Tokens $tokens)
+    public function getPriority(): int
+    {
+        return -41;
+    }
+
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -91,22 +96,14 @@ function fnc($foo) {}
         }
     }
 
-    /**
-     * @param DocBlock $doc
-     * @param int      $summaryEnd
-     */
-    private function fixSummary(DocBlock $doc, $summaryEnd)
+    private function fixSummary(DocBlock $doc, int $summaryEnd): void
     {
         $nonBlankLineAfterSummary = $this->findNonBlankLine($doc, $summaryEnd);
 
         $this->removeExtraBlankLinesBetween($doc, $summaryEnd, $nonBlankLineAfterSummary);
     }
 
-    /**
-     * @param DocBlock $doc
-     * @param int      $summaryEnd
-     */
-    private function fixDescription(DocBlock $doc, $summaryEnd)
+    private function fixDescription(DocBlock $doc, int $summaryEnd): void
     {
         $annotationStart = $this->findFirstAnnotationOrEnd($doc);
 
@@ -124,7 +121,7 @@ function fnc($foo) {}
         $this->removeExtraBlankLinesBetween($doc, $descriptionEnd, $annotationStart);
     }
 
-    private function fixAllTheRest(DocBlock $doc)
+    private function fixAllTheRest(DocBlock $doc): void
     {
         $annotationStart = $this->findFirstAnnotationOrEnd($doc);
         $lastLine = $this->reverseFindLastUsefulContent($doc, \count($doc->getLines()) - 1);
@@ -134,12 +131,7 @@ function fnc($foo) {}
         }
     }
 
-    /**
-     * @param DocBlock $doc
-     * @param int      $from
-     * @param int      $to
-     */
-    private function removeExtraBlankLinesBetween(DocBlock $doc, $from, $to)
+    private function removeExtraBlankLinesBetween(DocBlock $doc, int $from, int $to): void
     {
         for ($index = $from + 1; $index < $to; ++$index) {
             $line = $doc->getLine($index);
@@ -148,11 +140,7 @@ function fnc($foo) {}
         }
     }
 
-    /**
-     * @param Line $current
-     * @param Line $next
-     */
-    private function removeExtraBlankLine(Line $current, Line $next)
+    private function removeExtraBlankLine(Line $current, Line $next): void
     {
         if (!$current->isTheEnd() && !$current->containsUsefulContent()
             && !$next->isTheEnd() && !$next->containsUsefulContent()) {
@@ -160,13 +148,7 @@ function fnc($foo) {}
         }
     }
 
-    /**
-     * @param DocBlock $doc
-     * @param int      $after
-     *
-     * @return null|int
-     */
-    private function findNonBlankLine(DocBlock $doc, $after)
+    private function findNonBlankLine(DocBlock $doc, int $after): ?int
     {
         foreach ($doc->getLines() as $index => $line) {
             if ($index <= $after) {
@@ -177,14 +159,11 @@ function fnc($foo) {}
                 return $index;
             }
         }
+
+        return null;
     }
 
-    /**
-     * @param DocBlock $doc
-     *
-     * @return int
-     */
-    private function findFirstAnnotationOrEnd(DocBlock $doc)
+    private function findFirstAnnotationOrEnd(DocBlock $doc): int
     {
         $index = null;
         foreach ($doc->getLines() as $index => $line) {
@@ -196,13 +175,7 @@ function fnc($foo) {}
         return $index; // no Annotation, return the last line
     }
 
-    /**
-     * @param DocBlock $doc
-     * @param int      $from
-     *
-     * @return null|int
-     */
-    private function reverseFindLastUsefulContent(DocBlock $doc, $from)
+    private function reverseFindLastUsefulContent(DocBlock $doc, int $from): ?int
     {
         for ($index = $from - 1; $index >= 0; --$index) {
             if ($doc->getLine($index)->containsUsefulContent()) {

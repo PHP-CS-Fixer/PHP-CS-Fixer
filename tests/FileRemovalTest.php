@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,6 +15,7 @@
 namespace PhpCsFixer\Tests;
 
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use PhpCsFixer\FileRemoval;
 
 /**
@@ -35,7 +38,7 @@ final class FileRemovalTest extends TestCase
      */
     private static $removeFilesOnTearDown = true;
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (self::$removeFilesOnTearDown) {
             @unlink(sys_get_temp_dir().'/cs_fixer_foo.php');
@@ -43,11 +46,90 @@ final class FileRemovalTest extends TestCase
         }
     }
 
+    public function testCleanRemovesObservedFiles(): void
+    {
+        $fs = $this->getMockFileSystem();
+
+        $fileRemoval = new FileRemoval();
+
+        $fileRemoval->observe($fs->url().'/foo.php');
+        $fileRemoval->observe($fs->url().'/baz.php');
+
+        $fileRemoval->clean();
+
+        self::assertFileDoesNotExist($fs->url().'/foo.php');
+        self::assertFileDoesNotExist($fs->url().'/baz.php');
+        self::assertFileExists($fs->url().'/bar.php');
+    }
+
+    public function testDestructRemovesObservedFiles(): void
+    {
+        $fs = $this->getMockFileSystem();
+
+        $fileRemoval = new FileRemoval();
+
+        $fileRemoval->observe($fs->url().'/foo.php');
+        $fileRemoval->observe($fs->url().'/baz.php');
+
+        $fileRemoval->__destruct();
+
+        self::assertFileDoesNotExist($fs->url().'/foo.php');
+        self::assertFileDoesNotExist($fs->url().'/baz.php');
+        self::assertFileExists($fs->url().'/bar.php');
+    }
+
+    public function testDeleteObservedFile(): void
+    {
+        $fs = $this->getMockFileSystem();
+
+        $fileRemoval = new FileRemoval();
+
+        $fileRemoval->observe($fs->url().'/foo.php');
+        $fileRemoval->observe($fs->url().'/baz.php');
+
+        $fileRemoval->delete($fs->url().'/foo.php');
+
+        self::assertFileDoesNotExist($fs->url().'/foo.php');
+        self::assertFileExists($fs->url().'/baz.php');
+    }
+
+    public function testDeleteNonObservedFile(): void
+    {
+        $fs = $this->getMockFileSystem();
+
+        $fileRemoval = new FileRemoval();
+
+        $fileRemoval->delete($fs->url().'/foo.php');
+
+        self::assertFileDoesNotExist($fs->url().'/foo.php');
+    }
+
+    public function testSleep(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Cannot serialize PhpCsFixer\FileRemoval');
+
+        $fileRemoval = new FileRemoval();
+        $fileRemoval->__sleep();
+    }
+
+    public function testWakeup(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\FileRemoval');
+
+        $fileRemoval = new FileRemoval();
+        $fileRemoval->__wakeup();
+    }
+
     /**
+     * Must NOT be run as first test, see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7104.
+     *
      * @runInSeparateProcess
+     *
      * @doesNotPerformAssertions
      */
-    public function testShutdownRemovesObservedFilesSetup()
+    public function testShutdownRemovesObservedFilesSetup(): void
     {
         self::$removeFilesOnTearDown = false;
 
@@ -65,71 +147,13 @@ final class FileRemovalTest extends TestCase
     /**
      * @depends testShutdownRemovesObservedFilesSetup
      */
-    public function testShutdownRemovesObservedFiles()
+    public function testShutdownRemovesObservedFiles(): void
     {
-        static::assertFileNotExists(sys_get_temp_dir().'/cs_fixer_foo.php');
-        static::assertFileExists(sys_get_temp_dir().'/cs_fixer_bar.php');
+        self::assertFileDoesNotExist(sys_get_temp_dir().'/cs_fixer_foo.php');
+        self::assertFileExists(sys_get_temp_dir().'/cs_fixer_bar.php');
     }
 
-    public function testCleanRemovesObservedFiles()
-    {
-        $fs = $this->getMockFileSystem();
-
-        $fileRemoval = new FileRemoval();
-
-        $fileRemoval->observe($fs->url().'/foo.php');
-        $fileRemoval->observe($fs->url().'/baz.php');
-
-        $fileRemoval->clean();
-
-        static::assertFileNotExists($fs->url().'/foo.php');
-        static::assertFileNotExists($fs->url().'/baz.php');
-        static::assertFileExists($fs->url().'/bar.php');
-    }
-
-    public function testDestructRemovesObservedFiles()
-    {
-        $fs = $this->getMockFileSystem();
-
-        $fileRemoval = new FileRemoval();
-
-        $fileRemoval->observe($fs->url().'/foo.php');
-        $fileRemoval->observe($fs->url().'/baz.php');
-
-        $fileRemoval->__destruct();
-
-        static::assertFileNotExists($fs->url().'/foo.php');
-        static::assertFileNotExists($fs->url().'/baz.php');
-        static::assertFileExists($fs->url().'/bar.php');
-    }
-
-    public function testDeleteObservedFile()
-    {
-        $fs = $this->getMockFileSystem();
-
-        $fileRemoval = new FileRemoval();
-
-        $fileRemoval->observe($fs->url().'/foo.php');
-        $fileRemoval->observe($fs->url().'/baz.php');
-
-        $fileRemoval->delete($fs->url().'/foo.php');
-
-        static::assertFileNotExists($fs->url().'/foo.php');
-        static::assertFileExists($fs->url().'/baz.php');
-    }
-
-    public function testDeleteNonObservedFile()
-    {
-        $fs = $this->getMockFileSystem();
-
-        $fileRemoval = new FileRemoval();
-
-        $fileRemoval->delete($fs->url().'/foo.php');
-
-        static::assertFileNotExists($fs->url().'/foo.php');
-    }
-
-    private function getMockFileSystem()
+    private function getMockFileSystem(): vfsStreamDirectory
     {
         return vfsStream::setup('root', null, [
             'foo.php' => '',

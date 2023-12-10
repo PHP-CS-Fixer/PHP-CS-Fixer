@@ -4,8 +4,6 @@ PHP 7.1 test.
 {
     "@Symfony": true
 }
---REQUIREMENTS--
-{"php": 70100}
 --EXPECT--
 <?php
 
@@ -14,7 +12,7 @@ function iterable_foo(iterable $foo): void
     try {
         $str = 'abcdef';
         echo $str[-2];
-    } catch (ExceptionType1 | ExceptionType2 $e) {
+    } catch (ExceptionType1|ExceptionType2 $e) {
         // Code to handle the exception
     } catch (\Exception $e) {
         // ...
@@ -33,7 +31,7 @@ interface Contract
 
 class Implementation implements Contract
 {
-    public function method(?Foo $foo = null): ?bool
+    public function method(Foo $foo = null): ?bool
     {
         return is_null($foo);
     }

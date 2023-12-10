@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,58 +27,55 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class DeprecatedFixerOptionTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.'),
             'deprecated'
         );
 
-        static::assertInstanceOf(FixerOptionInterface::class, $option);
-        static::assertInstanceOf(DeprecatedFixerOptionInterface::class, $option);
+        self::assertInstanceOf(FixerOptionInterface::class, $option);
+        self::assertInstanceOf(DeprecatedFixerOptionInterface::class, $option);
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.'),
             'deprecated'
         );
 
-        static::assertSame('foo', $option->getName());
+        self::assertSame('foo', $option->getName());
     }
 
-    public function testGetDescription()
+    public function testGetDescription(): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.'),
             'deprecated'
         );
 
-        static::assertSame('Foo.', $option->getDescription());
+        self::assertSame('Foo.', $option->getDescription());
     }
 
     /**
-     * @param bool $isRequired
-     *
      * @dataProvider provideHasDefaultCases
      */
-    public function testHasDefault($isRequired)
+    public function testHasDefault(bool $isRequired): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.', $isRequired),
             'deprecated'
         );
 
-        static::assertSame(!$isRequired, $option->hasDefault());
+        self::assertSame(!$isRequired, $option->hasDefault());
     }
 
-    public function provideHasDefaultCases()
+    public static function provideHasDefaultCases(): iterable
     {
-        return [
-            [true],
-            [false],
-        ];
+        yield [true];
+
+        yield [false];
     }
 
     /**
@@ -84,25 +83,24 @@ final class DeprecatedFixerOptionTest extends TestCase
      *
      * @dataProvider provideGetDefaultCases
      */
-    public function testGetDefault($default)
+    public function testGetDefault($default): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.', false, $default),
             'deprecated'
         );
 
-        static::assertSame($default, $option->getDefault());
+        self::assertSame($default, $option->getDefault());
     }
 
-    public function provideGetDefaultCases()
+    public static function provideGetDefaultCases(): iterable
     {
-        return [
-            ['foo'],
-            [true],
-        ];
+        yield ['foo'];
+
+        yield [true];
     }
 
-    public function testGetAllowedTypes()
+    public function testGetAllowedTypes(): void
     {
         $allowedTypes = ['string', 'bool'];
 
@@ -111,10 +109,10 @@ final class DeprecatedFixerOptionTest extends TestCase
             'deprecated'
         );
 
-        static::assertSame($allowedTypes, $option->getAllowedTypes());
+        self::assertSame($allowedTypes, $option->getAllowedTypes());
     }
 
-    public function testGetAllowedValues()
+    public function testGetAllowedValues(): void
     {
         $allowedValues = ['string', 'bool'];
 
@@ -123,31 +121,75 @@ final class DeprecatedFixerOptionTest extends TestCase
             'deprecated'
         );
 
-        static::assertSame($allowedValues, $option->getAllowedValues());
+        self::assertSame($allowedValues, $option->getAllowedValues());
     }
 
-    public function testGetNormalizer()
+    public function testGetNormalizer(): void
     {
-        $normalizer = function () {};
-
-        $decoratedOption = $this->prophesize(FixerOptionInterface::class);
-        $decoratedOption->getNormalizer()->willReturn($normalizer);
+        $normalizer = static fn () => null;
 
         $option = new DeprecatedFixerOption(
-            $decoratedOption->reveal(),
+            $this->createFixerOptionDouble($normalizer),
             'deprecated'
         );
 
-        static::assertSame($normalizer, $option->getNormalizer());
+        self::assertSame($normalizer, $option->getNormalizer());
     }
 
-    public function testGetDeprecationMessage()
+    public function testGetDeprecationMessage(): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.'),
             'Use option "bar" instead.'
         );
 
-        static::assertSame('Use option "bar" instead.', $option->getDeprecationMessage());
+        self::assertSame('Use option "bar" instead.', $option->getDeprecationMessage());
+    }
+
+    private function createFixerOptionDouble(\Closure $normalizer): FixerOptionInterface
+    {
+        return new class($normalizer) implements FixerOptionInterface {
+            private \Closure $normalizer;
+
+            public function __construct(\Closure $normalizer)
+            {
+                $this->normalizer = $normalizer;
+            }
+
+            public function getName(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDescription(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function hasDefault(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDefault(): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getAllowedTypes(): ?array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getAllowedValues(): ?array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getNormalizer(): \Closure
+            {
+                return $this->normalizer;
+            }
+        };
     }
 }

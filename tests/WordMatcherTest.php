@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,54 +26,53 @@ use PhpCsFixer\WordMatcher;
 final class WordMatcherTest extends TestCase
 {
     /**
-     * @param null|string $expected
-     * @param string      $needle
-     * @param array       $candidates
+     * @param string[] $candidates
      *
      * @dataProvider provideMatchCases
      */
-    public function testMatch($expected, $needle, array $candidates)
+    public function testMatch(?string $expected, string $needle, array $candidates): void
     {
         $matcher = new WordMatcher($candidates);
-        static::assertSame($expected, $matcher->match($needle));
+        self::assertSame($expected, $matcher->match($needle));
     }
 
     /**
-     * @return array
+     * @return iterable<array{?string, string, string[]}>
      */
-    public function provideMatchCases()
+    public static function provideMatchCases(): iterable
     {
-        return [
+        yield [
+            null,
+            'foo',
             [
-                null,
-                'foo',
-                [
-                    'no_blank_lines_after_class_opening',
-                    'no_blank_lines_after_phpdoc',
-                ],
-            ],
-            [
+                'no_blank_lines_after_class_opening',
                 'no_blank_lines_after_phpdoc',
-                'no_blank_lines_after_phpdocs',
-                [
-                    'no_blank_lines_after_class_opening',
-                    'no_blank_lines_after_phpdoc',
-                ],
             ],
+        ];
+
+        yield [
+            'no_blank_lines_after_phpdoc',
+            'no_blank_lines_after_phpdocs',
+            [
+                'no_blank_lines_after_class_opening',
+                'no_blank_lines_after_phpdoc',
+            ],
+        ];
+
+        yield [
+            'no_blank_lines_after_foo',
+            'no_blank_lines_foo',
             [
                 'no_blank_lines_after_foo',
-                'no_blank_lines_foo',
-                [
-                    'no_blank_lines_after_foo',
-                    'no_blank_lines_before_foo',
-                ],
+                'no_blank_lines_before_foo',
             ],
+        ];
+
+        yield [
+            null,
+            'braces',
             [
-                null,
-                'braces',
-                [
-                    'elseif',
-                ],
+                'elseif',
             ],
         ];
     }

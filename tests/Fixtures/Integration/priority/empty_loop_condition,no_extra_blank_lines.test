@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: empty_loop_condition,no_extra_blank_lines.
+--RULESET--
+{"empty_loop_condition": true, "no_extra_blank_lines": true}
+--EXPECT--
+<?php
+
+while (true) {
+    foo1();
+}
+
+# 1
+
+--INPUT--
+<?php
+
+do {
+    foo1();
+}
+while(
+true
+)
+;
+
+# 1

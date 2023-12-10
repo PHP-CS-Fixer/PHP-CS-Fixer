@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,11 +14,10 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixer
@@ -24,104 +25,91 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected PHP code
-     * @param null|string $input    PHP code
-     *
-     * @group legacy
-     * @dataProvider provideDefaultConfigurationTestCases
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
+     * @dataProvider provideFixWithDefaultConfigurationCases
      */
-    public function testLegacyFixWithDefaultConfiguration($expected, $input = null)
-    {
-        $this->fixer->configure(null);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected PHP code
-     * @param null|string $input    PHP code
-     *
-     * @dataProvider provideDefaultConfigurationTestCases
-     */
-    public function testFixWithDefaultConfiguration($expected, $input = null)
+    public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([]);
         $this->doTest($expected, $input);
     }
 
-    public function provideDefaultConfigurationTestCases()
+    public static function provideFixWithDefaultConfigurationCases(): iterable
     {
-        return [
-            [
-                '<?php interface A{/** @return    $this */public function test();}',
-                '<?php interface A{/** @return    this */public function test();}',
-            ],
-            [
-                '<?php interface B{/** @return self|int */function test();}',
-                '<?php interface B{/** @return $SELF|int */function test();}',
-            ],
-            [
-                '<?php class D {} /** @return {@this} */ require_once($a);echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;',
-            ],
-            [
-                '<?php /** @return this */ require_once($a);echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1; class E {}',
-            ],
+        yield [
+            '<?php interface A{/** @return    $this */public function test();}',
+            '<?php interface A{/** @return    this */public function test();}',
+        ];
+
+        yield [
+            '<?php interface B{/** @return self|int */function test();}',
+            '<?php interface B{/** @return $SELF|int */function test();}',
+        ];
+
+        yield [
+            '<?php class D {} /** @return {@this} */ require_once($a);echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;',
+        ];
+
+        yield [
+            '<?php /** @return this */ require_once($a);echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1; class E {}',
+        ];
+
+        yield [
+            '<?php
+
+trait SomeTrait
+{
+    /** @return $this */
+    public function someTest(): self
+    {
+        return $this;
+    }
+}
+// class Foo { use Bla; } $a = (new Foo())->someTest();',
+            '<?php
+
+trait SomeTrait
+{
+    /** @return this */
+    public function someTest(): self
+    {
+        return $this;
+    }
+}
+// class Foo { use Bla; } $a = (new Foo())->someTest();',
         ];
     }
 
     /**
-     * @param string      $expected      PHP code
-     * @param null|string $input         PHP code
-     * @param array       $configuration
+     * @param array<string, string> $configuration
      *
-     * @group legacy
-     * @dataProvider provideTestCases
-     * @expectedDeprecation Passing "replacements" at the root of the configuration for rule "phpdoc_return_self_reference" is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
+     * @dataProvider provideFixCases
      */
-    public function testLegacyFix($expected, $input = null, array $configuration = [])
-    {
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected      PHP code
-     * @param null|string $input         PHP code
-     * @param array       $configuration
-     *
-     * @dataProvider provideTestCases
-     */
-    public function testFix($expected, $input = null, array $configuration = [])
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure(['replacements' => $configuration]);
         $this->doTest($expected, $input);
     }
 
-    public function provideTestCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php interface C{/** @return $self|int */function test();}',
-                null,
-                ['$static' => 'static'],
-            ],
+        yield [
+            '<?php interface C{/** @return $self|int */function test();}',
+            null,
+            ['$static' => 'static'],
         ];
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideGeneratedFixCases
      */
-    public function testGeneratedFix($expected, $input)
+    public function testGeneratedFix(string $expected, string $input): void
     {
         $config = ['replacements' => [$input => $expected]];
         $this->fixer->configure($config);
 
         $expected = sprintf('<?php
 /**
- * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type hint
+ * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type declaration
  */
 class F
 {
@@ -139,7 +127,7 @@ class F
 
         $input = sprintf('<?php
 /**
- * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type hint
+ * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type declaration
  */
 class F
 {
@@ -158,57 +146,50 @@ class F
         $this->doTest($expected, $input);
     }
 
-    /**
-     * Expected after fixing, return type to fix.
-     *
-     * @return array<array<string, string>
-     */
-    public function provideGeneratedFixCases()
+    public static function provideGeneratedFixCases(): iterable
     {
-        return [
-            ['$this', 'this'],
-            ['$this', '@this'],
-            ['self', '$self'],
-            ['self', '@self'],
-            ['static', '$static'],
-            ['static', '@STATIC'],
-        ];
+        yield ['$this', 'this'];
+
+        yield ['$this', '@this'];
+
+        yield ['self', '$self'];
+
+        yield ['self', '@self'];
+
+        yield ['static', '$static'];
+
+        yield ['static', '@STATIC'];
     }
 
     /**
-     * @param array  $configuration
-     * @param string $message
+     * @param array<mixed> $configuration
      *
      * @dataProvider provideInvalidConfigurationCases
      */
-    public function testInvalidConfiguration(array $configuration, $message)
+    public function testInvalidConfiguration(array $configuration, string $message): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/')));
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/')));
 
         $this->fixer->configure($configuration);
     }
 
-    public function provideInvalidConfigurationCases()
+    public static function provideInvalidConfigurationCases(): iterable
     {
-        return [
-            [
-                ['replacements' => [1 => 'a']],
-                'Invalid configuration: Unknown key "integer#1", expected any of "this", "@this", "$self", "@self", "$static", "@static".',
-            ],
-            [
-                ['replacements' => [
-                    'this' => 'foo',
-                ]],
-                'Invalid configuration: Unknown value "string#foo", expected any of "$this", "static", "self".',
-            ],
+        yield [
+            ['replacements' => [1 => 'a']],
+            'Invalid configuration: Unknown key "integer#1", expected any of "this", "@this", "$self", "@self", "$static" and "@static".',
+        ];
+
+        yield [
+            ['replacements' => [
+                'this' => 'foo',
+            ]],
+            'Invalid configuration: Unknown value "string#foo", expected any of "$this", "static" and "self".',
         ];
     }
 
-    /**
-     * @requires PHP 7.0
-     */
-    public function testAnonymousClassFixing()
+    public function testAnonymousClassFixing(): void
     {
         $this->doTest(
             '<?php
@@ -250,5 +231,45 @@ class F
                 }
             '
         );
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield [
+            '<?php
+enum Foo {
+    case CAT;
+
+    /** @return $this */
+    public function test(): self {
+        return $this;
+    }
+}
+
+var_dump(Foo::CAT->test());
+',
+            '<?php
+enum Foo {
+    case CAT;
+
+    /** @return this */
+    public function test(): self {
+        return $this;
+    }
+}
+
+var_dump(Foo::CAT->test());
+',
+        ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,23 +18,18 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
- * @covers \PhpCsFixer\AbstractLinesBeforeNamespaceFixer
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer
  */
 final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string                      $expected
-     * @param null|string                 $input
-     * @param null|WhitespacesFixerConfig $whitespaces
      */
-    public function testFix($expected, $input = null, WhitespacesFixerConfig $whitespaces = null)
+    public function testFix(string $expected, ?string $input = null, WhitespacesFixerConfig $whitespaces = null): void
     {
         if (null !== $whitespaces) {
             $this->fixer->setWhitespacesConfig($whitespaces);
@@ -40,98 +37,105 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            ["<?php\n\nnamespace X;"],
-            ["<?php\n\nnamespace X;", "<?php\n\n\n\nnamespace X;"],
-            ["<?php\r\n\r\nnamespace X;"],
-            ["<?php\n\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"],
-            ["<?php\n\nfoo();\nnamespace\\bar\\baz();"],
-            ["<?php\n\nnamespace X;", "<?php\nnamespace X;"],
-            ["<?php\n\nnamespace X;", '<?php namespace X;'],
-            ["<?php\n\nnamespace X;", "<?php\t\nnamespace X;"],
-            ["<?php \n\nnamespace X;"],
-            ["<?php\r\n\r\nnamespace X;", '<?php namespace X;', new WhitespacesFixerConfig('    ', "\r\n")],
-            ["<?php\r\n\r\nnamespace X;", "<?php\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")],
-            ["<?php\r\n\r\nnamespace X;", "<?php\n\n\n\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")],
-            ["<?php\r\n\r\nnamespace X;", "<?php\r\n\n\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")],
-        ];
+        yield ["<?php\n\nnamespace X;"];
+
+        yield ["<?php\n\nnamespace X;", "<?php\n\n\n\nnamespace X;"];
+
+        yield ["<?php\r\n\r\nnamespace X;"];
+
+        yield ["<?php\n\nnamespace X;", "<?php\r\n\r\n\r\n\r\nnamespace X;"];
+
+        yield ["<?php\n\nfoo();\nnamespace\\bar\\baz();"];
+
+        yield ["<?php\n\nnamespace X;", "<?php\nnamespace X;"];
+
+        yield ["<?php\n\nnamespace X;", '<?php namespace X;'];
+
+        yield ["<?php\n\nnamespace X;", "<?php\t\nnamespace X;"];
+
+        yield ["<?php \n\nnamespace X;"];
+
+        yield ["<?php\r\n\r\nnamespace X;", '<?php namespace X;', new WhitespacesFixerConfig('    ', "\r\n")];
+
+        yield ["<?php\r\n\r\nnamespace X;", "<?php\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")];
+
+        yield ["<?php\r\n\r\nnamespace X;", "<?php\n\n\n\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")];
+
+        yield ["<?php\r\n\r\nnamespace X;", "<?php\r\n\n\nnamespace X;", new WhitespacesFixerConfig('    ', "\r\n")];
     }
 
-    public function testFixExampleWithCommentTooMuch()
+    public function testFixExampleWithCommentTooMuch(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-/*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+            /*
+             * This file is part of the PHP CS utility.
+             *
+             * (c) Fabien Potencier <fabien@symfony.com>
+             *
+             * This source file is subject to the MIT license that is bundled
+             * with this source code in the file LICENSE.
+             */
 
-namespace PhpCsFixer\Fixer\Contrib;
+            namespace PhpCsFixer\Fixer\Contrib;
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-/*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+            /*
+             * This file is part of the PHP CS utility.
+             *
+             * (c) Fabien Potencier <fabien@symfony.com>
+             *
+             * This source file is subject to the MIT license that is bundled
+             * with this source code in the file LICENSE.
+             */
 
 
-namespace PhpCsFixer\Fixer\Contrib;
+            namespace PhpCsFixer\Fixer\Contrib;
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testFixExampleWithCommentTooLittle()
+    public function testFixExampleWithCommentTooLittle(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-/*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+            /*
+             * This file is part of the PHP CS utility.
+             *
+             * (c) Fabien Potencier <fabien@symfony.com>
+             *
+             * This source file is subject to the MIT license that is bundled
+             * with this source code in the file LICENSE.
+             */
 
-namespace PhpCsFixer\Fixer\Contrib;
+            namespace PhpCsFixer\Fixer\Contrib;
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-/*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-namespace PhpCsFixer\Fixer\Contrib;
+            /*
+             * This file is part of the PHP CS utility.
+             *
+             * (c) Fabien Potencier <fabien@symfony.com>
+             *
+             * This source file is subject to the MIT license that is bundled
+             * with this source code in the file LICENSE.
+             */
+            namespace PhpCsFixer\Fixer\Contrib;
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }

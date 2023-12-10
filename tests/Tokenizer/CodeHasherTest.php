@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,17 +18,15 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CodeHasher;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\CodeHasher
  */
 final class CodeHasherTest extends TestCase
 {
-    public function testCodeHasher()
+    public function testCodeHasher(): void
     {
-        static::assertSame('322920910', CodeHasher::calculateCodeHash('<?php echo 1;'));
-        static::assertSame('322920910', CodeHasher::calculateCodeHash('<?php echo 1;')); // calling twice, hashes should always be the same when the input doesn't change.
+        self::assertSame('d9de49676ba2316990a5acd04c8418e8', CodeHasher::calculateCodeHash('<?php echo 1;'));
+        self::assertSame('d9de49676ba2316990a5acd04c8418e8', CodeHasher::calculateCodeHash('<?php echo 1;')); // calling twice, hashes should always be the same when the input doesn't change.
     }
 }

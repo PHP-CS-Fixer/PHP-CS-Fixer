@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,22 +17,22 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\BlocksAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class IncludeFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Include/Require and file path should be divided with a single space. File path should not be placed under brackets.',
+            'Include/Require and file path should be divided with a single space. File path should not be placed within parentheses.',
             [
                 new CodeSample(
                     '<?php
@@ -44,27 +46,27 @@ include_once("sample4.php");
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->clearIncludies($tokens, $this->findIncludies($tokens));
     }
 
-    private function clearIncludies(Tokens $tokens, array $includies)
+    /**
+     * @param array<int, array{begin: int, braces: ?array{open: int, close: int}, end: int}> $includies
+     */
+    private function clearIncludies(Tokens $tokens, array $includies): void
     {
+        $blocksAnalyzer = new BlocksAnalyzer();
+
         foreach ($includies as $includy) {
-            if ($includy['end'] && !$tokens[$includy['end']]->isGivenKind(T_CLOSE_TAG)) {
+            if (!$tokens[$includy['end']]->isGivenKind(T_CLOSE_TAG)) {
                 $afterEndIndex = $tokens->getNextNonWhitespace($includy['end']);
+
                 if (null === $afterEndIndex || !$tokens[$afterEndIndex]->isComment()) {
                     $tokens->removeLeadingWhitespace($includy['end']);
                 }
@@ -72,28 +74,35 @@ include_once("sample4.php");
 
             $braces = $includy['braces'];
 
-            if ($braces) {
-                $nextToken = $tokens[$tokens->getNextMeaningfulToken($braces['close'])];
+            if (null !== $braces) {
+                $prevIndex = $tokens->getPrevMeaningfulToken($includy['begin']);
+                $nextIndex = $tokens->getNextMeaningfulToken($braces['close']);
 
-                if ($nextToken->equalsAny([';', [T_CLOSE_TAG]])) {
-                    $this->removeWhitespaceAroundIfPossible($tokens, $braces['open']);
-                    $this->removeWhitespaceAroundIfPossible($tokens, $braces['close']);
-                    $tokens->clearTokenAndMergeSurroundingWhitespace($braces['open']);
-                    $tokens->clearTokenAndMergeSurroundingWhitespace($braces['close']);
+                // Include is also legal as function parameter or condition statement but requires being wrapped then.
+                if (!$tokens[$nextIndex]->equalsAny([';', [T_CLOSE_TAG]]) && !$blocksAnalyzer->isBlock($tokens, $prevIndex, $nextIndex)) {
+                    continue;
                 }
+
+                $this->removeWhitespaceAroundIfPossible($tokens, $braces['open']);
+                $this->removeWhitespaceAroundIfPossible($tokens, $braces['close']);
+                $tokens->clearTokenAndMergeSurroundingWhitespace($braces['open']);
+                $tokens->clearTokenAndMergeSurroundingWhitespace($braces['close']);
             }
 
             $nextIndex = $tokens->getNonEmptySibling($includy['begin'], 1);
 
             if ($tokens[$nextIndex]->isWhitespace()) {
                 $tokens[$nextIndex] = new Token([T_WHITESPACE, ' ']);
-            } elseif ($braces || $tokens[$nextIndex]->isGivenKind([T_VARIABLE, T_CONSTANT_ENCAPSED_STRING, T_COMMENT])) {
+            } elseif (null !== $braces || $tokens[$nextIndex]->isGivenKind([T_VARIABLE, T_CONSTANT_ENCAPSED_STRING, T_COMMENT])) {
                 $tokens->insertAt($includy['begin'] + 1, new Token([T_WHITESPACE, ' ']));
             }
         }
     }
 
-    private function findIncludies(Tokens $tokens)
+    /**
+     * @return array<int, array{begin: int, braces: ?array{open: int, close: int}, end: int}>
+     */
+    private function findIncludies(Tokens $tokens): array
     {
         static $includyTokenKinds = [T_REQUIRE, T_REQUIRE_ONCE, T_INCLUDE, T_INCLUDE_ONCE];
 
@@ -107,20 +116,15 @@ include_once("sample4.php");
                     'end' => $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]),
                 ];
 
-                $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
-                $nextToken = $tokens[$nextTokenIndex];
+                $braceOpenIndex = $tokens->getNextMeaningfulToken($index);
 
-                if ($nextToken->equals('(')) {
-                    // Don't remove braces when the statement is wrapped.
-                    // Include is also legal as function parameter or condition statement but requires being wrapped then.
-                    $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextTokenIndex);
+                if ($tokens[$braceOpenIndex]->equals('(')) {
+                    $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $braceOpenIndex);
 
-                    if ($tokens[$tokens->getNextMeaningfulToken($braceCloseIndex)]->equalsAny([';', [T_CLOSE_TAG]])) {
-                        $includy['braces'] = [
-                            'open' => $nextTokenIndex,
-                            'close' => $braceCloseIndex,
-                        ];
-                    }
+                    $includy['braces'] = [
+                        'open' => $braceOpenIndex,
+                        'close' => $braceCloseIndex,
+                    ];
                 }
 
                 $includies[$index] = $includy;
@@ -132,18 +136,16 @@ include_once("sample4.php");
         return $includies;
     }
 
-    /**
-     * @param Tokens $tokens
-     * @param int    $index
-     */
-    private function removeWhitespaceAroundIfPossible(Tokens $tokens, $index)
+    private function removeWhitespaceAroundIfPossible(Tokens $tokens, int $index): void
     {
         $nextIndex = $tokens->getNextNonWhitespace($index);
+
         if (null === $nextIndex || !$tokens[$nextIndex]->isComment()) {
             $tokens->removeLeadingWhitespace($index);
         }
 
         $prevIndex = $tokens->getPrevNonWhitespace($index);
+
         if (null === $prevIndex || !$tokens[$prevIndex]->isComment()) {
             $tokens->removeTrailingWhitespace($index);
         }

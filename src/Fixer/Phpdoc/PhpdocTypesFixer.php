@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,25 +15,29 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractPhpdocTypesFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\DocBlock\TypeExpression;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements ConfigurationDefinitionFixerInterface
+final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements ConfigurableFixerInterface
 {
     /**
      * Available types, grouped.
      *
      * @var array<string,string[]>
      */
-    private static $possibleTypes = [
+    private const POSSIBLE_TYPES = [
         'simple' => [
             'array',
             'bool',
@@ -45,10 +51,8 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
         ],
         'alias' => [
             'boolean',
-            'callback',
             'double',
             'integer',
-            'real',
         ],
         'meta' => [
             '$this',
@@ -64,27 +68,19 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
         ],
     ];
 
-    /**
-     * @var array string[]
-     */
-    private $typesToFix = [];
+    /** @var array<string, true> */
+    private array $typesSetToFix;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
-        $this->typesToFix = array_merge(...array_map(function ($group) {
-            return self::$possibleTypes[$group];
-        }, $this->configuration['groups']));
+        $typesToFix = array_merge(...array_map(static fn (string $group): array => self::POSSIBLE_TYPES[$group], $this->configuration['groups']));
+
+        $this->typesSetToFix = array_combine($typesToFix, array_fill(0, \count($typesToFix), true));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'The correct case must be used for standard PHP types in PHPDoc.',
@@ -98,11 +94,27 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
  */
 '
                 ),
+                new CodeSample(
+                    '<?php
+/**
+ * @param BOOL $foo
+ *
+ * @return MIXED
+ */
+',
+                    ['groups' => ['simple', 'alias']]
+                ),
             ]
         );
     }
 
-    public function getPriority()
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocParamOrderFixer, PhpdocReadonlyClassCommentToKeywordFixer, PhpdocReturnSelfReferenceFixer, PhpdocScalarFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagTypeFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer.
+     * Must run after PhpdocIndentFixer.
+     */
+    public function getPriority(): int
     {
         /*
          * Should be run before all other docblock fixers apart from the
@@ -115,26 +127,39 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
         return 16;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function normalize($type)
+    protected function normalize(string $type): string
     {
-        $lower = strtolower($type);
+        $typeExpression = new TypeExpression($type, null, []);
 
-        if (\in_array($lower, $this->typesToFix, true)) {
-            return $lower;
-        }
+        $typeExpression->walkTypes(function (TypeExpression $type): void {
+            if (!$type->isUnionType()) {
+                $value = $type->toString();
+                $valueLower = strtolower($value);
+                if (isset($this->typesSetToFix[$valueLower])) {
+                    $value = $valueLower;
+                }
 
-        return $type;
+                // normalize shape/callable/generic identifiers too
+                // TODO parse them as inner types and this will be not needed then
+                $value = Preg::replaceCallback(
+                    '/^(\??\s*)([^()[\]{}<>\'"]+)(?<!\s)(\s*[\s()[\]{}<>])/',
+                    fn ($matches) => $matches[1].$this->normalize($matches[2]).$matches[3],
+                    $value
+                );
+
+                // TODO TypeExpression should be immutable and walkTypes method should be changed to mapTypes method
+                \Closure::bind(static function () use ($type, $value): void {
+                    $type->value = $value;
+                }, null, TypeExpression::class)();
+            }
+        });
+
+        return $typeExpression->toString();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $possibleGroups = array_keys(self::$possibleTypes);
+        $possibleGroups = array_keys(self::POSSIBLE_TYPES);
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('groups', 'Type groups to fix.'))

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -21,7 +23,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 abstract class AbstractDifferTestCase extends TestCase
 {
-    final public function testIsDiffer()
+    final public function testIsDiffer(): void
     {
         $className = preg_replace(
             '/Test$/',
@@ -35,40 +37,40 @@ abstract class AbstractDifferTestCase extends TestCase
 
         $differ = new $className();
 
-        static::assertInstanceOf(\PhpCsFixer\Differ\DifferInterface::class, $differ);
+        self::assertInstanceOf(\PhpCsFixer\Differ\DifferInterface::class, $differ);
     }
 
-    final protected function oldCode()
+    final protected function oldCode(): string
     {
         return <<<'PHP'
-<?php
+            <?php
 
-function baz($options)
-{
-    if (!array_key_exists("foo", $options)) {
-        throw new \InvalidArgumentException();
+            function baz($options)
+            {
+                if (!array_key_exists("foo", $options)) {
+                    throw new \InvalidArgumentException();
+                }
+
+                return json_encode($options);
+            }
+
+            PHP;
     }
 
-    return json_encode($options);
-}
-
-PHP;
-    }
-
-    final protected function newCode()
+    final protected function newCode(): string
     {
         return <<<'PHP'
-<?php
+            <?php
 
-function baz($options)
-{
-    if (!\array_key_exists("foo", $options)) {
-        throw new \InvalidArgumentException();
-    }
+            function baz($options)
+            {
+                if (!\array_key_exists("foo", $options)) {
+                    throw new \InvalidArgumentException();
+                }
 
-    return json_encode($options);
-}
+                return json_encode($options);
+            }
 
-PHP;
+            PHP;
     }
 }

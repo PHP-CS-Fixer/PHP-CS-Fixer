@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\CastNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer
@@ -24,42 +24,70 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class LowercaseCastFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    /**
+     * @dataProvider provideFix74DeprecatedCases
+     *
+     * @group legacy
+     *
+     * @requires PHP <8.0
+     */
+    public function testFix74Deprecated(string $expected, ?string $input = null): void
     {
-        $cases = [];
-        foreach (['boolean', 'bool', 'integer', 'int', 'double', 'float', 'real', 'float', 'string', 'array', 'object', 'unset', 'binary'] as $from) {
-            $cases[] =
-                [
-                    sprintf('<?php $b= (%s)$d;', $from),
-                    sprintf('<?php $b= (%s)$d;', strtoupper($from)),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b=( %s) $d;', $from),
-                    sprintf('<?php $b=( %s) $d;', ucfirst($from)),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b=(%s ) $d;', $from),
-                    sprintf('<?php $b=(%s ) $d;', strtoupper($from)),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b=(  %s  ) $d;', $from),
-                    sprintf('<?php $b=(  %s  ) $d;', ucfirst($from)),
-                ];
+        $this->expectDeprecation('%AThe (real) cast is deprecated, use (float) instead');
+
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixCases(): iterable
+    {
+        $types = ['boolean', 'bool', 'integer', 'int', 'double', 'float', 'float', 'string', 'array', 'object', 'binary'];
+
+        if (\PHP_VERSION_ID < 8_00_00) {
+            $types[] = 'unset';
         }
 
-        return $cases;
+        foreach ($types as $from) {
+            foreach (self::createCasesFor($from) as $case) {
+                yield $case;
+            }
+        }
+    }
+
+    public static function provideFix74DeprecatedCases(): iterable
+    {
+        return self::createCasesFor('real');
+    }
+
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
+    private static function createCasesFor(string $type): iterable
+    {
+        yield [
+            sprintf('<?php $b= (%s)$d;', $type),
+            sprintf('<?php $b= (%s)$d;', strtoupper($type)),
+        ];
+
+        yield [
+            sprintf('<?php $b=( %s) $d;', $type),
+            sprintf('<?php $b=( %s) $d;', ucfirst($type)),
+        ];
+
+        yield [
+            sprintf('<?php $b=(%s ) $d;', $type),
+            sprintf('<?php $b=(%s ) $d;', strtoupper($type)),
+        ];
+
+        yield [
+            sprintf('<?php $b=(  %s  ) $d;', $type),
+            sprintf('<?php $b=(  %s  ) $d;', ucfirst($type)),
+        ];
     }
 }

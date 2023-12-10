@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -21,10 +23,5 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 interface IntegrationCaseFactoryInterface
 {
-    /**
-     * @param SplFileInfo $file
-     *
-     * @return IntegrationCase
-     */
-    public function create(SplFileInfo $file);
+    public function create(SplFileInfo $file): IntegrationCase;
 }

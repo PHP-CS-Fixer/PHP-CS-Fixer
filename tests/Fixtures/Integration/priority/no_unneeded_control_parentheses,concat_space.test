@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_unneeded_control_parentheses,concat_space.
+--RULESET--
+{"no_unneeded_control_parentheses": {"statements": ["others"]}, "concat_space": {"spacing":"one"}}
+--EXPECT--
+<?php
+
+$a = $a . $b . $c;
+
+--INPUT--
+<?php
+
+$a = $a . (     $b     ) . $c;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,581 +14,565 @@
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\Import\OrderedImportsFixer;
-use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Import\OrderedImportsFixer
  */
-final class OrderedImportsFixerTest extends AbstractFixerWithAliasedOptionsTestCase
+final class OrderedImportsFixerTest extends AbstractFixerTestCase
 {
-    public function testFix()
+    /**
+     * @dataProvider provideFixWithMultipleNamespaceCases
+     */
+    public function testFixWithMultipleNamespace(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixWithMultipleNamespaceCases(): iterable
     {
         $expected = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar as ZooBar;
-use Foo\Bar;
-use Foo\Zar\Baz;
+            <?php
 
-<?php
+            namespace FooRoo {
 
-use Foo\Bar;
-use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
- use Foo\Bir as FBB;
-use Foo\Zar\Baz;
-use SomeClass;
-   use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar as ZooBar;
+                use Foo\Bar;
+                use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
+                 use Foo\Bir as FBB;
+                use Foo\Zar\Baz;
+                use SomeClass;
+                   use Symfony\Annotation\Template, Zoo\Bar as ZooBar;
+                use Zoo\Tar1;
 
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
 
-use Zoo\Tar;
+                use Zoo\Tar2;
 
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
 
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+            }
+
+            namespace BlaRoo {
+
+                use Foo\Zar\Baz;
+              use SomeClass;
+                use Symfony\Annotation\Template;
+              use Symfony\Doctrine\Entities\Entity, Zoo\Bar;
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar as ZooBar;
-use Foo\Bar;
-use Foo\Zar\Baz;
+            <?php
 
-<?php
+            namespace FooRoo {
 
-use Foo\Bar\FooBar as FooBaz;
-use Zoo\Bar as ZooBar, Zoo\Tar;
- use Foo\Bar;
-use Foo\Zar\Baz;
-use Symfony\Annotation\Template;
-   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
-use SomeClass;
+                use Foo\Bar\FooBar as FooBaz;
+                use Zoo\Bar as ZooBar, Zoo\Tar1;
+                 use Foo\Bar;
+                use Foo\Zar\Baz;
+                use Symfony\Annotation\Template;
+                   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+                use SomeClass;
 
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
 
-use Symfony\Doctrine\Entities\Entity;
+                use Zoo\Tar2;
 
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
 
-        return function () use ($bar, $foo) {};
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+            }
+
+            namespace BlaRoo {
+
+                use Foo\Zar\Baz;
+              use Zoo\Bar;
+                use SomeClass;
+              use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+            }
+            EOF;
+
+        yield [$expected, $input];
+
+        $expected = <<<'EOF'
+            <?php namespace Space1 {
+                use Foo\Bar\Foo;
+                use Symfony\Annotation\Template;
+            }
+
+            namespace Space2 { use A,B; }
+
+            namespace Space3 {
+                use Symfony\Annotation\Template;
+                use Symfony\Doctrine\Entities\Entity0, Zoo\Bar;
+                echo Bar::C;
+                use A\B;
+            }
+
+            namespace Space4{}
+            EOF;
+
+        $input = <<<'EOF'
+            <?php namespace Space1 {
+                use Symfony\Annotation\Template;
+                use Foo\Bar\Foo;
+            }
+
+            namespace Space2 { use B,A; }
+
+            namespace Space3 {
+                use Zoo\Bar;
+                use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity0;
+                echo Bar::C;
+                use A\B;
+            }
+
+            namespace Space4{}
+            EOF;
+
+        yield [$expected, $input];
+
+        $expected =
+            '<?php
+                use B;
+                use C;
+                $foo = new C();
+                use A;
+            ';
+
+        $input =
+            '<?php
+                use C;
+                use B;
+                $foo = new C();
+                use A;
+            ';
+
+        yield [$expected, $input];
+
+        yield 'open-close groups' => [
+            '
+                <?php use X ?>
+                <?php use Z ?>
+                <?php echo X::class ?>
+                <?php use E ?>   output
+                <?php use F ?><?php echo E::class; use A; ?>
+            ',
+            '
+                <?php use Z ?>
+                <?php use X ?>
+                <?php echo X::class ?>
+                <?php use F ?>   output
+                <?php use E ?><?php echo E::class; use A; ?>
+            ',
+        ];
     }
-}
-EOF;
+
+    public function testFixWithComment(): void
+    {
+        $expected = <<<'EOF'
+            The normal
+            use of this fixer
+            should not change this sentence nor those statements below
+            use Zoo\Bar;
+            use Foo\Bar;
+            use Foo\Zar\Baz;
+
+            <?php
+
+            use Foo\Bar;
+            use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar /* He there */ as FooBaz;
+             use Foo\Bir as FBB;
+            use Foo\Zar\Baz;
+            use SomeClass;
+               use /* check */Symfony\Annotation\Template, Zoo\Bar as ZooBar;
+            use Zoo\Tar;
+
+            $a = new Bar();
+            $a = new FooBaz();
+            $a = new someclass();
+
+            class AnnotatedClass
+            {
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
+
+                    return function () use ($bar, $foo) {};
+                }
+            }
+            EOF;
+
+        $input = <<<'EOF'
+            The normal
+            use of this fixer
+            should not change this sentence nor those statements below
+            use Zoo\Bar;
+            use Foo\Bar;
+            use Foo\Zar\Baz;
+
+            <?php
+
+            use Foo\Bar\FooBar /* He there */ as FooBaz;
+            use Zoo\Bar as ZooBar, Zoo\Tar;
+             use Foo\Bar;
+            use Foo\Zar\Baz;
+            use /* check */Symfony\Annotation\Template;
+               use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+            use SomeClass;
+
+            $a = new Bar();
+            $a = new FooBaz();
+            $a = new someclass();
+
+            class AnnotatedClass
+            {
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
+
+                    return function () use ($bar, $foo) {};
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithMultipleNamespace()
+    public function testWithTraits(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-namespace FooRoo {
+            use Foo\Bar;
+            use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
+             use Foo\Bir as FBB;
+            use Foo\Zar\Baz;
+            use SomeClass;
+               use Symfony\Annotation\Template, Zoo\Bar as ZooBar;
+            use Zoo\Tar;
 
-    use Foo\Bar;
-    use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
-     use Foo\Bir as FBB;
-    use Foo\Zar\Baz;
-    use SomeClass;
-       use Symfony\Annotation\Template, Zoo\Bar as ZooBar;
-    use Zoo\Tar1;
+            trait Foo {}
 
-    $a = new Bar();
-    $a = new FooBaz();
-    $a = new someclass();
+            trait Zoo {}
 
-    use Zoo\Tar2;
+            class AnnotatedClass
+            {
+                use Foo, Bar;
 
-    class AnnotatedClass
-    {
-        /**
-         * @Template(foobar=21)
-         * @param Entity $foo
-         */
-        public function doSomething($foo)
-        {
-            $bar = $foo->toArray();
-            /** @var ArrayInterface $bar */
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
 
-            return function () use ($bar, $foo) {};
-        }
-    }
-}
-
-namespace BlaRoo {
-
-    use Foo\Zar\Baz;
-  use SomeClass;
-    use Symfony\Annotation\Template;
-  use Symfony\Doctrine\Entities\Entity, Zoo\Bar;
-
-    class AnnotatedClass
-    {
-        /**
-         * @Template(foobar=21)
-         * @param Entity $foo
-         */
-        public function doSomething($foo)
-        {
-            $bar = $foo->toArray();
-            /** @var ArrayInterface $bar */
-
-            return function () use ($bar, $foo) {};
-        }
-    }
-}
-EOF;
+                    return function () use ($bar, $foo) {};
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-namespace FooRoo {
+            use Foo\Bar\FooBar as FooBaz;
+            use Zoo\Bar as ZooBar, Zoo\Tar;
+             use Foo\Bar;
+            use Foo\Zar\Baz;
+            use Symfony\Annotation\Template;
+               use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+            use SomeClass;
 
-    use Foo\Bar\FooBar as FooBaz;
-    use Zoo\Bar as ZooBar, Zoo\Tar1;
-     use Foo\Bar;
-    use Foo\Zar\Baz;
-    use Symfony\Annotation\Template;
-       use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
-    use SomeClass;
+            trait Foo {}
 
-    $a = new Bar();
-    $a = new FooBaz();
-    $a = new someclass();
+            trait Zoo {}
 
-    use Zoo\Tar2;
+            class AnnotatedClass
+            {
+                use Foo, Bar;
 
-    class AnnotatedClass
-    {
-        /**
-         * @Template(foobar=21)
-         * @param Entity $foo
-         */
-        public function doSomething($foo)
-        {
-            $bar = $foo->toArray();
-            /** @var ArrayInterface $bar */
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
 
-            return function () use ($bar, $foo) {};
-        }
-    }
-}
-
-namespace BlaRoo {
-
-    use Foo\Zar\Baz;
-  use Zoo\Bar;
-    use SomeClass;
-  use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-
-    class AnnotatedClass
-    {
-        /**
-         * @Template(foobar=21)
-         * @param Entity $foo
-         */
-        public function doSomething($foo)
-        {
-            $bar = $foo->toArray();
-            /** @var ArrayInterface $bar */
-
-            return function () use ($bar, $foo) {};
-        }
-    }
-}
-EOF;
+                    return function () use ($bar, $foo) {};
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithComment()
+    public function testFixWithTraitImports(): void
     {
         $expected = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar;
-use Foo\Bar;
-use Foo\Zar\Baz;
+            The normal
+            use of this fixer
+            should not change this sentence nor those statements below
+            use Zoo\Bar;
+            use Foo\Bar;
+            use Foo\Zar\Baz;
 
-<?php
+            <?php
 
-use Foo\Bar;
-use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar /* He there */ as FooBaz;
- use Foo\Bir as FBB;
-use Foo\Zar\Baz;
-use SomeClass;
-   use /* check */Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar as ZooBar;
+            use Acme\MyReusableTrait;
+            use Foo\Bar, Foo\Bar\Foo as Fooo;
+             use Foo\Bar\FooBar as FooBaz;
+            use Foo\Bir as FBB;
+            use Foo\Zar\Baz;
+            use SomeClass;
+               use Symfony\Annotation\Template, Zoo\Bar as ZooBar;
+            use Zoo\Tar;
 
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
+            $a = new Bar();
+            $a = new FooBaz();
+            $a = new someclass();
 
-use Zoo\Tar;
+            class AnnotatedClass
+            {
+                use MyReusableTrait;
 
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
 
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+                    return function () use ($bar, $baz) {};
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar;
-use Foo\Bar;
-use Foo\Zar\Baz;
+            The normal
+            use of this fixer
+            should not change this sentence nor those statements below
+            use Zoo\Bar;
+            use Foo\Bar;
+            use Foo\Zar\Baz;
 
-<?php
+            <?php
 
-use Foo\Bar\FooBar /* He there */ as FooBaz;
-use Zoo\Bar as ZooBar, Zoo\Tar;
- use Foo\Bar;
-use Foo\Zar\Baz;
-use /* check */Symfony\Annotation\Template;
-   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
-use SomeClass;
+            use Foo\Bar\FooBar as FooBaz;
+            use Zoo\Bar as ZooBar, Zoo\Tar;
+             use Foo\Bar;
+            use Foo\Zar\Baz;
+            use Acme\MyReusableTrait;
+            use Symfony\Annotation\Template;
+               use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+            use SomeClass;
 
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
+            $a = new Bar();
+            $a = new FooBaz();
+            $a = new someclass();
 
-use Symfony\Doctrine\Entities\Entity;
+            class AnnotatedClass
+            {
+                use MyReusableTrait;
 
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
 
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+                    return function () use ($bar, $baz) {};
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testWithTraits()
+    public function testFixWithDifferentCases(): void
     {
         $expected = <<<'EOF'
-<?php
+            The normal
+            use of this fixer
+            should not change this sentence nor those statements below
+            use Zoo\Baz;
+            use abc\Bar;
 
-use Foo\Bar;
-use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
- use Foo\Bir as FBB;
-use Foo\Zar\Baz;
-use SomeClass;
-   use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar as ZooBar;
+            <?php
 
-use Zoo\Tar;
+            use abc\Bar;
+            use Zoo\Baz;
 
-trait Foo {}
-
-trait Zoo {}
-
-class AnnotatedClass
-{
-    use Foo, Bar;
-
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+            class Test
+            {
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            The normal
+            use of this fixer
+            should not change this sentence nor those statements below
+            use Zoo\Baz;
+            use abc\Bar;
 
-use Foo\Bar\FooBar as FooBaz;
-use Zoo\Bar as ZooBar, Zoo\Tar;
- use Foo\Bar;
-use Foo\Zar\Baz;
-use Symfony\Annotation\Template;
-   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
-use SomeClass;
+            <?php
 
-use Symfony\Doctrine\Entities\Entity;
+            use Zoo\Baz;
+            use abc\Bar;
 
-trait Foo {}
-
-trait Zoo {}
-
-class AnnotatedClass
-{
-    use Foo, Bar;
-
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+            class Test
+            {
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithTraitImports()
+    public function testWithoutUses(): void
     {
         $expected = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar;
-use Foo\Bar;
-use Foo\Zar\Baz;
+            <?php
 
-<?php
-
-use Acme\MyReusableTrait;
-use Foo\Bar, Foo\Bar\Foo as Fooo;
- use Foo\Bar\FooBar as FooBaz;
-use Foo\Bir as FBB;
-use Foo\Zar\Baz;
-use SomeClass;
-   use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar as ZooBar;
-
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
-
-use Zoo\Tar;
-
-class AnnotatedClass
-{
-    use MyReusableTrait;
-
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-
-        return function () use ($bar, $baz) {};
-    }
-}
-EOF;
-
-        $input = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar;
-use Foo\Bar;
-use Foo\Zar\Baz;
-
-<?php
-
-use Foo\Bar\FooBar as FooBaz;
-use Zoo\Bar as ZooBar, Zoo\Tar;
- use Foo\Bar;
-use Foo\Zar\Baz;
-use Acme\MyReusableTrait;
-use Symfony\Annotation\Template;
-   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
-use SomeClass;
-
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
-
-use Symfony\Doctrine\Entities\Entity;
-
-class AnnotatedClass
-{
-    use MyReusableTrait;
-
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-
-        return function () use ($bar, $baz) {};
-    }
-}
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixWithDifferentCases()
-    {
-        $expected = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Baz;
-use abc\Bar;
-
-<?php
-
-use abc\Bar;
-use Zoo\Baz;
-
-class Test
-{
-}
-EOF;
-
-        $input = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Baz;
-use abc\Bar;
-
-<?php
-
-use Zoo\Baz;
-use abc\Bar;
-
-class Test
-{
-}
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testWithoutUses()
-    {
-        $expected = <<<'EOF'
-<?php
-
-$c = 1;
-EOF
-        ;
+            $c = 1;
+            EOF;
 
         $this->doTest($expected);
     }
 
-    public function testOrderWithTrailingDigit()
+    public function testOrderWithTrailingDigit(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-use abc\Bar;
-use abc2\Bar2;
-use xyz\abc\Bar6;
-use xyz\abc2\Bar7;
-use xyz\xyz\Bar4;
-use xyz\xyz\Bar5;
+            use abc\Bar;
+            use abc2\Bar2;
+            use xyz\abc\Bar6;
+            use xyz\abc2\Bar7;
+            use xyz\xyz\Bar4;
+            use xyz\xyz\Bar5;
 
-class Test
-{
-}
-EOF;
+            class Test
+            {
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-use abc2\Bar2;
-use abc\Bar;
-use xyz\abc2\Bar7;
-use xyz\abc\Bar6;
-use xyz\xyz\Bar4;
-use xyz\xyz\Bar5;
+            use abc2\Bar2;
+            use abc\Bar;
+            use xyz\abc2\Bar7;
+            use xyz\abc\Bar6;
+            use xyz\xyz\Bar4;
+            use xyz\xyz\Bar5;
 
-class Test
-{
-}
-EOF;
+            class Test
+            {
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testCodeWithImportsOnly()
+    public function testCodeWithImportsOnly(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
-use Aaa;
-use Bbb;
-EOF;
+            use Aaa;
+            use Bbb;
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-use Bbb;
-use Aaa;
-EOF;
+            use Bbb;
+            use Aaa;
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testCodeWithCloseTag()
+    public function testCodeWithCloseTag(): void
     {
         $this->doTest(
             '<?php
@@ -598,67 +584,135 @@ EOF;
         );
     }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideCommentCases
-     */
-    public function testCodeWithComments($expected, $input = null)
+    public function testCodeWithComments(): void
     {
-        $this->doTest($expected, $input);
+        $this->doTest(
+            '<?php
+                use A\C1 /* A */;
+                use /* B */ B\C2;',
+            '<?php
+                use /* B */ B\C2;
+                use A\C1 /* A */;'
+        );
     }
 
-    public function provideCommentCases()
+    /**
+     * @requires PHP <8.0
+     */
+    public function testCodeWithCommentsAndMultiLine(): void
     {
-        return [
-            [
-                '<?php
-                    use A\C1 /* A */;
-                    use /* B */ B\C2;',
-                '<?php
-                    use /* B */ B\C2;
-                    use A\C1 /* A */;',
-            ],
-            [
-                '<?php
+        $this->doTest(
+            '<?php
                     use#
 A\C1;
                     use B#
 \C2#
 #
 ;',
-                '<?php
+            '<?php
                     use#
 B#
 \C2#
 #
 ;
-                    use A\C1;',
-            ],
-        ];
+                    use A\C1;'
+        );
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $config
+     * @param array<string, mixed> $config
      *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
+     * @dataProvider provideFixCases
      */
-    public function testFix70($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
-
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70Cases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            <<<'EOF'
+                The normal
+                use of this fixer
+                should not change this sentence nor those statements below
+                use Zoo\Bar as ZooBar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+
+                <?php
+
+                use Foo\Bar;
+                use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
+                 use Foo\Bir as FBB;
+                use Foo\Zar\Baz;
+                use SomeClass;
+                   use Symfony\Annotation\Template, Zoo\Bar as ZooBar;
+                use Zoo\Tar;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+                EOF
+            ,
+            <<<'EOF'
+                The normal
+                use of this fixer
+                should not change this sentence nor those statements below
+                use Zoo\Bar as ZooBar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+
+                <?php
+
+                use Foo\Bar\FooBar as FooBaz;
+                use Zoo\Bar as ZooBar, Zoo\Tar;
+                 use Foo\Bar;
+                use Foo\Zar\Baz;
+                use Symfony\Annotation\Template;
+                   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+                use SomeClass;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+                EOF
+            ,
+        ];
+
+        yield [
+            '<?php
 use A\B;
 use some\a\{ClassA, ClassB, ClassC as C};
 use some\b\{
@@ -667,30 +721,30 @@ use some\b\{
 };
 use const some\a\{ConstA, ConstB, ConstC};
 use const some\b\{
-    ConstA,
-    ConstB,
-    ConstC
+    ConstX,
+    ConstY,
+    ConstZ
 };
 use function some\a\{fn_a, fn_b, fn_c};
 use function some\b\{
-    fn_a,
-    fn_b,
-    fn_c
+    fn_x,
+    fn_y,
+    fn_z
 };
 ',
-                '<?php
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\b\{
-    fn_b,
-    fn_c,
-    fn_a
+    fn_y,
+    fn_z,
+    fn_x
 };
 use function some\a\{fn_a, fn_b, fn_c};
 use A\B;
 use const some\b\{
-    ConstC,
-    ConstA,
-    ConstB
+    ConstZ,
+    ConstX,
+    ConstY
 };
 use const some\a\{ConstA, ConstB, ConstC};
 use some\b\{
@@ -698,13 +752,14 @@ use some\b\{
     ClassF
 };
 ',
-                [
-                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
-                    'imports_order' => ['class', 'const', 'function'],
-                ],
-            ],
             [
-                '<?php
+                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'imports_order' => ['class', 'const', 'function'],
+            ],
+        ];
+
+        yield [
+            '<?php
 use A\B;
 use some\a\{ClassA as A /*z*/, ClassB, ClassC};
 use const some\a\{
@@ -714,7 +769,7 @@ use const some\a\{
 };
 use function some\a\{fn_a, fn_b, fn_c};
 ',
-                '<?php
+            '<?php
 use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
 use function some\a\{fn_c,  fn_a,fn_b   };
 use A\B;
@@ -724,13 +779,14 @@ use const some\a\{
     ConstC
 };
 ',
-                [
-                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
-                    'imports_order' => ['class', 'const', 'function'],
-                ],
-            ],
             [
-                '<?php
+                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'imports_order' => ['class', 'const', 'function'],
+            ],
+        ];
+
+        yield [
+            '<?php
 use A\B;
 use some\a\{ClassA, ClassB, ClassC as C};
 use const some\a\{ConstA, ConstB, ConstC};
@@ -740,29 +796,29 @@ use some\b\{
     ClassG
 };
 use const some\b\{
-    ConstA,
-    ConstB,
-    ConstC
+    ConstX,
+    ConstY,
+    ConstZ
 };
 use function some\b\{
-    fn_a,
-    fn_b,
-    fn_c
+    fn_x,
+    fn_y,
+    fn_z
 };
 ',
-                '<?php
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\b\{
-    fn_b,
-    fn_c,
-    fn_a
+    fn_y,
+    fn_z,
+    fn_x
 };
 use function some\a\{fn_a, fn_b, fn_c};
 use A\B;
 use const some\b\{
-    ConstC,
-    ConstA,
-    ConstB
+    ConstZ,
+    ConstX,
+    ConstY
 };
 use const some\a\{ConstA, ConstB, ConstC};
 use some\b\{
@@ -770,9 +826,10 @@ use some\b\{
     ClassF
 };
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use A\B;
 use const some\a\{
     ConstA,
@@ -782,7 +839,7 @@ use const some\a\{
 use some\a\{ClassA as A /*z2*/, ClassB, ClassC};
 use function some\a\{fn_a, fn_b, fn_c};
 ',
-                '<?php
+            '<?php
 use some\a\{  ClassB,ClassC, /*z2*/ ClassA as A};
 use function some\a\{fn_c,  fn_a,fn_b   };
 use A\B;
@@ -792,53 +849,58 @@ use const some\a\{
     ConstC
 };
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use C\B;
 use function B\fn_a;
 use const A\ConstA;
-                ',
-                '<?php
+            ',
+            '<?php
 use const A\ConstA;
 use function B\fn_a;
 use C\B;
-                ',
-                [
-                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
-                    'imports_order' => ['class', 'function', 'const'],
-                ],
-            ],
+            ',
             [
-                '<?php
+                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'imports_order' => ['class', 'function', 'const'],
+            ],
+        ];
+
+        yield [
+            '<?php
 use Foo\Bar\Baz;use Foo\Bar\{ClassA, ClassB, ClassC};
 use Foo\Bir;
 ',
-                '<?php
+            '<?php
 use Foo\Bar\Baz, Foo\Bir;
 use Foo\Bar\{ClassC, ClassB, ClassA};
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use A\A;use Foo3\Bar\{ClassA};use G\G;use H\H;use Ioo2\Bar\{ClassB};use J\J;use K\K;use Loo1\Bar\{ClassC};use M\M;
 ',
-                '<?php
+            '<?php
 use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;use Loo1\Bar\{ClassC};
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use Foo\Bar\Baz;use Foo\Bar\{ClassA, ClassB, ClassC};
 use Foo\Bir;
 ',
-                '<?php
+            '<?php
 use Foo\Bar\Baz, Foo\Bir;
 use Foo\Bar\{ClassC, ClassB, ClassA};
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use Foo\Bar\{ClassA, ClassB, ClassC};
 use Foo\Bir\{
     ClassD,
@@ -852,7 +914,7 @@ use Foo\Bor\{
     ClassJ
 };
 ',
-                '<?php
+            '<?php
 use Foo\Bar\{ClassC, ClassB, ClassA};
 use Foo\Bir\{ClassE, ClassF,
     ClassD};
@@ -863,121 +925,239 @@ use Foo\Bor\{
                         ClassG
 };
 ',
-            ],
-            'alpha - [\'class\', \'function\', \'const\']' => [
-                '<?php
+        ];
+
+        yield 'alpha - [\'class\', \'function\', \'const\']' => [
+            '<?php
 use Z\Z;
 use function X\X;
 use const Y\Y;
-                ',
-                '<?php
+            ',
+            '<?php
 use const Y\Y;
 use function X\X;
 use Z\Z;
-                ',
-                [
-                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
-                    'imports_order' => ['class', 'function', 'const'],
-                ],
-            ],
-            'alpha - [\'class\', \'const\', \'function\']' => [
-                '<?php
-use Z\Z;
-use const Y\Y;
-use function X\X;
-                ',
-                '<?php
-use function X\X;
-use const Y\Y;
-use Z\Z;
-                ',
-                [
-                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
-                    'imports_order' => ['class', 'const', 'function'],
-                ],
-            ],
-            'alpha - [\'function\', \'class\', \'const\']' => [
-                '<?php
-use function Z\Z;
-use Y\Y;
-use const X\X;
-                ',
-                '<?php
-use const X\X;
-use Y\Y;
-use function Z\Z;
-                ',
-                [
-                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
-                    'imports_order' => ['function', 'class', 'const'],
-                ],
-            ],
-            'alpha - [\'function\', \'const\', \'class\']' => [
-                '<?php
-use function Z\Z;
-use const Y\Y;
-use X\X;
-                ',
-                '<?php
-use X\X;
-use const Y\Y;
-use function Z\Z;
-                ',
-                [
-                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
-                    'imports_order' => ['function', 'const', 'class'],
-                ],
-            ],
-            'alpha - [\'const\', \'function\', \'class\']' => [
-                '<?php
-use const Z\Z;
-use function Y\Y;
-use X\X;
-                ',
-                '<?php
-use X\X;
-use function Y\Y;
-use const Z\Z;
-                ',
-                [
-                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
-                    'imports_order' => ['const', 'function', 'class'],
-                ],
-            ],
-            'alpha - [\'const\', \'class\', \'function\']' => [
-                '<?php
-use const Z\Z;
-use Y\Y;
-use function X\X;
-                ',
-                '<?php
-use function X\X;
-use Y\Y;
-use const Z\Z;
-                ',
-                [
-                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
-                    'imports_order' => ['const', 'class', 'function'],
-                ],
-            ],
-            '"strcasecmp" vs. "strnatcasecmp"' => [
-                '<?php
-use A\A1;
-use A\A10;
-use A\A2;
-use A\A20;
-                ',
-                '<?php
-use A\A20;
-use A\A2;
-use A\A10;
-use A\A1;
-                ',
-                [
-                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
-                ],
+            ',
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'imports_order' => ['class', 'function', 'const'],
             ],
         ];
+
+        yield 'alpha - [\'class\', \'const\', \'function\']' => [
+            '<?php
+use Z\Z;
+use const Y\Y;
+use function X\X;
+            ',
+            '<?php
+use function X\X;
+use const Y\Y;
+use Z\Z;
+            ',
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'imports_order' => ['class', 'const', 'function'],
+            ],
+        ];
+
+        yield 'alpha - [\'function\', \'class\', \'const\']' => [
+            '<?php
+use function Z\Z;
+use Y\Y;
+use const X\X;
+            ',
+            '<?php
+use const X\X;
+use Y\Y;
+use function Z\Z;
+            ',
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'imports_order' => ['function', 'class', 'const'],
+            ],
+        ];
+
+        yield 'alpha - [\'function\', \'const\', \'class\']' => [
+            '<?php
+use function Z\Z;
+use const Y\Y;
+use X\X;
+            ',
+            '<?php
+use X\X;
+use const Y\Y;
+use function Z\Z;
+            ',
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'imports_order' => ['function', 'const', 'class'],
+            ],
+        ];
+
+        yield 'alpha - [\'const\', \'function\', \'class\']' => [
+            '<?php
+use const Z\Z;
+use function Y\Y;
+use X\X;
+            ',
+            '<?php
+use X\X;
+use function Y\Y;
+use const Z\Z;
+            ',
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'imports_order' => ['const', 'function', 'class'],
+            ],
+        ];
+
+        yield 'alpha - [\'const\', \'class\', \'function\']' => [
+            '<?php
+use const Z\Z;
+use Y\Y;
+use function X\X;
+            ',
+            '<?php
+use function X\X;
+use Y\Y;
+use const Z\Z;
+            ',
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'imports_order' => ['const', 'class', 'function'],
+            ],
+        ];
+
+        yield '"strcasecmp" vs. "strnatcasecmp"' => [
+            '<?php
+use A\A1;
+use A\A10;
+use A\A2;
+use A\A20;
+            ',
+            '<?php
+use A\A20;
+use A\A2;
+use A\A10;
+use A\A1;
+            ',
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            ],
+        ];
+
+        yield [
+            '<?php
+use A\{B,};
+use C\{D,E,};
+',
+            '<?php
+use C\{D,E,};
+use A\{B,};
+',
+        ];
+
+        yield [
+            '<?php
+use Foo\{
+    Aaa,
+    Bbb,
+};',
+            '<?php
+use Foo\{
+    Bbb,
+    Aaa,
+};',
+        ];
+
+        yield [
+            '<?php
+use Foo\{
+    Aaa /* 3 *//* 4 *//* 5 */,
+    Bbb /* 1 *//* 2 */,
+};',
+            '<?php
+use Foo\{
+    /* 1 */Bbb/* 2 */,/* 3 */
+    /* 4 */Aaa/* 5 */,/* 6 */
+};',
+        ];
+
+        $input =
+            '<?php use A\{B,};
+use some\y\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\Z\{ConstAA,ConstBB,ConstCC,};
+use const some\X\{ConstA,ConstB,ConstC,ConstF};
+use C\{D,E,};
+';
+
+        yield [
+            '<?php use A\{B,};
+use C\{D,E,};
+use some\y\{ClassA, ClassB, ClassC as C,};
+use const some\X\{ConstA,ConstB,ConstC,ConstF};
+use const some\Z\{ConstAA,ConstBB,ConstCC,};
+use function some\a\{fn_a, fn_b, fn_c,};
+',
+            $input,
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+            ],
+        ];
+
+        yield [
+            '<?php use A\{B,};
+use C\{D,E,};
+use some\y\{ClassA, ClassB, ClassC as C,};
+use const some\Z\{ConstAA,ConstBB,ConstCC,};
+use const some\X\{ConstA,ConstB,ConstC,ConstF};
+use function some\a\{fn_a, fn_b, fn_c,};
+',
+            $input,
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+                'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+            ],
+        ];
+
+        yield [
+            '<?php use A\{B,};
+use some\y\{ClassA, ClassB, ClassC as C,};
+use C\{D,E,};
+use const some\Z\{ConstAA,ConstBB,ConstCC,};
+use const some\X\{ConstA,ConstB,ConstC,ConstF};
+use function some\a\{fn_a, fn_b, fn_c,};
+',
+            $input,
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_NONE,
+                'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+            ],
+        ];
+
+        yield [
+            '<?php use const CONST_A, CONST_B, CONST_C;',
+            '<?php use const CONST_C, CONST_B, CONST_A;',
+        ];
+
+        yield [
+            '<?php use function Foo\A, Foo\B, Foo\C;',
+            '<?php use function Foo\B, Foo\C, Foo\A;',
+        ];
+    }
+
+    public function testUnknownOrderTypes(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Unknown sort types "foo" and "bar".');
+
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            'imports_order' => ['class', 'const', 'function', 'foo', 'bar'],
+        ]);
     }
 
     /*
@@ -986,761 +1166,781 @@ use A\A1;
     |--------------------------------------------------------------------------
     */
 
-    public function testInvalidOrderTypesSize()
+    public function testInvalidOrderTypesSize(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "function".');
 
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
-            'importsOrder' => ['class', 'const'],
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            'imports_order' => ['class', 'const'],
         ]);
     }
 
-    public function testInvalidOrderType()
+    public function testInvalidOrderType(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "class".');
 
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
-            'importsOrder' => ['const', 'function', 'bar'],
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            'imports_order' => ['const', 'function', 'bar'],
         ]);
     }
 
     /**
-     * @dataProvider provideInvalidSortAlgorithmCases
+     * @param array<string, mixed> $configuration
      *
-     * @param array  $configuration
-     * @param string $expectedValue
+     * @dataProvider provideInvalidSortAlgorithmCases
      */
-    public function testInvalidSortAlgorithm(array $configuration, $expectedValue)
+    public function testInvalidSortAlgorithm(array $configuration, string $expectedValue): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage(sprintf(
             '[ordered_imports] Invalid configuration: The option "sort_algorithm" with value %s is invalid. Accepted values are: "alpha", "length", "none".',
             $expectedValue
         ));
 
-        $this->configureFixerWithAliasedOptions($configuration);
+        $this->fixer->configure($configuration);
     }
 
-    public function provideInvalidSortAlgorithmCases()
+    public static function provideInvalidSortAlgorithmCases(): iterable
     {
-        return [
+        yield [
             [
-                [
-                    'sortAlgorithm' => 'dope',
-                    'importsOrder' => null,
-                ],
-                '"dope"',
+                'sort_algorithm' => 'dope',
+                'imports_order' => null,
             ],
+            '"dope"',
+        ];
+
+        yield [
             [
-                [
-                    'sortAlgorithm' => [OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH],
-                    'importsOrder' => null,
-                ],
-                'array',
+                'sort_algorithm' => [OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH],
+                'imports_order' => null,
             ],
+            'array',
+        ];
+
+        yield [
             [
-                [
-                    'sortAlgorithm' => new \stdClass(),
-                    'importsOrder' => null,
-                ],
-                \stdClass::class,
+                'sort_algorithm' => new \stdClass(),
+                'imports_order' => null,
             ],
+            \stdClass::class,
         ];
     }
 
-    public function testFixByLength()
+    public function testByLengthFixWithSameLength(): void
     {
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar as ZooBar;
-use Foo\Bar;
-use Foo\Zar\Baz;
+            <?php
 
-<?php
+            use Acme;
+            use Bar1;
+            use Barr;
+            use Fooo;
 
-use Foo\Bar;
-use Zoo\Tar, SomeClass;
- use Foo\Zar\Baz;
-use Foo\Bir as FBB;
-use Zoo\Bar as ZooBar;
-   use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
-use Symfony\Annotation\Template;
+            class AnnotatedClass
+            {
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
 
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
-
-use Symfony\Doctrine\Entities\Entity;
-
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+                    return function () use ($bar, $foo) {};
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar as ZooBar;
-use Foo\Bar;
-use Foo\Zar\Baz;
+            <?php
 
-<?php
+            use Acme;
+            use Fooo;
+            use Barr;
+            use Bar1;
 
-use Foo\Bar\FooBar as FooBaz;
-use Zoo\Bar as ZooBar, Zoo\Tar;
- use Foo\Bar;
-use Foo\Zar\Baz;
-use Symfony\Annotation\Template;
-   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
-use SomeClass;
+            class AnnotatedClass
+            {
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
 
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
-
-use Symfony\Doctrine\Entities\Entity;
-
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+                    return function () use ($bar, $foo) {};
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthFixWithSameLength()
+    public function testByLengthFixWithSameLengthAndCaseSensitive(): void
     {
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
+            'case_sensitive' => true,
         ]);
 
         $expected = <<<'EOF'
-<?php
+            <?php
 
-use Acme;
-use Bar1;
-use Barr;
-use Fooo;
+            use Acme;
+            use BaRr;
+            use Bar1;
+            use Fooo;
 
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+            class AnnotatedClass { }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-use Acme;
-use Fooo;
-use Barr;
-use Bar1;
+            use Acme;
+            use Fooo;
+            use Bar1;
+            use BaRr;
 
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+            class AnnotatedClass { }
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthFixWithMultipleNamespace()
+    public function testByLengthFixWithMultipleNamespace(): void
     {
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
-<?php
+            <?php
 
-namespace FooRoo {
+            namespace FooRoo {
 
-    use Foo\Bar;
-    use Zoo\Tar1, Zoo\Tar2;
-    use SomeClass;
-    use Foo\Zar\Baz;
-    use Foo\Bir as FBB;
-    use Zoo\Bar as ZooBar, Foo\Bar\Foo as Fooo;
-    use Foo\Bar\FooBar as FooBaz;
+                use Foo\Bar;
+                use Zoo\Tar1, Zoo\Tar2;
+                use SomeClass;
+                use Foo\Zar\Baz;
+                use Foo\Bir as FBB;
+                use Zoo\Bar as ZooBar, Foo\Bar\Foo as Fooo;
+                use Foo\Bar\FooBar as FooBaz;
 
-    $a = new Bar();
-    $a = new FooBaz();
-    $a = new someclass();
+                use Symfony\Annotation\Template;
 
-    use Symfony\Annotation\Template;
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
 
-    class AnnotatedClass
-    {
-        /**
-         * @Template(foobar=21)
-         * @param Entity $foo
-         */
-        public function doSomething($foo)
-        {
-            $bar = $foo->toArray();
-            /** @var ArrayInterface $bar */
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
 
-            return function () use ($bar, $foo) {};
-        }
-    }
-}
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+            }
 
-namespace BlaRoo {
+            namespace BlaRoo {
 
-    use Zoo\Bar;
-    use SomeClass;
-    use Foo\Zar\Baz;
-    use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
+                use Zoo\Bar;
+                use SomeClass;
+                use Foo\Zar\Baz;
+                use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
 
-    class AnnotatedClass
-    {
-        /**
-         * @Template(foobar=21)
-         * @param Entity $foo
-         */
-        public function doSomething($foo)
-        {
-            $bar = $foo->toArray();
-            /** @var ArrayInterface $bar */
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
 
-            return function () use ($bar, $foo) {};
-        }
-    }
-}
-EOF;
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-namespace FooRoo {
+            namespace FooRoo {
 
-    use Foo\Bar\FooBar as FooBaz;
-    use Zoo\Bar as ZooBar, Zoo\Tar1;
-    use Foo\Bar;
-    use Foo\Zar\Baz;
-    use Symfony\Annotation\Template;
-    use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
-    use SomeClass;
+                use Foo\Bar\FooBar as FooBaz;
+                use Zoo\Bar as ZooBar, Zoo\Tar1;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+                use Symfony\Annotation\Template;
+                use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+                use SomeClass;
 
-    $a = new Bar();
-    $a = new FooBaz();
-    $a = new someclass();
+                use Zoo\Tar2;
 
-    use Zoo\Tar2;
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
 
-    class AnnotatedClass
-    {
-        /**
-         * @Template(foobar=21)
-         * @param Entity $foo
-         */
-        public function doSomething($foo)
-        {
-            $bar = $foo->toArray();
-            /** @var ArrayInterface $bar */
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
 
-            return function () use ($bar, $foo) {};
-        }
-    }
-}
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+            }
 
-namespace BlaRoo {
+            namespace BlaRoo {
 
-    use Foo\Zar\Baz;
-    use Zoo\Bar;
-    use SomeClass;
-    use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
+                use Foo\Zar\Baz;
+                use Zoo\Bar;
+                use SomeClass;
+                use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
 
-    class AnnotatedClass
-    {
-        /**
-         * @Template(foobar=21)
-         * @param Entity $foo
-         */
-        public function doSomething($foo)
-        {
-            $bar = $foo->toArray();
-            /** @var ArrayInterface $bar */
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
 
-            return function () use ($bar, $foo) {};
-        }
-    }
-}
-EOF;
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthFixWithComment()
+    public function testByLengthFixWithComment(): void
     {
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar;
-use Foo\Bar;
-use Foo\Zar\Baz;
+            The normal
+            use of this fixer
+            should not change this sentence nor those statements below
+            use Zoo\Bar;
+            use Foo\Bar;
+            use Foo\Zar\Baz;
 
-<?php
+            <?php
 
-use Foo\Bar;
-use Zoo\Tar, SomeClass;
-use Foo\Zar\Baz;
-use Foo\Bir as FBB;
-use Zoo\Bar as ZooBar;
-use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar /* He there */ as FooBaz;
-use /* FIXME */Symfony\Annotation\Template;
+            use Foo\Bar;
+            use Zoo\Tar, SomeClass;
+            use Foo\Zar\Baz;
+            use Foo\Bir as FBB;
+            use Zoo\Bar as ZooBar;
+            use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar /* He there */ as FooBaz;
+            use /* FIXME */Symfony\Annotation\Template;
 
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
+            $a = new Bar();
+            $a = new FooBaz();
+            $a = new someclass();
 
-use Symfony\Doctrine\Entities\Entity;
+            use Symfony\Doctrine\Entities\Entity;
 
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
+            class AnnotatedClass
+            {
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
 
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+                    return function () use ($bar, $foo) {};
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar;
-use Foo\Bar;
-use Foo\Zar\Baz;
+            The normal
+            use of this fixer
+            should not change this sentence nor those statements below
+            use Zoo\Bar;
+            use Foo\Bar;
+            use Foo\Zar\Baz;
 
-<?php
+            <?php
 
-use Foo\Bar\FooBar /* He there */ as FooBaz;
-use Zoo\Bar as ZooBar, Zoo\Tar;
-use Foo\Bar;
-use Foo\Zar\Baz;
-use /* FIXME */Symfony\Annotation\Template;
-use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
-use SomeClass;
+            use Foo\Bar\FooBar /* He there */ as FooBaz;
+            use Zoo\Bar as ZooBar, Zoo\Tar;
+            use Foo\Bar;
+            use Foo\Zar\Baz;
+            use /* FIXME */Symfony\Annotation\Template;
+            use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+            use SomeClass;
 
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
+            $a = new Bar();
+            $a = new FooBaz();
+            $a = new someclass();
 
-use Symfony\Doctrine\Entities\Entity;
+            use Symfony\Doctrine\Entities\Entity;
 
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
+            class AnnotatedClass
+            {
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
 
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+                    return function () use ($bar, $foo) {};
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testByLength()
+    public function testByLength(): void
     {
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
-<?php
+            <?php
 
-use Foo\Bar;
-use Zoo\Tar, SomeClass;
-use Foo\Zar\Baz;
-use Foo\Bir as FBB;
-use Zoo\Bar as ZooBar;
-use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
-use Symfony\Annotation\Template;
+            use Foo\Bar;
+            use Zoo\Tar, SomeClass;
+            use Foo\Zar\Baz;
+            use Foo\Bir as FBB;
+            use Zoo\Bar as ZooBar;
+            use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
+            use Symfony\Annotation\Template;
 
-use Symfony\Doctrine\Entities\Entity;
+            use Symfony\Doctrine\Entities\Entity;
 
-trait Foo {}
+            trait Foo {}
 
-trait Zoo {}
+            trait Zoo {}
 
-class AnnotatedClass
-{
-    use Foo, Bar;
+            class AnnotatedClass
+            {
+                use Foo, Bar;
 
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
 
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+                    return function () use ($bar, $foo) {};
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-use Foo\Bar\FooBar as FooBaz;
-use Zoo\Bar as ZooBar, Zoo\Tar;
-use Foo\Bar;
-use Foo\Zar\Baz;
-use Symfony\Annotation\Template;
-use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
-use SomeClass;
+            use Foo\Bar\FooBar as FooBaz;
+            use Zoo\Bar as ZooBar, Zoo\Tar;
+            use Foo\Bar;
+            use Foo\Zar\Baz;
+            use Symfony\Annotation\Template;
+            use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+            use SomeClass;
 
-use Symfony\Doctrine\Entities\Entity;
+            use Symfony\Doctrine\Entities\Entity;
 
-trait Foo {}
+            trait Foo {}
 
-trait Zoo {}
+            trait Zoo {}
 
-class AnnotatedClass
-{
-    use Foo, Bar;
+            class AnnotatedClass
+            {
+                use Foo, Bar;
 
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
 
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+                    return function () use ($bar, $foo) {};
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthFixWithTraitImports()
+    public function testByLengthFixWithTraitImports(): void
     {
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar;
-use Foo\Bar;
-use Foo\Zar\Baz;
+            The normal
+            use of this fixer
+            should not change this sentence nor those statements below
+            use Zoo\Bar;
+            use Foo\Bar;
+            use Foo\Zar\Baz;
 
-<?php
+            <?php
 
-use Foo\Bar;
-use Zoo\Tar, SomeClass;
-use Foo\Zar\Baz;
-use Foo\Bir as FBB;
-use Zoo\Bar as ZooBar;
-use Foo\Bar\Foo as Fooo;
-use Acme\MyReusableTrait, Foo\Bar\FooBar as FooBaz;
-use Symfony\Annotation\Template;
+            use Foo\Bar;
+            use Zoo\Tar, SomeClass;
+            use Foo\Zar\Baz;
+            use Foo\Bir as FBB;
+            use Zoo\Bar as ZooBar;
+            use Foo\Bar\Foo as Fooo;
+            use Acme\MyReusableTrait, Foo\Bar\FooBar as FooBaz;
+            use Symfony\Annotation\Template;
 
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
+            $a = new Bar();
+            $a = new FooBaz();
+            $a = new someclass();
 
-use Symfony\Doctrine\Entities\Entity;
+            use Symfony\Doctrine\Entities\Entity;
 
-class AnnotatedClass
-{
-    use MyReusableTrait;
+            class AnnotatedClass
+            {
+                use MyReusableTrait;
 
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
 
-        return function () use ($bar, $baz) {};
-    }
-}
-EOF;
+                    return function () use ($bar, $baz) {};
+                }
+            }
+            EOF;
 
         $input = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar;
-use Foo\Bar;
-use Foo\Zar\Baz;
+            The normal
+            use of this fixer
+            should not change this sentence nor those statements below
+            use Zoo\Bar;
+            use Foo\Bar;
+            use Foo\Zar\Baz;
 
-<?php
+            <?php
 
-use Foo\Bar\FooBar as FooBaz;
-use Zoo\Bar as ZooBar, Zoo\Tar;
-use Foo\Bar;
-use Foo\Zar\Baz;
-use Acme\MyReusableTrait;
-use Symfony\Annotation\Template;
-use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
-use SomeClass;
+            use Foo\Bar\FooBar as FooBaz;
+            use Zoo\Bar as ZooBar, Zoo\Tar;
+            use Foo\Bar;
+            use Foo\Zar\Baz;
+            use Acme\MyReusableTrait;
+            use Symfony\Annotation\Template;
+            use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+            use SomeClass;
 
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
+            $a = new Bar();
+            $a = new FooBaz();
+            $a = new someclass();
 
-use Symfony\Doctrine\Entities\Entity;
+            use Symfony\Doctrine\Entities\Entity;
 
-class AnnotatedClass
-{
-    use MyReusableTrait;
+            class AnnotatedClass
+            {
+                use MyReusableTrait;
 
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
 
-        return function () use ($bar, $baz) {};
-    }
-}
-EOF;
+                    return function () use ($bar, $baz) {};
+                }
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthFixWithDifferentCases()
+    public function testByLengthFixWithDifferentCases(): void
     {
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Baz;
-use abc\Bar;
+            The normal
+            use of this fixer
+            should not change this sentence nor those statements below
+            use Zoo\Baz;
+            use abc\Bar;
 
-<?php
+            <?php
 
-use abc\Bar;
-use Zoo\Baz;
+            use abc\Bar;
+            use Zoo\Baz;
 
-class Test
-{
-}
-EOF;
+            class Test
+            {
+            }
+            EOF;
 
         $input = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Baz;
-use abc\Bar;
+            The normal
+            use of this fixer
+            should not change this sentence nor those statements below
+            use Zoo\Baz;
+            use abc\Bar;
 
-<?php
+            <?php
 
-use Zoo\Baz;
-use abc\Bar;
+            use Zoo\Baz;
+            use abc\Bar;
 
-class Test
-{
-}
-EOF;
+            class Test
+            {
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthOrderWithTrailingDigit()
+    public function testByLengthOrderWithTrailingDigit(): void
     {
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
-<?php
+            <?php
 
-use abc\Bar;
-use abc2\Bar2;
-use xyz\abc\Bar6;
-use xyz\xyz\Bar4;
-use xyz\xyz\Bar5;
-use xyz\abc2\Bar7;
+            use abc\Bar;
+            use abc2\Bar2;
+            use xyz\abc\Bar6;
+            use xyz\xyz\Bar4;
+            use xyz\xyz\Bar5;
+            use xyz\abc2\Bar7;
 
-class Test
-{
-}
-EOF;
+            class Test
+            {
+            }
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-use abc2\Bar2;
-use abc\Bar;
-use xyz\abc2\Bar7;
-use xyz\abc\Bar6;
-use xyz\xyz\Bar4;
-use xyz\xyz\Bar5;
+            use abc2\Bar2;
+            use abc\Bar;
+            use xyz\abc2\Bar7;
+            use xyz\abc\Bar6;
+            use xyz\xyz\Bar4;
+            use xyz\xyz\Bar5;
 
-class Test
-{
-}
-EOF;
+            class Test
+            {
+            }
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthCodeWithImportsOnly()
+    public function testByLengthCodeWithImportsOnly(): void
     {
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
-<?php
+            <?php
 
-use Aaa;
-use Bbb;
-EOF;
+            use Aaa;
+            use Bbb;
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-use Bbb;
-use Aaa;
-EOF;
+            use Bbb;
+            use Aaa;
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthWithoutUses()
+    public function testByLengthWithoutUses(): void
     {
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
-<?php
+            <?php
 
-$c = 1;
-EOF
-        ;
+            $c = 1;
+            EOF;
 
         $this->doTest($expected);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70ByLengthCases
-     * @requires PHP 7.0
+     * @dataProvider provideFixByLengthCases
      */
-    public function testFix70ByLength($expected, $input = null)
+    public function testFixByLength(string $expected, ?string $input = null): void
     {
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70ByLengthCases()
+    public static function provideFixByLengthCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            <<<'EOF'
+                The normal
+                use of this fixer
+                should not change this sentence nor those statements below
+                use Zoo\Bar as ZooBar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+
+                <?php
+
+                use Foo\Bar;
+                use Zoo\Tar, SomeClass;
+                 use Foo\Zar\Baz;
+                use Foo\Bir as FBB;
+                use Zoo\Bar as ZooBar;
+                   use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
+                use Symfony\Annotation\Template;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
+
+                use Symfony\Doctrine\Entities\Entity;
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+                EOF
+            ,
+
+            <<<'EOF'
+                The normal
+                use of this fixer
+                should not change this sentence nor those statements below
+                use Zoo\Bar as ZooBar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+
+                <?php
+
+                use Foo\Bar\FooBar as FooBaz;
+                use Zoo\Bar as ZooBar, Zoo\Tar;
+                 use Foo\Bar;
+                use Foo\Zar\Baz;
+                use Symfony\Annotation\Template;
+                   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+                use SomeClass;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
+
+                use Symfony\Doctrine\Entities\Entity;
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+                EOF
+            ,
+        ];
+
+        yield [
+            '<?php
 use A\B;
 use Foo\Bar\Biz;
 use some\b\{
@@ -1750,12 +1950,12 @@ use some\b\{
 use function some\a\{fn_a, fn_b, fn_c};
 use some\b\{ClassA, ClassB, ClassC as C};
 use const some\a\{ConstA, ConstB, ConstC};
-use some\a\{ClassA as A /*z*/, ClassB, ClassC};
+use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
 use Some\Biz\Barz\Boozz\Foz\Which\Is\Really\Long;
 use const some\b\{ConstG, ConstX, ConstY, ConstZ};
 use some\c\{ClassR, ClassT, ClassV as V, NiceClassName};
 ',
-                '<?php
+            '<?php
 use function some\a\{fn_a, fn_b, fn_c};
 use Foo\Bar\Biz;
 use some\c\{ClassR, ClassT, ClassV as V, NiceClassName};
@@ -1768,46 +1968,41 @@ use some\b\{
 use const some\a\{ConstB, ConstA, ConstC};
 use const some\b\{ConstX, ConstY, ConstZ, ConstG};
 use some\b\{ClassA, ClassB, ClassC as C};
-use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
+use some\a\{  ClassY,ClassZ, /*z*/ ClassX as X};
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use const ZZZ;
 use function B;
 use function A123;
 ',
-                '<?php
+            '<?php
 use function B;
 use function A123;
 use const ZZZ;
 ',
-            ],
         ];
     }
 
     /**
-     * @dataProvider provideFix70TypesOrderAndLengthCases
-     * @requires PHP 7.0
-     *
-     * @param string      $expected
-     * @param null|string $input
+     * @dataProvider provideFixTypesOrderAndLengthCases
      */
-    public function testFix70TypesOrderAndLength($expected, $input = null)
+    public function testFixTypesOrderAndLength(string $expected, ?string $input = null): void
     {
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
         ]);
 
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70TypesOrderAndLengthCases()
+    public static function provideFixTypesOrderAndLengthCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 use A\B;
 use Some\Bar;
 use Foo\Zar\Baz;
@@ -1817,19 +2012,19 @@ use some\b\{
 };
 use some\a\{ClassA, ClassB, ClassC as C};
 use some\b\{ClassK, ClassL, ClassM as M};
-use some\a\{ClassA as A /*z*/, ClassB, ClassC};
+use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
 use const some\a\{ConstA, ConstB, ConstC};
 use const some\b\{ConstD, ConstE, ConstF};
 use function some\a\{fn_a, fn_b};
 use function some\f\{fn_c, fn_d, fn_e};
 use function some\b\{fn_k, fn_l, func_m};
 ',
-                '<?php
+            '<?php
 use const some\a\{ConstA, ConstB, ConstC};
 use some\a\{ClassA, ClassB, ClassC as C};
 use Foo\Zar\Baz;
 use some\b\{ClassK, ClassL, ClassM as M};
-use some\a\{ClassA as A /*z*/, ClassB, ClassC};
+use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
 use A\B;
 use some\b\{
     ClassF,
@@ -1841,33 +2036,28 @@ use function some\a\{fn_a, fn_b};
 use const some\b\{ConstD, ConstE, ConstF};
 use function some\f\{fn_c, fn_d, fn_e};
 ',
-            ],
         ];
     }
 
     /**
-     * @dataProvider provideFix70TypesOrderAndAlphabetCases
-     * @requires PHP 7.0
+     * @dataProvider provideFixTypesOrderAndAlphabetCases
      *
-     * @param string      $expected
-     * @param null|string $input
-     * @param string[]    $importOrder
+     * @param string[] $importOrder
      */
-    public function testFix70TypesOrderAndAlphabet($expected, $input = null, array $importOrder = null)
+    public function testFixTypesOrderAndAlphabet(string $expected, ?string $input = null, array $importOrder = null): void
     {
-        $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
-            'importsOrder' => $importOrder,
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            'imports_order' => $importOrder,
         ]);
 
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70TypesOrderAndAlphabetCases()
+    public static function provideFixTypesOrderAndAlphabetCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 use Aaa\Bbb;
 use Aaa\Ccc;
 use Bar\Biz\Boooz\Bum;
@@ -1889,7 +2079,7 @@ use function some\b\{fn_c, fn_d, fn_e};
 use function some\c\{fn_f};
 use function some\f\{fn_g, fn_h, fn_i};
 ',
-                '<?php
+            '<?php
 use Aaa\Ccc;
 use Foo\Zar\Baz;
 use function some\f\{fn_g, fn_h, fn_i};
@@ -1911,34 +2101,29 @@ use Aaa\Bbb;
 use const some\b\{ConstE};
 use function some\a\{fn_a, fn_b};
 ',
-                [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
-            ],
+            [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
         ];
     }
 
     /**
-     * @dataProvider provideFix70TypesOrderAndNoneCases
-     * @requires PHP 7.0
+     * @dataProvider provideFixTypesOrderAndNoneCases
      *
-     * @param string        $expected
-     * @param null|string   $input
      * @param null|string[] $importOrder
      */
-    public function testFix70TypesOrderAndNone($expected, $input = null, array $importOrder = null)
+    public function testFixTypesOrderAndNone(string $expected, ?string $input = null, array $importOrder = null): void
     {
         $this->fixer->configure([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_NONE,
-            'importsOrder' => $importOrder,
+            'sort_algorithm' => OrderedImportsFixer::SORT_NONE,
+            'imports_order' => $importOrder,
         ]);
 
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70TypesOrderAndNoneCases()
+    public static function provideFixTypesOrderAndNoneCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 use Aaa\Ccc;
 use Foo\Zar\Baz;
 use some\a\{ClassA};
@@ -1960,7 +2145,7 @@ use function some\a\{fn_x};
 use function some\b\{fn_c, fn_d, fn_e};
 use function some\a\{fn_a, fn_b};
 ',
-                '<?php
+            '<?php
 use Aaa\Ccc;
 use Foo\Zar\Baz;
 use function some\f\{fn_g, fn_h, fn_i};
@@ -1982,140 +2167,84 @@ use Aaa\Bbb;
 use const some\b\{ConstE};
 use function some\a\{fn_a, fn_b};
 ',
-                [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
-            ],
+            [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
         ];
     }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $config
-     *
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
-     */
-    public function testFix72($expected, $input = null, array $config = [])
-    {
-        $this->configureFixerWithAliasedOptions($config);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix72Cases()
-    {
-        $input =
-            '<?php use A\{B,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use function some\a\{fn_a, fn_b, fn_c,};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use C\{D,E,};
-';
-
-        return [
-            [
-                '<?php
-use A\{B,};
-use C\{D,E,};
-',
-                '<?php
-use C\{D,E,};
-use A\{B,};
-',
-            ],
-            [
-                '<?php use A\{B,};
-use C\{D,E,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use function some\a\{fn_a, fn_b, fn_c,};
-',
-                $input,
-                [
-                    'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
-                    'importsOrder' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
-                ],
-            ],
-            [
-                '<?php use A\{B,};
-use C\{D,E,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use function some\a\{fn_a, fn_b, fn_c,};
-',
-                $input,
-                [
-                    'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-                    'importsOrder' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
-                ],
-            ],
-            [
-                '<?php use A\{B,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use C\{D,E,};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use function some\a\{fn_a, fn_b, fn_c,};
-',
-                $input,
-                [
-                    'sortAlgorithm' => OrderedImportsFixer::SORT_NONE,
-                    'importsOrder' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
-                ],
-            ],
-        ];
-    }
-
-    public function testFixByNone()
+    public function testFixByNone(): void
     {
         $this->fixer->configure([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_NONE,
-            'importsOrder' => null,
+            'sort_algorithm' => OrderedImportsFixer::SORT_NONE,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar as ZooBar;
-use Foo\Bar;
-use Foo\Zar\Baz;
+            The normal
+            use of this fixer
+            should not change this sentence nor those statements below
+            use Zoo\Bar as ZooBar;
+            use Foo\Bar;
+            use Foo\Zar\Baz;
 
-<?php
+            <?php
 
-use Foo\Bar\FooBar as FooBaz;
-use Zoo\Bar as ZooBar, Zoo\Tar;
- use Foo\Bar;
-use Foo\Zar\Baz;
-use Symfony\Annotation\Template;
-   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
-use SomeClass;
+            use Foo\Bar\FooBar as FooBaz;
+            use Zoo\Bar as ZooBar, Zoo\Tar;
+             use Foo\Bar;
+            use Foo\Zar\Baz;
+            use Symfony\Annotation\Template;
+               use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+            use SomeClass;
 
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
+            $a = new Bar();
+            $a = new FooBaz();
+            $a = new someclass();
 
-use Symfony\Doctrine\Entities\Entity;
+            use Symfony\Doctrine\Entities\Entity;
 
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
+            class AnnotatedClass
+            {
+                /**
+                 * @Template(foobar=21)
+                 * @param Entity $foo
+                 */
+                public function doSomething($foo)
+                {
+                    $bar = $foo->toArray();
+                    /** @var ArrayInterface $bar */
 
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
+                    return function () use ($bar, $foo) {};
+                }
+            }
+            EOF;
 
         $this->doTest($expected);
+    }
+
+    public function testFixWithCaseSensitive(): void
+    {
+        $this->fixer->configure([
+            'case_sensitive' => true,
+        ]);
+
+        $expected = <<<'EOF'
+            <?php
+
+            use AA;
+            use Aaa;
+
+            class Foo { }
+            EOF;
+
+        $input = <<<'EOF'
+            <?php
+
+            use Aaa;
+            use AA;
+
+            class Foo { }
+            EOF;
+
+        $this->doTest($expected, $input);
     }
 }

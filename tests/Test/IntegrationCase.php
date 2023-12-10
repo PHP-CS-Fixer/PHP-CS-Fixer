@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,7 +14,7 @@
 
 namespace PhpCsFixer\Tests\Test;
 
-use PhpCsFixer\RuleSet;
+use PhpCsFixer\RuleSet\RuleSet;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -21,66 +23,47 @@ use PhpCsFixer\RuleSet;
  */
 final class IntegrationCase
 {
-    private $config;
+    /**
+     * @var array{indent: string, lineEnding: string}
+     */
+    private array $config;
+
+    private string $expectedCode;
+
+    private string $fileName;
+
+    private ?string $inputCode;
 
     /**
-     * @var string
+     * @var array{php: int, "php<": int, os: list<string>}
      */
-    private $expectedCode;
+    private array $requirements;
 
-    /**
-     * @var string
-     */
-    private $fileName;
-
-    /**
-     * @var null|string
-     */
-    private $inputCode;
-
-    /**
-     * Env requirements (possible keys: php).
-     *
-     * @var array
-     */
-    private $requirements;
-
-    /**
-     * @var RuleSet
-     */
-    private $ruleset;
+    private RuleSet $ruleset;
 
     /**
      * Settings how to perform the test (possible keys: none in base class, use as extension point for custom IntegrationTestCase).
      *
-     * @var array
+     * @var array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck?: bool}
      */
-    private $settings;
+    private array $settings;
+
+    private string $title;
 
     /**
-     * @var string
-     */
-    private $title;
-
-    /**
-     * @param string      $fileName
-     * @param string      $title
-     * @param array       $settings
-     * @param array       $requirements
-     * @param array       $config
-     * @param RuleSet     $ruleset
-     * @param string      $expectedCode
-     * @param null|string $inputCode
+     * @param array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck?: bool} $settings
+     * @param array{php: int, "php<": int, os: list<string>}                                         $requirements
+     * @param array{indent: string, lineEnding: string}                                              $config
      */
     public function __construct(
-        $fileName,
-        $title,
+        string $fileName,
+        string $title,
         array $settings,
         array $requirements,
         array $config,
         RuleSet $ruleset,
-        $expectedCode,
-        $inputCode
+        string $expectedCode,
+        ?string $inputCode
     ) {
         $this->fileName = $fileName;
         $this->title = $title;
@@ -92,45 +75,39 @@ final class IntegrationCase
         $this->inputCode = $inputCode;
     }
 
-    public function hasInputCode()
+    public function hasInputCode(): bool
     {
         return null !== $this->inputCode;
     }
 
-    public function getConfig()
+    /**
+     * @return array{indent: string, lineEnding: string}
+     */
+    public function getConfig(): array
     {
         return $this->config;
     }
 
-    public function getExpectedCode()
+    public function getExpectedCode(): string
     {
         return $this->expectedCode;
     }
 
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->fileName;
     }
 
-    public function getInputCode()
+    public function getInputCode(): ?string
     {
         return $this->inputCode;
     }
 
     /**
-     * @param string $name
-     *
      * @return mixed
      */
-    public function getRequirement($name)
+    public function getRequirement(string $name)
     {
-        if (!\is_string($name)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Requirement key must be a string, got "%s".',
-                \is_object($name) ? \get_class($name) : \gettype($name).'#'.$name
-            ));
-        }
-
         if (!\array_key_exists($name, $this->requirements)) {
             throw new \InvalidArgumentException(sprintf(
                 'Unknown requirement key "%s", expected any of "%s".',
@@ -142,22 +119,28 @@ final class IntegrationCase
         return $this->requirements[$name];
     }
 
-    public function getRequirements()
+    /**
+     * @return array{php: int, "php<": int, os: list<string>}
+     */
+    public function getRequirements(): array
     {
         return $this->requirements;
     }
 
-    public function getRuleset()
+    public function getRuleset(): RuleSet
     {
         return $this->ruleset;
     }
 
-    public function getSettings()
+    /**
+     * @return array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck?: bool}
+     */
+    public function getSettings(): array
     {
         return $this->settings;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }

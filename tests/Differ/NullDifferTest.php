@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,12 +25,12 @@ use PhpCsFixer\Differ\NullDiffer;
  */
 final class NullDifferTest extends AbstractDifferTestCase
 {
-    public function testDiffReturnsEmptyString()
+    public function testDiffReturnsEmptyString(): void
     {
         $diff = '';
 
         $differ = new NullDiffer();
 
-        static::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
+        self::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
     }
 }

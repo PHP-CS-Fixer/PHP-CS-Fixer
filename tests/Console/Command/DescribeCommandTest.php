@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,18 +14,28 @@
 
 namespace PhpCsFixer\Tests\Console\Command;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Tests\Fixtures\DescribeCommand\DescribeFixtureFixer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
-use Prophecy\Argument;
+use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -34,19 +46,36 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class DescribeCommandTest extends TestCase
 {
-    public function testExecuteOutput()
+    /**
+     * @dataProvider provideExecuteOutputCases
+     */
+    public function testExecuteOutput(string $expected, bool $expectedIsRegEx, bool $decorated, ?FixerInterface $fixer = null): void
     {
-        $expected =
-"Description of Foo/bar rule.
-Fixes stuff. DEPRECATED: use `Foo/baz` instead.
+        $actual = $this->execute(null !== $fixer ? $fixer->getName() : 'Foo/bar', $decorated, $fixer)->getDisplay(true);
+
+        if (true === $expectedIsRegEx) {
+            self::assertMatchesRegularExpression($expected, $actual);
+        } else {
+            self::assertSame($expected, $actual);
+        }
+    }
+
+    public static function provideExecuteOutputCases(): iterable
+    {
+        yield 'rule is configurable, risky and deprecated' => [
+            "Description of the `Foo/bar` rule.
+
+DEPRECATED: use `Foo/baz` instead.
+
+Fixes stuff.
 Replaces bad stuff with good stuff.
 
 Fixer applying this rule is risky.
 Can break stuff.
 
 Fixer is configurable using following options:
-* functions (a subset of ['foo', 'test']): list of `function` names to fix; defaults to ['foo', 'test']; DEPRECATED alias: funcs
 * deprecated_option (bool): a deprecated option; defaults to false. DEPRECATED: use option `functions` instead.
+* functions (a subset of ['foo', 'test']): list of `function` names to fix; defaults to ['foo', 'test']; DEPRECATED alias: funcs
 
 Fixing examples:
  * Example #1. Fixing with the default configuration.
@@ -69,23 +98,25 @@ Fixing examples:
    ".'
    ----------- end diff -----------
 
-';
-        static::assertSame($expected, $this->execute('Foo/bar', false)->getDisplay(true));
-    }
+',
+            false,
+            false,
+        ];
 
-    public function testExecuteOutputWithDecoration()
-    {
-        $expected =
-"\033[32mDescription of\033[39m Foo/bar \033[32mrule\033[39m.
-Fixes stuff. \033[37;41mDEPRECATED\033[39;49m: use \033[32m`Foo/baz`\033[39m instead.
+        yield 'rule is configurable, risky and deprecated [with decoration]' => [
+            "\033[34mDescription of the \033[39m\033[32m`Foo/bar`\033[39m\033[34m rule.\033[39m
+
+\033[37;41mDEPRECATED\033[39;49m: use \033[32m`Foo/baz`\033[39m instead.
+
+Fixes stuff.
 Replaces bad stuff with good stuff.
 
 \033[37;41mFixer applying this rule is risky.\033[39;49m
 Can break stuff.
 
 Fixer is configurable using following options:
-* \033[32mfunctions\033[39m (a subset of \e[33m['foo', 'test']\e[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m; \e[37;41mDEPRECATED\e[39;49m alias: \033[33mfuncs\033[39m
 * \033[32mdeprecated_option\033[39m (\033[33mbool\033[39m): a deprecated option; defaults to \e[33mfalse\e[39m. \033[37;41mDEPRECATED\033[39;49m: use option \e[32m`functions`\e[39m instead.
+* \033[32mfunctions\033[39m (a subset of \e[33m['foo', 'test']\e[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m; \e[37;41mDEPRECATED\e[39;49m alias: \033[33mfuncs\033[39m
 
 Fixing examples:
  * Example #1. Fixing with the \033[33mdefault\033[39m configuration.
@@ -108,18 +139,146 @@ Fixing examples:
    "."
 \033[33m   ----------- end diff -----------\033[39m
 
-";
-        $actual = $this->execute('Foo/bar', true)->getDisplay(true);
+",
+            false,
+            true,
+        ];
 
-        static::assertSame($expected, $actual);
+        yield 'rule without code samples' => [
+            'Description of the `Foo/samples` rule.
+
+Summary of the rule.
+Description of the rule.
+
+Fixing examples are not available for this rule.
+
+',
+            false,
+            false,
+            self::createFixerWithSamplesDouble([]),
+        ];
+
+        yield 'rule with code samples' => [
+            "Description of the `Foo/samples` rule.
+
+Summary of the rule.
+Description of the rule.
+
+Fixing examples:
+ * Example #1.
+   ---------- begin diff ----------
+   --- Original
+   +++ New
+   @@ -1,1 +1,1 @@
+   -<?php echo 'BEFORE';
+   +<?php echo 'AFTER';
+   "."
+   ----------- end diff -----------
+
+ * Example #2.
+   ---------- begin diff ----------
+   --- Original
+   +++ New
+   @@ -1,1 +1,1 @@
+   -<?php echo 'BEFORE'.'-B';
+   +<?php echo 'AFTER'.'-B';
+   ".'
+   ----------- end diff -----------
+
+',
+            false,
+            false,
+            self::createFixerWithSamplesDouble([
+                new CodeSample(
+                    "<?php echo 'BEFORE';".PHP_EOL,
+                ),
+                new CodeSample(
+                    "<?php echo 'BEFORE'.'-B';".PHP_EOL,
+                ),
+            ]),
+        ];
+
+        yield 'rule with code samples (one with matching PHP version, one NOT)' => [
+            "Description of the `Foo/samples` rule.
+
+Summary of the rule.
+Description of the rule.
+
+Fixing examples:
+ * Example #1.
+   ---------- begin diff ----------
+   --- Original
+   +++ New
+   @@ -1,1 +1,1 @@
+   -<?php echo 'BEFORE';
+   +<?php echo 'AFTER';
+   ".'
+   ----------- end diff -----------
+
+',
+            false,
+            false,
+            self::createFixerWithSamplesDouble([
+                new CodeSample(
+                    "<?php echo 'BEFORE';".PHP_EOL,
+                ),
+                new VersionSpecificCodeSample(
+                    "<?php echo 'BEFORE'.'-B';".PHP_EOL,
+                    new VersionSpecification(20_00_00)
+                ),
+            ]),
+        ];
+
+        yield 'rule with code samples (all with NOT matching PHP version)' => [
+            'Description of the `Foo/samples` rule.
+
+Summary of the rule.
+Description of the rule.
+
+Fixing examples cannot be demonstrated on the current PHP version.
+
+',
+            false,
+            false,
+            self::createFixerWithSamplesDouble([
+                new VersionSpecificCodeSample(
+                    "<?php echo 'BEFORE';".PHP_EOL,
+                    new VersionSpecification(20_00_00)
+                ),
+                new VersionSpecificCodeSample(
+                    "<?php echo 'BEFORE'.'-B';".PHP_EOL,
+                    new VersionSpecification(20_00_00)
+                ),
+            ]),
+        ];
+
+        yield 'rule that is part of ruleset' => [
+            '/^Description of the `binary_operator_spaces` rule.
+.*
+   ----------- end diff -----------
+
+'.preg_quote("Fixer is part of the following rule sets:
+* @PER with config: ['default' => 'at_least_single_space']
+* @PER-CS with config: ['default' => 'at_least_single_space']
+* @PER-CS1.0 with config: ['default' => 'at_least_single_space']
+* @PER-CS2.0 with config: ['default' => 'at_least_single_space']
+* @PSR12 with config: ['default' => 'at_least_single_space']
+* @PhpCsFixer with default config
+* @Symfony with default config").'
+$/s',
+
+            true,
+            false,
+            new BinaryOperatorSpacesFixer(),
+        ];
     }
 
-    public function testExecuteStatusCode()
+    public function testExecuteStatusCode(): void
     {
-        static::assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
+        self::assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
     }
 
-    public function testExecuteWithUnknownRuleName()
+    public function testExecuteWithUnknownRuleName(): void
     {
         $application = new Application();
         $application->add(new DescribeCommand(new FixerFactory()));
@@ -129,14 +288,14 @@ Fixing examples:
         $commandTester = new CommandTester($command);
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('#^Rule "Foo/bar" not found\.$#');
+        $this->expectExceptionMessageMatches('#^Rule "Foo/bar" not found\.$#');
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'Foo/bar',
         ]);
     }
 
-    public function testExecuteWithUnknownSetName()
+    public function testExecuteWithUnknownSetName(): void
     {
         $application = new Application();
         $application->add(new DescribeCommand(new FixerFactory()));
@@ -146,14 +305,14 @@ Fixing examples:
         $commandTester = new CommandTester($command);
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('#^Set "@NoSuchSet" not found\.$#');
+        $this->expectExceptionMessageMatches('#^Set "@NoSuchSet" not found\.$#');
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => '@NoSuchSet',
         ]);
     }
 
-    public function testExecuteWithoutName()
+    public function testExecuteWithoutName(): void
     {
         $application = new Application();
         $application->add(new DescribeCommand(new FixerFactory()));
@@ -163,31 +322,60 @@ Fixing examples:
         $commandTester = new CommandTester($command);
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageRegExp('/^Not enough arguments( \(missing: "name"\))?\.$/');
+        $this->expectExceptionMessageMatches('/^Not enough arguments( \(missing: "name"\))?\.$/');
         $commandTester->execute([
             'command' => $command->getName(),
         ]);
     }
 
-    public function testGetAlternativeSuggestion()
+    public function testGetAlternativeSuggestion(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
+        $this->expectExceptionMessageMatches('#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
         $this->execute('Foo2/bar', false);
     }
 
-    public function testFixerClassNameIsExposedWhenVerbose()
+    public function testFixerClassNameIsExposedWhenVerbose(): void
     {
-        $fixerName = uniqid('Foo/bar_');
+        $fixer = new class() implements FixerInterface {
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
 
-        $fixer = $this->prophesize(\PhpCsFixer\Fixer\FixerInterface::class);
-        $fixer->getName()->willReturn($fixerName);
-        $fixer->getPriority()->willReturn(0);
-        $fixer->isRisky()->willReturn(true);
-        $mock = $fixer->reveal();
+            public function isRisky(): bool
+            {
+                return true;
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDefinition(): FixerDefinition
+            {
+                return new FixerDefinition('Fixes stuff.', []);
+            }
+
+            public function getName(): string
+            {
+                return 'Foo/bar_baz';
+            }
+
+            public function getPriority(): int
+            {
+                return 0;
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
 
         $fixerFactory = new FixerFactory();
-        $fixerFactory->registerFixer($mock, true);
+        $fixerFactory->registerFixer($fixer, true);
 
         $application = new Application();
         $application->add(new DescribeCommand($fixerFactory));
@@ -198,84 +386,199 @@ Fixing examples:
         $commandTester->execute(
             [
                 'command' => $command->getName(),
-                'name' => $fixerName,
+                'name' => 'Foo/bar_baz',
             ],
             [
                 'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
             ]
         );
 
-        static::assertContains(\get_class($mock), $commandTester->getDisplay(true));
+        self::assertStringContainsString(str_replace("\0", '\\', \get_class($fixer)), $commandTester->getDisplay(true));
+    }
+
+    public function testCommandDescribesCustomFixer(): void
+    {
+        $application = new Application();
+        $application->add(new DescribeCommand());
+
+        $command = $application->find('describe');
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            'name' => (new DescribeFixtureFixer())->getName(),
+            '--config' => __DIR__.'/../../Fixtures/DescribeCommand/.php-cs-fixer.fixture.php',
+        ]);
+
+        $expected =
+"Description of the `Vendor/describe_fixture` rule.
+
+Fixture for describe command.
+
+Fixing examples:
+ * Example #1.
+   ---------- begin diff ----------
+   --- Original
+   +++ New
+   @@ -1,2 +1,2 @@
+    <?php
+   -echo 'describe fixture';
+   +echo 'fixture for describe';
+   ".'
+   ----------- end diff -----------
+
+';
+        self::assertSame($expected, $commandTester->getDisplay(true));
+        self::assertSame(0, $commandTester->getStatusCode());
     }
 
     /**
-     * @param string $name
-     * @param bool   $decorated
-     *
-     * @return CommandTester
+     * @param CodeSampleInterface[] $samples
      */
-    private function execute($name, $decorated)
+    private static function createFixerWithSamplesDouble(array $samples): FixerInterface
     {
-        $fixer = $this->prophesize();
-        $fixer->willImplement(\PhpCsFixer\Fixer\DefinedFixerInterface::class);
-        $fixer->willImplement(\PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface::class);
-        $fixer->willImplement(\PhpCsFixer\Fixer\DeprecatedFixerInterface::class);
+        return new class($samples) extends AbstractFixer {
+            /**
+             * @var CodeSampleInterface[]
+             */
+            private $samples;
 
-        $fixer->getName()->willReturn('Foo/bar');
-        $fixer->getPriority()->willReturn(0);
-        $fixer->isRisky()->willReturn(true);
-        $fixer->getSuccessorsNames()->willReturn(['Foo/baz']);
+            /**
+             * @param CodeSampleInterface[] $samples
+             */
+            public function __construct(
+                array $samples
+            ) {
+                parent::__construct();
+                $this->samples = $samples;
+            }
 
-        $functionNames = ['foo', 'test'];
+            public function getName(): string
+            {
+                return 'Foo/samples';
+            }
 
-        $fixer->getConfigurationDefinition()->willReturn(new FixerConfigurationResolver([
-            (new AliasedFixerOptionBuilder(new FixerOptionBuilder('functions', 'List of `function` names to fix.'), 'funcs'))
-                ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset($functionNames)])
-                ->setDefault($functionNames)
-                ->getOption(),
-            (new FixerOptionBuilder('deprecated_option', 'A deprecated option.'))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(false)
-                ->setDeprecationMessage('Use option `functions` instead.')
-                ->getOption(),
-        ]));
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                return new FixerDefinition(
+                    'Summary of the rule.',
+                    $this->samples,
+                    'Description of the rule.',
+                    null,
+                );
+            }
 
-        $fixer->getDefinition()->willReturn(new FixerDefinition(
-            'Fixes stuff.',
-            [
-                new CodeSample(
-                    "<?php echo 'bad stuff and bad thing';\n"
-                ),
-                new CodeSample(
-                    "<?php echo 'bad stuff and bad thing';\n",
-                    ['functions' => ['foo', 'bar']]
-                ),
-            ],
-            'Replaces bad stuff with good stuff.',
-            'Can break stuff.'
-        ));
+            public function isCandidate(Tokens $tokens): bool
+            {
+                return true;
+            }
 
-        $things = false;
-        $fixer->configure([])->will(function () use (&$things) {
-            $things = false;
-        });
-        $fixer->configure(['functions' => ['foo', 'bar']])->will(function () use (&$things) {
-            $things = true;
-        });
+            public function applyFix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                $tokens[3] = new Token([
+                    $tokens[3]->getId(),
+                    "'AFTER'",
+                ]);
+            }
+        };
+    }
 
-        $fixer->fix(
-            Argument::type(\SplFileInfo::class),
-            Argument::type(\PhpCsFixer\Tokenizer\Tokens::class)
-        )->will(function (array $arguments) use (&$things) {
-            $arguments[1][3] = new Token([
-                $arguments[1][3]->getId(),
-                ($things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\''),
-            ]);
-        });
+    private function createConfigurableDeprecatedFixerDouble(): FixerInterface
+    {
+        return new class() implements ConfigurableFixerInterface, DeprecatedFixerInterface {
+            /** @var array<mixed> */
+            private array $configuration;
+
+            public function configure(array $configuration): void
+            {
+                $this->configuration = $configuration;
+            }
+
+            public function getConfigurationDefinition(): FixerConfigurationResolver
+            {
+                $functionNames = ['foo', 'test'];
+
+                return new FixerConfigurationResolver([
+                    (new AliasedFixerOptionBuilder(new FixerOptionBuilder('functions', 'List of `function` names to fix.'), 'funcs'))
+                        ->setAllowedTypes(['array'])
+                        ->setAllowedValues([new AllowedValueSubset($functionNames)])
+                        ->setDefault($functionNames)
+                        ->getOption(),
+                    (new FixerOptionBuilder('deprecated_option', 'A deprecated option.'))
+                        ->setAllowedTypes(['bool'])
+                        ->setDefault(false)
+                        ->setDeprecationMessage('Use option `functions` instead.')
+                        ->getOption(),
+                ]);
+            }
+
+            public function getSuccessorsNames(): array
+            {
+                return ['Foo/baz'];
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isRisky(): bool
+            {
+                return true;
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                $tokens[3] = new Token([
+                    $tokens[3]->getId(),
+                    [] !== $this->configuration ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\'',
+                ]);
+            }
+
+            public function getDefinition(): FixerDefinition
+            {
+                return new FixerDefinition(
+                    'Fixes stuff.',
+                    [
+                        new CodeSample(
+                            "<?php echo 'bad stuff and bad thing';\n"
+                        ),
+                        new CodeSample(
+                            "<?php echo 'bad stuff and bad thing';\n",
+                            ['functions' => ['foo', 'bar']]
+                        ),
+                    ],
+                    'Replaces bad stuff with good stuff.',
+                    'Can break stuff.'
+                );
+            }
+
+            public function getName(): string
+            {
+                return 'Foo/bar';
+            }
+
+            public function getPriority(): int
+            {
+                return 0;
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
+    }
+
+    private function execute(string $name, bool $decorated, ?FixerInterface $fixer = null): CommandTester
+    {
+        $fixer ??= $this->createConfigurableDeprecatedFixerDouble();
+
+        $fixerClassName = \get_class($fixer);
+        $isBuiltIn = str_starts_with($fixerClassName, 'PhpCsFixer') && !str_contains($fixerClassName, '@anon');
 
         $fixerFactory = new FixerFactory();
-        $fixerFactory->registerFixer($fixer->reveal(), true);
+        $fixerFactory->registerFixer($fixer, !$isBuiltIn);
 
         $application = new Application();
         $application->add(new DescribeCommand($fixerFactory));

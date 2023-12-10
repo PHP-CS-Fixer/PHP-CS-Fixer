@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: no_useless_sprintf,no_empty_statement.
+--RULESET--
+{"no_useless_sprintf": true, "no_empty_statement": true}
+--EXPECT--
+<?php
+
+
+--INPUT--
+<?php
+;sprintf('foo');

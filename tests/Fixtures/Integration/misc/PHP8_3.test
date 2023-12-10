@@ -1,0 +1,116 @@
+--TEST--
+PHP 8.3 test.
+
+@TODO Fix whitespace inside dynamic const fetch, e.g. `Foo::{  $bar  }`
+@TODO Fix whitespace between const type and const name, e.g. `public const string       TEST = 'Test1';`
+--RULESET--
+{
+    "@PhpCsFixer": true,
+    "@PHP83Migration": true
+}
+--REQUIREMENTS--
+{"php": 80300}
+--EXPECT--
+<?php
+
+// https://wiki.php.net/rfc/arbitrary_static_variable_initializers
+function foo(int $j)
+{
+    static $i = bar($j * $j);
+}
+
+// https://wiki.php.net/rfc/dynamic_class_constant_fetch
+class Foo
+{
+    public const BAR = 'bar';
+}
+$bar = 'BAR';
+function bar(): string
+{
+    return 'BAR';
+}
+$baz = ['bar' => ['bar' => 'BAR']];
+
+echo Foo::{$bar};
+echo Foo::{bar()};
+echo Foo::{$baz['bar']['bar']};
+
+// https://wiki.php.net/rfc/typed_class_constants
+enum E
+{
+    public const string TEST = 'Test1';
+}
+
+trait T
+{
+    public const string TEST = E::TEST;
+}
+
+interface I
+{
+    public const string TEST = E::TEST;
+}
+
+class Foo implements I
+{
+    use T;
+
+    public const string TEST = E::TEST;
+}
+
+class Bar extends Foo
+{
+    public const string TEST = 'Test2';
+}
+
+// https://www.php.net/manual/en/migration83.new-features.php#migration83.new-features.core.readonly-modifier-improvements
+$a = new readonly class() {};
+
+--INPUT--
+<?php
+
+// https://wiki.php.net/rfc/arbitrary_static_variable_initializers
+function foo(    int     $j     ) {
+    static       $i  =  bar (  $j     *     $j ) ;
+}
+
+// https://wiki.php.net/rfc/dynamic_class_constant_fetch
+class Foo {
+    const BAR = 'bar';
+}
+$bar = 'BAR';
+function bar(): string { return 'BAR'; }
+$baz = ['bar' => ['bar' => 'BAR']];
+
+echo Foo    ::    {$bar};
+echo Foo    ::    {bar  (   )};
+echo Foo    ::    {$baz    [   'bar'    ]    [    'bar'    ]};
+
+// https://wiki.php.net/rfc/typed_class_constants
+enum E {
+    const    StRiNg TEST = "Test1";
+}
+
+trait T {
+    const        STRING TEST = E::TEST;
+}
+
+interface I {
+    const                      StrinG TEST = E::TEST;
+}
+
+class Foo implements I {
+    use T;
+
+    const   strIng TEST = E::TEST;
+}
+ 
+class Bar extends Foo {
+    const
+           string TEST = "Test2";
+}
+
+// https://www.php.net/manual/en/migration83.new-features.php#migration83.new-features.core.readonly-modifier-improvements
+$a   =    New     ReadOnly     CLASS
+{
+};

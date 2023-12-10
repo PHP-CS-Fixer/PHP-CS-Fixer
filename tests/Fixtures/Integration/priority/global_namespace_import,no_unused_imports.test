@@ -1,0 +1,20 @@
+--TEST--
+Integration of fixers: global_namespace_import,no_unused_imports.
+--RULESET--
+{"global_namespace_import": {"import_constants": false}, "no_unused_imports": true}
+--EXPECT--
+<?php
+
+namespace Test;
+
+
+echo \Foo;
+
+--INPUT--
+<?php
+
+namespace Test;
+
+use const Foo;
+
+echo Foo;

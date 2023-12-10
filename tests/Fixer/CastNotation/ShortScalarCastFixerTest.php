@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\CastNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\CastNotation\ShortScalarCastFixer
@@ -24,70 +24,96 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    /**
+     * @dataProvider provideFix74DeprecatedCases
+     *
+     * @group legacy
+     *
+     * @requires PHP <8.0
+     */
+    public function testFix74Deprecated(string $expected, ?string $input = null): void
     {
-        $cases = [];
-        foreach (['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'real' => 'float', 'binary' => 'string'] as $from => $to) {
-            $cases[] =
-                [
-                    sprintf('<?php echo ( %s  )$a;', $to),
-                    sprintf('<?php echo ( %s  )$a;', $from),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b=(%s) $d;', $to),
-                    sprintf('<?php $b=(%s) $d;', $from),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b= (%s)$d;', $to),
-                    sprintf('<?php $b= (%s)$d;', strtoupper($from)),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b=( %s) $d;', $to),
-                    sprintf('<?php $b=( %s) $d;', ucfirst($from)),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b=(%s ) $d;', $to),
-                    sprintf('<?php $b=(%s ) $d;', ucfirst($from)),
-                ];
-        }
+        $this->expectDeprecation('%AThe (real) cast is deprecated, use (float) instead');
 
-        return $cases;
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixCases(): iterable
+    {
+        foreach (['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'binary' => 'string'] as $from => $to) {
+            foreach (self::createCasesFor($from, $to) as $case) {
+                yield $case;
+            }
+        }
+    }
+
+    public static function provideFix74DeprecatedCases(): iterable
+    {
+        return self::createCasesFor('real', 'float');
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideNoFixCases
      */
-    public function testNoFix($expected)
+    public function testNoFix(string $expected): void
     {
         $this->doTest($expected);
     }
 
-    public function provideNoFixCases()
+    public static function provideNoFixCases(): iterable
     {
-        $cases = [];
-        foreach (['string', 'array', 'object', 'unset'] as $cast) {
-            $cases[] = [sprintf('<?php $b=(%s) $d;', $cast)];
-            $cases[] = [sprintf('<?php $b=( %s ) $d;', $cast)];
-            $cases[] = [sprintf('<?php $b=(%s ) $d;', ucfirst($cast))];
-            $cases[] = [sprintf('<?php $b=(%s ) $d;', strtoupper($cast))];
+        $types = ['string', 'array', 'object'];
+
+        if (\PHP_VERSION_ID < 8_00_00) {
+            $types[] = 'unset';
         }
 
-        return $cases;
+        foreach ($types as $cast) {
+            yield [sprintf('<?php $b=(%s) $d;', $cast)];
+
+            yield [sprintf('<?php $b=( %s ) $d;', $cast)];
+
+            yield [sprintf('<?php $b=(%s ) $d;', ucfirst($cast))];
+
+            yield [sprintf('<?php $b=(%s ) $d;', strtoupper($cast))];
+        }
+    }
+
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
+    private static function createCasesFor(string $from, string $to): iterable
+    {
+        yield [
+            sprintf('<?php echo ( %s  )$a;', $to),
+            sprintf('<?php echo ( %s  )$a;', $from),
+        ];
+
+        yield [
+            sprintf('<?php $b=(%s) $d;', $to),
+            sprintf('<?php $b=(%s) $d;', $from),
+        ];
+
+        yield [
+            sprintf('<?php $b= (%s)$d;', $to),
+            sprintf('<?php $b= (%s)$d;', strtoupper($from)),
+        ];
+
+        yield [
+            sprintf('<?php $b=( %s) $d;', $to),
+            sprintf('<?php $b=( %s) $d;', ucfirst($from)),
+        ];
+
+        yield [
+            sprintf('<?php $b=(%s ) $d;', $to),
+            sprintf('<?php $b=(%s ) $d;', ucfirst($from)),
+        ];
     }
 }

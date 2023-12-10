@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: no_blank_lines_after_phpdoc,header_comment.
 --RULESET--
-{"no_blank_lines_after_phpdoc": true, "header_comment": {"header": "Header", "commentType": "PHPDoc", "separate": "bottom"}}
+{"no_blank_lines_after_phpdoc": true, "header_comment": {"header": "Header", "comment_type": "PHPDoc", "separate": "bottom"}}
 --EXPECT--
 <?php
 /**

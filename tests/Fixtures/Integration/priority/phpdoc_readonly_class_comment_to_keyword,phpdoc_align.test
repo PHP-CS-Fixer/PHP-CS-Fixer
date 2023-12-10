@@ -1,0 +1,30 @@
+--TEST--
+Integration of fixers: phpdoc_readonly_class_comment_to_keyword,phpdoc_align.
+--RULESET--
+{"phpdoc_readonly_class_comment_to_keyword": true, "phpdoc_align": true}
+--REQUIREMENTS--
+{"php": 80200}
+--EXPECT--
+<?php
+
+/**
+ * @param inTeGer $fo  fo descr
+ * @param float   $bar fo descr
+ */
+readonly class Foo
+{
+
+}
+
+--INPUT--
+<?php
+
+/**
+ * @param inTeGer $fo fo descr
+ * @param float $bar fo descr
+ * @readonly 
+ */
+class Foo
+{
+
+}

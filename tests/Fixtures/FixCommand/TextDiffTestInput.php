@@ -13,8 +13,6 @@
 /**
  * Input for @see \PhpCsFixer\Tests\TextDiffTest.
  *
- * @author SpacePossum
- *
  * @internal
  */
 final class TextDiffTestInput

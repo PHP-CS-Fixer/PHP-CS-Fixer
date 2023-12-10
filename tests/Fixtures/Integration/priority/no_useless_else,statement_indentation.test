@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: no_useless_else,statement_indentation.
+--RULESET--
+{"no_useless_else": true, "statement_indentation": true}
+--EXPECT--
+<?php
+
+if (f1()) {
+    return 1;
+}  
+return 2;
+
+
+--INPUT--
+<?php
+
+if (f1()) {
+    return 1;
+} else {
+    return 2;
+}

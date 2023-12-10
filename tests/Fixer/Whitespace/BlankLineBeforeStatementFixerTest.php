@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,7 +21,6 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -28,11 +29,11 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideInvalidControlStatementCases
+     * @dataProvider provideConfigureRejectsInvalidControlStatementCases
      *
      * @param mixed $controlStatement
      */
-    public function testConfigureRejectsInvalidControlStatement($controlStatement)
+    public function testConfigureRejectsInvalidControlStatement($controlStatement): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
 
@@ -41,41 +42,37 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    /**
-     * @return array
-     */
-    public function provideInvalidControlStatementCases()
+    public static function provideConfigureRejectsInvalidControlStatementCases(): iterable
     {
-        return [
-            'null' => [null],
-            'false' => [false],
-            'true' => [true],
-            'int' => [0],
-            'float' => [3.14],
-            'array' => [[]],
-            'object' => [new \stdClass()],
-            'unknown' => ['foo'],
-        ];
+        yield 'null' => [null];
+
+        yield 'false' => [false];
+
+        yield 'true' => [true];
+
+        yield 'int' => [0];
+
+        yield 'float' => [3.14];
+
+        yield 'array' => [[]];
+
+        yield 'object' => [new \stdClass()];
+
+        yield 'unknown' => ['foo'];
     }
 
     /**
      * @dataProvider provideFixWithReturnCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithDefaultConfiguration($expected, $input = null)
+    public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
      * @dataProvider provideFixWithBreakCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithBreak($expected, $input = null)
+    public function testFixWithBreak(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['break'],
@@ -84,52 +81,52 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithBreakCases()
+    public static function provideFixWithBreakCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 switch ($a) {
     case 42:
         break;
 }',
-            ],
-            [
-                '<?php
-switch ($a) {
-    case 42:
-        $foo = $bar;
+        ];
 
-        break;
-}',
-                '<?php
+        yield [
+            '<?php
 switch ($a) {
     case 42:
         $foo = $bar;
+
         break;
 }',
-            ],
-            [
-                '<?php
+            '<?php
+switch ($a) {
+    case 42:
+        $foo = $bar;
+        break;
+}',
+        ];
+
+        yield [
+            '<?php
 while (true) {
     if ($foo === $bar) {
         break;
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 while (true) {
     if ($foo === $bar) {
         break 1;
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 while (true) {
     if ($foo === $bar) {
         echo $baz;
@@ -137,16 +134,17 @@ while (true) {
         break;
     }
 }',
-                '<?php
+            '<?php
 while (true) {
     if ($foo === $bar) {
         echo $baz;
         break;
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 while (true) {
     if ($foo === $bar) {
         echo $baz;
@@ -154,24 +152,30 @@ while (true) {
         break 1;
     }
 }',
-                '<?php
+            '<?php
 while (true) {
     if ($foo === $bar) {
         echo $baz;
         break 1;
     }
 }',
-            ],
+        ];
+
+        yield [
+            '<?php
+while (true) {
+    if ($foo === $bar) {
+        /** X */
+        break 1;
+    }
+}',
         ];
     }
 
     /**
      * @dataProvider provideFixWithCaseCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithCase($expected, $input = null)
+    public function testFixWithCase(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['case'],
@@ -180,39 +184,36 @@ while (true) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithCaseCases()
+    public static function provideFixWithCaseCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 switch ($a) {
     case 1:
         return 1;
 
-    case 2:
+    case 2;
         return 2;
+
+    case 3:
+        return 3;
 }',
-                '<?php
+            '<?php
 switch ($a) {
     case 1:
         return 1;
-    case 2:
+    case 2;
         return 2;
+    case 3:
+        return 3;
 }',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithContinueCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithContinue($expected, $input = null)
+    public function testFixWithContinue(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['continue'],
@@ -221,60 +222,61 @@ switch ($a) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithContinueCases()
+    public static function provideFixWithContinueCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 while (true) {
     continue;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 while (true) {
     continue 1;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 while (true) {
     while (true) {
         continue 2;
     }
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 while (true) {
     $foo = true;
 
     continue;
 }',
-                '<?php
+            '<?php
 while (true) {
     $foo = true;
     continue;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 while (true) {
     $foo = true;
 
     continue 1;
 }',
-                '<?php
+            '<?php
 while (true) {
     $foo = true;
     continue 1;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 while (true) {
     while (true) {
         switch($a) {
@@ -288,7 +290,7 @@ while (true) {
         continue 2;
     }
 }',
-                '<?php
+            '<?php
 while (true) {
     while (true) {
         switch($a) {
@@ -300,17 +302,13 @@ while (true) {
         continue 2;
     }
 }',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithDeclareCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithDeclare($expected, $input = null)
+    public function testFixWithDeclare(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['declare'],
@@ -319,41 +317,34 @@ while (true) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithDeclareCases()
+    public static function provideFixWithDeclareCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 declare(ticks=1);',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo = "bar";
 do {
 } while (true);
 $foo = "bar";
 
 declare(ticks=1);',
-                '<?php
+            '<?php
 $foo = "bar";
 do {
 } while (true);
 $foo = "bar";
 declare(ticks=1);',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithDefaultCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithDefault($expected, $input = null)
+    public function testFixWithDefault(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['default'],
@@ -362,101 +353,41 @@ declare(ticks=1);',
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithDefaultCases()
+    public static function provideFixWithDefaultCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 switch ($a) {
     case 1:
         return 1;
 
     default:
         return 2;
+}
+
+switch ($a1) {
+    default:
+        return 22;
 }',
-                '<?php
+            '<?php
 switch ($a) {
     case 1:
         return 1;
     default:
         return 2;
-}',
-            ],
-        ];
-    }
+}
 
-    /**
-     * @dataProvider provideFixWithDieCases
-     *
-     * @param string      $expected
-     * @param null|string $input
-     */
-    public function testFixWithDie($expected, $input = null)
-    {
-        $this->fixer->configure([
-            'statements' => ['die'],
-        ]);
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return array
-     */
-    public function provideFixWithDieCases()
-    {
-        return [
-            [
-                '<?php
-if ($foo === $bar) {
-    die();
+switch ($a1) {
+    default:
+        return 22;
 }',
-            ],
-            [
-                '<?php
-if ($foo === $bar) {
-    echo $baz;
-
-    die();
-}',
-                '<?php
-if ($foo === $bar) {
-    echo $baz;
-    die();
-}',
-            ],
-            [
-                '<?php
-if ($foo === $bar) {
-    echo $baz;
-
-    die();
-}',
-            ],
-            [
-                '<?php
-mysqli_connect() or die();',
-            ],
-            [
-                '<?php
-if ($foo === $bar) {
-    $bar = 9001;
-    mysqli_connect() or die();
-}',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithDoCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithDo($expected, $input = null)
+    public function testFixWithDo(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['do'],
@@ -465,38 +396,31 @@ if ($foo === $bar) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithDoCases()
+    public static function provideFixWithDoCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 do {
 } while (true);',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo = "bar";
 
 do {
 } while (true);',
-                '<?php
+            '<?php
 $foo = "bar";
 do {
 } while (true);',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithExitCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithExit($expected, $input = null)
+    public function testFixWithExit(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['exit'],
@@ -505,60 +429,56 @@ do {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithExitCases()
+    public static function provideFixWithExitCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 if ($foo === $bar) {
     exit();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($foo === $bar) {
     echo $baz;
 
     exit();
 }',
-                '<?php
+            '<?php
 if ($foo === $bar) {
     echo $baz;
     exit();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($foo === $bar) {
     echo $baz;
 
     exit();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 mysqli_connect() or exit();',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if ($foo === $bar) {
     $bar = 9001;
     mysqli_connect() or exit();
 }',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithForCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithFor($expected, $input = null)
+    public function testFixWithFor(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['for'],
@@ -567,30 +487,25 @@ if ($foo === $bar) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithForCases()
+    public static function provideFixWithForCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     echo 1;
 
                     for(;;){break;}
                 ',
-                '<?php
+            '<?php
                     echo 1;
                     for(;;){break;}
                 ',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithGotoCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithGoto($expected, $input = null)
+    public function testFixWithGoto(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['goto'],
@@ -599,39 +514,19 @@ if ($foo === $bar) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithGotoCases()
+    public static function provideFixWithGotoCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 a:
 
 if ($foo === $bar) {
     goto a;
 }',
-            ],
-            [
-                '<?php
-a:
+        ];
 
-if ($foo === $bar) {
-    echo $baz;
-
-    goto a;
-}',
-                '<?php
-a:
-
-if ($foo === $bar) {
-    echo $baz;
-    goto a;
-}',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php
 a:
 
 if ($foo === $bar) {
@@ -639,17 +534,31 @@ if ($foo === $bar) {
 
     goto a;
 }',
-            ],
+            '<?php
+a:
+
+if ($foo === $bar) {
+    echo $baz;
+    goto a;
+}',
+        ];
+
+        yield [
+            '<?php
+a:
+
+if ($foo === $bar) {
+    echo $baz;
+
+    goto a;
+}',
         ];
     }
 
     /**
      * @dataProvider provideFixWithIfCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithIf($expected, $input = null)
+    public function testFixWithIf(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['if'],
@@ -658,13 +567,46 @@ if ($foo === $bar) {
         $this->doTest($expected, $input);
     }
 
+    public static function provideFixWithIfCases(): iterable
+    {
+        yield [
+            '<?php if (true) {
+    echo $bar;
+}',
+        ];
+
+        yield [
+            '<?php
+if (true) {
+    echo $bar;
+}',
+        ];
+
+        yield [
+            '<?php
+$foo = $bar;
+
+if (true) {
+    echo $bar;
+}',
+            '<?php
+$foo = $bar;
+if (true) {
+    echo $bar;
+}',
+        ];
+
+        yield [
+            '<?php
+// foo
+if ($foo) { }',
+        ];
+    }
+
     /**
      * @dataProvider provideFixWithForEachCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithForEach($expected, $input = null)
+    public function testFixWithForEach(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['foreach'],
@@ -673,63 +615,25 @@ if ($foo === $bar) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithForEachCases()
+    public static function provideFixWithForEachCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     echo 1;
 
                     foreach($a as $b){break;}
                 ',
-                '<?php
+            '<?php
                     echo 1;
                     foreach($a as $b){break;}
                 ',
-            ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function provideFixWithIfCases()
-    {
-        return [
-            [
-                '<?php
-if (true) {
-    echo $bar;
-}',
-            ],
-            [
-                '<?php
-$foo = $bar;
-
-if (true) {
-    echo $bar;
-}',
-                '<?php
-$foo = $bar;
-if (true) {
-    echo $bar;
-}',
-            ],
-            [
-                '<?php
-// foo
-if ($foo) { }',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithIncludeCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithInclude($expected, $input = null)
+    public function testFixWithInclude(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['include'],
@@ -738,35 +642,28 @@ if ($foo) { }',
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithIncludeCases()
+    public static function provideFixWithIncludeCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 include "foo.php";',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo = $bar;
 
 include "foo.php";',
-                '<?php
+            '<?php
 $foo = $bar;
 include "foo.php";',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithIncludeOnceCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithIncludeOnce($expected, $input = null)
+    public function testFixWithIncludeOnce(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['include_once'],
@@ -775,35 +672,28 @@ include "foo.php";',
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithIncludeOnceCases()
+    public static function provideFixWithIncludeOnceCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 include_once "foo.php";',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo = $bar;
 
 include_once "foo.php";',
-                '<?php
+            '<?php
 $foo = $bar;
 include_once "foo.php";',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithRequireCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithRequire($expected, $input = null)
+    public function testFixWithRequire(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['require'],
@@ -812,35 +702,28 @@ include_once "foo.php";',
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithRequireCases()
+    public static function provideFixWithRequireCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 require "foo.php";',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo = $bar;
 
 require "foo.php";',
-                '<?php
+            '<?php
 $foo = $bar;
 require "foo.php";',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithRequireOnceCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithRequireOnce($expected, $input = null)
+    public function testFixWithRequireOnce(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['require_once'],
@@ -849,35 +732,28 @@ require "foo.php";',
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithRequireOnceCases()
+    public static function provideFixWithRequireOnceCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 require_once "foo.php";',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo = $bar;
 
 require_once "foo.php";',
-                '<?php
+            '<?php
 $foo = $bar;
 require_once "foo.php";',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithReturnCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithReturn($expected, $input = null)
+    public function testFixWithReturn(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['return'],
@@ -886,157 +762,206 @@ require_once "foo.php";',
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithReturnCases()
+    public static function provideFixWithReturnCases(): iterable
     {
-        return [
-            [
-                '
+        yield [
+            '<?php
+if ($a) { /* 1 */ /* 2 */ /* 3 */ // something about $a
+    return $b;
+}
+',
+        ];
+
+        yield [
+            '<?php
+if ($a) { // something about $a
+    return $b;
+}
+',
+        ];
+
+        yield [
+            '
 $a = $a;
 return $a;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = $a;
 
 return $a;',
-                '<?php
+            '<?php
 $a = $a; return $a;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $b = $b;
 
 return $b;',
-                '<?php
+            '<?php
 $b = $b;return $b;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $c = $c;
 
 return $c;',
-                '<?php
+            '<?php
 $c = $c;
 return $c;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $d = $d;
 
 return $d;',
-                '<?php
+            '<?php
 $d = $d;
 return $d;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     return 1;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true)
     return 1;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     return 1;
 } else {
     return 2;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true)
     return 1;
 else
     return 2;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     return 1;
 } elseif (false) {
     return 2;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true)
     return 1;
 elseif (false)
     return 2;',
-            ],
-            [
-                '<?php
-throw new Exception("return true;");',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
+throw new Exception("return true; //.");',
+        ];
+
+        yield [
+            '<?php
 function foo()
 {
     // comment
     return "foo";
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo()
 {
     // comment
 
     return "bar";
 }',
-            ],
+        ];
+
+        yield [
+            '<?php
+
+function foo()
+{
+    switch ($foo) {
+        case 2: // comment
+            return 1;
+    }
+}',
+        ];
+
+        yield 'do not fix when there is empty line between statement and preceding comment' => [
+            '<?php function foo()
+                {
+                    bar();
+                    // comment
+
+                    return 42;
+                }',
+        ];
+
+        yield 'do not fix when there is empty line between preceding comments' => [
+            '<?php function foo()
+                {
+                    bar();
+                    // comment1
+                    // comment2
+
+                    // comment3
+                    return 42;
+                }',
         ];
     }
 
     /**
      * @dataProvider provideFixWithReturnAndMessyWhitespacesCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithReturnAndMessyWhitespaces($expected, $input = null)
+    public function testFixWithReturnAndMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithReturnAndMessyWhitespacesCases()
+    public static function provideFixWithReturnAndMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                "<?php\r\n\$a = \$a;\r\n\r\nreturn \$a;",
-                "<?php\r\n\$a = \$a; return \$a;",
-            ],
-            [
-                "<?php\r\n\$b = \$b;\r\n\r\nreturn \$b;",
-                "<?php\r\n\$b = \$b;return \$b;",
-            ],
-            [
-                "<?php\r\n\$c = \$c;\r\n\r\nreturn \$c;",
-                "<?php\r\n\$c = \$c;\r\nreturn \$c;",
-            ],
+        yield [
+            "<?php\r\n\$a = \$a;\r\n\r\nreturn \$a;",
+            "<?php\r\n\$a = \$a; return \$a;",
+        ];
+
+        yield [
+            "<?php\r\n\$b = \$b;\r\n\r\nreturn \$b;",
+            "<?php\r\n\$b = \$b;return \$b;",
+        ];
+
+        yield [
+            "<?php\r\n\$c = \$c;\r\n\r\nreturn \$c;",
+            "<?php\r\n\$c = \$c;\r\nreturn \$c;",
         ];
     }
 
     /**
      * @dataProvider provideFixWithSwitchCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithSwitch($expected, $input = null)
+    public function testFixWithSwitch(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['switch'],
@@ -1045,44 +970,37 @@ function foo()
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithSwitchCases()
+    public static function provideFixWithSwitchCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 switch ($a) {
     case 42:
         break;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo = $bar;
 
 switch ($foo) {
     case $bar:
         break;
 }',
-                '<?php
+            '<?php
 $foo = $bar;
 switch ($foo) {
     case $bar:
         break;
 }',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithThrowCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithThrow($expected, $input = null)
+    public function testFixWithThrow(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['throw'],
@@ -1091,41 +1009,34 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithThrowCases()
+    public static function provideFixWithThrowCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 if (false) {
-    throw new \Exception("Something unexpected happened");
+    throw new \Exception("Something unexpected happened.");
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (false) {
     $log->error("No");
 
-    throw new \Exception("Something unexpected happened");
+    throw new \Exception("Something unexpected happened.");
 }',
-                '<?php
+            '<?php
 if (false) {
     $log->error("No");
-    throw new \Exception("Something unexpected happened");
+    throw new \Exception("Something unexpected happened.");
 }',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithTryCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithTry($expected, $input = null)
+    public function testFixWithTry(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['try'],
@@ -1134,22 +1045,19 @@ if (false) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithTryCases()
+    public static function provideFixWithTryCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 try {
     $transaction->commit();
 } catch (\Exception $exception) {
     $transaction->rollback();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo = $bar;
 
 try {
@@ -1157,24 +1065,20 @@ try {
 } catch (\Exception $exception) {
     $transaction->rollback();
 }',
-                '<?php
+            '<?php
 $foo = $bar;
 try {
     $transaction->commit();
 } catch (\Exception $exception) {
     $transaction->rollback();
 }',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithWhileCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithWhile($expected, $input = null)
+    public function testFixWithWhile(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['while'],
@@ -1183,33 +1087,31 @@ try {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithWhileCases()
+    public static function provideFixWithWhileCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 while (true) {
     $worker->work();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo = $bar;
 
 while (true) {
     $worker->work();
 }',
-                '<?php
+            '<?php
 $foo = $bar;
 while (true) {
     $worker->work();
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo = $bar;
 
 do {
@@ -1218,7 +1120,7 @@ do {
     while($a());
     $worker->work();
 } while (true);',
-                '<?php
+            '<?php
 $foo = $bar;
 
 do {
@@ -1226,17 +1128,13 @@ do {
     while($a());
     $worker->work();
 } while (true);',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithYieldCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithYield($expected, $input = null)
+    public function testFixWithYield(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['yield'],
@@ -1248,67 +1146,230 @@ do {
     /**
      * @yield array
      */
-    public function provideFixWithYieldCases()
+    public static function provideFixWithYieldCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
+function foo() {
+yield $a; /* a *//* b */     /* c */       /* d *//* e *//* etc */
+   '.'
+yield $b;
+}',
+            '<?php
+function foo() {
+yield $a; /* a *//* b */     /* c */       /* d *//* e *//* etc */   '.'
+yield $b;
+}',
+        ];
+
+        yield [
+            '<?php
+function foo() {
+    yield $a; // test
+
+    yield $b; // test /* A */
+
+    yield $c;
+
+    yield $d;
+
+yield $e;#
+
+yield $f;
+
+    /* @var int $g */
+    yield $g;
+
+/* @var int $h */
+yield $i;
+
+yield $j;
+}',
+            '<?php
+function foo() {
+    yield $a; // test
+    yield $b; // test /* A */
+    yield $c;
+    yield $d;yield $e;#
+yield $f;
+    /* @var int $g */
+    yield $g;
+/* @var int $h */
+yield $i;
+yield $j;
+}',
+        ];
+
+        yield [
+            '<?php
 function foo() {
     yield $a;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo() {
     yield $a;
 
     yield $b;
 }',
-                '<?php
+            '<?php
 function foo() {
     yield $a;
     yield $b;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
+function foo() {
+    yield \'b\' => $a;
+
+    yield "a" => $b;
+}',
+            '<?php
+function foo() {
+    yield \'b\' => $a;
+    yield "a" => $b;
+}',
+        ];
+
+        yield [
+            '<?php
 function foo() {
     $a = $a;
 
     yield $a;
 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo() {
     $a = $a;
 
     yield $a;
 }',
-                '<?php
+            '<?php
 function foo() {
     $a = $a;
     yield $a;
 }',
-            ],
+        ];
+
+        yield [
+            '<?php function foo() {
+                    // yield 1
+                    yield 1;
+
+                    // yield 2
+                    yield 2;
+                }',
+            '<?php function foo() {
+                    // yield 1
+                    yield 1;
+                    // yield 2
+                    yield 2;
+                }',
+        ];
+
+        yield [
+            '<?php function foo() {
+                    yield 1;
+
+                    // yield 2
+                    // or maybe yield 3
+                    // better compromise
+                    yield 2.5;
+                }',
+            '<?php function foo() {
+                    yield 1;
+                    // yield 2
+                    // or maybe yield 3
+                    // better compromise
+                    yield 2.5;
+                }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixWithYieldFromCases
+     */
+    public function testFixWithYieldFrom(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'statements' => ['yield_from'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @yield array
+     */
+    public static function provideFixWithYieldFromCases(): iterable
+    {
+        yield [
+            '<?php
+function foo() {
+    yield from $a;
+}',
+        ];
+
+        yield [
+            '<?php
+function foo() {
+    yield from $a;
+
+    yield from $b;
+}',
+            '<?php
+function foo() {
+    yield from $a;
+    yield from $b;
+}',
+        ];
+
+        yield [
+            '<?php
+function foo() {
+    $a = $a;
+
+    yield from $a;
+
+    yield $a;
+    yield $b;
+}',
+        ];
+
+        yield [
+            '<?php
+function foo() {
+    $a = $a;
+
+    yield from $a;
+}',
+            '<?php
+function foo() {
+    $a = $a;
+    yield from $a;
+}',
         ];
     }
 
     /**
      * @dataProvider provideFixWithMultipleConfigStatementsCases
      *
-     * @param string[]    $statements
-     * @param string      $expected
-     * @param null|string $input
+     * @param string[] $statements
      */
-    public function testFixWithMultipleConfigStatements(array $statements, $expected, $input = null)
+    public function testFixWithMultipleConfigStatements(array $statements, string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['statements' => $statements]);
-
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithMultipleConfigStatementsCases()
+    public static function provideFixWithMultipleConfigStatementsCases(): iterable
     {
         $statementsWithoutCaseOrDefault = [
             'break',
@@ -1329,12 +1390,11 @@ function foo() {
             'while',
         ];
 
-        $allStatements = array_merge($statementsWithoutCaseOrDefault, ['case', 'default']);
+        $allStatements = [...$statementsWithoutCaseOrDefault, 'case', 'default'];
 
-        return [
-            [
-                $statementsWithoutCaseOrDefault,
-                '<?php
+        yield [
+            $statementsWithoutCaseOrDefault,
+            '<?php
                     while($a) {
                         if ($c) {
                             switch ($d) {
@@ -1350,10 +1410,11 @@ function foo() {
                         }
                     }
                 ',
-            ],
-            [
-                $allStatements,
-                '<?php
+        ];
+
+        yield [
+            $allStatements,
+            '<?php
                     while($a) {
                         if ($c) {
                             switch ($d) {
@@ -1372,10 +1433,11 @@ function foo() {
                         }
                     }
                 ',
-            ],
-            [
-                ['break', 'throw'],
-                '<?php
+        ];
+
+        yield [
+            ['break', 'throw'],
+            '<?php
 do {
     echo 0;
     if ($a) {
@@ -1387,7 +1449,7 @@ do {
 
     throw $f;
 } while(true);',
-                '<?php
+            '<?php
 do {
     echo 0;
     if ($a) {
@@ -1397,7 +1459,162 @@ do {
     echo 2;
     throw $f;
 } while(true);',
-            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'statements' => ['default'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'match' => [
+            '<?php
+                match ($foo) {
+                    1 => "a",
+                    default => "b"
+                };
+
+                match ($foo) {
+                    1 => "a1",
+
+
+                    default => "b2"
+                };
+            ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'statements' => ['case'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield 'enum' => [
+            '<?php
+enum Suit {
+    case Hearts;
+    case Diamonds;
+    case Clubs;
+
+
+    case Spades;
+}
+
+enum UserStatus: string {
+    case Pending = "P";
+    case Active = "A";
+
+    public function label(): string {
+        switch ($a) {
+            case 1:
+                return 1;
+
+            case 2:
+                return 2; // do fix
+        }
+
+        return "label";
+    }
+}
+',
+            '<?php
+enum Suit {
+    case Hearts;
+    case Diamonds;
+    case Clubs;
+
+
+    case Spades;
+}
+
+enum UserStatus: string {
+    case Pending = "P";
+    case Active = "A";
+
+    public function label(): string {
+        switch ($a) {
+            case 1:
+                return 1;
+            case 2:
+                return 2; // do fix
+        }
+
+        return "label";
+    }
+}
+',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixWithDocCommentCases
+     */
+    public function testFixWithDocComment(string $expected, string $input = null): void
+    {
+        $this->fixer->configure([
+            'statements' => ['phpdoc'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixWithDocCommentCases(): iterable
+    {
+        yield [
+            '<?php
+/** @var int $foo */
+$foo = 123;
+
+/** @var float $bar */
+$bar = 45.6;
+
+/** @var string */
+$baz = "789";
+',
+            '<?php
+/** @var int $foo */
+$foo = 123;
+/** @var float $bar */
+$bar = 45.6;
+/** @var string */
+$baz = "789";
+',
+        ];
+
+        yield [
+            '<?php
+/* header */
+
+/**
+ * Class description
+ */
+class Foo {
+    /** test */
+    public function bar() {}
+}
+',
         ];
     }
 }

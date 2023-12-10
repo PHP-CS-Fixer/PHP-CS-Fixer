@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: nullable_type_declaration,types_spaces.
+--RULESET--
+{"nullable_type_declaration": {"syntax": "union"}, "types_spaces": {"space": "single"}}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+function bar(null | \Traversable $iterator): int | null {}
+
+--INPUT--
+<?php
+function bar(?\Traversable $iterator): int|null {}

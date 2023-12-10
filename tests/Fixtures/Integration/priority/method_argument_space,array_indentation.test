@@ -1,0 +1,31 @@
+--TEST--
+Integration of fixers: method_argument_space,array_indentation.
+--RULESET--
+{"array_indentation": true, "method_argument_space": {"on_multiline" : "ensure_fully_multiline"}}
+--EXPECT--
+<?php
+function foo($foo)
+{
+    $foo
+        ->bar()
+        ->baz(
+            [
+                $x
+            ]
+        )
+    ;
+}
+
+--INPUT--
+<?php
+function foo($foo)
+{
+    $foo
+        ->bar()
+        ->baz(
+                [
+                    $x
+                ]
+            )
+    ;
+}

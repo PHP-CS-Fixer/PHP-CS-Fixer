@@ -13,42 +13,46 @@
 namespace PhpCsFixer\Tests\Fixtures;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class DeprecatedFixer extends AbstractFixer implements DeprecatedFixerInterface, ConfigurationDefinitionFixerInterface
+final class DeprecatedFixer extends AbstractFixer implements DeprecatedFixerInterface, ConfigurableFixerInterface
 {
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
+        throw new \LogicException('Not implemented.');
     }
 
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
+        throw new \LogicException('Not implemented.');
     }
 
-    public function doSomethingWithCreateConfigDefinition()
+    public function doSomethingWithCreateConfigDefinition(): FixerConfigurationResolver
     {
         return $this->createConfigurationDefinition();
     }
 
-    public function getSuccessorsNames()
+    public function getSuccessorsNames(): array
     {
         return ['testA', 'testB'];
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'Vendor4/foo';
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
     }
 
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('foo', 'Foo.'))->getOption()

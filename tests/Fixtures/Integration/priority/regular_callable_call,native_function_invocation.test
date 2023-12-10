@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: regular_callable_call,native_function_invocation.
+--RULESET--
+{"regular_callable_call": true, "native_function_invocation": true}
+--EXPECT--
+<?php
+
+\strlen($foo);
+
+--INPUT--
+<?php
+
+call_user_func('strlen', $foo);

@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: no_spaces_after_function_name,get_class_to_class_keyword.
+--RULESET--
+{"no_spaces_after_function_name": true, "get_class_to_class_keyword": true}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+
+$foo = new Foo();
+echo $foo::class;
+
+--INPUT--
+<?php
+
+$foo = new Foo();
+echo get_class ($foo);

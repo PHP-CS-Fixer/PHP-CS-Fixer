@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,7 +14,7 @@
 
 namespace PhpCsFixer\Doctrine\Annotation;
 
-use Doctrine\Common\Annotations\DocLexer;
+use PhpCsFixer\Doctrine\Annotation\Token as AnnotationToken;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token as PhpToken;
 
@@ -20,28 +22,28 @@ use PhpCsFixer\Tokenizer\Token as PhpToken;
  * A list of Doctrine annotation tokens.
  *
  * @internal
+ *
+ * @extends \SplFixedArray<Token>
  */
 final class Tokens extends \SplFixedArray
 {
     /**
-     * @param PhpToken $input
      * @param string[] $ignoredTags
      *
      * @throws \InvalidArgumentException
-     *
-     * @return self
      */
-    public static function createFromDocComment(PhpToken $input, array $ignoredTags = [])
+    public static function createFromDocComment(PhpToken $input, array $ignoredTags = []): self
     {
         if (!$input->isGivenKind(T_DOC_COMMENT)) {
             throw new \InvalidArgumentException('Input must be a T_DOC_COMMENT token.');
         }
 
-        $tokens = new self();
+        $tokens = [];
 
         $content = $input->getContent();
         $ignoredTextPosition = 0;
         $currentPosition = 0;
+        $token = null;
         while (false !== $nextAtPosition = strpos($content, '@', $currentPosition)) {
             if (0 !== $nextAtPosition && !Preg::match('/\s/', $content[$nextAtPosition - 1])) {
                 $currentPosition = $nextAtPosition + 1;
@@ -57,27 +59,27 @@ final class Tokens extends \SplFixedArray
             $nbScannedTokensToUse = 0;
             $nbScopes = 0;
             while (null !== $token = $lexer->peek()) {
-                if (0 === $index && DocLexer::T_AT !== $token['type']) {
+                if (0 === $index && !$token->isType(DocLexer::T_AT)) {
                     break;
                 }
 
                 if (1 === $index) {
-                    if (DocLexer::T_IDENTIFIER !== $token['type'] || \in_array($token['value'], $ignoredTags, true)) {
+                    if (!$token->isType(DocLexer::T_IDENTIFIER) || \in_array($token->getContent(), $ignoredTags, true)) {
                         break;
                     }
 
                     $nbScannedTokensToUse = 2;
                 }
 
-                if ($index >= 2 && 0 === $nbScopes && !\in_array($token['type'], [DocLexer::T_NONE, DocLexer::T_OPEN_PARENTHESIS], true)) {
+                if ($index >= 2 && 0 === $nbScopes && !$token->isType([DocLexer::T_NONE, DocLexer::T_OPEN_PARENTHESIS])) {
                     break;
                 }
 
                 $scannedTokens[] = $token;
 
-                if (DocLexer::T_OPEN_PARENTHESIS === $token['type']) {
+                if ($token->isType(DocLexer::T_OPEN_PARENTHESIS)) {
                     ++$nbScopes;
-                } elseif (DocLexer::T_CLOSE_PARENTHESIS === $token['type']) {
+                } elseif ($token->isType(DocLexer::T_CLOSE_PARENTHESIS)) {
                     if (0 === --$nbScopes) {
                         $nbScannedTokensToUse = \count($scannedTokens);
 
@@ -100,11 +102,15 @@ final class Tokens extends \SplFixedArray
 
                 $lastTokenEndIndex = 0;
                 foreach (\array_slice($scannedTokens, 0, $nbScannedTokensToUse) as $token) {
-                    if (DocLexer::T_STRING === $token['type']) {
-                        $token['value'] = '"'.str_replace('"', '""', $token['value']).'"';
+                    if ($token->isType(DocLexer::T_STRING)) {
+                        $token = new AnnotationToken(
+                            $token->getType(),
+                            '"'.str_replace('"', '""', $token->getContent()).'"',
+                            $token->getPosition()
+                        );
                     }
 
-                    $missingTextLength = $token['position'] - $lastTokenEndIndex;
+                    $missingTextLength = $token->getPosition() - $lastTokenEndIndex;
                     if ($missingTextLength > 0) {
                         $tokens[] = new Token(DocLexer::T_NONE, substr(
                             $content,
@@ -113,11 +119,11 @@ final class Tokens extends \SplFixedArray
                         ));
                     }
 
-                    $tokens[] = new Token($token['type'], $token['value']);
-                    $lastTokenEndIndex = $token['position'] + \strlen($token['value']);
+                    $tokens[] = new Token($token->getType(), $token->getContent());
+                    $lastTokenEndIndex = $token->getPosition() + \strlen($token->getContent());
                 }
 
-                $currentPosition = $ignoredTextPosition = $nextAtPosition + $token['position'] + \strlen($token['value']);
+                $currentPosition = $ignoredTextPosition = $nextAtPosition + $token->getPosition() + \strlen($token->getContent());
             } else {
                 $currentPosition = $nextAtPosition + 1;
             }
@@ -127,67 +133,54 @@ final class Tokens extends \SplFixedArray
             $tokens[] = new Token(DocLexer::T_NONE, substr($content, $ignoredTextPosition));
         }
 
+        return self::fromArray($tokens);
+    }
+
+    /**
+     * Create token collection from array.
+     *
+     * @param Token[] $array       the array to import
+     * @param ?bool   $saveIndices save the numeric indices used in the original array, default is yes
+     */
+    public static function fromArray($array, $saveIndices = null): self
+    {
+        $tokens = new self(\count($array));
+
+        if (null === $saveIndices || $saveIndices) {
+            foreach ($array as $key => $val) {
+                $tokens[$key] = $val;
+            }
+        } else {
+            $index = 0;
+
+            foreach ($array as $val) {
+                $tokens[$index++] = $val;
+            }
+        }
+
         return $tokens;
     }
 
     /**
      * Returns the index of the closest next token that is neither a comment nor a whitespace token.
-     *
-     * @param int $index
-     *
-     * @return null|int
      */
-    public function getNextMeaningfulToken($index)
+    public function getNextMeaningfulToken(int $index): ?int
     {
         return $this->getMeaningfulTokenSibling($index, 1);
     }
 
     /**
      * Returns the index of the closest previous token that is neither a comment nor a whitespace token.
-     *
-     * @param int $index
-     *
-     * @return null|int
      */
-    public function getPreviousMeaningfulToken($index)
+    public function getPreviousMeaningfulToken(int $index): ?int
     {
         return $this->getMeaningfulTokenSibling($index, -1);
     }
 
     /**
-     * Returns the index of the closest next token of the given type.
-     *
-     * @param string|string[] $type
-     * @param int             $index
-     *
-     * @return null|int
-     */
-    public function getNextTokenOfType($type, $index)
-    {
-        return $this->getTokenOfTypeSibling($index, $type, 1);
-    }
-
-    /**
-     * Returns the index of the closest previous token of the given type.
-     *
-     * @param string|string[] $type
-     * @param int             $index
-     *
-     * @return null|int
-     */
-    public function getPreviousTokenOfType($type, $index)
-    {
-        return $this->getTokenOfTypeSibling($index, $type, -1);
-    }
-
-    /**
      * Returns the index of the last token that is part of the annotation at the given index.
-     *
-     * @param int $index
-     *
-     * @return null|int
      */
-    public function getAnnotationEnd($index)
+    public function getAnnotationEnd(int $index): ?int
     {
         $currentIndex = null;
 
@@ -225,36 +218,9 @@ final class Tokens extends \SplFixedArray
     }
 
     /**
-     * Returns the index of the close brace that matches the open brace at the given index.
-     *
-     * @param int $index
-     *
-     * @return null|int
-     */
-    public function getArrayEnd($index)
-    {
-        $level = 1;
-        for (++$index, $max = \count($this); $index < $max; ++$index) {
-            if ($this[$index]->isType(DocLexer::T_OPEN_CURLY_BRACES)) {
-                ++$level;
-            } elseif ($this[$index]->isType($index, DocLexer::T_CLOSE_CURLY_BRACES)) {
-                --$level;
-            }
-
-            if (0 === $level) {
-                return $index;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Returns the code from the tokens.
-     *
-     * @return string
      */
-    public function getCode()
+    public function getCode(): string
     {
         $code = '';
         foreach ($this as $token) {
@@ -266,57 +232,46 @@ final class Tokens extends \SplFixedArray
 
     /**
      * Inserts a token at the given index.
-     *
-     * @param int   $index
-     * @param Token $token
      */
-    public function insertAt($index, Token $token)
+    public function insertAt(int $index, Token $token): void
     {
         $this->setSize($this->getSize() + 1);
 
         for ($i = $this->getSize() - 1; $i > $index; --$i) {
-            $this[$i] = isset($this[$i - 1]) ? $this[$i - 1] : new Token();
+            $this[$i] = $this[$i - 1] ?? new Token();
         }
 
         $this[$index] = $token;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function offsetSet($index, $token)
+    public function offsetSet($index, $token): void
     {
+        if (null === $token) {
+            throw new \InvalidArgumentException('Token must be an instance of PhpCsFixer\\Doctrine\\Annotation\\Token, "null" given.');
+        }
+
         if (!$token instanceof Token) {
             $type = \gettype($token);
+
             if ('object' === $type) {
                 $type = \get_class($token);
             }
 
-            throw new \InvalidArgumentException(sprintf(
-                'Token must be an instance of PhpCsFixer\\Doctrine\\Annotation\\Token, %s given.',
-                $type
-            ));
-        }
-
-        if (null === $index) {
-            $index = \count($this);
-            $this->setSize($this->getSize() + 1);
+            throw new \InvalidArgumentException(sprintf('Token must be an instance of PhpCsFixer\\Doctrine\\Annotation\\Token, "%s" given.', $type));
         }
 
         parent::offsetSet($index, $token);
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $index
      *
      * @throws \OutOfBoundsException
      */
-    public function offsetUnset($index)
+    public function offsetUnset($index): void
     {
         if (!isset($this[$index])) {
-            throw new \OutOfBoundsException(sprintf('Index %s is invalid or does not exist.', $index));
+            throw new \OutOfBoundsException(sprintf('Index "%s" is invalid or does not exist.', $index));
         }
 
         $max = \count($this) - 1;
@@ -330,13 +285,7 @@ final class Tokens extends \SplFixedArray
         $this->setSize($max);
     }
 
-    /**
-     * @param int $index
-     * @param int $direction
-     *
-     * @return null|int
-     */
-    private function getMeaningfulTokenSibling($index, $direction)
+    private function getMeaningfulTokenSibling(int $index, int $direction): ?int
     {
         while (true) {
             $index += $direction;
@@ -346,30 +295,6 @@ final class Tokens extends \SplFixedArray
             }
 
             if (!$this[$index]->isType(DocLexer::T_NONE)) {
-                return $index;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param int             $index
-     * @param string|string[] $type
-     * @param int             $direction
-     *
-     * @return null|int
-     */
-    private function getTokenOfTypeSibling($index, $type, $direction)
-    {
-        while (true) {
-            $index += $direction;
-
-            if (!$this->offsetExists($index)) {
-                break;
-            }
-
-            if ($this[$index]->isType($type)) {
                 return $index;
             }
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,40 +14,27 @@
 
 namespace PhpCsFixer\Fixer\Phpdoc;
 
-use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
-use PhpCsFixer\Tokenizer\Token;
-use PhpCsFixer\Tokenizer\Tokens;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Symfony\Component\OptionsResolver\Options;
 
 /**
- * Case sensitive tag replace fixer (does not process inline tags like {@inheritdoc}).
+ * Case-sensitive tag replace fixer (does not process inline tags like {@inheritdoc}).
  *
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  */
-final class PhpdocNoAliasTagFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'No alias PHPDoc tags should be used.',
@@ -83,87 +72,43 @@ final class Example
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocSingleLineVarSpacingFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
-        // must be run before PhpdocAddMissingParamAnnotationFixer
-        return 11;
+        return parent::getPriority();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    public function configure(array $configuration): void
     {
-        $searchFor = array_keys($this->configuration['replacements']);
+        parent::configure($configuration);
 
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
+        /** @var GeneralPhpdocTagRenameFixer $generalPhpdocTagRenameFixer */
+        $generalPhpdocTagRenameFixer = $this->proxyFixers['general_phpdoc_tag_rename'];
 
-            $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType($searchFor);
-
-            if (empty($annotations)) {
-                continue;
-            }
-
-            foreach ($annotations as $annotation) {
-                $annotation->getTag()->setName($this->configuration['replacements'][$annotation->getTag()->getName()]);
-            }
-
-            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+        try {
+            $generalPhpdocTagRenameFixer->configure([
+                'fix_annotation' => true,
+                'fix_inline' => false,
+                'replacements' => $this->configuration['replacements'],
+                'case_sensitive' => true,
+            ]);
+        } catch (InvalidConfigurationException $exception) {
+            throw new InvalidFixerConfigurationException(
+                $this->getName(),
+                Preg::replace('/^\[.+?\] /', '', $exception->getMessage()),
+                $exception
+            );
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        return new FixerConfigurationResolverRootless('replacements', [
+        return new FixerConfigurationResolver([
             (new FixerOptionBuilder('replacements', 'Mapping between replaced annotations with new ones.'))
                 ->setAllowedTypes(['array'])
-                ->setNormalizer(static function (Options $options, $value) {
-                    $normalizedValue = [];
-
-                    foreach ($value as $from => $to) {
-                        if (!\is_string($from)) {
-                            throw new InvalidOptionsException('Tag to replace must be a string.');
-                        }
-
-                        if (!\is_string($to)) {
-                            throw new InvalidOptionsException(sprintf(
-                                'Tag to replace to from "%s" must be a string.',
-                                $from
-                            ));
-                        }
-
-                        if (1 !== Preg::match('#^\S+$#', $to) || false !== strpos($to, '*/')) {
-                            throw new InvalidOptionsException(sprintf(
-                                'Tag "%s" cannot be replaced by invalid tag "%s".',
-                                $from,
-                                $to
-                            ));
-                        }
-
-                        $normalizedValue[trim($from)] = trim($to);
-                    }
-
-                    foreach ($normalizedValue as $from => $to) {
-                        if (isset($normalizedValue[$to])) {
-                            throw new InvalidOptionsException(sprintf(
-                                'Cannot change tag "%1$s" to tag "%2$s", as the tag "%2$s" is configured to be replaced to "%3$s".',
-                                $from,
-                                $to,
-                                $normalizedValue[$to]
-                            ));
-                        }
-                    }
-
-                    return $normalizedValue;
-                })
                 ->setDefault([
                     'property-read' => 'property',
                     'property-write' => 'property',
@@ -171,6 +116,11 @@ final class Example
                     'link' => 'see',
                 ])
                 ->getOption(),
-        ], $this->getName());
+        ]);
+    }
+
+    protected function createProxyFixers(): array
+    {
+        return [new GeneralPhpdocTagRenameFixer()];
     }
 }

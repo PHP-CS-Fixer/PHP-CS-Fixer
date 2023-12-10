@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: return_to_yield_from,yield_from_array_to_yields.
+--RULESET--
+{"return_to_yield_from": true, "yield_from_array_to_yields": true}
+--EXPECT--
+<?php function foo(): iterable {
+     
+        yield 1;
+        yield 2;
+        yield 3;
+    
+}
+
+--INPUT--
+<?php function foo(): iterable {
+    return [
+        1,
+        2,
+        3,
+    ];
+}

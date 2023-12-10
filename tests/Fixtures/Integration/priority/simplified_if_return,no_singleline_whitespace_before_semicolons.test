@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: simplified_if_return,no_singleline_whitespace_before_semicolons.
+--RULESET--
+{"simplified_if_return": true, "no_singleline_whitespace_before_semicolons": true}
+--EXPECT--
+<?php
+return (bool) ($b);
+
+--INPUT--
+<?php
+if ($b) { return true; } return false;

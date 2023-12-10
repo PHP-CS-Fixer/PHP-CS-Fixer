@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,6 +16,7 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -25,103 +28,118 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $config
+     * @param array<string, mixed> $config
      *
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            'class_mapping' => [
-                '<?php new PHPUnit\Framework\Error\Error();',
-                '<?php new PHPUnit_Framework_Error();',
-            ],
-            'class_mapping_bogus_fqcn' => [
-                '<?php new \PHPUnit\Framework\MockObject\Stub\ReturnStub();',
-                '<?php new \PHPUnit_Framework_MockObject_Stub_Return();',
-            ],
-            [
-                '<?php
+        yield 'class_mapping' => [
+            '<?php new PHPUnit\Framework\Error\Error();',
+            '<?php new PHPUnit_Framework_Error();',
+        ];
+
+        yield 'class_mapping_bogus_fqcn' => [
+            '<?php new \PHPUnit\Framework\MockObject\Stub\ReturnStub();',
+            '<?php new \PHPUnit_Framework_MockObject_Stub_Return();',
+        ];
+
+        yield 'class_mapping_bogus_fqcn_lowercase' => [
+            '<?php new \PHPUnit\Framework\MockObject\Stub\ReturnStub();',
+            '<?php new \phpunit_framework_mockobject_stub_return();',
+        ];
+
+        yield 'class_mapping_bogus_fqcn_uppercase' => [
+            '<?php new \PHPUnit\Framework\MockObject\Stub\ReturnStub();',
+            '<?php new \PHPUNIT_FRAMEWORK_MOCKOBJECT_STUB_RETURN();',
+        ];
+
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit\Framework\TestCase
     {
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     final class TextDiffTest extends PHPUnit\Framework\TestCase
     {
     }',
-                '<?php
+            '<?php
     final class TextDiffTest extends PHPUnit_Framework_TestCase
     {
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     use \PHPUnit\Framework\TestCase;
     final class TextDiffTest extends TestCase
     {
     }',
-                '<?php
+            '<?php
     use \PHPUnit_Framework_TestCase;
     final class TextDiffTest extends PHPUnit_Framework_TestCase
     {
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     use \PHPUnit\FRAMEWORK\TestCase as TestAlias;
     final class TextDiffTest extends TestAlias
     {
     }',
-                '<?php
+            '<?php
     use \PHPUnit_FRAMEWORK_TestCase as TestAlias;
     final class TextDiffTest extends TestAlias
     {
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     namespace Foo;
     use PHPUnit\Framework\TestCase;
     final class TextDiffTest extends TestCase
     {
     }',
-                '<?php
+            '<?php
     namespace Foo;
     use PHPUnit_Framework_TestCase;
     final class TextDiffTest extends PHPUnit_Framework_TestCase
     {
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     namespace Foo;
     use PHPUnit\Framework\TestCase as TestAlias;
     final class TextDiffTest extends TestAlias
     {
     }',
-                '<?php
+            '<?php
     namespace Foo;
     use PHPUnit_Framework_TestCase as TestAlias;
     final class TextDiffTest extends TestAlias
     {
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit\Framework\TestCase
     {
         public function aaa()
@@ -137,7 +155,7 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
             $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function aaa()
@@ -153,10 +171,11 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
             $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
         }
     }',
-                ['target' => PhpUnitTargetVersion::VERSION_4_8],
-            ],
-            [
-                '<?php
+            ['target' => PhpUnitTargetVersion::VERSION_4_8],
+        ];
+
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit\Framework\TestCase
     {
         public function aaa()
@@ -172,7 +191,7 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
             $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function aaa()
@@ -188,10 +207,11 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
             $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
         }
     }',
-                ['target' => PhpUnitTargetVersion::VERSION_5_7],
-            ],
-            [
-                '<?php
+            ['target' => PhpUnitTargetVersion::VERSION_5_7],
+        ];
+
+        yield [
+            '<?php
     final class MyTest extends \PHPUnit\Framework\TestCase
     {
         public function aaa()
@@ -207,7 +227,7 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
             $d5 = new PHPUnit\Aaa\Bbb\Ccc\Ddd\Eee();
         }
     }',
-                '<?php
+            '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function aaa()
@@ -223,18 +243,90 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
             $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
         }
     }',
-                ['target' => PhpUnitTargetVersion::VERSION_6_0],
-            ],
-            [
-                '<?php
+            ['target' => PhpUnitTargetVersion::VERSION_6_0],
+        ];
+
+        yield [
+            '<?php
                     echo \PHPUnit\Runner\Version::id();
                     echo \PHPUnit\Runner\Version::id();
                     ',
-                '<?php
+            '<?php
                     echo \PHPUnit_Runner_Version::id();
                     echo \PHPUnit_Runner_Version::id();
                     ',
-            ],
+        ];
+
+        yield [
+            '<?php
+                final class MyTest extends TestCase
+                {
+                    const PHPUNIT_FOO = "foo";
+                }',
+        ];
+
+        yield [
+            '<?php
+                final class MyTest extends TestCase
+                {
+                    const FOO = Bar::PHPUNIT_FOO;
+                }',
+        ];
+
+        yield [
+            '<?php
+
+                define(\'PHPUNIT_COMPOSER_INSTALL\', dirname(__DIR__).\'/vendor/autoload.php\');
+                require PHPUNIT_COMPOSER_INSTALL;',
+        ];
+    }
+
+    /**
+     * @dataProvider provideClassIsFixedCases
+     */
+    public function testClassIsFixed(string $class): void
+    {
+        $this->fixer->configure(['target' => PhpUnitTargetVersion::VERSION_NEWEST]);
+
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode(sprintf('<?php new %s();', $class));
+
+        $this->fixer->fix(new \SplFileInfo(__FILE__), $tokens);
+
+        self::assertTrue($tokens->isChanged());
+        self::assertStringNotContainsString('_', $tokens->generateCode());
+    }
+
+    public static function provideClassIsFixedCases(): iterable
+    {
+        $classmap = require __DIR__.'/../../../vendor/composer/autoload_classmap.php';
+
+        foreach ($classmap as $class => $file) {
+            if (str_starts_with($class, 'PHPUnit_')) {
+                yield $file => [$class];
+            }
+        }
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield [
+            '<?php
+                final class MyTest extends TestCase
+                {
+                    final public const PHPUNIT_FOO_A = "foo";
+                    final public const PHPUNIT_FOO_B = Bar::PHPUNIT_FOO;
+                }',
         ];
     }
 }

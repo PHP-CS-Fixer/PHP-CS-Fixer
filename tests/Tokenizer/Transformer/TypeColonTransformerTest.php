@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,11 @@ use PhpCsFixer\Tokenizer\CT;
 final class TypeColonTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string $source
+     * @param array<int, int|string> $expectedTokens
      *
      * @dataProvider provideProcessCases
-     * @requires PHP 7.0
      */
-    public function testProcess($source, array $expectedTokens = [])
+    public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -41,45 +42,104 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public static function provideProcessCases(): iterable
     {
-        return [
+        yield [
+            '<?php function foo(): array { return []; }',
             [
-                '<?php function foo(): array { return []; }',
-                [
-                    6 => CT::T_TYPE_COLON,
-                ],
+                6 => CT::T_TYPE_COLON,
             ],
+        ];
+
+        yield [
+            '<?php function & foo(): array { return []; }',
             [
-                '<?php function & foo(): array { return []; }',
-                [
-                    8 => CT::T_TYPE_COLON,
-                ],
+                8 => CT::T_TYPE_COLON,
             ],
+        ];
+
+        yield [
+            '<?php interface F { public function foo(): array; }',
             [
-                '<?php interface F { public function foo(): array; }',
-                [
-                    14 => CT::T_TYPE_COLON,
-                ],
+                14 => CT::T_TYPE_COLON,
             ],
+        ];
+
+        yield [
+            '<?php $a=1; $f = function () : array {};',
             [
-                '<?php $a=1; $f = function () : array {};',
-                [
-                    15 => CT::T_TYPE_COLON,
-                ],
+                15 => CT::T_TYPE_COLON,
             ],
+        ];
+
+        yield [
+            '<?php $a=1; $f = function () use($a) : array {};',
             [
-                '<?php $a=1; $f = function () use($a) : array {};',
-                [
-                    20 => CT::T_TYPE_COLON,
-                ],
+                20 => CT::T_TYPE_COLON,
             ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a = 1 ? [] : [];
                     $b = 1 ? fnc() : [];
                     $c = 1 ?: [];
                 ',
+        ];
+
+        yield [
+            '<?php fn(): array => [];',
+            [
+                4 => CT::T_TYPE_COLON,
+            ],
+        ];
+
+        yield [
+            '<?php fn & (): array => [];',
+            [
+                7 => CT::T_TYPE_COLON,
+            ],
+        ];
+
+        yield [
+            '<?php $a=1; $f = fn () : array => [];',
+            [
+                15 => CT::T_TYPE_COLON,
+            ],
+        ];
+    }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideProcess81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testProcess81(string $source, array $expectedTokens = []): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                CT::T_TYPE_COLON,
+            ]
+        );
+    }
+
+    public static function provideProcess81Cases(): iterable
+    {
+        yield [
+            '<?php enum Foo: int {}',
+            [
+                4 => CT::T_TYPE_COLON,
+            ],
+        ];
+
+        yield [
+            '<?php enum Foo /** */ : int {}',
+            [
+                7 => CT::T_TYPE_COLON,
             ],
         ];
     }

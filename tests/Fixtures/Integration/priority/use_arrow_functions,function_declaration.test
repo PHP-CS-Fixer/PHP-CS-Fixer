@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: use_arrow_functions,function_declaration.
+--RULESET--
+{"use_arrow_functions": true, "function_declaration": {"closure_fn_spacing": "none"}}
+--EXPECT--
+<?php
+
+$fn = static fn(string $class): bool => is_subclass_of($class, Exception::class);
+
+--INPUT--
+<?php
+
+$fn = static function (string $class): bool {
+    return is_subclass_of($class, Exception::class);
+};

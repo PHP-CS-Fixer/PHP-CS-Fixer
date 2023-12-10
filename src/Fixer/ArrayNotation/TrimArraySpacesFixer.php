@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\ArrayNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -23,10 +26,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class TrimArraySpacesFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Arrays should be formatted like function/method arguments, without leading or trailing single line space.',
@@ -34,21 +34,15 @@ final class TrimArraySpacesFixer extends AbstractFixer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
-            if ($tokens[$index]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if ($tokens[$index]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN])) {
                 self::fixArray($tokens, $index);
             }
         }
@@ -56,17 +50,16 @@ final class TrimArraySpacesFixer extends AbstractFixer
 
     /**
      * Method to trim leading/trailing whitespace within single line arrays.
-     *
-     * @param Tokens $tokens
-     * @param int    $index
      */
-    private static function fixArray(Tokens $tokens, $index)
+    private static function fixArray(Tokens $tokens, int $index): void
     {
         $startIndex = $index;
 
         if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
             $startIndex = $tokens->getNextMeaningfulToken($startIndex);
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+        } elseif ($tokens[$startIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, $startIndex);
         } else {
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
         }
@@ -88,7 +81,7 @@ final class TrimArraySpacesFixer extends AbstractFixer
                 !$nextNonWhitespaceToken->isComment()
                 || $nextNonWhitespaceIndex === $prevNonWhitespaceIndex
                 || $tokenAfterNextNonWhitespaceToken->isWhitespace(" \t")
-                || '/*' === substr($nextNonWhitespaceToken->getContent(), 0, 2)
+                || str_starts_with($nextNonWhitespaceToken->getContent(), '/*')
             )
         ) {
             $tokens->clearAt($nextIndex);

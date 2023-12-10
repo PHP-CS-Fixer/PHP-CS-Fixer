@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,26 +17,21 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'There should not be blank lines between docblock and the documented element.',
@@ -56,29 +53,33 @@ class Bar {}
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before HeaderCommentFixer, PhpdocAlignFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
-        // should be run before the SingleBlankLineBeforeNamespaceFixer.
-        // should be run after the NoWhitespaceInBlankLineFixer.
         return -20;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         static $forbiddenSuccessors = [
-            T_DOC_COMMENT,
+            T_BREAK,
             T_COMMENT,
-            T_WHITESPACE,
+            T_CONTINUE,
+            T_DECLARE,
+            T_DOC_COMMENT,
+            T_GOTO,
+            T_INCLUDE,
+            T_INCLUDE_ONCE,
+            T_NAMESPACE,
+            T_REQUIRE,
+            T_REQUIRE_ONCE,
             T_RETURN,
             T_THROW,
-            T_GOTO,
-            T_CONTINUE,
-            T_BREAK,
-            T_DECLARE,
+            T_USE,
+            T_WHITESPACE,
         ];
 
         foreach ($tokens as $index => $token) {
@@ -96,11 +97,8 @@ class Bar {}
 
     /**
      * Cleanup a whitespace token.
-     *
-     * @param Tokens $tokens
-     * @param int    $index
      */
-    private function fixWhitespace(Tokens $tokens, $index)
+    private function fixWhitespace(Tokens $tokens, int $index): void
     {
         $content = $tokens[$index]->getContent();
         // if there is more than one new line in the whitespace, then we need to fix it

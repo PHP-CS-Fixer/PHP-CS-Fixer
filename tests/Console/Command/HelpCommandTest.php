@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,8 +14,9 @@
 
 namespace PhpCsFixer\Tests\Console\Command;
 
-use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\HelpCommand;
+use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -23,17 +26,24 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class HelpCommandTest extends TestCase
 {
-    public function testGetLatestReleaseVersionFromChangeLog()
+    /**
+     * @param null|mixed $expected
+     *
+     * @dataProvider provideGetDisplayableAllowedValuesCases
+     */
+    public function testGetDisplayableAllowedValues($expected, FixerOptionInterface $input): void
     {
-        $helpVersion = HelpCommand::getLatestReleaseVersionFromChangeLog();
-        $appVersion = Application::VERSION;
-        static::assertTrue(
-            version_compare($helpVersion, $appVersion, '<='),
-            sprintf(
-                'Expected version from change log "%s" <= as application version "%s".',
-                $helpVersion,
-                $appVersion
-            )
-        );
+        self::assertSame($expected, HelpCommand::getDisplayableAllowedValues($input));
+    }
+
+    public static function provideGetDisplayableAllowedValuesCases(): iterable
+    {
+        yield [null, new FixerOption('foo', 'bar', false, null, ['int'], [])];
+
+        yield [['A', 'B', 'x', 'z'], new FixerOption('foo', 'bar', false, null, ['string'], ['z', 'x', 'B', 'A'])];
+
+        yield [[0, 3, 9], new FixerOption('foo', 'bar', false, null, ['int'], [0, 3, 9, static fn () => true])];
+
+        yield [null, new FixerOption('foo', 'bar')];
     }
 }

@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: no_unneeded_braces,no_useless_else.
+--RULESET--
+{"no_unneeded_braces": true, "no_useless_else": true}
+--EXPECT--
+<?php
+$a = false;
+if ($a) {
+     throw $a;  // before useless else
+}  //
+    echo null;
+
+
+--INPUT--
+<?php
+$a = false;
+if ($a) {
+    {{ throw $a; }} // before useless else
+} else {//
+    echo null;
+}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,131 +26,138 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                "<?php echo 'DateTime'
-# a
- /* b */?>
-",
-                '<?php echo \
-DateTime:: # a
- /* b */ class?>
-',
-            ],
-            [
-                "<?php
+        yield [
+            "<?php
                 use Foo\\Bar\\Thing;
 
                 echo 'Foo\\Bar\\Thing';
                 ",
-                '<?php
+            '<?php
                 use Foo\Bar\Thing;
 
                 echo Thing::class;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 use Foo\\Bar;
             '."
                 echo 'Foo\\Bar\\Thing';
                 ",
-                '<?php
+            '<?php
                 use Foo\Bar;
             '.'
                 echo Bar\Thing::class;
                 ',
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php
+                namespace Foo;
+                use Foo\\Bar;
+                echo 'Foo\\Bar\\Baz';
+                ",
+            '<?php
+                namespace Foo;
+                use Foo\\Bar;
+                echo \\Foo\\Bar\\Baz::class;
+                ',
+        ];
+
+        yield [
+            "<?php
                 use Foo\\Bar\\Thing as Alias;
 
                 echo 'Foo\\Bar\\Thing';
                 ",
-                '<?php
+            '<?php
                 use Foo\Bar\Thing as Alias;
 
                 echo Alias::class;
                 ',
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php
                 use Foo\\Bar\\Dummy;
                 use Foo\\Bar\\Thing as Alias;
 
                 echo 'Foo\\Bar\\Dummy';
                 echo 'Foo\\Bar\\Thing';
                 ",
-                '<?php
+            '<?php
                 use Foo\Bar\Dummy;
                 use Foo\Bar\Thing as Alias;
 
                 echo Dummy::class;
                 echo Alias::class;
                 ',
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php
                 echo 'DateTime';
                 ",
-                '<?php
+            '<?php
                 echo \DateTime::class;
                 ',
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php
                 echo 'Thing';
                 ",
-                '<?php
+            '<?php
                 echo Thing::class;
                 ',
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php
                 class Foo {
                     public function amazingFunction() {
                         echo 'Thing';
                     }
                 }
                 ",
-                '<?php
+            '<?php
                 class Foo {
                     public function amazingFunction() {
                         echo Thing::class;
                     }
                 }
                 ',
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php
                 namespace A\\B;
 
                 use Foo\\Bar;
 
                 echo 'Foo\\Bar';
                 ",
-                '<?php
+            '<?php
                 namespace A\B;
 
                 use Foo\Bar;
 
                 echo Bar::class;
                 ',
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php
 
                 namespace A\\B {
 
@@ -173,7 +182,7 @@ DateTime:: # a
                     var_dump('B\\B\\D');
                 }
                 ",
-                '<?php
+            '<?php
 
                 namespace A\B {
 
@@ -198,27 +207,49 @@ DateTime:: # a
                     var_dump(D::class);
                 }
                 ',
-            ],
         ];
-    }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
+        yield [
+            '<?php
+                namespace Foo;
+                class Bar extends Baz {
+                    public function a() {
+                        return self::class;
+                    }
+                    public function b() {
+                        return static::class;
+                    }
+                    public function c() {
+                        return parent::class;
+                    }
+                }
+                ',
+        ];
 
-    public function provideFix70Cases()
-    {
-        return [
-            [
-                "<?php
+        yield [
+            "<?php
+                namespace Foo;
+                var_dump('Foo\\Bar\\Baz');
+                ",
+            '<?php
+                namespace Foo;
+                var_dump(Bar\\Baz::class);
+                ',
+        ];
+
+        yield [
+            "<?php
+                namespace Foo\\Bar;
+                var_dump('Foo\\Bar\\Baz');
+                ",
+            '<?php
+                namespace Foo\\Bar;
+                var_dump(Baz::class);
+                ',
+        ];
+
+        yield [
+            "<?php
                 use Foo\\Bar\\{ClassA, ClassB, ClassC as C};
                 use function Foo\\Bar\\{fn_a, fn_b, fn_c};
                 use const Foo\\Bar\\{ConstA, ConstB, ConstC};
@@ -226,7 +257,7 @@ DateTime:: # a
                 echo 'Foo\\Bar\\ClassB';
                 echo 'Foo\\Bar\\ClassC';
                 ",
-                '<?php
+            '<?php
                 use Foo\Bar\{ClassA, ClassB, ClassC as C};
                 use function Foo\Bar\{fn_a, fn_b, fn_c};
                 use const Foo\Bar\{ConstA, ConstB, ConstC};
@@ -234,7 +265,78 @@ DateTime:: # a
                 echo ClassB::class;
                 echo C::class;
                 ',
-            ],
+            "<?php
+                namespace {
+                    var_dump('Foo');
+                }
+                namespace A {
+                    use B\\C;
+                    var_dump('B\\C');
+                }
+                namespace {
+                    var_dump('Bar\\Baz');
+                }
+                namespace B {
+                    use A\\C\\D;
+                    var_dump('A\\C\\D');
+                }
+                namespace {
+                    var_dump('Qux\\Quux');
+                }
+                ",
+            '<?php
+                namespace {
+                    var_dump(Foo::class);
+                }
+                namespace A {
+                    use B\\C;
+                    var_dump(C::class);
+                }
+                namespace {
+                    var_dump(Bar\\Baz::class);
+                }
+                namespace B {
+                    use A\\C\\D;
+                    var_dump(D::class);
+                }
+                namespace {
+                    var_dump(Qux\\Quux::class);
+                }
+                ',
         ];
+    }
+
+    /**
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80(): void
+    {
+        $this->doTest(
+            "<?php echo 'DateTime'
+# a
+ /* b */?>
+",
+            '<?php echo \
+DateTime:: # a
+ /* b */ class?>
+'
+        );
+    }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testNotFixPHP8(): void
+    {
+        $this->doTest(
+            "<?php
+            echo 'Thing';
+            echo \$thing::class;
+            ",
+            '<?php
+            echo Thing::class;
+            echo $thing::class;
+            '
+        );
     }
 }

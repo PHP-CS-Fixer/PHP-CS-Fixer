@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,17 +27,14 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class StringLineEndingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
         $heredocTemplate = "<?php\n\$a=\n<<<EOT\n%s\n\nEOT;\n";
         $nowdocTemplate = "<?php\n\$a=\n<<<'EOT'\n%s\n\nEOT;\n";
@@ -48,55 +47,73 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
 *  )
 */';
 
-        return [
-            [
-                "<?php \$a = 'my\nmulti\nline\nstring';\r\n",
-                "<?php \$a = 'my\r\nmulti\nline\r\nstring';\r\n",
-            ],
-            [
-                "<?php \$a = \"my\nmulti\nline\nstring\";\r\n",
-                "<?php \$a = \"my\r\nmulti\nline\r\nstring\";\r\n",
-            ],
-            [
-                "<?php \$a = \"my\nmulti\nline\nstring\nwith\n\$b\ninterpolation\";\r\n",
-                "<?php \$a = \"my\r\nmulti\nline\r\nstring\nwith\r\n\$b\ninterpolation\";\r\n",
-            ],
-            [
-                sprintf($heredocTemplate, $input),
-                sprintf($heredocTemplate, str_replace("\n", "\r", $input)),
-            ],
-            [
-                sprintf($heredocTemplate, $input),
-                sprintf($heredocTemplate, str_replace("\n", "\r\n", $input)),
-            ],
-            [
-                sprintf($nowdocTemplate, $input),
-                sprintf($nowdocTemplate, str_replace("\n", "\r", $input)),
-            ],
-            [
-                sprintf($nowdocTemplate, $input),
-                sprintf($nowdocTemplate, str_replace("\n", "\r\n", $input)),
-            ],
-            [
-                sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), $input),
-                sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
-            ],
-            [
-                sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), $input),
-                sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
-            ],
-            [
-                sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), $input),
-                sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
-            ],
-            [
-                sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), $input),
-                sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
-            ],
+        yield [
+            "<?php \$a = 'my\nmulti\nline\nstring';\r\n",
+            "<?php \$a = 'my\r\nmulti\nline\r\nstring';\r\n",
+        ];
+
+        yield [
+            "<?php \$a = \"my\nmulti\nline\nstring\";\r\n",
+            "<?php \$a = \"my\r\nmulti\nline\r\nstring\";\r\n",
+        ];
+
+        yield [
+            "<?php \$a = \"my\nmulti\nline\nstring\nwith\n\$b\ninterpolation\";\r\n",
+            "<?php \$a = \"my\r\nmulti\nline\r\nstring\nwith\r\n\$b\ninterpolation\";\r\n",
+        ];
+
+        yield [
+            sprintf($heredocTemplate, $input),
+            sprintf($heredocTemplate, str_replace("\n", "\r", $input)),
+        ];
+
+        yield [
+            sprintf($heredocTemplate, $input),
+            sprintf($heredocTemplate, str_replace("\n", "\r\n", $input)),
+        ];
+
+        yield [
+            sprintf($nowdocTemplate, $input),
+            sprintf($nowdocTemplate, str_replace("\n", "\r", $input)),
+        ];
+
+        yield [
+            sprintf($nowdocTemplate, $input),
+            sprintf($nowdocTemplate, str_replace("\n", "\r\n", $input)),
+        ];
+
+        yield [
+            sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), $input),
+            sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
+        ];
+
+        yield [
+            sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), $input),
+            sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
+        ];
+
+        yield [
+            sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), $input),
+            sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
+        ];
+
+        yield [
+            sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), $input),
+            sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
+        ];
+
+        yield 'not T_CLOSE_TAG, do T_INLINE_HTML' => [
+            "<?php foo(); ?>\r\nA\n\n",
+            "<?php foo(); ?>\r\nA\r\n\r\n",
+        ];
+
+        yield [
+            "<?php \$a = b'my\nmulti\nline\nstring';\r\n",
+            "<?php \$a = b'my\r\nmulti\nline\r\nstring';\r\n",
         ];
     }
 
-    public function testWithDifferentLineEndingConfiguration()
+    public function testWithDifferentLineEndingConfiguration(): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 

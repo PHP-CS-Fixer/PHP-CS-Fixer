@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,6 +15,7 @@
 namespace PhpCsFixer\Tests\Linter;
 
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -24,94 +27,87 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractLinterTestCase extends TestCase
 {
-    abstract public function testIsAsync();
+    abstract public function testIsAsync(): void;
 
-    public function testLintingAfterTokenManipulation()
+    public function testLintingAfterTokenManipulation(): void
     {
         $linter = $this->createLinter();
 
         $tokens = Tokens::fromCode("<?php \n#EOF\n");
         $tokens->insertAt(1, new Token([T_NS_SEPARATOR, '\\']));
 
-        $this->expectException(\PhpCsFixer\Linter\LintingException::class);
+        $this->expectException(LintingException::class);
         $linter->lintSource($tokens->generateCode())->check();
     }
 
     /**
-     * @param string      $file
-     * @param null|string $errorRegExp
-     *
      * @dataProvider provideLintFileCases
      */
-    public function testLintFile($file, $errorRegExp = null)
+    public function testLintFile(string $file, ?string $errorMessage = null): void
     {
-        if (null !== $errorRegExp) {
-            $this->expectException(\PhpCsFixer\Linter\LintingException::class);
-            $this->expectExceptionMessageRegExp($errorRegExp);
+        if (null !== $errorMessage) {
+            $this->expectException(LintingException::class);
+            $this->expectExceptionMessage($errorMessage);
+        } else {
+            $this->expectNotToPerformAssertions();
         }
 
         $linter = $this->createLinter();
-
-        static::assertNull($linter->lintFile($file)->check());
+        $linter->lintFile($file)->check();
     }
 
     /**
-     * @return array
+     * @medium
      */
-    public function provideLintFileCases()
+    public static function provideLintFileCases(): iterable
     {
-        return [
-            [
-                __DIR__.'/../Fixtures/Linter/valid.php',
-            ],
-            [
-                __DIR__.'/../Fixtures/Linter/invalid.php',
-                '/syntax error, unexpected.*T_ECHO.*line 5/',
-            ],
+        yield [
+            __DIR__.'/../Fixtures/Linter/valid.php',
+        ];
+
+        yield [
+            __DIR__.'/../Fixtures/Linter/invalid.php',
+            sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
+        ];
+
+        yield [
+            __DIR__.'/../Fixtures/Linter/multiple.php',
+            'Fatal error: Multiple access type modifiers are not allowed on line 4.',
         ];
     }
 
     /**
-     * @param string      $source
-     * @param null|string $errorRegExp
-     *
      * @dataProvider provideLintSourceCases
      */
-    public function testLintSource($source, $errorRegExp = null)
+    public function testLintSource(string $source, ?string $errorMessage = null): void
     {
-        if (null !== $errorRegExp) {
-            $this->expectException(\PhpCsFixer\Linter\LintingException::class);
-            $this->expectExceptionMessageRegExp($errorRegExp);
+        if (null !== $errorMessage) {
+            $this->expectException(LintingException::class);
+            $this->expectExceptionMessage($errorMessage);
+        } else {
+            $this->expectNotToPerformAssertions();
         }
 
         $linter = $this->createLinter();
-
-        static::assertNull($linter->lintSource($source)->check());
+        $linter->lintSource($source)->check();
     }
 
-    /**
-     * @return array
-     */
-    public function provideLintSourceCases()
+    public static function provideLintSourceCases(): iterable
     {
-        return [
-            [
-                '<?php echo 123;',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php echo 123;',
+        ];
+
+        yield [
+            '<?php
                     print "line 2";
                     print "line 3";
                     print "line 4";
                     echo echo;
                 ',
-                '/syntax error, unexpected.*T_ECHO.*line 5/',
-            ],
+            sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
         ];
     }
 
-    /**
-     * @return LinterInterface
-     */
-    abstract protected function createLinter();
+    abstract protected function createLinter(): LinterInterface;
 }

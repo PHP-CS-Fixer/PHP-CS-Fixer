@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -20,68 +23,62 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTestCase
 {
     /**
-     * @param array $configuration
+     * @param array<string, mixed> $configuration
      *
-     * @dataProvider provideInvalidConfigurationCases
+     * @dataProvider provideConfigureWithInvalidConfigurationCases
      */
-    public function testConfigureWithInvalidConfiguration(array $configuration)
+    public function testConfigureWithInvalidConfiguration(array $configuration): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
 
         $this->fixer->configure($configuration);
     }
 
     /**
-     * @return array
+     * @return iterable<array{array<string, mixed>}>
      */
-    public function provideInvalidConfigurationCases()
+    public static function provideConfigureWithInvalidConfigurationCases(): iterable
     {
-        return [
-            [['foo' => 'bar']],
-            [['ignored_tags' => 'foo']],
-        ];
+        yield [['foo' => 'bar']];
+
+        yield [['ignored_tags' => 'foo']];
     }
 
     /**
-     * @param array<array<string>> $commentCases
+     * @param list<array{0: string, 1?: string}> $commentCases
      *
-     * @return array
+     * @return list<array{0: string, 1?: string}>
      */
-    protected function createTestCases(array $commentCases)
+    protected static function createTestCases(array $commentCases): array
     {
         $cases = [];
         foreach ($commentCases as $commentCase) {
             $cases[] = [
-                $this->withClassDocBlock($commentCase[0]),
-                isset($commentCase[1]) ? $this->withClassDocBlock($commentCase[1]) : null,
+                self::withClassDocBlock($commentCase[0]),
+                isset($commentCase[1]) ? self::withClassDocBlock($commentCase[1]) : null,
             ];
 
             $cases[] = [
-                $this->withPropertyDocBlock($commentCase[0]),
-                isset($commentCase[1]) ? $this->withPropertyDocBlock($commentCase[1]) : null,
+                self::withPropertyDocBlock($commentCase[0]),
+                isset($commentCase[1]) ? self::withPropertyDocBlock($commentCase[1]) : null,
             ];
 
             $cases[] = [
-                $this->withMethodDocBlock($commentCase[0]),
-                isset($commentCase[1]) ? $this->withMethodDocBlock($commentCase[1]) : null,
+                self::withMethodDocBlock($commentCase[0]),
+                isset($commentCase[1]) ? self::withMethodDocBlock($commentCase[1]) : null,
             ];
 
             $cases[] = [
-                $this->withWrongElementDocBlock($commentCase[0]),
+                self::withWrongElementDocBlock($commentCase[0]),
             ];
         }
 
         return $cases;
     }
 
-    /**
-     * @param string $comment
-     *
-     * @return string
-     */
-    private function withClassDocBlock($comment)
+    private static function withClassDocBlock(string $comment): string
     {
-        return $this->with('<?php
+        return self::with('<?php
 
 %s
 class FooClass
@@ -89,14 +86,9 @@ class FooClass
 }', $comment, false);
     }
 
-    /**
-     * @param string $comment
-     *
-     * @return string
-     */
-    private function withPropertyDocBlock($comment)
+    private static function withPropertyDocBlock(string $comment): string
     {
-        return $this->with('<?php
+        return self::with('<?php
 
 class FooClass
 {
@@ -105,14 +97,9 @@ class FooClass
 }', $comment, true);
     }
 
-    /**
-     * @param string $comment
-     *
-     * @return string
-     */
-    private function withMethodDocBlock($comment)
+    private static function withMethodDocBlock(string $comment): string
     {
-        return $this->with('<?php
+        return self::with('<?php
 
 class FooClass
 {
@@ -123,27 +110,15 @@ class FooClass
 }', $comment, true);
     }
 
-    /**
-     * @param string $comment
-     *
-     * @return string
-     */
-    private function withWrongElementDocBlock($comment)
+    private static function withWrongElementDocBlock(string $comment): string
     {
-        return $this->with('<?php
+        return self::with('<?php
 
 %s
 $foo = bar();', $comment, false);
     }
 
-    /**
-     * @param string $php
-     * @param string $comment
-     * @param bool   $indent
-     *
-     * @return string
-     */
-    private function with($php, $comment, $indent)
+    private static function with(string $php, string $comment, bool $indent): string
     {
         $comment = trim($comment);
 

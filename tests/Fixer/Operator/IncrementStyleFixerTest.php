@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\Fixer\Operator\IncrementStyleFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -20,154 +23,193 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\Fixer\AbstractIncrementOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\IncrementStyleFixer
  */
 final class IncrementStyleFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPreIncrementCases
      */
-    public function testFixPreIncrement($expected, $input = null)
+    public function testFixPreIncrement(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure(['style' => 'pre']);
+        $this->fixer->configure(['style' => IncrementStyleFixer::STYLE_PRE]);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPostIncrementCases
      */
-    public function testFixPostIncrement($expected, $input = null)
+    public function testFixPostIncrement(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure(['style' => 'post']);
+        $this->fixer->configure(['style' => IncrementStyleFixer::STYLE_POST]);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPostIncrementCases()
+    public static function provideFixPostIncrementCases(): iterable
     {
-        return array_map(static function (array $case) {
-            return array_reverse($case);
-        }, $this->provideFixPreIncrementCases());
+        foreach (self::provideFixPreIncrementCases() as $case) {
+            yield array_reverse($case);
+        }
     }
 
-    public function provideFixPreIncrementCases()
+    public static function provideFixPreIncrementCases(): iterable
     {
-        return [
-            [
-                '<?php ++$a;',
-                '<?php $a++;',
-            ],
-            [
-                '<?php ++$$a;',
-                '<?php $$a++;',
-            ],
-            [
-                '<?php ++${"a"};',
-                '<?php ${"a"}++;',
-            ],
-            [
-                '<?php --$a;',
-                '<?php $a--;',
-            ],
-            [
-                '<?php foo(); ++$a;',
-                '<?php foo(); $a++;',
-            ],
-            [
-                '<?php if (true) { ++$a; }',
-                '<?php if (true) { $a++; }',
-            ],
-            [
-                '<?php if (true) {} ++$a;',
-                '<?php if (true) {} $a++;',
-            ],
-            [
-                '<?php for ($i = 0; $i < $count; ++$i) {}',
-                '<?php for ($i = 0; $i < $count; $i++) {}',
-            ],
-            [
-                '<?php ++$a->foo;',
-                '<?php $a->foo++;',
-            ],
-            [
-                '<?php ++$a->{"foo"};',
-                '<?php $a->{"foo"}++;',
-            ],
-            [
-                '<?php ++$a->$b;',
-                '<?php $a->$b++;',
-            ],
-            [
-                '<?php ++Foo\Bar::$bar;',
-                '<?php Foo\Bar::$bar++;',
-            ],
-            [
-                '<?php ++$a::$bar;',
-                '<?php $a::$bar++;',
-            ],
-            [
-                '<?php ++$a[0];',
-                '<?php $a[0]++;',
-            ],
-            [
-                '<?php ++$a[$b];',
-                '<?php $a[$b]++;',
-            ],
-            [
-                '<?php ++${$a}->{$b."foo"}->bar[$c]->$baz;',
-                '<?php ${$a}->{$b."foo"}->bar[$c]->$baz++;',
-            ],
+        yield [
+            '<?php ++$a;',
+            '<?php $a++;',
+        ];
 
-            ['<?php $a = $b++;'],
-            ['<?php $a + $b++;'],
-            ['<?php $a++ + $b;'],
-            ['<?php foo($b++);'],
-            ['<?php foo($a, $b++);'],
-            ['<?php $a[$b++];'],
-            ['<?php echo $a++;'],
+        yield [
+            '<?php ++$$a;',
+            '<?php $$a++;',
+        ];
 
-            ['<?php $a = ++$b;'],
-            ['<?php $a + ++$b;'],
-            ['<?php ++$a + $b;'],
-            ['<?php foo(++$b);'],
-            ['<?php foo($a, ++$b);'],
-            ['<?php $a[++$b];'],
-            ['<?php echo ++$a;'],
+        yield [
+            '<?php ++${"a"};',
+            '<?php ${"a"}++;',
+        ];
 
-            [
-                '<?php class Test {
+        yield [
+            '<?php --$a;',
+            '<?php $a--;',
+        ];
+
+        yield [
+            '<?php foo(); ++$a;',
+            '<?php foo(); $a++;',
+        ];
+
+        yield [
+            '<?php if (true) { ++$a; }',
+            '<?php if (true) { $a++; }',
+        ];
+
+        yield [
+            '<?php if (true) {} ++$a;',
+            '<?php if (true) {} $a++;',
+        ];
+
+        yield [
+            '<?php for ($i = 0; $i < $count; ++$i) {}',
+            '<?php for ($i = 0; $i < $count; $i++) {}',
+        ];
+
+        yield [
+            '<?php ++$a->foo;',
+            '<?php $a->foo++;',
+        ];
+
+        yield [
+            '<?php ++$a->{"foo"};',
+            '<?php $a->{"foo"}++;',
+        ];
+
+        yield [
+            '<?php ++$a->$b;',
+            '<?php $a->$b++;',
+        ];
+
+        yield [
+            '<?php ++Foo\Bar::$bar;',
+            '<?php Foo\Bar::$bar++;',
+        ];
+
+        yield [
+            '<?php ++$a::$bar;',
+            '<?php $a::$bar++;',
+        ];
+
+        yield [
+            '<?php ++$a[0];',
+            '<?php $a[0]++;',
+        ];
+
+        yield [
+            '<?php ++$a[$b];',
+            '<?php $a[$b]++;',
+        ];
+
+        yield ['<?php $a = $b++;'];
+
+        yield ['<?php $a + $b++;'];
+
+        yield ['<?php $a++ + $b;'];
+
+        yield ['<?php foo($b++);'];
+
+        yield ['<?php foo($a, $b++);'];
+
+        yield ['<?php $a[$b++];'];
+
+        yield ['<?php echo $a++;'];
+
+        yield ['<?php $a = ++$b;'];
+
+        yield ['<?php $a + ++$b;'];
+
+        yield ['<?php ++$a + $b;'];
+
+        yield ['<?php foo(++$b);'];
+
+        yield ['<?php foo($a, ++$b);'];
+
+        yield ['<?php $a[++$b];'];
+
+        yield ['<?php echo ++$a;'];
+
+        yield ['<?= ++$a;'];
+
+        yield [
+            '<?php class Test {
     public function foo() {
         $a = 123;
         ++self::$st;
     }
 }',
-                '<?php class Test {
+            '<?php class Test {
     public function foo() {
         $a = 123;
         self::$st++;
     }
 }',
-            ],
+        ];
 
-            [
-                '<?php class Test {
+        yield [
+            '<?php class Test {
     public function foo() {
         $a = 123;
         ++static::$st;
     }
 }',
-                '<?php class Test {
+            '<?php class Test {
     public function foo() {
         $a = 123;
         static::$st++;
     }
 }',
-            ],
         ];
+
+        yield [
+            '<?php if ($foo) ++$a;',
+            '<?php if ($foo) $a++;',
+        ];
+
+        if (\PHP_VERSION_ID < 8_00_00) {
+            yield [
+                '<?php ++$a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h;',
+                '<?php $a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h++;',
+            ];
+
+            yield [
+                '<?php ++$a{0};',
+                '<?php $a{0}++;',
+            ];
+
+            yield [
+                '<?php ++${$a}->{$b."foo"}->bar[$c]->$baz;',
+                '<?php ${$a}->{$b."foo"}->bar[$c]->$baz++;',
+            ];
+        }
     }
 }

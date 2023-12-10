@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,8 +19,6 @@ use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Differ\DiffConsoleFormatter
@@ -26,30 +26,23 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 final class DiffConsoleFormatterTest extends TestCase
 {
     /**
-     * @dataProvider provideTestCases
-     *
-     * @param string $expected
-     * @param bool   $isDecoratedOutput
-     * @param string $template
-     * @param string $diff
-     * @param string $lineTemplate
+     * @dataProvider provideDiffConsoleFormatterCases
      */
-    public function testDiffConsoleFormatter($expected, $isDecoratedOutput, $template, $diff, $lineTemplate)
+    public function testDiffConsoleFormatter(string $expected, bool $isDecoratedOutput, string $template, string $diff, string $lineTemplate): void
     {
         $diffFormatter = new DiffConsoleFormatter($isDecoratedOutput, $template);
 
-        static::assertSame(
+        self::assertSame(
             str_replace(PHP_EOL, "\n", $expected),
             str_replace(PHP_EOL, "\n", $diffFormatter->format($diff, $lineTemplate))
         );
     }
 
-    public function provideTestCases()
+    public static function provideDiffConsoleFormatterCases(): iterable
     {
-        return [
-            [
-                sprintf(
-                    '<comment>   ---------- begin diff ----------</comment>
+        yield [
+            sprintf(
+                '<comment>   ---------- begin diff ----------</comment>
    '.'
    <fg=cyan>%s</fg=cyan>
     no change
@@ -58,28 +51,29 @@ final class DiffConsoleFormatterTest extends TestCase
    <fg=green>%s</fg=green>
    '.'
 <comment>   ----------- end diff -----------</comment>',
-                    OutputFormatter::escape('@@ -12,51 +12,151 @@'),
-                    OutputFormatter::escape('-/**\\'),
-                    OutputFormatter::escape('+/*\\'),
-                    OutputFormatter::escape('+A')
-                ),
-                true,
-                sprintf(
-                    '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
-                    PHP_EOL,
-                    PHP_EOL
-                ),
-                '
+                OutputFormatter::escape('@@ -12,51 +12,151 @@'),
+                OutputFormatter::escape('-/**\\'),
+                OutputFormatter::escape('+/*\\'),
+                OutputFormatter::escape('+A')
+            ),
+            true,
+            sprintf(
+                '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
+                PHP_EOL,
+                PHP_EOL
+            ),
+            '
 @@ -12,51 +12,151 @@
  no change
 -/**\
 +/*\
 +A
 ',
-                '   %s',
-            ],
-            [
-                '[start]
+            '   %s',
+        ];
+
+        yield [
+            '[start]
 | '.'
 | @@ -12,51 +12,151 @@
 |  no change
@@ -89,9 +83,9 @@ final class DiffConsoleFormatterTest extends TestCase
 | +A
 | '.'
 [end]',
-                false,
-                sprintf('[start]%s%%s%s[end]', PHP_EOL, PHP_EOL),
-                '
+            false,
+            sprintf('[start]%s%%s%s[end]', PHP_EOL, PHP_EOL),
+            '
 @@ -12,51 +12,151 @@
  no change
  '.'
@@ -99,29 +93,31 @@ final class DiffConsoleFormatterTest extends TestCase
 +/*\
 +A
 ',
-                '| %s',
-            ],
-            [
-                mb_convert_encoding("<fg=red>--- Original</fg=red>\n<fg=green>+ausgefüllt</fg=green>", 'ISO-8859-1'),
-                true,
-                '%s',
-                mb_convert_encoding("--- Original\n+ausgefüllt", 'ISO-8859-1'),
-                '%s',
-            ],
-            [
-                mb_convert_encoding("<fg=red>--- Original</fg=red>\n<fg=green>+++ New</fg=green>\n<fg=cyan>@@ @@</fg=cyan>\n<fg=red>-ausgefüllt</fg=red>", 'ISO-8859-1'),
-                true,
-                '%s',
-                mb_convert_encoding("--- Original\n+++ New\n@@ @@\n-ausgefüllt", 'ISO-8859-1'),
-                '%s',
-            ],
-            [
-                mb_convert_encoding("--- Original\n+++ New\n@@ @@\n-ausgefüllt", 'ISO-8859-1'),
-                false,
-                '%s',
-                mb_convert_encoding("--- Original\n+++ New\n@@ @@\n-ausgefüllt", 'ISO-8859-1'),
-                '%s',
-            ],
+            '| %s',
+        ];
+
+        yield [
+            mb_convert_encoding("<fg=red>--- Original</fg=red>\n<fg=green>+ausgefüllt</fg=green>", 'ISO-8859-1'),
+            true,
+            '%s',
+            mb_convert_encoding("--- Original\n+ausgefüllt", 'ISO-8859-1'),
+            '%s',
+        ];
+
+        yield [
+            mb_convert_encoding("<fg=red>--- Original</fg=red>\n<fg=green>+++ New</fg=green>\n<fg=cyan>@@ @@</fg=cyan>\n<fg=red>-ausgefüllt</fg=red>", 'ISO-8859-1'),
+            true,
+            '%s',
+            mb_convert_encoding("--- Original\n+++ New\n@@ @@\n-ausgefüllt", 'ISO-8859-1'),
+            '%s',
+        ];
+
+        yield [
+            mb_convert_encoding("--- Original\n+++ New\n@@ @@\n-ausgefüllt", 'ISO-8859-1'),
+            false,
+            '%s',
+            mb_convert_encoding("--- Original\n+++ New\n@@ @@\n-ausgefüllt", 'ISO-8859-1'),
+            '%s',
         ];
     }
 }

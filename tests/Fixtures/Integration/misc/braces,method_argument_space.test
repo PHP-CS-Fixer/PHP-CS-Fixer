@@ -1,0 +1,24 @@
+--TEST--
+Integration of fixers: braces,method_argument_space.
+--RULESET--
+{"method_argument_space": {"on_multiline": "ensure_fully_multiline"}, "braces": true}
+--EXPECT--
+<?php
+
+function foo()
+{
+    return bar(
+        'foo',
+        'bar'
+    );
+}
+
+--INPUT--
+<?php
+
+function foo(){
+  return bar(
+    'foo',
+    'bar'
+  );
+}

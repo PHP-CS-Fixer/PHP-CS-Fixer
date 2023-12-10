@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: phpdoc_types,phpdoc_to_return_type.
+--RULESET--
+{"phpdoc_types": true, "phpdoc_to_return_type": true}
+--EXPECT--
+<?php
+/**
+ * @return int
+ */
+function my_foo(): int
+{
+    return 1;
+}
+
+--INPUT--
+<?php
+/**
+ * @return INT
+ */
+function my_foo()
+{
+    return 1;
+}

@@ -1,0 +1,18 @@
+--TEST--
+Integration of fixers: native_function_invocation,global_namespace_import.
+--RULESET--
+{"native_function_invocation": true, "global_namespace_import": {"import_functions": true}}
+--EXPECT--
+<?php
+
+namespace Test;
+use function count;
+
+echo count($foo);
+
+--INPUT--
+<?php
+
+namespace Test;
+
+echo count($foo);

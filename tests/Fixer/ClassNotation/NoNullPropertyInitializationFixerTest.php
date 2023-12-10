@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,95 +26,100 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoNullPropertyInitializationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php class Foo { public $bar; }',
-                '<?php class Foo { public $bar = null; }',
-            ],
-            [
-                '<?php class Foo { protected $bar; }',
-                '<?php class Foo { protected $bar = null; }',
-            ],
-            [
-                '<?php class Foo { private $bar; }',
-                '<?php class Foo { private $bar = null; }',
-            ],
-            [
-                '<?php class Foo { var $bar; }',
-                '<?php class Foo { var $bar = null; }',
-            ],
-            [
-                '<?php class Foo { VAR $bar; }',
-                '<?php class Foo { VAR $bar = null; }',
-            ],
-            [
-                '<?php class Foo { public $bar; }',
-                '<?php class Foo { public $bar = NULL; }',
-            ],
-            [
-                '<?php class Foo { PUblic $bar; }',
-                '<?php class Foo { PUblic $bar = nuLL; }',
-            ],
-            [
-                '<?php trait Foo { public $bar; }',
-                '<?php trait Foo { public $bar = nuLL; }',
-            ],
-            [
-                '<?php class Foo { public $bar; }',
-                '<?php class Foo { public $bar = \null; }',
-            ],
-            [
-                '<?php class Foo { public $bar; }',
-                '<?php class Foo { public $bar = \     null; }',
-            ],
-            [
-                '<?php class Foo { public $bar/* oh hai! */; }',
-                '<?php class Foo { public $bar = \/* oh hai! */null; }',
-            ],
-            [
-                '<?php class Foo {/* */public/* A */$bar/* B *//** C */;/* D */}',
-                '<?php class Foo {/* */public/* A */$bar/* B */=/** C */null;/* D */}',
-            ],
-            [
-                '<?php class Foo { public $bar; protected $baz; }',
-                '<?php class Foo { public $bar = null; protected $baz = null; }',
-            ],
-            [
-                '<?php class Foo { public $bar = \'null\'; }',
-            ],
-            [
-                '<?php class Foo { public function bar() { return null; } }',
-            ],
-            [
-                '<?php class Foo { protected $bar, $baz, $qux; }',
-                '<?php class Foo { protected $bar = null, $baz = null, $qux = null; }',
-            ],
-            [
-                '<?php class Foo { protected $bar, $baz = \'baz\', $qux; }',
-                '<?php class Foo { protected $bar, $baz = \'baz\', $qux = null; }',
-            ],
-            [
-                '<?php trait Foo { public $bar; } abstract class Bar { protected $bar, $baz = \'baz\', $qux; }',
-                '<?php trait Foo { public $bar = null; } abstract class Bar { protected $bar, $baz = \'baz\', $qux = null; }',
-            ],
-            [
-                '<?php class Foo { public function foo() { return null; } public $bar; public function baz() { return null; } }',
-                '<?php class Foo { public function foo() { return null; } public $bar = null; public function baz() { return null; } }',
-            ],
-            [
-                '<?php class#1
+        yield [
+            '<?php class Foo { public $bar; }',
+            '<?php class Foo { public $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { protected $bar; }',
+            '<?php class Foo { protected $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { private $bar; }',
+            '<?php class Foo { private $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { var $bar; }',
+            '<?php class Foo { var $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { VAR $bar; }',
+            '<?php class Foo { VAR $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public $bar; }',
+            '<?php class Foo { public $bar = NULL; }',
+        ];
+
+        yield [
+            '<?php class Foo { PUblic $bar; }',
+            '<?php class Foo { PUblic $bar = nuLL; }',
+        ];
+
+        yield [
+            '<?php trait Foo { public $bar; }',
+            '<?php trait Foo { public $bar = nuLL; }',
+        ];
+
+        yield [
+            '<?php class Foo { public $bar; }',
+            '<?php class Foo { public $bar = \null; }',
+        ];
+
+        yield [
+            '<?php class Foo {/* */public/* A */$bar/* B *//** C */;/* D */}',
+            '<?php class Foo {/* */public/* A */$bar/* B */=/** C */null;/* D */}',
+        ];
+
+        yield [
+            '<?php class Foo { public $bar; protected $baz; }',
+            '<?php class Foo { public $bar = null; protected $baz = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public $bar = \'null\'; }',
+        ];
+
+        yield [
+            '<?php class Foo { public function bar() { return null; } }',
+        ];
+
+        yield [
+            '<?php class Foo { protected $bar, $baz, $qux; }',
+            '<?php class Foo { protected $bar = null, $baz = null, $qux = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { protected $bar, $baz = \'baz\', $qux; }',
+            '<?php class Foo { protected $bar, $baz = \'baz\', $qux = null; }',
+        ];
+
+        yield [
+            '<?php trait Foo { public $bar; } abstract class Bar { protected $bar, $baz = \'baz\', $qux; }',
+            '<?php trait Foo { public $bar = null; } abstract class Bar { protected $bar, $baz = \'baz\', $qux = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public function foo() { return null; } public $bar; public function baz() { return null; } }',
+            '<?php class Foo { public function foo() { return null; } public $bar = null; public function baz() { return null; } }',
+        ];
+
+        yield [
+            '<?php class#1
 Foo#2
 {#3
 protected#4
@@ -127,7 +134,7 @@ $qux#11
 ;#13
 }
 ',
-                '<?php class#1
+            '<?php class#1
 Foo#2
 {#3
 protected#4
@@ -142,61 +149,272 @@ $qux#11
 null;#13
 }
 ',
-            ],
-            [
-                '<?php class Foo { const FOO = null; }',
-            ],
+        ];
+
+        yield [
+            '<?php class Foo { public static $bar; }',
+            '<?php class Foo { public static $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { protected static $bar; }',
+            '<?php class Foo { protected static $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { private static $bar; }',
+            '<?php class Foo { private static $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { static $bar; }',
+            '<?php class Foo { static $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { STATIC $bar; }',
+            '<?php class Foo { STATIC $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public static $bar; }',
+            '<?php class Foo { public static $bar = NULL; }',
+        ];
+
+        yield [
+            '<?php class Foo { PUblic STatic $bar; }',
+            '<?php class Foo { PUblic STatic $bar = nuLL; }',
+        ];
+
+        yield [
+            '<?php trait Foo { public static $bar; }',
+            '<?php trait Foo { public static $bar = nuLL; }',
+        ];
+
+        yield [
+            '<?php class Foo { public static $bar; }',
+            '<?php class Foo { public static $bar = \null; }',
+        ];
+
+        yield [
+            '<?php class Foo {/* */public/* */static/* A */$bar/* B *//** C */;/* D */}',
+            '<?php class Foo {/* */public/* */static/* A */$bar/* B */=/** C */null;/* D */}',
+        ];
+
+        yield [
+            '<?php class Foo { public static $bar; protected static $baz; }',
+            '<?php class Foo { public static $bar = null; protected static $baz = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public static $bar = \'null\'; }',
+        ];
+
+        yield [
+            '<?php class Foo { public static function bar() { return null; } }',
+        ];
+
+        yield [
+            '<?php class Foo { protected static $bar, $baz, $qux; }',
+            '<?php class Foo { protected static $bar = null, $baz = null, $qux = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { protected static $bar, $baz = \'baz\', $qux; }',
+            '<?php class Foo { protected static $bar, $baz = \'baz\', $qux = null; }',
+        ];
+
+        yield [
+            '<?php trait Foo { public static $bar; } abstract class Bar { protected static $bar, $baz = \'baz\', $qux; }',
+            '<?php trait Foo { public static $bar = null; } abstract class Bar { protected static $bar, $baz = \'baz\', $qux = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public function foo() { return null; } public static $bar; public function baz() { return null; } }',
+            '<?php class Foo { public function foo() { return null; } public static $bar = null; public function baz() { return null; } }',
+        ];
+
+        yield [
+            '<?php class#1
+Foo#2
+{#3
+protected#4
+static#4.5
+$bar#5
+#6
+,#7
+$baz#8
+#9
+,#10
+$qux#11
+#12
+;#13
+}
+',
+            '<?php class#1
+Foo#2
+{#3
+protected#4
+static#4.5
+$bar#5
+=#6
+null,#7
+$baz#8
+=#9
+null,#10
+$qux#11
+=#12
+null;#13
+}
+',
+        ];
+
+        yield [
+            '<?php class Foo { const FOO = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public function foo() { static $foo = null; } }',
+        ];
+
+        yield [
+            '<?php function foo() { static $foo = null; }',
+        ];
+
+        yield [
+            '<?php new class () { public $bar; };',
+            '<?php new class () { public $bar = null; };',
+        ];
+
+        yield [
+            '<?php class Foo { public function foo() { return new class() { private $bar; }; } }',
+            '<?php class Foo { public function foo() { return new class() { private $bar = null; }; } }',
+        ];
+
+        yield [
+            '<?php class Foo { public function foo() { return new class() { private $bar; }; } } trait Baz { public $baz; }',
+            '<?php class Foo { public function foo() { return new class() { private $bar = null; }; } } trait Baz { public $baz = null; }',
+        ];
+
+        yield [
+            '<?php new class () { public static $bar; };',
+            '<?php new class () { public static $bar = null; };',
+        ];
+
+        yield [
+            '<?php class Foo { public function foo() { return new class() { private static $bar; }; } }',
+            '<?php class Foo { public function foo() { return new class() { private static $bar = null; }; } }',
+        ];
+
+        yield [
+            '<?php class Foo { public function foo() { return new class() { private static $bar; }; } } trait Baz { public static $baz; }',
+            '<?php class Foo { public function foo() { return new class() { private static $bar = null; }; } } trait Baz { public static $baz = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public function foo() { return new class() { public function foo() { static $foo = null; } }; } }',
+        ];
+
+        yield [
+            '<?php function foo() { return new class() { public function foo() { static $foo = null; } }; }',
+        ];
+
+        yield [
+            '<?php class Foo { public const FOO = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { protected ?int $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { protected ? string $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { protected ? array $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { protected static ?int $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { protected static ? string $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { protected static ? array $bar = null; }',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
+     * @dataProvider provideFixPrePHP80Cases
      *
-     * @requires PHP 7.0
-     * @dataProvider providePhp70Cases
+     * @requires PHP <8.0
      */
-    public function testFixPhp70($expected, $input = null)
+    public function testFixPrePHP80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function providePhp70Cases()
+    public static function provideFixPrePHP80Cases(): iterable
     {
-        return [
-            [
-                '<?php new class () { public $bar; };',
-                '<?php new class () { public $bar = null; };',
-            ],
-            [
-                '<?php class Foo { public function foo() { return new class() { private $bar; }; } }',
-                '<?php class Foo { public function foo() { return new class() { private $bar = null; }; } }',
-            ],
-            [
-                '<?php class Foo { public function foo() { return new class() { private $bar; }; } } trait Baz { public $baz; }',
-                '<?php class Foo { public function foo() { return new class() { private $bar = null; }; } } trait Baz { public $baz = null; }',
-            ],
+        yield [
+            '<?php class Foo { public $bar; }',
+            '<?php class Foo { public $bar = \     null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public $bar/* oh hai! */; }',
+            '<?php class Foo { public $bar = \/* oh hai! */null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public static $bar; }',
+            '<?php class Foo { public static $bar = \     null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public static $bar/* oh hai! */; }',
+            '<?php class Foo { public static $bar = \/* oh hai! */null; }',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 7.1
-     * @dataProvider providePhp71Cases
+     * @requires PHP 8.0
      */
-    public function testFixPhp71($expected, $input = null)
+    public function testFixPhp80(): void
+    {
+        $this->doTest('<?php
+class Point {
+    public function __construct(
+        public ?float $x = null,
+        protected ?float $y = null,
+        private ?float $z = null,
+    ) {}
+}
+');
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function providePhp71Cases()
+    public static function provideFix81Cases(): iterable
     {
-        return [
-            [
-                '<?php class Foo { public const FOO = null; }',
-            ],
+        yield 'readonly - cannot have default value, fixer should not crash' => [
+            '<?php
+final class Foo
+{
+    public readonly string $prop;
+}',
         ];
     }
 }

@@ -1,0 +1,40 @@
+--TEST--
+Invalid phpdocs must be kept unfixed.
+--RULESET--
+{
+    "@PhpCsFixer": true,
+    "@PhpCsFixer:risky": true
+}
+--EXPECT--
+<?php
+
+/**
+ * @method X|Y testA(int $x)
+ * @method X   testB(int $$x)
+ * @method X|Y testC(int $x)
+ */
+class MyClass
+{
+    /** @var (Y || X) */
+    public $v1;
+
+    /** @var (X|Y) */
+    public $v2;
+}
+
+--INPUT--
+<?php
+
+/**
+ * @method  Y|X testA(int $x)
+ * @method  X testB(int $$x)
+ * @method  Y|X testC(int $x)
+ */
+class Foo
+{
+    /** @var  (Y || X) */
+    public $v1;
+
+    /** @var  (Y | X) */
+    public $v2;
+}

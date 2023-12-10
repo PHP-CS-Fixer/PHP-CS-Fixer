@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,42 +27,78 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            ['<?php $x = "strlen";'],
-            ['<?php $x = Foo::strlen("bar");'],
-            ['<?php $x = new strlen("bar");'],
-            ['<?php $x = new \strlen("bar");'],
-            ['<?php $x = new Foo\strlen("bar");'],
-            ['<?php $x = Foo\strlen("bar");'],
-            ['<?php $x = strlen::call("bar");'],
-            ['<?php $x = $foo->strlen("bar");'],
-            ['<?php $x = strlen();'], // number of arguments mismatch
-            ['<?php $x = strlen($a, $b);'], // number of arguments mismatch
-            ['<?php $x = mb_strlen("bar");', '<?php $x = strlen("bar");'],
-            ['<?php $x = \mb_strlen("bar");', '<?php $x = \strlen("bar");'],
-            ['<?php $x = mb_strtolower(mb_strstr("bar", "a"));', '<?php $x = strtolower(strstr("bar", "a"));'],
-            ['<?php $x = mb_strtolower( \mb_strstr ("bar", "a"));', '<?php $x = strtolower( \strstr ("bar", "a"));'],
-            ['<?php $x = mb_substr("bar", 2, 1);', '<?php $x = substr("bar", 2, 1);'],
-            [
-                '<?php
+        yield ['<?php $x = "strlen";'];
+
+        yield ['<?php $x = Foo::strlen("bar");'];
+
+        yield ['<?php $x = new strlen("bar");'];
+
+        yield ['<?php $x = new \strlen("bar");'];
+
+        yield ['<?php $x = new Foo\strlen("bar");'];
+
+        yield ['<?php $x = Foo\strlen("bar");'];
+
+        yield ['<?php $x = strlen::call("bar");'];
+
+        yield ['<?php $x = $foo->strlen("bar");'];
+
+        yield ['<?php $x = strlen();']; // number of arguments mismatch
+
+        yield ['<?php $x = strlen($a, $b);']; // number of arguments mismatch
+
+        yield ['<?php $x = mb_strlen("bar");', '<?php $x = strlen("bar");'];
+
+        yield ['<?php $x = \mb_strlen("bar");', '<?php $x = \strlen("bar");'];
+
+        yield ['<?php $x = mb_strtolower(mb_strstr("bar", "a"));', '<?php $x = strtolower(strstr("bar", "a"));'];
+
+        yield ['<?php $x = mb_strtolower( \mb_strstr ("bar", "a"));', '<?php $x = strtolower( \strstr ("bar", "a"));'];
+
+        yield ['<?php $x = mb_substr("bar", 2, 1);', '<?php $x = substr("bar", 2, 1);'];
+
+        yield [
+            '<?php
                 interface Test
                 {
                     public function &strlen($a);
                     public function strtolower($a);
                 }',
-            ],
+        ];
+
+        yield [
+            '<?php $a = mb_str_split($a);',
+            '<?php $a = str_split($a);',
+        ];
+    }
+
+    /**
+     * @requires PHP 8.3
+     *
+     * @dataProvider provideFix83Cases
+     */
+    public function testFix83(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, null|string}>
+     */
+    public static function provideFix83Cases(): iterable
+    {
+        yield 'mb_str_pad()' => [
+            '<?php $x = mb_str_pad("bar", 2, "0", STR_PAD_LEFT);',
+            '<?php $x = str_pad("bar", 2, "0", STR_PAD_LEFT);',
         ];
     }
 }

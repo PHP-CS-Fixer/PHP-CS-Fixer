@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,17 +26,17 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class DescribeNameNotFoundExceptionTest extends TestCase
 {
-    public function testIsInvalidArgumentException()
+    public function testIsInvalidArgumentException(): void
     {
         $exception = new DescribeNameNotFoundException(
             'Peter',
             'weird'
         );
 
-        static::assertInstanceOf(\InvalidArgumentException::class, $exception);
+        self::assertInstanceOf(\InvalidArgumentException::class, $exception);
     }
 
-    public function testConstructorSetsValues()
+    public function testConstructorSetsValues(): void
     {
         $name = 'Peter';
         $type = 'weird';
@@ -44,7 +46,7 @@ final class DescribeNameNotFoundExceptionTest extends TestCase
             $type
         );
 
-        static::assertSame($name, $exception->getName());
-        static::assertSame($type, $exception->getType());
+        self::assertSame($name, $exception->getName());
+        self::assertSame($type, $exception->getType());
     }
 }

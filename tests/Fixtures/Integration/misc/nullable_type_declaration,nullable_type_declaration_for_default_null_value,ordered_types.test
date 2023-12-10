@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: nullable_type_declaration,nullable_type_declaration_for_default_null_value,ordered_types.
+--RULESET--
+{
+    "nullable_type_declaration": {"syntax": "union"},
+    "nullable_type_declaration_for_default_null_value": {"use_nullable_type_declaration": true},
+    "ordered_types": {"null_adjustment": "always_last"}
+}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+
+function intel(array|null $config = null): array|null
+{
+    return $config;
+}
+
+--INPUT--
+<?php
+
+function intel(array $config = null): ?array
+{
+    return $config;
+}

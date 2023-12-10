@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,22 +17,21 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\DocBlock\TypeExpression;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Utils;
 
-final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Sorts PHPDoc types.',
@@ -80,22 +81,35 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
                         'null_adjustment' => 'none',
                     ]
                 ),
+                new CodeSample(
+                    '<?php
+/**
+ * @param Aaa|AA $bar
+ */
+',
+                    ['case_sensitive' => true]
+                ),
             ]
         );
     }
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before PhpdocAlignFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
-    public function isCandidate(Tokens $tokens)
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('sort_algorithm', 'The sorting algorithm to apply.'))
@@ -106,10 +120,14 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
                 ->setAllowedValues(['always_first', 'always_last', 'none'])
                 ->setDefault('always_first')
                 ->getOption(),
+            (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
         ]);
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -119,24 +137,26 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
             $doc = new DocBlock($token->getContent());
             $annotations = $doc->getAnnotationsOfType(Annotation::getTagsWithTypes());
 
-            if (!\count($annotations)) {
+            if (0 === \count($annotations)) {
                 continue;
             }
 
             foreach ($annotations as $annotation) {
-                $types = $annotation->getTypes();
-
                 // fix main types
-                $annotation->setTypes($this->sortTypes($types));
+                if (null !== $annotation->getTypeExpression()) {
+                    $annotation->setTypes(
+                        $this->sortTypes(
+                            $annotation->getTypeExpression()
+                        )
+                    );
+                }
 
                 // fix @method parameters types
                 $line = $doc->getLine($annotation->getStart());
-                $line->setContent(Preg::replaceCallback('/(@method\s+.+?\s+\w+\()(.*)\)/', function (array $matches) {
-                    $sorted = Preg::replaceCallback('/((?:^|,)\s*)([^\s]+)/', function (array $matches) {
-                        return $matches[1].$this->sortJoinedTypes($matches[2]);
-                    }, $matches[2]);
+                $line->setContent(Preg::replaceCallback('/@method\s+'.TypeExpression::REGEX_TYPES.'\s+\K(?&callable)/', function (array $matches) {
+                    $typeExpression = new TypeExpression($matches[0], null, []);
 
-                    return $matches[1].$sorted.')';
+                    return implode('|', $this->sortTypes($typeExpression));
                 }, $line->getContent()));
             }
 
@@ -145,68 +165,36 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
     }
 
     /**
-     * @param string[] $types
-     *
      * @return string[]
      */
-    private function sortTypes(array $types)
+    private function sortTypes(TypeExpression $typeExpression): array
     {
-        foreach ($types as $index => $type) {
-            $types[$index] = Preg::replaceCallback('/^([^<]+)<(?:([\w\|]+?)(,\s*))?(.*)>$/', function (array $matches) {
-                return $matches[1].'<'.$this->sortJoinedTypes($matches[2]).$matches[3].$this->sortJoinedTypes($matches[4]).'>';
-            }, $type);
-        }
+        $normalizeType = static fn (string $type): string => Preg::replace('/^\\??\\\?/', '', $type);
 
-        if ('alpha' === $this->configuration['sort_algorithm']) {
-            $types = Utils::stableSort(
-                $types,
-                static function ($type) { return $type; },
-                static function ($typeA, $typeB) {
-                    $regexp = '/^\\??\\\?/';
+        $typeExpression->sortTypes(
+            function (TypeExpression $a, TypeExpression $b) use ($normalizeType): int {
+                $a = $normalizeType($a->toString());
+                $b = $normalizeType($b->toString());
+                $lowerCaseA = strtolower($a);
+                $lowerCaseB = strtolower($b);
 
-                    return strcasecmp(
-                        Preg::replace($regexp, '', $typeA),
-                        Preg::replace($regexp, '', $typeB)
-                    );
+                if ('none' !== $this->configuration['null_adjustment']) {
+                    if ('null' === $lowerCaseA && 'null' !== $lowerCaseB) {
+                        return 'always_last' === $this->configuration['null_adjustment'] ? 1 : -1;
+                    }
+                    if ('null' !== $lowerCaseA && 'null' === $lowerCaseB) {
+                        return 'always_last' === $this->configuration['null_adjustment'] ? -1 : 1;
+                    }
                 }
-            );
-        }
 
-        if ('none' !== $this->configuration['null_adjustment']) {
-            $nulls = [];
-            foreach ($types as $index => $type) {
-                if (Preg::match('/^\\\?null$/i', $type)) {
-                    $nulls[$index] = $type;
-                    unset($types[$index]);
+                if ('alpha' === $this->configuration['sort_algorithm']) {
+                    return $this->configuration['case_sensitive'] ? $a <=> $b : strcasecmp($a, $b);
                 }
-            }
 
-            if (\count($nulls)) {
-                if ('always_last' === $this->configuration['null_adjustment']) {
-                    array_push($types, ...$nulls);
-                } else {
-                    array_unshift($types, ...$nulls);
-                }
-            }
-        }
-
-        return $types;
-    }
-
-    /**
-     * @param string $types
-     *
-     * @return string
-     */
-    private function sortJoinedTypes($types)
-    {
-        $types = array_filter(
-            Preg::split('/([^|<]+(?:<.*>)?)/', $types, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY),
-            static function ($value) {
-                return '|' !== $value;
+                return 0;
             }
         );
 
-        return implode('|', $this->sortTypes($types));
+        return $typeExpression->getTypes();
     }
 }

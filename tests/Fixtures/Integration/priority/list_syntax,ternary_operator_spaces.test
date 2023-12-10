@@ -2,8 +2,6 @@
 Integration of fixers: list_syntax,ternary_operator_spaces.
 --RULESET--
 {"list_syntax": {"syntax":"short"}, "ternary_operator_spaces":true}
---REQUIREMENTS--
-{"php": 70100}
 --EXPECT--
 <?php
 $a = $z ? [$c,$d] = $a : 1;

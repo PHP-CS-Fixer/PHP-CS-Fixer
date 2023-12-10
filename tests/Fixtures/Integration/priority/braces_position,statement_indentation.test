@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: braces_position,statement_indentation.
+--RULESET--
+{"braces_position": true, "statement_indentation": true}
+--EXPECT--
+<?php
+function foo()
+{
+    return true;
+}
+
+--INPUT--
+<?php
+function foo() { return true; }

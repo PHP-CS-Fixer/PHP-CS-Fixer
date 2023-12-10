@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,8 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
-use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -27,10 +29,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class SelfAccessorFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Inside class or interface element `self` should be preferred to the class name itself.',
@@ -55,30 +54,31 @@ class Sample
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after PsrAutoloadingFixer.
      */
-    public function isRisky()
+    public function getPriority(): int
+    {
+        return -11;
+    }
+
+    public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        foreach ((new NamespacesAnalyzer())->getDeclarations($tokens) as $namespace) {
+        foreach ($tokens->getNamespaceDeclarations() as $namespace) {
             for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex(); ++$index) {
                 if (!$tokens[$index]->isGivenKind([T_CLASS, T_INTERFACE]) || $tokensAnalyzer->isAnonymousClass($index)) {
                     continue;
@@ -99,14 +99,8 @@ class Sample
 
     /**
      * Replace occurrences of the name of the classy element by "self" (if possible).
-     *
-     * @param Tokens $tokens
-     * @param string $namespace
-     * @param string $name
-     * @param int    $startIndex
-     * @param int    $endIndex
      */
-    private function replaceNameOccurrences(Tokens $tokens, $namespace, $name, $startIndex, $endIndex)
+    private function replaceNameOccurrences(Tokens $tokens, string $namespace, string $name, int $startIndex, int $endIndex): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $insideMethodSignatureUntil = null;
@@ -126,7 +120,21 @@ class Sample
                 continue;
             }
 
+            if ($token->isGivenKind(T_FN)) {
+                $i = $tokensAnalyzer->getLastTokenIndexOfArrowFunction($i);
+                $i = $tokens->getNextMeaningfulToken($i);
+
+                continue;
+            }
+
             if ($token->isGivenKind(T_FUNCTION)) {
+                if ($tokensAnalyzer->isLambda($i)) {
+                    $i = $tokens->getNextTokenOfKind($i, ['{']);
+                    $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
+
+                    continue;
+                }
+
                 $i = $tokens->getNextTokenOfKind($i, ['(']);
                 $insideMethodSignatureUntil = $tokens->getNextTokenOfKind($i, ['{', ';']);
 
@@ -151,7 +159,7 @@ class Sample
                 }
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classStartIndex)];
             }
-            if ($prevToken->isGivenKind([T_OBJECT_OPERATOR, T_STRING])) {
+            if ($prevToken->isGivenKind(T_STRING) || $prevToken->isObjectOperator()) {
                 continue;
             }
 
@@ -161,7 +169,7 @@ class Sample
                 || (
                     null !== $insideMethodSignatureUntil
                     && $i < $insideMethodSignatureUntil
-                    && $prevToken->equalsAny(['(', ',', [CT::T_TYPE_COLON], [CT::T_NULLABLE_TYPE]])
+                    && $prevToken->equalsAny(['(', ',', [CT::T_NULLABLE_TYPE], [CT::T_TYPE_ALTERNATION], [CT::T_TYPE_COLON]])
                 )
             ) {
                 for ($j = $classStartIndex; $j < $i; ++$j) {
@@ -172,20 +180,18 @@ class Sample
         }
     }
 
-    private function getClassStart(Tokens $tokens, $index, $namespace)
+    private function getClassStart(Tokens $tokens, int $index, string $namespace): ?int
     {
         $namespace = ('' !== $namespace ? '\\'.$namespace : '').'\\';
 
         foreach (array_reverse(Preg::split('/(\\\\)/', $namespace, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE)) as $piece) {
             $index = $tokens->getPrevMeaningfulToken($index);
             if ('\\' === $piece) {
-                if (!$tokens[$index]->isGivenKind([T_NS_SEPARATOR])) {
+                if (!$tokens[$index]->isGivenKind(T_NS_SEPARATOR)) {
                     return null;
                 }
-            } else {
-                if (!$tokens[$index]->equals([T_STRING, $piece], false)) {
-                    return null;
-                }
+            } elseif (!$tokens[$index]->equals([T_STRING, $piece], false)) {
+                return null;
             }
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -24,107 +27,107 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigureCheckSearchFunction()
+    public function testConfigureCheckSearchFunction(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[random_api_migration\] Invalid configuration: Function "is_null" is not handled by the fixer\.$#');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('#^\[random_api_migration\] Invalid configuration: Function "is_null" is not handled by the fixer\.$#');
 
         $this->fixer->configure(['replacements' => ['is_null' => 'random_int']]);
     }
 
-    public function testConfigureCheckReplacementType()
+    public function testConfigureCheckReplacementType(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "NULL" given\.$#');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "null" given\.$#');
 
         $this->fixer->configure(['replacements' => ['rand' => null]]);
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing "replacements" at the root of the configuration for rule "random_api_migration" is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
-     */
-    public function testLegacyConfigure()
-    {
-        $this->fixer->configure(['rand' => 'random_int']);
-
-        static::assertSame(
-            ['replacements' => [
-                'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
-            ],
-            static::getObjectAttribute($this->fixer, 'configuration')
-        );
-    }
-
-    public function testConfigure()
+    public function testConfigure(): void
     {
         $this->fixer->configure(['replacements' => ['rand' => 'random_int']]);
 
-        static::assertSame(
+        $reflectionProperty = new \ReflectionProperty($this->fixer, 'configuration');
+        $reflectionProperty->setAccessible(true);
+
+        self::assertSame(
             ['replacements' => [
                 'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
             ],
-            static::getObjectAttribute($this->fixer, 'configuration')
+            $reflectionProperty->getValue($this->fixer)
         );
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $config
+     * @param array<string, mixed> $config
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
-
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return array[]
+     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
      */
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php random_int(0, getrandmax());',
-                '<?php rand();',
-                ['replacements' => ['rand' => 'random_int']],
-            ],
-            [
-                '<?php random_int#1
+        yield [
+            '<?php random_int(0, getrandmax());',
+            '<?php rand();',
+            ['replacements' => ['rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php random_int#1
                 #2
                 (0, getrandmax()#3
                 #4
                 )#5
                 ;',
-                '<?php rand#1
+            '<?php rand#1
                 #2
                 (#3
                 #4
                 )#5
                 ;',
-                ['replacements' => ['rand' => 'random_int']],
-            ],
-            ['<?php $smth->srand($a);'],
-            ['<?php srandSmth($a);'],
-            ['<?php smth_srand($a);'],
-            ['<?php new srand($a);'],
-            ['<?php new Smth\\srand($a);'],
-            ['<?php Smth\\srand($a);'],
-            ['<?php namespace\\srand($a);'],
-            ['<?php Smth::srand($a);'],
-            ['<?php new srand\\smth($a);'],
-            ['<?php srand::smth($a);'],
-            ['<?php srand\\smth($a);'],
-            ['<?php "SELECT ... srand(\$a) ...";'],
-            ['<?php "SELECT ... SRAND($a) ...";'],
-            ["<?php 'test'.'srand' . 'in concatenation';"],
-            ['<?php "test" . "srand"."in concatenation";'],
-            [
-                '<?php
+            ['replacements' => ['rand' => 'random_int']],
+        ];
+
+        yield ['<?php $smth->srand($a);'];
+
+        yield ['<?php srandSmth($a);'];
+
+        yield ['<?php smth_srand($a);'];
+
+        yield ['<?php new srand($a);'];
+
+        yield ['<?php new Smth\\srand($a);'];
+
+        yield ['<?php Smth\\srand($a);'];
+
+        yield ['<?php namespace\\srand($a);'];
+
+        yield ['<?php Smth::srand($a);'];
+
+        yield ['<?php new srand\\smth($a);'];
+
+        yield ['<?php srand::smth($a);'];
+
+        yield ['<?php srand\\smth($a);'];
+
+        yield ['<?php "SELECT ... srand(\$a) ...";'];
+
+        yield ['<?php "SELECT ... SRAND($a) ...";'];
+
+        yield ["<?php 'test'.'srand' . 'in concatenation';"];
+
+        yield ['<?php "test" . "srand"."in concatenation";'];
+
+        yield [
+            '<?php
 class SrandClass
 {
     const srand = 1;
@@ -140,76 +143,93 @@ class srand extends SrandClass{
     const srand = "srand";
 }
 ',
-            ],
-            ['<?php mt_srand($a);', '<?php srand($a);'],
-            ['<?php \\mt_srand($a);', '<?php \\srand($a);'],
-            ['<?php $a = &mt_srand($a);', '<?php $a = &srand($a);'],
-            ['<?php $a = &\\mt_srand($a);', '<?php $a = &\\srand($a);'],
-            ['<?php /* foo */ mt_srand /** bar */ ($a);', '<?php /* foo */ srand /** bar */ ($a);'],
-            ['<?php a(mt_getrandmax ());', '<?php a(getrandmax ());'],
-            ['<?php a(mt_rand());', '<?php a(rand());'],
-            ['<?php a(mt_srand());', '<?php a(srand());'],
-            ['<?php a(\\mt_srand());', '<?php a(\\srand());'],
-            [
-                '<?php rand(rand($a));',
-                null,
-                ['replacements' => ['rand' => 'random_int']],
-            ],
-            [
-                '<?php random_int($d, random_int($a,$b));',
-                '<?php rand($d, rand($a,$b));',
-                ['replacements' => ['rand' => 'random_int']],
-            ],
-            [
-                '<?php random_int($a, \Other\Scope\mt_rand($a));',
-                '<?php rand($a, \Other\Scope\mt_rand($a));',
-                ['replacements' => ['rand' => 'random_int']],
-            ],
-            [
-                '<?php $a = random_int(1,2) + random_int(3,4);',
-                '<?php $a = rand(1,2) + mt_rand(3,4);',
-                ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
-            ],
-            [
-                '<?php
+        ];
+
+        yield ['<?php mt_srand($a);', '<?php srand($a);'];
+
+        yield ['<?php \\mt_srand($a);', '<?php \\srand($a);'];
+
+        yield ['<?php $a = &mt_srand($a);', '<?php $a = &srand($a);'];
+
+        yield ['<?php $a = &\\mt_srand($a);', '<?php $a = &\\srand($a);'];
+
+        yield ['<?php /* foo */ mt_srand /** bar */ ($a);', '<?php /* foo */ srand /** bar */ ($a);'];
+
+        yield ['<?php a(mt_getrandmax ());', '<?php a(getrandmax ());'];
+
+        yield ['<?php a(mt_rand());', '<?php a(rand());'];
+
+        yield ['<?php a(mt_srand());', '<?php a(srand());'];
+
+        yield ['<?php a(\\mt_srand());', '<?php a(\\srand());'];
+
+        yield [
+            '<?php rand(rand($a));',
+            null,
+            ['replacements' => ['rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php random_int($d, random_int($a,$b));',
+            '<?php rand($d, rand($a,$b));',
+            ['replacements' => ['rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php random_int($a, \Other\Scope\mt_rand($a));',
+            '<?php rand($a, \Other\Scope\mt_rand($a));',
+            ['replacements' => ['rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php $a = random_int(1,2) + random_int(3,4);',
+            '<?php $a = rand(1,2) + mt_rand(3,4);',
+            ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php
                 interface Test
                 {
                     public function getrandmax();
                     public function &rand();
                 }',
-                null,
-                ['replacements' => ['rand' => 'random_int']],
-            ],
+            null,
+            ['replacements' => ['rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php rand($d, rand($a,$b));',
+            null,
+            ['replacements' => ['rand' => 'rand']],
+        ];
+
+        yield [
+            '<?php $a = random_int(1,2,) + random_int(3,4,);',
+            '<?php $a = rand(1,2,) + mt_rand(3,4,);',
+            ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php mt_srand($a,);',
+            '<?php srand($a,);',
         ];
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     * @param array  $config
+     * @dataProvider provideFix81Cases
      *
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
+     * @requires PHP 8.1
      */
-    public function testFix73($expected, $input, array $config = [])
+    public function testFix81(string $expected, string $input = null): void
     {
-        $this->fixer->configure($config);
-
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public static function provideFix81Cases(): iterable
     {
-        return [
-            [
-                '<?php $a = random_int(1,2,) + random_int(3,4,);',
-                '<?php $a = rand(1,2,) + mt_rand(3,4,);',
-                ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
-            ],
-            [
-                '<?php mt_srand($a,);',
-                '<?php srand($a,);',
-            ],
+        yield 'simple 8.1' => [
+            '<?php $f = srand(...);',
         ];
     }
 }

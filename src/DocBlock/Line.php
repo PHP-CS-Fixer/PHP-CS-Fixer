@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,43 +19,35 @@ use PhpCsFixer\Preg;
 /**
  * This represents a line of a docblock.
  *
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
-class Line
+final class Line
 {
     /**
      * The content of this line.
-     *
-     * @var string
      */
-    private $content;
+    private string $content;
 
     /**
      * Create a new line instance.
-     *
-     * @param string $content
      */
-    public function __construct($content)
+    public function __construct(string $content)
     {
         $this->content = $content;
     }
 
     /**
      * Get the string representation of object.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->content;
     }
 
     /**
      * Get the content of this line.
-     *
-     * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -62,52 +56,42 @@ class Line
      * Does this line contain useful content?
      *
      * If the line contains text or tags, then this is true.
-     *
-     * @return bool
      */
-    public function containsUsefulContent()
+    public function containsUsefulContent(): bool
     {
-        return 0 !== Preg::match('/\\*\s*\S+/', $this->content) && !$this->isTheStart() && !$this->isTheEnd();
+        return Preg::match('/\\*\s*\S+/', $this->content) && '' !== trim(str_replace(['/', '*'], ' ', $this->content));
     }
 
     /**
      * Does the line contain a tag?
      *
      * If this is true, then it must be the first line of an annotation.
-     *
-     * @return bool
      */
-    public function containsATag()
+    public function containsATag(): bool
     {
-        return 0 !== Preg::match('/\\*\s*@/', $this->content);
+        return Preg::match('/\\*\s*@/', $this->content);
     }
 
     /**
      * Is the line the start of a docblock?
-     *
-     * @return bool
      */
-    public function isTheStart()
+    public function isTheStart(): bool
     {
-        return false !== strpos($this->content, '/**');
+        return str_contains($this->content, '/**');
     }
 
     /**
      * Is the line the end of a docblock?
-     *
-     * @return bool
      */
-    public function isTheEnd()
+    public function isTheEnd(): bool
     {
-        return false !== strpos($this->content, '*/');
+        return str_contains($this->content, '*/');
     }
 
     /**
      * Set the content of this line.
-     *
-     * @param string $content
      */
-    public function setContent($content)
+    public function setContent(string $content): void
     {
         $this->content = $content;
     }
@@ -116,10 +100,10 @@ class Line
      * Remove this line by clearing its contents.
      *
      * Note that this method technically brakes the internal state of the
-     * docblock, but is useful when we need to retain the indexes of lines
+     * docblock, but is useful when we need to retain the indices of lines
      * during the execution of an algorithm.
      */
-    public function remove()
+    public function remove(): void
     {
         $this->content = '';
     }
@@ -128,14 +112,14 @@ class Line
      * Append a blank docblock line to this line's contents.
      *
      * Note that this method technically brakes the internal state of the
-     * docblock, but is useful when we need to retain the indexes of lines
+     * docblock, but is useful when we need to retain the indices of lines
      * during the execution of an algorithm.
      */
-    public function addBlank()
+    public function addBlank(): void
     {
-        $matched = Preg::match('/^([ \t]*\*)[^\r\n]*(\r?\n)$/', $this->content, $matches);
+        $matched = Preg::match('/^(\h*\*)[^\r\n]*(\r?\n)$/', $this->content, $matches);
 
-        if (1 !== $matched) {
+        if (!$matched) {
             return;
         }
 

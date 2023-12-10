@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: single_space_around_construct,nullable_type_declaration.
+--RULESET--
+{"single_space_around_construct": true, "nullable_type_declaration": {"syntax": "union"}}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+class Foo
+{
+    public null|int $a;
+    protected null|array $b;
+    private null|string $c;
+    private static null|bool $d;
+}
+
+--INPUT--
+<?php
+class Foo
+{
+    public?int $a;
+    protected?array $b;
+    private?string $c;
+    private static?bool $d;
+}

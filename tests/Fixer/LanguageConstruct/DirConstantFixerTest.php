@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,110 +27,168 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class DirConstantFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
         $multiLinePatternToFix = <<<'FIX'
-<?php $x =
-dirname
+            <?php $x =
+            dirname
 
-(
+            (
 
-    __FILE__
+                __FILE__
 
-)
+            )
 
-;
-FIX;
+            ;
+            FIX;
         $multiLinePatternFixed = <<<'FIXED'
-<?php $x =
-__DIR__
+            <?php $x =
+            __DIR__
 
-;
-FIXED;
+            ;
+            FIXED;
 
-        return [
-            ['<?php $x = "dirname";'],
+        yield ['<?php $x = "dirname";'];
 
-            ['<?php $x = dirname(__FILE__.".dist");'],
+        yield ['<?php $x = dirname(__FILE__.".dist");'];
 
-            ['<?php $x = ClassA::dirname(__FILE__);'],
-            ['<?php $x = ScopeA\\dirname(__FILE__);'],
-            ['<?php $x = namespace\\dirname(__FILE__);'],
-            ['<?php $x = $object->dirname(__FILE__);'],
+        yield ['<?php $x = ClassA::dirname(__FILE__);'];
 
-            ['<?php $x = new \\dirname(__FILE__);'],
-            ['<?php $x = new dirname(__FILE__);'],
-            ['<?php $x = new ScopeB\\dirname(__FILE__);'],
+        yield ['<?php $x = ScopeA\\dirname(__FILE__);'];
 
-            ['<?php dirnameSmth(__FILE__);'],
-            ['<?php smth_dirname(__FILE__);'],
+        yield ['<?php $x = namespace\\dirname(__FILE__);'];
 
-            ['<?php "SELECT ... dirname(__FILE__) ...";'],
-            ['<?php "SELECT ... DIRNAME(__FILE__) ...";'],
-            ['<?php "test" . "dirname" . "in concatenation";'],
+        yield ['<?php $x = $object->dirname(__FILE__);'];
 
-            [
-                '<?php $x = dirname(__DIR__);',
-                '<?php $x = dirname(dirname(__FILE__));',
-            ],
-            [
-                '<?php $x = __DIR__;',
-                '<?php $x = dirname(__FILE__);',
-            ],
-            [
-                '<?php $x =   /* A */ __DIR__     /* B */;',
-                '<?php $x = dirname  (  /* A */ __FILE__  )   /* B */;',
-            ],
-            [
-                '<?php $x = __DIR__;',
-                '<?php $x = \\dirname(__FILE__);',
-            ],
-            [
-                '<?php $x = __DIR__.".dist";',
-                '<?php $x = dirname(__FILE__).".dist";',
-            ],
-            [
-                '<?php $x = __DIR__.".dist";',
-                '<?php $x = \\dirname(__FILE__).".dist";',
-            ],
-            [
-                '<?php $x = /* 0 *//* 1 */ /** x2*//*3*//** 4*/__DIR__/**5*//*xx*/;',
-                '<?php $x = /* 0 */dirname/* 1 */ /** x2*/(/*3*//** 4*/__FILE__/**5*/)/*xx*/;',
-            ],
-            [
-                '<?php
+        yield ['<?php $x = new \\dirname(__FILE__);'];
+
+        yield ['<?php $x = new dirname(__FILE__);'];
+
+        yield ['<?php $x = new ScopeB\\dirname(__FILE__);'];
+
+        yield ['<?php dirnameSmth(__FILE__);'];
+
+        yield ['<?php smth_dirname(__FILE__);'];
+
+        yield ['<?php "SELECT ... dirname(__FILE__) ...";'];
+
+        yield ['<?php "SELECT ... DIRNAME(__FILE__) ...";'];
+
+        yield ['<?php "test" . "dirname" . "in concatenation";'];
+
+        yield [
+            '<?php $x = dirname(__DIR__);',
+            '<?php $x = dirname(dirname(__FILE__));',
+        ];
+
+        yield [
+            '<?php $x = __DIR__;',
+            '<?php $x = dirname(__FILE__);',
+        ];
+
+        yield [
+            '<?php $x =   /* A */ __DIR__     /* B */;',
+            '<?php $x = dirname  (  /* A */ __FILE__  )   /* B */;',
+        ];
+
+        yield [
+            '<?php $x = __DIR__;',
+            '<?php $x = \dirname(__FILE__);',
+        ];
+
+        yield [
+            '<?php $x = __DIR__.".dist";',
+            '<?php $x = dirname(__FILE__).".dist";',
+        ];
+
+        yield [
+            '<?php $x = __DIR__.".dist";',
+            '<?php $x = \dirname(__FILE__).".dist";',
+        ];
+
+        yield [
+            '<?php $x = /* 0 *//* 1 */ /** x2*//*3*//** 4*/__DIR__/**5*//*xx*/;',
+            '<?php $x = /* 0 */dirname/* 1 */ /** x2*/(/*3*//** 4*/__FILE__/**5*/)/*xx*/;',
+        ];
+
+        yield [
+            '<?php
                 interface Test
                 {
                     public function dirname($a);
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 interface Test
                 {
                     public function &dirname($a);
                 }',
-            ],
-            [
-                "<?php echo __DIR__\n?>",
-                "<?php echo dirname\n(\n__FILE__\n)\n?>",
-            ],
-            [
-                "<?php echo __DIR__/*1*/\n?>",
-                "<?php echo dirname\n(\n__FILE__/*1*/\n)\n?>",
-            ],
-            [
-                '<?php $x =# A
+        ];
+
+        yield [
+            "<?php echo __DIR__\n?>",
+            "<?php echo dirname\n(\n__FILE__\n)\n?>",
+        ];
+
+        yield [
+            "<?php echo __DIR__/*1*/\n?>",
+            "<?php echo dirname\n(\n__FILE__/*1*/\n)\n?>",
+        ];
+
+        yield [
+            $multiLinePatternFixed,
+            $multiLinePatternToFix,
+        ];
+
+        yield [
+            '<?php $x = __DIR__;',
+            '<?php $x = \dirname(
+                    __FILE__                     '.'
+                );',
+        ];
+
+        yield [
+            '<?php
+                    $x = dirname(dirname("a".__FILE__));
+                    $x = dirname(dirname(__FILE__."a"));
+                    $x = dirname(dirname("a".__FILE__."a"));
+                ',
+        ];
+
+        yield [
+            '<?php $x = __DIR__.".dist";',
+            '<?php $x = dirname(__FILE__,   ).".dist";',
+        ];
+
+        yield [
+            '<?php $x = __DIR__/* a */  /* b */  .".dist";',
+            '<?php $x = \dirname(__FILE__/* a */,  /* b */)  .".dist";',
+        ];
+
+        yield [
+            '<?php $x = __DIR__;',
+            '<?php $x = \dirname(
+                    __FILE__   ,                     '.'
+                );',
+        ];
+    }
+
+    /**
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80(): void
+    {
+        $this->doTest(
+            '<?php $x =# A
 # A1
 # B
 # C
@@ -136,7 +196,7 @@ __DIR__# D
 # E
 ;# F
 ',
-                '<?php $x =# A
+            '<?php $x =# A
 \
 # A1
 dirname# B
@@ -144,50 +204,7 @@ dirname# B
 __FILE__# D
 )# E
 ;# F
-',
-            ],
-            [
-                $multiLinePatternFixed,
-                $multiLinePatternToFix,
-            ],
-            [
-                '<?php $x = __DIR__;',
-                '<?php $x = \dirname(
-                    __FILE__                     '.'
-                );',
-            ],
-        ];
-    }
-
-    /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73($expected, $input)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases()
-    {
-        return [
-            [
-                '<?php $x = __DIR__.".dist";',
-                '<?php $x = dirname(__FILE__,   ).".dist";',
-            ],
-            [
-                '<?php $x = __DIR__/* a */  /* b */  .".dist";',
-                '<?php $x = \dirname(__FILE__/* a */,  /* b */)  .".dist";',
-            ],
-            [
-                '<?php $x = __DIR__;',
-                '<?php $x = \dirname(
-                    __FILE__   ,                     '.'
-                );',
-            ],
-        ];
+'
+        );
     }
 }

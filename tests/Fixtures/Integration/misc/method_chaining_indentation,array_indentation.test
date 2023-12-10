@@ -9,9 +9,29 @@ Foo::bar([
 ])
     ->call();
 
+function foo($foo)
+{
+    $foo
+        ->bar()
+        ->baz([
+            'foo' => 'bar',
+        ])
+    ;
+}
+
 --INPUT--
 <?php
 Foo::bar([
 		'baz',
 	])
 	    ->call();
+
+function foo($foo)
+{
+    $foo
+        ->bar()
+           ->baz([
+                'foo' => 'bar',
+            ])
+    ;
+}

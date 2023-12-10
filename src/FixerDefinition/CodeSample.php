@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,38 +19,28 @@ namespace PhpCsFixer\FixerDefinition;
  */
 final class CodeSample implements CodeSampleInterface
 {
-    /**
-     * @var string
-     */
-    private $code;
+    private string $code;
 
     /**
-     * @var null|array
+     * @var null|array<string, mixed>
      */
-    private $configuration;
+    private ?array $configuration;
 
     /**
-     * @param string     $code
-     * @param null|array $configuration
+     * @param null|array<string, mixed> $configuration
      */
-    public function __construct($code, array $configuration = null)
+    public function __construct(string $code, ?array $configuration = null)
     {
         $this->code = $code;
         $this->configuration = $configuration;
     }
 
-    /**
-     * @return string
-     */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
 
-    /**
-     * @return null|array
-     */
-    public function getConfiguration()
+    public function getConfiguration(): ?array
     {
         return $this->configuration;
     }

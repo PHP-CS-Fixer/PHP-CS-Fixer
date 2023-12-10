@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,32 +26,22 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
+     * @param array<string, mixed> $config
      *
      * @dataProvider provideDocblocksCases
-     */
-    public function testFix($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTraitsCases
+     * @dataProvider provideFixCases
      */
-    public function testFixTraits($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
+
         $this->doTest($expected, $input);
     }
 
-    public function provideDocblocksCases()
+    public static function provideDocblocksCases(): iterable
     {
-        $cases = [];
-
-        $cases[] = [
+        yield [
             '<?php
 /**
  * Do not convert this
@@ -61,6 +53,11 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
  */
 class DocBlocks
 {
+    /**
+     * Do not convert this
+     */
+    use TestTrait;
+
     /**
      * Do not convert this
      */
@@ -93,7 +90,7 @@ class DocBlocks
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php namespace Docs;
 
 /**
@@ -107,7 +104,7 @@ class DocBlocks{}
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 
 /**
@@ -118,7 +115,7 @@ namespace Foo;
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -135,7 +132,7 @@ abstract class DocBlocks
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -148,7 +145,7 @@ interface DocBlocks
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 namespace NS;
 
@@ -160,7 +157,7 @@ final class Foo
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -186,7 +183,7 @@ include_once "include_once.php";
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -225,7 +222,7 @@ $loader = require_once __DIR__."/vendor/autoload.php";
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -236,7 +233,7 @@ $loader = require_once __DIR__."/../app/autoload.php";
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -249,7 +246,7 @@ $foo = createFoo();
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -262,7 +259,7 @@ $local = true;
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -273,7 +270,7 @@ $local = true;
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -283,7 +280,7 @@ foreach($connections as $sqlite) {
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -293,7 +290,7 @@ foreach($connections as $key => $sqlite) {
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -303,7 +300,7 @@ foreach($connections as $key => $sqlite) {
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -320,7 +317,7 @@ foreach($connections as $key => $sqlite) {
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -335,7 +332,7 @@ $sqlite1->open($path);
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -350,7 +347,7 @@ $i++;
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -359,7 +356,7 @@ $index = $a[\'number\'];
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -368,7 +365,7 @@ list($one, $two) = explode("," , $csvLines);
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -383,7 +380,7 @@ list($one, $two) = explode("," , $csvLines);
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -416,7 +413,7 @@ for($i = 0, $size = count($people); $i < $size; ++$i) {
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -479,7 +476,7 @@ for($i = 0, $size = count($people); $i < $size; ++$i) {
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 /* This should be a comment */
 ',
@@ -488,7 +485,7 @@ for($i = 0, $size = count($people); $i < $size; ++$i) {
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 /**
  * This is a page level docblock should stay untouched
@@ -498,7 +495,7 @@ echo "Some string";
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -507,7 +504,7 @@ static $formatter;
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -519,7 +516,7 @@ function getNumberFormatter()
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 
 class A
@@ -533,7 +530,7 @@ class A
 ',
         ];
 
-        $cases[] = ['<?php
+        yield ['<?php
 /** header */
 echo 123;
 
@@ -542,7 +539,7 @@ echo 123;
             ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 /** header */
 echo 123;
@@ -552,14 +549,148 @@ $loader = require __DIR__.\'/../vendor/autoload.php\';
 ',
         ];
 
-        return $cases;
+        yield [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** @todo Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            null,
+            ['ignored_tags' => ['todo']],
+        ];
+
+        yield [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @todo Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @todo Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            ['ignored_tags' => ['todo']],
+        ];
+
+        yield [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @fix-me Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @fix-me Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            ['ignored_tags' => ['fix-me']],
+        ];
+
+        yield [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* @todoNot Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @TODO Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** @todoNot Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @TODO Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            ['ignored_tags' => ['todo']],
+        ];
+
+        yield [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/**
+ * @deprecated This tag is not in the list but the next one is
+ * @todo This should be a PHPDoc as the tag is on "ignored_tags" list
+ */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/**
+ * @deprecated This tag is not in the list but the next one is
+ * @todo This should be a PHPDoc as the tag is on "ignored_tags" list
+ */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            ['ignored_tags' => ['todo']],
+        ];
+
+        yield 'do not convert before fn' => [
+            '<?php // needed because by default first comment is never fixed
+            /** @param int $x */
+            fn ($x) => $x + 42;
+            ',
+        ];
     }
 
-    public function provideTraitsCases()
+    public static function provideTraitsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
 /**
@@ -569,27 +700,13 @@ trait DocBlocks
 {
     public function test() {}
 }',
-            ],
         ];
     }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
+    public static function provideFixCases(): iterable
     {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 /** header */
 echo 123;
 
@@ -599,27 +716,10 @@ echo 123;
 /** @var Session $session */ # test
 $session = new Session();
                 ',
-            ],
         ];
-    }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix71Cases
-     * @requires PHP 7.1
-     */
-    public function testFix71($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases()
-    {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
 /** @var int $a */
@@ -628,7 +728,7 @@ $first = true;// needed because by default first docblock is never fixed.
 /* @var int $c */
 [$a] = $c;
                 ',
-                '<?php
+            '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
 /** @var int $a */
@@ -637,9 +737,10 @@ $first = true;// needed because by default first docblock is never fixed.
 /** @var int $c */
 [$a] = $c;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
 /**
@@ -647,7 +748,170 @@ $first = true;// needed because by default first docblock is never fixed.
  */
 [$a] = $b;
                 ',
-            ],
+        ];
+
+        yield [
+            '<?php
+                class Foo {
+                    /**
+                     * Do not convert this
+                     */
+                    private int $foo;
+                }',
+        ];
+
+        yield [
+            '<?php
+                class Foo {
+                    /**
+                     * Do not convert this
+                     */
+                    protected ?string $foo;
+                }',
+        ];
+
+        yield [
+            '<?php
+                class Foo {
+                    /**
+                     * Do not convert this
+                     */
+                    public ? float $foo;
+                }',
+        ];
+
+        yield [
+            '<?php
+                class Foo {
+                    /**
+                     * Do not convert this
+                     */
+                    var ? Foo\Bar $foo;
+                }',
+        ];
+
+        yield [
+            '<?php
+                class Foo {
+                    /**
+                     * Do not convert this
+                     */
+                    var ? array $foo;
+                }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): iterable
+    {
+        yield [
+            '<?php
+/**
+ * @Annotation
+ */
+#[CustomAnnotationA]
+Class MyAnnotation3
+{
+    /**
+     * @Annotation
+     */
+    #[CustomAnnotationB]
+    #[CustomAnnotationC]
+    public function foo() {}
+
+    /**
+     * @Annotation
+     */
+    #[CustomAnnotationD]
+    public $var;
+
+    /*
+     * end of class
+     */
+}',
+            '<?php
+/**
+ * @Annotation
+ */
+#[CustomAnnotationA]
+Class MyAnnotation3
+{
+    /**
+     * @Annotation
+     */
+    #[CustomAnnotationB]
+    #[CustomAnnotationC]
+    public function foo() {}
+
+    /**
+     * @Annotation
+     */
+    #[CustomAnnotationD]
+    public $var;
+
+    /**
+     * end of class
+     */
+}',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+	public function __construct(
+	    /** @var string Do not convert this */
+		public string $bar
+	) {
+	}
+}
+',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected): void
+    {
+        $this->doTest($expected);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield 'enum' => [
+            '<?php
+declare(strict_types=1);
+
+namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
+
+/** Before enum */
+enum Foo {
+    //
+}',
+        ];
+
+        yield 'phpDoc over enum case' => [
+            '<?php
+enum Foo: int
+{
+    /**
+     * @deprecated do not convert this
+     */
+    case BAR = 1;
+}
+',
         ];
     }
 }

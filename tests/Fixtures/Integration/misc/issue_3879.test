@@ -1,0 +1,27 @@
+--TEST--
+Integration of fixers: align_multiline_comment and PHPDoc rules.
+--RULESET--
+{"align_multiline_comment": true, "@PhpCsFixer": true}
+--EXPECT--
+<?php
+
+/**
+ * This is a broken phpdoc.
+ *
+ * @param string $str the next line has no *
+ *
+ * @return int the number of runs needed to fix this is 2 :(
+ */
+function fixMe($str) {}
+
+--INPUT--
+<?php
+
+/**
+ * This is a broken phpdoc
+ *
+ * @param string $str The next line has no *.
+
+ * @return int The number of runs needed to fix this is 2 :( .
+ */
+function fixMe($str) {}

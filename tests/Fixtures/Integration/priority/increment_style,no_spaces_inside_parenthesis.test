@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: increment_style,no_spaces_inside_parenthesis.
+--RULESET--
+{"increment_style": true, "no_spaces_inside_parenthesis": true}
+--EXPECT--
+<?php
+
+for (; foo(); ++$j);
+
+--INPUT--
+<?php
+
+for (; foo(); $j ++);

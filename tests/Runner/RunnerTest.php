@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,9 +21,11 @@ use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
 use PhpCsFixer\Linter\Linter;
+use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Runner\Runner;
+use PhpCsFixer\Tests\Fixtures\FakeDiffer;
 use PhpCsFixer\Tests\TestCase;
-use Prophecy\Argument;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -35,21 +39,9 @@ final class RunnerTest extends TestCase
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
      */
-    public function testThatFixSuccessfully()
+    public function testThatFixSuccessfully(): void
     {
-        $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
-        $linterProphecy
-            ->isAsync()
-            ->willReturn(false)
-        ;
-        $linterProphecy
-            ->lintFile(Argument::type('string'))
-            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
-        ;
-        $linterProphecy
-            ->lintSource(Argument::type('string'))
-            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
-        ;
+        $linter = $this->createLinterDouble();
 
         $fixers = [
             new Fixer\ClassNotation\VisibilityRequiredFixer(),
@@ -68,7 +60,7 @@ final class RunnerTest extends TestCase
             new NullDiffer(),
             null,
             new ErrorsManager(),
-            $linterProphecy->reveal(),
+            $linter,
             true,
             new NullCacheManager(),
             new Directory($path),
@@ -77,9 +69,9 @@ final class RunnerTest extends TestCase
 
         $changed = $runner->fix();
 
-        static::assertCount(2, $changed);
-        static::assertArraySubset($expectedChangedInfo, array_pop($changed));
-        static::assertArraySubset($expectedChangedInfo, array_pop($changed));
+        self::assertCount(2, $changed);
+        self::assertSame($expectedChangedInfo, array_pop($changed));
+        self::assertSame($expectedChangedInfo, array_pop($changed));
 
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
         $runner = new Runner(
@@ -88,7 +80,7 @@ final class RunnerTest extends TestCase
             new NullDiffer(),
             null,
             new ErrorsManager(),
-            $linterProphecy->reveal(),
+            $linter,
             true,
             new NullCacheManager(),
             new Directory($path),
@@ -97,15 +89,15 @@ final class RunnerTest extends TestCase
 
         $changed = $runner->fix();
 
-        static::assertCount(1, $changed);
-        static::assertArraySubset($expectedChangedInfo, array_pop($changed));
+        self::assertCount(1, $changed);
+        self::assertSame($expectedChangedInfo, array_pop($changed));
     }
 
     /**
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
      */
-    public function testThatFixInvalidFileReportsToErrorManager()
+    public function testThatFixInvalidFileReportsToErrorManager(): void
     {
         $errorsManager = new ErrorsManager();
 
@@ -126,17 +118,71 @@ final class RunnerTest extends TestCase
         $changed = $runner->fix();
         $pathToInvalidFile = $path.\DIRECTORY_SEPARATOR.'somefile.php';
 
-        static::assertCount(0, $changed);
+        self::assertCount(0, $changed);
 
         $errors = $errorsManager->getInvalidErrors();
 
-        static::assertCount(1, $errors);
+        self::assertCount(1, $errors);
 
         $error = $errors[0];
 
-        static::assertInstanceOf(\PhpCsFixer\Error\Error::class, $error);
+        self::assertInstanceOf(\PhpCsFixer\Error\Error::class, $error);
 
-        static::assertSame(Error::TYPE_INVALID, $error->getType());
-        static::assertSame($pathToInvalidFile, $error->getFilePath());
+        self::assertSame(Error::TYPE_INVALID, $error->getType());
+        self::assertSame($pathToInvalidFile, $error->getFilePath());
+    }
+
+    /**
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixFile
+     */
+    public function testThatDiffedFileIsPassedToDiffer(): void
+    {
+        $spy = new FakeDiffer();
+        $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
+        $fixers = [
+            new Fixer\ClassNotation\VisibilityRequiredFixer(),
+        ];
+
+        $runner = new Runner(
+            Finder::create()->in($path),
+            $fixers,
+            $spy,
+            null,
+            new ErrorsManager(),
+            new Linter(),
+            true,
+            new NullCacheManager(),
+            new Directory($path),
+            true
+        );
+
+        $runner->fix();
+
+        self::assertSame($path, $spy->passedFile->getPath());
+    }
+
+    private function createLinterDouble(): LinterInterface
+    {
+        return new class() implements LinterInterface {
+            public function isAsync(): bool
+            {
+                return false;
+            }
+
+            public function lintFile(string $path): LintingResultInterface
+            {
+                return new class() implements LintingResultInterface {
+                    public function check(): void {}
+                };
+            }
+
+            public function lintSource(string $source): LintingResultInterface
+            {
+                return new class() implements LintingResultInterface {
+                    public function check(): void {}
+                };
+            }
+        };
     }
 }

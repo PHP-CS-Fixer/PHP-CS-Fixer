@@ -1,0 +1,111 @@
+name: Static Code Analysis
+
+on:
+  - pull_request
+  - push
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+concurrency:
+  group: sca-${{ github.head_ref || github.run_id }} # will be canceled on subsequent pushes in pull requests but not branches
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system:
+          - ubuntu-20.04
+        php-version:
+          - 8.3
+
+    name: Static Code Analysis
+
+    runs-on: ${{ matrix.operating-system }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP with Composer deps
+        uses: ./.github/composite-actions/setup-php-with-composer-deps
+        with:
+          os: ${{ runner.os }}
+          php: ${{ matrix.php-version }}
+
+      ## We want to have a lock-file used on PR level, so contributors are not bothered by SCA complains unrelated to their changes,
+      ## and same time we want to be aware that we are complying with bleeding edge of SCA tools as maintainers observing the push hook.
+      - name: Unlock dev-tools
+        if: ${{ github.event_name != 'pull_request' }}
+        run: rm ./dev-tools/composer.lock
+
+      - name: Cache dev-tools
+        uses: actions/cache@v3
+        with:
+          path: dev-tools/bin/
+          key: DevTools-${{ hashFiles('dev-tools/install.sh') }}
+
+      - name: Install dev-tools
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          retry_wait_seconds: 30
+          command: ./dev-tools/install.sh
+
+      - name: Run AutoReview
+        run: vendor/bin/paraunit run --testsuite auto-review
+
+      - name: Check - file permissions
+        run: ./dev-tools/check_file_permissions.sh
+
+      - name: Check - trailing spaces
+        run: ./dev-tools/check_trailing_spaces.sh
+
+      - name: Check - phpstan
+        run: ./dev-tools/vendor/bin/phpstan analyse --ansi
+
+      - name: Check - composer-require-checker
+        run: ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
+
+      - name: Check - composer normalize
+        run: |
+          composer normalize --dry-run --working-dir=./dev-tools ../composer.json
+          composer normalize --dry-run --working-dir=./dev-tools composer.json
+
+      - name: Check - shell scripts
+        run: ./dev-tools/check_shell_scripts.sh
+
+      - name: Find changed files (for pull request)
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          if git diff origin/$GITHUB_BASE_REF --name-only --diff-filter=ACMRTUXB | grep -E "\.php$"; then
+            echo 'CHANGED_PHP_FILES<<EOF' >> $GITHUB_ENV
+            git diff origin/$GITHUB_BASE_REF --name-only --diff-filter=ACMRTUXB | grep -E "\.php$" >> $GITHUB_ENV
+            echo 'EOF' >> $GITHUB_ENV
+          fi
+
+      - name: Find changed files (for push)
+        if: ${{ github.event_name != 'pull_request' }}
+        run: |
+          if git diff --name-only --diff-filter=ACMRTUXB HEAD~..HEAD | grep -E "\.php$"; then
+            echo 'CHANGED_PHP_FILES<<EOF' >> $GITHUB_ENV
+            git diff --name-only --diff-filter=ACMRTUXB HEAD~..HEAD | grep -E "\.php$" >> $GITHUB_ENV
+            echo 'EOF' >> $GITHUB_ENV
+          fi
+
+      - name: Check - Mess Detector (phpmd)
+        if: ${{ env.CHANGED_PHP_FILES }}
+        run: |
+          if [ '${{ github.event_name }}' == 'pull_request' ]; then
+            ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | grep -v /Fixtures/ | xargs | sed 's/ /,/g'` github ./dev-tools/mess-detector/phpmd.xml
+          else
+            ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | grep -v /Fixtures/ | xargs | sed 's/ /,/g'` ansi ./dev-tools/mess-detector/phpmd.xml
+          fi
+
+      - name: Check - ensure test files are not present in the archive
+        run: |
+          git archive -o /dev/null HEAD -v 2>&1 | grep tests | grep \.php \
+          && (echo "Test files detected in archive" && exit 1) || echo "No test files detected in archive"

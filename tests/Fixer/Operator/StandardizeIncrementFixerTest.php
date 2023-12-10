@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,483 +21,599 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\Fixer\AbstractIncrementOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\StandardizeIncrementFixer
  */
 final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php ++$i;',
-                '<?php $i += 1;',
-            ],
-            [
-                '<?php ++$i;',
-                '<?php $i+=1;',
-            ],
-            [
-                '<?php for ($i = 0; $i < $n; ++$i) {};',
-                '<?php for ($i = 0; $i < $n; $i += 1) {};',
-            ],
-            [
-                '<?php ++$foo->bar;',
-                '<?php $foo->bar += 1;',
-            ],
-            [
-                '<?php ++$foo->$bar;',
-                '<?php $foo->$bar += 1;',
-            ],
-            [
-                '<?php ++$foo->$$$bar;',
-                '<?php $foo->$$$bar += 1;',
-            ],
-            [
-                '<?php ++$foo["bar"];',
-                '<?php $foo["bar"] += 1;',
-            ],
-            [
-                '<?php ++$foo[baz()];',
-                '<?php $foo[baz()] += 1;',
-            ],
-            [
-                '<?php ++$foo[$bar->baz];',
-                '<?php $foo[$bar->baz] += 1;',
-            ],
-            [
-                '<?php ++$foo[$bar];',
-                '<?php $foo[$bar] += 1;',
-            ],
-            [
-                '<?php ++$foo[Bar::BAZ];',
-                '<?php $foo[Bar::BAZ] += 1;',
-            ],
-            [
-                '<?php echo $foo[++$i];',
-                '<?php echo $foo[$i += 1];',
-            ],
-            [
-                '<?php echo ++$foo->{$bar};',
-                '<?php echo $foo->{$bar} += 1;',
-            ],
-            [
-                '<?php echo ++$foo->{$bar->{$baz}};',
-                '<?php echo $foo->{$bar->{$baz}} += 1;',
-            ],
-            [
-                '<?php echo ++$foo[$bar[$baz]];',
-                '<?php echo $foo[$bar[$baz]] += 1;',
-            ],
-            [
-                '<?php ++$$foo;',
-                '<?php $$foo += 1;',
-            ],
-            [
-                '<?php ++$$$$foo;',
-                '<?php $$$$foo += 1;',
-            ],
-            [
-                '<?php ++${$foo};',
-                '<?php ${$foo} += 1;',
-            ],
-            [
-                '<?php ++$$${$foo};',
-                '<?php $$${$foo} += 1;',
-            ],
-            [
-                '<?php ++$a{$b};',
-                '<?php $a{$b} += 1;',
-            ],
-            [
-                '<?php ++$a[++$b];',
-                '<?php $a[$b += 1] += 1;',
-            ],
-            [
-                '<?php foo(++$a);',
-                '<?php foo($a += 1);',
-            ],
-            [
-                '<?php foo(++$a, $bar);',
-                '<?php foo($a += 1, $bar);',
-            ],
-            [
-                '<?php ++$foo->{++$a};',
-                '<?php $foo->{$a += 1} += 1;',
-            ],
-            [
-                '<?php ++${++$a};',
-                '<?php ${$a += 1} += 1;',
-            ],
-            [
-                '<?php ++$i ?>',
-                '<?php $i += 1 ?>',
-            ],
-            [
-                '<?php $a = $b ? ++$c : ++$d;',
-                '<?php $a = $b ? $c += 1 : $d += 1;',
-            ],
-            [
-                '<?php ++$a->{++$b}[++$c];',
-                '<?php $a->{$b += 1}[$c += 1] += 1;',
-            ],
-            [
-                '<?php (++$i);',
-                '<?php ($i += 1);',
-            ],
-            [
-                '<?php (((++$i)));',
-                '<?php ((($i += 1)));',
-            ],
-            [
-                '<?php ++$a->b->$c;',
-                '<?php $a->b->$c += 1;',
-            ],
-            [
-                '<?php ++$i/* foo */;',
-                '<?php $i +=/* foo */1;',
-            ],
-            [
-                '<?php ++$i/* foo *//* bar */;',
-                '<?php $i /* foo */ += /* bar */1;',
-            ],
-            [
-                '<?php ++$i/** foo *//** bar */;',
-                '<?php $i /** foo */ += /** bar */1;',
-            ],
-            [
-                "<?php ++\$i// foo\n;",
-                "<?php \$i += // foo\n1;",
-            ],
-            [
-                '<?php --$i;',
-                '<?php $i -= 1;',
-            ],
-            [
-                '<?php --$i;',
-                '<?php $i-=1;',
-            ],
-            [
-                '<?php for ($i = 0; $i < $n; --$i) {};',
-                '<?php for ($i = 0; $i < $n; $i -= 1) {};',
-            ],
-            [
-                '<?php --$foo->bar;',
-                '<?php $foo->bar -= 1;',
-            ],
-            [
-                '<?php --$foo->$bar;',
-                '<?php $foo->$bar -= 1;',
-            ],
-            [
-                '<?php --$foo->$$$bar;',
-                '<?php $foo->$$$bar -= 1;',
-            ],
-            [
-                '<?php --$foo["bar"];',
-                '<?php $foo["bar"] -= 1;',
-            ],
-            [
-                '<?php --$foo[baz()];',
-                '<?php $foo[baz()] -= 1;',
-            ],
-            [
-                '<?php --$foo[$bar->baz];',
-                '<?php $foo[$bar->baz] -= 1;',
-            ],
-            [
-                '<?php --$foo[$bar];',
-                '<?php $foo[$bar] -= 1;',
-            ],
-            [
-                '<?php --$foo[Bar::BAZ];',
-                '<?php $foo[Bar::BAZ] -= 1;',
-            ],
-            [
-                '<?php echo $foo[--$i];',
-                '<?php echo $foo[$i -= 1];',
-            ],
-            [
-                '<?php echo --$foo->{$bar};',
-                '<?php echo $foo->{$bar} -= 1;',
-            ],
-            [
-                '<?php echo --$foo->{$bar->{$baz}};',
-                '<?php echo $foo->{$bar->{$baz}} -= 1;',
-            ],
-            [
-                '<?php echo --$foo[$bar[$baz]];',
-                '<?php echo $foo[$bar[$baz]] -= 1;',
-            ],
-            [
-                '<?php --$$foo;',
-                '<?php $$foo -= 1;',
-            ],
-            [
-                '<?php --$$$$foo;',
-                '<?php $$$$foo -= 1;',
-            ],
-            [
-                '<?php --${$foo};',
-                '<?php ${$foo} -= 1;',
-            ],
-            [
-                '<?php --$$${$foo};',
-                '<?php $$${$foo} -= 1;',
-            ],
-            [
-                '<?php --$a{$b};',
-                '<?php $a{$b} -= 1;',
-            ],
-            [
-                '<?php --$a[--$b];',
-                '<?php $a[$b -= 1] -= 1;',
-            ],
-            [
-                '<?php foo(--$a);',
-                '<?php foo($a -= 1);',
-            ],
-            [
-                '<?php foo(--$a, $bar);',
-                '<?php foo($a -= 1, $bar);',
-            ],
-            [
-                '<?php --$foo->{--$a};',
-                '<?php $foo->{$a -= 1} -= 1;',
-            ],
-            [
-                '<?php --${--$a};',
-                '<?php ${$a -= 1} -= 1;',
-            ],
-            [
-                '<?php --$i ?>',
-                '<?php $i -= 1 ?>',
-            ],
-            [
-                '<?php $a = $b ? --$c : --$d;',
-                '<?php $a = $b ? $c -= 1 : $d -= 1;',
-            ],
-            [
-                '<?php --$a->{--$b}[--$c];',
-                '<?php $a->{$b -= 1}[$c -= 1] -= 1;',
-            ],
-            [
-                '<?php (--$i);',
-                '<?php ($i -= 1);',
-            ],
-            [
-                '<?php (((--$i)));',
-                '<?php ((($i -= 1)));',
-            ],
-            [
-                '<?php --$a->b->$c;',
-                '<?php $a->b->$c -= 1;',
-            ],
-            [
-                '<?php --$i/* foo */;',
-                '<?php $i -=/* foo */1;',
-            ],
-            [
-                '<?php --$i/* foo *//* bar */;',
-                '<?php $i /* foo */ -= /* bar */1;',
-            ],
-            [
-                '<?php --$i/** foo *//** bar */;',
-                '<?php $i /** foo */ -= /** bar */1;',
-            ],
-            [
-                "<?php --\$i// foo\n;",
-                "<?php \$i -= // foo\n1;",
-            ],
-            [
-                '<?php $i + 1;',
-            ],
-            [
-                '<?php $i - 1;',
-            ],
-            [
-                '<?php $i = 1;',
-            ],
-            [
-                '<?php $i = -1;',
-            ],
-            [
-                '<?php $i + 1;',
-            ],
-            [
-                '<?php $i += 1.0;',
-            ],
-            [
-                '<?php $i += "1";',
-            ],
-            [
-                '<?php $i -= 1.0;',
-            ],
-            [
-                '<?php $i -= "1";',
-            ],
-            [
-                '<?php $i += 1 * 2;',
-            ],
-            [
-                '<?php $i += 1 ** 2;',
-            ],
-            [
-                '<?php $i += 1 / 2;',
-            ],
-            [
-                '<?php $i += 1 + 2;',
-            ],
-            [
-                '<?php $i += 1 - 2;',
-            ],
-            [
-                '<?php $i += 1 % 2;',
-            ],
-            [
-                '<?php $i += 1 ?: 2;',
-            ],
-            [
-                '<?php $i += 1 & 2;',
-            ],
-            [
-                '<?php $i += 1 ^ 2;',
-            ],
-            [
-                '<?php $i += 1 >> 2;',
-            ],
-            [
-                '<?php $i += 1 << 2;',
-            ],
-            [
-                '<?php $i += 1 && true;',
-            ],
-            [
-                '<?php $i += 1 || true;',
-            ],
-            [
-                '<?php $i += 1 and true;',
-            ],
-            [
-                '<?php $i += 1 or true;',
-            ],
-            [
-                '<?php $i += 1 xor true;',
-            ],
-            [
-                '<?php $i += 1 === 2;',
-            ],
-            [
-                '<?php $i += 1 == 2;',
-            ],
-            [
-                '<?php $i += 1 !== 2;',
-            ],
-            [
-                '<?php $i += 1 != 2;',
-            ],
-            [
-                '<?php $i += 1 < 2;',
-            ],
-            [
-                '<?php $i += 1 > 2;',
-            ],
-            [
-                '<?php $i += 1 <= 2;',
-            ],
-            [
-                '<?php $i += 1 >= 2;',
-            ],
-            [
-                '<?php $i += 1 <> 2;',
-            ],
-            [
-                '<?php $i -= 1 * 2;',
-            ],
-            [
-                '<?php $i -= 1 ** 2;',
-            ],
-            [
-                '<?php $i -= 1 / 2;',
-            ],
-            [
-                '<?php $i -= 1 + 2;',
-            ],
-            [
-                '<?php $i -= 1 - 2;',
-            ],
-            [
-                '<?php $i -= 1 % 2;',
-            ],
-            [
-                '<?php $i -= 1 ?: 2;',
-            ],
-            [
-                '<?php $i -= 1 & 2;',
-            ],
-            [
-                '<?php $i -= 1 ^ 2;',
-            ],
-            [
-                '<?php $i -= 1 >> 2;',
-            ],
-            [
-                '<?php $i -= 1 << 2;',
-            ],
-            [
-                '<?php $i -= 1 && true;',
-            ],
-            [
-                '<?php $i -= 1 || true;',
-            ],
-            [
-                '<?php $i -= 1 and true;',
-            ],
-            [
-                '<?php $i -= 1 or true;',
-            ],
-            [
-                '<?php $i -= 1 xor true;',
-            ],
-            [
-                '<?php $i -= 1 === 2;',
-            ],
-            [
-                '<?php $i -= 1 == 2;',
-            ],
-            [
-                '<?php $i -= 1 !== 2;',
-            ],
-            [
-                '<?php $i -= 1 != 2;',
-            ],
-            [
-                '<?php $i -= 1 < 2;',
-            ],
-            [
-                '<?php $i -= 1 > 2;',
-            ],
-            [
-                '<?php $i -= 1 <= 2;',
-            ],
-            [
-                '<?php $i -= 1 >= 2;',
-            ],
-            [
-                '<?php $i -= 1 <> 2;',
-            ],
-            [
-                '<?php #1
+        yield [
+            '<?php ++$i;',
+            '<?php $i += 1;',
+        ];
+
+        yield [
+            '<?php ++$i;',
+            '<?php $i+=1;',
+        ];
+
+        yield [
+            '<?php for ($i = 0; $i < $n; ++$i) {};',
+            '<?php for ($i = 0; $i < $n; $i += 1) {};',
+        ];
+
+        yield [
+            '<?php ++$foo->bar;',
+            '<?php $foo->bar += 1;',
+        ];
+
+        yield [
+            '<?php ++$foo->$bar;',
+            '<?php $foo->$bar += 1;',
+        ];
+
+        yield [
+            '<?php ++$foo->$$$bar;',
+            '<?php $foo->$$$bar += 1;',
+        ];
+
+        yield [
+            '<?php ++$foo["bar"];',
+            '<?php $foo["bar"] += 1;',
+        ];
+
+        yield [
+            '<?php ++$foo[baz()];',
+            '<?php $foo[baz()] += 1;',
+        ];
+
+        yield [
+            '<?php ++$foo[$bar->baz];',
+            '<?php $foo[$bar->baz] += 1;',
+        ];
+
+        yield [
+            '<?php ++$foo[$bar];',
+            '<?php $foo[$bar] += 1;',
+        ];
+
+        yield [
+            '<?php ++$foo[Bar::BAZ];',
+            '<?php $foo[Bar::BAZ] += 1;',
+        ];
+
+        yield [
+            '<?php echo $foo[++$i];',
+            '<?php echo $foo[$i += 1];',
+        ];
+
+        yield [
+            '<?php echo ++$foo[$bar[$baz]];',
+            '<?php echo $foo[$bar[$baz]] += 1;',
+        ];
+
+        yield [
+            '<?php ++$$foo;',
+            '<?php $$foo += 1;',
+        ];
+
+        yield [
+            '<?php ++$$$$foo;',
+            '<?php $$$$foo += 1;',
+        ];
+
+        yield [
+            '<?php ++${$foo};',
+            '<?php ${$foo} += 1;',
+        ];
+
+        yield [
+            '<?php ++$$${$foo};',
+            '<?php $$${$foo} += 1;',
+        ];
+
+        yield [
+            '<?php ++$a[$b];',
+            '<?php $a[$b] += 1;',
+        ];
+
+        yield [
+            '<?php ++$a[++$b];',
+            '<?php $a[$b += 1] += 1;',
+        ];
+
+        yield [
+            '<?php foo(++$a);',
+            '<?php foo($a += 1);',
+        ];
+
+        yield [
+            '<?php foo(++$a, $bar);',
+            '<?php foo($a += 1, $bar);',
+        ];
+
+        yield [
+            '<?php ++$foo->{++$a};',
+            '<?php $foo->{$a += 1} += 1;',
+        ];
+
+        yield [
+            '<?php ++${++$a};',
+            '<?php ${$a += 1} += 1;',
+        ];
+
+        yield [
+            '<?php ++$i ?>',
+            '<?php $i += 1 ?>',
+        ];
+
+        yield [
+            '<?php $a = $b ? ++$c : ++$d;',
+            '<?php $a = $b ? $c += 1 : $d += 1;',
+        ];
+
+        yield [
+            '<?php ++$a->{++$b}[++$c];',
+            '<?php $a->{$b += 1}[$c += 1] += 1;',
+        ];
+
+        yield [
+            '<?php (++$i);',
+            '<?php ($i += 1);',
+        ];
+
+        yield [
+            '<?php (((++$i)));',
+            '<?php ((($i += 1)));',
+        ];
+
+        yield [
+            '<?php ++$a->b->$c;',
+            '<?php $a->b->$c += 1;',
+        ];
+
+        yield [
+            '<?php ++$i/* foo */;',
+            '<?php $i +=/* foo */1;',
+        ];
+
+        yield [
+            '<?php ++$i/* foo *//* bar */;',
+            '<?php $i /* foo */ += /* bar */1;',
+        ];
+
+        yield [
+            '<?php ++$i/** foo *//** bar */;',
+            '<?php $i /** foo */ += /** bar */1;',
+        ];
+
+        yield [
+            "<?php ++\$i// foo\n;",
+            "<?php \$i += // foo\n1;",
+        ];
+
+        yield [
+            '<?php --$i;',
+            '<?php $i -= 1;',
+        ];
+
+        yield [
+            '<?php --$i;',
+            '<?php $i-=1;',
+        ];
+
+        yield [
+            '<?php for ($i = 0; $i < $n; --$i) {};',
+            '<?php for ($i = 0; $i < $n; $i -= 1) {};',
+        ];
+
+        yield [
+            '<?php --$foo->bar;',
+            '<?php $foo->bar -= 1;',
+        ];
+
+        yield [
+            '<?php --$foo->$bar;',
+            '<?php $foo->$bar -= 1;',
+        ];
+
+        yield [
+            '<?php --$foo->$$$bar;',
+            '<?php $foo->$$$bar -= 1;',
+        ];
+
+        yield [
+            '<?php --$foo["bar"];',
+            '<?php $foo["bar"] -= 1;',
+        ];
+
+        yield [
+            '<?php --$foo[baz()];',
+            '<?php $foo[baz()] -= 1;',
+        ];
+
+        yield [
+            '<?php --$foo[$bar->baz];',
+            '<?php $foo[$bar->baz] -= 1;',
+        ];
+
+        yield [
+            '<?php --$foo[$bar];',
+            '<?php $foo[$bar] -= 1;',
+        ];
+
+        yield [
+            '<?php --$foo[Bar::BAZ];',
+            '<?php $foo[Bar::BAZ] -= 1;',
+        ];
+
+        yield [
+            '<?php echo $foo[--$i];',
+            '<?php echo $foo[$i -= 1];',
+        ];
+
+        yield [
+            '<?php echo --$foo->{$bar};',
+            '<?php echo $foo->{$bar} -= 1;',
+        ];
+
+        yield [
+            '<?php echo --$foo->{$bar->{$baz}};',
+            '<?php echo $foo->{$bar->{$baz}} -= 1;',
+        ];
+
+        yield [
+            '<?php echo --$foo[$bar[$baz]];',
+            '<?php echo $foo[$bar[$baz]] -= 1;',
+        ];
+
+        yield [
+            '<?php --$$foo;',
+            '<?php $$foo -= 1;',
+        ];
+
+        yield [
+            '<?php --$$$$foo;',
+            '<?php $$$$foo -= 1;',
+        ];
+
+        yield [
+            '<?php --${$foo};',
+            '<?php ${$foo} -= 1;',
+        ];
+
+        yield [
+            '<?php --$$${$foo};',
+            '<?php $$${$foo} -= 1;',
+        ];
+
+        yield [
+            '<?php --$a[$b];',
+            '<?php $a[$b] -= 1;',
+        ];
+
+        yield [
+            '<?php --$a[--$b];',
+            '<?php $a[$b -= 1] -= 1;',
+        ];
+
+        yield [
+            '<?php foo(--$a);',
+            '<?php foo($a -= 1);',
+        ];
+
+        yield [
+            '<?php foo(--$a, $bar);',
+            '<?php foo($a -= 1, $bar);',
+        ];
+
+        yield [
+            '<?php --$foo->{--$a};',
+            '<?php $foo->{$a -= 1} -= 1;',
+        ];
+
+        yield [
+            '<?php --${--$a};',
+            '<?php ${$a -= 1} -= 1;',
+        ];
+
+        yield [
+            '<?php --$i ?>',
+            '<?php $i -= 1 ?>',
+        ];
+
+        yield [
+            '<?php $a = $b ? --$c : --$d;',
+            '<?php $a = $b ? $c -= 1 : $d -= 1;',
+        ];
+
+        yield [
+            '<?php --$a->{--$b}[--$c];',
+            '<?php $a->{$b -= 1}[$c -= 1] -= 1;',
+        ];
+
+        yield [
+            '<?php (--$i);',
+            '<?php ($i -= 1);',
+        ];
+
+        yield [
+            '<?php (((--$i)));',
+            '<?php ((($i -= 1)));',
+        ];
+
+        yield [
+            '<?php --$a->b->$c;',
+            '<?php $a->b->$c -= 1;',
+        ];
+
+        yield [
+            '<?php --$i/* foo */;',
+            '<?php $i -=/* foo */1;',
+        ];
+
+        yield [
+            '<?php --$i/* foo *//* bar */;',
+            '<?php $i /* foo */ -= /* bar */1;',
+        ];
+
+        yield [
+            '<?php --$i/** foo *//** bar */;',
+            '<?php $i /** foo */ -= /** bar */1;',
+        ];
+
+        yield [
+            "<?php --\$i// foo\n;",
+            "<?php \$i -= // foo\n1;",
+        ];
+
+        yield [
+            '<?php $i + 1;',
+        ];
+
+        yield [
+            '<?php $i - 1;',
+        ];
+
+        yield [
+            '<?php $i = 1;',
+        ];
+
+        yield [
+            '<?php $i = -1;',
+        ];
+
+        yield [
+            '<?php $i + 1;',
+        ];
+
+        yield [
+            '<?php $i += 1.0;',
+        ];
+
+        yield [
+            '<?php $i += "1";',
+        ];
+
+        yield [
+            '<?php $i -= 1.0;',
+        ];
+
+        yield [
+            '<?php $i -= "1";',
+        ];
+
+        yield [
+            '<?php $i += 1 * 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 ** 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 / 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 + 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 - 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 % 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 ?: 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 & 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 ^ 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 >> 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 << 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 && true;',
+        ];
+
+        yield [
+            '<?php $i += 1 || true;',
+        ];
+
+        yield [
+            '<?php $i += 1 and true;',
+        ];
+
+        yield [
+            '<?php $i += 1 or true;',
+        ];
+
+        yield [
+            '<?php $i += 1 xor true;',
+        ];
+
+        yield [
+            '<?php $i += 1 === 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 == 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 !== 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 != 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 < 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 > 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 <= 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 >= 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 <> 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 * 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 ** 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 / 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 + 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 - 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 % 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 ?: 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 & 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 ^ 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 >> 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 << 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 && true;',
+        ];
+
+        yield [
+            '<?php $i -= 1 || true;',
+        ];
+
+        yield [
+            '<?php $i -= 1 and true;',
+        ];
+
+        yield [
+            '<?php $i -= 1 or true;',
+        ];
+
+        yield [
+            '<?php $i -= 1 xor true;',
+        ];
+
+        yield [
+            '<?php $i -= 1 === 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 == 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 !== 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 != 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 < 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 > 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 <= 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 >= 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 <> 2;',
+        ];
+
+        yield [
+            '<?php #1
 #2
 ++$i#3
 #4
@@ -504,7 +622,7 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
 #7
 ;#8
 #9',
-                '<?php #1
+            '<?php #1
 #2
 $i#3
 #4
@@ -513,45 +631,134 @@ $i#3
 1#7
 ;#8
 #9',
-            ],
-            [
-                '<?php $a -= ($a -= ($a -= (--$a)));',
-                '<?php $a -= ($a -= ($a -= ($a -= 1)));',
-            ],
-            [
-                '<?php --$a[foo($d,foo($c))];',
-                '<?php $a[foo($d,foo($c))] -= 1;',
-            ],
+        ];
+
+        yield [
+            '<?php $a -= ($a -= ($a -= (--$a)));',
+            '<?php $a -= ($a -= ($a -= ($a -= 1)));',
+        ];
+
+        yield [
+            '<?php --$a[foo($d,foo($c))];',
+            '<?php $a[foo($d,foo($c))] -= 1;',
+        ];
+
+        yield [
+            '<?php $i *= 1; ++$i;',
+            '<?php $i *= 1; $i += 1;',
+        ];
+
+        yield [
+            '<?php ++A::$b;',
+            '<?php A::$b += 1;',
+        ];
+
+        yield [
+            '<?php ++\A::$b;',
+            '<?php \A::$b += 1;',
+        ];
+
+        yield [
+            '<?php ++\A\B\C::$d;',
+            '<?php \A\B\C::$d += 1;',
+        ];
+
+        yield [
+            '<?php ++$a::$b;',
+            '<?php $a::$b += 1;',
+        ];
+
+        yield [
+            '<?php ++$a::$b->$c;',
+            '<?php $a::$b->$c += 1;',
+        ];
+
+        yield [
+            '<?php class Foo {
+                    public static function bar() {
+                        ++self::$v1;
+                        ++static::$v2;
+                    }
+                }',
+            '<?php class Foo {
+                    public static function bar() {
+                        self::$v1 += 1;
+                        static::$v2 += 1;
+                    }
+                }',
+        ];
+
+        yield [
+            '<?php $i -= 1 ?? 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 ?? 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 <=> 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 <=> 2;',
+        ];
+
+        yield [
+            '<?php ++$a::$b::$c;',
+            '<?php $a::$b::$c += 1;',
+        ];
+
+        yield [
+            '<?php ++$a->$b::$c;',
+            '<?php $a->$b::$c += 1;',
+        ];
+
+        yield [
+            '<?php ++$a::${$b}::$c;',
+            '<?php $a::${$b}::$c += 1;',
+        ];
+
+        yield [
+            '<?php ++$a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h;',
+            '<?php $a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h += 1;',
+        ];
+
+        yield [
+            '<?php $i += 1_0;',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
+     * @dataProvider provideFixPre80Cases
      *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
+     * @requires PHP <8.0
      */
-    public function testFix70($expected, $input = null)
+    public function testFixPre80(string $expected, string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70Cases()
+    public static function provideFixPre80Cases(): iterable
     {
-        return [
-            [
-                '<?php $i -= 1 ?? 2;',
-            ],
-            [
-                '<?php $i += 1 ?? 2;',
-            ],
-            [
-                '<?php $i -= 1 <=> 2;',
-            ],
-            [
-                '<?php $i += 1 <=> 2;',
-            ],
+        yield [
+            '<?php echo ++$foo->{$bar};',
+            '<?php echo $foo->{$bar} += 1;',
+        ];
+
+        yield [
+            '<?php echo ++$foo->{$bar->{$baz}};',
+            '<?php echo $foo->{$bar->{$baz}} += 1;',
+        ];
+
+        yield [
+            '<?php ++$a{$b};',
+            '<?php $a{$b} += 1;',
+        ];
+
+        yield [
+            '<?php --$a{$b};',
+            '<?php $a{$b} -= 1;',
         ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,85 +26,111 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoBinaryStringFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php echo \'hello world\';',
-                '<?php echo b\'hello world\';',
-            ],
-            [
-                '<?php $a=\'hello world\';',
-                '<?php $a=b\'hello world\';',
-            ],
-            [
-                '<?php echo (\'hello world\');',
-                '<?php echo (b\'hello world\');',
-            ],
-            [
-                '<?php echo "hi".\'hello world\';',
-                '<?php echo "hi".b\'hello world\';',
-            ],
-            [
-                '<?php echo "hello world";',
-                '<?php echo b"hello world";',
-            ],
-            [
-                '<?php echo \'hello world\';',
-                '<?php echo B\'hello world\';',
-            ],
-            [
-                '<?php echo "hello world";',
-                '<?php echo B"hello world";',
-            ],
-            [
-                '<?php echo "hello world";',
-                '<?php echo B"hello world";',
-            ],
-            [
-                '<?php echo /* foo */"hello world";',
-                '<?php echo /* foo */B"hello world";',
-            ],
-            [
-                "<?php echo <<<EOT\nfoo\nEOT;\n",
-                "<?php echo b<<<EOT\nfoo\nEOT;\n",
-            ],
-            [
-                "<?php echo <<<EOT\nfoo\nEOT;\n",
-                "<?php echo B<<<EOT\nfoo\nEOT;\n",
-            ],
-            [
-                "<?php echo <<<'EOT'\nfoo\nEOT;\n",
-                "<?php echo b<<<'EOT'\nfoo\nEOT;\n",
-            ],
-            [
-                "<?php echo <<<'EOT'\nfoo\nEOT;\n",
-                "<?php echo B<<<'EOT'\nfoo\nEOT;\n",
-            ],
-            [
-                "<?php echo <<<\"EOT\"\nfoo\nEOT;\n",
-                "<?php echo b<<<\"EOT\"\nfoo\nEOT;\n",
-            ],
-            [
-                "<?php echo <<<\"EOT\"\nfoo\nEOT;\n",
-                "<?php echo B<<<\"EOT\"\nfoo\nEOT;\n",
-            ],
-            ['<?php echo Bar::foo();'],
-            ['<?php echo bar::foo();'],
-            ['<?php echo "b";'],
-            ['<?php echo b;'],
-            ['<?php echo b."a";'],
-            ['<?php echo b("a");'],
+        yield [
+            '<?php echo \'hello world\';',
+            '<?php echo b\'hello world\';',
         ];
+
+        yield [
+            '<?php $a=\'hello world\';',
+            '<?php $a=b\'hello world\';',
+        ];
+
+        yield [
+            '<?php echo (\'hello world\');',
+            '<?php echo (b\'hello world\');',
+        ];
+
+        yield [
+            '<?php echo "hi".\'hello world\';',
+            '<?php echo "hi".b\'hello world\';',
+        ];
+
+        yield [
+            '<?php echo "hello world";',
+            '<?php echo b"hello world";',
+        ];
+
+        yield [
+            '<?php echo \'hello world\';',
+            '<?php echo B\'hello world\';',
+        ];
+
+        yield [
+            '<?php echo "hello world";',
+            '<?php echo B"hello world";',
+        ];
+
+        yield [
+            '<?php echo "hello world";',
+            '<?php echo B"hello world";',
+        ];
+
+        yield [
+            '<?php echo /* foo */"hello world";',
+            '<?php echo /* foo */B"hello world";',
+        ];
+
+        yield [
+            "<?php echo <<<EOT\nfoo\nEOT;\n",
+            "<?php echo b<<<EOT\nfoo\nEOT;\n",
+        ];
+
+        yield [
+            "<?php echo <<<EOT\nfoo\nEOT;\n",
+            "<?php echo B<<<EOT\nfoo\nEOT;\n",
+        ];
+
+        yield [
+            "<?php echo <<<'EOT'\nfoo\nEOT;\n",
+            "<?php echo b<<<'EOT'\nfoo\nEOT;\n",
+        ];
+
+        yield [
+            "<?php echo <<<'EOT'\nfoo\nEOT;\n",
+            "<?php echo B<<<'EOT'\nfoo\nEOT;\n",
+        ];
+
+        yield [
+            "<?php echo <<<\"EOT\"\nfoo\nEOT;\n",
+            "<?php echo b<<<\"EOT\"\nfoo\nEOT;\n",
+        ];
+
+        yield [
+            "<?php echo <<<\"EOT\"\nfoo\nEOT;\n",
+            "<?php echo B<<<\"EOT\"\nfoo\nEOT;\n",
+        ];
+
+        yield [
+            '<?php
+                    echo "{$fruit}";
+                    echo " {$fruit}";
+                ',
+            '<?php
+                    echo b"{$fruit}";
+                    echo b" {$fruit}";
+                ',
+        ];
+
+        yield ['<?php echo Bar::foo();'];
+
+        yield ['<?php echo bar::foo();'];
+
+        yield ['<?php echo "b";'];
+
+        yield ['<?php echo b;'];
+
+        yield ['<?php echo b."a";'];
+
+        yield ['<?php echo b("a");'];
     }
 }

@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_useless_sprintf,no_spaces_inside_parenthesis.
+--RULESET--
+{"no_useless_sprintf": true, "no_spaces_inside_parenthesis": true}
+--EXPECT--
+<?php
+
+$a =  $foo ;
+
+--INPUT--
+<?php
+
+$a = sprintf( $foo );

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,58 +26,54 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                 use A\B;
                 ',
-                '<?php
+            '<?php
                 use \A\B;
                 ',
-            ],
-            [
-                '<?php
-                use/*1*/A\B;
+        ];
+
+        yield [
+            '<?php
+                use/*1*/A\C;
                 ',
-                '<?php
-                use/*1*/\A\B;
+            '<?php
+                use/*1*/\A\C;
                 ',
-            ],
-            [
-                '<?php use /*1*/A\B;',
-                '<?php use\/*1*/A\B;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 $a = function(\B\C $a) use ($b){
 
                 };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 namespace NS;
                 use A\B;
                 ',
-                '<?php
+            '<?php
                 namespace NS;
                 use \A\B;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 namespace NS{
                     use A\B;
                 }
@@ -83,7 +81,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use C\D;
                 }
                 ',
-                '<?php
+            '<?php
                 namespace NS{
                     use \A\B;
                 }
@@ -91,12 +89,10 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use \C\D;
                 }
                 ',
-            ],
-            [
-                '<?php
-                use C;
-                use C\X;
+        ];
 
+        yield [
+            '<?php
                 namespace Foo {
                     use A;
                     use A\X;
@@ -111,10 +107,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     new X();
                 }
                 ',
-                '<?php
-                use \C;
-                use \C\X;
-
+            '<?php
                 namespace Foo {
                     use \A;
                     use \A\X;
@@ -129,28 +122,31 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     new X();
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 namespace Foo\Bar;
                 use Baz;
                 class Foo implements Baz {}
                 ',
-                '<?php
+            '<?php
                 namespace Foo\Bar;
                 use \Baz;
                 class Foo implements Baz {}
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 trait SomeTrait {
                     use \A;
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 namespace NS{
                     use A\B;
                     trait Tr8A{
@@ -161,7 +157,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use C\D;
                 }
                 ',
-                '<?php
+            '<?php
                 namespace NS{
                     use \A\B;
                     trait Tr8A{
@@ -172,73 +168,115 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use \C\D;
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 trait Foo {}
                 class Bar {
                     use \Foo;
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     use function a\b;
                     use const d\e;
                 ',
-                '<?php
+            '<?php
                     use function \a\b;
                     use const \d\e;
                 ',
-            ],
-            'no space case' => [
-                '<?php
-                    use Events\Payment\Base as PaymentEvent;
-                    use const d\e;
-                ',
-                '<?php
-                    use\Events\Payment\Base as PaymentEvent;
-                    use const\d\e;
-                ',
-            ],
         ];
-    }
 
-    /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
-     */
-    public function testFix72($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix72Cases()
-    {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 namespace AAA;
 use some\a\{ClassA, ClassB, ClassC as C,};
 use function some\a\{fn_a, fn_b, fn_c,};
 use const some\a\{ConstA,ConstB,ConstC
 ,
 };
-use const some\Z\{ConstA,ConstB,ConstC,};
+use const some\Z\{ConstX,ConstY,ConstZ,};
 ',
-                '<?php
+            '<?php
 namespace AAA;
 use \some\a\{ClassA, ClassB, ClassC as C,};
 use function \some\a\{fn_a, fn_b, fn_c,};
 use const \some\a\{ConstA,ConstB,ConstC
 ,
 };
-use const \some\Z\{ConstA,ConstB,ConstC,};
+use const \some\Z\{ConstX,ConstY,ConstZ,};
 ',
-            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPrePHP80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixPrePHP80Cases(): iterable
+    {
+        yield [
+            '<?php use /*1*/A\D;',
+            '<?php use\/*1*/A\D;',
+        ];
+
+        yield 'no space case' => [
+            '<?php
+                use Events\Payment\Base as PaymentEvent;
+                use const d\e;
+            ',
+            '<?php
+                use\Events\Payment\Base as PaymentEvent;
+                use const\d\e;
+            ',
+        ];
+
+        yield [
+            '<?php
+            use C;
+            use C\X;
+
+            namespace Foo {
+                use A;
+                use A\X;
+
+                new X();
+            }
+
+            namespace Bar {
+                use B;
+                use B\X;
+
+                new X();
+            }
+            ',
+            '<?php
+            use \C;
+            use \C\X;
+
+            namespace Foo {
+                use \A;
+                use \A\X;
+
+                new X();
+            }
+
+            namespace Bar {
+                use \B;
+                use \B\X;
+
+                new X();
+            }
+            ',
         ];
     }
 }

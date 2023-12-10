@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
@@ -19,7 +22,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -28,220 +30,240 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $configuration
+     * @param array<string, mixed> $configuration
      *
      * @dataProvider provideWithTabsCases
      */
-    public function testWithTabs($expected, $input = null, array $configuration = [])
+    public function testWithTabs(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
-    public function provideWithTabsCases()
+    public static function provideWithTabsCases(): iterable
     {
-        return [
-            [
-                "<?php function myFunction() {
+        yield [
+            "<?php function myFunction() {
 \t\$foo         = 1;
 \t\$looooongVar = 2;
 \t\$middleVar   = 1;
 }",
-                "<?php function myFunction() {
+            "<?php function myFunction() {
 \t\$foo= \t1;
 \t\$looooongVar\t  = 2;
 \t\$middleVar\t= 1;
 }",
-                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                "<?php class A{
+            ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            "<?php class A{
 public function myFunction() {
 \t \$foo         = 1;
 \t \$looooongVar = 2;
 \t \$middleVar   = 1;
 }
 }",
-                "<?php class A{
+            "<?php class A{
 public function myFunction() {
 \t \$foo = 1;
 \t \$looooongVar = 2;
 \t \$middleVar = 1;
 }
 }",
-                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]],
-            ],
+            ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $configuration
+     * @param array<string, mixed> $configuration
      *
-     * @dataProvider provideTestCases
+     * @dataProvider provideConfiguredCases
      */
-    public function testConfigured($expected, $input = null, array $configuration = [])
+    public function testConfigured(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
-    public function provideTestCases()
+    public static function provideConfiguredCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 $this->a
  = $this->b
  = 1
 ;',
-                '<?php
+            '<?php
 $this->a
 = $this->b
 = 1
 ;',
-                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                '<?php
+            ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php
         $this->newName
                 = $this->path
                 = $this->randomName
                 = $this->remoteFile
                 = $this->tmpContent
                 = null;',
-                '<?php
+            '<?php
         $this->newName
                 =     $this->path
                =    $this->randomName
               =   $this->remoteFile
              =  $this->tmpContent
             = null;',
-                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                '<?php
+            ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php
 $a//
      = 1;
                 ',
-                '<?php
+            '<?php
 $a//
      =  1;
                 ',
-                ['operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE]],
-            ],
-            [
-                '<?php
-    $var = [];
+            ['operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE]],
+        ];
+
+        yield [
+            '<?php
+    $a =  1;
+    $b = 2;
+            ',
+            '<?php
+    $a =  1;
+    $b=2;
+            ',
+            ['operators' => ['=' => BinaryOperatorSpacesFixer::AT_LEAST_SINGLE_SPACE]],
+        ];
+
+        yield [
+            '<?php
+    $var = [1 => 2];
     foreach ([
                 1 => 2,
                 2 => 3,
             ] as $k => $v) {
         $var[] = [$i => $bar];
     }',
-                '<?php
-    $var = [];
+            '<?php
+    $var = [1=>2];
     foreach ([
                 1=> 2,
                 2   =>3,
             ] as $k => $v) {
         $var[] = [$i => $bar];
     }',
-                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                '<?php $a = array(
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php $a = array(
                     1 => 2, 4 => 5,
                     5 => 2, 6 => 5, 7 => 8, 9 => 10, 11 => 1222,
                 );',
-                '<?php $a = array(
+            '<?php $a = array(
                     1=>2, 4=>5,
                     5=>2, 6 =>   5, 7=>8, 9=>10, 11=>1222,
                 );',
-                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                '<?php $a = array(1 => 2, 4 => 5);',
-                '<?php $a = array(1=>2, 4  =>  5);',
-                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                '<?php $a = array(1 => 2, 4 => 5 && $b, 5 => 5 && $b, 6 => 5 && $b, 7 => 5 && $b);',
-                '<?php $a = array(1 => 2, 4 => 5&&$b, 5 => 5  &&  $b, 6 => 5&&  $b, 7 => 5  &&$b);',
-                ['operators' => ['&&' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                '<?php
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php $a = array(1 => 2, 4 => 5);',
+            '<?php $a = array(1=>2, 4  =>  5);',
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php $a = array(1 => 2, 4 => 5 && $b, 5 => 5 && $b, 6 => 5 && $b, 7 => 5 && $b);',
+            '<?php $a = array(1 => 2, 4 => 5&&$b, 5 => 5  &&  $b, 6 => 5&&  $b, 7 => 5  &&$b);',
+            ['operators' => ['&&' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php
                     [1 =>   "foo"];
                     [2    => "foo"];
                     [3 => "foo"];
                 ',
-                '<?php
+            '<?php
                     [1 =>   "foo"];
                     [2    =>"foo"];
                     [3=>"foo"];
                 ',
-                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
-            ],
-            [
-                '<?php
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+        ];
+
+        yield [
+            '<?php
                     [1 => "foo"];
                     [2 => "foo"];
                     [3 => "foo"];
                 ',
-                '<?php
+            '<?php
                     [1 =>   "foo"];
                     [2    =>"foo"];
                     [3=>"foo"];
                 ',
-                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                '<?php $a += 1;',
-                '<?php $a+=1;',
-                ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
-            ],
-            [
-                '<?php $a += 1;',
-                '<?php $a+=1;',
-                ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                '<?php $a+=1;',
-                null,
-                ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN]],
-            ],
-            [
-                '<?php
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php $a += 1;',
+            '<?php $a+=1;',
+            ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+        ];
+
+        yield [
+            '<?php $a += 1;',
+            '<?php $a+=1;',
+            ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php $a+=1;',
+            null,
+            ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN]],
+        ];
+
+        yield [
+            '<?php
     $ade = $b !==   $a;
     $b = $b   !==   $a;
     $c = $b   !== $a;
                 ',
-                '<?php
+            '<?php
     $ade = $b!==   $a;
     $b = $b!==   $a;
     $c = $b!==$a;
                 ',
-                ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
-            ],
-            [
-                '<?php
+            ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+        ];
+
+        yield [
+            '<?php
     $aab = $b !== $e;
     $b = $b   !== $c;
     $c = $b   !== $d;
                 ',
-                '<?php
+            '<?php
     $aab = $b         !==$e;
     $b = $b     !==$c;
     $c = $b             !==$d;
                 ',
-                ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                '<?php
+            ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php
     $aaa*= 11;
     $b  *= 21;
     $c  *=31;
@@ -249,7 +271,7 @@ $a//
     $d = $e and $f;
     $d = $g   or    $h;
                 ',
-                '<?php
+            '<?php
     $aaa*= 11;
     $b *= 21;
     $c*=31;
@@ -257,71 +279,77 @@ $a//
     $d = $e   and    $f;
     $d = $g   or    $h;
                 ',
-                [
-                    'operators' => [
-                        'and' => BinaryOperatorSpacesFixer::SINGLE_SPACE,
-                        '*=' => BinaryOperatorSpacesFixer::ALIGN,
-                        'or' => null,
-                    ],
+            [
+                'operators' => [
+                    'and' => BinaryOperatorSpacesFixer::SINGLE_SPACE,
+                    '*=' => BinaryOperatorSpacesFixer::ALIGN,
+                    'or' => null,
                 ],
             ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $abc = $b !== $a;
     $b = $b   !== $a;
     $c = $b   !== $a;
                 ',
-                '<?php
+            '<?php
     $abc = $b         !==    $a;
     $b = $b     !==     $a;
     $c = $b             !==    $a;
                 ',
-                ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                '<?php $a = [
+            ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php $a = [
                     1 => 2,
                     2 => 3,
                 ];',
-                '<?php $a = [
+            '<?php $a = [
                     1=>2,
                     2  =>   3,
                 ];',
-                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                '<?php
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php
                     [1 => "foo",
                      2 => "foo"];
                 ',
-                '<?php
+            '<?php
                     [1 =>   "foo",
                      2   => "foo"];
                 ',
-                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                '<?php
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php
                     [1 => "foo"];
                     $i += 1;
                 ',
-                '<?php
+            '<?php
                     [1 => "foo"];
                     $i+= 1;
                 ',
-                ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            [
-                '<?php $a    =   1   +    2; $b = array(
+            ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php $a    =   1   +    2; $b = array(
                     13 =>3,
                     4  =>  3,
                     5=>2,
                 );',
-                null,
-                ['default' => null],
-            ],
-            [
-                '<?php $a = 1 + 2; $b = array(
+            null,
+            ['default' => null],
+        ];
+
+        yield [
+            '<?php $a = 1 + 2; $b = array(
                     $øøø => $ø0ø0ø,
                     $ø4  => $ø1ø1ø,
                     $ø5  => $ø2ø2ø,
@@ -329,7 +357,7 @@ $a//
                 $a = 12 + 1;
                 $a = 13 + 41;
                 ',
-                '<?php $a    =   1   +    2; $b = array(
+            '<?php $a    =   1   +    2; $b = array(
                     $øøø =>$ø0ø0ø,
                     $ø4  =>  $ø1ø1ø,
                     $ø5=>$ø2ø2ø,
@@ -337,45 +365,49 @@ $a//
                 $a = 12   +  1;
                 $a = 13+41;
                 ',
-                ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL],
-            ],
-            'do not align with nor touch strings' => [
-                '<?php
+            ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL],
+        ];
+
+        yield 'do not align with nor touch strings' => [
+            '<?php
                     \putenv("{$name}= {$value}");
                 $b                     = $c + 1;
                                     $b = $c - 1;
                 ',
-                '<?php
+            '<?php
                     \putenv("{$name}= {$value}");
                 $b =$c+1;
                                     $b =$c  -  1;
                 ',
-                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
-            ],
-            'do not align with declare' => [
-                '<?php
+            ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+        ];
+
+        yield 'do not align with declare' => [
+            '<?php
                     declare(ticks=1);
                     $a = 1;
                     $b = 1;
                 ',
-                '<?php
+            '<?php
                     declare(ticks=1);
                     $a   = 1;
                     $b              = 1;
                 ',
-                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            'do not align with multibyte character in array key' => [
-                '<?php
+            ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield 'do not align with multibyte character in array key' => [
+            '<?php
                     $map = [
                         "ø" => "oe",
                     ];
                 ',
-                null,
-                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
-            ],
-            'align correctly with multibyte characters in array key' => [
-                '<?php
+            null,
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+        ];
+
+        yield 'align correctly with multibyte characters in array key' => [
+            '<?php
                     $inflect_male = array(
                         "aitė\b" => "øasø",
                         "ytė\b"  => "øisø",
@@ -387,7 +419,7 @@ $a//
                             "utė\b"  => "us",
                         ),
                     );',
-                '<?php
+            '<?php
                     $inflect_male = array(
                         "aitė\b" => "øasø",
                         "ytė\b" => "øisø",
@@ -399,37 +431,40 @@ $a//
                             "utė\b"  =>     "us",
                         ),
                     );',
-                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
-            ],
-            [
-                '<?php
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+        ];
+
+        yield [
+            '<?php
                     $foo = 1+$bar;
                 ',
-                '<?php
+            '<?php
                     $foo  =  1 + $bar;
                 ',
-                [
-                    'default' => BinaryOperatorSpacesFixer::NO_SPACE,
-                    'operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE],
-                ],
-            ],
             [
-                '<?php
+                'default' => BinaryOperatorSpacesFixer::NO_SPACE,
+                'operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE],
+            ],
+        ];
+
+        yield [
+            '<?php
                     $foo = 1    +    $bar|$a;
                 ',
-                '<?php
+            '<?php
                     $foo  =  1    +    $bar | $a;
                 ',
-                [
-                    'default' => null,
-                    'operators' => [
-                        '=' => BinaryOperatorSpacesFixer::SINGLE_SPACE,
-                        '|' => BinaryOperatorSpacesFixer::NO_SPACE,
-                    ],
+            [
+                'default' => null,
+                'operators' => [
+                    '=' => BinaryOperatorSpacesFixer::SINGLE_SPACE,
+                    '|' => BinaryOperatorSpacesFixer::NO_SPACE,
                 ],
             ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $foo = $d #
   |
  #
@@ -437,7 +472,7 @@ $a|         // foo
 $b#
    |$d;
                 ',
-                '<?php
+            '<?php
                     $foo           = $d #
   |
  #
@@ -445,260 +480,376 @@ $a |         // foo
 $b#
    | $d;
                 ',
-                [
-                    'operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE],
-                ],
+            [
+                'operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE],
             ],
+        ];
+
+        yield [
+            '<?php declare(strict_types=1);
+$a = 1;
+echo 1 <=> 1;
+echo 1 <=> 2;
+echo 2 <=> 1;
+echo 2 <=> 1;
+
+$a = $a  ?? $b;
+$a = $ab ?? $b;
+$a = $ac ?? $b;
+$a = $ad ?? $b;
+$a = $ae ?? $b;
+',
+            '<?php declare(strict_types=1);
+$a = 1;
+echo 1<=>1;
+echo 1 <=>2;
+echo 2<=> 1;
+echo 2  <=>   1;
+
+$a = $a ?? $b;
+$a = $ab   ?? $b;
+$a = $ac    ?? $b;
+$a = $ad  ?? $b;
+$a = $ae?? $b;
+',
+            ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE, '??' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield 'align array destructuring' => [
+            '<?php
+                    $c                 = [$d] = $e[1];
+                    function A(){}[$a] = $a[$c];
+                    $b                 = 1;
+                ',
+            '<?php
+                    $c = [$d] = $e[1];
+                    function A(){}[$a] = $a[$c];
+                    $b = 1;
+                ',
+            ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]],
+        ];
+
+        yield 'align array destructuring with assignments' => [
+            '<?php
+                    $d = [
+                        "a" => $a,
+                        "b" => $b,
+                        "c" => $c
+                    ] = $array;
+                ',
+            '<?php
+                    $d = [
+                        "a"=>$a,
+                        "b"   => $b,
+                        "c" =>   $c
+                    ] = $array;
+                ',
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield 'multiple exceptions catch, default config' => [
+            '<?php try {} catch (A   |     B $e) {}',
+        ];
+
+        yield 'multiple exceptions catch, no space config' => [
+            '<?php try {} catch (A   |     B $e) {}',
+            null,
+            ['operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE]],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixCases
+     * @dataProvider provideFixDefaultsCases
      */
-    public function testFixDefaults($expected, $input = null)
+    public function testFixDefaults(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixDefaultsCases(): iterable
     {
-        return [
-            [
-                '<?php $a +      /** */
+        yield [
+            '<?php $a +      /** */
                 $b;',
-                '<?php $a    +      /** */
+            '<?php $a    +      /** */
                 $b;',
-            ],
-            [
-                '<?php '.'
+        ];
+
+        yield [
+            '<?php '.'
                     $a
                     + $b
                     + $d;
                 ;',
-                '<?php '.'
+            '<?php '.'
                     $a
                     +$b
                     +  $d;
                 ;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a
                /***/ + $b
             /***/   + $d;
                 ;',
-                '<?php
+            '<?php
                     $a
                /***/+   $b
             /***/   +$d;
                 ;',
-            ],
-            [
-                '<?php $a + $b;',
-                '<?php $a+$b;',
-            ],
-            [
-                '<?php 1 + $b;',
-                '<?php 1+$b;',
-            ],
-            [
-                '<?php 0.2 + $b;',
-                '<?php 0.2+$b;',
-            ],
-            [
-                '<?php $a[1] + $b;',
-                '<?php $a[1]+$b;',
-            ],
-            [
-                '<?php FOO + $b;',
-                '<?php FOO+$b;',
-            ],
-            [
-                '<?php foo() + $b;',
-                '<?php foo()+$b;',
-            ],
-            [
-                '<?php ${"foo"} + $b;',
-                '<?php ${"foo"}+$b;',
-            ],
-            [
-                '<?php $a & $b;',
-                '<?php $a&$b;',
-            ],
-            [
-                '<?php $a &= $b;',
-                '<?php $a&=$b;',
-            ],
-            [
-                '<?php $a &= $b;',
-                '<?php $a &=$b;',
-            ],
-            [
-                '<?php $a &= $b;',
-                '<?php $a&= $b;',
-            ],
-            [
-                '<?php $a &= $b;',
-                '<?php $a  &=   $b;',
-            ],
-            [
-                '<?php $a &=
+        ];
+
+        yield [
+            '<?php $a + $b;',
+            '<?php $a+$b;',
+        ];
+
+        yield [
+            '<?php 1 + $b;',
+            '<?php 1+$b;',
+        ];
+
+        yield [
+            '<?php 0.2 + $b;',
+            '<?php 0.2+$b;',
+        ];
+
+        yield [
+            '<?php $a[1] + $b;',
+            '<?php $a[1]+$b;',
+        ];
+
+        yield [
+            '<?php FOO + $b;',
+            '<?php FOO+$b;',
+        ];
+
+        yield [
+            '<?php foo() + $b;',
+            '<?php foo()+$b;',
+        ];
+
+        yield [
+            '<?php ${"foo"} + $b;',
+            '<?php ${"foo"}+$b;',
+        ];
+
+        yield [
+            '<?php $a & $b;',
+            '<?php $a&$b;',
+        ];
+
+        yield [
+            '<?php $a &= $b;',
+            '<?php $a&=$b;',
+        ];
+
+        yield [
+            '<?php $a &= $b;',
+            '<?php $a &=$b;',
+        ];
+
+        yield [
+            '<?php $a &= $b;',
+            '<?php $a&= $b;',
+        ];
+
+        yield [
+            '<?php $a &= $b;',
+            '<?php $a  &=   $b;',
+        ];
+
+        yield [
+            '<?php $a &=
 $b;',
-            ],
-            [
-                '<?php $a
+        ];
+
+        yield [
+            '<?php $a
 &= $b;',
-                '<?php $a
+            '<?php $a
 &=$b;',
-            ],
-            [
-                '<?php (1) and 2;',
-                '<?php (1)and 2;',
-            ],
-            [
-                '<?php 1 or ($b - $c);',
-                '<?php 1 or($b-$c);',
-            ],
-            [
-                '<?php "a" xor (2);',
-                '<?php "a"xor(2);',
-            ],
-            [
-                '<?php $a * -$b;',
-                '<?php $a*-$b;',
-            ],
-            [
-                '<?php $a = -2 / +5;',
-                '<?php $a=-2/+5;',
-            ],
-            [
-                '<?php $a = &$b;',
-                '<?php $a=&$b;',
-            ],
-            [
-                '<?php $a++ + $b;',
-                '<?php $a+++$b;',
-            ],
-            [
-                '<?php __LINE__ - 1;',
-                '<?php __LINE__-1;',
-            ],
-            [
-                '<?php `echo 1` + 1;',
-                '<?php `echo 1`+1;',
-            ],
-            [
-                '<?php function foo(&$a, array &$b, Bar &$c) {}',
-            ],
-            [
-                '<?php $a = 1 //
+        ];
+
+        yield [
+            '<?php (1) and 2;',
+            '<?php (1)and 2;',
+        ];
+
+        yield [
+            '<?php 1 or ($b - $c);',
+            '<?php 1 or($b-$c);',
+        ];
+
+        yield [
+            '<?php "a" xor (2);',
+            '<?php "a"xor(2);',
+        ];
+
+        yield [
+            '<?php $a * -$b;',
+            '<?php $a*-$b;',
+        ];
+
+        yield [
+            '<?php $a = -2 / +5;',
+            '<?php $a=-2/+5;',
+        ];
+
+        yield [
+            '<?php $a = &$b;',
+            '<?php $a=&$b;',
+        ];
+
+        yield [
+            '<?php $a++ + $b;',
+            '<?php $a+++$b;',
+        ];
+
+        yield [
+            '<?php __LINE__ - 1;',
+            '<?php __LINE__-1;',
+        ];
+
+        yield [
+            '<?php `echo 1` + 1;',
+            '<?php `echo 1`+1;',
+        ];
+
+        yield [
+            '<?php function foo(&$a, array &$b, Bar &$c) {}',
+        ];
+
+        yield [
+            '<?php $a = 1 //
                     || 2;
                 ',
-            ],
-            [
-                '<?php $a =
+        ];
+
+        yield [
+            '<?php $a =
                     2;',
-            ],
-            [
-                '<?php declare(ticks=1);',
-            ],
-            [
-                '<?php declare(ticks =  1);',
-            ],
-            [
-                '<?php $a = 1;declare(ticks =  1);$b = 1;',
-                '<?php $a=1;declare(ticks =  1);$b=1;',
-            ],
-            [
-                '<?php $a = array("b" => "c", );',
-                '<?php $a = array("b"=>"c", );',
-            ],
-            [
-                '<?php $a = array("b" => "c", );',
-                '<?php $a = array("b" =>"c", );',
-            ],
-            [
-                '<?php $a = array("b" => "c", );',
-                '<?php $a = array("b"=> "c", );',
-            ],
-            [
-                '<?php [1, 2] + [3, 4];',
-                '<?php [1, 2]+[3, 4];',
-            ],
-            [
-                '<?php [1, 2] + [3, 4];',
-                '<?php [1, 2]   +   [3, 4];',
-            ],
-            [
-                '<?php [1, 2] + //   '.'
+        ];
+
+        yield [
+            '<?php declare(ticks=1);',
+        ];
+
+        yield [
+            '<?php declare(ticks =  1);',
+        ];
+
+        yield [
+            '<?php $a = 1;declare(ticks =  1);$b = 1;',
+            '<?php $a=1;declare(ticks =  1);$b=1;',
+        ];
+
+        yield [
+            '<?php $a = array("b" => "c", );',
+            '<?php $a = array("b"=>"c", );',
+        ];
+
+        yield [
+            '<?php $a = array("b" => "c", );',
+            '<?php $a = array("b" =>"c", );',
+        ];
+
+        yield [
+            '<?php $a = array("b" => "c", );',
+            '<?php $a = array("b"=> "c", );',
+        ];
+
+        yield [
+            '<?php [1, 2] + [3, 4];',
+            '<?php [1, 2]+[3, 4];',
+        ];
+
+        yield [
+            '<?php [1, 2] + [3, 4];',
+            '<?php [1, 2]   +   [3, 4];',
+        ];
+
+        yield [
+            '<?php [1, 2] + //   '.'
                 [3, 4];',
-                '<?php [1, 2]   + //   '.'
+            '<?php [1, 2]   + //   '.'
                 [3, 4];',
-            ],
-            [
-                '<?php $a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;',
-                '<?php $a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php $a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;$a = $b + $c;',
+            '<?php $a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;$a=$b+$c;',
+        ];
+
+        yield [
+            '<?php
 $c =
 $a
 +
 $b;
 ',
-            ],
+        ];
+
+        yield ['<a href="test-<?=$path?>-<?=$id?>.html">Test</a>'];
+
+        yield 'reference in functions declarations' => [
+            '<?php
+                function a(string &$x) { return $x + 1; };
+                $b = function (string &$x) { return $x + 1; };
+                $c = fn (string &$x) => $x + 1;
+            ',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideUnalignEqualsCases
      */
-    public function testUnalignEquals($expected, $input = null)
+    public function testUnalignEquals(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideUnalignEqualsCases()
+    public static function provideUnalignEqualsCases(): iterable
     {
-        return [
-            [
-                '<?php $a = "c"?>',
-                '<?php $a="c"?>',
-            ],
-            [
-                '<?php $a = "c";',
-                '<?php $a ="c";',
-            ],
-            [
-                '<?php $a = "c";',
-                '<?php $a= "c";',
-            ],
-            [
-                '<?php $d = $c + $a/**/ +     //
+        yield [
+            '<?php $a = "c"?>',
+            '<?php $a="c"?>',
+        ];
+
+        yield [
+            '<?php $a = "c";',
+            '<?php $a ="c";',
+        ];
+
+        yield [
+            '<?php $a = "c";',
+            '<?php $a= "c";',
+        ];
+
+        yield [
+            '<?php $d = $c + $a/**/ +     //
                 $b;',
-                '<?php $d =    $c+$a/**/+     //
+            '<?php $d =    $c+$a/**/+     //
                 $b;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $a = 1;
     $bbbb = \'
     $cccccccc = 3;
     \';',
-                '<?php
+            '<?php
     $a    = 1;
     $bbbb = \'
     $cccccccc = 3;
     \';',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $ccc = 1;
     $bb = 1;
     $a = 1;
@@ -743,9 +894,9 @@ $b;
 
     for ($i = 0; $i < 10; $i++) {
         $aa = 2;
-        $a[$b] = array();
+        $a[$b] = array(12);
     }',
-                '<?php
+            '<?php
     $ccc = 1;
     $bb  = 1;
     $a   = 1;
@@ -790,167 +941,59 @@ $b;
 
     for ($i = 0; $i < 10; $i++) {
         $aa    = 2;
-        $a[$b] = array();
+        $a[$b] = array(12);
     }',
-            ],
         ];
     }
 
-    public function testWrongConfigItem()
+    public function testWrongConfigItem(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
-            '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. Defined options are: "align_double_arrow", "align_equals", "default", "operators"\.$/'
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(
+            '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. Defined options are: "default", "operators"\.$/'
         );
 
         $this->fixer->configure(['foo' => true]);
     }
 
-    public function testWrongConfigOldValue()
+    public function testWrongConfigTypeForOperators(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
-            '/^\[binary_operator_spaces\] Invalid configuration: The option "align_double_arrow" with value 123 is invalid\. Accepted values are: true, false, null\.$/'
-        );
-
-        $this->fixer->configure(['align_double_arrow' => 123]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'single_space']] as replacement for ['align_equals' => true, 'align_double_arrow' => false].
-     */
-    public function testWrongConfigOldDeprecated()
-    {
-        $this->fixer->configure([
-            'align_equals' => true,
-            'align_double_arrow' => false,
-        ]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => null].
-     */
-    public function testWrongConfigOldDeprecated2()
-    {
-        $this->fixer->configure([
-            'align_equals' => true,
-            'align_double_arrow' => null,
-        ]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=>' => 'align']] as replacement for ['align_equals' => null, 'align_double_arrow' => true].
-     */
-    public function testWrongConfigOldDeprecated3()
-    {
-        $this->fixer->configure([
-            'align_equals' => null,
-            'align_double_arrow' => true,
-        ]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'single_space', '=>' => 'align']] as replacement for ['align_equals' => false, 'align_double_arrow' => true].
-     */
-    public function testWrongConfigOldDeprecated4()
-    {
-        $this->fixer->configure([
-            'align_equals' => false,
-            'align_double_arrow' => true,
-        ]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => true].
-     */
-    public function testWrongConfigOldDeprecated5()
-    {
-        $this->fixer->configure([
-            'align_equals' => true,
-            'align_double_arrow' => true,
-        ]);
-
-        // simple test to see if the old config is still used
-        $this->doTest(
-            '<?php
-                $a = array(
-                    1  => 2,
-                    2  => 3,
-                );
-
-                $b   = 1;
-                $c   =  2;
-            ',
-            '<?php
-                $a = array(
-                    1 => 2,
-                    2  => 3,
-                );
-
-                $b = 1;
-                $c   =  2;
-            '
-        );
-    }
-
-    public function testWrongConfigOldAndNewMixed()
-    {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[binary_operator_spaces\] Mixing old configuration with new configuration is not allowed\.$/');
-
-        $this->fixer->configure([
-            'align_double_arrow' => true,
-            'operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN],
-        ]);
-    }
-
-    public function testWrongConfigTypeForOperators()
-    {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
-            '/^\[binary_operator_spaces\] Invalid configuration: The option "operators" with value true is expected to be of type "array", but is of type "boolean"\.$/'
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(
+            '/^\[binary_operator_spaces\] Invalid configuration: The option "operators" with value true is expected to be of type "array", but is of type "(bool|boolean)"\.$/'
         );
 
         $this->fixer->configure(['operators' => true]);
     }
 
-    public function testWrongConfigTypeForOperatorsKey()
+    public function testWrongConfigTypeForOperatorsKey(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[binary_operator_spaces\] Invalid configuration: Unexpected "operators" key, expected any of ".*", got "integer#123"\.$/');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('/^\[binary_operator_spaces\] Invalid configuration: Unexpected "operators" key, expected any of ".*", got "integer#123"\.$/');
 
         $this->fixer->configure(['operators' => [123 => 1]]);
     }
 
-    public function testWrongConfigTypeForOperatorsKeyValue()
+    public function testWrongConfigTypeForOperatorsKeyValue(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[binary_operator_spaces\] Invalid configuration: Unexpected value for operator "\+", expected any of ".*", got "string#abc"\.$/');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('/^\[binary_operator_spaces\] Invalid configuration: Unexpected value for operator "\+", expected any of ".*", got "string#abc"\.$/');
 
         $this->fixer->configure(['operators' => ['+' => 'abc']]);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideUnalignDoubleArrowCases
      */
-    public function testUnalignDoubleArrow($expected, $input = null)
+    public function testUnalignDoubleArrow(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideUnalignDoubleArrowCases()
+    public static function provideUnalignDoubleArrowCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     $data = [
         "foo" => "Bar",
         "main" => array(
@@ -963,7 +1006,7 @@ $b;
         ),
         "bar" => array(),
     ];',
-                '<?php
+            '<?php
     $data = [
         "foo"  => "Bar",
         "main" => array(
@@ -976,9 +1019,10 @@ $b;
         ),
         "bar"  => array(),
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $data = [
         "foo" => "Bar",
         "main" => [array("baz" => "Test")],
@@ -993,7 +1037,7 @@ $b;
     foreach ($foo as $i => $bar) {
         $var[] = /* Comment */ [$i => $bar];
     }',
-                '<?php
+            '<?php
     $data = [
         "foo"  => "Bar",
         "main" => [array("baz" => "Test")],
@@ -1008,84 +1052,92 @@ $b;
     foreach ($foo as $i => $bar) {
         $var[] = /* Comment */ [$i => $bar];
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $data = [
         "foo" => "Bar",
         "main" => [array("baz" => "Test")],
         "bar" => array(),
     ];',
-                '<?php
+            '<?php
     $data = [
         "foo"  => "Bar",
         "main" => [array("baz" => "Test")],
         "bar"  => array(),
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $data = array(
         "foo" => "Bar",
         "main" => array("baz" => "Test"),
         "bar" => array(),
     );',
-                '<?php
+            '<?php
     $data = array(
         "foo"  => "Bar",
         "main" => array("baz" => "Test"),
         "bar"  => array(),
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $data = array(
         "foo" => "Bar",
         "main" => array(array("baz" => "Test")),
         "bar" => array(),
     );',
-                '<?php
+            '<?php
     $data = array(
         "foo"  => "Bar",
         "main" => array(array("baz" => "Test")),
         "bar"  => array(),
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $var = [];
     foreach ($foo as $i => $bar) {
         $var[] = /* Comment */ [$i => $bar];
     }',
-                '<?php
+            '<?php
     $var = [];
     foreach ($foo as $i  =>  $bar) {
         $var[] = /* Comment */ [$i  =>  $bar];
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $var = [];
     foreach ($foo as $i => $bar) {
         $var[] = [$i => $bar];
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $var = [];
     foreach ([1 => 2] as $k => $v) {
         $var[] = [$i => $bar];
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $var = [];
     foreach (fncCall() as $k => $v){
         $var[] = [$i => $bar];
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $var = [];
     foreach ($foo as $bar) {
         $var[] = [
@@ -1093,7 +1145,7 @@ $b;
             $iaaa => $bar,
         ];
     }',
-                '<?php
+            '<?php
     $var = [];
     foreach ($foo as $bar) {
         $var[] = [
@@ -1101,23 +1153,25 @@ $b;
             $iaaa => $bar,
         ];
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $data = [
         "foo" => "Bar",
         "main" => [["baz" => "Test", "bar" => "Test2"]],
         "bar" => [],
     ];',
-                '<?php
+            '<?php
     $data = [
         "foo"  => "Bar",
         "main" => [["baz" => "Test", "bar" => "Test2"]],
         "bar"  => [],
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $a = [
         0 => 1,
         10 /*Comment*/ => [
@@ -1129,7 +1183,7 @@ $b;
             22 => 3,
         ]
     ];',
-                '<?php
+            '<?php
     $a = [
         0  => 1,
         10 /*Comment*/ => [
@@ -1141,9 +1195,10 @@ $b;
             22 => 3,
         ]
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $a = array(
         0 => 1,
         10 => array(
@@ -1155,7 +1210,7 @@ $b;
             22 => 3,
         )
     );',
-                '<?php
+            '<?php
     $a = array(
         0  => 1,
         10 => array(
@@ -1167,41 +1222,44 @@ $b;
             22 => 3,
         )
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $arr = array(
         $a => 1,
         $bbbb => \'
         $cccccccc = 3;
         \',
     );',
-                '<?php
+            '<?php
     $arr = array(
         $a    => 1,
         $bbbb => \'
         $cccccccc = 3;
         \',
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $arr = [
         $a => 1,
         $bbbb => \'
         $cccccccc = 3;
         \',
     ];',
-                '<?php
+            '<?php
     $arr = [
         $a    => 1,
         $bbbb => \'
         $cccccccc = 3;
         \',
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     foreach($arr as $k => $v){
         $arr = array($k => 1,
             $a => 1,
@@ -1210,7 +1268,7 @@ $b;
             \',
         );
     }',
-                '<?php
+            '<?php
     foreach($arr as $k => $v){
         $arr = array($k => 1,
             $a          => 1,
@@ -1219,9 +1277,10 @@ $b;
             \',
         );
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $a = array(
         10 => 11,
         20 => 22,
@@ -1230,7 +1289,7 @@ $b;
             =>
                 44,
     );',
-                '<?php
+            '<?php
     $a = array(
         10    => 11,
         20    => 22,
@@ -1239,23 +1298,25 @@ $b;
             =>
                 44,
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return array(
         " " => "",    "\t" => "",
         "\n" => "", "\r" => "",
         "\0" => "", "\x0B" => "",
     );',
-                '<?php
+            '<?php
     return array(
         " "   => "",    "\t"    => "",
         "\n"   => "", "\r"   => "",
         "\0"  => "", "\x0B"    => "",
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return $this->grabAttribsBeforeToken(
         $tokens,
         $index,
@@ -1267,7 +1328,7 @@ $b;
             "static" => null,
         )
     );',
-                '<?php
+            '<?php
     return $this->grabAttribsBeforeToken(
         $tokens,
         $index,
@@ -1279,21 +1340,23 @@ $b;
             "static"     => null,
         )
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return array(
         self::STATUS_UNKNOWN_0 => array("symbol" => "?", "description" => "unknown"),
         self::STATUS_INVALID_0 => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
     );',
-                '<?php
+            '<?php
     return array(
         self::STATUS_UNKNOWN_0 => array("symbol" => "?", "description" => "unknown"),
         self::STATUS_INVALID_0    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $array = array(
         "bazab" => b(array(
             1 => 2,
@@ -1305,7 +1368,7 @@ $b;
             10 => 11,
         )),
     );',
-                '<?php
+            '<?php
     $array = array(
         "bazab" => b(array(
             1 => 2,
@@ -1317,50 +1380,48 @@ $b;
             10      => 11,
         )),
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     Foo::test()->aaa(array(1 => 2))->bbb("a", "b");
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     function foo() {
         yield 1 => 2;
     }',
-            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideAlignEqualsCases
+     * @dataProvider provideFixAlignEqualsCases
      */
-    public function testFixAlignEquals($expected, $input = null)
+    public function testFixAlignEquals(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]]);
         $this->doTest($expected, $input);
     }
 
-    public function provideAlignEqualsCases()
+    public static function provideFixAlignEqualsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     $a    = 1;
     $bbbb = \'
     $ddcccccc1 = 3;
     \';',
-                '<?php
+            '<?php
     $a = 1;
     $bbbb = \'
     $ddcccccc1 = 3;
     \';',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $ccc = 1;
     $bb  = 1;
     $a   = 1;
@@ -1398,7 +1459,7 @@ $b;
         $abc[$bcd = 1] = 1;
     }
 
-    while (false) {
+    while ($i = 1) {
         $aa    = 2;
         $a[$b] = array();
     }
@@ -1406,8 +1467,28 @@ $b;
     for ($i = 0; $i < 10; $i++) {
         $aa    = 2;
         $a[$b] = array();
-    }',
-                '<?php
+    }
+
+    $z = 1;
+    switch($a = 0) {
+        case 1:
+            $b  = 1;
+            $cc = 3;
+        break;
+    }
+
+    foreach ($a as $b) {
+        $aa    = 2;
+        $a[$b] = array();
+    }
+
+    do {
+        $aa    = 23;
+        $a[$b] = array(66);
+    } while ($i = 1);
+    $a = 3;
+    ',
+            '<?php
     $ccc = 1;
     $bb = 1;
     $a = 1;
@@ -1445,7 +1526,7 @@ $b;
         $abc[$bcd = 1] = 1;
     }
 
-    while (false) {
+    while ($i = 1) {
         $aa = 2;
         $a[$b] = array();
     }
@@ -1453,44 +1534,258 @@ $b;
     for ($i = 0; $i < 10; $i++) {
         $aa = 2;
         $a[$b] = array();
-    }',
-            ],
+    }
+
+    $z = 1;
+    switch($a = 0) {
+        case 1:
+            $b = 1;
+            $cc = 3;
+        break;
+    }
+
+    foreach ($a as $b) {
+        $aa    = 2;
+        $a[$b] = array();
+    }
+
+    do {
+        $aa = 23;
+        $a[$b] = array(66);
+    } while ($i = 1);
+    $a = 3;
+    ',
+        ];
+
+        yield [
+            '<?php
+m(
+    function ()
+    {
+        $d["a"]   = 1;
+        $d["abc"] = 2;
+    }
+);
+',
+            '<?php
+m(
+    function ()
+    {
+        $d["a"] = 1;
+        $d["abc"] = 2;
+    }
+);
+',
+        ];
+
+        yield [
+            '<?php
+
+class TaskObjectType
+{
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults(
+            [
+                "choices" => function (Options $options) {
+                    $choices   = TaskService::getFormMapperObjectList();
+                    $element   = null;
+                    $elementId = null;
+
+                    if (isset($options["task"]) && $options["task"]->getElement() === 42) {
+                        $element   = $options["task"]->getElement();
+                        $elementId = $options["task"]->getElementId();
+                    } elseif (isset($options["elementId"], $options["element"]) && $options["element"] === 42) {
+                        $element   = $options["element"];
+                        $elementId = $options["elementId"];
+                    };
+                },
+            ]
+        );
+    }
+}
+',
+            '<?php
+
+class TaskObjectType
+{
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults(
+            [
+                "choices" => function (Options $options) {
+                    $choices = TaskService::getFormMapperObjectList();
+                    $element = null;
+                    $elementId = null;
+
+                    if (isset($options["task"]) && $options["task"]->getElement() === 42) {
+                        $element = $options["task"]->getElement();
+                        $elementId = $options["task"]->getElementId();
+                    } elseif (isset($options["elementId"], $options["element"]) && $options["element"] === 42) {
+                        $element = $options["element"];
+                        $elementId = $options["elementId"];
+                    };
+                },
+            ]
+        );
+    }
+}
+',
+        ];
+
+        yield [
+            '<?php
+fn ($x = 1) => $x + 3;
+$f = 123;
+',
+        ];
+
+        yield [
+            '<?php
+if (($c = count($array)) > 100) {
+    $_data = \'100+\';
+} elseif (($c = count($array)) > 0) {
+    $_data = \'0+\';
+}
+',
+        ];
+
+        yield [
+            '<?php
+if (($c = count($array)) > 100) {
+    $closure = fn ($x = 1) => $x + 3;
+} elseif (($c = count($array)) > 0) {
+    $closure = fn ($x = 1) => $x ** 3;
+}
+',
+        ];
+
+        yield [
+            '<?php
+$suppliersTitles          = $container->getContainerSuppliers()->map(fn (ContainerSupplier $containerSupplier) => $containerSupplier->getSupplier()->getTitle());
+$suppliersClassifications = $container->getContainerSuppliers()->map(fn (ContainerSupplier $containerSupplier) => $containerSupplier->getSupplier()->getClassification());
+',
+            '<?php
+$suppliersTitles = $container->getContainerSuppliers()->map(fn (ContainerSupplier $containerSupplier) => $containerSupplier->getSupplier()->getTitle());
+$suppliersClassifications = $container->getContainerSuppliers()->map(fn (ContainerSupplier $containerSupplier) => $containerSupplier->getSupplier()->getClassification());
+',
+        ];
+
+        yield [
+            '<?php
+$a              = [$s = 5, $d => 5, $c => 9,];
+$ab             = [$bc = 1];
+$someOtherArray = [$bcd = 1];
+$a              = [$b];
+$ab             = [$bc];
+$abc            = [$bcd];
+',
+            '<?php
+$a = [$s = 5, $d => 5, $c => 9,];
+$ab = [$bc = 1];
+$someOtherArray = [$bcd = 1];
+$a = [$b];
+$ab = [$bc];
+$abc = [$bcd];
+',
+        ];
+
+        yield [
+            '<?php
+$result = false;
+
+$callback = static function () use (&$result) {
+    $result = true;
+};
+
+$this->query = $this->db->prepare(static function ($db) {
+   $sql = "INSERT INTO {$db->protectIdentifiers($db->DBPrefix)} ("
+          . $db->protectIdentifiers("name") . ", "
+          . $db->protectIdentifiers("email") . ", "
+          . $db->protectIdentifiers("country");
+});
+
+$classSet = Closure::bind(function ($key, $value) {
+    $this->{$key} = $value;
+}, $classObj, $className);
+',
+        ];
+
+        yield [
+            '<?php
+$obj = new class() extends SomeClass {
+    public $someProperty = null;
+};
+',
+        ];
+
+        yield [
+            '<?php
+$fabricator->setOverrides(["first" => "Bobby"], $persist = false);
+$bobbyUser = $fabricator->make();
+$bobbyUser = $fabricator->make();
+',
+        ];
+
+        yield [
+            '<?php
+$a = 1; if (true) {
+$bbb = 1;
+}
+',
+        ];
+
+        yield [
+            '<?php
+$fabricator->setOverrides(
+["first" => "Bobby"], $persist = false);
+$fabricator->setOverrides(["first" => "Bobby"], $persist = false
+);
+',
+        ];
+
+        yield [
+            '<?php
+$start = (
+    $input["start"] !== "" && ($date = DateTime::parse($input["start"]))
+        ? $date->setTimezone("UTC")
+        : $date->setTimezone("Europe/London")
+);
+',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideAlignDoubleArrowCases
+     * @dataProvider provideFixAlignDoubleArrowCases
      */
-    public function testFixAlignDoubleArrow($expected, $input = null)
+    public function testFixAlignDoubleArrow(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN]]);
         $this->doTest($expected, $input);
     }
 
-    public function provideAlignDoubleArrowCases()
+    public static function provideFixAlignDoubleArrowCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                 switch ($a) {
                     case "prod":
                         break;
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $array = array(
         "closure" => function ($param1, $param2) {
             return;
         }
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return new JsonResponse(array(
         "result" => "OK",
         "html"   => 1, /**/array(
@@ -1501,7 +1796,7 @@ $b;
             )
         ),)
     );',
-                '<?php
+            '<?php
     return new JsonResponse(array(
         "result" => "OK",
         "html" => 1, /**/array(
@@ -1512,9 +1807,10 @@ $b;
             )
         ),)
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return new JsonResponse([
         "result" => "OK",
         "html"   => renderView("views/my_view.html.twig", array(
@@ -1522,7 +1818,7 @@ $b;
             "foofoo" => 43,
         )),
     ]);',
-                '<?php
+            '<?php
     return new JsonResponse([
         "result" => "OK",
         "html" =>    renderView("views/my_view.html.twig", array(
@@ -1530,9 +1826,10 @@ $b;
             "foofoo" => 43,
         )),
     ]);',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return new JsonResponse([
         "result" => "OK",
         "html"   => renderView("views/my_view.html.twig", [
@@ -1541,7 +1838,7 @@ $b;
         ]),
         "baz" => "OK",
     ]);',
-                '<?php
+            '<?php
     return new JsonResponse([
         "result" => "OK",
         "html" =>    renderView("views/my_view.html.twig", [
@@ -1550,9 +1847,10 @@ $b;
         ]),
         "baz" => "OK",
     ]);',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $data = [
         "foo"  => "Bar",
         "main" => array(
@@ -1565,7 +1863,7 @@ $b;
         ),
         "bar"  => array(),
     ];',
-                '<?php
+            '<?php
     $data = [
         "foo"  => "Bar",
         "main" => array(
@@ -1578,9 +1876,10 @@ $b;
         ),
         "bar"  => array(),
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $data = [
         "foo"  => "Bar",
         "main" => [array("baz" => "Test")],
@@ -1595,61 +1894,69 @@ $b;
     foreach ($foo as $i => $bar) {
         $var[] = /* Comment */ [$i => $bar];
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $data = [
         "foo"  => "Bar",
         "main" => [array("baz" => "Test")],
         "bar"  => array(),
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $data = array(
         "foo"  => "Bar",
         "main" => array("baz" => "Test"),
         "bar"  => array(),
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $data = array(
         "foo"  => "Bar",
         "main" => array(array("baz" => "Test")),
         "bar"  => array(),
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $var = [];
     foreach ($foo as $i => $bar) {
         $var[] = /* Comment */ [$i => $bar];
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $var = [];
     foreach ($foo as $i => $bar) {
         $var[] = [$i => $bar];
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $var = [];
     foreach ([1 => 2] as $k => $v) {
         $var[] = [$i => $bar];
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $var = [];
     foreach (fncCall() as $k => $v){
         $var[] = [$i => $bar];
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $var = [];
     foreach ($foo as $bar) {
         $var[] = [
@@ -1657,25 +1964,28 @@ $b;
             $iaaa => $bar,
         ];
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $data = [
         "foo"  => "Bar",
         "main" => [["baz" => "Test", "bar" => "Test2"]],
         "bar"  => [],
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $data = [
         "foo"  => "Bar",
         "main" => ["baz" => "Test"],
         "bar"  => [],
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $a = [
         0              => 1,
         10 /*Comment*/ => [
@@ -1687,7 +1997,7 @@ $b;
             22 => 3,
         ]
     ];',
-                '<?php
+            '<?php
     $a = [
         0  => 1,
         10 /*Comment*/ => [
@@ -1699,12 +2009,13 @@ $b;
             22 => 3,
         ]
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $a = array(
-        0  => 1,
-        10 => array(
+        0   => 1,
+        10  => array(
             1  => 2,
             22 => 3,
         ),
@@ -1713,41 +2024,44 @@ $b;
             22 => 3,
         )
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $arr = array(
         $a    => 1,
         $bbbb => \'
         $cccccccc2 = 3;
         \',
     );',
-                '<?php
+            '<?php
     $arr = array(
         $a => 1,
         $bbbb => \'
         $cccccccc2 = 3;
         \',
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $arr = [
         $a    => 1,
         $bbbb => \'
         $cccccccc3 = 3;
         \',
     ];',
-                '<?php
+            '<?php
     $arr = [
         $a => 1,
         $bbbb => \'
         $cccccccc3 = 3;
         \',
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     foreach($arr as $k => $v){
         $arr = array($k => 1,
             $a          => 1,
@@ -1756,9 +2070,10 @@ $b;
             \',
         );
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $a = array(
         10    => 11,
         20    => 22,
@@ -1767,7 +2082,7 @@ $b;
             =>
                 44,
     );',
-                '<?php
+            '<?php
     $a = array(
         10    =>    11,
         20  =>    22,
@@ -1776,23 +2091,25 @@ $b;
             =>
                 44,
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return array(
         " "    => "",    "\t"    => "",
         "\n"   => "", "\r"   => "",
         "\0"   => "", "\x0B"    => "",
     );',
-                '<?php
+            '<?php
     return array(
         " "   => "",    "\t"    => "",
         "\n"   => "", "\r"   => "",
         "\0"  => "", "\x0B"    => "",
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return $this->grabAttribsBeforeToken(
         $tokens,
         $index,
@@ -1804,7 +2121,7 @@ $b;
             "static"     => null,
         )
     );',
-                '<?php
+            '<?php
     return $this->grabAttribsBeforeToken(
         $tokens,
         $index,
@@ -1816,21 +2133,23 @@ $b;
             "static" => null,
         )
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return array(
         self::STATUS_UNKNOWN_1    => array("symbol" => "?", "description" => "unknown"),
         self::STATUS_INVALID_1    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
     );',
-                '<?php
+            '<?php
     return array(
         self::STATUS_UNKNOWN_1 => array("symbol" => "?", "description" => "unknown"),
         self::STATUS_INVALID_1    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $array = array(
         "bazab" => b(array(
             1     => 2,
@@ -1842,7 +2161,7 @@ $b;
             10      => 11,
         )),
     );',
-                '<?php
+            '<?php
     $array = array(
         "bazab" => b(array(
             1 => 2,
@@ -1854,82 +2173,93 @@ $b;
             10      => 11,
         )),
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     Foo::test()->aaa(array(1 => 2))->bbb("a", "b");
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $inflect_male = array(
         "aitė\b" => "as",
         "ytė\b"  => "is",
         "iūtė\b" => "ius",
         "utė\b"  => "us",
     );',
-                '<?php
+            '<?php
     $inflect_male = array(
         "aitė\b" => "as",
         "ytė\b" => "is",
         "iūtė\b" => "ius",
         "utė\b" => "us",
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 $formMapper
                     ->add(\'foo\', null, [\'required\' => false])
                     ->add(\'dummy_field\', null, [\'required\' => false])
                 ;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 $formMapper
                     ->add(\'foo\', null, array(\'required\' => false))
                     ->add(\'dummy_field\', null, array(\'required\' => false))
                 ;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(["server1" => $object], ["addedAt" => "DESC"], 5);
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(["server2" => $object], ["checkedAt" => "desc"], 50);
     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array("server1" => $object), array("addedAt" => "DESC"), 5);
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array("server2" => $object), array("checkedAt" => "desc"), 50);
     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy($foo[123]);
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy($foo[123]);
     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy((1 + 2));
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy((1 + 2));
     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array(1, 2));
     $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array(1, 2));
     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
     function foo() {}
 
@@ -1942,7 +2272,7 @@ $b;
         "b"       => 1,
     ];
     ',
-                '<?php
+            '<?php
 
     function foo() {}
 
@@ -1955,59 +2285,965 @@ $b;
         "b" => 1,
     ];
     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return array(
         self::STATUS_UNKNOWN_2    => array("symbol" => "?", "description" => "unknown"),
         self::STATUS_INVALID_2    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
     );',
-                '<?php
+            '<?php
     return array(
         self::STATUS_UNKNOWN_2 => array("symbol" => "?", "description" => "unknown"),
         self::STATUS_INVALID_2    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return array(
         self::STATUS_UNKNOWN_3    => array((1 + 11)=> "?", "description" => "unknown"),
         self::STATUS_INVALID_3    => array((2 + 3)=> "III", "description" => "invalid file syntax, file ignored"),
     );',
-                '<?php
+            '<?php
     return array(
         self::STATUS_UNKNOWN_3 => array((1+11)=> "?", "description" => "unknown"),
         self::STATUS_INVALID_3    => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
     );',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return [
         self::STATUS_UNKNOWN_4    => ["symbol" => "?", "description" => "unknown"],
         self::STATUS_INVALID_4    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
     ];',
-                '<?php
+            '<?php
     return [
         self::STATUS_UNKNOWN_4 => ["symbol" => "?", "description" => "unknown"],
         self::STATUS_INVALID_4    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
     ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     return [
         self::STATUS_UNKNOWN_7    => [(1 + 11)=> "?", "description" => "unknown"],
         self::STATUS_INVALID_7    => [(2 + 3)=> "III", "description" => "invalid file syntax, file ignored"],
     ];',
-                '<?php
+            '<?php
     return [
         self::STATUS_UNKNOWN_7 => [(1+11)=> "?", "description" => "unknown"],
         self::STATUS_INVALID_7    => [(2+3)=> "III", "description" => "invalid file syntax, file ignored"],
     ];',
-            ],
+        ];
+
+        yield [
+            '<?php
+$b = [1 => function() {
+    foreach([$a => 2] as $b) {
+        $bv = [
+            $b  => 2,
+            $cc => 3,
+        ];
+    }}, 2 => 3];
+',
+            '<?php
+$b = [1 => function() {
+    foreach([$a => 2] as $b) {
+        $bv = [
+            $b => 2,
+            $cc => 3,
+        ];
+    }}, 2 => 3];
+',
+        ];
+
+        yield [
+            '<?php
+function asd() {
+      return [
+          "this"    => fn () => false,
+          "is"      => fn () => false,
+          "an"      => fn () => false,
+          "example" => fn () => false,
+          "array"   => fn () => false,
+      ];
+}
+',
+            '<?php
+function asd() {
+      return [
+          "this" => fn () => false,
+          "is" => fn () => false,
+          "an" => fn () => false,
+          "example" => fn () => false,
+          "array" => fn () => false,
+      ];
+}
+',
+        ];
+
+        yield [
+            '<?php
+collect()
+    ->map(fn ($arg) => [])
+    ->keyBy(fn ($arg) => []);
+',
+        ];
+
+        yield [
+            '<?php
+if ($this->save([
+    "bar"       => "baz",
+    "barbarbar" => "baz",
+])) {
+    // Do the work
+}
+',
+            '<?php
+if ($this->save([
+    "bar" => "baz",
+    "barbarbar" => "baz",
+])) {
+    // Do the work
+}
+',
+        ];
+
+        yield [
+            '<?php
+class test
+{
+    public function __construct()
+    {
+        $result = $this->test1(fn () => $this->test2($a));
+        foreach ($result as $k => $v)
+        {
+        }
+
+        $result = $this->test1(fn () => $this->test2($a, $b));
+        foreach ($result as $k => $v)
+        {
+        }
+    }
+}
+',
+        ];
+
+        yield [
+            '<?php
+$array = [
+    "foo"     => 123,
+    "longkey" => "test",
+    "baz"     => fn () => "value",
+];
+',
+            '<?php
+$array = [
+    "foo" => 123,
+    "longkey" => "test",
+    "baz" => fn () => "value",
+];
+',
+        ];
+
+        yield [
+            '<?php
+function foo () {
+    $this->query = $this->db->prepare(static fn ($db) => $db->table("user")->insert([
+        "name"    => "a",
+        "email"   => "b@example.com",
+        "country" => "JP",
+    ]));
+
+    foreach ($data as $name => $array) {
+        foreach ($array as $field => $value) {
+            yield $type => $case;
+        }
+    }
+}
+',
+            '<?php
+function foo () {
+    $this->query = $this->db->prepare(static fn ($db) => $db->table("user")->insert([
+        "name" => "a",
+        "email" => "b@example.com",
+        "country" => "JP",
+    ]));
+
+    foreach ($data as $name => $array) {
+        foreach ($array as $field => $value) {
+            yield $type => $case;
+        }
+    }
+}
+',
+        ];
+
+        yield [
+            '<?php
+function test()
+{
+    yield "null customer" => [
+        "expected"    => null,
+        "ourCustomer" => null,
+    ];
+    yield "no underlying user" => [
+        "expected"    => null,
+        "ourCustomer" => Customer::seed(),
+    ];
+}
+                ',
         ];
     }
 
-    public function testDoNotTouchEqualsAndArrowByConfig()
+    /**
+     * @dataProvider provideFixAlignScopedDoubleArrowCases
+     */
+    public function testFixAlignScopedDoubleArrow(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_BY_SCOPE]]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixAlignScopedDoubleArrowCases(): iterable
+    {
+        yield [
+            '<?php
+                switch ($a) {
+                    case "prod":
+                        break;
+                }
+                ',
+        ];
+
+        yield [
+            '<?php
+    $array = array(
+        "closure" => function ($param1, $param2) {
+            return;
+        }
+    );',
+        ];
+
+        yield [
+            '<?php
+    return new JsonResponse(array(
+        "result" => "OK",
+        "html"   => 1, /**/array(
+            "foo"    => "bar",
+            "foofoo" => array(
+                "a"  => 1,
+                "b"  => 2
+            )
+        ),)
+    );',
+            '<?php
+    return new JsonResponse(array(
+        "result" => "OK",
+        "html" => 1, /**/array(
+            "foo" => "bar",
+            "foofoo" => array(
+                "a" => 1,
+                "b"  =>  2
+            )
+        ),)
+    );',
+        ];
+
+        yield [
+            '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html"   => renderView("views/my_view.html.twig", array(
+            "foo"    => "bar",
+            "foofoo" => 43,
+        )),
+    ]);',
+            '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html" =>    renderView("views/my_view.html.twig", array(
+            "foo" => "bar",
+            "foofoo" => 43,
+        )),
+    ]);',
+        ];
+
+        yield [
+            '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html"   => renderView("views/my_view.html.twig", [
+            "foo"    => "bar",
+            "foofoo" => 42,
+        ]),
+        "baz"    => "OK",
+    ]);',
+            '<?php
+    return new JsonResponse([
+        "result" => "OK",
+        "html" =>    renderView("views/my_view.html.twig", [
+            "foo" =>   "bar",
+            "foofoo" =>    42,
+        ]),
+        "baz" => "OK",
+    ]);',
+        ];
+
+        yield [
+            '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => array(
+            [
+                "baz"     => "Test",
+                "bazaa"   => $a->{"Test"},
+                "bazaa"   => $a["Test"],
+                "bazaaaa" => b("Test"),
+            ]
+        ),
+        "bar"  => array(),
+    ];',
+            '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => array(
+            [
+                "baz" => "Test",
+                "bazaa" => $a->{"Test"},
+                "bazaa" => $a["Test"],
+                "bazaaaa" => b("Test"),
+            ]
+        ),
+        "bar"  => array(),
+    ];',
+        ];
+
+        yield [
+            '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => [array("baz" => "Test")],
+        "bar"  => array(),
+    ];
+    $data = array(
+        "foo"  => "Bar",
+        "main" => array("baz" => "Test"),
+        "bar"  => array(),
+    );
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = /* Comment */ [$i => $bar];
+    }',
+        ];
+
+        yield [
+            '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => [array("baz" => "Test")],
+        "bar"  => array(),
+    ];',
+        ];
+
+        yield [
+            '<?php
+    $data = array(
+        "foo"  => "Bar",
+        "main" => array("baz" => "Test"),
+        "bar"  => array(),
+    );',
+        ];
+
+        yield [
+            '<?php
+    $data = array(
+        "foo"  => "Bar",
+        "main" => array(array("baz" => "Test")),
+        "bar"  => array(),
+    );',
+        ];
+
+        yield [
+            '<?php
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = /* Comment */ [$i => $bar];
+    }',
+        ];
+
+        yield [
+            '<?php
+    $var = [];
+    foreach ($foo as $i => $bar) {
+        $var[] = [$i => $bar];
+    }',
+        ];
+
+        yield [
+            '<?php
+    $var = [];
+    foreach ([1 => 2] as $k => $v) {
+        $var[] = [$i => $bar];
+    }',
+        ];
+
+        yield [
+            '<?php
+    $var = [];
+    foreach (fncCall() as $k => $v){
+        $var[] = [$i => $bar];
+    }',
+        ];
+
+        yield [
+            '<?php
+    $var = [];
+    foreach ($foo as $bar) {
+        $var[] = [
+            $i    => $bar,
+            $iaaa => $bar,
+        ];
+    }',
+        ];
+
+        yield [
+            '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => [["baz" => "Test", "bar" => "Test2"]],
+        "bar"  => [],
+    ];',
+        ];
+
+        yield [
+            '<?php
+    $data = [
+        "foo"  => "Bar",
+        "main" => ["baz" => "Test"],
+        "bar"  => [],
+    ];',
+        ];
+
+        yield [
+            '<?php
+    $a = [
+        0              => 1,
+        10 /*Comment*/ => [
+            1  => 2,
+            22 => 3,
+        ],
+        100            => [
+            1  => 2,
+            22 => 3,
+        ]
+    ];',
+            '<?php
+    $a = [
+        0  => 1,
+        10 /*Comment*/ => [
+            1  => 2,
+            22 => 3,
+        ],
+        100 => [
+            1  => 2,
+            22 => 3,
+        ]
+    ];',
+        ];
+
+        yield [
+            '<?php
+    $a = array(
+        0   => 1,
+        10  => array(
+            1  => 2,
+            22 => 3,
+        ),
+        100 => array(
+            1  => 2,
+            22 => 3,
+        )
+    );',
+        ];
+
+        yield [
+            '<?php
+    $arr = array(
+        $a    => 1,
+        $bbbb => \'
+        $cccccccc2 = 3;
+        \',
+    );',
+            '<?php
+    $arr = array(
+        $a => 1,
+        $bbbb => \'
+        $cccccccc2 = 3;
+        \',
+    );',
+        ];
+
+        yield [
+            '<?php
+    $arr = [
+        $a    => 1,
+        $bbbb => \'
+        $cccccccc3 = 3;
+        \',
+    ];',
+            '<?php
+    $arr = [
+        $a => 1,
+        $bbbb => \'
+        $cccccccc3 = 3;
+        \',
+    ];',
+        ];
+
+        yield [
+            '<?php
+    foreach($arr as $k => $v){
+        $arr = array($k => 1,
+            $a          => 1,
+            $bbbb       => \'
+            $cccccccc4 = 3;
+            \',
+        );
+    }',
+        ];
+
+        yield [
+            '<?php
+    $a = array(
+        10    => 11,
+        20    => 22,
+        30    => 33,
+        40
+              =>
+                44,
+    );',
+            '<?php
+    $a = array(
+        10    =>    11,
+        20  =>    22,
+        30=>33,
+        40
+            =>
+                44,
+    );',
+        ];
+
+        yield [
+            '<?php
+    return array(
+        " "    => "",    "\t"    => "",
+        "\n"   => "", "\r"   => "",
+        "\0"   => "", "\x0B"    => "",
+    );',
+            '<?php
+    return array(
+        " "   => "",    "\t"    => "",
+        "\n"   => "", "\r"   => "",
+        "\0"  => "", "\x0B"    => "",
+    );',
+        ];
+
+        yield [
+            '<?php
+    return $this->grabAttribsBeforeToken(
+        $tokens,
+        $index,
+        $tokenAttribsMap,
+        array(
+            "abstract"   => null,
+            "final"      => null,
+            "visibility" => new Token(array(T_PUBLIC, "public")),
+            "static"     => null,
+        )
+    );',
+            '<?php
+    return $this->grabAttribsBeforeToken(
+        $tokens,
+        $index,
+        $tokenAttribsMap,
+        array(
+            "abstract" => null,
+            "final" => null,
+            "visibility" => new Token(array(T_PUBLIC, "public")),
+            "static" => null,
+        )
+    );',
+        ];
+
+        yield [
+            '<?php
+    return array(
+        self::STATUS_UNKNOWN_1    => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_1    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            '<?php
+    return array(
+        self::STATUS_UNKNOWN_1 => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_1    => array("symbol" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+        ];
+
+        yield [
+            '<?php
+    $array = array(
+        "bazab" => b(array(
+            1       => 2,
+            5       => [
+                6     => 7,
+                8     => 9,
+            ],
+            3       => 4,
+            10      => 11,
+        )),
+    );',
+            '<?php
+    $array = array(
+        "bazab" => b(array(
+            1 => 2,
+            5     => [
+                6 => 7,
+                8     => 9,
+            ],
+            3    => 4,
+            10      => 11,
+        )),
+    );',
+        ];
+
+        yield [
+            '<?php
+    Foo::test()->aaa(array(1 => 2))->bbb("a", "b");
+',
+        ];
+
+        yield [
+            '<?php
+    $inflect_male = array(
+        "aitė\b" => "as",
+        "ytė\b"  => "is",
+        "iūtė\b" => "ius",
+        "utė\b"  => "us",
+    );',
+            '<?php
+    $inflect_male = array(
+        "aitė\b" => "as",
+        "ytė\b" => "is",
+        "iūtė\b" => "ius",
+        "utė\b" => "us",
+    );',
+        ];
+
+        yield [
+            '<?php
+                $formMapper
+                    ->add(\'foo\', null, [\'required\' => false])
+                    ->add(\'dummy_field\', null, [\'required\' => false])
+                ;
+                ',
+        ];
+
+        yield [
+            '<?php
+                $formMapper
+                    ->add(\'foo\', null, array(\'required\' => false))
+                    ->add(\'dummy_field\', null, array(\'required\' => false))
+                ;
+                ',
+        ];
+
+        yield [
+            '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(["server1" => $object], ["addedAt" => "DESC"], 5);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(["server2" => $object], ["checkedAt" => "desc"], 50);
+    ',
+        ];
+
+        yield [
+            '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array("server1" => $object), array("addedAt" => "DESC"), 5);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array("server2" => $object), array("checkedAt" => "desc"), 50);
+    ',
+        ];
+
+        yield [
+            '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy($foo[123]);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy($foo[123]);
+    ',
+        ];
+
+        yield [
+            '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
+    ',
+        ];
+
+        yield [
+            '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy((1 + 2));
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy((1 + 2));
+    ',
+        ];
+
+        yield [
+            '<?php
+    $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array(1, 2));
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array(1, 2));
+    ',
+        ];
+
+        yield [
+            '<?php
+
+    function foo() {}
+
+    $bar = 42;
+
+    $foo = [
+        "test123" => "foo",
+        "foo"     => $bar[123],
+        "a"       => foo(),
+        "b"       => 1,
+    ];
+    ',
+            '<?php
+
+    function foo() {}
+
+    $bar = 42;
+
+    $foo = [
+        "test123" => "foo",
+        "foo" => $bar[123],
+        "a" => foo(),
+        "b" => 1,
+    ];
+    ',
+        ];
+
+        yield [
+            '<?php
+    return array(
+        self::STATUS_UNKNOWN_2    => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_2    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            '<?php
+    return array(
+        self::STATUS_UNKNOWN_2 => array("symbol" => "?", "description" => "unknown"),
+        self::STATUS_INVALID_2    => array("symbol123" => "III", "description" => "invalid file syntax, file ignored"),
+    );',
+        ];
+
+        yield [
+            '<?php
+    return array(
+        self::STATUS_UNKNOWN_3    => array((1 + 11)=> "?", "description" => "unknown"),
+        self::STATUS_INVALID_3    => array((2 + 3)=> "III", "description" => "invalid file syntax, file ignored"),
+    );',
+            '<?php
+    return array(
+        self::STATUS_UNKNOWN_3 => array((1+11)=> "?", "description" => "unknown"),
+        self::STATUS_INVALID_3    => array((2+3)=> "III", "description" => "invalid file syntax, file ignored"),
+    );',
+        ];
+
+        yield [
+            '<?php
+    return [
+        self::STATUS_UNKNOWN_4    => ["symbol" => "?", "description" => "unknown"],
+        self::STATUS_INVALID_4    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+            '<?php
+    return [
+        self::STATUS_UNKNOWN_4 => ["symbol" => "?", "description" => "unknown"],
+        self::STATUS_INVALID_4    => ["symbol123" => "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+        ];
+
+        yield [
+            '<?php
+    return [
+        self::STATUS_UNKNOWN_7    => [(1 + 11)=> "?", "description" => "unknown"],
+        self::STATUS_INVALID_7    => [(2 + 3)=> "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+            '<?php
+    return [
+        self::STATUS_UNKNOWN_7 => [(1+11)=> "?", "description" => "unknown"],
+        self::STATUS_INVALID_7    => [(2+3)=> "III", "description" => "invalid file syntax, file ignored"],
+    ];',
+        ];
+
+        yield [
+            '<?php
+$b = [1 => function() {
+    foreach([$a => 2] as $b) {
+        $bv = [
+            $b  => 2,
+            $cc => 3,
+        ];
+    }}, 2 => 3];
+',
+            '<?php
+$b = [1 => function() {
+    foreach([$a => 2] as $b) {
+        $bv = [
+            $b => 2,
+            $cc => 3,
+        ];
+    }}, 2 => 3];
+',
+        ];
+
+        yield [
+            '<?php
+function asd() {
+      return [
+          "this"    => fn () => false,
+          "is"      => fn () => false,
+          "an"      => fn () => false,
+          "example" => fn () => false,
+          "array"   => fn () => false,
+      ];
+}
+',
+            '<?php
+function asd() {
+      return [
+          "this" => fn () => false,
+          "is" => fn () => false,
+          "an" => fn () => false,
+          "example" => fn () => false,
+          "array" => fn () => false,
+      ];
+}
+',
+        ];
+
+        yield [
+            '<?php
+collect()
+    ->map(fn ($arg) => [])
+    ->keyBy(fn ($arg) => []);
+',
+        ];
+
+        yield [
+            '<?php
+if ($this->save([
+    "bar"       => "baz",
+    "barbarbar" => "baz",
+])) {
+    // Do the work
+}
+',
+            '<?php
+if ($this->save([
+    "bar" => "baz",
+    "barbarbar" => "baz",
+])) {
+    // Do the work
+}
+',
+        ];
+
+        yield [
+            '<?php
+class test
+{
+    public function __construct()
+    {
+        $result = $this->test1(fn () => $this->test2($a));
+        foreach ($result as $k => $v)
+        {
+        }
+
+        $result = $this->test1(fn () => $this->test2($a, $b));
+        foreach ($result as $k => $v)
+        {
+        }
+    }
+}
+',
+        ];
+
+        yield [
+            '<?php
+$array = [
+    "foo"     => 123,
+    "longkey" => "test",
+    "baz"     => fn () => "value",
+];
+',
+            '<?php
+$array = [
+    "foo" => 123,
+    "longkey" => "test",
+    "baz" => fn () => "value",
+];
+',
+        ];
+
+        yield [
+            '<?php
+function foo () {
+    $this->query = $this->db->prepare(static fn ($db) => $db->table("user")->insert([
+        "name"    => "a",
+        "email"   => "b@example.com",
+        "country" => "JP",
+    ]));
+
+    foreach ($data as $name => $array) {
+        foreach ($array as $field => $value) {
+            yield $type => $case;
+        }
+    }
+}
+',
+            '<?php
+function foo () {
+    $this->query = $this->db->prepare(static fn ($db) => $db->table("user")->insert([
+        "name" => "a",
+        "email" => "b@example.com",
+        "country" => "JP",
+    ]));
+
+    foreach ($data as $name => $array) {
+        foreach ($array as $field => $value) {
+            yield $type => $case;
+        }
+    }
+}
+',
+        ];
+
+        yield [
+            '<?php
+function test()
+{
+    yield "null customer" => [
+        "expected"    => null,
+        "ourCustomer" => null,
+    ];
+    yield "no underlying user" => [
+        "expected"    => null,
+        "ourCustomer" => Customer::seed(),
+    ];
+}
+                ',
+        ];
+    }
+
+    public function testDoNotTouchEqualsAndArrowByConfig(): void
     {
         $this->fixer->configure(
             [
@@ -2037,98 +3273,81 @@ $b;
     }
 
     /**
-     * @requires PHP 7.0
+     * @param array<string, mixed> $configuration
+     *
+     * @dataProvider provideFixPhp74Cases
      */
-    public function testPHP70Cases()
+    public function testFixPhp74(string $expected, ?string $input = null, array $configuration = []): void
     {
-        $this->fixer->configure(['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE, '??' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]]);
+        $this->fixer->configure($configuration);
+
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixPhp74Cases(): iterable
+    {
+        yield [
+            '<?php
+                    $a = fn() => null;
+                    $b = fn() => null;
+                ',
+            '<?php
+                    $a = fn()    =>      null;
+                    $b = fn()      =>  null;
+                ',
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield [
+            '<?php $a ??= 1;',
+            '<?php $a??=1;',
+            ['operators' => ['??=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+        ];
+    }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testUnionTypesAreNotChanged(): void
+    {
         $this->doTest(
-            '<?php declare(strict_types=1);
-$a = 1;
-echo 1 <=> 1;
-echo 1 <=> 2;
-echo 2 <=> 1;
-echo 2 <=> 1;
-
-$a = $a  ?? $b;
-$a = $ab ?? $b;
-$a = $ac ?? $b;
-$a = $ad ?? $b;
-$a = $ae ?? $b;
-',
-            '<?php declare(strict_types=1);
-$a = 1;
-echo 1<=>1;
-echo 1 <=>2;
-echo 2<=> 1;
-echo 2  <=>   1;
-
-$a = $a ?? $b;
-$a = $ab   ?? $b;
-$a = $ac    ?? $b;
-$a = $ad  ?? $b;
-$a = $ae?? $b;
-'
+            '<?php
+            class Foo
+            {
+                private bool|int | string $prop;
+                public function bar(TypeA | TypeB|TypeC $x): TypeA|TypeB | TypeC|TypeD
+                {
+                }
+                public function baz(
+                    callable|array $a,
+                    array|callable $b,
+                ) {}
+                public function qux(
+                    bool|int | string &$reference
+                ) {}
+                public function quux(): static| TypeA {}
+            }'
         );
     }
 
     /**
-     * @requires PHP 7.1
-     *
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $configuration
-     *
-     * @dataProvider providePHP71Cases
+     * @requires PHP 8.1
      */
-    public function testPHP71Cases($expected, $input = null, array $configuration = [])
+    public function testIntersectionTypesAreNotChanged(): void
     {
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    public function providePHP71Cases()
-    {
-        return [
-            'align array destruction' => [
-                '<?php
-                    $c = [$d] = $e[1];
-                    function A(){}[$a] = $a[$c];
-                    $b                 = 1;
-                ',
-                '<?php
-                    $c = [$d] = $e[1];
-                    function A(){}[$a] = $a[$c];
-                    $b = 1;
-                ',
-                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]],
-            ],
-            'align array destruction with assignments' => [
-                '<?php
-                    $d = [
-                        "a" => $a,
-                        "b" => $b,
-                        "c" => $c
-                    ] = $array;
-                ',
-                '<?php
-                    $d = [
-                        "a"=>$a,
-                        "b"   => $b,
-                        "c" =>   $c
-                    ] = $array;
-                ',
-                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            'multiple exceptions catch, default config' => [
-                '<?php try {} catch (A | B $e) {}',
-                '<?php try {} catch (A   |     B $e) {}',
-            ],
-            'multiple exceptions catch, no space config' => [
-                '<?php try {} catch (A|B $e) {}',
-                '<?php try {} catch (A   |     B $e) {}',
-                ['operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE]],
-            ],
-        ];
+        $this->doTest(
+            '<?php
+            class Foo
+            {
+                private TypeA&TypeB & TypeC $prop;
+                public function bar(TypeA & TypeB&TypeC $x): TypeA&TypeB & TypeC&TypeD
+                {
+                }
+                public function baz(
+                    Countable&Traversable $a,
+                    Traversable&Countable $b,
+                ) {}
+            }'
+        );
     }
 }

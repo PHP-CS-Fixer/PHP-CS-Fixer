@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,26 +21,15 @@ namespace PhpCsFixer\Linter;
  */
 interface LinterInterface
 {
-    /**
-     * @return bool
-     */
-    public function isAsync();
+    public function isAsync(): bool;
 
     /**
      * Lint PHP file.
-     *
-     * @param string $path
-     *
-     * @return LintingResultInterface
      */
-    public function lintFile($path);
+    public function lintFile(string $path): LintingResultInterface;
 
     /**
      * Lint PHP code.
-     *
-     * @param string $source
-     *
-     * @return LintingResultInterface
      */
-    public function lintSource($source);
+    public function lintSource(string $source): LintingResultInterface;
 }

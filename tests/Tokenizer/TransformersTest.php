@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,48 +28,48 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class TransformersTest extends TestCase
 {
     /**
-     * @dataProvider provideTransformCases
+     * @param array<int, int> $expectedTokenKinds
      *
-     * @param string $input
-     * @param array  $expectedTokenKinds
+     * @dataProvider provideTransformCases
      */
-    public function testTransform($input, $expectedTokenKinds)
+    public function testTransform(string $input, array $expectedTokenKinds): void
     {
         $tokens = Tokens::fromCode($input);
 
         foreach ($expectedTokenKinds as $index => $expected) {
-            static::assertTrue($tokens->offsetExists($index));
-            static::assertTrue($tokens[$index]->isGivenKind($expected));
+            self::assertTrue($tokens->offsetExists($index));
+            self::assertTrue($tokens[$index]->isGivenKind($expected));
         }
     }
 
-    public function provideTransformCases()
+    /**
+     * @return iterable<string, array{string, array<int, int>}>
+     */
+    public static function provideTransformCases(): iterable
     {
-        return [
-            'use trait after complex string variable' => [
-                <<<'SOURCE'
-<?php
+        yield 'use trait after complex string variable' => [
+            <<<'SOURCE'
+                <?php
 
-class TransformTest extends TestCase
-{
-    public function testSomething()
-    {
-        $a = 1;
-        $this->assertSame('1', "{$a}");
-    }
+                class TransformTest extends TestCase
+                {
+                    public function testSomething()
+                    {
+                        $a = 1;
+                        $this->assertSame('1', "{$a}");
+                    }
 
-    use TestTrait;
+                    use TestTrait;
 
-    public function testUsingTrait()
-    {
-        $this->testTraitFunction();
-    }
-}
+                    public function testUsingTrait()
+                    {
+                        $this->testTraitFunction();
+                    }
+                }
 
-SOURCE
-                ,
-                [46 => CT::T_USE_TRAIT],
-            ],
+                SOURCE
+            ,
+            [46 => CT::T_USE_TRAIT],
         ];
     }
 }

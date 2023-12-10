@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -20,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * This abstract fixer provides a base for fixers to fix types in PHPDoc.
  *
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  */
@@ -31,11 +33,8 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      *
      * @var string[]
      */
-    protected $tags;
+    protected array $tags;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct()
     {
         parent::__construct();
@@ -43,18 +42,12 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
         $this->tags = Annotation::getTagsWithTypes();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -64,7 +57,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
             $doc = new DocBlock($token->getContent());
             $annotations = $doc->getAnnotationsOfType($this->tags);
 
-            if (empty($annotations)) {
+            if (0 === \count($annotations)) {
                 continue;
             }
 
@@ -78,12 +71,8 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
 
     /**
      * Actually normalize the given type.
-     *
-     * @param string $type
-     *
-     * @return string
      */
-    abstract protected function normalize($type);
+    abstract protected function normalize(string $type): string;
 
     /**
      * Fix the types at the given line.
@@ -91,10 +80,8 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      * We must be super careful not to modify parts of words.
      *
      * This will be nicely handled behind the scenes for us by the annotation class.
-     *
-     * @param Annotation $annotation
      */
-    private function fixTypes(Annotation $annotation)
+    private function fixTypes(Annotation $annotation): void
     {
         $types = $annotation->getTypes();
 
@@ -110,7 +97,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      *
      * @return string[]
      */
-    private function normalizeTypes(array $types)
+    private function normalizeTypes(array $types): array
     {
         foreach ($types as $index => $type) {
             $types[$index] = $this->normalizeType($type);
@@ -121,17 +108,11 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
 
     /**
      * Prepare the type and normalize it.
-     *
-     * @param string $type
-     *
-     * @return string
      */
-    private function normalizeType($type)
+    private function normalizeType(string $type): string
     {
-        if ('[]' === substr($type, -2)) {
-            return $this->normalize(substr($type, 0, -2)).'[]';
-        }
-
-        return $this->normalize($type);
+        return str_ends_with($type, '[]')
+            ? $this->normalizeType(substr($type, 0, -2)).'[]'
+            : $this->normalize($type);
     }
 }

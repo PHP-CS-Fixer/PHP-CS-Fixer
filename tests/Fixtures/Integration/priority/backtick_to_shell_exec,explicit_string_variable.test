@@ -4,7 +4,7 @@ Integration of fixers: backtick_to_shell_exec,explicit_string_variable.
 {"backtick_to_shell_exec": true, "explicit_string_variable": true}
 --EXPECT--
 <?php
-$a = shell_exec("echo ${foo}");
+$a = shell_exec("echo {$foo}");
 
 --INPUT--
 <?php

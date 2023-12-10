@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,51 +26,35 @@ final class Error
     /**
      * Error which has occurred in linting phase, before applying any fixers.
      */
-    const TYPE_INVALID = 1;
+    public const TYPE_INVALID = 1;
 
     /**
      * Error which has occurred during fixing phase.
      */
-    const TYPE_EXCEPTION = 2;
+    public const TYPE_EXCEPTION = 2;
 
     /**
      * Error which has occurred in linting phase, after applying any fixers.
      */
-    const TYPE_LINT = 3;
+    public const TYPE_LINT = 3;
+
+    private int $type;
+
+    private string $filePath;
+
+    private ?\Throwable $source;
 
     /**
-     * @var int
+     * @var list<string>
      */
-    private $type;
+    private array $appliedFixers;
+
+    private ?string $diff;
 
     /**
-     * @var string
+     * @param list<string> $appliedFixers
      */
-    private $filePath;
-
-    /**
-     * @var null|\Throwable
-     */
-    private $source;
-
-    /**
-     * @var array
-     */
-    private $appliedFixers;
-
-    /**
-     * @var null|string
-     */
-    private $diff;
-
-    /**
-     * @param int             $type
-     * @param string          $filePath
-     * @param null|\Throwable $source
-     * @param array           $appliedFixers
-     * @param null|string     $diff
-     */
-    public function __construct($type, $filePath, $source = null, array $appliedFixers = [], $diff = null)
+    public function __construct(int $type, string $filePath, ?\Throwable $source = null, array $appliedFixers = [], ?string $diff = null)
     {
         $this->type = $type;
         $this->filePath = $filePath;
@@ -77,42 +63,30 @@ final class Error
         $this->diff = $diff;
     }
 
-    /**
-     * @return string
-     */
-    public function getFilePath()
+    public function getFilePath(): string
     {
         return $this->filePath;
     }
 
-    /**
-     * @return null|\Throwable
-     */
-    public function getSource()
+    public function getSource(): ?\Throwable
     {
         return $this->source;
     }
 
-    /**
-     * @return int
-     */
-    public function getType()
+    public function getType(): int
     {
         return $this->type;
     }
 
     /**
-     * @return array
+     * @return list<string>
      */
-    public function getAppliedFixers()
+    public function getAppliedFixers(): array
     {
         return $this->appliedFixers;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getDiff()
+    public function getDiff(): ?string
     {
         return $this->diff;
     }

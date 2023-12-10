@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -24,39 +27,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @group legacy
-     * @dataProvider provideTestFixCases
-     * @expectedDeprecation Passing "assertions" at the root of the configuration for rule "php_unit_construct" is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.
+     * @dataProvider provideFixCases
      */
-    public function testLegacyFix($expected, $input = null)
-    {
-        $this->fixer->configure([
-            'assertEquals',
-            'assertSame',
-            'assertNotEquals',
-            'assertNotSame',
-        ]);
-        $this->doTest($expected, $input);
-
-        foreach (['assertSame', 'assertEquals', 'assertNotEquals', 'assertNotSame'] as $method) {
-            $this->fixer->configure([$method]);
-            $this->doTest(
-                $expected,
-                $input && false !== strpos($input, $method) ? $input : null
-            );
-        }
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideTestFixCases
-     */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['assertions' => [
             'assertEquals',
@@ -70,33 +43,33 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
             $this->fixer->configure(['assertions' => [$method]]);
             $this->doTest(
                 $expected,
-                $input && false !== strpos($input, $method) ? $input : null
+                null !== $input && str_contains($input, $method) ? $input : null
             );
         }
     }
 
-    public function provideTestFixCases()
+    public static function provideFixCases(): iterable
     {
         $cases = [
-            ['<?php $sth->assertSame(true, $foo);'],
-            ['<?php $this->assertSame($b, null);'],
+            ['$sth->assertSame(true, $foo);'],
+            ['$this->assertSame($b, null);'],
             [
-                '<?php $this->assertNull(/*bar*/ $a);',
-                '<?php $this->assertSame(null /*foo*/, /*bar*/ $a);',
+                '$this->assertNull(/*bar*/ $a);',
+                '$this->assertSame(null /*foo*/, /*bar*/ $a);',
             ],
             [
-                '<?php $this->assertSame(null === $eventException ? $exception : $eventException, $event->getException());',
+                '$this->assertSame(null === $eventException ? $exception : $eventException, $event->getException());',
             ],
             [
-                '<?php $this->assertSame(null /*comment*/ === $eventException ? $exception : $eventException, $event->getException());',
+                '$this->assertSame(null /*comment*/ === $eventException ? $exception : $eventException, $event->getException());',
             ],
             [
-                '<?php
+                '
     $this->assertTrue(
         $a,
         "foo" . $bar
     );',
-                '<?php
+                '
     $this->assertSame(
         true,
         $a,
@@ -104,13 +77,13 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     );',
             ],
             [
-                '<?php
+                '
     $this->assertTrue(#
         #
         $a,#
         "foo" . $bar#
     );',
-                '<?php
+                '
     $this->assertSame(#
         true,#
         $a,#
@@ -118,83 +91,138 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     );',
             ],
             [
-                '<?php $this->assertSame("a", $a); $this->assertTrue($b);',
-                '<?php $this->assertSame("a", $a); $this->assertSame(true, $b);',
+                '$this->assertSame("a", $a); $this->assertTrue($b);',
+                '$this->assertSame("a", $a); $this->assertSame(true, $b);',
             ],
             [
-                '<?php $this->assertSame(true || $a, $b); $this->assertTrue($c);',
-                '<?php $this->assertSame(true || $a, $b); $this->assertSame(true, $c);',
+                '$this->assertSame(true || $a, $b); $this->assertTrue($c);',
+                '$this->assertSame(true || $a, $b); $this->assertSame(true, $c);',
             ],
             [
-                '<?php $this->assertFalse($foo);',
-                '<?php $this->assertEquals(FALSE, $foo);',
+                '$this->assertFalse($foo);',
+                '$this->assertEquals(FALSE, $foo);',
             ],
             [
-                '<?php $this->assertTrue($foo);',
-                '<?php $this->assertEquals(TruE, $foo);',
+                '$this->assertTrue($foo);',
+                '$this->assertEquals(TruE, $foo);',
             ],
             [
-                '<?php $this->assertNull($foo);',
-                '<?php $this->assertEquals(NULL, $foo);',
+                '$this->assertNull($foo);',
+                '$this->assertEquals(NULL, $foo);',
             ],
         ];
 
+        array_walk(
+            $cases,
+            static function (&$case): void {
+                $case[0] = self::generateTest($case[0]);
+
+                if (isset($case[1])) {
+                    $case[1] = self::generateTest($case[1]);
+                }
+            }
+        );
+
         return array_merge(
             $cases,
-            $this->generateCases('<?php $this->assert%s%s($a); //%s %s', '<?php $this->assert%s(%s, $a); //%s %s'),
-            $this->generateCases('<?php $this->assert%s%s($a, "%s", "%s");', '<?php $this->assert%s(%s, $a, "%s", "%s");'),
-            $this->generateCases('<?php static::assert%s%s($a); //%s %s', '<?php static::assert%s(%s, $a); //%s %s'),
-            $this->generateCases('<?php self::assert%s%s($a); //%s %s', '<?php self::assert%s(%s, $a); //%s %s')
+            [
+                'not in a class' => ['<?php $this->assertEquals(NULL, $foo);'],
+                'not phpunit class' => ['<?php class Foo { public function testFoo(){ $this->assertEquals(NULL, $foo); }}'],
+                'multiple candidates in multiple classes ' => [
+                    '<?php
+                        class FooTest1 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}
+                        class FooTest2 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}
+                        class FooTest3 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}
+                    ',
+                    '<?php
+                        class FooTest1 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertEquals(NULL, $foo); }}
+                        class FooTest2 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertEquals(NULL, $foo); }}
+                        class FooTest3 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertEquals(NULL, $foo); }}
+                    ',
+                ],
+            ],
+            self::generateCases('$this->assert%s%s($a); //%s %s', '$this->assert%s(%s, $a); //%s %s'),
+            self::generateCases('$this->assert%s%s($a, "%s", "%s");', '$this->assert%s(%s, $a, "%s", "%s");'),
+            self::generateCases('static::assert%s%s($a); //%s %s', 'static::assert%s(%s, $a); //%s %s'),
+            self::generateCases('STATIC::assert%s%s($a); //%s %s', 'STATIC::assert%s(%s, $a); //%s %s'),
+            self::generateCases('self::assert%s%s($a); //%s %s', 'self::assert%s(%s, $a); //%s %s')
         );
     }
 
-    public function testInvalidConfig()
+    public function testInvalidConfig(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[php_unit_construct\] Invalid configuration: The option "assertions" .*\.$/');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('/^\[php_unit_construct\] Invalid configuration: The option "assertions" .*\.$/');
 
         $this->fixer->configure(['assertions' => ['__TEST__']]);
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input)
+    public function testFix73(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public static function provideFix73Cases(): iterable
     {
-        return [
-            [
-                '<?php $this->assertTrue($a, );',
-                '<?php $this->assertSame(true, $a, );',
-            ],
-            [
-                '<?php $this->assertTrue($a, $message , );',
-                '<?php $this->assertSame(true, $a, $message , );',
-            ],
+        yield [
+            self::generateTest('$this->assertTrue($a, );'),
+            self::generateTest('$this->assertSame(true, $a, );'),
+        ];
+
+        yield [
+            self::generateTest('$this->assertTrue($a, $message , );'),
+            self::generateTest('$this->assertSame(true, $a, $message , );'),
         ];
     }
 
-    private function generateCases($expectedTemplate, $inputTemplate)
+    public function testEmptyAssertions(): void
     {
-        $cases = [];
+        $this->fixer->configure(['assertions' => []]);
+        $this->doTest(self::generateTest('$this->assertSame(null, $a);'));
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield [
+            self::generateTest('$this->assertEquals(...);'),
+        ];
+    }
+
+    /**
+     * @return list<array{string, string}>
+     */
+    private static function generateCases(string $expectedTemplate, string $inputTemplate): array
+    {
         $functionTypes = ['Same' => true, 'NotSame' => false, 'Equals' => true, 'NotEquals' => false];
+        $cases = [];
+
         foreach (['true', 'false', 'null'] as $type) {
             foreach ($functionTypes as $method => $positive) {
                 $cases[] = [
-                    sprintf($expectedTemplate, $positive ? '' : 'Not', ucfirst($type), $method, $type),
-                    sprintf($inputTemplate, $method, $type, $method, $type),
+                    self::generateTest(sprintf($expectedTemplate, $positive ? '' : 'Not', ucfirst($type), $method, $type)),
+                    self::generateTest(sprintf($inputTemplate, $method, $type, $method, $type)),
                 ];
             }
         }
 
         return $cases;
+    }
+
+    private static function generateTest(string $content): string
+    {
+        return "<?php final class FooTest extends \\PHPUnit_Framework_TestCase {\n    public function testSomething() {\n        ".$content."\n    }\n}\n";
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,15 +29,9 @@ use Symfony\Component\Process\Process;
  */
 final class ProcessLinter implements LinterInterface
 {
-    /**
-     * @var FileRemoval
-     */
-    private $fileRemoval;
+    private FileRemoval $fileRemoval;
 
-    /**
-     * @var ProcessLinterProcessBuilder
-     */
-    private $processBuilder;
+    private ProcessLinterProcessBuilder $processBuilder;
 
     /**
      * Temporary file for code linting.
@@ -47,7 +43,7 @@ final class ProcessLinter implements LinterInterface
     /**
      * @param null|string $executable PHP executable, null for autodetection
      */
-    public function __construct($executable = null)
+    public function __construct(?string $executable = null)
     {
         if (null === $executable) {
             $executableFinder = new PhpExecutableFinder();
@@ -58,7 +54,7 @@ final class ProcessLinter implements LinterInterface
             }
 
             if ('phpdbg' === \PHP_SAPI) {
-                if (false === strpos($executable, 'phpdbg')) {
+                if (!str_contains($executable, 'phpdbg')) {
                     throw new UnavailableLinterException('Automatically found PHP executable is non-standard phpdbg. Could not find proper PHP executable.');
                 }
 
@@ -72,7 +68,6 @@ final class ProcessLinter implements LinterInterface
         }
 
         $this->processBuilder = new ProcessLinterProcessBuilder($executable);
-
         $this->fileRemoval = new FileRemoval();
     }
 
@@ -84,35 +79,44 @@ final class ProcessLinter implements LinterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * This class is not intended to be serialized,
+     * and cannot be deserialized (see __wakeup method).
      */
-    public function isAsync()
+    public function __sleep(): array
+    {
+        throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
+    }
+
+    /**
+     * Disable the deserialization of the class to prevent attacker executing
+     * code by leveraging the __destruct method.
+     *
+     * @see https://owasp.org/www-community/vulnerabilities/PHP_Object_Injection
+     */
+    public function __wakeup(): void
+    {
+        throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
+    }
+
+    public function isAsync(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function lintFile($path)
+    public function lintFile(string $path): LintingResultInterface
     {
-        return new ProcessLintingResult($this->createProcessForFile($path));
+        return new ProcessLintingResult($this->createProcessForFile($path), $path);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function lintSource($source)
+    public function lintSource(string $source): LintingResultInterface
     {
-        return new ProcessLintingResult($this->createProcessForSource($source));
+        return new ProcessLintingResult($this->createProcessForSource($source), $this->temporaryFile);
     }
 
     /**
      * @param string $path path to file
-     *
-     * @return Process
      */
-    private function createProcessForFile($path)
+    private function createProcessForFile(string $path): Process
     {
         // in case php://stdin
         if (!is_file($path)) {
@@ -130,13 +134,11 @@ final class ProcessLinter implements LinterInterface
      * Create process that lint PHP code.
      *
      * @param string $source code
-     *
-     * @return Process
      */
-    private function createProcessForSource($source)
+    private function createProcessForSource(string $source): Process
     {
         if (null === $this->temporaryFile) {
-            $this->temporaryFile = tempnam('.', 'cs_fixer_tmp_');
+            $this->temporaryFile = tempnam(sys_get_temp_dir(), 'cs_fixer_tmp_');
             $this->fileRemoval->observe($this->temporaryFile);
         }
 

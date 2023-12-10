@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,24 +26,19 @@ use PhpCsFixer\Tests\TestCase;
 final class ShortDescriptionTest extends TestCase
 {
     /**
-     * @param mixed      $expected
-     * @param null|mixed $input
-     *
      * @dataProvider provideGetEndCases
      */
-    public function testGetEnd($expected, $input = null)
+    public function testGetEnd(?int $expected, string $input): void
     {
         $doc = new DocBlock($input);
         $shortDescription = new ShortDescription($doc);
 
-        static::assertSame($expected, $shortDescription->getEnd());
+        self::assertSame($expected, $shortDescription->getEnd());
     }
 
-    public function provideGetEndCases()
+    public static function provideGetEndCases(): iterable
     {
-        return [
-            [null, '/** */'],
-            [1, '/**
+        yield [1, '/**
      * Test docblock.
      *
      * @param string $hello
@@ -55,19 +52,24 @@ final class ShortDescriptionTest extends TestCase
      * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
      *
      * @return void
-     */'],
-            [2, '/**
+     */'];
+
+        yield [2, '/**
                   * This is a multi-line
                   * short description.
-                  */'],
-            [3, '/**
+                  */'];
+
+        yield [3, '/**
                   *
                   *
                   * There might be extra blank lines.
                   *
                   *
                   * And here is description...
-                  */'],
-        ];
+                  */'];
+
+        yield [null, '/** */'];
+
+        yield [null, "/**\n * @test\n*/"];
     }
 }

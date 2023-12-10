@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\Semicolon;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Semicolon\SpaceAfterSemicolonFixer
@@ -24,23 +24,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFixWithSpacesInEmptyForExpressions($expected, $input = null)
+    public function testFixWithSpacesInEmptyForExpressions(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'remove_in_empty_for_expressions' => false,
@@ -48,218 +42,243 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     test1();
                     $a; // test
                 ',
-            ],
-            [
-                '<?php test2();',
-            ],
-            [
-                '<?php test3(); ',
-            ],
-            [
-                '<?php test4();   ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php test2();',
+        ];
+
+        yield [
+            '<?php test3(); ',
+        ];
+
+        yield [
+            '<?php test4();   ',
+        ];
+
+        yield [
+            '<?php
                     test5();     // test
                 ',
-            ],
-            [
-                '<?php test6();       /* */ //',
-            ],
-            [
-                '<?php test7a(); /* */',
-                '<?php test7a();/* */',
-            ],
-            [
-                '<?php test7b(); /* *//**/',
-                '<?php test7b();/* *//**/',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php test6();       /* */ //',
+        ];
+
+        yield [
+            '<?php test7a(); /* */',
+            '<?php test7a();/* */',
+        ];
+
+        yield [
+            '<?php test7b(); /* *//**/',
+            '<?php test7b();/* *//**/',
+        ];
+
+        yield [
+            '<?php
                     test8(); $a = 4;
                 ',
-                '<?php
+            '<?php
                     test8();     $a = 4;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     test9(); $b = 7;
                 ',
-                '<?php
+            '<?php
                     test9();$b = 7;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (; ;) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;;) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (; ; ++$u1) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;;++$u1) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (; $u2 < 0;) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;$u2 < 0;) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (; $u3 < 3; ++$u3) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;$u3 < 3;++$u3) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u4 = 0; ;) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u4 = 0;;) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u5 = 0; ; ++$u5) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u5 = 0;;++$u5) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u6 = 0; $u6 < 6;) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u6 = 0;$u6 < 6;) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u7 = 0;$u7 < 7;++$u7) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (; ;    ) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;    ;    ) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (; ; ++$u1) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;    ;    ++$u1) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (; $u2 < 0;    ) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;    $u2 < 0;    ) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (; $u3 < 3; ++$u3) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;    $u3 < 3;    ++$u3) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($ui4 = 0; ;    ) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($ui4 = 0;    ;    ) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u5 = 0; ; ++$u5) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u5 = 0;    ;    ++$u5) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u6 = 0; $u6 < 6;    ) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u6 = 0;    $u6 < 6;    ) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u7 = 0;    $u7 < 7;    ++$u7) {
                     }
                 ',
-            ],
-            [
-                '<?php if ($a):?>
+        ];
+
+        yield [
+            '<?php if ($a):?>
                     1
                 <?php endif; ?>
                 <?php if ($b):?>
@@ -268,7 +287,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                 <?php if ($c):?>
                     3
                 <?php endif; ?>',
-                '<?php if ($a):?>
+            '<?php if ($a):?>
                     1
                 <?php endif;?>
                 <?php if ($b):?>
@@ -277,21 +296,18 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                 <?php if ($c):?>
                     3
                 <?php endif;?>',
-            ],
-            [
-                '<?php echo 1; ; ; ; ; ; ; ; ;',
-                '<?php echo 1;;;;;;;;;',
-            ],
+        ];
+
+        yield [
+            '<?php echo 1; ; ; ; ; ; ; ; ;',
+            '<?php echo 1;;;;;;;;;',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpacesInEmptyForExpressionsCases
      */
-    public function testFixWithoutSpacesInEmptyForExpressions($expected, $input = null)
+    public function testFixWithoutSpacesInEmptyForExpressions(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'remove_in_empty_for_expressions' => true,
@@ -299,218 +315,243 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithoutSpacesInEmptyForExpressionsCases()
+    public static function provideFixWithoutSpacesInEmptyForExpressionsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     test1();
                     $a; // test
                 ',
-            ],
-            [
-                '<?php test2();',
-            ],
-            [
-                '<?php test3(); ',
-            ],
-            [
-                '<?php test4();   ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php test2();',
+        ];
+
+        yield [
+            '<?php test3(); ',
+        ];
+
+        yield [
+            '<?php test4();   ',
+        ];
+
+        yield [
+            '<?php
                     test5();     // test
                 ',
-            ],
-            [
-                '<?php test6();       /* */ //',
-            ],
-            [
-                '<?php test7a(); /* */',
-                '<?php test7a();/* */',
-            ],
-            [
-                '<?php test7b(); /* *//**/',
-                '<?php test7b();/* *//**/',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php test6();       /* */ //',
+        ];
+
+        yield [
+            '<?php test7a(); /* */',
+            '<?php test7a();/* */',
+        ];
+
+        yield [
+            '<?php test7b(); /* *//**/',
+            '<?php test7b();/* *//**/',
+        ];
+
+        yield [
+            '<?php
                     test8(); $a = 4;
                 ',
-                '<?php
+            '<?php
                     test8();     $a = 4;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     test9(); $b = 7;
                 ',
-                '<?php
+            '<?php
                     test9();$b = 7;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (;;) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (; ;) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (;; ++$u1) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;;++$u1) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (; $u2 < 0;) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;$u2 < 0;) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (; $u3 < 3; ++$u3) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;$u3 < 3;++$u3) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u4 = 0;;) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u4 = 0; ;) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u5 = 0;; ++$u5) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u5 = 0;;++$u5) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u6 = 0; $u6 < 6;) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u6 = 0;$u6 < 6;) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u7 = 0;$u7 < 7;++$u7) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (;;) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;    ;    ) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (;; ++$u1) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;    ;    ++$u1) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (; $u2 < 0;) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;    $u2 < 0;    ) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (; $u3 < 3; ++$u3) {
                     }
                 ',
-                '<?php
+            '<?php
                     for (;    $u3 < 3;    ++$u3) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($ui4 = 0;;) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($ui4 = 0;    ;    ) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u5 = 0;; ++$u5) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u5 = 0;    ;    ++$u5) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u6 = 0; $u6 < 6;) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u6 = 0;    $u6 < 6;    ) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
                     }
                 ',
-                '<?php
+            '<?php
                     for ($u7 = 0;    $u7 < 7;    ++$u7) {
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     for (
                         $u7 = 0;
                         ;
@@ -518,14 +559,14 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                     ) {
                     }
                 ',
-            ],
-            [
-                '<?php for ( /* foo */ ; /* bar */ ; /* baz */ ) { }',
-            ],
+        ];
+
+        yield [
+            '<?php for ( /* foo */ ; /* bar */ ; /* baz */ ) { }',
         ];
     }
 
-    public function testHaltCompiler()
+    public function testHaltCompiler(): void
     {
         $this->doTest('<?php
             __HALT_COMPILER();

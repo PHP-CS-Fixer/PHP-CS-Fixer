@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,21 +24,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SelfStaticAccessorFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            'simple' => [
-                '<?php
+        yield 'simple' => [
+            '<?php
 final class Sample
 {
     public function getBar()
@@ -50,7 +48,7 @@ final class Sample
     }
 }
 ',
-                '<?php
+            '<?php
 final class Sample
 {
     public function getBar()
@@ -64,25 +62,27 @@ final class Sample
     }
 }
 ',
-            ],
-            'multiple' => [
-                '<?php
+        ];
+
+        yield 'multiple' => [
+            '<?php
                     final class Foo0 { public function A(){ return self::A; }}
                     final class Foo1 { public function A(){ return self::A; }}
                     final class Foo2 { public function A(){ return self::A; }}
                     final class Foo3 { public function A(){ return self::A; }}
                     final class Foo4{public function A(){return self::A;}}final class Foo5{public function A(){return self::A;}}
                 ',
-                '<?php
+            '<?php
                     final class Foo0 { public function A(){ return static::A; }}
                     final class Foo1 { public function A(){ return static::A; }}
                     final class Foo2 { public function A(){ return static::A; }}
                     final class Foo3 { public function A(){ return static::A; }}
                     final class Foo4{public function A(){return static::A;}}final class Foo5{public function A(){return static::A;}}
                 ',
-            ],
-            'comments and casing' => [
-                '<?php
+        ];
+
+        yield 'comments and casing' => [
+            '<?php
 FINAL CLASS Sample
 {
     public function getBar()
@@ -91,7 +91,7 @@ FINAL CLASS Sample
     }
 }
 ',
-                '<?php
+            '<?php
 FINAL CLASS Sample
 {
     public function getBar()
@@ -100,9 +100,10 @@ FINAL CLASS Sample
     }
 }
 ',
-            ],
-            'not final' => [
-                '<?php
+        ];
+
+        yield 'not final' => [
+            '<?php
 class Sample
 {
     public function getBar()
@@ -111,9 +112,10 @@ class Sample
     }
 }
 ',
-            ],
-            'abstract' => [
-                '<?php
+        ];
+
+        yield 'abstract' => [
+            '<?php
 abstract class Sample
 {
     public function getBar()
@@ -122,9 +124,10 @@ abstract class Sample
     }
 }
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 final class Foo
 {
     public function bar()
@@ -135,7 +138,7 @@ final class Foo
     }
 }
                 ',
-                '<?php
+            '<?php
 final class Foo
 {
     public function bar()
@@ -146,9 +149,10 @@ final class Foo
     }
 }
                 ',
-            ],
-            'instance of' => [
-                '<?php
+        ];
+
+        yield 'instance of' => [
+            '<?php
 final class Foo
 {
     public function isBar($foo)
@@ -157,7 +161,7 @@ final class Foo
     }
 }
                 ',
-                '<?php
+            '<?php
 final class Foo
 {
     public function isBar($foo)
@@ -166,43 +170,42 @@ final class Foo
     }
 }
                 ',
-            ],
         ];
-    }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
+        yield 'in method as new' => [
+            '<?php final class A { public static function b() { return new self(); } }',
+            '<?php final class A { public static function b() { return new static(); } }',
+        ];
 
-    public function provideFix70Cases()
-    {
-        return [
-            'simple' => [
-                '<?php
+        yield 'in method as new with comments' => [
+            '<?php final class A { public static function b() { return new /* hmm */ self(); } }',
+            '<?php final class A { public static function b() { return new /* hmm */ static(); } }',
+        ];
+
+        yield 'in method as new without parentheses' => [
+            '<?php final class A { public static function b() { return new self; } }',
+            '<?php final class A { public static function b() { return new static; } }',
+        ];
+
+        yield 'simple anonymous class' => [
+            '<?php
 $a = new class {
     public function getBar()
     {
         return self::class;
     }
 };',
-                '<?php
+            '<?php
 $a = new class {
     public function getBar()
     {
         return static::class;
     }
 };',
-            ],
-            'nested' => [
-                '<?php
+        ];
+
+        yield 'nested anonymous class' => [
+            '<?php
 final class Foo
 {
     public function Foo()
@@ -226,7 +229,7 @@ final class Foo
     }
 }
 ',
-                '<?php
+            '<?php
 final class Foo
 {
     public function Foo()
@@ -250,9 +253,10 @@ final class Foo
     }
 }
 ',
-            ],
-            'anonymous classes inside lambda' => [
-                '<?php
+        ];
+
+        yield 'anonymous classes inside lambda' => [
+            '<?php
 final class Foo
 {
     public function bar()
@@ -298,7 +302,7 @@ final class Foo
     }
 }
 ',
-                '<?php
+            '<?php
 final class Foo
 {
     public function bar()
@@ -344,12 +348,14 @@ final class Foo
     }
 }
 ',
-            ],
-            'no scope' => [
-                '<?php echo static::class;',
-            ],
-            'do not fix inside lambda' => [
-                '<?php
+        ];
+
+        yield 'no scope' => [
+            '<?php echo static::class;',
+        ];
+
+        yield 'do not fix inside lambda' => [
+            '<?php
 final class Foo
 {
     public function Bar()
@@ -363,7 +369,155 @@ final class Foo
 $a = static function() { return static::class; };
 $b = function() { return static::class; };
 ',
-            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield 'enums' => [
+            '<?php
+enum Foo
+{
+    case Baz;
+
+    private const BAR = \'foo\';
+
+    public static function bar(): Foo
+    {
+        return self::Baz;
+    }
+
+    public static function baz(mixed $other): void
+    {
+        if ($other instanceof self) {
+            echo self::BAR;
+        }
+    }
+}
+',
+            '<?php
+enum Foo
+{
+    case Baz;
+
+    private const BAR = \'foo\';
+
+    public static function bar(): Foo
+    {
+        return static::Baz;
+    }
+
+    public static function baz(mixed $other): void
+    {
+        if ($other instanceof static) {
+            echo static::BAR;
+        }
+    }
+}
+',
+        ];
+
+        yield 'enum with nested anonymous class' => [
+            '<?php
+                enum Suit: int implements SomeIntInterface, Z
+                {
+                    case Hearts = 1;
+                    case Clubs = 3;
+                    public const HEARTS = self::Hearts;
+
+                    public function Foo(): string
+                    {
+                        return self::Hearts->Bar()->getBar() . self::class . self::Clubs->value;
+                    }
+
+                    public function Bar(): object
+                    {
+                        return new class {
+                            public function getBar()
+                            {
+                                return self::class;
+                            }
+                        };
+                    }
+                }
+            ',
+            '<?php
+                enum Suit: int implements SomeIntInterface, Z
+                {
+                    case Hearts = 1;
+                    case Clubs = 3;
+                    public const HEARTS = self::Hearts;
+
+                    public function Foo(): string
+                    {
+                        return static::Hearts->Bar()->getBar() . static::class . static::Clubs->value;
+                    }
+
+                    public function Bar(): object
+                    {
+                        return new class {
+                            public function getBar()
+                            {
+                                return static::class;
+                            }
+                        };
+                    }
+                }
+            ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield 'simple' => [
+            '<?php
+final readonly class Sample
+{
+    public function getBar()
+    {
+        return self::class.self::test();
+    }
+
+    private static function test()
+    {
+        return \'test\';
+    }
+}
+',
+            '<?php
+final readonly class Sample
+{
+    public function getBar()
+    {
+        return static::class.static::test();
+    }
+
+    private static function test()
+    {
+        return \'test\';
+    }
+}
+',
         ];
     }
 }

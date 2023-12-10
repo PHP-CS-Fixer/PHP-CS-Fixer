@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,202 +25,244 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php function bFunction($foo, $bar) {}',
-                '<?php function bFunction($foo = null, $bar) {}',
-            ],
-            [
-                '<?php function bFunction($foo, $bar) {}',
-                '<?php function bFunction($foo = "two words", $bar) {}',
-            ],
-            [
-                '<?php function cFunction($foo, $bar, $baz) {}',
-                '<?php function cFunction($foo = false, $bar = "bar", $baz) {}',
-            ],
-            [
-                '<?php function dFunction($foo, $bar, $baz) {}',
-                '<?php function dFunction($foo = false, $bar, $baz) {}',
-            ],
-            [
-                '<?php function foo (Foo $bar = null, $baz) {}',
-            ],
-            [
-                '<?php function eFunction($foo, $bar, \SplFileInfo $baz, $x = "default") {}',
-                '<?php function eFunction($foo, $bar = "removedDefault", \SplFileInfo $baz, $x = "default") {}',
-            ],
-            [
-                <<<'EOT'
-                    <?php
-                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
+        yield [
+            '<?php function bFunction($foo, $bar) {}',
+            '<?php function bFunction($foo = null, $bar) {}',
+        ];
 
-                        function fFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
-EOT
-                ,
-                <<<'EOT'
-                    <?php
-                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
+        yield [
+            '<?php function bFunction($foo, $bar) {}',
+            '<?php function bFunction($foo = "two words", $bar) {}',
+        ];
 
-                        function fFunction($foo, $bar = 'removedValue', \SplFileInfo $baz, $x = 'default') {};
-EOT
-            ],
-            [
-                '<?php function foo ($bar /* a */  /* b */ , $c) {}',
-                '<?php function foo ($bar /* a */ = /* b */ 1, $c) {}',
-            ],
-            [
-                '<?php function hFunction($foo,$bar,\SplFileInfo $baz,$x = 5) {};',
-                '<?php function hFunction($foo,$bar="removedValue",\SplFileInfo $baz,$x = 5) {};',
-            ],
-            [
-                '<?php function eFunction($foo, $bar, \SplFileInfo $baz = null, $x) {}',
-                '<?php function eFunction($foo = PHP_EOL, $bar, \SplFileInfo $baz = null, $x) {}',
-            ],
-            [
-                '<?php function eFunction($foo, $bar) {}',
-                '<?php function eFunction($foo       = null, $bar) {}',
-            ],
-            [
-                <<<'EOT'
-                    <?php
-                        function foo(
-                            $a, // test
-                            $b, /* test */
-                            $c, // abc
-                            $d
-                        ) {}
-EOT
-                ,
-                <<<'EOT'
-                    <?php
-                        function foo(
-                            $a = 1, // test
-                            $b = 2, /* test */
-                            $c = null, // abc
-                            $d
-                        ) {}
-EOT
-            ],
-            [
-                '<?php function foo($foo, $bar) {}',
-                '<?php function foo($foo = array(array(1)), $bar) {}',
-            ],
-            [
-                '<?php function a($a, $b) {}',
-                '<?php function a($a = array("a" => "b", "c" => "d"), $b) {}',
-            ],
-            [
-                '<?php function a($a, $b) {}',
-                '<?php function a($a = ["a" => "b", "c" => "d"], $b) {}',
-            ],
-            [
-                '<?php function a($a, $b) {}',
-                '<?php function a($a = NULL, $b) {}',
-            ],
-            [
-                '<?php function a(\SplFileInfo $a = Null, $b) {}',
-            ],
-            [
-                '<?php function a(array $a = null, $b) {}',
-            ],
-            [
-                '<?php function a(callable $a = null, $b) {}',
-            ],
-            [
-                '<?php function a(\SplFileInfo &$a = Null, $b) {}',
-            ],
-            [
-                '<?php function a(&$a, $b) {}',
-                '<?php function a(&$a = null, $b) {}',
-            ],
-            [
-                '<?php $fnc = function ($a, $b = 1) use ($c) {};',
-            ],
-            [
-                '<?php $fnc = function ($a, $b) use ($c) {};',
-                '<?php $fnc = function ($a = 1, $b) use ($c) {};',
-            ],
-            [
-                '<?php function bFunction($foo#
+        yield [
+            '<?php function cFunction($foo, $bar, $baz) {}',
+            '<?php function cFunction($foo = false, $bar = "bar", $baz) {}',
+        ];
+
+        yield [
+            '<?php function dFunction($foo, $bar, $baz) {}',
+            '<?php function dFunction($foo = false, $bar, $baz) {}',
+        ];
+
+        yield [
+            '<?php function foo (Foo $bar = null, $baz) {}',
+        ];
+
+        yield [
+            '<?php function eFunction($foo, $bar, \SplFileInfo $baz, $x = "default") {}',
+            '<?php function eFunction($foo, $bar = "removedDefault", \SplFileInfo $baz, $x = "default") {}',
+        ];
+
+        yield [
+            <<<'EOT'
+                                    <?php
+                                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
+
+                                        function fFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
+                EOT
+            ,
+            <<<'EOT'
+                                    <?php
+                                        function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
+
+                                        function fFunction($foo, $bar = 'removedValue', \SplFileInfo $baz, $x = 'default') {};
+                EOT
+        ];
+
+        yield [
+            '<?php function foo ($bar /* a */  /* b */ , $c) {}',
+            '<?php function foo ($bar /* a */ = /* b */ 1, $c) {}',
+        ];
+
+        yield [
+            '<?php function hFunction($foo,$bar,\SplFileInfo $baz,$x = 5) {};',
+            '<?php function hFunction($foo,$bar="removedValue",\SplFileInfo $baz,$x = 5) {};',
+        ];
+
+        yield [
+            '<?php function eFunction($foo, $bar, \SplFileInfo $baz = null, $x) {}',
+            '<?php function eFunction($foo = PHP_EOL, $bar, \SplFileInfo $baz = null, $x) {}',
+        ];
+
+        yield [
+            '<?php function eFunction($foo, $bar) {}',
+            '<?php function eFunction($foo       = null, $bar) {}',
+        ];
+
+        yield [
+            <<<'EOT'
+                                    <?php
+                                        function foo(
+                                            $a, // test
+                                            $b, /* test */
+                                            $c, // abc
+                                            $d
+                                        ) {}
+                EOT
+            ,
+            <<<'EOT'
+                                    <?php
+                                        function foo(
+                                            $a = 1, // test
+                                            $b = 2, /* test */
+                                            $c = null, // abc
+                                            $d
+                                        ) {}
+                EOT
+        ];
+
+        yield [
+            '<?php function foo($foo, $bar) {}',
+            '<?php function foo($foo = array(array(1)), $bar) {}',
+        ];
+
+        yield [
+            '<?php function a($a, $b) {}',
+            '<?php function a($a = array("a" => "b", "c" => "d"), $b) {}',
+        ];
+
+        yield [
+            '<?php function a($a, $b) {}',
+            '<?php function a($a = ["a" => "b", "c" => "d"], $b) {}',
+        ];
+
+        yield [
+            '<?php function a($a, $b) {}',
+            '<?php function a($a = NULL, $b) {}',
+        ];
+
+        yield [
+            '<?php function a(\SplFileInfo $a = Null, $b) {}',
+        ];
+
+        yield [
+            '<?php function a(array $a = null, $b) {}',
+        ];
+
+        yield [
+            '<?php function a(callable $a = null, $b) {}',
+        ];
+
+        yield [
+            '<?php function a(\SplFileInfo &$a = Null, $b) {}',
+        ];
+
+        yield [
+            '<?php function a(&$a, $b) {}',
+            '<?php function a(&$a = null, $b) {}',
+        ];
+
+        yield [
+            '<?php $fnc = function ($a, $b = 1) use ($c) {};',
+        ];
+
+        yield [
+            '<?php $fnc = function ($a, $b) use ($c) {};',
+            '<?php $fnc = function ($a = 1, $b) use ($c) {};',
+        ];
+
+        yield [
+            '<?php function bFunction($foo#
  #
  #
  ,#
 $bar) {}',
-                '<?php function bFunction($foo#
+            '<?php function bFunction($foo#
  =#
  null#
  ,#
 $bar) {}',
-            ],
+        ];
+
+        yield [
+            '<?php function a($a = 1, ...$b) {}',
+        ];
+
+        yield [
+            '<?php function a($a = 1, \SplFileInfo ...$b) {}',
+        ];
+
+        yield [
+            '<?php function foo (?Foo $bar, $baz) {}',
+            '<?php function foo (?Foo $bar = null, $baz) {}',
+        ];
+
+        yield [
+            '<?php function foo (?Foo $bar = null, ?Baz $baz = null) {}',
+        ];
+
+        yield [
+            '<?php $fn = fn ($a, $b) => null;',
+            '<?php $fn = fn ($a = 1, $b) => null;',
         ];
     }
 
     /**
-     * @dataProvider provideFix56Cases
+     * @dataProvider provideFix80Cases
      *
-     * @param string      $expected
-     * @param null|string $input
+     * @requires PHP 8.0
      */
-    public function testFix56($expected, $input = null)
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFix56cases()
+    public static function provideFix80Cases(): iterable
     {
-        return [
-            [
-                '<?php function a($a = 1, ...$b) {}',
-            ],
-            [
-                '<?php function a($a = 1, \SplFileInfo ...$b) {}',
-            ],
+        yield 'handle trailing comma' => [
+            '<?php function foo($x, $y = 42, $z = 42 ) {}',
+        ];
+
+        yield 'handle attributes without arguments' => [
+            '<?php function foo(
+                #[Attribute1] $x,
+                #[Attribute2] $y,
+                #[Attribute3] $z
+            ) {}',
+            '<?php function foo(
+                #[Attribute1] $x,
+                #[Attribute2] $y = 42,
+                #[Attribute3] $z
+            ) {}',
+        ];
+
+        yield 'handle attributes with arguments' => [
+            '<?php function foo(
+                #[Attribute1(1, 2)] $x,
+                #[Attribute2(3, 4)] $y,
+                #[Attribute3(5, 6)] $z
+            ) {}',
+            '<?php function foo(
+                #[Attribute1(1, 2)] $x,
+                #[Attribute2(3, 4)] $y = 42,
+                #[Attribute3(5, 6)] $z
+            ) {}',
         ];
     }
 
     /**
-     * @dataProvider provideFix71Cases
+     * @dataProvider provideFix81Cases
      *
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 7.1
+     * @requires PHP 8.1
      */
-    public function testFix71($expected, $input = null)
+    public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFix71cases()
+    public static function provideFix81Cases(): iterable
     {
-        return [
-            [
-                '<?php function foo (?Foo $bar, $baz) {}',
-                '<?php function foo (?Foo $bar = null, $baz) {}',
-            ],
-            [
-                '<?php function foo (?Foo $bar = null, ?Baz $baz = null) {}',
-            ],
+        yield 'do not crash' => [
+            '<?php strlen( ... );',
         ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,73 +21,57 @@ namespace PhpCsFixer\Cache;
  */
 final class Signature implements SignatureInterface
 {
-    /**
-     * @var string
-     */
-    private $phpVersion;
+    private string $phpVersion;
+
+    private string $fixerVersion;
+
+    private string $indent;
+
+    private string $lineEnding;
 
     /**
-     * @var string
+     * @var array<string, array<string, mixed>|bool>
      */
-    private $fixerVersion;
+    private array $rules;
 
     /**
-     * @var string
+     * @param array<string, array<string, mixed>|bool> $rules
      */
-    private $indent;
-
-    /**
-     * @var string
-     */
-    private $lineEnding;
-
-    /**
-     * @var array
-     */
-    private $rules;
-
-    /**
-     * @param string $phpVersion
-     * @param string $fixerVersion
-     * @param string $indent
-     * @param string $lineEnding
-     * @param array  $rules
-     */
-    public function __construct($phpVersion, $fixerVersion, $indent, $lineEnding, array $rules)
+    public function __construct(string $phpVersion, string $fixerVersion, string $indent, string $lineEnding, array $rules)
     {
         $this->phpVersion = $phpVersion;
         $this->fixerVersion = $fixerVersion;
         $this->indent = $indent;
         $this->lineEnding = $lineEnding;
-        $this->rules = self::utf8Encode($rules);
+        $this->rules = self::makeJsonEncodable($rules);
     }
 
-    public function getPhpVersion()
+    public function getPhpVersion(): string
     {
         return $this->phpVersion;
     }
 
-    public function getFixerVersion()
+    public function getFixerVersion(): string
     {
         return $this->fixerVersion;
     }
 
-    public function getIndent()
+    public function getIndent(): string
     {
         return $this->indent;
     }
 
-    public function getLineEnding()
+    public function getLineEnding(): string
     {
         return $this->lineEnding;
     }
 
-    public function getRules()
+    public function getRules(): array
     {
         return $this->rules;
     }
 
-    public function equals(SignatureInterface $signature)
+    public function equals(SignatureInterface $signature): bool
     {
         return $this->phpVersion === $signature->getPhpVersion()
             && $this->fixerVersion === $signature->getFixerVersion()
@@ -94,15 +80,16 @@ final class Signature implements SignatureInterface
             && $this->rules === $signature->getRules();
     }
 
-    private static function utf8Encode(array $data)
+    /**
+     * @param array<string, array<string, mixed>|bool> $data
+     *
+     * @return array<string, array<string, mixed>|bool>
+     */
+    private static function makeJsonEncodable(array $data): array
     {
-        if (!\function_exists('mb_detect_encoding')) {
-            return $data;
-        }
-
-        array_walk_recursive($data, static function (&$item) {
+        array_walk_recursive($data, static function (&$item): void {
             if (\is_string($item) && !mb_detect_encoding($item, 'utf-8', true)) {
-                $item = utf8_encode($item);
+                $item = base64_encode($item);
             }
         });
 

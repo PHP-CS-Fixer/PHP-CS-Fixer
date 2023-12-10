@@ -1,0 +1,6 @@
+--TEST--
+Test if array_indentation can handle huge arrays.
+--RULESET--
+{
+    "array_indentation": true
+}

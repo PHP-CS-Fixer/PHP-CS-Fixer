@@ -8,19 +8,35 @@ Integration of fixers: phpdoc_to_comment,phpdoc_var_without_name.
 --EXPECT--
 <?php
 
-$first = true;// needed because by default first docblock is never fixed.
+/**
+ * File docblock needed because by default first docblock is never fixed.
+ */
 
 /**
- * @var ClassLoader
+ * Class Foo holds only the autoloader
  */
-$loader = require_once __DIR__.'/../app/autoload.php';
+class Foo
+{
+    /**
+     * @var ClassLoader
+     */
+    public $loader;
+}
 
 --INPUT--
 <?php
 
-$first = true;// needed because by default first docblock is never fixed.
+/**
+ * File docblock needed because by default first docblock is never fixed.
+ */
 
 /**
- * @var ClassLoader $loader
+ * Class Foo holds only the autoloader
  */
-$loader = require_once __DIR__.'/../app/autoload.php';
+class Foo
+{
+    /**
+     * @var ClassLoader $loader
+     */
+    public $loader;
+}

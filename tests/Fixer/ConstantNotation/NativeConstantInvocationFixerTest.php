@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ConstantNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -23,11 +26,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigureRejectsUnknownConfigurationKey()
+    public function testConfigureRejectsUnknownConfigurationKey(): void
     {
         $key = 'foo';
 
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage(sprintf('[native_constant_invocation] Invalid configuration: The option "%s" does not exist.', $key));
 
         $this->fixer->configure([
@@ -40,12 +43,12 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $element
      */
-    public function testConfigureRejectsInvalidExcludeConfigurationElement($element)
+    public function testConfigureRejectsInvalidExcludeConfigurationElement($element): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage(sprintf(
             'Each element must be a non-empty, trimmed string, got "%s" instead.',
-            \is_object($element) ? \get_class($element) : \gettype($element)
+            get_debug_type($element)
         ));
 
         $this->fixer->configure([
@@ -60,12 +63,12 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $element
      */
-    public function testConfigureRejectsInvalidIncludeConfigurationElement($element)
+    public function testConfigureRejectsInvalidIncludeConfigurationElement($element): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage(sprintf(
             'Each element must be a non-empty, trimmed string, got "%s" instead.',
-            \is_object($element) ? \get_class($element) : \gettype($element)
+            get_debug_type($element)
         ));
 
         $this->fixer->configure([
@@ -75,24 +78,26 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    /**
-     * @return array
-     */
-    public function provideInvalidConfigurationElementCases()
+    public static function provideInvalidConfigurationElementCases(): iterable
     {
-        return [
-            'null' => [null],
-            'false' => [false],
-            'true' => [true],
-            'int' => [1],
-            'array' => [[]],
-            'float' => [0.1],
-            'object' => [new \stdClass()],
-            'not-trimmed' => ['  M_PI  '],
-        ];
+        yield 'null' => [null];
+
+        yield 'false' => [false];
+
+        yield 'true' => [true];
+
+        yield 'int' => [1];
+
+        yield 'array' => [[]];
+
+        yield 'float' => [0.1];
+
+        yield 'object' => [new \stdClass()];
+
+        yield 'not-trimmed' => ['  M_PI  '];
     }
 
-    public function testConfigureResetsExclude()
+    public function testConfigureResetsExclude(): void
     {
         $this->fixer->configure([
             'exclude' => [
@@ -110,159 +115,112 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         $this->doTest($after, $before);
     }
 
-    public function testIsRisky()
-    {
-        $fixer = $this->createFixer();
-
-        static::assertTrue($fixer->isRisky());
-    }
-
     /**
      * @dataProvider provideFixWithDefaultConfigurationCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithDefaultConfiguration($expected, $input = null)
+    public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithDefaultConfigurationCases()
+    public static function provideFixWithDefaultConfigurationCases(): iterable
     {
-        return [
-            ['<?php var_dump(NULL, FALSE, TRUE, 1);'],
-            ['<?php echo CUSTOM_DEFINED_CONSTANT_123;'],
-            ['<?php echo m_pi; // Constant are case sensitive'],
-            ['<?php namespace M_PI;'],
-            ['<?php namespace Foo; use M_PI;'],
-            ['<?php class M_PI {}'],
-            ['<?php class Foo extends M_PI {}'],
-            ['<?php class Foo implements M_PI {}'],
-            ['<?php interface M_PI {};'],
-            ['<?php trait M_PI {};'],
-            ['<?php class Foo { const M_PI = 1; }'],
-            ['<?php class Foo { use M_PI; }'],
-            ['<?php class Foo { public $M_PI = 1; }'],
-            ['<?php class Foo { function M_PI($M_PI) {} }'],
-            ['<?php class Foo { function bar() { $M_PI = M_PI() + self::M_PI(); } }'],
-            ['<?php class Foo { function bar() { $this->M_PI(self::M_PI); } }'],
-            ['<?php namespace Foo; use M_PI;'],
-            ['<?php namespace Foo; use Bar as M_PI;'],
-            ['<?php echo Foo\\M_PI\\Bar;'],
-            ['<?php M_PI::foo();'],
-            ['<?php function x(M_PI $foo, M_PI &$bar, M_PI ...$baz) {}'],
-            ['<?php $foo instanceof M_PI;'],
-            ['<?php class x implements FOO, M_PI, BAZ {}'],
-            ['<?php class Foo { use Bar, M_PI { Bar::baz insteadof M_PI; } }'],
-            ['<?php M_PI: goto M_PI;'],
-            [
-                '<?php echo \\M_PI;',
-                '<?php echo M_PI;',
-            ],
-            [
-                '<?php namespace Foo; use M_PI; echo \\M_PI;',
-                '<?php namespace Foo; use M_PI; echo M_PI;',
-            ],
-            [
-                // Here we are just testing the algorithm.
-                // A user likely would add this M_PI to its excluded list.
-                '<?php namespace M_PI; const M_PI = 1; return \\M_PI;',
-                '<?php namespace M_PI; const M_PI = 1; return M_PI;',
-            ],
-            [
-                '<?php
-echo \\/**/M_PI;
-echo \\ M_PI;
-echo \\#
-#
-M_PI;
-echo \\M_PI;
-',
-                '<?php
-echo \\/**/M_PI;
-echo \\ M_PI;
-echo \\#
-#
-M_PI;
-echo M_PI;
-',
-            ],
-            [
-                '<?php foo(\E_DEPRECATED | \E_USER_DEPRECATED);',
-                '<?php foo(E_DEPRECATED | E_USER_DEPRECATED);',
-            ],
+        yield ['<?php var_dump(NULL, FALSE, TRUE, 1);'];
+
+        yield ['<?php echo CUSTOM_DEFINED_CONSTANT_123;'];
+
+        yield ['<?php echo m_pi; // Constant are case sensitive'];
+
+        yield ['<?php namespace M_PI;'];
+
+        yield ['<?php namespace Foo; use M_PI;'];
+
+        yield ['<?php class M_PI {}'];
+
+        yield ['<?php class Foo extends M_PI {}'];
+
+        yield ['<?php class Foo implements M_PI {}'];
+
+        yield ['<?php interface M_PI {};'];
+
+        yield ['<?php trait M_PI {};'];
+
+        yield ['<?php class Foo { const M_PI = 1; }'];
+
+        yield ['<?php class Foo { use M_PI; }'];
+
+        yield ['<?php class Foo { public $M_PI = 1; }'];
+
+        yield ['<?php class Foo { function M_PI($M_PI) {} }'];
+
+        yield ['<?php class Foo { function bar() { $M_PI = M_PI() + self::M_PI(); } }'];
+
+        yield ['<?php class Foo { function bar() { $this->M_PI(self::M_PI); } }'];
+
+        yield ['<?php namespace Foo; use M_PI;'];
+
+        yield ['<?php namespace Foo; use Bar as M_PI;'];
+
+        yield ['<?php echo Foo\\M_PI\\Bar;'];
+
+        yield ['<?php M_PI::foo();'];
+
+        yield ['<?php function x(M_PI $foo, M_PI &$bar, M_PI ...$baz) {}'];
+
+        yield ['<?php $foo instanceof M_PI;'];
+
+        yield ['<?php class x implements FOO, M_PI, BAZ {}'];
+
+        yield ['<?php class Foo { use Bar, M_PI { Bar::baz insteadof M_PI; } }'];
+
+        yield ['<?php M_PI: goto M_PI;'];
+
+        yield [
+            '<?php echo \\M_PI;',
+            '<?php echo M_PI;',
         ];
-    }
 
-    /**
-     * @dataProvider provideFix70WithDefaultConfigurationCases
-     *
-     * @param string      $expected
-     * @param null|string $input
-     * @requires PHP 7.0
-     */
-    public function testFix70WithDefaultConfiguration($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return array
-     */
-    public function provideFix70WithDefaultConfigurationCases()
-    {
-        return [
-            ['<?php function foo(): M_PI {}'],
-            ['<?php use X\Y\{FOO, BAR as BAR2, M_PI};'],
+        yield [
+            '<?php namespace Foo; use M_PI; echo \\M_PI;',
+            '<?php namespace Foo; use M_PI; echo M_PI;',
         ];
-    }
 
-    /**
-     * @dataProvider provideFix70WithDefaultConfigurationCases
-     *
-     * @param string      $expected
-     * @param null|string $input
-     * @requires PHP 7.1
-     */
-    public function testFix71WithDefaultConfiguration($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
+        yield [
+            // Here we are just testing the algorithm.
+            // A user likely would add this M_PI to its excluded list.
+            '<?php namespace M_PI; const M_PI = 1; return \\M_PI;',
+            '<?php namespace M_PI; const M_PI = 1; return M_PI;',
+        ];
 
-    /**
-     * @return array
-     */
-    public function provideFix71WithDefaultConfigurationCases()
-    {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php foo(\E_DEPRECATED | \E_USER_DEPRECATED);',
+            '<?php foo(E_DEPRECATED | E_USER_DEPRECATED);',
+        ];
+
+        yield ['<?php function foo(): M_PI {}'];
+
+        yield ['<?php use X\Y\{FOO, BAR as BAR2, M_PI};'];
+
+        yield [
+            '<?php
 try {
-    foo(\JSON_ERROR_DEPTH|\JSON_PRETTY_PRINT|\JOB_QUEUE_PRIORITY_HIGH);
+    foo(\JSON_ERROR_DEPTH|\JSON_PRETTY_PRINT|JOB_QUEUE_PRIORITY_HIGH);
 } catch (\Exception | \InvalidArgumentException|\UnexpectedValueException|LogicException $e) {
 }
 ',
-                '<?php
+            '<?php
 try {
     foo(\JSON_ERROR_DEPTH|JSON_PRETTY_PRINT|\JOB_QUEUE_PRIORITY_HIGH);
 } catch (\Exception | \InvalidArgumentException|\UnexpectedValueException|LogicException $e) {
 }
 ',
-            ],
         ];
     }
 
     /**
      * @dataProvider provideFixWithConfiguredCustomIncludeCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithConfiguredCustomInclude($expected, $input = null)
+    public function testFixWithConfiguredCustomInclude(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'include' => [
@@ -273,30 +231,23 @@ try {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithConfiguredCustomIncludeCases()
+    public static function provideFixWithConfiguredCustomIncludeCases(): iterable
     {
-        return [
-            [
-                '<?php echo \\FOO_BAR_BAZ . \\M_PI;',
-                '<?php echo FOO_BAR_BAZ . M_PI;',
-            ],
-            [
-                '<?php class Foo { public function bar($foo) { return \\FOO_BAR_BAZ . \\M_PI; } }',
-                '<?php class Foo { public function bar($foo) { return FOO_BAR_BAZ . M_PI; } }',
-            ],
+        yield [
+            '<?php echo \\FOO_BAR_BAZ . \\M_PI;',
+            '<?php echo FOO_BAR_BAZ . M_PI;',
+        ];
+
+        yield [
+            '<?php class Foo { public function bar($foo) { return \\FOO_BAR_BAZ . \\M_PI; } }',
+            '<?php class Foo { public function bar($foo) { return FOO_BAR_BAZ . M_PI; } }',
         ];
     }
 
     /**
      * @dataProvider provideFixWithConfiguredOnlyIncludeCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithConfiguredOnlyInclude($expected, $input = null)
+    public function testFixWithConfiguredOnlyInclude(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'fix_built_in' => false,
@@ -308,30 +259,23 @@ try {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithConfiguredOnlyIncludeCases()
+    public static function provideFixWithConfiguredOnlyIncludeCases(): iterable
     {
-        return [
-            [
-                '<?php echo PHP_SAPI . FOO_BAR_BAZ . \\M_PI;',
-                '<?php echo PHP_SAPI . FOO_BAR_BAZ . M_PI;',
-            ],
-            [
-                '<?php class Foo { public function bar($foo) { return PHP_SAPI . FOO_BAR_BAZ . \\M_PI; } }',
-                '<?php class Foo { public function bar($foo) { return PHP_SAPI . FOO_BAR_BAZ . M_PI; } }',
-            ],
+        yield [
+            '<?php echo PHP_SAPI . FOO_BAR_BAZ . \\M_PI;',
+            '<?php echo PHP_SAPI . FOO_BAR_BAZ . M_PI;',
+        ];
+
+        yield [
+            '<?php class Foo { public function bar($foo) { return PHP_SAPI . FOO_BAR_BAZ . \\M_PI; } }',
+            '<?php class Foo { public function bar($foo) { return PHP_SAPI . FOO_BAR_BAZ . M_PI; } }',
         ];
     }
 
     /**
      * @dataProvider provideFixWithConfiguredExcludeCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithConfiguredExclude($expected, $input = null)
+    public function testFixWithConfiguredExclude(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'exclude' => [
@@ -342,24 +286,20 @@ try {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithConfiguredExcludeCases()
+    public static function provideFixWithConfiguredExcludeCases(): iterable
     {
-        return [
-            [
-                '<?php echo \\PHP_SAPI . M_PI;',
-                '<?php echo PHP_SAPI . M_PI;',
-            ],
-            [
-                '<?php class Foo { public function bar($foo) { return \\PHP_SAPI . M_PI; } }',
-                '<?php class Foo { public function bar($foo) { return PHP_SAPI . M_PI; } }',
-            ],
+        yield [
+            '<?php echo \\PHP_SAPI . M_PI;',
+            '<?php echo PHP_SAPI . M_PI;',
+        ];
+
+        yield [
+            '<?php class Foo { public function bar($foo) { return \\PHP_SAPI . M_PI; } }',
+            '<?php class Foo { public function bar($foo) { return PHP_SAPI . M_PI; } }',
         ];
     }
 
-    public function testNullTrueFalseAreCaseInsensitive()
+    public function testNullTrueFalseAreCaseInsensitive(): void
     {
         $this->fixer->configure([
             'fix_built_in' => false,
@@ -373,45 +313,45 @@ try {
         ]);
 
         $expected = <<<'EOT'
-<?php
-var_dump(
-    \null,
-    \NULL,
-    \Null,
-    \nUlL,
-    \false,
-    \FALSE,
-    true,
-    TRUE,
-    \M_PI,
-    \M_pi,
-    m_pi,
-    m_PI
-);
-EOT;
+            <?php
+            var_dump(
+                \null,
+                \NULL,
+                \Null,
+                \nUlL,
+                \false,
+                \FALSE,
+                true,
+                TRUE,
+                \M_PI,
+                \M_pi,
+                m_pi,
+                m_PI
+            );
+            EOT;
 
         $input = <<<'EOT'
-<?php
-var_dump(
-    null,
-    NULL,
-    Null,
-    nUlL,
-    false,
-    FALSE,
-    true,
-    TRUE,
-    M_PI,
-    M_pi,
-    m_pi,
-    m_PI
-);
-EOT;
+            <?php
+            var_dump(
+                null,
+                NULL,
+                Null,
+                nUlL,
+                false,
+                FALSE,
+                true,
+                TRUE,
+                M_PI,
+                M_pi,
+                m_pi,
+                m_PI
+            );
+            EOT;
 
         $this->doTest($expected, $input);
     }
 
-    public function testDoNotIncludeUserConstantsUnlessExplicitlyListed()
+    public function testDoNotIncludeUserConstantsUnlessExplicitlyListed(): void
     {
         $uniqueConstantName = uniqid(self::class);
         $uniqueConstantName = preg_replace('/\W+/', '_', $uniqueConstantName);
@@ -432,27 +372,27 @@ EOT;
         ]);
 
         $expected = <<<EOT
-<?php
-var_dump(
-    \\null,
-    {$dontFixMe},
-    \\{$fixMe}
-);
-EOT;
+            <?php
+            var_dump(
+                \\null,
+                {$dontFixMe},
+                \\{$fixMe}
+            );
+            EOT;
 
         $input = <<<EOT
-<?php
-var_dump(
-    null,
-    {$dontFixMe},
-    {$fixMe}
-);
-EOT;
+            <?php
+            var_dump(
+                null,
+                {$dontFixMe},
+                {$fixMe}
+            );
+            EOT;
 
         $this->doTest($expected, $input);
     }
 
-    public function testDoNotFixImportedConstants()
+    public function testDoNotFixImportedConstants(): void
     {
         $this->fixer->configure([
             'fix_built_in' => false,
@@ -464,75 +404,142 @@ EOT;
         ]);
 
         $expected = <<<'EOT'
-<?php
+            <?php
 
-namespace Foo;
+            namespace Foo;
 
-use const M_EULER;
+            use const M_EULER;
 
-var_dump(
-    null,
-    \M_PI,
-    M_EULER
-);
-EOT;
+            var_dump(
+                null,
+                \M_PI,
+                M_EULER
+            );
+            EOT;
 
         $input = <<<'EOT'
-<?php
+            <?php
 
-namespace Foo;
+            namespace Foo;
 
-use const M_EULER;
+            use const M_EULER;
 
-var_dump(
-    null,
-    M_PI,
-    M_EULER
-);
-EOT;
+            var_dump(
+                null,
+                M_PI,
+                M_EULER
+            );
+            EOT;
 
         $this->doTest($expected, $input);
     }
 
-    public function testFixScopedOnly()
+    public function testFixScopedOnly(): void
     {
         $this->fixer->configure(['scope' => 'namespaced']);
 
         $expected = <<<'EOT'
-<?php
+            <?php
 
-namespace space1 {
-    echo \PHP_VERSION;
-}
-namespace {
-    echo PHP_VERSION;
-}
-EOT;
+            namespace space1 {
+                echo \PHP_VERSION;
+            }
+            namespace {
+                echo PHP_VERSION;
+            }
+            EOT;
 
         $input = <<<'EOT'
-<?php
+            <?php
 
-namespace space1 {
-    echo PHP_VERSION;
-}
-namespace {
-    echo PHP_VERSION;
-}
-EOT;
+            namespace space1 {
+                echo PHP_VERSION;
+            }
+            namespace {
+                echo PHP_VERSION;
+            }
+            EOT;
 
         $this->doTest($expected, $input);
     }
 
-    public function testFixScopedOnlyNoNamespace()
+    public function testFixScopedOnlyNoNamespace(): void
     {
         $this->fixer->configure(['scope' => 'namespaced']);
 
         $expected = <<<'EOT'
-<?php
+            <?php
 
-echo PHP_VERSION . PHP_EOL;
-EOT;
+            echo PHP_VERSION . PHP_EOL;
+            EOT;
 
         $this->doTest($expected);
+    }
+
+    public function testFixStrictOption(): void
+    {
+        $this->fixer->configure(['strict' => true]);
+        $this->doTest(
+            '<?php
+                echo \PHP_VERSION . \PHP_EOL; // built-in constants to have backslash
+                echo MY_FRAMEWORK_MAJOR_VERSION . MY_FRAMEWORK_MINOR_VERSION; // non-built-in constants not to have backslash
+                echo \Dont\Touch\Namespaced\CONSTANT;
+            ',
+            '<?php
+                echo \PHP_VERSION . PHP_EOL; // built-in constants to have backslash
+                echo \MY_FRAMEWORK_MAJOR_VERSION . MY_FRAMEWORK_MINOR_VERSION; // non-built-in constants not to have backslash
+                echo \Dont\Touch\Namespaced\CONSTANT;
+            '
+        );
+    }
+
+    /**
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80(): void
+    {
+        $this->doTest(
+            '<?php
+echo \\/**/M_PI;
+echo \\ M_PI;
+echo \\#
+#
+M_PI;
+echo \\M_PI;
+',
+            '<?php
+echo \\/**/M_PI;
+echo \\ M_PI;
+echo \\#
+#
+M_PI;
+echo M_PI;
+'
+        );
+    }
+
+    /**
+     * @dataProvider provideFixPhp80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80(string $expected): void
+    {
+        $this->fixer->configure(['strict' => true]);
+        $this->doTest($expected);
+    }
+
+    public static function provideFixPhp80Cases(): iterable
+    {
+        yield [
+            '<?php
+            try {
+            } catch (\Exception) {
+            }',
+        ];
+
+        yield ['<?php try { foo(); } catch(\InvalidArgumentException|\LogicException $e) {}'];
+
+        yield ['<?php try { foo(); } catch(\InvalidArgumentException|\LogicException) {}'];
     }
 }

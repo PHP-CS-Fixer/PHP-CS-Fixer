@@ -25,11 +25,16 @@ namespace PhpCsFixer\Tests\Fixtures\Test\FileReaderTest;
  */
 final class StdinFakeStream
 {
-    private static $hasReadContent = false;
+    /**
+     * @var resource
+     */
+    public $context;
 
-    private $content = '<?php echo "foo";';
+    private static bool $hasReadContent = false;
 
-    private $hasReadCurrentString = false;
+    private string $content = '<?php echo "foo";';
+
+    private bool $hasReadCurrentString = false;
 
     public function stream_open($path)
     {

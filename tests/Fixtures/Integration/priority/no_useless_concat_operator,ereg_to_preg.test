@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_useless_concat_operator,ereg_to_preg.
+--RULESET--
+{"no_useless_concat_operator": true, "ereg_to_preg": true}
+--EXPECT--
+<?php
+
+$x = preg_match("#[AZ]/#D", $m);
+
+--INPUT--
+<?php
+
+$x = ereg("[A"."Z]/", $m);

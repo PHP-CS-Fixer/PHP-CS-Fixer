@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,75 +14,44 @@
 
 namespace PhpCsFixer\Tokenizer\Transformer;
 
-use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\AbstractTypeTransformer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform `|` operator into CT::T_TYPE_ALTERNATION in `} catch (ExceptionType1 | ExceptionType2 $e) {`.
+ * Transform `|` operator into CT::T_TYPE_ALTERNATION in `function foo(Type1 | Type2 $x) {`
+ * or `} catch (ExceptionType1 | ExceptionType2 $e) {`.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class TypeAlternationTransformer extends AbstractTransformer
+final class TypeAlternationTransformer extends AbstractTypeTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getCustomTokens()
+    public function getPriority(): int
+    {
+        // needs to run after ArrayTypehintTransformer, TypeColonTransformer and AttributeTransformer
+        return -15;
+    }
+
+    public function getRequiredPhpVersionId(): int
+    {
+        return 7_01_00;
+    }
+
+    public function process(Tokens $tokens, Token $token, int $index): void
+    {
+        $this->doProcess($tokens, $index, '|');
+    }
+
+    public function getCustomTokens(): array
     {
         return [CT::T_TYPE_ALTERNATION];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRequiredPhpVersionId()
+    protected function replaceToken(Tokens $tokens, int $index): void
     {
-        return 70100;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function process(Tokens $tokens, Token $token, $index)
-    {
-        if (!$token->equals('|')) {
-            return;
-        }
-
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        $prevToken = $tokens[$prevIndex];
-
-        if (!$prevToken->isGivenKind(T_STRING)) {
-            return;
-        }
-
-        do {
-            $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-            if (null === $prevIndex) {
-                break;
-            }
-
-            $prevToken = $tokens[$prevIndex];
-
-            if ($prevToken->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
-                continue;
-            }
-
-            if (
-                $prevToken->isGivenKind(CT::T_TYPE_ALTERNATION)
-                || (
-                    $prevToken->equals('(')
-                    && $tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(T_CATCH)
-                )
-            ) {
-                $tokens[$index] = new Token([CT::T_TYPE_ALTERNATION, '|']);
-            }
-
-            break;
-        } while (true);
+        $tokens[$index] = new Token([CT::T_TYPE_ALTERNATION, '|']);
     }
 }

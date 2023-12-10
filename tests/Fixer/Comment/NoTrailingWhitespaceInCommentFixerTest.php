@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,51 +26,82 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
+        /*
+                //
+                //
+
+                //
+                //
+                //
+
+                //
+                //
+
+                //
+        */
+                ',
+            '<?php
+        /*
+                //
+                //
+                '.'
+                //
+                //
+                //
+                '.'
+                //
+                //
+                '.'
+                //
+        */
+                ',
+        ];
+
+        yield [
+            '<?php
     // This is'.'
     //'.'
     //'.'
     // multiline comment.
     //',
-                '<?php
+            '<?php
     // This is '.'
     // '.'
     //    '.'
     // multiline comment. '.'
     // ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /*
      * This is another'.'
      *'.'
      *'.'
      * multiline comment.'.'
      */',
-                '<?php
+            '<?php
     /* '.'
      * This is another '.'
      * '.'
      * '.'
      * multiline comment. '.'
      */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * Summary'.'
      *'.'
@@ -78,7 +111,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * @annotation
      *  Foo
      */',
-                '<?php
+            '<?php
     /** '.'
      * Summary '.'
      * '.'
@@ -88,51 +121,52 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * @annotation '.'
      *  Foo '.'
      */',
-            ],
-            [
-                str_replace(
-                    "\n",
-                    "\r\n",
-                    '<?php
+        ];
+
+        yield [
+            str_replace(
+                "\n",
+                "\r\n",
+                '<?php
     /**
      * Summary
      *'.'
      * Description
     */'
-                ),
-                str_replace(
-                    "\n",
-                    "\r\n",
-                    '<?php
+            ),
+            str_replace(
+                "\n",
+                "\r\n",
+                '<?php
     /**
      * Summary
      * '.'
      * Description
     */'
-                ),
-            ],
-            [
-                str_replace(
-                    "\n",
-                    "\r",
-                    '<?php
+            ),
+        ];
+
+        yield [
+            str_replace(
+                "\n",
+                "\r",
+                '<?php
     /**
      * Summary
      *'.'
      * Description
     */'
-                ),
-                str_replace(
-                    "\n",
-                    "\r",
-                    '<?php
+            ),
+            str_replace(
+                "\n",
+                "\r",
+                '<?php
     /**
      * Summary
      * '.'
      * Description
     */'
-                ),
-            ],
+            ),
         ];
     }
 }

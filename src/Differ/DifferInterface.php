@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,13 +21,6 @@ interface DifferInterface
 {
     /**
      * Create diff.
-     *
-     * @param string $old
-     * @param string $new
-     *
-     * @return string
-     *
-     * TODO: on 3.0 pass the file name (if applicable) for which this diff is
      */
-    public function diff($old, $new);
+    public function diff(string $old, string $new, ?\SplFileInfo $file = null): string;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,41 +20,43 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer
+ *
+ * @requires PHP <8.0
  */
 final class NoUnsetCastFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            'simple form I' => [
-                "<?php\n\$a = null;",
-                "<?php\n\$a =(unset)\$z;",
-            ],
-            'simple form II' => [
-                "<?php\n\$b = null;",
-                "<?php\n\$b = (unset)\$z;",
-            ],
-            'simple form III' => [
-                "<?php\n\$c = null?>",
-                "<?php\n\$c = (unset)\$z?>",
-            ],
-            'lot of spaces' => [
-                "<?php\n\$d = \t \t \t null;",
-                "<?php\n\$d = \t (unset)\$z\t \t ;",
-            ],
-            'comments' => [
-                '<?php
+        yield 'simple form I' => [
+            "<?php\n\$a = null;",
+            "<?php\n\$a =(unset)\$z;",
+        ];
+
+        yield 'simple form II' => [
+            "<?php\n\$b = null;",
+            "<?php\n\$b = (unset)\$z;",
+        ];
+
+        yield 'simple form III' => [
+            "<?php\n\$c = null?>",
+            "<?php\n\$c = (unset)\$z?>",
+        ];
+
+        yield 'lot of spaces' => [
+            "<?php\n\$d = \t \t \t null;",
+            "<?php\n\$d = \t (unset)\$z\t \t ;",
+        ];
+
+        yield 'comments' => [
+            '<?php
 #0
 $a#1
 #2
@@ -64,7 +68,7 @@ $a#1
 #8
 ;
 ',
-                '<?php
+            '<?php
 #0
 $a#1
 #2
@@ -76,28 +80,34 @@ $b#7
 #8
 ;
 ',
-            ],
-            [
-                "<?php\n(unset) \$b;",
-            ],
-            [
-                '<?php $r = (unset) f(1);',
-            ],
-            [
-                '<?php $r = (unset) (new C())->mf(3);',
-            ],
-            [
-                '<?php $r = (unset) $f(1);',
-            ],
-            [
-                '<?php $r = (unset) $c::sf(2) ?>',
-            ],
-            [
-                '<?php $r = (unset) $a[0];',
-            ],
-            [
-                '<?php $r = (unset) $n**f($n);',
-            ],
+        ];
+
+        yield [
+            "<?php\n(unset) \$b;",
+        ];
+
+        yield [
+            '<?php $r = (unset) f(1);',
+        ];
+
+        yield [
+            '<?php $r = (unset) (new C())->mf(3);',
+        ];
+
+        yield [
+            '<?php $r = (unset) $f(1);',
+        ];
+
+        yield [
+            '<?php $r = (unset) $c::sf(2) ?>',
+        ];
+
+        yield [
+            '<?php $r = (unset) $a[0];',
+        ];
+
+        yield [
+            '<?php $r = (unset) $n**f($n);',
         ];
     }
 }

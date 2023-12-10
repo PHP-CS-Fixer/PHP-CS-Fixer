@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,13 +24,13 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class ErrorTest extends TestCase
 {
-    public function testThatErrorTypeConstantValuesAreDifferent()
+    public function testThatErrorTypeConstantValuesAreDifferent(): void
     {
-        static::assertNotSame(Error::TYPE_INVALID, Error::TYPE_EXCEPTION);
-        static::assertNotSame(Error::TYPE_EXCEPTION, Error::TYPE_LINT);
+        self::assertNotSame(Error::TYPE_INVALID, Error::TYPE_EXCEPTION);
+        self::assertNotSame(Error::TYPE_EXCEPTION, Error::TYPE_LINT);
     }
 
-    public function testConstructorSetsValues()
+    public function testConstructorSetsValues(): void
     {
         $type = 123;
         $filePath = 'foo.php';
@@ -38,7 +40,33 @@ final class ErrorTest extends TestCase
             $filePath
         );
 
-        static::assertSame($type, $error->getType());
-        static::assertSame($filePath, $error->getFilePath());
+        self::assertSame($type, $error->getType());
+        self::assertSame($filePath, $error->getFilePath());
+        self::assertNull($error->getSource());
+        self::assertSame([], $error->getAppliedFixers());
+        self::assertNull($error->getDiff());
+    }
+
+    public function testConstructorSetsValues2(): void
+    {
+        $type = 456;
+        $filePath = __FILE__;
+        $source = new \Exception();
+        $appliedFixers = ['some_rule'];
+        $diff = '__diff__';
+
+        $error = new Error(
+            $type,
+            $filePath,
+            $source,
+            $appliedFixers,
+            $diff
+        );
+
+        self::assertSame($type, $error->getType());
+        self::assertSame($filePath, $error->getFilePath());
+        self::assertSame($source, $error->getSource());
+        self::assertSame($appliedFixers, $error->getAppliedFixers());
+        self::assertSame($diff, $error->getDiff());
     }
 }

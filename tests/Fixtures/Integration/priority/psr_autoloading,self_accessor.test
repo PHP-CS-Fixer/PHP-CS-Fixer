@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: psr_autoloading,self_accessor.
+--RULESET--
+{"psr_autoloading": true, "self_accessor": true}
+--EXPECT--
+<?php
+class MyClass
+{
+    public static function create()
+    {
+        return new self();
+    }
+}
+
+--INPUT--
+<?php
+class Foo
+{
+    public static function create()
+    {
+        return new MyClass();
+    }
+}

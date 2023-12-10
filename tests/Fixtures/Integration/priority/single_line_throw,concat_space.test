@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: single_line_throw,concat_space.
+--RULESET--
+{"concat_space": {"spacing": "none"}, "single_line_throw": true}
+--EXPECT--
+<?php
+throw new Exception("Foo"."Bar");
+
+--INPUT--
+<?php
+throw new Exception(
+    "Foo"
+    .
+    "Bar"
+);

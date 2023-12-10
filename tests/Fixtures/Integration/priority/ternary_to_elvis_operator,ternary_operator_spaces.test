@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: ternary_to_elvis_operator,ternary_operator_spaces.
+--RULESET--
+{"ternary_to_elvis_operator": true, "ternary_operator_spaces": true}
+--EXPECT--
+<?php
+$a = $a ?: 1;
+
+--INPUT--
+<?php
+$a = $a ? $a : 1;

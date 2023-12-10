@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,54 +14,35 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
-use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer
  */
-final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTestCase
+final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyConfigureDefaultToNull()
+    public function testConfigureDefaultToFalse(): void
     {
         $defaultConfig = [
+            'inline_constructor_arguments' => true,
             'multi_line_extends_each_single_line' => false,
             'single_item_single_line' => false,
             'single_line' => false,
+            'space_before_parenthesis' => false,
         ];
 
         $fixer = new ClassDefinitionFixer();
         $fixer->configure($defaultConfig);
-        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
-
-        $fixer->configure(null);
-        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
-    }
-
-    public function testConfigureDefaultToNull()
-    {
-        $defaultConfig = [
-            'multi_line_extends_each_single_line' => false,
-            'single_item_single_line' => false,
-            'single_line' => false,
-        ];
-
-        $fixer = new ClassDefinitionFixer();
-        $fixer->configure($defaultConfig);
-        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
+        self::assertConfigurationSame($defaultConfig, $fixer);
 
         $fixer->configure([]);
-        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
+        self::assertConfigurationSame($defaultConfig, $fixer);
     }
 
     /**
@@ -67,176 +50,213 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
      * @param string              $input    PHP source code
      * @param array<string, bool> $config
      *
-     * @dataProvider provideAnonymousClassesCases
-     *
-     * @requires PHP 7.0
+     * @dataProvider provideFixingAnonymousClassesCases
      */
-    public function testFixingAnonymousClasses($expected, $input, array $config = [])
+    public function testFixingAnonymousClasses(string $expected, string $input, array $config = []): void
     {
-        $this->configureFixerWithAliasedOptions($config);
-
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string $expected PHP source code
-     * @param string $input    PHP source code
-     *
-     * @dataProvider provideClassesCases
+     * @dataProvider provideFixingClassesCases
      */
-    public function testFixingClasses($expected, $input)
+    public function testFixingClasses(string $expected, string $input): void
     {
         $this->fixer->configure([]);
-
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string              $expected PHP source code
-     * @param string              $input    PHP source code
-     * @param array<string, bool> $config
+     * @param array<string, mixed> $config
      *
-     * @dataProvider provideClassesWithConfigCases
+     * @dataProvider provideFixingClassesWithConfigCases
      */
-    public function testFixingClassesWithConfig($expected, $input, array $config)
+    public function testFixingClassesWithConfig(string $expected, string $input, array $config): void
     {
-        $this->configureFixerWithAliasedOptions($config);
-
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string $expected PHP source code
-     * @param string $input    PHP source code
-     *
-     * @dataProvider provideInterfacesCases
+     * @dataProvider provideFixingInterfacesCases
      */
-    public function testFixingInterfaces($expected, $input)
+    public function testFixingInterfaces(string $expected, string $input): void
     {
         $this->fixer->configure([]);
-
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string $expected PHP source code
-     * @param string $input    PHP source code
-     *
-     * @dataProvider provideTraitsCases
+     * @dataProvider provideFixingTraitsCases
      */
-    public function testFixingTraits($expected, $input)
+    public function testFixingTraits(string $expected, string $input): void
     {
         $this->fixer->configure([]);
-
         $this->doTest($expected, $input);
     }
 
-    public function testInvalidConfigurationKey()
+    public function testInvalidConfigurationKey(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
-            '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "multi_line_extends_each_single_line", "single_item_single_line", "single_line"\.$/'
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(
+            '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "inline_constructor_arguments", "multi_line_extends_each_single_line", "single_item_single_line", "single_line", "space_before_parenthesis"\.$/'
         );
 
         $fixer = new ClassDefinitionFixer();
         $fixer->configure(['a' => false]);
     }
 
-    public function testInvalidConfigurationValueType()
+    public function testInvalidConfigurationValueType(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(
             '/^\[class_definition\] Invalid configuration: The option "single_line" with value "z" is expected to be of type "bool", but is of type "string"\.$/'
         );
 
         $fixer = new ClassDefinitionFixer();
-        $fixer->configure(['singleLine' => 'z']);
+        $fixer->configure(['single_line' => 'z']);
     }
 
-    public function provideAnonymousClassesCases()
+    public static function provideFixingAnonymousClassesCases(): iterable
     {
-        return [
-            [
-                '<?php $a = new class(0) extends SomeClass implements SomeInterface, D {};',
-                "<?php \$a = new    class(0)     extends\nSomeClass\timplements    SomeInterface, D {};",
-            ],
-            [
-                '<?php $a = new class(1) extends SomeClass implements SomeInterface, D {};',
-                "<?php \$a = new    class(1)     extends\nSomeClass\timplements    SomeInterface, D {};",
-                ['singleLine' => true],
-            ],
-            [
-                "<?php \$a = new class('1a') implements\nA\n{};",
-                "<?php \$a = new class('1a')   implements\nA{};",
-            ],
-            [
-                "<?php \$a = new class('1a') implements A {};",
-                "<?php \$a = new class('1a')   implements\nA{};",
-                ['singleItemSingleLine' => true],
-            ],
-            [
-                '<?php $a = new class {};',
-                '<?php $a = new class{};',
-            ],
-            [
-                '<?php $a = new class {};',
-                "<?php \$a = new class\n{};",
-            ],
-            [
-                '<?php $a = new class() {};',
-                "<?php \$a = new\n class  (  ){};",
-            ],
-            [
-                '<?php $a = new class(10, 1, /**/ 2) {};',
-                '<?php $a = new class(  10, 1,/**/2  ){};',
-            ],
-            [
-                '<?php $a = new class(2) {};',
-                '<?php $a = new    class(2){};',
-            ],
-            [
-                '<?php $a = new class($this->prop) {};',
-                '<?php $a = new class(   $this->prop   ){};',
-            ],
-            [
-                '<?php $a = new class($this->prop, $v[3], 4) {};',
-                '<?php $a = new class(   $this->prop,$v[3],   4)         {};',
-            ],
-            'PSR-12 Extends/Implements Parenthesis on the next line.' => [
-                '<?php
+        yield [
+            '<?php $a = new class(0) extends SomeClass implements SomeInterface, D {};',
+            "<?php \$a = new    class(0)     extends\nSomeClass\timplements    SomeInterface, D {};",
+        ];
+
+        yield [
+            '<?php $a = new class(1) extends SomeClass implements SomeInterface, D {};',
+            "<?php \$a = new    class(1)     extends\nSomeClass\timplements    SomeInterface, D {};",
+            ['single_line' => true],
+        ];
+
+        yield [
+            "<?php \$a = new class('1a') implements\nA\n{};",
+            "<?php \$a = new class('1a')   implements\nA{};",
+        ];
+
+        yield [
+            "<?php \$a = new class('1a') implements A {};",
+            "<?php \$a = new class('1a')   implements\nA{};",
+            ['single_item_single_line' => true],
+        ];
+
+        yield [
+            '<?php $a = new class {};',
+            '<?php $a = new class{};',
+        ];
+
+        yield [
+            '<?php $a = new class {};',
+            "<?php \$a = new class\n{};",
+        ];
+
+        yield [
+            '<?php $a = new class() {};',
+            "<?php \$a = new\n class  (  ){};",
+        ];
+
+        yield [
+            '<?php $a = new class(  ) {};',
+            "<?php \$a = new\n class  (  ){};",
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            '<?php $a = new class implements Foo {};',
+            "<?php \$a = new\n class    implements Foo {};",
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            '<?php $a = new class( $this->foo() , bar ( $a) ) {};',
+            "<?php \$a = new\n class  ( \$this->foo() , bar ( \$a) ){};",
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            '<?php $a = new class(10, 1, /**/ 2) {};',
+            '<?php $a = new class(  10, 1,/**/2  ){};',
+        ];
+
+        yield [
+            '<?php $a = new class(  10, 1,/**/2  ) {};',
+            '<?php $a = new class(  10, 1,/**/2  ){};',
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            '<?php $a = new class(2) {};',
+            '<?php $a = new    class(2){};',
+        ];
+
+        yield [
+            '<?php $a = new class($this->prop) {};',
+            '<?php $a = new class(   $this->prop   ){};',
+        ];
+
+        yield [
+            '<?php $a = new class(   $this->prop   ) {};',
+            '<?php $a = new class(   $this->prop   ){};',
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            "<?php \$a = new class(\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d) implements A, B {};",
+            "<?php \$a = new class(\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d) implements  A, \t B{};",
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            "<?php \$a = new class(\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d) implements A, B {};",
+            "<?php \$a = new   class  (\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d)    implements  A, \t B{};",
+            ['inline_constructor_arguments' => false],
+        ];
+
+        yield [
+            '<?php $a = new class($this->prop, $v[3], 4) {};',
+            '<?php $a = new class(   $this->prop,$v[3],   4)         {};',
+        ];
+
+        yield 'PSR-12 Extends/Implements Parenthesis on the next line.' => [
+            '<?php
 $instance = new class extends \Foo implements
 \ArrayAccess,
     \Countable,
     \Serializable
 {};',
-                '<?php
-$instance = new class extends \Foo implements
+            '<?php
+$instance = new class   extends \Foo  implements
 \ArrayAccess,\Countable,\Serializable{};',
-            ],
-            'PSR-12 Implements Parenthesis on the next line.' => [
-                '<?php
+        ];
+
+        yield 'PSR-12 Implements Parenthesis on the next line.' => [
+            '<?php
 $instance = new class implements
 \ArrayAccess,
     \Countable,
     \Serializable
 {};',
-                '<?php
+            '<?php
 $instance = new class implements
 \ArrayAccess,\Countable,\Serializable{};',
-            ],
-            'PSR-12 Extends Parenthesis on the next line.' => [
-                '<?php
+        ];
+
+        yield 'PSR-12 Extends Parenthesis on the next line.' => [
+            '<?php
 $instance = new class extends
 ArrayAccess
 {};',
-                '<?php
+            '<?php
 $instance = new class
 extends
 ArrayAccess
 {};',
-            ],
-            [
-                "<?php \$a = new #
+        ];
+
+        yield [
+            "<?php \$a = new #
 class #
 ( #
 '1a', #
@@ -250,7 +270,7 @@ B,
 #
 }#
 ;",
-                "<?php \$a = new#
+            "<?php \$a = new#
 class#
 (#
 '1a',#
@@ -263,9 +283,10 @@ B,C#
 #
 }#
 ;",
-            ],
-            [
-                "<?php \$a = new #
+        ];
+
+        yield [
+            "<?php \$a = new #
 class #
 ( #
 '1a', #
@@ -277,7 +298,7 @@ A #
 #
 }#
 ;",
-                "<?php \$a = new#
+            "<?php \$a = new#
 class#
 (#
 '1a',#
@@ -289,84 +310,107 @@ A#
 #
 }#
 ;",
-                ['singleItemSingleLine' => true],
-            ],
-            [
-                '<?php $a = new class() #
+            ['single_item_single_line' => true],
+        ];
+
+        yield [
+            '<?php $a = new class() #
 {};',
-                '<?php $a = new class()#
+            '<?php $a = new class()#
 {};',
-            ],
+        ];
+
+        yield 'space_before_parenthesis 1' => [
+            '<?php $z = new class () {};',
+            '<?php $z = new class()  {};',
+            ['space_before_parenthesis' => true],
+        ];
+
+        yield 'space_before_parenthesis 2' => [
+            '<?php $z = new class () {};',
+            '<?php $z = new class   ()  {};',
+            ['space_before_parenthesis' => true],
+        ];
+
+        yield 'space_before_parenthesis and inline_constructor_arguments' => [
+            '<?php $z = new class ( static::foo($this->bar())  ,baz() ) {};',
+            '<?php $z = new class   ( static::foo($this->bar())  ,baz() )  {};',
+            ['space_before_parenthesis' => true, 'inline_constructor_arguments' => false],
         ];
     }
 
-    public function provideClassesCases()
+    public static function provideFixingClassesCases(): iterable
     {
         return array_merge(
-            $this->provideClassyCases('class'),
-            $this->provideClassyExtendingCases('class'),
-            $this->provideClassyImplementsCases()
+            self::provideClassyCases('class'),
+            self::provideClassyExtendingCases('class'),
+            self::provideClassyImplementsCases()
         );
     }
 
-    public function provideClassesWithConfigCases()
+    public static function provideFixingClassesWithConfigCases(): iterable
     {
-        return [
+        yield [
+            "<?php class configA implements B, C\n{}",
+            "<?php class configA implements\nB, C{}",
+            ['single_line' => true],
+        ];
+
+        yield [
+            "<?php class configA1 extends B\n{}",
+            "<?php class configA1\n extends\nB{}",
+            ['single_line' => true],
+        ];
+
+        yield [
+            "<?php class configA1a extends B\n{}",
+            "<?php class configA1a\n extends\nB{}",
+            ['single_line' => false, 'single_item_single_line' => true],
+        ];
+
+        yield [
+            "<?php class configA2 extends D implements B, C\n{}",
+            "<?php class configA2 extends D implements\nB,\nC{}",
+            ['single_line' => true],
+        ];
+
+        yield [
+            "<?php class configA3 extends D implements B, C\n{}",
+            "<?php class configA3\n extends\nD\n\t implements\nB,\nC{}",
+            ['single_line' => true],
+        ];
+
+        yield [
+            "<?php class configA4 extends D implements B, #\nC\n{}",
+            "<?php class configA4\n extends\nD\n\t implements\nB,#\nC{}",
+            ['single_line' => true],
+        ];
+
+        yield [
+            "<?php class configA5 implements A\n{}",
+            "<?php class configA5 implements\nA{}",
+            ['single_line' => false, 'single_item_single_line' => true],
+        ];
+
+        yield [
+            "<?php interface TestWithMultiExtendsMultiLine extends\n    A,\nAb,\n    C,\n    D\n{}",
+            "<?php interface TestWithMultiExtendsMultiLine extends A,\nAb,C,D\n{}",
             [
-                "<?php class configA implements B, C\n{}",
-                "<?php class configA implements\nB, C{}",
-                ['singleLine' => true],
-            ],
-            [
-                "<?php class configA1 extends B\n{}",
-                "<?php class configA1\n extends\nB{}",
-                ['singleLine' => true],
-            ],
-            [
-                "<?php class configA1a extends B\n{}",
-                "<?php class configA1a\n extends\nB{}",
-                ['singleLine' => false, 'singleItemSingleLine' => true],
-            ],
-            [
-                "<?php class configA2 extends D implements B, C\n{}",
-                "<?php class configA2 extends D implements\nB,\nC{}",
-                ['singleLine' => true],
-            ],
-            [
-                "<?php class configA3 extends D implements B, C\n{}",
-                "<?php class configA3\n extends\nD\n\t implements\nB,\nC{}",
-                ['singleLine' => true],
-            ],
-            [
-                "<?php class configA4 extends D implements B, #\nC\n{}",
-                "<?php class configA4\n extends\nD\n\t implements\nB,#\nC{}",
-                ['singleLine' => true],
-            ],
-            [
-                "<?php class configA5 implements A\n{}",
-                "<?php class configA5 implements\nA{}",
-                ['singleLine' => false, 'singleItemSingleLine' => true],
-            ],
-            [
-                "<?php interface TestWithMultiExtendsMultiLine extends\n    A,\nAb,\n    C,\n    D\n{}",
-                "<?php interface TestWithMultiExtendsMultiLine extends A,\nAb,C,D\n{}",
-                [
-                    'singleLine' => false,
-                    'singleItemSingleLine' => false,
-                    'multiLineExtendsEachSingleLine' => true,
-                ],
+                'single_line' => false,
+                'single_item_single_line' => false,
+                'multi_line_extends_each_single_line' => true,
             ],
         ];
     }
 
-    public function provideInterfacesCases()
+    public static function provideFixingInterfacesCases(): iterable
     {
-        $cases = array_merge(
-            $this->provideClassyCases('interface'),
-            $this->provideClassyExtendingCases('interface')
+        yield from array_merge(
+            self::provideClassyCases('interface'),
+            self::provideClassyExtendingCases('interface')
         );
 
-        $cases[] = [
+        yield [
             '<?php
 interface Test extends
   /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
@@ -392,22 +436,19 @@ TestInterface3, /**/     TestInterface4   ,
         /**/TestInterface65    {}
             ',
         ];
-
-        return $cases;
     }
 
-    public function provideTraitsCases()
+    public static function provideFixingTraitsCases(): iterable
     {
-        return $this->provideClassyCases('trait');
+        return self::provideClassyCases('trait');
     }
 
     /**
-     * @param string $source   PHP source code
-     * @param array  $expected
+     * @param array<string, mixed> $expected
      *
      * @dataProvider provideClassyDefinitionInfoCases
      */
-    public function testClassyDefinitionInfo($source, array $expected)
+    public function testClassyDefinitionInfo(string $source, array $expected): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
@@ -417,141 +458,151 @@ TestInterface3, /**/     TestInterface4   ,
 
         $result = $method->invoke($this->fixer, $tokens, $expected['classy']);
 
-        static::assertSame($expected, $result);
+        ksort($expected);
+        ksort($result);
+
+        self::assertSame($expected, $result);
     }
 
-    public function provideClassyDefinitionInfoCases()
+    public static function provideClassyDefinitionInfoCases(): iterable
     {
-        return [
+        yield [
+            '<?php class A{}',
             [
-                '<?php class A{}',
-                [
-                    'start' => 1,
-                    'classy' => 1,
-                    'open' => 4,
-                    'extends' => false,
-                    'implements' => false,
-                    'anonymousClass' => false,
-                ],
+                'start' => 1,
+                'classy' => 1,
+                'open' => 4,
+                'extends' => false,
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => false,
+                'abstract' => false,
+                'readonly' => false,
             ],
+        ];
+
+        yield [
+            '<?php final class A{}',
             [
-                '<?php final class A{}',
-                [
-                    'start' => 1,
-                    'classy' => 3,
-                    'open' => 6,
-                    'extends' => false,
-                    'implements' => false,
-                    'anonymousClass' => false,
-                ],
+                'start' => 1,
+                'classy' => 3,
+                'open' => 6,
+                'extends' => false,
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => 1,
+                'abstract' => false,
+                'readonly' => false,
             ],
+        ];
+
+        yield [
+            '<?php abstract /**/ class A{}',
             [
-                '<?php abstract /**/ class A{}',
-                [
-                    'start' => 1,
-                    'classy' => 5,
-                    'open' => 8,
-                    'extends' => false,
-                    'implements' => false,
-                    'anonymousClass' => false,
-                ],
+                'start' => 1,
+                'classy' => 5,
+                'open' => 8,
+                'extends' => false,
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => false,
+                'abstract' => 1,
+                'readonly' => false,
             ],
+        ];
+
+        yield [
+            '<?php class A extends B {}',
             [
-                '<?php class A extends B {}',
-                [
-                    'start' => 1,
-                    'classy' => 1,
-                    'open' => 9,
-                    'extends' => [
-                        'start' => 5,
-                        'numberOfExtends' => 1,
-                        'multiLine' => false,
-                    ],
-                    'implements' => false,
-                    'anonymousClass' => false,
+                'start' => 1,
+                'classy' => 1,
+                'open' => 9,
+                'extends' => [
+                    'start' => 5,
+                    'numberOfExtends' => 1,
+                    'multiLine' => false,
                 ],
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => false,
+                'abstract' => false,
+                'readonly' => false,
             ],
+        ];
+
+        yield [
+            '<?php interface A extends B,C,D {}',
             [
-                '<?php interface A extends B,C,D {}',
-                [
-                    'start' => 1,
-                    'classy' => 1,
-                    'open' => 13,
-                    'extends' => [
-                        'start' => 5,
-                        'numberOfExtends' => 3,
-                        'multiLine' => false,
-                    ],
-                    'implements' => false,
-                    'anonymousClass' => false,
+                'start' => 1,
+                'classy' => 1,
+                'open' => 13,
+                'extends' => [
+                    'start' => 5,
+                    'numberOfExtends' => 3,
+                    'multiLine' => false,
                 ],
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => false,
+                'abstract' => false,
+                'readonly' => false,
             ],
         ];
     }
 
     /**
-     * @param string $source   PHP source code
-     * @param string $label
-     * @param array  $expected
+     * @param array<string, mixed> $expected
      *
-     * @dataProvider provideClassyImplementsInfoCases
+     * @dataProvider provideClassyInheritanceInfoCases
      */
-    public function testClassyInheritanceInfo($source, $label, array $expected)
+    public function testClassyInheritanceInfo(string $source, string $label, array $expected): void
     {
         $this->doTestClassyInheritanceInfo($source, $label, $expected);
     }
 
-    /**
-     * @param string $source   PHP source code
-     * @param string $label
-     * @param array  $expected
-     *
-     * @requires PHP 7.0
-     * @dataProvider provideClassyInheritanceInfo7Cases
-     */
-    public function testClassyInheritanceInfo7($source, $label, array $expected)
+    public static function provideClassyInheritanceInfoCases(): iterable
     {
-        $this->doTestClassyInheritanceInfo($source, $label, $expected);
-    }
-
-    public function provideClassyImplementsInfoCases()
-    {
-        return [
-            [
-                '<?php
+        yield '1' => [
+            '<?php
 class X11 implements    Z   , T,R
 {
 }',
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
-            ],
-            [
-                '<?php
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+        ];
+
+        yield '2' => [
+            '<?php
 class X10 implements    Z   , T,R    //
 {
 }',
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
-            ],
-            [
-                '<?php class A implements B {}',
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 1, 'multiLine' => false],
-            ],
-            [
-                "<?php class A implements B,\n C{}",
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 2, 'multiLine' => true],
-            ],
-            [
-                "<?php class A implements Z\\C\\B,C,D  {\n\n\n}",
-                'numberOfImplements',
-                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
-            ],
-            [
-                '<?php
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+        ];
+
+        yield '3' => [
+            '<?php class A implements B {}',
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 1, 'multiLine' => false],
+        ];
+
+        yield '4' => [
+            "<?php class A implements B,\n I{}",
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 2, 'multiLine' => true],
+        ];
+
+        yield '5' => [
+            "<?php class A implements Z\\C\\B,C,D  {\n\n\n}",
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+        ];
+
+        if (\PHP_VERSION_ID < 8_00_00) {
+            $multiLine = true;
+            $code = '<?php
 namespace A {
-    interface C {}
+    interface X {}
 }
 
 namespace {
@@ -568,122 +619,277 @@ namespace {
 
     $a = new A();
     $a->test();
-}',
-                'numberOfImplements',
-                ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => true],
-            ],
-        ];
+}';
+        } else {
+            $multiLine = false;
+            $code = '<?php
+namespace A {
+    interface X {}
+}
+
+namespace {
+    class B{}
+
+    class A extends //
+        B     implements /*  */ \A\C, Z{
+        public function test()
+        {
+            echo 1;
+        }
     }
 
-    public function provideClassyInheritanceInfo7Cases()
-    {
-        return [
-            [
-                "<?php \$a = new    class(3)     extends\nSomeClass\timplements    SomeInterface, D {};",
-                'numberOfExtends',
-                ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
-            ],
-            [
-                "<?php \$a = new class(4) extends\nSomeClass\timplements SomeInterface, D\n\n{};",
-                'numberOfImplements',
-                ['start' => 16, 'numberOfImplements' => 2, 'multiLine' => false],
-            ],
-            [
-                "<?php \$a = new class(5) extends SomeClass\nimplements    SomeInterface, D {};",
-                'numberOfExtends',
-                ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
-            ],
+    $a = new A();
+    $a->test();
+}';
+        }
+
+        yield [
+            $code,
+            'numberOfImplements',
+            ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => $multiLine],
+        ];
+
+        yield [
+            "<?php \$a = new    class(3)     extends\nSomeClass\timplements    SomeInterface, D {};",
+            'numberOfExtends',
+            ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
+        ];
+
+        yield [
+            "<?php \$a = new class(4) extends\nSomeClass\timplements SomeInterface, D\n\n{};",
+            'numberOfImplements',
+            ['start' => 16, 'numberOfImplements' => 2, 'multiLine' => false],
+        ];
+
+        yield [
+            "<?php \$a = new class(5) extends SomeClass\nimplements    SomeInterface, D {};",
+            'numberOfExtends',
+            ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider providePHP7Cases
-     * @requires PHP 7.0
+     * @dataProvider provideFixCases
      */
-    public function testFixPHP7($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([]);
-
         $this->doTest($expected, $input);
     }
 
-    public function providePHP7Cases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 $a = new class implements
     \RFb,
     \Fcc,
     \GFddZz
 {
 };',
-                '<?php
+            '<?php
 $a = new class implements
     \RFb,
     \Fcc, \GFddZz
 {
 };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = new class implements
     \RFb,
     \Fcc,
     \GFddZz
 {
 }?>',
-                '<?php
+            '<?php
 $a = new class implements
     \RFb,
     \Fcc, \GFddZz
 {
 }?>',
-            ],
+        ];
+
+        yield [
+            '<?php new class(1, 2, 3, ) {};',
+            '<?php new class(1, 2, 3,) {};',
+        ];
+
+        yield [
+            '<?php new class(1, 2, 3, ) {};',
+            '<?php new class(
+                    1,
+                    2,
+                    3,
+                ) {};',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure([]);
-
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                "<?php\r\nclass Aaa implements\r\n\tBbb,\r\n\tCcc,\r\n\tDdd\r\n\t{\r\n\t}",
-                "<?php\r\nclass Aaa implements\r\n\tBbb, Ccc,\r\n\tDdd\r\n\t{\r\n\t}",
-            ],
+        yield [
+            "<?php\r\nclass Aaa implements\r\n\tBbb,\r\n\tCcc,\r\n\tDdd\r\n\t{\r\n\t}",
+            "<?php\r\nclass Aaa implements\r\n\tBbb, Ccc,\r\n\tDdd\r\n\t{\r\n\t}",
         ];
     }
 
-    private function doTestClassyInheritanceInfo($source, $label, array $expected)
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'anonymous class, single attribute' => [
+            '<?php $a = new #[FOO] class(2) {};',
+            '<?php $a = new    #[FOO]   class(2){};',
+        ];
+
+        yield 'anonymous class, multiple attributes' => [
+            '<?php $a = new #[FOO] #[BAR] class {};',
+            '<?php $a = new    #[FOO]    #[BAR]  class  {};',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield [
+            "<?php enum SomeEnum implements SomeInterface, D\n{};",
+            "<?php enum SomeEnum \timplements    SomeInterface, D {};",
+        ];
+
+        yield [
+            "<?php enum SomeEnum : int\n{}",
+            '<?php enum   SomeEnum  :  int   {}',
+        ];
+
+        yield [
+            "<?php enum SomeEnum\n{}",
+            "<?php enum\tSomeEnum{}",
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield 'final readonly works' => [
+            '<?php final readonly class a
+{}',
+            '<?php final           readonly      class a
+{}',
+        ];
+
+        yield 'final - readonly modifiers get sorted' => [
+            '<?php final readonly class a
+{}',
+            '<?php readonly final class a
+{}',
+        ];
+
+        yield 'abstract - readonly modifiers get sorted' => [
+            '<?php abstract readonly class a
+{}',
+            '<?php readonly abstract class a
+{}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testFix83(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix83Cases(): iterable
+    {
+        yield 'anonymous class, readonly, missing spacing' => [
+            '<?php $a = new readonly class {};',
+            '<?php $a = new readonly class{};',
+        ];
+
+        yield 'anonymous class, readonly, to much spacing' => [
+            '<?php $a = new readonly class {};',
+            '<?php $a = new      readonly   class  {};',
+        ];
+
+        yield 'anonymous class, single attribute' => [
+            '<?php $a = new #[BAR] readonly class {};',
+            '<?php $a = new        #[BAR]   readonly class{};',
+        ];
+
+        yield 'anonymous class, multiple attributes' => [
+            '<?php $a = new #[FOO] #[BAR] readonly class {};',
+            '<?php $a = new    #[FOO]    #[BAR]   readonly class   {};',
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $expected
+     */
+    private static function assertConfigurationSame(array $expected, ClassDefinitionFixer $fixer): void
+    {
+        $reflectionProperty = new \ReflectionProperty($fixer, 'configuration');
+        $reflectionProperty->setAccessible(true);
+
+        self::assertSame($expected, $reflectionProperty->getValue($fixer));
+    }
+
+    /**
+     * @param array<string, mixed> $expected
+     */
+    private function doTestClassyInheritanceInfo(string $source, string $label, array $expected): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
-        static::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
+        self::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
         $method = new \ReflectionMethod($this->fixer, 'getClassyInheritanceInfo');
         $method->setAccessible(true);
 
         $result = $method->invoke($this->fixer, $tokens, $expected['start'], $label);
 
-        static::assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
-    private function provideClassyCases($classy)
+    private static function provideClassyCases(string $classy): iterable
     {
         return [
             [
@@ -751,7 +957,7 @@ namespace {
         ];
     }
 
-    private function provideClassyExtendingCases($classy)
+    private static function provideClassyExtendingCases(string $classy): iterable
     {
         return [
             [
@@ -781,9 +987,14 @@ extends
         ];
     }
 
-    private function provideClassyImplementsCases()
+    private static function provideClassyImplementsCases(): iterable
     {
         return [
+            [
+                '<?php class LotOfImplements implements A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q
+{}',
+                '<?php class LotOfImplements implements A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q{}',
+            ],
             [
                 "<?php class E implements B\n{}",
                 "<?php class    E   \nimplements     B       \t{}",
@@ -792,11 +1003,24 @@ extends
                 "<?php abstract class F extends B implements C\n{}",
                 '<?php abstract    class    F    extends     B    implements C {}',
             ],
-            [
+            'multiline abstract extends implements with comments' => [
                 "<?php abstract class G extends       //
 B /*  */ implements C\n{}",
                 '<?php abstract    class     G     extends       //
 B/*  */implements C{}',
+            ],
+            'final extends implement' => [
+                "<?php final class G extends       //
+B /*  */ implements C\n{}",
+                '<?php final    class     G     extends       //
+B/*  */implements C{}',
+            ],
+            'final' => [
+                '<?php final class G        //
+/*  */
+{}',
+                '<?php final    class     G        //
+/*  */{}',
             ],
             [
                 '<?php

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -30,26 +32,18 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ImportTransformer extends AbstractTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getCustomTokens()
+    public function getPriority(): int
     {
-        return [CT::T_CONST_IMPORT, CT::T_FUNCTION_IMPORT];
+        // Should run after CurlyBraceTransformer and ReturnRefTransformer
+        return -1;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRequiredPhpVersionId()
+    public function getRequiredPhpVersionId(): int
     {
-        return 50600;
+        return 5_06_00;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(Tokens $tokens, Token $token, $index)
+    public function process(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->isGivenKind([T_CONST, T_FUNCTION])) {
             return;
@@ -57,11 +51,22 @@ final class ImportTransformer extends AbstractTransformer
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if ($prevToken->isGivenKind(T_USE)) {
-            $tokens[$index] = new Token([
-                $token->isGivenKind(T_FUNCTION) ? CT::T_FUNCTION_IMPORT : CT::T_CONST_IMPORT,
-                $token->getContent(),
-            ]);
+        if (!$prevToken->isGivenKind(T_USE)) {
+            $nextToken = $tokens[$tokens->getNextTokenOfKind($index, ['=', '(', [CT::T_RETURN_REF], [CT::T_GROUP_IMPORT_BRACE_CLOSE]])];
+
+            if (!$nextToken->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+                return;
+            }
         }
+
+        $tokens[$index] = new Token([
+            $token->isGivenKind(T_FUNCTION) ? CT::T_FUNCTION_IMPORT : CT::T_CONST_IMPORT,
+            $token->getContent(),
+        ]);
+    }
+
+    public function getCustomTokens(): array
+    {
+        return [CT::T_CONST_IMPORT, CT::T_FUNCTION_IMPORT];
     }
 }

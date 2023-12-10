@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,27 +15,28 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
+ * @deprecated
+ *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-final class ClassKeywordRemoveFixer extends AbstractFixer
+final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedFixerInterface
 {
     /**
      * @var string[]
      */
-    private $imports = [];
+    private array $imports = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Converts `::class` keywords to FQCN strings.',
@@ -50,66 +53,44 @@ $className = Baz::class;
         );
     }
 
+    public function getSuccessorsNames(): array
+    {
+        return [];
+    }
+
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoUnusedImportsFixer.
      */
-    public function isCandidate(Tokens $tokens)
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(CT::T_CLASS_CONSTANT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $this->replaceClassKeywords($tokens);
-    }
-
-    /**
-     * Replaces ::class keyword, namespace by namespace.
-     *
-     * It uses recursive method to get rid of token index changes.
-     *
-     * @param Tokens $tokens
-     * @param int    $namespaceNumber
-     */
-    private function replaceClassKeywords(Tokens $tokens, $namespaceNumber = -1)
-    {
-        $namespaceIndexes = array_keys($tokens->findGivenKind(T_NAMESPACE));
-
-        // Namespace blocks
-        if (\count($namespaceIndexes) && isset($namespaceIndexes[$namespaceNumber])) {
-            $startIndex = $namespaceIndexes[$namespaceNumber];
-
-            $namespaceBlockStartIndex = $tokens->getNextTokenOfKind($startIndex, [';', '{']);
-            $endIndex = $tokens[$namespaceBlockStartIndex]->equals('{')
-                ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $namespaceBlockStartIndex)
-                : $tokens->getNextTokenOfKind($namespaceBlockStartIndex, [T_NAMESPACE]);
-            $endIndex = $endIndex ?: $tokens->count() - 1;
-        } elseif (-1 === $namespaceNumber) { // Out of any namespace block
-            $startIndex = 0;
-            $endIndex = \count($namespaceIndexes) ? $namespaceIndexes[0] : $tokens->count() - 1;
-        } else {
-            return;
+        $previousNamespaceScopeEndIndex = 0;
+        foreach ($tokens->getNamespaceDeclarations() as $declaration) {
+            $this->replaceClassKeywordsSection($tokens, '', $previousNamespaceScopeEndIndex, $declaration->getStartIndex());
+            $this->replaceClassKeywordsSection($tokens, $declaration->getFullName(), $declaration->getStartIndex(), $declaration->getScopeEndIndex());
+            $previousNamespaceScopeEndIndex = $declaration->getScopeEndIndex();
         }
 
-        $this->storeImports($tokens, $startIndex, $endIndex);
-        $tokens->rewind();
-        $this->replaceClassKeywordsSection($tokens, $startIndex, $endIndex);
-        $this->replaceClassKeywords($tokens, $namespaceNumber + 1);
+        $this->replaceClassKeywordsSection($tokens, '', $previousNamespaceScopeEndIndex, $tokens->count() - 1);
     }
 
-    /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
-     */
-    private function storeImports(Tokens $tokens, $startIndex, $endIndex)
+    private function storeImports(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $this->imports = [];
 
+        /** @var int $index */
         foreach ($tokensAnalyzer->getImportUseIndexes() as $index) {
             if ($index < $startIndex || $index > $endIndex) {
                 continue;
@@ -128,15 +109,11 @@ $className = Baz::class;
             if ($tokens[$index]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $groupEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $index);
                 $groupImports = array_map(
-                    static function ($import) {
-                        return trim($import);
-                    },
+                    static fn (string $import): string => trim($import),
                     explode(',', $tokens->generatePartialCode($index + 1, $groupEndIndex - 1))
                 );
                 foreach ($groupImports as $groupImport) {
-                    $groupImportParts = array_map(static function ($import) {
-                        return trim($import);
-                    }, explode(' as ', $groupImport));
+                    $groupImportParts = array_map(static fn (string $import): string => trim($import), explode(' as ', $groupImport));
                     if (2 === \count($groupImportParts)) {
                         $this->imports[$groupImportParts[1]] = $import.$groupImportParts[0];
                     } else {
@@ -153,28 +130,32 @@ $className = Baz::class;
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
-     */
-    private function replaceClassKeywordsSection(Tokens $tokens, $startIndex, $endIndex)
+    private function replaceClassKeywordsSection(Tokens $tokens, string $namespace, int $startIndex, int $endIndex): void
     {
+        if ($endIndex - $startIndex < 3) {
+            return;
+        }
+
+        $this->storeImports($tokens, $startIndex, $endIndex);
+
         $ctClassTokens = $tokens->findGivenKind(CT::T_CLASS_CONSTANT, $startIndex, $endIndex);
-        if (!empty($ctClassTokens)) {
-            $this->replaceClassKeyword($tokens, current(array_keys($ctClassTokens)));
-            $this->replaceClassKeywordsSection($tokens, $startIndex, $endIndex);
+        foreach (array_reverse(array_keys($ctClassTokens)) as $classIndex) {
+            $this->replaceClassKeyword($tokens, $namespace, $classIndex);
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     * @param int    $classIndex
-     */
-    private function replaceClassKeyword(Tokens $tokens, $classIndex)
+    private function replaceClassKeyword(Tokens $tokens, string $namespacePrefix, int $classIndex): void
     {
         $classEndIndex = $tokens->getPrevMeaningfulToken($classIndex);
         $classEndIndex = $tokens->getPrevMeaningfulToken($classEndIndex);
+
+        if (!$tokens[$classEndIndex]->isGivenKind(T_STRING)) {
+            return;
+        }
+
+        if ($tokens[$classEndIndex]->equalsAny([[T_STRING, 'self'], [T_STATIC, 'static'], [T_STRING, 'parent']], false)) {
+            return;
+        }
 
         $classBeginIndex = $classEndIndex;
         while (true) {
@@ -194,45 +175,46 @@ $className = Baz::class;
         );
 
         $classImport = false;
-        foreach ($this->imports as $alias => $import) {
-            if ($classString === $alias) {
-                $classImport = $import;
+        if ($tokens[$classBeginIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            $namespacePrefix = '';
+        } else {
+            foreach ($this->imports as $alias => $import) {
+                if ($classString === $alias) {
+                    $classImport = $import;
 
-                break;
-            }
+                    break;
+                }
 
-            $classStringArray = explode('\\', $classString);
-            $namespaceToTest = $classStringArray[0];
+                $classStringArray = explode('\\', $classString);
+                $namespaceToTest = $classStringArray[0];
 
-            if (0 === strcmp($namespaceToTest, substr($import, -\strlen($namespaceToTest)))) {
-                $classImport = $import;
+                if (0 === ($namespaceToTest <=> substr($import, -\strlen($namespaceToTest)))) {
+                    $classImport = $import;
 
-                break;
+                    break;
+                }
             }
         }
 
         for ($i = $classBeginIndex; $i <= $classIndex; ++$i) {
-            if (!$tokens[$i]->isComment() && !($tokens[$i]->isWhitespace() && false !== strpos($tokens[$i]->getContent(), "\n"))) {
+            if (!$tokens[$i]->isComment() && !($tokens[$i]->isWhitespace() && str_contains($tokens[$i]->getContent(), "\n"))) {
                 $tokens->clearAt($i);
             }
         }
 
         $tokens->insertAt($classBeginIndex, new Token([
             T_CONSTANT_ENCAPSED_STRING,
-            "'".$this->makeClassFQN($classImport, $classString)."'",
+            "'".$this->makeClassFQN($namespacePrefix, $classImport, $classString)."'",
         ]));
     }
 
     /**
      * @param false|string $classImport
-     * @param string       $classString
-     *
-     * @return string
      */
-    private function makeClassFQN($classImport, $classString)
+    private function makeClassFQN(string $namespacePrefix, $classImport, string $classString): string
     {
         if (false === $classImport) {
-            return $classString;
+            return ('' !== $namespacePrefix ? ($namespacePrefix.'\\') : '').$classString;
         }
 
         $classStringArray = explode('\\', $classString);

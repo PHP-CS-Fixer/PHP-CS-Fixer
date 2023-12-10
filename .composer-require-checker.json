@@ -1,20 +1,24 @@
 {
     "symbol-whitelist" : [
+        "Symfony\\Component\\EventDispatcher\\Event",
+        "Symfony\\Contracts\\EventDispatcher\\Event",
         "Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface",
-        "PhpCsFixer\\Tests\\Test\\Constraint\\SameStringsConstraint",
-        "PHPUnit\\Framework\\Constraint\\IsIdentical",
-        "PHPUnit\\Framework\\TestCase",
-        "PHPUnit\\Runner\\Version",
-        "PHPUnitGoodPractices\\Traits\\ExpectationViaCodeOverAnnotationTrait",
-        "PHPUnitGoodPractices\\Traits\\ExpectOverSetExceptionTrait",
-        "PHPUnitGoodPractices\\Traits\\IdentityOverEqualityTrait",
-        "PHPUnitGoodPractices\\Traits\\ProphecyOverMockObjectTrait",
-        "PHPUnitGoodPractices\\Traits\\ProphesizeOnlyInterfaceTrait",
-        "Prophecy\\Argument",
 
         "null", "true", "false",
         "static", "self", "parent",
-        "array", "string", "int", "float", "bool", "iterable", "callable", "void"
+        "array", "string", "int", "float", "bool", "iterable", "callable", "void",
+        "T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG",
+        "T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG",
+        "T_ATTRIBUTE",
+        "T_COALESCE_EQUAL",
+        "T_ENUM",
+        "T_FN",
+        "T_MATCH",
+        "T_NAME_FULLY_QUALIFIED",
+        "T_NAME_QUALIFIED",
+        "T_NAME_RELATIVE",
+        "T_NULLSAFE_OBJECT_OPERATOR",
+        "T_READONLY"
     ],
     "php-core-extensions" : [
         "dom", "mbstring", "Phar",

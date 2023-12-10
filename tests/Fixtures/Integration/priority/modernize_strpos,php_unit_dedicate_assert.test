@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: modernize_strpos,php_unit_dedicate_assert.
+--RULESET--
+{"modernize_strpos": true, "php_unit_dedicate_assert": {"target": "newest"}}
+--EXPECT--
+<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testSomeTest()
+    {
+        self::assertStringStartsWith(  $needle, $haystack);
+    }
+}
+
+--INPUT--
+<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testSomeTest()
+    {
+        self::assertTrue(0 === strpos($haystack, $needle));
+    }
+}

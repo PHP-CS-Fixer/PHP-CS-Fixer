@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,7 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\Semicolon;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
@@ -25,269 +26,287 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideNoEmptyStatementsCases
      */
-    public function testNoEmptyStatements($expected, $input = null)
+    public function testNoEmptyStatements(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideNoEmptyStatementsCases()
+    public static function provideNoEmptyStatementsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                 abstract class TestClass0 extends Test IMPLEMENTS TestInterface, TestInterface2
                 {
                 }
                 ',
-                '<?php
+            '<?php
                 abstract class TestClass0 extends Test IMPLEMENTS TestInterface, TestInterface2
                 {
                 };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 abstract class TestClass1 EXTENDS Test implements TestInterface
                 {
                 }
                 ',
-                '<?php
+            '<?php
                 abstract class TestClass1 EXTENDS Test implements TestInterface
                 {
                 };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 CLASS TestClass2 extends Test
                 {
                 }
                 ',
-                '<?php
+            '<?php
                 CLASS TestClass2 extends Test
                 {
                 };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class TestClass3 implements TestInterface1
                 {
                 }
                 ',
-                '<?php
+            '<?php
                 class TestClass3 implements TestInterface1
                 {
                 };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 class TestClass4
                 {
                 }
                 ',
-                '<?php
+            '<?php
                 class TestClass4
                 {
                 };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 interface TestInterface1
                 {
                 }
                 ',
-                '<?php
+            '<?php
                 interface TestInterface1
                 {
                 };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 interface TestExtendingInterface extends TestInterface2, TestInterface3 {
                 }
                 ',
-                '<?php
+            '<?php
                 interface TestExtendingInterface extends TestInterface2, TestInterface3 {
                 };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 namespace Two {
                     $a = 1; {
                     }
                 }
                 ',
-                '<?php
+            '<?php
                 namespace Two {;;
                     $a = 1; {
                     };
                 }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 {
                     '.'
                 }
                 echo 1;
                 ',
-                '<?php
+            '<?php
                 {
                     ;
                 };
                 echo 1;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 while($time < $a)
                     ;
                 echo "done waiting.";
                 $b = \Test;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     if($a>1){
 
                     }
                 ',
-                '<?php
+            '<?php
                     if($a>1){
 
                     };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     if($a>1) {
 
                     } else {
 
                     }
                 ',
-                '<?php
+            '<?php
                     if($a>1) {
 
                     } else {
 
                     };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     try{
 
                     }catch (\Exception $e) {
 
                     }
                 ',
-                '<?php
+            '<?php
                     try{
 
                     }catch (\Exception $e) {
 
                     };
                 ',
-            ],
-            [
-                '<?php ',
-                '<?php ;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php ',
+            '<?php ;',
+        ];
+
+        yield [
+            '<?php
                     function foo()
                     {
                          // a
                     }
                 ',
-                '<?php
+            '<?php
                     function foo()
                     {
                         ; // a
                     }
                 ',
-            ],
-            [
-                '<?php function foo(){}',
-                '<?php function foo(){;;}',
-            ],
-            [
-                '<?php class Test{}',
-                '<?php class Test{};',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php function foo(){}',
+            '<?php function foo(){;;}',
+        ];
+
+        yield [
+            '<?php class Test{}',
+            '<?php class Test{};',
+        ];
+
+        yield [
+            '<?php
                     for(;;) {
                     }
                 ',
-                '<?php
+            '<?php
                     for(;;) {
                     };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     foreach($a as $b) {
                     }
                     foreach($a as $b => $c) {
                     }
                 ',
-                '<?php
+            '<?php
                     foreach($a as $b) {
                     };
                     foreach($a as $b => $c) {
                     };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     while($a > 1){
                     }
                     do {
-                    } while($a>1);
+                    } while($a>1);  // 1
                 ',
-                '<?php
+            '<?php
                     while($a > 1){
                     };
                     do {
-                    } while($a>1);
+                    } while($a>1); 1; // 1
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     switch($a) {
                         default : {echo 1;}
                     }
                 ',
-                '<?php
+            '<?php
                     switch($a) {
                         default : {echo 1;}
                     };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function test($a, $b) {
                 }
                 ',
-                '<?php
+            '<?php
                 function test($a, $b) {
                 };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function foo($n)
                 {
                     '.'
@@ -301,7 +320,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     return $n->{$o};
                 }
                 ',
-                '<?php
+            '<?php
                 function foo($n)
                 {
                     ;
@@ -315,99 +334,135 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     return $n->{$o};
                 };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 declare(ticks=1) {
                 // entire script here
                 }
                 declare(ticks=1);
                 ',
-                '<?php
+            '<?php
                 declare(ticks=1) {
                 // entire script here
                 };
                 declare(ticks=1);
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     namespace A\B\C;
                     use D;
                 ',
-                '<?php
+            '<?php
                     namespace A\B\C;;;;
                     use D;;;;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     namespace A\B\C;
                     use D;
                 ',
-                '<?php
+            '<?php
                     namespace A\B\C;
                     use D;;;;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     namespace A\B\C;use D;
                 ',
-                '<?php
+            '<?php
                     namespace A\B\C;;use D;
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     trait TestTrait
                     {
                     }
                 ',
-                '<?php
+            '<?php
                     trait TestTrait
                     {
                     };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     try {
-                        throw new \Exception("a");
+                        throw new \Exception("Foo.");
                     } catch (\Exception $e){
                         //
                     } finally {
                     }  '.'
                 ',
-                '<?php
+            '<?php
                     try {
-                        throw new \Exception("a");
+                        throw new \Exception("Foo.");
                     } catch (\Exception $e){
                         //
                     } finally {
                     }  ;
                 ',
-            ],
+        ];
+
+        foreach (['break', 'continue'] as $ops) {
+            yield [
+                sprintf('<?php while(true) {%s ;}', $ops),
+                sprintf('<?php while(true) {%s 1;}', $ops),
+            ];
+        }
+
+        foreach (['1', '1.0', '"foo"', '$foo'] as $noop) {
+            yield [
+                '<?php echo "foo";  ',
+                sprintf('<?php echo "foo"; %s ;', $noop),
+            ];
+        }
+
+        yield [
+            '<?php /* 1 */   /* 2 */  /* 3 */ ',
+            '<?php /* 1 */ ;  /* 2 */ 1 /* 3 */ ;',
+        ];
+
+        yield [
+            '<?php
+                while(true) {while(true) {break 2;}}
+                while(true) {continue;}
+            ',
+        ];
+
+        yield [
+            '<?php if ($foo1) {} ',
+            '<?php if ($foo1) {} 1;',
+        ];
+
+        yield [
+            '<?php if ($foo2) {}',
+            '<?php if ($foo2) {1;}',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider providePHP7Cases
-     * @requires PHP 7.0
+     * @dataProvider provideFixCases
      */
-    public function testFixPHP7($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function providePHP7Cases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     use function Functional\map;
                     $a = new class {
                         public function log($msg)
@@ -415,166 +470,189 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                         }
                     };
                     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     use function Functional\map;
                     $a = new class extends A {
                     };
                     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     use function Functional\map;
                     $a = new class implements B {
                     };
                     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     use function Functional\map;
                     $a = new class extends A implements B {
                     };
                     ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a = new class extends \A implements B\C {
                     };
                     ',
-            ],
-            [
-                '<?php {{}}',
-                '<?php {{}};',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php {{}}',
+            '<?php {{}};',
+        ];
+
+        yield [
+            '<?php
                     namespace A\B\C {
 
                     }
                 ',
-                '<?php
+            '<?php
                     namespace A\B\C {
 
                     };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     namespace A{
 
                     }
                 ',
-                '<?php
+            '<?php
                     namespace A{
 
                     };
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     namespace{
 
                     }
                 ',
-                '<?php
+            '<?php
                     namespace{
 
                     };
                 ',
-            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideCasesWithShortOpenTagCases
      */
-    public function testCasesWithShortOpenTag($expected, $input = null)
+    public function testCasesWithShortOpenTag(string $expected, ?string $input = null): void
     {
-        if (!ini_get('short_open_tag')) {
-            static::markTestSkipped('No short tag tests possible.');
+        if (!\ini_get('short_open_tag')) {
+            self::markTestSkipped('No short tag tests possible.');
         }
+
         $this->doTest($expected, $input);
     }
 
-    public function provideCasesWithShortOpenTagCases()
+    public static function provideCasesWithShortOpenTagCases(): iterable
     {
-        return [
-            [
-                '<? ',
-                '<? ;',
-            ],
+        yield [
+            '<? ',
+            '<? ;',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixMultipleSemicolonsCases
      */
-    public function testFixMultipleSemicolons($expected, $input = null)
+    public function testFixMultipleSemicolons(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixMultipleSemicolonsCases()
+    public static function provideFixMultipleSemicolonsCases(): iterable
     {
-        return [
-            [
-                '<?php $foo = 2 ; //
+        yield [
+            '<?php $foo = 2 ; //
                     '.'
 
                 ',
-                '<?php $foo = 2 ; //
+            '<?php $foo = 2 ; //
                     ;
 
                 ',
-            ],
-            [
-                '<?php $foo = 3; /**/ ',
-                '<?php $foo = 3; /**/; ;',
-            ],
-            [
-                '<?php $foo = 1;',
-                '<?php $foo = 1;;;',
-            ],
-            [
-                '<?php $foo = 4; ',
-                '<?php $foo = 4;; ;;',
-            ],
-            [
-                '<?php $foo = 5;
+        ];
+
+        yield [
+            '<?php $foo = 3; /**/ ',
+            '<?php $foo = 3; /**/; ;',
+        ];
+
+        yield [
+            '<?php $foo = 1;',
+            '<?php $foo = 1;;;',
+        ];
+
+        yield [
+            '<?php $foo = 4; ',
+            '<?php $foo = 4;; ;;',
+        ];
+
+        yield [
+            '<?php $foo = 5;
 
     ',
-                '<?php $foo = 5;;
+            '<?php $foo = 5;;
 ;
     ;',
-            ],
-            [
-                '<?php $foo = 6; ',
-                '<?php $foo = 6;; ',
-            ],
-            [
-                '<?php for ($i = 7; ; ++$i) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php $foo = 6; ',
+            '<?php $foo = 6;; ',
+        ];
+
+        yield [
+            '<?php for ($i = 7; ; ++$i) {}',
+        ];
+
+        yield [
+            '<?php
                     switch($a){
                         case 8;
                             echo 9;
                     }
                 ',
-                '<?php
+            '<?php
                     switch($a){
                         case 8;;
                             echo 9;
                     }
                 ',
-            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield [
+            '<?php enum Foo{}',
+            '<?php enum Foo{};',
         ];
     }
 }

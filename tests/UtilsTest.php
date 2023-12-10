@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,12 +15,15 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Odín del Río <odin.drp@gmail.com>
  *
  * @internal
@@ -27,95 +32,133 @@ use PhpCsFixer\Utils;
  */
 final class UtilsTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
+    /**
+     * @var null|false|string
+     */
+    private $originalValueOfFutureMode;
+
+    protected function setUp(): void
+    {
+        $this->originalValueOfFutureMode = getenv('PHP_CS_FIXER_FUTURE_MODE');
+    }
+
+    protected function tearDown(): void
+    {
+        putenv("PHP_CS_FIXER_FUTURE_MODE={$this->originalValueOfFutureMode}");
+    }
+
     /**
      * @param string $expected Camel case string
-     * @param string $input    Input string
      *
      * @dataProvider provideCamelCaseToUnderscoreCases
      */
-    public function testCamelCaseToUnderscore($expected, $input = null)
+    public function testCamelCaseToUnderscore(string $expected, string $input = null): void
     {
         if (null !== $input) {
-            static::assertSame($expected, Utils::camelCaseToUnderscore($input));
+            self::assertSame($expected, Utils::camelCaseToUnderscore($input));
         }
 
-        static::assertSame($expected, Utils::camelCaseToUnderscore($expected));
+        self::assertSame($expected, Utils::camelCaseToUnderscore($expected));
     }
 
     /**
-     * @return array
+     * @return iterable<array{0: string, 1?: string}>
      */
-    public function provideCamelCaseToUnderscoreCases()
+    public static function provideCamelCaseToUnderscoreCases(): iterable
     {
-        return [
-            [
-                'dollar_close_curly_braces',
-                'DollarCloseCurlyBraces',
-            ],
-            [
-                'utf8_encoder_fixer',
-                'utf8EncoderFixer',
-            ],
-            [
-                'terminated_with_number10',
-                'TerminatedWithNumber10',
-            ],
-            [
-                'utf8_encoder_fixer',
-            ],
+        yield [
+            'dollar_close_curly_braces',
+            'DollarCloseCurlyBraces',
+        ];
+
+        yield [
+            'utf8_encoder_fixer',
+            'utf8EncoderFixer',
+        ];
+
+        yield [
+            'terminated_with_number10',
+            'TerminatedWithNumber10',
+        ];
+
+        yield [
+            'utf8_encoder_fixer',
+        ];
+
+        yield [
+            'a',
+            'A',
+        ];
+
+        yield [
+            'aa',
+            'AA',
+        ];
+
+        yield [
+            'foo',
+            'FOO',
+        ];
+
+        yield [
+            'foo_bar_baz',
+            'FooBarBAZ',
+        ];
+
+        yield [
+            'foo_bar_baz',
+            'FooBARBaz',
+        ];
+
+        yield [
+            'foo_bar_baz',
+            'FOOBarBaz',
+        ];
+
+        yield [
+            'mr_t',
+            'MrT',
+        ];
+
+        yield [
+            'voyage_éclair',
+            'VoyageÉclair',
         ];
     }
 
     /**
-     * @param int $expected
-     * @param int $left
-     * @param int $right
-     *
-     * @dataProvider provideCmpIntCases
-     */
-    public function testCmpInt($expected, $left, $right)
-    {
-        static::assertSame($expected, Utils::cmpInt($left, $right));
-    }
-
-    public function provideCmpIntCases()
-    {
-        return [
-            [0,    1,   1],
-            [0,   -1,  -1],
-            [-1,  10,  20],
-            [-1, -20, -10],
-            [1,   20,  10],
-            [1,  -10, -20],
-        ];
-    }
-
-    /**
-     * @param string       $spaces
-     * @param array|string $input  token prototype
+     * @param array{int, string}|string $input token prototype
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */
-    public function testCalculateTrailingWhitespaceIndent($spaces, $input)
+    public function testCalculateTrailingWhitespaceIndent(string $spaces, $input): void
     {
         $token = new Token($input);
 
-        static::assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
+        self::assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
     }
 
-    public function provideCalculateTrailingWhitespaceIndentCases()
+    /**
+     * @return iterable<array{string, array{int, string}|string}>
+     */
+    public static function provideCalculateTrailingWhitespaceIndentCases(): iterable
     {
-        return [
-            ['    ', [T_WHITESPACE, "\n\n    "]],
-            [' ', [T_WHITESPACE, "\r\n\r\r\r "]],
-            ["\t", [T_WHITESPACE, "\r\n\t"]],
-            ['', [T_WHITESPACE, "\t\n\r"]],
-            ['', [T_WHITESPACE, "\n"]],
-            ['', ''],
-        ];
+        yield ['    ', [T_WHITESPACE, "\n\n    "]];
+
+        yield [' ', [T_WHITESPACE, "\r\n\r\r\r "]];
+
+        yield ["\t", [T_WHITESPACE, "\r\n\t"]];
+
+        yield ['', [T_WHITESPACE, "\t\n\r"]];
+
+        yield ['', [T_WHITESPACE, "\n"]];
+
+        yield ['', ''];
     }
 
-    public function testCalculateTrailingWhitespaceIndentFail()
+    public function testCalculateTrailingWhitespaceIndentFail(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The given token must be whitespace, got "T_STRING".');
@@ -126,6 +169,9 @@ final class UtilsTest extends TestCase
     }
 
     /**
+     * @param list<mixed> $expected
+     * @param list<mixed> $elements
+     *
      * @dataProvider provideStableSortCases
      */
     public function testStableSort(
@@ -133,44 +179,48 @@ final class UtilsTest extends TestCase
         array $elements,
         callable $getComparableValueCallback,
         callable $compareValuesCallback
-    ) {
-        static::assertSame(
+    ): void {
+        self::assertSame(
             $expected,
             Utils::stableSort($elements, $getComparableValueCallback, $compareValuesCallback)
         );
     }
 
-    public function provideStableSortCases()
+    /**
+     * @return iterable<array{list<mixed>, list<mixed>, callable, callable}>
+     */
+    public static function provideStableSortCases(): iterable
     {
-        return [
-            [
-                ['a', 'b', 'c', 'd', 'e'],
-                ['b', 'd', 'e', 'a', 'c'],
-                static function ($element) { return $element; },
-                'strcmp',
-            ],
-            [
-                ['b', 'd', 'e', 'a', 'c'],
-                ['b', 'd', 'e', 'a', 'c'],
-                static function ($element) { return 'foo'; },
-                'strcmp',
-            ],
-            [
-                ['b', 'd', 'e', 'a', 'c'],
-                ['b', 'd', 'e', 'a', 'c'],
-                static function ($element) { return $element; },
-                static function ($a, $b) { return 0; },
-            ],
-            [
-                ['bar1', 'baz1', 'foo1', 'bar2', 'baz2', 'foo2'],
-                ['foo1', 'foo2', 'bar1', 'bar2', 'baz1', 'baz2'],
-                static function ($element) { return preg_replace('/([a-z]+)(\d+)/', '$2$1', $element); },
-                'strcmp',
-            ],
+        yield [
+            ['a', 'b', 'c', 'd', 'e'],
+            ['b', 'd', 'e', 'a', 'c'],
+            static fn ($element) => $element,
+            'strcmp',
+        ];
+
+        yield [
+            ['b', 'd', 'e', 'a', 'c'],
+            ['b', 'd', 'e', 'a', 'c'],
+            static fn (): string => 'foo',
+            'strcmp',
+        ];
+
+        yield [
+            ['b', 'd', 'e', 'a', 'c'],
+            ['b', 'd', 'e', 'a', 'c'],
+            static fn ($element) => $element,
+            static fn (): int => 0,
+        ];
+
+        yield [
+            ['bar1', 'baz1', 'foo1', 'bar2', 'baz2', 'foo2'],
+            ['foo1', 'foo2', 'bar1', 'bar2', 'baz1', 'baz2'],
+            static fn ($element) => preg_replace('/([a-z]+)(\d+)/', '$2$1', $element),
+            'strcmp',
         ];
     }
 
-    public function testSortFixers()
+    public function testSortFixers(): void
     {
         $fixers = [
             $this->createFixerDouble('f1', 0),
@@ -179,7 +229,7 @@ final class UtilsTest extends TestCase
             $this->createFixerDouble('f4', -10),
         ];
 
-        static::assertSame(
+        self::assertSame(
             [
                 $fixers[2],
                 $fixers[0],
@@ -190,7 +240,108 @@ final class UtilsTest extends TestCase
         );
     }
 
-    public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray()
+    public function testNaturalLanguageJoinThrowsInvalidArgumentExceptionForEmptyArray(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Array of names cannot be empty.');
+
+        Utils::naturalLanguageJoin([]);
+    }
+
+    public function testNaturalLanguageJoinThrowsInvalidArgumentExceptionForMoreThanOneCharWrapper(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Wrapper should be a single-char string or empty.');
+
+        Utils::naturalLanguageJoin(['a', 'b'], 'foo');
+    }
+
+    /**
+     * @dataProvider provideNaturalLanguageJoinCases
+     *
+     * @param list<string> $names
+     */
+    public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"'): void
+    {
+        self::assertSame($joined, Utils::naturalLanguageJoin($names, $wrapper));
+    }
+
+    /**
+     * @return iterable<array{0: string, 1: list<string>, 2?: string}>
+     */
+    public static function provideNaturalLanguageJoinCases(): iterable
+    {
+        yield [
+            '"a"',
+            ['a'],
+        ];
+
+        yield [
+            '"a" and "b"',
+            ['a', 'b'],
+        ];
+
+        yield [
+            '"a", "b" and "c"',
+            ['a', 'b', 'c'],
+        ];
+
+        yield [
+            '\'a\'',
+            ['a'],
+            '\'',
+        ];
+
+        yield [
+            '\'a\' and \'b\'',
+            ['a', 'b'],
+            '\'',
+        ];
+
+        yield [
+            '\'a\', \'b\' and \'c\'',
+            ['a', 'b', 'c'],
+            '\'',
+        ];
+
+        yield [
+            '?a?',
+            ['a'],
+            '?',
+        ];
+
+        yield [
+            '?a? and ?b?',
+            ['a', 'b'],
+            '?',
+        ];
+
+        yield [
+            '?a?, ?b? and ?c?',
+            ['a', 'b', 'c'],
+            '?',
+        ];
+
+        yield [
+            'a',
+            ['a'],
+            '',
+        ];
+
+        yield [
+            'a and b',
+            ['a', 'b'],
+            '',
+        ];
+
+        yield [
+            'a, b and c',
+            ['a', 'b', 'c'],
+            '',
+        ];
+    }
+
+    public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -198,77 +349,156 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @dataProvider provideNaturalLanguageJoinWithBackticksCases
+     * @param list<string> $names
      *
-     * @param string $joined
-     * @param array  $names
+     * @dataProvider provideNaturalLanguageJoinWithBackticksCases
      */
-    public function testNaturalLanguageJoinWithBackticks($joined, array $names)
+    public function testNaturalLanguageJoinWithBackticks(string $joined, array $names): void
     {
-        static::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
+        self::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
     }
 
-    public function provideNaturalLanguageJoinWithBackticksCases()
+    /**
+     * @return iterable<array{string, list<string>}>
+     */
+    public static function provideNaturalLanguageJoinWithBackticksCases(): iterable
     {
-        return [
-            [
-                '`a`',
-                ['a'],
-            ],
-            [
-                '`a` and `b`',
-                ['a', 'b'],
-            ],
-            [
-                '`a`, `b` and `c`',
-                ['a', 'b', 'c'],
-            ],
+        yield [
+            '`a`',
+            ['a'],
+        ];
+
+        yield [
+            '`a` and `b`',
+            ['a', 'b'],
+        ];
+
+        yield [
+            '`a`, `b` and `c`',
+            ['a', 'b', 'c'],
         ];
     }
 
     /**
-     * @param int   $expected
-     * @param array $options
-     *
-     * @dataProvider provideCalculateBitmaskCases
+     * @group legacy
      */
-    public function testCalculateBitmask($expected, array $options)
+    public function testTriggerDeprecationWhenFutureModeIsOff(): void
     {
-        static::assertSame($expected, Utils::calculateBitmask($options));
+        putenv('PHP_CS_FIXER_FUTURE_MODE=0');
+
+        $message = __METHOD__.'::The message';
+        $this->expectDeprecation($message);
+
+        Utils::triggerDeprecation(new \DomainException($message));
+
+        $triggered = Utils::getTriggeredDeprecations();
+        self::assertContains($message, $triggered);
     }
 
-    public function provideCalculateBitmaskCases()
+    public function testTriggerDeprecationWhenFutureModeIsOn(): void
     {
-        return [
-            [
-                JSON_HEX_TAG | JSON_HEX_QUOT,
-                ['JSON_HEX_TAG', 'JSON_HEX_QUOT'],
-            ],
-            [
-                JSON_HEX_TAG | JSON_HEX_QUOT,
-                ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'NON_EXISTENT_CONST'],
-            ],
-            [
-                JSON_HEX_TAG,
-                ['JSON_HEX_TAG'],
-            ],
-            [
-                JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS,
-                ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'JSON_HEX_AMP', 'JSON_HEX_APOS'],
-            ],
-            [
-                0,
-                [],
-            ],
-        ];
+        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
+
+        $message = __METHOD__.'::The message';
+        $exception = new \DomainException($message);
+        $futureModeException = null;
+
+        try {
+            Utils::triggerDeprecation($exception);
+        } catch (\Exception $futureModeException) {
+        }
+
+        self::assertInstanceOf(\RuntimeException::class, $futureModeException);
+        self::assertSame($exception, $futureModeException->getPrevious());
+
+        $triggered = Utils::getTriggeredDeprecations();
+        self::assertNotContains($message, $triggered);
     }
 
-    private function createFixerDouble($name, $priority)
+    /**
+     * @param mixed $input
+     *
+     * @dataProvider provideToStringCases
+     */
+    public function testToString(string $expected, $input): void
     {
-        $fixer = $this->prophesize(FixerInterface::class);
-        $fixer->getName()->willReturn($name);
-        $fixer->getPriority()->willReturn($priority);
+        self::assertSame($expected, Utils::toString($input));
+    }
 
-        return $fixer->reveal();
+    /**
+     * @return iterable<array{string, mixed}>
+     */
+    public static function provideToStringCases(): iterable
+    {
+        yield ["['a' => 3, 'b' => 'c']", ['a' => 3, 'b' => 'c']];
+
+        yield ['[[1], [2]]', [[1], [2]]];
+
+        yield ['[0 => [1], \'a\' => [2]]', [[1], 'a' => [2]]];
+
+        yield ['[1, 2, \'foo\', null]', [1, 2, 'foo', null]];
+
+        yield ['[1, 2]', [1, 2]];
+
+        yield ['[]', []];
+
+        yield ['1.5', 1.5];
+
+        yield ['false', false];
+
+        yield ['true', true];
+
+        yield ['1', 1];
+
+        yield ["'foo'", 'foo'];
+    }
+
+    private function createFixerDouble(string $name, int $priority): FixerInterface
+    {
+        return new class($name, $priority) implements FixerInterface {
+            private string $name;
+            private int $priority;
+
+            public function __construct(string $name, int $priority)
+            {
+                $this->name = $name;
+                $this->priority = $priority;
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isRisky(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getName(): string
+            {
+                return $this->name;
+            }
+
+            public function getPriority(): int
+            {
+                return $this->priority;
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
     }
 }

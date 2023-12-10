@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,16 +14,13 @@
 
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\DocBlock\Annotation;
-use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
-use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -29,203 +28,150 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class PhpdocToReturnTypeFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
 {
+    private const TYPE_CHECK_TEMPLATE = '<?php function f(): %s {}';
+
     /**
-     * @var array
+     * @var array<int, array<int, int|string>>
      */
-    private $blacklistFuncNames = [
+    private array $excludeFuncNames = [
         [T_STRING, '__construct'],
         [T_STRING, '__destruct'],
         [T_STRING, '__clone'],
     ];
 
     /**
-     * @var array
+     * @var array<string, true>
      */
-    private $versionSpecificTypes = [
-        'void' => 70100,
-        'iterable' => 70100,
-        'object' => 70200,
-    ];
-
-    /**
-     * @var array
-     */
-    private $scalarTypes = [
-        'bool' => true,
-        'float' => true,
-        'int' => true,
-        'string' => true,
-    ];
-
-    /**
-     * @var array
-     */
-    private $skippedTypes = [
-        'mixed' => true,
+    private array $skippedTypes = [
         'resource' => true,
         'null' => true,
     ];
 
-    /**
-     * @var string
-     */
-    private $classRegex = '/^\\\\?[a-zA-Z_\\x7f-\\xff](?:\\\\?[a-zA-Z0-9_\\x7f-\\xff]+)*(?<array>\[\])*$/';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'EXPERIMENTAL: Takes `@return` annotation of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.',
+            'EXPERIMENTAL: Takes `@return` annotation of non-mixed types and adjusts accordingly the function signature.',
             [
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 
 /** @return \My\Bar */
-function my_foo()
+function f1()
 {}
-',
-                    new VersionSpecification(70000)
-                ),
-                new VersionSpecificCodeSample(
-                    '<?php
 
 /** @return void */
-function my_foo()
+function f2()
 {}
-',
-                    new VersionSpecification(70100)
-                ),
-                new VersionSpecificCodeSample(
-                    '<?php
 
 /** @return object */
 function my_foo()
 {}
 ',
-                    new VersionSpecification(70200)
+                ),
+                new CodeSample(
+                    '<?php
+
+/** @return Foo */
+function foo() {}
+/** @return string */
+function bar() {}
+',
+                    ['scalar_types' => false]
+                ),
+                new VersionSpecificCodeSample(
+                    '<?php
+final class Foo {
+    /**
+     * @return static
+     */
+    public function create($prototype) {
+        return new static($prototype);
+    }
+}
+',
+                    new VersionSpecification(8_00_00)
                 ),
             ],
             null,
-            '[1] This rule is EXPERIMENTAL and is not covered with backward compatibility promise. [2] `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented. [4] `@inheritdocs` support is under construction.'
+            'This rule is EXPERIMENTAL and [1] is not covered with backward compatibility promise. [2] `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented.'
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN]);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before FullyQualifiedStrictTypesFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAlignFixer, ReturnToYieldFromFixer, ReturnTypeDeclarationFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
-        // should be run after PhpdocScalarFixer.
-        // should be run before ReturnTypeDeclarationFixer, FullyQualifiedStrictTypesFixer, NoSuperfluousPhpdocTagsFixer.
-        return 8;
+        return 13;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
+    protected function isSkippedType(string $type): bool
     {
-        return true;
+        return isset($this->skippedTypes[$type]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
-    {
-        return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('scalar_types', 'Fix also scalar types; may have unexpected behaviour due to PHP bad type coercion system.'))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(true)
-                ->getOption(),
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 < $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (!$tokens[$index]->isGivenKind([T_FUNCTION, T_FN])) {
                 continue;
             }
 
             $funcName = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$funcName]->equalsAny($this->blacklistFuncNames, false)) {
+
+            if ($tokens[$funcName]->equalsAny($this->excludeFuncNames, false)) {
                 continue;
             }
 
-            $returnTypeAnnotation = $this->findReturnAnnotations($tokens, $index);
-            if (1 !== \count($returnTypeAnnotation)) {
-                continue;
-            }
-            $returnTypeAnnotation = current($returnTypeAnnotation);
-            $types = array_values($returnTypeAnnotation->getTypes());
-            $typesCount = \count($types);
-            if (1 > $typesCount || 2 < $typesCount) {
+            $docCommentIndex = $this->findFunctionDocComment($tokens, $index);
+            if (null === $docCommentIndex) {
                 continue;
             }
 
-            $isNullable = false;
-            $returnType = current($types);
-            if (2 === $typesCount) {
-                $null = $types[0];
-                $returnType = $types[1];
-                if ('null' !== $null) {
-                    $null = $types[1];
-                    $returnType = $types[0];
-                }
-
-                if ('null' !== $null) {
-                    continue;
-                }
-
-                $isNullable = true;
-
-                if (\PHP_VERSION_ID < 70100) {
-                    continue;
-                }
-
-                if ('void' === $returnType) {
-                    continue;
-                }
-            }
-
-            if ('static' === $returnType) {
-                $returnType = 'self';
-            }
-
-            if (isset($this->skippedTypes[$returnType])) {
+            $returnTypeAnnotations = $this->getAnnotationsFromDocComment('return', $tokens, $docCommentIndex);
+            if (1 !== \count($returnTypeAnnotations)) {
                 continue;
             }
 
-            if (isset($this->versionSpecificTypes[$returnType]) && \PHP_VERSION_ID < $this->versionSpecificTypes[$returnType]) {
+            /** @var Annotation $returnTypeAnnotation */
+            $returnTypeAnnotation = current($returnTypeAnnotations);
+
+            $typesExpression = $returnTypeAnnotation->getTypeExpression();
+
+            if (null === $typesExpression) {
                 continue;
             }
 
-            if (isset($this->scalarTypes[$returnType]) && false === $this->configuration['scalar_types']) {
+            $typeInfo = $this->getCommonTypeInfo($typesExpression, true);
+            $unionTypes = null;
+
+            if (null === $typeInfo) {
+                $unionTypes = $this->getUnionTypes($typesExpression, true);
+            }
+
+            if (null === $typeInfo && null === $unionTypes) {
                 continue;
             }
 
-            if (1 !== Preg::match($this->classRegex, $returnType, $matches)) {
-                continue;
+            if (null !== $typeInfo) {
+                [$returnType, $isNullable] = $typeInfo;
+            } elseif (null !== $unionTypes) {
+                $returnType = $unionTypes;
+                $isNullable = false;
             }
 
-            if (isset($matches['array'])) {
-                $returnType = 'array';
+            if (!isset($returnType, $isNullable)) {
+                continue;
             }
 
             $startIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
@@ -234,93 +180,45 @@ function my_foo()
                 continue;
             }
 
-            $this->fixFunctionDefinition($tokens, $startIndex, $isNullable, $returnType);
+            if (!$this->isValidSyntax(sprintf(self::TYPE_CHECK_TEMPLATE, $returnType))) {
+                continue;
+            }
+
+            $endFuncIndex = $tokens->getPrevTokenOfKind($startIndex, [')']);
+
+            $tokens->insertAt(
+                $endFuncIndex + 1,
+                array_merge(
+                    [
+                        new Token([CT::T_TYPE_COLON, ':']),
+                        new Token([T_WHITESPACE, ' ']),
+                    ],
+                    $this->createTypeDeclarationTokens($returnType, $isNullable)
+                )
+            );
         }
+    }
+
+    protected function createTokensFromRawType(string $type): Tokens
+    {
+        $typeTokens = Tokens::fromCode(sprintf(self::TYPE_CHECK_TEMPLATE, $type));
+        $typeTokens->clearRange(0, 7);
+        $typeTokens->clearRange(\count($typeTokens) - 3, \count($typeTokens) - 1);
+        $typeTokens->clearEmptyTokens();
+
+        return $typeTokens;
     }
 
     /**
      * Determine whether the function already has a return type hint.
      *
-     * @param Tokens $tokens
-     * @param int    $index  The index of the end of the function definition line, EG at { or ;
-     *
-     * @return bool
+     * @param int $index The index of the end of the function definition line, EG at { or ;
      */
-    private function hasReturnTypeHint(Tokens $tokens, $index)
+    private function hasReturnTypeHint(Tokens $tokens, int $index): bool
     {
         $endFuncIndex = $tokens->getPrevTokenOfKind($index, [')']);
         $nextIndex = $tokens->getNextMeaningfulToken($endFuncIndex);
 
         return $tokens[$nextIndex]->isGivenKind(CT::T_TYPE_COLON);
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $index      The index of the end of the function definition line, EG at { or ;
-     * @param bool   $isNullable
-     * @param string $returnType
-     */
-    private function fixFunctionDefinition(Tokens $tokens, $index, $isNullable, $returnType)
-    {
-        static $specialTypes = [
-            'array' => [CT::T_ARRAY_TYPEHINT, 'array'],
-            'callable' => [T_CALLABLE, 'callable'],
-        ];
-        $newTokens = [
-            new Token([CT::T_TYPE_COLON, ':']),
-            new Token([T_WHITESPACE, ' ']),
-        ];
-        if (true === $isNullable) {
-            $newTokens[] = new Token([CT::T_NULLABLE_TYPE, '?']);
-        }
-
-        if (isset($specialTypes[$returnType])) {
-            $newTokens[] = new Token($specialTypes[$returnType]);
-        } else {
-            foreach (explode('\\', $returnType) as $nsIndex => $value) {
-                if (0 === $nsIndex && '' === $value) {
-                    continue;
-                }
-
-                if (0 < $nsIndex) {
-                    $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
-                }
-                $newTokens[] = new Token([T_STRING, $value]);
-            }
-        }
-
-        $endFuncIndex = $tokens->getPrevTokenOfKind($index, [')']);
-        $tokens->insertAt($endFuncIndex + 1, $newTokens);
-    }
-
-    /**
-     * Find all the return annotations in the function's PHPDoc comment.
-     *
-     * @param Tokens $tokens
-     * @param int    $index  The index of the function token
-     *
-     * @return Annotation[]
-     */
-    private function findReturnAnnotations(Tokens $tokens, $index)
-    {
-        do {
-            $index = $tokens->getPrevNonWhitespace($index);
-        } while ($tokens[$index]->isGivenKind([
-            T_COMMENT,
-            T_ABSTRACT,
-            T_FINAL,
-            T_PRIVATE,
-            T_PROTECTED,
-            T_PUBLIC,
-            T_STATIC,
-        ]));
-
-        if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
-            return [];
-        }
-
-        $doc = new DocBlock($tokens[$index]->getContent());
-
-        return $doc->getAnnotationsOfType('return');
     }
 }

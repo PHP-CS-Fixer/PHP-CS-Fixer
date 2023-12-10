@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: no_empty_statement, braces
+Integration of fixers: no_empty_statement,braces.
 --RULESET--
 {"no_empty_statement": true, "braces": true}
 --EXPECT--

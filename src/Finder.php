@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,10 +28,7 @@ class Finder extends BaseFinder
 
         $this
             ->files()
-            ->name('*.php')
-            ->name('*.phpt')
-            ->ignoreDotFiles(true)
-            ->ignoreVCS(true)
+            ->name('/\.php$/')
             ->exclude('vendor')
         ;
     }

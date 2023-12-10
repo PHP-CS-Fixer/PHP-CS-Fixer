@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\Casing;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\NativeFunctionCasingFixer
@@ -24,75 +24,77 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                 namespace Bar {
                     function STRLEN($str) {
-                        return "overriden" . \strlen($str);
+                        return "overridden" . \strlen($str);
                     }
                 }
 
                 namespace {
                     echo \Bar\STRLEN("xxx");
                 }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo strtolower("hello 1");
                 ',
-                '<?php
+            '<?php
                     echo STRTOLOWER("hello 1");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo strtolower //a
                         ("hello 2");
                 ',
-                '<?php
+            '<?php
                     echo STRTOLOWER //a
                         ("hello 2");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo strtolower /**/   ("hello 3");
                 ',
-                '<?php
+            '<?php
                     echo STRTOLOWER /**/   ("hello 3");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo \sqrt(4);
                 ',
-                '<?php
+            '<?php
                     echo \sQrT(4);
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     echo "1".\sqrt("hello 5");
                 ',
-                '<?php
+            '<?php
                     echo "1".\SQRT("hello 5");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     class Test{
                         public function gettypE()
                         {
@@ -108,81 +110,111 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     new STRTOLOWER();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     new \STRTOLOWER();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     new \A\B\STRTOLOWER();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     a::STRTOLOWER();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $a->STRTOLOWER();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php fOoO();',
+        ];
+
+        yield [
+            '<?php
                     namespace Foo {
                         function &Next() {
                             return prev(-1);
                         }
                     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $next1 = & next($array1);
                     $next2 = & \next($array2);
                 ',
-                '<?php
+            '<?php
                     $next1 = & Next($array1);
                     $next2 = & \Next($array2);
                 ',
-            ],
+        ];
+
+        yield [
+            '<?php
+                    namespace Foo;
+                    use function MyStuff\StrToLower;
+                    class Bar {
+                        public function getName() {
+                            return StrToLower($this->name);
+                        }
+                    }',
+        ];
+
+        yield [
+            '<?php
+                    echo \sqrt(4 , );
+                ',
+            '<?php
+                    echo \sQrT(4 , );
+                ',
+        ];
+
+        yield [
+            '<?php
+                    $a->STRTOLOWER(1,);
+                ',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
+     * @dataProvider provideFix80Cases
      *
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
+     * @requires PHP 8.0
      */
-    public function testFix73($expected, $input = null)
+    public function testFix80(string $expected): void
     {
-        $this->doTest($expected, $input);
+        $this->doTest($expected);
     }
 
-    public function provideFix73Cases()
+    public static function provideFix80Cases(): iterable
     {
-        return [
-            [
-                '<?php
-                    echo \sqrt(4 , );
-                ',
-                '<?php
-                    echo \sQrT(4 , );
-                ',
-            ],
-            [
-                '<?php
-                    $a->STRTOLOWER(1,);
-                ',
-            ],
+        yield ['<?php $a?->STRTOLOWER(1,);'];
+
+        yield [
+            '<?php
+                    final class SomeClass
+            {
+                #[File(mimeTypes: ["application/pdf", "image/*"])]
+                public FileBlob $attachment;
+            }
+            ',
         ];
     }
 }

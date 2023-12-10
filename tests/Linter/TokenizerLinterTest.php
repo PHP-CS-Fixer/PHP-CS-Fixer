@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Linter;
 
+use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\TokenizerLinter;
 
 /**
@@ -19,21 +22,17 @@ use PhpCsFixer\Linter\TokenizerLinter;
  *
  * @internal
  *
- * @requires PHP 7.0
  * @covers \PhpCsFixer\Linter\TokenizerLinter
  * @covers \PhpCsFixer\Linter\TokenizerLintingResult
  */
 final class TokenizerLinterTest extends AbstractLinterTestCase
 {
-    public function testIsAsync()
+    public function testIsAsync(): void
     {
-        static::assertFalse($this->createLinter()->isAsync());
+        self::assertFalse($this->createLinter()->isAsync());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createLinter()
+    protected function createLinter(): LinterInterface
     {
         return new TokenizerLinter();
     }

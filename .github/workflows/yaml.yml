@@ -1,0 +1,26 @@
+name: YAML Validation
+
+on:
+  pull_request:
+    paths:
+      - '**.yml'
+      - '**.yaml'
+  push:
+    paths:
+      - '**.yml'
+      - '**.yaml'
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  validate-yaml:
+    name: Validate YAML
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run yamllint
+        run: git ls-files --cached -z -- '*.y*ml' | xargs --null -- yamllint

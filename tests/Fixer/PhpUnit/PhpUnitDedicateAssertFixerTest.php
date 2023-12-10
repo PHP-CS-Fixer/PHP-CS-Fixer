@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,12 +14,11 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertFixer
@@ -25,333 +26,366 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $config
+     * @param array<string, mixed> $config
      *
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideTestFixLegacyCases
-     * @group legacy
-     * @expectedDeprecation Option "functions" for rule "php_unit_dedicate_assert" is deprecated and will be removed in version 3.0. Use option "target" instead.
-     */
-    public function testFixLegacy($expected, $input = null)
+    public static function provideFixCases(): iterable
     {
-        $defaultFunctions = [
-            'array_key_exists',
-            'empty',
-            'file_exists',
-            'is_array',
-            'is_bool',
-            'is_callable',
-            'is_double',
-            'is_float',
-            'is_infinite',
-            'is_int',
-            'is_integer',
-            'is_long',
-            'is_nan',
-            'is_null',
-            'is_numeric',
-            'is_object',
-            'is_real',
-            'is_resource',
-            'is_scalar',
-            'is_string',
-        ];
-
-        $this->fixer->configure(['functions' => $defaultFunctions]);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideTestFixCases()
-    {
-        $cases = [
-            [
-                '<?php
+        yield [
+            self::generateTest('
                     $this->assertNan($a);
                     $this->assertNan($a);
                     $this->assertTrue(test\is_nan($a));
                     $this->assertTrue(test\a\is_nan($a));
-                ',
-                '<?php
+                '),
+            self::generateTest('
                     $this->assertTrue(is_nan($a));
                     $this->assertTrue(\is_nan($a));
                     $this->assertTrue(test\is_nan($a));
                     $this->assertTrue(test\a\is_nan($a));
-                ',
-            ],
-            [
-                '<?php
+                '),
+        ];
+
+        yield [
+            self::generateTest('
                     $this->assertFileExists($a);
                     $this->assertFileNotExists($a);
                     $this->assertFileExists($a);
                     $this->assertFileNotExists($a);
-                ',
-                '<?php
+                '),
+            self::generateTest('
                     $this->assertTrue(file_exists($a));
                     $this->assertFalse(file_exists($a));
                     $this->assertTrue(\file_exists($a));
                     $this->assertFalse(\file_exists($a));
-                ',
-            ],
-            [
-                '<?php
+                '),
+        ];
+
+        yield [
+            self::generateTest('
                     $this->assertNull($a);
                     $this->assertNotNull($a);
                     $this->assertNull($a);
                     $this->assertNotNull($a, "my message");
-                ',
-                '<?php
+                '),
+            self::generateTest('
                     $this->assertTrue(is_null($a));
                     $this->assertFalse(is_null($a));
                     $this->assertTrue(\is_null($a));
                     $this->assertFalse(\is_null($a), "my message");
-                ',
-            ],
-            [
-                '<?php
+                '),
+        ];
+
+        yield [
+            self::generateTest('
                     $this->assertEmpty($a);
                     $this->assertNotEmpty($a);
-                ',
-                '<?php
+                '),
+            self::generateTest('
                     $this->assertTrue(empty($a));
                     $this->ASSERTFALSE(empty($a));
-                ',
-            ],
-            [
-                '<?php
+                '),
+        ];
+
+        yield [
+            self::generateTest('
                     $this->assertInfinite($a);
                     $this->assertFinite($a, "my message");
                     $this->assertInfinite($a);
-                    $this->assertFinite($a, "my message");
-                ',
-                '<?php
+                    $this->assertFinite($a, b"my message");
+                '),
+            self::generateTest('
                     $this->assertTrue(is_infinite($a));
                     $this->assertFalse(is_infinite($a), "my message");
                     $this->assertTrue(\is_infinite($a));
-                    $this->assertFalse(\is_infinite($a), "my message");
-                ',
-            ],
-            [
-                '<?php
+                    $this->assertFalse(\is_infinite($a), b"my message");
+                '),
+        ];
+
+        yield [
+            self::generateTest('
                     $this->assertArrayHasKey("test", $a);
                     $this->assertArrayNotHasKey($b, $a, $c);
-                ',
-                '<?php
+                '),
+            self::generateTest('
                     $this->assertTrue(\array_key_exists("test", $a));
                     $this->ASSERTFALSE(array_key_exists($b, $a), $c);
-                ',
-            ],
-            [
-                '<?php
+                '),
+        ];
+
+        yield [
+            self::generateTest('
 $this->assertTrue(is_dir($a));
 $this->assertTrue(is_writable($a));
 $this->assertTrue(is_readable($a));
-',
-                null,
-            ],
-            [
-                '<?php
+'),
+            null,
+            ['target' => PhpUnitTargetVersion::VERSION_5_0],
+        ];
+
+        yield [
+            self::generateTest('
 $this->assertTrue(is_dir($a));
 $this->assertTrue(is_writable($a));
 $this->assertTrue(is_readable($a));
-',
-                null,
-                ['target' => PhpUnitTargetVersion::VERSION_3_0],
-            ],
-            [
-                '<?php
+'),
+            null,
+            ['target' => PhpUnitTargetVersion::VERSION_3_0],
+        ];
+
+        yield [
+            self::generateTest('
 $this->assertDirectoryNotExists($a);
 $this->assertNotIsWritable($a);
 $this->assertNotIsReadable($a);
-',
-                '<?php
+'),
+            self::generateTest('
 $this->assertFalse(is_dir($a));
 $this->assertFalse(is_writable($a));
 $this->assertFalse(is_readable($a));
-',
-                ['target' => PhpUnitTargetVersion::VERSION_5_6],
-            ],
-            [
-                '<?php
+'),
+            ['target' => PhpUnitTargetVersion::VERSION_5_6],
+        ];
+
+        yield [
+            self::generateTest('
 $this->assertDirectoryExists($a);
 $this->assertIsWritable($a);
 $this->assertIsReadable($a);
-',
-                '<?php
+'),
+            self::generateTest('
 $this->assertTrue(is_dir($a));
 $this->assertTrue(is_writable($a));
 $this->assertTrue(is_readable($a));
-',
-                ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
-            ],
+'),
+            ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
         ];
 
-        foreach (['array', 'bool', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string'] as $type) {
-            $cases[] = [
-                sprintf('<?php $this->assertInternalType(\'%s\', $a);', $type),
-                sprintf('<?php $this->assertTrue(is_%s($a));', $type),
+        foreach (['array', 'bool', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'real', 'scalar', 'string'] as $type) {
+            yield [
+                self::generateTest(sprintf('$this->assertInternalType(\'%s\', $a);', $type)),
+                self::generateTest(sprintf('$this->assertTrue(is_%s($a));', $type)),
             ];
 
-            $cases[] = [
-                sprintf('<?php $this->assertNotInternalType(\'%s\', $a);', $type),
-                sprintf('<?php $this->assertFalse(is_%s($a));', $type),
+            yield [
+                self::generateTest(sprintf('$this->assertNotInternalType(\'%s\', $a);', $type)),
+                self::generateTest(sprintf('$this->assertFalse(is_%s($a));', $type)),
             ];
         }
 
-        $cases[] = [
-            '<?php $this->assertInternalType(\'float\', $a, "my message");',
-            '<?php $this->assertTrue(is_float( $a), "my message");',
+        yield [
+            self::generateTest('$this->assertInternalType(\'float\', $a, "my message");'),
+            self::generateTest('$this->assertTrue(is_float( $a), "my message");'),
         ];
 
-        $cases[] = [
-            '<?php $this->assertInternalType(\'float\', $a);',
-            '<?php $this->assertTrue(\IS_FLOAT($a));',
+        yield [
+            self::generateTest('$this->assertInternalType(\'float\', $a);'),
+            self::generateTest('$this->assertTrue(\IS_FLOAT($a));'),
         ];
 
-        $cases[] = [
-            '<?php $this->assertInternalType(#
+        yield [
+            self::generateTest('$this->assertInternalType(#
 \'float\'#
 , #
 $a#
 #
 )#
-;',
-            '<?php $this->assertTrue(#
+;'),
+            self::generateTest('$this->assertTrue(#
 \IS_FLOAT#
 (#
 $a#
 )#
 )#
-;',
+;'),
         ];
 
-        $cases[] = [
-            '<?php static::assertInternalType(\'float\', $a);',
-            '<?php static::assertTrue(is_float( $a));',
+        yield [
+            self::generateTest('static::assertInternalType(\'float\', $a);'),
+            self::generateTest('static::assertTrue(is_float( $a));'),
         ];
 
-        $cases[] = [
-            '<?php self::assertInternalType(\'float\', $a);',
-            '<?php self::assertTrue(is_float( $a));',
+        yield [
+            self::generateTest('self::assertInternalType(\'float\', $a);'),
+            self::generateTest('self::assertTrue(is_float( $a));'),
         ];
 
-        $cases[] = [
-            '<?php static::assertNull($a);',
-            '<?php static::assertTrue(is_null($a));',
+        yield [
+            self::generateTest('static::assertNull($a);'),
+            self::generateTest('static::assertTrue(is_null($a));'),
         ];
 
-        $cases[] = [
-            '<?php self::assertNull($a);',
-            '<?php self::assertTrue(is_null($a));',
+        yield [
+            self::generateTest('self::assertNull($a);'),
+            self::generateTest('self::assertTrue(is_null($a));'),
         ];
 
-        return $cases;
-    }
+        yield [
+            self::generateTest('SELF::assertNull($a);'),
+            self::generateTest('SELF::assertTrue(is_null($a));'),
+        ];
 
-    public function provideTestFixLegacyCases()
-    {
-        return array_filter($this->provideTestFixCases(), function (array $case) { return !isset($case[2]); });
+        yield [
+            self::generateTest('self::assertStringContainsString($needle, $haystack);'),
+            self::generateTest('self::assertTrue(str_contains($haystack, $needle));'),
+            ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
+        ];
+
+        yield [
+            self::generateTest('self::assertStringNotContainsString($needle, $a[$haystack.""](123)[foo()]);'),
+            self::generateTest('self::assertFalse(str_contains($a[$haystack.""](123)[foo()], $needle));'),
+            ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
+        ];
+
+        yield [
+            self::generateTest('self::assertStringStartsWith($needle, $haystack);'),
+            self::generateTest('self::assertTrue(str_starts_with($haystack, $needle));'),
+        ];
+
+        yield [
+            self::generateTest('self::assertStringStartsNotWith($needle, $haystack);'),
+            self::generateTest('self::assertFalse(str_starts_with($haystack, $needle));'),
+        ];
+
+        yield [
+            self::generateTest('self::assertStringStartsNotWith(  #3
+            $needle#4
+            , #1
+            $haystack#2
+            );'),
+            self::generateTest('self::assertFalse(str_starts_with(  #1
+            $haystack#2
+            ,#3
+            $needle#4
+            ));'),
+        ];
+
+        yield [
+            self::generateTest('self::assertStringEndsWith($needle, $haystack);'),
+            self::generateTest('self::assertTrue(str_ends_with($haystack, $needle));'),
+        ];
+
+        yield [
+            self::generateTest('self::assertStringEndsNotWith($needle, $haystack);'),
+            self::generateTest('self::assertFalse(str_ends_with($haystack, $needle));'),
+        ];
+
+        yield '$a instanceof class' => [
+            self::generateTest('
+                $this->assertInstanceOf(SomeClass::class, $x);
+                $this->assertInstanceOf(SomeClass::class, $y, $message);
+            '),
+            self::generateTest('
+                $this->assertTrue($x instanceof SomeClass);
+                $this->assertTrue($y instanceof SomeClass, $message);
+            '),
+        ];
+
+        yield '$a instanceof class\a\b' => [
+            self::generateTest('
+                $this->assertInstanceOf(\PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer::class, $ii);
+            '),
+            self::generateTest('
+                $this->assertTrue($ii instanceof \PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer);
+            '),
+        ];
+
+        yield '$a instanceof $b' => [
+            self::generateTest('
+                $this->assertInstanceOf($tty, $abc/* 1 *//* 2 */);
+                $this->assertInstanceOf($oo, $def, $message);
+            '),
+            self::generateTest('
+                $this->assertTrue($abc instanceof /* 1 */$tty /* 2 */);
+                $this->assertTrue($def instanceof $oo, $message);
+            '),
+        ];
+
+        yield 'do not fix instance of' => [
+            self::generateTest('
+                $this->assertTrue($gg instanceof $ijl . "X", $something);
+                $this->assertTrue($ff instanceof $klh . $b(1,2,$message), $noMsg);
+            '),
+        ];
+
+        yield '!$a instanceof class' => [
+            self::generateTest('
+                $this->assertNotInstanceOf(SomeClass::class, $x);
+                $this->assertNotInstanceOf(SomeClass::class, $y, $message);
+            '),
+            self::generateTest('
+                $this->assertTrue(!$x instanceof SomeClass);
+                $this->assertTrue(!$y instanceof SomeClass, $message);
+            '),
+        ];
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideNotFixCases
      */
-    public function testNotFix($expected)
+    public function testNotFix(string $expected): void
     {
+        $this->fixer->configure(['target' => PhpUnitTargetVersion::VERSION_NEWEST]);
         $this->doTest($expected);
     }
 
-    public function provideNotFixCases()
+    public static function provideNotFixCases(): iterable
     {
-        return [
-            [
-                '<?php echo $this->assertTrue;',
-            ],
-            [
-                '<?php echo $this->assertTrue?>',
-            ],
-            [
-                '<?php
-                    const is_null = 1;
-                    $this->assertTrue(is_null);
-                    $this->assertTrue(is_int($a) && $b);
-                    $this->assertFalse(is_nan($a));
-                    $this->assertTrue(is_int($a) || \is_bool($b));
-                    $this->assertTrue($a&&is_int($a));
-                    static::assertTrue(is_null);
-                    self::assertTrue(is_null);
-                ',
-            ],
+        yield 'not a method call' => [
+            self::generateTest('echo $this->assertTrue;'),
+        ];
+
+        yield 'wrong argument count 1' => [
+            self::generateTest('static::assertTrue(is_null($a, $b));'),
+        ];
+
+        yield 'wrong argument count 2' => [
+            self::generateTest('static::assertTrue(is_int($a, $b));'),
+        ];
+
+        yield [
+            self::generateTest('
+                $this->assertTrue(is_null);
+                $this->assertTrue(is_int($a) && $b);
+                $this->assertFalse(is_nan($a));
+                $this->assertTrue(is_int($a) || \is_bool($b));
+                $this->assertTrue($a&&is_int($a));
+                static::assertTrue(is_null);
+                self::assertTrue(is_null);
+            '),
+        ];
+
+        yield 'not in class' => [
+            '<?php self::assertTrue(is_null($a));',
+        ];
+
+        // Do not replace is_resource() by assertIsResource().
+        // is_resource() also checks if the resource is open or closed,
+        // while assertIsResource() does not.
+        yield 'Do not replace is_resource' => [
+            self::generateTest('self::assertTrue(is_resource($resource));'),
         ];
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing "functions" at the root of the configuration for rule "php_unit_dedicate_assert" is deprecated and will not be supported in 3.0, use "functions" => array(...) option instead.
-     */
-    public function testLegacyConfig()
+    public function testInvalidConfig(): void
     {
-        $this->fixer->configure(['file_exists']);
-        $this->doTest(
-            '<?php
-                    $this->assertFileExists($a);
-                    $this->assertTrue(is_infinite($a));
-            ',
-            '<?php
-                    $this->assertTrue(file_exists($a));
-                    $this->assertTrue(is_infinite($a));
-            '
-        );
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Option "functions" for rule "php_unit_dedicate_assert" is deprecated and will be removed in version 3.0. Use option "target" instead.
-     */
-    public function testConfig()
-    {
-        $this->fixer->configure(['functions' => ['file_exists']]);
-        $this->doTest(
-            '<?php
-                    $this->assertFileExists($a);
-                    $this->assertTrue(is_infinite($a));
-            ',
-            '<?php
-                    $this->assertTrue(file_exists($a));
-                    $this->assertTrue(is_infinite($a));
-            '
-        );
-    }
-
-    public function testInvalidConfig()
-    {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[php_unit_dedicate_assert\] Invalid configuration: The option "target" .*\.$/');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('/^\[php_unit_dedicate_assert\] Invalid configuration: The option "target" .*\.$/');
 
         $this->fixer->configure(['target' => '_unknown_']);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestAssertCountCases
      */
-    public function testAssertCount($expected, $input = null)
+    public function testAssertCount(string $expected, ?string $input = null): void
     {
         if (null === $input) {
             $expected = sprintf($expected, 'count');
@@ -363,12 +397,9 @@ $a#
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestAssertCountCases
      */
-    public function testAssertCountFromSizeOf($expected, $input = null)
+    public function testAssertCountFromSizeOf(string $expected, ?string $input = null): void
     {
         if (null === $input) {
             $expected = sprintf($expected, 'sizeof');
@@ -379,38 +410,43 @@ $a#
         $this->doTest($expected, $input);
     }
 
-    public function provideTestAssertCountCases()
+    public static function provideTestAssertCountCases(): iterable
     {
-        return [
-            // positive fixing
-            'assert same' => [
-                '<?php $this->assertCount(1, $a);',
-                '<?php $this->assertSame(1, %s($a));',
-            ],
-            'assert equals' => [
-                '<?php $this->assertCount(2, $b);',
-                '<?php $this->assertEquals(2, %s($b));',
-            ],
-            // negative fixing
-            'assert not same' => [
-                '<?php $this->assertNotCount(11, $c);',
-                '<?php $this->assertNotSame(11, %s($c));',
-            ],
-            'assert not equals' => [
-                '<?php $this->assertNotCount(122, $d);',
-                '<?php $this->assertNotEquals(122, %s($d));',
-            ],
-            // other cases
-            'assert same with namespace' => [
-                '<?php $this->assertCount(1, $a);',
-                '<?php $this->assertSame(1, \%s($a));',
-            ],
-            'no spacing' => [
-                '<?php $this->assertCount(1,$a);',
-                '<?php $this->assertSame(1,%s($a));',
-            ],
-            'lot of spacing' => [
-                '<?php $this->assertCount(
+        // positive fixing
+        yield 'assert same' => [
+            self::generateTest('$this->assertCount(1, $a);'),
+            self::generateTest('$this->assertSame(1, %s($a));'),
+        ];
+
+        yield 'assert equals' => [
+            self::generateTest('$this->assertCount(2, $b);'),
+            self::generateTest('$this->assertEquals(2, %s($b));'),
+        ];
+
+        // negative fixing
+        yield 'assert not same' => [
+            self::generateTest('$this->assertNotCount(11, $c);'),
+            self::generateTest('$this->assertNotSame(11, %s($c));'),
+        ];
+
+        yield 'assert not equals' => [
+            self::generateTest('$this->assertNotCount(122, $d);'),
+            self::generateTest('$this->assertNotEquals(122, %s($d));'),
+        ];
+
+        // other cases
+        yield 'assert same with namespace' => [
+            self::generateTest('$this->assertCount(1, $a);'),
+            self::generateTest('$this->assertSame(1, \%s($a));'),
+        ];
+
+        yield 'no spacing' => [
+            self::generateTest('$this->assertCount(1,$a);'),
+            self::generateTest('$this->assertSame(1,%s($a));'),
+        ];
+
+        yield 'lot of spacing' => [
+            self::generateTest('$this->assertCount(
                 1
                 ,
                 '.'
@@ -418,8 +454,8 @@ $a#
                 $a
                 '.'
                 )
-                ;',
-                '<?php $this->assertSame(
+                ;'),
+            self::generateTest('$this->assertSame(
                 1
                 ,
                 %s
@@ -427,28 +463,30 @@ $a#
                 $a
                 )
                 )
-                ;',
-            ],
-            'lot of fix cases' => [
-                '<?php
+                ;'),
+        ];
+
+        yield 'lot of fix cases' => [
+            self::generateTest('
                     $this->assertCount(1, $a);
                     $this->assertCount(2, $a);
                     $this->assertCount(3, $a);
                     $this->assertNotCount(4, $a);
                     $this->assertCount(5, $a, "abc");
                     $this->assertCount(6, $a, "def");
-                ',
-                '<?php
+                '),
+            self::generateTest('
                     $this->assertSame(1, %1$s($a));
                     $this->assertSame(2, %1$s($a));
                     $this->assertEquals(3, %1$s($a));
                     $this->assertNotSame(4, %1$s($a));
                     $this->assertEquals(5, %1$s($a), "abc");
                     $this->assertSame(6, \%1$s($a), "def");
-                ',
-            ],
-            'comment handling' => [
-                '<?php $this->assertCount(# 0
+                '),
+        ];
+
+        yield 'comment handling' => [
+            self::generateTest('$this->assertCount(# 0
 1# 1
 ,# 2
 # 3
@@ -456,8 +494,8 @@ $a#
 $a# 5
 # 6
 )# 7
-;# 8',
-                '<?php $this->assertSame(# 0
+;# 8'),
+            self::generateTest('$this->assertSame(# 0
 1# 1
 ,# 2
 %s# 3
@@ -465,53 +503,55 @@ $a# 5
 $a# 5
 )# 6
 )# 7
-;# 8',
-            ],
-            'do not fix 1' => [
-                '<?php
-                    $this->assertSame($b, %s($a));
-                ',
-            ],
-            'do not fix 2' => [
-                '<?php
-                    $this->assertSame(b(), %s($a));
-                ',
-            ],
-            'do not fix 3' => [
-                '<?php
-                    $this->assertSame(1.0, %s($a));
-                ',
-            ],
-            'do not fix 4' => [
-                '<?php
-                    $this->assertSame(1);
-                ',
-            ],
-            'do not fix 5' => [
-                '<?php
-                    $this->assertSame(1, "%s");
-                ',
-            ],
-            'do not fix 6' => [
-                '<?php
-                    $this->test(); // $this->assertSame($b, %s($a));
-                ',
-            ],
-            'do not fix 7' => [
-                '<?php
-                    $this->assertSame(2, count($array) - 1);
-                ',
-            ],
+;# 8'),
+        ];
+
+        yield [
+            self::generateTest('$this->assertCount($b, $a);'),
+            self::generateTest('$this->assertSame($b, %s($a));'),
+        ];
+
+        yield 'do not fix 1' => [
+            self::generateTest('$this->assertSame($b[1], %s($a));'),
+        ];
+
+        yield 'do not fix 2' => [
+            self::generateTest('$this->assertSame(b(), %s($a));'),
+        ];
+
+        yield 'do not fix 3' => [
+            self::generateTest('$this->assertSame(1.0, %s($a));'),
+        ];
+
+        yield 'do not fix 4' => [
+            self::generateTest('$this->assertSame(1);'),
+        ];
+
+        yield 'do not fix 5' => [
+            self::generateTest('$this->assertSame(1, "%s");'),
+        ];
+
+        yield 'do not fix 6' => [
+            self::generateTest('$this->test(); // $this->assertSame($b, %s($a));'),
+        ];
+
+        yield 'do not fix 7' => [
+            self::generateTest('$this->assertSame(2, count($array) - 1);'),
+        ];
+
+        yield 'do not fix 8' => [
+            self::generateTest('
+                    Foo::assertSame(1, sizeof($a));
+                    $this->assertSame(1, sizeof2(2));
+                    $this->assertSame(1, sizeof::foo);
+                '),
         ];
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideTestAssertCountCasingCases
      */
-    public function testAssertCountCasing($expected, $input)
+    public function testAssertCountCasing(string $expected, string $input): void
     {
         $expected = sprintf($expected, 'count');
         $input = sprintf($input, 'COUNT');
@@ -520,12 +560,9 @@ $a# 5
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideTestAssertCountCasingCases
      */
-    public function testAssertCountFromSizeOfCasing($expected, $input)
+    public function testAssertCountFromSizeOfCasing(string $expected, string $input): void
     {
         $expected = sprintf($expected, 'sizeof');
         $input = sprintf($input, 'SIZEOF');
@@ -533,71 +570,91 @@ $a# 5
         $this->doTest($expected, $input);
     }
 
-    public function provideTestAssertCountCasingCases()
+    public static function provideTestAssertCountCasingCases(): iterable
     {
-        return [
-            [
-                '<?php $this->assertCount(1, $a);',
-                '<?php $this->assertSame(1, %s($a));',
-            ],
-            [
-                '<?php $this->assertCount(1, $a);',
-                '<?php $this->assertSame(1, \%s($a));',
-            ],
+        yield [
+            self::generateTest('$this->assertCount(1, $a);'),
+            self::generateTest('$this->assertSame(1, %s($a));'),
+        ];
+
+        yield [
+            self::generateTest('$this->assertCount(1, $a);'),
+            self::generateTest('$this->assertSame(1, \%s($a));'),
         ];
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input)
+    public function testFix73(string $expected, string $input): void
     {
+        $this->fixer->configure(['target' => PhpUnitTargetVersion::VERSION_NEWEST]);
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public static function provideFix73Cases(): iterable
     {
-        return [
-            [
-                '<?php $this->assertNan($a, );',
-                '<?php $this->assertTrue(is_nan($a), );',
-            ],
-            [
-                '<?php $this->assertNan($a);',
-                '<?php $this->assertTrue(is_nan($a, ));',
-            ],
-            [
-                '<?php $this->assertNan($a, );',
-                '<?php $this->assertTrue(is_nan($a, ), );',
-            ],
-            [
-                '<?php $this->assertInternalType(\'array\', $a,);',
-                '<?php $this->assertTrue(is_array($a,),);',
-            ],
-            [
-                '<?php
-                   $this->assertNan($b);
-               ',
-                '<?php
-                   $this->assertTrue(\is_nan($b,));
-               ',
-            ],
-            [
-                '<?php
-                   $this->assertFileExists($f, \'message\',);
-               ',
-                '<?php
-                   $this->assertTrue(file_exists($f,), \'message\',);
-               ',
-            ],
-            [
-                '<?php $this->assertNan($y  , );',
-                '<?php $this->assertTrue(is_nan($y)  , );',
-            ],
+        yield [
+            self::generateTest('$this->assertNan($a, );'),
+            self::generateTest('$this->assertTrue(is_nan($a), );'),
         ];
+
+        yield [
+            self::generateTest('$this->assertNan($a);'),
+            self::generateTest('$this->assertTrue(is_nan($a, ));'),
+        ];
+
+        yield [
+            self::generateTest('$this->assertNan($a, );'),
+            self::generateTest('$this->assertTrue(is_nan($a, ), );'),
+        ];
+
+        yield [
+            self::generateTest('$this->assertInternalType(\'array\', $a,);'),
+            self::generateTest('$this->assertTrue(is_array($a,),);'),
+        ];
+
+        yield [
+            self::generateTest('$this->assertNan($b);'),
+            self::generateTest('$this->assertTrue(\is_nan($b,));'),
+        ];
+
+        yield [
+            self::generateTest('$this->assertFileExists($f, \'message\',);'),
+            self::generateTest('$this->assertTrue(file_exists($f,), \'message\',);'),
+        ];
+
+        yield [
+            self::generateTest('$this->assertNan($y  , );'),
+            self::generateTest('$this->assertTrue(is_nan($y)  , );'),
+        ];
+
+        yield 'str_starts_with with trailing ","' => [
+            self::generateTest('self::assertStringStartsWith($needle, $haystack);'),
+            self::generateTest('self::assertTrue(str_starts_with($haystack, $needle,));'),
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['target' => PhpUnitTargetVersion::VERSION_NEWEST]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield [
+            self::generateTest('$a = $this->assertTrue(...);'),
+        ];
+    }
+
+    private static function generateTest(string $content): string
+    {
+        return "<?php final class FooTest extends \\PHPUnit_Framework_TestCase {\n    public function testSomething() {\n        ".$content."\n    }\n}\n";
     }
 }

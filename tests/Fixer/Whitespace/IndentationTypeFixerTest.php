@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,137 +27,132 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class IndentationTypeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        $cases = [];
-
-        $cases[] = [
+        yield [
             '<?php
         echo ALPHA;',
             "<?php
 \t\techo ALPHA;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
         echo BRAVO;',
             "<?php
 \t\techo BRAVO;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
         echo CHARLIE;',
             "<?php
  \t\techo CHARLIE;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
         echo DELTA;',
             "<?php
   \t\techo DELTA;",
         ];
 
-        $cases[] = [
+        yield [
             "<?php
         echo 'ECHO';",
             "<?php
    \t\techo 'ECHO';",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
         echo FOXTROT;',
             "<?php
 \t \techo FOXTROT;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
         echo GOLF;',
             "<?php
 \t  \techo GOLF;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
         echo HOTEL;',
             "<?php
 \t   \techo HOTEL;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
         echo INDIA;',
             "<?php
 \t    echo INDIA;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
         echo JULIET;',
             "<?php
  \t   \techo JULIET;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
         echo KILO;',
             "<?php
   \t  \techo KILO;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
         echo MIKE;',
             "<?php
    \t \techo MIKE;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
         echo NOVEMBER;',
             "<?php
     \techo NOVEMBER;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
          echo OSCAR;',
             "<?php
 \t \t echo OSCAR;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
           echo PAPA;',
             "<?php
 \t \t  echo PAPA;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
            echo QUEBEC;',
             "<?php
 \t \t   echo QUEBEC;",
         ];
 
-        $cases[] = [
+        yield [
             '<?php $x = "a: \t";',
         ];
 
-        $cases[] = [
+        yield [
             "<?php
 \$x = \"
 \tLike
@@ -163,7 +160,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 \tdog\";",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
     /**
      * Test that tabs in docblocks are converted to spaces.
@@ -182,7 +179,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 \t */",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
         /**
          * Test that tabs in docblocks are converted to spaces.
@@ -193,7 +190,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 \t\t */",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
     /*
      | Test that tabs in comments are converted to spaces    '."\t".'.
@@ -204,7 +201,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 \t */",
         ];
 
-        $cases[] = [
+        yield [
             "<?php
     /**
      * This variable
@@ -217,45 +214,38 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 \t */",
         ];
 
-        $cases[] = [
+        yield [
             "<?php\necho 1;\n?>\r\n\t\$a = ellow;",
         ];
-
-        return $cases;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public static function provideMessyWhitespacesCases(): iterable
     {
-        $cases = [];
-
-        $cases[] = [
+        yield [
             "<?php
 \t\techo KILO;",
             '<?php
         echo KILO;',
         ];
 
-        $cases[] = [
+        yield [
             "<?php
 \t\t   echo QUEBEC;",
             '<?php
            echo QUEBEC;',
         ];
 
-        $cases[] = [
+        yield [
             "<?php
 \t/**
 \t * This variable
@@ -268,7 +258,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
      */",
         ];
 
-        $cases['mix indentation'] = [
+        yield 'mix indentation' => [
             "<?php
 \t\t/*
 \t\t * multiple indentation
@@ -281,7 +271,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 \t     */",
         ];
 
-        $cases[] = [
+        yield [
             "<?php
 function myFunction() {
 \t\$foo        = 1;
@@ -297,31 +287,83 @@ function myFunction() {
     $middleVar  = 1;
 }',
         ];
-
-        return $cases;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesReversedCases
      */
-    public function testMessyWhitespacesReversed($expected, $input = null)
+    public function testMessyWhitespacesReversed(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\r\n"));
 
         $this->doTest($input, $expected);
     }
 
-    public function provideMessyWhitespacesReversedCases()
+    public static function provideMessyWhitespacesReversedCases(): iterable
     {
-        return array_filter(
-            $this->provideMessyWhitespacesCases(),
-            static function ($key) {
-                return !\is_string($key) || false === strpos($key, 'mix indentation');
-            },
-            ARRAY_FILTER_USE_KEY
-        );
+        foreach (self::provideMessyWhitespacesCases() as $name => $case) {
+            if ('mix indentation' === $name) {
+                continue;
+            }
+
+            yield $name => $case;
+        }
+    }
+
+    /**
+     * @dataProvider provideDoubleSpaceIndentCases
+     */
+    public function testDoubleSpaceIndent(string $expected, ?string $input = null): void
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('  '));
+
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideDoubleSpaceIndentCases(): iterable
+    {
+        yield ['<?php
+if (true) {
+  if (true) {
+    (new stdClass())->foo(
+      "text",
+      "text2"
+    );
+  }
+}'];
+
+        yield [
+            "<?php
+if (true) {
+  if (true) {
+    (new stdClass())->foo(
+      'text',
+      'text2'
+    );
+  }
+}",
+            "<?php
+if (true) {
+  if (true) {
+\t(new stdClass())->foo(
+\t  'text',
+\t  'text2'
+\t);
+  }
+}",
+        ];
+
+        yield [
+            '<?php
+    /*
+     * Foo
+     */
+',
+
+            "<?php
+\t/*
+\t * Foo
+\t */
+", ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,189 +19,214 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author SpacePossum
- *
  * @internal
+ *
  * @covers \PhpCsFixer\Indicator\PhpUnitTestCaseIndicator
  */
 final class PhpUnitTestCaseIndicatorTest extends TestCase
 {
-    /**
-     * @var PhpUnitTestCaseIndicator
-     */
-    private $indicator;
+    private ?PhpUnitTestCaseIndicator $indicator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->indicator = new PhpUnitTestCaseIndicator();
+
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->indicator = null;
+
+        parent::tearDown();
     }
 
     /**
-     * @param bool   $expected
-     * @param Tokens $tokens
-     * @param int    $index
-     *
      * @dataProvider provideIsPhpUnitClassCases
      */
-    public function testIsPhpUnitClass($expected, Tokens $tokens, $index)
+    public function testIsPhpUnitClass(bool $expected, Tokens $tokens, int $index): void
     {
-        static::assertSame($expected, $this->indicator->isPhpUnitClass($tokens, $index));
+        self::assertSame($expected, $this->indicator->isPhpUnitClass($tokens, $index));
     }
 
-    public function provideIsPhpUnitClassCases()
+    public static function provideIsPhpUnitClassCases(): iterable
     {
-        return [
-            'Test class' => [
-                true,
-                Tokens::fromCode('<?php final class MyTest {}'),
-                3,
-            ],
-            'TestCase class' => [
-                true,
-                Tokens::fromCode('<?php final class SomeTestCase {}'),
-                3,
-            ],
-            'Extends Test' => [
-                true,
-                Tokens::fromCode('<?php final class foo extends Test {}'),
-                3,
-            ],
-            'Extends TestCase' => [
-                true,
-                Tokens::fromCode('<?php final class bar extends TestCase {}'),
-                3,
-            ],
-            'Implements AbstractFixerTest' => [
-                true,
-                Tokens::fromCode('<?php
+        yield 'Test class' => [
+            true,
+            Tokens::fromCode('<?php final class MyTest extends A {}'),
+            3,
+        ];
+
+        yield 'TestCase class' => [
+            true,
+            Tokens::fromCode('<?php final class SomeTestCase extends A {}'),
+            3,
+        ];
+
+        yield 'Extends Test' => [
+            true,
+            Tokens::fromCode('<?php final class foo extends Test {}'),
+            3,
+        ];
+
+        yield 'Extends TestCase' => [
+            true,
+            Tokens::fromCode('<?php final class bar extends TestCase {}'),
+            3,
+        ];
+
+        yield 'Implements AbstractFixerTest' => [
+            true,
+            Tokens::fromCode('<?php
 class A extends Foo implements PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest
 {
 }
 '),
-                1,
-            ],
-            'Extends TestCase implements Foo' => [
-                true,
-                Tokens::fromCode('<?php
+            1,
+        ];
+
+        yield 'Extends TestCase implements Foo' => [
+            true,
+            Tokens::fromCode('<?php
 class A extends TestCase implements Foo
 {
 }
 '),
-                1,
-            ],
-            'Implements TestInterface' => [
-                true,
-                Tokens::fromCode('<?php
-class Foo implements SomeTestInterface
+            1,
+        ];
+
+        yield 'Implements TestInterface' => [
+            true,
+            Tokens::fromCode('<?php
+class Foo extends A implements SomeTestInterface
 {
 }
 '),
-                1,
-            ],
-            'Implements TestInterface, SomethingElse' => [
-                true,
-                Tokens::fromCode('<?php
-class Foo implements TestInterface, SomethingElse
+            1,
+        ];
+
+        yield 'Implements TestInterface, SomethingElse' => [
+            true,
+            Tokens::fromCode('<?php
+class Foo extends A implements TestInterface, SomethingElse
 {
 }
 '),
-                1,
-            ],
-            [
-                false,
-                Tokens::fromCode('<?php final class MyClass {}'),
-                3,
-            ],
+            1,
+        ];
+
+        yield [
+            false,
+            Tokens::fromCode('<?php final class MyClass {}'),
+            3,
+        ];
+
+        yield 'Anonymous class' => [
+            false,
+            Tokens::fromCode('<?php $a = new class {};'),
+            7,
+        ];
+
+        yield 'Test class that does not extends' => [
+            false,
+            Tokens::fromCode('<?php final class MyTest {}'),
+            3,
+        ];
+
+        yield 'TestCase class that does not extends' => [
+            false,
+            Tokens::fromCode('<?php final class SomeTestCase implements PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest {}'),
+            3,
         ];
     }
 
-    public function testThrowsExceptionIfNotClass()
+    public function testThrowsExceptionIfNotClass(): void
     {
         $tokens = Tokens::fromCode('<?php echo 1;');
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessageRegExp('/^No T_CLASS at given index 1, got T_ECHO\.$/');
+        $this->expectExceptionMessageMatches('/^No "T_CLASS" at given index 1, got "T_ECHO"\.$/');
 
         $this->indicator->isPhpUnitClass($tokens, 1);
     }
 
     /**
-     * @param array<[int, int]> $expectedIndexes
-     * @param string            $code
+     * @param array<array{0: int, 1: int}> $expectedIndexes
      *
      * @dataProvider provideFindPhpUnitClassesCases
      */
-    public function testFindPhpUnitClasses(array $expectedIndexes, $code)
+    public function testFindPhpUnitClasses(array $expectedIndexes, string $code): void
     {
         $tokens = Tokens::fromCode($code);
 
-        $classesFromTop = $this->indicator->findPhpUnitClasses($tokens, false);
-        $classesFromTop = iterator_to_array($classesFromTop);
-        $classesFromBottom = $this->indicator->findPhpUnitClasses($tokens);
-        $classesFromBottom = iterator_to_array($classesFromBottom);
+        $classes = $this->indicator->findPhpUnitClasses($tokens);
+        $classes = iterator_to_array($classes);
 
-        static::assertSame($expectedIndexes, $classesFromTop);
-        static::assertSame(array_reverse($classesFromBottom), $classesFromTop);
+        self::assertSame($expectedIndexes, $classes);
     }
 
-    public function provideFindPhpUnitClassesCases()
+    public static function provideFindPhpUnitClassesCases(): iterable
     {
-        return [
-            'empty' => [
-                [],
-                '',
+        yield 'empty' => [
+            [],
+            '',
+        ];
+
+        yield 'empty script' => [
+            [],
+            "<?php\n",
+        ];
+
+        yield 'no test class' => [
+            [],
+            '<?php class Foo{}',
+        ];
+
+        yield 'single test class' => [
+            [
+                [10, 11],
             ],
-            'empty script' => [
-                [],
-                "<?php\n",
+            '<?php
+                class MyTest extends Foo {}
+            ',
+        ];
+
+        yield 'two PHPUnit classes' => [
+            [
+                [21, 34],
+                [10, 11],
             ],
-            'no test class' => [
-                [],
-                '<?php class Foo{}',
+            '<?php
+                class My1Test extends Foo1 {}
+                class My2Test extends Foo2 { public function A8() {} }
+            ',
+        ];
+
+        yield 'mixed classes' => [
+            [
+                [71, 84],
+                [29, 42],
             ],
-            'single test class' => [
-                [
-                    [6, 7],
-                ],
-                '<?php
-                    class MyTest {}
-                ',
-            ],
-            'two PHPUnit classes' => [
-                [
-                    [6, 7],
-                    [13, 26],
-                ],
-                '<?php
-                    class My1Test {}
-                    class My2Test { public function A() {} }
-                ',
-            ],
-            'mixed classes' => [
-                [
-                    [25, 38],
-                    [63, 76],
-                ],
-                '<?php
-                    class Foo1 { public function A() {} }
-                    class My1Test { public function A() {} }
-                    class Foo2 { public function A() {} }
-                    class My2Test { public function A() {} }
-                    class Foo3 { public function A() { return function (){}; } }
-                ',
-            ],
-            'class with anonymous class inside' => [
-                [],
-                '<?php
-                    class Foo
+            '<?php
+                class Foo1 { public function A1() {} }
+                class My1Test extends Foo1 { public function A2() {} }
+                class Foo2 { public function A3() {} }
+                class My2Test extends Foo2 { public function A4() {} }
+                class Foo3 { public function A5() { return function (){}; } }
+            ',
+        ];
+
+        yield 'class with anonymous class inside' => [
+            [],
+            '<?php
+                class Foo
+                {
+                    public function getClass()
                     {
-                        public function getClass()
-                        {
-                            return new class {};
-                        }
+                        return new class {};
                     }
-                ',
-            ],
+                }
+            ',
         ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,107 +26,128 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php class Foo extends Bar { public function baz() { self::qux(); } }',
-                '<?php class Foo extends Bar { public function baz() { SELF::qux(); } }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz() { static::qux(); } }',
-                '<?php class Foo extends Bar { public function baz() { STATIC::qux(); } }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz() { parent::baz(); } }',
-                '<?php class Foo extends Bar { public function baz() { PARENT::baz(); } }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz() { parent::baz(); } }',
-                '<?php class Foo extends Bar { public function baz() { Parent::baz(); } }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz() { return new self(); } }',
-                '<?php class Foo extends Bar { public function baz() { return new Self(); } }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz() { return SelfFoo::FOO; } }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz() { return FooSelf::FOO; } }',
-            ],
-            [
-                '<?php class Foo extends Bar { private STATIC $baz; }',
-            ],
-            [
-                '<?php class Foo extends Bar { STATIC private $baz; }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function paRent() {} }',
-            ],
-            [
-                '<?php $foo->Self();',
-            ],
-            [
-                '<?php Foo::Self();',
-            ],
-            [
-                '<?php if ($foo instanceof self) { return true; }',
-                '<?php if ($foo instanceof Self) { return true; }',
-            ],
-            [
-                '<?php if ($foo instanceof static) { return true; }',
-                '<?php if ($foo instanceof Static) { return true; }',
-            ],
-            [
-                '<?php if ($foo instanceof parent) { return true; }',
-                '<?php if ($foo instanceof Parent) { return true; }',
-            ],
-            [
-                '<?php if ($foo instanceof Self\Bar) { return true; }',
-            ],
-            [
-                '<?php if ($foo instanceof MySelf) { return true; }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz(self $x) {} }',
-                '<?php class Foo extends Bar { public function baz(Self $x) {} }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz(parent $x) {} }',
-                '<?php class Foo extends Bar { public function baz(Parent $x) {} }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz(MySelf $x) {} }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz(Self\Qux $x) {} }',
-            ],
-            [
-                '<?php $a = STATIC function() {};',
-            ],
-            [
-                '<?php class A { public function B() { STATIC $a; echo $a; }}',
-            ],
-            [
-                '<?php class A { public function B() { $collection = $static ? new static($b) : new self(); } }',
-                '<?php class A { public function B() { $collection = $static ? new STATIC($b) : new self(); } }',
-            ],
-            [
-                '<?php class A { STATIC public function B() {} }',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php class Foo extends Bar { public function baz() { self::qux(); } }',
+            '<?php class Foo extends Bar { public function baz() { SELF::qux(); } }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() { static::qux(); } }',
+            '<?php class Foo extends Bar { public function baz() { STATIC::qux(); } }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() { parent::baz(); } }',
+            '<?php class Foo extends Bar { public function baz() { PARENT::baz(); } }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() { parent::baz(); } }',
+            '<?php class Foo extends Bar { public function baz() { Parent::baz(); } }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() { return new self(); } }',
+            '<?php class Foo extends Bar { public function baz() { return new Self(); } }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() { return SelfFoo::FOO; } }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() { return FooSelf::FOO; } }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { private STATIC $baz; }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { STATIC private $baz; }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function paRent() {} }',
+        ];
+
+        yield [
+            '<?php $foo->Self();',
+        ];
+
+        yield [
+            '<?php Foo::Self();',
+        ];
+
+        yield [
+            '<?php if ($foo instanceof self) { return true; }',
+            '<?php if ($foo instanceof Self) { return true; }',
+        ];
+
+        yield [
+            '<?php if ($foo instanceof static) { return true; }',
+            '<?php if ($foo instanceof Static) { return true; }',
+        ];
+
+        yield [
+            '<?php if ($foo instanceof parent) { return true; }',
+            '<?php if ($foo instanceof Parent) { return true; }',
+        ];
+
+        yield [
+            '<?php if ($foo instanceof Self\Bar) { return true; }',
+        ];
+
+        yield [
+            '<?php if ($foo instanceof MySelf) { return true; }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz(self $x) {} }',
+            '<?php class Foo extends Bar { public function baz(Self $x) {} }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz(parent $x) {} }',
+            '<?php class Foo extends Bar { public function baz(Parent $x) {} }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz(MySelf $x) {} }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz(Self\Qux $x) {} }',
+        ];
+
+        yield [
+            '<?php $a = STATIC function() {};',
+        ];
+
+        yield [
+            '<?php class A { public function B() { STATIC $a; echo $a; }}',
+        ];
+
+        yield [
+            '<?php class A { public function B() { $collection = $static ? new static($b) : new self(); } }',
+            '<?php class A { public function B() { $collection = $static ? new STATIC($b) : new self(); } }',
+        ];
+
+        yield [
+            '<?php class A { STATIC public function B() {} }',
+        ];
+
+        yield [
+            '<?php
                     $a = function () {
                         STATIC $B = false;
                         if ($B) {
@@ -133,91 +156,175 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
                         $B = true;
                     };
                 ',
-            ],
-            [
-                '<?php class A { const PARENT = 42; }',
-            ],
-            [
-                '<?php namespace Foo\Parent;',
-            ],
-            [
-                '<?php namespace Parent\Foo;',
-            ],
+        ];
+
+        yield [
+            '<?php class A { const PARENT = 42; }',
+        ];
+
+        yield [
+            '<?php namespace Foo\Parent;',
+        ];
+
+        yield [
+            '<?php namespace Parent\Foo;',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() : self {} }',
+            '<?php class Foo extends Bar { public function baz() : Self {} }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() : parent {} }',
+            '<?php class Foo extends Bar { public function baz() : Parent {} }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() : MySelf {} }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() : Self\Qux {} }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz(?self $x) {} }',
+            '<?php class Foo extends Bar { public function baz(?Self $x) {} }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz(?parent $x) {} }',
+            '<?php class Foo extends Bar { public function baz(?Parent $x) {} }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() : ?self {} }',
+            '<?php class Foo extends Bar { public function baz() : ?Self {} }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() : ?parent {} }',
+            '<?php class Foo extends Bar { public function baz() : ?Parent {} }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() : ?MySelf {} }',
+        ];
+
+        yield [
+            '<?php class Foo extends Bar { public function baz() : ?Self\Qux {} }',
+        ];
+
+        yield [
+            '<?php class Foo {
+                private STATIC int $baz1;
+                private STATIC ?int $baz2;
+            }',
+        ];
+
+        yield [
+            '<?php
+                class Foo { public function bar() {} }
+                class FooChild extends Foo
+                {
+                    public function bar()
+                    {
+                        switch (true) {
+                            case parent::bar():
+                        }
+                    }
+                }',
+            '<?php
+                class Foo { public function bar() {} }
+                class FooChild extends Foo
+                {
+                    public function bar()
+                    {
+                        switch (true) {
+                            case PARENT::bar():
+                        }
+                    }
+                }',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
+     * @dataProvider provideFix80Cases
      *
-     * @requires PHP 7.0
-     * @dataProvider provideFix70Cases
+     * @requires PHP 8.0
      */
-    public function testFix70($expected, $input = null)
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70Cases()
+    public static function provideFix80Cases(): iterable
     {
-        return [
-            [
-                '<?php class Foo extends Bar { public function baz() : self {} }',
-                '<?php class Foo extends Bar { public function baz() : Self {} }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz() : parent {} }',
-                '<?php class Foo extends Bar { public function baz() : Parent {} }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz() : MySelf {} }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz() : Self\Qux {} }',
-            ],
-            [
-                '<?php namespace Parent;',
-            ],
+        yield ['<?php $foo?->Self();'];
+
+        yield [
+            '<?php class Foo extends A {
+                public function baz1() : int|parent {}
+                public function baz2() : parent|int {}
+                public function baz3() : ?parent {}
+            }',
+            '<?php class Foo extends A {
+                public function baz1() : int|Parent {}
+                public function baz2() : Parent|int {}
+                public function baz3() : ?Parent {}
+            }',
+        ];
+
+        yield [
+            '<?php class Foo extends A {
+                public function baz1() : int|static {}
+                public function baz2() : static|int {}
+                public function baz3() : ?static {}
+            }',
+            '<?php class Foo extends A {
+                public function baz1() : int|STATIC {}
+                public function baz2() : STATIC|int {}
+                public function baz3() : ?STATIC {}
+            }',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    private int|self $prop1, $prop2;
+    private self|int $prop3, $prop4;
+}
+',
+            '<?php
+class Foo
+{
+    private int|SELF $prop1, $prop2;
+    private SELF|int $prop3, $prop4;
+}
+',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
+     * @dataProvider provideFix81Cases
      *
-     * @requires PHP 7.1
-     * @dataProvider provideFix71Cases
+     * @requires PHP 8.1
      */
-    public function testFix71($expected, $input = null)
+    public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix71Cases()
+    public static function provideFix81Cases(): iterable
     {
-        return [
-            [
-                '<?php class Foo extends Bar { public function baz(?self $x) {} }',
-                '<?php class Foo extends Bar { public function baz(?Self $x) {} }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz(?parent $x) {} }',
-                '<?php class Foo extends Bar { public function baz(?Parent $x) {} }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz() : ?self {} }',
-                '<?php class Foo extends Bar { public function baz() : ?Self {} }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz() : ?parent {} }',
-                '<?php class Foo extends Bar { public function baz() : ?Parent {} }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz() : ?MySelf {} }',
-            ],
-            [
-                '<?php class Foo extends Bar { public function baz() : ?Self\Qux {} }',
-            ],
+        yield [
+            '<?php class A { final const PARENT = 42; }',
+        ];
+
+        yield [
+            '<?php enum Foo: string { case PARENT = \'parent\'; }',
         ];
     }
 }

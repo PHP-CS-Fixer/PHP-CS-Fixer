@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,184 +27,300 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class HeredocIndentationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @requires PHP <7.3
-     */
-    public function testDoNotFix()
-    {
-        $this->doTest(
-            <<<'TEST'
-<?php
-    foo(<<<EOD
-abc
-    def
-EOD
-    );
-TEST
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
+     * @param array<string, mixed> $config
      *
      * @dataProvider provideFixCases
-     * @requires PHP 7.3
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                <<<'EXPECTED'
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(<<<EOD
+                        EOD
+                    );
+                EXPECTED
+            ,
+            <<<'INPUT'
+                <?php
+                    foo(<<<EOD
+                EOD
+                    );
+                INPUT
+            ,
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(<<<EOD
+
+                        EOD
+                    );
+                EXPECTED
+            ,
+            <<<'INPUT'
+                <?php
+                    foo(<<<EOD
+
+                EOD
+                    );
+                INPUT
+            ,
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(<<<EOD
+                        abc
+
+                            def
+                        EOD
+                    );
+                EXPECTED
+            ,
+            <<<'INPUT'
+                <?php
+                    foo(<<<EOD
+                abc
+
+                    def
+                EOD
+                    );
+                INPUT
+            ,
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(<<<'EOD'
+
+                        abc
+                            def
+
+                        EOD
+                    );
+                EXPECTED
+            ,
+            <<<'INPUT'
+                <?php
+                    foo(<<<'EOD'
+
+                abc
+                    def
+
+                EOD
+                    );
+                INPUT
+            ,
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(<<<'EOD'
+                        abc
+                            def
+                        EOD
+                    );
+                EXPECTED
+            ,
+            <<<'INPUT'
+                <?php
+                    foo(<<<'EOD'
+                            abc
+                                def
+                            EOD
+                    );
+                INPUT
+            ,
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(<<<EOD
+                        $abc
+                            $def
+                        {$ghi}
+                        EOD
+                    );
+                EXPECTED
+            ,
+            <<<'INPUT'
+                <?php
+                    foo(<<<EOD
+                $abc
+                    $def
+                {$ghi}
+                EOD
+                    );
+                INPUT
+            ,
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    $a = <<<'EOD'
+                        <?php
+                            $b = <<<FOO
+                        abc
+                        FOO;
+                        EOD;
+                EXPECTED
+            ,
+            <<<'INPUT'
+                <?php
+                    $a = <<<'EOD'
+                <?php
+                    $b = <<<FOO
+                abc
+                FOO;
+                EOD;
+                INPUT
+            ,
+        ];
+
+        yield [
+            /* EXPECTED */ '
 <?php
     foo(<<<EOD
-        EOD
-    );
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-    foo(<<<EOD
-EOD
-    );
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    foo(<<<EOD
+          '.'
         abc
-            def
+          '.'
+        def
+          '.'
         EOD
-    );
-EXPECTED
-                ,
-                <<<'INPUT'
+    );',
+            /* INPUT */ '
 <?php
     foo(<<<EOD
-abc
-    def
-EOD
-    );
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    foo(<<<'EOD'
-        abc
-            def
-        EOD
-    );
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-    foo(<<<'EOD'
-abc
-    def
-EOD
-    );
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    foo(<<<'EOD'
-        abc
-            def
-        EOD
-    );
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-    foo(<<<'EOD'
-            abc
-                def
-            EOD
-    );
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
+        '.'
+      abc
+        '.'
+      def
+        '.'
+      EOD
+    );',
+        ];
+
+        yield [
+            /* EXPECTED */ '
 <?php
     foo(<<<EOD
-        $abc
-            $def
-        {$ghi}
+
+        abc
+
+        def
+
         EOD
-    );
-EXPECTED
-                ,
-                <<<'INPUT'
+    );',
+            /* INPUT */ '
 <?php
     foo(<<<EOD
-$abc
-    $def
-{$ghi}
-EOD
-    );
-INPUT
-                ,
-            ],
-            [
-                <<<'EXPECTED'
-<?php
-    $a = <<<'EOD'
-        <?php
-            $b = <<<FOO
-        abc
-        FOO;
-        EOD;
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-    $a = <<<'EOD'
-<?php
-    $b = <<<FOO
-abc
-FOO;
-EOD;
-INPUT
-                ,
-            ],
+  '.'
+      abc
+  '.'
+      def
+  '.'
+      EOD
+    );',
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php foo(<<<EOD
+                    EOD
+                );
+                EXPECTED
+            ,
+            <<<'INPUT'
+                <?php foo(<<<EOD
+                EOD
+                );
+                INPUT
+            ,
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(<<<EOD
+                    abc
+
+                        def
+                    EOD
+                    );
+                EXPECTED
+            ,
+            <<<'INPUT'
+                <?php
+                    foo(<<<EOD
+                abc
+
+                    def
+                EOD
+                    );
+                INPUT
+            ,
+            ['indentation' => 'same_as_start'],
+        ];
+
+        yield [
+            <<<'EXPECTED'
+                <?php
+                    foo(<<<EOD
+                    abc
+
+                        def
+                    EOD
+                    );
+                EXPECTED
+            ,
+            <<<'INPUT'
+                <?php
+                    foo(<<<EOD
+                        abc
+
+                            def
+                        EOD
+                    );
+                INPUT
+            ,
+            ['indentation' => 'same_as_start'],
         ];
     }
 
-    /**
-     * @requires PHP 7.3
-     */
-    public function testFixWithTabIndentation()
+    public function testFixWithTabIndentation(): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));
 
         $expected = <<<EXPECTED
-<?php
-\t\$a = <<<'EOD'
-\t\tabc
-\t\t    def
-\t\t\tghi
-\t\tEOD;
-EXPECTED;
+            <?php
+            \t\$a = <<<'EOD'
+            \t\tabc
+            \t\t    def
+            \t\t\tghi
+            \t\tEOD;
+            EXPECTED;
 
         $input = <<<INPUT
-<?php
-\t\$a = <<<'EOD'
-abc
-    def
-\tghi
-EOD;
-INPUT;
+            <?php
+            \t\$a = <<<'EOD'
+            abc
+                def
+            \tghi
+            EOD;
+            INPUT;
 
         $this->doTest($expected, $input);
     }

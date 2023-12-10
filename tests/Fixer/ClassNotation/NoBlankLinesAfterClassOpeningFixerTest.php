@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,32 +27,24 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideTraitsCases
+     * @dataProvider provideFixTraitsCases
      */
-    public function testFixTraits($expected, $input = null)
+    public function testFixTraits(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        $cases = [];
-
-        $cases[] = [
+        yield [
             '<?php
 class Good
 {
@@ -69,7 +63,8 @@ class Good
     }
 }',
         ];
-        $cases[] = [
+
+        yield [
             '<?php
 class Good
 {
@@ -95,7 +90,7 @@ class Good
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 interface Good
 {
@@ -116,7 +111,7 @@ interface Good
         ];
 
         // check if some fancy whitespaces aren't modified
-        $cases[] = [
+        yield [
             '<?php
 class Good
 {public
@@ -131,7 +126,7 @@ class Good
         ];
 
         // check if line with spaces is removed when next token is indented
-        $cases[] = [
+        yield [
             '<?php
 class Foo
 {
@@ -148,7 +143,7 @@ class Foo
         ];
 
         // check if line with spaces is removed when next token is not indented
-        $cases[] = [
+        yield [
             '<?php
 class Foo
 {
@@ -163,15 +158,11 @@ function bar() {}
 }
 ',
         ];
-
-        return $cases;
     }
 
-    public function provideTraitsCases()
+    public static function provideFixTraitsCases(): iterable
     {
-        $cases = [];
-
-        $cases[] = [
+        yield [
             '<?php
 trait Good
 {
@@ -190,34 +181,57 @@ trait Good
     public function firstMethod() {}
 }',
         ];
-
-        return $cases;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
-                "<?php\nclass Foo\n{\n\n    public function bar() {}\n}",
-            ],
-            [
-                "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
-                "<?php\nclass Foo\n{\r\n\r\n    public function bar() {}\n}",
-            ],
+        yield [
+            "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
+            "<?php\nclass Foo\n{\n\n    public function bar() {}\n}",
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
+            "<?php\nclass Foo\n{\r\n\r\n    public function bar() {}\n}",
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield [
+            '<?php
+enum Good
+{
+    public function firstMethod()
+    {}
+}',
+            '<?php
+enum Good
+{
+
+    public function firstMethod()
+    {}
+}',
         ];
     }
 }

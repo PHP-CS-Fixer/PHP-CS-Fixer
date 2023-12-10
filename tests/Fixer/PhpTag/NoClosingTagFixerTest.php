@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,71 +24,69 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoClosingTagFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideWithFullOpenTagCases
      */
-    public function testWithFullOpenTag($expected, $input = null)
+    public function testWithFullOpenTag(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideWithShortOpenTagCases
      */
-    public function testWithShortOpenTag($expected, $input = null)
+    public function testWithShortOpenTag(string $expected, ?string $input = null): void
     {
-        if (!ini_get('short_open_tag')) {
-            static::markTestSkipped('The short_open_tag option is required to be enabled.');
-
-            return;
+        if (!\ini_get('short_open_tag')) {
+            self::markTestSkipped('The short_open_tag option is required to be enabled.');
         }
 
         $this->doTest($expected, $input);
     }
 
-    public function provideWithFullOpenTagCases()
+    public static function provideWithFullOpenTagCases(): iterable
     {
-        return [
-            [
-                '<?php echo \'Foo\';',
-                '<?php echo \'Foo\'; ?>',
-            ],
-            [
-                '<?php echo \'Foo\';',
-                '<?php echo \'Foo\';?>',
-            ],
-            [
-                '<?php echo \'Foo\'; ?> PLAIN TEXT',
-            ],
-            [
-                'PLAIN TEXT<?php echo \'Foo\'; ?>',
-            ],
-            [
-                '<?php
+        yield [
+            '<?php echo \'Foo\';',
+            '<?php echo \'Foo\'; ?>',
+        ];
+
+        yield [
+            '<?php echo \'Foo\';',
+            '<?php echo \'Foo\';?>',
+        ];
+
+        yield [
+            '<?php echo \'Foo\'; ?> PLAIN TEXT',
+        ];
+
+        yield [
+            'PLAIN TEXT<?php echo \'Foo\'; ?>',
+        ];
+
+        yield [
+            '<?php
 
 echo \'Foo\';',
-                '<?php
+            '<?php
 
 echo \'Foo\';
 
 ?>',
-            ],
-            [
-                '<?php echo \'Foo\'; ?>
+        ];
+
+        yield [
+            '<?php echo \'Foo\'; ?>
 <p><?php echo \'this is a template\'; ?></p>
 <?php echo \'Foo\'; ?>',
-            ],
-            [
-                '<?php echo "foo";',
-                '<?php echo "foo" ?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php echo "foo";',
+            '<?php echo "foo" ?>',
+        ];
+
+        yield [
+            '<?php
 class foo
 {
     public function bar()
@@ -94,7 +94,7 @@ class foo
         echo "Here I am!";
     }
 }',
-                '<?php
+            '<?php
 class foo
 {
     public function bar()
@@ -102,77 +102,86 @@ class foo
         echo "Here I am!";
     }
 }?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function bar()
 {
     echo "Here I am!";
 }',
-                '<?php
+            '<?php
 function bar()
 {
     echo "Here I am!";
 }?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 if (true) {
     echo "Here I am!";
 }',
-                '<?php
+            '<?php
 if (true) {
     echo "Here I am!";
 }?>',
-            ],
-            'Trailing linebreak, priority issue with SingleBlankLineAtEofFixer.' => [
-                '<?php echo 1;',
-                "<?php echo 1;\n?>\n",
-            ],
-            'Trailing comment.' => [
-                '<?php echo 1;// test',
-                "<?php echo 1;// test\n?>",
-            ],
-            'No code' => [
-                '<?php ',
-                '<?php ?>',
-            ],
-            'No code, only comment' => [
-                '<?php /* license */',
-                '<?php /* license */ ?>',
-            ],
-            [
-                '<?php ?>aa',
-            ],
+        ];
+
+        yield 'Trailing linebreak, priority issue with SingleBlankLineAtEofFixer.' => [
+            '<?php echo 1;',
+            "<?php echo 1;\n?>\n",
+        ];
+
+        yield 'Trailing comment.' => [
+            '<?php echo 1;// test',
+            "<?php echo 1;// test\n?>",
+        ];
+
+        yield 'No code' => [
+            '<?php ',
+            '<?php ?>',
+        ];
+
+        yield 'No code, only comment' => [
+            '<?php /* license */',
+            '<?php /* license */ ?>',
+        ];
+
+        yield [
+            '<?php ?>aa',
         ];
     }
 
-    public function provideWithShortOpenTagCases()
+    public static function provideWithShortOpenTagCases(): iterable
     {
-        return [
-            [
-                '<? echo \'Foo\';',
-                '<? echo \'Foo\'; ?>',
-            ],
-            [
-                '<? echo \'Foo\';',
-                '<? echo \'Foo\';?>',
-            ],
-            [
-                '<? echo \'Foo\'; ?>
+        yield [
+            '<? echo \'Foo\';',
+            '<? echo \'Foo\'; ?>',
+        ];
+
+        yield [
+            '<? echo \'Foo\';',
+            '<? echo \'Foo\';?>',
+        ];
+
+        yield [
+            '<? echo \'Foo\'; ?>
 <p><? echo \'this is a template\'; ?></p>
 <? echo \'Foo\'; ?>',
-            ],
-            [
-                '<? /**/', '<? /**/?>',
-            ],
-            [
-                '<?= "somestring"; ?> <?= "anotherstring"; ?>',
-            ],
-            [
-                '<?= 1;',
-                '<?= 1; ?>',
-            ],
+        ];
+
+        yield [
+            '<? /**/', '<? /**/?>',
+        ];
+
+        yield [
+            '<?= "somestring"; ?> <?= "anotherstring"; ?>',
+        ];
+
+        yield [
+            '<?= 1;',
+            '<?= 1; ?>',
         ];
     }
 }

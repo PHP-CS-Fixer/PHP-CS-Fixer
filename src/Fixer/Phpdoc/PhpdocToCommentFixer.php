@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,8 +15,14 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -23,20 +31,25 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Ceeram <ceeram@cakephp.org>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocToCommentFixer extends AbstractFixer
+final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * {@inheritdoc}
+     * @var string[]
      */
-    public function isCandidate(Tokens $tokens)
+    private array $ignoredTags = [];
+
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocAnnotationWithoutDotFixer, PhpdocIndentFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocParamOrderFixer, PhpdocReadonlyClassCommentToKeywordFixer, PhpdocReturnSelfReferenceFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagTypeFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer, SingleLineCommentSpacingFixer, SingleLineCommentStyleFixer.
+     * Must run after CommentToPhpdocFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         /*
          * Should be run before all other docblock fixers so that these fixers
@@ -46,10 +59,7 @@ final class PhpdocToCommentFixer extends AbstractFixer
         return 25;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Docblocks should only be used on structural elements.',
@@ -58,20 +68,53 @@ final class PhpdocToCommentFixer extends AbstractFixer
                     '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
-/** This should not be a docblock */
+/** This should be a comment */
 foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
 }
 '
                 ),
+                new CodeSample(
+                    '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** This should be a comment */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @todo This should be a PHPDoc as the tag is on "ignored_tags" list */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+',
+                    ['ignored_tags' => ['todo']]
+                ),
             ]
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    public function configure(array $configuration = null): void
+    {
+        parent::configure($configuration);
+
+        $this->ignoredTags = array_map(
+            static fn (string $tag): string => strtolower($tag),
+            $this->configuration['ignored_tags']
+        );
+    }
+
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('ignored_tags', 'List of ignored tags (matched case insensitively).'))
+                ->setAllowedTypes(['array'])
+                ->setDefault([])
+                ->getOption(),
+        ]);
+    }
+
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $commentsAnalyzer = new CommentsAnalyzer();
 
@@ -86,6 +129,14 @@ foreach($connections as $key => $sqlite) {
 
             if ($commentsAnalyzer->isBeforeStructuralElement($tokens, $index)) {
                 continue;
+            }
+
+            if (0 < Preg::matchAll('~\@([a-zA-Z0-9_\\\\-]+)\b~', $token->getContent(), $matches)) {
+                foreach ($matches[1] as $match) {
+                    if (\in_array(strtolower($match), $this->ignoredTags, true)) {
+                        continue 2;
+                    }
+                }
             }
 
             $tokens[$index] = new Token([T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);

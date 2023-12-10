@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: control_structure_braces,no_multiple_statements_per_line.
+--RULESET--
+{"control_structure_braces": true, "no_multiple_statements_per_line": true}
+--EXPECT--
+<?php
+$callback = function () { if ($a) { return true; } return false; };
+
+--INPUT--
+<?php
+$callback = function () { if ($a) return true; return false; };

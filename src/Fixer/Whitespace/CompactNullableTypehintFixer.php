@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,68 +14,50 @@
 
 namespace PhpCsFixer\Fixer\Whitespace;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
-use PhpCsFixer\Tokenizer\CT;
-use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * @author Jack Cherng <jfcherng@gmail.com>
+ *
+ * @deprecated
  */
-final class CompactNullableTypehintFixer extends AbstractFixer
+final class CompactNullableTypehintFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    private CompactNullableTypeDeclarationFixer $compactNullableTypeDeclarationFixer;
+
+    public function __construct()
     {
+        $this->compactNullableTypeDeclarationFixer = new CompactNullableTypeDeclarationFixer();
+
+        parent::__construct();
+    }
+
+    public function getDefinition(): FixerDefinitionInterface
+    {
+        $fixerDefinition = $this->compactNullableTypeDeclarationFixer->getDefinition();
+
         return new FixerDefinition(
             'Remove extra spaces in a nullable typehint.',
-            [
-                new VersionSpecificCodeSample(
-                    "<?php\nfunction sample(? string \$str): ? string\n{}\n",
-                    new VersionSpecification(70100)
-                ),
-            ],
-            'Rule is applied only in a PHP 7.1+ environment.'
+            $fixerDefinition->getCodeSamples(),
+            $fixerDefinition->getDescription(),
+            $fixerDefinition->getRiskyDescription(),
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function getSuccessorsNames(): array
     {
-        return \PHP_VERSION_ID >= 70100 && $tokens->isTokenKindFound(CT::T_NULLABLE_TYPE);
+        return [
+            $this->compactNullableTypeDeclarationFixer->getName(),
+        ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function createProxyFixers(): array
     {
-        static $typehintKinds = [
-            CT::T_ARRAY_TYPEHINT,
-            T_CALLABLE,
-            T_NS_SEPARATOR,
-            T_STRING,
+        return [
+            $this->compactNullableTypeDeclarationFixer,
         ];
-
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(CT::T_NULLABLE_TYPE)) {
-                continue;
-            }
-
-            // remove whitespaces only if there are only whitespaces
-            // between '?' and the variable type
-            if (
-                $tokens[$index + 1]->isWhitespace() &&
-                $tokens[$index + 2]->isGivenKind($typehintKinds)
-            ) {
-                $tokens->removeTrailingWhitespace($index);
-            }
-        }
     }
 }

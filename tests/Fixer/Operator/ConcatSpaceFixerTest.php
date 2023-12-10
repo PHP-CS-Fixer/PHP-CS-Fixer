@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,11 +14,11 @@
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -24,75 +26,79 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class ConcatSpaceFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfigMissingKey()
+    public function testInvalidConfigMissingKey(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[concat_space\] Invalid configuration: The option "a" does not exist\. Defined options are: "spacing"\.$#');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('#^\[concat_space\] Invalid configuration: The option "a" does not exist\. Defined options are: "spacing"\.$#');
 
         $this->fixer->configure(['a' => 1]);
     }
 
-    public function testInvalidConfigValue()
+    public function testInvalidConfigValue(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[concat_space\] Invalid configuration: The option "spacing" with value "tabs" is invalid\. Accepted values are: "one", "none"\.$#');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('#^\[concat_space\] Invalid configuration: The option "spacing" with value "tabs" is invalid\. Accepted values are: "one", "none"\.$#');
 
         $this->fixer->configure(['spacing' => 'tabs']);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideWithoutSpaceCases
+     * @dataProvider provideFixWithoutSpaceCases
      */
-    public function testFixWithoutSpace($expected, $input = null)
+    public function testFixWithoutSpace(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['spacing' => 'none']);
         $this->doTest($expected, $input);
     }
 
-    public function provideWithoutSpaceCases()
+    public static function provideFixWithoutSpaceCases(): iterable
     {
-        return [
-            [
-                '<?php $foo = "a".\'b\'."c"."d".$e.($f + 1);',
-                '<?php $foo = "a" . \'b\' ."c". "d" . $e.($f + 1);',
-            ],
-            [
-                '<?php $foo = 1 ."foo";',
-                '<?php $foo = 1 . "foo";',
-            ],
-            [
-                '<?php $foo = "foo". 1;',
-                '<?php $foo = "foo" . 1;',
-            ],
-            [
-                '<?php $foo = "a".
+        yield [
+            '<?php $foo = "a".\'b\'."c"."d".$e.($f + 1);',
+            '<?php $foo = "a" . \'b\' ."c". "d" . $e.($f + 1);',
+        ];
+
+        yield [
+            '<?php $foo = 1 ."foo";',
+            '<?php $foo = 1 . "foo";',
+        ];
+
+        yield [
+            '<?php $foo = "foo". 1;',
+            '<?php $foo = "foo" . 1;',
+        ];
+
+        yield [
+            '<?php $foo = "a".
 "b";',
-                '<?php $foo = "a" .
+            '<?php $foo = "a" .
 "b";',
-            ],
-            [
-                '<?php $a = "foobar"
+        ];
+
+        yield [
+            '<?php $a = "foobar"
     ."baz";',
-            ],
-            [
-                '<?php $a = "foobar"
+        ];
+
+        yield [
+            '<?php $a = "foobar"
                      //test
                      ."baz";',
-            ],
-            [
-                '<?php $a = "foobar"
+        ];
+
+        yield [
+            '<?php $a = "foobar"
                      /* test */
                      ."baz";',
-            ],
-            [
-                '<?php $a = "foobar" //
+        ];
+
+        yield [
+            '<?php $a = "foobar" //
     ."baz";',
-            ],
-            [
-                '<?php $a = "foobar" //
+        ];
+
+        yield [
+            '<?php $a = "foobar" //
                             ."baz"//
                             ."cex"/**/
                             ."dev"/**  */
@@ -101,24 +107,28 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                             ."ewer23"           '.'
                             ."dev"      /**  */
                     ;',
-            ],
-            [
-                '<?php $a = "foobar" //
+        ];
+
+        yield [
+            '<?php $a = "foobar" //
     ."baz" /**/
     ."something";',
-            ],
-            [
-                '<?php $a = "foobar"
+        ];
+
+        yield [
+            '<?php $a = "foobar"
     ."baz".      //
     "something";',
-            ],
-            [
-                '<?php $a = "foobar"
+        ];
+
+        yield [
+            '<?php $a = "foobar"
     ."baz".      /**  */
     "something";',
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php
                 \$longString = '*'
                     .'*****'
                     .'*****'
@@ -128,7 +138,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                     // Other comment
                     .'*****';
                 ",
-                "<?php
+            "<?php
                 \$longString = '*'
                     . '*****'
                     .  '*****'
@@ -138,27 +148,22 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                     // Other comment
                     .  '*****';
                 ",
-            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideWithSpaceCases
+     * @dataProvider provideFixWithSpaceCases
      */
-    public function testFixWithSpace($expected, $input = null)
+    public function testFixWithSpace(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['spacing' => 'one']);
         $this->doTest($expected, $input);
     }
 
-    public function provideWithSpaceCases()
+    public static function provideFixWithSpaceCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     $a =   //
                     $c .   /**/
                     $d     #
@@ -166,7 +171,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                     . $f . //
                     $z;
                 ',
-                '<?php
+            '<?php
                     $a =   //
                     $c   .   /**/
                     $d     #
@@ -174,39 +179,42 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                     .   $f   . //
                     $z;
                 ',
-            ],
-            [
-                '<?php $foo = "a" . \'b\' . "c" . "d" . $e . ($f + 1);',
-                '<?php $foo = "a" . \'b\' ."c". "d"    .  $e.($f + 1);',
-            ],
-            [
-                '<?php $foo = "a" .
+        ];
+
+        yield [
+            '<?php $foo = "a" . \'b\' . "c" . "d" . $e . ($f + 1);',
+            '<?php $foo = "a" . \'b\' ."c". "d"    .  $e.($f + 1);',
+        ];
+
+        yield [
+            '<?php $foo = "a" .
 "b";',
-                '<?php $foo = "a".
+            '<?php $foo = "a".
 "b";',
-            ],
-            [
-                '<?php $a = "foobar"
+        ];
+
+        yield [
+            '<?php $a = "foobar"
     . "baz";',
-                '<?php $a = "foobar"
+            '<?php $a = "foobar"
     ."baz";',
-            ],
-            [
-                '<?php echo $a . $b;
+        ];
+
+        yield [
+            '<?php echo $a . $b;
                     echo $d . $e .   //
                         $f;
                     echo $a . $b?>
                  <?php
                     echo $c;
                 ',
-                '<?php echo $a.$b;
+            '<?php echo $a.$b;
                     echo $d    .            $e          .   //
                         $f;
                     echo $a   .                  $b?>
                  <?php
                     echo $c;
                 ',
-            ],
         ];
     }
 }

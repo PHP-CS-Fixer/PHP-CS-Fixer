@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,33 +20,33 @@ namespace PhpCsFixer\FixerDefinition;
 final class VersionSpecification implements VersionSpecificationInterface
 {
     /**
-     * @var null|int
+     * @var null|int<1, max>
      */
-    private $minimum;
+    private ?int $minimum;
 
     /**
-     * @var null|int
+     * @var null|int<1, max>
      */
-    private $maximum;
+    private ?int $maximum;
 
     /**
-     * @param null|int $minimum
-     * @param null|int $maximum
+     * @param null|int<1, max> $minimum
+     * @param null|int<1, max> $maximum
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct($minimum = null, $maximum = null)
+    public function __construct(?int $minimum = null, ?int $maximum = null)
     {
         if (null === $minimum && null === $maximum) {
             throw new \InvalidArgumentException('Minimum or maximum need to be specified.');
         }
 
-        if (null !== $minimum && (!\is_int($minimum) || 1 > $minimum)) {
+        if (null !== $minimum && 1 > $minimum) {
             throw new \InvalidArgumentException('Minimum needs to be either null or an integer greater than 0.');
         }
 
         if (null !== $maximum) {
-            if (!\is_int($maximum) || 1 > $maximum) {
+            if (1 > $maximum) {
                 throw new \InvalidArgumentException('Maximum needs to be either null or an integer greater than 0.');
             }
 
@@ -57,10 +59,7 @@ final class VersionSpecification implements VersionSpecificationInterface
         $this->maximum = $maximum;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isSatisfiedBy($version)
+    public function isSatisfiedBy(int $version): bool
     {
         if (null !== $this->minimum && $version < $this->minimum) {
             return false;

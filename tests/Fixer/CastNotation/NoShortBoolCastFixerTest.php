@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,43 +24,41 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
             $c = // lala
                 // cc
             (bool)$content;',
-                '<?php
+            '<?php
             $c = ! // lala
                 // cc
             !$content;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = \'0\';
 $b = /*
 
     */(bool)$a;',
-                '<?php
+            '<?php
 $a = \'0\';
 $b = !/*
 
     */!$a;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 function foo($a, $b) {
     $c = (bool)$a;
     $d = !$a;
@@ -71,7 +71,7 @@ function foo($a, $b) {
     return (bool) $a;
 }
                 ',
-                '<?php
+            '<?php
 function foo($a, $b) {
     $c = !!$a;
     $d = !$a;
@@ -87,7 +87,6 @@ function foo($a, $b) {
     return !! $a;
 }
                 ',
-            ],
         ];
     }
 }

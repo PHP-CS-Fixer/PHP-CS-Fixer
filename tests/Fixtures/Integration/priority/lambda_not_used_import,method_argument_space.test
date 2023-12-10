@@ -1,0 +1,9 @@
+--TEST--
+Integration of fixers: lambda_not_used_import,method_argument_space.
+--RULESET--
+{"lambda_not_used_import": true, "method_argument_space": true}
+--EXPECT--
+<?php function() use ($a, $c) { return $a + $c; };
+
+--INPUT--
+<?php function() use ($a, $b, $c) { return $a + $c; };

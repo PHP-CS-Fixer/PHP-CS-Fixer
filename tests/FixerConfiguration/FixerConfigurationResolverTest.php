@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,18 +18,23 @@ use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionSorter;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @internal
  *
+ * @group legacy
+ *
  * @covers \PhpCsFixer\FixerConfiguration\FixerConfigurationResolver
  */
 final class FixerConfigurationResolverTest extends TestCase
 {
-    public function testWithoutOptions()
+    public function testWithoutOptions(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Options cannot be empty.');
@@ -35,7 +42,7 @@ final class FixerConfigurationResolverTest extends TestCase
         new FixerConfigurationResolver([]);
     }
 
-    public function testWithDuplicatesOptions()
+    public function testWithDuplicatesOptions(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The "foo" option is defined multiple times.');
@@ -46,7 +53,7 @@ final class FixerConfigurationResolverTest extends TestCase
         ]);
     }
 
-    public function testWithDuplicateAliasOptions()
+    public function testWithDuplicateAliasOptions(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The "foo" option is defined multiple times.');
@@ -57,7 +64,7 @@ final class FixerConfigurationResolverTest extends TestCase
         ]);
     }
 
-    public function testGetOptions()
+    public function testGetOptions(): void
     {
         $options = [
             new FixerOption('foo', 'Bar.'),
@@ -65,113 +72,115 @@ final class FixerConfigurationResolverTest extends TestCase
         ];
         $configuration = new FixerConfigurationResolver($options);
 
-        static::assertSame($options, $configuration->getOptions());
+        $fixerOptionSorter = new FixerOptionSorter();
+
+        $expected = $fixerOptionSorter->sort($options);
+
+        self::assertSame($expected, $configuration->getOptions());
     }
 
-    public function testResolve()
+    public function testResolve(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.'),
         ]);
-        static::assertSame(
+        self::assertSame(
             ['foo' => 'bar'],
             $configuration->resolve(['foo' => 'bar'])
         );
     }
 
-    public function testResolveWithMissingRequiredOption()
+    public function testResolveWithMissingRequiredOption(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.'),
         ]);
 
-        $this->expectException(\Symfony\Component\OptionsResolver\Exception\MissingOptionsException::class);
+        $this->expectException(MissingOptionsException::class);
         $configuration->resolve([]);
     }
 
-    public function testResolveWithDefault()
+    public function testResolveWithDefault(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.', false, 'baz'),
         ]);
 
-        static::assertSame(
+        self::assertSame(
             ['foo' => 'baz'],
             $configuration->resolve([])
         );
     }
 
-    public function testResolveWithAllowedTypes()
+    public function testResolveWithAllowedTypes(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.', true, null, ['int']),
         ]);
 
-        static::assertSame(
+        self::assertSame(
             ['foo' => 1],
             $configuration->resolve(['foo' => 1])
         );
 
-        $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
+        $this->expectException(InvalidOptionsException::class);
         $configuration->resolve(['foo' => '1']);
     }
 
-    public function testResolveWithAllowedValues()
+    public function testResolveWithAllowedValues(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.', true, null, null, [true, false]),
         ]);
 
-        static::assertSame(
+        self::assertSame(
             ['foo' => true],
             $configuration->resolve(['foo' => true])
         );
 
-        $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
+        $this->expectException(InvalidOptionsException::class);
         $configuration->resolve(['foo' => 1]);
     }
 
-    public function testResolveWithAllowedValuesSubset()
+    public function testResolveWithAllowedValuesSubset(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.', true, null, null, [new AllowedValueSubset(['foo', 'bar'])]),
         ]);
 
-        static::assertSame(
+        self::assertSame(
             ['foo' => ['bar']],
             $configuration->resolve(['foo' => ['bar']])
         );
 
-        $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
+        $this->expectException(InvalidOptionsException::class);
         $configuration->resolve(['foo' => ['baz']]);
     }
 
-    public function testResolveWithUndefinedOption()
+    public function testResolveWithUndefinedOption(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('bar', 'Bar.'),
         ]);
 
-        $this->expectException(\Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException::class);
+        $this->expectException(UndefinedOptionsException::class);
         $configuration->resolve(['foo' => 'foooo']);
     }
 
-    public function testResolveWithNormalizers()
+    public function testResolveWithNormalizers(): void
     {
         $configuration = new FixerConfigurationResolver([
-            new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, $value) {
-                return (int) $value;
-            }),
+            new FixerOption('foo', 'Bar.', true, null, null, null, static fn (Options $options, string $value): int => (int) $value),
         ]);
 
-        static::assertSame(
+        self::assertSame(
             ['foo' => 1],
             $configuration->resolve(['foo' => '1'])
         );
 
         $exception = new InvalidOptionsException('');
         $configuration = new FixerConfigurationResolver([
-            new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, $value) use ($exception) {
+            new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, $value) use ($exception): void {
                 throw $exception;
             }),
         ]);
@@ -183,21 +192,33 @@ final class FixerConfigurationResolverTest extends TestCase
         } catch (InvalidOptionsException $caught) {
         }
 
-        static::assertSame($exception, $caught);
+        self::assertSame($exception, $caught);
     }
 
-    public function testResolveWithAliasedDuplicateConfig()
+    public function testResolveWithAliasedDuplicateConfig(): void
     {
         $configuration = new FixerConfigurationResolver([
             new AliasedFixerOption(new FixerOption('bar', 'Bar.'), 'baz'),
         ]);
 
-        $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
-        $this->expectExceptionMessage('Aliased option bar/baz is passed multiple times');
+        $this->expectException(InvalidOptionsException::class);
+        $this->expectExceptionMessage('Aliased option "bar"/"baz" is passed multiple times');
 
         $configuration->resolve([
             'bar' => '1',
             'baz' => '2',
+        ]);
+    }
+
+    public function testResolveWithDeprecatedAlias(): void
+    {
+        $this->expectDeprecation('Option "baz" is deprecated, use "bar" instead.');
+        $configuration = new FixerConfigurationResolver([
+            new AliasedFixerOption(new FixerOption('bar', 'Bar.'), 'baz'),
+        ]);
+
+        $configuration->resolve([
+            'baz' => '1',
         ]);
     }
 }

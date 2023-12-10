@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,50 +17,53 @@ namespace PhpCsFixer\Runner;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\FileReader;
 use PhpCsFixer\FixerFileProcessedEvent;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @extends \FilterIterator<mixed, \SplFileInfo, \Iterator<mixed, \SplFileInfo>>
  */
 final class FileFilterIterator extends \FilterIterator
 {
-    /**
-     * @var null|EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private ?EventDispatcherInterface $eventDispatcher;
+
+    private CacheManagerInterface $cacheManager;
 
     /**
-     * @var CacheManagerInterface
+     * @var array<string, bool>
      */
-    private $cacheManager;
+    private array $visitedElements = [];
 
     /**
-     * @var array<string,bool>
+     * @param \Traversable<\SplFileInfo> $iterator
      */
-    private $visitedElements = [];
-
     public function __construct(
-        \Iterator $iterator,
-        EventDispatcherInterface $eventDispatcher = null,
+        \Traversable $iterator,
+        ?EventDispatcherInterface $eventDispatcher,
         CacheManagerInterface $cacheManager
     ) {
+        if (!$iterator instanceof \Iterator) {
+            $iterator = new \IteratorIterator($iterator);
+        }
+
         parent::__construct($iterator);
 
         $this->eventDispatcher = $eventDispatcher;
         $this->cacheManager = $cacheManager;
     }
 
-    public function accept()
+    public function accept(): bool
     {
         $file = $this->current();
         if (!$file instanceof \SplFileInfo) {
             throw new \RuntimeException(
                 sprintf(
                     'Expected instance of "\SplFileInfo", got "%s".',
-                    \is_object($file) ? \get_class($file) : \gettype($file)
+                    get_debug_type($file)
                 )
             );
         }
@@ -95,22 +100,9 @@ final class FileFilterIterator extends \FilterIterator
         return true;
     }
 
-    /**
-     * @param string $name
-     * @param Event  $event
-     */
-    private function dispatchEvent($name, Event $event)
+    private function dispatchEvent(string $name, Event $event): void
     {
         if (null === $this->eventDispatcher) {
-            return;
-        }
-
-        // BC compatibility < Sf 4.3
-        if (
-            !$this->eventDispatcher instanceof \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
-        ) {
-            $this->eventDispatcher->dispatch($name, $event);
-
             return;
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,109 +26,132 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SingleQuoteFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php $a = \'\';',
-                '<?php $a = "";',
-            ],
-            [
-                '<?php $a = \'foo bar\';',
-                '<?php $a = "foo bar";',
-            ],
-            [
-                '<?php $a = b\'\';',
-                '<?php $a = b"";',
-            ],
-            [
-                '<?php $a = B\'\';',
-                '<?php $a = B"";',
-            ],
-            [
-                '<?php $a = \'foo bar\';',
-                '<?php $a = "foo bar";',
-            ],
-            [
-                '<?php $a = b\'foo bar\';',
-                '<?php $a = b"foo bar";',
-            ],
-            [
-                '<?php $a = B\'foo bar\';',
-                '<?php $a = B"foo bar";',
-            ],
-            [
-                '<?php $a = \'foo
+        yield [
+            '<?php $a = \'\';',
+            '<?php $a = "";',
+        ];
+
+        yield [
+            '<?php $a = \'foo bar\';',
+            '<?php $a = "foo bar";',
+        ];
+
+        yield [
+            '<?php $a = b\'\';',
+            '<?php $a = b"";',
+        ];
+
+        yield [
+            '<?php $a = B\'\';',
+            '<?php $a = B"";',
+        ];
+
+        yield [
+            '<?php $a = \'foo bar\';',
+            '<?php $a = "foo bar";',
+        ];
+
+        yield [
+            '<?php $a = b\'foo bar\';',
+            '<?php $a = b"foo bar";',
+        ];
+
+        yield [
+            '<?php $a = B\'foo bar\';',
+            '<?php $a = B"foo bar";',
+        ];
+
+        yield [
+            '<?php $a = \'foo
                     bar\';',
-                '<?php $a = "foo
+            '<?php $a = "foo
                     bar";',
-            ],
-            [
-                '<?php $a = \'foo\'.\'bar\'."$baz";',
-                '<?php $a = \'foo\'."bar"."$baz";',
-            ],
-            [
-                '<?php $a = \'foo "bar"\';',
-                '<?php $a = "foo \"bar\"";',
-            ],
-            [<<<'EOF'
-<?php $a = '\\foo\\bar\\\\';
-EOF
-                , <<<'EOF'
-<?php $a = "\\foo\\bar\\\\";
-EOF
-            ],
-            [
-                '<?php $a = \'foo $bar7\';',
-                '<?php $a = "foo \$bar7";',
-            ],
-            [
-                '<?php $a = \'foo $(bar7)\';',
-                '<?php $a = "foo \$(bar7)";',
-            ],
-            [
-                '<?php $a = \'foo \\\\($bar8)\';',
-                '<?php $a = "foo \\\\(\$bar8)";',
-            ],
-            ['<?php $a = "foo \\" \\$$bar";'],
-            ['<?php $a = b"foo \\" \\$$bar";'],
-            ['<?php $a = B"foo \\" \\$$bar";'],
-            ['<?php $a = "foo \'bar\'";'],
-            ['<?php $a = b"foo \'bar\'";'],
-            ['<?php $a = B"foo \'bar\'";'],
-            ['<?php $a = "foo $bar";'],
-            ['<?php $a = b"foo $bar";'],
-            ['<?php $a = B"foo $bar";'],
-            ['<?php $a = "foo ${bar}";'],
-            ['<?php $a = b"foo ${bar}";'],
-            ['<?php $a = B"foo ${bar}";'],
-            ['<?php $a = "foo\n bar";'],
-            ['<?php $a = b"foo\n bar";'],
-            ['<?php $a = B"foo\n bar";'],
-            [<<<'EOF'
-<?php $a = "\\\n";
-EOF
-            ],
+        ];
+
+        yield [
+            '<?php $a = \'foo\'.\'bar\'."$baz";',
+            '<?php $a = \'foo\'."bar"."$baz";',
+        ];
+
+        yield [
+            '<?php $a = \'foo "bar"\';',
+            '<?php $a = "foo \"bar\"";',
+        ];
+
+        yield [
+            <<<'EOF'
+                <?php $a = '\\foo\\bar\\\\';
+                EOF
+            ,
+            <<<'EOF'
+                <?php $a = "\\foo\\bar\\\\";
+                EOF
+        ];
+
+        yield [
+            '<?php $a = \'foo $bar7\';',
+            '<?php $a = "foo \$bar7";',
+        ];
+
+        yield [
+            '<?php $a = \'foo $(bar7)\';',
+            '<?php $a = "foo \$(bar7)";',
+        ];
+
+        yield [
+            '<?php $a = \'foo \\\\($bar8)\';',
+            '<?php $a = "foo \\\\(\$bar8)";',
+        ];
+
+        yield ['<?php $a = "foo \\" \\$$bar";'];
+
+        yield ['<?php $a = b"foo \\" \\$$bar";'];
+
+        yield ['<?php $a = B"foo \\" \\$$bar";'];
+
+        yield ['<?php $a = "foo \'bar\'";'];
+
+        yield ['<?php $a = b"foo \'bar\'";'];
+
+        yield ['<?php $a = B"foo \'bar\'";'];
+
+        yield ['<?php $a = "foo $bar";'];
+
+        yield ['<?php $a = b"foo $bar";'];
+
+        yield ['<?php $a = B"foo $bar";'];
+
+        yield ['<?php $a = "foo ${bar}";'];
+
+        yield ['<?php $a = b"foo ${bar}";'];
+
+        yield ['<?php $a = B"foo ${bar}";'];
+
+        yield ['<?php $a = "foo\n bar";'];
+
+        yield ['<?php $a = b"foo\n bar";'];
+
+        yield ['<?php $a = B"foo\n bar";'];
+
+        yield [<<<'EOF'
+            <?php $a = "\\\n";
+            EOF
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideTestSingleQuoteFixCases
+     * @dataProvider provideSingleQuoteFixCases
      */
-    public function testSingleQuoteFix($expected, $input = null)
+    public function testSingleQuoteFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'strings_containing_single_quote_chars' => true,
@@ -135,45 +160,45 @@ EOF
         $this->doTest($expected, $input);
     }
 
-    public function provideTestSingleQuoteFixCases()
+    public static function provideSingleQuoteFixCases(): iterable
     {
-        return [
-            [
-                '<?php $a = \'foo \\\'bar\\\'\';',
-                '<?php $a = "foo \'bar\'";',
-            ],
-            [
-                <<<'EOT'
-<?php
-// none
-$a = 'start \' end';
-// one escaped baskslash
-$b = 'start \\\' end';
-// two escaped baskslash
-$c = 'start \\\\\' end';
-EOT
-                ,
-                <<<'EOT'
-<?php
-// none
-$a = "start ' end";
-// one escaped baskslash
-$b = "start \\' end";
-// two escaped baskslash
-$c = "start \\\\' end";
-EOT
-                ,
-            ],
-            [
-                <<<'EOT'
-<?php
-// one unescaped backslash
-$a = "start \' end";
-// one escaped + one unescaped baskslash
-$b = "start \\\' end";
-EOT
-                ,
-            ],
+        yield [
+            '<?php $a = \'foo \\\'bar\\\'\';',
+            '<?php $a = "foo \'bar\'";',
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php
+                // none
+                $a = 'start \' end';
+                // one escaped baskslash
+                $b = 'start \\\' end';
+                // two escaped baskslash
+                $c = 'start \\\\\' end';
+                EOT
+            ,
+            <<<'EOT'
+                <?php
+                // none
+                $a = "start ' end";
+                // one escaped baskslash
+                $b = "start \\' end";
+                // two escaped baskslash
+                $c = "start \\\\' end";
+                EOT
+            ,
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php
+                // one unescaped backslash
+                $a = "start \' end";
+                // one escaped + one unescaped baskslash
+                $b = "start \\\' end";
+                EOT
+            ,
         ];
     }
 }

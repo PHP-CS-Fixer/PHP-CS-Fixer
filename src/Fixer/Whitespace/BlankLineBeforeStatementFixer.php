@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,13 +15,15 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -27,20 +31,18 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
- * @author SpacePossum
  */
-final class BlankLineBeforeStatementFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class BlankLineBeforeStatementFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
-     * @var array
+     * @var array<string, int>
      */
-    private static $tokenMap = [
+    private static array $tokenMap = [
         'break' => T_BREAK,
         'case' => T_CASE,
         'continue' => T_CONTINUE,
         'declare' => T_DECLARE,
         'default' => T_DEFAULT,
-        'die' => T_EXIT,
         'do' => T_DO,
         'exit' => T_EXIT,
         'for' => T_FOR,
@@ -49,6 +51,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'if' => T_IF,
         'include' => T_INCLUDE,
         'include_once' => T_INCLUDE_ONCE,
+        'phpdoc' => T_DOC_COMMENT,
         'require' => T_REQUIRE,
         'require_once' => T_REQUIRE_ONCE,
         'return' => T_RETURN,
@@ -57,17 +60,15 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'try' => T_TRY,
         'while' => T_WHILE,
         'yield' => T_YIELD,
+        'yield_from' => T_YIELD_FROM,
     ];
 
     /**
-     * @var array
+     * @var list<int>
      */
-    private $fixTokenMap = [];
+    private array $fixTokenMap = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
@@ -76,12 +77,11 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         foreach ($this->configuration['statements'] as $key) {
             $this->fixTokenMap[$key] = self::$tokenMap[$key];
         }
+
+        $this->fixTokenMap = array_values($this->fixTokenMap);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'An empty line feed must precede any configured statement.',
@@ -119,19 +119,6 @@ foreach ($foo as $bar) {
 ',
                     [
                         'statements' => ['continue'],
-                    ]
-                ),
-                new CodeSample(
-                    '<?php
-if ($foo === false) {
-    die(0);
-} else {
-    $bar = 9000;
-    die(1);
-}
-',
-                    [
-                        'statements' => ['die'],
                     ]
                 ),
                 new CodeSample(
@@ -212,7 +199,7 @@ switch ($a) {
                     '<?php
 if (null === $a) {
     $foo->bar();
-    throw new \UnexpectedValueException("A cannot be null");
+    throw new \UnexpectedValueException("A cannot be null.");
 }
 ',
                     [
@@ -234,10 +221,11 @@ try {
                 ),
                 new CodeSample(
                     '<?php
-
-if (true) {
-    $foo = $bar;
-    yield $foo;
+function getValues() {
+    yield 1;
+    yield 2;
+    // comment
+    yield 3;
 }
 ',
                     [
@@ -250,67 +238,50 @@ if (true) {
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after NoExtraBlankLinesFixer, NoUselessElseFixer, NoUselessReturnFixer, ReturnAssignmentFixer, YieldFromArrayToYieldsFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
-        // should be run after NoUselessReturnFixer and NoExtraBlankLinesFixer
         return -21;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound(array_values($this->fixTokenMap));
+        return $tokens->isAnyTokenKindsFound($this->fixTokenMap);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $lineEnding = $this->whitespacesConfig->getLineEnding();
-        $tokenKinds = array_values($this->fixTokenMap);
         $analyzer = new TokensAnalyzer($tokens);
 
-        for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
+        for ($index = $tokens->count() - 1; $index > 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind($tokenKinds) || ($token->isGivenKind(T_WHILE) && $analyzer->isWhilePartOfDoWhile($index))) {
+            if (!$token->isGivenKind($this->fixTokenMap)) {
                 continue;
             }
 
-            $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
-
-            if (!$prevNonWhitespaceToken->equalsAny([';', '}'])) {
+            if ($token->isGivenKind(T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
                 continue;
             }
 
-            $prevIndex = $index - 1;
-            $prevToken = $tokens[$prevIndex];
-
-            if ($prevToken->isWhitespace()) {
-                $countParts = substr_count($prevToken->getContent(), "\n");
-
-                if (0 === $countParts) {
-                    $tokens[$prevIndex] = new Token([T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
-                } elseif (1 === $countParts) {
-                    $tokens[$prevIndex] = new Token([T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
-                }
-            } else {
-                $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding.$lineEnding]));
-
-                ++$index;
-                ++$limit;
+            if ($token->isGivenKind(T_CASE) && $analyzer->isEnumCase($index)) {
+                continue;
             }
+
+            $insertBlankLineIndex = $this->getInsertBlankLineIndex($tokens, $index);
+            $prevNonWhitespace = $tokens->getPrevNonWhitespace($insertBlankLineIndex);
+
+            if ($this->shouldAddBlankLine($tokens, $prevNonWhitespace)) {
+                $this->insertBlankLine($tokens, $insertBlankLineIndex);
+            }
+
+            $index = $prevNonWhitespace;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('statements', 'List of statements which must be preceded by an empty line.'))
@@ -326,5 +297,72 @@ if (true) {
                 ])
                 ->getOption(),
         ]);
+    }
+
+    private function getInsertBlankLineIndex(Tokens $tokens, int $index): int
+    {
+        while ($index > 0) {
+            if ($tokens[$index - 1]->isWhitespace() && substr_count($tokens[$index - 1]->getContent(), "\n") > 1) {
+                break;
+            }
+
+            $prevIndex = $tokens->getPrevNonWhitespace($index);
+
+            if (!$tokens[$prevIndex]->isComment()) {
+                break;
+            }
+
+            if (!$tokens[$prevIndex - 1]->isWhitespace()) {
+                break;
+            }
+
+            if (1 !== substr_count($tokens[$prevIndex - 1]->getContent(), "\n")) {
+                break;
+            }
+
+            $index = $prevIndex;
+        }
+
+        return $index;
+    }
+
+    private function shouldAddBlankLine(Tokens $tokens, int $prevNonWhitespace): bool
+    {
+        $prevNonWhitespaceToken = $tokens[$prevNonWhitespace];
+
+        if ($prevNonWhitespaceToken->isComment()) {
+            for ($j = $prevNonWhitespace - 1; $j >= 0; --$j) {
+                if (str_contains($tokens[$j]->getContent(), "\n")) {
+                    return false;
+                }
+
+                if ($tokens[$j]->isWhitespace() || $tokens[$j]->isComment()) {
+                    continue;
+                }
+
+                return $tokens[$j]->equalsAny([';', '}']);
+            }
+        }
+
+        return $prevNonWhitespaceToken->equalsAny([';', '}']);
+    }
+
+    private function insertBlankLine(Tokens $tokens, int $index): void
+    {
+        $prevIndex = $index - 1;
+        $prevToken = $tokens[$prevIndex];
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+
+        if ($prevToken->isWhitespace()) {
+            $newlinesCount = substr_count($prevToken->getContent(), "\n");
+
+            if (0 === $newlinesCount) {
+                $tokens[$prevIndex] = new Token([T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
+            } elseif (1 === $newlinesCount) {
+                $tokens[$prevIndex] = new Token([T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
+            }
+        } else {
+            $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding.$lineEnding]));
+        }
     }
 }

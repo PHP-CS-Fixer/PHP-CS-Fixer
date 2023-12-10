@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\Alias;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\SetTypeToCastFixer
@@ -24,25 +24,22 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SetTypeToCastFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            'null cast' => [
-                '<?php $foo = null;',
-                '<?php settype($foo, "null");',
-            ],
-            'null cast comments' => [
-                '<?php
+        yield 'null cast' => [
+            '<?php $foo = null;',
+            '<?php settype($foo, "null");',
+        ];
+
+        yield 'null cast comments' => [
+            '<?php
 # 0
 $foo = null# 1
 # 2
@@ -55,7 +52,7 @@ $foo = null# 1
 # 9
 # 10
 ;',
-                '<?php
+            '<?php
 # 0
 settype# 1
 # 2
@@ -68,61 +65,75 @@ $foo# 5
 "null"# 9
 )# 10
 ;',
-            ],
-            'array + spacing' => [
-                '<?php $foo = (array) $foo;',
-                '<?php settype  (  $foo  , \'array\');',
-            ],
-            'bool + casing' => [
-                '<?php $foo = (bool) $foo;',
-                '<?php settype  (  $foo  , "Bool");',
-            ],
-            'boolean' => [
-                '<?php $foo = (bool) $foo;',
-                '<?php settype  (  $foo  , "boolean");',
-            ],
-            'double' => [
-                '<?php $foo = (float) $foo;',
-                '<?php settype($foo, "double");',
-            ],
-            'float' => [
-                '<?php $foo = (float) $foo;',
-                '<?php settype($foo, "float");',
-            ],
-            'float in loop' => [
-                '<?php while(a()){$foo = (float) $foo;}',
-                '<?php while(a()){settype($foo, "float");}',
-            ],
-            'int full caps' => [
-                '<?php $foo = (int) $foo;',
-                '<?php settype($foo, "INT");',
-            ],
-            'integer (simple)' => [
-                '<?php $foo = (int) $foo;',
-                '<?php settype($foo, "integer");',
-            ],
-            'object' => [
-                '<?php echo 1; $foo = (object) $foo;',
-                '<?php echo 1; settype($foo, "object");',
-            ],
-            'string' => [
-                '<?php $foo = (string) $foo;',
-                '<?php settype($foo, "string");',
-            ],
-            'string in function body' => [
-                '<?php function A(){ $foo = (string) $foo; return $foo; }',
-                '<?php function A(){ settype($foo, "string"); return $foo; }',
-            ],
-            'integer + no space' => [
-                '<?php $foo = (int) $foo;',
-                '<?php settype($foo,"integer");',
-            ],
-            'no space comments' => [
-                '<?php /*0*//*1*/$foo = (int) $foo/*2*//*3*//*4*//*5*//*6*//*7*/;/*8*/',
-                '<?php /*0*//*1*/settype/*2*/(/*3*/$foo/*4*/,/*5*/"integer"/*6*/)/*7*/;/*8*/',
-            ],
-            'comments with line breaks' => [
-                '<?php #0
+        ];
+
+        yield 'array + spacing' => [
+            '<?php $foo = (array) $foo;',
+            '<?php settype  (  $foo  , \'array\');',
+        ];
+
+        yield 'bool + casing' => [
+            '<?php $foo = (bool) $foo;',
+            '<?php settype  (  $foo  , "Bool");',
+        ];
+
+        yield 'boolean with extra space' => [
+            '<?php $foo = (bool) $foo;',
+            '<?php settype  (  $foo  , "boolean");',
+        ];
+
+        yield 'double' => [
+            '<?php $foo = (float) $foo;',
+            '<?php settype($foo, "double");',
+        ];
+
+        yield 'float' => [
+            '<?php $foo = (float) $foo;',
+            '<?php settype($foo, "float");',
+        ];
+
+        yield 'float in loop' => [
+            '<?php while(a()){$foo = (float) $foo;}',
+            '<?php while(a()){settype($foo, "float");}',
+        ];
+
+        yield 'int full caps' => [
+            '<?php $foo = (int) $foo;',
+            '<?php settype($foo, "INT");',
+        ];
+
+        yield 'integer (simple)' => [
+            '<?php $foo = (int) $foo;',
+            '<?php settype($foo, "integer");',
+        ];
+
+        yield 'object' => [
+            '<?php echo 1; $foo = (object) $foo;',
+            '<?php echo 1; settype($foo, "object");',
+        ];
+
+        yield 'string' => [
+            '<?php $foo = (string) $foo;',
+            '<?php settype($foo, "string");',
+        ];
+
+        yield 'string in function body' => [
+            '<?php function A(){ $foo = (string) $foo; return $foo; }',
+            '<?php function A(){ settype($foo, "string"); return $foo; }',
+        ];
+
+        yield 'integer + no space' => [
+            '<?php $foo = (int) $foo;',
+            '<?php settype($foo,"integer");',
+        ];
+
+        yield 'no space comments' => [
+            '<?php /*0*//*1*/$foo = (int) $foo/*2*//*3*//*4*//*5*//*6*//*7*/;/*8*/',
+            '<?php /*0*//*1*/settype/*2*/(/*3*/$foo/*4*/,/*5*/"integer"/*6*/)/*7*/;/*8*/',
+        ];
+
+        yield 'comments with line breaks' => [
+            '<?php #0
 #1
 $foo = (int) $foo#2
 #3
@@ -132,7 +143,7 @@ $foo = (int) $foo#2
 #7
 #8
 ;#9',
-                '<?php #0
+            '<?php #0
 #1
 settype#2
 #3
@@ -142,65 +153,83 @@ $foo#5
 "integer"#7
 )#8
 ;#9',
-            ],
-            // do not fix cases
-            'first argument is not a variable' => [
-                '<?php
-                    namespace A\B;             // needed to keep the linter happy on PHP5.6
+        ];
+
+        // do not fix cases
+        yield 'first argument is not a variable' => [
+            '<?php
+                    namespace A\B;             // comment
                     function settype($a, $b){} // "
 
                     settype(1, "double");
                 ',
-            ],
-            'first argument is variable followed by operation' => [
-                '<?php
-                    namespace A\B;                // needed to keep the linter happy on PHP5.6
+        ];
+
+        yield 'first argument is variable followed by operation' => [
+            '<?php
+                    namespace A\B;                // comment
                     function settype($a, $b){}    // "
 
                     settype($foo + 1, "integer"); // function must be overridden, so do not fix it
                 ',
-            ],
-            'wrong numbers of arguments' => [
-                '<?php settype($foo, "integer", $a);',
-            ],
-            'other namespace I' => [
-                '<?php a\b\settype($foo, "integer", $a);',
-            ],
-            'other namespace II' => [
-                '<?php \b\settype($foo, "integer", $a);',
-            ],
-            'static call' => [
-                '<?php A::settype($foo, "integer");',
-            ],
-            'member call' => [
-                '<?php $a->settype($foo, "integer");',
-            ],
-            'unknown type' => [
-                '<?php $a->settype($foo, "foo");',
-            ],
-            'return value used I' => [
-                '<?php $a = settype($foo, "integer");',
-            ],
-            'return value used II' => [
-                '<?php a(settype($foo, "integer"));',
-            ],
-            'return value used III' => [
-                '<?php $a = "123"; $b = [settype($a, "integer")];',
-            ],
-            'return value used IV' => [
-                '<?php $a = "123"; $b = [3 => settype($a, "integer")];',
-            ],
-            'wrapped statements, fixable after removing the useless parenthesis brace' => [
-                '<?php
+        ];
+
+        yield 'wrong numbers of arguments' => [
+            '<?php settype($foo, "integer", $a);',
+        ];
+
+        yield 'other namespace I' => [
+            '<?php a\b\settype($foo, "integer", $a);',
+        ];
+
+        yield 'other namespace II' => [
+            '<?php \b\settype($foo, "integer", $a);',
+        ];
+
+        yield 'static call' => [
+            '<?php A::settype($foo, "integer");',
+        ];
+
+        yield 'member call' => [
+            '<?php $a->settype($foo, "integer");',
+        ];
+
+        yield 'unknown type' => [
+            '<?php $a->settype($foo, "foo");',
+        ];
+
+        yield 'return value used I' => [
+            '<?php $a = settype($foo, "integer");',
+        ];
+
+        yield 'return value used II' => [
+            '<?php a(settype($foo, "integer"));',
+        ];
+
+        yield 'return value used III' => [
+            '<?php $a = "123"; $b = [settype($a, "integer")];',
+        ];
+
+        yield 'return value used IV' => [
+            '<?php $a = "123"; $b = [3 => settype($a, "integer")];',
+        ];
+
+        yield 'return value used V' => [
+            '<?= settype($foo, "object");',
+        ];
+
+        yield 'wrapped statements, fixable after removing the useless parenthesis brace' => [
+            '<?php
                     settype(/*1*//*2*/($a), \'int\');
                     settype($b, (\'int\'));
                     settype(($c), (\'int\'));
                     settype((($d)), ((\'int\')));
                 ',
-            ],
-            'wrapped statements, not-fixable, even after removing the useless parenthesis brace' => [
-                '<?php
-                    namespace A\B;                // needed to keep the linter happy on PHP5.6
+        ];
+
+        yield 'wrapped statements, not-fixable, even after removing the useless parenthesis brace' => [
+            '<?php
+                    namespace A\B;                // comment
                     function settype($a, $b){}    // "
 
                     settype($foo1, (("integer")."1"));
@@ -208,41 +237,26 @@ $foo#5
                     settype($foo3, ((("integer")."1")));
                     settype((($foo)+1), "integer");
                 ',
-            ],
-            'nested is not an issue for this fixer, as these non may be fixed' => [
-                '<?php
+        ];
+
+        yield 'nested is not an issue for this fixer, as these non may be fixed' => [
+            '<?php
                     settype($foo, settype($foo, "double"));
                     settype(settype($foo, "double"), "double");
                 ',
-            ],
         ];
-    }
 
-    /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73($expected, $input)
-    {
-        $this->doTest($expected, $input);
-    }
+        yield 'unknown type II' => [
+            '<?php settype($foo, "stringX");',
+        ];
 
-    public function provideFix73Cases()
-    {
-        return [
-            'null cast' => [
-                '<?php $foo = null;',
-                '<?php settype($foo, "null");',
-            ],
-            'boolean' => [
-                '<?php $foo = (bool) $foo;',
-                '<?php settype($foo, "boolean", );',
-            ],
-            'comments with line breaks' => [
-                '<?php #0
+        yield 'boolean' => [
+            '<?php $foo = (bool) $foo;',
+            '<?php settype($foo, "boolean", );',
+        ];
+
+        yield 'comments with line breaks II' => [
+            '<?php #0
 #1
 $foo = (int) $foo#2
 #3
@@ -253,7 +267,7 @@ $foo = (int) $foo#2
 #8
 #9
 ;#10',
-                '<?php #0
+            '<?php #0
 #1
 settype#2
 #3
@@ -264,7 +278,6 @@ $foo#5
 ,#8
 )#9
 ;#10',
-            ],
         ];
     }
 }

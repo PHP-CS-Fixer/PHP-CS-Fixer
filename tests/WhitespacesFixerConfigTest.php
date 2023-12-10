@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,36 +26,36 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class WhitespacesFixerConfigTest extends TestCase
 {
     /**
-     * @param string      $indent
-     * @param string      $lineEnding
-     * @param null|string $exceptionRegExp
-     *
-     * @dataProvider provideTestCases
+     * @dataProvider provideFixCases
      */
-    public function testCases($indent, $lineEnding, $exceptionRegExp = null)
+    public function testFix(string $indent, string $lineEnding, ?string $exceptionRegExp = null): void
     {
         if (null !== $exceptionRegExp) {
             $this->expectException(\InvalidArgumentException::class);
-            $this->expectExceptionMessageRegExp('%^'.preg_quote($exceptionRegExp, '%').'$%');
+            $this->expectExceptionMessageMatches('%^'.preg_quote($exceptionRegExp, '%').'$%');
         }
 
         $config = new WhitespacesFixerConfig($indent, $lineEnding);
 
-        static::assertSame($indent, $config->getIndent());
-        static::assertSame($lineEnding, $config->getLineEnding());
+        self::assertSame($indent, $config->getIndent());
+        self::assertSame($lineEnding, $config->getLineEnding());
     }
 
-    public function provideTestCases()
+    /**
+     * @return iterable<array{0: string, 1: string, 2?: string}>
+     */
+    public static function provideFixCases(): iterable
     {
-        return [
-            ['    ', "\n"],
-            ["\t", "\n"],
-            ['    ', "\r\n"],
-            ["\t", "\r\n"],
-            ['    ', 'asd', 'Invalid "lineEnding" param, expected "\n" or "\r\n".'],
-            ['    ', [], 'Invalid "lineEnding" param, expected "\n" or "\r\n".'],
-            ['std', "\n", 'Invalid "indent" param, expected tab or two or four spaces.'],
-            [[], "\n", 'Invalid "indent" param, expected tab or two or four spaces.'],
-        ];
+        yield ['    ', "\n"];
+
+        yield ["\t", "\n"];
+
+        yield ['    ', "\r\n"];
+
+        yield ["\t", "\r\n"];
+
+        yield ['    ', 'asd', 'Invalid "lineEnding" param, expected "\n" or "\r\n".'];
+
+        yield ['std', "\n", 'Invalid "indent" param, expected tab or two or four spaces.'];
     }
 }

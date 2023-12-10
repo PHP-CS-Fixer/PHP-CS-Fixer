@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: nullable_type_declaration,ordered_types.
+--RULESET--
+{"nullable_type_declaration": {"syntax": "union"}, "ordered_types": {"null_adjustment": "always_last"}}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+function intel(array|null $config) {}
+
+--INPUT--
+<?php
+function intel(?array $config) {}

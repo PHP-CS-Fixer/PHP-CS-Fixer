@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,21 +26,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitDedicateAssertInternalTypeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideTestFixInternalTypeCases
+     * @dataProvider provideFixInternalTypeCases
      */
-    public function testFixInternalType($expected, $input = null)
+    public function testFixInternalType(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixInternalTypeCases()
+    public static function provideFixInternalTypeCases(): iterable
     {
-        return [
-            'skip cases' => [
-                '<?php
+        yield 'skip cases' => [
+            '<?php
 final class MyTest extends \PhpUnit\FrameWork\TestCase
 {
     public function testMe()
@@ -57,9 +55,10 @@ final class MyTest extends \PhpUnit\FrameWork\TestCase
     }
 }
 ',
-            ],
-            'expected normal cases' => [
-                '<?php
+        ];
+
+        yield 'expected normal cases' => [
+            '<?php
 final class MyTest extends \PhpUnit\FrameWork\TestCase
 {
     public function testMe()
@@ -100,7 +99,7 @@ final class MyTest extends \PhpUnit\FrameWork\TestCase
     }
 }
 ',
-                '<?php
+            '<?php
 final class MyTest extends \PhpUnit\FrameWork\TestCase
 {
     public function testMe()
@@ -141,9 +140,10 @@ final class MyTest extends \PhpUnit\FrameWork\TestCase
     }
 }
 ',
-            ],
-            'false positive cases' => [
-                '<?php
+        ];
+
+        yield 'false positive cases' => [
+            '<?php
 final class MyTest extends \PhpUnit\FrameWork\TestCase
 {
     public function testMe()
@@ -153,27 +153,10 @@ final class MyTest extends \PhpUnit\FrameWork\TestCase
     }
 }
 ',
-            ],
         ];
-    }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
-            'anonymous class false positive case' => [
-                '<?php
+        yield 'anonymous class false positive case' => [
+            '<?php
 final class MyTest extends \PhpUnit\FrameWork\TestCase
 {
     public function testMe()
@@ -188,7 +171,6 @@ final class MyTest extends \PhpUnit\FrameWork\TestCase
     }
 }
 ',
-            ],
         ];
     }
 }

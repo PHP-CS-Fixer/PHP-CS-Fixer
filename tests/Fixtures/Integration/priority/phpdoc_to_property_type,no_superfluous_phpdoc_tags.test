@@ -1,0 +1,24 @@
+--TEST--
+Integration of fixers: phpdoc_to_property_type,no_superfluous_phpdoc_tags.
+--RULESET--
+{"phpdoc_to_property_type": true, "no_superfluous_phpdoc_tags": true}
+--REQUIREMENTS--
+{"php": 70400}
+--EXPECT--
+<?php
+
+class Test {
+    /**
+     */
+    private int $foo;
+}
+
+--INPUT--
+<?php
+
+class Test {
+    /**
+     * @var int
+     */
+    private $foo;
+}

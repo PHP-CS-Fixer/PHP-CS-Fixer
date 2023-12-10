@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: class_definition,single_line_empty_body.
+--RULESET--
+{"class_definition": true, "single_line_empty_body": true}
+--EXPECT--
+<?php
+class Foo {}
+
+--INPUT--
+<?php
+class Foo
+{
+
+}

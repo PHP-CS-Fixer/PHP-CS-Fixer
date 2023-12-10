@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,88 +24,123 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class AllowedValueSubsetTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
-        static::assertInternalType('callable', new AllowedValueSubset(['foo', 'bar']));
+        self::assertIsCallable(new AllowedValueSubset(['foo', 'bar']));
+    }
+
+    public static function provideGetAllowedValuesAreSortedCases(): iterable
+    {
+        yield [
+            ['bar', 'foo'],
+            ['foo', 'bar'],
+        ];
+
+        yield [
+            ['bar', 'Foo'],
+            ['Foo', 'bar'],
+        ];
+    }
+
+    /**
+     * @param list<string> $expected
+     * @param list<string> $input
+     *
+     * @dataProvider provideGetAllowedValuesAreSortedCases
+     */
+    public function testGetAllowedValuesAreSorted(array $expected, array $input): void
+    {
+        $subset = new AllowedValueSubset($input);
+
+        self::assertSame($expected, $subset->getAllowedValues());
     }
 
     /**
      * @param mixed $inputValue
-     * @param bool  $expectedResult
      *
      * @dataProvider provideInvokeCases
      */
-    public function testInvoke($inputValue, $expectedResult)
+    public function testInvoke($inputValue, bool $expectedResult): void
     {
         $subset = new AllowedValueSubset(['foo', 'bar']);
 
-        static::assertSame($expectedResult, $subset($inputValue));
+        self::assertSame($expectedResult, $subset($inputValue));
     }
 
-    public function provideInvokeCases()
+    public static function provideInvokeCases(): iterable
     {
-        return [
-            [
-                ['foo', 'bar'],
-                true,
-            ],
-            [
-                ['bar', 'foo'],
-                true,
-            ],
-            [
-                ['foo'],
-                true,
-            ],
-            [
-                ['bar'],
-                true,
-            ],
-            [
-                [],
-                true,
-            ],
-            [
-                ['foo', 'bar', 'baz'],
-                false,
-            ],
-            [
-                ['baz'],
-                false,
-            ],
-            [
-                1,
-                false,
-            ],
-            [
-                1.2,
-                false,
-            ],
-            [
-                'foo',
-                false,
-            ],
-            [
-                new \stdClass(),
-                false,
-            ],
-            [
-                true,
-                false,
-            ],
-            [
-                null,
-                false,
-            ],
+        yield [
+            ['foo', 'bar'],
+            true,
+        ];
+
+        yield [
+            ['bar', 'foo'],
+            true,
+        ];
+
+        yield [
+            ['foo'],
+            true,
+        ];
+
+        yield [
+            ['bar'],
+            true,
+        ];
+
+        yield [
+            [],
+            true,
+        ];
+
+        yield [
+            ['foo', 'bar', 'baz'],
+            false,
+        ];
+
+        yield [
+            ['baz'],
+            false,
+        ];
+
+        yield [
+            1,
+            false,
+        ];
+
+        yield [
+            1.2,
+            false,
+        ];
+
+        yield [
+            'foo',
+            false,
+        ];
+
+        yield [
+            new \stdClass(),
+            false,
+        ];
+
+        yield [
+            true,
+            false,
+        ];
+
+        yield [
+            null,
+            false,
         ];
     }
 
-    public function testGetAllowedValues()
+    public function testGetAllowedValues(): void
     {
-        $values = ['foo', 'bar'];
+        $values = ['bar', 'foo'];
 
         $subset = new AllowedValueSubset($values);
 
-        static::assertSame($values, $subset->getAllowedValues());
+        self::assertSame($values, $subset->getAllowedValues());
     }
 }

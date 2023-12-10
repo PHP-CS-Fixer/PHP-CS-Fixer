@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,69 +17,68 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
- * @covers \PhpCsFixer\AbstractProxyFixer
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoAccessFixer
  */
 final class PhpdocNoAccessFixerTest extends AbstractFixerTestCase
 {
-    public function testFixAccess()
+    public function testFixAccess(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     */
+            <?php
+                /**
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * @access public
-     */
+            <?php
+                /**
+                 * @access public
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testFixMany()
+    public function testFixMany(): void
     {
         $expected = <<<'EOF'
-<?php
-/**
- * Hello!
- * @notaccess bar
- */
+            <?php
+            /**
+             * Hello!
+             * @notaccess bar
+             */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-/**
- * Hello!
- * @access private
- * @notaccess bar
- * @access foo
- */
+            <?php
+            /**
+             * Hello!
+             * @access private
+             * @notaccess bar
+             * @access foo
+             */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testDoNothing()
+    public function testDoNothing(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * @var access
-     */
+            <?php
+                /**
+                 * @var access
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }

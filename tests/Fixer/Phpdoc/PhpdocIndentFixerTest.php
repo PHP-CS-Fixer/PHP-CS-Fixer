@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,25 +26,20 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocIndentFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixIndentCases
      */
-    public function testFixIndent($expected, $input = null)
+    public function testFixIndent(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixIndentCases()
+    public static function provideFixIndentCases(): iterable
     {
-        $cases = [];
+        yield ['<?php /** @var Foo $foo */ ?>'];
 
-        $cases[] = ['<?php /** @var Foo $foo */ ?>'];
+        yield ['<?php /** foo */'];
 
-        $cases[] = ['<?php /** foo */'];
-
-        $cases[] = [
+        yield [
             '<?php
 /**
  * Do not indent
@@ -85,7 +82,7 @@ class DocBlocks
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 class DocBlocks
 {
@@ -154,7 +151,7 @@ class DocBlocks
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 /**
  * Final class should also not be indented
@@ -179,7 +176,7 @@ final class DocBlocks
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
     if (1) {
         class Foo {
@@ -210,7 +207,7 @@ final class DocBlocks
     }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 /**
  * Variable
@@ -297,19 +294,19 @@ $partialFix = true;
     }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
     $user = $event->getForm()->getData();  /** @var User $user */
     echo "Success";',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
     $user = $event->getForm()->getData();/** @var User $user */
     echo "Success";',
         ];
 
-        $cases[] = [
+        yield [
             "<?php
 class DocBlocks
 {
@@ -338,7 +335,7 @@ class DocBlocks
 }",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 /**
  * Used to write a value to a session key.
@@ -357,7 +354,7 @@ function write(\$name) {}
 ",
         ];
 
-        $cases[] = [
+        yield [
             '<?php
     class Foo
     {
@@ -370,7 +367,7 @@ function write(\$name) {}
     }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 /**
  * docs
@@ -381,7 +378,7 @@ $foo = $bar;
 ',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 function foo()
 {
@@ -390,7 +387,7 @@ function foo()
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 
 /**
@@ -402,7 +399,7 @@ class Foo
 }',
         ];
 
-        $cases[] = [
+        yield [
             '<?php
 class Application
 {
@@ -413,7 +410,5 @@ class Dispatcher
 }
 ',
         ];
-
-        return $cases;
     }
 }

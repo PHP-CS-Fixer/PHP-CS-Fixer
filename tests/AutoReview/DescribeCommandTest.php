@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,6 +24,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @internal
  *
  * @coversNothing
+ *
  * @group auto-review
  * @group covers-nothing
  */
@@ -29,11 +32,8 @@ final class DescribeCommandTest extends TestCase
 {
     /**
      * @dataProvider provideDescribeCommandCases
-     *
-     * @param FixerFactory $factory
-     * @param string       $fixerName
      */
-    public function testDescribeCommand(FixerFactory $factory, $fixerName)
+    public function testDescribeCommand(FixerFactory $factory, string $fixerName): void
     {
         $command = new DescribeCommand($factory);
 
@@ -46,20 +46,16 @@ final class DescribeCommandTest extends TestCase
             'name' => $fixerName,
         ]);
 
-        static::assertSame(0, $commandTester->getStatusCode());
+        self::assertSame(0, $commandTester->getStatusCode());
     }
 
-    public function provideDescribeCommandCases()
+    public static function provideDescribeCommandCases(): iterable
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
 
-        $cases = [];
-
         foreach ($factory->getFixers() as $fixer) {
-            $cases[] = [$factory, $fixer->getName()];
+            yield [$factory, $fixer->getName()];
         }
-
-        return $cases;
     }
 }

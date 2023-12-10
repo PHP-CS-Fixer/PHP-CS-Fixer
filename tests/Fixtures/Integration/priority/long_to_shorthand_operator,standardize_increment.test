@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: long_to_shorthand_operator,standardize_increment.
+--RULESET--
+{"long_to_shorthand_operator": true, "standardize_increment": true}
+--EXPECT--
+<?php
+
+++$definitions[$argument];
+
+--INPUT--
+<?php
+
+$definitions[$argument] = $definitions[$argument] + 1;

@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: function_to_constant,native_constant_invocation.
+--RULESET--
+{"function_to_constant": true, "native_constant_invocation": true}
+--EXPECT--
+<?php
+
+echo \M_PI;
+
+--INPUT--
+<?php
+
+echo pi();

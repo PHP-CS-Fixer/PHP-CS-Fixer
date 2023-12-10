@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_useless_concat_operator,set_type_to_cast.
+--RULESET--
+{"no_useless_concat_operator": true, "set_type_to_cast": true}
+--EXPECT--
+<?php
+
+$foo = (bool) $foo;
+
+--INPUT--
+<?php
+
+settype  (  $foo  , "Bo"."ol");

@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: empty_loop_body,braces.
+--RULESET--
+{"empty_loop_body": {"style": "braces"}, "braces": true}
+--EXPECT--
+<?php
+
+while (foo4()) {
+}
+
+--INPUT--
+<?php
+
+while (foo4()) ;

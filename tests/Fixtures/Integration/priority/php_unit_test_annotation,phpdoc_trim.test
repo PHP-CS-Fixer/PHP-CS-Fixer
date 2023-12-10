@@ -1,10 +1,10 @@
 --TEST--
-Integration of fixers: php_unit_test_annotation,phpdoc_trim
+Integration of fixers: php_unit_test_annotation,phpdoc_trim.
 --RULESET--
 {"php_unit_test_annotation": true, "phpdoc_trim" : true}
 --EXPECT--
 <?php
-class Test
+class Test extends TestCase
 {
     /**
      * It does thing for foo and bar
@@ -14,7 +14,7 @@ class Test
 
 --INPUT--
 <?php
-class Test
+class Test extends TestCase
 {
     /**
      * It does thing for foo and bar

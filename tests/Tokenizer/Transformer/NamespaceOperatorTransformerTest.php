@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,11 +27,11 @@ use PhpCsFixer\Tokenizer\CT;
 final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string $source
+     * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens)
+    public function testProcess(string $source, array $expectedTokens): void
     {
         $this->doTest(
             $source,
@@ -41,18 +43,16 @@ final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public static function provideProcessCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 namespace Foo;
 namespace\Bar\baz();
 ',
-                [
-                    1 => T_NAMESPACE,
-                    6 => CT::T_NAMESPACE_OPERATOR,
-                ],
+            [
+                1 => T_NAMESPACE,
+                6 => CT::T_NAMESPACE_OPERATOR,
             ],
         ];
     }

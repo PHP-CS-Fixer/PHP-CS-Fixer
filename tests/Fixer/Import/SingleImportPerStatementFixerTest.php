@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,7 +19,6 @@ use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -26,142 +27,143 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     /**/use Foo;
-use FooB;
+                    use FooB;
                 ',
-                '<?php
+            '<?php
                     /**/use Foo,FooB;
                 ',
-            ],
-            [
-                <<<'EOF'
-use Some, Not, PHP, Like, Use, Statement;
-<?php
+        ];
 
-use Foo;
-use FooA;
-use FooB;
-use FooC;
-use FooD as D;
-use FooE;
-use FooF;
-use FooG as G;
-use FooH;
-use FooI;
-use FooJ;
-use FooZ;
+        yield [
+            <<<'EOF'
+                use Some, Not, PHP, Like, Use, Statement;
+                <?php
 
-EOF
-                ,
-                <<<'EOF'
-use Some, Not, PHP, Like, Use, Statement;
-<?php
+                use Foo;
+                use FooA;
+                use FooB;
+                use FooC;
+                use FooD as D;
+                use FooE;
+                use FooF;
+                use FooG as G;
+                use FooH;
+                use FooI;
+                use FooJ;
+                use FooZ;
 
-use Foo;
-use FooA, FooB;
-use FooC, FooD as D, FooE;
-use FooF,
-    FooG as G,
-  FooH,     FooI,
-        FooJ;
-use FooZ;
+                EOF
+            ,
+            <<<'EOF'
+                use Some, Not, PHP, Like, Use, Statement;
+                <?php
 
-EOF
-            ],
-            [
-                <<<'EOF'
-<?php
+                use Foo;
+                use FooA, FooB;
+                use FooC, FooD as D, FooE;
+                use FooF,
+                    FooG as G,
+                  FooH,     FooI,
+                        FooJ;
+                use FooZ;
 
-namespace {
-    use Foo;
-    use FooA;
-    use FooB;
-    use FooC;
-    use FooD as D;
-    use FooE;
-    use FooF;
-    use FooG as G;
-    use FooH;
-    use FooI;
-    use FooJ;
-    use FooZ;
-}
+                EOF
+        ];
 
-namespace Boo {
-    use Bar;
-    use BarA;
-    use BarB;
-    use BarC;
-    use BarD as D;
-    use BarE;
-    use BarF;
-    use BarG as G;
-    use BarH;
-    use BarI;
-    use BarJ;
-    use BarZ;
-}
+        yield [
+            <<<'EOF'
+                <?php
 
-EOF
-                ,
-                <<<'EOF'
-<?php
+                namespace {
+                    use Foo;
+                    use FooA;
+                    use FooB;
+                    use FooC;
+                    use FooD as D;
+                    use FooE;
+                    use FooF;
+                    use FooG as G;
+                    use FooH;
+                    use FooI;
+                    use FooJ;
+                    use FooZ;
+                }
 
-namespace {
-    use Foo;
-    use FooA, FooB;
-    use FooC, FooD as D, FooE;
-    use FooF,
-        FooG as G,
-      FooH,     FooI,
-            FooJ;
-    use FooZ;
-}
+                namespace Boo {
+                    use Bar;
+                    use BarA;
+                    use BarB;
+                    use BarC;
+                    use BarD as D;
+                    use BarE;
+                    use BarF;
+                    use BarG as G;
+                    use BarH;
+                    use BarI;
+                    use BarJ;
+                    use BarZ;
+                }
 
-namespace Boo {
-    use Bar;
-    use BarA, BarB;
-    use BarC, BarD as D, BarE;
-    use BarF,
-        BarG as G,
-      BarH,     BarI,
-            BarJ;
-    use BarZ;
-}
+                EOF
+            ,
+            <<<'EOF'
+                <?php
 
-EOF
-            ],
-            [
-                '<?php
+                namespace {
+                    use Foo;
+                    use FooA, FooB;
+                    use FooC, FooD as D, FooE;
+                    use FooF,
+                        FooG as G,
+                      FooH,     FooI,
+                            FooJ;
+                    use FooZ;
+                }
+
+                namespace Boo {
+                    use Bar;
+                    use BarA, BarB;
+                    use BarC, BarD as D, BarE;
+                    use BarF,
+                        BarG as G,
+                      BarH,     BarI,
+                            BarJ;
+                    use BarZ;
+                }
+
+                EOF
+        ];
+
+        yield [
+            '<?php
                     use FooA;
                     use FooB;
                 ',
-                '<?php
+            '<?php
                     use FooA, FooB;
                 ',
-            ],
-            [
-                '<?php use FooA;
+        ];
+
+        yield [
+            '<?php use FooA;
 use FooB?>',
-                '<?php use FooA, FooB?>',
-            ],
-            [
-                '<?php
+            '<?php use FooA, FooB?>',
+        ];
+
+        yield [
+            '<?php
 use B;
 use C;
     use E;
@@ -169,64 +171,172 @@ use C;
         use G;
         use H;
 ',
-                '<?php
+            '<?php
 use B,C;
     use E,F;
         use G,H;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use B;
 /*
 */use C;
 ',
-                '<?php
+            '<?php
 use B,
 /*
 */C;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use A;
 use B;
 //,{} use ; :
 #,{} use ; :
 /*,{} use ; :*/
 use C  ; ',
-                '<?php
+            '<?php
 use A,B,
 //,{} use ; :
 #,{} use ; :
 /*,{} use ; :*/
 C  ; ',
-            ],
-            [
-                '<?php use Z ;
+        ];
+
+        yield [
+            '<?php use Z ;
 use X ?><?php new X(); // run before white space around semicolon',
-                '<?php use Z , X ?><?php new X(); // run before white space around semicolon',
-            ],
+            '<?php use Z , X ?><?php new X(); // run before white space around semicolon',
+        ];
+
+        yield [
+            '<?php use FooA#
+;#
+#
+use FooB;',
+            '<?php use FooA#
+,#
+#
+FooB;',
+        ];
+
+        yield [
+            '<?php use some\b\ClassB;
+use function some\b\CC as C;
+use function some\b\D;
+use const some\b\E;
+use function some\b\A\B;',
+            '<?php use some\b\{ClassB, function CC as C, function D, const E, function A\B};',
+        ];
+
+        yield [
+            '<?php
+use Foo\Bar;
+use Foo\Baz;',
+            '<?php
+use Foo\ {
+    Bar, Baz
+};',
+        ];
+
+        yield [
+            '<?php
+use Foo\Bar;
+use Foo\Baz;',
+            '<?php
+use Foo\
+{
+    Bar, Baz
+};',
+        ];
+
+        yield [
+            '<?php
+use function md5;
+use function str_repeat;
+use const true;
+use const false;
+use A;
+use B;
+',
+            '<?php
+use function md5, str_repeat;
+use const true, false;
+use A,B;
+',
+        ];
+
+        yield [
+            '<?php
+use D\E;
+use D\F;
+use G\H;
+use G\I/*1*//*2*/;
+',
+            '<?php
+use D\{E,F,};
+use G\{H,I/*1*/,/*2*/};
+',
+        ];
+    }
+
+    public function testWithConfig(): void
+    {
+        $expected = '<?php
+use Space\Models\TestModelA;
+use Space\Models\TestModelB;
+use Space\Models\TestModel;';
+
+        $input = '<?php
+use Space\Models\ {
+    TestModelA,
+    TestModelB,
+    TestModel,
+};';
+
+        $this->doTest($expected, $input);
+
+        $this->fixer->configure(['group_to_single_imports' => false]);
+
+        $this->doTest($input);
+    }
+
+    /**
+     * @dataProvider provideMessyWhitespacesCases
+     */
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideMessyWhitespacesCases(): iterable
+    {
+        yield [
+            "<?php\r\n    use FooA;\r\n    use FooB;",
+            "<?php\r\n    use FooA, FooB;",
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
+     * @dataProvider provideFixPrePHP80Cases
      *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
+     * @requires PHP <8.0
      */
-    public function test70($expected, $input = null)
+    public function testFixPrePHP80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70Cases()
+    public static function provideFixPrePHP80Cases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 use some\a\ClassA;
 use some\a\ClassB;
 use some\a\ClassC as C;
@@ -241,7 +351,7 @@ use A\{B};
 use D\E;
 use D\F;
                 ',
-                '<?php
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use    function some\b\{fn_a, fn_b, fn_c};
 use const/* group comment */some\c\{ConstA/**/as/**/ E   ,    ConstB   AS    D, '.'
@@ -250,53 +360,9 @@ ConstC};
 use A\{B};
 use D\{E,F};
                 ',
-            ],
-            [
-                '<?php use FooA#
-;#
-#
-use FooB;',
-                '<?php use FooA#
-,#
-#
-FooB;',
-            ],
-            [
-                '<?php use some\b\ClassB;
-use function some\b\CC as C;
-use function some\b\D;
-use const some\b\E;
-use function some\b\A\B;',
-                '<?php use some\b\{ClassB, function CC as C, function D, const E, function A\B};',
-            ],
-            [
-                '<?php
-use Foo\Bar;
-use Foo\Baz;',
-                '<?php
-use Foo\ {
-    Bar, Baz
-};',
-            ],
-            [
-                '<?php
-use Foo\Bar;
-use Foo\Baz;',
-                '<?php
-use Foo\
-{
-    Bar, Baz
-};',
-            ],
         ];
-    }
 
-    /**
-     * @requires PHP 7.0
-     */
-    public function testMessyComments()
-    {
-        $this->doTest(
+        yield 'messy comments' => [
             '<?php
 use D\/*1*//*2*//*3*/E;
 use D\/*4*//*5*//*6*//*7*//*8*//*9*/F/*10*//*11*//*12*/;
@@ -306,60 +372,7 @@ use D\{
 /*1*//*2*//*3*/E,/*4*//*5*//*6*/
 /*7*//*8*//*9*/F/*10*//*11*//*12*/
 };
-'
-        );
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideMessyWhitespacesCases
-     */
-    public function testMessyWhitespaces($expected, $input = null)
-    {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideMessyWhitespacesCases()
-    {
-        return [
-            [
-                "<?php\r\n    use FooA;\r\n    use FooB;",
-                "<?php\r\n    use FooA, FooB;",
-            ],
-        ];
-    }
-
-    /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
-     */
-    public function testFix72($expected, $input)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix72Cases()
-    {
-        return [
-            [
-                '<?php
-use D\E;
-use D\F;
-use G\H;
-use G\I/*1*//*2*/;
 ',
-                '<?php
-use D\{E,F,};
-use G\{H,I/*1*/,/*2*/};
-',
-            ],
         ];
     }
 }

@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: strict_comparison,binary_operator_spaces.text.
+Integration of fixers: strict_comparison,binary_operator_spaces.
 --RULESET--
 {"strict_comparison": true, "binary_operator_spaces": {"operators":{"===":"align_single_space"}}}
 --EXPECT--

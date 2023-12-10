@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,11 +14,14 @@
 
 namespace PhpCsFixer\Tests\Console;
 
+use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Finder;
+use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Tests\Fixtures\DeprecatedFixer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
@@ -32,15 +37,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class ConfigurationResolverTest extends TestCase
 {
-    public function testSetOptionWithUndefinedOption()
+    public function testSetOptionWithUndefinedOption(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^Unknown option name: "foo"\.$/');
+        $this->expectExceptionMessageMatches('/^Unknown option name: "foo"\.$/');
 
         $this->createConfigurationResolver(['foo' => 'bar']);
     }
 
-    public function testResolveProgressWithPositiveConfigAndPositiveOption()
+    public function testResolveProgressWithPositiveConfigAndPositiveOption(): void
     {
         $config = new Config();
         $config->setHideProgress(true);
@@ -50,10 +55,10 @@ final class ConfigurationResolverTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
         ], $config);
 
-        static::assertSame('none', $resolver->getProgress());
+        self::assertSame('none', $resolver->getProgressType());
     }
 
-    public function testResolveProgressWithPositiveConfigAndNegativeOption()
+    public function testResolveProgressWithPositiveConfigAndNegativeOption(): void
     {
         $config = new Config();
         $config->setHideProgress(true);
@@ -63,10 +68,10 @@ final class ConfigurationResolverTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_NORMAL,
         ], $config);
 
-        static::assertSame('none', $resolver->getProgress());
+        self::assertSame('none', $resolver->getProgressType());
     }
 
-    public function testResolveProgressWithNegativeConfigAndPositiveOption()
+    public function testResolveProgressWithNegativeConfigAndPositiveOption(): void
     {
         $config = new Config();
         $config->setHideProgress(false);
@@ -76,10 +81,10 @@ final class ConfigurationResolverTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
         ], $config);
 
-        static::assertSame('run-in', $resolver->getProgress());
+        self::assertSame('dots', $resolver->getProgressType());
     }
 
-    public function testResolveProgressWithNegativeConfigAndNegativeOption()
+    public function testResolveProgressWithNegativeConfigAndNegativeOption(): void
     {
         $config = new Config();
         $config->setHideProgress(false);
@@ -89,15 +94,13 @@ final class ConfigurationResolverTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_NORMAL,
         ], $config);
 
-        static::assertSame('none', $resolver->getProgress());
+        self::assertSame('none', $resolver->getProgressType());
     }
 
     /**
-     * @param string $progressType
-     *
      * @dataProvider provideProgressTypeCases
      */
-    public function testResolveProgressWithPositiveConfigAndExplicitProgress($progressType)
+    public function testResolveProgressWithPositiveConfigAndExplicitProgress(string $progressType): void
     {
         $config = new Config();
         $config->setHideProgress(true);
@@ -108,28 +111,13 @@ final class ConfigurationResolverTest extends TestCase
             'show-progress' => $progressType,
         ], $config);
 
-        static::assertSame($progressType, $resolver->getProgress());
+        self::assertSame($progressType, $resolver->getProgressType());
     }
 
     /**
-     * @param string $progressType
-     *
-     * @dataProvider provideProgressTypeLegacyCases
-     *
-     * @group legacy
-     * @expectedDeprecation Passing `estimating`, `estimating-max` or `run-in` is deprecated and will not be supported in 3.0, use `none` or `dots` instead.
-     */
-    public function testResolveProgressWithPositiveConfigAndExplicitProgressLegacy($progressType)
-    {
-        $this->testResolveProgressWithPositiveConfigAndExplicitProgress($progressType);
-    }
-
-    /**
-     * @param string $progressType
-     *
      * @dataProvider provideProgressTypeCases
      */
-    public function testResolveProgressWithNegativeConfigAndExplicitProgress($progressType)
+    public function testResolveProgressWithNegativeConfigAndExplicitProgress(string $progressType): void
     {
         $config = new Config();
         $config->setHideProgress(false);
@@ -140,40 +128,17 @@ final class ConfigurationResolverTest extends TestCase
             'show-progress' => $progressType,
         ], $config);
 
-        static::assertSame($progressType, $resolver->getProgress());
+        self::assertSame($progressType, $resolver->getProgressType());
     }
 
-    /**
-     * @param string $progressType
-     *
-     * @dataProvider provideProgressTypeLegacyCases
-     *
-     * @group legacy
-     * @expectedDeprecation Passing `estimating`, `estimating-max` or `run-in` is deprecated and will not be supported in 3.0, use `none` or `dots` instead.
-     */
-    public function testResolveProgressWithNegativeConfigAndExplicitProgressLegacy($progressType)
+    public static function provideProgressTypeCases(): iterable
     {
-        $this->testResolveProgressWithNegativeConfigAndExplicitProgress($progressType);
+        foreach (ProgressOutputType::AVAILABLE as $outputType) {
+            yield $outputType => [$outputType];
+        }
     }
 
-    public function provideProgressTypeLegacyCases()
-    {
-        return [
-            ['run-in'],
-            ['estimating'],
-            ['estimating-max'],
-        ];
-    }
-
-    public function provideProgressTypeCases()
-    {
-        return [
-            ['none'],
-            ['dots'],
-        ];
-    }
-
-    public function testResolveProgressWithInvalidExplicitProgress()
+    public function testResolveProgressWithInvalidExplicitProgress(): void
     {
         $resolver = $this->createConfigurationResolver([
             'format' => 'txt',
@@ -182,167 +147,239 @@ final class ConfigurationResolverTest extends TestCase
         ]);
 
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none", "run-in", "estimating", "estimating-max", "dots".');
+        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none" and "dots".');
 
-        $resolver->getProgress();
+        $resolver->getProgressType();
     }
 
-    public function testResolveConfigFileDefault()
+    public function testResolveConfigFileDefault(): void
     {
         $resolver = $this->createConfigurationResolver([]);
 
-        static::assertNull($resolver->getConfigFile());
-        static::assertInstanceOf(\PhpCsFixer\ConfigInterface::class, $resolver->getConfig());
+        self::assertNull($resolver->getConfigFile());
+        self::assertInstanceOf(\PhpCsFixer\ConfigInterface::class, $resolver->getConfig());
     }
 
-    public function testResolveConfigFileByPathOfFile()
+    public function testResolveConfigFileByPathOfFile(): void
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_1';
 
         $resolver = $this->createConfigurationResolver(['path' => [$dir.\DIRECTORY_SEPARATOR.'foo.php']]);
 
-        static::assertSame($dir.\DIRECTORY_SEPARATOR.'.php_cs.dist', $resolver->getConfigFile());
-        static::assertInstanceOf('Test1Config', $resolver->getConfig());
+        self::assertSame($dir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php', $resolver->getConfigFile());
+        self::assertInstanceOf(\Test1Config::class, $resolver->getConfig()); // @phpstan-ignore-line to avoid `Class Test1Config not found.`
     }
 
-    public function testResolveConfigFileSpecified()
+    public function testResolveConfigFileSpecified(): void
     {
-        $file = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_4/my.php_cs';
+        $file = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_4/my.php-cs-fixer.php';
 
         $resolver = $this->createConfigurationResolver(['config' => $file]);
 
-        static::assertSame($file, $resolver->getConfigFile());
-        static::assertInstanceOf('Test4Config', $resolver->getConfig());
+        self::assertSame($file, $resolver->getConfigFile());
+        self::assertInstanceOf(\Test4Config::class, $resolver->getConfig()); // @phpstan-ignore-line to avoid `Class Test4Config not found.`
     }
 
     /**
-     * @param string      $expectedFile
-     * @param string      $expectedClass
-     * @param string      $path
-     * @param null|string $cwdPath
-     *
-     * @dataProvider provideResolveConfigFileDefaultCases
+     * @dataProvider provideResolveConfigFileChooseFileCases
      */
-    public function testResolveConfigFileChooseFile($expectedFile, $expectedClass, $path, $cwdPath = null)
+    public function testResolveConfigFileChooseFile(string $expectedFile, string $expectedClass, string $path, ?string $cwdPath = null): void
     {
         $resolver = $this->createConfigurationResolver(
             ['path' => [$path]],
             null,
-            $cwdPath
+            $cwdPath ?? ''
         );
 
-        static::assertSame($expectedFile, $resolver->getConfigFile());
-        static::assertInstanceOf($expectedClass, $resolver->getConfig());
+        self::assertSame($expectedFile, $resolver->getConfigFile());
+        self::assertInstanceOf($expectedClass, $resolver->getConfig());
     }
 
-    public function provideResolveConfigFileDefaultCases()
+    public static function provideResolveConfigFileChooseFileCases(): iterable
     {
-        $dirBase = $this->getFixtureDir();
+        $dirBase = self::getFixtureDir();
 
-        return [
-            [
-                $dirBase.'case_1'.\DIRECTORY_SEPARATOR.'.php_cs.dist',
-                'Test1Config',
-                $dirBase.'case_1',
-            ],
-            [
-                $dirBase.'case_2'.\DIRECTORY_SEPARATOR.'.php_cs',
-                'Test2Config',
-                $dirBase.'case_2',
-            ],
-            [
-                $dirBase.'case_3'.\DIRECTORY_SEPARATOR.'.php_cs',
-                'Test3Config',
-                $dirBase.'case_3',
-            ],
-            [
-                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php_cs.dist',
-                'Test6Config',
-                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir',
-                $dirBase.'case_6',
-            ],
-            [
-                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php_cs.dist',
-                'Test6Config',
-                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir/empty_file.php',
-                $dirBase.'case_6',
-            ],
+        yield [
+            $dirBase.'case_1'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
+            'Test1Config',
+            $dirBase.'case_1',
+        ];
+
+        yield [
+            $dirBase.'case_2'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
+            'Test2Config',
+            $dirBase.'case_2',
+        ];
+
+        yield [
+            $dirBase.'case_3'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
+            'Test3Config',
+            $dirBase.'case_3',
+        ];
+
+        yield [
+            $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
+            'Test6Config',
+            $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir',
+            $dirBase.'case_6',
+        ];
+
+        yield [
+            $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
+            'Test6Config',
+            $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir/empty_file.php',
+            $dirBase.'case_6',
         ];
     }
 
-    public function testResolveConfigFileChooseFileWithInvalidFile()
+    public function testResolveConfigFileChooseFileWithInvalidFile(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
-            '#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php_cs\.dist" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#'
+        $this->expectExceptionMessageMatches(
+            '#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php-cs-fixer\.dist\.php" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#'
         );
 
-        $dirBase = $this->getFixtureDir();
+        $dirBase = self::getFixtureDir();
 
         $resolver = $this->createConfigurationResolver(['path' => [$dirBase.'case_5']]);
 
         $resolver->getConfig();
     }
 
-    public function testResolveConfigFileChooseFileWithInvalidFormat()
+    public function testResolveConfigFileChooseFileWithInvalidFormat(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^The format "xls" is not defined, supported are "checkstyle", "gitlab", "json", "junit", "txt", "xml"\.$/');
+        $this->expectExceptionMessageMatches('/^The format "xls" is not defined, supported are "checkstyle", "gitlab", "json", "junit", "txt" and "xml"\.$/');
 
-        $dirBase = $this->getFixtureDir();
+        $dirBase = self::getFixtureDir();
 
         $resolver = $this->createConfigurationResolver(['path' => [$dirBase.'case_7']]);
 
         $resolver->getReporter();
     }
 
-    public function testResolveConfigFileChooseFileWithPathArrayWithoutConfig()
+    public function testResolveConfigFileChooseFileWithPathArrayWithoutConfig(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^For multiple paths config parameter is required\.$/');
+        $this->expectExceptionMessageMatches('/^For multiple paths config parameter is required\.$/');
 
-        $dirBase = $this->getFixtureDir();
+        $dirBase = self::getFixtureDir();
 
-        $resolver = $this->createConfigurationResolver(['path' => [$dirBase.'case_1/.php_cs.dist', $dirBase.'case_1/foo.php']]);
+        $resolver = $this->createConfigurationResolver(['path' => [$dirBase.'case_1/.php-cs-fixer.dist.php', $dirBase.'case_1/foo.php']]);
 
         $resolver->getConfig();
     }
 
-    public function testResolveConfigFileChooseFileWithPathArrayAndConfig()
+    public function testResolveConfigFileChooseFileWithPathArrayAndConfig(): void
     {
-        $dirBase = $this->getFixtureDir();
+        $dirBase = self::getFixtureDir();
+        $configFile = $dirBase.'case_1/.php-cs-fixer.dist.php';
 
         $resolver = $this->createConfigurationResolver([
-            'config' => $dirBase.'case_1/.php_cs.dist',
-            'path' => [$dirBase.'case_1/.php_cs.dist', $dirBase.'case_1/foo.php'],
+            'config' => $configFile,
+            'path' => [$configFile, $dirBase.'case_1/foo.php'],
         ]);
 
-        static::assertInstanceOf(\PhpCsFixer\Console\ConfigurationResolver::class, $resolver);
+        self::assertSame($configFile, $resolver->getConfigFile());
     }
 
-    public function testResolvePathRelativeA()
+    /**
+     * @param array<int, string> $paths
+     * @param array<int, string> $expectedPaths
+     *
+     * @dataProvider provideResolvePathCases
+     */
+    public function testResolvePath(array $paths, string $cwd, array $expectedPaths): void
     {
         $resolver = $this->createConfigurationResolver(
-            ['path' => ['Command']],
+            ['path' => $paths],
             null,
-            __DIR__
+            $cwd
         );
 
-        static::assertSame([__DIR__.\DIRECTORY_SEPARATOR.'Command'], $resolver->getPath());
+        self::assertSame($expectedPaths, $resolver->getPath());
     }
 
-    public function testResolvePathRelativeB()
+    public static function provideResolvePathCases(): iterable
+    {
+        yield [
+            ['Command'],
+            __DIR__,
+            [__DIR__.\DIRECTORY_SEPARATOR.'Command'],
+        ];
+
+        yield [
+            [basename(__DIR__)],
+            \dirname(__DIR__),
+            [__DIR__],
+        ];
+
+        yield [
+            [' Command'],
+            __DIR__,
+            [__DIR__.\DIRECTORY_SEPARATOR.'Command'],
+        ];
+
+        yield [
+            ['Command '],
+            __DIR__,
+            [__DIR__.\DIRECTORY_SEPARATOR.'Command'],
+        ];
+    }
+
+    /**
+     * @param array<string> $paths
+     *
+     * @dataProvider provideRejectInvalidPathCases
+     */
+    public function testRejectInvalidPath(array $paths, string $expectedMessage): void
     {
         $resolver = $this->createConfigurationResolver(
-            ['path' => [basename(__DIR__)]],
+            ['path' => $paths],
             null,
             \dirname(__DIR__)
         );
 
-        static::assertSame([__DIR__], $resolver->getPath());
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage($expectedMessage);
+
+        $resolver->getPath();
     }
 
-    public function testResolvePathWithFileThatIsExcludedDirectlyOverridePathMode()
+    public static function provideRejectInvalidPathCases(): iterable
+    {
+        yield [
+            [''],
+            'Invalid path: "".',
+        ];
+
+        yield [
+            [__DIR__, ''],
+            'Invalid path: "".',
+        ];
+
+        yield [
+            ['', __DIR__],
+            'Invalid path: "".',
+        ];
+
+        yield [
+            ['  '],
+            'Invalid path: "  ".',
+        ];
+
+        yield [
+            [__DIR__, '  '],
+            'Invalid path: "  ".',
+        ];
+
+        yield [
+            ['  ', __DIR__],
+            'Invalid path: "  ".',
+        ];
+    }
+
+    public function testResolvePathWithFileThatIsExcludedDirectlyOverridePathMode(): void
     {
         $config = new Config();
         $config->getFinder()
@@ -355,10 +392,10 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertCount(1, $resolver->getFinder());
+        self::assertCount(1, $resolver->getFinder());
     }
 
-    public function testResolvePathWithFileThatIsExcludedDirectlyIntersectionPathMode()
+    public function testResolvePathWithFileThatIsExcludedDirectlyIntersectionPathMode(): void
     {
         $config = new Config();
         $config->getFinder()
@@ -371,10 +408,10 @@ final class ConfigurationResolverTest extends TestCase
             'path-mode' => 'intersection',
         ], $config);
 
-        static::assertCount(0, $resolver->getFinder());
+        self::assertCount(0, $resolver->getFinder());
     }
 
-    public function testResolvePathWithFileThatIsExcludedByDirOverridePathMode()
+    public function testResolvePathWithFileThatIsExcludedByDirOverridePathMode(): void
     {
         $dir = \dirname(__DIR__);
         $config = new Config();
@@ -388,10 +425,10 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertCount(1, $resolver->getFinder());
+        self::assertCount(1, $resolver->getFinder());
     }
 
-    public function testResolvePathWithFileThatIsExcludedByDirIntersectionPathMode()
+    public function testResolvePathWithFileThatIsExcludedByDirIntersectionPathMode(): void
     {
         $dir = \dirname(__DIR__);
         $config = new Config();
@@ -405,10 +442,10 @@ final class ConfigurationResolverTest extends TestCase
             'path' => [__FILE__],
         ], $config);
 
-        static::assertCount(0, $resolver->getFinder());
+        self::assertCount(0, $resolver->getFinder());
     }
 
-    public function testResolvePathWithFileThatIsNotExcluded()
+    public function testResolvePathWithFileThatIsNotExcluded(): void
     {
         $dir = __DIR__;
         $config = new Config();
@@ -422,18 +459,16 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertCount(1, $resolver->getFinder());
+        self::assertCount(1, $resolver->getFinder());
     }
 
     /**
-     * @param array|\Exception $expected
-     * @param null|Finder      $configFinder
-     * @param string           $pathMode
-     * @param null|string      $configOption
+     * @param \Exception|list<string> $expected
+     * @param list<string>            $path
      *
      * @dataProvider provideResolveIntersectionOfPathsCases
      */
-    public function testResolveIntersectionOfPaths($expected, $configFinder, array $path, $pathMode, $configOption = null)
+    public function testResolveIntersectionOfPaths($expected, ?Finder $configFinder, array $path, string $pathMode, ?string $configOption = null): void
     {
         if ($expected instanceof \Exception) {
             $this->expectException(\get_class($expected));
@@ -453,274 +488,283 @@ final class ConfigurationResolverTest extends TestCase
         ], $config);
 
         $intersectionItems = array_map(
-            static function (\SplFileInfo $file) {
-                return $file->getRealPath();
-            },
+            static fn (\SplFileInfo $file): string => $file->getRealPath(),
             iterator_to_array($resolver->getFinder(), false)
         );
 
         sort($expected);
         sort($intersectionItems);
 
-        static::assertSame($expected, $intersectionItems);
+        self::assertSame($expected, $intersectionItems);
     }
 
-    public function provideResolveIntersectionOfPathsCases()
+    public static function provideResolveIntersectionOfPathsCases(): iterable
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
-        $cb = static function (array $items) use ($dir) {
-            return array_map(
-                static function ($item) use ($dir) {
-                    return realpath($dir.'/'.$item);
-                },
-                $items
-            );
-        };
+        $cb = static fn (array $items): array => array_map(
+            static fn (string $item): string => realpath($dir.'/'.$item),
+            $items
+        );
 
-        return [
-            'no path at all' => [
-                new \LogicException(),
-                Finder::create(),
-                [],
-                'override',
-            ],
-            'configured only by finder' => [
-                // don't override if the argument is empty
-                $cb(['a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php']),
-                Finder::create()
-                    ->in($dir),
-                [],
-                'override',
-            ],
-            'configured only by argument' => [
-                $cb(['a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php']),
-                Finder::create(),
-                [$dir],
-                'override',
-            ],
-            'configured by finder, intersected with empty argument' => [
-                [],
-                Finder::create()
-                    ->in($dir),
-                [],
-                'intersection',
-            ],
-            'configured by finder, intersected with dir' => [
-                $cb(['c/c1.php', 'c/d/cd1.php']),
-                Finder::create()
-                    ->in($dir),
-                [$dir.'/c'],
-                'intersection',
-            ],
-            'configured by finder, intersected with file' => [
-                $cb(['c/c1.php']),
-                Finder::create()
-                    ->in($dir),
-                [$dir.'/c/c1.php'],
-                'intersection',
-            ],
-            'finder points to one dir while argument to another, not connected' => [
-                [],
-                Finder::create()
-                    ->in($dir.'/b'),
-                [$dir.'/c'],
-                'intersection',
-            ],
-            'finder with excluded dir, intersected with excluded file' => [
-                [],
-                Finder::create()
-                    ->in($dir)
-                    ->exclude('c'),
-                [$dir.'/c/d/cd1.php'],
-                'intersection',
-            ],
-            'finder with excluded dir, intersected with dir containing excluded one' => [
-                $cb(['c/c1.php']),
-                Finder::create()
-                    ->in($dir)
-                    ->exclude('c/d'),
-                [$dir.'/c'],
-                'intersection',
-            ],
-            'finder with excluded file, intersected with dir containing excluded one' => [
-                $cb(['c/d/cd1.php']),
-                Finder::create()
-                    ->in($dir)
-                    ->notPath('c/c1.php'),
-                [$dir.'/c'],
-                'intersection',
-            ],
-            'configured by finder, intersected with non-existing path' => [
-                new \LogicException(),
-                Finder::create()
-                    ->in($dir),
-                ['non_existing_dir'],
-                'intersection',
-            ],
-            'configured by config file, overridden by multiple files' => [
-                $cb(['d/d1.php', 'd/d2.php']),
-                null,
-                [$dir.'/d/d1.php', $dir.'/d/d2.php'],
-                'override',
-                $dir.'/d/.php_cs',
-            ],
-            'configured by config file, intersected with multiple files' => [
-                $cb(['d/d1.php', 'd/d2.php']),
-                null,
-                [$dir.'/d/d1.php', $dir.'/d/d2.php'],
-                'intersection',
-                $dir.'/d/.php_cs',
-            ],
-            'configured by config file, overridden by non-existing dir' => [
-                new \LogicException(),
-                null,
-                [$dir.'/d/fff'],
-                'override',
-                $dir.'/d/.php_cs',
-            ],
-            'configured by config file, intersected with non-existing dir' => [
-                new \LogicException(),
-                null,
-                [$dir.'/d/fff'],
-                'intersection',
-                $dir.'/d/.php_cs',
-            ],
-            'configured by config file, overridden by non-existing file' => [
-                new \LogicException(),
-                null,
-                [$dir.'/d/fff.php'],
-                'override',
-                $dir.'/d/.php_cs',
-            ],
-            'configured by config file, intersected with non-existing file' => [
-                new \LogicException(),
-                null,
-                [$dir.'/d/fff.php'],
-                'intersection',
-                $dir.'/d/.php_cs',
-            ],
-            'configured by config file, overridden by multiple files and dirs' => [
-                $cb(['d/d1.php', 'd/e/de1.php', 'd/f/df1.php']),
-                null,
-                [$dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'],
-                'override',
-                $dir.'/d/.php_cs',
-            ],
-            'configured by config file, intersected with multiple files and dirs' => [
-                $cb(['d/d1.php', 'd/e/de1.php', 'd/f/df1.php']),
-                null,
-                [$dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'],
-                'intersection',
-                $dir.'/d/.php_cs',
-            ],
+        yield 'no path at all' => [
+            new \LogicException(),
+            Finder::create(),
+            [],
+            'override',
+        ];
+
+        yield 'configured only by finder' => [
+            // don't override if the argument is empty
+            $cb(['a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php']),
+            Finder::create()
+                ->in($dir),
+            [],
+            'override',
+        ];
+
+        yield 'configured only by argument' => [
+            $cb(['a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php']),
+            Finder::create(),
+            [$dir],
+            'override',
+        ];
+
+        yield 'configured by finder, intersected with empty argument' => [
+            [],
+            Finder::create()
+                ->in($dir),
+            [],
+            'intersection',
+        ];
+
+        yield 'configured by finder, intersected with dir' => [
+            $cb(['c/c1.php', 'c/d/cd1.php']),
+            Finder::create()
+                ->in($dir),
+            [$dir.'/c'],
+            'intersection',
+        ];
+
+        yield 'configured by finder, intersected with file' => [
+            $cb(['c/c1.php']),
+            Finder::create()
+                ->in($dir),
+            [$dir.'/c/c1.php'],
+            'intersection',
+        ];
+
+        yield 'finder points to one dir while argument to another, not connected' => [
+            [],
+            Finder::create()
+                ->in($dir.'/b'),
+            [$dir.'/c'],
+            'intersection',
+        ];
+
+        yield 'finder with excluded dir, intersected with excluded file' => [
+            [],
+            Finder::create()
+                ->in($dir)
+                ->exclude('c'),
+            [$dir.'/c/d/cd1.php'],
+            'intersection',
+        ];
+
+        yield 'finder with excluded dir, intersected with dir containing excluded one' => [
+            $cb(['c/c1.php']),
+            Finder::create()
+                ->in($dir)
+                ->exclude('c/d'),
+            [$dir.'/c'],
+            'intersection',
+        ];
+
+        yield 'finder with excluded file, intersected with dir containing excluded one' => [
+            $cb(['c/d/cd1.php']),
+            Finder::create()
+                ->in($dir)
+                ->notPath('c/c1.php'),
+            [$dir.'/c'],
+            'intersection',
+        ];
+
+        yield 'configured by finder, intersected with non-existing path' => [
+            new \LogicException(),
+            Finder::create()
+                ->in($dir),
+            ['non_existing_dir'],
+            'intersection',
+        ];
+
+        yield 'configured by config file, overridden by multiple files' => [
+            $cb(['d/d1.php', 'd/d2.php']),
+            null,
+            [$dir.'/d/d1.php', $dir.'/d/d2.php'],
+            'override',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, intersected with multiple files' => [
+            $cb(['d/d1.php', 'd/d2.php']),
+            null,
+            [$dir.'/d/d1.php', $dir.'/d/d2.php'],
+            'intersection',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, overridden by non-existing dir' => [
+            new \LogicException(),
+            null,
+            [$dir.'/d/fff'],
+            'override',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, intersected with non-existing dir' => [
+            new \LogicException(),
+            null,
+            [$dir.'/d/fff'],
+            'intersection',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, overridden by non-existing file' => [
+            new \LogicException(),
+            null,
+            [$dir.'/d/fff.php'],
+            'override',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, intersected with non-existing file' => [
+            new \LogicException(),
+            null,
+            [$dir.'/d/fff.php'],
+            'intersection',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, overridden by multiple files and dirs' => [
+            $cb(['d/d1.php', 'd/e/de1.php', 'd/f/df1.php']),
+            null,
+            [$dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'],
+            'override',
+            $dir.'/d/.php-cs-fixer.php',
+        ];
+
+        yield 'configured by config file, intersected with multiple files and dirs' => [
+            $cb(['d/d1.php', 'd/e/de1.php', 'd/f/df1.php']),
+            null,
+            [$dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'],
+            'intersection',
+            $dir.'/d/.php-cs-fixer.php',
         ];
     }
 
     /**
-     * @param array $options
-     * @param bool  $expectedResult
+     * @param array<string, mixed> $options
      *
      * @dataProvider provideConfigFinderIsOverriddenCases
      */
-    public function testConfigFinderIsOverridden(array $options, $expectedResult)
+    public function testConfigFinderIsOverridden(array $options, bool $expectedResult): void
     {
         $resolver = $this->createConfigurationResolver($options);
 
-        static::assertSame($expectedResult, $resolver->configFinderIsOverridden());
+        self::assertSame($expectedResult, $resolver->configFinderIsOverridden());
 
         $resolver = $this->createConfigurationResolver($options);
         $resolver->getFinder();
 
-        static::assertSame($expectedResult, $resolver->configFinderIsOverridden());
+        self::assertSame($expectedResult, $resolver->configFinderIsOverridden());
     }
 
-    public function provideConfigFinderIsOverriddenCases()
+    public static function provideConfigFinderIsOverriddenCases(): iterable
     {
         $root = __DIR__.'/../..';
 
-        return [
+        yield [
             [
-                [
-                    'config' => $root.'/.php_cs.dist',
-                ],
-                false,
+                'config' => $root.'/.php-cs-fixer.dist.php',
             ],
+            false,
+        ];
+
+        yield [
             [
-                [
-                    'config' => $root.'/.php_cs.dist',
-                    'path' => [$root.'/src'],
-                ],
-                true,
+                'config' => $root.'/.php-cs-fixer.dist.php',
+                'path' => [$root.'/src'],
             ],
+            true,
+        ];
+
+        yield [
+            [],
+            false,
+        ];
+
+        yield [
             [
-                [],
-                false,
+                'path' => [$root.'/src'],
             ],
+            false,
+        ];
+
+        yield [
             [
-                [
-                    'path' => [$root.'/src'],
-                ],
-                false,
+                'config' => $root.'/.php-cs-fixer.dist.php',
+                'path' => [$root.'/src'],
+                'path-mode' => ConfigurationResolver::PATH_MODE_INTERSECTION,
             ],
+            false,
+        ];
+
+        // scenario when loaded config is not setting custom finder
+        yield [
             [
-                [
-                    'config' => $root.'/.php_cs.dist',
-                    'path' => [$root.'/src'],
-                    'path-mode' => ConfigurationResolver::PATH_MODE_INTERSECTION,
-                ],
-                false,
+                'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_3/.php-cs-fixer.dist.php',
+                'path' => [$root.'/src'],
             ],
-            // scenario when loaded config is not setting custom finder
+            false,
+        ];
+
+        // scenario when loaded config contains not fully defined finder
+        yield [
             [
-                [
-                    'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_3/.php_cs.dist',
-                    'path' => [$root.'/src'],
-                ],
-                false,
+                'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_9/.php-cs-fixer.php',
+                'path' => [$root.'/src'],
             ],
-            // scenario when loaded config contains not fully defined finder
-            [
-                [
-                    'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_9/.php_cs',
-                    'path' => [$root.'/src'],
-                ],
-                false,
-            ],
+            false,
         ];
     }
 
-    public function testResolveIsDryRunViaStdIn()
+    public function testResolveIsDryRunViaStdIn(): void
     {
         $resolver = $this->createConfigurationResolver([
             'dry-run' => false,
             'path' => ['-'],
         ]);
 
-        static::assertTrue($resolver->isDryRun());
+        self::assertTrue($resolver->isDryRun());
     }
 
-    public function testResolveIsDryRunViaNegativeOption()
+    public function testResolveIsDryRunViaNegativeOption(): void
     {
         $resolver = $this->createConfigurationResolver(['dry-run' => false]);
 
-        static::assertFalse($resolver->isDryRun());
+        self::assertFalse($resolver->isDryRun());
     }
 
-    public function testResolveIsDryRunViaPositiveOption()
+    public function testResolveIsDryRunViaPositiveOption(): void
     {
         $resolver = $this->createConfigurationResolver(['dry-run' => true]);
 
-        static::assertTrue($resolver->isDryRun());
+        self::assertTrue($resolver->isDryRun());
     }
 
     /**
-     * @param bool             $expected
-     * @param bool             $configValue
-     * @param null|bool|string $passed
-     *
      * @dataProvider provideResolveBooleanOptionCases
      */
-    public function testResolveUsingCacheWithConfigOption($expected, $configValue, $passed)
+    public function testResolveUsingCacheWithConfigOption(bool $expected, bool $configValue, ?string $passed): void
     {
         $config = new Config();
         $config->setUsingCache($configValue);
@@ -730,10 +774,10 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertSame($expected, $resolver->getUsingCache());
+        self::assertSame($expected, $resolver->getUsingCache());
     }
 
-    public function testResolveUsingCacheWithPositiveConfigAndNoOption()
+    public function testResolveUsingCacheWithPositiveConfigAndNoOption(): void
     {
         $config = new Config();
         $config->setUsingCache(true);
@@ -743,10 +787,10 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertTrue($resolver->getUsingCache());
+        self::assertTrue($resolver->getUsingCache());
     }
 
-    public function testResolveUsingCacheWithNegativeConfigAndNoOption()
+    public function testResolveUsingCacheWithNegativeConfigAndNoOption(): void
     {
         $config = new Config();
         $config->setUsingCache(false);
@@ -756,10 +800,10 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertFalse($resolver->getUsingCache());
+        self::assertFalse($resolver->getUsingCache());
     }
 
-    public function testResolveCacheFileWithoutConfigAndOption()
+    public function testResolveCacheFileWithoutConfigAndOption(): void
     {
         $config = new Config();
         $default = $config->getCacheFile();
@@ -769,25 +813,36 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertSame($default, $resolver->getCacheFile());
+        self::assertSame($default, $resolver->getCacheFile());
     }
 
-    public function testResolveCacheFileWithConfig()
+    public function testResolveCacheFileWithConfig(): void
     {
         $cacheFile = 'foo/bar.baz';
 
         $config = new Config();
-        $config->setCacheFile($cacheFile);
+        $config
+            ->setUsingCache(false)
+            ->setCacheFile($cacheFile)
+        ;
 
         $resolver = $this->createConfigurationResolver(
             [],
             $config
         );
 
-        static::assertSame($cacheFile, $resolver->getCacheFile());
+        self::assertNull($resolver->getCacheFile());
+
+        $cacheManager = $resolver->getCacheManager();
+
+        self::assertInstanceOf(NullCacheManager::class, $cacheManager);
+
+        $linter = $resolver->getLinter();
+
+        self::assertInstanceOf(LinterInterface::class, $linter);
     }
 
-    public function testResolveCacheFileWithOption()
+    public function testResolveCacheFileWithOption(): void
     {
         $cacheFile = 'bar.baz';
 
@@ -799,10 +854,10 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertSame($cacheFile, $resolver->getCacheFile());
+        self::assertSame($cacheFile, $resolver->getCacheFile());
     }
 
-    public function testResolveCacheFileWithConfigAndOption()
+    public function testResolveCacheFileWithConfigAndOption(): void
     {
         $configCacheFile = 'foo/bar.baz';
         $optionCacheFile = 'bar.baz';
@@ -815,17 +870,13 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertSame($optionCacheFile, $resolver->getCacheFile());
+        self::assertSame($optionCacheFile, $resolver->getCacheFile());
     }
 
     /**
-     * @param bool             $expected
-     * @param bool             $configValue
-     * @param null|bool|string $passed
-     *
      * @dataProvider provideResolveBooleanOptionCases
      */
-    public function testResolveAllowRiskyWithConfigOption($expected, $configValue, $passed)
+    public function testResolveAllowRiskyWithConfigOption(bool $expected, bool $configValue, ?string $passed): void
     {
         $config = new Config();
         $config->setRiskyAllowed($configValue);
@@ -835,10 +886,10 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertSame($expected, $resolver->getRiskyAllowed());
+        self::assertSame($expected, $resolver->getRiskyAllowed());
     }
 
-    public function testResolveAllowRiskyWithNegativeConfigAndPositiveOption()
+    public function testResolveAllowRiskyWithNegativeConfigAndPositiveOption(): void
     {
         $config = new Config();
         $config->setRiskyAllowed(false);
@@ -848,10 +899,10 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertTrue($resolver->getRiskyAllowed());
+        self::assertTrue($resolver->getRiskyAllowed());
     }
 
-    public function testResolveAllowRiskyWithNegativeConfigAndNegativeOption()
+    public function testResolveAllowRiskyWithNegativeConfigAndNegativeOption(): void
     {
         $config = new Config();
         $config->setRiskyAllowed(false);
@@ -861,10 +912,10 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertFalse($resolver->getRiskyAllowed());
+        self::assertFalse($resolver->getRiskyAllowed());
     }
 
-    public function testResolveAllowRiskyWithPositiveConfigAndNoOption()
+    public function testResolveAllowRiskyWithPositiveConfigAndNoOption(): void
     {
         $config = new Config();
         $config->setRiskyAllowed(true);
@@ -874,10 +925,10 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertTrue($resolver->getRiskyAllowed());
+        self::assertTrue($resolver->getRiskyAllowed());
     }
 
-    public function testResolveAllowRiskyWithNegativeConfigAndNoOption()
+    public function testResolveAllowRiskyWithNegativeConfigAndNoOption(): void
     {
         $config = new Config();
         $config->setRiskyAllowed(false);
@@ -887,14 +938,14 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertFalse($resolver->getRiskyAllowed());
+        self::assertFalse($resolver->getRiskyAllowed());
     }
 
-    public function testResolveRulesWithConfig()
+    public function testResolveRulesWithConfig(): void
     {
         $config = new Config();
         $config->setRules([
-            'braces' => true,
+            'statement_indentation' => true,
             'strict_comparison' => false,
         ]);
 
@@ -903,45 +954,81 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertSameRules(
+        self::assertSameRules(
             [
-                'braces' => true,
+                'statement_indentation' => true,
             ],
             $resolver->getRules()
         );
     }
 
-    public function testResolveRulesWithOption()
+    public function testResolveRulesWithOption(): void
     {
-        $resolver = $this->createConfigurationResolver(['rules' => 'braces,-strict_comparison']);
+        $resolver = $this->createConfigurationResolver(['rules' => 'statement_indentation,-strict_comparison']);
 
-        static::assertSameRules(
+        self::assertSameRules(
             [
-                'braces' => true,
+                'statement_indentation' => true,
             ],
             $resolver->getRules()
         );
     }
 
-    public function testResolveRulesWithUnknownRules()
+    /**
+     * @param string[] $rules
+     *
+     * @dataProvider provideResolveRenamedRulesWithUnknownRulesCases
+     */
+    public function testResolveRenamedRulesWithUnknownRules(string $expectedMessage, array $rules): void
     {
-        $this->expectException(
-            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class
-        );
-        $this->expectExceptionMessage(
-            'The rules contain unknown fixers: "bar", "binary_operator_space" (did you mean "binary_operator_spaces"?).'
-        );
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage($expectedMessage);
 
-        $resolver = $this->createConfigurationResolver(['rules' => 'braces,-bar,binary_operator_space']);
-
+        $resolver = $this->createConfigurationResolver(['rules' => implode(',', $rules)]);
         $resolver->getRules();
     }
 
-    public function testResolveRulesWithConfigAndOption()
+    public static function provideResolveRenamedRulesWithUnknownRulesCases(): iterable
+    {
+        yield 'with config' => [
+            'The rules contain unknown fixers: "blank_line_before_return" is renamed (did you mean "blank_line_before_statement"? (note: use configuration "[\'statements\' => [\'return\']]")).
+For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+            ['blank_line_before_return'],
+        ];
+
+        yield 'without config' => [
+            'The rules contain unknown fixers: "final_static_access" is renamed (did you mean "self_static_accessor"?).
+For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+            ['final_static_access'],
+        ];
+
+        yield [
+            'The rules contain unknown fixers: "hash_to_slash_comment" is renamed (did you mean "single_line_comment_style"? (note: use configuration "[\'comment_types\' => [\'hash\']]")).
+For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+            ['hash_to_slash_comment'],
+        ];
+
+        yield 'both renamed and unknown' => [
+            'The rules contain unknown fixers: "final_static_access" is renamed (did you mean "self_static_accessor"?), "binary_operator_space" (did you mean "binary_operator_spaces"?).
+For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+            ['final_static_access', 'binary_operator_space'],
+        ];
+    }
+
+    public function testResolveRulesWithUnknownRules(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The rules contain unknown fixers: "bar", "binary_operator_space" (did you mean "binary_operator_spaces"?).');
+
+        $resolver = $this->createConfigurationResolver(['rules' => 'statement_indentation,-bar,binary_operator_space']);
+        $resolver->getRules();
+    }
+
+    public function testResolveRulesWithConfigAndOption(): void
     {
         $config = new Config();
         $config->setRules([
-            'braces' => true,
+            'statement_indentation' => true,
             'strict_comparison' => false,
         ]);
 
@@ -950,7 +1037,7 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        static::assertSameRules(
+        self::assertSameRules(
             [
                 'blank_line_before_statement' => true,
             ],
@@ -958,17 +1045,17 @@ final class ConfigurationResolverTest extends TestCase
         );
     }
 
-    public function testResolveCommandLineInputOverridesDefault()
+    public function testResolveCommandLineInputOverridesDefault(): void
     {
         $command = new FixCommand(new ToolInfo());
         $definition = $command->getDefinition();
         $arguments = $definition->getArguments();
-        static::assertCount(1, $arguments, 'Expected one argument, possibly test needs updating.');
-        static::assertArrayHasKey('path', $arguments);
+        self::assertCount(1, $arguments, 'Expected one argument, possibly test needs updating.');
+        self::assertArrayHasKey('path', $arguments);
 
         $options = $definition->getOptions();
-        static::assertSame(
-            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'diff-format', 'format', 'stop-on-violation', 'show-progress'],
+        self::assertSame(
+            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress'],
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );
@@ -979,152 +1066,112 @@ final class ConfigurationResolverTest extends TestCase
             'config' => null,
             'dry-run' => true,
             'rules' => 'php_unit_construct',
-            'using-cache' => false,
+            'using-cache' => 'no',
             'diff' => true,
-            'diff-format' => 'udiff',
             'format' => 'json',
             'stop-on-violation' => true,
         ]);
 
-        static::assertTrue($resolver->shouldStopOnViolation());
-        static::assertTrue($resolver->getRiskyAllowed());
-        static::assertTrue($resolver->isDryRun());
-        static::assertSame(['php_unit_construct' => true], $resolver->getRules());
-        static::assertFalse($resolver->getUsingCache());
-        static::assertNull($resolver->getCacheFile());
-        static::assertInstanceOf(\PhpCsFixer\Differ\UnifiedDiffer::class, $resolver->getDiffer());
-        static::assertSame('json', $resolver->getReporter()->getFormat());
+        self::assertTrue($resolver->shouldStopOnViolation());
+        self::assertTrue($resolver->getRiskyAllowed());
+        self::assertTrue($resolver->isDryRun());
+        self::assertSame(['php_unit_construct' => true], $resolver->getRules());
+        self::assertFalse($resolver->getUsingCache());
+        self::assertNull($resolver->getCacheFile());
+        self::assertInstanceOf(\PhpCsFixer\Differ\UnifiedDiffer::class, $resolver->getDiffer());
+        self::assertSame('json', $resolver->getReporter()->getFormat());
     }
 
     /**
-     * @param string           $expected
      * @param null|bool|string $diffConfig
-     * @param null|string      $differConfig
      *
-     * @dataProvider provideDifferCases
+     * @dataProvider provideResolveDifferCases
      */
-    public function testResolveDiffer($expected, $diffConfig, $differConfig = null)
+    public function testResolveDiffer(string $expected, $diffConfig): void
     {
         $resolver = $this->createConfigurationResolver([
             'diff' => $diffConfig,
-            'diff-format' => $differConfig,
         ]);
 
-        static::assertInstanceOf($expected, $resolver->getDiffer());
+        self::assertInstanceOf($expected, $resolver->getDiffer());
     }
 
-    public function provideDifferCases()
+    public static function provideResolveDifferCases(): iterable
     {
-        return [
-            [
-                \PhpCsFixer\Differ\NullDiffer::class,
-                false,
-            ],
-            [
-                \PhpCsFixer\Differ\NullDiffer::class,
-                null,
-            ],
-            [
-                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
-                true,
-            ],
-            [
-                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
-                'sbd',
-            ],
-            [
-                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
-                true,
-                'sbd',
-            ],
-            [
-                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
-                false,
-                'sbd',
-            ],
-            [
-                \PhpCsFixer\Differ\SebastianBergmannDiffer::class,
-                null,
-                'sbd',
-            ],
-            [
-                \PhpCsFixer\Differ\UnifiedDiffer::class,
-                true,
-                'udiff',
-            ],
-            [
-                \PhpCsFixer\Differ\UnifiedDiffer::class,
-                false,
-                'udiff',
-            ],
-            [
-                \PhpCsFixer\Differ\UnifiedDiffer::class,
-                null,
-                'udiff',
-            ],
+        yield [
+            \PhpCsFixer\Differ\NullDiffer::class,
+            false,
+        ];
+
+        yield [
+            \PhpCsFixer\Differ\NullDiffer::class,
+            null,
+        ];
+
+        yield [
+            \PhpCsFixer\Differ\UnifiedDiffer::class,
+            true,
         ];
     }
 
-    public function testResolveConfigFileOverridesDefault()
+    public function testResolveConfigFileOverridesDefault(): void
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_8';
 
-        $resolver = $this->createConfigurationResolver(['path' => [$dir.\DIRECTORY_SEPARATOR.'.php_cs']]);
+        $resolver = $this->createConfigurationResolver(['path' => [$dir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php']]);
 
-        static::assertTrue($resolver->getRiskyAllowed());
-        static::assertSame(['php_unit_construct' => true], $resolver->getRules());
-        static::assertFalse($resolver->getUsingCache());
-        static::assertNull($resolver->getCacheFile());
-        static::assertSame('xml', $resolver->getReporter()->getFormat());
+        self::assertTrue($resolver->getRiskyAllowed());
+        self::assertSame(['php_unit_construct' => true], $resolver->getRules());
+        self::assertFalse($resolver->getUsingCache());
+        self::assertNull($resolver->getCacheFile());
+        self::assertSame('xml', $resolver->getReporter()->getFormat());
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Expected "yes" or "no" for option "allow-risky", other values are deprecated and support will be removed in 3.0. Got "yes please", this implicitly set the option to "false".
-     */
-    public function testDeprecationOfPassingOtherThanNoOrYes()
+    public function testDeprecationOfPassingOtherThanNoOrYes(): void
     {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Expected "yes" or "no" for option "allow-risky", got "yes please".');
+
         $resolver = $this->createConfigurationResolver(['allow-risky' => 'yes please']);
 
-        static::assertFalse($resolver->getRiskyAllowed());
+        $resolver->getRiskyAllowed();
     }
 
-    public function provideResolveBooleanOptionCases()
+    public static function provideResolveBooleanOptionCases(): iterable
     {
-        return [
-            [true, true, 'yes'],
-            [true, true, true],
-            [true, false, 'yes'],
-            [true, false, true],
-            [false, true, 'no'],
-            [false, true, false],
-            [false, false, 'no'],
-            [false, false, false],
-            [true, true, null],
-            [false, false, null],
-        ];
+        yield [true, true, 'yes'];
+
+        yield [true, false, 'yes'];
+
+        yield [false, true, 'no'];
+
+        yield [false, false, 'no'];
+
+        yield [true, true, null];
+
+        yield [false, false, null];
     }
 
-    public function testWithEmptyRules()
+    public function testWithEmptyRules(): void
     {
         $resolver = $this->createConfigurationResolver(['rules' => '']);
 
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^Empty rules value is not allowed\.$/');
+        $this->expectExceptionMessageMatches('/^Empty rules value is not allowed\.$/');
 
         $resolver->getRules();
     }
 
     /**
-     * @param array|bool $ruleConfig
+     * @param array<string, mixed>|bool $ruleConfig
      *
      * @dataProvider provideDeprecatedFixerConfiguredCases
      *
      * @group legacy
-     * @expectedDeprecation Rule "Vendor4/foo" is deprecated. Use "testA" and "testB" instead.
      */
-    public function testDeprecatedFixerConfigured($ruleConfig)
+    public function testDeprecatedFixerConfigured($ruleConfig): void
     {
+        $this->expectDeprecation('Rule "Vendor4/foo" is deprecated. Use "testA" and "testB" instead.');
         $fixer = new DeprecatedFixer();
         $config = new Config();
         $config->registerCustomFixers([$fixer]);
@@ -1134,29 +1181,78 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getFixers();
     }
 
-    public function provideDeprecatedFixerConfiguredCases()
+    public static function provideDeprecatedFixerConfiguredCases(): iterable
     {
-        return [
-            [true],
-            [['foo' => true]],
-            [false],
-        ];
+        yield [true];
+
+        yield [['foo' => true]];
+
+        yield [false];
     }
 
-    private static function assertSameRules(array $expected, array $actual, $message = '')
+    public static function provideGetDirectoryCases(): iterable
+    {
+        yield [null, '/my/path/my/file', 'my/file'];
+
+        yield ['/my/path/.php-cs-fixer.cache', '/my/path/my/file', 'my/file'];
+
+        yield ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', 'dir2/file'];
+
+        yield ['dir/.php-cs-fixer.cache', '/my/path/dir/dir3/file', 'dir3/file'];
+    }
+
+    /**
+     * @dataProvider provideGetDirectoryCases
+     */
+    public function testGetDirectory(?string $cacheFile, string $file, string $expectedPathRelativeToFile): void
+    {
+        if (null !== $cacheFile) {
+            $cacheFile = $this->normalizePath($cacheFile);
+        }
+
+        $file = $this->normalizePath($file);
+        $expectedPathRelativeToFile = $this->normalizePath($expectedPathRelativeToFile);
+
+        $config = new Config();
+
+        if (null === $cacheFile) {
+            $config->setUsingCache(false);
+        } else {
+            $config->setCacheFile($cacheFile);
+        }
+
+        $resolver = new ConfigurationResolver($config, [], $this->normalizePath('/my/path'), new TestToolInfo());
+        $directory = $resolver->getDirectory();
+
+        self::assertSame($expectedPathRelativeToFile, $directory->getRelativePathTo($file));
+    }
+
+    private function normalizePath(string $path): string
+    {
+        return str_replace('/', \DIRECTORY_SEPARATOR, $path);
+    }
+
+    /**
+     * @param array<string, array<string, mixed>|bool> $expected
+     * @param array<string, array<string, mixed>|bool> $actual
+     */
+    private static function assertSameRules(array $expected, array $actual): void
     {
         ksort($expected);
         ksort($actual);
 
-        static::assertSame($expected, $actual, $message);
+        self::assertSame($expected, $actual);
     }
 
-    private function getFixtureDir()
+    private static function getFixtureDir(): string
     {
         return realpath(__DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.\DIRECTORY_SEPARATOR).'/';
     }
 
-    private function createConfigurationResolver(array $options, Config $config = null, $cwdPath = '')
+    /**
+     * @param array<string, mixed> $options
+     */
+    private function createConfigurationResolver(array $options, Config $config = null, string $cwdPath = ''): ConfigurationResolver
     {
         if (null === $config) {
             $config = new Config();
@@ -1166,7 +1262,7 @@ final class ConfigurationResolverTest extends TestCase
             $config,
             $options,
             $cwdPath,
-            new ToolInfo()
+            new TestToolInfo()
         );
     }
 }

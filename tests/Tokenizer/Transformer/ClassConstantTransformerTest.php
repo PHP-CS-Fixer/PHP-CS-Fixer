@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,11 +27,11 @@ use PhpCsFixer\Tokenizer\CT;
 final class ClassConstantTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string $source
+     * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens = [])
+    public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -40,27 +42,28 @@ final class ClassConstantTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public static function provideProcessCases(): iterable
     {
-        return [
+        yield [
+            '<?php echo X::class;',
             [
-                '<?php echo X::class;',
-                [
-                    5 => CT::T_CLASS_CONSTANT,
-                ],
+                5 => CT::T_CLASS_CONSTANT,
             ],
+        ];
+
+        yield [
+            '<?php echo X::cLaSS;',
             [
-                '<?php echo X::cLaSS;',
-                [
-                    5 => CT::T_CLASS_CONSTANT,
-                ],
+                5 => CT::T_CLASS_CONSTANT,
             ],
-            [
-                '<?php echo X::bar;',
-            ],
-            [
-                '<?php class X{}',
-            ],
+        ];
+
+        yield [
+            '<?php echo X::bar;',
+        ];
+
+        yield [
+            '<?php class X{}',
         ];
     }
 }

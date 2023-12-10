@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,144 +28,152 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
         $manySpaces = [];
+
         for ($i = 1; $i <= 100; ++$i) {
             $manySpaces[] = 'namespace Test'.$i.';';
         }
 
-        return [
-            // with newline
-            ["<?php\nnamespace Test1;"],
-            ["<?php\n\nnamespace Test2;"],
-            [
-                "<?php\nnamespace Test3;",
-                "<?php\n namespace Test3;",
-            ],
-            // without newline
-            ['<?php namespace Test4;'],
-            [
-                '<?php namespace Test5;',
-                '<?php  namespace Test5;',
-            ],
-            // multiple namespaces with newline
-            [
-                '<?php
+        // with newline
+        yield ["<?php\nnamespace Test1;"];
+
+        yield ["<?php\n\nnamespace Test2;"];
+
+        yield [
+            "<?php\nnamespace Test3;",
+            "<?php\n namespace Test3;",
+        ];
+
+        // without newline
+        yield ['<?php namespace Test4;'];
+
+        yield [
+            '<?php namespace Test5;',
+            '<?php  namespace Test5;',
+        ];
+
+        // multiple namespaces with newline
+        yield [
+            '<?php
 namespace Test6a;
 namespace Test6b;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 namespace Test7a;
 /* abc */
 namespace Test7b;',
-                '<?php
+            '<?php
 namespace Test7a;
 /* abc */namespace Test7b;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 namespace Test8a;
 namespace Test8b;',
-                '<?php
+            '<?php
  namespace Test8a;
     namespace Test8b;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 namespace Test9a;
 class Test {}
 namespace Test9b;',
-                '<?php
+            '<?php
  namespace Test9a;
 class Test {}
    namespace Test9b;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 namespace Test10a;
 use Exception;
 namespace Test10b;',
-                '<?php
+            '<?php
  namespace Test10a;
 use Exception;
    namespace Test10b;',
-            ],
-            // multiple namespaces without newline
-            ['<?php namespace Test11a; namespace Test11b;'],
-            [
-                '<?php namespace Test12a; namespace Test12b;',
-                '<?php    namespace Test12a;  namespace Test12b;', ],
-            [
-                '<?php namespace Test13a; namespace Test13b;',
-                '<?php namespace Test13a;  namespace Test13b;', ],
-            // namespaces without spaces in between
-            [
-                '<?php
+        ];
+
+        // multiple namespaces without newline
+        yield ['<?php namespace Test11a; namespace Test11b;'];
+
+        yield [
+            '<?php namespace Test12a; namespace Test12b;',
+            '<?php    namespace Test12a;  namespace Test12b;', ];
+
+        yield [
+            '<?php namespace Test13a; namespace Test13b;',
+            '<?php namespace Test13a;  namespace Test13b;', ];
+
+        // namespaces without spaces in between
+        yield [
+            '<?php
 namespace Test14a{}
 namespace Test14b{}',
-                '<?php
+            '<?php
      namespace Test14a{}namespace Test14b{}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 namespace Test15a;
 namespace Test15b;',
-                '<?php
+            '<?php
 namespace Test15a;namespace Test15b;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 '.implode("\n", $manySpaces),
-                '<?php
+            '<?php
 '.implode('', $manySpaces),
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 #
 namespace TestComment;',
-                '<?php
+            '<?php
 #
   namespace TestComment;',
-            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                "<?php\r\nnamespace TestW1a{}\r\nnamespace TestW1b{}",
-                "<?php\r\n     namespace TestW1a{}\r\nnamespace TestW1b{}",
-            ],
-            [
-                "<?php\r\nnamespace Test14a{}\r\nnamespace Test14b{}",
-                "<?php\r\n     namespace Test14a{}namespace Test14b{}",
-            ],
+        yield [
+            "<?php\r\nnamespace TestW1a{}\r\nnamespace TestW1b{}",
+            "<?php\r\n     namespace TestW1a{}\r\nnamespace TestW1b{}",
+        ];
+
+        yield [
+            "<?php\r\nnamespace Test14a{}\r\nnamespace Test14b{}",
+            "<?php\r\n     namespace Test14a{}namespace Test14b{}",
         ];
     }
 }

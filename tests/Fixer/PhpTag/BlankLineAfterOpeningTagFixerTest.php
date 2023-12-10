@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,54 +28,54 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 
     $a = 0;
     echo 1;',
-                '<?php
+            '<?php
     $a = 0;
     echo 1;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
     $b = 2;
     echo 3;',
-                '<?php     $b = 2;
+            '<?php     $b = 2;
     echo 3;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     '.'
     $c = 4;
     echo 5;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 $a = function(){
                     echo 1;
                 };',
-                '<?php $a = function(){
+            '<?php $a = function(){
                     echo 1;
                 };',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
  class SomeClass
  {
@@ -81,81 +83,83 @@ $a = function(){
      const FOO = "bar";
  }
 ',
-            ],
-            [
-                '<?php $foo = true; ?>',
-            ],
-            [
-                '<?php $foo = true; ?>
+        ];
+
+        yield [
+            '<?php $foo = true; ?>',
+        ];
+
+        yield [
+            '<?php $foo = true; ?>
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 $foo = true;
 ?>',
-                '<?php
+            '<?php
 $foo = true;
 ?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 $foo = true;
 $bar = false;
 ',
-                '<?php $foo = true;
+            '<?php $foo = true;
 $bar = false;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 $foo = true;
 ?>
 Html here
 <?php $bar = false;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $foo = true;
 ?>
 Html here
 <?php $bar = false;
 ',
-            ],
-            [
-                '<?= $bar;
+        ];
+
+        yield [
+            '<?= $bar;
 $foo = $bar;
 ?>',
-            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                "<?php\r\n\r\n\$foo = true;\r\n",
-                "<?php \$foo = true;\r\n",
-            ],
-            [
-                "<?php\r\n\r\n\$foo = true;\r\n",
-                "<?php\r\n\$foo = true;\r\n",
-            ],
+        yield [
+            "<?php\r\n\r\n\$foo = true;\r\n",
+            "<?php \$foo = true;\r\n",
+        ];
+
+        yield [
+            "<?php\r\n\r\n\$foo = true;\r\n",
+            "<?php\r\n\$foo = true;\r\n",
         ];
     }
 }

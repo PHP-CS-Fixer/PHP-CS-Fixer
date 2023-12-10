@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: function_declaration,method_argument_space.
+--RULESET--
+{"function_declaration": {"trailing_comma_single_line": true}, "method_argument_space": true}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+function foo($bar, ) { echo $bar.$baz; };
+$a = function () use ($b, $c, ): void { echo $b.$c; };
+
+--INPUT--
+<?php
+function foo($bar,) { echo $bar.$baz; };
+$a = function () use ($b, $c,): void { echo $b.$c; };

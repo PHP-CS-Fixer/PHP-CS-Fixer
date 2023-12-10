@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,10 @@ namespace PhpCsFixer\Fixer\Operator;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\AlternativeSyntaxAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -23,10 +29,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class TernaryOperatorSpacesFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Standardize spaces around ternary operator.',
@@ -36,31 +39,54 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after ArraySyntaxFixer, ListSyntaxFixer, TernaryToElvisOperatorFixer.
      */
-    public function isCandidate(Tokens $tokens)
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound(['?', ':']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $ternaryLevel = 0;
+        $alternativeSyntaxAnalyzer = new AlternativeSyntaxAnalyzer();
+        $gotoLabelAnalyzer = new GotoLabelAnalyzer();
+        $ternaryOperatorIndices = [];
 
         foreach ($tokens as $index => $token) {
+            if (!$token->equalsAny(['?', ':'])) {
+                continue;
+            }
+
+            if (SwitchAnalyzer::belongsToSwitch($tokens, $index)) {
+                continue;
+            }
+
+            if ($alternativeSyntaxAnalyzer->belongsToAlternativeSyntax($tokens, $index)) {
+                continue;
+            }
+
+            if ($gotoLabelAnalyzer->belongsToGoToLabel($tokens, $index)) {
+                continue;
+            }
+
+            $ternaryOperatorIndices[] = $index;
+        }
+
+        foreach (array_reverse($ternaryOperatorIndices) as $index) {
+            $token = $tokens[$index];
+
             if ($token->equals('?')) {
-                ++$ternaryLevel;
-
                 $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($index);
-                $nextNonWhitespaceToken = $tokens[$nextNonWhitespaceIndex];
 
-                if ($nextNonWhitespaceToken->equals(':')) {
+                if ($tokens[$nextNonWhitespaceIndex]->equals(':')) {
                     // for `$a ?: $b` remove spaces between `?` and `:`
-                    if ($tokens[$index + 1]->isWhitespace()) {
-                        $tokens->clearAt($index + 1);
-                    }
+                    $tokens->ensureWhitespaceAtIndex($index + 1, 0, '');
                 } else {
                     // for `$a ? $b : $c` ensure space after `?`
                     $this->ensureWhitespaceExistence($tokens, $index + 1, true);
@@ -72,7 +98,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                 continue;
             }
 
-            if ($ternaryLevel && $token->equals(':')) {
+            if ($token->equals(':')) {
                 // for `$a ? $b : $c` ensure space after `:`
                 $this->ensureWhitespaceExistence($tokens, $index + 1, true);
 
@@ -82,22 +108,15 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                     // for `$a ? $b : $c` ensure space before `:`
                     $this->ensureWhitespaceExistence($tokens, $index - 1, false);
                 }
-
-                --$ternaryLevel;
             }
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     * @param int    $index
-     * @param bool   $after
-     */
-    private function ensureWhitespaceExistence(Tokens $tokens, $index, $after)
+    private function ensureWhitespaceExistence(Tokens $tokens, int $index, bool $after): void
     {
         if ($tokens[$index]->isWhitespace()) {
             if (
-                false === strpos($tokens[$index]->getContent(), "\n")
+                !str_contains($tokens[$index]->getContent(), "\n")
                 && !$tokens[$index - 1]->isComment()
             ) {
                 $tokens[$index] = new Token([T_WHITESPACE, ' ']);

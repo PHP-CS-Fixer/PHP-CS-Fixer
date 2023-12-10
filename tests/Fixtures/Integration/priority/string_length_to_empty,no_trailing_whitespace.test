@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: string_length_to_empty,no_trailing_whitespace.
+--RULESET--
+{"string_length_to_empty": true, "no_trailing_whitespace": true}
+--EXPECT--
+<?php $a = '' === $b
+;
+
+--INPUT--
+<?php $a = 0 === strlen($b    )
+;

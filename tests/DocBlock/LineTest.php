@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,7 +19,7 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -116,110 +118,88 @@ final class LineTest extends TestCase
     ];
 
     /**
-     * @param int    $pos
-     * @param string $content
-     *
      * @dataProvider provideLinesCases
      */
-    public function testPosAndContent($pos, $content)
+    public function testPosAndContent(int $pos, string $content): void
     {
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
 
-        static::assertSame($content, $line->getContent());
+        self::assertSame($content, $line->getContent());
+        self::assertSame($content, (string) $line);
     }
 
     /**
-     * @param int $pos
-     *
      * @dataProvider provideLinesCases
      */
-    public function testStartOrEndPos($pos)
+    public function testStartOrEndPos(int $pos): void
     {
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
 
-        static::assertSame(0 === $pos, $line->isTheStart());
-        static::assertSame(14 === $pos, $line->isTheEnd());
+        self::assertSame(0 === $pos, $line->isTheStart());
+        self::assertSame(14 === $pos, $line->isTheEnd());
     }
 
-    public function provideLinesCases()
+    public static function provideLinesCases(): iterable
     {
-        $cases = [];
-
         foreach (self::$content as $index => $content) {
-            $cases[] = [$index, $content];
+            yield [$index, $content];
         }
-
-        return $cases;
     }
 
     /**
-     * @param int  $pos
-     * @param bool $useful
-     *
-     * @dataProvider provideLinesWithUsefulCases
+     * @dataProvider provideUsefulCases
      */
-    public function testUseful($pos, $useful)
+    public function testUseful(int $pos, bool $useful): void
     {
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
 
-        static::assertSame($useful, $line->containsUsefulContent());
+        self::assertSame($useful, $line->containsUsefulContent());
     }
 
-    public function provideLinesWithUsefulCases()
+    public static function provideUsefulCases(): iterable
     {
-        $cases = [];
-
         foreach (self::$useful as $index => $useful) {
-            $cases[] = [$index, $useful];
+            yield [$index, $useful];
         }
-
-        return $cases;
     }
 
     /**
-     * @param int  $pos
-     * @param bool $tag
-     *
-     * @dataProvider provideLinesWithTagCases
+     * @dataProvider provideTagCases
      */
-    public function testTag($pos, $tag)
+    public function testTag(int $pos, bool $tag): void
     {
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
 
-        static::assertSame($tag, $line->containsATag());
+        self::assertSame($tag, $line->containsATag());
     }
 
-    public function provideLinesWithTagCases()
+    public static function provideTagCases(): iterable
     {
-        $cases = [];
-
         foreach (self::$tag as $index => $tag) {
-            $cases[] = [$index, $tag];
+            yield [$index, $tag];
         }
-
-        return $cases;
     }
 
-    public function testSetContent()
+    public function testSetContent(): void
     {
         $line = new Line("     * @param \$foo Hi!\n");
 
-        static::assertSame("     * @param \$foo Hi!\n", $line->getContent());
+        self::assertSame("     * @param \$foo Hi!\n", $line->getContent());
 
         $line->addBlank();
-        static::assertSame("     * @param \$foo Hi!\n     *\n", $line->getContent());
+        self::assertSame("     * @param \$foo Hi!\n     *\n", $line->getContent());
 
         $line->setContent("\t * test\r\n");
-        static::assertSame("\t * test\r\n", $line->getContent());
+        self::assertSame("\t * test\r\n", $line->getContent());
 
         $line->addBlank();
-        static::assertSame("\t * test\r\n\t *\r\n", $line->getContent());
+        self::assertSame("\t * test\r\n\t *\r\n", $line->getContent());
 
         $line->remove();
-        static::assertSame('', $line->getContent());
+        self::assertSame('', $line->getContent());
     }
 }

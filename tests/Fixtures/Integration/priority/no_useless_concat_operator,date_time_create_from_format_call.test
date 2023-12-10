@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_useless_concat_operator,date_time_create_from_format_call.
+--RULESET--
+{"no_useless_concat_operator": true, "date_time_create_from_format_call": true}
+--EXPECT--
+<?php
+
+$f = \DateTime::createFromFormat('!Y-m-d', '2022-02-11');
+
+--INPUT--
+<?php
+
+$f = \DateTime::createFromFormat('Y-m'.'-d', '2022-02-11');

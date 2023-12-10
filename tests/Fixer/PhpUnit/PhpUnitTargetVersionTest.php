@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,36 +27,36 @@ use PhpCsFixer\Tests\TestCase;
 final class PhpUnitTargetVersionTest extends TestCase
 {
     /**
-     * @param bool        $expected
-     * @param string      $candidate
-     * @param string      $target
-     * @param null|string $exception
-     *
-     * @dataProvider provideTestFulfillsCases
+     * @dataProvider provideFulfillsCases
      */
-    public function testFulfills($expected, $candidate, $target, $exception = null)
+    public function testFulfills(bool $expected, string $candidate, string $target, ?string $exception = null): void
     {
         if (null !== $exception) {
             $this->expectException($exception);
         }
 
-        static::assertSame(
+        self::assertSame(
             $expected,
             PhpUnitTargetVersion::fulfills($candidate, $target)
         );
     }
 
-    public function provideTestFulfillsCases()
+    public static function provideFulfillsCases(): iterable
     {
-        return [
-            [true, PhpUnitTargetVersion::VERSION_NEWEST, PhpUnitTargetVersion::VERSION_5_6],
-            [true, PhpUnitTargetVersion::VERSION_NEWEST, PhpUnitTargetVersion::VERSION_5_2],
-            [true, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_5_6],
-            [true, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_5_2],
-            [true, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_2],
-            [false, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6],
-            [false, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6],
-            [false, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_NEWEST, \LogicException::class],
-        ];
+        yield [true, PhpUnitTargetVersion::VERSION_NEWEST, PhpUnitTargetVersion::VERSION_5_6];
+
+        yield [true, PhpUnitTargetVersion::VERSION_NEWEST, PhpUnitTargetVersion::VERSION_5_2];
+
+        yield [true, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_5_6];
+
+        yield [true, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_5_2];
+
+        yield [true, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_2];
+
+        yield [false, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6];
+
+        yield [false, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6];
+
+        yield [false, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_NEWEST, \LogicException::class];
     }
 }

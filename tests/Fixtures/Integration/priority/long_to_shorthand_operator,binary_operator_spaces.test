@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: long_to_shorthand_operator,binary_operator_spaces.
+--RULESET--
+{"long_to_shorthand_operator": true, "binary_operator_spaces": {"operators":{"+":"align_single_space"}}}
+--EXPECT--
+<?php
+
+$a += 2;
+$ab = 3 + 1;
+
+--INPUT--
+<?php
+
+$a = $a   +    2;
+$ab              = 3 + 1;

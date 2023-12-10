@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: spaces_inside_parentheses,get_class_to_class_keyword.
+--RULESET--
+{"spaces_inside_parentheses": true, "get_class_to_class_keyword": true}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+
+$date = new \DateTimeImmutable();
+echo $date::class;
+
+--INPUT--
+<?php
+
+$date = new \DateTimeImmutable();
+echo get_class( $date );

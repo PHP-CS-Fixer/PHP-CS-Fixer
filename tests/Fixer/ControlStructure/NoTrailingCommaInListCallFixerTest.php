@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,21 +26,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoTrailingCommaInListCallFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     list($a, $b) = foo();
     list($a, , $c, $d) = foo();
     list($a, , $c) = foo();
@@ -46,7 +44,7 @@ final class NoTrailingCommaInListCallFixerTest extends AbstractFixerTestCase
     list($a , $b) = foo();
     list($a, /* $b */, $c) = foo();
 ',
-                '<?php
+            '<?php
     list($a, $b) = foo();
     list($a, , $c, $d, ) = foo();
     list($a, , $c, , ) = foo();
@@ -54,15 +52,15 @@ final class NoTrailingCommaInListCallFixerTest extends AbstractFixerTestCase
     list($a , $b , ) = foo();
     list($a, /* $b */, $c, ) = foo();
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 list(
 $a#
 ,#
 #
 ) = $a;',
-            ],
         ];
     }
 }

@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: new_with_parentheses,class_definition.
+--RULESET--
+{"new_with_parentheses": true, "class_definition": {"space_before_parenthesis": true}}
+--EXPECT--
+<?php
+return new class () implements Foo {};
+
+--INPUT--
+<?php
+return new class implements Foo {};

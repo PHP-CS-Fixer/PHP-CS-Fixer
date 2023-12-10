@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: no_useless_concat_operator,php_unit_dedicate_assert_internal_type.
+--RULESET--
+{"no_useless_concat_operator": true, "php_unit_dedicate_assert_internal_type": true}
+--EXPECT--
+<?php
+
+final class MyTest extends \PhpUnit\FrameWork\TestCase
+{
+    public function testMe()
+    {
+        $this->assertIsArray($var);
+    }
+}
+
+--INPUT--
+<?php
+
+final class MyTest extends \PhpUnit\FrameWork\TestCase
+{
+    public function testMe()
+    {
+        $this->assertInternalType("ar"."ray", $var);
+    }
+}

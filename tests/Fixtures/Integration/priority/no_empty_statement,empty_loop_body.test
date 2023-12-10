@@ -1,0 +1,9 @@
+--TEST--
+Integration of fixers: no_empty_statement,empty_loop_body.
+--RULESET--
+{"no_empty_statement": true, "empty_loop_body": {"style": "semicolon"}}
+--EXPECT--
+<?php while(foo2()) ;
+
+--INPUT--
+<?php while(foo2()) {;}

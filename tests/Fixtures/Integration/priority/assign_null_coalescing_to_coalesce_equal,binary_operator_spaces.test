@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: assign_null_coalescing_to_coalesce_equal,binary_operator_spaces.
+--RULESET--
+{"assign_null_coalescing_to_coalesce_equal": true, "binary_operator_spaces": {"operators": {"??=": "align"}}}
+--REQUIREMENTS--
+{"php": 70400}
+--EXPECT--
+<?php
+
+$b     ??= 1;
+$a     ??= 2;
+
+--INPUT--
+<?php
+
+$b     ??= 1;
+$a = $a ?? 2;

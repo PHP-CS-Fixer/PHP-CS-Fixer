@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,24 +14,23 @@
 
 namespace PhpCsFixer\Fixer\DoctrineAnnotation;
 
-use Doctrine\Common\Annotations\DocLexer;
 use PhpCsFixer\AbstractDoctrineAnnotationFixer;
+use PhpCsFixer\Doctrine\Annotation\DocLexer;
 use PhpCsFixer\Doctrine\Annotation\Token;
 use PhpCsFixer\Doctrine\Annotation\Tokens;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * Adds braces to Doctrine annotations when missing.
  */
 final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Doctrine annotations without arguments must use the configured syntax.',
@@ -45,38 +46,27 @@ final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixe
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        return new FixerConfigurationResolver(array_merge(
-            parent::createConfigurationDefinition()->getOptions(),
-            [
-                (new FixerOptionBuilder('syntax', 'Whether to add or remove braces.'))
-                    ->setAllowedValues(['with_braces', 'without_braces'])
-                    ->setDefault('without_braces')
-                    ->getOption(),
-            ]
-        ));
+        return new FixerConfigurationResolver([
+            ...parent::createConfigurationDefinition()->getOptions(),
+            (new FixerOptionBuilder('syntax', 'Whether to add or remove braces.'))
+                ->setAllowedValues(['with_braces', 'without_braces'])
+                ->setDefault('without_braces')
+                ->getOption(),
+        ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function fixAnnotations(Tokens $tokens)
+    protected function fixAnnotations(Tokens $doctrineAnnotationTokens): void
     {
         if ('without_braces' === $this->configuration['syntax']) {
-            $this->removesBracesFromAnnotations($tokens);
+            $this->removesBracesFromAnnotations($doctrineAnnotationTokens);
         } else {
-            $this->addBracesToAnnotations($tokens);
+            $this->addBracesToAnnotations($doctrineAnnotationTokens);
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     */
-    private function addBracesToAnnotations(Tokens $tokens)
+    private function addBracesToAnnotations(Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$tokens[$index]->isType(DocLexer::T_AT)) {
@@ -93,10 +83,7 @@ final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixe
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     */
-    private function removesBracesFromAnnotations(Tokens $tokens)
+    private function removesBracesFromAnnotations(Tokens $tokens): void
     {
         for ($index = 0, $max = \count($tokens); $index < $max; ++$index) {
             if (!$tokens[$index]->isType(DocLexer::T_AT)) {

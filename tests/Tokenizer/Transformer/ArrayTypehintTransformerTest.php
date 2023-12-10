@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,11 +27,11 @@ use PhpCsFixer\Tokenizer\CT;
 final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string $source
+     * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens = [])
+    public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -41,19 +43,27 @@ final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public static function provideProcessCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 $a = array(1, 2, 3);
 function foo (array /** @type array */ $bar)
 {
 }',
-                [
-                    5 => T_ARRAY,
-                    22 => CT::T_ARRAY_TYPEHINT,
-                ],
+            [
+                5 => T_ARRAY,
+                22 => CT::T_ARRAY_TYPEHINT,
+            ],
+        ];
+
+        yield [
+            '<?php
+$a = array(1, 2, 3);
+$fn = fn(array /** @type array */ $bar) => null;',
+            [
+                5 => T_ARRAY,
+                23 => CT::T_ARRAY_TYPEHINT,
             ],
         ];
     }

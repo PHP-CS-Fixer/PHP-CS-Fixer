@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: escape_implicit_backslashes, heredoc_to_nowdoc.
+Integration of fixers: escape_implicit_backslashes,heredoc_to_nowdoc.
 --RULESET--
 {"escape_implicit_backslashes": {"heredoc_syntax": true}, "heredoc_to_nowdoc": true}
 --EXPECT--

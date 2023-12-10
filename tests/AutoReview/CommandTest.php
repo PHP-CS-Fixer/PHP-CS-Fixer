@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,6 +24,7 @@ use Symfony\Component\Console\Command\Command;
  * @internal
  *
  * @coversNothing
+ *
  * @group auto-review
  * @group covers-nothing
  */
@@ -29,30 +32,23 @@ final class CommandTest extends TestCase
 {
     /**
      * @dataProvider provideCommandHasNameConstCases
-     *
-     * @param Command $command
      */
-    public function testCommandHasNameConst(Command $command)
+    public function testCommandHasNameConst(Command $command): void
     {
-        static::assertNotNull($command->getDefaultName());
+        self::assertNotNull($command::getDefaultName());
     }
 
-    public function provideCommandHasNameConstCases()
+    public static function provideCommandHasNameConstCases(): iterable
     {
         $application = new Application();
         $commands = $application->all();
 
-        $names = array_filter(array_keys($commands), static function ($name) use ($commands) {
-            return
-                // is not an alias
-                !\in_array($name, $commands[$name]->getAliases(), true)
-                // and is our command
-                && 0 === strpos(\get_class($commands[$name]), 'PhpCsFixer\\')
-            ;
-        });
+        $names = array_filter(
+            array_keys($commands),
+            // is not an alias and is our command
+            static fn (string $name): bool => !\in_array($name, $commands[$name]->getAliases(), true) && str_starts_with(\get_class($commands[$name]), 'PhpCsFixer\\')
+        );
 
-        return array_map(static function ($name) use ($commands) {
-            return [$commands[$name]];
-        }, $names);
+        return array_map(static fn (string $name): array => [$commands[$name]], $names);
     }
 }

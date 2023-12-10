@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,7 +14,7 @@
 
 namespace PhpCsFixer\Tests\Test;
 
-use PhpCsFixer\RuleSet;
+use PhpCsFixer\RuleSet\RuleSet;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -22,12 +24,7 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryInterface
 {
-    /**
-     * @param SplFileInfo $file
-     *
-     * @return IntegrationCase
-     */
-    public function create(SplFileInfo $file)
+    public function create(SplFileInfo $file): IntegrationCase
     {
         try {
             if (!preg_match(
@@ -69,7 +66,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
             );
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException(
-                sprintf('%s Test file: "%s".', $e->getMessage(), $file->getRelativePathname()),
+                sprintf('%s Test file: "%s".', $e->getMessage(), $file->getPathname()),
                 $e->getCode(),
                 $e
             );
@@ -79,12 +76,9 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--CONFIG--' block of a '.test' file.
      *
-     * @param SplFileInfo $file
-     * @param string      $config
-     *
-     * @return array
+     * @return array{indent: string, lineEnding: string}
      */
-    protected function determineConfig(SplFileInfo $file, $config)
+    protected function determineConfig(SplFileInfo $file, ?string $config): array
     {
         $parsed = $this->parseJson($config, [
             'indent' => '    ',
@@ -111,21 +105,34 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--REQUIREMENTS--' block of a '.test' file and determines requirements.
      *
-     * @param SplFileInfo $file
-     * @param string      $config
-     *
-     * @return array
+     * @return array{php: int, "php<": int, os: list<string>}
      */
-    protected function determineRequirements(SplFileInfo $file, $config)
+    protected function determineRequirements(SplFileInfo $file, ?string $config): array
     {
         $parsed = $this->parseJson($config, [
             'php' => \PHP_VERSION_ID,
+            'php<' => PHP_INT_MAX,
+            'os' => ['Linux', 'Darwin', 'Windows'],
         ]);
 
         if (!\is_int($parsed['php'])) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected int value like 50509 for "php", got "%s".',
-                \is_object($parsed['php']) ? \get_class($parsed['php']) : \gettype($parsed['php']).'#'.$parsed['php']
+                get_debug_type($parsed['php']).'#'.$parsed['php'],
+            ));
+        }
+
+        if (!\is_int($parsed['php<'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected int value like 80301 for "php<", got "%s".',
+                get_debug_type($parsed['php<']).'#'.$parsed['php<'],
+            ));
+        }
+
+        if (!\is_array($parsed['os'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected array of OS names for "os", got "%s".',
+                get_debug_type($parsed['os']).' ('.$parsed['os'].')',
             ));
         }
 
@@ -134,26 +141,16 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
 
     /**
      * Parses the '--RULESET--' block of a '.test' file and determines what fixers should be used.
-     *
-     * @param SplFileInfo $file
-     * @param string      $config
-     *
-     * @return RuleSet
      */
-    protected function determineRuleset(SplFileInfo $file, $config)
+    protected function determineRuleset(SplFileInfo $file, string $config): RuleSet
     {
         return new RuleSet($this->parseJson($config));
     }
 
     /**
      * Parses the '--TEST--' block of a '.test' file and determines title.
-     *
-     * @param SplFileInfo $file
-     * @param string      $config
-     *
-     * @return string
      */
-    protected function determineTitle(SplFileInfo $file, $config)
+    protected function determineTitle(SplFileInfo $file, string $config): string
     {
         return $config;
     }
@@ -161,15 +158,13 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--SETTINGS--' block of a '.test' file and determines settings.
      *
-     * @param SplFileInfo $file
-     * @param string      $config
-     *
-     * @return array
+     * @return array{checkPriority: bool, deprecations: list<string>}
      */
-    protected function determineSettings(SplFileInfo $file, $config)
+    protected function determineSettings(SplFileInfo $file, ?string $config): array
     {
         $parsed = $this->parseJson($config, [
             'checkPriority' => true,
+            'deprecations' => [],
         ]);
 
         if (!\is_bool($parsed['checkPriority'])) {
@@ -179,16 +174,27 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
             ));
         }
 
+        if (!\is_array($parsed['deprecations'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected array value for "deprecations", got "%s".',
+                \is_object($parsed['deprecations']) ? \get_class($parsed['deprecations']) : \gettype($parsed['deprecations']).'#'.$parsed['deprecations']
+            ));
+        }
+
+        foreach ($parsed['deprecations'] as $index => $deprecation) {
+            if (!\is_string($deprecation)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Expected only string value for "deprecations", got "%s" @ index %d.',
+                    \is_object($deprecation) ? \get_class($deprecation) : \gettype($deprecation).'#'.$deprecation,
+                    $index
+                ));
+            }
+        }
+
         return $parsed;
     }
 
-    /**
-     * @param SplFileInfo $file
-     * @param null|string $code
-     *
-     * @return string
-     */
-    protected function determineExpectedCode(SplFileInfo $file, $code)
+    protected function determineExpectedCode(SplFileInfo $file, ?string $code): string
     {
         $code = $this->determineCode($file, $code, '-out.php');
 
@@ -199,25 +205,12 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         return $code;
     }
 
-    /**
-     * @param SplFileInfo $file
-     * @param null|string $code
-     *
-     * @return null|string
-     */
-    protected function determineInputCode(SplFileInfo $file, $code)
+    protected function determineInputCode(SplFileInfo $file, ?string $code): ?string
     {
         return $this->determineCode($file, $code, '-in.php');
     }
 
-    /**
-     * @param SplFileInfo $file
-     * @param null|string $code
-     * @param string      $suffix
-     *
-     * @return null|string
-     */
-    private function determineCode(SplFileInfo $file, $code, $suffix)
+    private function determineCode(SplFileInfo $file, ?string $code, string $suffix): ?string
     {
         if (null !== $code) {
             return $code;
@@ -227,35 +220,30 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         if ($candidateFile->isFile()) {
             return $candidateFile->getContents();
         }
+
+        return null;
     }
 
     /**
-     * @param null|string $encoded
-     * @param null|array  $template
+     * @param null|array<mixed> $template
      *
-     * @return array
+     * @return array<mixed>
      */
-    private function parseJson($encoded, array $template = null)
+    private function parseJson(?string $encoded, array $template = null): array
     {
         // content is optional if template is provided
-        if (!$encoded && null !== $template) {
+        if ((null === $encoded || '' === $encoded) && null !== $template) {
             $decoded = [];
         } else {
-            $decoded = json_decode($encoded, true);
-
-            if (JSON_ERROR_NONE !== json_last_error()) {
-                throw new \InvalidArgumentException(sprintf('Malformed JSON: "%s", error: "%s".', $encoded, json_last_error_msg()));
-            }
+            $decoded = json_decode($encoded, true, 512, JSON_THROW_ON_ERROR);
         }
 
         if (null !== $template) {
-            $decoded = array_merge(
-                $template,
-                array_intersect_key(
-                    $decoded,
-                    array_flip(array_keys($template))
-                )
-            );
+            foreach ($template as $index => $value) {
+                if (!\array_key_exists($index, $decoded)) {
+                    $decoded[$index] = $value;
+                }
+            }
         }
 
         return $decoded;

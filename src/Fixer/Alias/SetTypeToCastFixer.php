@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,19 +17,14 @@ namespace PhpCsFixer\Fixer\Alias;
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-/**
- * @author SpacePossum
- */
 final class SetTypeToCastFixer extends AbstractFunctionReferenceFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Cast shall be used, not `settype`.',
@@ -47,16 +44,20 @@ settype($bar, "null");
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after NoBinaryStringFixer, NoUselessConcatOperatorFixer.
      */
-    public function isCandidate(Tokens $tokens)
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_CONSTANT_ENCAPSED_STRING, T_STRING, T_VARIABLE]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $map = [
             'array' => [T_ARRAY_CAST, '(array)'],
@@ -82,7 +83,8 @@ settype($bar, "null");
             }
 
             $prev = $tokens->getPrevMeaningfulToken($functionNameIndex);
-            if (!$tokens[$prev]->isGivenKind(T_OPEN_TAG) && !$tokens[$prev]->equalsAny([';', '{'])) {
+
+            if (!$tokens[$prev]->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
                 continue; // return value of the function is used
             }
 
@@ -145,14 +147,17 @@ settype($bar, "null");
             );
 
             if ('null' === $type) {
-                $this->findSettypeNullCall($tokens, $functionNameIndex, $argumentToken);
+                $this->fixSettypeNullCall($tokens, $functionNameIndex, $argumentToken);
             } else {
                 $this->fixSettypeCall($tokens, $functionNameIndex, $argumentToken, new Token($map[$type]));
             }
         }
     }
 
-    private function findSettypeCalls(Tokens $tokens)
+    /**
+     * @return list<list<int>>
+     */
+    private function findSettypeCalls(Tokens $tokens): array
     {
         $candidates = [];
 
@@ -170,24 +175,15 @@ settype($bar, "null");
         return $candidates;
     }
 
-    /**
-     * @param Tokens $tokens
-     * @param int    $functionNameIndex
-     * @param int    $openParenthesisIndex
-     * @param int    $firstArgumentStart
-     * @param int    $commaIndex
-     * @param int    $secondArgumentStart
-     * @param int    $closeParenthesisIndex
-     */
     private function removeSettypeCall(
         Tokens $tokens,
-        $functionNameIndex,
-        $openParenthesisIndex,
-        $firstArgumentStart,
-        $commaIndex,
-        $secondArgumentStart,
-        $closeParenthesisIndex
-    ) {
+        int $functionNameIndex,
+        int $openParenthesisIndex,
+        int $firstArgumentStart,
+        int $commaIndex,
+        int $secondArgumentStart,
+        int $closeParenthesisIndex
+    ): void {
         $tokens->clearTokenAndMergeSurroundingWhitespace($closeParenthesisIndex);
         $prevIndex = $tokens->getPrevMeaningfulToken($closeParenthesisIndex);
         if ($tokens[$prevIndex]->equals(',')) {
@@ -201,18 +197,12 @@ settype($bar, "null");
         $tokens->clearEmptyTokens();
     }
 
-    /**
-     * @param Tokens $tokens
-     * @param Token  $castToken
-     * @param int    $functionNameIndex
-     * @param Token  $argumentToken
-     */
     private function fixSettypeCall(
         Tokens $tokens,
-        $functionNameIndex,
+        int $functionNameIndex,
         Token $argumentToken,
         Token $castToken
-    ) {
+    ): void {
         $tokens->insertAt(
             $functionNameIndex,
             [
@@ -229,16 +219,11 @@ settype($bar, "null");
         $tokens->removeTrailingWhitespace($functionNameIndex + 6); // 6 = number of inserted tokens -1 for offset correction
     }
 
-    /**
-     * @param Tokens $tokens
-     * @param int    $functionNameIndex
-     * @param Token  $argumentToken
-     */
-    private function findSettypeNullCall(
+    private function fixSettypeNullCall(
         Tokens $tokens,
-        $functionNameIndex,
+        int $functionNameIndex,
         Token $argumentToken
-    ) {
+    ): void {
         $tokens->insertAt(
             $functionNameIndex,
             [

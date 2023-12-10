@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,25 +27,25 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class InvalidConfigurationExceptionTest extends TestCase
 {
-    public function testIsInvalidArgumentException()
+    public function testIsInvalidArgumentException(): void
     {
         $exception = new InvalidConfigurationException('I cannot do that, Dave.');
 
-        static::assertInstanceOf(\InvalidArgumentException::class, $exception);
+        self::assertInstanceOf(\InvalidArgumentException::class, $exception);
     }
 
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $message = 'I cannot do that, Dave.';
 
         $exception = new InvalidConfigurationException($message);
 
-        static::assertSame($message, $exception->getMessage());
-        static::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG, $exception->getCode());
-        static::assertNull($exception->getPrevious());
+        self::assertSame($message, $exception->getMessage());
+        self::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG, $exception->getCode());
+        self::assertNull($exception->getPrevious());
     }
 
-    public function testConstructorSetsValues()
+    public function testConstructorSetsValues(): void
     {
         $message = 'I cannot do that, Dave.';
         $code = 9000;
@@ -55,8 +57,8 @@ final class InvalidConfigurationExceptionTest extends TestCase
             $previous
         );
 
-        static::assertSame($message, $exception->getMessage());
-        static::assertSame($code, $exception->getCode());
-        static::assertSame($previous, $exception->getPrevious());
+        self::assertSame($message, $exception->getMessage());
+        self::assertSame($code, $exception->getCode());
+        self::assertSame($previous, $exception->getPrevious());
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,17 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocVarAnnotationCorrectOrderFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
         yield [ // It's @param, we care only about @var
             '<?php /** @param $foo Foo */',
@@ -160,6 +159,18 @@ final class PhpdocVarAnnotationCorrectOrderFixerTest extends AbstractFixerTestCa
             '<?php
 /** @var $foo Foo|array<int, int>|null */
 ',
+        ];
+
+        yield [
+            '<?php
+                class Foo
+                {
+                    /**
+                     * @var $bar
+                     */
+                    private $bar;
+                }
+            ',
         ];
     }
 }

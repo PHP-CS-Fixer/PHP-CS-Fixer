@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: phpdoc_no_access,phpdoc_separation.
+--RULESET--
+{"phpdoc_no_access": true, "phpdoc_separation": true}
+--EXPECT--
+<?php
+/**
+ * @param $foo
+ * @param $bar
+ *
+ * @return bool
+ */
+
+--INPUT--
+<?php
+/**
+ * @access public
+ * @param $foo
+ * @param $bar
+ * @return bool
+ */

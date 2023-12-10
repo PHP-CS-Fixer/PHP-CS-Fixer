@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -24,29 +27,25 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class AlignMultilineCommentFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfiguration()
+    public function testInvalidConfiguration(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
 
         $this->fixer->configure(['a' => 1]);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideDefaultCases
      */
-    public function testDefaults($expected, $input = null)
+    public function testDefaults(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideDefaultCases()
+    public static function provideDefaultCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 $a = 1;
     /**
      * Doc comment
@@ -56,7 +55,7 @@ $a = 1;
      * first without an asterisk
      * second without an asterisk or space
      */',
-                '<?php
+            '<?php
 $a = 1;
     /**
      * Doc comment
@@ -66,93 +65,103 @@ $a = 1;
     first without an asterisk
 second without an asterisk or space
    */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * Document start
      */',
-                '<?php
+            '<?php
     /**
 * Document start
     */',
-            ],
-            [
-                "<?php\n \n /**\n  * Two new lines\n  */",
-                "<?php\n \n /**\n* Two new lines\n*/",
-            ],
-            [
-                "<?php
+        ];
+
+        yield [
+            "<?php\n \n /**\n  * Two new lines\n  */",
+            "<?php\n \n /**\n* Two new lines\n*/",
+        ];
+
+        yield [
+            "<?php
 \t/**
 \t * Tabs as indentation
 \t */",
-                "<?php
+            "<?php
 \t/**
 * Tabs as indentation
         */",
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $a = 1;
 /**
  * Doc command without prior indentation
  */',
-                '<?php
+            '<?php
 $a = 1;
 /**
 * Doc command without prior indentation
 */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 /**
  * Doc command without prior indentation
  * Document start
  */',
-                '<?php
+            '<?php
 /**
 * Doc command without prior indentation
 * Document start
 */',
-            ],
+        ];
 
-            // Untouched cases
-            [
-                '<?php
+        // Untouched cases
+        yield [
+            '<?php
     /*
      * Multiline comment
        *
 *
    */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /** inline doc comment */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
  $a=1;  /**
 *
  doc comment that doesn\'t start in a new line
 
 */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     # Hash single line comments are untouched
      #
    #
       #',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     // Slash single line comments are untouched
      //
    //
       //',
-            ],
-            'uni code test' => [
-                '<?php
+        ];
+
+        yield 'uni code test' => [
+            '<?php
 class A
 {
     /**
@@ -167,50 +176,47 @@ class A
     {
     }
 }',
-            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideDocLikeMultilineCommentsCases
      */
-    public function testDocLikeMultilineComments($expected, $input = null)
+    public function testDocLikeMultilineComments(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['comment_type' => 'phpdocs_like']);
         $this->doTest($expected, $input);
     }
 
-    public function provideDocLikeMultilineCommentsCases()
+    public static function provideDocLikeMultilineCommentsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     /*
      * Doc-like Multiline comment
      *
      *
      */',
-                '<?php
+            '<?php
     /*
      * Doc-like Multiline comment
        *
 *
    */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /*
      * Multiline comment with mixed content
        *
   Line without an asterisk
 *
    */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /*
      * Two empty lines
         *
@@ -218,51 +224,42 @@ class A
 
 *
    */',
-            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMixedContentMultilineCommentsCases
      */
-    public function testMixedContentMultilineComments($expected, $input = null)
+    public function testMixedContentMultilineComments(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['comment_type' => 'all_multiline']);
         $this->doTest($expected, $input);
     }
 
-    public function provideMixedContentMultilineCommentsCases()
+    public static function provideMixedContentMultilineCommentsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     /*
      * Multiline comment with mixed content
      *
   Line without an asterisk
      *
      */',
-                '<?php
+            '<?php
     /*
      * Multiline comment with mixed content
        *
   Line without an asterisk
 *
    */',
-            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideDefaultCases
      */
-    public function testWhitespaceAwareness($expected, $input = null)
+    public function testWhitespaceAwareness(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $expected = str_replace("\n", "\r\n", $expected);

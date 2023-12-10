@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,97 +26,101 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            ['<?php /** Opening DocBlock */'],
-            [
-                '<?php /* Opening comment */',
-                '<?php /*** Opening comment */',
-            ],
-            [
-                '<?php /*\ Opening false-DocBlock */',
-                '<?php /**\ Opening false-DocBlock */',
-            ],
-            [
-                '<?php /** Closing DocBlock */',
-                '<?php /** Closing DocBlock ***/',
-            ],
-            [
-                '<?php /* Closing comment */',
-                '<?php /* Closing comment ***/',
-            ],
-            [
-                '<?php /**/',
-                '<?php /***/',
-            ],
-            [
-                '<?php /**/',
-                '<?php /********/',
-            ],
-            [
-                <<<'EOT'
-<?php
+        yield ['<?php /** Opening DocBlock */'];
 
-/*
- * WUT
- */
-EOT
-                ,
-                <<<'EOT'
-<?php
+        yield [
+            '<?php /* Opening comment */',
+            '<?php /*** Opening comment */',
+        ];
 
-/********
- * WUT
- ********/
-EOT
-                ,
-            ],
-            [
-                <<<'EOT'
-<?php
+        yield [
+            '<?php /*\ Opening false-DocBlock */',
+            '<?php /**\ Opening false-DocBlock */',
+        ];
 
-/*\
- * False DocBlock
- */
-EOT
-                ,
-                <<<'EOT'
-<?php
+        yield [
+            '<?php /** Closing DocBlock */',
+            '<?php /** Closing DocBlock ***/',
+        ];
 
-/**\
- * False DocBlock
- */
-EOT
-                ,
-            ],
-            [
-                <<<'EOT'
-<?php
-# Hash
-#*** Hash asterisk
-// Slash
-//*** Slash asterisk
+        yield [
+            '<?php /* Closing comment */',
+            '<?php /* Closing comment ***/',
+        ];
 
-/*
-/**
-/***
-Weird multiline comment
-*/
+        yield [
+            '<?php /**/',
+            '<?php /***/',
+        ];
 
-EOT
-                ,
-            ],
+        yield [
+            '<?php /**/',
+            '<?php /********/',
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php
+
+                /*
+                 * WUT
+                 */
+                EOT
+            ,
+            <<<'EOT'
+                <?php
+
+                /********
+                 * WUT
+                 ********/
+                EOT
+            ,
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php
+
+                /*\
+                 * False DocBlock
+                 */
+                EOT
+            ,
+            <<<'EOT'
+                <?php
+
+                /**\
+                 * False DocBlock
+                 */
+                EOT
+            ,
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php
+                # Hash
+                #*** Hash asterisk
+                // Slash
+                //*** Slash asterisk
+
+                /*
+                /**
+                /***
+                Weird multiline comment
+                */
+
+                EOT
+            ,
         ];
     }
 }

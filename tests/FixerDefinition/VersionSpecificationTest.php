@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class VersionSpecificationTest extends TestCase
 {
-    public function testConstructorRequiresEitherMinimumOrMaximum()
+    public function testConstructorRequiresEitherMinimumOrMaximum(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -33,10 +35,8 @@ final class VersionSpecificationTest extends TestCase
 
     /**
      * @dataProvider provideInvalidVersionCases
-     *
-     * @param mixed $minimum
      */
-    public function testConstructorRejectsInvalidMinimum($minimum)
+    public function testConstructorRejectsInvalidMinimum(int $minimum): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -45,10 +45,8 @@ final class VersionSpecificationTest extends TestCase
 
     /**
      * @dataProvider provideInvalidVersionCases
-     *
-     * @param mixed $maximum
      */
-    public function testConstructorRejectsInvalidMaximum($maximum)
+    public function testConstructorRejectsInvalidMaximum(int $maximum): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -58,23 +56,14 @@ final class VersionSpecificationTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function provideInvalidVersionCases()
+    public static function provideInvalidVersionCases(): iterable
     {
-        return [
-            'negative' => [-1],
-            'zero' => [0],
-            'float' => [3.14],
-            'string' => ['foo'],
-            'integerish' => ['9000'],
-            'array' => [[]],
-            'object' => [new \stdClass()],
-        ];
+        yield 'negative' => [-1];
+
+        yield 'zero' => [0];
     }
 
-    public function testConstructorRejectsMaximumLessThanMinimum()
+    public function testConstructorRejectsMaximumLessThanMinimum(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -86,59 +75,45 @@ final class VersionSpecificationTest extends TestCase
 
     /**
      * @dataProvider provideIsSatisfiedByReturnsTrueCases
-     *
-     * @param null|int $minimum
-     * @param null|int $maximum
-     * @param int      $actual
      */
-    public function testIsSatisfiedByReturnsTrue($minimum, $maximum, $actual)
+    public function testIsSatisfiedByReturnsTrue(?int $minimum, ?int $maximum, int $actual): void
     {
         $versionSpecification = new VersionSpecification(
             $minimum,
             $maximum
         );
 
-        static::assertTrue($versionSpecification->isSatisfiedBy($actual));
+        self::assertTrue($versionSpecification->isSatisfiedBy($actual));
     }
 
-    /**
-     * @return array
-     */
-    public function provideIsSatisfiedByReturnsTrueCases()
+    public static function provideIsSatisfiedByReturnsTrueCases(): iterable
     {
-        return [
-            'version-same-as-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID],
-            'version-same-as-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID],
-            'version-between-minimum-and-maximum' => [\PHP_VERSION_ID - 1, \PHP_VERSION_ID + 1, \PHP_VERSION_ID],
-            'version-same-as-minimum-and-maximum' => [\PHP_VERSION_ID, \PHP_VERSION_ID, \PHP_VERSION_ID],
-        ];
+        yield 'version-same-as-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID];
+
+        yield 'version-same-as-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID];
+
+        yield 'version-between-minimum-and-maximum' => [\PHP_VERSION_ID - 1, \PHP_VERSION_ID + 1, \PHP_VERSION_ID];
+
+        yield 'version-same-as-minimum-and-maximum' => [\PHP_VERSION_ID, \PHP_VERSION_ID, \PHP_VERSION_ID];
     }
 
     /**
      * @dataProvider provideIsSatisfiedByReturnsFalseCases
-     *
-     * @param null|int $minimum
-     * @param null|int $maximum
-     * @param int      $actual
      */
-    public function testIsSatisfiedByReturnsFalse($minimum, $maximum, $actual)
+    public function testIsSatisfiedByReturnsFalse(?int $minimum, ?int $maximum, int $actual): void
     {
         $versionSpecification = new VersionSpecification(
             $minimum,
             $maximum
         );
 
-        static::assertFalse($versionSpecification->isSatisfiedBy($actual));
+        self::assertFalse($versionSpecification->isSatisfiedBy($actual));
     }
 
-    /**
-     * @return array
-     */
-    public function provideIsSatisfiedByReturnsFalseCases()
+    public static function provideIsSatisfiedByReturnsFalseCases(): iterable
     {
-        return [
-            'version-greater-than-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID + 1],
-            'version-less-than-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID - 1],
-        ];
+        yield 'version-greater-than-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID + 1];
+
+        yield 'version-less-than-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID - 1];
     }
 }

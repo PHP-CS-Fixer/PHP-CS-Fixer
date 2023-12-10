@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: modernize_strpos,single_space_around_construct.
+--RULESET--
+{"modernize_strpos": true, "single_space_around_construct": true}
+--EXPECT--
+<?php
+function foo($a, $b): int
+{
+    return str_contains($a, $b) ? 1 : 2;
+}
+
+--INPUT--
+<?php
+function foo($a, $b): int
+{
+    return FALSE !== strpos($a, $b) ? 1 : 2;
+}

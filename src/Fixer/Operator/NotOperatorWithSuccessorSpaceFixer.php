@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,7 +17,7 @@ namespace PhpCsFixer\Fixer\Operator;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -23,10 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NotOperatorWithSuccessorSpaceFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Logical NOT operators (`!`) should have one trailing whitespace.',
@@ -43,35 +42,26 @@ if (!$bar) {
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after ModernizeStrposFixer, UnaryOperatorSpacesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
-        // should be run after the UnaryOperatorSpacesFixer
         return -10;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound('!');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
             if ($token->equals('!')) {
-                if (!$tokens[$index + 1]->isWhitespace()) {
-                    $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
-                } else {
-                    $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
-                }
+                $tokens->ensureWhitespaceAtIndex($index + 1, 0, ' ');
             }
         }
     }

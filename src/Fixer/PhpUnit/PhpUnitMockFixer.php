@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,13 +14,14 @@
 
 namespace PhpCsFixer\Fixer\PhpUnit;
 
-use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -26,17 +29,14 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitMockFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class PhpUnitMockFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
     /**
      * @var bool
      */
     private $fixCreatePartialMock;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Usages of `->getMock` and `->getMockWithoutInvokingTheOriginalConstructor` methods MUST be replaced by `->createMock` or `->createPartialMock` methods.',
@@ -74,70 +74,47 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_CLASS);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
         $this->fixCreatePartialMock = PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_5_5);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
-        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
-        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
-            for ($index = $indexes[0]; $index < $indexes[1]; ++$index) {
-                if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
-                    continue;
-                }
+        for ($index = $startIndex; $index < $endIndex; ++$index) {
+            if (!$tokens[$index]->isObjectOperator()) {
+                continue;
+            }
 
-                $index = $tokens->getNextMeaningfulToken($index);
+            $index = $tokens->getNextMeaningfulToken($index);
 
-                if ($tokens[$index]->equals([T_STRING, 'getMockWithoutInvokingTheOriginalConstructor'], false)) {
+            if ($tokens[$index]->equals([T_STRING, 'getMockWithoutInvokingTheOriginalConstructor'], false)) {
+                $tokens[$index] = new Token([T_STRING, 'createMock']);
+            } elseif ($tokens[$index]->equals([T_STRING, 'getMock'], false)) {
+                $openingParenthesis = $tokens->getNextMeaningfulToken($index);
+                $closingParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesis);
+
+                $argumentsCount = $argumentsAnalyzer->countArguments($tokens, $openingParenthesis, $closingParenthesis);
+
+                if (1 === $argumentsCount) {
                     $tokens[$index] = new Token([T_STRING, 'createMock']);
-                } elseif ($tokens[$index]->equals([T_STRING, 'getMock'], false)) {
-                    $openingParenthesis = $tokens->getNextMeaningfulToken($index);
-                    $closingParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesis);
-
-                    $argumentsCount = $argumentsAnalyzer->countArguments($tokens, $openingParenthesis, $closingParenthesis);
-
-                    if (1 === $argumentsCount) {
-                        $tokens[$index] = new Token([T_STRING, 'createMock']);
-                    } elseif (2 === $argumentsCount && true === $this->fixCreatePartialMock) {
-                        $tokens[$index] = new Token([T_STRING, 'createPartialMock']);
-                    }
+                } elseif (2 === $argumentsCount && true === $this->fixCreatePartialMock) {
+                    $tokens[$index] = new Token([T_STRING, 'createPartialMock']);
                 }
             }
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))

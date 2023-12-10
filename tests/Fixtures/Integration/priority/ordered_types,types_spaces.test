@@ -1,0 +1,33 @@
+--TEST--
+Integration of fixers: ordered_types,types_spaces.
+--RULESET--
+{"ordered_types": true, "types_spaces": {"space": "single"}}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+
+class Foo
+{
+    public null | array | string $bar = null;
+}
+
+try {
+    return (new Foo)->bar;
+} catch (\Error | \Exception $e) {
+    return $e->getMessage();
+}
+
+--INPUT--
+<?php
+
+class Foo
+{
+    public string|array|null $bar = null;
+}
+
+try {
+    return (new Foo)->bar;
+} catch (\Exception|\Error $e) {
+    return $e->getMessage();
+}

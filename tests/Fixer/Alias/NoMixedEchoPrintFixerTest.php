@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,11 +14,12 @@
 
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -25,170 +28,180 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideEchoToPrintFixCases
+     * @dataProvider provideFixEchoToPrintCases
      */
-    public function testFixEchoToPrint($expected, $input = null)
+    public function testFixEchoToPrint(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['use' => 'print']);
-
         $this->doTest($expected, $input);
     }
 
-    public function provideEchoToPrintFixCases()
+    public static function provideFixEchoToPrintCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                 print "test";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print ("test");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print("test");
                 ',
-            ],
-            // `echo` can take multiple parameters (although such usage is rare) while `print` can take only one argument,
-            // @see https://php.net/manual/en/function.echo.php and @see https://php.net/manual/en/function.print.php
-            [
-                '<?php
+        ];
+
+        // `echo` can take multiple parameters (although such usage is rare) while `print` can take only one argument,
+        // @see https://php.net/manual/en/function.echo.php and @see https://php.net/manual/en/function.print.php
+        yield [
+            '<?php
                 echo "This ", "string ", "was ", "made ", "with multiple parameters.";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print "test";
                 ',
-                '<?php
+            '<?php
                 echo "test";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print ("test");
                 ',
-                '<?php
+            '<?php
                 echo ("test");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print("test");
                 ',
-                '<?php
+            '<?php
                 echo("test");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print foo(1, 2);
                 ',
-                '<?php
+            '<?php
                 echo foo(1, 2);
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print ["foo", "bar", "baz"][$x];
                 ',
-                '<?php
+            '<?php
                 echo ["foo", "bar", "baz"][$x];
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 print $foo ? "foo" : "bar";
                 ',
-                '<?php
+            '<?php
                 echo $foo ? "foo" : "bar";
                 ',
-            ],
-            [
-                "<?php print 'foo' ?>...<?php echo 'bar', 'baz' ?>",
-                "<?php echo 'foo' ?>...<?php echo 'bar', 'baz' ?>",
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            "<?php print 'foo' ?>...<?php echo 'bar', 'baz' ?>",
+            "<?php echo 'foo' ?>...<?php echo 'bar', 'baz' ?>",
+        ];
+
+        yield [
+            '<?php
                 if ($foo) {
                     print "foo";
                 }
                 print "bar";
                 ',
-                '<?php
+            '<?php
                 if ($foo) {
                     echo "foo";
                 }
                 echo "bar";
                 ',
-            ],
-            [
-                "<div><?php print 'foo' ?></div>",
-                "<div><?php echo 'foo' ?></div>",
-            ],
-            [
-                '<?=$foo?>',
-            ],
         ];
+
+        yield [
+            '<?=$foo?>',
+        ];
+
+        foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
+            yield [
+                sprintf($codeSnippet, 'print'),
+                sprintf($codeSnippet, 'echo'),
+            ];
+        }
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider providePrintToEchoFixCases
+     * @dataProvider provideFixPrintToEchoCases
      */
-    public function testFixPrintToEcho($expected, $input = null)
+    public function testFixPrintToEcho(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['use' => 'echo']);
-
         $this->doTest($expected, $input);
     }
 
-    public function providePrintToEchoFixCases()
+    public static function provideFixPrintToEchoCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                 echo "test";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo ("test");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo("test");
                 ',
-            ],
-            // https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/1502#issuecomment-156436229
-            [
-                '<?php
+        ];
+
+        // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/1502#issuecomment-156436229
+        yield [
+            '<?php
                 ($some_var) ? print "true" : print "false";
                 ',
-            ],
-            // echo has no return value while print has a return value of 1 so it can be used in expressions.
-            // https://www.w3schools.com/php/php_echo_print.asp
-            [
-                '<?php
+        ];
+
+        // echo has no return value while print has a return value of 1 so it can be used in expressions.
+        // https://www.w3schools.com/php/php_echo_print.asp
+        yield [
+            '<?php
                 $ret = print "test";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 @print foo();
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 function testFunction() {
                     return print("test");
                 }
@@ -201,129 +214,159 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 switch(print(\'a\')) {}
                 if (1 === print($a)) {}
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 some_function_call();
                 echo "test";
                 ',
-                '<?php
+            '<?php
                 some_function_call();
                 print "test";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo "test";
                 ',
-                '<?php
+            '<?php
                 print "test";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo ("test");
                 ',
-                '<?php
+            '<?php
                 print ("test");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo("test");
                 ',
-                '<?php
+            '<?php
                 print("test");
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo foo(1, 2);
                 ',
-                '<?php
+            '<?php
                 print foo(1, 2);
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 echo $foo ? "foo" : "bar";
                 ',
-                '<?php
+            '<?php
                 print $foo ? "foo" : "bar";
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                 if ($foo) {
                     echo "foo";
                 }
                 echo "bar";
                 ',
-                '<?php
+            '<?php
                 if ($foo) {
                     print "foo";
                 }
                 print "bar";
                 ',
-            ],
-            [
-                "<div><?php echo 'foo' ?></div>",
-                "<div><?php print 'foo' ?></div>",
-            ],
         ];
+
+        foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
+            yield [
+                sprintf($codeSnippet, 'echo'),
+                sprintf($codeSnippet, 'print'),
+            ];
+        }
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyDefaultConfig()
-    {
-        $this->fixer->configure(null);
-
-        static::assertAttributeSame(T_PRINT, 'candidateTokenType', $this->fixer);
-    }
-
-    public function testDefaultConfig()
+    public function testDefaultConfig(): void
     {
         $this->fixer->configure([]);
 
-        static::assertAttributeSame(T_PRINT, 'candidateTokenType', $this->fixer);
+        self::assertCandidateTokenType(T_PRINT, $this->fixer);
     }
 
     /**
-     * @dataProvider provideWrongConfigCases
+     * @param array<mixed> $wrongConfig
      *
-     * @param mixed  $wrongConfig
-     * @param string $expectedMessage
+     * @dataProvider provideWrongConfigCases
      */
-    public function testWrongConfig($wrongConfig, $expectedMessage)
+    public function testWrongConfig(array $wrongConfig, string $expectedMessage): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp($expectedMessage);
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches($expectedMessage);
 
         $this->fixer->configure($wrongConfig);
     }
 
-    public function provideWrongConfigCases()
+    public static function provideWrongConfigCases(): iterable
     {
-        return [
-            [
-                ['a' => 'b'],
-                '#^\[no_mixed_echo_print\] Invalid configuration: The option "a" does not exist\. (Known|Defined) options are: "use"\.$#',
-            ],
-            [
-                ['a' => 'b', 'b' => 'c'],
-                '#^\[no_mixed_echo_print\] Invalid configuration: The options "a", "b" do not exist\. (Known|Defined) options are: "use"\.$#',
-            ],
-            [
-                [1],
-                '#^\[no_mixed_echo_print\] Invalid configuration: The option "0" does not exist\. (Known|Defined) options are: "use"\.$#',
-            ],
-            [
-                ['use' => '_invalid_'],
-                '#^\[no_mixed_echo_print\] Invalid configuration: The option "use" with value "_invalid_" is invalid\. Accepted values are: "print", "echo"\.$#',
-            ],
+        yield [
+            ['a' => 'b'],
+            '#^\[no_mixed_echo_print\] Invalid configuration: The option "a" does not exist\. (Known|Defined) options are: "use"\.$#',
         ];
+
+        yield [
+            ['a' => 'b', 'b' => 'c'],
+            '#^\[no_mixed_echo_print\] Invalid configuration: The options "a", "b" do not exist\. (Known|Defined) options are: "use"\.$#',
+        ];
+
+        yield [
+            [1],
+            '#^\[no_mixed_echo_print\] Invalid configuration: The option "0" does not exist\. (Known|Defined) options are: "use"\.$#',
+        ];
+
+        yield [
+            ['use' => '_invalid_'],
+            '#^\[no_mixed_echo_print\] Invalid configuration: The option "use" with value "_invalid_" is invalid\. Accepted values are: "print", "echo"\.$#',
+        ];
+    }
+
+    private static function assertCandidateTokenType(int $expected, AbstractFixer $fixer): void
+    {
+        $reflectionProperty = new \ReflectionProperty($fixer, 'candidateTokenType');
+        $reflectionProperty->setAccessible(true);
+
+        self::assertSame($expected, $reflectionProperty->getValue($fixer));
+    }
+
+    /**
+     * @return iterable<non-empty-string>
+     */
+    private static function getCodeSnippetsToConvertBothWays(): iterable
+    {
+        yield 'inside of HTML' => '<div><?php %1$s "foo" ?></div>';
+
+        yield 'foreach without curly brackets' => '<?php
+            %1$s "There will be foos: ";
+            foreach ($foos as $foo)
+                %1$s $foo;
+            %1$s "End of foos";
+        ';
+
+        yield 'if and else without curly brackets' => '<?php
+            if ($foo)
+                %1$s "One";
+            elseif ($bar)
+                %1$s "Two";
+            else
+                %1$s "Three";
+        ';
     }
 }

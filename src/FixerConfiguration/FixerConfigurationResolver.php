@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,47 +14,44 @@
 
 namespace PhpCsFixer\FixerConfiguration;
 
+use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class FixerConfigurationResolver implements FixerConfigurationResolverInterface
 {
     /**
-     * @var FixerOptionInterface[]
+     * @var list<FixerOptionInterface>
      */
-    private $options = [];
+    private array $options = [];
 
     /**
-     * @var string[]
+     * @var list<string>
      */
-    private $registeredNames = [];
+    private array $registeredNames = [];
 
     /**
      * @param iterable<FixerOptionInterface> $options
      */
-    public function __construct($options)
+    public function __construct(iterable $options)
     {
-        foreach ($options as $option) {
+        $fixerOptionSorter = new FixerOptionSorter();
+
+        foreach ($fixerOptionSorter->sort($options) as $option) {
             $this->addOption($option);
         }
 
-        if (empty($this->registeredNames)) {
+        if (0 === \count($this->registeredNames)) {
             throw new \LogicException('Options cannot be empty.');
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolve(array $options)
+    public function resolve(array $configuration): array
     {
         $resolver = new OptionsResolver();
 
@@ -62,14 +61,19 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
             if ($option instanceof AliasedFixerOption) {
                 $alias = $option->getAlias();
 
-                if (\array_key_exists($alias, $options)) {
-                    // @TODO 2.12 Trigger a deprecation notice and add a test for it
-                    if (\array_key_exists($name, $options)) {
-                        throw new InvalidOptionsException(sprintf('Aliased option %s/%s is passed multiple times.', $name, $alias));
+                if (\array_key_exists($alias, $configuration)) {
+                    if (\array_key_exists($name, $configuration)) {
+                        throw new InvalidOptionsException(sprintf('Aliased option "%s"/"%s" is passed multiple times.', $name, $alias));
                     }
 
-                    $options[$name] = $options[$alias];
-                    unset($options[$alias]);
+                    Utils::triggerDeprecation(new \RuntimeException(sprintf(
+                        'Option "%s" is deprecated, use "%s" instead.',
+                        $alias,
+                        $name
+                    )));
+
+                    $configuration[$name] = $configuration[$alias];
+                    unset($configuration[$alias]);
                 }
             }
 
@@ -83,9 +87,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
             if (null !== $allowedValues) {
                 foreach ($allowedValues as &$allowedValue) {
                     if (\is_object($allowedValue) && \is_callable($allowedValue)) {
-                        $allowedValue = function ($values) use ($allowedValue) {
-                            return $allowedValue($values);
-                        };
+                        $allowedValue = static fn (/* mixed */ $values) => $allowedValue($values);
                     }
                 }
 
@@ -103,17 +105,13 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
             }
         }
 
-        return $resolver->resolve($options);
+        return $resolver->resolve($configuration);
     }
 
     /**
-     * @param FixerOptionInterface $option
-     *
      * @throws \LogicException when the option is already defined
-     *
-     * @return $this
      */
-    private function addOption(FixerOptionInterface $option)
+    private function addOption(FixerOptionInterface $option): void
     {
         $name = $option->getName();
 
@@ -123,7 +121,5 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
 
         $this->options[] = $option;
         $this->registeredNames[] = $name;
-
-        return $this;
     }
 }

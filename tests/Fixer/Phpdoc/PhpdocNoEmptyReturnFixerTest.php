@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,7 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -23,179 +25,217 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocNoEmptyReturnFixerTest extends AbstractFixerTestCase
 {
-    public function testFixVoid()
+    public function testFixVoid(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     */
+            <?php
+                /**
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * @return void
-     */
+            <?php
+                /**
+                 * @return void
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testFixNull()
+    public function testFixNull(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     */
+            <?php
+                /**
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * @return null
-     */
+            <?php
+                /**
+                 * @return null
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testFixVoidCaseInsensitive()
+    public function testFixNullWithEndOnSameLine(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     */
+            <?php
+                /**
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * @return vOId
-     */
+            <?php
+                /**
+                 * @return null */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testFixNullCaseInsensitive()
+    public function testFixNullWithEndOnSameLineNoSpace(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     */
+            <?php
+                /**
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * @return nULl
-     */
+            <?php
+                /**
+                 * @return null*/
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testFixFull()
+    public function testFixVoidCaseInsensitive(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * Hello!
-     *
-     * @param string $foo
-     */
+            <?php
+                /**
+                 */
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
-    /**
-     * Hello!
-     *
-     * @param string $foo
-     * @return void
-     */
+            <?php
+                /**
+                 * @return vOId
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }
 
-    public function testDoNothing()
+    public function testFixNullCaseInsensitive(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * @var null
-     */
+            <?php
+                /**
+                 */
 
-EOF;
+            EOF;
+
+        $input = <<<'EOF'
+            <?php
+                /**
+                 * @return nULl
+                 */
+
+            EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixFull(): void
+    {
+        $expected = <<<'EOF'
+            <?php
+                /**
+                 * Hello!
+                 *
+                 * @param string $foo
+                 */
+
+            EOF;
+
+        $input = <<<'EOF'
+            <?php
+                /**
+                 * Hello!
+                 *
+                 * @param string $foo
+                 * @return void
+                 */
+
+            EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testDoNothing(): void
+    {
+        $expected = <<<'EOF'
+            <?php
+                /**
+                 * @var null
+                 */
+
+            EOF;
 
         $this->doTest($expected);
     }
 
-    public function testDoNothingAgain()
+    public function testDoNothingAgain(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * @return null|int
-     */
+            <?php
+                /**
+                 * @return null|int
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }
 
-    public function testOtherDoNothing()
+    public function testOtherDoNothing(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * @return int|null
-     */
+            <?php
+                /**
+                 * @return int|null
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }
 
-    public function testYetAnotherDoNothing()
+    public function testYetAnotherDoNothing(): void
     {
         $expected = <<<'EOF'
-<?php
-    /**
-     * @return null[]|string[]
-     */
+            <?php
+                /**
+                 * @return null[]|string[]
+                 */
 
-EOF;
+            EOF;
 
         $this->doTest($expected);
     }
 
-    public function testHandleSingleLinePhpdoc()
+    public function testHandleSingleLinePhpdoc(): void
     {
         $expected = <<<'EOF'
-<?php
+            <?php
 
 
 
-EOF;
+            EOF;
 
         $input = <<<'EOF'
-<?php
+            <?php
 
-/** @return null */
+            /** @return null */
 
-EOF;
+            EOF;
 
         $this->doTest($expected, $input);
     }

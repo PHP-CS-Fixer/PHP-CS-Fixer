@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: array_syntax,single_space_after_construct.
+--RULESET--
+{"array_syntax": {"syntax":"short"}, "single_space_after_construct": {"constructs":["return"]}}
+--EXPECT--
+<?php
+return // stop the war
+[];
+
+--INPUT--
+<?php
+return array       // stop the war
+();

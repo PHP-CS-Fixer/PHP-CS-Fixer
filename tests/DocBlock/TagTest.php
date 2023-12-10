@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,7 +19,7 @@ use PhpCsFixer\DocBlock\Tag;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -26,17 +28,13 @@ use PhpCsFixer\Tests\TestCase;
 final class TagTest extends TestCase
 {
     /**
-     * @param string $expected
-     * @param string $new
-     * @param string $input
-     *
      * @dataProvider provideNameCases
      */
-    public function testName($expected, $new, $input)
+    public function testName(string $expected, string $new, string $input): void
     {
         $tag = new Tag(new Line($input));
 
-        static::assertSame($expected, $tag->getName());
+        self::assertSame($expected, $tag->getName());
 
         if ('other' === $expected) {
             $this->expectException(\RuntimeException::class);
@@ -45,52 +43,64 @@ final class TagTest extends TestCase
 
         $tag->setName($new);
 
-        static::assertSame($new, $tag->getName());
+        self::assertSame($new, $tag->getName());
     }
 
-    public function provideNameCases()
+    public static function provideNameCases(): iterable
     {
-        return [
-            ['param', 'var', '     * @param Foo $foo'],
-            ['return', 'type', '*   @return            false'],
-            ['thRoWs', 'throws', '*@thRoWs \Exception'],
-            ['THROWSSS', 'throws', "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"],
-            ['other', 'foobar', ' *   @\Foo\Bar(baz = 123)'],
-            ['expectedException', 'baz', '     * @expectedException Exception'],
-            ['property-read', 'property-write', ' * @property-read integer $daysInMonth number of days in the given month'],
-            ['method', 'foo', ' * @method'],
-            ['method', 'hi', ' * @method string getString()'],
-            ['other', 'hello', ' * @method("GET")'],
-        ];
+        yield ['param', 'var', '     * @param Foo $foo'];
+
+        yield ['return', 'type', '*   @return            false'];
+
+        yield ['thRoWs', 'throws', '*@thRoWs \Exception'];
+
+        yield ['THROWSSS', 'throws', "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"];
+
+        yield ['other', 'foobar', ' *   @\Foo\Bar(baz = 123)'];
+
+        yield ['expectedException', 'baz', '     * @expectedException Exception'];
+
+        yield ['property-read', 'property-write', ' * @property-read integer $daysInMonth number of days in the given month'];
+
+        yield ['method', 'foo', ' * @method'];
+
+        yield ['method', 'hi', ' * @method string getString()'];
+
+        yield ['other', 'hello', ' * @method("GET")'];
     }
 
     /**
-     * @param bool   $expected
-     * @param string $input
-     *
      * @dataProvider provideValidCases
      */
-    public function testValid($expected, $input)
+    public function testValid(bool $expected, string $input): void
     {
         $tag = new Tag(new Line($input));
 
-        static::assertSame($expected, $tag->valid());
+        self::assertSame($expected, $tag->valid());
     }
 
-    public function provideValidCases()
+    public static function provideValidCases(): iterable
     {
-        return [
-            [true, '     * @param Foo $foo'],
-            [true, '*   @return            false'],
-            [true, '*@throws \Exception'],
-            [true, ' * @method'],
-            [true, ' * @method string getString()'],
-            [true, ' * @property-read integer $daysInMonth number of days in the given month'],
-            [false, ' * @method("GET")'],
-            [false, '*@thRoWs \InvalidArgumentException'],
-            [false, "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"],
-            [false, ' *   @\Foo\Bar(baz = 123)'],
-            [false, '     * @expectedException Exception'],
-        ];
+        yield [true, '     * @param Foo $foo'];
+
+        yield [true, '*   @return            false'];
+
+        yield [true, '*@throws \Exception'];
+
+        yield [true, ' * @method'];
+
+        yield [true, ' * @method string getString()'];
+
+        yield [true, ' * @property-read integer $daysInMonth number of days in the given month'];
+
+        yield [false, ' * @method("GET")'];
+
+        yield [false, '*@thRoWs \InvalidArgumentException'];
+
+        yield [false, "\t@THROWSSS\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n"];
+
+        yield [false, ' *   @\Foo\Bar(baz = 123)'];
+
+        yield [false, '     * @expectedException Exception'];
     }
 }

@@ -1,0 +1,28 @@
+--TEST--
+Integration of fixers: class_attributes_separation,no_extra_blank_lines.
+--RULESET--
+{"class_attributes_separation": {"elements": {"trait_import": "one"}}, "no_extra_blank_lines": {"tokens": ["use_trait"]}}
+--SETTINGS--
+{
+    "deprecations": [
+        "Option \"tokens: use_trait\" used in `no_extra_blank_lines` rule is deprecated, use the rule `class_attributes_separation` with `elements: trait_import` instead."
+    ]
+}
+--EXPECT--
+<?php
+
+class Foo
+{
+    use A;
+    use B;
+}
+
+--INPUT--
+<?php
+
+class Foo
+{
+    use A;
+
+    use B;
+}

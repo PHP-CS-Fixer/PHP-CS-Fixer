@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,8 +15,9 @@
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
-use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
+use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -22,43 +25,40 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @covers \PhpCsFixer\Fixer\Comment\HeaderCommentFixer
  */
-final class HeaderCommentFixerTest extends AbstractFixerWithAliasedOptionsTestCase
+final class HeaderCommentFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string $expected
-     * @param string $input
+     * @param array<string, mixed> $configuration
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(array $configuration, $expected, $input)
+    public function testFix(array $configuration, string $expected, ?string $input = null): void
     {
-        $this->configureFixerWithAliasedOptions($configuration);
-
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                ['header' => ''],
-                '<?php
-
+        yield [
+            ['header' => ''],
+            '<?php
 
 $a;',
-                '<?php
+            '<?php
 
 /**
  * new
  */
 $a;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_declare_strict',
-                ],
-                '<?php
+                'header' => 'tmp',
+                'location' => 'after_declare_strict',
+            ],
+            '<?php
 declare(strict_types=1);
 
 /*
@@ -68,19 +68,20 @@ declare(strict_types=1);
 namespace A\B;
 
 echo 1;',
-                '<?php
+            '<?php
 declare(strict_types=1);namespace A\B;
 
 echo 1;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_declare_strict',
-                    'separate' => 'bottom',
-                    'commentType' => 'PHPDoc',
-                ],
-                '<?php
+                'header' => 'tmp',
+                'location' => 'after_declare_strict',
+                'separate' => 'bottom',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
 declare(strict_types=1);
 /**
  * tmp
@@ -89,19 +90,20 @@ declare(strict_types=1);
 namespace A\B;
 
 echo 1;',
-                '<?php
+            '<?php
 declare(strict_types=1);
 
 namespace A\B;
 
 echo 1;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_open',
-                ],
-                '<?php
+                'header' => 'tmp',
+                'location' => 'after_open',
+            ],
+            '<?php
 
 /*
  * tmp
@@ -112,135 +114,141 @@ declare(strict_types=1);
 namespace A\B;
 
 echo 1;',
-                '<?php
+            '<?php
 declare(strict_types=1);
 
 namespace A\B;
 
 echo 1;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'new',
-                    'commentType' => 'comment',
-                ],
-                '<?php
+                'header' => 'new',
+                'comment_type' => HeaderCommentFixer::HEADER_COMMENT,
+            ],
+            '<?php
 
 /*
  * new
  */
-                    '.'
                 ',
-                '<?php
+            '<?php
                     /** test */
                 ',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'new',
-                    'commentType' => 'PHPDoc',
-                ],
-                '<?php
+                'header' => 'new',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
 
 /**
  * new
  */
-                    '.'
                 ',
-                '<?php
+            '<?php
                     /* test */
                 ',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'def',
-                    'commentType' => 'PHPDoc',
-                ],
-                '<?php
+                'header' => 'def',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
 
 /**
  * def
  */
+',
+            '<?php
+',
+        ];
 
-',
-                '<?php
-',
-            ],
-            [
-                ['header' => 'xyz'],
-                '<?php
+        yield [
+            ['header' => 'xyz'],
+            '<?php
 
 /*
  * xyz
  */
 
     $b;',
-                '<?php
+            '<?php
     $b;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'xyz123',
-                    'separate' => 'none',
-                ],
-                '<?php
+                'header' => 'xyz123',
+                'separate' => 'none',
+            ],
+            '<?php
 /*
  * xyz123
  */
     $a;',
-                '<?php
+            '<?php
     $a;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'abc',
-                    'commentType' => 'PHPDoc',
-                ],
-                '<?php
+                'header' => 'abc',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
 
 /**
  * abc
  */
 
 $c;',
-                '<?php
+            '<?php
 $c;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'ghi',
-                    'separate' => 'both',
-                ],
-                '<?php
+                'header' => 'ghi',
+                'separate' => 'both',
+            ],
+            '<?php
 
 /*
  * ghi
  */
 
 $d;',
-                '<?php
+            '<?php
 $d;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'ghi',
-                    'separate' => 'top',
-                ],
-                '<?php
+                'header' => 'ghi',
+                'separate' => 'top',
+            ],
+            '<?php
 
 /*
  * ghi
  */
 $d;',
-                '<?php
+            '<?php
 $d;',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_declare_strict',
-                ],
-                '<?php
+                'header' => 'tmp',
+                'location' => 'after_declare_strict',
+            ],
+            '<?php
 
 /*
  * tmp
@@ -249,32 +257,34 @@ $d;',
 declare(ticks=1);
 
 echo 1;',
-                '<?php
+            '<?php
 declare(ticks=1);
 
 echo 1;',
-            ],
-            [
-                ['header' => 'Foo'],
-                '<?php
+        ];
+
+        yield [
+            ['header' => 'Foo'],
+            '<?php
 
 /*
  * Foo
  */
 
 echo \'bar\';',
-                '<?php echo \'bar\';',
-            ],
-            [
-                ['header' => 'x'],
-                '<?php
+            '<?php echo \'bar\';',
+        ];
+
+        yield [
+            ['header' => 'x'],
+            '<?php
 
 /*
  * x
  */
 
 echo \'a\';',
-                '<?php
+            '<?php
 
 /*
  * y
@@ -282,10 +292,11 @@ echo \'a\';',
  */
 
 echo \'a\';',
-            ],
-            [
-                ['header' => "a\na"],
-                '<?php
+        ];
+
+        yield [
+            ['header' => "a\na"],
+            '<?php
 
 /*
  * a
@@ -293,7 +304,7 @@ echo \'a\';',
  */
 
 echo \'x\';',
-                '<?php
+            '<?php
 
 
 /*
@@ -303,11 +314,322 @@ echo \'x\';',
 
 
 echo \'x\';',
+        ];
+
+        yield [
+            [
+                'header' => 'foo',
+                'location' => 'after_open',
+                'separate' => 'bottom',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
+            '<?php
+/**
+ * foo
+ */
+
+declare(strict_types=1);
+
+namespace A;
+
+echo 1;',
+            '<?php
+
+declare(strict_types=1);
+/**
+ * foo
+ */
+
+namespace A;
+
+echo 1;',
+        ];
+
+        yield [
+            [
+                'header' => 'foo',
+                'location' => 'after_open',
+                'separate' => 'bottom',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
+/**
+ * foo
+ */
+
+declare(strict_types=1);
+/**
+ * bar
+ */
+
+namespace A;
+
+echo 1;',
+            '<?php
+
+declare(strict_types=1);
+/**
+ * bar
+ */
+
+namespace A;
+
+echo 1;',
+        ];
+
+        yield [
+            [
+                'header' => 'Foo',
+                'separate' => 'none',
+            ],
+            '<?php
+
+declare(strict_types=1);
+/*
+ * Foo
+ */
+namespace SebastianBergmann\Foo;
+
+class Bar
+{
+}',
+            '<?php
+/*
+ * Foo
+ */
+
+declare(strict_types=1);
+
+namespace SebastianBergmann\Foo;
+
+class Bar
+{
+}',
+        ];
+
+        yield [
+            ['header' => 'tmp'],
+            '<?php
+
+/*
+ * tmp
+ */
+
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+            '<?php
+
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+        ];
+
+        yield [
+            ['header' => 'tmp'],
+            '<?php
+
+/*
+ * tmp
+ */
+
+class Foo {}',
+            '<?php
+
+/*
+ * Foo class doc.
+ */
+class Foo {}',
+        ];
+
+        yield [
+            [
+                'header' => 'tmp',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
+
+/**
+ * tmp
+ */
+
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+            '<?php
+
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+        ];
+
+        yield [
+            [
+                'header' => 'tmp',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
+
+/**
+ * tmp
+ */
+
+class Foo {}',
+            '<?php
+
+/**
+ * tmp
+ */
+class Foo {}',
+        ];
+
+        yield [
+            [
+                'header' => 'tmp',
+                'separate' => 'top',
+            ],
+            '<?php
+
+/*
+ * tmp
+ */
+class Foo {}',
+            '<?php
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+        ];
+
+        yield [
+            [
+                'header' => 'bar',
+                'location' => 'after_open',
+            ],
+            '<?php
+
+/*
+ * bar
+ */
+
+declare(strict_types=1);
+
+// foo
+foo();',
+            '<?php
+
+/*
+ * foo
+ */
+
+declare(strict_types=1);
+
+// foo
+foo();',
+        ];
+
+        yield [
+            [
+                'header' => 'bar',
+                'location' => 'after_open',
+            ],
+            '<?php
+
+/*
+ * bar
+ */
+
+declare(strict_types=1);
+
+/* foo */
+foo();',
+            '<?php
+
+/*
+ * foo
+ */
+
+declare(strict_types=1);
+
+/* foo */
+foo();',
+        ];
+
+        yield [
+            [
+                'header' => 'tmp',
+                'location' => 'after_declare_strict',
+            ],
+            '<?php
+
+/*
+ * tmp
+ */
+
+declare(strict_types=1) ?>',
+            '<?php
+declare(strict_types=1) ?>',
+        ];
+
+        yield [
+            [
+                'header' => 'tmp',
+                'location' => 'after_declare_strict',
+            ],
+            '#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+/*
+ * tmp
+ */
+
+namespace A\B;
+
+echo 1;',
+            '#!/usr/bin/env php
+<?php
+declare(strict_types=1);namespace A\B;
+
+echo 1;',
+        ];
+
+        yield [
+            [
+                'header' => 'tmp',
+                'location' => 'after_open',
+            ],
+            'Short mixed file A
+Hello<?php echo "World!"; ?>',
+        ];
+
+        yield [
+            [
+                'header' => 'tmp',
+                'location' => 'after_open',
+            ],
+            'Short mixed file B
+<?php echo "Hello"; ?>World!',
+        ];
+
+        yield [
+            [
+                'header' => 'tmp',
+                'location' => 'after_open',
+            ],
+            'File with anything at the beginning and with multiple opening tags are not supported
+<?php
+echo 1;
+?>Hello World!<?php
+script_continues_here();',
         ];
     }
 
-    public function testDefaultConfiguration()
+    public function testDefaultConfiguration(): void
     {
         $this->fixer->configure(['header' => 'a']);
         $this->doTest(
@@ -324,82 +646,68 @@ echo 1;'
     }
 
     /**
-     * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyMisconfiguration()
-    {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage('[header_comment] Missing required configuration: The required option "header" is missing.');
-
-        $this->fixer->configure(null);
-    }
-
-    /**
-     * @param null|array $configuration
-     * @param string     $exceptionMessage
+     * @param null|array<string, mixed> $configuration
      *
      * @dataProvider provideMisconfigurationCases
      */
-    public function testMisconfiguration($configuration, $exceptionMessage)
+    public function testMisconfiguration(?array $configuration, string $exceptionMessage): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage('[header_comment] '.$exceptionMessage);
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches("#^\\[header_comment\\] {$exceptionMessage}$#");
 
-        $this->configureFixerWithAliasedOptions($configuration);
+        $this->fixer->configure($configuration);
     }
 
-    public function provideMisconfigurationCases()
+    public static function provideMisconfigurationCases(): iterable
     {
-        return [
-            [[], 'Missing required configuration: The required option "header" is missing.'],
+        yield [[], 'Missing required configuration: The required option "header" is missing.'];
+
+        yield [
+            ['header' => 1],
+            'Invalid configuration: The option "header" with value 1 is expected to be of type "string", but is of type "(int|integer)"\.',
+        ];
+
+        yield [
             [
-                ['header' => 1],
-                'Invalid configuration: The option "header" with value 1 is expected to be of type "string", but is of type "integer".',
+                'header' => '',
+                'comment_type' => 'foo',
             ],
+            'Invalid configuration: The option "comment_type" with value "foo" is invalid\. Accepted values are: "PHPDoc", "comment"\.',
+        ];
+
+        yield [
             [
-                [
-                    'header' => '',
-                    'commentType' => 'foo',
-                ],
-                'Invalid configuration: The option "comment_type" with value "foo" is invalid. Accepted values are: "PHPDoc", "comment".',
+                'header' => '',
+                'comment_type' => new \stdClass(),
             ],
+            'Invalid configuration: The option "comment_type" with value stdClass is invalid\. Accepted values are: "PHPDoc", "comment"\.',
+        ];
+
+        yield [
             [
-                [
-                    'header' => '',
-                    'commentType' => new \stdClass(),
-                ],
-                'Invalid configuration: The option "comment_type" with value stdClass is invalid. Accepted values are: "PHPDoc", "comment".',
+                'header' => '',
+                'location' => new \stdClass(),
             ],
+            'Invalid configuration: The option "location" with value stdClass is invalid\. Accepted values are: "after_open", "after_declare_strict"\.',
+        ];
+
+        yield [
             [
-                [
-                    'header' => '',
-                    'location' => new \stdClass(),
-                ],
-                'Invalid configuration: The option "location" with value stdClass is invalid. Accepted values are: "after_open", "after_declare_strict".',
+                'header' => '',
+                'separate' => new \stdClass(),
             ],
-            [
-                [
-                    'header' => '',
-                    'separate' => new \stdClass(),
-                ],
-                'Invalid configuration: The option "separate" with value stdClass is invalid. Accepted values are: "both", "top", "bottom", "none".',
-            ],
+            'Invalid configuration: The option "separate" with value stdClass is invalid\. Accepted values are: "both", "top", "bottom", "none"\.',
         ];
     }
 
     /**
-     * @param string $expected
-     * @param string $header
-     * @param string $type
-     *
      * @dataProvider provideHeaderGenerationCases
      */
-    public function testHeaderGeneration($expected, $header, $type)
+    public function testHeaderGeneration(string $expected, string $header, string $type): void
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'header' => $header,
-            'commentType' => $type,
+            'comment_type' => $type,
         ]);
         $this->doTest(
             '<?php
@@ -412,91 +720,29 @@ echo 1;'
         );
     }
 
-    public function provideHeaderGenerationCases()
+    public static function provideHeaderGenerationCases(): iterable
     {
-        return [
-            [
-                '/*
+        yield [
+            '/*
  * a
  */',
-                'a',
-                'comment',
-            ],
-            [
-                '/**
+            'a',
+            HeaderCommentFixer::HEADER_COMMENT,
+        ];
+
+        yield [
+            '/**
  * a
  */',
-                'a',
-                'PHPDoc',
-            ],
+            'a',
+            HeaderCommentFixer::HEADER_PHPDOC,
         ];
     }
 
     /**
-     * @param int    $expected
-     * @param string $code
-     *
-     * @dataProvider provideFindHeaderCommentInsertionIndexCases
-     */
-    public function testFindHeaderCommentInsertionIndex($expected, $code, array $config)
-    {
-        Tokens::clearCache();
-        $tokens = Tokens::fromCode($code);
-
-        $this->fixer->configure($config);
-
-        $method = new \ReflectionMethod($this->fixer, 'findHeaderCommentInsertionIndex');
-        $method->setAccessible(true);
-        static::assertSame($expected, $method->invoke($this->fixer, $tokens));
-    }
-
-    public function provideFindHeaderCommentInsertionIndexCases()
-    {
-        $config = ['header' => ''];
-        $cases = [
-            [1, '<?php #', $config],
-            [1, '<?php /**/ $bc;', $config],
-            [1, '<?php $bc;', $config],
-            [1, "<?php\n\n", $config],
-            [1, '<?php ', $config],
-        ];
-
-        $config['location'] = 'after_declare_strict';
-        $cases[] = [
-            8,
-            '<?php
-declare(strict_types=1);
-
-namespace A\B;
-
-echo 1;',
-            $config,
-        ];
-
-        $cases[] = [
-            8,
-            '<?php
-declare(strict_types=0);
-echo 1;',
-            $config,
-        ];
-
-        $cases[] = [
-            1,
-            '<?php
-declare(strict_types=1)?>',
-            $config,
-        ];
-
-        return $cases;
-    }
-
-    /**
-     * @param string $expected
-     *
      * @dataProvider provideDoNotTouchCases
      */
-    public function testDoNotTouch($expected)
+    public function testDoNotTouch(string $expected): void
     {
         $this->fixer->configure([
             'header' => '',
@@ -505,74 +751,73 @@ declare(strict_types=1)?>',
         $this->doTest($expected);
     }
 
-    public function provideDoNotTouchCases()
+    public static function provideDoNotTouchCases(): iterable
     {
-        return [
-            ["<?php\nphpinfo();\n?>\n<?"],
-            [" <?php\nphpinfo();\n"],
-            ["<?php\nphpinfo();\n?><hr/>"],
-            ["  <?php\n"],
-            ['<?= 1?>'],
-            ["<?= 1?><?php\n"],
-            ["<?= 1?>\n<?php\n"],
-        ];
+        yield ["<?php\nphpinfo();\n?>\n<?"];
+
+        yield [" <?php\nphpinfo();\n"];
+
+        yield ["<?php\nphpinfo();\n?><hr/>"];
+
+        yield ["  <?php\n"];
+
+        yield ['<?= 1?>'];
+
+        yield ["<?= 1?><?php\n"];
+
+        yield ["<?= 1?>\n<?php\n"];
+
+        yield ["<?php\n// comment 1\n?><?php\n// comment 2\n"];
     }
 
-    public function testWithoutConfiguration()
+    public function testWithoutConfiguration(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException::class);
+        $this->expectException(RequiredFixerConfigurationException::class);
 
         $this->doTest('<?php echo 1;');
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
+     * @param array<string, mixed> $configuration
      *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces(array $configuration, $expected, $input = null)
+    public function testMessyWhitespaces(array $configuration, string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        $this->configureFixerWithAliasedOptions($configuration);
-
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
+        yield [
             [
-                [
-                    'header' => 'whitemess',
-                    'location' => 'after_declare_strict',
-                    'separate' => 'bottom',
-                    'commentType' => 'PHPDoc',
-                ],
-                "<?php\r\ndeclare(strict_types=1);\r\n/**\r\n * whitemess\r\n */\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
-                "<?php\r\ndeclare(strict_types=1);\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
+                'header' => 'whitemess',
+                'location' => 'after_declare_strict',
+                'separate' => 'bottom',
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
+            "<?php\r\ndeclare(strict_types=1);\r\n/**\r\n * whitemess\r\n */\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
+            "<?php\r\ndeclare(strict_types=1);\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
         ];
     }
 
-    public function testConfigurationUpdatedWithWhitespsacesConfig()
+    public function testConfigurationUpdatedWithWhitespsacesConfig(): void
     {
         $this->fixer->configure(['header' => 'Foo']);
-
         $this->doTest(
             "<?php\n\n/*\n * Foo\n */\n\necho 1;",
             "<?php\necho 1;"
         );
 
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\r\n"));
-
         $this->doTest(
             "<?php\r\n\r\n/*\r\n * Foo\r\n */\r\n\r\necho 1;",
             "<?php\r\necho 1;"
         );
 
         $this->fixer->configure(['header' => 'Bar']);
-
         $this->doTest(
             "<?php\r\n\r\n/*\r\n * Bar\r\n */\r\n\r\necho 1;",
             "<?php\r\necho 1;"
@@ -586,14 +831,51 @@ declare(strict_types=1)?>',
         );
     }
 
-    public function testInvalidHeaderConfiguration()
+    public function testInvalidHeaderConfiguration(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[header_comment\] Cannot use \'\*/\' in header\.$#');
+        $this->expectExceptionMessageMatches('#^\[header_comment\] Cannot use \'\*/\' in header\.$#');
 
         $this->fixer->configure([
             'header' => '/** test */',
-            'comment_type' => 'PHPDoc',
+            'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
         ]);
+    }
+
+    /**
+     * @param array<string, mixed> $configuration
+     *
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(array $configuration, string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure($configuration);
+
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield [
+            ['header' => 'tmp'],
+            '<?php
+
+/*
+ * tmp
+ */
+
+/**
+ * Foo class doc.
+ */
+enum Foo {}',
+            '<?php
+
+/**
+ * Foo class doc.
+ */
+enum Foo {}',
+        ];
     }
 }

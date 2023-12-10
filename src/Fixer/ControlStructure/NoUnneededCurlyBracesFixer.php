@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,99 +14,79 @@
 
 namespace PhpCsFixer\Fixer\ControlStructure;
 
-use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
- * @author SpacePossum
+ * @deprecated
  */
-final class NoUnneededCurlyBracesFixer extends AbstractFixer
+final class NoUnneededCurlyBracesFixer extends AbstractProxyFixer implements ConfigurableFixerInterface, DeprecatedFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    private NoUnneededBracesFixer $noUnneededBracesFixer;
+
+    public function __construct()
     {
+        $this->noUnneededBracesFixer = new NoUnneededBracesFixer();
+
+        parent::__construct();
+    }
+
+    public function getDefinition(): FixerDefinitionInterface
+    {
+        $fixerDefinition = $this->noUnneededBracesFixer->getDefinition();
+
         return new FixerDefinition(
             'Removes unneeded curly braces that are superfluous and aren\'t part of a control structure\'s body.',
-            [
-                new CodeSample(
-                    '<?php {
-    echo 1;
-}
-
-switch ($b) {
-    case 1: {
-        break;
-    }
-}
-'
-                ),
-            ]
+            $fixerDefinition->getCodeSamples(),
+            $fixerDefinition->getDescription(),
+            $fixerDefinition->getRiskyDescription()
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
+    public function configure(array $configuration): void
     {
-        // must be run before NoUselessElseFixer and NoUselessReturnFixer.
-        return 26;
+        $this->noUnneededBracesFixer->configure($configuration);
+
+        parent::configure($configuration);
     }
 
     /**
      * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound('}');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($this->findCurlyBraceOpen($tokens) as $index) {
-            if ($this->isOverComplete($tokens, $index)) {
-                $this->clearOverCompleteBraces($tokens, $index, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index));
-            }
-        }
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $openIndex  index of `{` token
-     * @param int    $closeIndex index of `}` token
-     */
-    private function clearOverCompleteBraces(Tokens $tokens, $openIndex, $closeIndex)
-    {
-        $tokens->clearTokenAndMergeSurroundingWhitespace($closeIndex);
-        $tokens->clearTokenAndMergeSurroundingWhitespace($openIndex);
-    }
-
-    private function findCurlyBraceOpen(Tokens $tokens)
-    {
-        for ($i = \count($tokens) - 1; $i > 0; --$i) {
-            if ($tokens[$i]->equals('{')) {
-                yield $i;
-            }
-        }
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $index  index of `{` token
      *
-     * @return bool
+     * Must run before NoUselessElseFixer, NoUselessReturnFixer, ReturnAssignmentFixer, SimplifiedIfReturnFixer.
      */
-    private function isOverComplete(Tokens $tokens, $index)
+    public function getPriority(): int
     {
-        static $whiteList = ['{', '}', [T_OPEN_TAG], ':', ';'];
+        return $this->noUnneededBracesFixer->getPriority();
+    }
 
-        return $tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny($whiteList);
+    public function getSuccessorsNames(): array
+    {
+        return [
+            $this->noUnneededBracesFixer->getName(),
+        ];
+    }
+
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('namespaces', 'Remove unneeded curly braces from bracketed namespaces.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
+    }
+
+    protected function createProxyFixers(): array
+    {
+        return [
+            $this->noUnneededBracesFixer,
+        ];
     }
 }

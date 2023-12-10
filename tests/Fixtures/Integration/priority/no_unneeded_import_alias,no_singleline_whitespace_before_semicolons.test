@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: no_unneeded_import_alias,no_singleline_whitespace_before_semicolons.
+--RULESET--
+{"no_unneeded_import_alias": true, "no_singleline_whitespace_before_semicolons": true}
+--EXPECT--
+<?php
+
+use function U\V\W\FY;
+
+FY();
+
+--INPUT--
+<?php
+
+use function U\V\W\FY as FY;
+
+FY();

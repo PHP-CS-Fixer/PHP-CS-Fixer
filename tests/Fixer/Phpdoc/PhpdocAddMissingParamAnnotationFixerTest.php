@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -24,11 +27,11 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigureRejectsUnknownConfigurationKey()
+    public function testConfigureRejectsUnknownConfigurationKey(): void
     {
         $key = 'foo';
 
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage(sprintf(
             '[phpdoc_add_missing_param_annotation] Invalid configuration: The option "%s" does not exist.',
             $key
@@ -44,13 +47,10 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      *
      * @param mixed $value
      */
-    public function testConfigureRejectsInvalidConfigurationValue($value)
+    public function testConfigureRejectsInvalidConfigurationValue($value, string $expectedMessage): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
-        $this->expectExceptionMessage(sprintf(
-            'expected to be of type "bool", but is of type "%s".',
-            \is_object($value) ? \get_class($value) : \gettype($value)
-        ));
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessageMatches($expectedMessage);
 
         $this->fixer->configure([
             'only_untyped' => $value,
@@ -58,84 +58,101 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @return array
+     * @return iterable<string, array{mixed, string}>
      */
-    public function provideConfigureRejectsInvalidConfigurationValueCases()
+    public static function provideConfigureRejectsInvalidConfigurationValueCases(): iterable
     {
-        return [
-            'null' => [null],
-            'int' => [1],
-            'array' => [[]],
-            'float' => [0.1],
-            'object' => [new \stdClass()],
+        yield 'null' => [
+            null,
+            '#expected to be of type "bool", but is of type "(null|NULL)"\.$#',
+        ];
+
+        yield 'int' => [
+            1,
+            '#expected to be of type "bool", but is of type "(int|integer)"\.$#',
+        ];
+
+        yield 'array' => [
+            [],
+            '#expected to be of type "bool", but is of type "array"\.$#',
+        ];
+
+        yield 'float' => [
+            0.1,
+            '#expected to be of type "bool", but is of type "(float|double)"\.$#',
+        ];
+
+        yield 'object' => [
+            new \stdClass(),
+            '#expected to be of type "bool", but is of type "stdClass"\.$#',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $config
+     * @param null|array<string, mixed> $config
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, ?array $config = null): void
     {
-        $this->fixer->configure($config ?: ['only_untyped' => false]);
-
+        $this->fixer->configure($config ?? ['only_untyped' => false]);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     /**
      *
      */',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param int $foo
      * @param mixed $bar
      */
     function f1($foo, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param int $foo
      */
     function f1($foo, $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param int $bar
      * @param mixed $foo
      */
     function f2($foo, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param int $bar
      */
     function f2($foo, $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @return void
      * @param mixed $foo
      * @param mixed $bar
      */
     function f3($foo, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @return void
      */
     function f3($foo, $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     abstract class Foo {
         /**
          * @param int $bar
@@ -143,16 +160,17 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
          */
         abstract public function f4a($foo, $bar);
     }',
-                '<?php
+            '<?php
     abstract class Foo {
         /**
          * @param int $bar
          */
         abstract public function f4a($foo, $bar);
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class Foo {
         /**
          * @param int $bar
@@ -160,66 +178,71 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
          */
         static final public function f4b($foo, $bar) {}
     }',
-                '<?php
+            '<?php
     class Foo {
         /**
          * @param int $bar
          */
         static final public function f4b($foo, $bar) {}
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     class Foo {
         /**
          * @var int
          */
         private $foo;
     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param $bar No type !!
      * @param mixed $foo
      */
     function f5($foo, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param $bar No type !!
      */
     function f5($foo, $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param int
      * @param int $bar
      * @param Foo\Bar $foo
      */
     function f6(Foo\Bar $foo, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param int
      * @param int $bar
      */
     function f6(Foo\Bar $foo, $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param int $bar
      * @param null|string $foo
      */
     function f7(string $foo = nuLl, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param int $bar
      */
     function f7(string $foo = nuLl, $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @param int $bar
      * @param mixed $baz
@@ -227,275 +250,335 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @return void
      */
     function f9(string $foo, $bar, $baz) {}',
-                '<?php
+            '<?php
     /**
      * @param int $bar
      *
      * @return void
      */
     function f9(string $foo, $bar, $baz) {}',
-                ['only_untyped' => true],
-            ],
-            [
-                '<?php
+            ['only_untyped' => true],
+        ];
+
+        yield [
+            '<?php
     /**
      * @param bool|bool[] $caseSensitive Line 1
      *                                   Line 2
      */
      function f11($caseSensitive) {}
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /** @return string */
     function hello($string)
     {
         return $string;
     }',
-            ],
-            [
-                '<?php
-    /** @return string
-     * @param mixed $string
-     */
-    function hello($string)
-    {
-        return $string;
-    }',
-                '<?php
-    /** @return string
-     */
-    function hello($string)
-    {
-        return $string;
-    }',
-            ],
-            [
-                '<?php
-    /**
-     * @param mixed $string
-     * @return string */
-    function hello($string)
-    {
-        return $string;
-    }',
-                '<?php
-    /**
-     * @return string */
-    function hello($string)
-    {
-        return $string;
-    }',
-            ],
         ];
-    }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $config
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
+        yield [
+            '<?php
+    /** @return string
+     * @param mixed $string
      */
-    public function testFix70($expected, $input = null, array $config = [])
+    function hello($string)
     {
-        $this->fixer->configure($config ?: ['only_untyped' => false]);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
+        return $string;
+    }',
+            '<?php
+    /** @return string
+     */
+    function hello($string)
     {
-        return [
-            [
-                '<?php
+        return $string;
+    }',
+        ];
+
+        yield [
+            '<?php
+    /**
+     * @param mixed $string
+     * @return string */
+    function hello($string)
+    {
+        return $string;
+    }',
+            '<?php
+    /**
+     * @return string */
+    function hello($string)
+    {
+        return $string;
+    }',
+        ];
+
+        yield [
+            '<?php
     /**
      * @param int $bar
      * @param string $foo
      */
     function f8(string $foo = "null", $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param int $bar
      */
     function f8(string $foo = "null", $bar) {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     /**
      * @{inheritdoc}
      */
     function f10(string $foo = "null", $bar) {}',
-            ],
         ];
-    }
 
+        yield [
+            '<?php
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $config
-     *
-     * @dataProvider provideFix71Cases
-     * @requires PHP 7.1
+     * @inheritDoc
      */
-    public function testFix71($expected, $input = null, array $config = [])
-    {
-        $this->fixer->configure($config ?: ['only_untyped' => false]);
+    function f10(string $foo = "null", $bar) {}',
+        ];
 
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases()
-    {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
     /**
      * @param int $bar
      * @param ?array $foo
      */
     function p1(?array $foo = null, $bar) {}',
-                '<?php
+            '<?php
     /**
      * @param int $bar
      */
     function p1(?array $foo = null, $bar) {}',
-            ],
+            ['only_untyped' => false],
+        ];
+
+        yield [
+            '<?php
+    /**
+     * Foo
+     * @param mixed $bar
+     */
+    function p1(?int $foo = 0, $bar) {}',
+            '<?php
+    /**
+     * Foo
+     */
+    function p1(?int $foo = 0, $bar) {}',
+            ['only_untyped' => true],
+        ];
+
+        yield [
+            '<?php
+    /**
+     * Foo
+     * @return int
+     */
+    function p1(?int $foo = 0) {}',
+            null,
+            ['only_untyped' => true],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $config
+     * @param null|array<string, mixed> $config
      *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null, array $config = [])
+    public function testMessyWhitespaces(string $expected, ?string $input = null, ?array $config = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        $this->fixer->configure($config ?: ['only_untyped' => false]);
-
+        $this->fixer->configure($config ?? ['only_untyped' => false]);
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t * @param null|string \$foo\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
-                "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
-            ],
+        yield [
+            "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t * @param null|string \$foo\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
+            "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
         ];
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideByReferenceCases
      */
-    public function testByReference($expected, $input)
+    public function testByReference(string $expected, string $input): void
     {
         $this->fixer->configure(['only_untyped' => false]);
         $this->doTest($expected, $input);
     }
 
-    public function provideByReferenceCases()
+    public static function provideByReferenceCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     /**
                      * something
                      * @param mixed $numbers
                      */
                     function add(&$numbers) {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * something
                      */
                     function add(&$numbers) {}
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     /**
                      * something
                      * @param null|array $numbers
                      */
                     function add(array &$numbers = null) {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * something
                      */
                     function add(array &$numbers = null) {}
                 ',
-            ],
         ];
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideVariableNumberOfArgumentsCases
      */
-    public function testVariableNumberOfArguments($expected, $input)
+    public function testVariableNumberOfArguments(string $expected, string $input): void
     {
         $this->fixer->configure(['only_untyped' => false]);
         $this->doTest($expected, $input);
     }
 
-    public function provideVariableNumberOfArgumentsCases()
+    public static function provideVariableNumberOfArgumentsCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
                     /**
                      * something
                      * @param array $numbers
                      */
                     function sum(...$numbers) {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * something
                      */
                     function sum(...$numbers) {}
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     /**
                      * @param int $a
                      * @param array $numbers
                      */
                     function sum($a, ...$numbers) {}
                 ',
-                '<?php
+            '<?php
                     /**
                      * @param int $a
                      */
                     function sum($a, ...$numbers) {}
                 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     /**
                      * @param \Date[] $numbers
                      */
                     function sum(\Date ...$numbers) {}
                 ',
-                '<?php
+            '<?php
                     /**
                      */
                     function sum(\Date ...$numbers) {}
                 ',
-            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['only_untyped' => false]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): iterable
+    {
+        yield [
+            '<?php class Foo {
+                /**
+                 * @param Bar $x
+                 * @param ?Bar $y
+                 * @param null|Bar $z
+                 */
+                public function __construct(
+                    public Bar $x,
+                    protected ?Bar $y,
+                    private null|Bar $z,
+                ) {}
+            }',
+            '<?php class Foo {
+                /**
+                 */
+                public function __construct(
+                    public Bar $x,
+                    protected ?Bar $y,
+                    private null|Bar $z,
+                ) {}
+            }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['only_untyped' => false]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield [
+            '<?php class Foo {
+                /**
+                 * @param Bar $bar
+                 * @param Baz $baz
+                 */
+                public function __construct(
+                    public readonly Bar $bar,
+                    readonly public Baz $baz,
+                ) {}
+            }',
+            '<?php class Foo {
+                /**
+                 */
+                public function __construct(
+                    public readonly Bar $bar,
+                    readonly public Baz $baz,
+                ) {}
+            }',
         ];
     }
 }

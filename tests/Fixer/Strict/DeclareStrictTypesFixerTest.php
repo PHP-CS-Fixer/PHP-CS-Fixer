@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,8 +18,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
@@ -25,22 +25,17 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
-     * @requires PHP 7.0
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 declare(ticks=1);
 //
 declare(strict_types=1);
@@ -48,122 +43,129 @@ declare(strict_types=1);
 namespace A\B\C;
 class A {
 }',
-            ],
-            [
-                '<?php declare/* A b C*/(strict_types=1);',
-            ],
-            [
-                '<?php /**/ /**/ deClarE  (strict_types=1)    ?>Test',
-                '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>Test',
-            ],
-            [
-                '<?php            DECLARE  (    strict_types=1   )   ;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php declare/* A b C*/(strict_types=1);',
+        ];
+
+        yield [
+            '<?php /**/ /**/ deClarE  (strict_types=1)    ?>Test',
+            '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>Test',
+        ];
+
+        yield [
+            '<?php            DECLARE  (    strict_types=1   )   ;',
+        ];
+
+        yield [
+            '<?php
                 /**/
                 declare(strict_types=1);',
-            ],
-            [
-                '<?php declare(strict_types=1);
+        ];
+
+        yield [
+            '<?php declare(strict_types=1);
 
                 phpinfo();',
-                '<?php
+            '<?php
 
                 phpinfo();',
-            ],
-            [
-                '<?php declare(strict_types=1);
+        ];
+
+        yield [
+            '<?php declare(strict_types=1);
 
 /**
  * Foo
  */
 phpinfo();',
-                '<?php
+            '<?php
 
 /**
  * Foo
  */
 phpinfo();',
-            ],
-            [
-                '<?php declare(strict_types=1);
+        ];
+
+        yield [
+            '<?php declare(strict_types=1);
 
 // comment after empty line',
-                '<?php
+            '<?php
 
 // comment after empty line',
-            ],
-            [
-                '<?php declare(strict_types=1);
+        ];
+
+        yield [
+            '<?php declare(strict_types=1);
 // comment without empty line before',
-                '<?php
+            '<?php
 // comment without empty line before',
-            ],
-            [
-                '<?php declare(strict_types=1);
+        ];
+
+        yield [
+            '<?php declare(strict_types=1);
 phpinfo();',
-                '<?php phpinfo();',
-            ],
-            [
-                '<?php declare(strict_types=1);
+            '<?php phpinfo();',
+        ];
+
+        yield [
+            '<?php declare(strict_types=1);
 $a = 456;
 ',
-                '<?php
+            '<?php
 $a = 456;
 ',
-            ],
-            [
-                '<?php declare(strict_types=1);
+        ];
+
+        yield [
+            '<?php declare(strict_types=1);
 /**/',
-                '<?php /**/',
-            ],
+            '<?php /**/',
+        ];
+
+        yield [
+            '<?php declare(strict_types=1);',
+            '<?php declare(strict_types=0);',
         ];
     }
 
     /**
-     * @param string $input
-     *
      * @dataProvider provideDoNotFixCases
      */
-    public function testDoNotFix($input)
+    public function testDoNotFix(string $input): void
     {
         $this->doTest($input);
     }
 
-    public function provideDoNotFixCases()
+    public static function provideDoNotFixCases(): iterable
     {
-        return [
-            ['  <?php echo 123;'], // first statement must be a open tag
-            ['<?= 123;'], // first token open with echo is not fixed
-        ];
+        yield ['  <?php echo 123;']; // first statement must be an open tag
+
+        yield ['<?= 123;']; // first token open with echo is not fixed
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
-     * @requires PHP 7.0
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public static function provideMessyWhitespacesCases(): iterable
     {
-        return [
-            [
-                "<?php declare(strict_types=1);\r\nphpinfo();",
-                "<?php\r\n\tphpinfo();",
-            ],
-            [
-                "<?php declare(strict_types=1);\r\nphpinfo();",
-                "<?php\nphpinfo();",
-            ],
+        yield [
+            "<?php declare(strict_types=1);\r\nphpinfo();",
+            "<?php\r\n\tphpinfo();",
+        ];
+
+        yield [
+            "<?php declare(strict_types=1);\r\nphpinfo();",
+            "<?php\nphpinfo();",
         ];
     }
 }

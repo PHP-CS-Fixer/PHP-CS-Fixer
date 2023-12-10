@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,50 +26,108 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideTestFixCases
-     * @requires PHP 7.0
+     * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    /**
+     * @return iterable<string, array{0: string, 1?: null|string}>
+     */
+    public static function provideFixCases(): iterable
     {
-        return [
-            [
-                '<?php echo ${$foo}($bar);',
-                '<?php echo $$foo($bar);',
-            ],
-            [
-                '<?php echo ${$foo}[\'bar\'][\'baz\'];',
-                '<?php echo $$foo[\'bar\'][\'baz\'];',
-            ],
-            [
-                '<?php echo $foo->{$bar}[\'baz\'];',
-                '<?php echo $foo->$bar[\'baz\'];',
-            ],
-            [
-                '<?php echo $foo->{$bar}[\'baz\']();',
-                '<?php echo $foo->$bar[\'baz\']();',
-            ],
-            [
-                '<?php echo $
+        yield 'variable variable function call' => [
+            '<?php echo ${$foo}($bar);',
+            '<?php echo $$foo($bar);',
+        ];
+
+        yield 'variable variable array fetch' => [
+            '<?php echo ${$foo}[\'bar\'][\'baz\'];',
+            '<?php echo $$foo[\'bar\'][\'baz\'];',
+        ];
+
+        yield 'dynamic property access' => [
+            '<?php echo $foo->{$bar}[\'baz\'];',
+            '<?php echo $foo->$bar[\'baz\'];',
+        ];
+
+        yield 'dynamic property access with method call' => [
+            '<?php echo $foo->{$bar}[\'baz\']();',
+            '<?php echo $foo->$bar[\'baz\']();',
+        ];
+
+        yield 'variable variable with comments between dollar signs' => [
+            '<?php echo $
 /* C1 */
 // C2
 {$foo}
 // C3
 ;',
-                '<?php echo $
+            '<?php echo $
 /* C1 */
 // C2
 $foo
 // C3
 ;',
-            ],
+        ];
+
+        yield 'dynamic static property access using variable variable' => [
+            '<?php echo Foo::${$bar};',
+            '<?php echo Foo::$$bar;',
+        ];
+
+        yield 'dynamic static property access using variable variable with method call' => [
+            '<?php echo Foo::${$bar}->baz();',
+            '<?php echo Foo::$$bar->baz();',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: null|string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'dynamic property fetch with nullsafe operator' => [
+            '<?php echo $foo?->{$bar}["baz"];',
+            '<?php echo $foo?->$bar["baz"];',
+        ];
+
+        yield 'dynamic property fetch with nullsafe operator and method call' => [
+            '<?php echo $foo?->{$bar}["baz"]();',
+            '<?php echo $foo?->$bar["baz"]();',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testFix83(string $expected, ?string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: null|string}>
+     */
+    public static function provideFix83Cases(): iterable
+    {
+        yield 'dynamic class const fetch with variable variable' => [
+            '<?php echo Foo::{${$bar}};',
+            '<?php echo Foo::{$$bar};',
         ];
     }
 }

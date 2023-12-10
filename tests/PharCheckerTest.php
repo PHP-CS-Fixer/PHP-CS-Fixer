@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,23 +17,21 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\PharChecker;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\PharChecker
  */
 final class PharCheckerTest extends TestCase
 {
-    public function testPharChecker()
+    public function testPharChecker(): void
     {
         $checker = new PharChecker();
-        static::assertNull($checker->checkFileValidity(__DIR__.'/Fixtures/empty.phar'));
+        self::assertNull($checker->checkFileValidity(__DIR__.'/Fixtures/empty.phar'));
     }
 
-    public function testPharCheckerInvalidFile()
+    public function testPharCheckerInvalidFile(): void
     {
         $checker = new PharChecker();
-        static::assertStringStartsWith('Failed to create Phar instance.', $checker->checkFileValidity(__FILE__));
+        self::assertStringStartsWith('Failed to create Phar instance.', $checker->checkFileValidity(__FILE__));
     }
 }

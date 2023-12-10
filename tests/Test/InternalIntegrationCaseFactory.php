@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,9 +24,9 @@ use Symfony\Component\Finder\SplFileInfo;
 final class InternalIntegrationCaseFactory extends AbstractIntegrationCaseFactory
 {
     /**
-     * {@inheritdoc}
+     * @return array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck: bool}
      */
-    protected function determineSettings(SplFileInfo $file, $config)
+    protected function determineSettings(SplFileInfo $file, ?string $config): array
     {
         $parsed = parent::determineSettings($file, $config);
 

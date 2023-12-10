@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_unneeded_braces,simplified_if_return.
+--RULESET--
+{"no_unneeded_braces": true, "simplified_if_return": true}
+--EXPECT--
+<?php
+
+return ! ($foo)      ;
+
+--INPUT--
+<?php
+
+if ($foo) { return false; } {return true;}

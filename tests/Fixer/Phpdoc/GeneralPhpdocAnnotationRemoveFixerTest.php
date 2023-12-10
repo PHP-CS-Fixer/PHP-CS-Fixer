@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,31 +20,26 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @author Gert de Pagter
+ *
  * @covers \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer
  */
 final class GeneralPhpdocAnnotationRemoveFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixCases
+     * @param array<string, mixed> $config
      *
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $config
+     * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            'An Annotation gets removed' => [
-                '<?php
+        yield 'An Annotation gets removed' => [
+            '<?php
 /**
  * @internal
  */
@@ -50,7 +47,7 @@ function hello($name)
 {
     return "hello " . $name;
 }',
-                '<?php
+            '<?php
 /**
  * @internal
  * @param string $name
@@ -59,10 +56,11 @@ function hello($name)
 {
     return "hello " . $name;
 }',
-                ['annotations' => ['param']],
-            ],
-            'It removes multiple annotations' => [
-                '<?php
+            ['annotations' => ['param']],
+        ];
+
+        yield 'It removes multiple annotations' => [
+            '<?php
 /**
  * @author me
  * @internal
@@ -71,22 +69,7 @@ function hello($name)
 {
     return "hello " . $name;
 }',
-                '<?php
-/**
- * @author me
- * @internal
- * @param string $name
- * @return string
- * @throws \Exception
- */
-function hello($name)
-{
-    return "hello " . $name;
-}',
-                ['annotations' => ['param', 'return', 'throws']],
-            ],
-            'It does nothing if no configuration is given' => [
-                '<?php
+            '<?php
 /**
  * @author me
  * @internal
@@ -98,9 +81,26 @@ function hello($name)
 {
     return "hello " . $name;
 }',
-            ],
-            'It works on multiple functions' => [
-                '<?php
+            ['annotations' => ['param', 'return', 'throws']],
+        ];
+
+        yield 'It does nothing if no configuration is given' => [
+            '<?php
+/**
+ * @author me
+ * @internal
+ * @param string $name
+ * @return string
+ * @throws \Exception
+ */
+function hello($name)
+{
+    return "hello " . $name;
+}',
+        ];
+
+        yield 'It works on multiple functions' => [
+            '<?php
 /**
  * @param string $name
  * @throws \Exception
@@ -119,7 +119,7 @@ function noComment()
 {
     callOtherFunction();
 }',
-                '<?php
+            '<?php
 /**
  * @author me
  * @internal
@@ -144,10 +144,11 @@ function noComment()
 {
     callOtherFunction();
 }',
-                ['annotations' => ['author', 'return', 'internal']],
-            ],
-            'Nothing happens to non doc-block comments' => [
-                '<?php
+            ['annotations' => ['author', 'return', 'internal']],
+        ];
+
+        yield 'Nothing happens to non doc-block comments' => [
+            '<?php
 /*
  * @internal
  * @param string $name
@@ -156,11 +157,12 @@ function hello($name)
 {
     return "hello " . $name;
 }',
-                null,
-                ['annotations' => ['internal', 'param', 'return']],
-            ],
-            'Nothing happens if to be deleted annotations are not present' => [
-                '<?php
+            null,
+            ['annotations' => ['internal', 'param', 'return']],
+        ];
+
+        yield 'Nothing happens if to be deleted annotations are not present' => [
+            '<?php
 /**
  * @internal
  * @param string $name
@@ -169,20 +171,53 @@ function hello($name)
 {
     return "hello " . $name;
 }',
-                null,
-                ['annotations' => ['author', 'test', 'return', 'deprecated']],
-            ],
-            [
-                '<?php
+            null,
+            ['annotations' => ['author', 'test', 'return', 'deprecated']],
+        ];
+
+        yield [
+            '<?php
 
 while ($something = myFunction($foo)) {}
 ',
-                '<?php
+            '<?php
 /** @noinspection PhpAssignmentInConditionInspection */
 while ($something = myFunction($foo)) {}
 ',
-                ['annotations' => ['noinspection']],
-            ],
+            ['annotations' => ['noinspection']],
+        ];
+
+        yield [
+            '<?php
+/**
+* @internal
+* @AuThOr Jane Doe
+*/
+function foo() {}',
+            '<?php
+/**
+* @internal
+* @author John Doe
+* @AuThOr Jane Doe
+*/
+function foo() {}',
+            ['annotations' => ['author'], 'case_sensitive' => true],
+        ];
+
+        yield [
+            '<?php
+/**
+* @internal
+*/
+function foo() {}',
+            '<?php
+/**
+* @internal
+* @author John Doe
+* @AuThOr Jane Doe
+*/
+function foo() {}',
+            ['annotations' => ['author'], 'case_sensitive' => false],
         ];
     }
 }

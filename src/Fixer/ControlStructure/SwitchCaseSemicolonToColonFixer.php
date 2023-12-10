@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,20 +17,18 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Fixer for rules defined in PSR2 ¶5.2.
- *
- * @author SpacePossum
  */
 final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'A case should be followed by a colon and not a semicolon.',
@@ -49,54 +49,37 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after NoEmptyStatementFixer.
      */
-    public function isCandidate(Tokens $tokens)
+    public function getPriority(): int
     {
-        return $tokens->isAnyTokenKindsFound([T_CASE, T_DEFAULT]);
+        return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
-        foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind([T_CASE, T_DEFAULT])) {
-                $this->fixSwitchCase($tokens, $index);
+        return $tokens->isTokenKindFound(T_SWITCH);
+    }
+
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+    {
+        /** @var SwitchAnalysis $analysis */
+        foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]) as $analysis) {
+            $default = $analysis->getDefaultAnalysis();
+
+            if (null !== $default) {
+                $this->fixTokenIfNeeded($tokens, $default->getColonIndex());
+            }
+
+            foreach ($analysis->getCases() as $caseAnalysis) {
+                $this->fixTokenIfNeeded($tokens, $caseAnalysis->getColonIndex());
             }
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     * @param int    $index
-     */
-    protected function fixSwitchCase(Tokens $tokens, $index)
+    private function fixTokenIfNeeded(Tokens $tokens, int $index): void
     {
-        $ternariesCount = 0;
-        do {
-            if ($tokens[$index]->equalsAny(['(', '{'])) { // skip constructs
-                $type = Tokens::detectBlockType($tokens[$index]);
-                $index = $tokens->findBlockEnd($type['type'], $index);
-
-                continue;
-            }
-
-            if ($tokens[$index]->equals('?')) {
-                ++$ternariesCount;
-
-                continue;
-            }
-
-            if ($tokens[$index]->equalsAny([':', ';'])) {
-                if (0 === $ternariesCount) {
-                    break;
-                }
-
-                --$ternariesCount;
-            }
-        } while (++$index);
-
         if ($tokens[$index]->equals(';')) {
             $tokens[$index] = new Token(':');
         }

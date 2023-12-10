@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,346 +26,373 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideTestFixCases
+     * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            [<<<'EOF'
-<?php $a = <<<'TEST'
-Foo $bar \n
-TEST;
+        yield [<<<'EOF'
+            <?php $a = <<<'TEST'
+            Foo $bar \n
+            TEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = <<<'TEST'
-TEST;
+            EOF
+        ];
 
-EOF
-                , <<<'EOF'
-<?php $a = <<<TEST
-TEST;
+        yield [<<<'EOF'
+            <?php $a = <<<'TEST'
+            TEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = <<<'TEST'
-Foo \\ $bar \n
-TEST;
+            EOF
+            , <<<'EOF'
+                <?php $a = <<<TEST
+                TEST;
 
-EOF
-                , <<<'EOF'
-<?php $a = <<<TEST
-Foo \\\\ \$bar \\n
-TEST;
+                EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = <<<'TEST'
-Foo
-TEST;
+        yield [<<<'EOF'
+            <?php $a = <<<'TEST'
+            Foo \\ $bar \n
+            TEST;
 
-EOF
-                , <<<'EOF'
-<?php $a = <<<"TEST"
-Foo
-TEST;
+            EOF
+            , <<<'EOF'
+                <?php $a = <<<TEST
+                Foo \\\\ \$bar \\n
+                TEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = <<<TEST
-Foo $bar
-TEST;
+                EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = <<<TEST
-Foo \\$bar
-TEST;
+        yield [<<<'EOF'
+            <?php $a = <<<'TEST'
+            Foo
+            TEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = <<<TEST
-Foo \n $bar
-TEST;
+            EOF
+            , <<<'EOF'
+                <?php $a = <<<"TEST"
+                Foo
+                TEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = <<<TEST
-Foo \x00 $bar
-TEST;
+                EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php
-$html = <<<   'HTML'
-a
-HTML;
+        yield [<<<'EOF'
+            <?php $a = <<<TEST
+            Foo $bar
+            TEST;
 
-EOF
-                , <<<'EOF'
-<?php
-$html = <<<   HTML
-a
-HTML;
+            EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = <<<           'TEST'
-Foo
-TEST;
+        yield [<<<'EOF'
+            <?php $a = <<<TEST
+            Foo \\$bar
+            TEST;
 
-EOF
-                , <<<'EOF'
-<?php $a = <<<           "TEST"
-Foo
-TEST;
+            EOF
+        ];
 
-EOF
-            ],
-            [<<<EOF
-<?php echo <<<'TEST'\r\nFoo\r\nTEST;
+        yield [<<<'EOF'
+            <?php $a = <<<TEST
+            Foo \n $bar
+            TEST;
 
-EOF
-                , <<<EOF
-<?php echo <<<TEST\r\nFoo\r\nTEST;
+            EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = b<<<'TEST'
-Foo $bar \n
-TEST;
+        yield [<<<'EOF'
+            <?php $a = <<<TEST
+            Foo \x00 $bar
+            TEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = b<<<'TEST'
-TEST;
+            EOF
+        ];
 
-EOF
-                , <<<'EOF'
-<?php $a = b<<<TEST
-TEST;
+        yield [<<<'EOF'
+            <?php
+            $html = <<<   'HTML'
+            a
+            HTML;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = b<<<'TEST'
-Foo \\ $bar \n
-TEST;
+            EOF
+            , <<<'EOF'
+                <?php
+                $html = <<<   HTML
+                a
+                HTML;
 
-EOF
-                , <<<'EOF'
-<?php $a = b<<<TEST
-Foo \\\\ \$bar \\n
-TEST;
+                EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = b<<<'TEST'
-Foo
-TEST;
+        yield [<<<'EOF'
+            <?php $a = <<<           'TEST'
+            Foo
+            TEST;
 
-EOF
-                , <<<'EOF'
-<?php $a = b<<<"TEST"
-Foo
-TEST;
+            EOF
+            , <<<'EOF'
+                <?php $a = <<<           "TEST"
+                Foo
+                TEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = b<<<TEST
-Foo $bar
-TEST;
+                EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = b<<<TEST
-Foo \\$bar
-TEST;
+        yield [<<<EOF
+            <?php echo <<<'TEST'\r\nFoo\r\nTEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = b<<<TEST
-Foo \n $bar
-TEST;
+            EOF
+            , <<<EOF
+                <?php echo <<<TEST\r\nFoo\r\nTEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = b<<<TEST
-Foo \x00 $bar
-TEST;
+                EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php
-$html = b<<<   'HTML'
-a
-HTML;
+        yield [<<<'EOF'
+            <?php $a = b<<<'TEST'
+            Foo $bar \n
+            TEST;
 
-EOF
-                , <<<'EOF'
-<?php
-$html = b<<<   HTML
-a
-HTML;
+            EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = b<<<           'TEST'
-Foo
-TEST;
+        yield [<<<'EOF'
+            <?php $a = b<<<'TEST'
+            TEST;
 
-EOF
-                , <<<'EOF'
-<?php $a = b<<<           "TEST"
-Foo
-TEST;
+            EOF
+            , <<<'EOF'
+                <?php $a = b<<<TEST
+                TEST;
 
-EOF
-            ],
-            [<<<EOF
-<?php echo b<<<'TEST'\r\nFoo\r\nTEST;
+                EOF
+        ];
 
-EOF
-                , <<<EOF
-<?php echo b<<<TEST\r\nFoo\r\nTEST;
+        yield [<<<'EOF'
+            <?php $a = b<<<'TEST'
+            Foo \\ $bar \n
+            TEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = B<<<'TEST'
-Foo $bar \n
-TEST;
+            EOF
+            , <<<'EOF'
+                <?php $a = b<<<TEST
+                Foo \\\\ \$bar \\n
+                TEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = B<<<'TEST'
-TEST;
+                EOF
+        ];
 
-EOF
-                , <<<'EOF'
-<?php $a = B<<<TEST
-TEST;
+        yield [<<<'EOF'
+            <?php $a = b<<<'TEST'
+            Foo
+            TEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = B<<<'TEST'
-Foo \\ $bar \n
-TEST;
+            EOF
+            , <<<'EOF'
+                <?php $a = b<<<"TEST"
+                Foo
+                TEST;
 
-EOF
-                , <<<'EOF'
-<?php $a = B<<<TEST
-Foo \\\\ \$bar \\n
-TEST;
+                EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = B<<<'TEST'
-Foo
-TEST;
+        yield [<<<'EOF'
+            <?php $a = b<<<TEST
+            Foo $bar
+            TEST;
 
-EOF
-                , <<<'EOF'
-<?php $a = B<<<"TEST"
-Foo
-TEST;
+            EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = B<<<TEST
-Foo $bar
-TEST;
+        yield [<<<'EOF'
+            <?php $a = b<<<TEST
+            Foo \\$bar
+            TEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = B<<<TEST
-Foo \\$bar
-TEST;
+            EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = B<<<TEST
-Foo \n $bar
-TEST;
+        yield [<<<'EOF'
+            <?php $a = b<<<TEST
+            Foo \n $bar
+            TEST;
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = B<<<TEST
-Foo \x00 $bar
-TEST;
+            EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php
-$html = B<<<   'HTML'
-a
-HTML;
+        yield [<<<'EOF'
+            <?php $a = b<<<TEST
+            Foo \x00 $bar
+            TEST;
 
-EOF
-                , <<<'EOF'
-<?php
-$html = B<<<   HTML
-a
-HTML;
+            EOF
+        ];
 
-EOF
-            ],
-            [<<<'EOF'
-<?php $a = B<<<           'TEST'
-Foo
-TEST;
+        yield [<<<'EOF'
+            <?php
+            $html = b<<<   'HTML'
+            a
+            HTML;
 
-EOF
-                , <<<'EOF'
-<?php $a = B<<<           "TEST"
-Foo
-TEST;
+            EOF
+            , <<<'EOF'
+                <?php
+                $html = b<<<   HTML
+                a
+                HTML;
 
-EOF
-            ],
-            [<<<EOF
-<?php echo B<<<'TEST'\r\nFoo\r\nTEST;
+                EOF
+        ];
 
-EOF
-                , <<<EOF
-<?php echo B<<<TEST\r\nFoo\r\nTEST;
+        yield [<<<'EOF'
+            <?php $a = b<<<           'TEST'
+            Foo
+            TEST;
 
-EOF
-            ],
+            EOF
+            , <<<'EOF'
+                <?php $a = b<<<           "TEST"
+                Foo
+                TEST;
+
+                EOF
+        ];
+
+        yield [<<<EOF
+            <?php echo b<<<'TEST'\r\nFoo\r\nTEST;
+
+            EOF
+            , <<<EOF
+                <?php echo b<<<TEST\r\nFoo\r\nTEST;
+
+                EOF
+        ];
+
+        yield [<<<'EOF'
+            <?php $a = B<<<'TEST'
+            Foo $bar \n
+            TEST;
+
+            EOF
+        ];
+
+        yield [<<<'EOF'
+            <?php $a = B<<<'TEST'
+            TEST;
+
+            EOF
+            , <<<'EOF'
+                <?php $a = B<<<TEST
+                TEST;
+
+                EOF
+        ];
+
+        yield [<<<'EOF'
+            <?php $a = B<<<'TEST'
+            Foo \\ $bar \n
+            TEST;
+
+            EOF
+            , <<<'EOF'
+                <?php $a = B<<<TEST
+                Foo \\\\ \$bar \\n
+                TEST;
+
+                EOF
+        ];
+
+        yield [<<<'EOF'
+            <?php $a = B<<<'TEST'
+            Foo
+            TEST;
+
+            EOF
+            , <<<'EOF'
+                <?php $a = B<<<"TEST"
+                Foo
+                TEST;
+
+                EOF
+        ];
+
+        yield [<<<'EOF'
+            <?php $a = B<<<TEST
+            Foo $bar
+            TEST;
+
+            EOF
+        ];
+
+        yield [<<<'EOF'
+            <?php $a = B<<<TEST
+            Foo \\$bar
+            TEST;
+
+            EOF
+        ];
+
+        yield [<<<'EOF'
+            <?php $a = B<<<TEST
+            Foo \n $bar
+            TEST;
+
+            EOF
+        ];
+
+        yield [<<<'EOF'
+            <?php $a = B<<<TEST
+            Foo \x00 $bar
+            TEST;
+
+            EOF
+        ];
+
+        yield [<<<'EOF'
+            <?php
+            $html = B<<<   'HTML'
+            a
+            HTML;
+
+            EOF
+            , <<<'EOF'
+                <?php
+                $html = B<<<   HTML
+                a
+                HTML;
+
+                EOF
+        ];
+
+        yield [<<<'EOF'
+            <?php $a = B<<<           'TEST'
+            Foo
+            TEST;
+
+            EOF
+            , <<<'EOF'
+                <?php $a = B<<<           "TEST"
+                Foo
+                TEST;
+
+                EOF
+        ];
+
+        yield [<<<EOF
+            <?php echo B<<<'TEST'\r\nFoo\r\nTEST;
+
+            EOF
+            , <<<EOF
+                <?php echo B<<<TEST\r\nFoo\r\nTEST;
+
+                EOF
         ];
     }
 }

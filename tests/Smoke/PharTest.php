@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,10 +14,10 @@
 
 namespace PhpCsFixer\Tests\Smoke;
 
+use Keradus\CliExecutor\CliResult;
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
-use PhpCsFixer\Console\Command\HelpCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -24,15 +26,24 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @internal
  *
  * @coversNothing
+ *
  * @group covers-nothing
+ *
  * @large
  */
-final class PharTest extends AbstractSmokeTest
+final class PharTest extends AbstractSmokeTestCase
 {
+    /**
+     * @var string
+     */
     private static $pharCwd;
+
+    /**
+     * @var string
+     */
     private static $pharName;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -40,31 +51,22 @@ final class PharTest extends AbstractSmokeTest
         self::$pharName = 'php-cs-fixer.phar';
 
         if (!file_exists(self::$pharCwd.'/'.self::$pharName)) {
-            static::markTestSkippedOrFail('No phar file available.');
+            self::fail('No phar file available.');
         }
     }
 
-    public function testVersion()
+    public function testVersion(): void
     {
-        static::assertRegExp(
-            '/^.* '.Application::VERSION.'(?: '.Application::VERSION_CODENAME.')? by .*$/',
+        /** @phpstan-ignore-next-line to avoid `Ternary operator condition is always true|false.` */
+        $shouldExpectCodename = Application::VERSION_CODENAME ? 1 : 0;
+
+        self::assertMatchesRegularExpression(
+            sprintf("/^PHP CS Fixer (?<version>%s)(?<git_sha> \\([a-z0-9]+\\))?(?<codename> %s){%d}(?<by> by .*)\nPHP runtime: (?<php_version>\\d\\.\\d+\\..*)$/", Application::VERSION, Application::VERSION_CODENAME, $shouldExpectCodename),
             self::executePharCommand('--version')->getOutput()
         );
     }
 
-    public function testReadme()
-    {
-        static::assertSame(
-            str_replace(
-                HelpCOmmand::getLatestReleaseVersionFromChangeLog(),
-                Application::VERSION,
-                file_get_contents(__DIR__.'/../../README.rst')
-            ),
-            self::executePharCommand('readme')->getOutput()
-        );
-    }
-
-    public function testDescribe()
+    public function testDescribe(): void
     {
         $command = new DescribeCommand();
 
@@ -77,35 +79,72 @@ final class PharTest extends AbstractSmokeTest
             'name' => 'header_comment',
         ]);
 
-        static::assertSame(
+        self::assertSame(
             $commandTester->getDisplay(),
             self::executePharCommand('describe header_comment')->getOutput()
         );
     }
 
-    public function testFix()
+    public function testFix(): void
     {
-        static::assertSame(
+        self::assertSame(
             0,
             self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no 2>&1')->getCode()
         );
     }
 
-    public function testFixHelp()
+    public function testFixHelp(): void
     {
-        static::assertSame(
+        self::assertSame(
             0,
             self::executePharCommand('fix --help')->getCode()
         );
     }
 
-    /**
-     * @param string $params
-     *
-     * @return CliResult
-     */
-    private static function executePharCommand($params)
+    public static function provideReportCases(): iterable
     {
-        return CommandExecutor::create('php '.self::$pharName.' '.$params, self::$pharCwd)->getResult();
+        yield ['no'];
+
+        yield ['yes'];
+    }
+
+    /**
+     * @dataProvider provideReportCases
+     */
+    public function testReport(string $usingCache): void
+    {
+        try {
+            $json = self::executePharCommand(sprintf(
+                'fix %s --dry-run --format=json --rules=\'%s\' --using-cache=%s',
+                __FILE__,
+                json_encode(['concat_space' => ['spacing' => 'one']], JSON_THROW_ON_ERROR),
+                $usingCache,
+            ))->getOutput();
+
+            self::assertJson($json);
+
+            $report = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+            self::assertIsArray($report);
+            self::assertArrayHasKey('files', $report);
+            self::assertCount(1, $report['files']);
+            self::assertArrayHasKey(0, $report['files']);
+
+            self::assertSame(
+                'tests/Smoke/PharTest.php',
+                $report['files'][0]['name'],
+            );
+        } catch (\Throwable $exception) {
+            throw $exception;
+        } finally {
+            $cacheFile = __DIR__.'/../../.php-cs-fixer.cache';
+            if (file_exists($cacheFile)) {
+                unlink($cacheFile);
+            }
+        }
+    }
+
+    private static function executePharCommand(string $params): CliResult
+    {
+        return CommandExecutor::create('php '.self::$pharName.' '.$params, self::$pharCwd)->getResult(false);
     }
 }

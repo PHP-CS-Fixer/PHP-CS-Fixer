@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: no_useless_return,single_line_comment_style.
+--RULESET--
+{ "no_useless_return": true, "single_line_comment_style": true }
+--EXPECT--
+<?php
+function foo()
+{
+    // foo
+}
+
+--INPUT--
+<?php
+function foo()
+{
+    return/* foo */;
+}

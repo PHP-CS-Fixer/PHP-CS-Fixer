@@ -1,0 +1,4 @@
+--TEST--
+Integration of @PSR12:risky.
+--RULESET--
+{"@PSR12:risky": true}

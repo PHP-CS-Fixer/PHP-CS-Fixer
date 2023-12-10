@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,78 +20,104 @@ use PhpCsFixer\Runner\FileLintingIterator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Runner\FileLintingIterator
  */
 final class FileLintingIteratorTest extends TestCase
 {
-    public function testFileLintingIteratorEmpty()
+    public function testFileLintingIteratorEmpty(): void
     {
-        $fileLintingIteratorProphecy = $this->prophesize(LinterInterface::class);
-
         $iterator = new \ArrayIterator([]);
 
         $fileLintingIterator = new FileLintingIterator(
             $iterator,
-            $fileLintingIteratorProphecy->reveal()
+            $this->createLinterDouble()
         );
 
-        static::assertNull($fileLintingIterator->current());
-        static::assertNull($fileLintingIterator->currentLintingResult());
-        static::assertSame($iterator, $fileLintingIterator->getInnerIterator());
-        static::assertFalse($fileLintingIterator->valid());
+        self::assertNull($fileLintingIterator->current());
+        self::assertNull($fileLintingIterator->currentLintingResult());
+        self::assertSame($iterator, $fileLintingIterator->getInnerIterator());
+        self::assertFalse($fileLintingIterator->valid());
     }
 
-    public function testFileLintingIterator()
+    public function testFileLintingIterator(): void
     {
         $file = new \SplFileInfo(__FILE__);
-        $fileLintingIteratorProphecy = $this->prophesize(LinterInterface::class);
 
-        $lintingResultInterfaceProphecy = $this->prophesize(LintingResultInterface::class)->reveal();
-        $fileLintingIteratorProphecy->lintFile($file)->willReturn($lintingResultInterfaceProphecy);
+        $lintingResult = new class() implements LintingResultInterface {
+            public function check(): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
 
         $iterator = new \ArrayIterator([$file]);
 
         $fileLintingIterator = new FileLintingIterator(
             $iterator,
-            $fileLintingIteratorProphecy->reveal()
+            $this->createLinterDouble($lintingResult)
         );
 
         // test when not touched current is null
 
-        static::assertNull($fileLintingIterator->currentLintingResult());
+        self::assertNull($fileLintingIterator->currentLintingResult());
 
         // test iterating
 
-        $this->fileLintingIteratorIterationTest($fileLintingIterator, $file, $lintingResultInterfaceProphecy);
+        $this->fileLintingIteratorIterationTest($fileLintingIterator, $file, $lintingResult);
 
         // rewind and test again
 
         $fileLintingIterator->rewind();
 
-        $this->fileLintingIteratorIterationTest($fileLintingIterator, $file, $lintingResultInterfaceProphecy);
+        $this->fileLintingIteratorIterationTest($fileLintingIterator, $file, $lintingResult);
     }
 
     private function fileLintingIteratorIterationTest(
         FileLintingIterator $fileLintingIterator,
         \SplFileInfo $file,
         LintingResultInterface $lintingResultInterface
-    ) {
+    ): void {
         $iterations = 0;
 
         foreach ($fileLintingIterator as $lintedFile) {
-            static::assertSame($file, $lintedFile);
-            static::assertSame($lintingResultInterface, $fileLintingIterator->currentLintingResult());
+            self::assertSame($file, $lintedFile);
+            self::assertSame($lintingResultInterface, $fileLintingIterator->currentLintingResult());
             ++$iterations;
         }
 
-        static::assertSame(1, $iterations);
+        self::assertSame(1, $iterations);
 
         $fileLintingIterator->next();
 
-        static::assertNull($fileLintingIterator->currentLintingResult());
+        self::assertNull($fileLintingIterator->currentLintingResult());
+    }
+
+    private function createLinterDouble(?LintingResultInterface $lintingResult = null): LinterInterface
+    {
+        return new class($lintingResult) implements LinterInterface {
+            private ?LintingResultInterface $lintingResult;
+
+            public function __construct(?LintingResultInterface $lintingResult)
+            {
+                $this->lintingResult = $lintingResult;
+            }
+
+            public function isAsync(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function lintFile(string $path): LintingResultInterface
+            {
+                return $this->lintingResult;
+            }
+
+            public function lintSource(string $source): LintingResultInterface
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
     }
 }

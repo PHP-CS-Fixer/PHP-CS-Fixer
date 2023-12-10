@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -21,44 +23,29 @@ use Composer\Semver\VersionParser;
  */
 final class NewVersionChecker implements NewVersionCheckerInterface
 {
-    /**
-     * @var GithubClientInterface
-     */
-    private $githubClient;
+    private GithubClientInterface $githubClient;
 
-    /**
-     * @var VersionParser
-     */
-    private $versionParser;
+    private VersionParser $versionParser;
 
     /**
      * @var null|string[]
      */
     private $availableVersions;
 
-    /**
-     * @param GithubClientInterface $githubClient
-     */
     public function __construct(GithubClientInterface $githubClient)
     {
         $this->githubClient = $githubClient;
         $this->versionParser = new VersionParser();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLatestVersion()
+    public function getLatestVersion(): string
     {
         $this->retrieveAvailableVersions();
 
         return $this->availableVersions[0];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLatestVersionOfMajor($majorVersion)
+    public function getLatestVersionOfMajor(int $majorVersion): ?string
     {
         $this->retrieveAvailableVersions();
 
@@ -73,10 +60,7 @@ final class NewVersionChecker implements NewVersionCheckerInterface
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function compareVersions($versionA, $versionB)
+    public function compareVersions(string $versionA, string $versionB): int
     {
         $versionA = $this->versionParser->normalize($versionA);
         $versionB = $this->versionParser->normalize($versionB);
@@ -92,7 +76,7 @@ final class NewVersionChecker implements NewVersionCheckerInterface
         return 0;
     }
 
-    private function retrieveAvailableVersions()
+    private function retrieveAvailableVersions(): void
     {
         if (null !== $this->availableVersions) {
             return;

@@ -1,0 +1,9 @@
+--TEST--
+Integration of fixers: spaces_inside_parentheses,string_length_to_empty.
+--RULESET--
+{"spaces_inside_parentheses": true, "string_length_to_empty": true}
+--EXPECT--
+<?php $a = '' === $b;
+
+--INPUT--
+<?php $a = 0 === strlen(  $b  );

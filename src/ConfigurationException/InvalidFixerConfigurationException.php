@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,37 +19,26 @@ use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 /**
  * Exception thrown by Fixers on misconfiguration.
  *
- * @author SpacePossum
- *
  * @internal
+ *
  * @final Only internal extending this class is supported
  */
 class InvalidFixerConfigurationException extends InvalidConfigurationException
 {
-    /**
-     * @var string
-     */
-    private $fixerName;
+    private string $fixerName;
 
-    /**
-     * @param string          $fixerName
-     * @param string          $message
-     * @param null|\Exception $previous
-     */
-    public function __construct($fixerName, $message, \Exception $previous = null)
+    public function __construct(string $fixerName, string $message, ?\Throwable $previous = null)
     {
         parent::__construct(
             sprintf('[%s] %s', $fixerName, $message),
             FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG,
             $previous
         );
+
         $this->fixerName = $fixerName;
     }
 
-    /**
-     * @return string
-     */
-    public function getFixerName()
+    public function getFixerName(): string
     {
         return $this->fixerName;
     }

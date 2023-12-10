@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: no_unneeded_braces,return_assignment.
+--RULESET--
+{"no_unneeded_braces": true, "return_assignment": true}
+--EXPECT--
+<?php
+
+function A()
+{
+    return 1;
+}
+
+--INPUT--
+<?php
+
+function A()
+{
+    {$a = 1;}
+
+    return $a;
+}

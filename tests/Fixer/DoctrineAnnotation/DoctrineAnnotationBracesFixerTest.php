@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,28 +20,23 @@ use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\AbstractDoctrineAnnotationFixer
+ * @covers \PhpCsFixer\Doctrine\Annotation\DocLexer
  * @covers \PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationBracesFixer
  */
 final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotationFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithBracesCases
      */
-    public function testFixWithBraces($expected, $input = null)
+    public function testFixWithBraces(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['syntax' => 'with_braces']);
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithBracesCases()
+    public static function provideFixWithBracesCases(): iterable
     {
-        $cases = $this->createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo()
@@ -147,7 +144,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  */'],
             ['
 /**
- * See {@link http://help Help} or {@see BarClass} for details.
+ * See {@link https://help Help} or {@see BarClass} for details.
  */'],
             ['
 /**
@@ -253,6 +250,14 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @enduml
  * @startuml
  *
+ * // Psalm
+ * @psalm
+ * @psalm-param
+ *
+ * // PHPStan
+ * @phpstan
+ * @phpstan-param
+ *
  * // other
  * @fix
  * @FIXME
@@ -263,7 +268,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  */'],
         ]);
 
-        $cases[] = [
+        yield [
             '<?php
 
 /**
@@ -271,17 +276,12 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  */
 ',
         ];
-
-        return $cases;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutBracesCases
      */
-    public function testFixWithoutBraces($expected, $input = null)
+    public function testFixWithoutBraces(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
 
@@ -289,12 +289,9 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithoutBracesCases()
+    public static function provideFixWithoutBracesCases(): iterable
     {
-        $cases = $this->createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * Foo.
@@ -525,6 +522,15 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @enduml()
  * @startuml()
  *
+ * // Psalm
+ * @psalm()
+ * @psalm-param()
+ *
+ * // PHPStan
+ * @phpstan()
+ * @psalm-param()
+ *
+ *
  * // other
  * @fix()
  * @FIXME()
@@ -535,7 +541,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  */'],
         ]);
 
-        $cases[] = [
+        yield [
             '<?php
 
 /**
@@ -543,7 +549,37 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  */
 ',
         ];
+    }
 
-        return $cases;
+    /**
+     * @dataProvider provideFix82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix82Cases(): iterable
+    {
+        yield [
+            '<?php
+
+/**
+ * @author John Doe
+ *
+ * @Baz\Bar
+ */
+readonly class FooClass{}',
+            '<?php
+
+/**
+ * @author John Doe
+ *
+ * @Baz\Bar ( )
+ */
+readonly class FooClass{}',
+        ];
     }
 }

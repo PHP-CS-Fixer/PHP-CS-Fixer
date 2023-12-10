@@ -1,0 +1,20 @@
+--TEST--
+Integration of fixers: phpdoc_order,phpdoc_trim.
+--RULESET--
+{"phpdoc_order": true, "phpdoc_trim": true}
+--EXPECT--
+<?php
+/**
+ * @param $foo
+ * @param $bar
+ * @return bool
+ */
+
+--INPUT--
+<?php
+/**
+ * @return bool
+ *
+ * @param $foo
+ * @param $bar
+ */

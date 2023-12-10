@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,7 +20,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author John Kelly <wablam@gmail.com>
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Egidijus Girčys <e.gircys@gmail.com>
  *
@@ -29,233 +31,305 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideMultiLineWhitespaceFixCases
+     * @dataProvider provideFixMultiLineWhitespaceCases
      */
-    public function testFixMultiLineWhitespace($expected, $input = null)
+    public function testFixMultiLineWhitespace(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NO_MULTI_LINE]);
         $this->doTest($expected, $input);
     }
 
-    public function provideMultiLineWhitespaceFixCases()
+    public static function provideFixMultiLineWhitespaceCases(): iterable
     {
-        return [
-            [
-                '<?php
-                    $foo->bar() // test
-;',
-                '<?php
+        yield [
+            '<?php
+                    $foo->bar(); // test',
+            '<?php
                     $foo->bar() // test
                     ;',
-            ],
-            [
-                "<?php echo(1) // test\n;",
-            ],
-            [
-                '<?php
-                    $foo->bar() # test
-;',
-                '<?php
+        ];
+
+        yield [
+            '<?php echo(1); // test',
+            "<?php echo(1) // test\n;",
+        ];
+
+        yield [
+            "<?php echo(1); // test\n",
+        ];
+
+        yield [
+            '<?php
+                    $foo->bar(); # test',
+            '<?php
                     $foo->bar() # test
 
 
                 ;',
-            ],
-            [
-                "<?php\n;",
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
+                    $foo->bar();// test',
+            '<?php
+                    $foo->bar()// test
+
+
+                ;',
+        ];
+
+        yield [
+            "<?php\n;",
+        ];
+
+        yield [
+            '<?= $a; ?>',
+        ];
+
+        yield [
+            '<?php
 $this
     ->setName(\'readme1\')
     ->setDescription(\'Generates the README\');
 ',
-                '<?php
+            '<?php
 $this
     ->setName(\'readme1\')
     ->setDescription(\'Generates the README\')
 ;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $this
     ->setName(\'readme2\')
     ->setDescription(\'Generates the README\');
 ',
-                '<?php
+            '<?php
 $this
     ->setName(\'readme2\')
     ->setDescription(\'Generates the README\')
     ;
 ',
-            ],
-            [
-                '<?php echo "$this->foo(\'with param containing ;\') ;" ;',
-            ],
-            [
-                '<?php $this->foo();',
-            ],
-            [
-                '<?php $this->foo() ;',
-            ],
-            [
-                '<?php $this->foo(\'with param containing ;\') ;',
-            ],
-            [
-                '<?php $this->foo(\'with param containing ) ; \') ;',
-            ],
-            [
-                '<?php $this->foo("with param containing ) ; ")  ; ?>',
-            ],
-            [
-                '<?php $this->foo("with semicolon in string) ; "); ?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php echo "$this->foo(\'with param containing ;\') ;" ;',
+        ];
+
+        yield [
+            '<?php $this->foo();',
+        ];
+
+        yield [
+            '<?php $this->foo() ;',
+        ];
+
+        yield [
+            '<?php $this->foo(\'with param containing ;\') ;',
+        ];
+
+        yield [
+            '<?php $this->foo(\'with param containing ) ; \') ;',
+        ];
+
+        yield [
+            '<?php $this->foo("with param containing ) ; ")  ; ?>',
+        ];
+
+        yield [
+            '<?php $this->foo("with semicolon in string) ; "); ?>',
+        ];
+
+        yield [
+            '<?php
 $this
     ->example();',
-                '<?php
+            '<?php
 $this
     ->example()
 
     ;',
-            ],
-            [
-                '<?php
-                    Foo::bar() // test
-;',
-                '<?php
+        ];
+
+        yield [
+            '<?php
+                    Foo::bar(); // test',
+            '<?php
                     Foo::bar() // test
                     ;',
-            ],
-            [
-                '<?php
-                    Foo::bar() # test
-;',
-                '<?php
+        ];
+
+        yield [
+            '<?php
+                    Foo::bar(); # test',
+            '<?php
                     Foo::bar() # test
 
 
                 ;',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 self
     ::setName(\'readme1\')
     ->setDescription(\'Generates the README\');
 ',
-                '<?php
+            '<?php
 self
     ::setName(\'readme1\')
     ->setDescription(\'Generates the README\')
 ;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 self
     ::setName(\'readme2\')
     ->setDescription(\'Generates the README\');
 ',
-                '<?php
+            '<?php
 self
     ::setName(\'readme2\')
     ->setDescription(\'Generates the README\')
     ;
 ',
-            ],
-            [
-                '<?php echo "self::foo(\'with param containing ;\') ;" ;',
-            ],
-            [
-                '<?php self::foo();',
-            ],
-            [
-                '<?php self::foo() ;',
-            ],
-            [
-                '<?php self::foo(\'with param containing ;\') ;',
-            ],
-            [
-                '<?php self::foo(\'with param containing ) ; \') ;',
-            ],
-            [
-                '<?php self::foo("with param containing ) ; ")  ; ?>',
-            ],
-            [
-                '<?php self::foo("with semicolon in string) ; "); ?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php echo "self::foo(\'with param containing ;\') ;" ;',
+        ];
+
+        yield [
+            '<?php self::foo();',
+        ];
+
+        yield [
+            '<?php self::foo() ;',
+        ];
+
+        yield [
+            '<?php self::foo(\'with param containing ;\') ;',
+        ];
+
+        yield [
+            '<?php self::foo(\'with param containing ) ; \') ;',
+        ];
+
+        yield [
+            '<?php self::foo("with param containing ) ; ")  ; ?>',
+        ];
+
+        yield [
+            '<?php self::foo("with semicolon in string) ; "); ?>',
+        ];
+
+        yield [
+            '<?php
 self
     ::example();',
-                '<?php
+            '<?php
 self
     ::example()
 
     ;',
-            ],
+        ];
+
+        yield [
+            '<?php
+$seconds = $minutes
+    * 60; // seconds in a minute',
+            '<?php
+$seconds = $minutes
+    * 60 // seconds in a minute
+;',
+        ];
+
+        yield [
+            '<?php
+$seconds = $minutes
+    * (int) \'60\'; // seconds in a minute',
+            '<?php
+$seconds = $minutes
+    * (int) \'60\' // seconds in a minute
+;',
+        ];
+
+        yield [
+            '<?php
+$secondsPerMinute = 60;
+$seconds = $minutes
+    * $secondsPerMinute; // seconds in a minute',
+            '<?php
+$secondsPerMinute = 60;
+$seconds = $minutes
+    * $secondsPerMinute // seconds in a minute
+;',
+        ];
+
+        yield [
+            '<?php
+$secondsPerMinute = 60;
+$seconds = $minutes
+    * 60 * (int) true; // seconds in a minute',
+            '<?php
+$secondsPerMinute = 60;
+$seconds = $minutes
+    * 60 * (int) true // seconds in a minute
+;',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideMessyWhitespacesMultiLineWhitespaceFixCases
+     * @dataProvider provideMessyWhitespacesMultiLineWhitespaceCases
      */
-    public function testMessyWhitespacesMultiLineWhitespace($expected, $input = null)
+    public function testMessyWhitespacesMultiLineWhitespace(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NO_MULTI_LINE]);
-
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesMultiLineWhitespaceFixCases()
+    public static function provideMessyWhitespacesMultiLineWhitespaceCases(): iterable
     {
-        return [
-            [
-                "<?php echo(1) // test\r\n;",
-            ],
+        yield [
+            '<?php echo(1); // test',
+            "<?php echo(1) // test\r\n;",
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideSemicolonForChainedCallsFixCases
      */
-    public function testSemicolonForChainedCallsFix($expected, $input = null)
+    public function testSemicolonForChainedCallsFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
         $this->doTest($expected, $input);
     }
 
-    public function provideSemicolonForChainedCallsFixCases()
+    public static function provideSemicolonForChainedCallsFixCases(): iterable
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 
                     $this
                         ->method1()
                         ->method2()
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     $this
                         ->method1()
                         ->method2();
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     $this
                         ->method1()
@@ -264,7 +338,7 @@ self
 
 
 ',
-                '<?php
+            '<?php
 
                     $this
                         ->method1()
@@ -272,8 +346,10 @@ self
 
 
 ',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     $service->method1()
                         ->method2()
@@ -284,7 +360,7 @@ self
                         ->method1()
                         ->method2()
                     ;',
-                '<?php
+            '<?php
 
                     $service->method1()
                         ->method2()
@@ -294,20 +370,24 @@ self
                     $this
                         ->method1()
                         ->method2();',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     $service
                         ->method2()
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     $service
                         ->method2();
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     $service->method1()
                         ->method2()
@@ -315,15 +395,17 @@ self
                         ->method4()
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     $service->method1()
                         ->method2()
                         ->method3()
                         ->method4();
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     $this->service->method1()
                         ->method2([1, 2])
@@ -335,7 +417,7 @@ self
                         ->method4()
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     $this->service->method1()
                         ->method2([1, 2])
@@ -346,8 +428,10 @@ self
                         )
                         ->method4();
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     $service
                         ->method1()
@@ -356,7 +440,7 @@ self
                             ->method4()
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     $service
                         ->method1()
@@ -364,8 +448,10 @@ self
                         ->method3()
                             ->method4();
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $f = "g";
 
                     $service
@@ -375,7 +461,7 @@ self
                         ->method4(1, "a", $f)
                     ;
                 ?>',
-                '<?php
+            '<?php
                     $f = "g";
 
                     $service
@@ -384,8 +470,10 @@ self
                         ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
                         ->method4(1, "a", $f);
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $f = "g";
 
                     $service
@@ -395,7 +483,7 @@ self
                         ->method4(1, "a", $f) /* this is a comment */
                     ;
                 ?>',
-                '<?php
+            '<?php
                     $f = "g";
 
                     $service
@@ -404,18 +492,24 @@ self
                         ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
                         ->method4(1, "a", $f); /* this is a comment */
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $service->method1();
                     $service->method2()->method3();
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $service->method1() ;
                     $service->method2()->method3() ;
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     $service
                         ->method2(function ($a) {
@@ -426,7 +520,7 @@ self
                         })
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     $service
                         ->method2(function ($a) {
@@ -436,8 +530,10 @@ self
                             ;
                         });
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     $data = $service
                         ->method2(function ($a) {
@@ -452,7 +548,7 @@ self
                         })
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     $data = $service
                         ->method2(function ($a) {
@@ -465,8 +561,10 @@ self
                                 ));
                         });
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     $service
                         ->method1(null, null, [
@@ -476,7 +574,7 @@ self
                         ->method2(4, Type::class)
                     ;
 ',
-                '<?php
+            '<?php
 
                     $service
                         ->method1(null, null, [
@@ -485,36 +583,40 @@ self
                         ])
                         ->method2(4, Type::class);
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 $this
                         ->method1()
                         ->method2()
 ;
                 ?>',
-                '<?php
+            '<?php
 $this
                         ->method1()
                         ->method2();
                 ?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     self
                         ::method1()
                         ->method2()
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     self
                         ::method1()
                         ->method2();
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     self
                         ::method1()
@@ -523,7 +625,7 @@ $this
 
 
 ',
-                '<?php
+            '<?php
 
                     self
                         ::method1()
@@ -531,8 +633,10 @@ $this
 
 
 ',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     Service::method1()
                         ->method2()
@@ -543,7 +647,7 @@ $this
                         ->method1()
                         ->method2()
                     ;',
-                '<?php
+            '<?php
 
                     Service::method1()
                         ->method2()
@@ -553,20 +657,24 @@ $this
                     $this
                         ->method1()
                         ->method2();',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     Service
                         ::method2()
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     Service
                         ::method2();
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     Service::method1()
                         ->method2()
@@ -574,15 +682,17 @@ $this
                         ->method4()
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     Service::method1()
                         ->method2()
                         ->method3()
                         ->method4();
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     self::method1()
                         ->method2([1, 2])
@@ -594,7 +704,7 @@ $this
                         ->method4()
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     self::method1()
                         ->method2([1, 2])
@@ -605,8 +715,10 @@ $this
                         )
                         ->method4();
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     Service
                         ::method1()
@@ -615,7 +727,7 @@ $this
                             ->method4()
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     Service
                         ::method1()
@@ -623,8 +735,10 @@ $this
                         ->method3()
                             ->method4();
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $f = "g";
 
                     Service
@@ -634,7 +748,7 @@ $this
                         ->method4(1, "a", $f)
                     ;
                 ?>',
-                '<?php
+            '<?php
                     $f = "g";
 
                     Service
@@ -643,8 +757,10 @@ $this
                         ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
                         ->method4(1, "a", $f);
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     $f = "g";
 
                     Service
@@ -654,7 +770,7 @@ $this
                         ->method4(1, "a", $f) /* this is a comment */
                     ;
                 ?>',
-                '<?php
+            '<?php
                     $f = "g";
 
                     Service
@@ -663,18 +779,24 @@ $this
                         ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
                         ->method4(1, "a", $f); /* this is a comment */
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     Service::method1();
                     Service::method2()->method3();
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     Service::method1() ;
                     Service::method2()->method3() ;
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     Service
                         ::method2(function ($a) {
@@ -685,7 +807,7 @@ $this
                         })
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     Service
                         ::method2(function ($a) {
@@ -695,8 +817,10 @@ $this
                             ;
                         });
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     $data = Service
                         ::method2(function () {
@@ -711,7 +835,7 @@ $this
                         })
                     ;
                 ?>',
-                '<?php
+            '<?php
 
                     $data = Service
                         ::method2(function () {
@@ -724,8 +848,10 @@ $this
                                 ));
                         });
                 ?>',
-            ], [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     Service
                         ::method1(null, null, [
@@ -735,7 +861,7 @@ $this
                         ->method2(4, Type::class)
                     ;
 ',
-                '<?php
+            '<?php
 
                     Service
                         ::method1(null, null, [
@@ -744,22 +870,24 @@ $this
                         ])
                         ->method2(4, Type::class);
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 Service
                         ::method1()
                         ->method2()
 ;
                 ?>',
-                '<?php
+            '<?php
 Service
                         ::method1()
                         ->method2();
                 ?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     function foo($bar)
                     {
@@ -774,7 +902,7 @@ Service
                         ;
                     }
                 ?>',
-                '<?php
+            '<?php
 
                     function foo($bar)
                     {
@@ -787,9 +915,10 @@ Service
                             ->baz();
                     }
                 ?>',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
                     $foo = (new Foo($bar))
                         ->baz()
@@ -802,7 +931,7 @@ Service
                         ;
                     }
                 ?>',
-                '<?php
+            '<?php
 
                     $foo = (new Foo($bar))
                         ->baz();
@@ -813,65 +942,258 @@ Service
                             ->baz();
                     }
                 ?>',
-            ],
+        ];
+
+        yield [
+            '<?php
+$object
+    ->methodA()
+    ->methodB()
+;
+',
+            '<?php
+$object
+    ->methodA()
+    ->methodB();
+',
+        ];
+
+        yield [
+            '<?php $object
+    ->methodA()
+    ->methodB()
+;
+',
+            '<?php $object
+    ->methodA()
+    ->methodB();
+',
+        ];
+
+        yield [
+            "<?php\n\$this\n    ->one()\n    ->two(2, )\n;",
+            "<?php\n\$this\n    ->one()\n    ->two(2, );",
+        ];
+
+        yield [
+            "<?php\n\$this\n    ->one(1, )\n    ->two()\n;",
+            "<?php\n\$this\n    ->one(1, )\n    ->two();",
+        ];
+
+        yield [
+            '<?php
+
+                    $foo->bar();
+
+                    Service::method1()
+                        ->method2()
+                        ->method3()->method4()
+                    ;
+                ?>',
+            '<?php
+
+                    $foo->bar()
+                    ;
+
+                    Service::method1()
+                        ->method2()
+                        ->method3()->method4();
+                ?>',
+        ];
+
+        yield [
+            '<?php
+
+                    $foo->bar();
+
+                    \Service::method1()
+                        ->method2()
+                        ->method3()->method4()
+                    ;
+                ?>',
+            '<?php
+
+                    $foo->bar()
+                    ;
+
+                    \Service::method1()
+                        ->method2()
+                        ->method3()->method4();
+                ?>',
+        ];
+
+        yield [
+            '<?php
+
+                    $foo->bar();
+
+                    Ns\Service::method1()
+                        ->method2()
+                        ->method3()->method4()
+                    ;
+                ?>',
+            '<?php
+
+                    $foo->bar()
+                    ;
+
+                    Ns\Service::method1()
+                        ->method2()
+                        ->method3()->method4();
+                ?>',
+        ];
+
+        yield [
+            '<?php
+
+                    $foo->bar();
+
+                    \Ns\Service::method1()
+                        ->method2()
+                        ->method3()->method4()
+                    ;
+                ?>',
+            '<?php
+
+                    $foo->bar()
+                    ;
+
+                    \Ns\Service::method1()
+                        ->method2()
+                        ->method3()->method4();
+                ?>',
+        ];
+
+        yield [
+            '<?php
+$this
+    ->setName(\'readme2\')
+    ->setDescription(\'Generates the README\')
+;
+',
+            '<?php
+$this
+    ->setName(\'readme2\')
+    ->setDescription(\'Generates the README\')
+    ;
+',
+        ];
+
+        yield [
+            '<?php
+$this
+    ->foo()
+    ->{$bar ? \'bar\' : \'baz\'}()
+;
+',
+        ];
+
+        yield [
+            '<?php
+                    foo("bar")
+                        ->method1()
+                        ->method2()
+                    ;
+                ',
+            '<?php
+                    foo("bar")
+                        ->method1()
+                        ->method2();
+                ',
+        ];
+
+        yield [
+            '<?php
+                    $result = $arrayOfAwesomeObjects["most awesome object"]
+                        ->method1()
+                        ->method2()
+                    ;
+                ',
+            '<?php
+                    $result = $arrayOfAwesomeObjects["most awesome object"]
+                        ->method1()
+                        ->method2();
+                ',
+        ];
+
+        yield [
+            '<?php
+                    $foo;
+                    $bar = [
+                        1 => 2,
+                        3 => $baz->method(),
+                    ];
+                ',
+        ];
+
+        yield [
+            '<?php
+switch ($foo) {
+    case 1:
+        $bar
+            ->baz()
+        ;
+}
+',
+            '<?php
+switch ($foo) {
+    case 1:
+        $bar
+            ->baz()
+              ;
+}
+',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideMessyWhitespacesSemicolonForChainedCallsFixCases
+     * @dataProvider provideMessyWhitespacesSemicolonForChainedCallsCases
      */
-    public function testMessyWhitespacesSemicolonForChainedCalls($expected, $input = null)
+    public function testMessyWhitespacesSemicolonForChainedCalls(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
-
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesSemicolonForChainedCallsFixCases()
+    public static function provideMessyWhitespacesSemicolonForChainedCallsCases(): iterable
     {
-        return [
-            [
-                "<?php\r\n\r\n   \$this\r\n\t->method1()\r\n\t\t->method2()\r\n   ;",
-                "<?php\r\n\r\n   \$this\r\n\t->method1()\r\n\t\t->method2();",
-            ],
-            [
-                "<?php\r\n\r\n\t\$this->method1()\r\n\t\t->method2()\r\n\t\t->method(3)\r\n\t;",
-                "<?php\r\n\r\n\t\$this->method1()\r\n\t\t->method2()\r\n\t\t->method(3);",
-            ], [
-                "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t))\r\n\t\t\t;\r\n\t\t})\r\n\t;\r\n?>",
-                "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t));\r\n\t\t});\r\n?>",
-            ],
+        yield [
+            "<?php\r\n\r\n   \$this\r\n\t->method1()\r\n\t\t->method2()\r\n   ;",
+            "<?php\r\n\r\n   \$this\r\n\t->method1()\r\n\t\t->method2();",
+        ];
+
+        yield [
+            "<?php\r\n\r\n\t\$this->method1()\r\n\t\t->method2()\r\n\t\t->method(3)\r\n\t;",
+            "<?php\r\n\r\n\t\$this->method1()\r\n\t\t->method2()\r\n\t\t->method(3);",
+        ];
+
+        yield [
+            "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t))\r\n\t\t\t;\r\n\t\t})\r\n\t;\r\n?>",
+            "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t));\r\n\t\t});\r\n?>",
         ];
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
+     * @requires PHP 8.0
      */
-    public function testFix73($expected, $input)
+    public function testFix80(): void
     {
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
-        $this->doTest($expected, $input);
-    }
+        $this->doTest(
+            '<?php
 
-    public function provideFix73Cases()
-    {
-        return [
-            [
-                "<?php\n\$this\n    ->one()\n    ->two(2, )\n;",
-                "<?php\n\$this\n    ->one()\n    ->two(2, );",
-            ],
-            [
-                "<?php\n\$this\n    ->one(1, )\n    ->two()\n;",
-                "<?php\n\$this\n    ->one(1, )\n    ->two();",
-            ],
-        ];
+                $foo?->method1()
+                    ?->method2()
+                    ?->method3()
+                ;
+                ',
+            '<?php
+
+                $foo?->method1()
+                    ?->method2()
+                    ?->method3();
+                '
+        );
     }
 }

@@ -1,0 +1,4 @@
+--TEST--
+Integration of @Symfony:risky.
+--RULESET--
+{"@Symfony:risky": true}

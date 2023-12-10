@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: statement_indentation,heredoc_indentation.
+--RULESET--
+{"statement_indentation": true, "heredoc_indentation": true}
+--REQUIREMENTS--
+{"php": 70300}
+--EXPECT--
+<?php
+
+if (true) {
+    $foo === <<<'FOO'
+         bar
+          baz
+        FOO;
+}
+
+--INPUT--
+<?php
+
+if (true) {
+ $foo === <<<'FOO'
+  bar
+   baz
+ FOO;
+}

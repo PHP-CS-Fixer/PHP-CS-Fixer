@@ -1,0 +1,26 @@
+--TEST--
+Integration of fixers: phpdoc_line_span,no_superfluous_phpdoc_tags.
+--RULESET--
+{"phpdoc_line_span": true, "no_superfluous_phpdoc_tags": true}
+--EXPECT--
+<?php
+class Foo
+{
+    /**
+     */
+    function bar() : string
+    {
+        return 'bar';
+    }
+}
+
+--INPUT--
+<?php
+class Foo
+{
+    /** @return string */
+    function bar() : string
+    {
+        return 'bar';
+    }
+}

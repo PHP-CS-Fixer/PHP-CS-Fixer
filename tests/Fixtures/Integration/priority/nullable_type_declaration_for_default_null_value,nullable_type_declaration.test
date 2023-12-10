@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: nullable_type_declaration_for_default_null_value,nullable_type_declaration.
+--RULESET--
+{"nullable_type_declaration_for_default_null_value": true, "nullable_type_declaration": {"syntax": "union"}}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+
+function bar(null|string $foo = null): void {}
+
+--INPUT--
+<?php
+
+function bar(string $foo = null): void {}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -19,15 +22,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @requires PHP 7.0
  * @covers \PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer
  */
 final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfiguration()
+    public function testInvalidConfiguration(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(
             '#^\[return_type_declaration\] Invalid configuration: The option "s" does not exist\. (Known|Defined) options are: "space_before"\.$#'
         );
 
@@ -35,40 +37,18 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @group legacy
      * @dataProvider provideFixWithSpaceBeforeNoneCases
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testLegacyFixWithDefaultConfiguration($expected, $input = null)
-    {
-        $this->fixer->configure(null);
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideFixWithSpaceBeforeNoneCases
-     *
-     * @param string      $expected
-     * @param null|string $input
-     */
-    public function testFixWithDefaultConfiguration($expected, $input = null)
+    public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([]);
-
         $this->doTest($expected, $input);
     }
 
     /**
      * @dataProvider provideFixWithSpaceBeforeNoneCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithSpaceBeforeNone($expected, $input = null)
+    public function testFixWithSpaceBeforeNone(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'space_before' => 'none',
@@ -77,35 +57,39 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithSpaceBeforeNoneCases()
+    public static function provideFixWithSpaceBeforeNoneCases(): iterable
     {
-        return [
-            [
-                '<?php function foo1(int $a) {}',
-            ],
-            [
-                '<?php function foo2(int $a): string {}',
-                '<?php function foo2(int $a):string {}',
-            ],
-            [
-                '<?php function foo3(int $c)/**/ : /**/ string {}',
-            ],
-            [
-                '<?php function foo4(int $a): string {}',
-                '<?php function foo4(int $a)  :  string {}',
-            ],
-            [
-                '<?php function foo5(int $e)#
+        yield [
+            '<?php function foo1(int $a) {}',
+        ];
+
+        yield [
+            '<?php function foo2(int $a): string {}',
+            '<?php function foo2(int $a):string {}',
+        ];
+
+        yield [
+            '<?php function foo3(int $c)/**/ : /**/ string {}',
+        ];
+
+        yield [
+            '<?php function foo4(int $a): string {}',
+            '<?php function foo4(int $a)  :  string {}',
+        ];
+
+        yield [
+            '<?php function foo5(int $e)#
 : #
 #
 string {}',
-                '<?php function foo5(int $e)#
+            '<?php function foo5(int $e)#
 :#
 #
 string {}',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     function foo1(int $a): string {}
                     function foo2(int $a): string {}
                     function foo3(int $a): string {}
@@ -116,7 +100,7 @@ string {}',
                     function foo8(int $a): string {}
                     function foo9(int $a): string {}
                 ',
-                '<?php
+            '<?php
                     function foo1(int $a):string {}
                     function foo2(int $a):string {}
                     function foo3(int $a):string {}
@@ -127,17 +111,18 @@ string {}',
                     function foo8(int $a):string {}
                     function foo9(int $a):string {}
                 ',
-            ],
+        ];
+
+        yield [
+            '<?php fn(): int => 1;',
+            '<?php fn():int => 1;',
         ];
     }
 
     /**
      * @dataProvider provideFixWithSpaceBeforeOneCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithSpaceBeforeOne($expected, $input = null)
+    public function testFixWithSpaceBeforeOne(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'space_before' => 'one',
@@ -146,27 +131,70 @@ string {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithSpaceBeforeOneCases()
+    public static function provideFixWithSpaceBeforeOneCases(): iterable
     {
-        return [
-            [
-                '<?php function fooA(int $a) {}',
-            ],
-            [
-                '<?php function fooB(int $a) : string {}',
-                '<?php function fooB(int $a):string {}',
-            ],
-            [
-                '<?php function fooC(int $a)/**/ : /**/string {}',
-                '<?php function fooC(int $a)/**/:/**/string {}',
-            ],
-            [
-                '<?php function fooD(int $a) : string {}',
-                '<?php function fooD(int $a)  :  string {}',
-            ],
-            [
-                '<?php function fooE(int $a) /**/ : /**/ string {}',
-            ],
+        yield [
+            '<?php function fooA(int $a) {}',
+        ];
+
+        yield [
+            '<?php function fooB(int $a) : string {}',
+            '<?php function fooB(int $a):string {}',
+        ];
+
+        yield [
+            '<?php function fooC(int $a)/**/ : /**/string {}',
+            '<?php function fooC(int $a)/**/:/**/string {}',
+        ];
+
+        yield [
+            '<?php function fooD(int $a) : string {}',
+            '<?php function fooD(int $a)  :  string {}',
+        ];
+
+        yield [
+            '<?php function fooE(int $a) /**/ : /**/ string {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): iterable
+    {
+        yield [
+            '<?php function foo(): mixed{}',
+            '<?php function foo()   :   mixed{}',
+        ];
+
+        yield [
+            '<?php class A { public function foo(): static{}}',
+            '<?php class A { public function foo()   :static{}}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield [
+            '<?php enum Foo: int {}',
+            '<?php enum Foo   :   int {}',
         ];
     }
 }

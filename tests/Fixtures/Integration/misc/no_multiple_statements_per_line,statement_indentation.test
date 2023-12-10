@@ -1,0 +1,18 @@
+--TEST--
+Integration of fixers: no_multiple_statements_per_line,statement_indentation.
+--RULESET--
+{"no_multiple_statements_per_line": true, "statement_indentation": true}
+--EXPECT--
+<?php
+
+if (true) {
+    foo();
+    bar();
+}
+
+--INPUT--
+<?php
+
+if (true) {
+  foo(); bar();
+}

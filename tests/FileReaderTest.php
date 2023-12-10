@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,6 +16,7 @@ namespace PhpCsFixer\Tests;
 
 use org\bovigo\vfs\vfsStream;
 use PhpCsFixer\FileReader;
+use PhpCsFixer\Tests\Fixtures\Test\FileReaderTest\StdinFakeStream;
 
 /**
  * @author ntzm
@@ -24,25 +27,24 @@ use PhpCsFixer\FileReader;
  */
 final class FileReaderTest extends TestCase
 {
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
 
-        // testReadStdinCaches registers a stream wrapper for php so we can mock
+        // testReadStdinCaches registers a stream wrapper for PHP so we can mock
         // php://stdin. Restore the original stream wrapper after this class so
         // we don't affect other tests running after it
         stream_wrapper_restore('php');
     }
 
-    public function testCreateSingleton()
+    public function testCreateSingleton(): void
     {
         $instance = FileReader::createSingleton();
 
-        static::assertInstanceOf(\PhpCsFixer\FileReader::class, $instance);
-        static::assertSame($instance, FileReader::createSingleton());
+        self::assertSame($instance, FileReader::createSingleton());
     }
 
-    public function testRead()
+    public function testRead(): void
     {
         $fs = vfsStream::setup('root', null, [
             'foo.php' => '<?php echo "hi";',
@@ -50,21 +52,21 @@ final class FileReaderTest extends TestCase
 
         $reader = new FileReader();
 
-        static::assertSame('<?php echo "hi";', $reader->read($fs->url().'/foo.php'));
+        self::assertSame('<?php echo "hi";', $reader->read($fs->url().'/foo.php'));
     }
 
-    public function testReadStdinCaches()
+    public function testReadStdinCaches(): void
     {
         $reader = new FileReader();
 
         stream_wrapper_unregister('php');
-        stream_wrapper_register('php', 'PhpCsFixer\Tests\Fixtures\Test\FileReaderTest\StdinFakeStream');
+        stream_wrapper_register('php', StdinFakeStream::class);
 
-        static::assertSame('<?php echo "foo";', $reader->read('php://stdin'));
-        static::assertSame('<?php echo "foo";', $reader->read('php://stdin'));
+        self::assertSame('<?php echo "foo";', $reader->read('php://stdin'));
+        self::assertSame('<?php echo "foo";', $reader->read('php://stdin'));
     }
 
-    public function testThrowsExceptionOnFail()
+    public function testThrowsExceptionOnFail(): void
     {
         $fs = vfsStream::setup();
         $nonExistentFilePath = $fs->url().'/non-existent.php';
@@ -72,7 +74,7 @@ final class FileReaderTest extends TestCase
         $reader = new FileReader();
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Failed to read content from "'.$nonExistentFilePath.'". file_get_contents('.$nonExistentFilePath.'): failed to open stream: "org\bovigo\vfs\vfsStreamWrapper::stream_open" call failed');
+        $this->expectExceptionMessageMatches('#^Failed to read content from "'.preg_quote($nonExistentFilePath, '#').'.*$#');
 
         $reader->read($nonExistentFilePath);
     }

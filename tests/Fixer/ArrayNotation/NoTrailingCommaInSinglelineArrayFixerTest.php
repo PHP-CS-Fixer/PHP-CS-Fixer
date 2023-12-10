@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,120 +26,127 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoTrailingCommaInSinglelineArrayFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public static function provideFixCases(): iterable
     {
-        return [
-            ['<?php $x = array();'],
-            ['<?php $x = array("foo");'],
-            [
-                '<?php $x = array("foo");',
-                '<?php $x = array("foo", );',
-            ],
-            ["<?php \$x = array(\n'foo', \n);"],
-            ["<?php \$x = array('foo', \n);"],
-            ["<?php \$x = array(array('foo'), \n);", "<?php \$x = array(array('foo',), \n);"],
-            ["<?php \$x = array(array('foo',\n), \n);"],
-            [
-                '<?php
-    $test = array("foo", <<<TWIG
-        foo
-TWIG
-        , $twig);',
-                '<?php
-    $test = array("foo", <<<TWIG
-        foo
-TWIG
-        , $twig, );',
-            ],
-            [
-                '<?php
-    $test = array(
-        "foo", <<<TWIG
-        foo
-TWIG
-        , $twig, );',
-            ],
-            [
-                '<?php
-    $test = array("foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig);',
-                '<?php
-    $test = array("foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, );',
-            ],
-            [
-                '<?php
-    $test = array(
-        "foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, );',
-            ],
+        yield ['<?php $x = array();'];
 
-            // Short syntax
-            ['<?php $x = array([]);'],
-            ['<?php $x = [[]];'],
-            ['<?php $x = ["foo"];', '<?php $x = ["foo",];'],
-            ['<?php $x = bar(["foo"]);', '<?php $x = bar(["foo",]);'],
-            ["<?php \$x = bar([['foo'],\n]);"],
-            ["<?php \$x = ['foo', \n];"],
-            ['<?php $x = array([]);', '<?php $x = array([],);'],
-            ['<?php $x = [[]];', '<?php $x = [[],];'],
-            ['<?php $x = [$y[""]];', '<?php $x = [$y[""],];'],
-            [
-                '<?php
-    $test = ["foo", <<<TWIG
+        yield ['<?php $x = array("foo");'];
+
+        yield [
+            '<?php $x = array("foo");',
+            '<?php $x = array("foo", );',
+        ];
+
+        yield ["<?php \$x = array(\n'foo', \n);"];
+
+        yield ["<?php \$x = array('foo', \n);"];
+
+        yield ["<?php \$x = array(array('foo'), \n);", "<?php \$x = array(array('foo',), \n);"];
+
+        yield ["<?php \$x = array(array('foo',\n), \n);"];
+
+        yield [
+            '<?php
+    $test = array("foo", <<<TWIG
         foo
 TWIG
-        , $twig];',
-                '<?php
+        , $twig, );',
+        ];
+
+        yield [
+            '<?php
+    $test = array(
+        "foo", <<<TWIG
+        foo
+TWIG
+        , $twig, );',
+        ];
+
+        yield [
+            '<?php
+    $test = array("foo", <<<\'TWIG\'
+        foo
+TWIG
+        , $twig, );',
+        ];
+
+        yield [
+            '<?php
+    $test = array(
+        "foo", <<<\'TWIG\'
+        foo
+TWIG
+        , $twig, );',
+        ];
+
+        // Short syntax
+        yield ['<?php $x = array([]);'];
+
+        yield ['<?php $x = [[]];'];
+
+        yield ['<?php $x = ["foo"];', '<?php $x = ["foo",];'];
+
+        yield ['<?php $x = bar(["foo"]);', '<?php $x = bar(["foo",]);'];
+
+        yield ["<?php \$x = bar([['foo'],\n]);"];
+
+        yield ["<?php \$x = ['foo', \n];"];
+
+        yield ['<?php $x = array([]);', '<?php $x = array([],);'];
+
+        yield ['<?php $x = [[]];', '<?php $x = [[],];'];
+
+        yield ['<?php $x = [$y[""]];', '<?php $x = [$y[""],];'];
+
+        yield [
+            '<?php
     $test = ["foo", <<<TWIG
         foo
 TWIG
         , $twig, ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $test = [
         "foo", <<<TWIG
         foo
 TWIG
         , $twig, ];',
-            ],
-            [
-                '<?php
-    $test = ["foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig];',
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $test = ["foo", <<<\'TWIG\'
         foo
 TWIG
         , $twig, ];',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
     $test = [
         "foo", <<<\'TWIG\'
         foo
 TWIG
         , $twig, ];',
-            ],
+        ];
+
+        yield [
+            '<?php $x = array(...$foo);',
+            '<?php $x = array(...$foo, );',
+        ];
+
+        yield [
+            '<?php $x = [...$foo];',
+            '<?php $x = [...$foo, ];',
         ];
     }
 }

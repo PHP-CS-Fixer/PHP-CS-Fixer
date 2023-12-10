@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,15 +16,11 @@ namespace PhpCsFixer\FixerConfiguration;
 
 final class FixerOption implements FixerOptionInterface
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var string
-     */
-    private $description;
+    private string $description;
+
+    private bool $isRequired;
 
     /**
      * @var mixed
@@ -30,17 +28,12 @@ final class FixerOption implements FixerOptionInterface
     private $default;
 
     /**
-     * @var bool
-     */
-    private $isRequired;
-
-    /**
-     * @var null|string[]
+     * @var null|list<string>
      */
     private $allowedTypes;
 
     /**
-     * @var null|array
+     * @var null|list<null|(callable(mixed): bool)|scalar>
      */
     private $allowedValues;
 
@@ -50,22 +43,18 @@ final class FixerOption implements FixerOptionInterface
     private $normalizer;
 
     /**
-     * @param string        $name
-     * @param string        $description
-     * @param bool          $isRequired
-     * @param mixed         $default
-     * @param null|string[] $allowedTypes
-     * @param null|array    $allowedValues
-     * @param null|\Closure $normalizer
+     * @param mixed                                          $default
+     * @param null|list<string>                              $allowedTypes
+     * @param null|list<null|(callable(mixed): bool)|scalar> $allowedValues
      */
     public function __construct(
-        $name,
-        $description,
-        $isRequired = true,
+        string $name,
+        string $description,
+        bool $isRequired = true,
         $default = null,
-        array $allowedTypes = null,
-        array $allowedValues = null,
-        \Closure $normalizer = null
+        ?array $allowedTypes = null,
+        ?array $allowedValues = null,
+        ?\Closure $normalizer = null
     ) {
         if ($isRequired && null !== $default) {
             throw new \LogicException('Required options cannot have a default value.');
@@ -85,38 +74,27 @@ final class FixerOption implements FixerOptionInterface
         $this->default = $default;
         $this->allowedTypes = $allowedTypes;
         $this->allowedValues = $allowedValues;
+
         if (null !== $normalizer) {
             $this->normalizer = $this->unbind($normalizer);
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasDefault()
+    public function hasDefault(): bool
     {
         return !$this->isRequired;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefault()
     {
         if (!$this->hasDefault()) {
@@ -126,26 +104,17 @@ final class FixerOption implements FixerOptionInterface
         return $this->default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllowedTypes()
+    public function getAllowedTypes(): ?array
     {
         return $this->allowedTypes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllowedValues()
+    public function getAllowedValues(): ?array
     {
         return $this->allowedValues;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNormalizer()
+    public function getNormalizer(): ?\Closure
     {
         return $this->normalizer;
     }
@@ -164,12 +133,8 @@ final class FixerOption implements FixerOptionInterface
      * all elements are still referenced.
      *
      * See {@see https://bugs.php.net/bug.php?id=69639 Bug #69639} for details.
-     *
-     * @param \Closure $closure
-     *
-     * @return \Closure
      */
-    private function unbind(\Closure $closure)
+    private function unbind(\Closure $closure): \Closure
     {
         return $closure->bindTo(null);
     }

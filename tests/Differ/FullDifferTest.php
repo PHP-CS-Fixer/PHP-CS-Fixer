@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,15 +17,13 @@ namespace PhpCsFixer\Tests\Differ;
 use PhpCsFixer\Differ\FullDiffer;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Differ\FullDiffer
  */
 final class FullDifferTest extends AbstractDifferTestCase
 {
-    public function testDiffReturnsDiff()
+    public function testDiffReturnsDiff(): void
     {
         $diff = '--- Original
 +++ New
@@ -42,6 +42,6 @@ final class FullDifferTest extends AbstractDifferTestCase
 ';
         $differ = new FullDiffer();
 
-        static::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
+        self::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
     }
 }
