@@ -455,12 +455,12 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideTestClassCases
      */
-    public function testXXXDataPorvidersDeclaredReturnType(string $testClassName): void
+    public function testDataPorvidersDeclaredReturnType(string $testClassName): void
     {
         $reflectionClass = new \ReflectionClass($testClassName);
 
         $publicMethods = array_filter(
-            $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
+            $reflectionClass->getMethods(),
             static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName()
         );
 
