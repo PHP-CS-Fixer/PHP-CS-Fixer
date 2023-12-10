@@ -26,11 +26,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ClassKeywordFixer extends AbstractFixer
 {
-    /**
-     * @var string[]
-     */
-    private $imports = [];
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
