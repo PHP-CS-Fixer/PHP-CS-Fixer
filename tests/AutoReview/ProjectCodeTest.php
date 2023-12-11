@@ -653,7 +653,7 @@ final class ProjectCodeTest extends TestCase
                 if (1 === $interfacesCount) {
                     $interface = reset($interfaces);
 
-                    if ('Stringable' === $interface->getName()) {
+                    if (\Stringable::class === $interface->getName()) {
                         return false;
                     }
                 }
