@@ -18,7 +18,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Indicator\ClassyExistanceIndicator;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -49,8 +48,6 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $indicator = new ClassyExistanceIndicator();
-
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
@@ -59,7 +56,7 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
                 $name = ltrim($name, '\\');
                 $name = str_replace('\\\\', '\\', $name);
 
-                if ($indicator->exists($name)) {
+                if ($this->exists($name)) {
                     try {
                         $substitution = Tokens::fromCode("<?php echo \\{$name}::class;");
                         $substitution->clearRange(0, 2);
@@ -75,5 +72,16 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
                 }
             }
         }
+    }
+
+    private function exists(string $name): bool
+    {
+        if (class_exists($name) || interface_exists($name) || trait_exists($name)) {
+            $rc = new \ReflectionClass($name);
+
+            return $rc->getName() === $name;
+        }
+
+        return false;
     }
 }
