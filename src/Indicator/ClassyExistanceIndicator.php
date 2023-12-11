@@ -19,12 +19,7 @@ namespace PhpCsFixer\Indicator;
  */
 final class ClassyExistanceIndicator
 {
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function exists($name)
+    public function exists(string $name): bool
     {
         if (class_exists($name) || interface_exists($name) || trait_exists($name)) {
             $rc = new \ReflectionClass($name);
