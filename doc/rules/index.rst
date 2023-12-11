@@ -460,7 +460,7 @@ Import
 Language Construct
 ------------------
 
-- `class_keyword <./language_construct/class_keyword.rst>`_
+- `class_keyword <./language_construct/class_keyword.rst>`_ *(risky)*
 
   EXPERIMENTAL: Converts FQCN strings to ``*::class`` keywords. Do not use it, unless you know what you are doing.
 - `class_keyword_remove <./language_construct/class_keyword_remove.rst>`_ *(deprecated)*

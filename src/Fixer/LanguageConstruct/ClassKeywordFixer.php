@@ -57,7 +57,6 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
                 $name = str_replace('\\\\', '\\', $name);
 
                 if ($this->exists($name)) {
-                    try {
                         $substitution = Tokens::fromCode("<?php echo \\{$name}::class;");
                         $substitution->clearRange(0, 2);
                         $substitution->clearAt($substitution->getSize() - 1);
@@ -65,10 +64,6 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
 
                         $tokens->clearAt($index);
                         $tokens->insertAt($index, $substitution);
-                    } catch (\Error $e) {
-                        var_dump('error with parsing class', $name);
-                        var_dump($e->getMessage());
-                    }
                 }
             }
         }
@@ -83,5 +78,10 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
         }
 
         return false;
+    }
+
+    public function isRisky(): bool
+    {
+        return true;
     }
 }
