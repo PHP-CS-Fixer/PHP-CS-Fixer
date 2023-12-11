@@ -267,7 +267,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array<null|array<string>|string>>
+     * @return iterable<array{0: string, 1: list<string>, 2?: string}>
      */
     public static function provideNaturalLanguageJoinCases(): iterable
     {

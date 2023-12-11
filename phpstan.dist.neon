@@ -17,11 +17,11 @@ parameters:
         - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens|Console\\Command\\FixCommand)\.$/'
         - '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
 
-        # ignore PHPUnit data providers return type as they are not checked against the test methods anyway
+        # PHPUnit data providers return type were not maintained originally, this exception should shrink over time (eg with help of custom, re-usable type)
         -
-            message: '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type (array|iterable)\.$#'
+            message: '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type iterable\.$#'
             path: tests
-            count: 1126
+            count: 1120
 
         -
             message: '#Call to static method .+ with .+ will always evaluate to true.$#'

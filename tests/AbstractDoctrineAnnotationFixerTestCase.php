@@ -23,7 +23,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTestCase
 {
     /**
-     * @param array<mixed> $configuration
+     * @param array<string, mixed> $configuration
      *
      * @dataProvider provideConfigureWithInvalidConfigurationCases
      */
@@ -34,6 +34,9 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
         $this->fixer->configure($configuration);
     }
 
+    /**
+     * @return iterable<array{array<string, mixed>}>
+     */
     public static function provideConfigureWithInvalidConfigurationCases(): iterable
     {
         yield [['foo' => 'bar']];

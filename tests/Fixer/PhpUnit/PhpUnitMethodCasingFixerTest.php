@@ -183,7 +183,7 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<string[]>
+     * @return iterable<string, array{string, string}>
      */
     public static function provideFix80ToCamelCaseCases(): iterable
     {

@@ -889,7 +889,7 @@ $a = new class implements
         self::assertSame($expected, $result);
     }
 
-    private static function provideClassyCases(string $classy): array
+    private static function provideClassyCases(string $classy): iterable
     {
         return [
             [
@@ -957,7 +957,7 @@ namespace {
         ];
     }
 
-    private static function provideClassyExtendingCases(string $classy): array
+    private static function provideClassyExtendingCases(string $classy): iterable
     {
         return [
             [
@@ -987,7 +987,7 @@ extends
         ];
     }
 
-    private static function provideClassyImplementsCases(): array
+    private static function provideClassyImplementsCases(): iterable
     {
         return [
             [
