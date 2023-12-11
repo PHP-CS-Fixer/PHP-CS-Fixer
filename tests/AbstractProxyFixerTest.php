@@ -83,7 +83,9 @@ final class AbstractProxyFixerTest extends TestCase
 
     public function testPrioritySingleFixer(): void
     {
-        $proxyFixer = $this->createProxyFixerDouble([$this->createFixerDouble(true, false, false, 123)]);
+        $proxyFixer = $this->createProxyFixerDouble([
+            $this->createFixerDouble(true, false, false, 123),
+        ]);
         self::assertSame(123, $proxyFixer->getPriority());
     }
 
