@@ -46,6 +46,11 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
         return true;
     }
 
+    public function isRisky(): bool
+    {
+        return true;
+    }
+
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
@@ -57,13 +62,13 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
                 $name = str_replace('\\\\', '\\', $name);
 
                 if ($this->exists($name)) {
-                        $substitution = Tokens::fromCode("<?php echo \\{$name}::class;");
-                        $substitution->clearRange(0, 2);
-                        $substitution->clearAt($substitution->getSize() - 1);
-                        $substitution->clearEmptyTokens();
+                    $substitution = Tokens::fromCode("<?php echo \\{$name}::class;");
+                    $substitution->clearRange(0, 2);
+                    $substitution->clearAt($substitution->getSize() - 1);
+                    $substitution->clearEmptyTokens();
 
-                        $tokens->clearAt($index);
-                        $tokens->insertAt($index, $substitution);
+                    $tokens->clearAt($index);
+                    $tokens->insertAt($index, $substitution);
                 }
             }
         }
@@ -78,10 +83,5 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
         }
 
         return false;
-    }
-
-    public function isRisky(): bool
-    {
-        return true;
     }
 }
