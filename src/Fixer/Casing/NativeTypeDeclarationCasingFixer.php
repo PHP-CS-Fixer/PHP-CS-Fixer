@@ -127,7 +127,7 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
     {
         parent::__construct();
 
-        $this->propertyTypeModifiers = [[T_PRIVATE], [T_PROTECTED], [T_PUBLIC]];
+        $this->propertyTypeModifiers = [[T_PRIVATE], [T_PROTECTED], [T_PUBLIC], [T_VAR]];
 
         $this->functionTypeHints = [
             'array' => true,

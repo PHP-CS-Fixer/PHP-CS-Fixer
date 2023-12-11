@@ -172,7 +172,7 @@ Integration of %s.
     }
 
     /**
-     * @return string[][]
+     * @return iterable<array{string}>
      */
     public static function providePHPUnitMigrationTargetVersionsCases(): iterable
     {

@@ -50,4 +50,5 @@ labels: kind/bug
   <?php
   $var = 'foo';
   ```
+
 -->

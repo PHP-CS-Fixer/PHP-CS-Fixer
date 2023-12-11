@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.41.1
+---------------------
+
+* DX: Change `@testWith` to `@dataProvider` (#7535)
+* DX: Introduce Markdownlint (#7534)
+* fix: NativeTypeDeclarationCasingFixer - do not crash on `var` keyword (#7538)
+
 Changelog for v3.41.0
 ---------------------
 
@@ -920,7 +927,7 @@ Changelog for v3.5.0
 * bug #6165 DeclareEqualNormalizeFixer - fix for declare having multiple directives (kubawerlos)
 * bug #6170 NonPrintableCharacterFixer - fix for string in single quotes, having non-breaking space, linebreak, and single quote inside (kubawerlos)
 * bug #6181 UseTransformer - Trait import in enum fix (PHP8.1) (SpacePossum)
-* bug #6188 PhpdocTo(Param|Property|Return)TypeFixer - fix for type intersections (kubawerlos)
+* bug #6188 `PhpdocTo(Param|Property|Return)TypeFixer` - fix for type intersections (kubawerlos)
 * bug #6202 SquareBraceTransformer - fix for destructing square brace after double arrow (kubawerlos)
 * bug #6209 OrderedClassElementsFixer - PHP8.0 support abstract private methods in traits (SpacePossum)
 * bug #6224 ArgumentsAnalyzer - support PHP8.1 readonly (SpacePossum)
@@ -976,7 +983,7 @@ Changelog for v3.4.0
 * minor #6109 Add return type to `DummyTestSplFileInfo::getRealPath()` (derrabus)
 * minor #6115 Remove PHP 7.2 polyfill (derrabus)
 * minor #6116 CI: remove installation of mbstring polyfill in build script, it's required dependency now (keradus)
-* minor #6119 OrderedClassElementsFixer - PHPUnit assert(Pre|Post)Conditions methods support (meyerbaptiste)
+* minor #6119 OrderedClassElementsFixer - PHPUnit `assert(Pre|Post)Conditions` methods support (meyerbaptiste)
 * minor #6121 Use Tokens::ensureWhitespaceAtIndex to simplify code (kubawerlos)
 * minor #6127 Remove 2nd parameter to XdebugHandler constructor (phil-davis)
 * minor #6129 clean ups (SpacePossum)
@@ -1099,7 +1106,7 @@ Changelog for v3.2.0
 * minor #6029 PhpUnitDedicateAssertFixer - add "assertStringContainsString" and "as… (SpacePossum)
 * minor #6030 SingleSpaceAfterConstructFixer - Add `switch` support (SpacePossum)
 * minor #6033 ArgumentsAnalyzerTest - add more tests (SpacePossum)
-* minor #6034 7.0|7.1 - cleanup tests (SpacePossum)
+* minor #6034 Cleanup tests for PHP 7.0 and 7.1 (SpacePossum)
 * minor #6035 Documentation generation split up and add list. (SpacePossum)
 * minor #6048 Fix "can not" spelling (mvorisek)
 
@@ -1655,7 +1662,6 @@ Changelog for v2.17.0
 * minor #5284 PHP8 - Attribute support (SpacePossum)
 * minor #5323 NoUselessSprintfFixer - Fix test on PHP5.6 (SpacePossum)
 * minor #5326 DX: relax composer requirements to not block installation under PHP v8, support for PHP v8 is not yet ready (keradus)
-
 
 Changelog for v2.16.10
 ----------------------
@@ -3087,7 +3093,7 @@ Changelog for v2.10.3
 * minor #3484 Create Tokens::findBlockStart (ntzm)
 * minor #3512 Add missing array typehints (ntzm)
 * minor #3513 Making AppVeyor happy (kubawerlos)
-* minor #3516 Use null|type instead of ?type in PHPDocs (ntzm)
+* minor #3516 Use `null|type` instead of `?type` in PHPDocs (ntzm)
 * minor #3518 FixerFactoryTest - Test each priority test file is listed as test (SpacePossum)
 * minor #3519 Fix typo (SpacePossum)
 * minor #3520 Fix typos: ran vs. run (SpacePossum)
@@ -3272,7 +3278,7 @@ Changelog for v2.8.1
 
 * bug #3199 TokensAnalyzer - getClassyElements (SpacePossum)
 * bug #3208 BracesFixer - Fix for instantiation in control structures (julienfalque, SpacePossum)
-* bug #3215 BinaryOperatorSpacesFixer - Fix spaces around multiple exception catching (|) (ntzm)
+* bug #3215 BinaryOperatorSpacesFixer - Fix spaces around multiple exception catching (ntzm)
 * bug #3216 AbstractLinesBeforeNamespaceFixer - add min. and max. option, not only single target count (SpacePossum)
 * bug #3217 TokenizerLinter - fix lack of linting when code is cached (SpacePossum, keradus)
 * minor #3200 Skip slow test when Xdebug is loaded (julienfalque)
@@ -3319,7 +3325,7 @@ Changelog for v2.7.4
 
 * bug #3199 TokensAnalyzer - getClassyElements (SpacePossum)
 * bug #3208 BracesFixer - Fix for instantiation in control structures (julienfalque, SpacePossum)
-* bug #3215 BinaryOperatorSpacesFixer - Fix spaces around multiple exception catching (|) (ntzm)
+* bug #3215 BinaryOperatorSpacesFixer - Fix spaces around multiple exception catching (ntzm)
 * bug #3216 AbstractLinesBeforeNamespaceFixer - add min. and max. option, not only single target count (SpacePossum)
 * bug #3217 TokenizerLinter - fix lack of linting when code is cached (SpacePossum, keradus)
 * minor #3200 Skip slow test when Xdebug is loaded (julienfalque)
@@ -3730,7 +3736,7 @@ Changelog for v2.2.17
 * minor #3435 Add tests for general_phpdoc_annotation_remove (BackEndTea)
 * minor #3484 Create Tokens::findBlockStart (ntzm)
 * minor #3512 Add missing array typehints (ntzm)
-* minor #3516 Use null|type instead of ?type in PHPDocs (ntzm)
+* minor #3516 Use `null|type` instead of `?type` in PHPDocs (ntzm)
 * minor #3518 FixerFactoryTest - Test each priority test file is listed as test (SpacePossum)
 * minor #3520 Fix typos: ran vs. run (SpacePossum)
 * minor #3521 Use HTTPS (carusogabriel)
@@ -3823,7 +3829,7 @@ Changelog for v2.2.10
 
 * bug #3199 TokensAnalyzer - getClassyElements (SpacePossum)
 * bug #3208 BracesFixer - Fix for instantiation in control structures (julienfalque, SpacePossum)
-* bug #3215 BinaryOperatorSpacesFixer - Fix spaces around multiple exception catching (|) (ntzm)
+* bug #3215 BinaryOperatorSpacesFixer - Fix spaces around multiple exception catching (ntzm)
 * bug #3216 AbstractLinesBeforeNamespaceFixer - add min. and max. option, not only single target count (SpacePossum)
 * bug #3217 TokenizerLinter - fix lack of linting when code is cached (SpacePossum, keradus)
 * minor #3200 Skip slow test when Xdebug is loaded (julienfalque)
@@ -4018,7 +4024,9 @@ Changelog for v2.2.2
 --------------------
 
 Warning, this release breaks BC due to introduction of:
+
 * minor #2554 Add short diff. output format (SpacePossum, keradus)
+
 That PR was reverted in v2.2.3, which should be used instead of v2.2.2.
 
 * bug #2545 RuleSet - change resolvement (SpacePossum)
@@ -4448,7 +4456,7 @@ Changelog for v2.0.0
 * minor #2318 *TestCase - Reduce visibility of setUp() (localheinz)
 * minor #2319 Code grooming (keradus)
 * minor #2322 DX: use whitemessy aware assertion (keradus)
-* minor #2324 Echo|Print*Fixer - unify printing fixers (SpacePossum, keradus)
+* minor #2324 `Echo|Print*Fixer` - unify printing fixers (SpacePossum, keradus)
 * minor #2337 Normalize rule naming (keradus)
 * minor #2338 Drop hacks for unsupported HHVM (keradus)
 * minor #2339 Add some Fixer descriptions (SpacePossum, keradus)

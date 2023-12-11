@@ -60,7 +60,7 @@ final class SpacesInsideParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return array<array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideDefaultFixCases(): iterable
     {
@@ -254,7 +254,7 @@ multiply( (    2 + 3  ) * 4    );
     }
 
     /**
-     * @return array<array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideSpacesFixCases(): iterable
     {
