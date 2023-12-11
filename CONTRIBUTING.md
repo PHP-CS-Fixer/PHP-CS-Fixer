@@ -67,7 +67,7 @@ Sometimes it can be more convenient to have a shell inside the container:
 
 ```console
 docker compose run php-7.4 sh
-/app vendor/bin/phpunit
+/fixer vendor/bin/phpunit
 ```
 
 The images come with an [`xdebug` script](github.com/julienfalque/xdebug/) that allows running any PHP command with Xdebug enabled to help debug problems.
