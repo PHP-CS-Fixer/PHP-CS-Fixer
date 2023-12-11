@@ -28,6 +28,8 @@ final class VariableCaseFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideIgnoreCases
+     *
+     * @param array<string, mixed> $config
      */
     public function testIgnore(string $input, array $config = []): void
     {
@@ -35,6 +37,9 @@ final class VariableCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: array<string, mixed>}>
+     */
     public static function provideIgnoreCases(): iterable
     {
         foreach (['public', 'protected', 'private'] as $visibility) {
@@ -63,40 +68,44 @@ final class VariableCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideCamelCaseFixCases(): iterable
     {
-        return [
-            [
-                '<?php $testVariable = 2;',
-                '<?php $test_variable = 2;',
-            ],
-            [
-                '<?php $testVariable = 2; echo "hi $testVariable!";',
-                '<?php $test_variable = 2; echo "hi $test_variable!";',
-            ],
-            [
-                '<?php $testVariable = 2; echo "hi ${testVariable}!";',
-                '<?php $test_variable = 2; echo "hi ${test_variable}!";',
-            ],
-            [
-                '<?php $testVariable = 2; echo "hi {$testVariable}!";',
-                '<?php $test_variable = 2; echo "hi {$test_variable}!";',
-            ],
-            [
-                '<?php function foo_bar() { $testVariable = 2;}',
-                '<?php function foo_bar() { $test__variable = 2;}',
-            ],
-            [
-                '<?php echo $testModel->this_field;',
-                '<?php echo $test_model->this_field;',
-            ],
-            [
-                '<?php function f($barBaz, $file) { require $file;}',
-                '<?php function f($bar_baz, $file) { require $file;}',
-            ],
-            [
-                '<?php function f($bar_baz, $file) { require $file;}',
-            ],
+        yield 'variable assignment' => [
+            '<?php $testVariable = 2;',
+            '<?php $test_variable = 2;',
+        ];
+
+        yield 'variable assignment and string interpolation' => [
+            '<?php $testVariable = 2; echo "hi $testVariable!";',
+            '<?php $test_variable = 2; echo "hi $test_variable!";',
+        ];
+
+        yield 'variable assignment and deprecated string interpolation' => [
+            '<?php $testVariable = 2; echo "hi ${testVariable}!";',
+            '<?php $test_variable = 2; echo "hi ${test_variable}!";',
+        ];
+
+        yield 'variable assignment and braces string interpolation' => [
+            '<?php $testVariable = 2; echo "hi {$testVariable}!";',
+            '<?php $test_variable = 2; echo "hi {$test_variable}!";',
+        ];
+
+        yield 'local variable in function' => [
+            '<?php function foo_bar() { $testVariable = 2;}',
+            '<?php function foo_bar() { $test__variable = 2;}',
+        ];
+
+        yield 'property fetch on variable' => [
+            '<?php echo $testModel->this_field;',
+            '<?php echo $test_model->this_field;',
+        ];
+
+        yield 'function arguments' => [
+            '<?php function f($barBaz, $file) { require $file;}',
+            '<?php function f($bar_baz, $file) { require $file;}',
         ];
     }
 
@@ -109,45 +118,54 @@ final class VariableCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideSnakeCaseFixCases(): iterable
     {
-        return [
-            [
-                '<?php $test_variable = 2;',
-                '<?php $testVariable = 2;',
-            ],
-            [
-                '<?php $abc_12_variable = 2;',
-                '<?php $abc12Variable = 2;',
-            ],
-            [
-                '<?php $abc_123_a_variable = 2;',
-                '<?php $abc123aVariable = 2;',
-            ],
-            [
-                '<?php function fooBar() { $test_variable = 2;}',
-                '<?php function fooBar() { $testVariable = 2;}',
-            ],
-            [
-                '<?php $test_variable = 2; echo "hi $test_variable!";',
-                '<?php $testVariable = 2; echo "hi $testVariable!";',
-            ],
-            [
-                '<?php $test_variable = 2; echo "hi ${test_variable}!";',
-                '<?php $testVariable = 2; echo "hi ${testVariable}!";',
-            ],
-            [
-                '<?php $test_variable = 2; echo "hi {$test_variable}!";',
-                '<?php $testVariable = 2; echo "hi {$testVariable}!";',
-            ],
-            [
-                '<?php echo $test_model->this_field;',
-                '<?php echo $testModel->this_field;',
-            ],
-            [
-                '<?php function f($bar_baz, $file) { require $file;}',
-                '<?php function f($barBaz, $file) { require $file;}',
-            ],
+        yield 'variable assignment' => [
+            '<?php $test_variable = 2;',
+            '<?php $testVariable = 2;',
+        ];
+
+        yield 'variable assignment with numbers in name' => [
+            '<?php $abc_12_variable = 2;',
+            '<?php $abc12Variable = 2;',
+        ];
+
+        yield 'variable assignment with numbers in name and mixed casing' => [
+            '<?php $abc_123_a_variable = 2;',
+            '<?php $abc123aVariable = 2;',
+        ];
+
+        yield 'local variable in function' => [
+            '<?php function fooBar() { $test_variable = 2;}',
+            '<?php function fooBar() { $testVariable = 2;}',
+        ];
+
+        yield 'variable assignment and string interpolation' => [
+            '<?php $test_variable = 2; echo "hi $test_variable!";',
+            '<?php $testVariable = 2; echo "hi $testVariable!";',
+        ];
+
+        yield 'variable assignment and deprecated string interpolation' => [
+            '<?php $test_variable = 2; echo "hi ${test_variable}!";',
+            '<?php $testVariable = 2; echo "hi ${testVariable}!";',
+        ];
+
+        yield 'variable assignment and braces string interpolation' => [
+            '<?php $test_variable = 2; echo "hi {$test_variable}!";',
+            '<?php $testVariable = 2; echo "hi {$testVariable}!";',
+        ];
+
+        yield 'property fetch on variable' => [
+            '<?php echo $test_model->this_field;',
+            '<?php echo $testModel->this_field;',
+        ];
+
+        yield 'function arguments' => [
+            '<?php function f($bar_baz, $file) { require $file;}',
+            '<?php function f($barBaz, $file) { require $file;}',
         ];
     }
 }
