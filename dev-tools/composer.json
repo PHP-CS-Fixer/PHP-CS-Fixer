@@ -2,6 +2,7 @@
     "require": {
         "php": "^8.3",
         "ergebnis/composer-normalize": "^2.39.0",
+        "icanhazstring/composer-unused": "^0.8.11",
         "maglnet/composer-require-checker": "^4.7.1",
         "mi-schi/phpmd-extension": "^4.3.0",
         "pdepend/pdepend": "~2.15.0",
