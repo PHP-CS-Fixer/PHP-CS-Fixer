@@ -502,7 +502,7 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertMatchesRegularExpression('/^[A-Z`].+\.$/s', $description, sprintf('[%s] The %s must start with capital letter or a ` and end with dot.', $fixerName, $descriptionType));
         self::assertSame(
             0,
-            substr_count($description, 'phpdocs') - substr_count($description, '`phpdocs_'), // allow the optio
+            substr_count($description, 'phpdocs') - substr_count($description, '`phpdocs_'), // allow the option to have "`phpdocs_*`"
             sprintf('[%s] `PHPDoc` must not be in the plural in %s.', $fixerName, $descriptionType),
         );
         self::assertCorrectCasing($description, 'PHPDoc', $fixerName, $descriptionType);
