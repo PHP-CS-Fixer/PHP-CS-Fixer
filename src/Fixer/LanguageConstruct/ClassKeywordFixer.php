@@ -28,7 +28,7 @@ final class ClassKeywordFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'EXPERIMENTAL: Converts FQCN strings to `*::class` keywords.',
+            'EXPERIMENTAL: Converts FQCN strings to `*::class` keywords. Do not use it, unless you know what you are doing.',
             [
                 new CodeSample(
                     '<?php
