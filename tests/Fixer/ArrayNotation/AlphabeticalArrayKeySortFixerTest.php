@@ -60,7 +60,7 @@ final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
                     "a.*" => "int",
                 ];',
             [
-                'sort_special_key_mode' => 'special_case_on_bottom',
+                'special_keys_placement' => 'bottom',
             ],
         ];
 
@@ -84,7 +84,7 @@ final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
                     "a.*" => "int",
                 ];',
             [
-                'sort_special_key_mode' => 'special_case_on_top',
+                'special_keys_placement' => 'top',
             ],
         ];
 

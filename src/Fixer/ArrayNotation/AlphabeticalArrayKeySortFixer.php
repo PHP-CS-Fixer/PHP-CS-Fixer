@@ -47,11 +47,11 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                 ),
                 new CodeSample(
                     "<?php\n\$sample = ['b' => '2', 'a' => '1', foo() => 'bar', 'd' => '5'];\n",
-                    ['sort_special_key_mode' => 'special_case_on_bottom']
+                    ['special_keys_placement' => 'bottom']
                 ),
                 new CodeSample(
                     "<?php\n\$sample = ['b' => '2', 'a' => '1', foo() => 'bar', 'd' => '5'];\n",
-                    ['sort_special_key_mode' => 'special_case_on_top']
+                    ['special_keys_placement' => 'top']
                 ),
             ],
             'Use this fixer when you want a standardised representation of your keyed arrays; it will sort the numeric and string keys of your arrays alphabetically. Special keys, like concatenated ones, are kept in the same order but are either moved to the top or bottom (default) according to the configuration option.',
@@ -77,9 +77,9 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('sort_special_key_mode', 'Whether to sort the specials keys on the bottom `special_case_on_bottom` or top `special_case_on_top`.'))
-                ->setAllowedValues(['special_case_on_bottom', 'special_case_on_top'])
-                ->setDefault('special_case_on_bottom')
+            (new FixerOptionBuilder('special_keys_placement', 'Whether to sort the specials keys on the bottom `bottom` or top `top`.'))
+                ->setAllowedValues(['bottom', 'top'])
+                ->setDefault('bottom')
                 ->getOption(),
         ]);
     }
@@ -166,8 +166,8 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
      */
     private function sortContentKeys(array $contentKeys): array
     {
-        $sortMode = $this->configuration['sort_special_key_mode'];
-        $specialSortDirection = ('special_case_on_top' === $sortMode) ? -1 : 1;
+        $specialKeysPlacement = $this->configuration['special_keys_placement'];
+        $specialSortDirection = ('top' === $specialKeysPlacement) ? -1 : 1;
 
         usort($contentKeys, function ($a, $b) use ($contentKeys, $specialSortDirection) {
             $aIsSpecial = $this->isSpecialKey($a);
