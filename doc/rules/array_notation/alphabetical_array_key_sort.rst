@@ -23,15 +23,14 @@ Risky when the order of the array has an impact on the code execution.
 Configuration
 -------------
 
-``sort_special_key_mode``
-~~~~~~~~~~~~~~~~~~~~~~~~~
+``special_keys_placement``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Whether to sort the specials keys on the bottom ``special_case_on_bottom`` or
-top ``special_case_on_top``.
+Whether to sort the specials keys on the bottom ``bottom`` or top ``top``.
 
-Allowed values: ``'special_case_on_bottom'`` and ``'special_case_on_top'``
+Allowed values: ``'bottom'`` and ``'top'``
 
-Default value: ``'special_case_on_bottom'``
+Default value: ``'bottom'``
 
 Examples
 --------
@@ -65,7 +64,7 @@ With configuration: ``[]``.
 Example #3
 ~~~~~~~~~~
 
-With configuration: ``['sort_special_key_mode' => 'special_case_on_bottom']``.
+With configuration: ``['special_keys_placement' => 'bottom']``.
 
 .. code-block:: diff
 
@@ -78,7 +77,7 @@ With configuration: ``['sort_special_key_mode' => 'special_case_on_bottom']``.
 Example #4
 ~~~~~~~~~~
 
-With configuration: ``['sort_special_key_mode' => 'special_case_on_top']``.
+With configuration: ``['special_keys_placement' => 'top']``.
 
 .. code-block:: diff
 
