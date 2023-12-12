@@ -37,11 +37,18 @@ $foo = \'PhpCsFixer\Tokenizer\Tokens\';
 $bar = "\PhpCsFixer\Tokenizer\Tokens";
 '
                 ),
-            ]
+            ],
+            'This rule does not have an understanding of whether a class exists in the scope of the codebase or not, relying on run-time and autoloaded classes to determine it, which makes the rule useless when running on a single file out of codebase context.',
+            'Risky as EXPERIMENTAL.'
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
+    {
+        return true;
+    }
+
+    public function isRisky(): bool
     {
         return true;
     }
@@ -57,18 +64,13 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
                 $name = str_replace('\\\\', '\\', $name);
 
                 if ($this->exists($name)) {
-                    try {
-                        $substitution = Tokens::fromCode("<?php echo \\{$name}::class;");
-                        $substitution->clearRange(0, 2);
-                        $substitution->clearAt($substitution->getSize() - 1);
-                        $substitution->clearEmptyTokens();
+                    $substitution = Tokens::fromCode("<?php echo \\{$name}::class;");
+                    $substitution->clearRange(0, 2);
+                    $substitution->clearAt($substitution->getSize() - 1);
+                    $substitution->clearEmptyTokens();
 
-                        $tokens->clearAt($index);
-                        $tokens->insertAt($index, $substitution);
-                    } catch (\Error $e) {
-                        var_dump('error with parsing class', $name);
-                        var_dump($e->getMessage());
-                    }
+                    $tokens->clearAt($index);
+                    $tokens->insertAt($index, $substitution);
                 }
             }
         }
