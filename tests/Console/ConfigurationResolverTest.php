@@ -31,7 +31,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\ToolInfo;
+use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -1054,7 +1054,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     public function testResolveCommandLineInputOverridesDefault(): void
     {
-        $command = new FixCommand(new ToolInfo());
+        $command = new FixCommand($this->createToolInfoDouble());
         $definition = $command->getDefinition();
         $arguments = $definition->getArguments();
         self::assertCount(1, $arguments, 'Expected one argument, possibly test needs updating.');
@@ -1228,7 +1228,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
             $config->setCacheFile($cacheFile);
         }
 
-        $resolver = new ConfigurationResolver($config, [], $this->normalizePath('/my/path'), new TestToolInfo());
+        $resolver = new ConfigurationResolver($config, [], $this->normalizePath('/my/path'), $this->createToolInfoDouble());
         $directory = $resolver->getDirectory();
 
         self::assertSame($expectedPathRelativeToFile, $directory->getRelativePathTo($file));
@@ -1269,7 +1269,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
             $config,
             $options,
             $cwdPath,
-            new TestToolInfo()
+            $this->createToolInfoDouble()
         );
     }
 
@@ -1303,6 +1303,41 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
                 return new FixerConfigurationResolver([
                     (new FixerOptionBuilder('foo', 'Foo.'))->getOption(),
                 ]);
+            }
+        };
+    }
+
+    private function createToolInfoDouble(): ToolInfoInterface
+    {
+        return new class() implements ToolInfoInterface {
+            public function getComposerInstallationDetails(): array
+            {
+                throw new \BadMethodCallException();
+            }
+
+            public function getComposerVersion(): string
+            {
+                throw new \BadMethodCallException();
+            }
+
+            public function getVersion(): string
+            {
+                throw new \BadMethodCallException();
+            }
+
+            public function isInstalledAsPhar(): bool
+            {
+                return true;
+            }
+
+            public function isInstalledByComposer(): bool
+            {
+                throw new \BadMethodCallException();
+            }
+
+            public function getPharDownloadUri(string $version): string
+            {
+                throw new \BadMethodCallException();
             }
         };
     }
