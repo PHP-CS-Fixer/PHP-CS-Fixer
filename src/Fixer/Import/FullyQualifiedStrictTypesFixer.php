@@ -177,16 +177,17 @@ class SomeClass
 
         if ([] !== $matches) {
             foreach ($matches[2] as $i => $typeName) {
-                if (!\in_array($matches[1][$i], ['param', 'return', 'see', 'var'], true)) {
+                if (!\in_array($matches[1][$i], ['param', 'return', 'see', 'throws', 'var'], true)) {
                     continue;
                 }
 
                 $shortTokens = $this->determineShortType($typeName, $uses, $namespaceName);
 
                 if (null !== $shortTokens) {
+                    // Replace tag+type in order to avoid replacing type multiple times (when same type is used in multiple places)
                     $phpDocContent = str_replace(
-                        $typeName,
-                        implode('', array_map(
+                        $matches[0][$i],
+                        '@'.$matches[1][$i].' '.implode('', array_map(
                             static fn (Token $token) => $token->getContent(),
                             $shortTokens
                         )),

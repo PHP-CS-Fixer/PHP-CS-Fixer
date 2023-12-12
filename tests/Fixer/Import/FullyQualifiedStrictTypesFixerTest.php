@@ -700,15 +700,18 @@ class Two
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideCodeWithPhpDocCases
      */
-    public function testCodeWithPhpDoc(string $expected, ?string $input = null): void
+    public function testCodeWithPhpDoc(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<string, array{0: string, 1?: string}>
+     * @return iterable<string, array{0: string, 1?: string, 2?: array<string, mixed>}>
      */
     public static function provideCodeWithPhpDocCases(): iterable
     {
@@ -1024,6 +1027,28 @@ class SomeClass
         return $this->bam;
     }
 }',
+        ];
+
+        yield 'Leading backslash in global namespace' => [
+            '<?php
+
+/**
+ * @param \DateTimeInterface $dateTime
+ * @return \DateTimeInterface
+ * @see \DateTimeImmutable
+ * @throws \Exception
+ */
+function foo($dateTime) {}',
+            '<?php
+
+/**
+ * @param DateTimeInterface $dateTime
+ * @return DateTimeInterface
+ * @see DateTimeImmutable
+ * @throws Exception
+ */
+function foo($dateTime) {}',
+            ['leading_backslash_in_global_namespace' => true],
         ];
     }
 
