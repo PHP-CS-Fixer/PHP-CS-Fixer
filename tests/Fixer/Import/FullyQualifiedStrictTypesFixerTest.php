@@ -36,6 +36,9 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
     public static function provideNewLogicCases(): iterable
     {
         yield 'namespace === type name' => [
@@ -164,6 +167,9 @@ class A {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideCodeWithReturnTypesCases(): iterable
     {
         yield 'Import common strict types' => [
@@ -376,6 +382,9 @@ class SomeClass
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideCodeWithoutReturnTypesCases(): iterable
     {
         yield 'import from namespace and global' => [
@@ -635,6 +644,9 @@ namespace {
         ];
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideCodeWithReturnTypesCasesWithNullableCases(): iterable
     {
         yield 'Test namespace fixes with nullable types' => [
@@ -1025,6 +1037,9 @@ class SomeClass
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -1069,6 +1084,9 @@ class SomeClass
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [
@@ -1123,6 +1141,9 @@ class SomeClass
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'simple param in global namespace without use' => [
