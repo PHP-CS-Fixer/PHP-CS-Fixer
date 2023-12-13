@@ -35,16 +35,32 @@ Example #1
     use Foo\Bar;
     use Foo\Bar\Baz;
 
+    /**
+   - * @see \Foo\Bar\Baz
+   + * @see Baz
+     */
     class SomeClass
     {
-   -    public function doX(\Foo\Bar $foo): \Foo\Bar\Baz
-   +    public function doX(Bar $foo): Baz
-        {
+        /**
+   -     * @var \Foo\Bar\Baz
+   +     * @var Baz
+         */
+        public $baz;
+
+        /**
+   -     * @param \Foo\Bar\Baz $baz
+   +     * @param Baz $baz
+         */
+        public function __construct($baz) {
+            $this->baz = $baz;
         }
 
-   -    public function doY(Foo\NotImported $u, \Foo\NotImported $v)
-   +    public function doY(Foo\NotImported $u, Foo\NotImported $v)
-        {
+        /**
+   -     * @return \Foo\Bar\Baz
+   +     * @return Baz
+         */
+        public function getBaz() {
+            return $this->baz;
         }
     }
 

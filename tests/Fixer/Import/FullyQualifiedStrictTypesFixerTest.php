@@ -36,6 +36,9 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
     public static function provideNewLogicCases(): iterable
     {
         yield 'namespace === type name' => [
@@ -164,6 +167,9 @@ class A {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideCodeWithReturnTypesCases(): iterable
     {
         yield 'Import common strict types' => [
@@ -376,6 +382,9 @@ class SomeClass
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideCodeWithoutReturnTypesCases(): iterable
     {
         yield 'import from namespace and global' => [
@@ -635,6 +644,9 @@ namespace {
         ];
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideCodeWithReturnTypesCasesWithNullableCases(): iterable
     {
         yield 'Test namespace fixes with nullable types' => [
@@ -688,6 +700,359 @@ class Two
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
+     * @dataProvider provideCodeWithPhpDocCases
+     */
+    public function testCodeWithPhpDoc(string $expected, ?string $input = null, array $config = []): void
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string, 2?: array<string, mixed>}>
+     */
+    public static function provideCodeWithPhpDocCases(): iterable
+    {
+        yield 'Test class PHPDoc fixes' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+use Foo\Bar\Bam;
+
+/**
+ * @see Baz
+ * @see Bam
+ */
+class SomeClass
+{
+    /**
+     * @var Baz
+     */
+    public $baz;
+
+    /** @var Bam */
+    public $bam;
+}',
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+use Foo\Bar\Bam;
+
+/**
+ * @see \Foo\Bar\Baz
+ * @see \Foo\Bar\Bam
+ */
+class SomeClass
+{
+    /**
+     * @var \Foo\Bar\Baz
+     */
+    public $baz;
+
+    /** @var \Foo\Bar\Bam */
+    public $bam;
+}',
+        ];
+
+        yield 'Test PHPDoc nullable fixes' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+use Foo\Bar\Bam;
+
+/**
+ * @see Baz|null
+ * @see Bam|null
+ */
+class SomeClass {}',
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+use Foo\Bar\Bam;
+
+/**
+ * @see \Foo\Bar\Baz|null
+ * @see \Foo\Bar\Bam|null
+ */
+class SomeClass {}',
+        ];
+
+        yield 'Test PHPDoc in interface' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+interface SomeClass
+{
+   /**
+    * @param SomeClass $foo
+    * @param Buz $buz
+    * @param Zoof\Buz $barbuz
+    *
+    * @return Baz
+    */
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz;
+}',
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+interface SomeClass
+{
+   /**
+    * @param \Foo\Bar\SomeClass $foo
+    * @param \Foo\Bar\Buz $buz
+    * @param \Foo\Bar\Zoof\Buz $barbuz
+    *
+    * @return \Foo\Bar\Baz
+    */
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz;
+}',
+        ];
+
+        yield 'Test PHPDoc in interface with no imports' => [
+            '<?php
+
+namespace Foo\Bar;
+
+interface SomeClass
+{
+   /**
+    * @param SomeClass $foo
+    * @param Buz $buz
+    * @param Zoof\Buz $barbuz
+    *
+    * @return Baz
+    */
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz;
+}',
+            '<?php
+
+namespace Foo\Bar;
+
+interface SomeClass
+{
+   /**
+    * @param \Foo\Bar\SomeClass $foo
+    * @param \Foo\Bar\Buz $buz
+    * @param \Foo\Bar\Zoof\Buz $barbuz
+    *
+    * @return \Foo\Bar\Baz
+    */
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz;
+}',
+        ];
+
+        yield 'Test not imported PHPDoc fixes' => [
+            '<?php
+
+namespace Foo\Bar;
+
+/**
+ * @see Baz
+ * @see Bam
+ */
+final class SomeClass {}',
+            '<?php
+
+namespace Foo\Bar;
+
+/**
+ * @see \Foo\Bar\Baz
+ * @see \Foo\Bar\Bam
+ */
+final class SomeClass {}',
+        ];
+
+        yield 'Test multiple PHPDoc blocks' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Buz;
+use Foo\Bar\Baz;
+use Foo\Bar\SomeClass;
+
+/**
+ * @see Baz
+ * @see Bam
+ */
+interface SomeClass
+{
+    /**
+    * @param SomeClass $foo
+    * @param Buz $buz
+    *
+    * @return Baz
+    */
+    public function doSomething(SomeClass $foo, Buz $buz): Baz;
+}',
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Buz;
+use Foo\Bar\Baz;
+use Foo\Bar\SomeClass;
+
+/**
+ * @see \Foo\Bar\Baz
+ * @see \Foo\Bar\Bam
+ */
+interface SomeClass
+{
+    /**
+    * @param \Foo\Bar\SomeClass $foo
+    * @param \Foo\Bar\Buz $buz
+    *
+    * @return \Foo\Bar\Baz
+    */
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz): \Foo\Bar\Baz;
+}',
+        ];
+
+        yield 'Skip @covers in tests (they require FQCN)' => [
+            '<?php
+
+namespace Tests\Foo\Bar;
+
+use Foo\Bar\SomeClass;
+
+/**
+ * @covers \Foo\Bar\SomeClass
+ */
+class SomeClassTest {}',
+        ];
+
+        yield 'Imports with aliases' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz as Buzz;
+use Foo\Bar\Bam as Boom;
+
+/**
+ * @see Buzz
+ * @see Boom
+ */
+class SomeClass
+{
+    /**
+     * @var Buzz
+     */
+    public $baz;
+
+    /** @var Boom */
+    public $bam;
+
+    /**
+     * @param Buzz $baz
+     * @param Boom $bam
+     */
+    public function __construct($baz, $bam) {
+        $this->baz = $baz;
+        $this->bam = $bam;
+    }
+
+    /**
+     * @return Buzz
+     */
+    public function getBaz() {
+        return $this->baz;
+    }
+
+    /**
+     * @return Boom
+     */
+    public function getBam() {
+        return $this->bam;
+    }
+}',
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz as Buzz;
+use Foo\Bar\Bam as Boom;
+
+/**
+ * @see \Foo\Bar\Baz
+ * @see \Foo\Bar\Bam
+ */
+class SomeClass
+{
+    /**
+     * @var \Foo\Bar\Baz
+     */
+    public $baz;
+
+    /** @var \Foo\Bar\Bam */
+    public $bam;
+
+    /**
+     * @param \Foo\Bar\Baz $baz
+     * @param \Foo\Bar\Bam $bam
+     */
+    public function __construct($baz, $bam) {
+        $this->baz = $baz;
+        $this->bam = $bam;
+    }
+
+    /**
+     * @return \Foo\Bar\Baz
+     */
+    public function getBaz() {
+        return $this->baz;
+    }
+
+    /**
+     * @return \Foo\Bar\Bam
+     */
+    public function getBam() {
+        return $this->bam;
+    }
+}',
+        ];
+
+        yield 'Leading backslash in global namespace' => [
+            '<?php
+
+/**
+ * @param \DateTimeInterface $dateTime
+ * @return \DateTimeInterface
+ * @see \DateTimeImmutable
+ * @throws \Exception
+ */
+function foo($dateTime) {}',
+            '<?php
+
+/**
+ * @param DateTimeInterface $dateTime
+ * @return DateTimeInterface
+ * @see DateTimeImmutable
+ * @throws Exception
+ */
+function foo($dateTime) {}',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+    }
+
+    /**
      * @requires PHP 8.0
      *
      * @dataProvider provideFix80Cases
@@ -697,6 +1062,9 @@ class Two
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -741,6 +1109,9 @@ class Two
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [
@@ -795,6 +1166,9 @@ class SomeClass
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'simple param in global namespace without use' => [
