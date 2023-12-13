@@ -373,54 +373,44 @@ abstract class AbstractFixerTestCase extends TestCase
 
     final public function testProperMethodNaming(): void
     {
-        // THIS GROUP MAP WILL BE GONE AFTER ALL MIGRATION IS FINISHED
-        //
-        // group is the namespace part right before fixer's class name
-        // 0 - ignores
-        // 1 - check if expected methods exist
-        // 2 - check if an extra methods exist
-        $groupMap = [
-            'Alias' => 2,
-            'ArrayNotation' => 2,
-            'AttributeNotation' => 2,
-            'Basic' => 1,
-            'Casing' => 1,
-            'CastNotation' => 0,
-            'ClassNotation' => 0,
-            'ClassUsage' => 0,
-            'Comment' => 0,
-            'ConstantNotation' => 0,
-            'ControlStructure' => 0,
-            'DoctrineAnnotation' => 0,
-            'FunctionNotation' => 0,
-            'Import' => 0,
-            'LanguageConstruct' => 0,
-            'ListNotation' => 0,
-            'NamespaceNotation' => 0,
-            'Naming' => 0,
-            'Operator' => 0,
-            'PhpTag' => 0,
-            'PhpUnit' => 0,
-            'Phpdoc' => 0,
-            'ReturnNotation' => 0,
-            'Semicolon' => 0,
-            'Strict' => 0,
-            'StringNotation' => 0,
-            'Whitespace' => 0,
+        if ($this->fixer instanceof DeprecatedFixerInterface) {
+            self::markTestSkipped('Not worth refactoring tests for deprecated fixers.');
+        }
+
+        $exceptionGroup = [
+            'Casing',
+            'CastNotation',
+            'ClassNotation',
+            'ClassUsage',
+            'Comment',
+            'ConstantNotation',
+            'ControlStructure',
+            'DoctrineAnnotation',
+            'FunctionNotation',
+            'Import',
+            'LanguageConstruct',
+            'ListNotation',
+            'NamespaceNotation',
+            'Naming',
+            'Operator',
+            'PhpTag',
+            'PhpUnit',
+            'Phpdoc',
+            'ReturnNotation',
+            'Semicolon',
+            'Strict',
+            'StringNotation',
+            'Whitespace',
         ];
 
-        $fixerGroup = $groupMap[explode('\\', static::class)[3]] ?? 0;
+        $fixerGroup = explode('\\', static::class)[3];
 
-        if (0 === $fixerGroup) {
+        if (\in_array($fixerGroup, $exceptionGroup, true)) {
             self::markTestSkipped('Not covered yet.');
         }
 
         self::assertTrue(method_exists($this, 'testFix'), 'Method testFix does not exist.');
         self::assertTrue(method_exists($this, 'provideFixCases'), 'Method provideFixCases does not exist.');
-
-        if (1 === $fixerGroup) {
-            return; // stop here
-        }
 
         $names = ['Fix', 'FixPre80', 'Fix80', 'Fix81', 'Fix82', 'Fix83', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];

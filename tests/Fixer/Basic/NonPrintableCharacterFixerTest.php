@@ -26,30 +26,39 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
-        $this->fixer->configure([
-            'use_escape_sequences_in_strings' => false,
-        ]);
-
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @dataProvider provideFixCases
+     * @return iterable<array{string, null|string, array<mixed>}>
      */
-    public function testFixWithoutEscapeSequences(string $expected, ?string $input = null): void
+    public static function provideFixCases(): iterable
     {
-        $this->fixer->configure([
-            'use_escape_sequences_in_strings' => false,
-        ]);
+        foreach (self::provideFixWithoutEscapeSequencesInStringsCases() as $case) {
+            yield [
+                $case[0],
+                $case[1] ?? null,
+                ['use_escape_sequences_in_strings' => false],
+            ];
+        }
 
-        $this->doTest($expected, $input);
+        foreach (self::provideFixWithEscapeSequencesInStringsCases() as $case) {
+            yield [
+                $case[0],
+                $case[1] ?? null,
+                ['use_escape_sequences_in_strings' => true],
+            ];
+        }
     }
 
-    public static function provideFixCases(): iterable
+    private static function provideFixWithoutEscapeSequencesInStringsCases(): iterable
     {
         yield [
             '<?php echo "Hello World !";',
@@ -130,19 +139,7 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
         ];
     }
 
-    /**
-     * @dataProvider provideFixWithEscapeSequencesInStringsCases
-     */
-    public function testFixWithEscapeSequencesInStrings(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure([
-            'use_escape_sequences_in_strings' => true,
-        ]);
-
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixWithEscapeSequencesInStringsCases(): iterable
+    private static function provideFixWithEscapeSequencesInStringsCases(): iterable
     {
         yield [
             '<?php

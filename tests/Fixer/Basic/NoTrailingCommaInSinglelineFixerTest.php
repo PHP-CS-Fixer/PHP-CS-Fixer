@@ -24,10 +24,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoTrailingCommaInSinglelineFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -47,93 +50,95 @@ final class NoTrailingCommaInSinglelineFixerTest extends AbstractFixerTestCase
             '<?php $a = [1,[1,[1,[1,[1,[1,[1,[1]],[1,[1,[1,[1,[1,[1,[1,[1]]]]]]]]]]]]]];',
             '<?php $a = [1,[1,[1,[1,[1,[1,[1,[1,],],[1,[1,[1,[1,[1,[1,[1,[1,],],],],],],],],],],],],],];',
         ];
-    }
 
-    /**
-     * @dataProvider provideFixNoTrailingCommaInSinglelineFunctionCallCases
-     */
-    public function testFixNoTrailingCommaInSinglelineFunctionCall(string $expected, string $input = null): void
-    {
-        $this->fixer->configure(['elements' => ['arguments']]);
-
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixNoTrailingCommaInSinglelineFunctionCallCases(): iterable
-    {
         yield 'simple var' => [
             '<?php $a(1);',
             '<?php $a(1,);',
+            ['elements' => ['arguments']],
         ];
 
         yield '&' => [
             '<?php $a = &foo($a);',
             '<?php $a = &foo($a,);',
+            ['elements' => ['arguments']],
         ];
 
         yield 'open' => [
             '<?php foo($a);',
             '<?php foo($a,);',
+            ['elements' => ['arguments']],
         ];
 
         yield '=' => [
             '<?php $b = foo($a);',
             '<?php $b = foo($a,);',
+            ['elements' => ['arguments']],
         ];
 
         yield '.' => [
             '<?php $c = $b . foo($a);',
             '<?php $c = $b . foo($a,);',
+            ['elements' => ['arguments']],
         ];
 
         yield '(' => [
             '<?php (foo($a/* 1X */   /* 2 */  ));',
             '<?php (foo($a /* 1X */  , /* 2 */  ));',
+            ['elements' => ['arguments']],
         ];
 
         yield '\\' => [
             '<?php \foo($a);',
             '<?php \foo($a,);',
+            ['elements' => ['arguments']],
         ];
 
         yield 'A\\' => [
             '<?php A\foo($a);',
             '<?php A\foo($a,);',
+            ['elements' => ['arguments']],
         ];
 
         yield '\A\\' => [
             '<?php \A\foo($a);',
             '<?php \A\foo($a,);',
+            ['elements' => ['arguments']],
         ];
 
         yield ';' => [
             '<?php ; foo($a);',
             '<?php ; foo($a,);',
+            ['elements' => ['arguments']],
         ];
 
         yield '}' => [
             '<?php if ($a) { echo 1;} foo($a);',
             '<?php if ($a) { echo 1;} foo($a,);',
+            ['elements' => ['arguments']],
         ];
 
         yield 'test method call' => [
             '<?php $o->abc($a);',
             '<?php $o->abc($a,);',
+            ['elements' => ['arguments']],
         ];
 
         yield 'nested call' => [
             '<?php $o->abc($a,foo(1));',
             '<?php $o->abc($a,foo(1,));',
+            ['elements' => ['arguments']],
         ];
 
         yield 'wrapped' => [
             '<?php echo (new Process())->getOutput(1);',
             '<?php echo (new Process())->getOutput(1,);',
+            ['elements' => ['arguments']],
         ];
 
         yield 'dynamic function and method calls' => [
             '<?php $b->$a(1); $c("");',
             '<?php $b->$a(1,); $c("",);',
+            ['elements' => ['arguments']],
         ];
 
         yield 'static function call' => [
@@ -145,16 +150,19 @@ $b = isset($foo->bar);
 unset($foo->bar,);
 $b = isset($foo->bar,);
 ',
+            ['elements' => ['arguments']],
         ];
 
         yield 'unset' => [
             '<?php A::foo(1);',
             '<?php A::foo(1,);',
+            ['elements' => ['arguments']],
         ];
 
         yield 'anonymous_class construction' => [
             '<?php new class(1, 2) {};',
             '<?php new class(1, 2,) {};',
+            ['elements' => ['arguments']],
         ];
 
         yield 'array/property access call' => [
@@ -194,6 +202,7 @@ ${$e}(1,);
 $$e(2,);
 $f(0,)(1,);
 $g["e"](1,); // foo',
+            ['elements' => ['arguments']],
         ];
 
         yield 'do not fix' => [
@@ -221,20 +230,38 @@ $g["e"](1,); // foo',
                 {
                 }
             ;',
+            null,
+            ['elements' => ['arguments']],
         ];
+
+        foreach (self::provideFixNoTrailingCommaInSinglelineArrayFixerCases() as $case) {
+            yield [
+                $case[0],
+                $case[1] ?? null,
+                ['elements' => ['array']],
+            ];
+        }
+
+        foreach (self::provideFixNoTrailingCommaInListCallFixerCases() as $case) {
+            yield [
+                $case[0],
+                $case[1] ?? null,
+                ['elements' => ['array_destructuring']],
+            ];
+        }
     }
 
     /**
-     * @dataProvider provideFix80NoTrailingCommaInSinglelineFunctionCallFixerCases
+     * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
-    public function testFix80NoTrailingCommaInSinglelineFunctionCallFixer(string $expected, string $input = null): void
+    public function testFix80(string $expected, string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80NoTrailingCommaInSinglelineFunctionCallFixerCases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php function foo(
@@ -247,16 +274,16 @@ $foo1b = function() use ($bar, ) {};
     }
 
     /**
-     * @dataProvider provideFix81NoTrailingCommaInSinglelineFunctionCallFixerCases
+     * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
      */
-    public function testFix81NoTrailingCommaInSinglelineFunctionCallFixer(string $expected, ?string $input = null): void
+    public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix81NoTrailingCommaInSinglelineFunctionCallFixerCases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php $object?->method(1); strlen(...);',
@@ -264,17 +291,7 @@ $foo1b = function() use ($bar, ) {};
         ];
     }
 
-    /**
-     * @dataProvider provideFixNoTrailingCommaInSinglelineArrayFixerCases
-     */
-    public function testFixNoTrailingCommaInSinglelineArrayFixer(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['elements' => ['array']]);
-
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixNoTrailingCommaInSinglelineArrayFixerCases(): iterable
+    private static function provideFixNoTrailingCommaInSinglelineArrayFixerCases(): iterable
     {
         yield ['<?php $x = array();'];
 
@@ -391,17 +408,7 @@ TWIG
         ];
     }
 
-    /**
-     * @dataProvider provideFixNoTrailingCommaInListCallFixerCases
-     */
-    public function testFixNoTrailingCommaInListCallFixer(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['elements' => ['array_destructuring']]);
-
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixNoTrailingCommaInListCallFixerCases(): iterable
+    private static function provideFixNoTrailingCommaInListCallFixerCases(): iterable
     {
         yield [
             '<?php
