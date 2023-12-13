@@ -466,7 +466,7 @@ abstract class AbstractFixerTestCase extends TestCase
     {
         self::assertSame(
             substr_count(strtolower($haystack), strtolower($needle)),
-            substr_count($haystack, $needle) + ($exceptions[$needle][$descriptionType][$fixerName] ?? 0),
+            substr_count($haystack, $needle),
             sprintf('[%s] `%s` must be in correct casing in %s.', $fixerName, $needle, $descriptionType)
         );
     }
