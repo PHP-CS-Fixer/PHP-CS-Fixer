@@ -35,25 +35,46 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
         $this->fixer->configure(['a' => 1]);
     }
 
-    public function testFixWithDefaultConfiguration(): void
-    {
-        $this->fixer->configure([]);
-        $this->doTest(
-            '<?php $a = []; $b = [];',
-            '<?php $a = []; $b = array();'
-        );
-    }
-
     /**
-     * @dataProvider provideFixLongSyntaxCases
+     * @param array<string, mixed> $configuration
+     *
+     * @dataProvider provideFixCases
      */
-    public function testFixLongSyntax(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
-        $this->fixer->configure(['syntax' => 'long']);
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixLongSyntaxCases(): iterable
+    /**
+     * @return iterable<array{string, null|string, array<mixed>}>
+     */
+    public static function provideFixCases(): iterable
+    {
+        yield 'default configuration' => [
+            '<?php $a = []; $b = [];',
+            '<?php $a = []; $b = array();',
+            [],
+        ];
+
+        foreach (self::provideFixLongSyntaxCases() as $case) {
+            yield [
+                $case[0],
+                $case[1] ?? null,
+                ['syntax' => 'long'],
+            ];
+        }
+
+        foreach (self::provideFixShortSyntaxCases() as $case) {
+            yield [
+                $case[0],
+                $case[1] ?? null,
+                ['syntax' => 'short'],
+            ];
+        }
+    }
+
+    private static function provideFixLongSyntaxCases(): iterable
     {
         yield ['<?php $x = array();', '<?php $x = [];'];
 
@@ -102,16 +123,7 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
         yield ['<?php foreach ($array as $key => [$x, $y]) {}'];
     }
 
-    /**
-     * @dataProvider provideFixShortSyntaxCases
-     */
-    public function testFixShortSyntax(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['syntax' => 'short']);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixShortSyntaxCases(): iterable
+    private static function provideFixShortSyntaxCases(): iterable
     {
         yield ['<?php $x = [];', '<?php $x = array();'];
 

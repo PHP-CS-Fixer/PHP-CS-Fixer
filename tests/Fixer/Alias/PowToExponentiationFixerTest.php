@@ -274,6 +274,22 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
             '<?php echo 10_0** 2;',
             '<?php echo pow(10_0, 2);',
         ];
+
+        yield [
+            '<?php pow(); ++$a;++$a;++$a;++$a;++$a;++$a;// pow(1,2);',
+        ];
+
+        yield [
+            '<?php pow(5); ++$a;++$a;++$a;++$a;++$a;++$a;# pow(1,2);',
+        ];
+
+        yield [
+            '<?php pow(5,1,1); ++$a;++$a;++$a;++$a;++$a;++$a;/* pow(1,2); */',
+        ];
+
+        yield [
+            '<?php \a\pow(4,3); ++$a;++$a;++$a;++$a;++$a;++$a;/** pow(1,2); */',
+        ];
     }
 
     /**
@@ -291,33 +307,6 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         yield [
             '<?php echo $a{1}** $b{2+5};',
             '<?php echo pow($a{1}, $b{2+5});',
-        ];
-    }
-
-    /**
-     * @dataProvider provideNotFixCases
-     */
-    public function testNotFix(string $expected): void
-    {
-        $this->doTest($expected);
-    }
-
-    public static function provideNotFixCases(): iterable
-    {
-        yield [
-            '<?php pow(); ++$a;++$a;++$a;++$a;++$a;++$a;// pow(1,2);',
-        ];
-
-        yield [
-            '<?php pow(5); ++$a;++$a;++$a;++$a;++$a;++$a;# pow(1,2);',
-        ];
-
-        yield [
-            '<?php pow(5,1,1); ++$a;++$a;++$a;++$a;++$a;++$a;/* pow(1,2); */',
-        ];
-
-        yield [
-            '<?php \a\pow(4,3); ++$a;++$a;++$a;++$a;++$a;++$a;/** pow(1,2); */',
         ];
     }
 

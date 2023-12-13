@@ -28,15 +28,82 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixEchoToPrintCases
+     * @param array<string, mixed> $configuration
+     *
+     * @dataProvider provideFixCases
      */
-    public function testFixEchoToPrint(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
-        $this->fixer->configure(['use' => 'print']);
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixEchoToPrintCases(): iterable
+    /**
+     * @return iterable<array{string, null|string, array<mixed>}>
+     */
+    public static function provideFixCases(): iterable
+    {
+        foreach (self::provideFixEchoToPrintCases() as $case) {
+            yield [
+                $case[0],
+                $case[1] ?? null,
+                ['use' => 'print'],
+            ];
+        }
+
+        foreach (self::provideFixPrintToEchoCases() as $case) {
+            yield [
+                $case[0],
+                $case[1] ?? null,
+                ['use' => 'echo'],
+            ];
+        }
+    }
+
+    public function testConfigure(): void
+    {
+        $this->fixer->configure([]);
+
+        self::assertCandidateTokenType(T_PRINT, $this->fixer);
+    }
+
+    /**
+     * @param array<mixed> $wrongConfig
+     *
+     * @dataProvider provideInvalidConfigurationCases
+     */
+    public function testInvalidConfiguration(array $wrongConfig, string $expectedMessage): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches($expectedMessage);
+
+        $this->fixer->configure($wrongConfig);
+    }
+
+    public static function provideInvalidConfigurationCases(): iterable
+    {
+        yield [
+            ['a' => 'b'],
+            '#^\[no_mixed_echo_print\] Invalid configuration: The option "a" does not exist\. (Known|Defined) options are: "use"\.$#',
+        ];
+
+        yield [
+            ['a' => 'b', 'b' => 'c'],
+            '#^\[no_mixed_echo_print\] Invalid configuration: The options "a", "b" do not exist\. (Known|Defined) options are: "use"\.$#',
+        ];
+
+        yield [
+            [1],
+            '#^\[no_mixed_echo_print\] Invalid configuration: The option "0" does not exist\. (Known|Defined) options are: "use"\.$#',
+        ];
+
+        yield [
+            ['use' => '_invalid_'],
+            '#^\[no_mixed_echo_print\] Invalid configuration: The option "use" with value "_invalid_" is invalid\. Accepted values are: "print", "echo"\.$#',
+        ];
+    }
+
+    private static function provideFixEchoToPrintCases(): iterable
     {
         yield [
             '<?php
@@ -150,16 +217,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         }
     }
 
-    /**
-     * @dataProvider provideFixPrintToEchoCases
-     */
-    public function testFixPrintToEcho(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['use' => 'echo']);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixPrintToEchoCases(): iterable
+    private static function provideFixPrintToEchoCases(): iterable
     {
         yield [
             '<?php
@@ -293,49 +351,6 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 sprintf($codeSnippet, 'print'),
             ];
         }
-    }
-
-    public function testDefaultConfig(): void
-    {
-        $this->fixer->configure([]);
-
-        self::assertCandidateTokenType(T_PRINT, $this->fixer);
-    }
-
-    /**
-     * @param array<mixed> $wrongConfig
-     *
-     * @dataProvider provideWrongConfigCases
-     */
-    public function testWrongConfig(array $wrongConfig, string $expectedMessage): void
-    {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches($expectedMessage);
-
-        $this->fixer->configure($wrongConfig);
-    }
-
-    public static function provideWrongConfigCases(): iterable
-    {
-        yield [
-            ['a' => 'b'],
-            '#^\[no_mixed_echo_print\] Invalid configuration: The option "a" does not exist\. (Known|Defined) options are: "use"\.$#',
-        ];
-
-        yield [
-            ['a' => 'b', 'b' => 'c'],
-            '#^\[no_mixed_echo_print\] Invalid configuration: The options "a", "b" do not exist\. (Known|Defined) options are: "use"\.$#',
-        ];
-
-        yield [
-            [1],
-            '#^\[no_mixed_echo_print\] Invalid configuration: The option "0" does not exist\. (Known|Defined) options are: "use"\.$#',
-        ];
-
-        yield [
-            ['use' => '_invalid_'],
-            '#^\[no_mixed_echo_print\] Invalid configuration: The option "use" with value "_invalid_" is invalid\. Accepted values are: "print", "echo"\.$#',
-        ];
     }
 
     private static function assertCandidateTokenType(int $expected, AbstractFixer $fixer): void
