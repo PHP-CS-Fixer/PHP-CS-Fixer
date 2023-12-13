@@ -464,19 +464,6 @@ abstract class AbstractFixerTestCase extends TestCase
 
     protected static function assertCorrectCasing(string $haystack, string $needle, string $fixerName, string $descriptionType): void
     {
-        $exceptions = [
-            'PHPDoc' => [
-                'option:comment_type' => [
-                    'align_multiline_comment' => 2,
-                ],
-            ],
-            'PHPUnit' => [
-                'description' => [
-                    'ordered_class_elements' => 1,
-                ],
-            ],
-        ];
-
         self::assertSame(
             substr_count(strtolower($haystack), strtolower($needle)),
             substr_count($haystack, $needle) + ($exceptions[$needle][$descriptionType][$fixerName] ?? 0),
@@ -499,14 +486,17 @@ abstract class AbstractFixerTestCase extends TestCase
 
     private static function assertValidDescription(string $fixerName, string $descriptionType, string $description): void
     {
+        // Description:
+        // "Option `a` and `b_c` are allowed."
+        // becomes:
+        // "Option `_` and `_` are allowed."
+        // so values in backticks are excluded from check
+        $descriptionWithExcludedNames = preg_replace('/`([^`]+)`/', '`_`', $description);
+
         self::assertMatchesRegularExpression('/^[A-Z`].+\.$/s', $description, sprintf('[%s] The %s must start with capital letter or a ` and end with dot.', $fixerName, $descriptionType));
-        self::assertSame(
-            0,
-            substr_count($description, 'phpdocs') - substr_count($description, '`phpdocs_'), // allow the option to have "`phpdocs_*`"
-            sprintf('[%s] `PHPDoc` must not be in the plural in %s.', $fixerName, $descriptionType),
-        );
-        self::assertCorrectCasing($description, 'PHPDoc', $fixerName, $descriptionType);
-        self::assertCorrectCasing($description, 'PHPUnit', $fixerName, $descriptionType);
+        self::assertStringNotContainsString('phpdocs', $descriptionWithExcludedNames, sprintf('[%s] `PHPDoc` must not be in the plural in %s.', $fixerName, $descriptionType));
+        self::assertCorrectCasing($descriptionWithExcludedNames, 'PHPDoc', $fixerName, $descriptionType);
+        self::assertCorrectCasing($descriptionWithExcludedNames, 'PHPUnit', $fixerName, $descriptionType);
         self::assertFalse(strpos($descriptionType, '``'), sprintf('[%s] The %s must no contain sequential backticks.', $fixerName, $descriptionType));
     }
 
