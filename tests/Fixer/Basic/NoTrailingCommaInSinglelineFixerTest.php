@@ -34,6 +34,9 @@ final class NoTrailingCommaInSinglelineFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, null|string, 2?: array{elements?: array<string>}}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -234,21 +237,249 @@ $g["e"](1,); // foo',
             ['elements' => ['arguments']],
         ];
 
-        foreach (self::provideFixNoTrailingCommaInSinglelineArrayFixerCases() as $case) {
-            yield [
-                $case[0],
-                $case[1] ?? null,
-                ['elements' => ['array']],
-            ];
-        }
+        yield [
+            '<?php $x = array();',
+            null,
+            ['elements' => ['array']],
+        ];
 
-        foreach (self::provideFixNoTrailingCommaInListCallFixerCases() as $case) {
-            yield [
-                $case[0],
-                $case[1] ?? null,
-                ['elements' => ['array_destructuring']],
-            ];
-        }
+        yield [
+            '<?php $x = array("foo");',
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php $x = array("foo");',
+            '<?php $x = array("foo", );',
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            "<?php \$x = array(\n'foo', \n);",
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            "<?php \$x = array('foo', \n);",
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            "<?php \$x = array(array('foo'), \n);",
+            "<?php \$x = array(array('foo',), \n);",
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            "<?php \$x = array(array('foo',\n), \n);",
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php
+    $test = array("foo", <<<TWIG
+        foo
+TWIG
+        , $twig, );',
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php
+    $test = array(
+        "foo", <<<TWIG
+        foo
+TWIG
+        , $twig, );',
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php
+    $test = array("foo", <<<\'TWIG\'
+        foo
+TWIG
+        , $twig, );',
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php
+    $test = array(
+        "foo", <<<\'TWIG\'
+        foo
+TWIG
+        , $twig, );',
+            null,
+            ['elements' => ['array']],
+        ];
+
+        // Short syntax
+        yield [
+            '<?php $x = array([]);',
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php $x = [[]];',
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php $x = ["foo"];',
+            '<?php $x = ["foo",];',
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php $x = bar(["foo"]);',
+            '<?php $x = bar(["foo",]);',
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            "<?php \$x = bar([['foo'],\n]);",
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            "<?php \$x = ['foo', \n];",
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php $x = array([]);',
+            '<?php $x = array([],);',
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php $x = [[]];',
+            '<?php $x = [[],];',
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php $x = [$y[""]];',
+            '<?php $x = [$y[""],];',
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php
+    $test = ["foo", <<<TWIG
+        foo
+TWIG
+        , $twig, ];',
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php
+    $test = [
+        "foo", <<<TWIG
+        foo
+TWIG
+        , $twig, ];',
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php
+    $test = ["foo", <<<\'TWIG\'
+        foo
+TWIG
+        , $twig, ];',
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php
+    $test = [
+        "foo", <<<\'TWIG\'
+        foo
+TWIG
+        , $twig, ];',
+            null,
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php $x = array(...$foo);',
+            '<?php $x = array(...$foo, );',
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php $x = [...$foo];',
+            '<?php $x = [...$foo, ];',
+            ['elements' => ['array']],
+        ];
+
+        yield [
+            '<?php
+list($a1, $b) = foo();
+list($a2, , $c, $d) = foo();
+list($a3, , $c) = foo();
+list($a4) = foo();
+list($a5 , $b) = foo();
+list($a6, /* $b */, $c) = foo();
+',
+            '<?php
+list($a1, $b) = foo();
+list($a2, , $c, $d, ) = foo();
+list($a3, , $c, , ) = foo();
+list($a4, , , , , ) = foo();
+list($a5 , $b , ) = foo();
+list($a6, /* $b */, $c, ) = foo();
+',
+            ['elements' => ['array_destructuring']],
+        ];
+
+        yield [
+            '<?php
+list(
+$a#
+,#
+#
+) = $a;',
+            null,
+            ['elements' => ['array_destructuring']],
+        ];
+
+        yield [
+            '<?php
+[$a7, $b] = foo();
+[$a8, , $c, $d] = foo();
+[$a9, , $c] = foo();
+[$a10] = foo();
+[$a11 , $b] = foo();
+[$a12, /* $b */, $c] = foo();
+',
+            '<?php
+[$a7, $b] = foo();
+[$a8, , $c, $d, ] = foo();
+[$a9, , $c, , ] = foo();
+[$a10, , , , , ] = foo();
+[$a11 , $b , ] = foo();
+[$a12, /* $b */, $c, ] = foo();
+',
+            ['elements' => ['array_destructuring']],
+        ];
     }
 
     /**
@@ -288,173 +519,6 @@ $foo1b = function() use ($bar, ) {};
         yield [
             '<?php $object?->method(1); strlen(...);',
             '<?php $object?->method(1,); strlen(...);',
-        ];
-    }
-
-    private static function provideFixNoTrailingCommaInSinglelineArrayFixerCases(): iterable
-    {
-        yield ['<?php $x = array();'];
-
-        yield ['<?php $x = array("foo");'];
-
-        yield [
-            '<?php $x = array("foo");',
-            '<?php $x = array("foo", );',
-        ];
-
-        yield ["<?php \$x = array(\n'foo', \n);"];
-
-        yield ["<?php \$x = array('foo', \n);"];
-
-        yield ["<?php \$x = array(array('foo'), \n);", "<?php \$x = array(array('foo',), \n);"];
-
-        yield ["<?php \$x = array(array('foo',\n), \n);"];
-
-        yield [
-            '<?php
-    $test = array("foo", <<<TWIG
-        foo
-TWIG
-        , $twig, );',
-        ];
-
-        yield [
-            '<?php
-    $test = array(
-        "foo", <<<TWIG
-        foo
-TWIG
-        , $twig, );',
-        ];
-
-        yield [
-            '<?php
-    $test = array("foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, );',
-        ];
-
-        yield [
-            '<?php
-    $test = array(
-        "foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, );',
-        ];
-
-        // Short syntax
-        yield ['<?php $x = array([]);'];
-
-        yield ['<?php $x = [[]];'];
-
-        yield ['<?php $x = ["foo"];', '<?php $x = ["foo",];'];
-
-        yield ['<?php $x = bar(["foo"]);', '<?php $x = bar(["foo",]);'];
-
-        yield ["<?php \$x = bar([['foo'],\n]);"];
-
-        yield ["<?php \$x = ['foo', \n];"];
-
-        yield ['<?php $x = array([]);', '<?php $x = array([],);'];
-
-        yield ['<?php $x = [[]];', '<?php $x = [[],];'];
-
-        yield ['<?php $x = [$y[""]];', '<?php $x = [$y[""],];'];
-
-        yield [
-            '<?php
-    $test = ["foo", <<<TWIG
-        foo
-TWIG
-        , $twig, ];',
-        ];
-
-        yield [
-            '<?php
-    $test = [
-        "foo", <<<TWIG
-        foo
-TWIG
-        , $twig, ];',
-        ];
-
-        yield [
-            '<?php
-    $test = ["foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, ];',
-        ];
-
-        yield [
-            '<?php
-    $test = [
-        "foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, ];',
-        ];
-
-        yield [
-            '<?php $x = array(...$foo);',
-            '<?php $x = array(...$foo, );',
-        ];
-
-        yield [
-            '<?php $x = [...$foo];',
-            '<?php $x = [...$foo, ];',
-        ];
-    }
-
-    private static function provideFixNoTrailingCommaInListCallFixerCases(): iterable
-    {
-        yield [
-            '<?php
-list($a1, $b) = foo();
-list($a2, , $c, $d) = foo();
-list($a3, , $c) = foo();
-list($a4) = foo();
-list($a5 , $b) = foo();
-list($a6, /* $b */, $c) = foo();
-',
-            '<?php
-list($a1, $b) = foo();
-list($a2, , $c, $d, ) = foo();
-list($a3, , $c, , ) = foo();
-list($a4, , , , , ) = foo();
-list($a5 , $b , ) = foo();
-list($a6, /* $b */, $c, ) = foo();
-',
-        ];
-
-        yield [
-            '<?php
-list(
-$a#
-,#
-#
-) = $a;',
-        ];
-
-        yield [
-            '<?php
-[$a7, $b] = foo();
-[$a8, , $c, $d] = foo();
-[$a9, , $c] = foo();
-[$a10] = foo();
-[$a11 , $b] = foo();
-[$a12, /* $b */, $c] = foo();
-',
-            '<?php
-[$a7, $b] = foo();
-[$a8, , $c, $d, ] = foo();
-[$a9, , $c, , ] = foo();
-[$a10, , , , , ] = foo();
-[$a11 , $b , ] = foo();
-[$a12, /* $b */, $c, ] = foo();
-',
         ];
     }
 }
