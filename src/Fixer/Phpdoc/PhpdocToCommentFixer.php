@@ -150,7 +150,11 @@ function returnClassName() {
                 continue;
             }
 
-            if ($commentsAnalyzer->isBeforeStructuralElement($tokens, $index, $this->allowBeforeReturnStatement)) {
+            if ($this->allowBeforeReturnStatement && $commentsAnalyzer->isBeforeReturn($tokens, $index)) {
+                continue;
+            }
+
+            if ($commentsAnalyzer->isBeforeStructuralElement($tokens, $index)) {
                 continue;
             }
 

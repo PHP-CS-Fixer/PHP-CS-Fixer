@@ -469,21 +469,47 @@ enum Foo: int {
     /**
      * @dataProvider provideReturnStatementCases
      */
-    public function testReturnStatement(string $code, bool $allowReturn, bool $expected): void
+    public function testReturnStatement(string $code, bool $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
-        self::assertSame($expected, $analyzer->isBeforeStructuralElement($tokens, $index, $allowReturn));
+        self::assertSame($expected, $analyzer->isBeforeReturn($tokens, $index));
     }
 
     /**
-     * @return iterable<string, array{string, bool, bool}>
+     * @return iterable<string, array{string, bool}>
      */
     public static function provideReturnStatementCases(): iterable
     {
-        yield 'docblock disallow return' => [
+        yield 'docblock before var' => [
+            '<?php
+            function returnClassName()
+            {
+                /** @todo something */
+                $var = 123;
+
+                return;
+            }
+            ',
+            false,
+        ];
+
+        yield 'comment before var' => [
+            '<?php
+            function returnClassName()
+            {
+                // @todo something
+                $var = 123;
+
+                return;
+            }
+            ',
+            false,
+        ];
+
+        yield 'docblock return' => [
             '<?php
             function returnClassName()
             {
@@ -491,11 +517,10 @@ enum Foo: int {
                 return;
             }
             ',
-            false,
-            false,
+            true,
         ];
 
-        yield 'comment disallow return' => [
+        yield 'comment return' => [
             '<?php
             function returnClassName()
             {
@@ -503,31 +528,6 @@ enum Foo: int {
                 return;
             }
             ',
-            false,
-            false,
-        ];
-
-        yield 'docblock allow return' => [
-            '<?php
-            function returnClassName()
-            {
-                /** @todo something */
-                return;
-            }
-            ',
-            true,
-            true,
-        ];
-
-        yield 'comment allow return' => [
-            '<?php
-            function returnClassName()
-            {
-                // @todo something
-                return;
-            }
-            ',
-            true,
             true,
         ];
     }

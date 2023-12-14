@@ -65,7 +65,7 @@ final class CommentsAnalyzer
      *
      * @see https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md#3-definitions
      */
-    public function isBeforeStructuralElement(Tokens $tokens, int $index, bool $allowReturnStatement = false): bool
+    public function isBeforeStructuralElement(Tokens $tokens, int $index): bool
     {
         $token = $tokens[$index];
 
@@ -102,10 +102,6 @@ final class CommentsAnalyzer
             return true;
         }
 
-        if ($allowReturnStatement && $this->isValidReturnStatement($tokens, $nextIndex)) {
-            return true;
-        }
-
         if ($this->isValidVariableAssignment($tokens, $token, $nextIndex)) {
             return true;
         }
@@ -115,6 +111,35 @@ final class CommentsAnalyzer
         }
 
         return false;
+    }
+
+    /**
+     * Check if comment at given index precedes return statement.
+     */
+    public function isBeforeReturn(Tokens $tokens, int $index): bool
+    {
+        if (!$tokens[$index]->isGivenKind([T_COMMENT, T_DOC_COMMENT])) {
+            throw new \InvalidArgumentException('Given index must point to a comment.');
+        }
+
+        $nextIndex = $index;
+        do {
+            $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+
+            // @TODO: drop condition when PHP 8.0+ is required
+            if (\defined('T_ATTRIBUTE')) {
+                while (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(T_ATTRIBUTE)) {
+                    $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $nextIndex);
+                    $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+                }
+            }
+        } while (null !== $nextIndex && $tokens[$nextIndex]->equals('('));
+
+        if (null === $nextIndex || $tokens[$nextIndex]->equals('}')) {
+            return false;
+        }
+
+        return $this->isValidReturnStatement($tokens, $nextIndex);
     }
 
     /**
