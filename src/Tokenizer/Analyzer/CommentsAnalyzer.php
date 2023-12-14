@@ -73,18 +73,7 @@ final class CommentsAnalyzer
             throw new \InvalidArgumentException('Given index must point to a comment.');
         }
 
-        $nextIndex = $index;
-        do {
-            $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
-
-            // @TODO: drop condition when PHP 8.0+ is required
-            if (\defined('T_ATTRIBUTE')) {
-                while (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(T_ATTRIBUTE)) {
-                    $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $nextIndex);
-                    $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
-                }
-            }
-        } while (null !== $nextIndex && $tokens[$nextIndex]->equals('('));
+        $nextIndex = $this->getNextTokenIndex($tokens, $index);
 
         if (null === $nextIndex || $tokens[$nextIndex]->equals('}')) {
             return false;
@@ -122,18 +111,7 @@ final class CommentsAnalyzer
             throw new \InvalidArgumentException('Given index must point to a comment.');
         }
 
-        $nextIndex = $index;
-        do {
-            $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
-
-            // @TODO: drop condition when PHP 8.0+ is required
-            if (\defined('T_ATTRIBUTE')) {
-                while (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(T_ATTRIBUTE)) {
-                    $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $nextIndex);
-                    $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
-                }
-            }
-        } while (null !== $nextIndex && $tokens[$nextIndex]->equals('('));
+        $nextIndex = $this->getNextTokenIndex($tokens, $index);
 
         if (null === $nextIndex || $tokens[$nextIndex]->equals('}')) {
             return false;
@@ -363,5 +341,24 @@ final class CommentsAnalyzer
         }
 
         return $lineCount;
+    }
+
+    private function getNextTokenIndex(Tokens $tokens, int $startIndex): ?int
+    {
+        $nextIndex = $startIndex;
+
+        do {
+            $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+
+            // @TODO: drop condition when PHP 8.0+ is required
+            if (\defined('T_ATTRIBUTE')) {
+                while (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(T_ATTRIBUTE)) {
+                    $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $nextIndex);
+                    $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+                }
+            }
+        } while (null !== $nextIndex && $tokens[$nextIndex]->equals('('));
+
+        return $nextIndex;
     }
 }
