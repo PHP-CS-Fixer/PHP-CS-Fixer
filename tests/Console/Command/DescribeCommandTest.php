@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Command;
 
+use org\bovigo\vfs\vfsStream;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
@@ -32,7 +33,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\FixerFactory;
-use PhpCsFixer\Tests\Fixtures\DescribeCommand\DescribeFixtureFixer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -398,6 +398,15 @@ $/s',
 
     public function testCommandDescribesCustomFixer(): void
     {
+        $fixer = $this->createCustomFixerDouble();
+
+        $fs = vfsStream::setup('root', null, [
+            '.php-cs-fixer.php' => $code = sprintf(
+                '<?php $class=\'%s\'; return (new PhpCsFixer\Config())->registerCustomFixers([new $class()]);',
+                str_replace("\0", '\'."\0".\'', \get_class($fixer)),
+            ),
+        ]);
+
         $application = new Application();
         $application->add(new DescribeCommand());
 
@@ -406,14 +415,14 @@ $/s',
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
-            'name' => (new DescribeFixtureFixer())->getName(),
-            '--config' => __DIR__.'/../../Fixtures/DescribeCommand/.php-cs-fixer.fixture.php',
+            'name' => $fixer->getName(),
+            '--config' => $fs->url().'/.php-cs-fixer.php',
         ]);
 
         $expected =
-"Description of the `Vendor/describe_fixture` rule.
+"Description of the `Custom/name` rule.
 
-Fixture for describe command.
+This is custom fixer.
 
 Fixing examples:
  * Example #1.
@@ -422,8 +431,8 @@ Fixing examples:
    +++ New
    @@ -1,2 +1,2 @@
     <?php
-   -echo 'describe fixture';
-   +echo 'fixture for describe';
+   -echo 'old string';
+   +echo 'new string';
    ".'
    ----------- end diff -----------
 
@@ -479,6 +488,38 @@ Fixing examples:
                     $tokens[3]->getId(),
                     "'AFTER'",
                 ]);
+            }
+        };
+    }
+
+    private function createCustomFixerDouble(): FixerInterface
+    {
+        return new class() extends AbstractFixer {
+            public function getName(): string
+            {
+                return 'Custom/name';
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                return $tokens->isTokenKindFound(T_CONSTANT_ENCAPSED_STRING);
+            }
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                return new FixerDefinition(
+                    'This is custom fixer.',
+                    [
+                        new CodeSample(
+                            "<?php\necho 'old string';\n"
+                        ),
+                    ],
+                );
+            }
+
+            protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                $tokens[3] = new Token([T_CONSTANT_ENCAPSED_STRING, "'new string'"]);
             }
         };
     }
