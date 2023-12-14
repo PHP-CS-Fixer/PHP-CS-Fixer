@@ -10,7 +10,7 @@ Configuration
 ``allow_before_return_statement``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Whether to allow PhpDoc before return statement.
+Whether to allow PHPDoc before return statement.
 
 Allowed types: ``bool``
 
