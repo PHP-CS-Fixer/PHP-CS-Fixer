@@ -372,6 +372,74 @@ abstract class AbstractFixerTestCase extends TestCase
         }
     }
 
+    final public function testProperMethodNaming(): void
+    {
+        if ($this->fixer instanceof DeprecatedFixerInterface) {
+            self::markTestSkipped('Not worth refactoring tests for deprecated fixers.');
+        }
+
+        $exceptionGroup = [
+            'Casing',
+            'CastNotation',
+            'ClassNotation',
+            'ClassUsage',
+            'Comment',
+            'ConstantNotation',
+            'ControlStructure',
+            'DoctrineAnnotation',
+            'FunctionNotation',
+            'Import',
+            'LanguageConstruct',
+            'ListNotation',
+            'NamespaceNotation',
+            'Naming',
+            'Operator',
+            'PhpTag',
+            'PhpUnit',
+            'Phpdoc',
+            'ReturnNotation',
+            'Semicolon',
+            'Strict',
+            'StringNotation',
+            'Whitespace',
+        ];
+
+        $fixerGroup = explode('\\', static::class)[3];
+
+        if (\in_array($fixerGroup, $exceptionGroup, true)) {
+            self::markTestSkipped('Not covered yet.');
+        }
+
+        self::assertTrue(method_exists($this, 'testFix'), 'Method testFix does not exist.');
+        self::assertTrue(method_exists($this, 'provideFixCases'), 'Method provideFixCases does not exist.');
+
+        $names = ['Fix', 'FixPre80', 'Fix80', 'Fix81', 'Fix82', 'Fix83', 'InvalidConfiguration'];
+        $methodNames = ['testConfigure'];
+        foreach ($names as $name) {
+            $methodNames[] = 'test'.$name;
+            $methodNames[] = 'provide'.$name.'Cases';
+        }
+
+        $class = new \ReflectionObject($this);
+
+        $extraMethods = [];
+        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            if ($method->getDeclaringClass()->getName() !== $class->getName()) {
+                continue;
+            }
+            if (\in_array($method->getName(), $methodNames, true)) {
+                continue;
+            }
+            $extraMethods[] = $method->getName();
+        }
+
+        self::assertSame(
+            [],
+            $extraMethods,
+            sprintf('Methods "%s" should not be present.', implode('". "', $extraMethods)),
+        );
+    }
+
     protected function createFixer(): AbstractFixer
     {
         $fixerClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
