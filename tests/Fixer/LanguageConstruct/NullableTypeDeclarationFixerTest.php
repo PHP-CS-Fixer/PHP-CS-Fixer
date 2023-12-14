@@ -36,7 +36,7 @@ final class NullableTypeDeclarationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<string, array<int, null|string>>
+     * @return iterable<string, array{string, 1?: ?string}>
      */
     public static function provideDefaultFixCases(): iterable
     {
@@ -113,7 +113,7 @@ class Dto
     }
 
     /**
-     * @return iterable<string, array<int, null|string>>
+     * @return iterable<string, array{string, 1?: ?string}>
      */
     public static function provideFixWithUnionSyntaxCases(): iterable
     {
@@ -209,7 +209,7 @@ class Foo
     }
 
     /**
-     * @return iterable<string, array<int, null|array<string, string>|string>>
+     * @return iterable<string, array{string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixPhp81Cases(): iterable
     {
@@ -262,7 +262,7 @@ class Qux
     }
 
     /**
-     * @return iterable<string, array<int, null|array<string, string>|string>>
+     * @return iterable<string, array{string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixPhp82Cases(): iterable
     {

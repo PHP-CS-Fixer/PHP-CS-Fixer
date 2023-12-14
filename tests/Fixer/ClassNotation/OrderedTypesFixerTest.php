@@ -40,7 +40,7 @@ final class OrderedTypesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<string, (null|array<string, string>|string)[]|string[]>
+     * @return iterable<string, array{string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixCases(): iterable
     {
@@ -162,7 +162,7 @@ try {
     }
 
     /**
-     * @return iterable<(null|array<string, string>|string)[]>
+     * @return iterable<string, array{string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixPhp80Cases(): iterable
     {
@@ -214,7 +214,7 @@ try {
     }
 
     /**
-     * @return iterable<(null|array<string, string>|string)[]|string[]>
+     * @return iterable<array{string, 1?: ?string}>
      */
     public static function provideFixDefaultCases(): iterable
     {
@@ -330,7 +330,7 @@ try {
     }
 
     /**
-     * @return iterable<(null|string|string[])[]|string[]>
+     * @return iterable<array{string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixWithAlphaAlgorithmAndNullAlwaysLastCases(): iterable
     {
@@ -446,7 +446,7 @@ try {
     }
 
     /**
-     * @return iterable<(null|array<string, string>|string)[]|string[]>
+     * @return iterable<array{string, 1?: ?string}>
      */
     public static function provideFixWithAlphaAlgorithmOnlyCases(): iterable
     {
@@ -561,7 +561,7 @@ try {
     }
 
     /**
-     * @return iterable<(null|array<string, string>|string)[]|string[]>
+     * @return iterable<array{string, 1: ?string}>
      */
     public static function provideFixWithSandwichedWhitespaceOrCommentInTypeCases(): iterable
     {
@@ -603,7 +603,7 @@ try {
     }
 
     /**
-     * @return iterable<(null|array<string, string>|string)[]|string[]>
+     * @return iterable<array{string, 1: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixPhp81Cases(): iterable
     {
@@ -660,7 +660,7 @@ try {
     }
 
     /**
-     * @return iterable<(null|array<string, string>|string)[]|string[]>
+     * @return iterable<array{string, 1: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixPhp82Cases(): iterable
     {
@@ -721,7 +721,7 @@ try {
     }
 
     /**
-     * @return iterable<(null|array<string, string>|string)[]|string[]>
+     * @return iterable<array{string, 1: ?string}>
      */
     public static function provideFixWithCaseSensitiveCases(): iterable
     {

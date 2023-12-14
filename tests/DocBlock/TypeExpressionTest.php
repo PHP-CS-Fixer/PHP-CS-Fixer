@@ -191,7 +191,7 @@ final class TypeExpressionTest extends TestCase
 
         yield ['\\closure(string): void'];
 
-        yield ['\\Closure'];
+        yield [\Closure::class];
 
         yield ['\\Closure()'];
 
@@ -456,8 +456,8 @@ final class TypeExpressionTest extends TestCase
         $globalNamespace = new NamespaceAnalysis('', '', 0, 999, 0, 999);
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
 
-        $useTraversable = new NamespaceUseAnalysis('Traversable', 'Traversable', false, 0, 0, NamespaceUseAnalysis::TYPE_CLASS);
-        $useObjectAsTraversable = new NamespaceUseAnalysis('Foo', 'Traversable', false, 0, 0, NamespaceUseAnalysis::TYPE_CLASS);
+        $useTraversable = new NamespaceUseAnalysis(\Traversable::class, \Traversable::class, false, 0, 0, NamespaceUseAnalysis::TYPE_CLASS);
+        $useObjectAsTraversable = new NamespaceUseAnalysis('Foo', \Traversable::class, false, 0, 0, NamespaceUseAnalysis::TYPE_CLASS);
 
         yield ['true', 'bool'];
 
@@ -539,7 +539,7 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array { 1: string, \Closure(): void }', 'array'];
 
-        yield ['Closure(): void', 'Closure'];
+        yield ['Closure(): void', \Closure::class];
 
         yield ['array<int, string>|iterable<int, string>', 'iterable'];
 

@@ -14,8 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Runner;
 
+use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\NullCacheManager;
+use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
@@ -24,7 +26,6 @@ use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Runner\Runner;
-use PhpCsFixer\Tests\Fixtures\FakeDiffer;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Finder\Finder;
 
@@ -138,7 +139,7 @@ final class RunnerTest extends TestCase
      */
     public function testThatDiffedFileIsPassedToDiffer(): void
     {
-        $spy = new FakeDiffer();
+        $differ = $this->createDifferDouble();
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
         $fixers = [
             new Fixer\ClassNotation\VisibilityRequiredFixer(),
@@ -147,7 +148,7 @@ final class RunnerTest extends TestCase
         $runner = new Runner(
             Finder::create()->in($path),
             $fixers,
-            $spy,
+            $differ,
             null,
             new ErrorsManager(),
             new Linter(),
@@ -159,7 +160,21 @@ final class RunnerTest extends TestCase
 
         $runner->fix();
 
-        self::assertSame($path, $spy->passedFile->getPath());
+        self::assertSame($path, AccessibleObject::create($differ)->passedFile->getPath());
+    }
+
+    private function createDifferDouble(): DifferInterface
+    {
+        return new class() implements DifferInterface {
+            public ?\SplFileInfo $passedFile;
+
+            public function diff(string $old, string $new, \SplFileInfo $file = null): string
+            {
+                $this->passedFile = $file;
+
+                return 'some-diff';
+            }
+        };
     }
 
     private function createLinterDouble(): LinterInterface

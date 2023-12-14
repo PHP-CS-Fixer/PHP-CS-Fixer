@@ -32,7 +32,7 @@ final class OrderedTraitsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array>
+     * @return iterable<string, array{string, 1?: ?string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -320,35 +320,35 @@ class User
     }
 
     /**
-     * @param array<mixed> $configuration
+     * @param array<string, mixed> $configuration
      *
      * @dataProvider provideFixWithConfigurationCases
      */
-    public function testFixWithConfiguration(array $configuration, string $expected, ?string $input = null): void
+    public function testFixWithConfiguration(string $expected, string $input = null, array $configuration): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<mixed>
+     * @return iterable<string, array{string, 1: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixWithConfigurationCases(): iterable
     {
         yield 'with case sensitive order' => [
+            '<?php
+class Foo {
+    use AA;
+    use Aaa;
+}',
+            '<?php
+class Foo {
+    use Aaa;
+    use AA;
+}',
             [
                 'case_sensitive' => true,
             ],
-            '<?php
-class Foo {
-    use AA;
-    use Aaa;
-}',
-            '<?php
-class Foo {
-    use Aaa;
-    use AA;
-}',
         ];
     }
 }

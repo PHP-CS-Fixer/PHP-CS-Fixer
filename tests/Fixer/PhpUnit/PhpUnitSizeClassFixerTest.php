@@ -334,7 +334,7 @@ class Test3 extends TestCase
     }
 
     /**
-     * @return iterable<string[]>
+     * @return iterable<string, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {

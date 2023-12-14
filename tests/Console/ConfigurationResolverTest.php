@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
@@ -21,10 +22,16 @@ use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Finder;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Linter\LinterInterface;
-use PhpCsFixer\Tests\Fixtures\DeprecatedFixer;
 use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\ToolInfo;
+use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -1047,7 +1054,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     public function testResolveCommandLineInputOverridesDefault(): void
     {
-        $command = new FixCommand(new ToolInfo());
+        $command = new FixCommand($this->createToolInfoDouble());
         $definition = $command->getDefinition();
         $arguments = $definition->getArguments();
         self::assertCount(1, $arguments, 'Expected one argument, possibly test needs updating.');
@@ -1172,7 +1179,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     public function testDeprecatedFixerConfigured($ruleConfig): void
     {
         $this->expectDeprecation('Rule "Vendor4/foo" is deprecated. Use "testA" and "testB" instead.');
-        $fixer = new DeprecatedFixer();
+        $fixer = $this->createDeprecatedFixerDouble();
         $config = new Config();
         $config->registerCustomFixers([$fixer]);
         $config->setRules([$fixer->getName() => $ruleConfig]);
@@ -1221,7 +1228,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
             $config->setCacheFile($cacheFile);
         }
 
-        $resolver = new ConfigurationResolver($config, [], $this->normalizePath('/my/path'), new TestToolInfo());
+        $resolver = new ConfigurationResolver($config, [], $this->normalizePath('/my/path'), $this->createToolInfoDouble());
         $directory = $resolver->getDirectory();
 
         self::assertSame($expectedPathRelativeToFile, $directory->getRelativePathTo($file));
@@ -1262,7 +1269,76 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
             $config,
             $options,
             $cwdPath,
-            new TestToolInfo()
+            $this->createToolInfoDouble()
         );
+    }
+
+    private function createDeprecatedFixerDouble(): DeprecatedFixerInterface
+    {
+        return new class() extends AbstractFixer implements DeprecatedFixerInterface, ConfigurableFixerInterface {
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getSuccessorsNames(): array
+            {
+                return ['testA', 'testB'];
+            }
+
+            public function getName(): string
+            {
+                return 'Vendor4/foo';
+            }
+
+            protected function applyFix(\SplFileInfo $file, Tokens $tokens): void {}
+
+            protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+            {
+                return new FixerConfigurationResolver([
+                    (new FixerOptionBuilder('foo', 'Foo.'))->getOption(),
+                ]);
+            }
+        };
+    }
+
+    private function createToolInfoDouble(): ToolInfoInterface
+    {
+        return new class() implements ToolInfoInterface {
+            public function getComposerInstallationDetails(): array
+            {
+                throw new \BadMethodCallException();
+            }
+
+            public function getComposerVersion(): string
+            {
+                throw new \BadMethodCallException();
+            }
+
+            public function getVersion(): string
+            {
+                throw new \BadMethodCallException();
+            }
+
+            public function isInstalledAsPhar(): bool
+            {
+                return true;
+            }
+
+            public function isInstalledByComposer(): bool
+            {
+                throw new \BadMethodCallException();
+            }
+
+            public function getPharDownloadUri(string $version): string
+            {
+                throw new \BadMethodCallException();
+            }
+        };
     }
 }
