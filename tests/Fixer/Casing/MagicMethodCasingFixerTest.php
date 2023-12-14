@@ -27,7 +27,7 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, string $input): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -263,18 +263,7 @@ class Foo extends Bar
             '<?php $foo->__invoke(1, );',
             '<?php $foo->__INVOKE(1, );',
         ];
-    }
 
-    /**
-     * @dataProvider provideDoNotFixCases
-     */
-    public function testDoNotFix(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideDoNotFixCases(): iterable
-    {
         yield [
             '<?php
 __Tostring();',

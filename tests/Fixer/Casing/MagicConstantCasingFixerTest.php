@@ -94,14 +94,14 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
     /**
      * @requires PHP <8.0
      *
-     * @dataProvider provideFix74Cases
+     * @dataProvider provideFixPre80Cases
      */
-    public function testFix74(string $expected, ?string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix74Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php

@@ -47,11 +47,8 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
             '<?php $fn = fn() => true;',
             '<?php $fn = FN() => true;',
         ];
-    }
 
-    public function testHaltCompiler(): void
-    {
-        $this->doTest('<?php __HALT_COMPILER();');
+        yield ['<?php __HALT_COMPILER();'];
     }
 
     /**
