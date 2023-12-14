@@ -130,7 +130,7 @@ function returnClassName() {
                 ->setAllowedTypes(['array'])
                 ->setDefault([])
                 ->getOption(),
-            (new FixerOptionBuilder('allow_before_return_statement', 'Whether to allow PhpDoc before return statement.'))
+            (new FixerOptionBuilder('allow_before_return_statement', 'Whether to allow PHPDoc before return statement.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false) // @TODO 4.0: set to `true`
                 ->getOption(),
