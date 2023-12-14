@@ -379,7 +379,6 @@ abstract class AbstractFixerTestCase extends TestCase
         }
 
         $exceptionGroup = [
-            'Casing',
             'CastNotation',
             'ClassNotation',
             'ClassUsage',
@@ -422,16 +421,14 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $class = new \ReflectionObject($this);
 
-        $extraMethods = [];
-        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method->getDeclaringClass()->getName() !== $class->getName()) {
-                continue;
-            }
-            if (\in_array($method->getName(), $methodNames, true)) {
-                continue;
-            }
-            $extraMethods[] = $method->getName();
-        }
+        $extraMethods = array_map(
+            static fn (\ReflectionMethod $method): string => $method->getName(),
+            array_filter(
+                $class->getMethods(\ReflectionMethod::IS_PUBLIC),
+                static fn (\ReflectionMethod $method): bool => $method->getDeclaringClass()->getName() === $class->getName()
+                    && !\in_array($method->getName(), $methodNames, true)
+            )
+        );
 
         self::assertSame(
             [],
