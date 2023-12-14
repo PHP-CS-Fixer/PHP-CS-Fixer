@@ -30,6 +30,8 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @internal
  *
+ * @group legacy
+ *
  * @covers \PhpCsFixer\RuleSet\RuleSet
  */
 final class RuleSetTest extends TestCase
