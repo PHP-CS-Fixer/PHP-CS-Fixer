@@ -20,7 +20,7 @@ use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 /**
  * @internal
  *
- * @deprecated Use `@PER-CS2.0:risky` instead.
+ * @deprecated use `@PER-CS:risky` instead
  *
  * @TODO 4.0 remove me
  *
@@ -36,17 +36,17 @@ final class PERRiskySet extends AbstractRuleSetDescription implements Deprecated
     public function getRules(): array
     {
         return [
-            '@PER-CS2.0:risky' => true,
+            '@PER-CS:risky' => true,
         ];
     }
 
     public function getDescription(): string
     {
-        return 'Alias for the PER-CS risky rules. It is recommended you use ``@PER-CS2.0:risky`` instead.';
+        return 'Alias for the newest PER-CS risky rules. It is recommended you use ``@PER-CS2.0:risky`` instead if you want to stick with stable ruleset.';
     }
 
     public function getSuccessorsNames(): array
     {
-        return ['@PER-CS2.0:risky'];
+        return ['@PER-CS:risky'];
     }
 }

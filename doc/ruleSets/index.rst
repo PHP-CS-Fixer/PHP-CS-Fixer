@@ -4,8 +4,8 @@ List of Available Rule sets
 - `@DoctrineAnnotation <./DoctrineAnnotation.rst>`_
 - `@PER <./PER.rst>`_ *(deprecated)*
 - `@PER-CS <./PER-CS.rst>`_
-- `@PER-CS1.0 <./PER-CS1.0.rst>`_ *(deprecated)*
-- `@PER-CS1.0:risky <./PER-CS1.0Risky.rst>`_ *(deprecated)*
+- `@PER-CS1.0 <./PER-CS1.0.rst>`_
+- `@PER-CS1.0:risky <./PER-CS1.0Risky.rst>`_
 - `@PER-CS2.0 <./PER-CS2.0.rst>`_
 - `@PER-CS2.0:risky <./PER-CS2.0Risky.rst>`_
 - `@PER-CS:risky <./PER-CSRisky.rst>`_

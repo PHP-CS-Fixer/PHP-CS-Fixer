@@ -1227,13 +1227,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      */
     public static function provideDeprecatedRuleSetConfiguredCases(): iterable
     {
-        yield ['@PER', ['@PER-CS2.0']];
+        yield ['@PER', ['@PER-CS']];
 
-        yield ['@PER:risky', ['@PER-CS2.0:risky']];
-
-        yield ['@PER-CS1.0', ['@PER-CS2.0']];
-
-        yield ['@PER-CS1.0:risky', ['@PER-CS2.0:risky']];
+        yield ['@PER:risky', ['@PER-CS:risky']];
     }
 
     public static function provideGetDirectoryCases(): iterable
