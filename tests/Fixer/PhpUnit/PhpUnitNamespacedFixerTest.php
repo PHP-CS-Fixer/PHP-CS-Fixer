@@ -308,6 +308,15 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
         }
     }
 
+    public function testDataProviderIsEmpty(): void
+    {
+        // check that data provider above is always empty
+        self::assertSame(
+            [],
+            iterator_to_array(self::provideClassIsFixedCases())
+        );
+    }
+
     /**
      * @dataProvider provideFix81Cases
      *
