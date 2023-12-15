@@ -24,7 +24,9 @@ use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use ReflectionClass;
 use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
@@ -71,9 +73,66 @@ abstract class AbstractFixer implements FixerInterface
             throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
         }
 
+        $isIgnored = false;
+        $tokenMapping = [];
+        foreach ($tokens as $index => $token) {
+            if (!$isIgnored && $this->tokenDisablesFixer($token)) {
+                $isIgnored = true;
+                continue;
+            }
+
+            if ($isIgnored && $token->isGivenKind(T_COMMENT) && $token->getContent() === '// phpcsfixer:enable') {
+                $isIgnored = false;
+                continue;
+            }
+
+            if ($isIgnored) {
+                $dummyToken = new Token([999999, $token->getContent()]);
+                $tokenMapping[spl_object_hash($dummyToken)] = $token;
+                $tokens->offsetSet($index, $dummyToken);
+            }
+        }
+
+        $tokens->clearChanged();
+
         if (0 < $tokens->count() && $this->isCandidate($tokens) && $this->supports($file)) {
             $this->applyFix($file, $tokens);
         }
+
+        $changed = $tokens->isChanged();
+
+        foreach ($tokens as $index => $token) {
+            $originalToken = $tokenMapping[spl_object_hash($token)] ?? null;
+            if ($originalToken) {
+                $tokens->offsetSet($index, $originalToken);
+            }
+        }
+
+        if (!$changed) {
+            $tokens->clearChanged();
+        }
+    }
+
+    private function tokenDisablesFixer(Token $token): bool {
+        if (!$token->isGivenKind(T_COMMENT)) {
+            return false;
+        }
+        $comment = $token->getContent();
+        if ($comment[1] !== '/') {
+            return false;
+        }
+        $comment = trim(substr($comment, 2));
+
+        if (!str_starts_with($comment, 'phpcsfixer:disable')) {
+            return false;
+        }
+        $rules = substr($comment, 18);
+        if (empty($rules)) {
+            return true;
+        }
+        $rules = array_map(trim(...), explode(',', $rules));
+
+        return in_array($this->getName(), $rules, true);
     }
 
     public function isRisky(): bool
