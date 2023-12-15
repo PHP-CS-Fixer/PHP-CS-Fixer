@@ -37,6 +37,7 @@ final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFi
      * @var string[]
      */
     private array $ignoredTags = [];
+    private bool $allowBeforeReturnStatement = false;
 
     public function isCandidate(Tokens $tokens): bool
     {
@@ -90,6 +91,22 @@ foreach($connections as $key => $sqlite) {
 ',
                     ['ignored_tags' => ['todo']]
                 ),
+                new CodeSample(
+                    '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** This should be a comment */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+function returnClassName() {
+    /** @var class-string */
+    return \StdClass::class;
+}
+',
+                    ['allow_before_return_statement' => true]
+                ),
             ]
         );
     }
@@ -102,6 +119,8 @@ foreach($connections as $key => $sqlite) {
             static fn (string $tag): string => strtolower($tag),
             $this->configuration['ignored_tags']
         );
+
+        $this->allowBeforeReturnStatement = true === $this->configuration['allow_before_return_statement'];
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -110,6 +129,10 @@ foreach($connections as $key => $sqlite) {
             (new FixerOptionBuilder('ignored_tags', 'List of ignored tags (matched case insensitively).'))
                 ->setAllowedTypes(['array'])
                 ->setDefault([])
+                ->getOption(),
+            (new FixerOptionBuilder('allow_before_return_statement', 'Whether to allow PHPDoc before return statement.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false) // @TODO 4.0: set to `true`
                 ->getOption(),
         ]);
     }
@@ -124,6 +147,10 @@ foreach($connections as $key => $sqlite) {
             }
 
             if ($commentsAnalyzer->isHeaderComment($tokens, $index)) {
+                continue;
+            }
+
+            if ($this->allowBeforeReturnStatement && $commentsAnalyzer->isBeforeReturn($tokens, $index)) {
                 continue;
             }
 
