@@ -40,7 +40,7 @@ final class TokensAnalyzerTest extends TestCase
 
         array_walk(
             $expectedElements,
-            static function (array &$element, $index) use ($tokens): void {
+            static function (array &$element, int $index) use ($tokens): void {
                 $element['token'] = $tokens[$index];
                 ksort($element);
             }
@@ -497,7 +497,7 @@ final class TokensAnalyzerTest extends TestCase
 
         array_walk(
             $expected,
-            static function (array &$element, $index) use ($tokens): void {
+            static function (array &$element, int $index) use ($tokens): void {
                 $element['token'] = $tokens[$index];
                 ksort($element);
             }
@@ -683,7 +683,7 @@ enum Foo: string
 
         array_walk(
             $expected,
-            static function (array &$element, $index) use ($tokens): void {
+            static function (array &$element, int $index) use ($tokens): void {
                 $element['token'] = $tokens[$index];
                 ksort($element);
             },

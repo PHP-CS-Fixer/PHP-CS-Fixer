@@ -308,7 +308,7 @@ interface Bar
      */
     private function collectDisjunctiveNormalFormTypes(string $type): array
     {
-        $types = array_map(static function ($subType) {
+        $types = array_map(static function (string $subType) {
             if (str_starts_with($subType, '(')) {
                 return explode('&', trim($subType, '()'));
             }
