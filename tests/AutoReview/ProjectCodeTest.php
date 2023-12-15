@@ -310,9 +310,15 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatTestClassCoversAreCorrect(string $testClassName): void
     {
+        if (DocumentationTest::class === $testClassName) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
         $reflectionClass = new \ReflectionClass($testClassName);
 
-        if ($reflectionClass->isAbstract() || $reflectionClass->isInterface() || DocumentationTest::class === $testClassName) {
+        if ($reflectionClass->isAbstract() || $reflectionClass->isInterface()) {
             $this->expectNotToPerformAssertions();
 
             return;
@@ -330,7 +336,6 @@ final class ProjectCodeTest extends TestCase
 
         array_shift($matches);
         $class = '\\'.str_replace('PhpCsFixer\Tests\\', 'PhpCsFixer\\', substr($testClassName, 0, -4));
-
         $parentClass = (new \ReflectionClass($class))->getParentClass();
         $parentClassName = false === $parentClass ? null : '\\'.$parentClass->getName();
 
