@@ -19,7 +19,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -32,8 +31,6 @@ use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
  */
 final class UtilsTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
      * @var null|false|string
      */
