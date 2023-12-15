@@ -114,7 +114,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 
         array_walk(
             $cases,
-            static function (&$case): void {
+            static function (array &$case): void {
                 $case[0] = self::generateTest($case[0]);
 
                 if (isset($case[1])) {

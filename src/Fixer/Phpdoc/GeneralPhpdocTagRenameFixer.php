@@ -92,7 +92,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
                 ->getOption(),
             (new FixerOptionBuilder('replacements', 'A map of tags to replace.'))
                 ->setAllowedTypes(['array'])
-                ->setNormalizer(static function (Options $options, $value): array {
+                ->setNormalizer(static function (Options $options, array $value): array {
                     $normalizedValue = [];
 
                     foreach ($value as $from => $to) {

@@ -168,7 +168,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
                     'var' => 'annotation',
                     'version' => 'annotation',
                 ])
-                ->setNormalizer(static function (Options $options, $value): array {
+                ->setNormalizer(static function (Options $options, array $value): array {
                     $normalized = [];
 
                     foreach ($value as $tag => $type) {
