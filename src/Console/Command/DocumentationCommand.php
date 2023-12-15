@@ -98,7 +98,7 @@ final class DocumentationCommand extends Command
 
         foreach ($setDefinitions as $name => $definition) {
             $path = $locator->getRuleSetsDocumentationFilePath($name);
-            $paths[$name] = $path;
+            $paths[$path] = $definition;
             $filesystem->dumpFile($path, $ruleSetDocumentationGenerator->generateRuleSetsDocumentation($definition, $fixers));
         }
 

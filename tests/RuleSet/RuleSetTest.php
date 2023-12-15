@@ -30,6 +30,8 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @internal
  *
+ * @group legacy
+ *
  * @covers \PhpCsFixer\RuleSet\RuleSet
  */
 final class RuleSetTest extends TestCase
@@ -282,6 +284,15 @@ final class RuleSetTest extends TestCase
      */
     public function testRiskyRulesInSet(array $set, bool $safe): void
     {
+        /** @TODO 4.0 Remove this expectations */
+        $expectedDeprecations = [
+            '@PER' => 'Rule set "@PER" is deprecated. Use "@PER-CS" instead.',
+            '@PER:risky' => 'Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.',
+        ];
+        if (\array_key_exists(array_key_first($set), $expectedDeprecations)) {
+            $this->expectDeprecation($expectedDeprecations[array_key_first($set)]);
+        }
+
         try {
             $fixers = (new FixerFactory())
                 ->registerBuiltInFixers()
