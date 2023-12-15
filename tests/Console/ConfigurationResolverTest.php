@@ -32,6 +32,7 @@ use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfoInterface;
+use PhpCsFixer\Utils;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -1195,6 +1196,40 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         yield [['foo' => true]];
 
         yield [false];
+    }
+
+    /**
+     * @dataProvider provideDeprecatedRuleSetConfiguredCases
+     *
+     * @group legacy
+     *
+     * @param array<string> $successors
+     */
+    public function testDeprecatedRuleSetConfigured(string $ruleSet, array $successors): void
+    {
+        $this->expectDeprecation(sprintf(
+            'Rule set "%s" is deprecated. %s.',
+            $ruleSet,
+            [] === $successors
+                ? 'No replacement available'
+                : sprintf('Use %s instead', Utils::naturalLanguageJoin($successors))
+        ));
+        $config = new Config();
+        $config->setRules([$ruleSet => true]);
+        $config->setRiskyAllowed(true);
+
+        $resolver = $this->createConfigurationResolver([], $config);
+        $resolver->getFixers();
+    }
+
+    /**
+     * @return iterable<array{0: string, 1: list<string>}>
+     */
+    public static function provideDeprecatedRuleSetConfiguredCases(): iterable
+    {
+        yield ['@PER', ['@PER-CS']];
+
+        yield ['@PER:risky', ['@PER-CS:risky']];
     }
 
     public static function provideGetDirectoryCases(): iterable

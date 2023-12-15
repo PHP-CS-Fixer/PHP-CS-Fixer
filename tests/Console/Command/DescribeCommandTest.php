@@ -42,6 +42,8 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * @internal
  *
+ * @group legacy
+ *
  * @covers \PhpCsFixer\Console\Command\DescribeCommand
  */
 final class DescribeCommandTest extends TestCase
@@ -51,6 +53,9 @@ final class DescribeCommandTest extends TestCase
      */
     public function testExecuteOutput(string $expected, bool $expectedIsRegEx, bool $decorated, ?FixerInterface $fixer = null): void
     {
+        // @TODO 4.0 Remove this expectation
+        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
+
         $actual = $this->execute(null !== $fixer ? $fixer->getName() : 'Foo/bar', $decorated, $fixer)->getDisplay(true);
 
         if (true === $expectedIsRegEx) {
@@ -275,6 +280,10 @@ $/s',
 
     public function testExecuteStatusCode(): void
     {
+        // @TODO 4.0 Remove this expectations
+        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
+        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+
         self::assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
     }
 
@@ -337,6 +346,10 @@ $/s',
 
     public function testFixerClassNameIsExposedWhenVerbose(): void
     {
+        // @TODO 4.0 Remove this expectations
+        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
+        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+
         $fixer = new class() implements FixerInterface {
             public function isCandidate(Tokens $tokens): bool
             {
@@ -398,6 +411,10 @@ $/s',
 
     public function testCommandDescribesCustomFixer(): void
     {
+        // @TODO 4.0 Remove this expectations
+        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
+        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+
         $application = new Application();
         $application->add(new DescribeCommand());
 

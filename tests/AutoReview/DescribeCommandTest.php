@@ -25,6 +25,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @coversNothing
  *
+ * @group legacy
  * @group auto-review
  * @group covers-nothing
  */
@@ -35,6 +36,9 @@ final class DescribeCommandTest extends TestCase
      */
     public function testDescribeCommand(FixerFactory $factory, string $fixerName): void
     {
+        // @TODO 4.0 Remove this expectation
+        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
+
         $command = new DescribeCommand($factory);
 
         $application = new Application();
