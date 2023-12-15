@@ -201,6 +201,24 @@ class SomeClass implements \Foo\Bar\Izumi
 }',
         ];
 
+        yield 'anonymous class implements, shorten to namespace' => [
+            '<?php
+namespace Foo\Bar;
+$a = new class implements Izumi {};',
+            '<?php
+namespace Foo\Bar;
+$a = new class implements \Foo\Bar\Izumi {};',
+        ];
+
+        yield 'anonymous class implements, shorten to imported name' => [
+            '<?php
+use Foo\Bar\Izumi;
+$a = new class implements Izumi {};',
+            '<?php
+use Foo\Bar\Izumi;
+$a = new class implements \Foo\Bar\Izumi {};',
+        ];
+
         yield 'class extends and implements' => [
             '<?php
 namespace Foo\Bar;
