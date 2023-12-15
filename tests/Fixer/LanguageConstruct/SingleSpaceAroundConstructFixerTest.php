@@ -869,7 +869,7 @@ FOO = 9000; }',
                 const FOO = [
                     1
                 ];
-                const    BAR = [
+                const BAR = [
                     2,
                 ];
             }',
