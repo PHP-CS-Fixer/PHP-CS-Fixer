@@ -28,14 +28,14 @@ final class SignatureTest extends TestCase
 {
     public function testIsFinal(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
+        $reflection = new \ReflectionClass(Signature::class);
 
         self::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsSignatureInterface(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
+        $reflection = new \ReflectionClass(Signature::class);
 
         self::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\SignatureInterface::class));
     }
