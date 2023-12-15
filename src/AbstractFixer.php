@@ -79,11 +79,13 @@ abstract class AbstractFixer implements FixerInterface
         foreach ($tokens as $index => $token) {
             if (!$isIgnored && $this->tokenDisablesFixer($token)) {
                 $isIgnored = true;
+
                 continue;
             }
 
-            if ($isIgnored && $token->isGivenKind(T_COMMENT) && $token->getContent() === '// phpcsfixer:enable') {
+            if ($isIgnored && $token->isGivenKind(T_COMMENT) && '// phpcsfixer:enable' === $token->getContent()) {
                 $isIgnored = false;
+
                 continue;
             }
 
@@ -95,7 +97,6 @@ abstract class AbstractFixer implements FixerInterface
         }
 
         if (!$changed) {
-
             $tokens->clearChanged();
         }
 
@@ -115,28 +116,6 @@ abstract class AbstractFixer implements FixerInterface
         if (!$changed) {
             $tokens->clearChanged();
         }
-    }
-
-    private function tokenDisablesFixer(Token $token): bool {
-        if (!$token->isGivenKind(T_COMMENT)) {
-            return false;
-        }
-        $comment = $token->getContent();
-        if (!str_starts_with('//', $comment)) {
-            return false;
-        }
-        $comment = trim(substr($comment, 2));
-
-        if (!str_starts_with($comment, 'phpcsfixer:disable')) {
-            return false;
-        }
-        $rules = substr($comment, 18);
-        if (empty($rules)) {
-            return true;
-        }
-        $rules = array_map('trim', explode(',', $rules));
-
-        return in_array($this->getName(), $rules, true);
     }
 
     public function isRisky(): bool
@@ -242,6 +221,29 @@ abstract class AbstractFixer implements FixerInterface
         }
 
         throw new \LogicException('Not implemented.');
+    }
+
+    private function tokenDisablesFixer(Token $token): bool
+    {
+        if (!$token->isGivenKind(T_COMMENT)) {
+            return false;
+        }
+        $comment = $token->getContent();
+        if (!str_starts_with('//', $comment)) {
+            return false;
+        }
+        $comment = trim(substr($comment, 2));
+
+        if (!str_starts_with($comment, 'phpcsfixer:disable')) {
+            return false;
+        }
+        $rules = substr($comment, 18);
+        if (empty($rules)) {
+            return true;
+        }
+        $rules = array_map('trim', explode(',', $rules));
+
+        return \in_array($this->getName(), $rules, true);
     }
 
     private function getDefaultWhitespacesFixerConfig(): WhitespacesFixerConfig
