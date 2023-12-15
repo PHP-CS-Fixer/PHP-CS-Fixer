@@ -1806,6 +1806,92 @@ $bar;',
         self::assertTrue($tokens->isTokenKindFound(T_VARIABLE));
     }
 
+    /**
+     * @param -1|1 $direction
+     *
+     * @requires PHP 8.0
+     *
+     * @dataProvider provideGetNonMetaSiblingCases
+     */
+    public function testGetNonMetaSibling(string $code, int $index, int $direction, int $expectedIndex): void
+    {
+        $tokens = Tokens::fromCode($code);
+
+        self::assertSame($expectedIndex, $tokens->getNonMetaSibling($index, $direction));
+    }
+
+    /**
+     * @return iterable<array{0: string, 1: int, 2: -1|1, 3: int}>
+     */
+    public static function provideGetNonMetaSiblingCases(): iterable
+    {
+        $cases = [
+            'outside function signature' => [
+                '<?php
+
+$a = 1;
+
+#[Foo]
+// comment
+# comment
+#[Bar]
+/* comment */
+/** comment */
+/*
+ * comment
+ */
+#[
+    Baz,
+    Buzz
+]
+function xyz() {};
+',
+                7,
+                36,
+            ],
+
+            'inside function signature' => [
+                '<?php function xyz(#[Foo] #[Bar] $a) {};',
+                4,
+                13,
+            ],
+
+            'inside class' => [
+                '<?php
+class Xyz {
+    #[Foo]
+    private $a;
+}',
+                5,
+                11,
+            ],
+
+            'between class properties' => [
+                '<?php
+class Xyz {
+    private $a; // Something
+
+    #[Foo]
+    #[Bar]
+    /** @var int */
+    #[
+        Baz(new Xyz()),
+        Buzz(1, 2, 3)
+    ]
+    private $b;
+}',
+                10,
+                49,
+            ],
+        ];
+
+        foreach ($cases as $name => $case) {
+            yield "{$name}, next sibling" => [$case[0], $case[1], 1, $case[2]];
+
+            yield "{$name}, previous sibling" => [$case[0], $case[2], -1, $case[1]];
+        }
+    }
+
     private function getBlockEdgeCachingTestTokens(): Tokens
     {
         Tokens::clearCache();

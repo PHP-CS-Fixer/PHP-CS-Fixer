@@ -524,6 +524,18 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Get index for closest next token which is non meta (whitespace, comments, PHP8 attribute).
+     *
+     * This method is shorthand for getNonMetaSibling method.
+     *
+     * @param int $index token index
+     */
+    public function getNextNonMeta(int $index): ?int
+    {
+        return $this->getNonMetaSibling($index, 1);
+    }
+
+    /**
      * Get index for closest next token which is non whitespace.
      *
      * This method is shorthand for getNonWhitespaceSibling method.
@@ -570,6 +582,43 @@ class Tokens extends \SplFixedArray
                 return $index;
             }
         }
+    }
+
+    /**
+     * Get index for closest sibling token which is non meta (whitespace, comment, PHP8 attribute).
+     *
+     * @param int  $index     token index
+     * @param -1|1 $direction
+     */
+    public function getNonMetaSibling(int $index, int $direction): ?int
+    {
+        if (!\defined('T_ATTRIBUTE')) {
+            return $this->getMeaningfulTokenSibling($index, $direction);
+        }
+
+        do {
+            $index = $this->getMeaningfulTokenSibling($index, $direction);
+
+            if (1 === $direction && $this[$index]->isGivenKind(T_ATTRIBUTE)) {
+                $index = $this->findBlockEnd(self::BLOCK_TYPE_ATTRIBUTE, $index);
+            } elseif (-1 === $direction && $this[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                $index = $this->findBlockStart(self::BLOCK_TYPE_ATTRIBUTE, $index);
+            }
+        } while ($this[$index]->isGivenKind([T_ATTRIBUTE, CT::T_ATTRIBUTE_CLOSE]));
+
+        return $index;
+    }
+
+    /**
+     * Get index for closest previous token which is non meta (whitespace, comment, PHP8 attribute).
+     *
+     * This method is shorthand for getNonMetaSibling method.
+     *
+     * @param int $index token index
+     */
+    public function getPrevNonMeta(int $index): ?int
+    {
+        return $this->getNonMetaSibling($index, -1);
     }
 
     /**
