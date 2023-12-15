@@ -72,6 +72,8 @@ abstract class AbstractFixer implements FixerInterface
             throw new RequiredFixerConfigurationException($this->getName(), 'Configuration is required.');
         }
 
+        $changed = $tokens->isChanged();
+
         $isIgnored = false;
         $tokenMapping = [];
         foreach ($tokens as $index => $token) {
@@ -92,7 +94,10 @@ abstract class AbstractFixer implements FixerInterface
             }
         }
 
-        $tokens->clearChanged();
+        if (!$changed) {
+
+            $tokens->clearChanged();
+        }
 
         if (0 < $tokens->count() && $this->isCandidate($tokens) && $this->supports($file)) {
             $this->applyFix($file, $tokens);
@@ -117,7 +122,7 @@ abstract class AbstractFixer implements FixerInterface
             return false;
         }
         $comment = $token->getContent();
-        if ($comment[1] !== '/') {
+        if (!str_starts_with('//', $comment)) {
             return false;
         }
         $comment = trim(substr($comment, 2));
