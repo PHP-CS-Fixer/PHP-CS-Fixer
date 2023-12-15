@@ -117,7 +117,7 @@ final class CommentsAnalyzer
             return false;
         }
 
-        return $this->isValidReturnStatement($tokens, $nextIndex);
+        return $tokens[$nextIndex]->isGivenKind(T_RETURN);
     }
 
     /**
@@ -247,20 +247,6 @@ final class CommentsAnalyzer
             ) {
                 return true;
             }
-        }
-
-        return false;
-    }
-
-    /**
-     * Checks return statement for correct docblock usage.
-     *
-     * @param int $languageConstructIndex index of variable Token
-     */
-    private function isValidReturnStatement(Tokens $tokens, int $languageConstructIndex): bool
-    {
-        if ($tokens[$languageConstructIndex]->isGivenKind(T_RETURN)) {
-            return true;
         }
 
         return false;

@@ -120,7 +120,7 @@ function returnClassName() {
             $this->configuration['ignored_tags']
         );
 
-        $this->allowBeforeReturnStatement = (bool) $this->configuration['allow_before_return_statement'];
+        $this->allowBeforeReturnStatement = true === $this->configuration['allow_before_return_statement'];
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
