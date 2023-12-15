@@ -312,7 +312,7 @@ final class ProjectCodeTest extends TestCase
     {
         $reflectionClass = new \ReflectionClass($testClassName);
 
-        if ($reflectionClass->isAbstract() || $reflectionClass->isInterface()) {
+        if ($reflectionClass->isAbstract() || $reflectionClass->isInterface() || DocumentationTest::class === $testClassName) {
             $this->expectNotToPerformAssertions();
 
             return;
@@ -330,6 +330,7 @@ final class ProjectCodeTest extends TestCase
 
         array_shift($matches);
         $class = '\\'.str_replace('PhpCsFixer\Tests\\', 'PhpCsFixer\\', substr($testClassName, 0, -4));
+
         $parentClass = (new \ReflectionClass($class))->getParentClass();
         $parentClassName = false === $parentClass ? null : '\\'.$parentClass->getName();
 

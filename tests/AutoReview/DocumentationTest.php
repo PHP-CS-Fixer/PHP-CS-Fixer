@@ -21,7 +21,7 @@ use PhpCsFixer\Documentation\RuleSetDocumentationGenerator;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSets;
-use PHPUnit\Framework\TestCase;
+use PhpCsFixer\Tests\TestCase;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Finder\Finder;
 
