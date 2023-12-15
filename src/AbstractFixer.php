@@ -26,7 +26,6 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use ReflectionClass;
 use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
@@ -130,7 +129,7 @@ abstract class AbstractFixer implements FixerInterface
         if (empty($rules)) {
             return true;
         }
-        $rules = array_map(trim(...), explode(',', $rules));
+        $rules = array_map('trim', explode(',', $rules));
 
         return in_array($this->getName(), $rules, true);
     }
