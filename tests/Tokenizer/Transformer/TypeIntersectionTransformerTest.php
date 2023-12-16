@@ -63,26 +63,28 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
             ',
         ];
 
-        yield 'ensure T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG is not modified' => [
-            '<?php $a = $b&$c;',
-            [
-                6 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-            ],
-        ];
+        if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition when PHP 8.1+ is required
+            yield 'ensure T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG is not modified' => [
+                '<?php $a = $b&$c;',
+                [
+                    6 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+                ],
+            ];
 
-        yield 'do not fix, close/open' => [
-            '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
-            [
-                20 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-            ],
-        ];
+            yield 'do not fix, close/open' => [
+                '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
+                [
+                    20 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+                ],
+            ];
 
-        yield 'do not fix, foreach' => [
-            '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
-            [
-                19 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-            ],
-        ];
+            yield 'do not fix, foreach' => [
+                '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
+                [
+                    19 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+                ],
+            ];
+        }
 
         yield 'arrow function' => [
             '<?php $a = fn(int&null $item): int&null => $item * 2;',
