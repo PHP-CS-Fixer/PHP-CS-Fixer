@@ -26,6 +26,7 @@ use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -448,6 +449,91 @@ final class ProjectCodeTest extends TestCase
                 $expected['input'],
                 $expected['expected'],
                 sprintf('Public method "%s::%s" has parameter \'input\' before \'expected\'.', $reflectionClass->getName(), $method->getName())
+            );
+        }
+    }
+
+    /**
+     * @dataProvider provideTestClassCases
+     */
+    public function testDataProvidersAreNonPhpVersionConditional(string $testClassName): void
+    {
+        // should only shrink, baseline of violations on moment of adding this test
+        $exceptionMethods = [
+            \PhpCsFixer\Tests\Fixer\CastNotation\LowercaseCastFixerTest::class => ['provideFixCases'],
+            \PhpCsFixer\Tests\Fixer\CastNotation\ShortScalarCastFixerTest::class => ['provideNoFixCases'],
+            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest::class => ['provideClassyInheritanceInfoCases'],
+            \PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest::class => ['provideFixWithConfiguredIncludeCases'],
+            \PhpCsFixer\Tests\Fixer\FunctionNotation\RegularCallableCallFixerTest::class => ['provideFixCases'],
+            \PhpCsFixer\Tests\Fixer\LanguageConstruct\NoUnsetOnPropertyFixerTest::class => ['provideFixCases'],
+            \PhpCsFixer\Tests\Fixer\Operator\AssignNullCoalescingToCoalesceEqualFixerTest::class => ['provideFixCases'],
+            \PhpCsFixer\Tests\Fixer\Operator\IncrementStyleFixerTest::class => ['provideFixPreIncrementCases'],
+            \PhpCsFixer\Tests\Fixer\Whitespace\NoExtraBlankLinesFixerTest::class => ['provideOneOrInLineCases'],
+            \PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest::class => ['provideFixSpaceOutsideOffsetCases', 'provideFixWithConfigurationCases'],
+            \PhpCsFixer\Tests\FixerDefinition\VersionSpecificationTest::class => ['provideIsSatisfiedByReturnsTrueCases', 'provideIsSatisfiedByReturnsFalseCases'],
+            \PhpCsFixer\Tests\FixerDefinition\VersionSpecificCodeSampleTest::class => ['provideIsSuitableForUsesVersionSpecificationCases'],
+            \PhpCsFixer\Tests\Linter\AbstractLinterTestCase::class => ['provideLintFileCases', 'provideLintSourceCases'],
+            \PhpCsFixer\Tests\PregTest::class => ['providePatternValidationCases'],
+            \PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis\TypeAnalysisTest::class => ['provideIsNullableCases'],
+            \PhpCsFixer\Tests\Tokenizer\Analyzer\FunctionsAnalyzerTest::class => ['provideFunctionArgumentInfoCases', 'provideIsGlobalFunctionCallCases', 'provideFunctionReturnTypeInfoCases', 'provideIsTheSameClassCallCases'],
+            \PhpCsFixer\Tests\Tokenizer\Analyzer\GotoLabelAnalyzerTest::class => ['provideGotoLabelAnalyzerTestCases'],
+            \PhpCsFixer\Tests\Tokenizer\TokensAnalyzerTest::class => ['provideIsAnonymousClassCases'],
+            \PhpCsFixer\Tests\Tokenizer\Transformer\TypeIntersectionTransformerTest::class => ['provideProcessCases'],
+        ];
+
+        $tokens = $this->createTokensForClass($testClassName);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $dataProviderElements = array_filter($tokensAnalyzer->getClassyElements(), static function (array $v, int $k) use ($exceptionMethods, $testClassName, $tokens) {
+            if ('method' !== $v['type']) {
+                // not a method
+                return false;
+            }
+
+            $nextToken = $tokens[$tokens->getNextMeaningfulToken($k)];
+
+            if (!$nextToken->isGivenKind(T_STRING) || !str_starts_with($nextToken->getContent(), 'provide')) {
+                // not a data provider method
+                return false;
+            }
+            // var_dump($testClassName, $exceptionMethods); die;
+            if (isset($exceptionMethods[$testClassName]) && \in_array($nextToken->getContent(), $exceptionMethods[$testClassName], true)) {
+                // method is part of exceptions
+                return false;
+            }
+
+            return true;
+        }, ARRAY_FILTER_USE_BOTH);
+
+        if (0 === \count($dataProviderElements)) {
+            $this->addToAssertionCount(1); // no data providers
+
+            return;
+        }
+
+        foreach ($dataProviderElements as $index => $element) {
+            $methodName = $tokens[$tokens->getNextMeaningfulToken($index)]->getContent();
+            $methodId = $testClassName.'::'.$methodName;
+
+            $startIndex = $tokens->getNextTokenOfKind($index, ['{']);
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
+
+            $versionTokens = array_filter($tokens->findGivenKind(T_STRING, $startIndex, $endIndex), static function (Token $v): bool {
+                return $v->equalsAny([
+                    [T_STRING, 'PHP_VERSION_ID'],
+                    [T_STRING, 'PHP_MAJOR_VERSION'],
+                    [T_STRING, 'PHP_MINOR_VERSION'],
+                    [T_STRING, 'PHP_RELEASE_VERSION'],
+                    [T_STRING, 'phpversion'],
+                ], false);
+            });
+
+            self::assertCount(
+                0,
+                $versionTokens,
+                sprintf(
+                    "DataProvider '%s' should not check PHP version and provide different cases depends on it. It leads to situation when DataProvider provides 'sometimes 10, sometimes 11' test cases, depends on PHP version. That makes John Doe to see 'you run 10/10' and thinking all tests are executed, instead of actually seeing 'you run 10/11 and 1 skipped'.",
+                    $methodId,
+                ),
             );
         }
     }
