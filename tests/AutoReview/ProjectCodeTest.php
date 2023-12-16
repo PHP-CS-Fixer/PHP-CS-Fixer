@@ -453,53 +453,34 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestClassCases
+     * @dataProvider provideDataProviderMethodCases
      */
-    public function testDataProvidersDeclaredReturnType(string $testClassName): void
+    public function testDataProvidersDeclaredReturnType(string $testClassName, \ReflectionMethod $method): void
     {
-        $reflectionClass = new \ReflectionClass($testClassName);
+        $methodId = $testClassName.'::'.$method->getName();
 
-        $publicMethods = array_filter(
-            $reflectionClass->getMethods(),
-            static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName()
-        );
+        self::assertSame('iterable', $method->hasReturnType() ? $method->getReturnType()->__toString() : null, sprintf('DataProvider `%s` must provide `iterable` as return in method prototype.', $methodId));
 
-        $dataProviderMethods = array_filter(
-            $publicMethods,
-            static fn (\ReflectionMethod $reflectionMethod): bool => str_starts_with($reflectionMethod->getName(), 'provide')
-        );
+        $doc = new DocBlock(false !== $method->getDocComment() ? $method->getDocComment() : '/** */');
 
-        if ([] === $dataProviderMethods) {
-            $this->expectNotToPerformAssertions(); // no methods to test, all good!
+        $returnDocs = $doc->getAnnotationsOfType('return');
+
+        if (\count($returnDocs) > 1) {
+            throw new \UnexpectedValueException(sprintf('Multiple `%s@return` annotations.', $methodId));
+        }
+
+        if (1 !== \count($returnDocs)) {
+            $this->addToAssertionCount(1); // no @return annotation, all good!
 
             return;
         }
 
-        /** @var \ReflectionMethod $method */
-        foreach ($dataProviderMethods as $method) {
-            $methodId = $method->getDeclaringClass()->getName().'::'.$method->getName();
+        $returnDoc = $returnDocs[0];
+        $types = $returnDoc->getTypes();
 
-            self::assertSame('iterable', $method->hasReturnType() ? $method->getReturnType()->__toString() : null, sprintf('DataProvider `%s` must provide `iterable` as return in method prototype.', $methodId));
-
-            $doc = new DocBlock(false !== $method->getDocComment() ? $method->getDocComment() : '/** */');
-
-            $returnDocs = $doc->getAnnotationsOfType('return');
-            if (\count($returnDocs) > 1) {
-                throw new \UnexpectedValueException(sprintf('Multiple `%s@return` annotations.', $methodId));
-            }
-            if (1 !== \count($returnDocs)) {
-                $this->addToAssertionCount(1); // no @return annotation, all good!
-
-                continue;
-            }
-
-            $returnDoc = $returnDocs[0];
-            $types = $returnDoc->getTypes();
-
-            self::assertCount(1, $types, sprintf('DataProvider `%s@return` must provide single type.', $methodId));
-            self::assertMatchesRegularExpression('/^iterable\</', $types[0], sprintf('DataProvider `%s@return` must return iterable.', $methodId));
-            self::assertMatchesRegularExpression('/^iterable\\<(?:(?:int\\|)?string, )?array\\{/', $types[0], sprintf('DataProvider `%s@return` must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $methodId));
-        }
+        self::assertCount(1, $types, sprintf('DataProvider `%s@return` must provide single type.', $methodId));
+        self::assertMatchesRegularExpression('/^iterable\</', $types[0], sprintf('DataProvider `%s@return` must return iterable.', $methodId));
+        self::assertMatchesRegularExpression('/^iterable\\<(?:(?:int\\|)?string, )?array\\{/', $types[0], sprintf('DataProvider `%s@return` must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $methodId));
     }
 
     /**
