@@ -108,7 +108,7 @@ abstract class AbstractFixer implements FixerInterface
 
         foreach ($tokens as $index => $token) {
             $originalToken = $tokenMapping[spl_object_hash($token)] ?? null;
-            if ($originalToken !== null) {
+            if (null !== $originalToken) {
                 $tokens->offsetSet($index, $originalToken);
             }
         }
@@ -238,7 +238,7 @@ abstract class AbstractFixer implements FixerInterface
             return false;
         }
         $rules = trim(substr($comment, 18));
-        if ($rules === '') {
+        if ('' === $rules) {
             return true;
         }
         $rules = array_map('trim', explode(',', $rules));
