@@ -384,13 +384,13 @@ abstract class AbstractFixerTestCase extends TestCase
             'ConstantNotation',
             'ControlStructure',
             'DoctrineAnnotation',
-            'FunctionNotation', // remove me
+            'FunctionNotation', // @TODO: remove it before others
             'Import',
-            'LanguageConstruct', // remove me
+            'LanguageConstruct', // @TODO: remove it before others
             'ListNotation',
             'NamespaceNotation',
             'Naming',
-            'Operator', // remove me
+            'Operator', // @TODO: remove it before others
             'PhpTag',
             'PhpUnit',
             'Phpdoc',
@@ -398,7 +398,7 @@ abstract class AbstractFixerTestCase extends TestCase
             'Semicolon',
             'Strict',
             'StringNotation',
-            'Whitespace', // remove me
+            'Whitespace', // @TODO: remove it before others
         ];
 
         $fixerGroup = explode('\\', static::class)[3];
