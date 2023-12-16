@@ -108,7 +108,7 @@ abstract class AbstractFixer implements FixerInterface
 
         foreach ($tokens as $index => $token) {
             $originalToken = $tokenMapping[spl_object_hash($token)] ?? null;
-            if ($originalToken) {
+            if ($originalToken !== null) {
                 $tokens->offsetSet($index, $originalToken);
             }
         }
@@ -229,7 +229,7 @@ abstract class AbstractFixer implements FixerInterface
             return false;
         }
         $comment = $token->getContent();
-        if (!str_starts_with('//', $comment)) {
+        if (!str_starts_with($comment, '//')) {
             return false;
         }
         $comment = trim(substr($comment, 2));
@@ -237,8 +237,8 @@ abstract class AbstractFixer implements FixerInterface
         if (!str_starts_with($comment, 'phpcsfixer:disable')) {
             return false;
         }
-        $rules = substr($comment, 18);
-        if (empty($rules)) {
+        $rules = trim(substr($comment, 18));
+        if ($rules === '') {
             return true;
         }
         $rules = array_map('trim', explode(',', $rules));

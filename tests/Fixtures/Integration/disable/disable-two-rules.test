@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: array_indentation,braces.
+--RULESET--
+{"strict_comparison": true, "single_quote": true}
+--EXPECT--
+<?php
+
+// phpcsfixer:disable strict_comparison,single_quote
+$a = "test" == 'test';
+// phpcsfixer:enable
+
+$b = 'test' === 'test';
+
+--INPUT--
+<?php
+
+// phpcsfixer:disable strict_comparison,single_quote
+$a = "test" == 'test';
+// phpcsfixer:enable
+
+$b = "test" == 'test';
