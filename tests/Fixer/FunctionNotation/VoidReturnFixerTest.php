@@ -279,7 +279,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
             $input = sprintf($code, '');
             $expected = sprintf($code, \in_array($name, $excluded, true) ? '' : ': void');
 
-            yield [
+            yield sprintf('Test if magic method %s is handled without causing syntax error', $name) => [
                 $expected,
                 $expected === $input ? null : $input,
             ];

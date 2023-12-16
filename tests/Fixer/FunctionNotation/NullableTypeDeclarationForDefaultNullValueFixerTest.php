@@ -309,14 +309,16 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
             ',
         ];
 
-        $cases = [
+        yield [
             '<?php function foo(?string &/* comment */$param = null) {}',
             '<?php function foo(string &/* comment */$param = null) {}',
         ];
 
-        yield [$cases[0], $cases[1]];
-
-        yield [$cases[1], $cases[0], ['use_nullable_type_declaration' => false]];
+        yield [
+            '<?php function foo(string &/* comment */$param = null) {}',
+            '<?php function foo(?string &/* comment */$param = null) {}',
+            ['use_nullable_type_declaration' => false],
+        ];
     }
 
     /**
@@ -779,6 +781,10 @@ class Foo
     {
         foreach ($cases as $key => $case) {
             yield $key => $case;
+
+            if (count($case) > 1) {
+                throw new \BadMethodCallException(sprintf('Method "%s" does not support handling "configuration" input yet, please implement it.', __METHOD__));
+            }
 
             $reversed = array_reverse($case);
 
