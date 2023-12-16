@@ -63,28 +63,26 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
             ',
         ];
 
-        if (\PHP_VERSION_ID >= 8_01_00) {
-            yield 'ensure T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG is not modified' => [
-                '<?php $a = $b&$c;',
-                [
-                    6 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-                ],
-            ];
+        yield 'ensure T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG is not modified' => [
+            '<?php $a = $b&$c;',
+            [
+                6 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+            ],
+        ];
 
-            yield 'do not fix, close/open' => [
-                '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
-                [
-                    20 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-                ],
-            ];
+        yield 'do not fix, close/open' => [
+            '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
+            [
+                20 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+            ],
+        ];
 
-            yield 'do not fix, foreach' => [
-                '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
-                [
-                    19 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-                ],
-            ];
-        }
+        yield 'do not fix, foreach' => [
+            '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
+            [
+                19 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+            ],
+        ];
 
         yield 'arrow function' => [
             '<?php $a = fn(int&null $item): int&null => $item * 2;',

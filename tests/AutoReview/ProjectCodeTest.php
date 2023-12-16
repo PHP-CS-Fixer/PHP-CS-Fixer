@@ -366,13 +366,6 @@ final class ProjectCodeTest extends TestCase
             \PhpCsFixer\Tests\Fixer\Operator\OperatorLinebreakFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Whitespace\NoExtraBlankLinesFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest::class,
-            \PhpCsFixer\Tests\Linter\AbstractLinterTestCase::class,
-            \PhpCsFixer\Tests\PregTest::class,
-            \PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis\TypeAnalysisTest::class,
-            \PhpCsFixer\Tests\Tokenizer\Analyzer\FunctionsAnalyzerTest::class,
-            \PhpCsFixer\Tests\Tokenizer\Analyzer\GotoLabelAnalyzerTest::class,
-            \PhpCsFixer\Tests\Tokenizer\TokensAnalyzerTest::class,
-            \PhpCsFixer\Tests\Tokenizer\Transformer\TypeIntersectionTransformerTest::class,
         ];
 
         $classesAllowedToUsePhpVersionIdConstant = [
