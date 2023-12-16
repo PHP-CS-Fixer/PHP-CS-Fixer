@@ -28,9 +28,9 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
     /**
      * @param array<string, bool> $config
      *
-     * @dataProvider provideNewLogicCases
+     * @dataProvider provideFixCases
      */
-    public function testNewLogic(string $expected, ?string $input = null, array $config = []): void
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -39,7 +39,7 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
     /**
      * @return iterable<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
      */
-    public static function provideNewLogicCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'namespace === type name' => [
             '<?php
@@ -155,6 +155,205 @@ class A {
     public function b(\foo\baz\buzz $buzz): void {
     }
 }',
+        ];
+
+        yield 'interface multiple extends' => [
+            '<?php
+namespace Foo\Bar;
+use D\E;
+use IIII\G;
+use Foo\Bar\C;
+interface NakanoInterface extends IzumiInterface, A, E, \C, EZ
+{
+}',
+            '<?php
+namespace Foo\Bar;
+use D\E;
+use IIII\G;
+use Foo\Bar\C;
+interface NakanoInterface extends \Foo\Bar\IzumiInterface, \Foo\Bar\A, \D\E, \C, EZ
+{
+}',
+        ];
+
+        yield 'interface in global namespace with global extend' => [
+            '<?php interface Foo1 extends ArrayAccess2{}',
+            '<?php interface Foo1 extends \ArrayAccess2{}',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'interface in global namespace with multiple extend' => [
+            '<?php use B\Exception; interface Foo extends ArrayAccess, \Exception, Exception {}',
+            '<?php use B\Exception; interface Foo extends \ArrayAccess, \Exception, \B\Exception {}',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'class implements' => [
+            '<?php
+namespace Foo\Bar;
+class SomeClass implements Izumi
+{
+}',
+            '<?php
+namespace Foo\Bar;
+class SomeClass implements \Foo\Bar\Izumi
+{
+}',
+        ];
+
+        yield 'anonymous class implements, shorten to namespace' => [
+            '<?php
+namespace Foo\Bar;
+$a = new class implements Izumi {};',
+            '<?php
+namespace Foo\Bar;
+$a = new class implements \Foo\Bar\Izumi {};',
+        ];
+
+        yield 'anonymous class implements, shorten to imported name' => [
+            '<?php
+use Foo\Bar\Izumi;
+$a = new class implements Izumi {};',
+            '<?php
+use Foo\Bar\Izumi;
+$a = new class implements \Foo\Bar\Izumi {};',
+        ];
+
+        yield 'class extends and implements' => [
+            '<?php
+namespace Foo\Bar;
+class SomeClass extends A implements Izumi
+{
+}',
+            '<?php
+namespace Foo\Bar;
+class SomeClass extends \Foo\Bar\A implements \Foo\Bar\Izumi
+{
+}',
+        ];
+
+        yield 'class extends and implements multiple' => [
+            '<?php
+namespace Foo\Bar;
+class SomeClass extends A implements Izumi, A, \A\B, C
+{
+}',
+            '<?php
+namespace Foo\Bar;
+class SomeClass extends \Foo\Bar\A implements \Foo\Bar\Izumi, A, \A\B, \Foo\Bar\C
+{
+}',
+        ];
+
+        yield 'single caught exception' => [
+            '<?php use A\B; echo 1; try{ foo(999); } catch (B $z) {}',
+            '<?php use A\B; echo 1; try{ foo(999); } catch (\A\B $z) {}',
+        ];
+
+        yield 'single caught exception namespaced' => [
+            '<?php namespace B; try{ foo(999); } catch (A $z) {}',
+            '<?php namespace B; try{ foo(999); } catch (\B\A $z) {}',
+        ];
+
+        yield 'multiple caught exceptions' => [
+            '<?php namespace D; use A\B; try{ foo(); } catch (B |  \A\C  | /* 1 */  \A\D $z) {}',
+            '<?php namespace D; use A\B; try{ foo(); } catch (\A\B |  \A\C  | /* 1 */  \A\D $z) {}',
+        ];
+
+        yield 'catch in multiple namespaces' => [
+            '<?php
+namespace {
+    try{ foo(); } catch (Exception $z) {}
+    try{ foo(); } catch (A\X $z) {}
+    try{ foo(); } catch (B\Z $z) {}
+}
+namespace A {
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (X $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
+}
+namespace B {
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (Z $z) {}
+}
+',
+            '<?php
+namespace {
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
+}
+namespace A {
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
+}
+namespace B {
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
+}
+',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'starts with but not full name extends' => [
+            '<?php namespace a\abcd;
+class Foo extends \a\abcdTest { }',
+            null,
+        ];
+
+        yield 'starts with but not full name function arg' => [
+            '<?php
+namespace Z\B\C\D
+{
+    function A(\Z\B\C\DE\Foo $fix) {}
+}
+',
+            null,
+        ];
+
+        yield 'static class reference' => [
+            '<?php
+            use ZXY\A;
+            echo A::class;
+            echo A::B();
+            echo A::class;
+            foo(A::B,A::C);
+            echo $a[A::class];
+            echo A::class?>
+            ',
+            '<?php
+            use ZXY\A;
+            echo \ZXY\A::class;
+            echo \ZXY\A::B();
+            echo \ZXY\A::class;
+            foo(\ZXY\A::B,\ZXY\A::C);
+            echo $a[\ZXY\A::class];
+            echo \ZXY\A::class?>
+            ',
+        ];
+
+        yield [
+            '<?php
+            namespace Foo\Test;
+            $this->assertSame($names, \Foo\TestMyThing::zxy(1,2));
+            ',
+            null,
+        ];
+
+        yield [
+            '<?php
+            use ZXY\A;
+            use D;
+            echo $D::CONST_VALUE;
+            echo parent::CONST_VALUE;
+            echo self::$abc;
+            echo Z::F;
+            echo X\Z::F;
+            ',
+            null,
         ];
     }
 
@@ -375,10 +574,13 @@ class SomeClass
     }
 
     /**
+     * @param array<string, array<string, mixed>|bool> $config
+     *
      * @dataProvider provideCodeWithoutReturnTypesCases
      */
-    public function testCodeWithoutReturnTypes(string $expected, ?string $input = null): void
+    public function testCodeWithoutReturnTypes(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -1053,12 +1255,15 @@ function foo($dateTime) {}',
     }
 
     /**
+     * @param array<string, array<string, mixed>|bool> $config
+     *
      * @requires PHP 8.0
      *
      * @dataProvider provideFix80Cases
      */
-    public function testFix80(string $expected, ?string $input = null): void
+    public function testFix80(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -1093,6 +1298,11 @@ function foo($dateTime) {}',
         yield [
             '<?php function f(): Foo|Bar|A\B\C {}',
             '<?php function f(): Foo|\Bar|\A\B\C {}',
+        ];
+
+        yield 'caught exception without var' => [
+            '<?php use A\B; try{ foo(0); } catch (B) {}',
+            '<?php use A\B; try{ foo(0); } catch (\A\B) {}',
         ];
     }
 
