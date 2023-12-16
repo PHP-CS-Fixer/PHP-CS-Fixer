@@ -782,7 +782,7 @@ class Foo
         foreach ($cases as $key => $case) {
             yield $key => $case;
 
-            if (count($case) > 1) {
+            if (\count($case) > 2) {
                 throw new \BadMethodCallException(sprintf('Method "%s" does not support handling "configuration" input yet, please implement it.', __METHOD__));
             }
 
