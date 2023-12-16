@@ -98,7 +98,6 @@ final class ProjectCodeTest extends TestCase
         }
 
         self::assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
-        self::assertTrue(is_subclass_of($testClassName, TestCase::class), sprintf('Expected test class "%s" to be a subclass of "\PhpCsFixer\Tests\TestCase".', $testClassName));
     }
 
     /**
@@ -197,6 +196,14 @@ final class ProjectCodeTest extends TestCase
                 implode("\n", array_map(static fn (string $item): string => " * {$item}", $extraProps))
             )
         );
+    }
+
+    /**
+     * @dataProvider provideTestClassCases
+     */
+    public function testThatTestClassExtendsPhpCsFixerTestCaseClass(string $className): void
+    {
+        self::assertTrue(is_subclass_of($className, TestCase::class), sprintf('Expected test class "%s" to be a subclass of "%s".', $className, TestCase::class));
     }
 
     /**
@@ -848,7 +855,7 @@ final class ProjectCodeTest extends TestCase
 
         $finder = Finder::create()
             ->files()
-            ->name('*.php')
+            ->name('*Test.php')
             ->in(__DIR__.'/..')
             ->exclude([
                 'Fixtures',
@@ -864,8 +871,6 @@ final class ProjectCodeTest extends TestCase
             ),
             iterator_to_array($finder, false)
         );
-
-        $classes = array_filter($classes, static fn (string $class): bool => is_subclass_of($class, TestCase::class));
 
         sort($classes);
 
