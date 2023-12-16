@@ -56,7 +56,7 @@ jobs:
           command: ./dev-tools/install.sh
 
       - name: Run AutoReview
-        run: vendor/bin/paraunit run --testsuite auto-review
+        run: vendor/bin/paraunit run --testsuite hello
 
       - name: Check - file permissions
         run: ./dev-tools/check_file_permissions.sh

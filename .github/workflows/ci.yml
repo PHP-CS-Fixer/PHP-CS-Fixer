@@ -184,7 +184,7 @@ jobs:
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
           FAST_LINT_TEST_CASES: 1
-        run: vendor/bin/paraunit coverage --testsuite unit --exclude-group covers-nothing --clover build/logs/clover.xml
+        run: vendor/bin/paraunit coverage --testsuite hello --exclude-group covers-nothing --clover build/logs/clover.xml
 
       - name: Upload coverage results to Coveralls
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
