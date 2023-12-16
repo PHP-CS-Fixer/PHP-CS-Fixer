@@ -346,8 +346,8 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThereIsNoPregFunctionUsedDirectly(string $className): void
     {
-        $rc = new \ReflectionClass($className);
-        $tokens = Tokens::fromCode(file_get_contents($rc->getFileName()));
+        $tokens = $this->createTokensForClass($className);
+
         $stringTokens = array_filter(
             $tokens->toArray(),
             static fn (Token $token): bool => $token->isGivenKind(T_STRING)
@@ -374,8 +374,7 @@ final class ProjectCodeTest extends TestCase
      */
     public function testNoPHPUnitMockUsed(string $testClassName): void
     {
-        $rc = new \ReflectionClass($testClassName);
-        $tokens = Tokens::fromCode(file_get_contents($rc->getFileName()));
+        $tokens = $this->createTokensForClass($testClassName);
         $stringTokens = array_filter(
             $tokens->toArray(),
             static fn (Token $token): bool => $token->isGivenKind(T_STRING)
@@ -511,12 +510,10 @@ final class ProjectCodeTest extends TestCase
             T_WHITESPACE,
         ];
 
-        $rc = new \ReflectionClass($className);
-        $file = $rc->getFileName();
-        $tokens = Tokens::fromCode(file_get_contents($file));
+        $tokens = $this->createTokensForClass($className);
         $classyIndex = null;
 
-        self::assertTrue($tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds()), sprintf('File "%s" should contains a classy.', $file));
+        self::assertTrue($tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds()), sprintf('File for "%s" should contains a classy.', $className));
 
         $count = \count($tokens);
 
@@ -534,11 +531,11 @@ final class ProjectCodeTest extends TestCase
             }
 
             if (!$tokens[$index]->isGivenKind($headerTypes) && !$tokens[$index]->equalsAny([';', '=', '(', ')'])) {
-                self::fail(sprintf('File "%s" should only contains single classy, found "%s" @ %d.', $file, $tokens[$index]->toJson(), $index));
+                self::fail(sprintf('File for "%s" should only contains single classy, found "%s" @ %d.', $className, $tokens[$index]->toJson(), $index));
             }
         }
 
-        self::assertNotNull($classyIndex, sprintf('File "%s" does not contain a classy.', $file));
+        self::assertNotNull($classyIndex, sprintf('File for "%s" does not contain a classy.', $className));
 
         $nextTokenOfKind = $tokens->getNextTokenOfKind($classyIndex, ['{']);
 
@@ -548,7 +545,7 @@ final class ProjectCodeTest extends TestCase
 
         $classyEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextTokenOfKind);
 
-        self::assertNull($tokens->getNextNonWhitespace($classyEndIndex), sprintf('File "%s" should only contains a single classy.', $file));
+        self::assertNull($tokens->getNextNonWhitespace($classyEndIndex), sprintf('File for "%s" should only contains a single classy.', $className));
     }
 
     /**
@@ -757,6 +754,16 @@ final class ProjectCodeTest extends TestCase
         }
     }
 
+    private function createTokensForClass(string $className): Tokens
+    {
+        $file = $className;
+        $file = preg_replace('#^PhpCsFixer\\\Tests\\\#', 'tests\\', $file);
+        $file = preg_replace('#^PhpCsFixer\\\#', 'src\\', $file);
+        $file = str_replace('\\', \DIRECTORY_SEPARATOR, $file).'.php';
+
+        return Tokens::fromCode(file_get_contents($file));
+    }
+
     /**
      * @return iterable<string, string>
      */
@@ -774,9 +781,7 @@ final class ProjectCodeTest extends TestCase
      */
     private function getAnnotationsOfTestClass(string $testClassName, string $annotation): iterable
     {
-        $tokens = Tokens::fromCode(file_get_contents(
-            str_replace('\\', \DIRECTORY_SEPARATOR, preg_replace('#^PhpCsFixer\\\Tests#', 'tests', $testClassName)).'.php'
-        ));
+        $tokens = $this->createTokensForClass($testClassName);
 
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
