@@ -823,13 +823,7 @@ final class ProjectCodeTest extends TestCase
         $file = preg_replace('#^PhpCsFixer\\\#', 'src\\', $file);
         $file = str_replace('\\', \DIRECTORY_SEPARATOR, $file).'.php';
 
-        static $fileTokens = [];
-
-        if (!isset($fileTokens[$file])) {
-            $fileTokens[$file] = Tokens::fromCode(file_get_contents($file));
-        }
-
-        return $fileTokens[$file];
+        return Tokens::fromCode(file_get_contents($file));
     }
 
     /**
