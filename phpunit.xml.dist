@@ -33,6 +33,10 @@
         <testsuite name="auto-review">
             <directory>./tests/AutoReview/</directory>
         </testsuite>
+        <testsuite name="hello">
+            <file>./tests/Console/Command/ListFilesCommandTest.php</file>
+            <file>./tests/FileRemovalTest.php</file>
+        </testsuite>
     </testsuites>
 
     <coverage>
