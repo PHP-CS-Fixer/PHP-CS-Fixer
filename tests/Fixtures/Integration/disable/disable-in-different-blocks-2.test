@@ -1,0 +1,16 @@
+--TEST--
+undefined behavior 2
+--RULESET--
+{"array_syntax": true}
+--EXPECT--
+<?php
+???
+
+--INPUT--
+<?php
+$array = array(
+    1,
+    // phpcsfixer:disable
+    2,
+);
+// phpcsfixer:enable

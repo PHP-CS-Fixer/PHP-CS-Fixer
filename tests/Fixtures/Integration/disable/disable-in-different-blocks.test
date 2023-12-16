@@ -1,0 +1,25 @@
+--TEST--
+undefined behavior
+--RULESET--
+{"statement_indentation": true}
+--EXPECT--
+<?php
+$goodIntentation = 7;
+// phpcsfixer:disable
+        $toMuchIndentation = foo(
+                     $x,
+                     $y,
+                     // phpcsfixer:enable
+                     $z,
+);
+
+--INPUT--
+<?php
+$goodIntentation = 7;
+// phpcsfixer:disable
+        $toMuchIndentation = foo(
+                     $x,
+                     $y,
+                     // phpcsfixer:enable
+                     $z,
+        );

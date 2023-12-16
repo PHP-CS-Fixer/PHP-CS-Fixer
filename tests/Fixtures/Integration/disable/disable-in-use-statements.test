@@ -1,0 +1,26 @@
+--TEST--
+Todo: modify fixer? The disabled part is interpreted as logic between use statements. 
+The groups are sorted for themselves
+--RULESET--
+{"ordered_imports": true}
+--EXPECT--
+<?php
+use D;
+use E;
+// phpcsfixer:disable
+use C;
+use B;
+// phpcsfixer:enable
+use A;
+use F;
+
+--INPUT--
+<?php
+use E;
+use D;
+// phpcsfixer:disable
+use C;
+use B;
+// phpcsfixer:enable
+use F;
+use A;
