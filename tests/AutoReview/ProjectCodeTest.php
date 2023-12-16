@@ -507,7 +507,6 @@ final class ProjectCodeTest extends TestCase
                 // not a data provider method
                 return false;
             }
-            // var_dump($testClassName, $exceptionMethods); die;
             if (isset($exceptionMethods[$testClassName]) && \in_array($nextToken->getContent(), $exceptionMethods[$testClassName], true)) {
                 // method is part of exceptions
                 return false;
