@@ -403,6 +403,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $exceptions = [
             \PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest::class => ['testCommentBlockStartDetection', 'provideCommentBlockStartDetectionCases'],
+            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest::class => ['testClassyDefinitionInfo', 'provideClassyDefinitionInfoCases', 'testClassyInheritanceInfo', 'provideClassyInheritanceInfoCases'],
         ];
 
         $fixerGroup = explode('\\', static::class)[3];

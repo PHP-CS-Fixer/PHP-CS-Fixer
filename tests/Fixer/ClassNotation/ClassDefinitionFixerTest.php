@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -443,6 +444,231 @@ $a = new class implements
     }
 
     /**
+     * @param array<string, mixed> $expected
+     *
+     * @dataProvider provideClassyDefinitionInfoCases
+     */
+    public function testClassyDefinitionInfo(string $source, array $expected): void
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+
+        $method = new \ReflectionMethod($this->fixer, 'getClassyDefinitionInfo');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($this->fixer, $tokens, $expected['classy']);
+
+        ksort($expected);
+        ksort($result);
+
+        self::assertSame($expected, $result);
+    }
+
+    public static function provideClassyDefinitionInfoCases(): iterable
+    {
+        yield [
+            '<?php class A{}',
+            [
+                'start' => 1,
+                'classy' => 1,
+                'open' => 4,
+                'extends' => false,
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => false,
+                'abstract' => false,
+                'readonly' => false,
+            ],
+        ];
+
+        yield [
+            '<?php final class A{}',
+            [
+                'start' => 1,
+                'classy' => 3,
+                'open' => 6,
+                'extends' => false,
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => 1,
+                'abstract' => false,
+                'readonly' => false,
+            ],
+        ];
+
+        yield [
+            '<?php abstract /**/ class A{}',
+            [
+                'start' => 1,
+                'classy' => 5,
+                'open' => 8,
+                'extends' => false,
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => false,
+                'abstract' => 1,
+                'readonly' => false,
+            ],
+        ];
+
+        yield [
+            '<?php class A extends B {}',
+            [
+                'start' => 1,
+                'classy' => 1,
+                'open' => 9,
+                'extends' => [
+                    'start' => 5,
+                    'numberOfExtends' => 1,
+                    'multiLine' => false,
+                ],
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => false,
+                'abstract' => false,
+                'readonly' => false,
+            ],
+        ];
+
+        yield [
+            '<?php interface A extends B,C,D {}',
+            [
+                'start' => 1,
+                'classy' => 1,
+                'open' => 13,
+                'extends' => [
+                    'start' => 5,
+                    'numberOfExtends' => 3,
+                    'multiLine' => false,
+                ],
+                'implements' => false,
+                'anonymousClass' => false,
+                'final' => false,
+                'abstract' => false,
+                'readonly' => false,
+            ],
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $expected
+     *
+     * @dataProvider provideClassyInheritanceInfoCases
+     */
+    public function testClassyInheritanceInfo(string $source, string $label, array $expected): void
+    {
+        $this->doTestClassyInheritanceInfo($source, $label, $expected);
+    }
+
+    public static function provideClassyInheritanceInfoCases(): iterable
+    {
+        yield '1' => [
+            '<?php
+class X11 implements    Z   , T,R
+{
+}',
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+        ];
+
+        yield '2' => [
+            '<?php
+class X10 implements    Z   , T,R    //
+{
+}',
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+        ];
+
+        yield '3' => [
+            '<?php class A implements B {}',
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 1, 'multiLine' => false],
+        ];
+
+        yield '4' => [
+            "<?php class A implements B,\n I{}",
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 2, 'multiLine' => true],
+        ];
+
+        yield '5' => [
+            "<?php class A implements Z\\C\\B,C,D  {\n\n\n}",
+            'numberOfImplements',
+            ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+        ];
+
+        if (\PHP_VERSION_ID < 8_00_00) {
+            $multiLine = true;
+            $code = '<?php
+namespace A {
+    interface X {}
+}
+
+namespace {
+    class B{}
+
+    class A extends //
+        B     implements /*  */ \A
+        \C, Z{
+        public function test()
+        {
+            echo 1;
+        }
+    }
+
+    $a = new A();
+    $a->test();
+}';
+        } else {
+            $multiLine = false;
+            $code = '<?php
+namespace A {
+    interface X {}
+}
+
+namespace {
+    class B{}
+
+    class A extends //
+        B     implements /*  */ \A\C, Z{
+        public function test()
+        {
+            echo 1;
+        }
+    }
+
+    $a = new A();
+    $a->test();
+}';
+        }
+
+        yield [
+            $code,
+            'numberOfImplements',
+            ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => $multiLine],
+        ];
+
+        yield [
+            "<?php \$a = new    class(3)     extends\nSomeClass\timplements    SomeInterface, D {};",
+            'numberOfExtends',
+            ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
+        ];
+
+        yield [
+            "<?php \$a = new class(4) extends\nSomeClass\timplements SomeInterface, D\n\n{};",
+            'numberOfImplements',
+            ['start' => 16, 'numberOfImplements' => 2, 'multiLine' => false],
+        ];
+
+        yield [
+            "<?php \$a = new class(5) extends SomeClass\nimplements    SomeInterface, D {};",
+            'numberOfExtends',
+            ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
+        ];
+    }
+
+    /**
      * @dataProvider provideWithWhitespacesConfigCases
      */
     public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
@@ -575,6 +801,22 @@ $a = new class implements
             '<?php $a = new #[FOO] #[BAR] readonly class {};',
             '<?php $a = new    #[FOO]    #[BAR]   readonly class   {};',
         ];
+    }
+
+    /**
+     * @param array<string, mixed> $expected
+     */
+    private function doTestClassyInheritanceInfo(string $source, string $label, array $expected): void
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+        self::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
+        $method = new \ReflectionMethod($this->fixer, 'getClassyInheritanceInfo');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($this->fixer, $tokens, $expected['start'], $label);
+
+        self::assertSame($expected, $result);
     }
 
     /**
