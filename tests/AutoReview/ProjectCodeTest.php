@@ -42,9 +42,14 @@ use Symfony\Component\Finder\SplFileInfo;
 final class ProjectCodeTest extends TestCase
 {
     /**
-     * @var null|list<array{class-string<TestCase>}>
+     * @var null|array<string, array{class-string<TestCase>}>
      */
     private static ?array $testClassCases = null;
+
+    /**
+     * @var null|array<string, array{class-string}>
+     */
+    private static ?array $srcClassCases = null;
 
     /**
      * This structure contains older classes that are not yet covered by tests.
@@ -66,6 +71,7 @@ final class ProjectCodeTest extends TestCase
 
     public static function tearDownAfterClass(): void
     {
+        self::$srcClassCases = null;
         self::$testClassCases = null;
     }
 
@@ -293,7 +299,7 @@ final class ProjectCodeTest extends TestCase
             );
 
             foreach ($methods as $method) {
-                yield [$testClassName, $method];
+                yield $testClassName.'::'.$method->getName() => [$testClassName, $method];
             }
         }
     }
@@ -589,12 +595,21 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{class-string}>
+     */
     public static function provideSrcClassCases(): iterable
     {
-        return array_map(
-            static fn (string $item): array => [$item],
-            self::getSrcClasses()
-        );
+        if (null === self::$srcClassCases) {
+            $cases = self::getSrcClasses();
+
+            self::$srcClassCases = array_combine(
+                $cases,
+                array_map(static fn (string $case): array => [$case], $cases),
+            );
+        }
+
+        yield from self::$srcClassCases;
     }
 
     public static function provideThatSrcClassesNotAbuseInterfacesCases(): iterable
@@ -657,14 +672,16 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<array{class-string<TestCase>}>
+     * @return iterable<string, array{class-string<TestCase>}>
      */
     public static function provideTestClassCases(): iterable
     {
         if (null === self::$testClassCases) {
-            self::$testClassCases = array_map(
-                static fn (string $item): array => [$item],
-                self::getTestClasses(),
+            $cases = self::getTestClasses();
+
+            self::$testClassCases = array_combine(
+                $cases,
+                array_map(static fn (string $case): array => [$case], $cases),
             );
         }
 
