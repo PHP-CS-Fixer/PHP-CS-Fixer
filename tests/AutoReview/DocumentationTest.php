@@ -28,10 +28,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Documentation\DocumentationLocator
- * @covers \PhpCsFixer\Documentation\FixerDocumentGenerator
- * @covers \PhpCsFixer\Documentation\RstUtils
- * @covers \PhpCsFixer\Documentation\RuleSetDocumentationGenerator
+ * @coversNothing
  *
  * @group legacy
  * @group auto-review

@@ -316,12 +316,6 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatTestClassCoversAreCorrect(string $testClassName): void
     {
-        if (DocumentationTest::class === $testClassName) {
-            $this->expectNotToPerformAssertions();
-
-            return;
-        }
-
         $reflectionClass = new \ReflectionClass($testClassName);
 
         if ($reflectionClass->isAbstract() || $reflectionClass->isInterface()) {
