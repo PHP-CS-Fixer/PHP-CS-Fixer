@@ -34,8 +34,8 @@
             <directory>./tests/AutoReview/</directory>
         </testsuite>
         <testsuite name="hello">
-            <file>./tests/Console/Command/ListFilesCommandTest.php</file>
             <file>./tests/FileRemovalTest.php</file>
+            <file>./tests/Console/Command/ListFilesCommandTest.php</file>
         </testsuite>
     </testsuites>
 
