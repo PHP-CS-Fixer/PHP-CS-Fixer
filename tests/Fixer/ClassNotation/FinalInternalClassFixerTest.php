@@ -25,13 +25,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class FinalInternalClassFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected PHP source code
-     * @param null|string $input    PHP source code
+     * @param array<string, string> $configuration
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -186,21 +186,7 @@ class Foo {}
 class Bar {}
 ',
         ];
-    }
 
-    /**
-     * @param array<string, mixed> $config
-     *
-     * @dataProvider provideFixWithConfigCases
-     */
-    public function testFixWithConfig(string $expected, string $input, array $config): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixWithConfigCases(): iterable
-    {
         yield [
             "<?php\n/** @CUSTOM */final class A{}",
             "<?php\n/** @CUSTOM */class A{}",
@@ -338,24 +324,7 @@ class Foo {}
                 'exclude' => ['Hello'],
             ],
         ];
-    }
 
-    /**
-     * @param string      $expected PHP source code
-     * @param null|string $input    PHP source code
-     *
-     * @dataProvider provideAnonymousClassesCases
-     */
-    public function testAnonymousClasses(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
-     */
-    public static function provideAnonymousClassesCases(): iterable
-    {
         yield [
             '<?php
 /** @internal */
@@ -373,47 +342,54 @@ $a = new class{};',
         ];
     }
 
-    public function testConfigureSameAnnotationInBothLists(): void
+    /**
+     * @group legacy
+     *
+     * @param array<mixed> $config
+     *
+     * @dataProvider provideInvalidConfigurationCases
+     */
+    public function testInvalidConfiguration(array $config, string $exceptionExpression, ?string $deprecationMessage = null): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches(
-            sprintf('#^%s$#', preg_quote('[final_internal_class] Annotation cannot be used in both "include" and "exclude" list, got duplicates: "internal123".', '#'))
-        );
+        $this->expectExceptionMessageMatches($exceptionExpression);
+        if (null !== $deprecationMessage) {
+            $this->expectDeprecation($deprecationMessage);
+        }
 
-        $this->fixer->configure([
-            'include' => ['@internal123', 'a'],
-            'exclude' => ['@internal123', 'b'],
-        ]);
+        $this->fixer->configure($config);
     }
 
     /**
-     * @group legacy
+     * @return iterable<array{array<mixed>, string, 2?: string}>
      */
-    public function testConfigureBothNewAndOldIncludeSet(): void
+    public static function provideInvalidConfigurationCases(): iterable
     {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_include" and new option "include".', '#')));
-        $this->expectDeprecation('Option "annotation_include" for rule "final_internal_class" is deprecated and will be removed in version 4.0. Use "include" to configure PHPDoc annotations tags and attributes.');
+        yield 'same annotation in both lists' => [
+            [
+                'include' => ['@internal123', 'a'],
+                'exclude' => ['@internal123', 'b'],
+            ],
+            sprintf('#^%s$#', preg_quote('[final_internal_class] Annotation cannot be used in both "include" and "exclude" list, got duplicates: "internal123".', '#')),
+        ];
 
-        $this->fixer->configure([
-            'annotation_include' => ['@internal', 'a'],
-            'include' => ['@internal', 'b'],
-        ]);
-    }
+        yield 'both new and old include set' => [
+            [
+                'annotation_include' => ['@internal', 'a'],
+                'include' => ['@internal', 'b'],
+            ],
+            sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_include" and new option "include".', '#')),
+            'Option "annotation_include" for rule "final_internal_class" is deprecated and will be removed in version 4.0. Use "include" to configure PHPDoc annotations tags and attributes.',
+        ];
 
-    /**
-     * @group legacy
-     */
-    public function testConfigureBothNewAndOldExcludeSet(): void
-    {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_exclude" and new option "exclude".', '#')));
-        $this->expectDeprecation('Option "annotation_exclude" for rule "final_internal_class" is deprecated and will be removed in version 4.0. Use "exclude" to configure PHPDoc annotations tags and attributes.');
-
-        $this->fixer->configure([
-            'annotation_exclude' => ['@internal', 'a'],
-            'exclude' => ['@internal', 'b'],
-        ]);
+        yield 'both new and old exclude set' => [
+            [
+                'annotation_exclude' => ['@internal', 'a'],
+                'exclude' => ['@internal', 'b'],
+            ],
+            sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_exclude" and new option "exclude".', '#')),
+            'Option "annotation_exclude" for rule "final_internal_class" is deprecated and will be removed in version 4.0. Use "exclude" to configure PHPDoc annotations tags and attributes.',
+        ];
     }
 
     /**

@@ -379,20 +379,18 @@ abstract class AbstractFixerTestCase extends TestCase
         }
 
         $exceptionGroup = [
-            'CastNotation',
-            'ClassNotation',
             'ClassUsage',
             'Comment',
             'ConstantNotation',
             'ControlStructure',
             'DoctrineAnnotation',
-            'FunctionNotation',
+            'FunctionNotation', // remove me
             'Import',
-            'LanguageConstruct',
+            'LanguageConstruct', // remove me
             'ListNotation',
             'NamespaceNotation',
             'Naming',
-            'Operator',
+            'Operator', // remove me
             'PhpTag',
             'PhpUnit',
             'Phpdoc',
@@ -400,7 +398,7 @@ abstract class AbstractFixerTestCase extends TestCase
             'Semicolon',
             'Strict',
             'StringNotation',
-            'Whitespace',
+            'Whitespace', // remove me
         ];
 
         $fixerGroup = explode('\\', static::class)[3];
@@ -412,7 +410,7 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertTrue(method_exists($this, 'testFix'), 'Method testFix does not exist.');
         self::assertTrue(method_exists($this, 'provideFixCases'), 'Method provideFixCases does not exist.');
 
-        $names = ['Fix', 'FixPre80', 'Fix80', 'Fix81', 'Fix82', 'Fix83', 'InvalidConfiguration'];
+        $names = ['Fix', 'Fix74Deprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'WithWhitespacesConfig', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];
         foreach ($names as $name) {
             $methodNames[] = 'test'.$name;
