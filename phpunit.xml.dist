@@ -11,6 +11,7 @@
     columns="max"
     defaultTimeLimit="10"
     enforceTimeLimit="true"
+    executionOrder="defects"
     failOnRisky="true"
     failOnWarning="true"
     timeoutForSmallTests="10"
