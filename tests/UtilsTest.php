@@ -44,6 +44,8 @@ final class UtilsTest extends TestCase
     protected function tearDown(): void
     {
         putenv("PHP_CS_FIXER_FUTURE_MODE={$this->originalValueOfFutureMode}");
+
+        parent::tearDown();
     }
 
     /**
